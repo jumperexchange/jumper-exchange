@@ -1,5 +1,8 @@
-# React App
+# Cross Chain Wallet Dashboard
 
+![Screenshot](https://raw.githubusercontent.com/zenkteam/cross-layer-wallet-overview/main/public/icon192.png)
+
+This projects helps you to keep track of your liquidity accross chains.
 
 ## Setup
 

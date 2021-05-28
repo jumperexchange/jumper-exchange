@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './assets/logo.svg';
+import logo from './assets/icon192.png';
 import { Layout, Menu } from 'antd';
 import { Header, Footer } from 'antd/lib/layout/layout';
 import './App.css';
