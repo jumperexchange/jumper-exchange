@@ -1,0 +1,27 @@
+
+/* Table */
+.ant-table-thead > tr > th {
+  text-align: center;
+}
+
+/* Cell content */
+.amounts {
+  text-align: right;
+  padding-right: 60px;
+}
+
+.amount_coin {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.amount_usd {
+  color: gray;
+  font-size: 12px;
+}
+
+.coin {
+  text-align: center;
+}
+
