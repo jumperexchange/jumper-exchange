@@ -7,6 +7,11 @@
   margin: 8px 24px 8px 0;
 }
 
+/* global styles */
+.site-layout {
+  margin-top: 64px;
+}
+
 .site-layout .site-layout-background {
   background: #fff;
 }

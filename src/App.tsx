@@ -1,8 +1,9 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './assets/logo.svg';
 import { Layout, Menu } from 'antd';
+import { Header, Footer } from 'antd/lib/layout/layout';
 import './App.css';
-const { Header, Content, Footer } = Layout;
+import Dashboard from './components/Dashboard';
 
 function App() {
   return (
@@ -18,11 +19,8 @@ function App() {
         </Menu>
       </Header>
 
-      <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
-        <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
-          Content
-        </div>
-      </Content>
+      <Dashboard></Dashboard>
+      
       
       <Footer style={{ textAlign: 'center' }}>©2021</Footer>
     </Layout>
