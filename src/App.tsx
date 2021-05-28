@@ -17,9 +17,8 @@ function App() {
         <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
         <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
           <Menu.Item key="1">Dashboard</Menu.Item>
+          <Menu.Item key="2"><ConnectButton /></Menu.Item>
         </Menu>
-
-        <ConnectButton />
       </Header>
 
       <Dashboard></Dashboard>
