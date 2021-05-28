@@ -10,7 +10,7 @@ function App() {
     <Layout>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
         <div >
-          <img src={logo} className="logo" alt="logo" />
+          <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
         </div>
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
           <Menu.Item key="1">nav 1</Menu.Item>
