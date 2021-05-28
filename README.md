@@ -2,7 +2,7 @@
 
 ![Screenshot](https://raw.githubusercontent.com/zenkteam/cross-layer-wallet-overview/main/public/icon192.png)
 
-This projects helps you to keep track of your liquidity accross chains.
+This projects helps you to keep track of your liquidity across chains.
 
 ## Setup
 
@@ -52,3 +52,10 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+
+## Contributors
+
+- Max Klenk ([GitHub](https://github.com/maxklenk), [LinkedIn](https://www.linkedin.com/in/maxklenk/), [Gitcoin](https://gitcoin.co/maxklenk))
+- Adrian Weniger ([GitHub](https://github.com/Addminus), [LinkedIn](https://www.linkedin.com/in/adrian-weniger-8a35b6132/))
+- Philipp Zentner ([GitHub](https://github.com/philippzentner), [LinkedIn](https://www.linkedin.com/in/philippzentner/), [Gitcoin](https://gitcoin.co/philippzentner))
