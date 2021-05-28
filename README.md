@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Use [nvm](https://github.com/nvm-sh/nvm) to run the app with an up-to-date node verion: `nvm use`.
+
+[EditorConfig](https://editorconfig.org/) defines basic formatting, use a [plugin](https://editorconfig.org/#download) for your IDE.
+
 ## Available Scripts
 
 In the project directory, you can run:
