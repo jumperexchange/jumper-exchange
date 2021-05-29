@@ -236,6 +236,15 @@ function Dashboard() {
       </div>
     )
   }
+
+  function renderSummary(summary: any) {
+    return (
+      <div className="amounts">
+        <div className="amount_coin">{summary.amount_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</div>
+        <div className="amount_usd">{summary.percentage_of_portfolio.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} % of portfolio</div>
+      </div>
+    )
+  }
   
   function renderCoin(coin: Coin) {
     return (
@@ -311,33 +320,28 @@ function Dashboard() {
     },
   ];
   
-  const summary: DataType = {
-    key: 0,
-    coin: {
-      name: '',
-      img_url: '',
-    },
+  const summary: any = {
     portfolio: {
-      amount_coin: 22,
       amount_usd: 33,
+      percentage_of_portfolio: 100,
     },
   
     wallet1: {
       eth: {
-        amount_coin: 22,
         amount_usd: 33,
+        percentage_of_portfolio: 7,
       },
       pol: {
-        amount_coin: 22,
         amount_usd: 33,
+        percentage_of_portfolio: 7,
       },
       bsc: {
-        amount_coin: 22,
         amount_usd: 33,
+        percentage_of_portfolio: 7,
       },
       dai: {
-        amount_coin: 22,
         amount_usd: 33,
+        percentage_of_portfolio: 7,
       },
     },
   }
@@ -351,17 +355,17 @@ function Dashboard() {
           dataSource={data}
           bordered
           size="middle"
-          scroll={{ x: '1000px', y: 'calc(100vh - 280px)' }}
+          scroll={{ x: '1000px', y: 'calc(100vh - 277px)' }}
           pagination={false}
           summary={() => (
             <Table.Summary fixed>
               <Table.Summary.Row>
                 <Table.Summary.Cell index={0}>SUM</Table.Summary.Cell>
-                <Table.Summary.Cell index={1}>{renderAmounts(summary.portfolio)}</Table.Summary.Cell>
-                <Table.Summary.Cell index={2}>{renderAmounts(summary.wallet1.eth)}</Table.Summary.Cell>
-                <Table.Summary.Cell index={3}>{renderAmounts(summary.wallet1.pol)}</Table.Summary.Cell>
-                <Table.Summary.Cell index={4}>{renderAmounts(summary.wallet1.bsc)}</Table.Summary.Cell>
-                <Table.Summary.Cell index={5}>{renderAmounts(summary.wallet1.dai)}</Table.Summary.Cell>
+                <Table.Summary.Cell index={1}>{renderSummary(summary.portfolio)}</Table.Summary.Cell>
+                <Table.Summary.Cell index={2}>{renderSummary(summary.wallet1.eth)}</Table.Summary.Cell>
+                <Table.Summary.Cell index={3}>{renderSummary(summary.wallet1.pol)}</Table.Summary.Cell>
+                <Table.Summary.Cell index={4}>{renderSummary(summary.wallet1.bsc)}</Table.Summary.Cell>
+                <Table.Summary.Cell index={5}>{renderSummary(summary.wallet1.dai)}</Table.Summary.Cell>
                 <Table.Summary.Cell index={6}></Table.Summary.Cell>
               </Table.Summary.Row>
             </Table.Summary>
