@@ -30,10 +30,10 @@ export interface DataType {
   coin: Coin;
   portfolio: Amounts;
 
-  [WalletKey.WALLET1]: WalletAmounts | undefined;
-  [WalletKey.WALLET2]: WalletAmounts | undefined;
-  [WalletKey.WALLET3]: WalletAmounts | undefined;
-  [WalletKey.WALLET4]: WalletAmounts | undefined;
+  [WalletKey.WALLET1]: WalletAmounts;
+  [WalletKey.WALLET2]: WalletAmounts;
+  [WalletKey.WALLET3]: WalletAmounts;
+  [WalletKey.WALLET4]: WalletAmounts;
 }
 
 export enum ChainKey {
@@ -52,10 +52,10 @@ export interface Summary {
     amount_usd: number;
     percentage_of_portfolio: number;
   },
-  [WalletKey.WALLET1]?: any;
-  [WalletKey.WALLET2]?: any;
-  [WalletKey.WALLET3]?: any;
-  [WalletKey.WALLET4]?: any;
+  [WalletKey.WALLET1]: any;
+  [WalletKey.WALLET2]: any;
+  [WalletKey.WALLET3]: any;
+  [WalletKey.WALLET4]: any;
 }
 export interface Wallet {
   key: WalletKey;

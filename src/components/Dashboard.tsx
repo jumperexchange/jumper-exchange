@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Amounts, ChainKey, Coin, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
 import './Dashboard.css';
 import  '../services/balanceService'
+import { getBNBAcrossChains, getDaiAcrossChains, getEthAcrossChains, getPolygonAcrossChains } from '../services/balanceService';
 
 const ChainDetails = {
   [ChainKey.ETH]: {
@@ -40,6 +41,11 @@ const coins : Array<Coin> = [
     key: 'BNB',
     name: 'BNB',
     img_url: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
+  },
+  {
+    key: 'DAI',
+    name: 'DAI',
+    img_url: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
   }
 ]
 
@@ -321,37 +327,39 @@ const emptySummary : Summary = {
     percentage_of_portfolio: 100,
   },
   [WalletKey.WALLET1]: {
-    [ChainKey.ETH]: emptySummaryAmounts,
-    [ChainKey.BSC]: emptySummaryAmounts,
-    [ChainKey.POL]: emptySummaryAmounts,
-    [ChainKey.DAI]: emptySummaryAmounts,
+    [ChainKey.ETH]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.BSC]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.POL]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.DAI]: Object.assign({}, emptySummaryAmounts),
   },
   [WalletKey.WALLET2]: {
-    [ChainKey.ETH]: emptySummaryAmounts,
-    [ChainKey.BSC]: emptySummaryAmounts,
-    [ChainKey.POL]: emptySummaryAmounts,
-    [ChainKey.DAI]: emptySummaryAmounts,
+    [ChainKey.ETH]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.BSC]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.POL]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.DAI]: Object.assign({}, emptySummaryAmounts),
   },
   [WalletKey.WALLET3]: {
-    [ChainKey.ETH]: emptySummaryAmounts,
-    [ChainKey.BSC]: emptySummaryAmounts,
-    [ChainKey.POL]: emptySummaryAmounts,
-    [ChainKey.DAI]: emptySummaryAmounts,
+    [ChainKey.ETH]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.BSC]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.POL]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.DAI]: Object.assign({}, emptySummaryAmounts),
   },
   [WalletKey.WALLET4]: {
-    [ChainKey.ETH]: emptySummaryAmounts,
-    [ChainKey.BSC]: emptySummaryAmounts,
-    [ChainKey.POL]: emptySummaryAmounts,
-    [ChainKey.DAI]: emptySummaryAmounts,
+    [ChainKey.ETH]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.BSC]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.POL]: Object.assign({}, emptySummaryAmounts),
+    [ChainKey.DAI]: Object.assign({}, emptySummaryAmounts),
   },
 }
 
-
+function deepClone(obj : any) {
+  return JSON.parse(JSON.stringify(obj))
+}
 
 function Dashboard() {
   const [data, setData] = useState<Array<DataType>>([]);
   const [columns, setColumns] = useState<Array<ColomnType>>(baseColumns)
-  const [summary, setSummary] = useState<Summary>(emptySummary)
+  const [summary, setSummary] = useState<Summary>(deepClone(emptySummary))
   const [wallets, setWallets] = useState<Array<Wallet>>([])
 
   const web3 = useWeb3React()
@@ -373,22 +381,122 @@ function Dashboard() {
       wallet1,
     ]
     const data = buildDataRows(coins, wallets)
+    setWallets(wallets)
+    setData(data)
+  }, [])
+
+  // keep columns in sync
+  useEffect(() => {
     const columns = [
       coinColumn,
       portfolioColumn,
       ...wallets.map(wallet => buildWalletColumn(data, wallet)),
       addColumn,
     ]
-
-    setWallets(wallets)
     setColumns(columns)
-    setSummary(emptySummary)
-    setData(data)
-  }, [])
+  }, [wallets, data])
+
+  // keep Summary in sync
+  useEffect(() => {
+    // sum for each chain in each wallet
+    const newSummary = data.reduce((summary : Summary, coin) => {
+      wallets.forEach((wallet: Wallet) => {
+        wallet.chains.forEach((chainName: ChainKey) => {
+          if (coin[wallet.key][chainName].amount_usd !== -1) {
+            summary[wallet.key][chainName].amount_usd += coin[wallet.key][chainName].amount_usd;
+          }
+        })
+      })
+
+      return summary
+    }, deepClone(emptySummary))
+
+    // total sum
+    // TODO
+
+    // calculate percentages
+    // TODO
+
+    // set new Summary
+    setSummary(newSummary)
+  }, [data, wallets])
+
+  // keep Portfolio in sync
+  // TODO
+
+
+  const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    if (web3.account && !loading) {
+      setLoading(true)
+      const updateAmounts = (walletKey : WalletKey, coinKey: string, amounts : any) => {
+        setData(data.map(coin => {
+          if (coin.key === coinKey && coin[walletKey]) {
+            coin[walletKey].eth.amount_coin = amounts.onEth;
+            coin[walletKey].bsc.amount_coin = amounts.onBsc;
+            coin[walletKey].pol.amount_coin = amounts.onPolygon;
+            coin[walletKey].dai.amount_coin = amounts.onXdai;
+          }
+          return coin
+        }))
+      }
+
+      getEthAcrossChains(web3.account)
+        .then((amounts : any) => {
+          updateAmounts(WalletKey.WALLET1, 'ETH', amounts)
+        })
+        getDaiAcrossChains(web3.account)
+        .then((amounts : any) => {
+          updateAmounts(WalletKey.WALLET1, 'DAI', amounts)
+        })
+        getPolygonAcrossChains(web3.account)
+        .then((amounts : any) => {
+          updateAmounts(WalletKey.WALLET1, 'MATIC', amounts)
+        })
+        getBNBAcrossChains(web3.account)
+        .then((amounts : any) => {
+          updateAmounts(WalletKey.WALLET1, 'BNB', amounts)
+        })
+    }
+  }, [web3, data, loading])
+
+  // ACCESS
+  const addWallet = () => {
+    const wallet2 : Wallet = {
+      key: WalletKey.WALLET2,
+      name: 'Second Wallet',
+      address: '0x42322341423423423',
+      chains: [
+        ChainKey.ETH,
+        ChainKey.BSC,
+        ChainKey.POL,
+        ChainKey.DAI,
+      ]
+    }
+    setWallets(prevItems => [...prevItems, wallet2]);
+  }
+
+  const removeWallet = () => {
+    setWallets(wallets.filter(wallet => wallet.key !== WalletKey.WALLET2))
+  }
+
+  const updateData = () => {
+    setData(data.map(coin => {
+      if (coin.key === 'ETH' && coin.wallet1) {
+        coin.wallet1.eth.amount_coin = 1
+        coin.wallet1.eth.amount_usd = 1
+      }
+      return coin
+    }))
+  }
 
   let summaryIndex = 0
   return (
     <Content className="site-layout">
+    <Button onClick={addWallet}>Add Wallet</Button>
+      <Button onClick={removeWallet}>remove Wallet</Button>
+      <Button onClick={updateData}>set Data</Button>
+
       <div className="site-layout-background" style={{ minHeight: 'calc(100vh - 64px)' }}>
         <Table
           columns={columns}
