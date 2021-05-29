@@ -9,6 +9,7 @@ import { getBNBAcrossChains, getDaiAcrossChains, getEthAcrossChains, getPolygonA
 import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
 import ConnectButton from './web3/ConnectButton';
 import { ethers } from 'ethers';
+import { readWallets, storeWallets } from '../services/localStorage';
 
 const COINS = {
   ETH: 'ETH',
@@ -276,32 +277,36 @@ const walletColumn: ColomnType = {
       title: 'Ethereum',
       children: [{
         title: COINS.ETH,
-        dataIndex: ['empty'],
+        dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
+        render: renderAmounts,
       }]
     },
     {
       title: 'Polygon',
       children: [{
         title: COINS.MATIC,
-        dataIndex: ['empty'],
+        dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
+        render: renderAmounts,
       }],
     },
     {
       title: 'Binance Smart Chain',
       children: [{
         title: COINS.BNB,
-        dataIndex: ['empty'],
+        dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
+        render: renderAmounts,
       }],
     },
     {
       title: 'xDai',
       children: [{
         title: COINS.DAI,
-        dataIndex: ['empty'],
+        dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
+        render: renderAmounts,
       }],
     },
   ],
@@ -348,6 +353,32 @@ function Dashboard() {
 
   const web3 = useWeb3React()
 
+  const calculatePortfolio = (coin : DataType) => {
+    // sum portfolio
+    coin.portfolio.amount_coin = 0;
+    coin.portfolio.amount_usd = 0;
+    Object.values(WalletKey).forEach((walletKey : WalletKey) => {
+      Object.values(ChainKey).forEach((chainKey: ChainKey) => {
+        if (coin[walletKey][chainKey].amount_coin > 0) {
+          coin.portfolio.amount_coin += coin[walletKey][chainKey].amount_coin;
+          coin.portfolio.amount_usd += coin[walletKey][chainKey].amount_usd;
+        }
+      })
+    })
+  }
+
+  const clearWalletData = (walletKey : WalletKey) => {
+    setData(data.map(coin => {
+      Object.values(ChainKey).forEach(chain => {
+        coin[walletKey][chain].amount_coin = -1
+        coin[walletKey][chain].amount_usd = -1
+      })
+      
+      calculatePortfolio(coin)
+      return coin
+    }))
+  }
+
   const updateAmounts = (walletKey : WalletKey, coinKey: string, amounts : any) => {
     setData(data.map(coin => {
       if (coin.key === coinKey && coin[walletKey]) {
@@ -360,17 +391,7 @@ function Dashboard() {
         coin[walletKey].dai.amount_coin = amounts.onXdai;
         coin[walletKey].dai.amount_usd = amounts.onXdai; // debug
 
-        // sum portfolio
-        coin.portfolio.amount_coin = 0;
-        coin.portfolio.amount_usd = 0;
-        Object.values(WalletKey).forEach((walletKey : WalletKey) => {
-          Object.values(ChainKey).forEach((chainKey: ChainKey) => {
-            if (coin[walletKey][chainKey].amount_coin > 0) {
-              coin.portfolio.amount_coin += coin[walletKey][chainKey].amount_coin;
-              coin.portfolio.amount_usd += coin[walletKey][chainKey].amount_usd;
-            }
-          })
-        })
+        calculatePortfolio(coin)
       }
       return coin
     }))
@@ -393,6 +414,71 @@ function Dashboard() {
     .then((amounts : any) => {
       updateAmounts(wallet.key, COINS.BNB, amounts)
     })
+  }
+
+  const removeWallet = (wallet : Wallet) => {
+    const newWallets = wallets.filter(item => item.key !== wallet.key)
+    storeWallets(newWallets)
+    setWallets(newWallets)
+    clearWalletData(wallet.key)
+  }
+
+  const triggerWalletUpdate = (wallet : Wallet) => {
+    clearWalletData(wallet.key)
+
+    setWallets(wallets.map((item : Wallet) => {
+      if (item.key === wallet.key) {
+        item.loading = false
+      }
+      return item
+    }))
+  }
+
+  const findUnusedWalletKey = () : WalletKey => {
+    for (const key of Object.values(WalletKey)) {
+      if (!wallets.find((item : Wallet) => item.key === key)) {
+        return key
+      }
+    }
+    throw new Error('No more keys available')
+  }
+
+  const addWallet = (address : string) => {
+    const wallet : Wallet = {
+      key: findUnusedWalletKey(),
+      name: 'My Wallet',
+      address: address,
+      chains: Object.values(ChainKey),
+      loading: false,
+    }
+    const newWallets = [...wallets, wallet]
+    storeWallets(newWallets)
+    setWallets(newWallets)
+  }
+
+  const showWalletModal = () => {
+    setWalletModalVisible(true);
+  };
+
+  const getModalAddressSuggestion = () => {
+    const addedWallets = wallets.map(wallet => wallet.address)
+    const web3Account = (web3.account && addedWallets.indexOf(web3.account) === -1) ? web3.account : ''
+    return walletModalAddress || web3Account;
+  }
+
+  const handleWalletModalAdd = () => {
+    const address = getModalAddressSuggestion();
+    if (ethers.utils.isAddress(address)) {
+      addWallet(address)
+      setWalletModalVisible(false)
+      setWalletModalAddress('')
+    }
+  };
+
+  const handleWalletModalClose = () => {
+    if (wallets.length) {
+      setWalletModalVisible(false)
+    }
   }
 
   // Automatically trigger update
@@ -508,88 +594,16 @@ function Dashboard() {
     setSummary(newSummary)
   }, [data, wallets])
 
-  // Setup first wallet
-  // useEffect(() => {
-  //   if (web3.account && !wallets.length) {
-  //     const wallet : Wallet = {
-  //       key: WalletKey.WALLET1,
-  //       name: 'My Wallet',
-  //       address: web3.account,
-  //       chains: Object.values(ChainKey),
-  //       loading: false,
-  //     }
-  //     setWallets(prevItems => [...prevItems, wallet]);
-  //   }
-  // }, [web3, wallets])
-
-  
-
-
-
-  const removeWallet = (wallet : Wallet) => {
-    setWallets(wallets.filter(item => item.key !== wallet.key))
-    // TODO: clear data of wallet + portfolio recalculation
-  }
-
-  const triggerWalletUpdate = (wallet : Wallet) => {
-    // TODO: clear data of wallet
-
-    setWallets(wallets.map((item : Wallet) => {
-      if (item.key === wallet.key) {
-        item.loading = false
-      }
-      return item
-    }))
-  }
-
-  const findUnusedWalletKey = () : WalletKey => {
-    for (const key of Object.values(WalletKey)) {
-      if (!wallets.find((item : Wallet) => item.key === key)) {
-        return key
-      }
-    }
-    throw new Error('No more keys available')
-  }
-
-  const addWallet = (address : string) => {
-    const wallet : Wallet = {
-      key: findUnusedWalletKey(),
-      name: 'My Wallet',
-      address: address,
-      chains: Object.values(ChainKey),
-      loading: false,
-    }
-    setWallets(prevItems => [...prevItems, wallet]);
-  }
-
-  const showWalletModal = () => {
-    setWalletModalVisible(true);
-  };
-
-  const getModalAddressSuggestion = () => {
-    const addedWallets = wallets.map(wallet => wallet.address)
-    const web3Account = (web3.account && addedWallets.indexOf(web3.account) === -1) ? web3.account : ''
-    return walletModalAddress || web3Account;
-  }
-
-  const handleWalletModalAdd = () => {
-    const address = getModalAddressSuggestion();
-    if (ethers.utils.isAddress(address)) {
-      addWallet(address)
-      setWalletModalVisible(false)
-      setWalletModalAddress('')
-    }
-  };
-
-  const handleWalletModalClose = () => {
-    if (wallets.length) {
-      setWalletModalVisible(false)
-    }
-  }
-
+  // Setup
   useEffect(() => {
     if (!wallets.length && !walletModalVisible) {
-      setWalletModalVisible(true);
+      // check localStorage
+      const storedWallets = readWallets()
+      if (storedWallets.length) {
+        setWallets(storedWallets)
+      } else {
+        setWalletModalVisible(true);
+      }
     }
   }, [wallets, walletModalVisible])
 
