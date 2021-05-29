@@ -3,6 +3,7 @@ import { Content } from 'antd/lib/layout/layout';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Table, TableColumnType } from 'antd';
 import './Dashboard.css';
+import  '../services/eth'
 
 interface Amounts {
   amount_coin: number;
@@ -37,7 +38,7 @@ interface ColomnType extends TableColumnType<DataType> {
 
 const data: Array<DataType> = [];
 
-for (let i = 0; i < 20; i += 3) {
+for (let i = 0; i < 3; i += 3) {
   data.push({
     key: i,
     coin: {
@@ -51,7 +52,7 @@ for (let i = 0; i < 20; i += 3) {
 
     wallet1: {
       eth: {
-        amount_coin: 22,
+        amount_coin: 12,
         amount_usd: 33,
       },
       pol: {
@@ -59,11 +60,11 @@ for (let i = 0; i < 20; i += 3) {
         amount_usd: 33,
       },
       bsc: {
-        amount_coin: 22,
+        amount_coin: 32,
         amount_usd: 33,
       },
       dai: {
-        amount_coin: 22,
+        amount_coin: 42,
         amount_usd: 33,
       },
     },
@@ -81,19 +82,19 @@ for (let i = 0; i < 20; i += 3) {
 
     wallet1: {
       eth: {
-        amount_coin: 22,
+        amount_coin: 62,
         amount_usd: 33,
       },
       pol: {
-        amount_coin: 22,
+        amount_coin: 72,
         amount_usd: 33,
       },
       bsc: {
-        amount_coin: 22,
+        amount_coin: 82,
         amount_usd: 33,
       },
       dai: {
-        amount_coin: 22,
+        amount_coin: 92,
         amount_usd: 33,
       },
     },
@@ -222,6 +223,7 @@ const columns: Array<ColomnType> = [
     title: 'Add Wallet',
     dataIndex: '',
     width: 100,
+    
   },
 ];
 
@@ -256,10 +258,12 @@ const summary: DataType = {
   },
 }
 
+
+
 function Dashboard() {
   const web3 = useWeb3React()
-  console.log(web3)
 
+ 
   return (
     <Content className="site-layout">
       <div className="site-layout-background" style={{ minHeight: 'calc(100vh - 64px)' }}>
