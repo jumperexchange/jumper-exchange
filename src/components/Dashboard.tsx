@@ -130,7 +130,7 @@ function renderGas(data: Array<DataType>, walletKey: WalletKey, chain: ChainKey,
       <div className="amount_coin">
         { amounts.amount_coin === -1 ? (
           <Tooltip title={tooltip}>
-          {coinName}: <Skeleton.Button style={{ width: 70}} active={true} size={'small'} shape={'round'} />
+          {coinName}: <Skeleton.Button style={{ width: 60}} active={true} size={'small'} shape={'round'} />
         </Tooltip>
         ) : amounts.amount_coin === 0 ? (
           <Tooltip color="red" title={tooltipEmpty}>
@@ -246,10 +246,10 @@ const buildDataRow = (coin: any, wallets: Array<Wallet>) : DataType => {
       amount_coin: -1,
       amount_usd: -1,
     },
-    [WalletKey.WALLET1]: Object.assign({}, emptyWalletAmounts),
-    [WalletKey.WALLET2]: Object.assign({}, emptyWalletAmounts),
-    [WalletKey.WALLET3]: Object.assign({}, emptyWalletAmounts),
-    [WalletKey.WALLET4]: Object.assign({}, emptyWalletAmounts),
+    [WalletKey.WALLET1]: deepClone(emptyWalletAmounts),
+    [WalletKey.WALLET2]: deepClone(emptyWalletAmounts),
+    [WalletKey.WALLET3]: deepClone(emptyWalletAmounts),
+    [WalletKey.WALLET4]: deepClone(emptyWalletAmounts),
   }
 
   return row
@@ -270,7 +270,7 @@ const coinColumn : ColomnType = {
 }
 const portfolioColumn : ColomnType = {
   title: 'Portfolio',
-  width: baseWidth,
+  width: baseWidth + 10,
   dataIndex: 'portfolio',
   render: renderAmounts,
 }
@@ -409,7 +409,7 @@ function Dashboard() {
       wallets.forEach((wallet: Wallet) => {
         wallet.chains.forEach((chainName: ChainKey) => {
           if (coin[wallet.key][chainName].amount_usd !== -1) {
-            summary[wallet.key][chainName].amount_usd += coin[wallet.key][chainName].amount_usd;
+            summary[wallet.key][chainName].amount_usd += coin[wallet.key][chainName].amount_usd
           }
         })
       })
@@ -418,18 +418,25 @@ function Dashboard() {
     }, deepClone(emptySummary))
 
     // total sum
-    // TODO
+    newSummary.portfolio.amount_usd = 0;
+    wallets.forEach((wallet: Wallet) => {
+      wallet.chains.forEach((chainKey: ChainKey) => {
+        newSummary.portfolio.amount_usd += newSummary[wallet.key][chainKey].amount_usd
+      })
+    })
 
     // calculate percentages
-    // TODO
+    wallets.forEach((wallet: Wallet) => {
+      wallet.chains.forEach((chainKey: ChainKey) => {
+        newSummary[wallet.key][chainKey].percentage_of_portfolio = newSummary[wallet.key][chainKey].amount_usd === 0
+          ? 0
+          : newSummary[wallet.key][chainKey].amount_usd / newSummary.portfolio.amount_usd * 100
+      })
+    })
 
     // set new Summary
     setSummary(newSummary)
   }, [data, wallets])
-
-  // keep Portfolio in sync
-  // TODO
-
 
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
@@ -446,6 +453,18 @@ function Dashboard() {
             coin[walletKey].pol.amount_usd = amounts.onPolygon; // debug
             coin[walletKey].dai.amount_coin = amounts.onXdai;
             coin[walletKey].dai.amount_usd = amounts.onXdai; // debug
+
+            // sum portfolio
+            coin.portfolio.amount_coin = 0;
+            coin.portfolio.amount_usd = 0;
+            [WalletKey.WALLET1, WalletKey.WALLET2, WalletKey.WALLET3, WalletKey.WALLET4].forEach((walletKey : WalletKey) => {
+              [ChainKey.ETH, ChainKey.BSC, ChainKey.POL, ChainKey.DAI].forEach((chainKey: ChainKey) => {
+                if (coin[walletKey][chainKey].amount_coin > 0) {
+                  coin.portfolio.amount_coin += coin[walletKey][chainKey].amount_coin;
+                  coin.portfolio.amount_usd += coin[walletKey][chainKey].amount_usd;
+                }
+              })
+            })
           }
           return coin
         }))
