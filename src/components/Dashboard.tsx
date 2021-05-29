@@ -1,60 +1,54 @@
+import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
-import React, { useEffect, useState } from 'react';
-import { Amounts, ChainKey, Coin, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
-import './Dashboard.css';
-import  '../services/balanceService'
-import { getBNBAcrossChains, getDaiAcrossChains, getEthAcrossChains, getPolygonAcrossChains } from '../services/balanceService';
-import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
-import ConnectButton from './web3/ConnectButton';
 import { ethers } from 'ethers';
+import React, { useEffect, useState } from 'react';
+import '../services/balanceService';
+import { getTokenBalance } from '../services/balanceService';
 import { readWallets, storeWallets } from '../services/localStorage';
+import { Amounts, ChainKey, Coin, CoinKey, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
+import './Dashboard.css';
+import ConnectButton from './web3/ConnectButton';
 
-const COINS = {
-  ETH: 'ETH',
-  MATIC: 'MATIC',
-  BNB: 'BNB',
-  DAI: 'DAI',
-}
 const ChainDetails = {
   [ChainKey.ETH]: {
     name: 'Ethereum',
-    gasName: COINS.ETH,
+    gasName: CoinKey.ETH,
   },
   [ChainKey.BSC]: {
     name: 'Binance Smart Chain',
-    gasName: COINS.BNB,
+    gasName: CoinKey.BNB,
   },
   [ChainKey.POL]: {
     name: 'Polygon',
-    gasName: COINS.MATIC,
+    gasName: CoinKey.MATIC,
   },
   [ChainKey.DAI]: {
     name: 'xDai',
-    gasName: COINS.DAI,
+    gasName: CoinKey.DAI,
   },
 }
 
 const coins : Array<Coin> = [
   {
-    key: COINS.ETH,
-    name: COINS.ETH,
+    key: CoinKey.ETH,
+    name: CoinKey.ETH,
     img_url: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
   },
   {
-    key: COINS.MATIC,
-    name: COINS.MATIC,
+    key: CoinKey.MATIC,
+    name: CoinKey.MATIC,
     img_url: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
   },
   {
-    key: COINS.BNB,
-    name: COINS.BNB,
+    key: CoinKey.BNB,
+    name: CoinKey.BNB,
     img_url: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
   },
   {
-    key: COINS.DAI,
-    name: COINS.DAI,
+    key: CoinKey.DAI,
+    name: CoinKey.DAI,
     img_url: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
   }
 ]
@@ -276,7 +270,7 @@ const walletColumn: ColomnType = {
     {
       title: 'Ethereum',
       children: [{
-        title: COINS.ETH,
+        title: CoinKey.ETH,
         dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
         render: renderAmounts,
@@ -285,7 +279,7 @@ const walletColumn: ColomnType = {
     {
       title: 'Polygon',
       children: [{
-        title: COINS.MATIC,
+        title: CoinKey.MATIC,
         dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
         render: renderAmounts,
@@ -294,7 +288,7 @@ const walletColumn: ColomnType = {
     {
       title: 'Binance Smart Chain',
       children: [{
-        title: COINS.BNB,
+        title: CoinKey.BNB,
         dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
         render: renderAmounts,
@@ -303,7 +297,7 @@ const walletColumn: ColomnType = {
     {
       title: 'xDai',
       children: [{
-        title: COINS.DAI,
+        title: CoinKey.DAI,
         dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
         render: renderAmounts,
@@ -382,14 +376,14 @@ function Dashboard() {
   const updateAmounts = (walletKey : WalletKey, coinKey: string, amounts : any) => {
     setData(data.map(coin => {
       if (coin.key === coinKey && coin[walletKey]) {
-        coin[walletKey].eth.amount_coin = amounts.onEth;
-        coin[walletKey].eth.amount_usd = amounts.onEth; // debug
-        coin[walletKey].bsc.amount_coin = amounts.onBsc;
-        coin[walletKey].bsc.amount_usd = amounts.onBsc; // debug
-        coin[walletKey].pol.amount_coin = amounts.onPolygon;
-        coin[walletKey].pol.amount_usd = amounts.onPolygon; // debug
-        coin[walletKey].dai.amount_coin = amounts.onXdai;
-        coin[walletKey].dai.amount_usd = amounts.onXdai; // debug
+        coin[walletKey].eth.amount_coin = amounts.eth;
+        coin[walletKey].eth.amount_usd = amounts.eth; // debug
+        coin[walletKey].bsc.amount_coin = amounts.bsc;
+        coin[walletKey].bsc.amount_usd = amounts.bsc; // debug
+        coin[walletKey].pol.amount_coin = amounts.pol;
+        coin[walletKey].pol.amount_usd = amounts.pol; // debug
+        coin[walletKey].dai.amount_coin = amounts.dai;
+        coin[walletKey].dai.amount_usd = amounts.dai; // debug
 
         calculatePortfolio(coin)
       }
@@ -398,21 +392,11 @@ function Dashboard() {
   }
 
   const updateWalletAmounts = (wallet: Wallet) => {
-    getEthAcrossChains(wallet.address)
+    Object.values(CoinKey).forEach(coin => {
+      getTokenBalance(coin, wallet.address)
       .then((amounts : any) => {
-        updateAmounts(wallet.key, COINS.ETH, amounts)
+        updateAmounts(wallet.key, coin, amounts)
       })
-    getDaiAcrossChains(wallet.address)
-    .then((amounts : any) => {
-      updateAmounts(wallet.key, COINS.DAI, amounts)
-    })
-    getPolygonAcrossChains(wallet.address)
-    .then((amounts : any) => {
-      updateAmounts(wallet.key, COINS.MATIC, amounts)
-    })
-    getBNBAcrossChains(wallet.address)
-    .then((amounts : any) => {
-      updateAmounts(wallet.key, COINS.BNB, amounts)
     })
   }
 

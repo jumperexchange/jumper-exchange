@@ -64,3 +64,10 @@ export interface Wallet {
   chains: Array<ChainKey>;
   loading: boolean;
 }
+
+export enum CoinKey {
+  ETH = 'ETH',
+  MATIC = 'MATIC',
+  BNB = 'BNB',
+  DAI = 'DAI',
+}
