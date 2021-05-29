@@ -10,7 +10,7 @@
   padding-right: 20px;
 }
 .amounts-empty .amount_coin {
-  color: gray;
+  color: lightgray;
 }
 .amounts-empty .amount_usd {
   color: transparent;

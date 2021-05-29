@@ -5,7 +5,6 @@ import { Header } from 'antd/lib/layout/layout';
 import './App.css';
 import Dashboard from './components/Dashboard';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
-import ConnectButton from './components/web3/ConnectButton';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
         <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
         <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
           <Menu.Item key="1">Dashboard</Menu.Item>
-          <Menu.Item key="2"><ConnectButton /></Menu.Item>
         </Menu>
       </Header>
 

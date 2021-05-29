@@ -2,11 +2,11 @@ import {ethers} from "ethers";
 import erc20_abi from './ABI/ERC_20.json'
 
 
-enum RpcUrls {
-  ETH = 'https://mainnet.infura.io/v3/ec3c55702afa4fc3a6377e1a3fb82721',
-  BSC = 'https://bsc-dataseed1.defibit.io',
-  POLYGON = 'https://rpc-mainnet.matic.network',
-  XDAI = 'https://xdai.poanetwork.dev'
+const RpcUrls ={
+  ETH: process.env.REACT_APP_RPC_URL_MAINNET,
+  BSC: process.env.REACT_APP_RPC_URL_BSC,
+  POLYGON: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET,
+  XDAI: process.env.REACT_APP_RPC_URL_XDAI,
 }
 
 const provider =  {

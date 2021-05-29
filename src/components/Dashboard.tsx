@@ -1,50 +1,60 @@
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Badge, Button, Modal, Skeleton, Table, Tooltip } from 'antd';
+import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 import { Amounts, ChainKey, Coin, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
 import './Dashboard.css';
 import  '../services/balanceService'
 import { getBNBAcrossChains, getDaiAcrossChains, getEthAcrossChains, getPolygonAcrossChains } from '../services/balanceService';
+import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
+import ConnectButton from './web3/ConnectButton';
+import { ethers } from 'ethers';
+import { readWallets, storeWallets } from '../services/localStorage';
 
+const COINS = {
+  ETH: 'ETH',
+  MATIC: 'MATIC',
+  BNB: 'BNB',
+  DAI: 'DAI',
+}
 const ChainDetails = {
   [ChainKey.ETH]: {
     name: 'Ethereum',
-    gasName: 'ETH',
+    gasName: COINS.ETH,
   },
   [ChainKey.BSC]: {
     name: 'Binance Smart Chain',
-    gasName: 'BNB',
+    gasName: COINS.BNB,
   },
   [ChainKey.POL]: {
     name: 'Polygon',
-    gasName: 'MATIC',
+    gasName: COINS.MATIC,
   },
   [ChainKey.DAI]: {
     name: 'xDai',
-    gasName: 'DAI',
+    gasName: COINS.DAI,
   },
 }
 
 const coins : Array<Coin> = [
   {
-    key: 'ETH',
-    name: 'ETH',
+    key: COINS.ETH,
+    name: COINS.ETH,
     img_url: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
   },
   {
-    key: 'MATIC',
-    name: 'MATIC',
+    key: COINS.MATIC,
+    name: COINS.MATIC,
     img_url: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
   },
   {
-    key: 'BNB',
-    name: 'BNB',
+    key: COINS.BNB,
+    name: COINS.BNB,
     img_url: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
   },
   {
-    key: 'DAI',
-    name: 'DAI',
+    key: COINS.DAI,
+    name: COINS.DAI,
     img_url: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
   }
 ]
@@ -124,7 +134,7 @@ function renderGas(data: Array<DataType>, walletKey: WalletKey, chain: ChainKey,
       <div className="amount_coin">
         { amounts.amount_coin === -1 ? (
           <Tooltip title={tooltip}>
-          {coinName}: <Skeleton.Button style={{ width: 70}} active={true} size={'small'} shape={'round'} />
+          {coinName}: <Skeleton.Button style={{ width: 60}} active={true} size={'small'} shape={'round'} />
         </Tooltip>
         ) : amounts.amount_coin === 0 ? (
           <Tooltip color="red" title={tooltipEmpty}>
@@ -194,26 +204,9 @@ function renderCoin(coin: Coin) {
 }
 
 // builders
-const buildWalletColumn = (data: Array<DataType>, wallet : Wallet) => {
-  const children : Array<ColomnType> = wallet.chains.map(chainKey => {
-    return {
-      title: ChainDetails[chainKey].name,
-      children: [{
-        title: renderGas(data, wallet.key, chainKey, ChainDetails[chainKey].gasName),
-        dataIndex: [wallet.key, chainKey],
-        width: baseWidth,
-        render: renderAmounts,
-      }]
-    }
-  })
 
-  return {
-    title: `"${wallet.name}" ${wallet.address.substr(0,4)}...${wallet.address.substr(-4,4)}`,
-    children
-  }
-}
 
-const buildDataRow = (coin: any, wallets: Array<Wallet>) : DataType => {
+const buildDataRow = (coin: any) : DataType => {
   const emptyWalletAmounts : WalletAmounts = {
     [ChainKey.ETH]: {
       amount_coin: -1,
@@ -240,17 +233,17 @@ const buildDataRow = (coin: any, wallets: Array<Wallet>) : DataType => {
       amount_coin: -1,
       amount_usd: -1,
     },
-    [WalletKey.WALLET1]: emptyWalletAmounts,
-    [WalletKey.WALLET2]: emptyWalletAmounts,
-    [WalletKey.WALLET3]: emptyWalletAmounts,
-    [WalletKey.WALLET4]: emptyWalletAmounts,
+    [WalletKey.WALLET1]: deepClone(emptyWalletAmounts),
+    [WalletKey.WALLET2]: deepClone(emptyWalletAmounts),
+    [WalletKey.WALLET3]: deepClone(emptyWalletAmounts),
+    [WalletKey.WALLET4]: deepClone(emptyWalletAmounts),
   }
 
   return row
 }
 
-const buildDataRows = (coins: Array<any>, wallets: Array<Wallet>) : Array<DataType> => {
-  return coins.map(coin => buildDataRow(coin, wallets))
+const buildDataRows = (coins: Array<any>) : Array<DataType> => {
+  return coins.map(coin => buildDataRow(coin))
 }
 
 // columns
@@ -264,48 +257,56 @@ const coinColumn : ColomnType = {
 }
 const portfolioColumn : ColomnType = {
   title: 'Portfolio',
-  width: baseWidth,
+  width: baseWidth + 10,
   dataIndex: 'portfolio',
   render: renderAmounts,
 }
 const addColumn : ColomnType = {
-  title: 'Add Wallet',
+  title: (
+    <Button>
+      Add Wallet
+    </Button>
+  ),
   dataIndex: '',
   width: 100,
 }
 const walletColumn: ColomnType = {
-  title: '"Your Wallet" 0x99...XXXX',
+  title: 'No Wallet Connected',
   children: [
     {
       title: 'Ethereum',
       children: [{
-        title: 'ETH',
-        dataIndex: ['empty'],
+        title: COINS.ETH,
+        dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
+        render: renderAmounts,
       }]
     },
     {
       title: 'Polygon',
       children: [{
-        title: 'MATIC',
-        dataIndex: ['empty'],
+        title: COINS.MATIC,
+        dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
+        render: renderAmounts,
       }],
     },
     {
       title: 'Binance Smart Chain',
       children: [{
-        title: 'BNB',
-        dataIndex: ['empty'],
+        title: COINS.BNB,
+        dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
+        render: renderAmounts,
       }],
     },
     {
       title: 'xDai',
       children: [{
-        title: 'DAI',
-        dataIndex: ['empty'],
+        title: COINS.DAI,
+        dataIndex: [WalletKey.WALLET1, ChainKey.ETH],
         width: baseWidth,
+        render: renderAmounts,
       }],
     },
   ],
@@ -321,35 +322,21 @@ const emptySummaryAmounts = {
   amount_usd: 0,
   percentage_of_portfolio: 0,
 }
+const emptySummaryWallet = {
+  [ChainKey.ETH]: emptySummaryAmounts,
+  [ChainKey.BSC]: emptySummaryAmounts,
+  [ChainKey.POL]: emptySummaryAmounts,
+  [ChainKey.DAI]: emptySummaryAmounts,
+}
 const emptySummary : Summary = {
   portfolio: {
     amount_usd: 0,
     percentage_of_portfolio: 100,
   },
-  [WalletKey.WALLET1]: {
-    [ChainKey.ETH]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.BSC]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.POL]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.DAI]: Object.assign({}, emptySummaryAmounts),
-  },
-  [WalletKey.WALLET2]: {
-    [ChainKey.ETH]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.BSC]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.POL]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.DAI]: Object.assign({}, emptySummaryAmounts),
-  },
-  [WalletKey.WALLET3]: {
-    [ChainKey.ETH]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.BSC]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.POL]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.DAI]: Object.assign({}, emptySummaryAmounts),
-  },
-  [WalletKey.WALLET4]: {
-    [ChainKey.ETH]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.BSC]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.POL]: Object.assign({}, emptySummaryAmounts),
-    [ChainKey.DAI]: Object.assign({}, emptySummaryAmounts),
-  },
+  [WalletKey.WALLET1]: emptySummaryWallet,
+  [WalletKey.WALLET2]: emptySummaryWallet,
+  [WalletKey.WALLET3]: emptySummaryWallet,
+  [WalletKey.WALLET4]: emptySummaryWallet,
 }
 
 function deepClone(obj : any) {
@@ -357,43 +344,218 @@ function deepClone(obj : any) {
 }
 
 function Dashboard() {
-  const [data, setData] = useState<Array<DataType>>([]);
+  const [data, setData] = useState<Array<DataType>>(buildDataRows(coins));
   const [columns, setColumns] = useState<Array<ColomnType>>(baseColumns)
   const [summary, setSummary] = useState<Summary>(deepClone(emptySummary))
   const [wallets, setWallets] = useState<Array<Wallet>>([])
+  const [walletModalVisible, setWalletModalVisible] = useState(false);
+  const [walletModalAddress, setWalletModalAddress] = useState('');
 
   const web3 = useWeb3React()
 
-  // Setup
-  useEffect(() => {
-    const wallet1 : Wallet = {
-      key: WalletKey.WALLET1,
-      name: 'Personal Wallet',
-      address: '0x12312312312312312312312sdfsdf3',
-      chains: [
-        ChainKey.ETH,
-        ChainKey.BSC,
-        ChainKey.POL,
-        ChainKey.DAI,
-      ]
+  const calculatePortfolio = (coin : DataType) => {
+    // sum portfolio
+    coin.portfolio.amount_coin = 0;
+    coin.portfolio.amount_usd = 0;
+    Object.values(WalletKey).forEach((walletKey : WalletKey) => {
+      Object.values(ChainKey).forEach((chainKey: ChainKey) => {
+        if (coin[walletKey][chainKey].amount_coin > 0) {
+          coin.portfolio.amount_coin += coin[walletKey][chainKey].amount_coin;
+          coin.portfolio.amount_usd += coin[walletKey][chainKey].amount_usd;
+        }
+      })
+    })
+  }
+
+  const clearWalletData = (walletKey : WalletKey) => {
+    setData(data.map(coin => {
+      Object.values(ChainKey).forEach(chain => {
+        coin[walletKey][chain].amount_coin = -1
+        coin[walletKey][chain].amount_usd = -1
+      })
+      
+      calculatePortfolio(coin)
+      return coin
+    }))
+  }
+
+  const updateAmounts = (walletKey : WalletKey, coinKey: string, amounts : any) => {
+    setData(data.map(coin => {
+      if (coin.key === coinKey && coin[walletKey]) {
+        coin[walletKey].eth.amount_coin = amounts.onEth;
+        coin[walletKey].eth.amount_usd = amounts.onEth; // debug
+        coin[walletKey].bsc.amount_coin = amounts.onBsc;
+        coin[walletKey].bsc.amount_usd = amounts.onBsc; // debug
+        coin[walletKey].pol.amount_coin = amounts.onPolygon;
+        coin[walletKey].pol.amount_usd = amounts.onPolygon; // debug
+        coin[walletKey].dai.amount_coin = amounts.onXdai;
+        coin[walletKey].dai.amount_usd = amounts.onXdai; // debug
+
+        calculatePortfolio(coin)
+      }
+      return coin
+    }))
+  }
+
+  const updateWalletAmounts = (wallet: Wallet) => {
+    getEthAcrossChains(wallet.address)
+      .then((amounts : any) => {
+        updateAmounts(wallet.key, COINS.ETH, amounts)
+      })
+    getDaiAcrossChains(wallet.address)
+    .then((amounts : any) => {
+      updateAmounts(wallet.key, COINS.DAI, amounts)
+    })
+    getPolygonAcrossChains(wallet.address)
+    .then((amounts : any) => {
+      updateAmounts(wallet.key, COINS.MATIC, amounts)
+    })
+    getBNBAcrossChains(wallet.address)
+    .then((amounts : any) => {
+      updateAmounts(wallet.key, COINS.BNB, amounts)
+    })
+  }
+
+  const removeWallet = (wallet : Wallet) => {
+    const newWallets = wallets.filter(item => item.key !== wallet.key)
+    storeWallets(newWallets)
+    setWallets(newWallets)
+    clearWalletData(wallet.key)
+  }
+
+  const triggerWalletUpdate = (wallet : Wallet) => {
+    clearWalletData(wallet.key)
+
+    setWallets(wallets.map((item : Wallet) => {
+      if (item.key === wallet.key) {
+        item.loading = false
+      }
+      return item
+    }))
+  }
+
+  const findUnusedWalletKey = () : WalletKey => {
+    for (const key of Object.values(WalletKey)) {
+      if (!wallets.find((item : Wallet) => item.key === key)) {
+        return key
+      }
     }
-    const wallets = [
-      wallet1,
-    ]
-    const data = buildDataRows(coins, wallets)
-    setWallets(wallets)
-    setData(data)
-  }, [])
+    throw new Error('No more keys available')
+  }
+
+  const addWallet = (address : string) => {
+    const wallet : Wallet = {
+      key: findUnusedWalletKey(),
+      name: 'My Wallet',
+      address: address,
+      chains: Object.values(ChainKey),
+      loading: false,
+    }
+    const newWallets = [...wallets, wallet]
+    storeWallets(newWallets)
+    setWallets(newWallets)
+  }
+
+  const showWalletModal = () => {
+    setWalletModalVisible(true);
+  };
+
+  const getModalAddressSuggestion = () => {
+    const addedWallets = wallets.map(wallet => wallet.address)
+    const web3Account = (web3.account && addedWallets.indexOf(web3.account) === -1) ? web3.account : ''
+    return walletModalAddress || web3Account;
+  }
+
+  const handleWalletModalAdd = () => {
+    const address = getModalAddressSuggestion();
+    if (ethers.utils.isAddress(address)) {
+      addWallet(address)
+      setWalletModalVisible(false)
+      setWalletModalAddress('')
+    }
+  };
+
+  const handleWalletModalClose = () => {
+    if (wallets.length) {
+      setWalletModalVisible(false)
+    }
+  }
+
+  // Automatically trigger update
+  useEffect(() => {
+    let changed = false
+    const newWallets = wallets.map((wallet) => {
+      if (!wallet.loading) {
+        // trigger update if wallet is not already loading/loaded
+        wallet.loading = true
+        changed = true
+        updateWalletAmounts(wallet)
+      }
+      return wallet
+    })
+
+    // only update wallets if at least one update was triggered
+    if (changed) {
+      setWallets(newWallets)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallets, data])
+
+  const buildWalletColumn = (data: Array<DataType>, wallet : Wallet) => {
+    const children : Array<ColomnType> = wallet.chains.map(chainKey => {
+      return {
+        title: ChainDetails[chainKey].name,
+        children: [{
+          title: renderGas(data, wallet.key, chainKey, ChainDetails[chainKey].gasName),
+          dataIndex: [wallet.key, chainKey],
+          width: baseWidth,
+          render: renderAmounts,
+        }]
+      }
+    })
+  
+    return {
+      title: (
+        <Row>
+          <Col span={12} offset={6}>
+            {`"${wallet.name}" ${wallet.address.substr(0,4)}...${wallet.address.substr(-4,4)}`}
+          </Col>
+          <Col span={1} offset={4}>
+            <SyncOutlined onClick={() => triggerWalletUpdate(wallet)} />
+          </Col>
+          <Col span={1} offset={0}>
+            <DeleteOutlined onClick={() => removeWallet(wallet)} />
+          </Col>
+  
+          
+        </Row>
+      ),
+      children
+    }
+  }
 
   // keep columns in sync
   useEffect(() => {
+    const addColumn = {
+      title: (
+        <Button onClick={showWalletModal}>
+          Add Wallet
+        </Button>
+      ),
+      dataIndex: '',
+      width: 100,
+    }
+    const walletColumns = wallets.length ? wallets.map(wallet => buildWalletColumn(data, wallet)) : [walletColumn]
     const columns = [
       coinColumn,
       portfolioColumn,
-      ...wallets.map(wallet => buildWalletColumn(data, wallet)),
+      ...walletColumns,
       addColumn,
     ]
     setColumns(columns)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallets, data])
 
   // keep Summary in sync
@@ -403,7 +565,7 @@ function Dashboard() {
       wallets.forEach((wallet: Wallet) => {
         wallet.chains.forEach((chainName: ChainKey) => {
           if (coin[wallet.key][chainName].amount_usd !== -1) {
-            summary[wallet.key][chainName].amount_usd += coin[wallet.key][chainName].amount_usd;
+            summary[wallet.key][chainName].amount_usd += coin[wallet.key][chainName].amount_usd
           }
         })
       })
@@ -412,91 +574,43 @@ function Dashboard() {
     }, deepClone(emptySummary))
 
     // total sum
-    // TODO
+    newSummary.portfolio.amount_usd = 0;
+    wallets.forEach((wallet: Wallet) => {
+      wallet.chains.forEach((chainKey: ChainKey) => {
+        newSummary.portfolio.amount_usd += newSummary[wallet.key][chainKey].amount_usd
+      })
+    })
 
     // calculate percentages
-    // TODO
+    wallets.forEach((wallet: Wallet) => {
+      wallet.chains.forEach((chainKey: ChainKey) => {
+        newSummary[wallet.key][chainKey].percentage_of_portfolio = newSummary[wallet.key][chainKey].amount_usd === 0
+          ? 0
+          : newSummary[wallet.key][chainKey].amount_usd / newSummary.portfolio.amount_usd * 100
+      })
+    })
 
     // set new Summary
     setSummary(newSummary)
   }, [data, wallets])
 
-  // keep Portfolio in sync
-  // TODO
-
-
-  const [loading, setLoading] = useState<boolean>(false);
+  // Setup
   useEffect(() => {
-    if (web3.account && !loading) {
-      setLoading(true)
-      const updateAmounts = (walletKey : WalletKey, coinKey: string, amounts : any) => {
-        setData(data.map(coin => {
-          if (coin.key === coinKey && coin[walletKey]) {
-            coin[walletKey].eth.amount_coin = amounts.onEth;
-            coin[walletKey].bsc.amount_coin = amounts.onBsc;
-            coin[walletKey].pol.amount_coin = amounts.onPolygon;
-            coin[walletKey].dai.amount_coin = amounts.onXdai;
-          }
-          return coin
-        }))
+    if (!wallets.length && !walletModalVisible) {
+      // check localStorage
+      const storedWallets = readWallets()
+      if (storedWallets.length) {
+        setWallets(storedWallets)
+      } else {
+        setWalletModalVisible(true);
       }
-
-      getEthAcrossChains(web3.account)
-        .then((amounts : any) => {
-          updateAmounts(WalletKey.WALLET1, 'ETH', amounts)
-        })
-        getDaiAcrossChains(web3.account)
-        .then((amounts : any) => {
-          updateAmounts(WalletKey.WALLET1, 'DAI', amounts)
-        })
-        getPolygonAcrossChains(web3.account)
-        .then((amounts : any) => {
-          updateAmounts(WalletKey.WALLET1, 'MATIC', amounts)
-        })
-        getBNBAcrossChains(web3.account)
-        .then((amounts : any) => {
-          updateAmounts(WalletKey.WALLET1, 'BNB', amounts)
-        })
     }
-  }, [web3, data, loading])
+  }, [wallets, walletModalVisible])
 
-  // ACCESS
-  const addWallet = () => {
-    const wallet2 : Wallet = {
-      key: WalletKey.WALLET2,
-      name: 'Second Wallet',
-      address: '0x42322341423423423',
-      chains: [
-        ChainKey.ETH,
-        ChainKey.BSC,
-        ChainKey.POL,
-        ChainKey.DAI,
-      ]
-    }
-    setWallets(prevItems => [...prevItems, wallet2]);
-  }
-
-  const removeWallet = () => {
-    setWallets(wallets.filter(wallet => wallet.key !== WalletKey.WALLET2))
-  }
-
-  const updateData = () => {
-    setData(data.map(coin => {
-      if (coin.key === 'ETH' && coin.wallet1) {
-        coin.wallet1.eth.amount_coin = 1
-        coin.wallet1.eth.amount_usd = 1
-      }
-      return coin
-    }))
-  }
 
   let summaryIndex = 0
   return (
     <Content className="site-layout">
-    <Button onClick={addWallet}>Add Wallet</Button>
-      <Button onClick={removeWallet}>remove Wallet</Button>
-      <Button onClick={updateData}>set Data</Button>
-
       <div className="site-layout-background" style={{ minHeight: 'calc(100vh - 64px)' }}>
         <Table
           columns={columns}
@@ -513,12 +627,46 @@ function Dashboard() {
                 { wallets.map((wallet: Wallet) => wallet.chains.map((chainName: ChainKey) => (
                   <Table.Summary.Cell index={summaryIndex++} key={wallet.key + chainName}>{renderSummary(summary[wallet.key][chainName])}</Table.Summary.Cell>
                 )))}
+                { wallets.length === 0 && Object.values(ChainKey).map(() => (
+                  <Table.Summary.Cell index={summaryIndex++} key={summaryIndex}></Table.Summary.Cell>
+                ))}
                 <Table.Summary.Cell index={summaryIndex++}></Table.Summary.Cell>
               </Table.Summary.Row>
             </Table.Summary>
           )}
         />
       </div>
+
+      <Modal
+        title="Add Wallet"
+        visible={walletModalVisible}
+        onOk={handleWalletModalAdd}
+        onCancel={handleWalletModalClose}
+        footer={[
+            // only show close if other wallets have been added already
+            wallets.length ? (
+              <Button key="back" onClick={handleWalletModalClose}>
+                Close
+              </Button>
+            ) : '',
+            <Button key="submit" type="primary" onClick={handleWalletModalAdd}>
+              Add
+            </Button>,
+        ]}
+      >
+        
+        { !web3.account ? (<ConnectButton />) : (<Button style={{ display: 'block' }}>Connected with {web3.account.substr(0, 4)}...</Button>)}
+        
+        Enter a wallet address:
+        <Input 
+          size="large" 
+          placeholder="0x..." 
+          prefix={<WalletOutlined />}
+          value={getModalAddressSuggestion()}
+          onChange={(event) => setWalletModalAddress(event.target.value)}
+        />
+
+      </Modal>
     </Content>
   );
 }
