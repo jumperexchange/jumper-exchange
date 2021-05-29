@@ -40,7 +40,6 @@ const erc20Tokens = {
     dai: new ethers.Contract('0x44fA8E6f47987339850636F88629646662444217', erc20_abi, provider.xdai) 
   },
 
-
 }
 
 

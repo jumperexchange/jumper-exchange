@@ -63,3 +63,12 @@ export interface Wallet {
   address: string;
   chains: Array<ChainKey>;
 }
+
+interface NetworkConfig {
+  readOnlyProvider: string
+  locksmithUri: string
+  unlockAppUrl: string
+}
+export interface NetworkConfigs {
+  [networkId: string]: NetworkConfig
+}
