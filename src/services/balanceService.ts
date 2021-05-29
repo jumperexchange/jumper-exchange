@@ -5,7 +5,7 @@ import erc20_abi from './ABI/ERC_20.json'
 enum RpcUrls {
   ETH = 'https://mainnet.infura.io/v3/ec3c55702afa4fc3a6377e1a3fb82721',
   BSC = 'https://bsc-dataseed1.defibit.io',
-  POLYGON = 'https://polygon-mainnet.infura.io/v3/ec3c55702afa4fc3a6377e1a3fb82721',
+  POLYGON = 'https://rpc-mainnet.matic.network/',
   XDAI = 'https://xdai.poanetwork.dev'
 }
 
@@ -24,7 +24,7 @@ const erc20Tokens = {
     dai: new ethers.Contract('0x6b175474e89094c44da98b954eedeac495271d0f', erc20_abi, provider.eth) 
   },
   bsc:{
-    bnb:new ethers.Contract('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', erc20_abi, provider.bsc), // https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+    bnb:new ethers.Contract('0x0000000000000000000000000000000000001002', erc20_abi, provider.bsc), // https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
     polygon: new ethers.Contract('0xa90cb47c72f2c7e4411e781772735d9317d08dd4', erc20_abi, provider.bsc), // https://bscscan.com/token/...
     dai: new ethers.Contract('0x1dc56f2705ff2983f31fb5964cc3e19749a7cba7', erc20_abi, provider.bsc) // https://bscscan.com/token/...
   },
@@ -38,9 +38,45 @@ const erc20Tokens = {
     polygon: new ethers.Contract('0x7122d7661c4564b7C6Cd4878B06766489a6028A2', erc20_abi, provider.xdai),
     dai: new ethers.Contract('0x44fA8E6f47987339850636F88629646662444217', erc20_abi, provider.xdai) 
   },
-
-
 }
+
+
+// liste an coins
+function getListOfSupportedTokens() {
+  return Object.keys(erc20Tokens.eth)
+};
+
+//get coins on chain (wallet adresse, coinlist)
+function getCoinBalanceFor(tokenList:Array<string>, walletAdress: string) {
+  //check if unsupported token in given List.
+  
+  //for every given token
+  tokenList.forEach(token =>{
+    //get balance on every available chain
+     // check main token on chain
+     // check tokens on other chains
+    
+    
+    
+    //Add balance to return object
+
+
+
+
+
+  });
+    
+
+  //return balance object; sorted by coin with value on each chain.
+
+};
+
+
+
+
+
+
+
 
 
 async function getEthAcrossChains(wallet: string){
@@ -48,13 +84,13 @@ async function getEthAcrossChains(wallet: string){
 
     const onEth = await provider.eth.getBalance(wallet);
     const onBsc = await provider.bsc.getBalance(wallet);
-    // const onPolygon = await provider.polygon.getBalance(wallet);
+    const onPolygon = await provider.polygon.getBalance(wallet);
     const onXdai = await provider.xdai.getBalance(wallet);
 
     const ethBalances = {
       onEth : ethers.utils.formatEther(onEth),
       onBsc : ethers.utils.formatEther(onBsc),
-      // onPolygon : ethers.utils.formatEther(onPolygon),
+      onPolygon : ethers.utils.formatEther(onPolygon),
       onXdai : ethers.utils.formatEther(onXdai),
     }
 
@@ -68,13 +104,13 @@ async function getDaiAcrossChains(wallet: string){
 
     const onEth = await erc20Tokens.eth.dai.balanceOf(wallet);
     const onBsc = await erc20Tokens.bsc.dai.balanceOf(wallet);
-    // const onPolygon = await erc20Tokens.polygon.dai.balanceOf(wallet);
+    const onPolygon = await erc20Tokens.polygon.dai.balanceOf(wallet);
     const onXdai = await erc20Tokens.xdai.dai.balanceOf(wallet);
 
     const daiBalances = {
       onEth : ethers.utils.formatEther(onEth),
       onBsc : ethers.utils.formatEther(onBsc),
-      // onPolygon : ethers.utils.formatEther(onPolygon),
+      onPolygon : ethers.utils.formatEther(onPolygon),
       onXdai : ethers.utils.formatEther(onXdai),
     }
 
@@ -88,13 +124,13 @@ async function getPolygonAcrossChains(wallet: string){
 
     const onEth = await erc20Tokens.eth.polygon.balanceOf(wallet);
     const onBsc = await erc20Tokens.bsc.polygon.balanceOf(wallet);
-    // const onPolygon = await erc20Tokens.polygon.polygon.balanceOf(wallet);
+    const onPolygon = await erc20Tokens.polygon.polygon.balanceOf(wallet);
     const onXdai = await erc20Tokens.xdai.polygon.balanceOf(wallet);
 
     const polygonBalances = {
       onEth : ethers.utils.formatEther(onEth),
       onBsc : ethers.utils.formatEther(onBsc),
-      // onPolygon : ethers.utils.formatEther(onPolygon),
+      onPolygon : ethers.utils.formatEther(onPolygon),
       onXdai : ethers.utils.formatEther(onXdai),
     }
 
@@ -108,13 +144,13 @@ async function getBNBAcrossChains(wallet: string){
 
     const onEth = await erc20Tokens.eth.bnb.balanceOf(wallet);
     const onBsc = await erc20Tokens.bsc.bnb.balanceOf(wallet);
-    // const onPolygon = await erc20Tokens.polygon.bnb.balanceOf(wallet);
+    const onPolygon = await erc20Tokens.polygon.bnb.balanceOf(wallet);
     const onXdai = await erc20Tokens.xdai.bnb.balanceOf(wallet);
 
     const bnbBalances = {
       onEth : ethers.utils.formatEther(onEth),
       onBsc : ethers.utils.formatEther(onBsc),
-      // onPolygon : ethers.utils.formatEther(onPolygon),
+      onPolygon : ethers.utils.formatEther(onPolygon),
       onXdai : ethers.utils.formatEther(onXdai),
     }
 
@@ -125,9 +161,12 @@ async function getBNBAcrossChains(wallet: string){
 
 
 
+console.log(getListOfSupportedTokens());
+
+// console.log(getListOfSupportedCoins());
+console.log(getCoinBalanceFor(["dai", "eth"], "12345"));
 
 
-
-export {getEthAcrossChains, getBNBAcrossChains, getDaiAcrossChains, getPolygonAcrossChains}
+// export {getEthAcrossChains, getBNBAcrossChains, getDaiAcrossChains, getPolygonAcrossChains}
 
 
