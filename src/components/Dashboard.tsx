@@ -1,7 +1,7 @@
 import React from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Badge, Button, Modal, Table, TableColumnType, Tooltip } from 'antd';
+import { Avatar, Badge, Button, Modal, Skeleton, Table, TableColumnType, Tooltip } from 'antd';
 import './Dashboard.css';
 
 interface Amounts {
@@ -99,7 +99,7 @@ function Dashboard() {
   //// TABLE SETUP
   const data: Array<DataType> = [];
 
-  for (let i = 0; i < 20; i += 3) {
+  for (let i = 0; i < 1; i += 3) {
     data.push({
       key: i,
       coin: {
@@ -117,16 +117,16 @@ function Dashboard() {
           amount_usd: 33,
         },
         pol: {
-          amount_coin: 22,
-          amount_usd: 33,
+          amount_coin: 0,
+          amount_usd: 0,
         },
         bsc: {
           amount_coin: 22,
           amount_usd: 33,
         },
         dai: {
-          amount_coin: 22,
-          amount_usd: 33,
+          amount_coin: 0,
+          amount_usd: 0,
         },
       },
     });
@@ -143,8 +143,8 @@ function Dashboard() {
   
       wallet1: {
         eth: {
-          amount_coin: 22,
-          amount_usd: 33,
+          amount_coin: 0,
+          amount_usd: 0,
         },
         pol: {
           amount_coin: 22,
@@ -229,12 +229,35 @@ function Dashboard() {
   }
   
   function renderAmounts(amounts: Amounts) {
-    return (
-      <div className="amounts">
-        <div className="amount_coin">{amounts.amount_coin.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</div>
-        <div className="amount_usd">{amounts.amount_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</div>
-      </div>
-    )
+    if (amounts.amount_coin === -1) {
+      // loading
+      return (
+        <div className="amounts">
+          <div className="amount_coin">
+            <Skeleton.Button style={{ width: 70}} active={true} size={'small'} shape={'round'} />
+          </div>
+          <div className="amount_usd">
+            <Skeleton.Button style={{ width: 60, height: 18}} active={true} size={'small'} shape={'round'} />
+          </div>
+        </div>
+      )
+    } else if (amounts.amount_coin === 0) {
+      // empty
+      return (
+        <div className="amounts amounts-empty">
+          <div className="amount_coin">00.0000</div>
+          <div className="amount_usd">00.00</div>
+        </div>
+      )
+    } else {
+      // default
+      return (
+        <div className={'amounts' + (amounts.amount_coin === 0 ? ' amounts-empty' : '') }>
+          <div className="amount_coin">{amounts.amount_coin.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</div>
+          <div className="amount_usd">{amounts.amount_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</div>
+        </div>
+      )
+    }
   }
 
   function renderSummary(summary: any) {

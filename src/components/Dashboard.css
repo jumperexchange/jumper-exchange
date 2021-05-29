@@ -9,6 +9,12 @@
   text-align: right;
   padding-right: 60px;
 }
+.amounts-empty .amount_coin {
+  color: gray;
+}
+.amounts-empty .amount_usd {
+  color: transparent;
+}
 
 .amount_coin {
   font-family: monospace;
