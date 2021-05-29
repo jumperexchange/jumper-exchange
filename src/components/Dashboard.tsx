@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Amounts, ChainKey, Coin, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
 import './Dashboard.css';
 import  '../services/balanceService'
+import { getBNBAcrossChains, getDaiAcrossChains, getEthAcrossChains, getPolygonAcrossChains } from '../services/balanceService';
 
 const ChainDetails = {
   [ChainKey.ETH]: {
@@ -40,6 +41,11 @@ const coins : Array<Coin> = [
     key: 'BNB',
     name: 'BNB',
     img_url: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
+  },
+  {
+    key: 'DAI',
+    name: 'DAI',
+    img_url: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
   }
 ]
 
@@ -417,6 +423,42 @@ function Dashboard() {
 
   // keep Portfolio in sync
   // TODO
+
+
+  const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    if (web3.account && !loading) {
+      setLoading(true)
+      const updateAmounts = (walletKey : WalletKey, coinKey: string, amounts : any) => {
+        setData(data.map(coin => {
+          if (coin.key === coinKey && coin[walletKey]) {
+            coin[walletKey].eth.amount_coin = amounts.onEth;
+            coin[walletKey].bsc.amount_coin = amounts.onBsc;
+            coin[walletKey].pol.amount_coin = amounts.onPolygon;
+            coin[walletKey].dai.amount_coin = amounts.onXdai;
+          }
+          return coin
+        }))
+      }
+
+      getEthAcrossChains(web3.account)
+        .then((amounts : any) => {
+          updateAmounts(WalletKey.WALLET1, 'ETH', amounts)
+        })
+        getDaiAcrossChains(web3.account)
+        .then((amounts : any) => {
+          updateAmounts(WalletKey.WALLET1, 'DAI', amounts)
+        })
+        getPolygonAcrossChains(web3.account)
+        .then((amounts : any) => {
+          updateAmounts(WalletKey.WALLET1, 'MATIC', amounts)
+        })
+        getBNBAcrossChains(web3.account)
+        .then((amounts : any) => {
+          updateAmounts(WalletKey.WALLET1, 'BNB', amounts)
+        })
+    }
+  }, [web3, data, loading])
 
   // ACCESS
   const addWallet = () => {
