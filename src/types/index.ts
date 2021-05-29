@@ -62,4 +62,5 @@ export interface Wallet {
   name: string;
   address: string;
   chains: Array<ChainKey>;
+  loading: boolean;
 }
