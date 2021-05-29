@@ -1,0 +1,65 @@
+import { TableColumnType } from 'antd';
+
+export interface Amounts {
+  amount_coin: number;
+  amount_usd: number;
+}
+
+export interface WalletAmounts {
+  eth: Amounts;
+  pol: Amounts;
+  bsc: Amounts;
+  dai: Amounts;
+}
+
+export interface Coin {
+  key: string;
+  name: string;
+  img_url: string;
+}
+
+export enum WalletKey {
+  WALLET1 = 'wallet1',
+  WALLET2 = 'wallet2',
+  WALLET3 = 'wallet3',
+  WALLET4 = 'wallet4',
+}
+
+export interface DataType {
+  key: React.Key;
+  coin: Coin;
+  portfolio: Amounts;
+
+  [WalletKey.WALLET1]: WalletAmounts | undefined;
+  [WalletKey.WALLET2]: WalletAmounts | undefined;
+  [WalletKey.WALLET3]: WalletAmounts | undefined;
+  [WalletKey.WALLET4]: WalletAmounts | undefined;
+}
+
+export enum ChainKey {
+  ETH = 'eth',
+  POL = 'pol',
+  BSC = 'bsc',
+  DAI = 'dai',
+}
+
+export interface ColomnType extends TableColumnType<DataType> {
+  children?: Array<ColomnType>;
+}
+
+export interface Summary {
+  portfolio: {
+    amount_usd: number;
+    percentage_of_portfolio: number;
+  },
+  [WalletKey.WALLET1]?: any;
+  [WalletKey.WALLET2]?: any;
+  [WalletKey.WALLET3]?: any;
+  [WalletKey.WALLET4]?: any;
+}
+export interface Wallet {
+  key: WalletKey;
+  name: string;
+  address: string;
+  chains: Array<ChainKey>;
+}

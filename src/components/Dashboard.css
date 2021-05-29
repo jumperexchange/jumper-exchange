@@ -7,7 +7,13 @@
 /* Cell content */
 .amounts {
   text-align: right;
-  padding-right: 60px;
+  padding-right: 20px;
+}
+.amounts-empty .amount_coin {
+  color: gray;
+}
+.amounts-empty .amount_usd {
+  color: transparent;
 }
 
 .amount_coin {
