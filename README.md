@@ -39,6 +39,10 @@ TXT    _dnslink.subdomain = dnslink=/ipns/bafzbeia3zldi5h554pjqicc35krfylfpw3xvw
 CNAME        subdomain    = gateway-int.ipfs.io
 ```
 
+### Add Wallets via ENS Domain
+
+When adding a new wallet users can simply enter their ens domain instead of connecting their wallet.
+
 ### Wallet Balances via different RPCs
 
 
