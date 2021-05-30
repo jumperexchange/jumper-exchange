@@ -4,6 +4,42 @@
 
 This projects helps you to keep track of your liquidity across chains.
 
+## Used Technologies
+
+### Paywall using [Unlock](https://unlock-protocol.com/)
+
+![unlock](https://user-images.githubusercontent.com/3898310/120112229-47827b00-c175-11eb-9e14-e6ebafab1e60.png)
+
+We have integrated a paywall using Unlock, to make users pay if they want to view multiple wallets at the same time.
+
+### Social Proof Notification based on data from [theGraph](https://thegraph.com/explorer/subgraph/unlock-protocol/unlock)
+
+![social-proof](https://user-images.githubusercontent.com/3898310/120111996-5288db80-c174-11eb-9114-53f7d315cbd5.png)
+
+To increase the willingness to pay, we show little social proof notifications about other users who bought the upgrade. We get those information from theGraph and show users a link to etherscan so they can check that the notifications are not fake.
+
+### Hosting via IPFS using [Textile Buckets](https://docs.textile.io/buckets/) and [Cloudflare](https://www.cloudflare.com/)
+
+```
+https://dashboard-textile.cryptopixels.org/
+                \/
+  TXT _dnslink dnslink=/ipns/bafz...xvjq
+      CNAME gateway-int.ipfs.io
+                \/
+    Textile Bucket (IPFS + IPNS)
+```
+The Website is hosted decentral using a textile bucket, which we make more accessible via a custom domain by integration Cloudflare CDN.
+
+### Wallet Balances via different RPCs
+
+
+
+### Coin Prices via [Coingecko](https://www.coingecko.com/)
+
+
+
+
+
 ## Setup
 
 Use [nvm](https://github.com/nvm-sh/nvm) to run the app with an up-to-date node verion: `nvm use`.
