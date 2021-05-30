@@ -6,8 +6,8 @@ import { Amounts, ChainKey, Coin, ColomnType, DataType, Summary, Wallet, WalletA
 import './Dashboard.css';
 import  '../services/balanceService'
 import { getBNBAcrossChains, getDaiAcrossChains, getEthAcrossChains, getPolygonAcrossChains } from '../services/balanceService';
-import { WalletService } from '@unlock-protocol/unlock-js';
 import { Paywall } from '@unlock-protocol/paywall';
+
 
 (window as any).unlockProtocolConfig = {
   network: 4, // Network ID (1 is for mainnet, 4 for rinkeby... etc)
@@ -15,9 +15,9 @@ import { Paywall } from '@unlock-protocol/paywall';
     '0x791E3D208ED611837bb84a632bC801DF2639eB0E': { // 0xabc is the address of a lock.
       name: 'One Year Premiun',
       network: 4 // you can customize the network for each lock
-    }, 
+    },
   },
-  icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg', 
+  icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
   callToAction: {
     default: 'This content is locked. Pay with cryptocurrency to access it!',
     expired: 'This is what is shown when the user had a key which is now expired',
@@ -27,6 +27,29 @@ import { Paywall } from '@unlock-protocol/paywall';
   }
 }
 
+// Configure networks to use
+const networkConfigs: NetworkConfigs = {
+  1: {
+    readOnlyProvider:
+      'https://eth-mainnet.alchemyapi.io/v2/b7Mxclz5hGyHqoeodGLQ17F5Qi97S7xJ',
+    locksmithUri: 'https://locksmith.unlock-protocol.com',
+    unlockAppUrl: 'https://app.unlock-protocol.com',
+  },
+  4: {
+    readOnlyProvider:
+      'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
+    locksmithUri: 'https://rinkeby.locksmith.unlock-protocol.com',
+    unlockAppUrl: 'https://app.unlock-protocol.com',
+  },
+  100: {
+    readOnlyProvider: 'https://rpc.xdaichain.com/',
+    locksmithUri: 'https://locksmith.unlock-protocol.com',
+    unlockAppUrl: 'https://app.unlock-protocol.com',
+  },
+}
+
+// You may actually want to put that in a context.., at the top of the application
+const PAYWALL = new Paywall((window as any).unlockProtocolConfig, networkConfigs)
 
 const COINS = {
   ETH: 'ETH',
@@ -391,13 +414,13 @@ function Dashboard() {
   const [columns, setColumns] = useState<Array<ColomnType>>(baseColumns)
   const [summary, setSummary] = useState<Summary>(deepClone(emptySummary))
   const [wallets, setWallets] = useState<Array<Wallet>>([])
-  const [paywall, setPaywall] = useState<any>()
   const [premiumUnlocked, setPremiumUnlocked] = useState(LOCKED)
 
   const web3 = useWeb3React()
 
   // Setup
   useEffect(() => {
+
     const wallet1 : Wallet = {
       key: WalletKey.WALLET1,
       name: 'Personal Wallet',
@@ -414,44 +437,6 @@ function Dashboard() {
     ]
     const data = buildDataRows(coins, wallets)
 
-    let unlockAppUrl
-    const baseUrl = 'localhost' // Set at build time
-
-    if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
-      unlockAppUrl = 'https://staging-app.unlock-protocol.com'
-    } else if (baseUrl.match('paywall.unlock-protocol.com')) {
-      unlockAppUrl = 'https://app.unlock-protocol.com'
-    } else {
-      unlockAppUrl = 'http://localhost:3000'
-    }
-
-    // Configure networks to use
-    const networkConfigs: NetworkConfigs = {
-      1: {
-        readOnlyProvider:
-          'https://eth-mainnet.alchemyapi.io/v2/b7Mxclz5hGyHqoeodGLQ17F5Qi97S7xJ',
-        locksmithUri: 'https://locksmith.unlock-protocol.com',
-        unlockAppUrl: unlockAppUrl,
-      },
-      4: {
-        readOnlyProvider:
-          'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
-        locksmithUri: 'https://rinkeby.locksmith.unlock-protocol.com',
-        unlockAppUrl: unlockAppUrl,
-      },
-      100: {
-        readOnlyProvider: 'https://rpc.xdaichain.com/',
-        locksmithUri: 'https://locksmith.unlock-protocol.com',
-        unlockAppUrl: unlockAppUrl,
-      },
-      1337: {
-        readOnlyProvider: 'http://127.0.0.1:8545',
-        locksmithUri: 'http://127.0.0.1:8080',
-        unlockAppUrl: unlockAppUrl,
-      },
-    }
-
-    const paywall = new Paywall((window as any).unlockProtocolConfig, networkConfigs)
 
     /*const {
       getState,
@@ -459,7 +444,7 @@ function Dashboard() {
       loadCheckoutModal,
       resetConfig,
     } = paywall
-  
+
     setupUnlockProtocolVariable({
       loadCheckoutModal,
       resetConfig,
@@ -467,12 +452,10 @@ function Dashboard() {
       getState,
     })*/
 
-    setPaywall(paywall)
 
     window.addEventListener('unlockProtocol.authenticated', function(e : any) {
       // event.detail.addresss includes the address of the current user, when known
       console.log("authenticated event", e)
-      setPremiumUnlocked(UNLOCKED)
     })
 
     window.addEventListener('unlockProtocol.transactionSent', function(e : any) {
@@ -486,8 +469,8 @@ function Dashboard() {
 
       console.log("status changed event", e)
       // the state is a string whose value can either be 'unlocked' or 'locked'...
-      // If state is 'unlocked': implement code here which will be triggered when 
-      // the current visitor has a valid lock key  
+      // If state is 'unlocked': implement code here which will be triggered when
+      // the current visitor has a valid lock key
       // If state is 'locked': implement code here which will be
       // triggered when the current visitor does not have a valid lock key
     })
@@ -497,18 +480,19 @@ function Dashboard() {
   }, [])
 
   const callCheckoutModal = () => {
-    if (paywall) {
-      console.log("Load checkout modal", paywall)
-      paywall.loadCheckoutModal()
-    }else{
+    // @ts-expect-error
+    if (PAYWALL && PAYWALL.loadCheckoutModal) {
+      // @ts-expect-error
+      PAYWALL.loadCheckoutModal()
+    } else{
       console.log("There's no unlockProtocol")
     }
   }
 
   const checkPremium = () => {
-    if (premiumUnlocked == LOCKED) {
+    if (premiumUnlocked === LOCKED) {
       callCheckoutModal()
-      return false;  
+      return false;
     }
     return true;
   }
@@ -616,6 +600,7 @@ function Dashboard() {
     if(checkPremium() === false){
       return;
     }
+    alert('Thanks for your membership!')
     /*
     const wallet2 : Wallet = {
       key: WalletKey.WALLET2,
