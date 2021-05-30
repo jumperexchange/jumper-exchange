@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ChainKey, Coin, CoinKey } from '../types';
+import { ChainKey, CoinKey } from '../types';
 import erc20_abi from './ABI/ERC_20.json';
 
 // add usdt, usdc, Cake, Bunny and many more

@@ -417,6 +417,7 @@ function Dashboard() {
   const [columns, setColumns] = useState<Array<ColomnType>>(baseColumns)
   const [summary, setSummary] = useState<Summary>(deepClone(emptySummary))
   const [wallets, setWallets] = useState<Array<Wallet>>([])
+  const [prices, setPrices] = useState<any>(null);
   const [walletModalVisible, setWalletModalVisible] = useState(false);
   const [walletModalAddress, setWalletModalAddress] = useState('');
   const [premiumUnlocked, setPremiumUnlocked] = useState(LOCKED)
@@ -766,6 +767,37 @@ function Dashboard() {
     }
   }, [wallets, walletModalVisible])
 
+  // get prices
+  useEffect(() => {
+    getPricesForTokens(Object.values(CoinKey))
+      .then(setPrices)
+  }, [])
+
+  // update data with prices
+  useEffect(() => {
+    if (prices) {    
+      let changed = false
+      const newData = data.map(coin => {
+        Object.values(WalletKey).forEach((walletKey : WalletKey) => {
+          Object.values(ChainKey).forEach(chain => {
+            if (coin[walletKey][chain].amount_coin > 0) {
+              const inUsd = prices[coin.key].usd * coin[walletKey][chain].amount_coin
+              if (inUsd !== coin[walletKey][chain].amount_usd) {
+                coin[walletKey][chain].amount_usd = inUsd
+                changed = true
+              }
+            }
+          })
+        })
+        calculatePortfolio(coin)
+        return coin
+      })
+
+      if (changed) {
+        setData(newData)
+      }
+    }
+  }, [data, prices])
 
   let summaryIndex = 0
   return (
