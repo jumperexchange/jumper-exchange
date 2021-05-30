@@ -70,6 +70,11 @@ export enum CoinKey {
   MATIC = 'MATIC',
   BNB = 'BNB',
   DAI = 'DAI',
+  USDT = 'USDT',
+  USDC = 'USDC',
+  UNI = 'UNI',
+  LINK = 'LINK',
+  AAVE = 'AAVE'
 }
 
 export enum Currencies {

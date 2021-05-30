@@ -6,7 +6,11 @@ const CoinGeckoIds = {
   [CoinKey.BNB]: "binancecoin",
   [CoinKey.MATIC]: "matic-network",
   [CoinKey.DAI]: "dai",
-
+  [CoinKey.USDT]: 'tether',
+  [CoinKey.USDC]: 'usd-coin',
+  [CoinKey.UNI]: 'uniswap',
+  [CoinKey.LINK]: 'chainlink',
+  [CoinKey.AAVE]: 'aave',
 }
 
 async function getPricesForTokens(coinKeys: Array<CoinKey>){
