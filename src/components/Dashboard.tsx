@@ -1,23 +1,54 @@
-import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SyncOutlined, WalletOutlined, SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
+import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip, notification } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import { Amounts, ChainKey, Coin, CoinKey, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey, NetworkConfigs } from '../types';
 import './Dashboard.css';
-import  '../services/balanceService'
-import { getBNBAcrossChains, getDaiAcrossChains, getEthAcrossChains, getPolygonAcrossChains, getTokenBalance } from '../services/balanceService';
+import "animate.css";
+import { getTokenBalance } from '../services/balanceService';
 import { readWallets, storeWallets } from '../services/localStorage';
 import { Paywall } from '@unlock-protocol/paywall';
 import ConnectButton from './web3/ConnectButton';
+import { InMemoryCache, ApolloClient, gql } from '@apollo/client'
+import { kStringMaxLength } from 'buffer';
+//import { ApolloProvider } from "@apollo/react-hooks";
+
+const UNLOCK_PREMIUM_LOCK_CONTRACT = "0x791E3D208ED611837bb84a632bC801DF2639eB0E";
+const network = 'rinkeby';
+const GRAPH_ENDPOINTS = {
+  mainnet: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
+  rinkeby: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
+};
+const GRAPH_EXPLORER_ENDPOINTS = {
+  mainnet: 'https://thegraph.com/explorer/subgraph/unlock-protocol/unlock',
+  rinkeby: 'https://thegraph.com/explorer/subgraph/unlock-protocol/unlock-rinkeby',
+};
+const ETHERSCAN_URLS = {
+  mainnet: 'https://etherscan.io',
+  rinkeby: 'https://rinkeby.etherscan.io',
+};
+
+const GRAPH_ENPOINT = GRAPH_ENDPOINTS[network]
+const GRAPH_EXPLORER = GRAPH_EXPLORER_ENDPOINTS[network]
+const ETHERSCAN_URL = ETHERSCAN_URLS[network]
+
+const GRAPH_CLIENT = new ApolloClient({
+  uri: GRAPH_ENPOINT,
+  cache: new InMemoryCache()
+});
 
 (window as any).unlockProtocolConfig = {
   network: 4, // Network ID (1 is for mainnet, 4 for rinkeby... etc)
   locks: {
     '0x791E3D208ED611837bb84a632bC801DF2639eB0E': { // 0xabc is the address of a lock.
-      name: 'One Year Premiun',
+      name: 'One Year Premium Rinkeby',
       network: 4 // you can customize the network for each lock
+    },
+    '0x791E3D208ED611837bb84a632bC801DF2639eB02': { // 0xabc is the address of a lock.
+      name: 'One Year Premium',
+      network: 1 // you can customize the network for each lock
     },
   },
   icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
@@ -33,14 +64,12 @@ import ConnectButton from './web3/ConnectButton';
 // Configure networks to use
 const networkConfigs: NetworkConfigs = {
   1: {
-    readOnlyProvider:
-      'https://eth-mainnet.alchemyapi.io/v2/b7Mxclz5hGyHqoeodGLQ17F5Qi97S7xJ',
+    readOnlyProvider: 'https://eth-mainnet.alchemyapi.io/v2/b7Mxclz5hGyHqoeodGLQ17F5Qi97S7xJ',
     locksmithUri: 'https://locksmith.unlock-protocol.com',
     unlockAppUrl: 'https://app.unlock-protocol.com',
   },
   4: {
-    readOnlyProvider:
-      'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
+    readOnlyProvider: 'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
     locksmithUri: 'https://rinkeby.locksmith.unlock-protocol.com',
     unlockAppUrl: 'https://app.unlock-protocol.com',
   },
@@ -54,13 +83,7 @@ const networkConfigs: NetworkConfigs = {
 // You may actually want to put that in a context.., at the top of the application
 const PAYWALL = new Paywall((window as any).unlockProtocolConfig, networkConfigs)
 
-const COINS = {
-  ETH: 'ETH',
-  MATIC: 'MATIC',
-  BNB: 'BNB',
-  DAI: 'DAI',
-}
-
+const MAX_AMOUNT_FREE_WALLETS = 1;
 
 const ChainDetails = {
   [ChainKey.ETH]: {
@@ -497,6 +520,9 @@ function Dashboard() {
   }
 
   const showWalletModal = () => {
+    if(checkPremium() === false){
+      return;
+    }
     setWalletModalVisible(true);
   };
 
@@ -507,9 +533,6 @@ function Dashboard() {
   }
 
   const handleWalletModalAdd = () => {
-    if(checkPremium() === false){
-      return;
-    }
     const address = getModalAddressSuggestion();
     if (ethers.utils.isAddress(address)) {
       addWallet(address)
@@ -524,8 +547,51 @@ function Dashboard() {
     }
   }
 
+  useEffect(() => {
+    getLastUnlockPurchases()
+    
+  }, [])
+
+  // eslint-disable-next-line
+  const getLastUnlockPurchases = () => {
+    const UNLOCK_DATA = gql`
+    query($unlockContract:[String],  $olderThan:[String]){
+      locks(where:{address:$unlockContract}) {
+        keys(where:{createdAt_lte:$olderThan}) {
+          createdAt
+        }
+      }
+    }
+    `
+    GRAPH_CLIENT.query({
+      query: UNLOCK_DATA,
+      variables: {
+        unlockContract: UNLOCK_PREMIUM_LOCK_CONTRACT,
+        olderThan: Date.now()-(60*60*24), // last 24h
+      },
+    }).then(result => {
+      console.log("result", result)
+      notification.open({
+        message: 'New premium users!',
+        description: '3 people just upgraded their account to premium using <a href="http://unlock-protocol.com/">Unlock</a>.',
+        placement: 'bottomRight',
+        onClick: () => {
+          alert('Show me the proof via <a href="'+ETHERSCAN_URL+'/address/'+UNLOCK_PREMIUM_LOCK_CONTRACT+'">Etherscan</a>');
+        },
+      });
+      
+    })
+  }
+
   // Automatically trigger update
   useEffect(() => {
+
+    // @ts-expect-error
+    if(PAYWALL && PAYWALL.lockStatus){
+      // @ts-expect-error
+      setPremiumUnlocked(PAYWALL.lockStatus)
+    }
+
     window.addEventListener('unlockProtocol.authenticated', function(e : any) {
       // event.detail.addresss includes the address of the current user, when known
       console.log("authenticated event", e)
@@ -538,7 +604,11 @@ function Dashboard() {
 
     window.addEventListener('unlockProtocol.status', function(e : any) {
       const state = e.detail.state
-      setPremiumUnlocked(state)
+      if(premiumUnlocked === LOCKED && state === UNLOCKED){
+        console.log("CHANGED FROM LOCKED TO UNLOCKED")
+        setPremiumUnlocked(state)
+        setWalletModalVisible(true);
+      }
 
       console.log("status changed event", e)
       // the state is a string whose value can either be 'unlocked' or 'locked'...
@@ -611,7 +681,7 @@ function Dashboard() {
   }
 
   const checkPremium = () => {
-    if (premiumUnlocked === LOCKED) {
+    if (premiumUnlocked === LOCKED && wallets.length >= MAX_AMOUNT_FREE_WALLETS) {
       callCheckoutModal()
       return false;
     }
@@ -622,9 +692,15 @@ function Dashboard() {
   useEffect(() => {
     const addColumn = {
       title: (
-        <Button onClick={showWalletModal}>
-          Add Wallet
-        </Button>
+        <>
+        <div>
+          PREMIUM: { premiumUnlocked === UNLOCKED ? <SmileTwoTone /> : <FrownTwoTone /> }
+        </div>
+          
+          <Button onClick={showWalletModal}>
+            Add Wallet
+          </Button>
+        </>
       ),
       dataIndex: '',
       width: 100,
