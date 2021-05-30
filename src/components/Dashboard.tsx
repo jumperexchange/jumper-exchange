@@ -446,6 +446,7 @@ function Dashboard() {
   const [prices, setPrices] = useState<any>(null);
   const [walletModalVisible, setWalletModalVisible] = useState(false);
   const [walletModalAddress, setWalletModalAddress] = useState('');
+  const [walletModalLoading, setWalletModalLoading] = useState<boolean>(false)
   const [premiumUnlocked, setPremiumUnlocked] = useState(LOCKED)
 
   const web3 = useWeb3React()
@@ -556,13 +557,24 @@ function Dashboard() {
     return walletModalAddress || web3Account;
   }
 
-  const handleWalletModalAdd = () => {
-    const address = getModalAddressSuggestion();
+  const resolveEnsName = async (name : string) => {
+    const ethereum = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_MAINNET)
+    return ethereum.resolveName(name)
+  }
+  const handleWalletModalAdd = async () => {
+    setWalletModalLoading(true);
+    let address = getModalAddressSuggestion();
+
+    if (address.endsWith('.eth')) {
+      address = await resolveEnsName(address) || ''
+    }
+
     if (ethers.utils.isAddress(address)) {
       addWallet(address)
       setWalletModalVisible(false)
       setWalletModalAddress('')
     }
+    setWalletModalLoading(false);
   };
 
   const handleWalletModalClose = () => {
@@ -866,21 +878,22 @@ function Dashboard() {
                 Close
               </Button>
             ) : '',
-            <Button key="submit" type="primary" onClick={handleWalletModalAdd}>
-              Add
+            <Button key="submit" type="primary" onClick={handleWalletModalAdd} disabled={walletModalLoading}>
+              { walletModalLoading ? 'Loading' : 'Add' }
             </Button>,
         ]}
       >
         
         { !web3.account ? (<ConnectButton />) : (<Button style={{ display: 'block' }}>Connected with {web3.account.substr(0, 4)}...</Button>)}
         
-        Enter a wallet address:
+        Enter a wallet address / ens domain:
         <Input 
           size="large" 
           placeholder="0x..." 
           prefix={<WalletOutlined />}
           value={getModalAddressSuggestion()}
           onChange={(event) => setWalletModalAddress(event.target.value)}
+          disabled={walletModalLoading}
         />
 
       </Modal>
