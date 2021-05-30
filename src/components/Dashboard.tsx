@@ -1,18 +1,88 @@
-import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
+import { DeleteOutlined, FrownTwoTone, SmileTwoTone, SyncOutlined, WalletOutlined } from '@ant-design/icons';
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import { Paywall } from '@unlock-protocol/paywall';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
+import "animate.css";
+import { Avatar, Badge, Button, Col, Input, Modal, notification, Row, Skeleton, Table, Tooltip } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
-import { ethers } from 'ethers';
+import { BytesLike, ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
-import '../services/balanceService';
 import { getTokenBalance } from '../services/balanceService';
 import {getPricesForTokens} from '../services/PriceService'
 import { readWallets, storeWallets } from '../services/localStorage';
-import { Amounts, ChainKey, Coin, CoinKey, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
+import { Amounts, ChainKey, Coin, CoinKey, ColomnType, DataType, NetworkConfigs, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
 import './Dashboard.css';
 import ConnectButton from './web3/ConnectButton';
 
+const UNLOCK_PREMIUM_LOCK_CONTRACT : BytesLike = '0x791E3D208ED611837bb84a632bC801DF2639eB0E';
+const network = 'rinkeby';
+const GRAPH_ENDPOINTS = {
+  mainnet: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
+  rinkeby: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
+};
+// const GRAPH_EXPLORER_ENDPOINTS = {
+//   mainnet: 'https://thegraph.com/explorer/subgraph/unlock-protocol/unlock',
+//   rinkeby: 'https://thegraph.com/explorer/subgraph/unlock-protocol/unlock-rinkeby',
+// };
+const ETHERSCAN_URLS = {
+  mainnet: 'https://etherscan.io',
+  rinkeby: 'https://rinkeby.etherscan.io',
+};
 
+const GRAPH_ENPOINT = GRAPH_ENDPOINTS[network]
+// const GRAPH_EXPLORER = GRAPH_EXPLORER_ENDPOINTS[network]
+const ETHERSCAN_URL = ETHERSCAN_URLS[network]
+
+const GRAPH_CLIENT = new ApolloClient({
+  uri: GRAPH_ENPOINT,
+  cache: new InMemoryCache()
+});
+
+(window as any).unlockProtocolConfig = {
+  network: 4, // Network ID (1 is for mainnet, 4 for rinkeby... etc)
+  locks: {
+    '0x791E3D208ED611837bb84a632bC801DF2639eB0E': { // 0xabc is the address of a lock.
+      name: 'One Year Premium Rinkeby',
+      network: 4 // you can customize the network for each lock
+    },
+    '0x791E3D208ED611837bb84a632bC801DF2639eB02': { // 0xabc is the address of a lock.
+      name: 'One Year Premium',
+      network: 1 // you can customize the network for each lock
+    },
+  },
+  icon: 'https://app.unlock-protocol.com/static/images/svg/default.svg',
+  callToAction: {
+    default: 'This content is locked. Pay with cryptocurrency to access it!',
+    expired: 'This is what is shown when the user had a key which is now expired',
+    pending: 'This is the message shown when the user sent a transaction to purchase a key which has not be confirmed yet',
+    confirmed: 'This is the message shown when the user has a confirmed key',
+    noWallet: 'This is the message shown when the user does not have a crypto wallet which is required...',
+  }
+}
+
+// Configure networks to use
+const networkConfigs: NetworkConfigs = {
+  1: {
+    readOnlyProvider: 'https://eth-mainnet.alchemyapi.io/v2/b7Mxclz5hGyHqoeodGLQ17F5Qi97S7xJ',
+    locksmithUri: 'https://locksmith.unlock-protocol.com',
+    unlockAppUrl: 'https://app.unlock-protocol.com',
+  },
+  4: {
+    readOnlyProvider: 'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
+    locksmithUri: 'https://rinkeby.locksmith.unlock-protocol.com',
+    unlockAppUrl: 'https://app.unlock-protocol.com',
+  },
+  100: {
+    readOnlyProvider: 'https://rpc.xdaichain.com/',
+    locksmithUri: 'https://locksmith.unlock-protocol.com',
+    unlockAppUrl: 'https://app.unlock-protocol.com',
+  },
+}
+
+// You may actually want to put that in a context.., at the top of the application
+const PAYWALL = new Paywall((window as any).unlockProtocolConfig, networkConfigs)
+
+const MAX_AMOUNT_FREE_WALLETS = 1;
 
 const ChainDetails = {
   [ChainKey.ETH]: {
@@ -201,8 +271,6 @@ function renderCoin(coin: Coin) {
 }
 
 // builders
-
-
 const buildDataRow = (coin: any) : DataType => {
   const emptyWalletAmounts : WalletAmounts = {
     [ChainKey.ETH]: {
@@ -341,12 +409,17 @@ function deepClone(obj : any) {
 }
 
 function Dashboard() {
+
+  const LOCKED = 'locked'
+  const UNLOCKED = 'unlocked'
+
   const [data, setData] = useState<Array<DataType>>(buildDataRows(coins));
   const [columns, setColumns] = useState<Array<ColomnType>>(baseColumns)
   const [summary, setSummary] = useState<Summary>(deepClone(emptySummary))
   const [wallets, setWallets] = useState<Array<Wallet>>([])
   const [walletModalVisible, setWalletModalVisible] = useState(false);
   const [walletModalAddress, setWalletModalAddress] = useState('');
+  const [premiumUnlocked, setPremiumUnlocked] = useState(LOCKED)
 
   const web3 = useWeb3React()
 
@@ -444,6 +517,9 @@ function Dashboard() {
   }
 
   const showWalletModal = () => {
+    if(checkPremium() === false){
+      return;
+    }
     setWalletModalVisible(true);
   };
 
@@ -468,8 +544,80 @@ function Dashboard() {
     }
   }
 
+  useEffect(() => {
+    getLastUnlockPurchases()
+    
+  }, [])
+
+  const getLastUnlockPurchases = () => {
+    const UNLOCK_DATA = gql`
+    query($unlockContract:String,  $olderThan: String){
+      locks(where:{address:$unlockContract}) {
+        keys(where:{createdAt_lte:$olderThan}) {
+          createdAt
+        }
+      }
+    }
+    `
+    const oneDayAgo = (Date.now() - (60*60*24)).toString()
+    GRAPH_CLIENT.query({
+      query: UNLOCK_DATA,
+      variables: {
+        unlockContract: UNLOCK_PREMIUM_LOCK_CONTRACT,
+        olderThan: oneDayAgo,
+      },
+    }).then(result => {
+      const etherscan = ETHERSCAN_URL + '/address/' + UNLOCK_PREMIUM_LOCK_CONTRACT
+      const amountKeys = result.data.locks[0].keys.length
+      notification.open({
+        message: 'New premium users!',
+        description: (
+          <p>
+            {amountKeys} people just upgraded their account to premium using <a target="_blank" rel="nofollow noreferrer" href="http://unlock-protocol.com/">Unlock</a>.
+            Check on <a target="_blank" rel="nofollow noreferrer" href={etherscan}>Etherscan</a>
+          </p>
+        ),
+        placement: 'bottomRight',
+        duration: 10000000,
+      });
+    })
+  }
+
   // Automatically trigger update
   useEffect(() => {
+
+    // @ts-expect-error
+    if(PAYWALL && PAYWALL.lockStatus){
+      // @ts-expect-error
+      setPremiumUnlocked(PAYWALL.lockStatus)
+    }
+
+    window.addEventListener('unlockProtocol.authenticated', function(e : any) {
+      // event.detail.addresss includes the address of the current user, when known
+      console.log("authenticated event", e)
+    })
+
+    window.addEventListener('unlockProtocol.transactionSent', function(e : any) {
+      // event.detail.hash includes the hash of the transaction sent
+      console.log("transaction sent event", e)
+    })
+
+    window.addEventListener('unlockProtocol.status', function(e : any) {
+      const state = e.detail.state
+      if(premiumUnlocked === LOCKED && state === UNLOCKED){
+        console.log("CHANGED FROM LOCKED TO UNLOCKED")
+        setPremiumUnlocked(state)
+        // setWalletModalVisible(true); // do not trigger on every page load
+      }
+
+      console.log("status changed event", e)
+      // the state is a string whose value can either be 'unlocked' or 'locked'...
+      // If state is 'unlocked': implement code here which will be triggered when
+      // the current visitor has a valid lock key
+      // If state is 'locked': implement code here which will be
+      // triggered when the current visitor does not have a valid lock key
+    })
+
     let changed = false
     const newWallets = wallets.map((wallet) => {
       if (!wallet.loading) {
@@ -522,13 +670,37 @@ function Dashboard() {
     }
   }
 
+  const callCheckoutModal = () => {
+    // @ts-expect-error
+    if (PAYWALL && PAYWALL.loadCheckoutModal) {
+      // @ts-expect-error
+      PAYWALL.loadCheckoutModal()
+    } else{
+      console.log("There's no unlockProtocol")
+    }
+  }
+
+  const checkPremium = () => {
+    if (premiumUnlocked === LOCKED && wallets.length >= MAX_AMOUNT_FREE_WALLETS) {
+      callCheckoutModal()
+      return false;
+    }
+    return true;
+  }
+
   // keep columns in sync
   useEffect(() => {
     const addColumn = {
       title: (
-        <Button onClick={showWalletModal}>
-          Add Wallet
-        </Button>
+        <>
+        <div>
+          PREMIUM: { premiumUnlocked === UNLOCKED ? <SmileTwoTone /> : <FrownTwoTone /> }
+        </div>
+          
+          <Button onClick={showWalletModal}>
+            Add Wallet
+          </Button>
+        </>
       ),
       dataIndex: '',
       width: 100,
