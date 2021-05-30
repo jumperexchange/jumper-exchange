@@ -1,37 +1,35 @@
-import { DeleteOutlined, SyncOutlined, WalletOutlined, SmileTwoTone, FrownTwoTone } from '@ant-design/icons';
+import { DeleteOutlined, FrownTwoTone, SmileTwoTone, SyncOutlined, WalletOutlined } from '@ant-design/icons';
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import { Paywall } from '@unlock-protocol/paywall';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip, notification } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
-import { ethers } from 'ethers';
-import React, { useEffect, useState } from 'react';
-import { Amounts, ChainKey, Coin, CoinKey, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey, NetworkConfigs } from '../types';
-import './Dashboard.css';
 import "animate.css";
+import { Avatar, Badge, Button, Col, Input, Modal, notification, Row, Skeleton, Table, Tooltip } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
+import { BytesLike, ethers } from 'ethers';
+import React, { useEffect, useState } from 'react';
 import { getTokenBalance } from '../services/balanceService';
 import { readWallets, storeWallets } from '../services/localStorage';
-import { Paywall } from '@unlock-protocol/paywall';
+import { Amounts, ChainKey, Coin, CoinKey, ColomnType, DataType, NetworkConfigs, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
+import './Dashboard.css';
 import ConnectButton from './web3/ConnectButton';
-import { InMemoryCache, ApolloClient, gql } from '@apollo/client'
-import { kStringMaxLength } from 'buffer';
-//import { ApolloProvider } from "@apollo/react-hooks";
 
-const UNLOCK_PREMIUM_LOCK_CONTRACT = "0x791E3D208ED611837bb84a632bC801DF2639eB0E";
+const UNLOCK_PREMIUM_LOCK_CONTRACT : BytesLike = '0x791E3D208ED611837bb84a632bC801DF2639eB0E';
 const network = 'rinkeby';
 const GRAPH_ENDPOINTS = {
   mainnet: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
   rinkeby: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
 };
-const GRAPH_EXPLORER_ENDPOINTS = {
-  mainnet: 'https://thegraph.com/explorer/subgraph/unlock-protocol/unlock',
-  rinkeby: 'https://thegraph.com/explorer/subgraph/unlock-protocol/unlock-rinkeby',
-};
+// const GRAPH_EXPLORER_ENDPOINTS = {
+//   mainnet: 'https://thegraph.com/explorer/subgraph/unlock-protocol/unlock',
+//   rinkeby: 'https://thegraph.com/explorer/subgraph/unlock-protocol/unlock-rinkeby',
+// };
 const ETHERSCAN_URLS = {
   mainnet: 'https://etherscan.io',
   rinkeby: 'https://rinkeby.etherscan.io',
 };
 
 const GRAPH_ENPOINT = GRAPH_ENDPOINTS[network]
-const GRAPH_EXPLORER = GRAPH_EXPLORER_ENDPOINTS[network]
+// const GRAPH_EXPLORER = GRAPH_EXPLORER_ENDPOINTS[network]
 const ETHERSCAN_URL = ETHERSCAN_URLS[network]
 
 const GRAPH_CLIENT = new ApolloClient({
@@ -272,8 +270,6 @@ function renderCoin(coin: Coin) {
 }
 
 // builders
-
-
 const buildDataRow = (coin: any) : DataType => {
   const emptyWalletAmounts : WalletAmounts = {
     [ChainKey.ETH]: {
@@ -552,10 +548,9 @@ function Dashboard() {
     
   }, [])
 
-  // eslint-disable-next-line
   const getLastUnlockPurchases = () => {
     const UNLOCK_DATA = gql`
-    query($unlockContract:[String],  $olderThan:[String]){
+    query($unlockContract:String,  $olderThan: String){
       locks(where:{address:$unlockContract}) {
         keys(where:{createdAt_lte:$olderThan}) {
           createdAt
@@ -563,23 +558,27 @@ function Dashboard() {
       }
     }
     `
+    const oneDayAgo = (Date.now() - (60*60*24)).toString()
     GRAPH_CLIENT.query({
       query: UNLOCK_DATA,
       variables: {
         unlockContract: UNLOCK_PREMIUM_LOCK_CONTRACT,
-        olderThan: Date.now()-(60*60*24), // last 24h
+        olderThan: oneDayAgo,
       },
     }).then(result => {
-      console.log("result", result)
+      const etherscan = ETHERSCAN_URL + '/address/' + UNLOCK_PREMIUM_LOCK_CONTRACT
+      const amountKeys = result.data.locks[0].keys.length
       notification.open({
         message: 'New premium users!',
-        description: '3 people just upgraded their account to premium using <a href="http://unlock-protocol.com/">Unlock</a>.',
+        description: (
+          <p>
+            {amountKeys} people just upgraded their account to premium using <a target="_blank" rel="nofollow noreferrer" href="http://unlock-protocol.com/">Unlock</a>.
+            Check on <a target="_blank" rel="nofollow noreferrer" href={etherscan}>Etherscan</a>
+          </p>
+        ),
         placement: 'bottomRight',
-        onClick: () => {
-          alert('Show me the proof via <a href="'+ETHERSCAN_URL+'/address/'+UNLOCK_PREMIUM_LOCK_CONTRACT+'">Etherscan</a>');
-        },
+        duration: 10000000,
       });
-      
     })
   }
 
@@ -607,7 +606,7 @@ function Dashboard() {
       if(premiumUnlocked === LOCKED && state === UNLOCKED){
         console.log("CHANGED FROM LOCKED TO UNLOCKED")
         setPremiumUnlocked(state)
-        setWalletModalVisible(true);
+        // setWalletModalVisible(true); // do not trigger on every page load
       }
 
       console.log("status changed event", e)
