@@ -62,6 +62,14 @@ export interface Wallet {
   name: string;
   address: string;
   chains: Array<ChainKey>;
+  loading: boolean;
+}
+
+export enum CoinKey {
+  ETH = 'ETH',
+  MATIC = 'MATIC',
+  BNB = 'BNB',
+  DAI = 'DAI',
 }
 
 interface NetworkConfig {

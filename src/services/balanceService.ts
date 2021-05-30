@@ -1,133 +1,98 @@
-import {ethers} from "ethers";
-import erc20_abi from './ABI/ERC_20.json'
+import { ethers } from "ethers";
+import { ChainKey, CoinKey } from '../types';
+import erc20_abi from './ABI/ERC_20.json';
 
-
-const RpcUrls ={
-  ETH: process.env.REACT_APP_RPC_URL_MAINNET,
-  BSC: process.env.REACT_APP_RPC_URL_BSC,
-  POLYGON: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET,
-  XDAI: process.env.REACT_APP_RPC_URL_XDAI,
+const RpcUrls = {
+  [ChainKey.ETH]: process.env.REACT_APP_RPC_URL_MAINNET,
+  [ChainKey.BSC]: process.env.REACT_APP_RPC_URL_BSC,
+  [ChainKey.POL]: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET,
+  [ChainKey.DAI]: process.env.REACT_APP_RPC_URL_XDAI,
 }
 
-const provider =  {
-  eth : new ethers.providers.JsonRpcProvider(RpcUrls.ETH),
-  bsc: new ethers.providers.JsonRpcProvider(RpcUrls.BSC),
-  polygon : new ethers.providers.JsonRpcProvider(RpcUrls.POLYGON),
-  xdai: new ethers.providers.JsonRpcProvider(RpcUrls.XDAI),
+const provider = {
+  [ChainKey.ETH]: new ethers.providers.JsonRpcProvider(RpcUrls[ChainKey.ETH]),
+  [ChainKey.BSC]: new ethers.providers.JsonRpcProvider(RpcUrls[ChainKey.BSC]),
+  [ChainKey.POL]: new ethers.providers.JsonRpcProvider(RpcUrls[ChainKey.POL]),
+  [ChainKey.DAI]: new ethers.providers.JsonRpcProvider(RpcUrls[ChainKey.DAI]),
 }
 
-//logic: blockchain -> Token on that chain
-const erc20Tokens = {
-  eth:{
-    bnb:new ethers.Contract('0xb8c77482e45f1f44de1745f52c74426c631bdd52', erc20_abi, provider.eth),
-    polygon: new ethers.Contract('0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0', erc20_abi, provider.eth),
-    dai: new ethers.Contract('0x6b175474e89094c44da98b954eedeac495271d0f', erc20_abi, provider.eth) 
+const nativeTokenMapping = {
+  [CoinKey.ETH]: {
+    nativeChain: ChainKey.ETH,
   },
-  bsc:{
-    eth: new ethers.Contract('0x2170ed0880ac9a755fd29b2688956bd959f933f8', erc20_abi, provider.bsc),
-    bnb:new ethers.Contract('0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', erc20_abi, provider.bsc), // https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
-    polygon: new ethers.Contract('0xa90cb47c72f2c7e4411e781772735d9317d08dd4', erc20_abi, provider.bsc), // https://bscscan.com/token/...
-    dai: new ethers.Contract('0x1dc56f2705ff2983f31fb5964cc3e19749a7cba7', erc20_abi, provider.bsc) // https://bscscan.com/token/...
+  [CoinKey.BNB]: {
+    nativeChain: ChainKey.BSC,
   },
-  polygon:{
-    bnb:new ethers.Contract('0xA649325Aa7C5093d12D6F98EB4378deAe68CE23F', erc20_abi, provider.polygon), // https://explorer-mainnet.maticvigil.com/address/...
-    polygon: new ethers.Contract('0x0000000000000000000000000000000000001010', erc20_abi, provider.polygon),
-    dai: new ethers.Contract('0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', erc20_abi, provider.polygon) 
+  [CoinKey.MATIC]: {
+    nativeChain: ChainKey.POL,
   },
-  xdai:{
-    bnb:new ethers.Contract('0xCa8d20f3e0144a72C6B5d576e9Bd3Fd8557E2B04', erc20_abi, provider.xdai), // https://blockscout.com/xdai/mainnet/address/...
-    polygon: new ethers.Contract('0x7122d7661c4564b7C6Cd4878B06766489a6028A2', erc20_abi, provider.xdai),
-    dai: new ethers.Contract('0x44fA8E6f47987339850636F88629646662444217', erc20_abi, provider.xdai) 
+  [CoinKey.DAI]: {
+    nativeChain: ChainKey.DAI,
   },
-
 }
 
-
-async function getEthAcrossChains(wallet: string){
-  return new Promise(async (resolve, reject) =>  {
-
-    const onEth = await provider.eth.getBalance(wallet);
-    const onBsc = await erc20Tokens.bsc.eth.balanceOf(wallet);
-    // const onPolygon = await erc20Tokens.polygon.eth.balanceOf(wallet);
-    // const onXdai = await provider.xdai.getBalance(wallet); // TODO: change
-
-    const ethBalances = {
-      onEth : parseFloat(ethers.utils.formatEther(onEth)),
-      onBsc : parseFloat(ethers.utils.formatEther(onBsc)),
-      onPolygon : 0, //parseFloat(ethers.utils.formatEther(onPolygon)),
-      onXdai : 0, //parseFloat(ethers.utils.formatEther(onXdai)),
-    }
-
-    console.table({"Eth Amount": ethBalances});
-    resolve (ethBalances)
-  })
+//logic: token -> provider for each chain
+const availableTokens = {
+  [CoinKey.ETH]: {
+    [ChainKey.BSC]: new ethers.Contract('0x2170ed0880ac9a755fd29b2688956bd959f933f8', erc20_abi, provider[ChainKey.BSC]),
+    [ChainKey.POL]: new ethers.Contract('0xfD8ee443ab7BE5b1522a1C020C097CFF1ddC1209', erc20_abi, provider[ChainKey.POL]),
+    [ChainKey.DAI]: new ethers.Contract('0xa5c7cb68cd81640D40c85b2e5Ec9E4Bb55Be0214', erc20_abi, provider[ChainKey.DAI]),
+  },
+  [CoinKey.BNB]: {
+    [ChainKey.ETH]: new ethers.Contract('0xB8c77482e45F1F44dE1745F52C74426C631bDD52', erc20_abi, provider[ChainKey.ETH]),
+    [ChainKey.POL]: new ethers.Contract('0xA649325Aa7C5093d12D6F98EB4378deAe68CE23F', erc20_abi, provider[ChainKey.POL]),
+    [ChainKey.DAI]: new ethers.Contract('0xCa8d20f3e0144a72C6B5d576e9Bd3Fd8557E2B04', erc20_abi, provider[ChainKey.DAI]), // xdai explorer says wbnb 0xCa8d20f3e0144a72C6B5d576e9Bd3Fd8557E2B04
+  },
+  [CoinKey.MATIC]: {
+    [ChainKey.ETH]: new ethers.Contract('0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0', erc20_abi, provider[ChainKey.ETH]),
+    [ChainKey.BSC]: new ethers.Contract('0xa90cb47c72f2c7e4411e781772735d9317d08dd4', erc20_abi, provider[ChainKey.BSC]),
+    [ChainKey.DAI]: new ethers.Contract('0x7122d7661c4564b7C6Cd4878B06766489a6028A2', erc20_abi, provider[ChainKey.DAI])
+  },
+  [CoinKey.DAI]: {
+    [ChainKey.ETH]: new ethers.Contract('0x6b175474e89094c44da98b954eedeac495271d0f', erc20_abi, provider[ChainKey.ETH]),
+    [ChainKey.BSC]: new ethers.Contract('0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3', erc20_abi, provider[ChainKey.BSC]),
+    [ChainKey.POL]: new ethers.Contract('0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', erc20_abi, provider[ChainKey.POL]),
+  },
 }
 
-async function getDaiAcrossChains(wallet: string){
-  return new Promise(async (resolve, reject) =>  {
-
-    const onEth = await erc20Tokens.eth.dai.balanceOf(wallet);
-    const onBsc = await erc20Tokens.bsc.dai.balanceOf(wallet);
-    const onPolygon = await erc20Tokens.polygon.dai.balanceOf(wallet);
-    const onXdai = await provider.xdai.getBalance(wallet); // moved
-
-    const daiBalances = {
-      onEth : parseFloat(ethers.utils.formatEther(onEth)),
-      onBsc : parseFloat(ethers.utils.formatEther(onBsc)),
-      onPolygon : parseFloat(ethers.utils.formatEther(onPolygon)),
-      onXdai : parseFloat(ethers.utils.formatEther(onXdai)),
-    }
-
-    console.table({"Dai Amount": daiBalances});    
-    resolve (daiBalances)
-  })
+function getListOfSupportedTokens() {
+  return Object.keys(availableTokens)
 }
 
-async function getPolygonAcrossChains(wallet: string){
-  return new Promise(async (resolve, reject) =>  {
+async function getTokenBalance(coinKey: CoinKey, walletAdress: string) {
+  if (!getListOfSupportedTokens().includes(coinKey)) {
+    console.error(`CoinKey ${coinKey} is not supported`)
+    return null
+  }
 
-    const onEth = await erc20Tokens.eth.polygon.balanceOf(wallet);
-    const onBsc = await erc20Tokens.bsc.polygon.balanceOf(wallet);
-    const onPolygon =  await provider.polygon.getBalance(wallet); // moved
-    const onXdai = await erc20Tokens.xdai.polygon.balanceOf(wallet);
+  var balanceAcrossChains: { [k: string]: number } = {}
 
-    const polygonBalances = {
-      onEth : parseFloat(ethers.utils.formatEther(onEth)),
-      onBsc : parseFloat(ethers.utils.formatEther(onBsc)),
-      onPolygon : parseFloat(ethers.utils.formatEther(onPolygon)),
-      onXdai : parseFloat(ethers.utils.formatEther(onXdai)),
-    }
+  // get native/base chain token balance
+  const nativeChain = nativeTokenMapping[coinKey].nativeChain
+  if (nativeChain) {
+    const nativeBalance = await provider[nativeChain].getBalance(walletAdress)
+    balanceAcrossChains[nativeChain] = parseFloat(ethers.utils.formatEther(nativeBalance))
+  }
 
-    console.table({"Polygon Amount": polygonBalances});    
-    resolve (polygonBalances)
-  })
+  // get token on other chains
+  const chains = availableTokens[coinKey];
+  for (const [chain, contract] of Object.entries(chains)) {
+    const externalBalance = await contract.balanceOf(walletAdress);
+    balanceAcrossChains[chain] = parseFloat(ethers.utils.formatEther(externalBalance))
+  }
+
+  return balanceAcrossChains
 }
 
-async function getBNBAcrossChains(wallet: string){
-  return new Promise(async (resolve, reject) =>  {
+async function getTokenBalanceFor(coinKeys: Array<CoinKey>, walletAdress: string) {
+  var balances: { [k: string]: object } = {}
+  for (const coinKey of coinKeys) {
+    balances[coinKey] = getTokenBalance(coinKey, walletAdress)
+  }
 
-    const onEth = await erc20Tokens.eth.bnb.balanceOf(wallet);
-    const onBsc = await provider.bsc.getBalance(wallet); // moved
-    const onPolygon = await erc20Tokens.polygon.bnb.balanceOf(wallet);
-    const onXdai = await erc20Tokens.xdai.bnb.balanceOf(wallet);
-
-    const bnbBalances = {
-      onEth : parseFloat(ethers.utils.formatEther(onEth)),
-      onBsc : parseFloat(ethers.utils.formatEther(onBsc)),
-      onPolygon : parseFloat(ethers.utils.formatEther(onPolygon)),
-      onXdai : parseFloat(ethers.utils.formatEther(onXdai)),
-    }
-
-    console.table({"BNB Amount": bnbBalances});    
-    resolve (bnbBalances)
-  })
+  return balances
 }
 
-
-
-
-
-
-export {getEthAcrossChains, getBNBAcrossChains, getDaiAcrossChains, getPolygonAcrossChains}
+export { getTokenBalance, getTokenBalanceFor, getListOfSupportedTokens };
 
 
