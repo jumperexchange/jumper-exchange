@@ -81,3 +81,12 @@ export enum Currencies {
   USD = "usd",
   EUR = "eur",
 }
+
+interface NetworkConfig {
+  readOnlyProvider: string
+  locksmithUri: string
+  unlockAppUrl: string
+}
+export interface NetworkConfigs {
+  [networkId: string]: NetworkConfig
+}
