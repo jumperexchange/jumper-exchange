@@ -71,3 +71,8 @@ export enum CoinKey {
   BNB = 'BNB',
   DAI = 'DAI',
 }
+
+export enum Currencies {
+  USD = "usd",
+  EUR = "eur",
+}

@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ChainKey, CoinKey } from '../types';
+import { ChainKey, Coin, CoinKey } from '../types';
 import erc20_abi from './ABI/ERC_20.json';
 
 const RpcUrls = {
@@ -93,6 +93,8 @@ async function getTokenBalanceFor(coinKeys: Array<CoinKey>, walletAdress: string
   return balances
 }
 
-export { getTokenBalance, getTokenBalanceFor, getListOfSupportedTokens };
 
+
+
+export { getTokenBalance, getTokenBalanceFor, getListOfSupportedTokens };
 

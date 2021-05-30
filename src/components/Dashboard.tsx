@@ -6,10 +6,13 @@ import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import '../services/balanceService';
 import { getTokenBalance } from '../services/balanceService';
+import {getPricesForTokens} from '../services/PriceService'
 import { readWallets, storeWallets } from '../services/localStorage';
 import { Amounts, ChainKey, Coin, CoinKey, ColomnType, DataType, Summary, Wallet, WalletAmounts, WalletKey } from '../types';
 import './Dashboard.css';
 import ConnectButton from './web3/ConnectButton';
+
+
 
 const ChainDetails = {
   [ChainKey.ETH]: {
