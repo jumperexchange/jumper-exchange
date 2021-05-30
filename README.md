@@ -30,6 +30,15 @@ https://dashboard-textile.cryptopixels.org/
 ```
 The Website is hosted decentral using a textile bucket, which we make more accessible via a custom domain by integration Cloudflare CDN.
 
+Setup:
+- Textile provides a custom url for your bucket, based on the ipns name of your bucket ([ipns].textile.space):
+  https://bafzbeia3zldi5h554pjqicc35krfylfpw3xvwrluwc4bh3zqio62lfxvjq.textile.space/
+- To serve your files via a cloudflare, you have to set the following DNS entries:
+```
+TXT    _dnslink.subdomain = dnslink=/ipns/bafzbeia3zldi5h554pjqicc35krfylfpw3xvwrluwc4bh3zqio62lfxvjq
+CNAME        subdomain    = gateway-int.ipfs.io
+```
+
 ### Wallet Balances via different RPCs
 
 
