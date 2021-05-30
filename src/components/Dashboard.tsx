@@ -123,7 +123,33 @@ const coins : Array<Coin> = [
     key: CoinKey.DAI,
     name: CoinKey.DAI,
     img_url: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
-  }
+  },
+  {
+    key: CoinKey.USDT,
+    name: CoinKey.USDT,
+    img_url: 'https://zapper.fi/images/networks/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
+  },
+  {
+    key: CoinKey.USDC,
+    name: CoinKey.USDC,
+    img_url: 'https://zapper.fi/images/networks/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
+  },
+  {
+    key: CoinKey.LINK,
+    name: CoinKey.LINK,
+    img_url: 'https://zapper.fi/images/networks/ethereum/0x514910771af9ca656af840dff83e8264ecf986ca.png',
+  },
+  {
+    key: CoinKey.UNI,
+    name: CoinKey.UNI,
+    img_url: 'https://zapper.fi/images/networks/ethereum/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984.png',
+  },
+  {
+    key: CoinKey.AAVE,
+    name: CoinKey.AAVE,
+    img_url: 'https://zapper.fi/images/networks/ethereum/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9.png',
+  },
+
 ]
 
 // modals
