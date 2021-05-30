@@ -498,7 +498,7 @@ function Dashboard() {
 
   const callCheckoutModal = () => {
     if (paywall) {
-      console.log("Load checkout modal")
+      console.log("Load checkout modal", paywall)
       paywall.loadCheckoutModal()
     }else{
       console.log("There's no unlockProtocol")
