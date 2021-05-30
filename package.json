@@ -2,7 +2,6 @@
   "name": "cross-layer-wallet-overview",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://zenkteam.github.io/cross-layer-wallet-overview/",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@testing-library/dom": "^7.31.0",

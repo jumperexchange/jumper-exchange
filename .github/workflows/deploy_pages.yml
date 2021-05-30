@@ -10,6 +10,9 @@ jobs:
   buildAndDeploy:
 
     runs-on: ubuntu-latest
+
+    env:
+      PUBLIC_URL: /cross-layer-wallet-overview/
     
     steps:
     - uses: actions/checkout@v2
