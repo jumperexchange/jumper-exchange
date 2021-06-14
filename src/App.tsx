@@ -13,9 +13,12 @@ function App() {
       <Web3ConnectionManager>
         <Layout>
           <Header style={{ position: 'fixed', zIndex: 1, width: '100%', padding: 0 }}>
-            <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
+            <a href="/" className="wordmark">
+              <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
+              Li.Finance
+            </a>
             <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
-              <Menu.Item key="1">Dashboard</Menu.Item>
+              {/* <Menu.Item key="1">Dashboard</Menu.Item> */}
             </Menu>
           </Header>
 
