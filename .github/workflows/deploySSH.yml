@@ -27,7 +27,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '10'
+          node-version: '10' # only for unlock
 
       - name: Install dependencies
         run: yarn install
@@ -48,10 +48,10 @@ jobs:
           # Remote port
           #REMOTE_PORT: # optional, default is 22
           # Source directory
-          SOURCE: "dist/" # optional, default is 
+          SOURCE: "build/" # optional, default is
           # Target directory
           TARGET: ${{ secrets.REMOTE_TARGET }}/prod/web # optional, default is /home/REMOTE_USER/
           # Arguments to pass to rsync
           #ARGS: # optional, default is -rltgoDzvO
           # An array of folder to exclude
-          EXCLUDE: "/dist/, /node_modules/" # optional, default is 
+          #EXCLUDE: # optional, default is
