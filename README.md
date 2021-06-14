@@ -2,7 +2,7 @@
 
 What we are aiming at:
 
-![Screenshot](./src/assets/life-goal.png?raw=true)
+![Screenshot](./src/assets/lifi-goal.png?raw=true)
 
 
 

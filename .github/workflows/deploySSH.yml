@@ -55,3 +55,19 @@ jobs:
           #ARGS: # optional, default is -rltgoDzvO
           # An array of folder to exclude
           #EXCLUDE: # optional, default is
+      
+      # Purge Cloudflare caches (https://github.com/marketplace/actions/cloudflare-purge-cache)
+      - name: Purge cache
+        uses: jakejarvis/cloudflare-purge-action@master
+        env:
+          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ONE }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
+          PURGE_URLS: '["https://li.finance/"]'
+      - name: Purge cache
+        uses: jakejarvis/cloudflare-purge-action@master
+        env:
+          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_TWO }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
+          PURGE_URLS: '["https://transferto.xyz/"]'
