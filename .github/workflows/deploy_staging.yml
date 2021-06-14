@@ -6,9 +6,9 @@ name: Deploy Prod Web via SSH
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ develop ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
         
-      - name: Install dependencies
+      - name: Build WebApp
         run: yarn build
       
       # Runs a set of commands using the runners shell
@@ -50,7 +50,7 @@ jobs:
           # Source directory
           SOURCE: "build/" # optional, default is
           # Target directory
-          TARGET: ${{ secrets.REMOTE_TARGET }}/prod/web # optional, default is /home/REMOTE_USER/
+          TARGET: ${{ secrets.REMOTE_TARGET }}/test/web # optional, default is /home/REMOTE_USER/
           # Arguments to pass to rsync
           #ARGS: # optional, default is -rltgoDzvO
           # An array of folder to exclude
@@ -63,11 +63,11 @@ jobs:
           CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ONE }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
-          PURGE_URLS: '["https://li.finance/"]'
+          PURGE_URLS: '["https://test.li.finance/"]'
       - name: Purge cache
         uses: jakejarvis/cloudflare-purge-action@master
         env:
           CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_TWO }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
-          PURGE_URLS: '["https://transferto.xyz/"]'
+          PURGE_URLS: '["https://test.transferto.xyz/"]'
