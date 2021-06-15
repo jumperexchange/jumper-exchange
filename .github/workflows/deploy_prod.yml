@@ -74,3 +74,13 @@ jobs:
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
           PURGE_URLS: '["https://transferto.xyz/"]'
+
+      # Notify Rollbar about release
+      - name: Notify deploy to Rollbar
+        uses: rollbar/github-deploy-action@2.1.1
+        id: rollbar_deploy
+        with:
+          environment: 'production'
+          version: ${{ github.sha }}
+        env:
+          ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
