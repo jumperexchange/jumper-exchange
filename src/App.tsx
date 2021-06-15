@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './assets/icon192.png';
 import { Layout, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
@@ -6,8 +6,14 @@ import './App.css';
 import Dashboard from './components/Dashboard';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
+import analytics from './services/analytics';
 
 function App() {
+
+  useEffect(() => {
+    analytics.sendPageView('/')
+  }, [])
+
   return (
     <WrappedWeb3ReactProvider>
       <Web3ConnectionManager>
