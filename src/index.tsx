@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './services/reportWebVitals';
 import analytics from './services/analytics';
+import { BrowserRouter } from 'react-router-dom';
 
 analytics.initialize(process.env.REACT_APP_ANALYTICS_ID)
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

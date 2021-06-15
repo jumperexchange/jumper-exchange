@@ -31,9 +31,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-      
-      - name: Folder
-        run: ls -al
 
       - name: Build WebApp
         run: yarn build:staging

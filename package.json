@@ -1,5 +1,5 @@
 {
-  "name": "cross-layer-wallet-overview",
+  "name": "lifi-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,6 +13,7 @@
     "@types/node": "^15.6.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.1.7",
     "@unlock-protocol/paywall": "^0.1.0",
     "@unlock-protocol/unlock-js": "^0.18.2",
     "@web3-react/core": "^6.1.9",
@@ -26,6 +27,7 @@
     "graphql": "^15.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1",
