@@ -1,7 +1,7 @@
 import { Layout, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import React, { useEffect } from 'react';
-import { Link, Route, Switch, useLocation } from 'react-router-dom';
+import { Link, Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import './App.css';
 import logo from './assets/icon192.png';
 import AboutPage from './components/AboutPage';
@@ -10,6 +10,7 @@ import NotFoundPage from './components/NotFoundPage';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
+import setMetatags from './services/metatags';
 
 function usePageViews() {
   let location = useLocation()
@@ -32,7 +33,7 @@ function App() {
             </Link>
             <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
               <Menu.Item key="1">
-                <Link to="/">Dashboard</Link>
+                <Link to="/dashboard">Dashboard</Link>
               </Menu.Item>
               <Menu.Item key="2">
                 <Link to="/about">About</Link>
@@ -41,15 +42,26 @@ function App() {
           </Header>
 
           <Switch>
-            <Route exact path="/">
-              <Dashboard/>
-            </Route>
-            <Route path="/about">
-              <AboutPage/>
-            </Route>
-            <Route path="*">
-              <NotFoundPage/>
-            </Route>
+            <Redirect exact from='/' to="/dashboard" />
+            <Route path="/dashboard" render={() => {
+              setMetatags({
+                title: 'Li.Finance - Dashboard',
+              })
+              return <Dashboard/>
+            }}/>
+            <Route path="/about" render={() => {
+              setMetatags({
+                title: 'Li.Finance - About',
+              })
+              return <AboutPage/>
+            }}/>
+            <Route path="*" render={() => {
+              setMetatags({
+                title: 'Li.Finance - Not Found',
+                status: 404,
+              })
+              return <NotFoundPage/>
+            }}/>
           </Switch>
         </Layout>
       </Web3ConnectionManager>
