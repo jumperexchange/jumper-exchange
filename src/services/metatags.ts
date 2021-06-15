@@ -65,7 +65,7 @@ function updateMetaTags(data: any) {
   })
 
   Object.keys(data.tags).forEach((key: string) => {
-    addMetaTag(nodes, key, data.og[key]);
+    addMetaTag(nodes, key, data.tags[key]);
   })
 
   if (data.prerenderHeader) {
