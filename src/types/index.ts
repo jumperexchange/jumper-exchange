@@ -5,64 +5,46 @@ export interface Amounts {
   amount_usd: number;
 }
 
-export interface WalletAmounts {
-  eth: Amounts;
-  pol: Amounts;
-  bsc: Amounts;
-  dai: Amounts;
-}
-
 export interface Coin {
   key: string;
   name: string;
   img_url: string;
 }
 
-export enum WalletKey {
-  WALLET1 = 'wallet1',
-  WALLET2 = 'wallet2',
-  WALLET3 = 'wallet3',
-  WALLET4 = 'wallet4',
-}
 
-export interface DataType {
-  key: React.Key;
-  coin: Coin;
-  portfolio: Amounts;
 
-  [WalletKey.WALLET1]: WalletAmounts;
-  [WalletKey.WALLET2]: WalletAmounts;
-  [WalletKey.WALLET3]: WalletAmounts;
-  [WalletKey.WALLET4]: WalletAmounts;
+export interface DataType  {
+  [key: string]: string | number | Amounts | Coin; // kind of deactivating typing for DataType; last resort?
+  key: React.Key; //React.key
+  coin: Coin; 
+  portfolio: Amounts; //Amounts
 }
 
 export enum ChainKey {
   ETH = 'eth',
-  POL = 'pol',
+  POL = 'matic',
   BSC = 'bsc',
-  DAI = 'dai',
+  DAI = 'xdai',
+  OKT = 'okt',
+  FTM = 'ftm'
 }
 
 export interface ColomnType extends TableColumnType<DataType> {
   children?: Array<ColomnType>;
 }
 
-export interface Summary {
-  portfolio: {
-    amount_usd: number;
-    percentage_of_portfolio: number;
-  },
-  [WalletKey.WALLET1]: any;
-  [WalletKey.WALLET2]: any;
-  [WalletKey.WALLET3]: any;
-  [WalletKey.WALLET4]: any;
+
+export interface ChainPortfolio{
+  id: string,
+  pricePerCoin: number,
+  amount: number,
 }
+
+
 export interface Wallet {
-  key: WalletKey;
-  name: string;
   address: string;
-  chains: Array<ChainKey>;
   loading: boolean;
+  portfolio: {[ChainKey: string]: Array<ChainPortfolio>} // ChainKeys -> [ChainPortfolio]
 }
 
 export enum CoinKey {
@@ -74,7 +56,9 @@ export enum CoinKey {
   USDC = 'USDC',
   UNI = 'UNI',
   LINK = 'LINK',
-  AAVE = 'AAVE'
+  AAVE = 'AAVE',
+  FTM = 'FTM',
+  OKT = 'OKT'
 }
 
 export enum Currencies {
@@ -82,11 +66,14 @@ export enum Currencies {
   EUR = "eur",
 }
 
-interface NetworkConfig {
-  readOnlyProvider: string
-  locksmithUri: string
-  unlockAppUrl: string
+export interface SummaryAmounts {
+  amount_usd: number;
+  percentage_of_portfolio: number;
 }
-export interface NetworkConfigs {
-  [networkId: string]: NetworkConfig
+
+export interface Summaries{
+  Total: SummaryAmounts
+  [ChainKey:string]: SummaryAmounts;
 }
+
+
