@@ -71,9 +71,14 @@ export interface SummaryAmounts {
   percentage_of_portfolio: number;
 }
 
-export interface Summaries{
-  Total: SummaryAmounts
-  [ChainKey:string]: SummaryAmounts;
+export interface WalletSummary{
+  wallet: string
+  [ChainKey.ETH]: SummaryAmounts;
+  [ChainKey.POL]: SummaryAmounts;
+  [ChainKey.BSC]: SummaryAmounts;
+  [ChainKey.DAI]: SummaryAmounts;
+  [ChainKey.OKT]: SummaryAmounts;
+  [ChainKey.FTM]: SummaryAmounts;
 }
 
 
