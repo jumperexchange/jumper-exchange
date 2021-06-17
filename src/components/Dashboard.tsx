@@ -360,14 +360,13 @@ const calculateWalletSummary = (wallet: Wallet) => {
     [ChainKey.DAI]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.OKT]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.FTM]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-  };
+  }
   
   Object.values(ChainKey).forEach(chain => {
-      wallet.portfolio[chain].map(portfolio => {
+      wallet.portfolio[chain].forEach(portfolio => {
         summary[chain].amount_usd += portfolio.amount * portfolio.pricePerCoin;
         summary[chain].percentage_of_portfolio = 0.0
       })
-    
   })
   return summary
 }
@@ -469,17 +468,6 @@ const NewDashboard = () => {
     })  
   }
 
-  // on mount
-  useEffect(() => {
-    if(!registeredWallets.length){      
-      setWalletModalVisible(true)
-    } else {
-      updateEntirePortfolio();
-      setColumns(buildColumns(false));
-      setData(buildRows)
-    }
-  }, [])
-
   useEffect( () => {
     if(!registeredWallets.length){
       setWalletModalVisible(true)
@@ -490,6 +478,7 @@ const NewDashboard = () => {
       setColumns(buildColumns());
       setData(buildRows)
     }
+    // eslint-disable-next-line
   }, [registeredWallets.length])
   
 
