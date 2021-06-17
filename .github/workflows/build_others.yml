@@ -1,0 +1,37 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build other branches
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches-ignore: [ main, develop ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  deploySSH:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '10' # only for unlock
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build WebApp
+        run: yarn build:staging
+
+      - name: Insert DataUnlocker
+        run: output=$(curl --fail -F html=@build/index.html 'https://api.dataunlocker.com/properties/46555a39346d356231644a4f/scripts/latest/inject?endpoint=paru601nzh8t') && echo "$output" > build/index.html || echo "Failed to inject DataUnlocker's script"
