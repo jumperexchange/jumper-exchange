@@ -211,7 +211,7 @@ function renderSummary(summary: SummaryAmounts) {
   return (
     <div className="amounts">
       <div className="amount_coin">{summary.amount_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</div>
-      <div className="amount_usd">{summary.percentage_of_portfolio.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} % of portfolio</div>
+      <div className="amount_usd">{(summary.percentage_of_portfolio*100.0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} % of portfolio</div>
     </div>
   )
 }
@@ -351,7 +351,7 @@ const initialRows: Array<DataType> = coins.map(coin => {
   }
 })
 
-const calculateWalletSummary = (wallet: Wallet) => {
+const calculateWalletSummary = (wallet: Wallet, totalPortfolioSum: number) => {
   var summary:WalletSummary = {
     wallet: wallet.address,
     [ChainKey.ETH]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
@@ -360,15 +360,20 @@ const calculateWalletSummary = (wallet: Wallet) => {
     [ChainKey.DAI]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.OKT]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.FTM]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-  }
-  
+  }  
   Object.values(ChainKey).forEach(chain => {
       wallet.portfolio[chain].forEach(portfolio => {
         summary[chain].amount_usd += portfolio.amount * portfolio.pricePerCoin;
-        summary[chain].percentage_of_portfolio = 0.0
+        summary[chain].percentage_of_portfolio = portfolio.amount * portfolio.pricePerCoin / totalPortfolioSum
       })
   })
   return summary
+}
+
+const calculateSummary =  (wallets:Array<Wallet>) => {
+  wallets.forEach(wallet => {
+
+  });
 }
 
 // actual component
@@ -557,10 +562,10 @@ const NewDashboard = () => {
             <Table.Summary fixed>
               <Table.Summary.Row>
                 <Table.Summary.Cell index={summaryIndex} className="sum">SUM</Table.Summary.Cell>
-                <Table.Summary.Cell index={summaryIndex++}>{renderSummary(emptySummaryAmounts)}</Table.Summary.Cell>
+                <Table.Summary.Cell index={summaryIndex++}>{renderSummary(!registeredWallets.length? emptySummaryAmounts:{amount_usd: data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0), percentage_of_portfolio: 1} as SummaryAmounts)}</Table.Summary.Cell>
                 {
                   registeredWallets.map((wallet:Wallet) => {
-                    const summary = calculateWalletSummary(wallet);
+                    const summary = calculateWalletSummary(wallet, data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0));
                     return[
                       <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.ETH}`}>{renderSummary(summary[ChainKey.ETH])}</Table.Summary.Cell>,
                       <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.POL}`}>{renderSummary(summary[ChainKey.POL])}</Table.Summary.Cell>,
