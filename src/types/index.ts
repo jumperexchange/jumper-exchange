@@ -9,6 +9,9 @@ export interface Coin {
   key: string;
   name: string;
   img_url: string;
+  contracts: {
+    [ChainKey: string]: string,
+  }
 }
 
 
