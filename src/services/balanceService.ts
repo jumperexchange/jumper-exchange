@@ -54,8 +54,6 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
     })
   }
   
-  // return prices
-  console.log("balances");
   console.log(balanceArray);
   
 
@@ -64,9 +62,57 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
 }
 
 
+async function getBalancesForWallet(walletAdress: string){
+  walletAdress = walletAdress.toLowerCase()
+  const tokenListUrl = `https://openapi.debank.com/v1/user/token_list?id=${walletAdress}&is_all=true`
+
+  var result
+  try{
+    result = await axios.get(tokenListUrl);
+  } catch (e){
+    console.warn(`Debank api call for token list failed with status ` + e)
+    console.warn(e)
+    return {}
+  }
+
+  var tokenList: Array<tokenListDebankT>;
+  // response body is empty?
+  if (Object.keys(result.data).length === 0){
+    return {};
+  } else{
+    tokenList = result.data
+  }
+
+  // build return object
+  const totalPortfolio : {[ChainKey: string]: Array<ChainPortfolio>} = {
+    [ChainKey.ETH] : [],
+    [ChainKey.BSC] : [],
+    [ChainKey.POL] : [],
+    [ChainKey.DAI] : [],
+    [ChainKey.OKT] : [],
+    [ChainKey.FTM] : [],
+
+  }
+  // var balanceArray: Array<ChainPortfolio> = [] 
+  for (const token of tokenList){
+    totalPortfolio[token.chain].push({
+      amount: token.amount as number,
+      id: token.id,
+      pricePerCoin: token.price as number,
+    }) 
+   
+  }
+  console.log(totalPortfolio);
+  
+
+  
+  return totalPortfolio
+}
 
 
-export { getCoinsOnChain };
+
+
+export { getCoinsOnChain ,getBalancesForWallet };
 
 
 

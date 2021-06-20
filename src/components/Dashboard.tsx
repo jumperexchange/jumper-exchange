@@ -8,8 +8,8 @@ import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons'
 import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF
-import { getCoinsOnChain } from '../services/balanceService';
-import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts } from '../types';
+import { getBalancesForWallet } from '../services/balanceService';
+import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio } from '../types';
 import { useWeb3React } from "@web3-react/core";
 import ConnectButton from "./web3/ConnectButton";
 import { ethers } from "ethers";
@@ -468,11 +468,13 @@ const NewDashboard = () => {
   
   const updateWalletPortfolio = async (wallet: Wallet) => {
     wallet.loading = true
-    
+
+    const portfolio : {[ChainKey: string]: Array<ChainPortfolio>} = await getBalancesForWallet(wallet.address)
     for (const chain of Object.values(ChainKey)){
-      const chainPortfolio = await getCoinsOnChain(wallet.address, chain)
+      const chainPortfolio = portfolio[chain]
       wallet.portfolio[chain] = [...chainPortfolio.filter(portfolio => coinIdArray.includes(portfolio.id))]
     }
+
     wallet.loading = false
     setRegisteredWallets(
       registeredWallets.map(old => 
@@ -482,6 +484,7 @@ const NewDashboard = () => {
     ))  
     setColumns(buildColumns(false))
     setData(buildRows)
+  
   }
 
   const  updateEntirePortfolio = () => {
