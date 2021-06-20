@@ -55,6 +55,11 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
   }
   
   // return prices
+  console.log("balances");
+  console.log(balanceArray);
+  
+
+  
   return balanceArray
 }
 
