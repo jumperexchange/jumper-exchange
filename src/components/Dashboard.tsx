@@ -9,7 +9,7 @@ import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF
 import { getCoinsOnChain } from '../services/balanceService';
-import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio } from '../types';
+import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts } from '../types';
 import { useWeb3React } from "@web3-react/core";
 import ConnectButton from "./web3/ConnectButton";
 import { ethers } from "ethers";
