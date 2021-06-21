@@ -54,7 +54,6 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
     })
   }
   
-  console.log(balanceArray);
   
 
   
@@ -102,7 +101,6 @@ async function getBalancesForWallet(walletAdress: string){
     }) 
    
   }
-  console.log(totalPortfolio);
   
 
   
