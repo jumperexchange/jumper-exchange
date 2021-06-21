@@ -15,6 +15,7 @@ import ConnectButton from "./web3/ConnectButton";
 import { ethers } from "ethers";
 import { readWallets, storeWallets } from '../services/localStorage';
 
+
 const emptySummaryAmounts = {
   amount_usd: 0,
   percentage_of_portfolio: 0,
@@ -529,6 +530,9 @@ const NewDashboard = () => {
   const [walletModalAddress, setWalletModalAddress] = useState('');
   const [walletModalLoading, setWalletModalLoading] = useState<boolean>(false)
   const [data, setData] = useState<Array<DataType>>(initialRows);
+  // fixes react warning
+  // https://stackoverflow.com/a/63144665
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(true);
 
  
   const deleteWallet = (wallet: Wallet) => {
@@ -612,6 +616,7 @@ const NewDashboard = () => {
     }
 
     wallet.loading = false
+    if(isSubscribed){
     setRegisteredWallets(
       registeredWallets.map(old => 
         old.address === wallet.address 
@@ -620,6 +625,7 @@ const NewDashboard = () => {
     ))  
     setColumns(buildColumns(false))
     setData(buildRows)
+      }
   
   }
 
@@ -629,7 +635,9 @@ const NewDashboard = () => {
     })  
   }
 
-  useEffect( () => {
+  useEffect(() => {
+    
+
     if(!registeredWallets.length){
       setWalletModalVisible(true)
       setColumns(initialColumns);
@@ -640,6 +648,7 @@ const NewDashboard = () => {
       setData(buildRows)
       
     }
+    return () => {setIsSubscribed(false)}
     // eslint-disable-next-line
   }, [registeredWallets.length])
   

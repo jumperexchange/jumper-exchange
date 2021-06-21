@@ -92,7 +92,6 @@ async function getBalancesForWallet(walletAdress: string){
     [ChainKey.FTM] : [],
 
   }
-  // var balanceArray: Array<ChainPortfolio> = [] 
   for (const token of tokenList){
     totalPortfolio[token.chain].push({
       amount: token.amount as number,
