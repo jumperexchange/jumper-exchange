@@ -4,7 +4,6 @@ import './Dashboard.css';
 //LIBS
 import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip,  } from 'antd';
 import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
-
 import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF

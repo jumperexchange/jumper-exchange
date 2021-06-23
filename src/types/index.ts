@@ -32,6 +32,8 @@ export enum ChainKey {
   FTM = 'ftm'
 }
 
+
+
 export interface ColomnType extends TableColumnType<DataType> {
   children?: Array<ColomnType>;
 }
@@ -82,6 +84,11 @@ export interface WalletSummary{
   [ChainKey.DAI]: SummaryAmounts;
   [ChainKey.OKT]: SummaryAmounts;
   [ChainKey.FTM]: SummaryAmounts;
+}
+
+export interface ProgressStep {
+  title: string
+  description: string
 }
 
 

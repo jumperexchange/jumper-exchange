@@ -7,6 +7,7 @@ import logo from './assets/icon192.png';
 import AboutPage from './components/AboutPage';
 import Dashboard from './components/Dashboard';
 import NotFoundPage from './components/NotFoundPage';
+import Swap from './components/Swap';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
@@ -36,6 +37,9 @@ function App() {
                 <Link to="/dashboard">Dashboard</Link>
               </Menu.Item>
               <Menu.Item key="2">
+                <Link to="/swap">Swap</Link>
+              </Menu.Item>
+              <Menu.Item key="3">
                 <Link to="/about">About</Link>
               </Menu.Item>
             </Menu>
@@ -48,6 +52,12 @@ function App() {
                 title: 'Li.Finance - Dashboard',
               })
               return <Dashboard/>
+            }}/>
+            <Route path="/swap" render={() => {
+              setMetatags({
+                title: 'Li.Finance - Swap',
+              })
+              return <Swap/>
             }}/>
             <Route path="/about" render={() => {
               setMetatags({
