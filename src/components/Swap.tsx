@@ -1,21 +1,47 @@
+// CSS
+import './Swap.css'
 // LIBS
 import { SwapOutlined } from '@ant-design/icons';
-import { Col, InputNumber, Row, Select, Steps, Avatar, Button } from 'antd';
+import { Col, InputNumber, Row, Select, Steps, Avatar, Button, Input } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 // OWN STUFF
 import { ChainKey, Coin, CoinKey, ProgressStep } from '../types';
+import { CrossAction, SwapAction } from '../types/server';
+import Title from 'antd/lib/typography/Title';
+
 const { Step } = Steps;
 const { Option } = Select;
 
-const chainNames = {
-  [ChainKey.ETH] : 'Ethereum Mainnet',
-  [ChainKey.POL] : 'Polygon Mainnet',
-  [ChainKey.BSC] : 'BSC Mainnet',
-  [ChainKey.DAI] : 'xDai Mainnet',
-  [ChainKey.OKT] : 'OKExChain Mainnet',
-  [ChainKey.FTM] : 'FTM Mainnet'
-}
+
+const chainInfo  = [
+  {
+    key:ChainKey.ETH, 
+    name: 'Ethereum Mainnet'
+  },
+  {
+    key:ChainKey.POL, 
+    name: 'Polygon Mainnet'
+  },
+  {
+    key:ChainKey.BSC, 
+    name: 'BSC Mainnet'
+  },
+  {
+    key:ChainKey.DAI, 
+    name: 'xDai Mainnet'
+  },
+  {
+    key:ChainKey.OKT, 
+    name: 'OKExChain Mainnet'
+  },
+  {
+    key:ChainKey.FTM, 
+    name: 'FTM Mainnet'
+  },
+]
 
 const coins : Array<Coin> = [
   {
@@ -164,154 +190,197 @@ const coins : Array<Coin> = [
 
 ]
 
-const stepList: Array<ProgressStep> = [
-  {
-    title:"Deposit Tokens",
-    description: "description"
-  },
-  {
-    title:"Swapping Chains",
-    description: "description"
-  },
-  {
-    title:"Withdrawing tokens",
-    description: "description"
-  }
-]
+
 
 const Swap = () => {
-  const [progress, setProgress] = useState<Array<ProgressStep>>(stepList)
-  const [currentProgress, setCurrentProgress] = useState<number>(0)
-  const [value, setValue] = useState<string | number>('99');
+  const [progressSteps, setProgressSteps] = useState<Array<ProgressStep>>([])
+  // const [currentProgress, setCurrentProgress] = useState<number>(0)
+  const [depositChain, setDepositChain] = useState<string>("");
+  const [depositAmount, setDepositAmount] = useState<number>(0);
+  const [depositToken, setDepositToken] = useState<string>("");
+  const [withdrawChain, setWithdrawChain] = useState<string>("");
+  const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
+  const [withdrawToken, setWithdrawToken] = useState<string>("");
 
+  const parseToProgressSteps = (actions: Array<Array<CrossAction | SwapAction>>) => {
+    if (!actions.length) {
+      return setProgressSteps([])
+    }
+    
 
-  function handleChange(value: string) {
-    console.log(`selected ${value}`);
+    const stepList: Array<ProgressStep> = actions[0].map(action => {
+      let title: string = ""
+      let description: string = "" 
+      switch (action.type){
+        case "swap": 
+          title = "Swap Chains"
+          description = `Swap ${action.fromAmount} ${action.fromToken.symbol} for ${action.toAmount} ${action.toToken.symbol} on ${action.chainKey}`
+          break;
+        case "cross":
+          title = "Cross Chains"
+          description = `Cross ${action.amount} ${action.token.symbol} on ${action.chainKey} to ${action.toChainKey}`
+          break;
+      }
+      const step = {title, description}
+      return step
+    });
+
+    setProgressSteps(stepList)
+
   }
+
+  const getTransfers = async () => {
+    if(depositAmount !== 0 && depositChain !== "" && depositToken !== "" && withdrawChain !== "" && withdrawToken !== ""){
+      const deposit = {
+        type:"deposit",
+        chainKey: depositChain,
+        token: {symbol: depositToken},
+        amount: depositAmount
+      }
+      const withdraw = {
+        type: "withdraw",
+        chainKey: withdrawChain, 
+        token: {symbol: withdrawToken}, 
+        amount: Infinity
+      }
+      const result = await axios.post("http://localhost:8000/api/transfer", {deposit, withdraw})
+      parseToProgressSteps(result.data)
+    }
+  }
+
+  useEffect(() => {
+    getTransfers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken])
+
+
+  const formatAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    return parseFloat(e.currentTarget.value)
+  }
+
 
   return (
     <Content className="site-layout">
-    <div className="site-layout-background" style={{ paddingTop:32, minHeight: 'calc(100vh - 64px)' }}>
+    <div className="site-layout-background" style={{ paddingTop:64, minHeight: 'calc(100vh - 64px)' }}>
 
-      <div style={{border:"2px solid #F0F0F0", borderRadius: 20, padding: 24, width:"50vw", margin: "32px auto"}}>
-        <Row style={{marginBottom: 16}} justify={"center"}>
-          <Row justify={"space-between"} style={{ padding : 24 }}>
-              <Col >
-                From:
-                <Select style={{width: 150}} placeholder="select chain" onChange={handleChange} bordered={false}>
-                  {Object.values(chainNames).map((name:string) => (<Option value={name}>{name}</Option>))}
-                </Select>
-              </Col>
+      <Row align="middle" gutter={[128, 16]} justify={"center"}>
+        <Col >
+
+          <div style={{ width: 500, border:"2px solid #F0F0F0", borderRadius: 20, padding: 24, margin: "0 auto"}}>
+
+            <Row style={{marginBottom:32, paddingTop : 24}} justify={"center"}>
               <Col>
-                <InputNumber<string>
-                  style={{ width: 200, borderBottom: "1px solid #ededed" }}
-                  defaultValue="0"
-                  min="0"
-                  max="10"
-                  step="0.001"
-                  onChange={setValue}
-                  bordered={false}
-                  stringMode
-                />
-
-                <Select
-                  placeholder="select coin"
-                  onChange={handleChange}
-                  optionLabelProp="label"
-                  bordered={false}
-                  style={{minWidth: 100}}
-                  dropdownStyle={{minWidth: 100}}
-                >
-                  {coins.map(coin => (
-                    <Option value={coin.key} label={coin.key}>
-                      <div className="demo-option-label-item">
-                        <span role="img" aria-label={coin.key}>
-                          <Avatar
-                            size="small"
-                            src={coin.img_url}
-                            alt={coin.name}
-                          />
-                        </span>
-                        {` ${coin.name}`}
-                      </div>
-                    </Option>
-                  ))}
-                </Select>
-              </Col>
-            </Row> 
-        </Row>
-
-        <Row style={{marginBottom: 16}} justify={"center"} >
-          <SwapOutlined />
-        </Row>
-
-        <Row style={{marginBottom: 32}} justify={"space-around"}>
-          <Row justify={"space-between"} style={{  borderRadius: 20, padding : 24 }}>
-              <Col >
-                To:
-                <Select placeholder="select chain" onChange={handleChange} bordered={false}>
-                  {Object.values(chainNames).map((name:string) => (<Option value={name}>{name}</Option>))}
-                </Select>
-              </Col>
-              <Col>
-                <InputNumber<string>
-                  style={{ width: 200, borderBottom: "1px solid #ededed",  }}
-                  defaultValue="0"
-                  min="0"
-                  max="10"
-                  step="0.001"
-                  onChange={setValue}
-                  bordered={false}
-                  stringMode
-                />
-
-                <Select
-                  placeholder="select coin"
-                  onChange={handleChange}
-                  optionLabelProp="label"
-                  bordered={false}
-                  style={{minWidth: 100}}
-                  dropdownStyle={{minWidth: 100}}
-                >
-                  {coins.map(coin => (
-                    <Option value={coin.key} label={coin.key}>
-                      <div className="demo-option-label-item">
-                        <span role="img" aria-label={coin.key}>
-                          <Avatar
-                            size="small"
-                            src={coin.img_url}
-                            alt={coin.name}
-                          />
-                        </span>
-                        {` ${coin.name}`}
-                      </div>
-                    </Option>
-                  ))}
-                </Select>
-              </Col>
+               <Input.Group compact style={{border: "1px solid #f0f0f0", padding: 16, borderRadius:24}}>
+                    <Select style={{width: 150}} placeholder="select chain" onChange={((v:string) => setDepositChain(v))} bordered={false}>
+                      {chainInfo.map(chain => (<Option value={chain.key}>{chain.name}</Option>))}
+                    </Select>
+                    <Input
+                        style={{ width:100, textAlign: "right" }}
+                        type="number"
+                        defaultValue={0.0}
+                        min={0}
+                        max={10}
+                        value={depositAmount}
+                        onChange={((event) => setDepositAmount(formatAmountInput(event)))}
+                        placeholder="0.0"
+                        bordered={false}
+                      />
+                      <Select
+                      placeholder="select coin"
+                      onChange={((v:string) => setDepositToken(v))}
+                      optionLabelProp="label"
+                      bordered={false}
+                      style={{width: 100}}
+                      dropdownStyle={{minWidth: 100}}
+                    >
+                      {coins.map(coin => (
+                        <Option value={coin.key} label={coin.key}>
+                          <div className="demo-option-label-item">
+                            <span role="img" aria-label={coin.key}>
+                              <Avatar
+                                size="small"
+                                src={coin.img_url}
+                                alt={coin.name}
+                              />
+                            </span>
+                            {` ${coin.name}`}
+                          </div>
+                        </Option>
+                      ))}
+                    </Select>
+                  </Input.Group>
+            </Col>
             </Row>
-        </Row>
-        
-        <Row justify={"center"} style={{marginBottom: 16}}>
-          <Button type="primary" shape="round" icon={<SwapOutlined />} size={"large"}>Swap</Button>
-        </Row>
 
-      </div>
+            <Row style={{marginBottom: 32}} justify={"center"} >
+              <SwapOutlined />
+            </Row>
 
-      
+            <Row style={{marginBottom: 32}} justify={"center"}>
+              <Col>
+              <Input.Group style={{border: "1px solid #f0f0f0", padding: 16, borderRadius:24}}>
+                  <Select style={{ width:150}} placeholder="select chain" onChange={((v:string) => setWithdrawChain(v))} bordered={false}>
+                    {chainInfo.map(chain => (<Option value={chain.key}>{chain.name}</Option>))}
+                  </Select>
+                  <span style={{ width:100, display: "inline-block",textAlign: "right"  }}>{withdrawAmount}</span>
+                  <Select
+                      placeholder="select coin"
+                      onChange={((v:string) => setWithdrawToken(v))}
+                      optionLabelProp="label"
+                      bordered={false}
+                      style={{width: 100}}
+                      dropdownStyle={{minWidth: 100}}
+                    >
+                      {coins.map(coin => (
+                        <Option value={coin.key} label={coin.key}>
+                          <div className="demo-option-label-item">
+                            <span role="img" aria-label={coin.key}>
+                              <Avatar
+                                size="small"
+                                src={coin.img_url}
+                                alt={coin.name}
+                              />
+                            </span>
+                            {` ${coin.name}`}
+                          </div>
+                        </Option>
+                      ))}
+                    </Select>
+                </Input.Group>
+            </Col>
+            </Row>
+            
+            <Row justify={"center"} style={{marginBottom: 16}}>
+              <Button type="primary" shape="round" icon={<SwapOutlined />} size={"large"}>Swap</Button>
+            </Row>
+
+          </div>
+        </Col>
+        <Col >
+          {
+            !progressSteps.length
+            ?  <Title level={4} type="secondary">Please Specify A Transaction</Title>
+            : <Steps direction="vertical" progressDot current={0}>
+                {
+                  progressSteps.map(step => (<Step title={step.title} description={step.description} />))
+                }
+              </Steps>
+          }
+        </Col>
+
+
+      </Row>
+
+     
 
          
 
 
 
 
-      <Row justify={"center"}>  
-          <Steps direction="horizontal" progressDot current={currentProgress}>
-            {
-              progress.map(step => (<Step title={step.title} description={step.description} />))
-            }
-          </Steps>
-      </Row>
+   
+          
+   
     </div>  
     </Content>
   )
