@@ -2,19 +2,18 @@
 import './Swap.css'
 // LIBS
 import { SwapOutlined } from '@ant-design/icons';
-import { Col, InputNumber, Row, Select, Steps, Avatar, Button, Input } from 'antd';
+import { Col, Row, Select, Steps, Avatar, Button, Input } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 // OWN STUFF
 import { ChainKey, Coin, CoinKey, ProgressStep } from '../types';
-import { CrossAction, SwapAction } from '../types/server';
+import { TranferStep } from '../types/server';
 import Title from 'antd/lib/typography/Title';
 
 const { Step } = Steps;
 const { Option } = Select;
-
 
 const chainInfo  = [
   {
@@ -190,10 +189,8 @@ const coins : Array<Coin> = [
 
 ]
 
-
-
 const Swap = () => {
-  const [progressSteps, setProgressSteps] = useState<Array<ProgressStep>>([])
+  const [routes, setRoutes] = useState<Array<Array<ProgressStep>>>([[]])
   // const [currentProgress, setCurrentProgress] = useState<number>(0)
   const [depositChain, setDepositChain] = useState<string>("");
   const [depositAmount, setDepositAmount] = useState<number>(0);
@@ -202,34 +199,48 @@ const Swap = () => {
   const [withdrawAmount, setWithdrawAmount] = useState<number>(0);
   const [withdrawToken, setWithdrawToken] = useState<string>("");
 
-  const parseToProgressSteps = (actions: Array<Array<CrossAction | SwapAction>>) => {
-    if (!actions.length) {
-      return setProgressSteps([])
+  const parseToProgressSteps = (routes: Array<Array<TranferStep>>) => {
+    console.log(routes)
+    if (!routes.length) {
+      return setRoutes([[]])
     }
     
+    const routeOptions:  Array<Array<ProgressStep>>= []
+    routes.forEach(route =>{
+      const stepList: Array<ProgressStep> = route.map(step => {
+        let title: string = ""
+        let description: string = "" 
+        switch (step.action.type){
+          case "swap": 
+            title = "Swap Tokens"
+            description = `${step.action.fromAmount} ${step.action.fromToken.symbol} for ${step.estimate?.toAmount} ${step.action.toToken.symbol} on ${step.action.chainKey}`
+            break;
+          case "cross":
+            title = "Cross Chains"
+            description = `${step.estimate?.fromAmount} ${step.action.token.symbol} on ${step.action.chainKey} to ${step.action.toChainKey}`
+            break;
+          case "withdraw":
+            title = "Withdraw"
+            description = `${step.action.amount} ${step.action.token.symbol} to 0x...`
+            break;
+          case "deposit":
+            title = "Deposit"
+            description = `${step.action.amount} ${step.action.token.symbol} from 0x...`
+            break;
+        }
+         
+        return {title, description}
+      });
+      routeOptions.push(stepList)
 
-    const stepList: Array<ProgressStep> = actions[0].map(action => {
-      let title: string = ""
-      let description: string = "" 
-      switch (action.type){
-        case "swap": 
-          title = "Swap Chains"
-          description = `Swap ${action.fromAmount} ${action.fromToken.symbol} for ${action.toAmount} ${action.toToken.symbol} on ${action.chainKey}`
-          break;
-        case "cross":
-          title = "Cross Chains"
-          description = `Cross ${action.amount} ${action.token.symbol} on ${action.chainKey} to ${action.toChainKey}`
-          break;
-      }
-      const step = {title, description}
-      return step
-    });
+    })
+    
 
-    setProgressSteps(stepList)
+    setRoutes(routeOptions)
 
   }
 
-  const getTransfers = async () => {
+  const getTransferRoutes = async () => {
     if(depositAmount !== 0 && depositChain !== "" && depositToken !== "" && withdrawChain !== "" && withdrawToken !== ""){
       const deposit = {
         type:"deposit",
@@ -249,10 +260,9 @@ const Swap = () => {
   }
 
   useEffect(() => {
-    getTransfers();
+    getTransferRoutes();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken])
-
 
   const formatAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     return parseFloat(e.currentTarget.value)
@@ -261,12 +271,10 @@ const Swap = () => {
 
   return (
     <Content className="site-layout">
-    <div className="site-layout-background" style={{ paddingTop:64, minHeight: 'calc(100vh - 64px)' }}>
-
-      <Row align="middle" gutter={[128, 16]} justify={"center"}>
+    <div style={{ padding: 32, paddingTop: 64, minHeight: 'calc(100vh - 64px)' }}>
+      <Row align="middle" gutter={[32, 16]} justify={"space-around"}>
         <Col >
-
-          <div style={{ width: 500, border:"2px solid #F0F0F0", borderRadius: 20, padding: 24, margin: "0 auto"}}>
+          <div className="swap-input" style={{ width: 500, border:"2px solid #f0f0f0", borderRadius: 20, padding: 24, margin: "0 auto"}}>
 
             <Row style={{marginBottom:32, paddingTop : 24}} justify={"center"}>
               <Col>
@@ -357,15 +365,22 @@ const Swap = () => {
           </div>
         </Col>
         <Col >
-          {
-            !progressSteps.length
-            ?  <Title level={4} type="secondary">Please Specify A Transaction</Title>
-            : <Steps direction="vertical" progressDot current={0}>
-                {
-                  progressSteps.map(step => (<Step title={step.title} description={step.description} />))
-                }
-              </Steps>
-          }
+          <Row justify={"start"}>
+            {
+            !routes[0].length
+            ? <Title style={{margin: "0 auto"}} level={4} type="secondary">Please Specify A Transaction</Title>
+            : routes.map(route =>
+                <Col>
+                  <Steps size="small" direction="vertical" progressDot current={0}>
+                    {
+                      route.map(step => (<Step title={step.title} description={step.description} />))
+                    }
+                  </Steps>
+                </Col>        
+              )
+            }
+          </Row>
+        
         </Col>
 
 

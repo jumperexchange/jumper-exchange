@@ -1,6 +1,66 @@
-import { ChainKey } from ".";
 
-// types from server
+export enum ChainKey {
+  ETH = 'eth',
+  POL = 'pol',
+  BSC = 'bsc',
+  DAI = 'dai',
+}
+
+export interface Token {
+  symbol: string
+}
+
+export interface BaseEstimate {
+  fromAmount: number
+  toAmount: number
+  fees: {
+    included: boolean
+    percentage: number | null
+    token: Token
+    amount: number
+  }
+}
+
+export interface DepositEstimate extends BaseEstimate { }
+export interface SwapEstimate extends BaseEstimate {
+  path: Array<string>
+}
+export interface CrossEstimate extends BaseEstimate { }
+export interface WithdrawEstimate extends BaseEstimate { }
+
+export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate
+
+
+export interface Execution {
+
+}
+export type Action = DepositAction | WithdrawAction | SwapAction | CrossAction
+
+
+export interface TranferStep {
+  action: Action
+  estimate?: Estimate
+  execution?: Execution
+}
+
+
+interface ActionBase {
+  type: string
+  chainKey: ChainKey
+}
+
+export interface DepositAction extends ActionBase {
+  type: 'deposit'
+  amount: number
+  token: Token
+}
+
+export interface WithdrawAction extends ActionBase {
+  type: 'withdraw'
+  amount: number
+  token: Token
+}
+
 export interface SwapAction extends ActionBase {
   type: 'swap'
   fromToken: Token
@@ -15,12 +75,4 @@ export interface CrossAction extends ActionBase {
   toChainKey: ChainKey
   amount: number
   token: Token
-}
-export interface Token {
-  symbol: string
-}
-
-export interface ActionBase {
-  type: string
-  chainKey: ChainKey
 }
