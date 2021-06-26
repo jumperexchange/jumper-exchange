@@ -4,3 +4,28 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
   margin-right: -8px;
 }
+
+.site-layout .swap-view {
+  background: #f0f0f0;
+}
+
+.swap-input {
+  background: white;
+}
+
+.swap-routes {
+  background: white;
+}
+
+.progress-step-list {
+}
+
+.progress-step-title {
+  color: #3f3f3f;
+  font-size: 15px;
+  margin-bottom: -3px;
+}
+
+.progress-step-descripion {
+  color: #7e7e7e;
+}

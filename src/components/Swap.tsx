@@ -189,6 +189,16 @@ const coins : Array<Coin> = [
 
 ]
 
+
+// const renderStep = (step: ProgressStep) => {
+//   return (
+//     <li>
+//       <p className="progress-step-title">{step.title}</p>
+//       <p className="progress-step-descripion">{step.description}</p>
+//     </li>
+//   )
+// }
+
 const Swap = () => {
   const [routes, setRoutes] = useState<Array<Array<ProgressStep>>>([[]])
   // const [currentProgress, setCurrentProgress] = useState<number>(0)
@@ -213,11 +223,11 @@ const Swap = () => {
         switch (step.action.type){
           case "swap": 
             title = "Swap Tokens"
-            description = `${step.action.fromAmount} ${step.action.fromToken.symbol} for ${step.estimate?.toAmount} ${step.action.toToken.symbol} on ${step.action.chainKey}`
+            description = `${step.action.fromAmount.toFixed(4)} ${step.action.fromToken.symbol} for ${step.estimate?.toAmount.toFixed(4)} ${step.action.toToken.symbol} on ${step.action.chainKey}`
             break;
           case "cross":
             title = "Cross Chains"
-            description = `${step.estimate?.fromAmount} ${step.action.token.symbol} on ${step.action.chainKey} to ${step.action.toChainKey}`
+            description = `${step.estimate?.fromAmount.toFixed(4)} ${step.action.token.symbol} on ${step.action.chainKey} to ${step.action.toChainKey}`
             break;
           case "withdraw":
             title = "Withdraw"
@@ -225,7 +235,7 @@ const Swap = () => {
             break;
           case "deposit":
             title = "Deposit"
-            description = `${step.action.amount} ${step.action.token.symbol} from 0x...`
+            description = `${step.action.amount.toFixed(4)} ${step.action.token.symbol} from 0x...`
             break;
         }
          
@@ -271,10 +281,13 @@ const Swap = () => {
 
   return (
     <Content className="site-layout">
-    <div style={{ padding: 32, paddingTop: 64, minHeight: 'calc(100vh - 64px)' }}>
-      <Row align="middle" gutter={[32, 16]} justify={"space-around"}>
-        <Col >
+    <div className="swap-view" style={{ padding: 32, paddingTop: 64, minHeight: 'calc(100vh - 64px)' }}>
+      <Row gutter={[32, 16]} justify={"center"}>
+        <Col>
           <div className="swap-input" style={{ width: 500, border:"2px solid #f0f0f0", borderRadius: 20, padding: 24, margin: "0 auto"}}>
+            <Row style={{marginBottom:32, paddingTop : 32}}>
+              <Title style={{margin: "0 auto"}} level={4} type="secondary">Please Specify A Transaction</Title>
+            </Row>
 
             <Row style={{marginBottom:32, paddingTop : 24}} justify={"center"}>
               <Col>
@@ -358,29 +371,34 @@ const Swap = () => {
             </Col>
             </Row>
             
-            <Row justify={"center"} style={{marginBottom: 16}}>
-              <Button type="primary" shape="round" icon={<SwapOutlined />} size={"large"}>Swap</Button>
-            </Row>
+            
+              
 
           </div>
         </Col>
         <Col >
-          <Row justify={"start"}>
+          <Row gutter={[32, 32]} justify={"space-between"} className="swap-routes" style={{ width: "65vw",  border:"2px solid #f0f0f0", borderRadius: 20, padding: 24, margin: "0 auto"  }}>
             {
-            !routes[0].length
-            ? <Title style={{margin: "0 auto"}} level={4} type="secondary">Please Specify A Transaction</Title>
-            : routes.map(route =>
+              !routes[0].length
+              ? <Title style={{margin: "0 auto"}} level={4} type="secondary">Please Specify A Transaction</Title>
+              : routes.map(route =>
                 <Col>
-                  <Steps size="small" direction="vertical" progressDot current={0}>
+                  <Steps progressDot size="small" direction="vertical" className="progress-step-list">
                     {
-                      route.map(step => (<Step title={step.title} description={step.description} />))
+                      // route.map(step=> renderStep(step))
+                      route.map(step =>
+                        <Step title={step.title} description={step.description}></Step>
+                        )
                     }
                   </Steps>
-                </Col>        
-              )
+                  <Row justify={"center"} style={{margin: "16px 0 16px 0"}}>
+                    <Button type="primary" shape="round" icon={<SwapOutlined />} size={"large"}>Swap</Button>
+                  </Row>
+                </Col>
+                )
             }
-          </Row>
-        
+                        
+          </Row>              
         </Col>
 
 
