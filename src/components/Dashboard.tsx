@@ -9,7 +9,7 @@ import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF
 import { getBalancesForWallet } from '../services/balanceService';
-import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio } from '../types';
+import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio, supportedChains } from '../types';
 import { useWeb3React } from "@web3-react/core";
 import ConnectButton from "./web3/ConnectButton";
 import { ethers } from "ethers";
@@ -22,13 +22,16 @@ const emptySummaryAmounts = {
 }
 
 const emptyWallet = {
-  address: "0x..", loading:true, portfolio:{
+  address: "0x..",
+  loading:true,
+  portfolio: {
     [ChainKey.ETH]: [],
     [ChainKey.POL]: [],
     [ChainKey.BSC]: [],
     [ChainKey.DAI]: [],
     [ChainKey.OKT]: [],
-    [ChainKey.FTM]: [],}
+    [ChainKey.FTM]: [],
+  }
 }
 const coins : Array<Coin> = [
   {
@@ -426,62 +429,17 @@ const buildColumnForWallet = (wallet: Wallet, syncHandler: Function, deleteHandl
   const walletColumn: ColomnType = {
     title: renderWalletColumnTitle(wallet.address, syncHandler, deleteHandler),
     dataIndex: wallet.address,
-    children: [ // each chain
-      {
-        title: 'Ethereum',
+    children: supportedChains.filter(chain => chain.visible).map((chain) => {
+      return {
+        title: chain.name,
         children: [{
-          title: renderGas(wallet, ChainKey.ETH, CoinKey.ETH),
-          dataIndex: `${wallet.address}_${ChainKey.ETH}`,
+          title: renderGas(wallet, chain.key, chain.coin),
+          dataIndex: `${wallet.address}_${chain.key}`,
           width: baseWidth,
           render: renderAmounts
         }]
-      },
-      {
-        title: 'Polygon',
-        children: [{
-          title: renderGas(wallet, ChainKey.POL, CoinKey.MATIC),
-          dataIndex: `${wallet.address}_${ChainKey.POL}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-      {
-        title: 'Binance Smart Chain',
-        children: [{
-          title: renderGas(wallet, ChainKey.BSC, CoinKey.BNB),
-          dataIndex: `${wallet.address}_${ChainKey.BSC}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-      {
-        title: 'xDai',
-        children: [{
-          title: renderGas(wallet, ChainKey.DAI, CoinKey.DAI),
-          dataIndex: `${wallet.address}_${ChainKey.DAI}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-      {
-        title: 'Fantom',
-        children: [{
-          title: renderGas(wallet, ChainKey.FTM, CoinKey.FTM),
-          dataIndex: `${wallet.address}_${ChainKey.FTM}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-      {
-        title: 'OKExCHain',
-        children: [{
-          title: renderGas(wallet, ChainKey.OKT, CoinKey.OKT),
-          dataIndex: `${wallet.address}_${ChainKey.OKT}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-    ],
+      }
+    }),
   }
   return walletColumn
 }
@@ -685,7 +643,7 @@ const Dashboard = () => {
     const newWallet = {
       address: address,
       loading: true,
-      portfolio:{
+      portfolio: {
         [ChainKey.ETH]:[],
         [ChainKey.BSC]:[],
         [ChainKey.POL]:[],
@@ -755,16 +713,16 @@ const Dashboard = () => {
                 <Table.Summary.Cell index={summaryIndex++}>{renderSummary(!registeredWallets.length? emptySummaryAmounts:{amount_usd: data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0), percentage_of_portfolio: 1} as SummaryAmounts)}</Table.Summary.Cell>
                 {
                   registeredWallets.map((wallet:Wallet) => {
-                    let summary =  calculateWalletSummary(wallet, data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0))
+                    const total = data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0)
+                    const summary =  calculateWalletSummary(wallet, total)
 
-                    return[
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.ETH}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.ETH])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.POL}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.POL])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.BSC}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.BSC])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.DAI}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.DAI])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.FTM}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.FTM])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.OKT}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.OKT])}</Table.Summary.Cell>,
-                    ]
+                    return supportedChains
+                      .filter(chain => chain.visible)
+                      .map(chain => {
+                        return (
+                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[chain.key])}</Table.Summary.Cell> 
+                        )
+                      })
                   })
                 }
                 <Table.Summary.Cell index={summaryIndex++} key={'add'}></Table.Summary.Cell>

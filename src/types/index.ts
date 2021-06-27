@@ -85,3 +85,42 @@ export interface WalletSummary{
 }
 
 
+
+export const supportedChains = [
+  {
+    key: ChainKey.ETH,
+    name: 'Ethereum',
+    coin: CoinKey.ETH,
+    visible: true,
+  },
+  {
+    key: ChainKey.POL,
+    name: 'Polygon',
+    coin: CoinKey.MATIC,
+    visible: true,
+  },
+  {
+    key: ChainKey.BSC,
+    name: 'Binance Smart Chain',
+    coin: CoinKey.BNB,
+    visible: true,
+  },
+  {
+    key: ChainKey.DAI,
+    name: 'xDai',
+    coin: CoinKey.DAI,
+    visible: true,
+  },
+  {
+    key: ChainKey.FTM,
+    name: 'Fantom',
+    coin: CoinKey.FTM,
+    visible: false,
+  },
+  {
+    key: ChainKey.OKT,
+    name: 'OKExCHain',
+    coin: CoinKey.OKT,
+    visible: false,
+  },
+]
