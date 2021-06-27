@@ -246,7 +246,10 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for ethereum chain',
         content: (
           <div>
-            You need to buy ETH.
+            <p>Find out how to get ETH:</p>
+            <a href="https://ethereum.org/en/get-eth/" target="_blank" rel="nofollow noreferrer">
+              Where to buy ETH (by ethereum.org)
+            </a>
           </div>
         )
       })
@@ -256,7 +259,11 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for Polygon/Matic chain',
         content: (
           <div>
-            You need to buy MATIC.
+            <p>You can get some free MATIC using those faucets. It should be enough to exchange or move your funds.</p>
+            <ul>
+              <li><a href="https://matic.supply/" target="_blank" rel="nofollow noreferrer">https://matic.supply/</a></li>
+              <li><a href="https://macncheese.finance/matic-polygon-mainnet-faucet.php" target="_blank" rel="nofollow noreferrer">https://macncheese.finance/</a></li>
+            </ul>
           </div>
         )
       })
@@ -266,7 +273,8 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for Binance Smart Chain',
         content: (
           <div>
-            You need to buy BNB.
+            <p>You need to buy BNB.</p>
+            e.g. on <a href="https://www.binance.com/" target="_blank" rel="nofollow noreferrer">binance.com</a>
           </div>
         )
       })
@@ -276,10 +284,10 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for xDAI chain',
         content: (
           <div>
-            You can get some free DAI using those faucets. It should be enough to exchange or move your funds.
+            <p>You can get some free DAI using those faucets. It should be enough to exchange or move your funds.</p>
             <ul>
               <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
-              <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/xdai/mainnet/faucet</a></li>
+              <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/.../faucet</a></li>
             </ul>
           </div>
         )
@@ -290,11 +298,10 @@ const showGasModal = (gas: ChainKey) => {
           title: 'Gas Info for FTM chain',
           content: (
             <div>
-              You can get some free FTM using those faucets. It should be enough to exchange or move your funds.
-              <ul>
-                <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
-                <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/xdai/mainnet/faucet</a></li>
-              </ul>
+              <p>Find out how to get ETH:</p>
+              <a href="https://fantom.foundation/where-to-buy-ftm/" target="_blank" rel="nofollow noreferrer">
+                Where to buy ETH (by fantom.foundation)
+              </a>
             </div>
           )
         })
@@ -304,33 +311,55 @@ const showGasModal = (gas: ChainKey) => {
             title: 'Gas Info for OKT chain',
             content: (
               <div>
-                You can get some free OKT using those faucets. It should be enough to exchange or move your funds.
-                <ul>
-                  <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
-                  <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/xdai/mainnet/faucet</a></li>
-                </ul>
+                <p>Find out how to get OKT:</p>
+                <a href="https://www.okex.com/okexchain" target="_blank" rel="nofollow noreferrer">
+                  Where to buy ETH (by okex.com)
+                </a>
               </div>
             )
           })
           break;
   }
-  
 }
 
 // render formatters
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
   const coin = coins.find(coin => coin.key === coinName) as Coin
+  const isChainUsed = wallet.portfolio[chain].length > 0
   const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.contracts[chain])
   const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : {amount_coin:0, amount_usd:0}
 
   const tooltipsEmpty = {
-    [ChainKey.ETH]: (<>The Ethereum chain requires ETH to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.ETH)}>Get ETH</Button></>),
-    [ChainKey.POL]: (<>The Polygon/Matic chain requires MATIC to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.POL)}>Get MATIC</Button></>),
-    [ChainKey.BSC]: (<>The Binance Smart Chain requires BNB to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.BSC)}>Get BNB</Button></>),
-    [ChainKey.DAI]: (<>The xDAI chain requires DAI to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.DAI)}>Get DAI</Button></>),
-    [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.OKT)}>Get OKT</Button></>),
-    [ChainKey.FTM]: (<>The Fantom chain requires FTM to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.FTM)}>Get FTM</Button></>),
-  
+    [ChainKey.ETH]:
+      (<>
+        <span>The Ethereum chain requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.ETH)}>Get ETH</Button>
+      </>),
+    [ChainKey.POL]:
+      (<>
+        <span>The Polygon/Matic chain requires MATIC to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.POL)}>Get MATIC</Button>
+      </>),
+    [ChainKey.BSC]:
+      (<>
+        <span>The Binance Smart Chain requires BNB to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.BSC)}>Get BNB</Button>
+      </>),
+    [ChainKey.DAI]:
+      (<>
+        <span>The xDAI chain requires DAI to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.DAI)}>Get DAI</Button>
+      </>),
+    [ChainKey.OKT]:
+      (<>
+        <span>The OKExCahin chain requires OKT to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.OKT)}>Get OKT</Button>
+      </>),
+    [ChainKey.FTM]:
+      (<>
+        <span>The Fantom chain requires FTM to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.FTM)}>Get FTM</Button>
+      </>),
   }
   const tooltipEmpty = tooltipsEmpty[chain];
   const tooltips = {
@@ -340,8 +369,6 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
     [ChainKey.DAI]: (<>The xDAI chain requires DAI to pay for gas.</>),
     [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas.</>),
     [ChainKey.FTM]: (<>The Fantom chain requires FTM to pay for gas.</>),
-  
-
   }
   const tooltip = tooltips[chain];
   return (
@@ -352,9 +379,14 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
           {coinName}: <Skeleton.Button style={{ width: 60}} active={true} size={'small'} shape={'round'} />
         </Tooltip>
         ) : amounts.amount_coin === 0 ? (
-          <Tooltip color="red" title={tooltipEmpty}>
+          <Tooltip color={isChainUsed ? 'red' : 'gray'} title={tooltipEmpty}>
             {coinName}: -
-            <Badge size="small" count={'!'} offset={[5, -15]}/>
+            <Badge
+              size="small"
+              count={'!'}
+              offset={[5, -15]}
+              style={{ backgroundColor: (isChainUsed ? 'red' : 'gray') }}
+            />
           </Tooltip>
         ) : (
           <Tooltip title={tooltip}>
@@ -378,9 +410,7 @@ const renderWalletColumnTitle = (address: string, syncHandler: Function, deleteH
           <DeleteOutlined onClick={() => deleteHandler()} />
         </Col>
       </Row>
-      )
-    
-  
+  )
 }
 //Helpers
 const parsePortfolioToAmount = (inPortfolio: any) => {
@@ -519,7 +549,7 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: number) => {
 }
 
 // actual component
-const NewDashboard = () => {
+const Dashboard = () => {
 
   const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(()=>{return readWallets()})
   const web3 = useWeb3React()
@@ -630,7 +660,7 @@ const NewDashboard = () => {
   const  updateEntirePortfolio = () => {
     registeredWallets.forEach(async wallet => {
       await updateWalletPortfolio(wallet);
-    })  
+    })
   }
 
   useEffect(() => {
@@ -780,4 +810,4 @@ const NewDashboard = () => {
 
 
 
-export default NewDashboard
+export default Dashboard
