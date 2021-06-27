@@ -2,7 +2,7 @@
 import './Swap.css'
 // LIBS
 import { SwapOutlined } from '@ant-design/icons';
-import { Col, Row, Select, Steps, Avatar, Button, Input } from 'antd';
+import { Col, Row, Select, Steps, Avatar, Button, Input, Collapse } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
@@ -11,9 +11,10 @@ import axios from 'axios';
 import { ChainKey, Coin, CoinKey, ProgressStep } from '../types';
 import { TranferStep } from '../types/server';
 import Title from 'antd/lib/typography/Title';
-
+//ANTD COMPONENTS
 const { Step } = Steps;
 const { Option } = Select;
+const { Panel } = Collapse;
 
 const chainInfo  = [
   {
@@ -371,7 +372,13 @@ const Swap = () => {
             </Col>
             </Row>
             
-            
+            <Row style={{marginBottom: 32}} justify={"center"} >
+              <Collapse ghost>
+                <Panel header ={`Send swapped ${withdrawToken} to another wallet`}  key="1">
+                  <Input placeholder="0x0....." style={{border:"2px solid #f0f0f0", borderRadius: 20}}/>
+                </Panel>
+              </Collapse>
+            </Row>
               
 
           </div>
