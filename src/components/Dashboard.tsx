@@ -470,8 +470,6 @@ const portfolioColumn : ColomnType = {
   render: renderAmounts
 }
 
-
-
 const initialColumns = [
     coinColumn,
     portfolioColumn,
@@ -562,8 +560,8 @@ const NewDashboard = () => {
     }
     columns.push({
       title: (
-        <Button onClick={() => setWalletModalVisible(true)}>
-          Add Wallet
+        <Button onClick={() => setWalletModalVisible(true)} style={{height: 80}}>
+          Add<br/>Wallet
         </Button>
       ),
       dataIndex: '',
