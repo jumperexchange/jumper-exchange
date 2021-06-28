@@ -39,6 +39,9 @@ export interface ColomnType extends TableColumnType<DataType> {
 
 export interface ChainPortfolio{
   id: string,
+  name: string,
+  symbol: string,
+  img_url: string,
   pricePerCoin: number,
   amount: number,
 }

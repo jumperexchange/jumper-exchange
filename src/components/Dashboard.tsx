@@ -33,7 +33,7 @@ const emptyWallet = {
     [ChainKey.FTM]: [],
   }
 }
-const coins : Array<Coin> = [
+const defaultCoins : Array<Coin> = [
   {
     key: CoinKey.ETH,
     name: CoinKey.ETH,
@@ -177,17 +177,9 @@ const coins : Array<Coin> = [
       [ChainKey.OKT]: 'okt',
     },
   },
-
 ]
 
-const coinIdArray = coins.map(coin => {
-  const ids:Array<string> = [];
-  Object.values(ChainKey).forEach(chain =>{
-    ids.push(coin.contracts[chain])
-  })
-  return ids
-}).flat(1)
-
+let coins = defaultCoins
 
 // individual render functions
 function renderAmounts(amounts: Amounts = {amount_coin: -1, amount_usd: -1}) {
@@ -225,10 +217,14 @@ function renderAmounts(amounts: Amounts = {amount_coin: -1, amount_usd: -1}) {
 function renderCoin(coin: Coin) {
   return (
     <div className="coin">
-      <Avatar
-        src={coin.img_url}
-        alt={coin.name}
-      />
+      <Tooltip title={coin.name}>
+        <Avatar
+          src={coin.img_url}
+          alt={coin.name}
+        >
+          { coin.key }
+        </Avatar>
+      </Tooltip>
     </div>
   )
 }
@@ -567,7 +563,7 @@ const Dashboard = () => {
         key: coin.key,
         coin: coin as Coin,
         portfolio: {
-          amount_coin:0.0,
+          amount_coin: 0.0,
           amount_usd: 0.0,
         },
       }
@@ -589,6 +585,11 @@ const Dashboard = () => {
       }); // for each wallet
       generatedRows.push(coinRow)
     }) // for each coin
+
+    // sort
+    generatedRows.sort((a, b) => b.portfolio.amount_coin - a.portfolio.amount_coin) // DESC token
+    generatedRows.sort((a, b) => b.portfolio.amount_usd - a.portfolio.amount_usd) // DESC usd
+
     return generatedRows
   }
   
@@ -599,7 +600,29 @@ const Dashboard = () => {
     const portfolio : {[ChainKey: string]: Array<ChainPortfolio>} = await getBalancesForWallet(wallet.address)
     for (const chain of Object.values(ChainKey)){
       const chainPortfolio = portfolio[chain]
-      wallet.portfolio[chain] = [...chainPortfolio.filter(portfolio => coinIdArray.includes(portfolio.id))]
+      wallet.portfolio[chain] = chainPortfolio
+
+      // add new coins
+      chainPortfolio.forEach(coin => {
+        const exists = coins.find(existingCoin => existingCoin.contracts[chain] === coin.id)
+        if (!exists) {
+          let newCoin = {
+            key: coin.symbol,
+            name: coin.name,
+            img_url: coin.img_url,
+            contracts: {
+              [ChainKey.ETH]: '',
+              [ChainKey.BSC]: '',
+              [ChainKey.POL]: '',
+              [ChainKey.DAI]: '',
+              [ChainKey.FTM]: '',
+              [ChainKey.OKT]: '',
+            },
+          }
+          newCoin.contracts[chain] = coin.id
+          coins.push(newCoin)
+        }
+      })
     }
 
     wallet.loading = false
