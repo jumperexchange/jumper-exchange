@@ -594,6 +594,7 @@ const Dashboard = () => {
   
   const updateWalletPortfolio = async (wallet: Wallet) => {
     wallet.loading = true
+    setData(buildRows) // set loading state
 
     const portfolio : {[ChainKey: string]: Array<ChainPortfolio>} = await getBalancesForWallet(wallet.address)
     for (const chain of Object.values(ChainKey)){
