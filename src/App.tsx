@@ -1,4 +1,5 @@
-import { Layout, Menu } from 'antd';
+import { WalletOutlined } from '@ant-design/icons';
+import { Button, Layout, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
 import React, { useEffect } from 'react';
 import { Link, Route, Switch, Redirect, useLocation } from 'react-router-dom';
@@ -41,6 +42,11 @@ function App() {
               </Menu.Item>
               <Menu.Item key="3">
                 <Link to="/about">About</Link>
+              </Menu.Item>
+              <Menu.Item key="wallets" style={{float: "right"}}>
+                <Button shape="round" icon={<WalletOutlined />} >
+                  Add Wallets
+                </Button>
               </Menu.Item>
             </Menu>
           </Header>

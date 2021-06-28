@@ -282,7 +282,7 @@ const Swap = () => {
 
   return (
     <Content className="site-layout">
-    <div className="swap-view" style={{ padding: 32, paddingTop: 64, minHeight: 'calc(100vh - 64px)' }}>
+    <div className="swap-view" style={{ padding: 24, paddingTop: 64, minHeight: 'calc(100vh - 64px)' }}>
       <Row gutter={[32, 16]} justify={"center"}>
         <Col>
           <div className="swap-input" style={{ width: 500, border:"2px solid #f0f0f0", borderRadius: 20, padding: 24, margin: "0 auto"}}>
@@ -384,7 +384,7 @@ const Swap = () => {
           </div>
         </Col>
         <Col >
-          <Row gutter={[32, 32]} justify={"space-between"} className="swap-routes" style={{ width: "65vw",  border:"2px solid #f0f0f0", borderRadius: 20, padding: 24, margin: "0 auto"  }}>
+          <Row gutter={[32, 64]} justify={"space-between"} className="swap-routes" style={{ maxWidth: "65vw", minWidth: "50vw",  border:"2px solid #f0f0f0", borderRadius: 20, padding: 24, margin: "0 auto"  }}>
             {
               !routes[0].length
               ? <Title style={{margin: "0 auto"}} level={4} type="secondary">Please Specify A Transaction</Title>
@@ -398,9 +398,10 @@ const Swap = () => {
                         )
                     }
                   </Steps>
-                  <Row justify={"center"} style={{margin: "16px 0 16px 0"}}>
-                    <Button type="primary" shape="round" icon={<SwapOutlined />} size={"large"}>Swap</Button>
+                  <Row justify={"start"} style={{margin: "16px 0 16px 0"}}>
+                    <Button shape="round" icon={<SwapOutlined />} size={"large"}>Swap</Button>
                   </Row>
+                  
                 </Col>
                 )
             }
