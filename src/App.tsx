@@ -43,11 +43,11 @@ function App() {
               <Menu.Item key="3">
                 <Link to="/about">About</Link>
               </Menu.Item>
-              <Menu.Item key="wallets" style={{float: "right"}}>
+              { false && <Menu.Item key="wallets" style={{float: "right"}}>
                 <Button shape="round" icon={<WalletOutlined />} >
                   Add Wallets
                 </Button>
-              </Menu.Item>
+              </Menu.Item> }
             </Menu>
           </Header>
 

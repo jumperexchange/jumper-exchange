@@ -14,13 +14,11 @@ export interface Coin {
   }
 }
 
-
-
-export interface DataType  {
+export interface DataType {
   [key: string]: string | number | Amounts | Coin; // kind of deactivating typing for DataType; last resort?
-  key: React.Key; //React.key
-  coin: Coin; 
-  portfolio: Amounts; //Amounts
+  key: React.Key;
+  coin: Coin;
+  portfolio: Amounts;
 }
 
 export enum ChainKey {
@@ -32,14 +30,11 @@ export enum ChainKey {
   FTM = 'ftm'
 }
 
-
-
 export interface ColomnType extends TableColumnType<DataType> {
   children?: Array<ColomnType>;
 }
 
-
-export interface ChainPortfolio{
+export interface ChainPortfolio {
   id: string,
   name: string,
   symbol: string,
@@ -48,11 +43,10 @@ export interface ChainPortfolio{
   amount: number,
 }
 
-
 export interface Wallet {
   address: string;
   loading: boolean;
-  portfolio: {[ChainKey: string]: Array<ChainPortfolio>} // ChainKeys -> [ChainPortfolio]
+  portfolio: { [ChainKey: string]: Array<ChainPortfolio> } // ChainKeys -> [ChainPortfolio]
 }
 
 export enum CoinKey {
@@ -79,7 +73,7 @@ export interface SummaryAmounts {
   percentage_of_portfolio: number;
 }
 
-export interface WalletSummary{
+export interface WalletSummary {
   wallet: string
   [ChainKey.ETH]: SummaryAmounts;
   [ChainKey.POL]: SummaryAmounts;
@@ -93,44 +87,3 @@ export interface ProgressStep {
   title: string
   description: string
 }
-
-
-
-export const supportedChains = [
-  {
-    key: ChainKey.ETH,
-    name: 'Ethereum',
-    coin: CoinKey.ETH,
-    visible: true,
-  },
-  {
-    key: ChainKey.POL,
-    name: 'Polygon',
-    coin: CoinKey.MATIC,
-    visible: true,
-  },
-  {
-    key: ChainKey.BSC,
-    name: 'Binance Smart Chain',
-    coin: CoinKey.BNB,
-    visible: true,
-  },
-  {
-    key: ChainKey.DAI,
-    name: 'xDai',
-    coin: CoinKey.DAI,
-    visible: true,
-  },
-  {
-    key: ChainKey.FTM,
-    name: 'Fantom',
-    coin: CoinKey.FTM,
-    visible: false,
-  },
-  {
-    key: ChainKey.OKT,
-    name: 'OKExCHain',
-    coin: CoinKey.OKT,
-    visible: false,
-  },
-]

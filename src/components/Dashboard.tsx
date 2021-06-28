@@ -8,12 +8,12 @@ import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF
 import { getBalancesForWallet } from '../services/balanceService';
-import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio, supportedChains } from '../types';
+import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio } from '../types';
+import { supportedChains, defaultCoins } from '../types/lists';
 import { useWeb3React } from "@web3-react/core";
 import ConnectButton from "./web3/ConnectButton";
 import { ethers } from "ethers";
 import { readWallets, storeWallets } from '../services/localStorage';
-
 
 const emptySummaryAmounts = {
   amount_usd: 0,
@@ -32,151 +32,6 @@ const emptyWallet = {
     [ChainKey.FTM]: [],
   }
 }
-const defaultCoins : Array<Coin> = [
-  {
-    key: CoinKey.ETH,
-    name: CoinKey.ETH,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
-    contracts: {
-      [ChainKey.ETH]: 'eth',
-      [ChainKey.BSC]: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
-      [ChainKey.POL]: '0xfd8ee443ab7be5b1522a1c020c097cff1ddc1209',
-      [ChainKey.DAI]: '0xa5c7cb68cd81640d40c85b2e5ec9e4bb55be0214',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.MATIC,
-    name: CoinKey.MATIC,
-    img_url: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
-    contracts: {
-      [ChainKey.ETH]: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
-      [ChainKey.BSC]: '0xa90cb47c72f2c7e4411e781772735d9317d08dd4',
-      [ChainKey.POL]: 'matic',
-      [ChainKey.DAI]: '0x7122d7661c4564b7c6cd4878b06766489a6028a2',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.BNB,
-    name: CoinKey.BNB,
-    img_url: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
-    contracts: {
-      [ChainKey.ETH]: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
-      [ChainKey.BSC]: 'bsc',
-      [ChainKey.POL]: '0xa649325aa7c5093d12d6f98eb4378deae68ce23f',
-      [ChainKey.DAI]: '0xca8d20f3e0144a72c6b5d576e9bd3fd8557e2b04',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.DAI,
-    name: CoinKey.DAI,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
-    contracts: {
-      [ChainKey.ETH]: '0x6b175474e89094c44da98b954eedeac495271d0f',
-      [ChainKey.BSC]: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
-      [ChainKey.POL]: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
-      [ChainKey.DAI]: 'xdai',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.USDT,
-    name: CoinKey.USDT,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
-    contracts: {
-      [ChainKey.ETH]: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-      [ChainKey.BSC]: '0x55d398326f99059ff775485246999027b3197955',
-      [ChainKey.POL]: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-      [ChainKey.DAI]: '0x4ecaba5870353805a9f068101a40e0f32ed605c6',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.USDC,
-    name: CoinKey.USDC,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
-    contracts: {
-      [ChainKey.ETH]: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-      [ChainKey.BSC]: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
-      [ChainKey.POL]: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-      [ChainKey.DAI]: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.LINK,
-    name: CoinKey.LINK,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0x514910771af9ca656af840dff83e8264ecf986ca.png',
-    contracts: {
-      [ChainKey.ETH]: '0x514910771af9ca656af840dff83e8264ecf986ca',
-      [ChainKey.BSC]: '0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd',
-      [ChainKey.POL]: '0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39',
-      [ChainKey.DAI]: '0xE2e73A1c69ecF83F464EFCE6A5be353a37cA09b2',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.UNI,
-    name: CoinKey.UNI,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984.png',
-    contracts: {
-      [ChainKey.ETH]: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
-      [ChainKey.BSC]: '0xbf5140a22578168fd562dccf235e5d43a02ce9b1',
-      [ChainKey.POL]: '0xb33EaAd8d922B1083446DC23f610c2567fB5180f',
-      [ChainKey.DAI]: '0x4537e328Bf7e4eFA29D05CAeA260D7fE26af9D74',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.AAVE,
-    name: CoinKey.AAVE,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9.png',
-    contracts: {
-      [ChainKey.ETH]: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
-      [ChainKey.BSC]: '0xfb6115445bff7b52feb98650c87f44907e58f802',
-      [ChainKey.POL]: '0xd6df932a45c0f255f85145f286ea0b292b21c90b',
-      [ChainKey.DAI]: '0xDF613aF6B44a31299E48131e9347F034347E2F00',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.FTM,
-    name: CoinKey.FTM,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0x4e15361fd6b4bb609fa63c81a2be19d873717870.png',
-    contracts: {
-      [ChainKey.ETH]: '',
-      [ChainKey.BSC]: '',
-      [ChainKey.POL]: '',
-      [ChainKey.DAI]: '',
-      [ChainKey.FTM]: 'ftm',
-      [ChainKey.OKT]: '',
-    },
-  },
-  {
-    key: CoinKey.OKT,
-    name: CoinKey.OKT,
-    img_url: 'https://s2.coinmarketcap.com/static/img/coins/64x64/8267.png',
-    contracts: {
-      [ChainKey.ETH]: '',
-      [ChainKey.BSC]: '',
-      [ChainKey.POL]: '',
-      [ChainKey.DAI]: '',
-      [ChainKey.FTM]: '',
-      [ChainKey.OKT]: 'okt',
-    },
-  },
-]
 
 let coins = defaultCoins
 
@@ -467,7 +322,7 @@ const initialColumns = [
       width: 100,
     }
 ]
-  
+
 const initialRows: Array<DataType> = coins.map(coin => {
   return {
     key: coin.key,
@@ -491,7 +346,7 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: number) => {
     [ChainKey.DAI]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.OKT]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.FTM]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-  }  
+  }
   Object.values(ChainKey).forEach(chain => {
       wallet.portfolio[chain].forEach(portfolio => {
         summary[chain].amount_usd += portfolio.amount * portfolio.pricePerCoin;
@@ -515,13 +370,13 @@ const Dashboard = () => {
   // https://stackoverflow.com/a/63144665
   const [isSubscribed, setIsSubscribed] = useState<boolean>(true);
 
- 
+
   const deleteWallet = (wallet: Wallet) => {
     const newWallets = registeredWallets.filter(item => item.address !== wallet.address)
     storeWallets(newWallets)
     setRegisteredWallets(newWallets)
   }
-  
+
   const buildWalletColumns = () => {
     var walletColumns: Array<ColomnType> = []
     registeredWallets.forEach(wallet => {
@@ -591,7 +446,7 @@ const Dashboard = () => {
 
     return generatedRows
   }
-  
+
   const updateWalletPortfolio = async (wallet: Wallet) => {
     wallet.loading = true
     setData(buildRows) // set loading state
@@ -627,15 +482,15 @@ const Dashboard = () => {
     wallet.loading = false
     if(isSubscribed){
     setRegisteredWallets(
-      registeredWallets.map(old => 
-        old.address === wallet.address 
-          ? wallet 
-          : old 
-    ))  
+      registeredWallets.map(old =>
+        old.address === wallet.address
+          ? wallet
+          : old
+    ))
     setColumns(buildColumns(false))
     setData(buildRows)
       }
-  
+
   }
 
   const  updateEntirePortfolio = () => {
@@ -645,7 +500,7 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    
+
 
     if(!registeredWallets.length){
       setWalletModalVisible(true)
@@ -655,12 +510,12 @@ const Dashboard = () => {
       updateEntirePortfolio()
       setColumns(buildColumns());
       setData(buildRows)
-      
+
     }
     return () => {setIsSubscribed(false)}
     // eslint-disable-next-line
   }, [registeredWallets.length])
-  
+
 
   const addWallet = (address: string) => {
     const newWallet = {
@@ -743,7 +598,7 @@ const Dashboard = () => {
                       .filter(chain => chain.visible)
                       .map(chain => {
                         return (
-                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[chain.key])}</Table.Summary.Cell> 
+                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[chain.key])}</Table.Summary.Cell>
                         )
                       })
                   })
@@ -756,7 +611,7 @@ const Dashboard = () => {
       </div>
 
 
-      <Modal 
+      <Modal
         title = "Add Wallet"
         visible = {walletModalVisible}
         onOk={handleWalletModalAdd}
@@ -771,14 +626,14 @@ const Dashboard = () => {
           <Button key="submit" type="primary" onClick={handleWalletModalAdd} disabled={walletModalLoading}>
             { walletModalLoading ? 'Loading' : 'Add' }
           </Button>,
-      ]} 
-      > 
+      ]}
+      >
        { !web3.account ? (<ConnectButton />) : (<Button style={{ display: 'block' }}>Connected with {web3.account.substr(0, 4)}...</Button>)}
-        
+
         Enter a wallet address / ens domain:
-        <Input 
-          size="large" 
-          placeholder="0x..." 
+        <Input
+          size="large"
+          placeholder="0x..."
           prefix={<WalletOutlined />}
           value={getModalAddressSuggestion()}
           onChange={(event) => setWalletModalAddress(event.target.value)}
