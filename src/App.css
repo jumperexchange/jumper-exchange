@@ -23,18 +23,9 @@
 }
 
 .ant-menu.ant-menu-horizontal {
-  line-height: 61px;
   background: rgb(24,21,35);
   background: linear-gradient(140deg, rgba(24,21,35,1) 0%, rgba(9,9,121,1) 93%, rgba(9,9,121,1) 100%);
-}
-
-.ant-menu-horizontal > .ant-menu-item {
-  border-bottom: 4px solid rgba(201, 48, 228, 0.6);
-}
-
-.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover,
-.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected {
-  border-bottom: 4px solid #2bc990;
+  border: none;
 }
 
 .ant-menu-horizontal > .ant-menu-item a,

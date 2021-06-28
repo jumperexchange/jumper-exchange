@@ -52,7 +52,7 @@ function App() {
           </Header>
 
           <Switch>
-            <Redirect exact from='/' to="/dashboard" />
+            <Redirect exact from="/" to="/swap" />
             <Route path="/dashboard" render={() => {
               setMetatags({
                 title: 'Li.Finance - Dashboard',
