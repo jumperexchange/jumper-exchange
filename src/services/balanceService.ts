@@ -48,8 +48,11 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
   var balanceArray: Array<ChainPortfolio> = [] 
   for (const token of tokenList){
     balanceArray.push({
-      amount: token.amount as number,
       id: token.id,
+      name: token.name,
+      symbol: token.optimized_symbol,
+      img_url: token.logo_url,
+      amount: token.amount as number,
       pricePerCoin: token.price as number,
     })
   }
@@ -94,8 +97,11 @@ async function getBalancesForWallet(walletAdress: string){
   }
   for (const token of tokenList){
     totalPortfolio[token.chain].push({
-      amount: token.amount as number,
       id: token.id,
+      name: token.name,
+      symbol: token.optimized_symbol,
+      img_url: token.logo_url,
+      amount: token.amount as number,
       pricePerCoin: token.price as number,
     }) 
    

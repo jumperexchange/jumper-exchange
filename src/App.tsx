@@ -31,7 +31,7 @@ function App() {
           <Header style={{ position: 'fixed', zIndex: 1, width: '100%', padding: 0 }}>
             <Link to="/" className="wordmark">
               <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
-              Li.Finance
+              <span>Li.Finance</span>
             </Link>
             <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
               <Menu.Item key="1">

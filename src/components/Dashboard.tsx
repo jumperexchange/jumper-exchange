@@ -8,7 +8,7 @@ import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF
 import { getBalancesForWallet } from '../services/balanceService';
-import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio } from '../types';
+import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio, supportedChains } from '../types';
 import { useWeb3React } from "@web3-react/core";
 import ConnectButton from "./web3/ConnectButton";
 import { ethers } from "ethers";
@@ -21,15 +21,18 @@ const emptySummaryAmounts = {
 }
 
 const emptyWallet = {
-  address: "0x..", loading:true, portfolio:{
+  address: "0x..",
+  loading:true,
+  portfolio: {
     [ChainKey.ETH]: [],
     [ChainKey.POL]: [],
     [ChainKey.BSC]: [],
     [ChainKey.DAI]: [],
     [ChainKey.OKT]: [],
-    [ChainKey.FTM]: [],}
+    [ChainKey.FTM]: [],
+  }
 }
-const coins : Array<Coin> = [
+const defaultCoins : Array<Coin> = [
   {
     key: CoinKey.ETH,
     name: CoinKey.ETH,
@@ -173,17 +176,9 @@ const coins : Array<Coin> = [
       [ChainKey.OKT]: 'okt',
     },
   },
-
 ]
 
-const coinIdArray = coins.map(coin => {
-  const ids:Array<string> = [];
-  Object.values(ChainKey).forEach(chain =>{
-    ids.push(coin.contracts[chain])
-  })
-  return ids
-}).flat(1)
-
+let coins = defaultCoins
 
 // individual render functions
 function renderAmounts(amounts: Amounts = {amount_coin: -1, amount_usd: -1}) {
@@ -221,10 +216,14 @@ function renderAmounts(amounts: Amounts = {amount_coin: -1, amount_usd: -1}) {
 function renderCoin(coin: Coin) {
   return (
     <div className="coin">
-      <Avatar
-        src={coin.img_url}
-        alt={coin.name}
-      />
+      <Tooltip title={coin.name}>
+        <Avatar
+          src={coin.img_url}
+          alt={coin.name}
+        >
+          { coin.key }
+        </Avatar>
+      </Tooltip>
     </div>
   )
 }
@@ -245,7 +244,10 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for ethereum chain',
         content: (
           <div>
-            You need to buy ETH.
+            <p>Find out how to get ETH:</p>
+            <a href="https://ethereum.org/en/get-eth/" target="_blank" rel="nofollow noreferrer">
+              Where to buy ETH (by ethereum.org)
+            </a>
           </div>
         )
       })
@@ -255,7 +257,11 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for Polygon/Matic chain',
         content: (
           <div>
-            You need to buy MATIC.
+            <p>You can get some free MATIC using those faucets. It should be enough to exchange or move your funds.</p>
+            <ul>
+              <li><a href="https://matic.supply/" target="_blank" rel="nofollow noreferrer">https://matic.supply/</a></li>
+              <li><a href="https://macncheese.finance/matic-polygon-mainnet-faucet.php" target="_blank" rel="nofollow noreferrer">https://macncheese.finance/</a></li>
+            </ul>
           </div>
         )
       })
@@ -265,7 +271,8 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for Binance Smart Chain',
         content: (
           <div>
-            You need to buy BNB.
+            <p>You need to buy BNB.</p>
+            e.g. on <a href="https://www.binance.com/" target="_blank" rel="nofollow noreferrer">binance.com</a>
           </div>
         )
       })
@@ -275,10 +282,10 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for xDAI chain',
         content: (
           <div>
-            You can get some free DAI using those faucets. It should be enough to exchange or move your funds.
+            <p>You can get some free DAI using those faucets. It should be enough to exchange or move your funds.</p>
             <ul>
               <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
-              <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/xdai/mainnet/faucet</a></li>
+              <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/.../faucet</a></li>
             </ul>
           </div>
         )
@@ -289,11 +296,10 @@ const showGasModal = (gas: ChainKey) => {
           title: 'Gas Info for FTM chain',
           content: (
             <div>
-              You can get some free FTM using those faucets. It should be enough to exchange or move your funds.
-              <ul>
-                <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
-                <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/xdai/mainnet/faucet</a></li>
-              </ul>
+              <p>Find out how to get ETH:</p>
+              <a href="https://fantom.foundation/where-to-buy-ftm/" target="_blank" rel="nofollow noreferrer">
+                Where to buy ETH (by fantom.foundation)
+              </a>
             </div>
           )
         })
@@ -303,33 +309,55 @@ const showGasModal = (gas: ChainKey) => {
             title: 'Gas Info for OKT chain',
             content: (
               <div>
-                You can get some free OKT using those faucets. It should be enough to exchange or move your funds.
-                <ul>
-                  <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
-                  <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/xdai/mainnet/faucet</a></li>
-                </ul>
+                <p>Find out how to get OKT:</p>
+                <a href="https://www.okex.com/okexchain" target="_blank" rel="nofollow noreferrer">
+                  Where to buy ETH (by okex.com)
+                </a>
               </div>
             )
           })
           break;
   }
-  
 }
 
 // render formatters
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
   const coin = coins.find(coin => coin.key === coinName) as Coin
+  const isChainUsed = wallet.portfolio[chain].length > 0
   const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.contracts[chain])
   const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : {amount_coin:0, amount_usd:0}
 
   const tooltipsEmpty = {
-    [ChainKey.ETH]: (<>The Ethereum chain requires ETH to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.ETH)}>Get ETH</Button></>),
-    [ChainKey.POL]: (<>The Polygon/Matic chain requires MATIC to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.POL)}>Get MATIC</Button></>),
-    [ChainKey.BSC]: (<>The Binance Smart Chain requires BNB to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.BSC)}>Get BNB</Button></>),
-    [ChainKey.DAI]: (<>The xDAI chain requires DAI to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.DAI)}>Get DAI</Button></>),
-    [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.OKT)}>Get OKT</Button></>),
-    [ChainKey.FTM]: (<>The Fantom chain requires FTM to pay for gas. Without it you won't be able to do anything on this chain. <Button type="link" block onClick={() => showGasModal(ChainKey.FTM)}>Get FTM</Button></>),
-  
+    [ChainKey.ETH]:
+      (<>
+        <span>The Ethereum chain requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.ETH)}>Get ETH</Button>
+      </>),
+    [ChainKey.POL]:
+      (<>
+        <span>The Polygon/Matic chain requires MATIC to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.POL)}>Get MATIC</Button>
+      </>),
+    [ChainKey.BSC]:
+      (<>
+        <span>The Binance Smart Chain requires BNB to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.BSC)}>Get BNB</Button>
+      </>),
+    [ChainKey.DAI]:
+      (<>
+        <span>The xDAI chain requires DAI to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.DAI)}>Get DAI</Button>
+      </>),
+    [ChainKey.OKT]:
+      (<>
+        <span>The OKExCahin chain requires OKT to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.OKT)}>Get OKT</Button>
+      </>),
+    [ChainKey.FTM]:
+      (<>
+        <span>The Fantom chain requires FTM to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.FTM)}>Get FTM</Button>
+      </>),
   }
   const tooltipEmpty = tooltipsEmpty[chain];
   const tooltips = {
@@ -339,8 +367,6 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
     [ChainKey.DAI]: (<>The xDAI chain requires DAI to pay for gas.</>),
     [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas.</>),
     [ChainKey.FTM]: (<>The Fantom chain requires FTM to pay for gas.</>),
-  
-
   }
   const tooltip = tooltips[chain];
   return (
@@ -351,9 +377,14 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
           {coinName}: <Skeleton.Button style={{ width: 60}} active={true} size={'small'} shape={'round'} />
         </Tooltip>
         ) : amounts.amount_coin === 0 ? (
-          <Tooltip color="red" title={tooltipEmpty}>
+          <Tooltip color={isChainUsed ? 'red' : 'gray'} title={tooltipEmpty}>
             {coinName}: -
-            <Badge size="small" count={'!'} offset={[5, -15]}/>
+            <Badge
+              size="small"
+              count={'!'}
+              offset={[5, -15]}
+              style={{ backgroundColor: (isChainUsed ? 'red' : 'gray') }}
+            />
           </Tooltip>
         ) : (
           <Tooltip title={tooltip}>
@@ -377,9 +408,7 @@ const renderWalletColumnTitle = (address: string, syncHandler: Function, deleteH
           <DeleteOutlined onClick={() => deleteHandler()} />
         </Col>
       </Row>
-      )
-    
-  
+  )
 }
 //Helpers
 const parsePortfolioToAmount = (inPortfolio: any) => {
@@ -395,62 +424,17 @@ const buildColumnForWallet = (wallet: Wallet, syncHandler: Function, deleteHandl
   const walletColumn: ColomnType = {
     title: renderWalletColumnTitle(wallet.address, syncHandler, deleteHandler),
     dataIndex: wallet.address,
-    children: [ // each chain
-      {
-        title: 'Ethereum',
+    children: supportedChains.filter(chain => chain.visible).map((chain) => {
+      return {
+        title: chain.name,
         children: [{
-          title: renderGas(wallet, ChainKey.ETH, CoinKey.ETH),
-          dataIndex: `${wallet.address}_${ChainKey.ETH}`,
+          title: renderGas(wallet, chain.key, chain.coin),
+          dataIndex: `${wallet.address}_${chain.key}`,
           width: baseWidth,
           render: renderAmounts
         }]
-      },
-      {
-        title: 'Polygon',
-        children: [{
-          title: renderGas(wallet, ChainKey.POL, CoinKey.MATIC),
-          dataIndex: `${wallet.address}_${ChainKey.POL}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-      {
-        title: 'Binance Smart Chain',
-        children: [{
-          title: renderGas(wallet, ChainKey.BSC, CoinKey.BNB),
-          dataIndex: `${wallet.address}_${ChainKey.BSC}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-      {
-        title: 'xDai',
-        children: [{
-          title: renderGas(wallet, ChainKey.DAI, CoinKey.DAI),
-          dataIndex: `${wallet.address}_${ChainKey.DAI}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-      {
-        title: 'Fantom',
-        children: [{
-          title: renderGas(wallet, ChainKey.FTM, CoinKey.FTM),
-          dataIndex: `${wallet.address}_${ChainKey.FTM}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-      {
-        title: 'OKExCHain',
-        children: [{
-          title: renderGas(wallet, ChainKey.OKT, CoinKey.OKT),
-          dataIndex: `${wallet.address}_${ChainKey.OKT}`,
-          width: baseWidth,
-          render: renderAmounts
-        }],
-      },
-    ],
+      }
+    }),
   }
   return walletColumn
 }
@@ -468,8 +452,6 @@ const portfolioColumn : ColomnType = {
   dataIndex: 'portfolio',
   render: renderAmounts
 }
-
-
 
 const initialColumns = [
     coinColumn,
@@ -520,7 +502,7 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: number) => {
 }
 
 // actual component
-const NewDashboard = () => {
+const Dashboard = () => {
 
   const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(()=>{return readWallets()})
   const web3 = useWeb3React()
@@ -561,8 +543,8 @@ const NewDashboard = () => {
     }
     columns.push({
       title: (
-        <Button onClick={() => setWalletModalVisible(true)}>
-          Add Wallet
+        <Button onClick={() => setWalletModalVisible(true)} style={{height: 80}}>
+          Add<br/>Wallet
         </Button>
       ),
       dataIndex: '',
@@ -580,7 +562,7 @@ const NewDashboard = () => {
         key: coin.key,
         coin: coin as Coin,
         portfolio: {
-          amount_coin:0.0,
+          amount_coin: 0.0,
           amount_usd: 0.0,
         },
       }
@@ -602,16 +584,44 @@ const NewDashboard = () => {
       }); // for each wallet
       generatedRows.push(coinRow)
     }) // for each coin
+
+    // sort
+    generatedRows.sort((a, b) => b.portfolio.amount_coin - a.portfolio.amount_coin) // DESC token
+    generatedRows.sort((a, b) => b.portfolio.amount_usd - a.portfolio.amount_usd) // DESC usd
+
     return generatedRows
   }
   
   const updateWalletPortfolio = async (wallet: Wallet) => {
     wallet.loading = true
+    setData(buildRows) // set loading state
 
     const portfolio : {[ChainKey: string]: Array<ChainPortfolio>} = await getBalancesForWallet(wallet.address)
     for (const chain of Object.values(ChainKey)){
       const chainPortfolio = portfolio[chain]
-      wallet.portfolio[chain] = [...chainPortfolio.filter(portfolio => coinIdArray.includes(portfolio.id))]
+      wallet.portfolio[chain] = chainPortfolio
+
+      // add new coins
+      chainPortfolio.forEach(coin => {
+        const exists = coins.find(existingCoin => existingCoin.contracts[chain] === coin.id)
+        if (!exists) {
+          let newCoin = {
+            key: coin.symbol,
+            name: coin.name,
+            img_url: coin.img_url,
+            contracts: {
+              [ChainKey.ETH]: '',
+              [ChainKey.BSC]: '',
+              [ChainKey.POL]: '',
+              [ChainKey.DAI]: '',
+              [ChainKey.FTM]: '',
+              [ChainKey.OKT]: '',
+            },
+          }
+          newCoin.contracts[chain] = coin.id
+          coins.push(newCoin)
+        }
+      })
     }
 
     wallet.loading = false
@@ -631,7 +641,7 @@ const NewDashboard = () => {
   const  updateEntirePortfolio = () => {
     registeredWallets.forEach(async wallet => {
       await updateWalletPortfolio(wallet);
-    })  
+    })
   }
 
   useEffect(() => {
@@ -656,7 +666,7 @@ const NewDashboard = () => {
     const newWallet = {
       address: address,
       loading: true,
-      portfolio:{
+      portfolio: {
         [ChainKey.ETH]:[],
         [ChainKey.BSC]:[],
         [ChainKey.POL]:[],
@@ -726,16 +736,16 @@ const NewDashboard = () => {
                 <Table.Summary.Cell index={summaryIndex++}>{renderSummary(!registeredWallets.length? emptySummaryAmounts:{amount_usd: data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0), percentage_of_portfolio: 1} as SummaryAmounts)}</Table.Summary.Cell>
                 {
                   registeredWallets.map((wallet:Wallet) => {
-                    let summary =  calculateWalletSummary(wallet, data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0))
+                    const total = data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0)
+                    const summary =  calculateWalletSummary(wallet, total)
 
-                    return[
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.ETH}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.ETH])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.POL}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.POL])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.BSC}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.BSC])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.DAI}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.DAI])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.FTM}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.FTM])}</Table.Summary.Cell>,
-                      <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${ChainKey.OKT}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[ChainKey.OKT])}</Table.Summary.Cell>,
-                    ]
+                    return supportedChains
+                      .filter(chain => chain.visible)
+                      .map(chain => {
+                        return (
+                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[chain.key])}</Table.Summary.Cell> 
+                        )
+                      })
                   })
                 }
                 <Table.Summary.Cell index={summaryIndex++} key={'add'}></Table.Summary.Cell>
@@ -781,4 +791,4 @@ const NewDashboard = () => {
 
 
 
-export default NewDashboard
+export default Dashboard

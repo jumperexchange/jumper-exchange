@@ -7,6 +7,11 @@
   line-height: 62px;
   margin-right: 20px;
 }
+@media only screen and (max-width: 480px) {
+  .wordmark span {
+    display: none;
+  }
+}
 .logo {
   width: 48px;
   height: 48px;
@@ -20,6 +25,10 @@
 
 .site-layout .site-layout-background {
   background: #fff;
+}
+
+.ant-layout-header {
+  overflow: hidden;
 }
 
 .ant-menu.ant-menu-horizontal {

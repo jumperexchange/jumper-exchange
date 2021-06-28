@@ -41,6 +41,9 @@ export interface ColomnType extends TableColumnType<DataType> {
 
 export interface ChainPortfolio{
   id: string,
+  name: string,
+  symbol: string,
+  img_url: string,
   pricePerCoin: number,
   amount: number,
 }
@@ -92,3 +95,42 @@ export interface ProgressStep {
 }
 
 
+
+export const supportedChains = [
+  {
+    key: ChainKey.ETH,
+    name: 'Ethereum',
+    coin: CoinKey.ETH,
+    visible: true,
+  },
+  {
+    key: ChainKey.POL,
+    name: 'Polygon',
+    coin: CoinKey.MATIC,
+    visible: true,
+  },
+  {
+    key: ChainKey.BSC,
+    name: 'Binance Smart Chain',
+    coin: CoinKey.BNB,
+    visible: true,
+  },
+  {
+    key: ChainKey.DAI,
+    name: 'xDai',
+    coin: CoinKey.DAI,
+    visible: true,
+  },
+  {
+    key: ChainKey.FTM,
+    name: 'Fantom',
+    coin: CoinKey.FTM,
+    visible: false,
+  },
+  {
+    key: ChainKey.OKT,
+    name: 'OKExCHain',
+    coin: CoinKey.OKT,
+    visible: false,
+  },
+]
