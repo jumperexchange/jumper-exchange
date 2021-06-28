@@ -1,4 +1,4 @@
-import { ChainKey, Wallet, WalletKey } from '../types';
+import { ChainKey, Wallet } from '../types';
 
 const isSupported = () => {
   try {
@@ -30,16 +30,18 @@ const readWallets = (): Array<Wallet> => {
   if (walletsString) {
     try {
       const addresses = JSON.parse(walletsString)
-      const walletKeys = Object.values(WalletKey)
-      let walletIndex = 0
-
       return addresses.map((address: string) => {
         return {
-          key: walletKeys[walletIndex++],
-          name: 'My Wallet',
           address: address,
-          chains: Object.values(ChainKey),
           loading: false,
+          portfolio:{
+            [ChainKey.ETH]:[],
+            [ChainKey.BSC]:[],
+            [ChainKey.POL]:[],
+            [ChainKey.DAI]:[],
+            [ChainKey.FTM]:[],
+            [ChainKey.OKT]:[]
+          }
         }
       })
     }
