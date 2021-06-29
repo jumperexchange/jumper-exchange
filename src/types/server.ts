@@ -1,14 +1,4 @@
-
-export enum ChainKey {
-  ETH = 'eth',
-  POL = 'pol',
-  BSC = 'bsc',
-  DAI = 'dai',
-}
-
-export interface Token {
-  symbol: string
-}
+import { ChainKey, Token } from '.'
 
 export interface BaseEstimate {
   fromAmount: number
@@ -74,5 +64,6 @@ export interface CrossAction extends ActionBase {
   type: 'cross'
   toChainKey: ChainKey
   amount: number
-  token: Token
+  fromToken: Token
+  toToken: Token
 }

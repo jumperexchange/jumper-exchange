@@ -1,83 +1,74 @@
 // LIBS
 import { SwapOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Input, Row, Select, Steps } from 'antd';
+import { Avatar, Button, Col, Input, Row, Select, Steps, Modal } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF
-import { ProgressStep } from '../types';
-import { defaultCoins, supportedChains } from '../types/lists';
-import { TranferStep } from '../types/server';
+import { ChainKey, CoinKey } from '../types';
+import { defaultCoins, findDefaultCoin, supportedChains } from '../types/lists';
+import { DepositAction, TranferStep, WithdrawAction } from '../types/server';
 import './Swap.css';
+import Swapping from './Swapping';
 
 const chainInfo = supportedChains.filter(chain => chain.visible)
 const coins = defaultCoins
 
 const Swap = () => {
-  const [routes, setRoutes] = useState<Array<Array<ProgressStep>>>([])
-  const [depositChain, setDepositChain] = useState<string>("");
-  const [depositAmount, setDepositAmount] = useState<number>(Infinity);
-  const [depositToken, setDepositToken] = useState<string>("");
-  const [withdrawChain, setWithdrawChain] = useState<string>("");
+
+  const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [selectedRoute, setselectedRoute] = useState<Array<TranferStep>>([]);
+  const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.DAI);
+  const [depositAmount, setDepositAmount] = useState<number>(1);
+  const [depositToken, setDepositToken] = useState<CoinKey>(CoinKey.USDC);
+  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.POL);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity);
-  const [withdrawToken, setWithdrawToken] = useState<string>("");
+  const [withdrawToken, setWithdrawToken] = useState<CoinKey>(CoinKey.USDT);
 
-  const parseToProgressSteps = (routes: Array<Array<TranferStep>>) => {
-    if (!routes.length) {
-      return setRoutes([])
-    }
-
-    const routeOptions: Array<Array<ProgressStep>> = []
-    routes.forEach(route => {
-      const stepList: Array<ProgressStep> = route.map(step => {
-        let title: string = ""
-        let description: string = ""
-        switch (step.action.type) {
-          case "swap":
-            title = "Swap Tokens"
-            description = `${step.estimate?.fromAmount.toFixed(4)} ${step.action.fromToken.symbol} for ${step.estimate?.toAmount.toFixed(4)} ${step.action.toToken.symbol} on ${step.action.chainKey}`
-            break;
-          case "cross":
-            title = "Cross Chains"
-            description = `${step.estimate?.fromAmount.toFixed(4)} ${step.action.token.symbol} on ${step.action.chainKey} to ${step.estimate?.toAmount.toFixed(4)} ${step.action.token.symbol} ${step.action.toChainKey}`
-            break;
-          case "withdraw":
-            title = "Withdraw"
-            description = `${step.estimate?.toAmount} ${step.action.token.symbol} to 0x...`
-            break;
-          case "deposit":
-            title = "Deposit"
-            description = `${step.estimate?.fromAmount.toFixed(4)} ${step.action.token.symbol} from 0x...`
-            break;
+  const parseStep = (step : TranferStep) => {
+    switch (step.action.type) {
+      case "swap":
+        return {
+          title: "Swap Tokens",
+          description: `${step.estimate?.fromAmount.toFixed(4)} ${step.action.fromToken.symbol} for ${step.estimate?.toAmount.toFixed(4)} ${step.action.toToken.symbol} on ${step.action.chainKey}`,
         }
-
-        return { title, description }
-      });
-      routeOptions.push(stepList)
-    })
-
-    setRoutes(routeOptions)
+      case "cross":
+        return {
+      title: "Cross Chains",
+        description: `${step.estimate?.fromAmount.toFixed(4)} ${step.action.fromToken.symbol} on ${step.action.chainKey} to ${step.estimate?.toAmount.toFixed(4)} ${step.action.toToken.symbol} ${step.action.toChainKey}`,
+        }
+      case "withdraw":
+        return {
+          title: "Withdraw",
+        description: `${step.estimate?.toAmount} ${step.action.token.symbol} to 0x...`,
+        }
+      case "deposit":
+        return {
+          title: "Deposit",
+        description: `${step.estimate?.fromAmount.toFixed(4)} ${step.action.token.symbol} from 0x...`,
+        }
+    }
   }
 
   const getTransferRoutes = async () => {
-    if ((isFinite(depositAmount) || isFinite(withdrawAmount)) && depositChain !== "" && depositToken !== "" && withdrawChain !== "" && withdrawToken !== "") {
-      const deposit = {
+    if ((isFinite(depositAmount) || isFinite(withdrawAmount)) && depositChain && depositToken && withdrawChain && withdrawToken) {
+      const deposit : DepositAction = {
         type: "deposit",
         chainKey: depositChain,
-        token: { symbol: depositToken },
+        token: findDefaultCoin(depositToken).chains[depositChain],
         amount: depositAmount ? depositAmount : Infinity
       }
-      const withdraw = {
+      const withdraw : WithdrawAction = {
         type: "withdraw",
         chainKey: withdrawChain,
-        token: { symbol: withdrawToken },
+        token: findDefaultCoin(withdrawToken).chains[withdrawChain],
         amount: withdrawAmount ? withdrawAmount : Infinity
       }
       const result = await axios.post("http://localhost:8000/api/transfer", { deposit, withdraw })
-      parseToProgressSteps(result.data)
+      setRoutes(result.data)
     } else {
-      parseToProgressSteps([])
+      setRoutes([])
     }
   }
 
@@ -98,6 +89,9 @@ const Swap = () => {
     return parseFloat(e.currentTarget.value)
   }
 
+  const openSwapModal = (route: Array<TranferStep>) => {
+    setselectedRoute(route)
+  }
 
   return (
     <Content className="site-layout">
@@ -117,7 +111,8 @@ const Swap = () => {
                     <Select
                       style={{ width: 150 }}
                       placeholder="select chain"
-                      onChange={((v: string) => setDepositChain(v))}
+                      value={depositChain}
+                      onChange={((v: ChainKey) => setDepositChain(v))}
                       bordered={false}
                     >
                       {chainInfo.map(chain => (
@@ -137,7 +132,8 @@ const Swap = () => {
                     />
                     <Select
                       placeholder="select coin"
-                      onChange={((v: string) => setDepositToken(v))}
+                      value={depositToken}
+                      onChange={((v: CoinKey) => setDepositToken(v))}
                       optionLabelProp="label"
                       bordered={false}
                       style={{ width: 100 }}
@@ -172,7 +168,8 @@ const Swap = () => {
                     <Select
                       style={{ width: 150 }}
                       placeholder="select chain"
-                      onChange={((v: string) => setWithdrawChain(v))}
+                      value={withdrawChain}
+                      onChange={((v: ChainKey) => setWithdrawChain(v))}
                       bordered={false}
                     >
                       {chainInfo.map(chain => (
@@ -192,7 +189,8 @@ const Swap = () => {
                     />
                     <Select
                       placeholder="select coin"
-                      onChange={((v: string) => setWithdrawToken(v))}
+                      value={withdrawToken}
+                      onChange={((v: CoinKey) => setWithdrawToken(v))}
                       optionLabelProp="label"
                       bordered={false}
                       style={{ width: 100 }}
@@ -238,13 +236,14 @@ const Swap = () => {
                     <Col key={index}>
                       <Steps progressDot size="small" direction="vertical" className="progress-step-list">
                         {
-                          route.map(step =>
-                            <Steps.Step key={step.title} title={step.title} description={step.description}></Steps.Step>
-                          )
+                          route.map(step => {
+                            let { title, description } = parseStep(step)
+                            return <Steps.Step key={title} title={title} description={description}></Steps.Step>
+                          })
                         }
                       </Steps>
                       <Row justify={"start"} style={{ margin: 16 }}>
-                        <Button shape="round" icon={<SwapOutlined />} size={"large"}>Swap</Button>
+                        <Button shape="round" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal(route)}>Swap</Button>
                       </Row>
                     </Col>
                   )
@@ -254,6 +253,10 @@ const Swap = () => {
           }
         </Row>
       </div>
+
+      <Modal visible={selectedRoute.length > 0}>
+        <Swapping route={selectedRoute}></Swapping>
+      </Modal>
     </Content>
   )
 }
