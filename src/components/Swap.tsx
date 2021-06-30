@@ -1,74 +1,85 @@
 // LIBS
 import { SwapOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Input, Row, Select, Steps, Modal } from 'antd';
+import { Avatar, Button, Col, Input, Modal, Row, Select, Steps } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-// OWN STUFF
+import { formatTokenAmount } from '../services/utils';
 import { ChainKey, CoinKey } from '../types';
-import { defaultCoins, findDefaultCoin, supportedChains } from '../types/lists';
+import { defaultCoins, findDefaultCoin, getChainByKey } from '../types/lists';
 import { DepositAction, TranferStep, WithdrawAction } from '../types/server';
 import './Swap.css';
 import Swapping from './Swapping';
 
-const chainInfo = supportedChains.filter(chain => chain.visible)
+const transferChains = [
+  getChainByKey(ChainKey.POL),
+  getChainByKey(ChainKey.BSC),
+  getChainByKey(ChainKey.DAI),
+]
 const coins = defaultCoins
 
 const Swap = () => {
-
   const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [selectedRoute, setselectedRoute] = useState<Array<TranferStep>>([]);
-  const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.DAI);
-  const [depositAmount, setDepositAmount] = useState<number>(1);
+  const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.POL);
+  const [depositAmount, setDepositAmount] = useState<number>(0.01);
   const [depositToken, setDepositToken] = useState<CoinKey>(CoinKey.USDC);
-  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.POL);
+  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.DAI);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity);
   const [withdrawToken, setWithdrawToken] = useState<CoinKey>(CoinKey.USDT);
 
-  const parseStep = (step : TranferStep) => {
+  const parseStep = (step: TranferStep) => {
     switch (step.action.type) {
       case "swap":
         return {
           title: "Swap Tokens",
-          description: `${step.estimate?.fromAmount.toFixed(4)} ${step.action.fromToken.symbol} for ${step.estimate?.toAmount.toFixed(4)} ${step.action.toToken.symbol} on ${step.action.chainKey}`,
+          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on ${step.action.chainKey}`,
         }
       case "cross":
         return {
-      title: "Cross Chains",
-        description: `${step.estimate?.fromAmount.toFixed(4)} ${step.action.fromToken.symbol} on ${step.action.chainKey} to ${step.estimate?.toAmount.toFixed(4)} ${step.action.toToken.symbol} ${step.action.toChainKey}`,
+          title: "Cross Chains",
+          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} on ${step.action.chainKey} to ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on ${step.action.toChainKey}`,
         }
       case "withdraw":
         return {
           title: "Withdraw",
-        description: `${step.estimate?.toAmount} ${step.action.token.symbol} to 0x...`,
+          description: `${formatTokenAmount(step.action.token, step.estimate?.toAmount)} to 0x...`,
         }
       case "deposit":
         return {
           title: "Deposit",
-        description: `${step.estimate?.fromAmount.toFixed(4)} ${step.action.token.symbol} from 0x...`,
+          description: `${formatTokenAmount(step.action.token, step.estimate?.fromAmount)} from 0x...`,
         }
     }
   }
 
   const getTransferRoutes = async () => {
+    setRoutes([])
+
     if ((isFinite(depositAmount) || isFinite(withdrawAmount)) && depositChain && depositToken && withdrawChain && withdrawToken) {
-      const deposit : DepositAction = {
+      setRoutesLoading(true)
+      const dToken = findDefaultCoin(depositToken).chains[depositChain]
+      const deposit: DepositAction = {
         type: "deposit",
         chainKey: depositChain,
-        token: findDefaultCoin(depositToken).chains[depositChain],
-        amount: depositAmount ? depositAmount : Infinity
+        chainId: getChainByKey(depositChain).id,
+        token: dToken,
+        amount: depositAmount ? depositAmount * (10 ** dToken.decimals) : Infinity
       }
-      const withdraw : WithdrawAction = {
+
+      const wToken = findDefaultCoin(withdrawToken).chains[withdrawChain]
+      const withdraw: WithdrawAction = {
         type: "withdraw",
         chainKey: withdrawChain,
-        token: findDefaultCoin(withdrawToken).chains[withdrawChain],
-        amount: withdrawAmount ? withdrawAmount : Infinity
+        chainId: getChainByKey(withdrawChain).id,
+        token: wToken,
+        amount: withdrawAmount ? withdrawAmount * (10 ** wToken.decimals) : Infinity
       }
       const result = await axios.post("http://localhost:8000/api/transfer", { deposit, withdraw })
       setRoutes(result.data)
-    } else {
-      setRoutes([])
+      setRoutesLoading(false)
     }
   }
 
@@ -115,7 +126,7 @@ const Swap = () => {
                       onChange={((v: ChainKey) => setDepositChain(v))}
                       bordered={false}
                     >
-                      {chainInfo.map(chain => (
+                      {transferChains.map(chain => (
                         <Select.Option key={chain.key} value={chain.key}>{chain.name}</Select.Option>
                       ))}
                     </Select>
@@ -172,7 +183,7 @@ const Swap = () => {
                       onChange={((v: ChainKey) => setWithdrawChain(v))}
                       bordered={false}
                     >
-                      {chainInfo.map(chain => (
+                      {transferChains.map(chain => (
                         <Select.Option key={chain.key} value={chain.key}>{chain.name}</Select.Option>
                       ))}
                     </Select>
@@ -251,10 +262,22 @@ const Swap = () => {
               </Row>
             </Col>
           }
+          {routesLoading &&
+            <Col>
+              <Row gutter={[32, 62]} justify={"space-between"} className="swap-routes" style={{ width: "65vw", border: "2px solid #f0f0f0", borderRadius: 20, padding: 24 }}>
+                Loading...
+              </Row>
+            </Col>
+          }
         </Row>
       </div>
 
-      <Modal visible={selectedRoute.length > 0}>
+      <Modal
+        visible={selectedRoute.length > 0}
+        onOk={() => setselectedRoute([])}
+        onCancel={() => setselectedRoute([])}
+        width={700}
+      >
         <Swapping route={selectedRoute}></Swapping>
       </Modal>
     </Content>

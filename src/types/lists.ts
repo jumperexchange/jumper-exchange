@@ -1,12 +1,56 @@
-import { ChainKey, Coin, CoinKey } from '.';
+import { BigNumber } from 'ethers';
+import { ChainKey, Coin, CoinKey, Token } from '.';
 
-export const supportedChains = [
+interface AddEthereumChainParameter {
+  chainId: string;
+  blockExplorerUrls?: string[];
+  chainName?: string;
+  iconUrls?: string[];
+  nativeCurrency?: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  rpcUrls?: string[];
+}
+
+interface Chain {
+  key: ChainKey
+  name: string
+  coin: CoinKey
+  id: number
+  visible: boolean
+  metamask?: AddEthereumChainParameter
+}
+
+const prefixChainId = (chainId: number) => {
+  return '0x' + BigNumber.from(chainId)._hex.split('0x')[1].replace(/\b0+/g, '')
+}
+
+export const supportedChains: Array<Chain> = [
   {
     key: ChainKey.ETH,
     name: 'Ethereum',
     coin: CoinKey.ETH,
     id: 1,
     visible: true,
+
+    metamask: {
+      chainId: prefixChainId(1),
+      blockExplorerUrls: [
+        'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+      ],
+      chainName: 'Ethereum Mainnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'ETH',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://etherscan.io/',
+      ],
+    },
   },
   {
     key: ChainKey.POL,
@@ -14,6 +58,24 @@ export const supportedChains = [
     coin: CoinKey.MATIC,
     id: 137,
     visible: true,
+
+    // https://docs.matic.network/docs/develop/metamask/config-matic/
+    metamask: {
+      chainId: prefixChainId(137),
+      blockExplorerUrls: [
+        'https://rpc-mainnet.maticvigil.com/',
+      ],
+      chainName: 'Matic Mainnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'MATIC',
+        symbol: 'MATIC',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://polygonscan.com/',
+      ],
+    },
   },
   {
     key: ChainKey.BSC,
@@ -21,6 +83,26 @@ export const supportedChains = [
     coin: CoinKey.BNB,
     id: 56,
     visible: true,
+
+    // https://docs.binance.org/smart-chain/wallet/metamask.html
+    metamask: {
+      chainId: prefixChainId(56),
+      blockExplorerUrls: [
+        'https://bsc-dataseed.binance.org/',
+        'https://bsc-dataseed1.defibit.io/',
+        'https://bsc-dataseed1.ninicoin.io/',
+      ],
+      chainName: 'Binance Smart Chain',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'BNB',
+        symbol: 'BNB',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://bscscan.com/',
+      ],
+    },
   },
   {
     key: ChainKey.DAI,
@@ -28,6 +110,24 @@ export const supportedChains = [
     coin: CoinKey.DAI,
     id: 100,
     visible: true,
+
+    // https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup
+    metamask: {
+      chainId: prefixChainId(100),
+      blockExplorerUrls: [
+        'https://rpc.xdaichain.com/',
+      ],
+      chainName: 'xDai',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'xDai',
+        symbol: 'xDai',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://blockscout.com/xdai/mainnet',
+      ],
+    },
   },
   {
     key: ChainKey.FTM,
@@ -35,7 +135,24 @@ export const supportedChains = [
     coin: CoinKey.FTM,
     id: 250,
     visible: false,
+
     // https://docs.fantom.foundation/tutorials/set-up-metamask
+    metamask: {
+      chainId: prefixChainId(250),
+      blockExplorerUrls: [
+        'https://rpcapi.fantom.network',
+      ],
+      chainName: 'Fantom Opera',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'FTM',
+        symbol: 'FTM',
+        decimals: 18, // TODO: check
+      },
+      rpcUrls: [
+        'https://ftmscan.com/',
+      ],
+    },
   },
   {
     key: ChainKey.OKT,
@@ -43,10 +160,42 @@ export const supportedChains = [
     coin: CoinKey.OKT,
     id: 66,
     visible: false,
+
     // https://okexchain-docs.readthedocs.io/en/latest/developers/quick-start-for-mainnet.html
+    metamask: {
+      chainId: prefixChainId(66),
+      blockExplorerUrls: [
+        'https://www.oklink.com/okexchain/',
+      ],
+      chainName: 'OKExChain Mainnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'OKT',
+        symbol: 'OKT',
+        decimals: 18, // TODO: check
+      },
+      rpcUrls: [
+        'https://exchainrpc.okex.org',
+      ],
+    },
   },
 ]
 
+export const getChainByKey = (chainKey: ChainKey) => {
+  const chain = supportedChains.find(chain => chain.key === chainKey)
+  if (!chain) {
+    throw new Error('Invalid chainKey')
+  }
+  return chain
+}
+
+export const getChainById = (chainId: number) => {
+  const chain = supportedChains.find(chain => chain.id === chainId)
+  if (!chain) {
+    throw new Error('Invalid chainId')
+  }
+  return chain
+}
 
 export const defaultCoins: Array<Coin> = [
   // NATIVE COINS
@@ -295,4 +444,45 @@ export const findDefaultCoin = (coinKey: CoinKey) => {
     throw new Error('Invalid Coin')
   }
   return coin
+}
+
+
+export const wrappedTokens: { [ChainKey: string]: Token } = {
+  [ChainKey.ETH]: {
+    // https://ww7.etherscan.io/token/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+    id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+    symbol: 'WETH',
+    decimals: 18,
+    chainId: 1,
+    chainKey: ChainKey.ETH,
+    key: 'WETH',
+  },
+  [ChainKey.BSC]: {
+    // https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+    id: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+    symbol: 'WBNB',
+    decimals: 18,
+    chainId: 56,
+    chainKey: ChainKey.BSC,
+    key: 'WBNB',
+  },
+
+  [ChainKey.POL]: {
+    // https://polygonscan.com/token/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
+    id: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+    symbol: 'WMATIC',
+    decimals: 18,
+    chainId: 137,
+    chainKey: ChainKey.POL,
+    key: 'WMATIC',
+  },
+  [ChainKey.DAI]: {
+    // https://blockscout.com/xdai/mainnet/address/0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d
+    id: '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d',
+    symbol: 'WXDAI',
+    decimals: 18,
+    chainId: 100,
+    chainKey: ChainKey.DAI,
+    key: 'WXDAI',
+  },
 }

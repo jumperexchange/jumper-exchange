@@ -37,6 +37,7 @@ export interface TranferStep {
 interface ActionBase {
   type: string
   chainKey: ChainKey
+  chainId: number
 }
 
 export interface DepositAction extends ActionBase {
@@ -49,6 +50,7 @@ export interface WithdrawAction extends ActionBase {
   type: 'withdraw'
   amount: number
   token: Token
+  recipient?: string
 }
 
 export interface SwapAction extends ActionBase {

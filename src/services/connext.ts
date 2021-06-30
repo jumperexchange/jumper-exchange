@@ -1,14 +1,14 @@
 import { BrowserNode } from "@connext/vector-browser-node"
-import { ConditionalTransferCreatedPayload, ERC20Abi, FullChannelState, TransferNames, EngineEvents, ConditionalTransferResolvedPayload, DepositReconciledPayload, WithdrawalReconciledPayload, WithdrawalResolvedPayload } from "@connext/vector-types"
-import { Contract, utils, ethers, providers } from "ethers"
-import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
-import { JsonRpcProvider } from "@ethersproject/providers"
+import { ConditionalTransferCreatedPayload, ConditionalTransferResolvedPayload, DepositReconciledPayload, EngineEvents, ERC20Abi, FullChannelState, TransferNames, WithdrawalReconciledPayload, WithdrawalResolvedPayload } from "@connext/vector-types"
 import { getBalanceForAssetId, getRandomBytes32 } from "@connext/vector-utils"
 import { BigNumber } from "@ethersproject/bignumber"
+import { JsonRpcProvider } from "@ethersproject/providers"
+import { Contract, ethers, providers, utils } from "ethers"
 import { Evt } from "evt"
+import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
 
 const connext = "vector892GMZ3CuUkpyW8eeXfW2bt5W73TWEXtgV71nphXUXAmpncnj8" // referenced in https://docs.connext.network/connext-mainnet
-const xpollinate =  "vector52rjrwRFUkaJai2J4TrngZ6doTUXGZhizHmrZ6J15xVv4YFgFC" // used by https://www.xpollinate.io/
+const xpollinate = "vector52rjrwRFUkaJai2J4TrngZ6doTUXGZhizHmrZ6J15xVv4YFgFC" // used by https://www.xpollinate.io/
 const routerPublicIdentifier = xpollinate || connext
 
 const chainProviders: { [chainId: number]: string } = {
@@ -49,14 +49,28 @@ const uniswapRouters: { [chainId: number]: string } = {
   137: "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff", // router v2 https://explorer-mainnet.maticvigil.com/address/0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff/contracts
 }
 
+let _node: BrowserNode
+let _evts: EvtContainer
+
+export const getNode = () => {
+  return _node
+}
+
+export const getEvt = (node: BrowserNode) => {
+  if (!_evts) {
+    _evts = createEvtContainer(node)
+  }
+  return _evts
+}
+
 export const initNode = async () => {
   const node = new BrowserNode({
     routerPublicIdentifier,
     chainProviders,
   })
   await node.init()
-
-  return node
+  _node = node
+  return getNode()
 }
 
 export const getChannelForChain = async (node: BrowserNode, chainId: number) => {
@@ -159,37 +173,6 @@ async function refreshBalance(
   return getBalanceForAssetId(channel, assetId, participant)
 }
 
-async function deposit(node: BrowserNode, channel: any, signer: any, token: string, amount: string) {
-  // Ask user to transfer to channel
-  const fromTokenContract = new Contract(
-    token,
-    ERC20Abi,
-    signer
-  )
-  const tx = await fromTokenContract.transfer(
-    channel.channelAddress,
-    amount
-  )
-  // setLog(`(1/7) Starting swap`, { tx: tx.hash, chainId: fromChainId })
-
-  // Confirmed
-  await tx.wait()
-  // const receipt = await tx.wait()
-  // reconcile deposit on from chain
-  // const e = {} as EngineEvent
-  // node.waitFor<EngineEvent>(e, 300_000, payload => {
-  //   console.log(payload)
-  // })
-  const depositRes = await node.reconcileDeposit({
-    channelAddress: channel.channelAddress,
-    assetId: token,
-  })
-  if (depositRes.isError) {
-    throw depositRes.getError()
-  }
-  console.log(`INFO: Deposit complete`)
-}
-
 async function handleNodeResponse(channel: FullChannelState, nodeResponsePromise: Promise<any>) {
   // try normal handling instead
   const resolved = await nodeResponsePromise
@@ -208,7 +191,56 @@ async function handleNodeResponse(channel: FullChannelState, nodeResponsePromise
   }
 }
 
-async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: FullChannelState, amount: string, tokenA: string, tokenB: string) {
+
+export const triggerDeposit = async (node: BrowserNode, signer: providers.JsonRpcSigner, chainId: number, tokenId: string, amount: ethers.BigNumberish) => {
+  return deposit(node, await getChannelForChain(node, chainId), signer, tokenId, amount)
+}
+async function deposit(node: BrowserNode, channel: FullChannelState, signer: any, token: string, amount: ethers.BigNumberish) {
+  // Ask user to transfer to channel
+  const fromTokenContract = new Contract(
+    token,
+    ERC20Abi,
+    signer
+  )
+
+  console.log('>> user has to submit transaction')
+  const tx = await fromTokenContract.transfer(
+    channel.channelAddress,
+    amount.toString(),
+  )
+  // setLog(`(1/7) Starting swap`, { tx: tx.hash, chainId: fromChainId })
+
+  // Confirmed
+  console.log('>> waiting for transaction')
+  await tx.wait()
+  // const receipt = await tx.wait()
+  // reconcile deposit on from chain
+  // const e = {} as EngineEvent
+  // node.waitFor<EngineEvent>(e, 300_000, payload => {
+  //   console.log(payload)
+  // })
+
+  console.log('>> claim transaction')
+  const depositRes = await node.reconcileDeposit({
+    channelAddress: channel.channelAddress,
+    assetId: token,
+  })
+  if (depositRes.isError) {
+    throw depositRes.getError()
+  }
+  console.log(`INFO: Deposit complete`)
+}
+
+export const triggerSwap = async (node: BrowserNode, chainId: number, path: Array<string>, fromTokenId: string, toTokenId: string, amount: ethers.BigNumberish) => {
+  const channel = await getChannelForChain(node, chainId)
+  amount = 100
+  if (!amount) {
+    amount = getBalanceForAssetId(channel, fromTokenId, 'bob')
+  }
+  return swapInChannel(getEvt(node), node, channel, amount, fromTokenId, toTokenId, path)
+}
+async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: FullChannelState, amount: ethers.BigNumberish, tokenA: string, tokenB: string, path: Array<string>) {
+
   // define swap
   const helperContract = new Contract(
     withdrawHelpers[channel.networkContext.chainId],
@@ -222,7 +254,7 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
     to: channel.channelAddress,
     tokenA,
     tokenB,
-    path: [tokenA, tokenB],
+    path,
   }
   console.log('swapDataOption', swapDataOption)
   const swapData = await helperContract.getCallData(swapDataOption)
@@ -230,7 +262,7 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
   // trigger swap by withdrawing coins to contract
   const withdrawOptions = {
     assetId: tokenA,
-    amount: amount,
+    amount: amount.toString(),
     channelAddress: channel.channelAddress,
     callData: swapData,
     callTo: withdrawHelpers[channel.networkContext.chainId],
@@ -252,7 +284,9 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
   }
 
   let postSwapBalance: string = '0'
-  while (postSwapBalance === '0') {
+  let retries = 0
+  const MAX_RETRIES = 5
+  while (postSwapBalance === '0' && retries < MAX_RETRIES) {
     // reconcile deposit on toChain
     const depositRes = await node.reconcileDeposit({
       channelAddress: channel.channelAddress,
@@ -262,10 +296,19 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
       throw depositRes.getError()
     }
     postSwapBalance = await refreshBalance(node, channel, tokenB, 'bob')
+    retries++
   }
 }
 
-async function transferBetweenChains(node: BrowserNode, fromChannel: any, fromToken: string, toChannel: any, toToken: string, amount: string) {
+export const triggerTransfer = async (node: BrowserNode, fromChainId: number, toChainId: number, fromTokenId: string, toTokenId: string, amount: ethers.BigNumberish) => {
+  const fromChannel = await getChannelForChain(node, fromChainId)
+  const toChannel = await getChannelForChain(node, toChainId)
+  if (!amount) {
+    amount = getBalanceForAssetId(fromChannel, fromTokenId, 'bob')
+  }
+  return transferBetweenChains(node, fromChannel, fromTokenId, toChannel, toTokenId, amount)
+}
+async function transferBetweenChains(node: BrowserNode, fromChannel: FullChannelState, fromToken: string, toChannel: FullChannelState, toToken: string, amount: ethers.BigNumberish) {
   // generate Secrets
   const preImage = getRandomBytes32()
   const lockHash = utils.soliditySha256(["bytes32"], [preImage])
@@ -273,7 +316,7 @@ async function transferBetweenChains(node: BrowserNode, fromChannel: any, fromTo
 
   await node.conditionalTransfer({
     publicIdentifier: node.publicIdentifier,
-    amount: amount,
+    amount: amount.toString(),
     assetId: fromToken,
     channelAddress: fromChannel.channelAddress,
     type: TransferNames.HashlockTransfer,
@@ -329,10 +372,17 @@ async function transferBetweenChains(node: BrowserNode, fromChannel: any, fromTo
   console.log("resolve: ", resolve)
 }
 
-async function withdrawFromChannel(evt: EvtContainer, node: BrowserNode, channel: FullChannelState, recipient: string, token: string, amount: string) {
+export const triggerWithdraw = async (node: BrowserNode, chainId: number, recipient: string, tokenId: string, amount: ethers.BigNumberish) => {
+  const channel = await getChannelForChain(node, chainId)
+  if (!amount) {
+    amount = getBalanceForAssetId(channel, tokenId, 'bob')
+  }
+  return withdrawFromChannel(getEvt(node), node, channel, recipient, tokenId, amount)
+}
+async function withdrawFromChannel(evt: EvtContainer, node: BrowserNode, channel: FullChannelState, recipient: string, token: string, amount: ethers.BigNumberish) {
   const withdrawPromise = node.withdraw({
     assetId: token,
-    amount: amount,
+    amount: amount.toString(),
     channelAddress: channel.channelAddress,
     publicIdentifier: channel.bobIdentifier,
     recipient,
@@ -352,8 +402,8 @@ export const getChannelBalances = async (node: BrowserNode, chainId: number) => 
   const bob: { [k: string]: any } = {}
 
   channel.assetIds.forEach((value: string, index: number) => {
-    alice[value] = channel.balances[index].amount[0]
-    bob[value] = channel.balances[index].amount[1]
+    alice[value.toLowerCase()] = channel.balances[index].amount[0]
+    bob[value.toLowerCase()] = channel.balances[index].amount[1]
   })
 
   return {
@@ -426,7 +476,7 @@ export const swap = async (
 
   // // ## Swap on fromChain
   console.log('INFO: swap start')
-  await swapInChannel(evts, node, fromChannel, swapAmount.toString(), fromToken, fromTokenPair)
+  await swapInChannel(evts, node, fromChannel, swapAmount.toString(), fromToken, fromTokenPair, [fromToken, fromTokenPair])
   console.log('INFO: swap done')
 
   // refresh channel to get new balance
@@ -448,7 +498,7 @@ export const swap = async (
 
   // withdraw with swap data
   console.log('INFO: swap start')
-  await swapInChannel(evts, node, toChannel, postCrossChainTransferBalance, toToken, toTokenPair)
+  await swapInChannel(evts, node, toChannel, postCrossChainTransferBalance, toToken, toTokenPair, [toToken, toTokenPair])
   console.log('INFO: swap done')
 
   // refresh channel to get new balance
