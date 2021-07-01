@@ -5,9 +5,9 @@ import { Button, Timeline, Typography } from 'antd';
 import React, { useState } from 'react';
 import * as connext from '../services/connext';
 import { formatTokenAmount } from '../services/utils';
-import { ChainKey, CoinKey } from '../types';
-import { defaultCoins, findDefaultCoin, getChainById, getChainByKey } from '../types/lists';
+import { getChainById, getChainByKey } from '../types/lists';
 import { CrossAction, DepositAction, Execution, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
+import StateChannelBalances from './StateChannelBalances';
 import ConnectButton from './web3/ConnectButton';
 
 interface SwappingProps {
@@ -201,48 +201,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
   }
 
-  // DEBUG
-  const transferableCoins = [
-    findDefaultCoin(CoinKey.DAI),
-    findDefaultCoin(CoinKey.USDC),
-    findDefaultCoin(CoinKey.USDT),
-  ]
-  const channelCoins = defaultCoins || transferableCoins
-
-  const transferChains = [
-    getChainByKey(ChainKey.POL),
-    getChainByKey(ChainKey.BSC),
-    getChainByKey(ChainKey.DAI),
-  ]
-
-  const [balances, setBalances] = useState<any>()
-
-  const updateBalances = async () => {
-    if (!node) return
-
-    const newBalances: any = {}
-    for (const chainId of [56, 100, 137]) {
-      newBalances[chainId] = await connext.getChannelBalances(node, chainId);
-    }
-    console.log(newBalances)
-    setBalances(newBalances)
-  }
-
-  (window as any).reconcileDeposit = (chainId: any, tokenId: any) => {
-    if (!node) return
-    connext.reconcileDeposit(node, chainId, tokenId)
-  }
-
-  (window as any).reconcileChain = (chainId: number) => {
-    if (!node) return
-    const chain = getChainById(chainId)
-    channelCoins.forEach(coin => {
-      connext.reconcileDeposit(node, chainId, coin.chains[chain.key].id)
-    })
-  }
-  (window as any).node = node
-  // END: DEBUG
-
   return (<>
     <Timeline mode="alternate">
       <Timeline.Item color="green"></Timeline.Item>
@@ -263,41 +221,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         {!node && loggingIn && 'loading...'}
         {node && 'connected'}
       </Timeline.Item>
-      {
-        route.map(step => {
-          return parseStepToTimeline(step)
-        })
-      }
+      { route.map(parseStepToTimeline) }
     </Timeline>
 
-
-    Balance on StateChannels: <Button type="link" onClick={() => updateBalances()}>(updateBalances)</Button>
-    <table>
-      <thead className="ant-table-tbody">
-        <tr>
-          <th className="ant-table-cell"></th>
-          {transferChains.map(chain => (
-            <td key={chain.key} className="ant-table-cell">{chain.name}</td>
-          ))}
-        </tr>
-      </thead>
-      <tbody className="ant-table-tbody">
-        {channelCoins.map(coin => (
-          <tr key={coin.key} className="ant-table-row">
-            <td className="ant-table-cell">{coin.name}</td>
-            {transferChains.map(chain => {
-              const coinId = coin.chains[chain.key].id
-              const balance = balances ? balances[chain.id]?.bob[coinId] : '-'
-              return <td key={chain.key} className="ant-table-cell">
-                {formatTokenAmount(coin.chains[chain.key], balance)}
-                <br/>
-                <small>{balance}</small>
-                </td>
-            })}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <StateChannelBalances node={node}></StateChannelBalances>
   </>)
 }
 
