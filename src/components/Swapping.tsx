@@ -1,20 +1,21 @@
 import { BrowserNode } from '@connext/vector-browser-node';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Timeline } from 'antd';
+import { Button, Timeline, Typography } from 'antd';
 import React, { useState } from 'react';
 import * as connext from '../services/connext';
 import { formatTokenAmount } from '../services/utils';
 import { ChainKey } from '../types';
 import { defaultCoins, getChainById, getChainByKey, supportedChains } from '../types/lists';
-import { CrossAction, DepositAction, DepositEstimate, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
+import { CrossAction, DepositAction, DepositEstimate, emptyExecution, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
 import ConnectButton from './web3/ConnectButton';
 
 interface SwappingProps {
   route: Array<TranferStep>,
+  updateRoute: Function,
 }
 
-const Swapping = ({ route }: SwappingProps) => {
+const Swapping = ({ route, updateRoute }: SwappingProps) => {
   // Connext
   const [node, setNode] = useState<BrowserNode>(connext.getNode())
   const [loggingIn, setLoggingIn] = useState<boolean>(false)
@@ -71,8 +72,14 @@ const Swapping = ({ route }: SwappingProps) => {
   const triggerDeposit = (step: TranferStep) => {
     if (!node || !web3.library) return
     const depositAction = step.action as DepositAction
+    step.execution = emptyExecution
+    const updateStatus = (status : any) => {
+      console.log('STATUS_CHANGE:', status)
+      step.execution = status
+      updateRoute(route)
+    }
 
-    connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, depositAction.amount)
+    connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, depositAction.amount, updateStatus, step.execution)
   }
 
   const triggerSwap = (step: TranferStep) => {
@@ -141,14 +148,28 @@ const Swapping = ({ route }: SwappingProps) => {
   const parseStepToTimeline = (step: TranferStep) => {
     switch (step.action.type) {
       case "deposit":
+        const executionSteps = !step.execution ? [] : (step.execution as any).process.map((process: any) => {
+          return (
+            <p>
+              <Typography.Text
+                type={process.status === 'DONE' ? 'success' : undefined}
+                className={process.status === 'PENDING' ? 'flashing' : undefined}
+              >
+                {process.message}
+              </Typography.Text>
+            </p>
+          )
+        })
+        const triggerButton = <Button disabled={!node || !web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerDeposit(step)}>trigger Deposit</Button>
+        const color = step.execution && step.execution.status === 'DONE' ? 'green' : (node ? 'blue' : 'gray')
         return [
-          <Timeline.Item color={node ? 'blue' : 'gray'}>
+          <Timeline.Item color={color}>
             <h4>Deposit</h4>
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} from {web3.account ? web3.account.substr(0, 4) : '0x'}...</span>
           </Timeline.Item>,
-          <Timeline.Item color={node ? 'blue' : 'gray'}>
-            <Button disabled={!node || !web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerDeposit(step)}>trigger Deposit</Button>
-          </Timeline.Item>
+          <Timeline.Item color={color}>
+            { !step.execution ? triggerButton : executionSteps }
+          </Timeline.Item>,
         ]
       case "swap":
         return [

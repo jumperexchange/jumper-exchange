@@ -3,10 +3,11 @@ import { ConditionalTransferCreatedPayload, ConditionalTransferResolvedPayload, 
 import { getBalanceForAssetId, getRandomBytes32 } from "@connext/vector-utils"
 import { BigNumber } from "@ethersproject/bignumber"
 import { JsonRpcProvider } from "@ethersproject/providers"
-import { Contract, ethers, providers, utils } from "ethers"
+import { Contract, ContractReceipt, ethers, providers, utils } from "ethers"
 import { AddressZero } from "@ethersproject/constants";
 import { Evt } from "evt"
 import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
+import { emptyExecution, Execution, Process } from '../types/server'
 
 const connext = "vector892GMZ3CuUkpyW8eeXfW2bt5W73TWEXtgV71nphXUXAmpncnj8" // referenced in https://docs.connext.network/connext-mainnet
 const xpollinate = "vector52rjrwRFUkaJai2J4TrngZ6doTUXGZhizHmrZ6J15xVv4YFgFC" // used by https://www.xpollinate.io/
@@ -192,12 +193,27 @@ async function handleNodeResponse(channel: FullChannelState, nodeResponsePromise
   }
 }
 
-
-export const triggerDeposit = async (node: BrowserNode, signer: providers.JsonRpcSigner, chainId: number, tokenId: string, amount: ethers.BigNumberish) => {
-  return deposit(node, await getChannelForChain(node, chainId), signer, tokenId, amount)
+export const triggerDeposit = async (node: BrowserNode, signer: providers.JsonRpcSigner, chainId: number, tokenId: string, amount: ethers.BigNumberish, updateStatus: Function, initialStatus?: any) => {
+  return deposit(node, await getChannelForChain(node, chainId), signer, tokenId, amount, updateStatus, initialStatus)
 }
-async function deposit(node: BrowserNode, channel: FullChannelState, signer: any, token: string, amount: ethers.BigNumberish) {
+async function deposit(node: BrowserNode, channel: FullChannelState, signer: any, token: string, amount: ethers.BigNumberish, updateStatus?: Function, initialStatus?: Execution) {
+  // setup
+  const status = initialStatus || Object.assign({}, emptyExecution)
+  const update = updateStatus || console.log
+  update(status)
+
   // Ask user to transfer to channel
+  // -> set status
+  status.status = 'PENDING'
+  const approveProcess : Process = {
+    startedAt: Date.now(),
+    message: 'Approve transaction',
+    status: 'PENDING',
+  }
+  status.process.push(approveProcess)
+  update(status)
+
+  // -> start transaction
   const tx =
     token === AddressZero
       ? await signer.sendTransaction({
@@ -206,25 +222,76 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
       })
     : await new Contract(token, ERC20Abi, signer).transfer(channel.channelAddress, amount);
 
-  // Confirmed
-  console.log('>> waiting for transaction')
-  await tx.wait()
-  // const receipt = await tx.wait()
-  // reconcile deposit on from chain
-  // const e = {} as EngineEvent
-  // node.waitFor<EngineEvent>(e, 300_000, payload => {
-  //   console.log(payload)
-  // })
+  // -> set status
+  approveProcess.status = 'DONE'
+  approveProcess.doneAt = Date.now()
+  approveProcess.transaction = tx.hash
+  update(status)
 
-  console.log('>> claim transaction')
+  // Wait for transaction
+  // -> set status
+  status.status = 'PENDING'
+  const waitingProcess : Process = {
+    startedAt: Date.now(),
+    message: 'Waiting for transaction',
+    status: 'PENDING',
+    transaction: tx.hash,
+  }
+  status.process.push(waitingProcess)
+  update(status)
+
+  // -> waiting...
+  try {
+    const receipt : ContractReceipt = await tx.wait()
+    // TODO: set used fees
+    console.log('receipt: status', receipt.status, 'gasUsed', receipt.gasUsed.toString())
+  } catch (error) {
+    console.error(error)
+    if (error.replacement) {
+      console.log('replacement', error.replacement)
+      // TODO: try again with new id
+    } else {
+      throw error
+    }
+  }
+  // -> set status
+  waitingProcess.status = 'DONE'
+  waitingProcess.doneAt = Date.now()
+  update(status)
+
+  // claim transaction
+  // -> set status
+  status.status = 'PENDING'
+  const claimProcess : Process = {
+    startedAt: Date.now(),
+    message: 'Claiming transfer',
+    status: 'PENDING',
+  }
+  status.process.push(claimProcess)
+  update(status)
+
+  // -> claiming
   const depositRes = await node.reconcileDeposit({
     channelAddress: channel.channelAddress,
     assetId: token,
   })
   if (depositRes.isError) {
+    status.status = 'FAILED'
+    claimProcess.status = 'FAILED'
+    claimProcess.failedAt = Date.now()
+    update(status)
     throw depositRes.getError()
   }
-  console.log(`INFO: Deposit complete`)
+
+  // -> set status
+  status.status = 'DONE'
+  claimProcess.status = 'DONE'
+  claimProcess.doneAt = Date.now()
+  // TODO: set final amounts
+  update(status)
+
+  // DONE
+  return status
 }
 
 export const triggerSwap = async (node: BrowserNode, chainId: number, path: Array<string>, fromTokenId: string, toTokenId: string, amount: ethers.BigNumberish) => {

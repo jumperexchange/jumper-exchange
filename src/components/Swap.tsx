@@ -23,6 +23,7 @@ const Swap = () => {
   const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [selectedRoute, setselectedRoute] = useState<Array<TranferStep>>([]);
+  const [selectedRouteIndex, setselectedRouteIndex] = useState<number>();
   const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.POL);
   const [depositAmount, setDepositAmount] = useState<number>(0.01);
   const [depositToken, setDepositToken] = useState<CoinKey>(CoinKey.USDC);
@@ -113,10 +114,19 @@ const Swap = () => {
     return parseFloat(e.currentTarget.value)
   }
 
-  const openSwapModal = (route: Array<TranferStep>) => {
+  const openSwapModal = (route: Array<TranferStep>, index: number) => {
     setselectedRoute(route)
+    setselectedRouteIndex(index)
   }
 
+  const updateRoute = (route : any, index: number) => {
+    const newRoutes = [
+      ...routes.slice(0, index),
+      route,
+      ...routes.slice(index + 1)
+    ]
+    setRoutes(newRoutes)
+  }
   return (
     <Content className="site-layout">
       <div className="swap-view" style={{ padding: 24, paddingTop: 64, minHeight: 'calc(100vh - 64px)' }}>
@@ -267,7 +277,7 @@ const Swap = () => {
                         }
                       </Steps>
                       <Row justify={"start"} style={{ margin: 16 }}>
-                        <Button shape="round" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal(route)}>Swap</Button>
+                        <Button shape="round" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal(route, index)}>Swap</Button>
                       </Row>
                     </Col>
                   )
@@ -291,7 +301,7 @@ const Swap = () => {
         onCancel={() => setselectedRoute([])}
         width={700}
       >
-        <Swapping route={selectedRoute}></Swapping>
+        <Swapping route={selectedRoute} updateRoute={(route : any) => updateRoute(route, selectedRouteIndex ?? 0)}></Swapping>
       </Modal>
     </Content>
   )

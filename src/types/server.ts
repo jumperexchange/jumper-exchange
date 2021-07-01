@@ -21,9 +21,27 @@ export interface WithdrawEstimate extends BaseEstimate { }
 export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate
 
 
-export interface Execution {
 
+export type Status = 'NOT_STARTED' | 'PENDING' | 'FAILED' | 'DONE'
+export interface Process {
+  startedAt: number
+  doneAt?: number
+  failedAt?: number
+  message: string
+  status: Status
+
+  // additional information
+  [key: string]: any
 }
+export interface Execution {
+  status: Status
+  process: Array<Process>
+}
+export const emptyExecution : Execution = {
+  status: 'NOT_STARTED',
+  process: []
+}
+
 export type Action = DepositAction | WithdrawAction | SwapAction | CrossAction
 
 
