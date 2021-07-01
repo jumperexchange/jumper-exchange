@@ -233,7 +233,6 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
 
 export const triggerSwap = async (node: BrowserNode, chainId: number, path: Array<string>, fromTokenId: string, toTokenId: string, amount: ethers.BigNumberish) => {
   const channel = await getChannelForChain(node, chainId)
-  amount = 100
   if (!amount) {
     amount = getBalanceForAssetId(channel, fromTokenId, 'bob')
   }

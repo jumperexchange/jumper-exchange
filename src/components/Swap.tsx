@@ -62,7 +62,7 @@ const Swap = () => {
       setRoutesLoading(true)
       const dToken = findDefaultCoin(depositToken).chains[depositChain]
       const deposit: DepositAction = {
-        type: "deposit",
+        type: 'deposit',
         chainKey: depositChain,
         chainId: getChainByKey(depositChain).id,
         token: dToken,
@@ -71,14 +71,27 @@ const Swap = () => {
 
       const wToken = findDefaultCoin(withdrawToken).chains[withdrawChain]
       const withdraw: WithdrawAction = {
-        type: "withdraw",
+        type: 'withdraw',
         chainKey: withdrawChain,
         chainId: getChainByKey(withdrawChain).id,
         token: wToken,
         amount: withdrawAmount ? withdrawAmount * (10 ** wToken.decimals) : Infinity
       }
-      const result = await axios.post("http://localhost:8000/api/transfer", { deposit, withdraw })
-      setRoutes(result.data)
+      const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw })
+
+      // remove swaps with native coins
+      const filteredRoutes = result.data.filter((path : Array<TranferStep>) => {
+        for (const step of path) {
+          if (step.action.type === 'swap') {
+            if (step.action.fromToken.id === '0x0000000000000000000000000000000000000000' || step.action.toToken.id === '0x0000000000000000000000000000000000000000') {
+              return false
+            }
+          }
+        }
+        return true
+      })
+
+      setRoutes(filteredRoutes)
       setRoutesLoading(false)
     }
   }

@@ -276,7 +276,11 @@ const Swapping = ({ route }: SwappingProps) => {
             {transferChains.map(chain => {
               const coinId = coin.chains[chain.key].id
               const balance = balances ? balances[chain.id]?.bob[coinId] : '-'
-              return <td key={chain.key} className="ant-table-cell">{balance}</td>
+              return <td key={chain.key} className="ant-table-cell">
+                {formatTokenAmount(coin.chains[chain.key], balance)}
+                <br/>
+                <small>{balance}</small>
+                </td>
             })}
           </tr>
         ))}
