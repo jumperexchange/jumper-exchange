@@ -139,6 +139,7 @@ const showGasModal = (gas: ChainKey) => {
           <div>
             <p>You can get some free DAI using those faucets. It should be enough to exchange or move your funds.</p>
             <ul>
+              <li><a href="https://xdai-faucet.top/" target="_blank" rel="nofollow noreferrer">https://xdai-faucet.top/</a></li>
               <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
               <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/.../faucet</a></li>
             </ul>

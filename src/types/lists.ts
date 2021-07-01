@@ -116,6 +116,9 @@ export const supportedChains: Array<Chain> = [
       chainId: prefixChainId(100),
       blockExplorerUrls: [
         'https://rpc.xdaichain.com/',
+        'https://dai.poa.network/',
+        'https://xdai.poanetwork.dev/',
+        'https://xdai.1hive.org/',
       ],
       chainName: 'xDai',
       iconUrls: [],

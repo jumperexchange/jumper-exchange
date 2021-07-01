@@ -4,6 +4,7 @@ import { getBalanceForAssetId, getRandomBytes32 } from "@connext/vector-utils"
 import { BigNumber } from "@ethersproject/bignumber"
 import { JsonRpcProvider } from "@ethersproject/providers"
 import { Contract, ethers, providers, utils } from "ethers"
+import { AddressZero } from "@ethersproject/constants";
 import { Evt } from "evt"
 import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
 
@@ -197,18 +198,13 @@ export const triggerDeposit = async (node: BrowserNode, signer: providers.JsonRp
 }
 async function deposit(node: BrowserNode, channel: FullChannelState, signer: any, token: string, amount: ethers.BigNumberish) {
   // Ask user to transfer to channel
-  const fromTokenContract = new Contract(
-    token,
-    ERC20Abi,
-    signer
-  )
-
-  console.log('>> user has to submit transaction')
-  const tx = await fromTokenContract.transfer(
-    channel.channelAddress,
-    amount.toString(),
-  )
-  // setLog(`(1/7) Starting swap`, { tx: tx.hash, chainId: fromChainId })
+  const tx =
+    token === AddressZero
+      ? await signer.sendTransaction({
+        to: channel.channelAddress,
+        value: BigNumber.from(amount).toHexString(),
+      })
+    : await new Contract(token, ERC20Abi, signer).transfer(channel.channelAddress, amount);
 
   // Confirmed
   console.log('>> waiting for transaction')
