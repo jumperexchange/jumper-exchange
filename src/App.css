@@ -43,6 +43,7 @@
 }
 
 /* Annimations */
+/* .ant-timeline-item-head-blue, */
 .flashing {
   animation: blinker 1s linear infinite;
 }
