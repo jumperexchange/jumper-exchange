@@ -337,9 +337,9 @@ export const triggerSwap = async (node: BrowserNode, chainId: number, path: Arra
   if (!amount) {
     amount = getBalanceForAssetId(channel, fromTokenId, 'bob')
   }
-  return swapInChannel(getEvt(node), node, channel, amount, fromTokenId, toTokenId, path, updateStatus, initialStatus)
+  return swapInChannel(getEvt(node), node, channel, amount.toString(), fromTokenId, toTokenId, path, updateStatus, initialStatus)
 }
-async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: FullChannelState, amount: ethers.BigNumberish, tokenA: string, tokenB: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) {
+async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: FullChannelState, amount: string, tokenA: string, tokenB: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) {
   // setup
   const status = initialStatus || JSON.parse(JSON.stringify(emptyExecution))
   const update = updateStatus || console.log
@@ -376,7 +376,7 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
 
   const withdrawOptions = {
     assetId: tokenA,
-    amount: amount.toString(),
+    amount: amount,
     channelAddress: channel.channelAddress,
     callData: swapData,
     callTo: withdrawHelpers[channel.networkContext.chainId],

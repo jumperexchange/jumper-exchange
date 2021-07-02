@@ -56,7 +56,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const swapEstimate = step.estimate as SwapEstimate
     const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
 
-    connext.triggerSwap(node, chainId, swapEstimate.path, swapAction.fromToken.id, swapAction.toToken.id, 1000000000000000 || swapAction.fromAmount, (status: Execution) => updateStatus(step, status))
+    connext.triggerSwap(node, chainId, swapEstimate.path, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerTransfer = (step: TranferStep) => {
@@ -124,9 +124,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     return execution.process.map((process, index) => {
       return (
-        <p>
+        <p key={index}>
           <Typography.Text
-            key={index}
             type={process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined) }
             className={process.status === 'PENDING' ? 'flashing' : undefined}
           >
