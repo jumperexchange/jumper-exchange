@@ -12,11 +12,11 @@ export interface Token {
   chainId: number
 
   chainKey: ChainKey
-  key: CoinKey | string
+  key: CoinKey
 }
 
 export interface Coin {
-  key: CoinKey | string;
+  key: CoinKey;
   name: string;
   img_url: string;
   chains: {

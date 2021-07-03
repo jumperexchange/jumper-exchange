@@ -32,7 +32,7 @@ const chainJsonProviders: { [chainId: number]: JsonRpcProvider } = {
 const withdrawHelpers: { [chainId: number]: string } = {
   56: "0xad654314d3F6590243602D14b4089332EBb5227D", // https://bscscan.com/address/0xad654314d3f6590243602d14b4089332ebb5227d#tokentxns
   100: "0xe12639c8C458f719146286f8B8b7050176577a62", // https://blockscout.com/xdai/mainnet/address/0xe12639c8C458f719146286f8B8b7050176577a62/internal-transactions
-  137: "0xD1CC3E4b9c6d0cb0B9B97AEde44d4908FF0be507",
+  137: "0xD1CC3E4b9c6d0cb0B9B97AEde44d4908FF0be507", // https://polygonscan.com/address/0xD1CC3E4b9c6d0cb0B9B97AEde44d4908FF0be507#tokentxns
 }
 
 // Official routers
@@ -271,7 +271,7 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
   status.status = 'PENDING'
   const waitingProcess : Process = {
     startedAt: Date.now(),
-    message: 'Waiting for transaction',
+    message: 'Wait for transaction',
     status: 'PENDING',
     transaction: tx.hash,
   }
@@ -302,7 +302,7 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
   status.status = 'PENDING'
   const claimProcess : Process = {
     startedAt: Date.now(),
-    message: 'Claiming transfer',
+    message: 'Claim transfer',
     status: 'PENDING',
   }
   status.process.push(claimProcess)
@@ -350,7 +350,7 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
   status.status = 'PENDING'
   const defineProcess : Process = {
     startedAt: Date.now(),
-    message: 'Define Swap',
+    message: 'Define swap',
     status: 'PENDING',
   }
   status.process.push(defineProcess)
@@ -413,6 +413,11 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
       await handleNodeResponse(channel, toSwapWithdrawPromise)
     } catch (e) {
       console.error(e)
+      status.status = 'FAILED'
+      withdrawProcess.status = 'FAILED'
+      withdrawProcess.failedAt = Date.now()
+      update(status)
+      throw e
     }
   }
 
@@ -427,7 +432,7 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
   status.status = 'PENDING'
   const reconcileProcess : Process = {
     startedAt: Date.now(),
-    message: 'Deposit swapped tokens to StateChannel',
+    message: 'Claim swapped tokens',
     status: 'PENDING',
   }
   status.process.push(reconcileProcess)
@@ -490,7 +495,7 @@ async function transferBetweenChains(node: BrowserNode, fromChannel: FullChannel
   status.status = 'PENDING'
   const startProcess : Process = {
     startedAt: Date.now(),
-    message: 'creating Transfer',
+    message: 'Create transfer',
     status: 'PENDING',
   }
   status.process.push(startProcess)
@@ -618,7 +623,7 @@ async function withdrawFromChannel(evt: EvtContainer, node: BrowserNode, channel
   status.status = 'PENDING'
   const withdrawProcess : Process = {
     startedAt: Date.now(),
-    message: 'Withdrawing',
+    message: 'Withdraw',
     status: 'PENDING',
   }
   status.process.push(withdrawProcess)

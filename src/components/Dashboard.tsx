@@ -468,10 +468,10 @@ const Dashboard = () => {
             chainId: 0,
 
             chainKey: ChainKey.ETH,
-            key: coin.symbol,
+            key: coin.symbol as CoinKey,
           }
           let newCoin : Coin = {
-            key: coin.symbol,
+            key: coin.symbol as CoinKey,
             name: coin.name,
             img_url: coin.img_url,
             chains: {

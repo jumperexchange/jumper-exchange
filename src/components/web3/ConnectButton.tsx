@@ -9,7 +9,7 @@ function ConnectButton() {
 
 
   return (
-    <Button style={{ display: 'block' }} onClick={() => activate(injected)}>
+    <Button type="primary" style={{ display: 'block' }} onClick={() => activate(injected)}>
       Connect with MetaMask
     </Button>
   );

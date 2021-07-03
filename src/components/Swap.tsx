@@ -25,11 +25,11 @@ const Swap = () => {
   const [selectedRoute, setselectedRoute] = useState<Array<TranferStep>>([]);
   const [selectedRouteIndex, setselectedRouteIndex] = useState<number>();
   const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.POL);
-  const [depositAmount, setDepositAmount] = useState<number>(0.01);
+  const [depositAmount, setDepositAmount] = useState<number>(1);
   const [depositToken, setDepositToken] = useState<CoinKey>(CoinKey.USDC);
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.DAI);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity);
-  const [withdrawToken, setWithdrawToken] = useState<CoinKey>(CoinKey.USDT);
+  const [withdrawToken, setWithdrawToken] = useState<CoinKey>();
 
   const parseStep = (step: TranferStep) => {
     switch (step.action.type) {
@@ -127,6 +127,22 @@ const Swap = () => {
     ]
     setRoutes(newRoutes)
   }
+
+  const isOptimal = (routes: Array<Array<TranferStep>>, index: number) => {
+    let optimalIndex = 0
+    let optimalOutput = 0
+
+    routes.forEach((route, index) => {
+      const toAmount = route[route.length - 1].estimate?.toAmount || 0
+      if (toAmount > optimalOutput) {
+        optimalOutput = toAmount
+        optimalIndex = index
+      }
+    })
+
+    return optimalIndex === index
+  }
+
   return (
     <Content className="site-layout">
       <div className="swap-view" style={{ padding: 24, paddingTop: 64, minHeight: 'calc(100vh - 64px)' }}>
@@ -136,7 +152,7 @@ const Swap = () => {
           <Col>
             <div className="swap-input" style={{ width: 500, border: "2px solid #f0f0f0", borderRadius: 20, padding: 24, margin: "0 auto" }}>
               <Row style={{ marginBottom: 32, paddingTop: 32 }}>
-                <Title style={{ margin: "0 auto" }} level={4} type="secondary">Please Specify A Transaction</Title>
+                <Title style={{ margin: "0 auto" }} level={4} type="secondary">Please Specify Your Transaction</Title>
               </Row>
 
               <Row style={{ marginBottom: 32, paddingTop: 24 }} justify={"center"}>
@@ -263,12 +279,12 @@ const Swap = () => {
 
           {/* Routes */}
           {routes.length > 0 &&
-            <Col>
-              <Row gutter={[32, 62]} justify={"space-between"} className="swap-routes" style={{ width: "65vw", border: "2px solid #f0f0f0", borderRadius: 20, padding: 24 }}>
+            <Col style={{marginTop: 20}}>
+              <Row gutter={[32, 62]} justify={"center"} style={{ width: "65vw" }}>
                 {
                   routes.map((route, index) =>
-                    <Col key={index}>
-                      <Steps progressDot size="small" direction="vertical" className="progress-step-list">
+                    <Col key={index} className={'swap-route ' + (isOptimal(routes, index) ? 'optimal' : '')} style={{padding: 24, paddingTop: 24, paddingBottom: 24}}>
+                      <Steps progressDot size="small" direction="vertical" current={5} className="progress-step-list">
                         {
                           route.map(step => {
                             let { title, description } = parseStep(step)
@@ -276,7 +292,7 @@ const Swap = () => {
                           })
                         }
                       </Steps>
-                      <Row justify={"start"} style={{ margin: 16 }}>
+                      <Row justify={"center"} style={{ margin: 16 }}>
                         <Button shape="round" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal(route, index)}>Swap</Button>
                       </Row>
                     </Col>
@@ -286,8 +302,8 @@ const Swap = () => {
             </Col>
           }
           {routesLoading &&
-            <Col>
-              <Row gutter={[32, 62]} justify={"space-between"} className="swap-routes" style={{ width: "65vw", border: "2px solid #f0f0f0", borderRadius: 20, padding: 24 }}>
+            <Col style={{marginTop: 80}}>
+              <Row gutter={[32, 62]} justify={"center"} className="swap-routes" style={{ width: "65vw", border: "2px solid #f0f0f0", borderRadius: 20, padding: 24 }}>
                 Loading...
               </Row>
             </Col>
@@ -300,6 +316,7 @@ const Swap = () => {
         onOk={() => setselectedRoute([])}
         onCancel={() => setselectedRoute([])}
         width={700}
+        footer={null}
       >
         <Swapping route={selectedRoute} updateRoute={(route : any) => updateRoute(route, selectedRouteIndex ?? 0)}></Swapping>
       </Modal>

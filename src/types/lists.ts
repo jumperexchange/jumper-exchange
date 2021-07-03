@@ -14,13 +14,23 @@ interface AddEthereumChainParameter {
   rpcUrls?: string[];
 }
 
+interface Exchange {
+  name: string
+  iconUrl: string
+  logoUrl: string
+  webUrl: string
+  graph: string
+  tokenlistUrl: string
+}
+
 interface Chain {
   key: ChainKey
   name: string
   coin: CoinKey
   id: number
   visible: boolean
-  metamask?: AddEthereumChainParameter
+  exchange?: Exchange
+  metamask: AddEthereumChainParameter
 }
 
 const prefixChainId = (chainId: number) => {
@@ -34,6 +44,15 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 1,
     visible: true,
+
+    exchange: {
+      name: 'UniswapV2',
+      iconUrl: '',
+      logoUrl: '',
+      webUrl: 'https://app.uniswap.org/#/swap',
+      graph: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2', // https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
+      tokenlistUrl: 'https://gateway.ipfs.io/ipns/tokens.uniswap.org',
+    },
 
     metamask: {
       chainId: prefixChainId(1),
@@ -59,6 +78,15 @@ export const supportedChains: Array<Chain> = [
     id: 137,
     visible: true,
 
+    exchange: {
+      name: 'QuickSwap',
+      iconUrl: '',
+      logoUrl: 'https://quickswap.exchange/static/media/QuickSwap_logo.420e2e01.png',
+      webUrl: 'https://quickswap.exchange/',
+      graph: 'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap06', // https://thegraph.com/explorer/subgraph/sameepsi/quickswap06 (often new versions)
+      tokenlistUrl: 'https://unpkg.com/quickswap-default-token-list@1.0.71/build/quickswap-default.tokenlist.json',
+    },
+
     // https://docs.matic.network/docs/develop/metamask/config-matic/
     metamask: {
       chainId: prefixChainId(137),
@@ -83,6 +111,15 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.BNB,
     id: 56,
     visible: true,
+
+    exchange: {
+      name: 'Pancake',
+      logoUrl: '',
+      iconUrl: 'https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png',
+      webUrl: 'https://exchange.pancakeswap.finance/',
+      graph: 'https://api.thegraph.com/subgraphs/name/bscnodes/pancakeswap', // https://thegraph.com/explorer/subgraph/bscnodes/pancakeswap
+      tokenlistUrl: 'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
+    },
 
     // https://docs.binance.org/smart-chain/wallet/metamask.html
     metamask: {
@@ -110,6 +147,15 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.DAI,
     id: 100,
     visible: true,
+
+    exchange: {
+      name: 'Honeyswap',
+      iconUrl: '',
+      logoUrl: 'https://app.honeyswap.org/static/media/wordmark_white.svg',
+      webUrl: 'https://app.honeyswap.org/',
+      graph: 'https://api.thegraph.com/subgraphs/name/1hive/honeyswap-xdai',
+      tokenlistUrl: 'https://tokens.honeyswap.org/',
+    },
 
     // https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup
     metamask: {
@@ -449,7 +495,6 @@ export const findDefaultCoin = (coinKey: CoinKey) => {
   return coin
 }
 
-
 export const wrappedTokens: { [ChainKey: string]: Token } = {
   [ChainKey.ETH]: {
     // https://ww7.etherscan.io/token/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -458,7 +503,7 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     decimals: 18,
     chainId: 1,
     chainKey: ChainKey.ETH,
-    key: 'WETH',
+    key: 'WETH' as CoinKey,
   },
   [ChainKey.BSC]: {
     // https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
@@ -467,7 +512,7 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     decimals: 18,
     chainId: 56,
     chainKey: ChainKey.BSC,
-    key: 'WBNB',
+    key: 'WBNB' as CoinKey,
   },
 
   [ChainKey.POL]: {
@@ -477,7 +522,7 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     decimals: 18,
     chainId: 137,
     chainKey: ChainKey.POL,
-    key: 'WMATIC',
+    key: 'WMATIC' as CoinKey,
   },
   [ChainKey.DAI]: {
     // https://blockscout.com/xdai/mainnet/address/0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d
@@ -486,6 +531,6 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     decimals: 18,
     chainId: 100,
     chainKey: ChainKey.DAI,
-    key: 'WXDAI',
+    key: 'WXDAI' as CoinKey,
   },
 }
