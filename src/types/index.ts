@@ -5,12 +5,24 @@ export interface Amounts {
   amount_usd: number;
 }
 
+export interface Token {
+  id: string
+  symbol: string
+  decimals: number
+  chainId: number
+  name: string
+  logoURI: string
+
+  chainKey: ChainKey
+  key: CoinKey
+}
+
 export interface Coin {
-  key: string;
+  key: CoinKey;
   name: string;
-  img_url: string;
-  contracts: {
-    [ChainKey: string]: string,
+  logoURI: string;
+  chains: {
+    [ChainKey: string]: Token,
   }
 }
 

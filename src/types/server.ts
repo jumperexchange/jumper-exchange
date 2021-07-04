@@ -1,14 +1,4 @@
-
-export enum ChainKey {
-  ETH = 'eth',
-  POL = 'pol',
-  BSC = 'bsc',
-  DAI = 'dai',
-}
-
-export interface Token {
-  symbol: string
-}
+import { ChainKey, Token } from '.'
 
 export interface BaseEstimate {
   fromAmount: number
@@ -31,9 +21,27 @@ export interface WithdrawEstimate extends BaseEstimate { }
 export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate
 
 
-export interface Execution {
 
+export type Status = 'NOT_STARTED' | 'PENDING' | 'FAILED' | 'DONE'
+export interface Process {
+  startedAt: number
+  doneAt?: number
+  failedAt?: number
+  message: string
+  status: Status
+
+  // additional information
+  [key: string]: any
 }
+export interface Execution {
+  status: Status
+  process: Array<Process>
+}
+export const emptyExecution : Execution = {
+  status: 'NOT_STARTED',
+  process: []
+}
+
 export type Action = DepositAction | WithdrawAction | SwapAction | CrossAction
 
 
@@ -47,6 +55,7 @@ export interface TranferStep {
 interface ActionBase {
   type: string
   chainKey: ChainKey
+  chainId: number
 }
 
 export interface DepositAction extends ActionBase {
@@ -59,6 +68,7 @@ export interface WithdrawAction extends ActionBase {
   type: 'withdraw'
   amount: number
   token: Token
+  recipient?: string
 }
 
 export interface SwapAction extends ActionBase {
@@ -74,5 +84,6 @@ export interface CrossAction extends ActionBase {
   type: 'cross'
   toChainKey: ChainKey
   amount: number
-  token: Token
+  fromToken: Token
+  toToken: Token
 }

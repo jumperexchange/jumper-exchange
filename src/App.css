@@ -41,3 +41,13 @@
 .ant-menu-horizontal > .ant-menu-item-selected a {
   color: white;
 }
+
+/* Annimations */
+/* .ant-timeline-item-head-blue, */
+.flashing {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% { opacity: 0.2; }
+}

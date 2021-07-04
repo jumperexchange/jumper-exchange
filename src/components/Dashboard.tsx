@@ -8,7 +8,7 @@ import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF
 import { getBalancesForWallet } from '../services/balanceService';
-import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio } from '../types';
+import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio, Token } from '../types';
 import { supportedChains, defaultCoins } from '../types/lists';
 import { useWeb3React } from "@web3-react/core";
 import ConnectButton from "./web3/ConnectButton";
@@ -73,7 +73,7 @@ function renderCoin(coin: Coin) {
     <div className="coin">
       <Tooltip title={coin.name}>
         <Avatar
-          src={coin.img_url}
+          src={coin.logoURI}
           alt={coin.name}
         >
           { coin.key }
@@ -139,6 +139,7 @@ const showGasModal = (gas: ChainKey) => {
           <div>
             <p>You can get some free DAI using those faucets. It should be enough to exchange or move your funds.</p>
             <ul>
+              <li><a href="https://xdai-faucet.top/" target="_blank" rel="nofollow noreferrer">https://xdai-faucet.top/</a></li>
               <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
               <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/.../faucet</a></li>
             </ul>
@@ -179,7 +180,7 @@ const showGasModal = (gas: ChainKey) => {
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
   const coin = coins.find(coin => coin.key === coinName) as Coin
   const isChainUsed = wallet.portfolio[chain].length > 0
-  const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.contracts[chain])
+  const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.chains[chain].id)
   const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : {amount_coin:0, amount_usd:0}
 
   const tooltipsEmpty = {
@@ -427,7 +428,7 @@ const Dashboard = () => {
             amount_coin: wallet.loading ? -1 : 0.0,
             amount_usd: wallet.loading ? -1 : 0.0,
           }
-          const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.contracts[chain])
+          const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.chains[chain].id)
           const cellContent: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : emptyAmounts
           coinRow[`${wallet.address}_${chain}`] = cellContent
 
@@ -458,22 +459,32 @@ const Dashboard = () => {
 
       // add new coins
       chainPortfolio.forEach(coin => {
-        const exists = coins.find(existingCoin => existingCoin.contracts[chain] === coin.id)
+        const exists = coins.find(existingCoin => existingCoin.chains[chain].id === coin.id)
         if (!exists) {
-          let newCoin = {
-            key: coin.symbol,
+          const newToken : Token = {
+            id: coin.id,
+            symbol: coin.symbol,
+            decimals: 18,
+            chainId: 0,
             name: coin.name,
-            img_url: coin.img_url,
-            contracts: {
-              [ChainKey.ETH]: '',
-              [ChainKey.BSC]: '',
-              [ChainKey.POL]: '',
-              [ChainKey.DAI]: '',
-              [ChainKey.FTM]: '',
-              [ChainKey.OKT]: '',
+            logoURI: coin.img_url,
+
+            chainKey: ChainKey.ETH,
+            key: coin.symbol as CoinKey,
+          }
+          let newCoin : Coin = {
+            key: coin.symbol as CoinKey,
+            name: coin.name,
+            logoURI: coin.img_url,
+            chains: {
+              [ChainKey.ETH]: newToken,
+              [ChainKey.BSC]: newToken,
+              [ChainKey.POL]: newToken,
+              [ChainKey.DAI]: newToken,
+              [ChainKey.FTM]: newToken,
+              [ChainKey.OKT]: newToken,
             },
           }
-          newCoin.contracts[chain] = coin.id
           coins.push(newCoin)
         }
       })
