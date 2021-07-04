@@ -1,5 +1,5 @@
 import { BrowserNode } from '@connext/vector-browser-node';
-import { Web3Provider } from '@ethersproject/providers';
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Button, Timeline, Typography } from 'antd';
 import React, { useState } from 'react';
@@ -7,9 +7,10 @@ import { Link } from 'react-router-dom';
 import * as connext from '../services/connext';
 import { formatTokenAmount } from '../services/utils';
 import { getChainById, getChainByKey } from '../types/lists';
-import { CrossAction, DepositAction, Execution, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
+import { CrossAction, DepositAction, emptyExecution, Execution, ParaswapAction, Process, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
 import StateChannelBalances from './StateChannelBalances';
 import ConnectButton from './web3/ConnectButton';
+import { getAllowance, setAllowance, transfer } from '../services/paraswap';
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -40,6 +41,135 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
+  // Paraswap
+  const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+    // setup
+    const status = initialStatus || JSON.parse(JSON.stringify(emptyExecution))
+    const update = updateStatus || console.log
+    update(status)
+
+    // Ask user to set allowance
+    // -> set status
+    status.status = 'PENDING'
+    const allowanceProcess : Process = {
+      startedAt: Date.now(),
+      message: 'Set Allowance',
+      status: 'PENDING',
+    }
+    status.process.push(allowanceProcess)
+    update(status)
+
+    // -> check allowance
+    try {
+      const allowance1 = await getAllowance(chainId, srcAddress, srcToken)
+      // -> set allowance
+      if (allowance1 < srcAmount) {
+        await setAllowance(chainId, srcAddress, srcToken, srcAmount)
+      }
+    } catch (e) {
+      // -> set status
+      status.status = 'FAILED'
+      allowanceProcess.failedAt = Date.now()
+      allowanceProcess.status = 'FAILED'
+      update(status)
+      throw e
+    }
+
+    // -> set status
+    allowanceProcess.doneAt = Date.now()
+    allowanceProcess.status = 'DONE'
+    update(status)
+
+
+    // Swap via Paraswap
+    // -> set status
+    status.status = 'PENDING'
+    const swapProcess : Process = {
+      startedAt: Date.now(),
+      message: 'Swap via Paraswap',
+      status: 'PENDING',
+    }
+    status.process.push(swapProcess)
+    update(status)
+
+    // -> swapping
+    let tx
+    try {
+      tx = await transfer(signer, chainId, srcAddress, srcToken, destToken, srcAmount, destAddress)
+    } catch (e) {
+      // -> set status
+      status.status = 'FAILED'
+      swapProcess.failedAt = Date.now()
+      swapProcess.status = 'FAILED'
+      update(status)
+      throw e
+    }
+
+    // -> set status
+    swapProcess.doneAt = Date.now()
+    swapProcess.status = 'DONE'
+    update(status)
+
+
+    // Wait for transaction
+    // -> set status
+    status.status = 'PENDING'
+    const waitingProcess : Process = {
+      startedAt: Date.now(),
+      message: 'Wait for Transaction',
+      status: 'PENDING',
+      transaction: tx.hash,
+    }
+    status.process.push(waitingProcess)
+    update(status)
+
+    // -> waiting
+    try {
+      await tx.wait()
+    } catch (e) {
+      // -> set status
+      status.status = 'FAILED'
+      waitingProcess.failedAt = Date.now()
+      waitingProcess.status = 'FAILED'
+      update(status)
+      throw e
+    }
+
+    // -> set status
+    waitingProcess.doneAt = Date.now()
+    waitingProcess.status = 'DONE'
+    update(status)
+
+    if (srcAddress !== destAddress) {
+      // Reconcile Deposit
+      // -> set status
+      status.status = 'PENDING'
+      const reconcileProcess : Process = {
+        startedAt: Date.now(),
+        message: 'Claim Transfer',
+        status: 'PENDING',
+        transaction: tx.hash,
+      }
+      status.process.push(reconcileProcess)
+      update(status)
+
+      // -> reconciling
+      await connext.reconcileDeposit(node, chainId, destToken)
+
+      // -> set status
+      reconcileProcess.doneAt = Date.now()
+      reconcileProcess.status = 'DONE'
+      update(status)
+    }
+
+    // -> set status
+    status.status = 'DONE'
+    update(status)
+
+    // DONE
+    return status
+  }
+
   // Swap
   const updateStatus = (step: TranferStep, status: Execution) => {
     console.log('STATUS_CHANGE:', status)
@@ -62,6 +192,16 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
 
     return connext.triggerSwap(node, chainId, swapEstimate.path, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, (status: Execution) => updateStatus(step, status))
+  }
+
+  const triggerParaswap = async (step: TranferStep) => {
+    if (!node || !web3.account || !web3.library) return
+    const swapAction = step.action as ParaswapAction
+    const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
+    const fromAddress = web3.account
+    const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
+
+    return executeParaswap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerTransfer = (step: TranferStep) => {
@@ -262,6 +402,20 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         ]
       }
 
+      case 'paraswap': {
+        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerParaswap(step)} >trigger Swap</Button>
+        return [
+          <Timeline.Item key={index + '_left'} color={color}>
+            <h4>Swap{step.action.target === 'channel' ? ' and Deposit' : ''}</h4>
+            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via Paraswap</span>
+          </Timeline.Item>,
+          <Timeline.Item key={index + '_right'} color={color}>
+            {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
+            {hasFailed ? triggerButton : undefined}
+          </Timeline.Item>,
+        ]
+      }
+
       case 'cross': {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Transfer</Button>
 
@@ -289,6 +443,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
             {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
         ]
+
+      default:
+        console.warn('should never reach here')
     }
   }
 
@@ -300,6 +457,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         break
       case 'swap':
         triggerFunc = triggerSwap
+        break
+      case 'paraswap':
+        triggerFunc = triggerParaswap
         break
       case 'cross':
         triggerFunc = triggerTransfer

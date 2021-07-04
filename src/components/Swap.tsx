@@ -75,6 +75,11 @@ const Swap = () => {
           title: "Swap Tokens",
           description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on ${step.action.chainKey}`,
         }
+      case "paraswap":
+        return {
+          title: `Swap ${step.action.target === 'channel' ? ' and Deposit' : ''} Tokens`,
+          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via Paraswap`
+        }
       case "cross":
         return {
           title: "Cross Chains",

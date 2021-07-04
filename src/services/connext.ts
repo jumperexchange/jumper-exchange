@@ -197,6 +197,11 @@ async function handleNodeResponse(channel: FullChannelState, nodeResponsePromise
 
 
 // public helpers
+export const getChannelAddress = async (node: BrowserNode, chainId: number) => {
+  const channel = await getChannelForChain(node, chainId)
+  return channel.channelAddress
+}
+
 export const getChannelBalances = async (node: BrowserNode, chainId: number) => {
   const channel = await getChannelForChain(node, chainId)
 
