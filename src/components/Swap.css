@@ -1,0 +1,68 @@
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  margin-right: -8px;
+}
+
+.site-layout .swap-view {
+  background: #f0f0f0;
+}
+
+.swap-input {
+  background: white;
+}
+
+.swap-routes {
+  /* background: white; */
+}
+
+.swap-route {
+  background: #d6d6d6;
+  transform: scale(0.9);
+  transition: transform 200ms;
+
+  border: 2px solid #f0f0f0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.swap-route .ant-btn {
+  background: #ececec;
+}
+.swap-route.optimal,
+.swap-route:hover {
+  transform: scale(1);
+  background: white;
+}
+.swap-route.optimal .ant-btn,
+.swap-route:hover .ant-btn {
+  background: white;
+}
+
+.progress-step-list {
+}
+
+.progress-step-title {
+  color: #3f3f3f;
+  font-size: 15px;
+  margin-bottom: -3px;
+}
+
+.progress-step-descripion {
+  color: #7e7e7e;
+}
+
+.ant-timeline-item-content p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* laptop screen */
+@media only screen and (max-height: 900px) {
+  .ant-modal {
+    margin-top: -70px;
+  }
+  .ant-timeline-item {
+    padding-bottom: 12px;
+  }
+}

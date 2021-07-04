@@ -1,5 +1,6 @@
 import { ChainKey, ChainPortfolio } from '../types';
 import axios from 'axios'
+import { ethers } from 'ethers';
 
 type tokenListDebankT = {
   id: string,
@@ -45,7 +46,7 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
   }
 
   // build return object
-  var balanceArray: Array<ChainPortfolio> = [] 
+  var balanceArray: Array<ChainPortfolio> = []
   for (const token of tokenList){
     balanceArray.push({
       id: token.id,
@@ -56,13 +57,9 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
       pricePerCoin: token.price as number,
     })
   }
-  
-  
 
-  
   return balanceArray
 }
-
 
 async function getBalancesForWallet(walletAdress: string){
   walletAdress = walletAdress.toLowerCase()
@@ -95,29 +92,18 @@ async function getBalancesForWallet(walletAdress: string){
     [ChainKey.FTM] : [],
 
   }
-  for (const token of tokenList){
+  for (const token of tokenList) {
     totalPortfolio[token.chain].push({
-      id: token.id,
+      id: ethers.utils.isAddress(token.id) ? token.id : '0x0000000000000000000000000000000000000000',
       name: token.name,
       symbol: token.optimized_symbol,
       img_url: token.logo_url,
       amount: token.amount as number,
       pricePerCoin: token.price as number,
-    }) 
-   
+    })
   }
-  
 
-  
   return totalPortfolio
 }
 
-
-
-
-export { getCoinsOnChain ,getBalancesForWallet };
-
-
-
-
-
+export { getCoinsOnChain , getBalancesForWallet }
