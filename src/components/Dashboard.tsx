@@ -73,7 +73,7 @@ function renderCoin(coin: Coin) {
     <div className="coin">
       <Tooltip title={coin.name}>
         <Avatar
-          src={coin.img_url}
+          src={coin.logoURI}
           alt={coin.name}
         >
           { coin.key }
@@ -466,6 +466,8 @@ const Dashboard = () => {
             symbol: coin.symbol,
             decimals: 18,
             chainId: 0,
+            name: coin.name,
+            logoURI: coin.img_url,
 
             chainKey: ChainKey.ETH,
             key: coin.symbol as CoinKey,
@@ -473,7 +475,7 @@ const Dashboard = () => {
           let newCoin : Coin = {
             key: coin.symbol as CoinKey,
             name: coin.name,
-            img_url: coin.img_url,
+            logoURI: coin.img_url,
             chains: {
               [ChainKey.ETH]: newToken,
               [ChainKey.BSC]: newToken,

@@ -251,7 +251,7 @@ export const defaultCoins: Array<Coin> = [
   {
     key: CoinKey.ETH,
     name: CoinKey.ETH,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
     chains: {
       [ChainKey.ETH]: {
         id: '0x0000000000000000000000000000000000000000',
@@ -260,6 +260,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 1,
         chainKey: ChainKey.ETH,
         key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.BSC]: {
         id: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
@@ -268,6 +270,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 56,
         chainKey: ChainKey.BSC,
         key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.POL]: {
         id: '0xfd8ee443ab7be5b1522a1c020c097cff1ddc1209',
@@ -276,6 +280,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 137,
         chainKey: ChainKey.POL,
         key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.DAI]: {
         id: '0xa5c7cb68cd81640d40c85b2e5ec9e4bb55be0214',
@@ -284,13 +290,15 @@ export const defaultCoins: Array<Coin> = [
         chainId: 100,
         chainKey: ChainKey.DAI,
         key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
       },
     },
   },
   {
     key: CoinKey.MATIC,
     name: CoinKey.MATIC,
-    img_url: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
+    logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
     chains: {
       [ChainKey.ETH]: {
         id: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
@@ -299,6 +307,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 1,
         chainKey: ChainKey.ETH,
         key: CoinKey.MATIC,
+        name: CoinKey.MATIC,
+        logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.BSC]: {
         id: '0xa90cb47c72f2c7e4411e781772735d9317d08dd4',
@@ -307,6 +317,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 56,
         chainKey: ChainKey.BSC,
         key: CoinKey.MATIC,
+        name: CoinKey.MATIC,
+        logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.POL]: {
         id: '0x0000000000000000000000000000000000000000',
@@ -315,6 +327,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 137,
         chainKey: ChainKey.POL,
         key: CoinKey.MATIC,
+        name: CoinKey.MATIC,
+        logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.DAI]: {
         id: '0x7122d7661c4564b7c6cd4878b06766489a6028a2',
@@ -323,13 +337,15 @@ export const defaultCoins: Array<Coin> = [
         chainId: 100,
         chainKey: ChainKey.DAI,
         key: CoinKey.MATIC,
+        name: CoinKey.MATIC,
+        logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
       },
     },
   },
   {
     key: CoinKey.BNB,
     name: CoinKey.BNB,
-    img_url: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
+    logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
     chains: {
       [ChainKey.ETH]: {
         id: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
@@ -338,6 +354,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 1,
         chainKey: ChainKey.ETH,
         key: CoinKey.BNB,
+        name: CoinKey.BNB,
+        logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.BSC]: {
         id: '0x0000000000000000000000000000000000000000',
@@ -346,6 +364,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 56,
         chainKey: ChainKey.BSC,
         key: CoinKey.BNB,
+        name: CoinKey.BNB,
+        logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.POL]: {
         id: '0xa649325aa7c5093d12d6f98eb4378deae68ce23f',
@@ -354,6 +374,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 137,
         chainKey: ChainKey.POL,
         key: CoinKey.BNB,
+        name: CoinKey.BNB,
+        logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
       },
       [ChainKey.DAI]: {
         id: '0xca8d20f3e0144a72c6b5d576e9bd3fd8557e2b04',
@@ -362,13 +384,15 @@ export const defaultCoins: Array<Coin> = [
         chainId: 100,
         chainKey: ChainKey.DAI,
         key: CoinKey.BNB,
+        name: CoinKey.BNB,
+        logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
       },
     },
   },
   {
     key: CoinKey.DAI,
     name: CoinKey.DAI,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
     chains: {
       [ChainKey.ETH]: {
         id: '0x6b175474e89094c44da98b954eedeac495271d0f',
@@ -377,6 +401,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 1,
         chainKey: ChainKey.ETH,
         key: CoinKey.DAI,
+        name: CoinKey.DAI,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
       },
       [ChainKey.BSC]: {
         id: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
@@ -385,6 +411,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 56,
         chainKey: ChainKey.BSC,
         key: CoinKey.DAI,
+        name: CoinKey.DAI,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
       },
       [ChainKey.POL]: {
         id: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
@@ -393,6 +421,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 137,
         chainKey: ChainKey.POL,
         key: CoinKey.DAI,
+        name: CoinKey.DAI,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
       },
       [ChainKey.DAI]: {
         id: '0x0000000000000000000000000000000000000000',
@@ -401,6 +431,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 100,
         chainKey: ChainKey.DAI,
         key: CoinKey.DAI,
+        name: CoinKey.DAI,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
       },
     },
   },
@@ -410,7 +442,7 @@ export const defaultCoins: Array<Coin> = [
   {
     key: CoinKey.USDT,
     name: CoinKey.USDT,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
     chains: {
       [ChainKey.ETH]: {
         id: '0xdac17f958d2ee523a2206206994597c13d831ec7',
@@ -419,6 +451,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 1,
         chainKey: ChainKey.ETH,
         key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
       },
       [ChainKey.BSC]: {
         id: '0x55d398326f99059ff775485246999027b3197955',
@@ -427,6 +461,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 56,
         chainKey: ChainKey.BSC,
         key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
       },
       [ChainKey.POL]: {
         id: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
@@ -435,6 +471,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 137,
         chainKey: ChainKey.POL,
         key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
       },
       [ChainKey.DAI]: {
         id: '0x4ecaba5870353805a9f068101a40e0f32ed605c6',
@@ -443,13 +481,15 @@ export const defaultCoins: Array<Coin> = [
         chainId: 100,
         chainKey: ChainKey.DAI,
         key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
       },
     },
   },
   {
     key: CoinKey.USDC,
     name: CoinKey.USDC,
-    img_url: 'https://zapper.fi/images/networks/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
     chains: {
       [ChainKey.ETH]: {
         id: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
@@ -458,6 +498,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 1,
         chainKey: ChainKey.ETH,
         key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
       },
       [ChainKey.BSC]: {
         id: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
@@ -466,6 +508,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 56,
         chainKey: ChainKey.BSC,
         key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
       },
       [ChainKey.POL]: {
         id: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
@@ -474,6 +518,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 137,
         chainKey: ChainKey.POL,
         key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
       },
       [ChainKey.DAI]: {
         id: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
@@ -482,6 +528,8 @@ export const defaultCoins: Array<Coin> = [
         chainId: 100,
         chainKey: ChainKey.DAI,
         key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://zapper.fi/images/networks/ethereum/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
       },
     },
   },
@@ -495,6 +543,30 @@ export const findDefaultCoin = (coinKey: CoinKey) => {
   return coin
 }
 
+export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
+  [ChainKey.ETH]: [
+    findDefaultCoin(CoinKey.ETH).chains[ChainKey.ETH],
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.ETH],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.ETH],
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.ETH],
+  ],
+  [ChainKey.BSC]: [
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.BSC],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.BSC],
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.BSC],
+  ],
+  [ChainKey.POL]: [
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.POL],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.POL],
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.POL],
+  ],
+  [ChainKey.DAI]: [
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.DAI],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.DAI],
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.DAI],
+  ],
+}
+
 export const wrappedTokens: { [ChainKey: string]: Token } = {
   [ChainKey.ETH]: {
     // https://ww7.etherscan.io/token/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -504,6 +576,8 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     chainId: 1,
     chainKey: ChainKey.ETH,
     key: 'WETH' as CoinKey,
+    name: 'WETH',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
   },
   [ChainKey.BSC]: {
     // https://bscscan.com/token/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
@@ -513,8 +587,9 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     chainId: 56,
     chainKey: ChainKey.BSC,
     key: 'WBNB' as CoinKey,
+    name: 'WBNB',
+    logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
   },
-
   [ChainKey.POL]: {
     // https://polygonscan.com/token/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
     id: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
@@ -523,6 +598,8 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     chainId: 137,
     chainKey: ChainKey.POL,
     key: 'WMATIC' as CoinKey,
+    name: 'WMATIC',
+    logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
   },
   [ChainKey.DAI]: {
     // https://blockscout.com/xdai/mainnet/address/0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d
@@ -532,5 +609,7 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     chainId: 100,
     chainKey: ChainKey.DAI,
     key: 'WXDAI' as CoinKey,
+    name: 'WXDAI',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
   },
 }

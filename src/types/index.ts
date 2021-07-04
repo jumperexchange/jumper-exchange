@@ -10,6 +10,8 @@ export interface Token {
   symbol: string
   decimals: number
   chainId: number
+  name: string
+  logoURI: string
 
   chainKey: ChainKey
   key: CoinKey
@@ -18,7 +20,7 @@ export interface Token {
 export interface Coin {
   key: CoinKey;
   name: string;
-  img_url: string;
+  logoURI: string;
   chains: {
     [ChainKey: string]: Token,
   }

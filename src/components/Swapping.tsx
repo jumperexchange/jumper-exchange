@@ -317,22 +317,23 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const startCrossChainSwap = async () => {
     setIsSwapping(true)
 
-    for (const step of route) {
-      try {
-        await triggerStep(step)
-        setSwapDone(true)
-        setIsSwapping(false)
-      } catch (e) {
-        console.error(e)
-        break
+    try {
+      for (const step of route) {
+          await triggerStep(step)
       }
+    } catch (e) {
+      console.error(e)
+      return
     }
+
+    setIsSwapping(false)
+    setSwapDone(true)
   }
 
   if (!activeButton && !isSwapping && !swapDone) {
     activeButton = startSwapButton
   }
-  if (true) {
+  if (swapDone) {
     activeButton = <Link to="/dashboard"><Button type="link" >DONE - check your balances in our Dashboard</Button></Link>
   }
 
