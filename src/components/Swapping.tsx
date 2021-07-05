@@ -1,7 +1,7 @@
 import { BrowserNode } from '@connext/vector-browser-node';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Timeline, Typography } from 'antd';
+import { Alert, Button, Timeline, Typography } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as connext from '../services/connext';
@@ -26,14 +26,23 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const [loggingIn, setLoggingIn] = useState<boolean>(false)
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [swapDone, setSwapDone] = useState<boolean>(false)
+  const [alerts, setAlerts] = useState<Array<JSX.Element>>([])
 
   const initializeConnext = async () => {
     setLoggingIn(true)
+    setAlerts([])
     try {
       const _node = await connext.initNode()
       setNode(_node)
     } catch (e) {
-      console.log('Initiation error', { e })
+      setAlerts([
+        <Alert
+          message="Failed to connect to Connext"
+          description="Please disable shields or ad blockers or allow third party cookies in your browser and try again. Connext requires cross-site cookies to store your channel states."
+          type="error"
+          showIcon
+        />
+      ])
     } finally {
       setLoggingIn(false)
     }
@@ -532,6 +541,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   return (<>
+    {alerts}
+    <br/>
+
     <Timeline mode="alternate">
       <Timeline.Item color="green"></Timeline.Item>
 
