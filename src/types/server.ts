@@ -42,7 +42,7 @@ export const emptyExecution : Execution = {
   process: []
 }
 
-export type Action = DepositAction | WithdrawAction | SwapAction | ParaswapAction | CrossAction
+export type Action = DepositAction | WithdrawAction | SwapAction | ParaswapAction | OneInchAction | CrossAction
 
 
 export interface TranferStep {
@@ -82,6 +82,16 @@ export interface SwapAction extends ActionBase {
 
 export interface ParaswapAction extends ActionBase {
   type: 'paraswap'
+  fromToken: Token
+  toToken: Token
+
+  fromAmount: number
+  toAmount: number
+  target: 'wallet' | 'channel'
+}
+
+export interface OneInchAction extends ActionBase {
+  type: '1inch'
   fromToken: Token
   toToken: Token
 

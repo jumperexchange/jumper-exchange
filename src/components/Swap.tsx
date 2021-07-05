@@ -80,6 +80,11 @@ const Swap = () => {
           title: `Swap ${step.action.target === 'channel' ? ' and Deposit' : ''} Tokens`,
           description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via Paraswap`
         }
+      case "1inch":
+      return {
+        title: `Swap ${step.action.target === 'channel' ? ' and Deposit' : ''} Tokens`,
+        description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via 1Inch`
+      }
       case "cross":
         return {
           title: "Cross Chains",
