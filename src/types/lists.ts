@@ -183,7 +183,7 @@ export const supportedChains: Array<Chain> = [
     name: 'Fantom',
     coin: CoinKey.FTM,
     id: 250,
-    visible: false,
+    visible: true,
 
     // https://docs.fantom.foundation/tutorials/set-up-metamask
     metamask: {
@@ -208,7 +208,7 @@ export const supportedChains: Array<Chain> = [
     name: 'OKExCHain',
     coin: CoinKey.OKT,
     id: 66,
-    visible: false,
+    visible: true,
 
     // https://okexchain-docs.readthedocs.io/en/latest/developers/quick-start-for-mainnet.html
     metamask: {
@@ -228,6 +228,31 @@ export const supportedChains: Array<Chain> = [
       ],
     },
   },
+  {
+    key: ChainKey.AVA,
+    name: 'Avalanche',
+    coin: CoinKey.AVAX,
+    id: 43114,
+    visible: true,
+
+    // https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche
+    metamask: {
+      chainId: prefixChainId(43114),
+      blockExplorerUrls: [
+        'https://cchain.explorer.avax.network/',
+      ],
+      chainName: 'Avalanche Network',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'AVAX',
+        symbol: 'AVAX',
+        decimals: 18, // TODO: check
+      },
+      rpcUrls: [
+        'https://api.avax.network/ext/bc/C/rpc',
+      ],
+    }
+  }
 ]
 
 export const getChainByKey = (chainKey: ChainKey) => {

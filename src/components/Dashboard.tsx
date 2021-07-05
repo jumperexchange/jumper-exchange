@@ -28,8 +28,9 @@ const emptyWallet = {
     [ChainKey.POL]: [],
     [ChainKey.BSC]: [],
     [ChainKey.DAI]: [],
-    [ChainKey.OKT]: [],
     [ChainKey.FTM]: [],
+    [ChainKey.OKT]: [],
+    [ChainKey.AVA]: [],
   }
 }
 
@@ -162,12 +163,25 @@ const showGasModal = (gas: ChainKey) => {
         break;
         case ChainKey.OKT:
           Modal.info({
-            title: 'Gas Info for OKT chain',
+            title: 'Gas Info for OKExChain chain',
             content: (
               <div>
                 <p>Find out how to get OKT:</p>
                 <a href="https://www.okex.com/okexchain" target="_blank" rel="nofollow noreferrer">
-                  Where to buy ETH (by okex.com)
+                  Where to buy OKT (by okex.com)
+                </a>
+              </div>
+            )
+          })
+          break;
+        case ChainKey.AVA:
+          Modal.info({
+            title: 'Gas Info for Avalanche chain',
+            content: (
+              <div>
+                <p>Find out how to get AVAX:</p>
+                <a href="https://www.avax.network/" target="_blank" rel="nofollow noreferrer">
+                  Where to buy AVAX (by avax.network)
                 </a>
               </div>
             )
@@ -204,15 +218,20 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
         <span>The xDAI chain requires DAI to pay for gas. Without it you won't be able to do anything on this chain.</span>
         <Button type="default" block onClick={() => showGasModal(ChainKey.DAI)}>Get DAI</Button>
       </>),
+    [ChainKey.FTM]:
+      (<>
+        <span>The Fantom chain requires FTM to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.FTM)}>Get FTM</Button>
+      </>),
     [ChainKey.OKT]:
       (<>
         <span>The OKExCahin chain requires OKT to pay for gas. Without it you won't be able to do anything on this chain.</span>
         <Button type="default" block onClick={() => showGasModal(ChainKey.OKT)}>Get OKT</Button>
       </>),
-    [ChainKey.FTM]:
+    [ChainKey.AVA]:
       (<>
-        <span>The Fantom chain requires FTM to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.FTM)}>Get FTM</Button>
+        <span>The Avalanche chain requires AVAX to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.AVA)}>Get AVAX</Button>
       </>),
   }
   const tooltipEmpty = tooltipsEmpty[chain];
@@ -221,8 +240,9 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
     [ChainKey.POL]: (<>The Polygon/Matic chain requires MATIC to pay for gas.</>),
     [ChainKey.BSC]: (<>The Binance Smart Chain requires BNB to pay for gas.</>),
     [ChainKey.DAI]: (<>The xDAI chain requires DAI to pay for gas.</>),
-    [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas.</>),
     [ChainKey.FTM]: (<>The Fantom chain requires FTM to pay for gas.</>),
+    [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas.</>),
+    [ChainKey.AVA]: (<>The Avalanche chain requires AVAX to pay for gas.</>),
   }
   const tooltip = tooltips[chain];
   return (
@@ -335,6 +355,7 @@ const initialRows: Array<DataType> = coins.map(coin => {
     [`0x_${ChainKey.DAI}`]: {amount_coin:-1, amount_usd: -1},
     [`0x_${ChainKey.FTM}`]: {amount_coin:-1, amount_usd: -1},
     [`0x_${ChainKey.OKT}`]: {amount_coin:-1, amount_usd: -1},
+    [`0x_${ChainKey.AVA}`]: {amount_coin:-1, amount_usd: -1},
   }
 })
 
@@ -345,8 +366,9 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: number) => {
     [ChainKey.POL]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.BSC]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.DAI]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-    [ChainKey.OKT]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
     [ChainKey.FTM]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
+    [ChainKey.OKT]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
+    [ChainKey.AVA]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
   }
   Object.values(ChainKey).forEach(chain => {
       wallet.portfolio[chain].forEach(portfolio => {
@@ -428,7 +450,7 @@ const Dashboard = () => {
             amount_coin: wallet.loading ? -1 : 0.0,
             amount_usd: wallet.loading ? -1 : 0.0,
           }
-          const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.chains[chain].id)
+          const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.chains[chain]?.id)
           const cellContent: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : emptyAmounts
           coinRow[`${wallet.address}_${chain}`] = cellContent
 
@@ -459,7 +481,7 @@ const Dashboard = () => {
 
       // add new coins
       chainPortfolio.forEach(coin => {
-        const exists = coins.find(existingCoin => existingCoin.chains[chain].id === coin.id)
+        const exists = coins.find(existingCoin => existingCoin.chains[chain]?.id === coin.id)
         if (!exists) {
           const newToken : Token = {
             id: coin.id,
@@ -483,6 +505,7 @@ const Dashboard = () => {
               [ChainKey.DAI]: newToken,
               [ChainKey.FTM]: newToken,
               [ChainKey.OKT]: newToken,
+              [ChainKey.AVA]: newToken,
             },
           }
           coins.push(newCoin)
@@ -538,7 +561,8 @@ const Dashboard = () => {
         [ChainKey.POL]:[],
         [ChainKey.DAI]:[],
         [ChainKey.FTM]:[],
-        [ChainKey.OKT]:[]
+        [ChainKey.OKT]:[],
+        [ChainKey.AVA]:[],
       }
     }
     setRegisteredWallets([...registeredWallets, newWallet])

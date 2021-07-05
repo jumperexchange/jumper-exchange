@@ -25,7 +25,7 @@ const readWallets = (): Array<Wallet> => {
   if (!isSupported()) {
     return []
   }
-  
+
   const walletsString = localStorage.getItem('wallets')
   if (walletsString) {
     try {
@@ -40,7 +40,8 @@ const readWallets = (): Array<Wallet> => {
             [ChainKey.POL]:[],
             [ChainKey.DAI]:[],
             [ChainKey.FTM]:[],
-            [ChainKey.OKT]:[]
+            [ChainKey.OKT]:[],
+            [ChainKey.AVA]:[],
           }
         }
       })
