@@ -23,7 +23,7 @@ function AboutPage() {
                           <div className="hero-copy">
                                         <h1 className="hero-title mt-0">Cross-Chain Swap Aggregation</h1>
                                         <p className="hero-paragraph">Li.Finance provides the best cross-chain swap across all liquidity pools and bridges.</p>
-                                        <div className="hero-cta"><a className="button button-primary" href="https://twitter.com/lifimesh">Stay up to date on Twitter</a><a className="button" href="#">Get in touch</a></div>
+                                        <div className="hero-cta"><a className="button button-primary" href="https://twitter.com/lifimesh">Follow on Twitter</a><a className="button" href="https://gitcoin.co/grants/3133/lifinance-the-cross-chain-defi-mesh-widget">Support on Gitcoin</a></div>
                           </div>
                           <div className="hero-figure">
                             <a href="https://www.slideshare.net/philippzentner/lifinance-pitchdeck-no-request" target="_blank" rel="nofollow" style={{width:'595px',height:'485px',border:'none',display: 'block',backgroundImage: 'url('+slide+')', fontSize:'10px',paddingLeft:'20px',paddingTop:'10px'}}><small>Opens pitchdeck in new tab</small></a>
@@ -112,15 +112,15 @@ function AboutPage() {
                 <div className="container">
                     <div className="site-footer-inner">
                         <div className="brand footer-brand">
-                          <a href="#">
+                          <a href="https://li.finance">
                             <img className="header-logo-image" src={logo} alt="Logo" />
                           </a>
                         </div>
                         <ul className="footer-social-links list-reset">
                             <li>
-                                <a href="#">
+                                <a href="https://www.twitter.com/lifimesh">
                                     <span className="screen-reader-text">Twitter</span>
-                                    <svg width="16" height="16" xmlns="https://www.twitter.com/lifimesh">
+                                    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M16 3c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-1.7 0-3.2 1.5-3.2 3.3 0 .3 0 .5.1.7-2.7-.1-5.2-1.4-6.8-3.4-.3.5-.4 1-.4 1.7 0 1.1.6 2.1 1.5 2.7-.5 0-1-.2-1.5-.4C.7 7.7 1.8 9 3.3 9.3c-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.3 3.1 2.3-1.1.9-2.5 1.4-4.1 1.4H0c1.5.9 3.2 1.5 5 1.5 6 0 9.3-5 9.3-9.3v-.4C15 4.3 15.6 3.7 16 3z" fill="#0270D7"/>
                                     </svg>
                                 </a>
