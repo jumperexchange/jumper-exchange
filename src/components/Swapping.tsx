@@ -11,6 +11,7 @@ import { CrossAction, DepositAction, emptyExecution, Execution, ParaswapAction, 
 import StateChannelBalances from './StateChannelBalances';
 import ConnectButton from './web3/ConnectButton';
 import { getAllowance, setAllowance, transfer } from '../services/paraswap';
+import { Token } from '../types';
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -224,7 +225,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   // TODO: move in own component
   const switchChain = async (chainId: number) => {
-    if (web3.chainId === route[0].action.chainId) return // already on right chain
+    if (web3.chainId === chainId) return // already on right chain
 
     const ethereum = (window as any).ethereum
     if (typeof ethereum === 'undefined') return
@@ -255,6 +256,38 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     } catch (error) {
       console.error(`Error adding chain ${chainId}: ${error.message}`)
     }
+  }
+  // TODO: move in own component
+  const addToken = async (token: Token) => {
+    try {
+      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+      const wasAdded = await (window as any).ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20', // Initially only supports ERC20, but eventually more!
+          options: {
+            address: token.id, // The address that the token is at.
+            symbol: token.symbol, // A ticker symbol or shorthand, up to 5 chars.
+            decimals: token.decimals, // The number of decimals in the token
+            image: token.logoURI, // A string url of the token logo
+          },
+        },
+      });
+
+      if (wasAdded) {
+        console.log('Token Added');
+      } else {
+        console.log('Token not Added');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const switchAndAddToken = async (token: Token) => {
+    await switchChain(token.chainId)
+
+    setTimeout(() => addToken(token), 100)
   }
 
   let activeButton = null
@@ -433,10 +466,11 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
       case 'withdraw':
         const triggerButton = <Button type="primary" disabled={!node || !web3.account} onClick={() => triggerStep(step)}>trigger Withdraw</Button>
+        const token = step.action.token
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Withdraw</h4>
-            <span>{formatTokenAmount(step.action.token, step.estimate?.toAmount)} to {web3.account ? web3.account.substr(0, 4) : '0x'}...</span>
+            <span>{formatTokenAmount(step.action.token, step.estimate?.toAmount)} (<span onClick={() => switchAndAddToken(token)}>Add Token</span>) to {web3.account ? web3.account.substr(0, 4) : '0x'}...</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
