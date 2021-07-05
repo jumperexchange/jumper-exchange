@@ -26,7 +26,7 @@ function AboutPage() {
                                         <div className="hero-cta"><a className="button button-primary" href="https://twitter.com/lifimesh">Follow on Twitter</a><a className="button" href="https://gitcoin.co/grants/3133/lifinance-the-cross-chain-defi-mesh-widget">Support on Gitcoin</a></div>
                           </div>
                           <div className="hero-figure">
-                            <a href="https://www.slideshare.net/philippzentner/lifinance-pitchdeck-no-request" target="_blank" rel="nofollow" style={{width:'595px',height:'485px',border:'none',display: 'block',backgroundImage: 'url('+slide+')', fontSize:'10px',paddingLeft:'20px',paddingTop:'10px'}}><small>Opens pitchdeck in new tab</small></a>
+                            <a href="https://www.slideshare.net/philippzentner/lifinance-pitchdeck-no-request" target="_blank" rel="nofollow noreferrer" style={{width:'595px',height:'485px',border:'none',display: 'block',backgroundImage: 'url('+slide+')', fontSize:'10px',paddingLeft:'20px',paddingTop:'10px'}}><small>Opens pitchdeck in new tab</small></a>
                           </div>
                         </div>
                     </div>
