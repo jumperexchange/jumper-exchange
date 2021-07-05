@@ -1,7 +1,7 @@
 import { BrowserNode } from '@connext/vector-browser-node';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Button, Timeline, Typography } from 'antd';
+import { Alert, Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as connext from '../services/connext';
@@ -11,7 +11,10 @@ import { CrossAction, DepositAction, emptyExecution, Execution, ParaswapAction, 
 import StateChannelBalances from './StateChannelBalances';
 import ConnectButton from './web3/ConnectButton';
 import { getAllowance, setAllowance, transfer } from '../services/paraswap';
-import { Token } from '../types';
+import { ChainKey, Token } from '../types';
+import connextIcon from '../assets/icons/connext.png';
+import paraswapIcon from '../assets/icons/paraswap.png';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -408,6 +411,38 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     })
   }
 
+  const getChainAvatar = (chainKey: ChainKey) => {
+    const chain = getChainByKey(chainKey)
+
+    return (
+      <Tooltip title={chain.name}>
+        <Avatar size="small" src={chain.iconUrl} alt={chain.name}></Avatar>
+      </Tooltip>
+    )
+  }
+
+  const getExchangeAvatar = (chainKey: ChainKey) => {
+    const chain = getChainByKey(chainKey)
+
+    return (
+      <Tooltip title={chain.exchange?.name}>
+        <Avatar size="small" src={chain.exchange?.iconUrl} alt={chain.exchange?.name}></Avatar>
+      </Tooltip>
+    )
+  }
+
+  const connextAvatar = (
+    <Tooltip title="Connext">
+      <Avatar size="small" src={connextIcon} alt="Connext"></Avatar>
+    </Tooltip>
+  )
+
+  const paraswapAvatar = (
+    <Tooltip title="Paraswap">
+      <Avatar size="small" src={paraswapIcon} alt="Paraswap"></Avatar>
+    </Tooltip>
+  )
+
   const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>Start Cross Chain Swap</Button>
 
   const parseStepToTimeline = (step: TranferStep, index: number) => {
@@ -420,8 +455,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!node || !web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerStep(step)}>trigger Deposit</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Deposit</h4>
-            <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} from {web3.account ? web3.account.substr(0, 4) : '0x'}...</span>
+            <h4>Deposit from {web3.account ? web3.account.substr(0, 4) : '0x'}...</h4>
+            <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -434,8 +469,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on {step.action.chainKey}</span>
+            <h4>Swap on {getExchangeAvatar(step.action.chainKey)}</h4>
+            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -448,8 +483,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerParaswap(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap{step.action.target === 'channel' ? ' and Deposit' : ''}</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via Paraswap</span>
+            <h4>Swap{step.action.target === 'channel' ? ' and Deposit' : ''} via {paraswapAvatar}</h4>
+            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -460,11 +495,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
       case 'cross': {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Transfer</Button>
-
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Transfer</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} on {step.action.chainKey} to {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on {step.action.toChainKey}</span>
+            <h4>Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)} via {connextAvatar}</h4>
+            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -478,8 +512,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const token = step.action.token
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Withdraw</h4>
-            <span>{formatTokenAmount(step.action.token, step.estimate?.toAmount)} (<span onClick={() => switchAndAddToken(token)}>Add Token</span>) to {web3.account ? web3.account.substr(0, 4) : '0x'}...</span>
+            <h4>Withdraw to {web3.account ? web3.account.substr(0, 4) : '0x'}...</h4>
+            <span>{formatTokenAmount(step.action.token, step.estimate?.toAmount)} (<span onClick={() => switchAndAddToken(token)}>Add Token</span>)</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}

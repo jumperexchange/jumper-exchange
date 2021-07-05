@@ -1,6 +1,15 @@
 import { BigNumber } from 'ethers';
 import { ChainKey, Coin, CoinKey, Token } from '.';
 
+import bsc from "../assets/icons/bsc.png";
+import eth from "../assets/icons/ethereum.png";
+import pancake from "../assets/icons/pancake.png";
+import matic from "../assets/icons/matic.png";
+import quick from "../assets/icons/quick.png";
+import honey from "../assets/icons/honey.png";
+import xdai from "../assets/icons/xdai.png";
+import uniswap from "../assets/icons/uniswap.png";
+
 interface AddEthereumChainParameter {
   chainId: string;
   blockExplorerUrls?: string[];
@@ -29,6 +38,7 @@ interface Chain {
   coin: CoinKey
   id: number
   visible: boolean
+  iconUrl?: string
   exchange?: Exchange
   metamask: AddEthereumChainParameter
 }
@@ -44,10 +54,11 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 1,
     visible: true,
+    iconUrl: eth,
 
     exchange: {
       name: 'UniswapV2',
-      iconUrl: '',
+      iconUrl: uniswap,
       logoUrl: '',
       webUrl: 'https://app.uniswap.org/#/swap',
       graph: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2', // https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
@@ -77,10 +88,11 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.MATIC,
     id: 137,
     visible: true,
+    iconUrl: matic,
 
     exchange: {
       name: 'QuickSwap',
-      iconUrl: '',
+      iconUrl: quick,
       logoUrl: 'https://quickswap.exchange/static/media/QuickSwap_logo.420e2e01.png',
       webUrl: 'https://quickswap.exchange/',
       graph: 'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap06', // https://thegraph.com/explorer/subgraph/sameepsi/quickswap06 (often new versions)
@@ -111,10 +123,11 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.BNB,
     id: 56,
     visible: true,
+    iconUrl: bsc,
 
     exchange: {
       name: 'Pancake',
-      logoUrl: '',
+      logoUrl: pancake,
       iconUrl: 'https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png',
       webUrl: 'https://exchange.pancakeswap.finance/',
       graph: 'https://api.thegraph.com/subgraphs/name/bscnodes/pancakeswap', // https://thegraph.com/explorer/subgraph/bscnodes/pancakeswap
@@ -147,10 +160,11 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.DAI,
     id: 100,
     visible: true,
+    iconUrl: xdai,
 
     exchange: {
       name: 'Honeyswap',
-      iconUrl: '',
+      iconUrl: honey,
       logoUrl: 'https://app.honeyswap.org/static/media/wordmark_white.svg',
       webUrl: 'https://app.honeyswap.org/',
       graph: 'https://api.thegraph.com/subgraphs/name/1hive/honeyswap-xdai',
