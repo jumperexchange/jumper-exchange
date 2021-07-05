@@ -38,6 +38,7 @@ function App() {
                 <Link to="/dashboard">Dashboard</Link>
               </Menu.Item>
               <Menu.Item key="2">
+                <span className="beta-badge">Beta</span>
                 <Link to="/swap">Swap</Link>
               </Menu.Item>
               <Menu.Item key="3">

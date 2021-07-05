@@ -42,6 +42,18 @@
   color: white;
 }
 
+.beta-badge {
+  position: absolute;
+  background: #c930e4;
+  top: 9px;
+  right: -1px;
+  border-radius: 20px;
+  line-height: 1;
+  padding: 2px 4px;
+  color: white;
+  font-size: 12px;
+}
+
 /* Annimations */
 /* .ant-timeline-item-head-blue, */
 .flashing {
