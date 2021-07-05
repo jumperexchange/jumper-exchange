@@ -1,27 +1,20 @@
 import React from 'react';
 import './AboutPage.css';
 import { Content } from 'antd/lib/layout/layout';
+import logo from '../assets/Li.FinanceLogo.png';
+import f1 from '../assets/feature-icon-01.svg';
+import f2 from '../assets/feature-icon-02.svg';
+import f3 from '../assets/feature-icon-03.svg';
+import f4 from '../assets/feature-icon-04.svg';
+import f5 from '../assets/feature-icon-05.svg';
+import f6 from '../assets/feature-icon-06.svg';
 
 function AboutPage() {
   return (
     <Content className="site-layout aboutPage">
       <div className="is-boxed">
         <div className="body-wrap">
-            <header className="site-header">
-                <div className="container">
-                    <div className="site-header-inner">
-                        <div className="brand header-brand">
-                            <h1 className="m-0">
-                                <a href="https://li.finance" style={{textDecoration: 'none', fontSize: '24px', color:'#ffffff'}}>
-                                  <img className="header-logo-image" src="%PUBLIC_URL%/Li.FinanceLogo.png" alt="Logo" style={{display: 'inline-block'}} /> 
-                                  <span style={{marginLeft: '20px'}}>Li.Finance (LiFi)</span>
-                                </a>
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
+        
             <main>
                 <section className="hero">
                     <div className="container">
@@ -49,7 +42,7 @@ function AboutPage() {
                                 <div className="feature text-center is-revealing">
                                     <div className="feature-inner">
                                         <div className="feature-icon">
-                                          <img src="%PUBLIC_URL%/feature-icon-01.svg" alt="Feature 01" />
+                                          <img src={f1} alt="Feature 01" />
                                         </div>
                                         <h4 className="feature-title mt-24">Cross-Chain Liquidity Networks</h4>
                                         <p className="text-sm mb-0">Connext, Hop, Routerprotocol, Thorchain - we aggregate them all.</p>
@@ -58,7 +51,7 @@ function AboutPage() {
                                 <div className="feature text-center is-revealing">
                                     <div className="feature-inner">
                                         <div className="feature-icon">
-                                          <img src="%PUBLIC_URL%/feature-icon-02.svg" alt="Feature 02" />
+                                          <img src={f2} alt="Feature 02" />
                                         </div>
                                         <h4 className="feature-title mt-24">Decentralized Exchanges (DEXes)</h4>
                                         <p className="text-sm mb-0">To be able to allow true any-to-any-swaps, we talk to DEXes and DEX aggregators on all chains.</p>
@@ -67,7 +60,7 @@ function AboutPage() {
                                 <div className="feature text-center is-revealing">
                                     <div className="feature-inner">
                                         <div className="feature-icon">
-                                          <img src="%PUBLIC_URL%/feature-icon-03.svg" alt="Feature 02" />
+                                          <img src={f3} alt="Feature 02" />
                                         </div>
                                         <h4 className="feature-title mt-24">Lending-Protocols (Borrow & Flash Loans)</h4>
                                         <p className="text-sm mb-0">Hello arbitrage my old friend. Borrow funds and get flash-loans across chains, whenever you need it.</p>
@@ -84,7 +77,7 @@ function AboutPage() {
                                 <div className="feature text-center is-revealing">
                                     <div className="feature-inner">
                                         <div className="feature-icon">
-                                          <img src="%PUBLIC_URL%/feature-icon-03.svg" alt="Feature 03" />
+                                          <img src={f4} alt="Feature 03" />
                                         </div>
                                         <h4 className="feature-title mt-24">Web-Dapp Integrations</h4>
                                         <p className="text-sm mb-0">We've years of experience building truly fast, customizable and maintainable web widgets.</p>
@@ -93,7 +86,7 @@ function AboutPage() {
                                 <div className="feature text-center is-revealing">
                                     <div className="feature-inner">
                                         <div className="feature-icon">
-                                          <img src="%PUBLIC_URL%/feature-icon-04.svg" alt="Feature 04" />
+                                          <img src={f5} alt="Feature 04" />
                                         </div>
                                         <h4 className="feature-title mt-24">Mobile Integrations</h4>
                                         <p className="text-sm mb-0">Mass adoption will only happen once crypto goes fully native. We aim to pave the way for that experience.</p>
@@ -102,7 +95,7 @@ function AboutPage() {
                                 <div className="feature text-center is-revealing">
                                     <div className="feature-inner">
                                         <div className="feature-icon">
-                                          <img src="%PUBLIC_URL%/feature-icon-05.svg" alt="Feature 05" />
+                                          <img src={f6} alt="Feature 05" />
                                         </div>
                                         <h4 className="feature-title mt-24">Game Engine Integrations</h4>
                                         <p className="text-sm mb-0">Almost no other industry feels more at home, having their own currencies. Time to push crypto into games.</p>
@@ -119,7 +112,7 @@ function AboutPage() {
                     <div className="site-footer-inner">
                         <div className="brand footer-brand">
                           <a href="#">
-                            <img className="header-logo-image" src="%PUBLIC_URL%/Li.FinanceLogo.png" alt="Logo" />
+                            <img className="header-logo-image" src={logo} alt="Logo" />
                           </a>
                         </div>
                         <ul className="footer-social-links list-reset">
