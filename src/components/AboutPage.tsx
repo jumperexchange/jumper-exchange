@@ -8,6 +8,7 @@ import f3 from '../assets/feature-icon-03.svg';
 import f4 from '../assets/feature-icon-04.svg';
 import f5 from '../assets/feature-icon-05.svg';
 import f6 from '../assets/feature-icon-06.svg';
+import slide from '../assets/slideshow.png';
 
 function AboutPage() {
   return (
@@ -25,7 +26,7 @@ function AboutPage() {
                                         <div className="hero-cta"><a className="button button-primary" href="https://twitter.com/lifimesh">Stay up to date on Twitter</a><a className="button" href="#">Get in touch</a></div>
                           </div>
                           <div className="hero-figure">
-                            <a href="https://www.slideshare.net/philippzentner/lifinance-pitchdeck-no-request" target="_blank" rel="nofollow" style={{width:'595px',height:'485px',border:'none',display: 'block',background: 'url(/slideshow.png)', fontSize:'10px',paddingLeft:'20px',paddingTop:'10px'}}><small>Opens pitchdeck in new tab</small></a>
+                            <a href="https://www.slideshare.net/philippzentner/lifinance-pitchdeck-no-request" target="_blank" rel="nofollow" style={{width:'595px',height:'485px',border:'none',display: 'block',backgroundImage: 'url('+slide+')', fontSize:'10px',paddingLeft:'20px',paddingTop:'10px'}}><small>Opens pitchdeck in new tab</small></a>
                           </div>
                         </div>
                     </div>

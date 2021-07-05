@@ -534,8 +534,6 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-
-
     if(!registeredWallets.length){
       setWalletModalVisible(true)
       setColumns(initialColumns);
