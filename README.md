@@ -1,9 +1,8 @@
-# Li.Finance 
+# Li.Finance
 
-What we are aiming at:
+What we are aiming at (blue parts are already implemented):
 
-![Screenshot](./src/assets/lifi-goal.png?raw=true)
-
+![Screenshot](./src/assets/lifi-goal.jpg?raw=true)
 
 
 ## Setup
@@ -59,5 +58,5 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ## Contributors
 
 - Max Klenk ([GitHub](https://github.com/maxklenk), [LinkedIn](https://www.linkedin.com/in/maxklenk/), [Gitcoin](https://gitcoin.co/maxklenk))
-- Adrian Weniger ([GitHub](https://github.com/Addminus), [LinkedIn](https://www.linkedin.com/in/adrian-weniger-8a35b6132/))
+- Adrian Weniger ([GitHub](https://github.com/Addminus), [LinkedIn](https://www.linkedin.com/in/adrian-weniger-8a35b6132/), [Gitcoin](https://gitcoin.co/addminus))
 - Philipp Zentner ([GitHub](https://github.com/philippzentner), [LinkedIn](https://www.linkedin.com/in/philippzentner/), [Gitcoin](https://gitcoin.co/philippzentner))
