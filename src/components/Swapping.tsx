@@ -195,7 +195,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     if (!node || !web3.library) return
     const depositAction = step.action as DepositAction
 
-    return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, depositAction.amount, (status: Execution) => updateStatus(step, status))
+    return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, BigInt(depositAction.amount), (status: Execution) => updateStatus(step, status))
   }
 
   const triggerSwap = (step: TranferStep) => {
@@ -334,7 +334,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   const parseChainSteps = () => {
     const isDone = web3.chainId === route[0].action.chainId
-    const isActive = !isDone && web3.account
+    const isActive = !isDone && web3.account && !swapDone
 
     const button = <Button type="primary" disabled={!web3.account} onClick={() => switchChain(route[0].action.chainId)}>switch chain to {route[0].action.chainId}</Button>
     if (isActive) {
@@ -459,7 +459,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
-            {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
+            {ADMIN_MODE && triggerButton}
+            {step.execution && executionSteps}
             {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
         ]
