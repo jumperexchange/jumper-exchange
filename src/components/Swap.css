@@ -5,41 +5,37 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-right: -8px;
 }
 
-.site-layout .swap-view {
-  background: #f0f0f0;
-}
-
 .swap-input {
   background: white;
 }
 
-.swap-routes {
-  /* background: white; */
-}
-
 .swap-route {
-  background: #d6d6d6;
   transform: scale(0.9);
   transition: transform 200ms;
+  min-width: 300px;
 
-  border: 2px solid #f0f0f0;
+  border: 2px solid gray;
   border-radius: 6px;
   cursor: pointer;
 }
 .swap-route .ant-btn {
   background: #ececec;
 }
-.swap-route.optimal,
+.swap-route.optimal {
+  transform: scale(1);
+  border: 3px solid #07d207;
+}
 .swap-route:hover {
   transform: scale(1);
-  background: white;
 }
+
 .swap-route.optimal .ant-btn,
 .swap-route:hover .ant-btn {
   background: white;
 }
 
 .progress-step-list {
+  margin-bottom: 40px;
 }
 
 .progress-step-title {
@@ -55,7 +51,6 @@ input[type="number"]::-webkit-outer-spin-button {
 .ant-timeline-item-content p:last-child {
   margin-bottom: 0;
 }
-
 
 /* laptop screen */
 @media only screen and (max-height: 900px) {
@@ -74,5 +69,22 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .hero-image {
   margin: auto;
+  border-radius: 6px;
+}
+
+.selected {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.selected-label {
+  color: #07d207;
+  font-weight: bold;
+  padding: 6.4px;
+}
+
+.ant-btn-round.ant-btn-lg {
   border-radius: 6px;
 }

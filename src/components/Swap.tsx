@@ -6,7 +6,7 @@ import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { loadTokenListAsTokens } from '../services/tokenListService';
-import { formatTokenAmount } from '../services/utils';
+import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, Token } from '../types';
 import { defaultTokens, getChainByKey } from '../types/lists';
 import { DepositAction, TranferStep, WithdrawAction } from '../types/server';
@@ -34,6 +34,17 @@ const Swap = () => {
   const [withdrawToken, setWithdrawToken] = useState<string|undefined>(); // tokenId
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<Token> }>(defaultTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
+
+  const getSelectedWithdraw = () => {
+    if (highlightedIndex === -1) {
+      return '0.0'
+    } else {
+      const selectedRoute = routes[highlightedIndex]
+      const lastStep = selectedRoute[selectedRoute.length - 1]
+      return formatTokenAmountOnly((lastStep.action as any).token, lastStep.estimate?.toAmount)
+    }
+  }
 
   useEffect(() => {
     if (refreshTokens) {
@@ -114,6 +125,7 @@ const Swap = () => {
 
   const getTransferRoutes = async () => {
     setRoutes([])
+    setHighlightedIndex(-1)
 
     if ((isFinite(depositAmount) || isFinite(withdrawAmount)) && depositChain && depositToken && withdrawChain && withdrawToken) {
       setRoutesLoading(true)
@@ -137,7 +149,7 @@ const Swap = () => {
       const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw })
 
       // remove swaps with native coins
-      const filteredRoutes = result.data.filter((path : Array<TranferStep>) => {
+      const filteredRoutes : Array<Array<TranferStep>> = result.data.filter((path : Array<TranferStep>) => {
         for (const step of path) {
           if (step.action.type === 'swap') {
             if (step.action.fromToken.id === '0x0000000000000000000000000000000000000000' || step.action.toToken.id === '0x0000000000000000000000000000000000000000') {
@@ -148,7 +160,16 @@ const Swap = () => {
         return true
       })
 
-      setRoutes(filteredRoutes)
+      // sortedRoutes
+      const sortedRoutes = filteredRoutes.sort((routeA, routeB) => {
+        const routeAResult = routeA[routeA.length - 1].estimate?.toAmount || 0
+        const routeBResult = routeB[routeB.length - 1].estimate?.toAmount || 0
+
+        return routeBResult - routeAResult
+      })
+
+      setRoutes(sortedRoutes)
+      setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
       setNoRoutesAvailable(filteredRoutes.length === 0)
       setRoutesLoading(false)
     }
@@ -171,9 +192,9 @@ const Swap = () => {
     return parseFloat(e.currentTarget.value)
   }
 
-  const openSwapModal = (route: Array<TranferStep>, index: number) => {
-    setselectedRoute(route)
-    setselectedRouteIndex(index)
+  const openSwapModal = () => {
+    setselectedRoute(routes[highlightedIndex])
+    setselectedRouteIndex(highlightedIndex)
   }
 
   const updateRoute = (route : any, index: number) => {
@@ -185,33 +206,20 @@ const Swap = () => {
     setRoutes(newRoutes)
   }
 
-  const isOptimal = (routes: Array<Array<TranferStep>>, index: number) => {
-    let optimalIndex = 0
-    let optimalOutput = 0
-
-    routes.forEach((route, index) => {
-      const toAmount = route[route.length - 1].estimate?.toAmount || 0
-      if (toAmount >= optimalOutput) {
-        optimalOutput = toAmount
-        optimalIndex = index
-      }
-    })
-
-    return optimalIndex === index
-  }
-
   return (
     <Content className="site-layout">
       <div className="swap-view" style={{ padding: 24, paddingTop: 24, minHeight: 'calc(100vh - 64px)', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Hero Image */}
-        <Image
-          className="hero-image"
-          src={heroImage}
-        />
+        <Row style={{width: '80%', margin: 'auto', opacity: routes.length ? 0.3 : 1}} justify={'center'}>
+          <Image
+            className="hero-image"
+            src={heroImage}
+          />
+        </Row>
 
         {/* Swap Form */}
-        <Row gutter={[32, 16]} justify={"center"} style={{marginTop: 12}}>
+        <Row gutter={[32, 16]} justify={"center"} style={{marginTop: 36}}>
           <Col>
             <div className="swap-input" style={{ maxWidth: 500, border: "2px solid #f0f0f0", borderRadius: 6, padding: 24, margin: "0 auto" }}>
               <Row style={{ marginBottom: 32, paddingTop: 32 }}>
@@ -300,8 +308,10 @@ const Swap = () => {
                       defaultValue={0.0}
                       min={0}
                       max={10}
-                      value={isFinite(withdrawAmount) ? withdrawAmount : ''}
-                      onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
+                      disabled
+                      // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
+                      // onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
+                      value={getSelectedWithdraw()}
                       placeholder="0.0"
                       bordered={false}
                     />
@@ -338,6 +348,9 @@ const Swap = () => {
                 </Col>
               </Row>
 
+              <Row justify={"center"}>
+                <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
+              </Row>
               {/* Add when withdraw to other address is included */}
               {/* <Row style={{marginBottom: 32}} justify={"center"} >
               <Collapse ghost>
@@ -352,18 +365,18 @@ const Swap = () => {
         </Row>
 
         {/* Routes */}
-        <Row gutter={[32, 16]} justify={"center"} style={{marginTop: 20}}>
+        <Row gutter={[32, 16]} justify={"center"} style={{marginTop: 48}}>
           {routes.length > 0 &&
             <Col>
-              <h3 style={{textAlign: 'center'}}>Available routes</h3>
-              <Row gutter={[32, 62]} justify={"center"} style={{ width: "65vw" }}>
+              <h3 style={{textAlign: 'center'}}>Available routes (sorted by estimated withdraw)</h3>
+              <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}>
                 {
                   routes.map((route, index) =>
-                    <Col
+                    <div
                       key={index}
-                      className={'swap-route ' + (isOptimal(routes, index) ? 'optimal' : '')}
+                      className={'swap-route ' + (highlightedIndex === index ? 'optimal' : '')}
                       style={{padding: 24, paddingTop: 24, paddingBottom: 24}}
-                      onClick={() => openSwapModal(route, index)}
+                      onClick={() => setHighlightedIndex(index)}
                     >
                       <Steps progressDot size="small" direction="vertical" current={5} className="progress-step-list">
                         {
@@ -373,18 +386,23 @@ const Swap = () => {
                           })
                         }
                       </Steps>
-                      <Row justify={"center"} style={{ margin: 16 }}>
-                        <Button shape="round" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal(route, index)}>Swap</Button>
-                      </Row>
-                    </Col>
+
+                      <div className="selected">
+                        { highlightedIndex === index ? (
+                          <div className="selected-label">Selected</div>
+                        ) : (
+                          <Button shape="round" size={"large"} onClick={() => setHighlightedIndex(index)}>Select Route</Button>
+                        )}
+                      </div>
+                    </div>
                   )
                 }
-              </Row>
+              </div>
             </Col>
           }
           {routesLoading &&
             <Col>
-              <Row gutter={[32, 62]} justify={"center"} className="swap-routes" style={{ width: "65vw", border: "2px solid #f0f0f0", borderRadius: 6, padding: 24 }}>
+              <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 48 }}>
               <h3 style={{textAlign: 'center'}}>Loading...</h3>
               </Row>
             </Col>

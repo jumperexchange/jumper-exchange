@@ -9,13 +9,13 @@ import { formatTokenAmount } from '../services/utils';
 import { getChainById, getChainByKey } from '../types/lists';
 import { CrossAction, DepositAction, emptyExecution, Execution, ParaswapAction, Process, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
 import StateChannelBalances from './StateChannelBalances';
-import ConnectButton from './web3/ConnectButton';
 import { getAllowance, setAllowance, transfer } from '../services/paraswap';
 import {oneInch} from '../services/1Inch'
 import { ChainKey, Token } from '../types';
 import connextIcon from '../assets/icons/connext.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
 import { ArrowRightOutlined } from '@ant-design/icons';
+import { injected } from './web3/connectors';
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -348,7 +348,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const triggerOneIchSwap = async (step: TranferStep) => {
-    if (!node || !web3.account || !web3.library) return
+    if (!web3.account || !web3.library) return
     const swapAction = step.action as ParaswapAction
     const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
     const fromAddress = web3.account
@@ -444,11 +444,15 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   let activeButton = null
 
+  const { activate } = useWeb3React();
+
   const parseWalletSteps = () => {
     const isDone = !!web3.account
     const isActive = !isDone
 
-    const button = <ConnectButton />
+    const button = <Button type="primary" onClick={() => activate(injected)}>Connect with MetaMask</Button>
+    const buttonText = <Typography.Text onClick={() => activate(injected)}>Connect with MetaMask</Typography.Text>
+
     if (isActive) {
       activeButton = button
     }
@@ -462,7 +466,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       </Timeline.Item>,
       <Timeline.Item key="wallet_right" color={color}>
         {!web3.account ?
-          button
+          buttonText
           :
           <Typography.Text type="success">
             Connected with {web3.account.substr(0, 4)}...
@@ -478,6 +482,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const isActive = !isDone && web3.account && !swapDone
 
     const button = <Button type="primary" disabled={!web3.account} onClick={() => switchChain(route[0].action.chainId)}>switch chain to {route[0].action.chainId}</Button>
+    const buttonText = <Typography.Text onClick={() => switchChain(route[0].action.chainId)}>switch chain to {route[0].action.chainId}</Typography.Text>
     if (isActive) {
       activeButton = button
     }
@@ -491,7 +496,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       </Timeline.Item>,
       <Timeline.Item key="chain_right" color={color}>
         {web3.chainId !== route[0].action.chainId ?
-          button
+          buttonText
           :
           <Typography.Text type="success">
             On {route[0].action.chainKey} chain
@@ -502,10 +507,14 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const parseConnextSteps = () => {
+    if (route.filter(step => step.action.type === 'cross').length === 0) {
+      return []
+    }
     const isDone = !!node
     const isActive = !isDone && web3.chainId === route[0].action.chainId
 
     const button = <Button type="primary" disabled={!isActive} onClick={() => initializeConnext()}>Login to Connext</Button>
+    const buttonText = <Typography.Text onClick={() => initializeConnext()}>Login to Connext</Typography.Text>
     if (isActive) {
       activeButton = button
     }
@@ -518,7 +527,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         </h4>
       </Timeline.Item>,
       <Timeline.Item key="connext_right" color={color}>
-        {!node && !loggingIn && button}
+        {!node && !loggingIn && buttonText}
         {!node && loggingIn &&
           <Typography.Text className="flashing">
             In Progress
@@ -584,7 +593,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     </Tooltip>
   )
 
-  const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>Start Cross Chain Swap</Button>
+  const crossChain = route.filter(step => step.action.type === 'cross').length > 0
+  const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>{ crossChain ? 'Start Cross Chain Swap' : 'Start Swap'}</Button>
 
   const parseStepToTimeline = (step: TranferStep, index: number) => {
     const executionSteps = parseExecution(step.execution)

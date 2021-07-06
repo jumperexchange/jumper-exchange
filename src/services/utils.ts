@@ -6,8 +6,16 @@ export const formatTokenAmount = (token: Token, amount: number | undefined) => {
     return '- ' + token.symbol
   }
 
+  return formatTokenAmountOnly(token, amount) + ' ' + token.symbol
+}
+
+export const formatTokenAmountOnly = (token: Token, amount: number | undefined) => {
+  if (!amount) {
+    return '0.0'
+  }
+
   const floated = amount / 10 ** token.decimals
-  return floated.toFixed(4) + ' ' + token.symbol
+  return floated.toFixed(4)
 }
 
 export const checkWrappedTokenId = (chainId: number, tokenId: string) => {
