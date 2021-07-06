@@ -2,7 +2,7 @@ import { BrowserNode } from '@connext/vector-browser-node';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Button, Timeline, Typography } from 'antd';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as connext from '../services/connext';
 import { formatTokenAmount } from '../services/utils';
@@ -12,7 +12,6 @@ import StateChannelBalances from './StateChannelBalances';
 import ConnectButton from './web3/ConnectButton';
 import { getAllowance, setAllowance, transfer } from '../services/paraswap';
 import {oneInch} from '../services/1Inch'
-import { Wallet } from 'ethers';
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -191,10 +190,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     update(status)
 
     // -> check allowance
-    let wallet: Wallet;
     try {
-      wallet = await oneInch.getSignerForChain(chainId, srcAmount, srcToken, web3.account)
-      console.log(wallet)
+      const allowance = await oneInch.getSignerForChain(chainId, srcAmount, srcToken, (web3.library as any).getSigner() as JsonRpcSigner)
       // -> set allowance
       // if (allowance1 < srcAmount) {
       //   await setAllowance(chainId, srcAddress, srcToken, srcAmount)
@@ -228,7 +225,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     // -> swapping
     let tx
     try {
-      tx = await oneInch.transfer(wallet, chainId, srcToken, destToken, srcAmount, destAddress)
+      tx = await oneInch.transfer((web3.library as any).getSigner() as JsonRpcSigner, chainId, srcToken, destToken, srcAmount, destAddress)
     } catch (e) {
       // -> set status
       status.status = 'FAILED'

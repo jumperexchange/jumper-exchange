@@ -1,33 +1,30 @@
 import axios from 'axios'
-import { JsonRpcSigner, JsonRpcProvider, UrlJsonRpcProvider } from '@ethersproject/providers'
-import { BigNumber, Transaction, Wallet } from 'ethers'
-import { StringDecoder } from 'string_decoder'
+import {JsonRpcSigner } from '@ethersproject/providers'
+import { BigNumber } from 'ethers'
 
 const SUPPORTED_CHAINS = [1, 56, 137]
 const baseURL =  'https://api.1inch.exchange/v3.0/'
 
-const RpcUrls = {
-  1: process.env.REACT_APP_RPC_URL_MAINNET,
-  56: process.env.REACT_APP_RPC_URL_BSC,
-  137: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET,
-}
+// const RpcUrls = {
+//   1: process.env.REACT_APP_RPC_URL_MAINNET,
+//   56: process.env.REACT_APP_RPC_URL_BSC,
+//   137: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET,
+// }
 
-const provider:{[key: number] : JsonRpcProvider | null} = {
-  1: new JsonRpcProvider(RpcUrls[1]),
-  56: new JsonRpcProvider(RpcUrls[56]),
-  137: new JsonRpcProvider(RpcUrls[137]),
-}
+// const provider:{[key: number] : JsonRpcProvider | null} = {
+//   1: new JsonRpcProvider(RpcUrls[1]),
+//   56: new JsonRpcProvider(RpcUrls[56]),
+//   137: new JsonRpcProvider(RpcUrls[137]),
+// }
 
-const getSignerForChain = async (chainId: number, amount:number, fromTokenAddress: string , userAddress: string | null | undefined) => {
-  const result = await axios.get(`https://api.1inch.exchange/v3.0/1/approve/calldata?tokenAddress=${checkTokenAddress(fromTokenAddress)}`)
+const getSignerForChain = async (chainId: number, amount:number, fromTokenAddress: string , signer: JsonRpcSigner ) => {
+  const result = await axios.get(`https://api.1inch.exchange/v3.0/${chainId}/approve/calldata?amount=${amount}&infinity=true&tokenAddress=${checkTokenAddress(fromTokenAddress)}`)
   const allowance = result.data;
-  delete allowance.gasPrice;
-  console.log(allowance)
-  // const signer = provider[chainId]?.getSigner(userAddress as string) as JsonRpcSigner;
-  const wallet = new Wallet(userAddress as string, provider[chainId] as JsonRpcProvider);
-  const data = await wallet.sendTransaction(allowance)
-  console.log(data)
-  return wallet
+  delete allowance.gasPrice
+  allowance.value = BigNumber.from(allowance.value)
+  const approvedAllowance = await signer.sendTransaction(allowance)
+  // console.log(approvedAllowance)
+  return approvedAllowance
 
 }
 
@@ -57,19 +54,14 @@ use transactionSpeed to get gasprice
     tx
   }
 }
-const transfer = async (wallet: Wallet, chainId:number, fromTokenAddress: string, toTokenAddress: string, amount: number, destReceiver: string) => {
-  let oneInch = await getTransaction(chainId, fromTokenAddress, toTokenAddress, amount, wallet.address, destReceiver);
-  (window as any).ethereum.enable()
-  console.log(oneInch)
-  // oneInch gives back estimated gasLimit as gas. ethers transaction needs key gasLimit. 25% increase as per documentation
-  oneInch.tx.gasLimit = BigNumber.from(Math.round( oneInch.tx.gas * 0.25 ));
-  oneInch.tx.gasPrice = BigNumber.from(oneInch.tx.gasPrice)
+const transfer = async (signer: JsonRpcSigner, chainId:number, fromTokenAddress: string, toTokenAddress: string, amount: number, destReceiver: string) => {
+  const userAddress = await signer.getAddress()
+  let oneInch = await getTransaction(chainId, fromTokenAddress, toTokenAddress, amount, userAddress, destReceiver);
   oneInch.tx.value = BigNumber.from(oneInch.tx.value)
   delete oneInch.tx.gas
-  // const transaction = await signer.populateTransaction(  )
-  // const signedTransaction = await signer.signTransaction(transaction)
-
-  return wallet.sendTransaction(oneInch.tx)
+  delete oneInch.tx.gasPrice
+  console.log(oneInch.tx)
+  return signer.sendTransaction(oneInch.tx)
 }
 
 const isChainSupported = (chainId: number) => {
