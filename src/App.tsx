@@ -24,6 +24,8 @@ function usePageViews() {
 function App() {
   usePageViews()
 
+  const defaultKey = window.location.pathname === '/' ? '/swap' : window.location.pathname
+
   return (
     <WrappedWeb3ReactProvider>
       <Web3ConnectionManager>
@@ -33,15 +35,15 @@ function App() {
               <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
               <span>Li.Finance</span>
             </Link>
-            <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']}>
-              <Menu.Item key="1">
+            <Menu theme="light" mode="horizontal" defaultSelectedKeys={[defaultKey]}>
+              <Menu.Item key="/dashboard">
                 <Link to="/dashboard">Dashboard</Link>
               </Menu.Item>
-              <Menu.Item key="2">
+              <Menu.Item key="/swap">
                 <span className="beta-badge">Beta</span>
                 <Link to="/swap">Swap</Link>
               </Menu.Item>
-              <Menu.Item key="3">
+              <Menu.Item key="/about">
                 <Link to="/about">About</Link>
               </Menu.Item>
               { false && <Menu.Item key="wallets" style={{float: "right"}}>
