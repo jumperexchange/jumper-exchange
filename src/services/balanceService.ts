@@ -132,7 +132,7 @@ async function getBalancesForWallet(walletAdress: string){
     [ChainKey.AVA] : [],
   }
   for (const token of tokenList) {
-    totalPortfolio[token.chain].push({
+    totalPortfolio[token.chain]?.push({
       id: ethers.utils.isAddress(token.id) ? token.id : '0x0000000000000000000000000000000000000000',
       name: token.name,
       symbol: token.optimized_symbol,

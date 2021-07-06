@@ -593,6 +593,8 @@ const Dashboard = () => {
   const handleWalletModalClose = () => {
     if (!registeredWallets.length) {
       setWalletModalVisible(true)
+    } else {
+      setWalletModalVisible(false)
     }
   }
 
