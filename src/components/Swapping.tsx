@@ -204,7 +204,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     // -> check allowance
     try {
-      const allowance = await oneInch.getSignerForChain(chainId, srcAmount, srcToken, (web3.library as any).getSigner() as JsonRpcSigner)
+      await oneInch.getSignerForChain(chainId, srcAmount, srcToken, (web3.library as any).getSigner() as JsonRpcSigner)
       // -> set allowance
       // if (allowance1 < srcAmount) {
       //   await setAllowance(chainId, srcAddress, srcToken, srcAmount)
