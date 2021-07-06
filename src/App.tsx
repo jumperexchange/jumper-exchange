@@ -4,7 +4,7 @@ import { Header } from 'antd/lib/layout/layout';
 import React, { useEffect } from 'react';
 import { Link, Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import './App.css';
-import logo from './assets/Li.FinanceLogo.png';
+import logo from './assets/icon192.png';
 import AboutPage from './components/AboutPage';
 import Dashboard from './components/Dashboard';
 import NotFoundPage from './components/NotFoundPage';

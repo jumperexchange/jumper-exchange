@@ -1,21 +1,21 @@
 import React from 'react';
 import './AboutPage.css';
 import { Content } from 'antd/lib/layout/layout';
-import logo from '../assets/Li.FinanceLogo.png';
-import f1 from '../assets/feature-icon-01.svg';
-import f2 from '../assets/feature-icon-02.svg';
-import f3 from '../assets/feature-icon-03.svg';
-import f4 from '../assets/feature-icon-04.svg';
-import f5 from '../assets/feature-icon-05.svg';
-import f6 from '../assets/feature-icon-06.svg';
-import slide from '../assets/slideshow.png';
+import logo from '../assets/icon192.png';
+import f1 from '../assets/about/feature-icon-01.svg';
+import f2 from '../assets/about/feature-icon-02.svg';
+import f3 from '../assets/about/feature-icon-03.svg';
+import f4 from '../assets/about/feature-icon-04.svg';
+import f5 from '../assets/about/feature-icon-05.svg';
+import f6 from '../assets/about/feature-icon-06.svg';
+import slide from '../assets/about/slideshow.png';
 
 function AboutPage() {
   return (
     <Content className="site-layout aboutPage">
       <div className="is-boxed">
         <div className="body-wrap">
-        
+
             <main>
                 <section className="hero">
                     <div className="container">
