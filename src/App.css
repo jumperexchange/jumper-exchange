@@ -13,9 +13,9 @@
   }
 }
 .logo {
-  width: 48px;
-  height: 48px;
-  margin: 8px 24px 8px 50px;
+  width: 36px;
+  height: 36px;
+  margin: 15px 24px 8px 50px;
 }
 
 /* global styles */
@@ -40,6 +40,18 @@
 .ant-menu-horizontal > .ant-menu-item a,
 .ant-menu-horizontal > .ant-menu-item-selected a {
   color: white;
+}
+
+.beta-badge {
+  position: absolute;
+  background: #c930e4;
+  top: 9px;
+  right: -1px;
+  border-radius: 20px;
+  line-height: 1;
+  padding: 2px 4px;
+  color: white;
+  font-size: 12px;
 }
 
 /* Annimations */

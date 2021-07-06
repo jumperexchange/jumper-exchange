@@ -39,7 +39,8 @@ export enum ChainKey {
   BSC = 'bsc',
   DAI = 'xdai',
   OKT = 'okt',
-  FTM = 'ftm'
+  FTM = 'ftm',
+  AVA = 'ava',
 }
 
 export interface ColomnType extends TableColumnType<DataType> {
@@ -72,7 +73,8 @@ export enum CoinKey {
   LINK = 'LINK',
   AAVE = 'AAVE',
   FTM = 'FTM',
-  OKT = 'OKT'
+  OKT = 'OKT',
+  AVAX = 'AVAX',
 }
 
 export enum Currencies {
@@ -93,6 +95,7 @@ export interface WalletSummary {
   [ChainKey.DAI]: SummaryAmounts;
   [ChainKey.OKT]: SummaryAmounts;
   [ChainKey.FTM]: SummaryAmounts;
+  [ChainKey.AVA]: SummaryAmounts;
 }
 
 export interface ProgressStep {

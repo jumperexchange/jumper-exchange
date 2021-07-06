@@ -1,7 +1,7 @@
 import { BrowserNode } from '@connext/vector-browser-node';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Timeline, Typography } from 'antd';
+import { Alert, Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as connext from '../services/connext';
@@ -12,6 +12,10 @@ import StateChannelBalances from './StateChannelBalances';
 import ConnectButton from './web3/ConnectButton';
 import { getAllowance, setAllowance, transfer } from '../services/paraswap';
 import {oneInch} from '../services/1Inch'
+import { ChainKey, Token } from '../types';
+import connextIcon from '../assets/icons/connext.png';
+import paraswapIcon from '../assets/icons/paraswap.png';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -26,14 +30,23 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const [loggingIn, setLoggingIn] = useState<boolean>(false)
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [swapDone, setSwapDone] = useState<boolean>(false)
+  const [alerts, setAlerts] = useState<Array<JSX.Element>>([])
 
   const initializeConnext = async () => {
     setLoggingIn(true)
+    setAlerts([])
     try {
       const _node = await connext.initNode()
       setNode(_node)
     } catch (e) {
-      console.log('Initiation error', { e })
+      setAlerts([
+        <Alert
+          message="Failed to connect to Connext"
+          description="Please disable shields or ad blockers or allow third party cookies in your browser and try again. Connext requires cross-site cookies to store your channel states."
+          type="error"
+          showIcon
+        />
+      ])
     } finally {
       setLoggingIn(false)
     }
@@ -312,7 +325,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     if (!node || !web3.library) return
     const depositAction = step.action as DepositAction
 
-    return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, depositAction.amount, (status: Execution) => updateStatus(step, status))
+    return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, BigInt(depositAction.amount), (status: Execution) => updateStatus(step, status))
   }
 
   const triggerSwap = (step: TranferStep) => {
@@ -364,7 +377,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   // TODO: move in own component
   const switchChain = async (chainId: number) => {
-    if (web3.chainId === route[0].action.chainId) return // already on right chain
+    if (web3.chainId === chainId) return // already on right chain
 
     const ethereum = (window as any).ethereum
     if (typeof ethereum === 'undefined') return
@@ -395,6 +408,38 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     } catch (error) {
       console.error(`Error adding chain ${chainId}: ${error.message}`)
     }
+  }
+  // TODO: move in own component
+  const addToken = async (token: Token) => {
+    try {
+      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+      const wasAdded = await (window as any).ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20', // Initially only supports ERC20, but eventually more!
+          options: {
+            address: token.id, // The address that the token is at.
+            symbol: token.symbol, // A ticker symbol or shorthand, up to 5 chars.
+            decimals: token.decimals, // The number of decimals in the token
+            image: token.logoURI, // A string url of the token logo
+          },
+        },
+      });
+
+      if (wasAdded) {
+        console.log('Token Added');
+      } else {
+        console.log('Token not Added');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const switchAndAddToken = async (token: Token) => {
+    await switchChain(token.chainId)
+
+    setTimeout(() => addToken(token), 100)
   }
 
   let activeButton = null
@@ -430,7 +475,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   const parseChainSteps = () => {
     const isDone = web3.chainId === route[0].action.chainId
-    const isActive = !isDone && web3.account
+    const isActive = !isDone && web3.account && !swapDone
 
     const button = <Button type="primary" disabled={!web3.account} onClick={() => switchChain(route[0].action.chainId)}>switch chain to {route[0].action.chainId}</Button>
     if (isActive) {
@@ -507,6 +552,38 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     })
   }
 
+  const getChainAvatar = (chainKey: ChainKey) => {
+    const chain = getChainByKey(chainKey)
+
+    return (
+      <Tooltip title={chain.name}>
+        <Avatar size="small" src={chain.iconUrl} alt={chain.name}></Avatar>
+      </Tooltip>
+    )
+  }
+
+  const getExchangeAvatar = (chainKey: ChainKey) => {
+    const chain = getChainByKey(chainKey)
+
+    return (
+      <Tooltip title={chain.exchange?.name}>
+        <Avatar size="small" src={chain.exchange?.iconUrl} alt={chain.exchange?.name}></Avatar>
+      </Tooltip>
+    )
+  }
+
+  const connextAvatar = (
+    <Tooltip title="Connext">
+      <Avatar size="small" src={connextIcon} alt="Connext"></Avatar>
+    </Tooltip>
+  )
+
+  const paraswapAvatar = (
+    <Tooltip title="Paraswap">
+      <Avatar size="small" src={paraswapIcon} alt="Paraswap"></Avatar>
+    </Tooltip>
+  )
+
   const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>Start Cross Chain Swap</Button>
 
   const parseStepToTimeline = (step: TranferStep, index: number) => {
@@ -519,11 +596,12 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!node || !web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerStep(step)}>trigger Deposit</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Deposit</h4>
-            <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} from {web3.account ? web3.account.substr(0, 4) : '0x'}...</span>
+            <h4>Deposit from {web3.account ? web3.account.substr(0, 4) : '0x'}...</h4>
+            <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
-            {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
+            {ADMIN_MODE && triggerButton}
+            {step.execution && executionSteps}
             {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
         ]
@@ -533,8 +611,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on {step.action.chainKey}</span>
+            <h4>Swap on {getExchangeAvatar(step.action.chainKey)}</h4>
+            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -547,8 +625,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerParaswap(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap{step.action.target === 'channel' ? ' and Deposit' : ''}</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via Paraswap</span>
+            <h4>Swap{step.action.target === 'channel' ? ' and Deposit' : ''} via {paraswapAvatar}</h4>
+            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -573,11 +651,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
       case 'cross': {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Transfer</Button>
-
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Transfer</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} on {step.action.chainKey} to {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on {step.action.toChainKey}</span>
+            <h4>Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)} via {connextAvatar}</h4>
+            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -588,10 +665,11 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
       case 'withdraw':
         const triggerButton = <Button type="primary" disabled={!node || !web3.account} onClick={() => triggerStep(step)}>trigger Withdraw</Button>
+        const token = step.action.token
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Withdraw</h4>
-            <span>{formatTokenAmount(step.action.token, step.estimate?.toAmount)} to {web3.account ? web3.account.substr(0, 4) : '0x'}...</span>
+            <h4>Withdraw to {web3.account ? web3.account.substr(0, 4) : '0x'}...</h4>
+            <span>{formatTokenAmount(step.action.token, step.estimate?.toAmount)} (<span onClick={() => switchAndAddToken(token)}>Add Token</span>)</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -656,6 +734,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   return (<>
+    {alerts}
+    <br/>
+
     <Timeline mode="alternate">
       <Timeline.Item color="green"></Timeline.Item>
 

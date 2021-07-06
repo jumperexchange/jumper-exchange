@@ -1,6 +1,7 @@
 import { ChainKey, ChainPortfolio } from '../types';
 import axios from 'axios'
 import { ethers } from 'ethers';
+import { getChainByKey } from '../types/lists';
 
 type tokenListDebankT = {
   id: string,
@@ -19,6 +20,41 @@ type tokenListDebankT = {
   amount: number
 }
 
+const COVALENT_API_KEY = 'ckey_538ec97ac4594396bda51a91df1'
+const COVALENT_API_URI = 'https://api.covalenthq.com/v1'
+// const COVALENT_SUPPORTED_CHAINS = {
+//   1: 'Ethereum Mainnet',
+//   137: 'Polygon/Matic Mainnet',
+//   80001: 'Polygon/Matic Mumbai Testnet',
+//   56: 'Binance Smart Chain',
+//   43114: 'Avalanche C-Chain Mainnet',
+//   43113: 'Fuji C-Chain Testnet',
+//   250: 'Fantom Opera Mainnet',
+// }
+async function covalentGetCoinsOnChain(walletAdress: string, chainId: number) {
+  const url = `${COVALENT_API_URI}/${chainId}/address/${walletAdress}/balances_v2/?key=${COVALENT_API_KEY}`
+  let result
+  try {
+    result = await axios.get(url)
+  } catch (e) {
+    console.error(e)
+    return []
+  }
+
+  const portfolio : Array<ChainPortfolio> = []
+  for (const token of result.data.data.items) {
+    portfolio.push({
+      id: token.contract_address,
+      name: token.contract_name,
+      symbol: token.contract_ticker_symbol,
+      img_url: token.logo_url,
+      amount: parseInt(token.balance),
+      pricePerCoin: token.quote_rate || 0,
+    })
+  }
+
+  return portfolio
+}
 
 /* INFO: DEBANK API goes against our initial way of looking on all chains for a given coinId;
 it looks for all coins for a given chain -> its reversed!!!
@@ -63,6 +99,9 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
 
 async function getBalancesForWallet(walletAdress: string){
   walletAdress = walletAdress.toLowerCase()
+
+  const covalentAVAPromise = covalentGetCoinsOnChain(walletAdress, getChainByKey(ChainKey.AVA).id)
+
   const tokenListUrl = `https://openapi.debank.com/v1/user/token_list?id=${walletAdress}&is_all=true`
 
   var result
@@ -88,9 +127,9 @@ async function getBalancesForWallet(walletAdress: string){
     [ChainKey.BSC] : [],
     [ChainKey.POL] : [],
     [ChainKey.DAI] : [],
-    [ChainKey.OKT] : [],
     [ChainKey.FTM] : [],
-
+    [ChainKey.OKT] : [],
+    [ChainKey.AVA] : [],
   }
   for (const token of tokenList) {
     totalPortfolio[token.chain].push({
@@ -102,6 +141,8 @@ async function getBalancesForWallet(walletAdress: string){
       pricePerCoin: token.price as number,
     })
   }
+
+  totalPortfolio[ChainKey.AVA] = await covalentAVAPromise
 
   return totalPortfolio
 }

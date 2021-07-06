@@ -190,7 +190,7 @@ const Swap = () => {
 
     routes.forEach((route, index) => {
       const toAmount = route[route.length - 1].estimate?.toAmount || 0
-      if (toAmount > optimalOutput) {
+      if (toAmount >= optimalOutput) {
         optimalOutput = toAmount
         optimalIndex = index
       }
@@ -391,15 +391,17 @@ const Swap = () => {
 
       </div>
 
-      <Modal
-        visible={selectedRoute.length > 0}
-        onOk={() => setselectedRoute([])}
-        onCancel={() => setselectedRoute([])}
-        width={700}
-        footer={null}
-      >
-        <Swapping route={selectedRoute} updateRoute={(route : any) => updateRoute(route, selectedRouteIndex ?? 0)}></Swapping>
-      </Modal>
+      {!routesLoading &&
+        <Modal
+          visible={selectedRoute.length > 0}
+          onOk={() => setselectedRoute([])}
+          onCancel={() => setselectedRoute([])}
+          width={700}
+          footer={null}
+        >
+          <Swapping route={selectedRoute} updateRoute={(route : any) => updateRoute(route, selectedRouteIndex ?? 0)}></Swapping>
+        </Modal>
+      }
     </Content>
   )
 }
