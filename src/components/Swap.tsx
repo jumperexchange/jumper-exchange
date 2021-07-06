@@ -1,6 +1,6 @@
 // LIBS
 import { SwapOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Input, Modal, Row, Select, Steps } from 'antd';
+import { Avatar, Button, Col, Input, Modal, Row, Select, Steps, Image } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
@@ -12,6 +12,7 @@ import { defaultTokens, getChainByKey } from '../types/lists';
 import { DepositAction, TranferStep, WithdrawAction } from '../types/server';
 import './Swap.css';
 import Swapping from './Swapping';
+import heroImage from '../assets/swap-3chain-dexagg.png';
 
 const transferChains = [
   getChainByKey(ChainKey.POL),
@@ -201,14 +202,20 @@ const Swap = () => {
 
   return (
     <Content className="site-layout">
-      <div className="swap-view" style={{ padding: 24, paddingTop: 64, minHeight: 'calc(100vh - 64px)' }}>
+      <div className="swap-view" style={{ padding: 24, paddingTop: 24, minHeight: 'calc(100vh - 64px)', maxWidth: 1600, margin: 'auto' }}>
+
+        {/* Hero Image */}
+        <Image
+          className="hero-image"
+          src={heroImage}
+        />
 
         {/* Swap Form */}
-        <Row gutter={[32, 16]} justify={"center"}>
+        <Row gutter={[32, 16]} justify={"center"} style={{marginTop: 12}}>
           <Col>
-            <div className="swap-input" style={{ width: 500, border: "2px solid #f0f0f0", borderRadius: 6, padding: 24, margin: "0 auto" }}>
+            <div className="swap-input" style={{ maxWidth: 500, border: "2px solid #f0f0f0", borderRadius: 6, padding: 24, margin: "0 auto" }}>
               <Row style={{ marginBottom: 32, paddingTop: 32 }}>
-                <Title style={{ margin: "0 auto" }} level={4} type="secondary">Please Specify Your Transaction</Title>
+                <Title style={{ margin: '0 auto', color: '#1e1451' }} level={4} type="secondary">Please Specify Your Transaction</Title>
               </Row>
 
               <Row style={{ marginBottom: 32, paddingTop: 24 }} justify={"center"}>

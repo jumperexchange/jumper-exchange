@@ -71,3 +71,8 @@ input[type="number"]::-webkit-outer-spin-button {
   padding: 2px;
   object-fit: fill;
 }
+
+.hero-image {
+  margin: auto;
+  border-radius: 6px;
+}
