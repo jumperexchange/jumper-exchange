@@ -42,7 +42,13 @@ const Swap = () => {
     } else {
       const selectedRoute = routes[highlightedIndex]
       const lastStep = selectedRoute[selectedRoute.length - 1]
-      return formatTokenAmountOnly((lastStep.action as any).token, lastStep.estimate?.toAmount)
+      if (lastStep.action.type === 'withdraw') {
+        return formatTokenAmountOnly(lastStep.action.token, lastStep.estimate?.toAmount)
+      } else if (lastStep.action.type === '1inch' || lastStep.action.type === 'paraswap') {
+        return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
+      } else {
+        return '0.0'
+      }
     }
   }
 
