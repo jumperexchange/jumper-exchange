@@ -309,8 +309,7 @@ const Swap = () => {
                       min={0}
                       max={10}
                       disabled
-                      // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
-                      // onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
+                      onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
                       value={getSelectedWithdraw()}
                       placeholder="0.0"
                       bordered={false}
