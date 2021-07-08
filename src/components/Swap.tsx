@@ -132,6 +132,7 @@ const Swap = () => {
   const getTransferRoutes = async () => {
     setRoutes([])
     setHighlightedIndex(-1)
+    setNoRoutesAvailable(false)
 
     if ((isFinite(depositAmount) || isFinite(withdrawAmount)) && depositChain && depositToken && withdrawChain && withdrawToken) {
       setRoutesLoading(true)
@@ -354,7 +355,11 @@ const Swap = () => {
               </Row>
 
               <Row justify={"center"}>
-                <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
+                <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>
+                  { routesLoading && 'Searching Routes...' }
+                  { noRoutesAvailable && 'No Route Found' }
+                  { !routesLoading && !noRoutesAvailable && 'Swap' }
+                  </Button>
               </Row>
               {/* Add when withdraw to other address is included */}
               {/* <Row style={{marginBottom: 32}} justify={"center"} >
