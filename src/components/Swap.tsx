@@ -20,6 +20,9 @@ import Swapping from './Swapping';
 import heroImage from '../assets/swap-3chain-dexagg.png';
 import { truncateSync } from 'fs';
 
+
+const refreshTimerDuration: number = 20
+
 const transferChains = [
   getChainByKey(ChainKey.POL),
   getChainByKey(ChainKey.BSC),
@@ -29,6 +32,7 @@ const transferChains = [
 const Swap = () => {
   const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
+  const [routesRefreshing, setRoutesRefreshing] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setselectedRoute] = useState<Array<TranferStep>>([]);
   const [selectedRouteIndex, setselectedRouteIndex] = useState<number>();
@@ -137,12 +141,14 @@ const Swap = () => {
   }
 
   const getTransferRoutes = async () => {
-    setRoutes([])
-    setHighlightedIndex(-1)
-    setNoRoutesAvailable(false)
+    if(!routesRefreshing) {
+      setRoutes([])
+      setHighlightedIndex(-1)
+      setNoRoutesAvailable(false)
+    } // only reset if not refreshing
 
     if ((isFinite(depositAmount) || isFinite(withdrawAmount)) && depositChain && depositToken && withdrawChain && withdrawToken) {
-      setRoutesLoading(true)
+      if(!routesRefreshing) {setRoutesLoading(true)}// only set loading when not refreshing
       const dToken = findeToken(depositChain, depositToken)
       const deposit: DepositAction = {
         type: 'deposit',
@@ -182,10 +188,11 @@ const Swap = () => {
         return routeBResult - routeAResult
       })
 
-      setRoutes(sortedRoutes)
+      setRoutes([...sortedRoutes])
       setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
       setNoRoutesAvailable(filteredRoutes.length === 0)
       setRoutesLoading(false)
+      setRoutesRefreshing(false)
     }
   }
 
@@ -193,6 +200,11 @@ const Swap = () => {
     getTransferRoutes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken])
+
+  useEffect(() => {
+    if (routesRefreshing) getTransferRoutes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routesRefreshing])
 
   const onChangeDepositAmount = (amount: number) => {
     setDepositAmount(amount)
@@ -324,7 +336,7 @@ const Swap = () => {
                       max={10}
                       disabled
                       onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
-                      value={ routesLoading? "0.0" : getSelectedWithdraw() }
+                      value={ routesRefreshing ? "0.0" : getSelectedWithdraw() }
                       placeholder="0.0"
                       bordered={false}
                     />
@@ -389,24 +401,36 @@ const Swap = () => {
               <h3 style={{textAlign: 'center'}}>
                 Available routes (sorted by estimated withdraw)
               </h3>
-              <Tooltip  style={{margin: "0 auto", textAlign: 'center'}} title="Auto Refresh Countdown">
-                        <CountdownCircleTimer
-                          onComplete={() => {
-                            setRoutesLoading(true)
-                            getTransferRoutes()
-                            // repeat animation in 1.5 seconds
-                          }}
-                          isPlaying
-                          size={30}
-                          strokeWidth = {3}
-                          duration={30}
-                          trailColor="#ffffff"
-                          colors={[["#47DAFE", 0.33], ["#5D97FE", 0.33], ["#A369FE", 0.33]]}
-                        >
-                        </CountdownCircleTimer>
-                      </Tooltip>
+              {
+                routesRefreshing
+                ? (
+                  <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 32 }}>
+                    <h3 style={{textAlign: 'center'}}>Refreshing Routes...</h3>
+                  </Row>
+                )
+                : (
+                  <Row gutter={[32, 62]} justify={"center"} style={{marginTop: 32}}>
+                    <Tooltip  style={{margin: "0 auto",}} title="Auto Refresh Countdown">
+                      <CountdownCircleTimer
+                        onComplete={() => {
+                          setRoutesRefreshing(true)
+                          // repeat animation in 1.5 seconds
+                        }}
+                        isPlaying
+                        size={30}
+                        strokeWidth = {3}
+                        duration={refreshTimerDuration}
+                        trailColor="#ffffff"
+                        colors={[["#47DAFE", 0.33], ["#5D97FE", 0.33], ["#A369FE", 0.33]]}
+                      >
+                      </CountdownCircleTimer>
+                    </Tooltip>
+                  </Row>
+                )
 
-              <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}>
+              }
+
+              <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll', marginTop: 32 }}>
                 {
                   routes.map((route, index) =>
                     <div
