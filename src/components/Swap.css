@@ -88,3 +88,21 @@ input[type="number"]::-webkit-outer-spin-button {
 .ant-btn-round.ant-btn-lg {
   border-radius: 6px;
 }
+
+
+
+.ant-select-item-option-content .disabled {
+  opacity: 0.25;
+}
+.option-item {
+  display: flex;
+}
+.option-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 5px;
+}
+
+.option-balance {
+  margin-left: auto;
+}
