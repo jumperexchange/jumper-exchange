@@ -13,6 +13,7 @@ import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
 import setMetatags from './services/metatags';
+import { initStomt } from './services/stomt';
 
 function usePageViews() {
   let location = useLocation()
@@ -60,18 +61,21 @@ function App() {
               setMetatags({
                 title: 'Li.Finance - Dashboard',
               })
+              initStomt('dashboard')
               return <Dashboard/>
             }}/>
             <Route path="/swap" render={() => {
               setMetatags({
                 title: 'Li.Finance - Swap',
               })
+              initStomt('swap')
               return <Swap/>
             }}/>
             <Route path="/about" render={() => {
               setMetatags({
                 title: 'Li.Finance - About',
               })
+              initStomt('lifi')
               return <AboutPage/>
             }}/>
             <Route path="*" render={() => {
@@ -79,6 +83,7 @@ function App() {
                 title: 'Li.Finance - Not Found',
                 status: 404,
               })
+              initStomt('lifi')
               return <NotFoundPage/>
             }}/>
           </Switch>
