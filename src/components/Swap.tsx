@@ -7,12 +7,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
-import { ChainKey, Token } from '../types';
+import { ChainKey, ChainPortfolio, Token } from '../types';
 import { defaultTokens, getChainByKey } from '../types/lists';
 import { DepositAction, TranferStep, WithdrawAction } from '../types/server';
 import './Swap.css';
 import Swapping from './Swapping';
 import heroImage from '../assets/swap-3chain-dexagg.png';
+import { getBalancesForWallet } from '../services/balanceService';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 
 const transferChains = [
   getChainByKey(ChainKey.POL),
@@ -35,6 +38,11 @@ const Swap = () => {
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<Token> }>(defaultTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
+  const [balances, setBalances] = useState<{[ChainKey: string]: Array<ChainPortfolio>}>()
+  const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
+
+  // Wallet
+  const web3 = useWeb3React<Web3Provider>()
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -69,6 +77,25 @@ const Swap = () => {
     }
   }, [refreshTokens])
 
+  useEffect(() => {
+    if (refreshBalances && web3.account) {
+      setRefreshBalances(false)
+
+      getBalancesForWallet(web3.account)
+        .then(setBalances)
+    }
+  })
+
+  const getBalance = (chainKey: ChainKey, tokenId: string) => {
+    if (!balances) {
+      return 0
+    }
+
+    const tokenBalance = balances[chainKey].find(portfolio => portfolio.id === tokenId)
+
+    return tokenBalance?.amount || 0
+  }
+
   const onChangeDepositChain = (chainKey: ChainKey) => {
     setDepositToken(undefined) // TODO: check if same coin is available on new chain
     setDepositChain(chainKey)
@@ -77,6 +104,14 @@ const Swap = () => {
   const onChangeWithdrawChain = (chainKey: ChainKey) => {
     setWithdrawToken(undefined) // TODO: check if same coin is available on new chain
     setWithdrawChain(chainKey)
+  }
+
+  const onChangeDepositToken = (tokenId: string) => {
+    setDepositToken(tokenId)
+    const balance = getBalance(depositChain, tokenId)
+    if (balance < depositAmount) {
+      setDepositAmount(balance)
+    }
   }
 
   const changeDirection = () => {
@@ -261,7 +296,7 @@ const Swap = () => {
                     <Select
                       placeholder="select coin"
                       value={depositToken}
-                      onChange={((v) => setDepositToken(v))}
+                      onChange={((v) => onChangeDepositToken(v))}
                       optionLabelProp="key"
                       bordered={false}
                       style={{ width: 100 }}
@@ -271,21 +306,46 @@ const Swap = () => {
                         return (option?.label as string).toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }}
                     >
-                      {tokens[depositChain].map(token => (
-                        <Select.Option key={token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
-                          <div className="demo-option-label-item">
-                            <span role="img" aria-label={token.symbol}>
-                              <Avatar
-                                size="small"
-                                src={token.logoURI}
-                                alt={token.symbol}
-                                style={{marginRight: 10}}
-                              />
-                            </span>
-                            {token.symbol} - {token.name}
-                          </div>
-                        </Select.Option>
-                      ))}
+                      <Select.OptGroup label="Owned Token">
+                        {balances && balances[depositChain].map(token => (
+                          <Select.Option key={'own_' + token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
+                            <div className="option-item">
+                              <span role="img" aria-label={token.symbol}>
+                                <Avatar
+                                  size="small"
+                                  src={token.img_url}
+                                  alt={token.symbol}
+                                  style={{marginRight: 10}}
+                                />
+                              </span>
+                              <span className="option-name">{token.symbol} - {token.name}</span>
+                              <span className="option-balance">
+                                {getBalance(depositChain, token.id).toFixed(4)}
+                              </span>
+                            </div>
+                          </Select.Option>
+                        ))}
+                      </Select.OptGroup>
+                      <Select.OptGroup label="All Token">
+                        {tokens[depositChain].map(token => (
+                          <Select.Option key={token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
+                            <div className={'option-item ' + (!getBalance(depositChain, token.id) ? 'disabled' : '')}>
+                              <span role="img" aria-label={token.symbol}>
+                                <Avatar
+                                  size="small"
+                                  src={token.logoURI}
+                                  alt={token.symbol}
+                                  style={{marginRight: 10}}
+                                />
+                              </span>
+                              <span className="option-name">{token.symbol} - {token.name}</span>
+                              <span className="option-balance">
+                                {getBalance(depositChain, token.id).toFixed(4)}
+                              </span>
+                            </div>
+                          </Select.Option>
+                        ))}
+                      </Select.OptGroup>
                     </Select>
                   </Input.Group>
                 </Col>
@@ -334,21 +394,46 @@ const Swap = () => {
                         return (option?.label as string).toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }}
                     >
-                      {tokens[withdrawChain].map(token => (
-                        <Select.Option key={token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
-                          <div className="demo-option-label-item">
-                            <span role="img" aria-label={token.symbol}>
-                              <Avatar
-                                size="small"
-                                src={token.logoURI}
-                                alt={token.symbol}
-                                style={{marginRight: 10}}
-                              />
-                            </span>
-                            {token.symbol} - {token.name}
-                          </div>
-                        </Select.Option>
-                      ))}
+                      <Select.OptGroup label="owned Tokens">
+                        {balances && balances[withdrawChain].map(token => (
+                          <Select.Option key={'own_' + token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
+                            <div className="option-item">
+                              <span role="img" aria-label={token.symbol}>
+                                <Avatar
+                                  size="small"
+                                  src={token.img_url}
+                                  alt={token.symbol}
+                                  style={{marginRight: 10}}
+                                />
+                              </span>
+                              <span className="option-name">{token.symbol} - {token.name}</span>
+                              <span className="option-balance">
+                                {getBalance(withdrawChain, token.id).toFixed(4)}
+                              </span>
+                            </div>
+                          </Select.Option>
+                        ))}
+                      </Select.OptGroup>
+                      <Select.OptGroup label="all Tokens">
+                        {tokens[withdrawChain].map(token => (
+                          <Select.Option key={token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
+                            <div className="option-item">
+                              <span role="img" aria-label={token.symbol}>
+                                <Avatar
+                                  size="small"
+                                  src={token.logoURI}
+                                  alt={token.symbol}
+                                  style={{marginRight: 10}}
+                                />
+                              </span>
+                              <span className="option-name">{token.symbol} - {token.name}</span>
+                              <span className={'option-balance ' + (!getBalance(withdrawChain, token.id) ? 'disabled' : '')}>
+                                {getBalance(withdrawChain, token.id).toFixed()}
+                              </span>
+                            </div>
+                          </Select.Option>
+                        ))}
+                      </Select.OptGroup>
                     </Select>
                   </Input.Group>
                 </Col>
