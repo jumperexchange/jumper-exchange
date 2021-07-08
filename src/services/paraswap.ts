@@ -35,12 +35,25 @@ export const setAllowance = async (chainId: number, userAddress: string, tokenAd
   await para.approveToken(amount.toString(), userAddress, tokenAddress);
 
   let newAllowance = await getAllowance(chainId, userAddress, tokenAddress)
-  while (newAllowance < amount) {
+  while (newAllowance !== amount) {
     await sleep(500)
     newAllowance = await getAllowance(chainId, userAddress, tokenAddress)
   }
 
   return newAllowance
+}
+
+export const updateAllowance = async (chainId: number, userAddress: string, tokenAddress: string, amount: number) => {
+    const allowance = await getAllowance(chainId, userAddress, tokenAddress)
+    if (allowance === amount) {
+      return allowance
+    }
+
+    // -> set allowance
+    if (allowance > 0) {
+      await setAllowance(chainId, userAddress, tokenAddress, 0)
+    }
+    await setAllowance(chainId, userAddress, tokenAddress, amount)
 }
 
 export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddress: string, srcToken: string, destToken: string, srcAmount: number, receiver?: string) => {

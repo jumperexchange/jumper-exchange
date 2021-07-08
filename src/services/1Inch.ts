@@ -17,15 +17,15 @@ const baseURL =  'https://api.1inch.exchange/v3.0/'
 //   137: new JsonRpcProvider(RpcUrls[137]),
 // }
 
-const getSignerForChain = async (chainId: number, amount:number, fromTokenAddress: string , signer: JsonRpcSigner ) => {
+const setAllowance = async (chainId: number, amount:number, fromTokenAddress: string , signer: JsonRpcSigner ) => {
   const result = await axios.get(`https://api.1inch.exchange/v3.0/${chainId}/approve/calldata?amount=${amount}&infinity=true&tokenAddress=${checkTokenAddress(fromTokenAddress)}`)
   const allowance = result.data;
   delete allowance.gasPrice
   allowance.value = BigNumber.from(allowance.value)
   const approvedAllowance = await signer.sendTransaction(allowance)
-  // console.log(approvedAllowance)
+  // wait for confirmation
+  await approvedAllowance.wait(1)
   return approvedAllowance
-
 }
 
 const checkTokenAddress = (address:string ) =>{
@@ -60,7 +60,6 @@ const transfer = async (signer: JsonRpcSigner, chainId:number, fromTokenAddress:
   oneInch.tx.value = BigNumber.from(oneInch.tx.value)
   delete oneInch.tx.gas
   delete oneInch.tx.gasPrice
-  console.log(oneInch.tx)
   return signer.sendTransaction(oneInch.tx)
 }
 
@@ -70,4 +69,4 @@ const isChainSupported = (chainId: number) => {
 
 
 
-export const oneInch = {isChainSupported, getTransaction, transfer, getSignerForChain}
+export const oneInch = {isChainSupported, getTransaction, transfer, setAllowance}

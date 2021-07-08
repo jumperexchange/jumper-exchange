@@ -2,12 +2,15 @@ import { BrowserNode } from "@connext/vector-browser-node"
 import { ConditionalTransferCreatedPayload, ConditionalTransferResolvedPayload, DepositReconciledPayload, EngineEvents, ERC20Abi, FullChannelState, TransferNames, WithdrawalReconciledPayload, WithdrawalResolvedPayload } from "@connext/vector-types"
 import { getBalanceForAssetId, getRandomBytes32 } from "@connext/vector-utils"
 import { BigNumber } from "@ethersproject/bignumber"
-import { JsonRpcProvider } from "@ethersproject/providers"
+import { AddressZero } from "@ethersproject/constants"
+import { JsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers"
 import { Contract, ContractReceipt, ethers, providers, utils } from "ethers"
-import { AddressZero } from "@ethersproject/constants";
 import { Evt } from "evt"
-import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
+import * as paraswap from '../services/paraswap'
 import { emptyExecution, Execution, Process } from '../types/server'
+import { oneInch } from './1Inch'
+import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
+import { deepClone } from './utils'
 
 const connext = "vector892GMZ3CuUkpyW8eeXfW2bt5W73TWEXtgV71nphXUXAmpncnj8" // referenced in https://docs.connext.network/connext-mainnet
 const xpollinate = "vector52rjrwRFUkaJai2J4TrngZ6doTUXGZhizHmrZ6J15xVv4YFgFC" // used by https://www.xpollinate.io/
@@ -196,6 +199,58 @@ async function handleNodeResponse(channel: FullChannelState, nodeResponsePromise
 }
 
 
+// status helper
+const initStatus = (updateStatus?: Function, initialStatus?: Execution,) => {
+  const status = initialStatus || deepClone(emptyExecution)
+  const update = updateStatus || console.log
+  update(status)
+  return { status, update }
+}
+
+const createAndPushProcess = (updateStatus: Function, status: Execution, message: string, params?: object) => {
+  const newProcess: Process = {
+    startedAt: Date.now(),
+    message: message,
+    status: 'PENDING',
+  }
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      newProcess[key] = value
+    }
+  }
+
+  status.status = 'PENDING'
+  status.process.push(newProcess)
+  updateStatus(status)
+  return newProcess
+}
+
+const setStatusFailed = (updateStatus: Function, status: Execution, currentProcess: Process, params?: object) => {
+  status.status = 'FAILED'
+  currentProcess.status = 'FAILED'
+  currentProcess.failedAt = Date.now()
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      currentProcess[key] = value
+    }
+  }
+
+  updateStatus(status)
+}
+
+const setStatusDone = (updateStatus: Function, status: Execution, currentProcess: Process, params?: object) => {
+  currentProcess.status = 'DONE'
+  currentProcess.failedAt = Date.now()
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      currentProcess[key] = value
+    }
+  }
+
+  updateStatus(status)
+}
+
+
 // public helpers
 export const getChannelAddress = async (node: BrowserNode, chainId: number) => {
   const channel = await getChannelForChain(node, chainId)
@@ -241,97 +296,77 @@ export const triggerDeposit = async (node: BrowserNode, signer: providers.JsonRp
 }
 async function deposit(node: BrowserNode, channel: FullChannelState, signer: any, token: string, amount: ethers.BigNumberish, updateStatus?: Function, initialStatus?: Execution) {
   // setup
-  const status = initialStatus || JSON.parse(JSON.stringify(emptyExecution))
-  const update = updateStatus || console.log
-  update(status)
+  const { status, update } = initStatus(updateStatus, initialStatus)
 
   // Ask user to transfer to channel
   // -> set status
-  status.status = 'PENDING'
-  const approveProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Approve transaction',
-    status: 'PENDING',
-  }
-  status.process.push(approveProcess)
-  update(status)
+  const approveProcess = createAndPushProcess(update, status, 'Approve Transaction')
 
   // -> start transaction
-  const tx =
-    token === AddressZero
-      ? await signer.sendTransaction({
-        to: channel.channelAddress,
-        value: BigNumber.from(amount).toHexString(),
-      })
-    : await new Contract(token, ERC20Abi, signer).transfer(channel.channelAddress, amount);
+  let tx
+  try {
+    tx =
+      token === AddressZero
+        ? await signer.sendTransaction({
+          to: channel.channelAddress,
+          value: BigNumber.from(amount).toHexString(),
+        })
+        : await new Contract(token, ERC20Abi, signer).transfer(channel.channelAddress, amount);
+  } catch (e) {
+    setStatusFailed(update, status, approveProcess)
+    throw e
+  }
 
   // -> set status
-  approveProcess.status = 'DONE'
-  approveProcess.doneAt = Date.now()
-  approveProcess.transaction = tx.hash
-  update(status)
+  setStatusDone(update, status, approveProcess, { transaction: tx.hash })
 
   // Wait for transaction
   // -> set status
-  status.status = 'PENDING'
-  const waitingProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Wait for transaction',
-    status: 'PENDING',
-    transaction: tx.hash,
-  }
-  status.process.push(waitingProcess)
-  update(status)
+  const waitingProcess = createAndPushProcess(update, status, 'Wait for Transaction', { transaction: tx.hash })
 
   // -> waiting...
   try {
-    const receipt : ContractReceipt = await tx.wait()
+    const receipt: ContractReceipt = await tx.wait()
     // TODO: set used fees
     console.log('receipt: status', receipt.status, 'gasUsed', receipt.gasUsed.toString())
-  } catch (error) {
-    console.error(error)
-    if (error.replacement) {
-      console.log('replacement', error.replacement)
-      // TODO: try again with new id
-    } else {
-      throw error
-    }
+  } catch (e) {
+    setStatusFailed(update, status, waitingProcess)
+    throw e
+    // TODO: try again with new id
+    // if (error.replacement) {
+    //   console.log('replacement', error.replacement)
+    // } else {
+    //   throw error
+    // }
   }
   // -> set status
-  waitingProcess.status = 'DONE'
-  waitingProcess.doneAt = Date.now()
-  update(status)
+  setStatusDone(update, status, waitingProcess)
 
   // claim transaction
   // -> set status
-  status.status = 'PENDING'
-  const claimProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Claim transfer',
-    status: 'PENDING',
-  }
-  status.process.push(claimProcess)
-  update(status)
+  const claimProcess = createAndPushProcess(update, status, 'Claim Transfer')
 
   // -> claiming
-  const depositRes = await node.reconcileDeposit({
-    channelAddress: channel.channelAddress,
-    assetId: token,
-  })
+  let depositRes
+  try {
+    depositRes = await node.reconcileDeposit({
+      channelAddress: channel.channelAddress,
+      assetId: token,
+    })
+  } catch (e) {
+    setStatusFailed(update, status, claimProcess)
+    throw e
+  }
+
   if (depositRes.isError) {
-    status.status = 'FAILED'
-    claimProcess.status = 'FAILED'
-    claimProcess.failedAt = Date.now()
-    update(status)
+    setStatusFailed(update, status, claimProcess)
     throw depositRes.getError()
   }
 
   // -> set status
   status.status = 'DONE'
-  claimProcess.status = 'DONE'
-  claimProcess.doneAt = Date.now()
   // TODO: set final amounts
-  update(status)
+  setStatusDone(update, status, claimProcess)
 
   // DONE
   return status
@@ -346,20 +381,11 @@ export const triggerSwap = async (node: BrowserNode, chainId: number, path: Arra
 }
 async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: FullChannelState, amount: string, tokenA: string, tokenB: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) {
   // setup
-  const status = initialStatus || JSON.parse(JSON.stringify(emptyExecution))
-  const update = updateStatus || console.log
-  update(status)
+  const { status, update } = initStatus(updateStatus, initialStatus)
 
   // Define Swap
   // -> set status
-  status.status = 'PENDING'
-  const defineProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Define swap',
-    status: 'PENDING',
-  }
-  status.process.push(defineProcess)
-  update(status)
+  const defineProcess = createAndPushProcess(update, status, 'Define Swap')
 
   // -> defining
   const helperContract = new Contract(
@@ -376,7 +402,6 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
     tokenB,
     path,
   }
-  defineProcess.swapDataOptions = swapDataOptions
   const swapData = await helperContract.getCallData(swapDataOptions)
 
   const withdrawOptions = {
@@ -387,24 +412,13 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
     callTo: withdrawHelpers[channel.networkContext.chainId],
     recipient: withdrawHelpers[channel.networkContext.chainId],
   }
-  defineProcess.withdrawOptions = withdrawOptions
 
   // -> set status
-  defineProcess.status = 'DONE'
-  defineProcess.doneAt = Date.now()
-  update(status)
-
+  setStatusDone(update, status, defineProcess, { swapDataOptions, withdrawOptions })
 
   // trigger swap by withdrawing coins to contract
   // -> set status
-  status.status = 'PENDING'
-  const withdrawProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Withdraw to swap contract',
-    status: 'PENDING',
-  }
-  status.process.push(withdrawProcess)
-  update(status)
+  const withdrawProcess = createAndPushProcess(update, status, 'Withdraw to Swap Contract')
 
   // -> withdrawing
   const toSwapWithdrawPromise = node.withdraw(withdrawOptions)
@@ -413,35 +427,20 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
   try {
     await evt.WITHDRAWAL_RESOLVED.waitFor(30_000)
   } catch (e) {
-    console.error(e)
     try {
       await handleNodeResponse(channel, toSwapWithdrawPromise)
     } catch (e) {
-      console.error(e)
-      status.status = 'FAILED'
-      withdrawProcess.status = 'FAILED'
-      withdrawProcess.failedAt = Date.now()
-      update(status)
+      setStatusFailed(update, status, withdrawProcess)
       throw e
     }
   }
 
   // -> set status
-  withdrawProcess.status = 'DONE'
-  withdrawProcess.doneAt = Date.now()
-  update(status)
-
+  setStatusDone(update, status, withdrawProcess)
 
   // Reconcile swapped tokens to stateChannel
   // -> set status
-  status.status = 'PENDING'
-  const reconcileProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Claim swapped tokens',
-    status: 'PENDING',
-  }
-  status.process.push(reconcileProcess)
-  update(status)
+  const reconcileProcess = createAndPushProcess(update, status, 'Claim Swapped Token')
 
   // -> try to reconcile
   let postSwapBalance: string = '0'
@@ -462,19 +461,11 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
 
   // -> set status
   if (postSwapBalance === '0') {
-    status.status = 'FAILED'
-    reconcileProcess.status = 'FAILED'
-    reconcileProcess.failedAt = Date.now()
-    update(status)
-
-    // FAILED
+    setStatusFailed(update, status, reconcileProcess)
     throw new Error('Unable to access swapped tokens')
   } else {
-    status.status = 'DONE'
-    reconcileProcess.status = 'DONE'
-    reconcileProcess.doneAt = Date.now()
     // TODO: set final amounts
-    update(status)
+    setStatusDone(update, status, reconcileProcess)
 
     // DONE
     return status
@@ -491,120 +482,106 @@ export const triggerTransfer = async (node: BrowserNode, fromChainId: number, to
 }
 async function transferBetweenChains(node: BrowserNode, fromChannel: FullChannelState, fromToken: string, toChannel: FullChannelState, toToken: string, amount: ethers.BigNumberish, updateStatus?: Function, initialStatus?: Execution) {
   // setup
-  const status = initialStatus || JSON.parse(JSON.stringify(emptyExecution))
-  const update = updateStatus || console.log
-  update(status)
+  const { status, update } = initStatus(updateStatus, initialStatus)
 
   // create Transfer
   // -> set status
-  status.status = 'PENDING'
-  const startProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Create transfer',
-    status: 'PENDING',
-  }
-  status.process.push(startProcess)
-  update(status)
+  const startProcess = createAndPushProcess(update, status, 'Create Transfer')
 
   // -> creating
   const preImage = getRandomBytes32()
   const lockHash = utils.soliditySha256(['bytes32'], [preImage])
   const routingId = getRandomBytes32()
 
-  await node.conditionalTransfer({
-    publicIdentifier: node.publicIdentifier,
-    amount: amount.toString(),
-    assetId: fromToken,
-    channelAddress: fromChannel.channelAddress,
-    type: TransferNames.HashlockTransfer,
-    details: {
-      lockHash,
-      expiry: '0',
-    },
-    meta: {
-      routingId,
-    },
-    recipient: node.publicIdentifier,
-    recipientChainId: toChannel.networkContext.chainId,
-    recipientAssetId: toToken,
-  })
+  try {
+    await node.conditionalTransfer({
+      publicIdentifier: node.publicIdentifier,
+      amount: amount.toString(),
+      assetId: fromToken,
+      channelAddress: fromChannel.channelAddress,
+      type: TransferNames.HashlockTransfer,
+      details: {
+        lockHash,
+        expiry: '0',
+      },
+      meta: {
+        routingId,
+      },
+      recipient: node.publicIdentifier,
+      recipientChainId: toChannel.networkContext.chainId,
+      recipientAssetId: toToken,
+    })
+  } catch (e) {
+    setStatusFailed(update, status, startProcess)
+    throw e
+  }
 
   // -> set status
-  startProcess.doneAt = Date.now()
-  startProcess.status = 'DONE'
-  update(status)
-
+  setStatusDone(update, status, startProcess)
 
   // wait for transfer on receiving chain
   // -> set status
-  status.status = 'PENDING'
-  const waitProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Wait for transfer on receiving chain',
-    status: 'PENDING',
-  }
-  status.process.push(waitProcess)
-  update(status)
+  const waitProcess = createAndPushProcess(update, status, 'Wait for Transfer on Receiving Chain')
 
   // -> waiting
-  const toTransferData = await new Promise<ConditionalTransferCreatedPayload>(
-    (res) => {
-      node.on(
-        'CONDITIONAL_TRANSFER_CREATED',
-        (data: ConditionalTransferCreatedPayload) => {
-          console.log('CONDITIONAL_TRANSFER_CREATED data: ', {
-            data,
-            toChannel,
-          })
-          if (data.channelAddress === toChannel.channelAddress) {
-            res(data)
-          } else {
-            console.log(
-              `Got transfer for ${data.channelAddress}, waiting for ${toChannel.channelAddress}`
-            )
+  let toTransferData
+  try {
+    toTransferData = await new Promise<ConditionalTransferCreatedPayload>(
+      (res) => {
+        node.on(
+          'CONDITIONAL_TRANSFER_CREATED',
+          (data: ConditionalTransferCreatedPayload) => {
+            console.log('CONDITIONAL_TRANSFER_CREATED data: ', {
+              data,
+              toChannel,
+            })
+            if (data.channelAddress === toChannel.channelAddress) {
+              res(data)
+            } else {
+              console.log(
+                `Got transfer for ${data.channelAddress}, waiting for ${toChannel.channelAddress}`
+              )
+            }
           }
-        }
-      )
-    }
-  )
+        )
+      }
+    )
+  } catch (e) {
+    setStatusFailed(update, status, waitProcess)
+    throw e
+  }
 
   // -> set status
-  waitProcess.doneAt = Date.now()
-  waitProcess.status = 'DONE'
-  update(status)
-
+  setStatusDone(update, status, waitProcess)
 
   // resolve transfer
   // -> set status
-  status.status = 'PENDING'
-  const resolveProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Resolve Transfer',
-    status: 'PENDING',
-  }
-  status.process.push(resolveProcess)
-  update(status)
+  const resolveProcess = createAndPushProcess(update, status, 'Resolve Transfer')
 
   // -> resolving
-  const resolveRes = await node.resolveTransfer({
-    channelAddress: toChannel.channelAddress,
-    transferResolver: {
-      preImage,
-    },
-    transferId: toTransferData.transfer.transferId,
-  })
-  if (resolveRes.isError) {
-    throw resolveRes.getError()
+  let resolveRes
+  try {
+    resolveRes = await node.resolveTransfer({
+      channelAddress: toChannel.channelAddress,
+      transferResolver: {
+        preImage,
+      },
+      transferId: toTransferData.transfer.transferId,
+    })
+    if (resolveRes.isError) {
+      throw resolveRes.getError()
+    }
+  } catch (e) {
+    setStatusFailed(update, status, resolveProcess)
+    throw e
   }
-  const resolve = resolveRes.getValue()
-  console.log("resolve: ", resolve)
 
   // -> set status
-  status.status = 'DONE'
-  resolveProcess.status = 'DONE'
-  resolveProcess.doneAt = Date.now()
   // TODO: set final amounts
-  update(status)
+  // const resolve = resolveRes.getValue()
+  // console.log("resolve: ", resolve)
+  status.status = 'DONE'
+  setStatusDone(update, status, resolveProcess)
 
   // DONE
   return status
@@ -619,20 +596,11 @@ export const triggerWithdraw = async (node: BrowserNode, chainId: number, recipi
 }
 async function withdrawFromChannel(evt: EvtContainer, node: BrowserNode, channel: FullChannelState, recipient: string, token: string, amount: ethers.BigNumberish, updateStatus?: Function, initialStatus?: Execution) {
   // setup
-  const status = initialStatus || JSON.parse(JSON.stringify(emptyExecution))
-  const update = updateStatus || console.log
-  update(status)
+  const { status, update } = initStatus(updateStatus, initialStatus)
 
   // Withdraw
   // -> set status
-  status.status = 'PENDING'
-  const withdrawProcess : Process = {
-    startedAt: Date.now(),
-    message: 'Withdraw',
-    status: 'PENDING',
-  }
-  status.process.push(withdrawProcess)
-  update(status)
+  const withdrawProcess = createAndPushProcess(update, status, 'Withdraw')
 
   // -> withdrawing
   const withdrawPromise = node.withdraw({
@@ -647,23 +615,166 @@ async function withdrawFromChannel(evt: EvtContainer, node: BrowserNode, channel
     await evt.WITHDRAWAL_RESOLVED.waitFor(30_000)
   } catch {
     try {
-    await handleNodeResponse(channel, withdrawPromise)
-    } catch (error) {
-      // -> set status
-      status.status = 'FAILED'
-      withdrawProcess.status = 'FAILED'
-      withdrawProcess.failedAt = Date.now()
-      update(status)
-      throw error
+      await handleNodeResponse(channel, withdrawPromise)
+    } catch (e) {
+      setStatusFailed(update, status, withdrawProcess)
+      throw e
     }
   }
 
   // -> set status
   status.status = 'DONE'
-  withdrawProcess.status = 'DONE'
-  withdrawProcess.doneAt = Date.now()
   // TODO: set final amounts
   // TODO: add transaction
+  setStatusDone(update, status, withdrawProcess)
+
+  // DONE
+  return status
+}
+
+export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner, node: BrowserNode, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+  // setup
+  const { status, update } = initStatus(updateStatus, initialStatus)
+
+  // Ask user to set allowance
+  // -> set status
+  const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
+
+  // -> check allowance
+  try {
+    await oneInch.setAllowance(chainId, srcAmount, srcToken, signer)
+  } catch (e) {
+    // -> set status
+    setStatusFailed(update, status, allowanceProcess)
+    throw e
+  }
+
+  // -> set status
+  setStatusDone(update, status, allowanceProcess)
+
+  // Swap via Paraswap
+  // -> set status
+  const swapProcess = createAndPushProcess(update, status, 'Swap via 1inch')
+
+  // -> swapping
+  let tx
+  try {
+    tx = await oneInch.transfer(signer, chainId, srcToken, destToken, srcAmount, destAddress)
+  } catch (e) {
+    // -> set status
+    setStatusFailed(update, status, swapProcess)
+    throw e
+  }
+
+  // -> set status
+  setStatusDone(update, status, swapProcess)
+
+
+  // Wait for transaction
+  // -> set status
+  const waitingProcess = createAndPushProcess(update, status, 'Wait for Transaction')
+
+  // -> waiting
+  try {
+    await tx.wait()
+  } catch (e) {
+    // -> set status
+    setStatusFailed(update, status, waitingProcess)
+    throw e
+  }
+
+  // -> set status
+  setStatusDone(update, status, waitingProcess)
+
+  if (srcAddress !== destAddress) {
+    // Reconcile Deposit
+    // -> set status
+    const reconcileProcess = createAndPushProcess(update, status, 'Claim Transfer')
+
+    // -> reconciling
+    await reconcileDeposit(node, chainId, destToken)
+
+    // -> set status
+    setStatusDone(update, status, reconcileProcess)
+  }
+
+  // -> set status
+  status.status = 'DONE'
+  update(status)
+
+  // DONE
+  return status
+}
+
+export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, node: BrowserNode, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+  // setup
+  const { status, update } = initStatus(updateStatus, initialStatus)
+
+  // Ask user to set allowance
+  // -> set status
+  const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
+
+  // -> check allowance
+  try {
+    await paraswap.updateAllowance(chainId, srcAddress, srcToken, srcAmount)
+  } catch (e) {
+    // -> set status
+    setStatusFailed(update, status, allowanceProcess)
+    throw e
+  }
+
+  // -> set status
+  setStatusDone(update, status, allowanceProcess)
+
+
+  // Swap via Paraswap
+  // -> set status
+  const swapProcess = createAndPushProcess(update, status, 'Swap via Paraswap')
+
+  // -> swapping
+  let tx
+  try {
+    tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken, destToken, srcAmount, destAddress)
+  } catch (e) {
+    // -> set status
+    setStatusFailed(update, status, swapProcess)
+    throw e
+  }
+
+  // -> set status
+  setStatusDone(update, status, swapProcess)
+
+
+  // Wait for transaction
+  // -> set status
+  const waitingProcess = createAndPushProcess(update, status, 'Wait for Transaction')
+
+  // -> waiting
+  try {
+    await tx.wait()
+  } catch (e) {
+    // -> set status
+    setStatusFailed(update, status, waitingProcess)
+    throw e
+  }
+
+  // -> set status
+  setStatusDone(update, status, waitingProcess)
+
+  if (srcAddress !== destAddress) {
+    // Reconcile Deposit
+    // -> set status
+    const reconcileProcess = createAndPushProcess(update, status, 'Claim Transfer')
+
+    // -> reconciling
+    await reconcileDeposit(node, chainId, destToken)
+
+    // -> set status
+    setStatusDone(update, status, reconcileProcess)
+  }
+
+  // -> set status
+  status.status = 'DONE'
   update(status)
 
   // DONE

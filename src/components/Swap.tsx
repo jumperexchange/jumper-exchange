@@ -3,7 +3,7 @@ import { SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Input, Modal, Row, Select, Steps, Image } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
-import axios from 'axios';
+import axios, { CancelTokenSource } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
@@ -28,6 +28,7 @@ interface TokenWithAmounts extends Token {
   amount?: number
   amountRendered?: string
 }
+let source : CancelTokenSource | undefined = undefined
 
 const Swap = () => {
   const [stateUpdate, setStateUpdate] = useState<number>(0)
@@ -219,11 +220,10 @@ const Swap = () => {
   }
 
   const getTransferRoutes = async () => {
-    setRoutes([])
-    setHighlightedIndex(-1)
-    setNoRoutesAvailable(false)
-
     if (((isFinite(depositAmount) && depositAmount > 0) || (isFinite(withdrawAmount) && withdrawAmount > 0)) && depositChain && depositToken && withdrawChain && withdrawToken) {
+      setRoutes([])
+      setHighlightedIndex(-1)
+      setNoRoutesAvailable(false)
       setRoutesLoading(true)
       const dToken = findeToken(depositChain, depositToken)
       const deposit: DepositAction = {
@@ -242,8 +242,19 @@ const Swap = () => {
         token: wToken,
         amount: withdrawAmount ? Math.floor(withdrawAmount * (10 ** wToken.decimals)) : Infinity
       }
+
+      // cancel previously running requests
+      if (source) {
+        source.cancel('cancel for new request')
+      }
+      source = axios.CancelToken.source()
+      const cancelToken = source.token
+      const config = {
+        cancelToken
+      }
+
       try {
-        const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw })
+        const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
 
         // remove swaps with native coins
         const filteredRoutes : Array<Array<TranferStep>> = result.data.filter((path : Array<TranferStep>) => {
@@ -269,9 +280,14 @@ const Swap = () => {
         setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
         setNoRoutesAvailable(filteredRoutes.length === 0)
         setRoutesLoading(false)
-      } catch {
-        setNoRoutesAvailable(true)
-        setRoutesLoading(false)
+      } catch (err) {
+        // check if it we are still loading a new request
+        if (!axios.isCancel(err)) {
+          setNoRoutesAvailable(true)
+          setRoutesLoading(false)
+        }
+      } finally {
+        source = undefined
       }
     }
   }

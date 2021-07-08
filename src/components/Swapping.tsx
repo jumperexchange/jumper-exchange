@@ -1,20 +1,18 @@
+import { ArrowRightOutlined } from '@ant-design/icons';
 import { BrowserNode } from '@connext/vector-browser-node';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
+import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Alert, Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as connext from '../services/connext';
-import { formatTokenAmount } from '../services/utils';
-import { getChainById, getChainByKey } from '../types/lists';
-import { CrossAction, DepositAction, emptyExecution, Execution, ParaswapAction, Process, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
-import StateChannelBalances from './StateChannelBalances';
-import { getAllowance, setAllowance, transfer } from '../services/paraswap';
-import {oneInch} from '../services/1Inch'
-import { ChainKey, Token } from '../types';
 import connextIcon from '../assets/icons/connext.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
-import { ArrowRightOutlined } from '@ant-design/icons';
+import * as connext from '../services/connext';
+import { formatTokenAmount } from '../services/utils';
+import { ChainKey, Token } from '../types';
+import { getChainById, getChainByKey } from '../types/lists';
+import { CrossAction, DepositAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
+import StateChannelBalances from './StateChannelBalances';
 import { injected } from './web3/connectors';
 
 interface SwappingProps {
@@ -31,6 +29,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [swapDone, setSwapDone] = useState<boolean>(false)
   const [alerts, setAlerts] = useState<Array<JSX.Element>>([])
+
+  let activeButton = null
+  const { activate } = useWeb3React();
 
   const initializeConnext = async () => {
     setLoggingIn(true)
@@ -54,264 +55,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-
-  // Paraswap
-  const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
-    // setup
-    const status = initialStatus || JSON.parse(JSON.stringify(emptyExecution))
-    const update = updateStatus || console.log
-    update(status)
-
-    // Ask user to set allowance
-    // -> set status
-    status.status = 'PENDING'
-    const allowanceProcess : Process = {
-      startedAt: Date.now(),
-      message: 'Set Allowance',
-      status: 'PENDING',
-    }
-    status.process.push(allowanceProcess)
-    update(status)
-
-    // -> check allowance
-    try {
-      const allowance1 = await getAllowance(chainId, srcAddress, srcToken)
-      // -> set allowance
-      if (allowance1 < srcAmount) {
-        await setAllowance(chainId, srcAddress, srcToken, srcAmount)
-      }
-    } catch (e) {
-      // -> set status
-      status.status = 'FAILED'
-      allowanceProcess.failedAt = Date.now()
-      allowanceProcess.status = 'FAILED'
-      update(status)
-      throw e
-    }
-
-    // -> set status
-    allowanceProcess.doneAt = Date.now()
-    allowanceProcess.status = 'DONE'
-    update(status)
-
-
-    // Swap via Paraswap
-    // -> set status
-    status.status = 'PENDING'
-    const swapProcess : Process = {
-      startedAt: Date.now(),
-      message: 'Swap via Paraswap',
-      status: 'PENDING',
-    }
-    status.process.push(swapProcess)
-    update(status)
-
-    // -> swapping
-    let tx
-    try {
-      tx = await transfer(signer, chainId, srcAddress, srcToken, destToken, srcAmount, destAddress)
-    } catch (e) {
-      // -> set status
-      status.status = 'FAILED'
-      swapProcess.failedAt = Date.now()
-      swapProcess.status = 'FAILED'
-      update(status)
-      throw e
-    }
-
-    // -> set status
-    swapProcess.doneAt = Date.now()
-    swapProcess.status = 'DONE'
-    update(status)
-
-
-    // Wait for transaction
-    // -> set status
-    status.status = 'PENDING'
-    const waitingProcess : Process = {
-      startedAt: Date.now(),
-      message: 'Wait for Transaction',
-      status: 'PENDING',
-      transaction: tx.hash,
-    }
-    status.process.push(waitingProcess)
-    update(status)
-
-    // -> waiting
-    try {
-      await tx.wait()
-    } catch (e) {
-      // -> set status
-      status.status = 'FAILED'
-      waitingProcess.failedAt = Date.now()
-      waitingProcess.status = 'FAILED'
-      update(status)
-      throw e
-    }
-
-    // -> set status
-    waitingProcess.doneAt = Date.now()
-    waitingProcess.status = 'DONE'
-    update(status)
-
-    if (srcAddress !== destAddress) {
-      // Reconcile Deposit
-      // -> set status
-      status.status = 'PENDING'
-      const reconcileProcess : Process = {
-        startedAt: Date.now(),
-        message: 'Claim Transfer',
-        status: 'PENDING',
-        transaction: tx.hash,
-      }
-      status.process.push(reconcileProcess)
-      update(status)
-
-      // -> reconciling
-      await connext.reconcileDeposit(node, chainId, destToken)
-
-      // -> set status
-      reconcileProcess.doneAt = Date.now()
-      reconcileProcess.status = 'DONE'
-      update(status)
-    }
-
-    // -> set status
-    status.status = 'DONE'
-    update(status)
-
-    // DONE
-    return status
-  }
-
-  // 1Inch
-  const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
-    // setup
-    const status = initialStatus || JSON.parse(JSON.stringify(emptyExecution))
-    const update = updateStatus || console.log
-    update(status)
-
-    // Ask user to set allowance
-    // -> set status
-    status.status = 'PENDING'
-    const allowanceProcess : Process = {
-      startedAt: Date.now(),
-      message: 'Set Allowance',
-      status: 'PENDING',
-    }
-    status.process.push(allowanceProcess)
-    update(status)
-
-    // -> check allowance
-    try {
-      await oneInch.getSignerForChain(chainId, srcAmount, srcToken, (web3.library as any).getSigner() as JsonRpcSigner)
-      // -> set allowance
-      // if (allowance1 < srcAmount) {
-      //   await setAllowance(chainId, srcAddress, srcToken, srcAmount)
-      // }
-    } catch (e) {
-      // -> set status
-      status.status = 'FAILED'
-      allowanceProcess.failedAt = Date.now()
-      allowanceProcess.status = 'FAILED'
-      update(status)
-      throw e
-    }
-
-    // -> set status
-    allowanceProcess.doneAt = Date.now()
-    allowanceProcess.status = 'DONE'
-    update(status)
-
-
-    // Swap via Paraswap
-    // -> set status
-    status.status = 'PENDING'
-    const swapProcess : Process = {
-      startedAt: Date.now(),
-      message: 'Swap via 1Inch',
-      status: 'PENDING',
-    }
-    status.process.push(swapProcess)
-    update(status)
-
-    // -> swapping
-    let tx
-    try {
-      tx = await oneInch.transfer((web3.library as any).getSigner() as JsonRpcSigner, chainId, srcToken, destToken, srcAmount, destAddress)
-    } catch (e) {
-      // -> set status
-      status.status = 'FAILED'
-      swapProcess.failedAt = Date.now()
-      swapProcess.status = 'FAILED'
-      update(status)
-      throw e
-    }
-
-    // -> set status
-    swapProcess.doneAt = Date.now()
-    swapProcess.status = 'DONE'
-    update(status)
-
-
-    // Wait for transaction
-    // -> set status
-    status.status = 'PENDING'
-    const waitingProcess : Process = {
-      startedAt: Date.now(),
-      message: 'Wait for Transaction',
-      status: 'PENDING',
-      transaction: tx.hash,
-    }
-    status.process.push(waitingProcess)
-    update(status)
-
-    // -> waiting
-    try {
-      await tx.wait()
-    } catch (e) {
-      // -> set status
-      status.status = 'FAILED'
-      waitingProcess.failedAt = Date.now()
-      waitingProcess.status = 'FAILED'
-      update(status)
-      throw e
-    }
-
-    // -> set status
-    waitingProcess.doneAt = Date.now()
-    waitingProcess.status = 'DONE'
-    update(status)
-
-    if (srcAddress !== destAddress) {
-      // Reconcile Deposit
-      // -> set status
-      status.status = 'PENDING'
-      const reconcileProcess : Process = {
-        startedAt: Date.now(),
-        message: 'Claim Transfer',
-        status: 'PENDING',
-        transaction: tx.hash,
-      }
-      status.process.push(reconcileProcess)
-      update(status)
-
-      // -> reconciling
-      await connext.reconcileDeposit(node, chainId, destToken)
-
-      // -> set status
-      reconcileProcess.doneAt = Date.now()
-      reconcileProcess.status = 'DONE'
-      update(status)
-    }
-
-    // -> set status
-    status.status = 'DONE'
-    update(status)
-
-    // DONE
-    return status
-  }
 
   // Swap
   const updateStatus = (step: TranferStep, status: Execution) => {
@@ -338,13 +81,13 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const triggerParaswap = async (step: TranferStep) => {
-    if (!node || !web3.account || !web3.library) return
+    if (!web3.account || !web3.library) return
     const swapAction = step.action as ParaswapAction
     const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
     const fromAddress = web3.account
     const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
 
-    return executeParaswap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+    return connext.executeParaswap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerOneIchSwap = async (step: TranferStep) => {
@@ -354,7 +97,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const fromAddress = web3.account
     const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
 
-    return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+    return connext.executeOneInchSwap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerTransfer = (step: TranferStep) => {
@@ -442,10 +185,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     setTimeout(() => addToken(token), 100)
   }
 
-  let activeButton = null
-
-  const { activate } = useWeb3React();
-
   const parseWalletSteps = () => {
     const isDone = !!web3.account
     const isActive = !isDone
@@ -461,7 +200,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     return [
       <Timeline.Item key="wallet_left" color={color}>
         <h4 style={{ marginBottom: 0 }}>
-          Connect Wallet on {route[0].action.chainKey}
+          Connect your Wallet
         </h4>
       </Timeline.Item>,
       <Timeline.Item key="wallet_right" color={color}>
@@ -481,8 +220,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const isDone = web3.chainId === route[0].action.chainId
     const isActive = !isDone && web3.account && !swapDone
 
-    const button = <Button type="primary" disabled={!web3.account} onClick={() => switchChain(route[0].action.chainId)}>switch chain to {route[0].action.chainId}</Button>
-    const buttonText = <Typography.Text onClick={() => switchChain(route[0].action.chainId)}>switch chain to {route[0].action.chainId}</Typography.Text>
+    const chain = getChainById(route[0].action.chainId)
+    const button = <Button type="primary" disabled={!web3.account} onClick={() => switchChain(route[0].action.chainId)}>Switch Chain to {chain.name}</Button>
+    const buttonText = <Typography.Text onClick={() => switchChain(route[0].action.chainId)}>Switch Chain to {chain.name}</Typography.Text>
     if (isActive) {
       activeButton = button
     }
@@ -491,7 +231,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     return [
       <Timeline.Item key="chain_left" color={color}>
         <h4 style={{ marginBottom: 0 }}>
-          Switch to {route[0].action.chainKey}
+          Switch to {chain.name}
         </h4>
       </Timeline.Item>,
       <Timeline.Item key="chain_right" color={color}>
@@ -499,7 +239,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
           buttonText
           :
           <Typography.Text type="success">
-            On {route[0].action.chainKey} chain
+            On {chain.name} Chain
           </Typography.Text>
         }
       </Timeline.Item>,
@@ -594,7 +334,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   )
 
   const crossChain = route.filter(step => step.action.type === 'cross').length > 0
-  const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>{ crossChain ? 'Start Cross Chain Swap' : 'Start Swap'}</Button>
+  const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>{crossChain ? 'Start Cross Chain Swap' : 'Start Swap'}</Button>
 
   const parseStepToTimeline = (step: TranferStep, index: number) => {
     const executionSteps = parseExecution(step.execution)
@@ -725,7 +465,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     try {
       for (const step of route) {
-          await triggerStep(step)
+        await triggerStep(step)
       }
     } catch (e) {
       console.error(e)
@@ -745,7 +485,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   return (<>
     {alerts}
-    <br/>
+    <br />
 
     <Timeline mode="alternate">
       <Timeline.Item color="green"></Timeline.Item>
@@ -771,4 +511,3 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 }
 
 export default Swapping
-
