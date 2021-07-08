@@ -1,5 +1,5 @@
 // LIBS
-import { SwapOutlined } from '@ant-design/icons';
+import { SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Input, Modal, Row, Select, Steps, Image } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
@@ -138,7 +138,12 @@ const Swap = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokens, balances])
 
-
+  const hasSufficientBalance = () => {
+    if (!depositToken) {
+      return true
+    }
+    return depositAmount <= getBalance(depositChain, depositToken)
+  }
 
   const onChangeDepositChain = (chainKey: ChainKey) => {
     setDepositToken(undefined) // TODO: check if same coin is available on new chain
@@ -226,7 +231,7 @@ const Swap = () => {
         chainKey: depositChain,
         chainId: getChainByKey(depositChain).id,
         token: dToken,
-        amount: depositAmount ? depositAmount * (10 ** dToken.decimals) : Infinity
+        amount: depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
       }
 
       const wToken = findeToken(withdrawChain, withdrawToken)
@@ -235,34 +240,39 @@ const Swap = () => {
         chainKey: withdrawChain,
         chainId: getChainByKey(withdrawChain).id,
         token: wToken,
-        amount: withdrawAmount ? withdrawAmount * (10 ** wToken.decimals) : Infinity
+        amount: withdrawAmount ? Math.floor(withdrawAmount * (10 ** wToken.decimals)) : Infinity
       }
-      const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw })
+      try {
+        const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw })
 
-      // remove swaps with native coins
-      const filteredRoutes : Array<Array<TranferStep>> = result.data.filter((path : Array<TranferStep>) => {
-        for (const step of path) {
-          if (step.action.type === 'swap') {
-            if (step.action.fromToken.id === '0x0000000000000000000000000000000000000000' || step.action.toToken.id === '0x0000000000000000000000000000000000000000') {
-              return false
+        // remove swaps with native coins
+        const filteredRoutes : Array<Array<TranferStep>> = result.data.filter((path : Array<TranferStep>) => {
+          for (const step of path) {
+            if (step.action.type === 'swap') {
+              if (step.action.fromToken.id === '0x0000000000000000000000000000000000000000' || step.action.toToken.id === '0x0000000000000000000000000000000000000000') {
+                return false
+              }
             }
           }
-        }
-        return true
-      })
+          return true
+        })
 
-      // sortedRoutes
-      const sortedRoutes = filteredRoutes.sort((routeA, routeB) => {
-        const routeAResult = routeA[routeA.length - 1].estimate?.toAmount || 0
-        const routeBResult = routeB[routeB.length - 1].estimate?.toAmount || 0
+        // sortedRoutes
+        const sortedRoutes = filteredRoutes.sort((routeA, routeB) => {
+          const routeAResult = routeA[routeA.length - 1].estimate?.toAmount || 0
+          const routeBResult = routeB[routeB.length - 1].estimate?.toAmount || 0
 
-        return routeBResult - routeAResult
-      })
+          return routeBResult - routeAResult
+        })
 
-      setRoutes(sortedRoutes)
-      setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
-      setNoRoutesAvailable(filteredRoutes.length === 0)
-      setRoutesLoading(false)
+        setRoutes(sortedRoutes)
+        setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
+        setNoRoutesAvailable(filteredRoutes.length === 0)
+        setRoutesLoading(false)
+      } catch {
+        setNoRoutesAvailable(true)
+        setRoutesLoading(false)
+      }
     }
   }
 
@@ -295,6 +305,20 @@ const Swap = () => {
       ...routes.slice(index + 1)
     ]
     setRoutes(newRoutes)
+  }
+
+  const submitButton = () => {
+    if (routesLoading) {
+      return <Button disabled={true} shape="round" type="primary" icon={<SyncOutlined spin />} size={"large"}>Searching Routes...</Button>
+    }
+    if (noRoutesAvailable) {
+      return <Button disabled={true} shape="round" type="primary" size={"large"}>No Route Found</Button>
+    }
+    if (!hasSufficientBalance()) {
+      return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
+    }
+
+    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
   }
 
   return (
@@ -500,11 +524,7 @@ const Swap = () => {
               </Row>
 
               <Row justify={"center"}>
-                <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>
-                  { routesLoading && 'Searching Routes...' }
-                  { noRoutesAvailable && 'No Route Found' }
-                  { !routesLoading && !noRoutesAvailable && 'Swap' }
-                  </Button>
+                { submitButton() }
               </Row>
               {/* Add when withdraw to other address is included */}
               {/* <Row style={{marginBottom: 32}} justify={"center"} >
