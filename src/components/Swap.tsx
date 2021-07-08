@@ -1,18 +1,24 @@
 // LIBS
 import { SwapOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Input, Modal, Row, Select, Steps, Image } from 'antd';
+import { Avatar, Button, Col, Input, Modal, Row, Select, Steps, Image, Tooltip } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { loadTokenListAsTokens } from '../services/tokenListService';
-import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+// CSS
+import './Swap.css';
+// TYPES
 import { ChainKey, Token } from '../types';
 import { defaultTokens, getChainByKey } from '../types/lists';
 import { DepositAction, TranferStep, WithdrawAction } from '../types/server';
-import './Swap.css';
+// SERVICES
+import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
+import { loadTokenListAsTokens } from '../services/tokenListService';
+// COMPONENTS
 import Swapping from './Swapping';
 import heroImage from '../assets/swap-3chain-dexagg.png';
+import { truncateSync } from 'fs';
 
 const transferChains = [
   getChainByKey(ChainKey.POL),
@@ -35,6 +41,7 @@ const Swap = () => {
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<Token> }>(defaultTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
+
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -317,7 +324,7 @@ const Swap = () => {
                       max={10}
                       disabled
                       onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
-                      value={getSelectedWithdraw()}
+                      value={ routesLoading? "0.0" : getSelectedWithdraw() }
                       placeholder="0.0"
                       bordered={false}
                     />
@@ -360,6 +367,7 @@ const Swap = () => {
                   { noRoutesAvailable && 'No Route Found' }
                   { !routesLoading && !noRoutesAvailable && 'Swap' }
                   </Button>
+                  <br />
               </Row>
               {/* Add when withdraw to other address is included */}
               {/* <Row style={{marginBottom: 32}} justify={"center"} >
@@ -378,7 +386,26 @@ const Swap = () => {
         <Row gutter={[32, 16]} justify={"center"} style={{marginTop: 48}}>
           {routes.length > 0 &&
             <Col>
-              <h3 style={{textAlign: 'center'}}>Available routes (sorted by estimated withdraw)</h3>
+              <h3 style={{textAlign: 'center'}}>
+                Available routes (sorted by estimated withdraw)
+              </h3>
+              <Tooltip  style={{margin: "0 auto", textAlign: 'center'}} title="Auto Refresh Countdown">
+                        <CountdownCircleTimer
+                          onComplete={() => {
+                            setRoutesLoading(true)
+                            getTransferRoutes()
+                            // repeat animation in 1.5 seconds
+                          }}
+                          isPlaying
+                          size={30}
+                          strokeWidth = {3}
+                          duration={30}
+                          trailColor="#ffffff"
+                          colors={[["#47DAFE", 0.33], ["#5D97FE", 0.33], ["#A369FE", 0.33]]}
+                        >
+                        </CountdownCircleTimer>
+                      </Tooltip>
+
               <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}>
                 {
                   routes.map((route, index) =>
