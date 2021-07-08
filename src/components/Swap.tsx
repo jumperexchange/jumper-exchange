@@ -397,37 +397,37 @@ const Swap = () => {
         <Row gutter={[32, 16]} justify={"center"} style={{marginTop: 48}}>
           {routes.length > 0 &&
             <Col>
-              <h3 style={{textAlign: 'center'}}>
+            <Row justify="center">
+              <h3>
                 Available routes (sorted by estimated withdraw)
               </h3>
-              {
-                routesRefreshing
-                ? (
-                  <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 32 }}>
+              <div style={{marginLeft: 6}}>
+                {
+                  routesRefreshing
+                  ? (
                     <h3 style={{textAlign: 'center'}}>Refreshing Routes...</h3>
-                  </Row>
-                )
-                : (
-                  <Row gutter={[32, 62]} justify={"center"} style={{marginTop: 32}}>
-                    <Tooltip  style={{margin: "0 auto",}} title="Auto Refresh Countdown">
-                      <CountdownCircleTimer
-                        onComplete={() => {
-                          setRoutesRefreshing(true)
-                          // repeat animation in 1.5 seconds
-                        }}
-                        isPlaying
-                        size={30}
-                        strokeWidth = {3}
-                        duration={refreshTimerDuration}
-                        trailColor="#ffffff"
-                        colors={[["#47DAFE", 0.33], ["#5D97FE", 0.33], ["#A369FE", 0.33]]}
-                      >
-                      </CountdownCircleTimer>
+                  )
+                  : !selectedRoute.length ?(
+                    <Tooltip title="Auto Refresh Countdown">
+                      <div>
+                        <CountdownCircleTimer
+                          onComplete={() => {
+                            setRoutesRefreshing(true)
+                          }}
+                          isPlaying
+                          size={30}
+                          strokeWidth = {3}
+                          duration={refreshTimerDuration}
+                          trailColor="#ffffff"
+                          colors={[["#47DAFE", 0.33], ["#5D97FE", 0.33], ["#A369FE", 0.33]]}
+                        >
+                        </CountdownCircleTimer>
+                      </div>
                     </Tooltip>
-                  </Row>
-                )
-
-              }
+                  ) : ''
+                }
+                </div>
+              </Row>
 
               <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll', marginTop: 32 }}>
                 {
