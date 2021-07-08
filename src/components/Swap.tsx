@@ -223,7 +223,7 @@ const Swap = () => {
     setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
 
-    if ((isFinite(depositAmount) || isFinite(withdrawAmount)) && depositChain && depositToken && withdrawChain && withdrawToken) {
+    if (((isFinite(depositAmount) && depositAmount > 0) || (isFinite(withdrawAmount) && withdrawAmount > 0)) && depositChain && depositToken && withdrawChain && withdrawToken) {
       setRoutesLoading(true)
       const dToken = findeToken(depositChain, depositToken)
       const deposit: DepositAction = {
@@ -370,7 +370,7 @@ const Swap = () => {
                       placeholder="select coin"
                       value={depositToken}
                       onChange={((v) => onChangeDepositToken(v))}
-                      optionLabelProp="key"
+                      optionLabelProp="data-label"
                       bordered={false}
                       style={{ width: 100 }}
                       dropdownStyle={{ minWidth: 300 }}
@@ -386,7 +386,7 @@ const Swap = () => {
                           </Select.Option>
                         }
                         {balances && tokens[depositChain].filter(token => token.amount).map(token => (
-                          <Select.Option key={'own_' + token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
+                          <Select.Option key={'own_' + token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
                             <div className="option-item">
                               <span role="img" aria-label={token.symbol}>
                                 <Avatar
@@ -407,7 +407,7 @@ const Swap = () => {
 
                       <Select.OptGroup label="All Token">
                         {tokens[depositChain].map(token => (
-                          <Select.Option key={token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
+                          <Select.Option key={token.id} value={token.id} label={token.symbol + '       - ' + token.name} data-label={token.symbol}>
                             <div className={'option-item ' + (token.amount === 0 ? 'disabled' : '')}>
                               <span role="img" aria-label={token.symbol}>
                                 <Avatar
@@ -464,7 +464,7 @@ const Swap = () => {
                       placeholder="Select coin"
                       value={withdrawToken}
                       onChange={((v) => setWithdrawToken(v))}
-                      optionLabelProp="key"
+                      optionLabelProp="data-label"
                       bordered={false}
                       style={{ width: 100 }}
                       dropdownStyle={{ minWidth: 300 }}
@@ -480,7 +480,7 @@ const Swap = () => {
                           </Select.Option>
                         }
                         {balances && tokens[withdrawChain].filter(token => token.amount).map(token => (
-                          <Select.Option key={'own_' + token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
+                          <Select.Option key={'own_' + token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
                             <div className="option-item">
                               <span role="img" aria-label={token.symbol}>
                                 <Avatar
@@ -500,7 +500,7 @@ const Swap = () => {
                       </Select.OptGroup>
                       <Select.OptGroup label="all Tokens">
                         {tokens[withdrawChain].map(token => (
-                          <Select.Option key={token.symbol} value={token.id} label={token.symbol + ' ' + token.name}>
+                          <Select.Option key={token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
                             <div className="option-item">
                               <span role="img" aria-label={token.symbol}>
                                 <Avatar
