@@ -13,6 +13,7 @@ import { formatTokenAmount } from '../services/utils';
 import { ChainKey, Token } from '../types';
 import { getChainById, getChainByKey } from '../types/lists';
 import { CrossAction, DepositAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
+import Clock from './Clock';
 import StateChannelBalances from './StateChannelBalances';
 import { injected } from './web3/connectors';
 
@@ -27,6 +28,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   // Connext
   const [node, setNode] = useState<BrowserNode>(connext.getNode())
   const [loggingIn, setLoggingIn] = useState<boolean>(false)
+  const [connextLoginStartedAt, setConnextLoginStartedAt] = useState<number>()
+  const [connextLoginDoneAt, setConnextLoginDoneAt] = useState<number>()
+  const [swapStartedAt, setSwapStartedAt] = useState<number>()
+  const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [swapDone, setSwapDone] = useState<boolean>(false)
   const [alerts, setAlerts] = useState<Array<JSX.Element>>([])
@@ -36,10 +41,12 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   const initializeConnext = async () => {
     setLoggingIn(true)
+    setConnextLoginStartedAt(Date.now())
     setAlerts([])
     try {
       const _node = await connext.initNode()
       setNode(_node)
+      setConnextLoginDoneAt(Date.now())
     } catch (e) {
       setAlerts([
         <Alert
@@ -208,10 +215,14 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         {!web3.account ?
           buttonText
           :
-          <Typography.Text type="success">
-            Connected with {web3.account.substr(0, 4)}...
-
-          </Typography.Text>
+          <p style={{display: 'flex'}}>
+            <Typography.Text type="success">
+              Connected with {web3.account.substr(0, 4)}...
+            </Typography.Text>
+            <Typography.Text style={{marginLeft: 'auto'}}>
+              <Clock startedAt={1} successAt={1}/>
+            </Typography.Text>
+          </p>
         }
       </Timeline.Item>,
     ]
@@ -239,9 +250,14 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         {web3.chainId !== route[0].action.chainId ?
           buttonText
           :
-          <Typography.Text type="success">
-            On {chain.name} Chain
-          </Typography.Text>
+          <p style={{display: 'flex'}}>
+            <Typography.Text type="success">
+              On {chain.name} Chain
+            </Typography.Text>
+            <Typography.Text style={{marginLeft: 'auto'}}>
+              <Clock startedAt={1} successAt={1}/>
+            </Typography.Text>
+          </p>
         }
       </Timeline.Item>,
     ]
@@ -270,14 +286,24 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       <Timeline.Item key="connext_right" color={color}>
         {!node && !loggingIn && buttonText}
         {!node && loggingIn &&
-          <Typography.Text className="flashing">
-            In Progress
-          </Typography.Text>
+          <p style={{display: 'flex'}}>
+            <Typography.Text className="flashing">
+              In Progress
+            </Typography.Text>
+            <Typography.Text style={{marginLeft: 'auto'}}>
+              { connextLoginStartedAt && <Clock startedAt={connextLoginStartedAt}/> }
+            </Typography.Text>
+          </p>
         }
         {node &&
-          <Typography.Text type="success">
-            Login successful
-          </Typography.Text>
+          <p style={{display: 'flex'}}>
+            <Typography.Text type="success">
+              Login successful
+            </Typography.Text>
+            <Typography.Text style={{marginLeft: 'auto'}}>
+              <Clock startedAt={connextLoginStartedAt || 1} successAt={connextLoginDoneAt || 1}/>
+            </Typography.Text>
+          </p>
         }
       </Timeline.Item>,
     ]
@@ -289,13 +315,17 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
     return execution.process.map((process, index) => {
+      const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
       return (
-        <p key={index}>
+        <p key={index} style={{display: 'flex'}}>
           <Typography.Text
-            type={process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)}
+            type={type}
             className={process.status === 'PENDING' ? 'flashing' : undefined}
           >
             {process.message}
+          </Typography.Text>
+          <Typography.Text style={{marginLeft: 'auto'}}>
+            <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt}/>
           </Typography.Text>
         </p>
       )
@@ -469,6 +499,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   const startCrossChainSwap = async () => {
     setIsSwapping(true)
+    setSwapStartedAt(Date.now())
 
     try {
       for (const step of route) {
@@ -476,10 +507,11 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       }
     } catch (e) {
       console.error(e)
+      setIsSwapping(false)
+      setSwapDoneAt(Date.now())
       return
     }
 
-    setIsSwapping(false)
     setSwapDone(true)
   }
 
@@ -509,6 +541,12 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       {/* Steps */}
       {route.map(parseStepToTimeline)}
     </Timeline>
+
+    <div style={{display: 'flex'}}>
+      <Typography.Text  style={{marginLeft: 'auto'}}>
+        { swapStartedAt ? <span className="totalTime"><Clock  startedAt={swapStartedAt} successAt={swapDoneAt}/></span> : <span>&nbsp;</span>}
+      </Typography.Text>
+    </div>
 
     <div style={{ textAlign: 'center', transform: 'scale(1.5)', marginBottom: 20 }}>
       {activeButton}

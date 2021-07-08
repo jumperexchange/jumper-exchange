@@ -687,7 +687,7 @@ const Swap = () => {
 
       </div>
 
-      {!routesLoading &&
+      {selectedRoute.length &&
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
