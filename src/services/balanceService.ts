@@ -2,6 +2,7 @@ import { ChainKey, ChainPortfolio } from '../types';
 import axios from 'axios'
 import { ethers } from 'ethers';
 import { getChainByKey } from '../types/lists';
+import { deepClone } from './utils';
 
 type tokenListDebankT = {
   id: string,
@@ -18,6 +19,16 @@ type tokenListDebankT = {
   is_wallet: boolean,
   time_at: number,
   amount: number
+}
+
+export const EMPTY_PORTFOLIO : {[ChainKey: string]: Array<ChainPortfolio>} = {
+  [ChainKey.ETH] : [],
+  [ChainKey.BSC] : [],
+  [ChainKey.POL] : [],
+  [ChainKey.DAI] : [],
+  [ChainKey.FTM] : [],
+  [ChainKey.OKT] : [],
+  [ChainKey.AVA] : [],
 }
 
 const COVALENT_API_KEY = 'ckey_538ec97ac4594396bda51a91df1'
@@ -122,15 +133,7 @@ async function getBalancesForWallet(walletAdress: string){
   }
 
   // build return object
-  const totalPortfolio : {[ChainKey: string]: Array<ChainPortfolio>} = {
-    [ChainKey.ETH] : [],
-    [ChainKey.BSC] : [],
-    [ChainKey.POL] : [],
-    [ChainKey.DAI] : [],
-    [ChainKey.FTM] : [],
-    [ChainKey.OKT] : [],
-    [ChainKey.AVA] : [],
-  }
+  const totalPortfolio : {[ChainKey: string]: Array<ChainPortfolio>} = deepClone(EMPTY_PORTFOLIO)
   for (const token of tokenList) {
     totalPortfolio[token.chain]?.push({
       id: ethers.utils.isAddress(token.id) ? token.id : '0x0000000000000000000000000000000000000000',
