@@ -18,7 +18,6 @@ import { loadTokenListAsTokens } from '../services/tokenListService';
 // COMPONENTS
 import Swapping from './Swapping';
 import heroImage from '../assets/swap-3chain-dexagg.png';
-import { truncateSync } from 'fs';
 
 
 const refreshTimerDuration: number = 20
