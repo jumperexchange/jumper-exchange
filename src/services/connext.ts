@@ -240,7 +240,7 @@ const setStatusFailed = (updateStatus: Function, status: Execution, currentProce
 
 const setStatusDone = (updateStatus: Function, status: Execution, currentProcess: Process, params?: object) => {
   currentProcess.status = 'DONE'
-  currentProcess.failedAt = Date.now()
+  currentProcess.doneAt = Date.now()
   if (params) {
     for (const [key, value] of Object.entries(params)) {
       currentProcess[key] = value

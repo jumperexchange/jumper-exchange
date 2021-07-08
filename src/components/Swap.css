@@ -189,3 +189,13 @@ h4.swap-title {
 .option-balance {
   margin-left: auto;
 }
+
+.ant-timeline.ant-timeline-alternate .ant-timeline-item-left .ant-timeline-item-content,
+.ant-timeline.ant-timeline-right .ant-timeline-item-left .ant-timeline-item-content,
+.ant-timeline.ant-timeline-label .ant-timeline-item-left .ant-timeline-item-content {
+  width: calc(50% - 22px);
+}
+
+.totalTime {
+  border-top: 1px solid rgba(0, 0, 0, 0.85);
+}
