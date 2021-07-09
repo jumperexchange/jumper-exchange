@@ -116,18 +116,18 @@ async function getBalancesForWallet(walletAdress: string){
   const tokenListUrl = `https://openapi.debank.com/v1/user/token_list?id=${walletAdress}&is_all=true`
 
   var result
-  try{
+  try {
     result = await axios.get(tokenListUrl);
-  } catch (e){
+  } catch (e) {
     console.warn(`Debank api call for token list failed with status ` + e)
     console.warn(e)
-    return {}
+    return deepClone(EMPTY_PORTFOLIO)
   }
 
   var tokenList: Array<tokenListDebankT>;
   // response body is empty?
   if (Object.keys(result.data).length === 0){
-    return {};
+    return deepClone(EMPTY_PORTFOLIO);
   } else{
     tokenList = result.data
   }

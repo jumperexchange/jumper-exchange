@@ -194,7 +194,7 @@ const showGasModal = (gas: ChainKey) => {
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
   const coin = coins.find(coin => coin.key === coinName) as Coin
   const isChainUsed = wallet.portfolio[chain].length > 0
-  const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.chains[chain].id)
+  const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === coin.chains[chain].id)
   const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : {amount_coin:0, amount_usd:0}
 
   const tooltipsEmpty = {
@@ -483,6 +483,18 @@ const Dashboard = () => {
       chainPortfolio.forEach(coin => {
         const exists = coins.find(existingCoin => existingCoin.chains[chain]?.id === coin.id)
         if (!exists) {
+          let symbolExists = coins.find(existingCoin => existingCoin.key === coin.symbol)
+          let symbol = coin.symbol
+          if (symbolExists) {
+            let symbol_id = 0
+            while(symbolExists) {
+              symbol_id += 1
+               // eslint-disable-next-line no-loop-func
+              symbolExists = coins.find(existingCoin => existingCoin.key === (coin.symbol + '_' + symbol_id))
+            }
+            symbol += '_' + symbol_id
+          }
+
           const newToken : Token = {
             id: coin.id,
             symbol: coin.symbol,
@@ -495,7 +507,7 @@ const Dashboard = () => {
             key: coin.symbol as CoinKey,
           }
           let newCoin : Coin = {
-            key: coin.symbol as CoinKey,
+            key: symbol as CoinKey,
             name: coin.name,
             logoURI: coin.img_url,
             chains: {
