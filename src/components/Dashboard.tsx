@@ -651,6 +651,7 @@ const Dashboard = () => {
         visible = {walletModalVisible}
         onOk={handleWalletModalAdd}
         onCancel={handleWalletModalClose}
+        zIndex={800}
         footer={[
           // only show close if other wallets have been added already
           registeredWallets.length === 0 ? (

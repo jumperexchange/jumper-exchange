@@ -31,7 +31,7 @@ function AboutPage() {
                   <div className="hero-figure">
                     <a href="https://www.slideshare.net/philippzentner/lifinance-pitchdeck-no-request" target="_blank" rel="nofollow noreferrer">
                       <small>Opens pitchdeck in new tab</small>
-                      <img src={slide} alt="Li.Finance Pitchdeck"></img>
+                      <img src={slide} alt="Li.Finance Pitchdeck" style={{maxWidth: '100%'}}></img>
                     </a>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ function AboutPage() {
                     </a>
                   </li>
                 </ul>
-                <div className="footer-copyright">&copy, 2021 Li.Finance, all rights reserved</div>
+                <div className="footer-copyright">&copy; 2021 Li.Finance, all rights reserved</div>
               </div>
             </div>
           </footer>

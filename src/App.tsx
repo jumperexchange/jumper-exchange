@@ -31,7 +31,7 @@ function App() {
     <WrappedWeb3ReactProvider>
       <Web3ConnectionManager>
         <Layout>
-          <Header style={{ position: 'fixed', zIndex: 1, width: '100%', padding: 0 }}>
+          <Header style={{ position: 'fixed', zIndex: 900, width: '100%', padding: 0 }}>
             <Link to="/" className="wordmark">
               <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
               <span>Li.Finance</span>

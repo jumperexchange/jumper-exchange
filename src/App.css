@@ -7,15 +7,20 @@
   line-height: 62px;
   margin-right: 20px;
 }
+.logo {
+  width: 36px;
+  height: 36px;
+  margin: 8px 20px 8px 50px;
+}
+
 @media only screen and (max-width: 480px) {
   .wordmark span {
     display: none;
   }
-}
-.logo {
-  width: 36px;
-  height: 36px;
-  margin: 15px 24px 8px 50px;
+  .logo {
+    margin-left: 15px;
+    margin-right: 0;
+  }
 }
 
 /* global styles */

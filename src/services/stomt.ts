@@ -10,11 +10,15 @@ const appIds = {
 }
 
 export const initStomt = (page : StomtPages) => {
+  const w = (window as any)
   if (!process.env.REACT_APP_STOMT_ENABLED) {
     return
   }
+  if (w.innerWidth < 560) {
+    return
+  }
+
   const appId = appIds[page]
-  const w = (window as any)
   if (!inited) {
     inited = true
     w.Stomt = w.Stomt || []

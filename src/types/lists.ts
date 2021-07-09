@@ -4,7 +4,7 @@ import { ChainKey, Coin, CoinKey, Token } from '.';
 import bsc from "../assets/icons/bsc.png";
 import eth from "../assets/icons/ethereum.png";
 import pancake from "../assets/icons/pancake.png";
-import matic from "../assets/icons/matic.png";
+import polygon from "../assets/icons/polygon.png";
 import quick from "../assets/icons/quick.png";
 import honey from "../assets/icons/honey.png";
 import xdai from "../assets/icons/xdai.png";
@@ -88,7 +88,7 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.MATIC,
     id: 137,
     visible: true,
-    iconUrl: matic,
+    iconUrl: polygon,
 
     exchange: {
       name: 'QuickSwap',
