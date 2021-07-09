@@ -103,7 +103,8 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(137),
       blockExplorerUrls: [
-        'https://rpc-mainnet.maticvigil.com/',
+        'https://polygonscan.com/',
+        'https://explorer-mainnet.maticvigil.com/',
       ],
       chainName: 'Matic Mainnet',
       iconUrls: [],
@@ -113,7 +114,7 @@ export const supportedChains: Array<Chain> = [
         decimals: 18,
       },
       rpcUrls: [
-        'https://polygonscan.com/',
+        'https://rpc-mainnet.maticvigil.com/',
       ],
     },
   },

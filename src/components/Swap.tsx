@@ -1,10 +1,10 @@
 // LIBS
-import { SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { SwapOutlined, SyncOutlined, LoginOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Input, Modal, Row, Select, Steps, Image } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, ChainPortfolio, Token } from '../types';
@@ -17,6 +17,7 @@ import { getBalancesForWallet } from '../services/balanceService';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { injected } from './web3/connectors';
+import { RefSelectProps } from 'antd/lib/select';
 
 const transferChains = [
   getChainByKey(ChainKey.POL),
@@ -40,9 +41,11 @@ const Swap = () => {
   const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.POL);
   const [depositAmount, setDepositAmount] = useState<number>(1);
   const [depositToken, setDepositToken] = useState<string | undefined>(); // tokenId
+  const depositSelectRef = useRef<RefSelectProps>()
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.DAI);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity);
   const [withdrawToken, setWithdrawToken] = useState<string | undefined>(); // tokenId
+  const withdrawSelectRef = useRef<RefSelectProps>()
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(defaultTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
@@ -154,24 +157,34 @@ const Swap = () => {
   }
 
   const onChangeDepositToken = (tokenId: string) => {
+    // unselect
+    depositSelectRef?.current?.blur()
+
+    // connect
     if (tokenId === 'connect') {
       activate(injected)
       return
     }
 
+    // set token
     setDepositToken(tokenId)
     const balance = getBalance(depositChain, tokenId)
-    if (balance < depositAmount) {
+    if (balance < depositAmount && balance > 0) {
       setDepositAmount(Math.floor(balance * 10000) / 10000)
     }
   }
 
   const onChangeWithdrawToken = (tokenId: string) => {
+    // unselect
+    withdrawSelectRef?.current?.blur()
+
+    // connect
     if (tokenId === 'connect') {
       activate(injected)
       return
     }
 
+    // set token
     setWithdrawToken(tokenId)
   }
 
@@ -331,6 +344,9 @@ const Swap = () => {
   }
 
   const submitButton = () => {
+    if (!web3.account) {
+      return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} onClick={() => activate(injected)}>Connect Wallet</Button>
+    }
     if (routesLoading) {
       return <Button disabled={true} shape="round" type="primary" icon={<SyncOutlined spin />} size={"large"}>Searching Routes...</Button>
     }
@@ -349,7 +365,7 @@ const Swap = () => {
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Hero Image */}
-        <Row style={{ marginTop: 24, width: '80%', margin: 'auto', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
+        <Row style={{ width: '80%', margin: '24px auto 0',transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
           <Image
             className="hero-image"
             src={heroImage}
@@ -367,7 +383,7 @@ const Swap = () => {
               <Row gutter={[{ xs: 8, sm: 16 }, { xs: 8, sm: 16 }]}>
                 <Col span={10}>
                   <div className="form-text">
-                    From
+                    From:
                   </div>
                 </Col>
                 <Col span={14}>
@@ -401,6 +417,7 @@ const Swap = () => {
                       onChange={((event) => onChangeDepositAmount(formatAmountInput(event)))}
                       placeholder="0.0"
                       bordered={false}
+                      className={web3.account && !hasSufficientBalance() ? 'insufficient' : ''}
                     />
                   </div>
                 </Col>
@@ -419,6 +436,11 @@ const Swap = () => {
                       bordered={false}
                       dropdownStyle={{ minWidth: 300 }}
                       showSearch
+                      ref={(select) => {
+                        if (select) {
+                          depositSelectRef.current = select
+                        }
+                      }}
                       filterOption={(input, option) => {
                         return (option?.label as string || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }}
@@ -481,7 +503,7 @@ const Swap = () => {
               <Row gutter={[{ xs: 8, sm: 16 }, { xs: 8, sm: 16 }]}>
                 <Col span={10}>
                   <div className="form-text">
-                    To
+                    To:
                   </div>
                 </Col>
                 <Col span={14}>
@@ -535,6 +557,11 @@ const Swap = () => {
                       bordered={false}
                       dropdownStyle={{ minWidth: 300 }}
                       showSearch
+                      ref={(select) => {
+                        if (select) {
+                          withdrawSelectRef.current = select
+                        }
+                      }}
                       filterOption={(input, option) => {
                         return (option?.label as string || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }}
@@ -609,7 +636,7 @@ const Swap = () => {
         </Row>
 
         {/* Routes */}
-        <Row gutter={[32, 16]} justify={"center"} style={{ marginTop: 48 }}>
+        <Row justify={"center"} style={{ marginTop: 48 }}>
           {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
@@ -619,7 +646,7 @@ const Swap = () => {
                     <div
                       key={index}
                       className={'swap-route ' + (highlightedIndex === index ? 'optimal' : '')}
-                      style={{ padding: 24, paddingTop: 24, paddingBottom: 24, marginLeft: 10 }}
+                      style={{ padding: 24, paddingTop: 24, paddingBottom: 24, marginLeft: 10, marginRight: 10 }}
                       onClick={() => setHighlightedIndex(index)}
                     >
                       <Steps progressDot size="small" direction="vertical" current={5} className="progress-step-list">

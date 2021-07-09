@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import connextIcon from '../assets/icons/connext.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
+import oneinchIcon from '../assets/icons/oneinch.png';
 import * as connext from '../services/connext';
 import { formatTokenAmount } from '../services/utils';
 import { ChainKey, Token } from '../types';
@@ -333,6 +334,12 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     </Tooltip>
   )
 
+  const oneinchAvatar = (
+    <Tooltip title="1inch">
+      <Avatar size="small" src={oneinchIcon} alt="1inch"></Avatar>
+    </Tooltip>
+  )
+
   const crossChain = route.filter(step => step.action.type === 'cross').length > 0
   const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>{crossChain ? 'Start Cross Chain Swap' : 'Start Swap'}</Button>
 
@@ -375,7 +382,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerParaswap(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap{step.action.target === 'channel' ? ' and Deposit' : ''} via {paraswapAvatar}</h4>
+            <h4>Swap{step.action.target === 'channel' ? ' & Deposit' : ''} on {paraswapAvatar}</h4>
             <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
@@ -389,8 +396,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerOneIchSwap(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap{step.action.target === 'channel' ? ' and Deposit' : ''}</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via 1Inch</span>
+            <h4>Swap{step.action.target === 'channel' ? ' & Deposit' : ''} on {oneinchAvatar}</h4>
+            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
