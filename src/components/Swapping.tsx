@@ -512,6 +512,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       return
     }
 
+    setIsSwapping(false)
+    setSwapDoneAt(Date.now())
     setSwapDone(true)
   }
 
