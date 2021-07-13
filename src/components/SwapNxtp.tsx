@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getBalance as getBalanceTest, mintTokens } from '../services/testToken';
 import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, ChainPortfolio, CoinKey, Token } from '../types';
-import { getChainByKey } from '../types/lists';
+import { getChainById, getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, TranferStep } from '../types/server';
 import './Swap.css';
 import SwappingNxtp from './SwappingNxtp';
@@ -186,14 +186,54 @@ const SwapNxtp = () => {
   }, [web3.account])
 
 
+  // TODO: move in own component
+  const switchChain = async (chainId: number) => {
+    if (web3.chainId === chainId) return // already on right chain
+
+    const ethereum = (window as any).ethereum
+    if (typeof ethereum === 'undefined') return
+
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: getChainById(chainId).metamask?.chainId }],
+      })
+    } catch (error) {
+      console.error(error)
+      if (error.code === 4902) {
+        await addChain(chainId)
+      }
+    }
+  }
+  // TODO: move in own component
+  const addChain = async (chainId: number) => {
+    const ethereum = (window as any).ethereum
+    if (typeof ethereum === 'undefined') return
+
+    const params = getChainById(chainId).metamask
+    try {
+      await ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [params],
+      })
+    } catch (error) {
+      console.error(`Error adding chain ${chainId}: ${error.message}`)
+    }
+  }
+
   const mintTestToken = async (chainKey: ChainKey) => {
     if (!web3.library || !web3.account) return
-    // change chain?
+    const chainId = getChainByKey(chainKey).id
+    await switchChain(chainId)
+    if (web3.chainId !== chainId) return
     setMinting(true)
-    const res = await mintTokens(web3.library?.getSigner(), testToken[chainKey][0].id)
-    await res.wait(1)
-    await getBalancesForWallet(web3.account).then(setBalances)
-    setMinting(false)
+    try {
+      const res = await mintTokens(web3.library?.getSigner(), testToken[chainKey][0].id)
+      await res.wait(1)
+      await getBalancesForWallet(web3.account).then(setBalances)
+    } finally {
+      setMinting(false)
+    }
   }
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
@@ -477,14 +517,18 @@ const SwapNxtp = () => {
                 <td className="ant-table-cell">(
                   { minting
                     ? <span className="flashing">minting</span>
-                    : <Button type="link" style={{padding: 0}} onClick={() => mintTestToken(ChainKey.RIN)}>Get TEST <SettingOutlined /></Button>
+                    : web3.chainId === 4
+                        ? <Button type="link" style={{padding: 0}} onClick={() => mintTestToken(ChainKey.RIN)}>Get TEST <SettingOutlined /></Button>
+                        : <Button type="link" style={{padding: 0}} onClick={() => switchChain(4)}>Change Chain</Button>
                   }
                 )</td>
                 <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.GOR][1].amount.toFixed(4)}</td>
                 <td className="ant-table-cell">(
                   { minting
                     ? <span className="flashing">minting</span>
-                    : <Button type="link" style={{padding: 0}} onClick={() => mintTestToken(ChainKey.GOR)}>Get TEST <SettingOutlined /></Button>
+                    : web3.chainId === 5
+                      ? <Button type="link" style={{padding: 0}} onClick={() => mintTestToken(ChainKey.GOR)}>Get TEST <SettingOutlined /></Button>
+                      : <Button type="link" style={{padding: 0}} onClick={() => switchChain(5)}>Change Chain</Button>
                   }
                   )</td>
               </tr>
