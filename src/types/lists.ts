@@ -267,7 +267,57 @@ export const supportedChains: Array<Chain> = [
         'https://api.avax.network/ext/bc/C/rpc',
       ],
     }
-  }
+  },
+
+  // TESTNETS
+  {
+    key: ChainKey.RIN,
+    name: 'Rinkeby',
+    coin: CoinKey.ETH,
+    id: 4,
+    visible: false,
+
+    metamask: {
+      chainId: prefixChainId(4),
+      blockExplorerUrls: [
+        'https://rinkeby.etherscan.io/',
+      ],
+      chainName: 'Rinkeby Testnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'ETH',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://rinkeby.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
+      ],
+    }
+  },
+  {
+    key: ChainKey.GOR,
+    name: 'Goerli',
+    coin: CoinKey.ETH,
+    id: 5,
+    visible: false,
+
+    metamask: {
+      chainId: prefixChainId(5),
+      blockExplorerUrls: [
+        'https://goerli.etherscan.io/',
+      ],
+      chainName: 'Goerli Testnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'ETH',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
+      ],
+    }
+  },
 ]
 
 export const getChainByKey = (chainKey: ChainKey) => {

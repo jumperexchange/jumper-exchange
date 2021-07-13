@@ -102,6 +102,7 @@ export interface OneInchAction extends ActionBase {
 
 export interface CrossAction extends ActionBase {
   type: 'cross'
+  method: 'vector' | 'nxtp'
   toChainKey: ChainKey
   amount: number
   fromToken: Token

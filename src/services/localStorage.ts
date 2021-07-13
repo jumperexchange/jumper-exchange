@@ -1,4 +1,4 @@
-import { ChainKey, Wallet } from '../types';
+import { chainKeysToObject, Wallet } from '../types';
 
 const isSupported = () => {
   try {
@@ -34,15 +34,7 @@ const readWallets = (): Array<Wallet> => {
         return {
           address: address,
           loading: false,
-          portfolio:{
-            [ChainKey.ETH]:[],
-            [ChainKey.BSC]:[],
-            [ChainKey.POL]:[],
-            [ChainKey.DAI]:[],
-            [ChainKey.FTM]:[],
-            [ChainKey.OKT]:[],
-            [ChainKey.AVA]:[],
-          }
+          portfolio: chainKeysToObject([]),
         }
       })
     }

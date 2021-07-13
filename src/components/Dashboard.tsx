@@ -2,13 +2,13 @@
 import "animate.css";
 import './Dashboard.css';
 //LIBS
-import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip,  } from 'antd';
+import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip, } from 'antd';
 import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
 import { Content } from 'antd/lib/layout/layout';
 import React, { useEffect, useState } from 'react';
 // OWN STUFF
 import { getBalancesForWallet } from '../services/balanceService';
-import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio, Token } from '../types';
+import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio, Token, chainKeysToObject } from '../types';
 import { supportedChains, defaultCoins } from '../types/lists';
 import { useWeb3React } from "@web3-react/core";
 import ConnectButton from "./web3/ConnectButton";
@@ -22,31 +22,23 @@ const emptySummaryAmounts = {
 
 const emptyWallet = {
   address: "0x..",
-  loading:true,
-  portfolio: {
-    [ChainKey.ETH]: [],
-    [ChainKey.POL]: [],
-    [ChainKey.BSC]: [],
-    [ChainKey.DAI]: [],
-    [ChainKey.FTM]: [],
-    [ChainKey.OKT]: [],
-    [ChainKey.AVA]: [],
-  }
+  loading: true,
+  portfolio: chainKeysToObject([]),
 }
 
 let coins = defaultCoins
 
 // individual render functions
-function renderAmounts(amounts: Amounts = {amount_coin: -1, amount_usd: -1}) {
+function renderAmounts(amounts: Amounts = { amount_coin: -1, amount_usd: -1 }) {
   if (amounts.amount_coin === -1) {
     // loading
     return (
       <div className="amounts">
         <div className="amount_coin">
-          <Skeleton.Button style={{ width: 70}} active={true} size={'small'} shape={'round'} />
+          <Skeleton.Button style={{ width: 70 }} active={true} size={'small'} shape={'round'} />
         </div>
         <div className="amount_usd">
-          <Skeleton.Button style={{ width: 60, height: 18}} active={true} size={'small'} shape={'round'} />
+          <Skeleton.Button style={{ width: 60, height: 18 }} active={true} size={'small'} shape={'round'} />
         </div>
       </div>
     )
@@ -61,7 +53,7 @@ function renderAmounts(amounts: Amounts = {amount_coin: -1, amount_usd: -1}) {
   } else {
     // default
     return (
-      <div className={'amounts' + (amounts.amount_coin === 0 ? ' amounts-empty' : '') }>
+      <div className={'amounts' + (amounts.amount_coin === 0 ? ' amounts-empty' : '')}>
         <div className="amount_coin">{amounts.amount_coin.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</div>
         <div className="amount_usd">{amounts.amount_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</div>
       </div>
@@ -77,7 +69,7 @@ function renderCoin(coin: Coin) {
           src={coin.logoURI}
           alt={coin.name}
         >
-          { coin.key }
+          {coin.key}
         </Avatar>
       </Tooltip>
     </div>
@@ -88,7 +80,7 @@ function renderSummary(summary: SummaryAmounts) {
   return (
     <div className="amounts">
       <div className="amount_coin">{summary.amount_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</div>
-      <div className="amount_usd">{(summary.percentage_of_portfolio*100.0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} % of portfolio</div>
+      <div className="amount_usd">{(summary.percentage_of_portfolio * 100.0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} % of portfolio</div>
     </div>
   )
 }
@@ -148,54 +140,80 @@ const showGasModal = (gas: ChainKey) => {
         )
       })
       break;
-      case ChainKey.FTM:
-        Modal.info({
-          title: 'Gas Info for FTM chain',
-          content: (
-            <div>
-              <p>Find out how to get ETH:</p>
-              <a href="https://fantom.foundation/where-to-buy-ftm/" target="_blank" rel="nofollow noreferrer">
-                Where to buy ETH (by fantom.foundation)
-              </a>
-            </div>
-          )
-        })
-        break;
-        case ChainKey.OKT:
-          Modal.info({
-            title: 'Gas Info for OKExChain chain',
-            content: (
-              <div>
-                <p>Find out how to get OKT:</p>
-                <a href="https://www.okex.com/okexchain" target="_blank" rel="nofollow noreferrer">
-                  Where to buy OKT (by okex.com)
-                </a>
-              </div>
-            )
-          })
-          break;
-        case ChainKey.AVA:
-          Modal.info({
-            title: 'Gas Info for Avalanche chain',
-            content: (
-              <div>
-                <p>Find out how to get AVAX:</p>
-                <a href="https://www.avax.network/" target="_blank" rel="nofollow noreferrer">
-                  Where to buy AVAX (by avax.network)
-                </a>
-              </div>
-            )
-          })
-          break;
+    case ChainKey.FTM:
+      Modal.info({
+        title: 'Gas Info for FTM chain',
+        content: (
+          <div>
+            <p>Find out how to get ETH:</p>
+            <a href="https://fantom.foundation/where-to-buy-ftm/" target="_blank" rel="nofollow noreferrer">
+              Where to buy ETH (by fantom.foundation)
+            </a>
+          </div>
+        )
+      })
+      break;
+    case ChainKey.OKT:
+      Modal.info({
+        title: 'Gas Info for OKExChain chain',
+        content: (
+          <div>
+            <p>Find out how to get OKT:</p>
+            <a href="https://www.okex.com/okexchain" target="_blank" rel="nofollow noreferrer">
+              Where to buy OKT (by okex.com)
+            </a>
+          </div>
+        )
+      })
+      break;
+    case ChainKey.AVA:
+      Modal.info({
+        title: 'Gas Info for Avalanche chain',
+        content: (
+          <div>
+            <p>Find out how to get AVAX:</p>
+            <a href="https://www.avax.network/" target="_blank" rel="nofollow noreferrer">
+              Where to buy AVAX (by avax.network)
+            </a>
+          </div>
+        )
+      })
+      break;
+    case ChainKey.RIN:
+      Modal.info({
+        title: 'Gas Info for Rinkeby Testnet',
+        content: (
+          <div>
+            <p>Find out how to get ETH:</p>
+            <a href="https://faucet.rinkeby.io/" target="_blank" rel="nofollow noreferrer">
+              Official Faucet
+            </a>
+          </div>
+        )
+      })
+      break;
+    case ChainKey.GOR:
+      Modal.info({
+        title: 'Gas Info for Goerli Testnet',
+        content: (
+          <div>
+            <p>Find out how to get ETH:</p>
+            <a href="https://goerli-faucet.slock.it/" target="_blank" rel="nofollow noreferrer">
+              Faucet
+            </a>
+          </div>
+        )
+      })
+      break;
   }
 }
 
 // render formatters
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
-  const coin = coins.find(coin => coin.key === coinName) as Coin
-  const isChainUsed = wallet.portfolio[chain].length > 0
+  const coin = coins.find(coin => coin.key === coinName) as Coin
+  const isChainUsed = wallet.portfolio[chain]?.length > 0
   const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === coin.chains[chain].id)
-  const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : {amount_coin:0, amount_usd:0}
+  const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : { amount_coin: 0, amount_usd: 0 }
 
   const tooltipsEmpty = {
     [ChainKey.ETH]:
@@ -233,6 +251,16 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
         <span>The Avalanche chain requires AVAX to pay for gas. Without it you won't be able to do anything on this chain.</span>
         <Button type="default" block onClick={() => showGasModal(ChainKey.AVA)}>Get AVAX</Button>
       </>),
+    [ChainKey.RIN]:
+      (<>
+        <span>The Rinkeby Testnet requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.RIN)}>Get ETH</Button>
+      </>),
+    [ChainKey.GOR]:
+      (<>
+        <span>The Goerli Testnet requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.GOR)}>Get ETH</Button>
+      </>),
   }
   const tooltipEmpty = tooltipsEmpty[chain];
   const tooltips = {
@@ -243,15 +271,17 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
     [ChainKey.FTM]: (<>The Fantom chain requires FTM to pay for gas.</>),
     [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas.</>),
     [ChainKey.AVA]: (<>The Avalanche chain requires AVAX to pay for gas.</>),
+    [ChainKey.RIN]: (<>The Rinkeby Testnet requires ETH to pay for gas.</>),
+    [ChainKey.GOR]: (<>The Rinkeby Testnet requires ETH to pay for gas.</>),
   }
   const tooltip = tooltips[chain];
   return (
     <div className="gas">
       <div className="amount_coin">
-        { amounts.amount_coin === -1 ? (
+        {amounts.amount_coin === -1 ? (
           <Tooltip title={tooltip}>
-          {coinName}: <Skeleton.Button style={{ width: 60}} active={true} size={'small'} shape={'round'} />
-        </Tooltip>
+            {coinName}: <Skeleton.Button style={{ width: 60 }} active={true} size={'small'} shape={'round'} />
+          </Tooltip>
         ) : amounts.amount_coin === 0 ? (
           <Tooltip color={isChainUsed ? 'red' : 'gray'} title={tooltipEmpty}>
             {coinName}: -
@@ -274,16 +304,16 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
 
 const renderWalletColumnTitle = (address: string, syncHandler: Function, deleteHandler: Function) => {
   return (<Row>
-        <Col span={12} offset={6}>
-          {`${address.substr(0,4)}...${address.substr(-4,4)}`}
-        </Col>
-        <Col span={1} offset={4}>
-          <SyncOutlined onClick={() => syncHandler()} />
-        </Col>
-        <Col span={1} offset={0}>
-          <DeleteOutlined onClick={() => deleteHandler()} />
-        </Col>
-      </Row>
+    <Col span={12} offset={6}>
+      {`${address.substr(0, 4)}...${address.substr(-4, 4)}`}
+    </Col>
+    <Col span={1} offset={4}>
+      <SyncOutlined onClick={() => syncHandler()} />
+    </Col>
+    <Col span={1} offset={0}>
+      <DeleteOutlined onClick={() => deleteHandler()} />
+    </Col>
+  </Row>
   )
 }
 //Helpers
@@ -315,14 +345,14 @@ const buildColumnForWallet = (wallet: Wallet, syncHandler: Function, deleteHandl
   return walletColumn
 }
 
-const coinColumn : ColomnType = {
+const coinColumn: ColomnType = {
   title: 'Coins',
   fixed: 'left',
   dataIndex: 'coin',
   render: renderCoin,
   width: 60,
 }
-const portfolioColumn : ColomnType = {
+const portfolioColumn: ColomnType = {
   title: 'Portfolio',
   width: baseWidth + 10,
   dataIndex: 'portfolio',
@@ -330,51 +360,42 @@ const portfolioColumn : ColomnType = {
 }
 
 const initialColumns = [
-    coinColumn,
-    portfolioColumn,
-    buildColumnForWallet(emptyWallet, () => {}, () => {}),
-    {
-      title: (
-        <Button>
-          Add Wallet
-        </Button>
-      ),
-      dataIndex: '',
-      width: 100,
-    }
+  coinColumn,
+  portfolioColumn,
+  buildColumnForWallet(emptyWallet, () => { }, () => { }),
+  {
+    title: (
+      <Button>
+        Add Wallet
+      </Button>
+    ),
+    dataIndex: '',
+    width: 100,
+  }
 ]
 
 const initialRows: Array<DataType> = coins.map(coin => {
   return {
     key: coin.key,
     coin: coin as Coin,
-    portfolio: {amount_coin:-1, amount_usd: -1},
-    [`0x_${ChainKey.ETH}`]: {amount_coin:-1, amount_usd: -1},
-    [`0x_${ChainKey.BSC}`]: {amount_coin:-1, amount_usd: -1},
-    [`0x_${ChainKey.POL}`]: {amount_coin:-1, amount_usd: -1},
-    [`0x_${ChainKey.DAI}`]: {amount_coin:-1, amount_usd: -1},
-    [`0x_${ChainKey.FTM}`]: {amount_coin:-1, amount_usd: -1},
-    [`0x_${ChainKey.OKT}`]: {amount_coin:-1, amount_usd: -1},
-    [`0x_${ChainKey.AVA}`]: {amount_coin:-1, amount_usd: -1},
+    portfolio: { amount_coin: -1, amount_usd: -1 },
+    ...chainKeysToObject({ amount_coin: -1, amount_usd: -1 }),
   }
 })
 
 const calculateWalletSummary = (wallet: Wallet, totalSumUsd: number) => {
-  var summary:WalletSummary = {
-    wallet: wallet.address,
-    [ChainKey.ETH]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-    [ChainKey.POL]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-    [ChainKey.BSC]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-    [ChainKey.DAI]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-    [ChainKey.FTM]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-    [ChainKey.OKT]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-    [ChainKey.AVA]: {amount_usd:0.0, percentage_of_portfolio: 0.0},
-  }
+  var summary: WalletSummary = Object.assign(
+    {
+      wallet: wallet.address,
+    },
+    chainKeysToObject({ amount_usd: 0.0, percentage_of_portfolio: 0.0 }),
+  ) as WalletSummary
+
   Object.values(ChainKey).forEach(chain => {
-      wallet.portfolio[chain].forEach(portfolio => {
-        summary[chain].amount_usd += portfolio.amount * portfolio.pricePerCoin;
-      })
-      summary[chain].percentage_of_portfolio = wallet.portfolio[chain].reduce((sum, current) => sum + current.amount * current.pricePerCoin, 0)/ totalSumUsd
+    wallet.portfolio[chain]?.forEach(portfolio => {
+      summary[chain].amount_usd += portfolio.amount * portfolio.pricePerCoin;
+    })
+    summary[chain].percentage_of_portfolio = wallet.portfolio[chain]?.reduce((sum, current) => sum + current.amount * current.pricePerCoin, 0) / totalSumUsd
   })
   return summary
 }
@@ -382,7 +403,7 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: number) => {
 // actual component
 const Dashboard = () => {
 
-  const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(()=>{return readWallets()})
+  const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() => { return readWallets() })
   const web3 = useWeb3React()
   const [columns, setColumns] = useState<Array<ColomnType>>(initialColumns)
   const [walletModalVisible, setWalletModalVisible] = useState(false);
@@ -409,20 +430,20 @@ const Dashboard = () => {
     return walletColumns;
   }
 
-  const buildColumns = (initialBuild: boolean = false) =>{
+  const buildColumns = (initialBuild: boolean = false) => {
     const columns = [
       coinColumn,
       portfolioColumn,
     ]
-    if(initialBuild){
-      buildColumnForWallet(emptyWallet, () => {}, () => {})
-    }else{
+    if (initialBuild) {
+      buildColumnForWallet(emptyWallet, () => { }, () => { })
+    } else {
       buildWalletColumns().map(column => columns.push(column))
     }
     columns.push({
       title: (
-        <Button onClick={() => setWalletModalVisible(true)} style={{height: 80}}>
-          Add<br/>Wallet
+        <Button onClick={() => setWalletModalVisible(true)} style={{ height: 80 }}>
+          Add<br />Wallet
         </Button>
       ),
       dataIndex: '',
@@ -431,12 +452,12 @@ const Dashboard = () => {
     return columns;
   }
 
-    //builders
+  //builders
   const buildRows = () => {
     const generatedRows: Array<DataType> = []
     coins.forEach(coin => {
       // row object
-      const coinRow : DataType = {
+      const coinRow: DataType = {
         key: coin.key,
         coin: coin as Coin,
         portfolio: {
@@ -444,7 +465,7 @@ const Dashboard = () => {
           amount_usd: 0.0,
         },
       }
-      registeredWallets.forEach( wallet => {
+      registeredWallets.forEach(wallet => {
         Object.values(ChainKey).forEach(chain => {
           const emptyAmounts: Amounts = {
             amount_coin: wallet.loading ? -1 : 0.0,
@@ -474,8 +495,8 @@ const Dashboard = () => {
     wallet.loading = true
     setData(buildRows) // set loading state
 
-    const portfolio : {[ChainKey: string]: Array<ChainPortfolio>} = await getBalancesForWallet(wallet.address)
-    for (const chain of Object.values(ChainKey)){
+    const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = await getBalancesForWallet(wallet.address)
+    for (const chain of Object.values(ChainKey)) {
       const chainPortfolio = portfolio[chain]
       wallet.portfolio[chain] = chainPortfolio
 
@@ -487,15 +508,15 @@ const Dashboard = () => {
           let symbol = coin.symbol
           if (symbolExists) {
             let symbol_id = 0
-            while(symbolExists) {
+            while (symbolExists) {
               symbol_id += 1
-               // eslint-disable-next-line no-loop-func
+              // eslint-disable-next-line no-loop-func
               symbolExists = coins.find(existingCoin => existingCoin.key === (coin.symbol + '_' + symbol_id))
             }
             symbol += '_' + symbol_id
           }
 
-          const newToken : Token = {
+          const newToken: Token = {
             id: coin.id,
             symbol: coin.symbol,
             decimals: 18,
@@ -506,19 +527,11 @@ const Dashboard = () => {
             chainKey: ChainKey.ETH,
             key: coin.symbol as CoinKey,
           }
-          let newCoin : Coin = {
+          let newCoin: Coin = {
             key: symbol as CoinKey,
             name: coin.name,
             logoURI: coin.img_url,
-            chains: {
-              [ChainKey.ETH]: newToken,
-              [ChainKey.BSC]: newToken,
-              [ChainKey.POL]: newToken,
-              [ChainKey.DAI]: newToken,
-              [ChainKey.FTM]: newToken,
-              [ChainKey.OKT]: newToken,
-              [ChainKey.AVA]: newToken,
-            },
+            chains: chainKeysToObject(newToken),
           }
           coins.push(newCoin)
         }
@@ -526,27 +539,27 @@ const Dashboard = () => {
     }
 
     wallet.loading = false
-    if(isSubscribed){
-    setRegisteredWallets(
-      registeredWallets.map(old =>
-        old.address === wallet.address
-          ? wallet
-          : old
-    ))
-    setColumns(buildColumns(false))
-    setData(buildRows)
-      }
+    if (isSubscribed) {
+      setRegisteredWallets(
+        registeredWallets.map(old =>
+          old.address === wallet.address
+            ? wallet
+            : old
+        ))
+      setColumns(buildColumns(false))
+      setData(buildRows)
+    }
 
   }
 
-  const  updateEntirePortfolio = () => {
+  const updateEntirePortfolio = () => {
     registeredWallets.forEach(async wallet => {
       await updateWalletPortfolio(wallet);
     })
   }
 
   useEffect(() => {
-    if(!registeredWallets.length){
+    if (!registeredWallets.length) {
       setWalletModalVisible(true)
       setColumns(initialColumns);
       setData(initialRows)
@@ -556,7 +569,7 @@ const Dashboard = () => {
       setData(buildRows)
 
     }
-    return () => {setIsSubscribed(false)}
+    return () => { setIsSubscribed(false) }
     // eslint-disable-next-line
   }, [registeredWallets.length])
 
@@ -565,15 +578,7 @@ const Dashboard = () => {
     const newWallet = {
       address: address,
       loading: true,
-      portfolio: {
-        [ChainKey.ETH]:[],
-        [ChainKey.BSC]:[],
-        [ChainKey.POL]:[],
-        [ChainKey.DAI]:[],
-        [ChainKey.FTM]:[],
-        [ChainKey.OKT]:[],
-        [ChainKey.AVA]:[],
-      }
+      portfolio: chainKeysToObject([]),
     }
     setRegisteredWallets([...registeredWallets, newWallet])
     storeWallets([...registeredWallets, newWallet])
@@ -581,7 +586,7 @@ const Dashboard = () => {
 
 
   // Add Wallet Modal Handlers
-  const resolveEnsName = async (name : string) => {
+  const resolveEnsName = async (name: string) => {
     const ethereum = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_MAINNET)
     return ethereum.resolveName(name)
   }
@@ -616,9 +621,6 @@ const Dashboard = () => {
     return walletModalAddress || web3Account;
   }
 
-
-
-
   let summaryIndex = 0
   return (
     <Content className="site-layout">
@@ -631,21 +633,21 @@ const Dashboard = () => {
           scroll={{ x: '1000px', y: 'calc(100vh - 277px)' }}
           pagination={false}
 
-          summary = {() => (
+          summary={() => (
             <Table.Summary fixed>
               <Table.Summary.Row>
                 <Table.Summary.Cell index={summaryIndex} className="sum">SUM</Table.Summary.Cell>
-                <Table.Summary.Cell index={summaryIndex++}>{renderSummary(!registeredWallets.length? emptySummaryAmounts:{amount_usd: data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0), percentage_of_portfolio: 1} as SummaryAmounts)}</Table.Summary.Cell>
+                <Table.Summary.Cell index={summaryIndex++}>{renderSummary(!registeredWallets.length ? emptySummaryAmounts : { amount_usd: data.reduce((sum, curr) => sum + curr.portfolio.amount_usd, 0), percentage_of_portfolio: 1 } as SummaryAmounts)}</Table.Summary.Cell>
                 {
-                  registeredWallets.map((wallet:Wallet) => {
-                    const total = data.reduce((sum, curr)=> sum + curr.portfolio.amount_usd, 0)
-                    const summary =  calculateWalletSummary(wallet, total)
+                  registeredWallets.map((wallet: Wallet) => {
+                    const total = data.reduce((sum, curr) => sum + curr.portfolio.amount_usd, 0)
+                    const summary = calculateWalletSummary(wallet, total)
 
                     return supportedChains
                       .filter(chain => chain.visible)
                       .map(chain => {
                         return (
-                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({amount_usd:0,percentage_of_portfolio:0}) : renderSummary(summary[chain.key])}</Table.Summary.Cell>
+                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({ amount_usd: 0, percentage_of_portfolio: 0 }) : renderSummary(summary[chain.key])}</Table.Summary.Cell>
                         )
                       })
                   })
@@ -659,8 +661,8 @@ const Dashboard = () => {
 
 
       <Modal
-        title = "Add Wallet"
-        visible = {walletModalVisible}
+        title="Add Wallet"
+        visible={walletModalVisible}
         onOk={handleWalletModalAdd}
         onCancel={handleWalletModalClose}
         zIndex={800}
@@ -672,11 +674,11 @@ const Dashboard = () => {
             </Button>
           ) : '',
           <Button key="submit" type="primary" onClick={handleWalletModalAdd} disabled={walletModalLoading}>
-            { walletModalLoading ? 'Loading' : 'Add' }
+            {walletModalLoading ? 'Loading' : 'Add'}
           </Button>,
-      ]}
+        ]}
       >
-       { !web3.account ? (<ConnectButton />) : (<Button style={{ display: 'block' }}>Connected with {web3.account.substr(0, 4)}...</Button>)}
+        {!web3.account ? (<ConnectButton />) : (<Button style={{ display: 'block' }}>Connected with {web3.account.substr(0, 4)}...</Button>)}
 
         Enter a wallet address / ens domain:
         <Input
@@ -688,7 +690,7 @@ const Dashboard = () => {
           disabled={walletModalLoading}
         />
       </Modal>
-      </ Content>
+    </ Content>
   )
 }
 

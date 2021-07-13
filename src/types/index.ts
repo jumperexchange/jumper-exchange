@@ -35,12 +35,24 @@ export interface DataType {
 
 export enum ChainKey {
   ETH = 'eth',
-  POL = 'matic',
+  POL = 'pol',
   BSC = 'bsc',
-  DAI = 'xdai',
+  DAI = 'dai',
   OKT = 'okt',
   FTM = 'ftm',
   AVA = 'ava',
+
+  // Testnets
+  RIN = 'rin',
+  GOR = 'gor',
+}
+
+export function chainKeysToObject(val: any) {
+  const result : { [ChainKey: string]: any } = {}
+  for (const key in ChainKey) {
+    result[key.toLowerCase()] = JSON.parse(JSON.stringify(val))
+  }
+  return result
 }
 
 export interface ColomnType extends TableColumnType<DataType> {
@@ -75,6 +87,9 @@ export enum CoinKey {
   FTM = 'FTM',
   OKT = 'OKT',
   AVAX = 'AVAX',
+
+  // Testnet
+  TEST = 'TEST',
 }
 
 export enum Currencies {
@@ -96,6 +111,8 @@ export interface WalletSummary {
   [ChainKey.OKT]: SummaryAmounts;
   [ChainKey.FTM]: SummaryAmounts;
   [ChainKey.AVA]: SummaryAmounts;
+  [ChainKey.RIN]: SummaryAmounts;
+  [ChainKey.GOR]: SummaryAmounts;
 }
 
 export interface ProgressStep {

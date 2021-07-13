@@ -5,8 +5,9 @@ const CHAINS = {
   MAINNET: 1,
   ROPSTEN: 3,
   RINKEBY: 4,
+  GOERLI: 5,
   KOVAN: 42,
-  
+
   BSC: 56,
   // BSC_TESTNET: 97,
 
@@ -20,11 +21,12 @@ const RPC_URLS: { [chainId: number]: string } = {
   [CHAINS.MAINNET]: process.env.REACT_APP_RPC_URL_MAINNET as string,
   [CHAINS.ROPSTEN]: process.env.REACT_APP_RPC_URL_ROPSTEN as string,
   [CHAINS.RINKEBY]: process.env.REACT_APP_RPC_URL_RINKEBY as string,
+  [CHAINS.GOERLI]: process.env.REACT_APP_RPC_URL_GORLI as string,
   [CHAINS.KOVAN]: process.env.REACT_APP_RPC_URL_KOVAN as string,
-  
+
   [CHAINS.BSC]: process.env.REACT_APP_RPC_URL_BSC as string,
   // [CHAINS.BSC_TESTNET]: process.env.REACT_APP_RPC_URL_BSC_TESTNET as string,
-  
+
   [CHAINS.POLYGON]: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET as string,
   [CHAINS.MUMBAI]: process.env.REACT_APP_RPC_URL_POLYGON_MUMBAI as string,
 

@@ -1,4 +1,4 @@
-import { ChainKey, ChainPortfolio } from '../types';
+import { ChainKey, chainKeysToObject, ChainPortfolio } from '../types';
 import axios from 'axios'
 import { ethers } from 'ethers';
 import { getChainByKey } from '../types/lists';
@@ -21,15 +21,7 @@ type tokenListDebankT = {
   amount: number
 }
 
-export const EMPTY_PORTFOLIO : {[ChainKey: string]: Array<ChainPortfolio>} = {
-  [ChainKey.ETH] : [],
-  [ChainKey.BSC] : [],
-  [ChainKey.POL] : [],
-  [ChainKey.DAI] : [],
-  [ChainKey.FTM] : [],
-  [ChainKey.OKT] : [],
-  [ChainKey.AVA] : [],
-}
+export const EMPTY_PORTFOLIO : {[ChainKey: string]: Array<ChainPortfolio>} = chainKeysToObject([])
 
 const COVALENT_API_KEY = 'ckey_538ec97ac4594396bda51a91df1'
 const COVALENT_API_URI = 'https://api.covalenthq.com/v1'
