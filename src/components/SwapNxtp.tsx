@@ -1,21 +1,23 @@
-import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { ArrowUpOutlined, LoginOutlined, SwapOutlined, SyncOutlined, SettingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Col, Input, Modal, Row, Select, Steps } from 'antd';
+import { Alert, Avatar, Button, Col, Input, Modal, Row, Select, Steps } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { RefSelectProps } from 'antd/lib/select';
 import Title from 'antd/lib/typography/Title';
 import { BigNumber, constants, providers } from "ethers";
 import React, { useEffect, useRef, useState } from 'react';
-import { getBalance as getBalanceTest } from '../services/testToken';
+import { getBalance as getBalanceTest, mintTokens } from '../services/testToken';
 import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, ChainPortfolio, CoinKey, Token } from '../types';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, TranferStep } from '../types/server';
 import './Swap.css';
 import SwappingNxtp from './SwappingNxtp';
+import ConnectButton from './web3/ConnectButton';
 import { injected } from './web3/connectors';
 
+const BALANCES_REFRESH_INTERVAL = 5000
 
 const transferChains = [
   getChainByKey(ChainKey.GOR),
@@ -73,10 +75,12 @@ const SwapNxtp = () => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
+  const [minting, setMinting] = useState<boolean>(false)
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React();
+  const intervalRef = useRef<NodeJS.Timeout>()
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -182,6 +186,16 @@ const SwapNxtp = () => {
   }, [web3.account])
 
 
+  const mintTestToken = async (chainKey: ChainKey) => {
+    if (!web3.library || !web3.account) return
+    // change chain?
+    setMinting(true)
+    const res = await mintTokens(web3.library?.getSigner(), testToken[chainKey][0].id)
+    await res.wait(1)
+    await getBalancesForWallet(web3.account).then(setBalances)
+    setMinting(false)
+  }
+
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
     if (!balances) {
       return 0
@@ -214,6 +228,16 @@ const SwapNxtp = () => {
     setStateUpdate(stateUpdate + 1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokens, balances])
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => setRefreshBalances(true), BALANCES_REFRESH_INTERVAL)
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [])
 
   const hasSufficientBalance = () => {
     if (!depositToken) {
@@ -419,6 +443,62 @@ const SwapNxtp = () => {
             src={heroImage}
           />
         </Row> */}
+
+        <Row justify="center" style={{marginTop: 24}}>
+
+        <Alert
+      message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
+      description={(
+        <>
+          <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
+          <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
+
+          <h3 style={{textAlign: 'center'}}>Your Balance</h3>
+          { web3.account && balances &&
+          <table style={{background: 'white', margin: 'auto'}}>
+            <thead className="ant-table-thead">
+              <tr className="ant-table-row">
+                <th className="ant-table-cell"></th>
+                <th className="ant-table-cell" colSpan={2}>Rinkeby</th>
+                <th className="ant-table-cell" colSpan={2}>Goerli</th>
+              </tr>
+            </thead>
+            <tbody className="ant-table-tbody">
+              <tr className="ant-table-row">
+                <td className="ant-table-cell">ETH</td>
+                <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.RIN][0].amount.toFixed(4)}</td>
+                <td className="ant-table-cell">(<a href="https://faucet.rinkeby.io/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)</td>
+                <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.GOR][0].amount.toFixed(4)}</td>
+                <td className="ant-table-cell">(<a href="https://goerli-faucet.slock.it/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)</td>
+              </tr>
+              <tr className="ant-table-row">
+                <td className="ant-table-cell">TEST</td>
+                <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.RIN][1].amount.toFixed(4)}</td>
+                <td className="ant-table-cell">(
+                  { minting
+                    ? <span className="flashing">minting</span>
+                    : <Button type="link" style={{padding: 0}} onClick={() => mintTestToken(ChainKey.RIN)}>Get TEST <SettingOutlined /></Button>
+                  }
+                )</td>
+                <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.GOR][1].amount.toFixed(4)}</td>
+                <td className="ant-table-cell">(
+                  { minting
+                    ? <span className="flashing">minting</span>
+                    : <Button type="link" style={{padding: 0}} onClick={() => mintTestToken(ChainKey.GOR)}>Get TEST <SettingOutlined /></Button>
+                  }
+                  )</td>
+              </tr>
+            </tbody>
+          </table>
+          }
+          { !web3.account &&
+            <Row justify="center"><ConnectButton></ConnectButton></Row>
+          }
+        </>
+      )}
+      type="info"
+    />
+        </Row>
 
         {/* Swap Form */}
         <Row style={{ margin: 20 }} justify={"center"} className="swap-form">
