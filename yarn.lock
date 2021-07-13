@@ -1302,7 +1302,7 @@
   integrity sha512-/L5jtrTonpv66oc1jke30jVLQPHuzZLIlHgSPe7i6N7pPTbTaj/x5K2+jMmD1oohZQUELVhovjZ4oPzp9n1e7Q==
   dependencies:
     "@connext/nxtp-contracts" "0.0.5"
-    "@connext/nxtp-txservice" "0.0.5"
+    "@connext/nxtp-txservice" "0.0.3"
     "@connext/nxtp-utils" "0.0.5"
     "@sinclair/typebox" "^0.17.7"
     ajv "^8.6.1"
@@ -1312,7 +1312,7 @@
     hyperid "^2.3.1"
     pino "^6.11.3"
 
-"@connext/nxtp-txservice@0.0.5":
+"@connext/nxtp-txservice@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.3.tgz#3d86a5603cda7d694290ab1ee7e26dcfe4008d4a"
   integrity sha512-GmofknLlH03qh0ZdIMGxshggfVM87g+Ub/RS3ulCKceM//2GugALIvFqJ9/yGPBh+uJ1LzqSqn5Nv57ds1GTXw==
