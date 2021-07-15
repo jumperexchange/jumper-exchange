@@ -56,13 +56,10 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     const signer = web3.library.getSigner()
 
     try {
-      console.log('init sdk')
       const _sdk = await NxtpSdk.init(chainProviders, signer, pino({ level: "info" }));
       setSdkChainId(web3.chainId)
       setSdk(_sdk)
       return _sdk
-      // const activeTxs = await _sdk.getActiveTransactions();
-      // console.log('activeTxs', activeTxs)
     } catch (e) {
       throw e
     }
@@ -211,7 +208,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
     // approve sent => wait
     sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareTokenApproval, (data) => {
-      console.log('SenderTransactionPrepareTokenApproval', data)
       approveProcess.txHash = data.transactionResponse.hash
       approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
       approveProcess.message = (<>Approve Token - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>)
@@ -219,7 +215,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     })
     // approved = done => next
     sdk.attachOnce(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
-      console.log('SenderTokenApprovalMined', data)
       approveProcess.message = (<>Approve Token (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
       setStatusDone(update, status, approveProcess)
       submitProcess = createAndPushProcess(update, status, 'Submit Cross Chain Transfer')
@@ -227,7 +222,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
     // sumbit sent => wait
     sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareSubmitted, (data) => {
-      console.log('SenderTransactionPrepareSubmitted', data)
       if (submitProcess) {
         submitProcess.txHash = data.transactionResponse.hash
         submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
@@ -237,7 +231,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     })
     // sumitted = done => next
     sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
-      console.log('SenderTransactionPrepared', data)
       if (submitProcess) {
         submitProcess.message = (<>Submit Transfer (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
         setStatusDone(update, status, submitProcess)
@@ -247,7 +240,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
     // ReceiverTransactionPrepared => sign
     sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
-      console.log('ReceiverTransactionPrepared', data)
       if (proceedProcess) {
         proceedProcess.message = 'Proceed Transfer - Sign'
         update(status)
@@ -255,7 +247,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     })
     // fullfilled = done
     sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
-      console.log('ReceiverTransactionFulfilled', data)
       if (proceedProcess) {
         proceedProcess.message = 'Proceed Transfer'
         setStatusDone(update, status, proceedProcess)
@@ -266,12 +257,12 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
       console.log('SenderTransactionFulfilled', data)
     })
 
-    // sdk.attachOnce(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
-    //   console.log('SenderTransactionCancelled', data)
-    // })
-    // sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
-    //   console.log('ReceiverTransactionCancelled', data)
-    // })
+    sdk.attachOnce(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
+      console.log('SenderTransactionCancelled', data)
+    })
+    sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
+      console.log('ReceiverTransactionCancelled', data)
+    })
 
     try {
       await transferPromise
@@ -290,9 +281,16 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
     // all done?
     status.status = 'DONE'
-    if (approveProcess) setStatusDone(update, status, approveProcess)
-    if (submitProcess) setStatusDone(update, status, submitProcess)
-    if (proceedProcess) setStatusDone(update, status, proceedProcess)
+    if (approveProcess && approveProcess.status !== 'DONE') {
+      setStatusDone(update, status, approveProcess)
+    }
+    if (submitProcess && submitProcess.status !== 'DONE') {
+      setStatusDone(update, status, submitProcess)
+    }
+    if (proceedProcess && proceedProcess.status !== 'DONE') {
+      setStatusDone(update, status, proceedProcess)
+    }
+    update(status)
     return status
   }
 

@@ -26,7 +26,6 @@ function usePageViews() {
 
   useEffect(() => {
     if (path) {
-      console.log('send', path)
       analytics.sendPageView(path)
     }
   }, [path])

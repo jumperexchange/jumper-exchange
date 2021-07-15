@@ -1,7 +1,7 @@
 import { ArrowUpOutlined, LoginOutlined, SwapOutlined, SyncOutlined, SettingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Avatar, Button, Col, Input, Modal, Row, Select, Steps } from 'antd';
+import { Alert, Avatar, Button, Col, Input, Modal, Row, Select } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { RefSelectProps } from 'antd/lib/select';
 import Title from 'antd/lib/typography/Title';
@@ -9,7 +9,7 @@ import { BigNumber, constants, providers } from "ethers";
 import React, { useEffect, useRef, useState } from 'react';
 import { switchChain } from '../services/metamask';
 import { getBalance as getBalanceTest, mintTokens } from '../services/testToken';
-import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
+import { formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, ChainPortfolio, CoinKey, Token } from '../types';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, TranferStep } from '../types/server';
@@ -304,41 +304,6 @@ const SwapNxtp = () => {
     setDepositToken(withdrawToken)
   }
 
-  const parseStep = (step: TranferStep) => {
-    switch (step.action.type) {
-      case "swap":
-        return {
-          title: "Swap Tokens",
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on ${step.action.chainKey}`,
-        }
-      case "paraswap":
-        return {
-          title: `Swap ${step.action.target === 'channel' ? ' and Deposit' : ''} Tokens`,
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via Paraswap`
-        }
-      case "1inch":
-        return {
-          title: `Swap ${step.action.target === 'channel' ? ' and Deposit' : ''} Tokens`,
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via 1Inch`
-        }
-      case "cross":
-        return {
-          title: "Cross Chains",
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} on ${step.action.chainKey} to ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on ${step.action.toChainKey}`,
-        }
-      case "withdraw":
-        return {
-          title: "Withdraw",
-          description: `${formatTokenAmount(step.action.token, step.estimate?.toAmount)} to 0x...`,
-        }
-      case "deposit":
-        return {
-          title: "Deposit",
-          description: `${formatTokenAmount(step.action.token, step.estimate?.fromAmount)} from 0x...`,
-        }
-    }
-  }
-
   const findToken = (chainKey: ChainKey, tokenId: string) => {
     const token = tokens[chainKey].find(token => token.id === tokenId)
     if (!token) {
@@ -441,19 +406,11 @@ const SwapNxtp = () => {
     <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)' }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
-        {/* Hero Image */}
-        {/* <Row style={{ width: '80%', margin: '24px auto 0',transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
-          <Image
-            className="hero-image"
-            src={heroImage}
-          />
-        </Row> */}
-
         <Row justify="center" style={{marginTop: 24}}>
 
-        <Alert
-      message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
-      description={(
+          <Alert
+            message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
+            description={(
         <>
           <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
           <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
@@ -770,56 +727,6 @@ const SwapNxtp = () => {
 
             </div>
           </Col>
-        </Row>
-
-        {/* Routes */}
-        <Row justify={"center"} style={{ marginTop: 48 }}>
-          {routes.length > 0 &&
-            <Col>
-              <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
-              <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}>
-                {
-                  routes.map((route, index) =>
-                    <div
-                      key={index}
-                      className={'swap-route ' + (highlightedIndex === index ? 'optimal' : '')}
-                      style={{ padding: 24, paddingTop: 24, paddingBottom: 24, marginLeft: 10, marginRight: 10 }}
-                      onClick={() => setHighlightedIndex(index)}
-                    >
-                      <Steps progressDot size="small" direction="vertical" current={5} className="progress-step-list">
-                        {
-                          route.map(step => {
-                            let { title, description } = parseStep(step)
-                            return <Steps.Step key={title} title={title} description={description}></Steps.Step>
-                          })
-                        }
-                      </Steps>
-
-                      <div className="selected">
-                        {highlightedIndex === index ? (
-                          <div className="selected-label">Selected</div>
-                        ) : (
-                          <Button shape="round" size={"large"} onClick={() => setHighlightedIndex(index)}>Select Route</Button>
-                        )}
-                      </div>
-                    </div>
-                  )
-                }
-              </div>
-            </Col>
-          }
-          {routesLoading &&
-            <Col>
-              <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 48 }}>
-                <h3 style={{ textAlign: 'center' }}>Loading...</h3>
-              </Row>
-            </Col>
-          }
-          {!routesLoading && noRoutesAvailable &&
-            <Col>
-              <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
-            </Col>
-          }
         </Row>
 
       </div>
