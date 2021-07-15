@@ -1,16 +1,17 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
-import { NxtpSdk } from '@connext/nxtp-sdk';
+import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { getRandomBytes32 } from '@connext/vector-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
 import { providers } from 'ethers';
 import pino from "pino";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
 import * as connext from '../services/connext';
+import { readNxtpMessagingToken, storeNxtpMessagingToken } from '../services/localStorage';
 import { addToken, switchChain } from '../services/metamask';
 import { deepClone, formatTokenAmount } from '../services/utils';
 import { ChainKey, Token } from '../types';
@@ -42,86 +43,33 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
   const { activate } = useWeb3React();
   const web3 = useWeb3React<Web3Provider>()
 
-  useEffect(() => {
-    const initializeConnext = async () => {
-      if (!web3.library) return
-      setAlerts([])
-
-      const chainProviders: { [chainId: number]: providers.JsonRpcProvider } = {
-        4: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_RINKEBY),
-        5: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_GORLI),
-      }
-      const signer = web3.library.getSigner()
-
-      try {
-        const _sdk = await NxtpSdk.init(chainProviders, signer, pino({ level: "info" }))
-        setSdkChainId(web3.chainId)
-        setSdk(_sdk)
-
-        // _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
-        //   console.log("SenderTransactionPrepared:", data);
-        //   // const { txData } = data;
-        //   // const table = activeTransferTableColumns;
-        //   // table.push({
-        //   //   txData,
-        //   //   status: NxtpSdkEvents.SenderTransactionPrepared,
-        //   // });
-        //   // setActiveTransferTableColumns(table);
-        // });
-
-        // _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
-        //   console.log("SenderTransactionFulfilled:", data);
-        //   // setActiveTransferTableColumns(
-        //   //   activeTransferTableColumns.filter((t) => t.txData.transactionId !== data.txData.transactionId),
-        //   // );
-        // });
-
-        // _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
-        //   console.log("SenderTransactionCancelled:", data);
-        //   // setActiveTransferTableColumns(
-        //   //   activeTransferTableColumns.filter((t) => t.txData.transactionId !== data.txData.transactionId),
-        //   // );
-        // });
-
-        // _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
-        //   console.log("ReceiverTransactionPrepared:", data);
-        //   // const { txData } = data;
-        //   // const index = activeTransferTableColumns.findIndex((col) => col.txData.transactionId === txData.transactionId);
-        //   // activeTransferTableColumns[index].status = NxtpSdkEvents.ReceiverTransactionPrepared;
-        //   // setActiveTransferTableColumns(activeTransferTableColumns);
-        // });
-
-        // _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
-        //   console.log("ReceiverTransactionFulfilled:", data);
-        //   // setActiveTransferTableColumns(
-        //   //   activeTransferTableColumns.filter((t) => t.txData.transactionId !== data.txData.transactionId),
-        //   // );
-        // });
-
-        // _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
-        //   console.log("ReceiverTransactionCancelled:", data);
-        //   // setActiveTransferTableColumns(
-        //   //   activeTransferTableColumns.filter((t) => t.txData.transactionId !== data.txData.transactionId),
-        //   // );
-        // });
-        // const activeTxs = await _sdk.getActiveTransactions();
-        // console.log('activeTxs', activeTxs)
-      } catch (e) {
-        setAlerts([
-          <Alert
-            message="Failed to connect to Connext"
-            description="Please try again later."
-            type="error"
-            showIcon
-          />
-        ])
-      }
+  const initializeConnext = async () => {
+    if (sdk && sdkChainId === web3.chainId) {
+      return sdk
     }
-
-    if (sdkChainId !== web3.chainId) {
-      initializeConnext()
+    if (!web3.library) {
+      throw Error('Connect Wallet first.')
     }
-  }, [web3, sdkChainId])
+    setAlerts([])
+
+    const chainProviders: { [chainId: number]: providers.JsonRpcProvider } = {
+      4: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_RINKEBY),
+      5: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_GORLI),
+    }
+    const signer = web3.library.getSigner()
+
+    try {
+      console.log('init sdk')
+      const _sdk = await NxtpSdk.init(chainProviders, signer, pino({ level: "info" }));
+      setSdkChainId(web3.chainId)
+      setSdk(_sdk)
+      return _sdk
+      // const activeTxs = await _sdk.getActiveTransactions();
+      // console.log('activeTxs', activeTxs)
+    } catch (e) {
+      throw e
+    }
+  }
 
   // Swap
   const updateStatus = (step: TranferStep, status: Execution) => {
@@ -218,48 +166,141 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const triggerTransfer = async (step: TranferStep) => {
-    if (!sdk || !web3.account) return
+    if (!web3.account) return
+
     // status
     const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
+
+    // login
+    const sdk = await initializeConnext()
     const loginProcess = createAndPushProcess(update, status, 'Sign for Login')
-    const approveProcess = createAndPushProcess(update, status, 'Approve Token')
-    const submitProcess = createAndPushProcess(update, status, 'Submit Cross Chain Transfer')
-    const proceedProcess = createAndPushProcess(update, status, 'Sign to Proceed Transfer')
+    try {
+      const oldToken = readNxtpMessagingToken()
+      if (oldToken) {
+        try {
+          await sdk.connectMessaging(oldToken)
+        } catch {
+          const token = await sdk.connectMessaging()
+          storeNxtpMessagingToken(token)
+        }
+      } else {
+        const token = await sdk.connectMessaging()
+        storeNxtpMessagingToken(token)
+      }
+      setStatusDone(update, status, loginProcess)
+    } catch (e) {
+      setStatusFailed(update, status, loginProcess)
+      throw e
+    }
+
+    // transfer
+    const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token')
+    let submitProcess: Process | undefined
+    let proceedProcess: Process | undefined
 
     const crossAction = step.action as CrossAction
-    const fromChainId = getChainByKey(crossAction.chainKey).id // will be replaced by crossAction.chainId
-    const toChainId = getChainByKey(crossAction.toChainKey).id // will be replaced by crossAction.toChainId
+    const fromChain = getChainByKey(crossAction.chainKey)
+    const toChain = getChainByKey(crossAction.toChainKey)
 
     const transactionId = getRandomBytes32()
     const expiry = (Math.floor(Date.now() / 1000) + 3600 * 24 * 3).toString() // 3 days
+    const transferPromise = sdk.transfer({
+      router: undefined,
+      sendingAssetId: crossAction.fromToken.id,
+      sendingChainId: fromChain.id,
+      receivingChainId: toChain.id,
+      receivingAssetId: crossAction.toToken.id,
+      receivingAddress: web3.account,
+      amount: crossAction.amount.toString(),
+      transactionId,
+      expiry
+      // callData?: string;
+    })
 
+    // approve sent => wait
+    sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareTokenApproval, (data) => {
+      console.log('SenderTransactionPrepareTokenApproval', data)
+      approveProcess.txHash = data.transactionResponse.hash
+      approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
+      approveProcess.message = (<>Approve Token - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>)
+      update(status)
+    })
+    // approved = done => next
+    sdk.attachOnce(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
+      console.log('SenderTokenApprovalMined', data)
+      approveProcess.message = (<>Approve Token (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
+      setStatusDone(update, status, approveProcess)
+      submitProcess = createAndPushProcess(update, status, 'Submit Cross Chain Transfer')
+    })
+
+    // sumbit sent => wait
+    sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareSubmitted, (data) => {
+      console.log('SenderTransactionPrepareSubmitted', data)
+      if (submitProcess) {
+        submitProcess.txHash = data.transactionResponse.hash
+        submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
+        submitProcess.message = (<>Submit Transfer - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>)
+        update(status)
+      }
+    })
+    // sumitted = done => next
+    sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
+      console.log('SenderTransactionPrepared', data)
+      if (submitProcess) {
+        submitProcess.message = (<>Submit Transfer (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
+        setStatusDone(update, status, submitProcess)
+      }
+      proceedProcess = createAndPushProcess(update, status, 'Proceed Transfer')
+    })
+
+    // ReceiverTransactionPrepared => sign
+    sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
+      console.log('ReceiverTransactionPrepared', data)
+      if (proceedProcess) {
+        proceedProcess.message = 'Proceed Transfer - Sign'
+        update(status)
+      }
+    })
+    // fullfilled = done
+    sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
+      console.log('ReceiverTransactionFulfilled', data)
+      if (proceedProcess) {
+        proceedProcess.message = 'Proceed Transfer'
+        setStatusDone(update, status, proceedProcess)
+      }
+    })
+    // all done?
+    sdk.attachOnce(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
+      console.log('SenderTransactionFulfilled', data)
+    })
+
+    // sdk.attachOnce(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
+    //   console.log('SenderTransactionCancelled', data)
+    // })
+    // sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
+    //   console.log('ReceiverTransactionCancelled', data)
+    // })
 
     try {
-      await sdk.transfer({
-        router: undefined,
-        sendingAssetId: crossAction.fromToken.id,
-        sendingChainId: fromChainId,
-        receivingChainId: toChainId,
-        receivingAssetId: crossAction.toToken.id,
-        receivingAddress: web3.account,
-        amount: crossAction.amount.toString(),
-        transactionId,
-        expiry
-        // callData?: string;
-      })
+      await transferPromise
     } catch (e) {
-      console.log(e)
-      setStatusFailed(update, status, loginProcess)
-      setStatusFailed(update, status, approveProcess)
-      setStatusFailed(update, status, submitProcess)
-      setStatusFailed(update, status, proceedProcess)
+      if (approveProcess && approveProcess.status !== 'DONE') {
+        setStatusFailed(update, status, approveProcess)
+      }
+      if (submitProcess && submitProcess.status !== 'DONE') {
+        setStatusFailed(update, status, submitProcess)
+      }
+      if (proceedProcess && proceedProcess.status !== 'DONE') {
+        setStatusFailed(update, status, proceedProcess)
+      }
       throw e
     }
+
+    // all done?
     status.status = 'DONE'
-    setStatusDone(update, status, loginProcess)
-    setStatusDone(update, status, approveProcess)
-    setStatusDone(update, status, submitProcess)
-    setStatusDone(update, status, proceedProcess)
+    if (approveProcess) setStatusDone(update, status, approveProcess)
+    if (submitProcess) setStatusDone(update, status, submitProcess)
+    if (proceedProcess) setStatusDone(update, status, proceedProcess)
     return status
   }
 
@@ -484,7 +525,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
-            {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
         ]
       }

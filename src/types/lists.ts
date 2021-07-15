@@ -12,15 +12,15 @@ import uniswap from "../assets/icons/uniswap.png";
 
 interface AddEthereumChainParameter {
   chainId: string;
-  blockExplorerUrls?: string[];
-  chainName?: string;
-  iconUrls?: string[];
-  nativeCurrency?: {
+  blockExplorerUrls: string[];
+  chainName: string;
+  iconUrls: string[];
+  nativeCurrency: {
     name: string;
     symbol: string;
     decimals: number;
   };
-  rpcUrls?: string[];
+  rpcUrls: string[];
 }
 
 interface Exchange {

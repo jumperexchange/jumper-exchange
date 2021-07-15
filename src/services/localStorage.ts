@@ -46,6 +46,18 @@ const readWallets = (): Array<Wallet> => {
   }
 }
 
+const storeNxtpMessagingToken = (token: string) => {
+  if (isSupported()) {
+    localStorage.setItem('nxtpMessagingToken', token)
+  }
+}
 
+const readNxtpMessagingToken = () => {
+  if (!isSupported()) {
+    return null
+  }
 
-export { isSupported, storeWallets, readWallets }
+  return localStorage.getItem('nxtpMessagingToken')
+}
+
+export { isSupported, storeWallets, readWallets, storeNxtpMessagingToken, readNxtpMessagingToken }

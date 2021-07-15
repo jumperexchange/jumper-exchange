@@ -1,3 +1,4 @@
+import { ReactElement } from 'react'
 import { ChainKey, Token } from '.'
 
 export interface BaseEstimate {
@@ -27,7 +28,7 @@ export interface Process {
   startedAt: number
   doneAt?: number
   failedAt?: number
-  message: string
+  message: string | ReactElement
   status: Status
 
   // additional information
