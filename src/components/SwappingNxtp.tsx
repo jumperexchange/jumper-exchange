@@ -1,6 +1,6 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { getRandomBytes32 } from '@connext/vector-utils';
+import { getRandomBytes32 } from "@connext/nxtp-utils";
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
@@ -10,15 +10,13 @@ import { useState } from 'react';
 import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
-import * as connext from '../services/connext';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from '../services/localStorage';
 import { addToken, switchChain } from '../services/metamask';
 import { deepClone, formatTokenAmount } from '../services/utils';
 import { ChainKey, Token } from '../types';
 import { getChainById, getChainByKey } from '../types/lists';
-import { CrossAction, DepositAction, emptyExecution, Execution, ParaswapAction, Process, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
+import { CrossAction, emptyExecution, Execution, Process, TranferStep } from '../types/server';
 import Clock from './Clock';
-import StateChannelBalances from './StateChannelBalances';
 import { injected } from './web3/connectors';
 
 
@@ -30,7 +28,6 @@ interface SwappingProps {
 const ADMIN_MODE = false
 
 const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
-  const node = connext.getNode() // TODO: remove
   const [sdk, setSdk] = useState<NxtpSdk>()
   const [sdkChainId, setSdkChainId] = useState<number>()
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
@@ -80,39 +77,34 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const triggerDeposit = (step: TranferStep) => {
-    if (!node || !web3.library) return
-    const depositAction = step.action as DepositAction
+    // const depositAction = step.action as DepositAction
 
-    return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, BigInt(depositAction.amount), (status: Execution) => updateStatus(step, status))
+    //return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, BigInt(depositAction.amount), (status: Execution) => updateStatus(step, status))
   }
 
   const triggerSwap = (step: TranferStep) => {
-    if (!node) return
-    const swapAction = step.action as SwapAction
-    const swapEstimate = step.estimate as SwapEstimate
-    const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
+    // const swapAction = step.action as SwapAction
+    // const swapEstimate = step.estimate as SwapEstimate
+    // const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
 
-    return connext.triggerSwap(node, chainId, swapEstimate.path, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, (status: Execution) => updateStatus(step, status))
+    //return connext.triggerSwap(node, chainId, swapEstimate.path, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerParaswap = async (step: TranferStep) => {
-    if (!web3.account || !web3.library) return
-    const swapAction = step.action as ParaswapAction
-    const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
-    const fromAddress = web3.account
-    const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
+    // const swapAction = step.action as ParaswapAction
+    // const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
+    // const fromAddress = web3.account
+    // const toAddress = fromAddress
 
-    return connext.executeParaswap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+    //return connext.executeParaswap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerOneIchSwap = async (step: TranferStep) => {
-    if (!web3.account || !web3.library) return
-    const swapAction = step.action as ParaswapAction
-    const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
-    const fromAddress = web3.account
-    const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
-
-    return connext.executeOneInchSwap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+    // const swapAction = step.action as ParaswapAction
+    // const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
+    // const fromAddress = web3.account
+    // const toAddress = fromAddress
+    //return connext.executeOneInchSwap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
   const initStatus = (updateStatus?: Function, initialStatus?: Execution,) => {
@@ -305,12 +297,11 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const triggerWithdraw = (step: TranferStep) => {
-    if (!node || !web3.account) return
-    const withdrawAction = step.action as WithdrawAction
-    const chainId = getChainByKey(withdrawAction.chainKey).id // will be replaced by withdrawAction.chainId
-    const recipient = withdrawAction.recipient ?? web3.account
+    // const withdrawAction = step.action as WithdrawAction
+    // const chainId = getChainByKey(withdrawAction.chainKey).id // will be replaced by withdrawAction.chainId
+    // const recipient = withdrawAction.recipient ?? web3.account
 
-    return connext.triggerWithdraw(node, chainId, recipient, withdrawAction.token.id, withdrawAction.amount, (status: Execution) => updateStatus(step, status))
+    //return connext.triggerWithdraw(node, chainId, recipient, withdrawAction.token.id, withdrawAction.amount, (status: Execution) => updateStatus(step, status))
   }
 
   const switchAndAddToken = async (token: Token) => {
@@ -460,7 +451,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
     switch (step.action.type) {
       case 'deposit': {
-        const triggerButton = <Button type="primary" disabled={!node || !web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerStep(step)}>trigger Deposit</Button>
+        const triggerButton = <Button type="primary" disabled={!web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerStep(step)}>trigger Deposit</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Deposit from {web3.account ? web3.account.substr(0, 4) : '0x'}...</h4>
@@ -475,7 +466,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'swap': {
-        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Swap</Button>
+        const triggerButton = <Button type="primary" disabled={false} onClick={() => triggerStep(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Swap on {getExchangeAvatar(step.action.chainKey)}</h4>
@@ -489,7 +480,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'paraswap': {
-        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerParaswap(step)} >trigger Swap</Button>
+        const triggerButton = <Button type="primary" disabled={false} onClick={() => triggerParaswap(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Swap{step.action.target === 'channel' ? ' & Deposit' : ''} on {paraswapAvatar}</h4>
@@ -503,7 +494,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case '1inch': {
-        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerOneIchSwap(step)} >trigger Swap</Button>
+        const triggerButton = <Button type="primary" disabled={false} onClick={() => triggerOneIchSwap(step)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Swap{step.action.target === 'channel' ? ' & Deposit' : ''} on {oneinchAvatar}</h4>
@@ -517,7 +508,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'cross': {
-        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Transfer</Button>
+        const triggerButton = <Button type="primary" disabled={false} onClick={() => triggerStep(step)} >trigger Transfer</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)} via {connextAvatar}</h4>
@@ -530,7 +521,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'withdraw':
-        const triggerButton = <Button type="primary" disabled={!node || !web3.account} onClick={() => triggerStep(step)}>trigger Withdraw</Button>
+        const triggerButton = <Button type="primary" disabled={!web3.account} onClick={() => triggerStep(step)}>trigger Withdraw</Button>
         const token = step.action.token
         return [
           <Timeline.Item key={index + '_left'} color={color}>
@@ -632,7 +623,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     <div style={{ textAlign: 'center', transform: 'scale(1.5)', marginBottom: 20 }}>
       {activeButton}
     </div>
-    {ADMIN_MODE && <StateChannelBalances node={node}></StateChannelBalances>}
   </>)
 }
 

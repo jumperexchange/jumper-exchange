@@ -43,6 +43,7 @@
     "build": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
     "build:staging": "REACT_APP_ENV=staging npm run build",
     "build:production": "REACT_APP_ENV=production npm run build",
+    "build:nxtp": "REACT_APP_ENV=nxtp npm run build",
     "test": "echo 'Not defined'",
     "eject": "react-scripts eject"
   },
