@@ -7,10 +7,11 @@ import { RefSelectProps } from 'antd/lib/select';
 import Title from 'antd/lib/typography/Title';
 import { BigNumber, constants, providers } from "ethers";
 import React, { useEffect, useRef, useState } from 'react';
+import { switchChain } from '../services/metamask';
 import { getBalance as getBalanceTest, mintTokens } from '../services/testToken';
 import { formatTokenAmount, formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, ChainPortfolio, CoinKey, Token } from '../types';
-import { getChainById, getChainByKey } from '../types/lists';
+import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, TranferStep } from '../types/server';
 import './Swap.css';
 import SwappingNxtp from './SwappingNxtp';
@@ -108,22 +109,22 @@ const SwapNxtp = () => {
       address,
       constants.AddressZero,
       providerRIN,
-    );
+    )
     const pBalenceTestRin = getBalanceTest(
       address,
-      '0x9ac2c46d7acc21c881154d57c0dc1c55a3139198',
+      testToken[ChainKey.RIN][0].id,
       providerRIN,
-    );
+    )
     const pBalenceEthGor = getBalanceTest(
       address,
       constants.AddressZero,
       providerGOR,
-    );
+    )
     const pBalenceTestGor = getBalanceTest(
       address,
-      '0x8a1cad3703e0beae0e0237369b4fcd04228d1682',
+      testToken[ChainKey.GOR][0].id,
       providerGOR,
-    );
+    )
 
     const portfolio = {
       [ChainKey.RIN]: [
@@ -184,42 +185,6 @@ const SwapNxtp = () => {
         .then(setBalances)
     }
   }, [web3.account])
-
-
-  // TODO: move in own component
-  const switchChain = async (chainId: number) => {
-    if (web3.chainId === chainId) return // already on right chain
-
-    const ethereum = (window as any).ethereum
-    if (typeof ethereum === 'undefined') return
-
-    try {
-      await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: getChainById(chainId).metamask?.chainId }],
-      })
-    } catch (error) {
-      console.error(error)
-      if (error.code === 4902) {
-        await addChain(chainId)
-      }
-    }
-  }
-  // TODO: move in own component
-  const addChain = async (chainId: number) => {
-    const ethereum = (window as any).ethereum
-    if (typeof ethereum === 'undefined') return
-
-    const params = getChainById(chainId).metamask
-    try {
-      await ethereum.request({
-        method: 'wallet_addEthereumChain',
-        params: [params],
-      })
-    } catch (error) {
-      console.error(`Error adding chain ${chainId}: ${error.message}`)
-    }
-  }
 
   const mintTestToken = async (chainKey: ChainKey) => {
     if (!web3.library || !web3.account) return

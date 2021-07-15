@@ -268,6 +268,55 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+  // {
+  //   key: ChainKey.FSN,
+  //   name: 'FSN-MAIN (anyswap)',
+  //   coin: CoinKey.FSN,
+  //   id: 32659,
+  //   visible: false,
+
+  //   // https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche
+  //   metamask: {
+  //     chainId: prefixChainId(32659),
+  //     blockExplorerUrls: [
+  //       'https://fsnex.com',
+  //     ],
+  //     chainName: 'FSN-MAIN',
+  //     iconUrls: [],
+  //     nativeCurrency: {
+  //       name: 'FSN',
+  //       symbol: 'FSN',
+  //       decimals: 18, // TODO: check
+  //     },
+  //     rpcUrls: [
+  //       'https://fsnmainnet2.anyswap.exchange',
+  //     ],
+  //   }
+  // },
+  // {
+  //   key: ChainKey.HAR,
+  //   name: 'Harmony Mainnet Shard 0',
+  //   coin: CoinKey.HAR,
+  //   id: 1666600000,
+  //   visible: false,
+  //   // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
+  //   metamask: {
+  //     chainId: prefixChainId(1666600000),
+  //     blockExplorerUrls: [
+  //       'https://www.harmony.one/',
+  //     ],
+  //     chainName: 'Harmony Mainnet Shard 0',,
+  //     iconUrls: [],
+  //     nativeCurrency: {
+  //       name: 'ONE',
+  //       symbol: 'ONE',
+  //       decimals: 18,
+  //     },
+  //     rpcUrls: [
+  //       'https://api.harmony.one',
+  //     ],
+  //   }
+  // },
 
   // TESTNETS
   {
