@@ -1,5 +1,6 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
-import { getRandomBytes32, NxtpSdk } from '@connext/nxtp-sdk';
+import { NxtpSdk } from '@connext/nxtp-sdk';
+import { getRandomBytes32 } from '@connext/vector-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Alert, Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
