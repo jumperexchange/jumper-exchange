@@ -30,8 +30,8 @@ interface SwappingProps {
 const ADMIN_MODE = false
 
 const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
-  const [sdk, setSdk] = useState<NxtpSdk>()
-  const [sdkChainId, setSdkChainId] = useState<number>()
+
+
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
@@ -42,6 +42,8 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
   const { activate } = useWeb3React();
   const web3 = useWeb3React<Web3Provider>()
 
+  const [sdkChainId, setSdkChainId] = useState<number>()
+  const [sdk, setSdk] = useState<NxtpSdk>()
   const initializeConnext = async () => {
     if (sdk && sdkChainId === web3.chainId) {
       return sdk

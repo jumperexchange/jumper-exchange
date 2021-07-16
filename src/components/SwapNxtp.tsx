@@ -1,7 +1,7 @@
 import { ArrowUpOutlined, LoginOutlined, SwapOutlined, SyncOutlined, SettingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Avatar, Button, Col, Input, Modal, Row, Select } from 'antd';
+import { Alert, Avatar, Button, Col, Input, Modal, Row, Select, Table } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { RefSelectProps } from 'antd/lib/select';
 import Title from 'antd/lib/typography/Title';
@@ -11,7 +11,7 @@ import { switchChain } from '../services/metamask';
 import { getBalance as getBalanceTest, mintTokens } from '../services/testToken';
 import { formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, ChainPortfolio, CoinKey, Token } from '../types';
-import { getChainByKey } from '../types/lists';
+import { getChainById, getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, TranferStep } from '../types/server';
 import './Swap.css';
 import SwappingNxtp from './SwappingNxtp';
@@ -19,6 +19,10 @@ import ConnectButton from './web3/ConnectButton';
 import { injected } from './web3/connectors';
 import connextWordmark from '../assets/connext_wordmark.svg';
 import lifiWordmark from '../assets/lifi_wordmark.svg';
+import { NxtpSdk, NxtpSdkEvent } from '@connext/nxtp-sdk';
+import pino from "pino";
+import { readNxtpMessagingToken } from '../services/localStorage';
+import { TransactionData } from '@connext/nxtp-utils';
 
 const BALANCES_REFRESH_INTERVAL = 5000
 
@@ -79,11 +83,59 @@ const SwapNxtp = () => {
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [minting, setMinting] = useState<boolean>(false)
+  const [sdkChainId, setSdkChainId] = useState<number>()
+  const [sdk, setSdk] = useState<NxtpSdk>()
+  const [activeTransactions, setActiveTransactions] = useState<{ txData: TransactionData; status: NxtpSdkEvent }[]>([])
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React();
   const intervalRef = useRef<NodeJS.Timeout>()
+
+
+  useEffect(() => {
+    const initializeConnext = async () => {
+      if (sdk && sdkChainId === web3.chainId) {
+        return sdk
+      }
+      if (!web3.library) {
+        throw Error('Connect Wallet first.')
+      }
+
+      const chainProviders: { [chainId: number]: providers.JsonRpcProvider } = {
+        4: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_RINKEBY),
+        5: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_GORLI),
+      }
+      const signer = web3.library.getSigner()
+
+      try {
+        const _sdk = await NxtpSdk.init(chainProviders, signer, pino({ level: "info" }));
+
+        setSdk(_sdk)
+        setSdkChainId(web3.chainId)
+
+        const oldToken = readNxtpMessagingToken()
+        if (oldToken) {
+          try {
+            await _sdk.connectMessaging(oldToken)
+          } catch (e) {
+            console.error(e)
+          }
+        }
+        const transactions = await _sdk.getActiveTransactions()
+        setActiveTransactions(transactions)
+
+        return _sdk
+      } catch (e) {
+        throw e
+      }
+    }
+
+    // init only once
+    if (web3.library && (!sdk || (sdk && sdkChainId))) {
+      initializeConnext()
+    }
+  }, [web3, sdk, sdkChainId])
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -404,6 +456,92 @@ const SwapNxtp = () => {
     return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
   }
 
+  const activeTransactionsColumns = [
+    {
+      title: "Transaction Id",
+      dataIndex: ["txData", "transactionId"],
+      // key:  "txId",
+      render: (id: string) => {
+        return <div style={{width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{id}</div>
+      }
+    },
+    {
+      title: "Sending Chain",
+      dataIndex: ["txData", "sendingChainId"],
+      // key: "sendingChain",
+      render: (chainId: number) => {
+        const chain = getChainById(chainId)
+        return <>{chainId} - {chain.name}</>
+      }
+    },
+    {
+      title: "Receiving Chain",
+      dataIndex:["txData", "receivingChainId"],
+      // key: "receivingChain",
+      render: (chainId: number) => {
+        const chain = getChainById(chainId)
+        return <>{chainId} - {chain.name}</>
+      }
+    },
+    {
+      title: "Asset",
+      dataIndex: ["txData"],
+      // key: "asset",
+      render: (action: TransactionData) => {
+        const chain = getChainById(action.receivingChainId)
+        const token = testToken[chain.key].find(token => token.id === action.receivingAssetId.toLowerCase())
+        const link = chain.metamask.blockExplorerUrls[0] + 'token/' + action.receivingAssetId
+        return <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a>
+      }
+    },
+    {
+      title: "Amount",
+      dataIndex: ["txData"],
+      // key: "amount",
+      render: (action: TransactionData) => {
+        const chain = getChainById(action.receivingChainId)
+        const token = testToken[chain.key].find(token => token.id === action.receivingAssetId.toLowerCase())
+        return (parseInt(action.amount) / (10**(token?.decimals || 18))).toFixed(4)
+      }
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      // key: "status",
+    },
+    {
+      title: "Expires",
+      dataIndex: ["txData", "expiry"],
+      // key: "expires",
+      render: (expiry: string) => {
+        return parseInt(expiry) > Date.now() / 1000
+          ? `${((parseInt(expiry) - Date.now() / 1000) / 3600).toFixed(2)} hours`
+          : "Expired"
+      }
+    },
+    {
+      title: "Action",
+      dataIndex: "txData",
+      // key: "action",
+      render: (action: TransactionData) => {
+        if (Date.now() / 1000 > parseInt(action.expiry)) {
+          return (
+            <Button
+              type="link"
+              onClick={() =>
+                sdk?.cancelExpired({ relayerFee: "0", signature: "0x", txData: action }, action.sendingChainId)
+              }
+            >
+              Cancel
+            </Button>
+          );
+        } else {
+          return <></>;
+        }
+      },
+    },
+  ]
+
   return (
     <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)' }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
@@ -495,6 +633,27 @@ const SwapNxtp = () => {
             type="info"
           />
         </Row>
+
+
+        {/* Active Transactions */}
+        { activeTransactions.length &&
+          <>
+            <Row justify="center" style={{marginTop: 24}}>
+              <h2>Active Transactions</h2>
+            </Row>
+            <Row justify="center">
+              <div style={{overflow: 'scroll', padding: 10}}>
+                <Table
+                  columns={activeTransactionsColumns}
+                  dataSource={activeTransactions}
+                  style={{whiteSpace: 'nowrap'}}
+                  pagination={false}
+                  rowKey={(row) => row.txData.transactionId}
+                ></Table>
+              </div>
+            </Row>
+          </>
+        }
 
         {/* Swap Form */}
         <Row style={{ margin: 20 }} justify={"center"} className="swap-form">
