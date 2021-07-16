@@ -30,11 +30,6 @@ interface SwappingProps {
 const ADMIN_MODE = false
 
 const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
-
-
-  const [swapStartedAt, setSwapStartedAt] = useState<number>()
-  const [swapDoneAt, setSwapDoneAt] = useState<number>()
-  const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [swapDone, setSwapDone] = useState<boolean>(false)
   const [alerts, setAlerts] = useState<Array<JSX.Element>>([])
 
@@ -253,6 +248,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
     // ReceiverTransactionPrepared => sign
     sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
+      console.log('ReceiverTransactionPrepared', data)
       if (proceedProcess) {
         proceedProcess.status = 'ACTION_REQUIRED'
         proceedProcess.message = 'Sign Message to Claim Funds'
@@ -261,6 +257,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     })
     // fullfilled = done
     sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
+      console.log('ReceiverTransactionFulfilled', data)
       if (proceedProcess) {
         proceedProcess.message = 'Funds Claimed'
         setStatusDone(update, status, proceedProcess)
@@ -585,22 +582,14 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const startCrossChainSwap = async () => {
-    setIsSwapping(true)
-    setSwapStartedAt(Date.now())
-
     try {
       for (const step of route) {
         await triggerStep(step)
       }
     } catch (e) {
       console.error(e)
-      setIsSwapping(false)
-      setSwapDoneAt(Date.now())
       return
     }
-
-    setIsSwapping(false)
-    setSwapDoneAt(Date.now())
     setSwapDone(true)
   }
 
@@ -616,9 +605,25 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     }
     return null
   }
-  const currentProcess = getCurrentProcess()
 
-  if (!activeButton && !isSwapping && !swapDone) {
+  const getLastProcess = () => {
+    let lastProcess
+    for (const step of route) {
+      if (step.execution?.process) {
+        for (const process of step.execution?.process) {
+          lastProcess = process
+        }
+      }
+    }
+    return lastProcess
+  }
+
+  const currentProcess = getCurrentProcess()
+  const swapStartedAt = route[0].execution?.process[0]?.startedAt
+  const lastProcess = getLastProcess()
+  const swapDoneAt = lastProcess?.doneAt || lastProcess?.failedAt
+
+  if (!currentProcess) {
     activeButton = startSwapButton
   }
   if (swapDone) {

@@ -19,7 +19,7 @@ import ConnectButton from './web3/ConnectButton';
 import { injected } from './web3/connectors';
 import connextWordmark from '../assets/connext_wordmark.svg';
 import lifiWordmark from '../assets/lifi_wordmark.svg';
-import { NxtpSdk, NxtpSdkEvent } from '@connext/nxtp-sdk';
+import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import pino from "pino";
 import { readNxtpMessagingToken } from '../services/localStorage';
 import { TransactionData } from '@connext/nxtp-utils';
@@ -114,6 +114,7 @@ const SwapNxtp = () => {
         setSdk(_sdk)
         setSdkChainId(web3.chainId)
 
+        // reuse existing messaging token
         const oldToken = readNxtpMessagingToken()
         if (oldToken) {
           try {
@@ -122,8 +123,65 @@ const SwapNxtp = () => {
             console.error(e)
           }
         }
+
+        const updateActiveTransactionsWith = (txData: TransactionData, status: NxtpSdkEvent) => {
+          setActiveTransactions((activeTransactions) => {
+            // update existing?
+            let updated = false
+            const updatedTransactions = activeTransactions.map((item) => {
+              if (item.txData.transactionId === txData.transactionId) {
+                item.status = status
+                updated = true
+              }
+              return item
+            })
+
+            if (updated) {
+              return updatedTransactions
+            } else {
+              return [
+                ...activeTransactions,
+                { txData, status },
+              ]
+            }
+          })
+        }
+
+        const removeActiveTransaction = (transactionId: string) => {
+          setActiveTransactions((activeTransactions) => {
+              return activeTransactions.filter((t) => t.txData.transactionId !== transactionId)
+          })
+        }
+
+        // listen to events
+        _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
+          updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared)
+        })
+
+        _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
+          removeActiveTransaction(data.txData.transactionId)
+        })
+
+        _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
+          removeActiveTransaction(data.txData.transactionId)
+        })
+
+        _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
+          updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionPrepared)
+        })
+
+        _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
+          updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionFulfilled)
+        })
+
+        _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
+          removeActiveTransaction(data.txData.transactionId)
+        })
+
         const transactions = await _sdk.getActiveTransactions()
-        setActiveTransactions(transactions)
+        for (const transaction of transactions) {
+          updateActiveTransactionsWith(transaction.txData, transaction.status)
+        }
 
         return _sdk
       } catch (e) {
