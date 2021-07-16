@@ -1,4 +1,6 @@
-import { ArrowUpOutlined, LoginOutlined, SwapOutlined, SyncOutlined, SettingOutlined } from '@ant-design/icons';
+import { ArrowUpOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { TransactionData } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Alert, Avatar, Button, Col, Input, Modal, Row, Select, Table } from 'antd';
@@ -7,24 +9,22 @@ import { RefSelectProps } from 'antd/lib/select';
 import Title from 'antd/lib/typography/Title';
 import { BigNumber, constants, providers } from "ethers";
 import React, { useEffect, useRef, useState } from 'react';
+import connextWordmark from '../assets/connext_wordmark.svg';
+import lifiWordmark from '../assets/lifi_wordmark.svg';
 import { switchChain } from '../services/metamask';
+import { setup, triggerTransfer } from '../services/nxtp';
 import { getBalance as getBalanceTest, mintTokens } from '../services/testToken';
-import { formatTokenAmountOnly } from '../services/utils';
+import { deepClone, formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, ChainPortfolio, CoinKey, Token } from '../types';
 import { getChainById, getChainByKey } from '../types/lists';
-import { CrossAction, CrossEstimate, TranferStep } from '../types/server';
+import { CrossAction, CrossEstimate, Execution, TranferStep } from '../types/server';
 import './Swap.css';
 import SwappingNxtp from './SwappingNxtp';
 import ConnectButton from './web3/ConnectButton';
 import { injected } from './web3/connectors';
-import connextWordmark from '../assets/connext_wordmark.svg';
-import lifiWordmark from '../assets/lifi_wordmark.svg';
-import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import pino from "pino";
-import { readNxtpMessagingToken } from '../services/localStorage';
-import { TransactionData } from '@connext/nxtp-utils';
+import { getRandomBytes32 } from "@connext/nxtp-utils";
 
-const BALANCES_REFRESH_INTERVAL = 5000
+const BALANCES_REFRESH_INTERVAL = 30000
 
 const transferChains = [
   getChainByKey(ChainKey.GOR),
@@ -66,10 +66,10 @@ interface TokenWithAmounts extends Token {
 const SwapNxtp = () => {
   const [stateUpdate, setStateUpdate] = useState<number>(0)
   const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [executionRoutes, setExecutionRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [modalRouteIndex, setModalRouteIndex] = useState<number>()
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setselectedRoute] = useState<Array<TranferStep>>([]);
-  const [selectedRouteIndex, setselectedRouteIndex] = useState<number>();
   const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.RIN);
   const [depositAmount, setDepositAmount] = useState<number>(1);
   const [depositToken, setDepositToken] = useState<string>(testToken[ChainKey.RIN][0].id);
@@ -102,91 +102,78 @@ const SwapNxtp = () => {
         throw Error('Connect Wallet first.')
       }
 
-      const chainProviders: { [chainId: number]: providers.JsonRpcProvider } = {
-        4: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_RINKEBY),
-        5: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_GORLI),
-      }
       const signer = web3.library.getSigner()
 
-      try {
-        const _sdk = await NxtpSdk.init(chainProviders, signer, pino({ level: "info" }));
+      const _sdk = await setup(signer)
+      setSdk(_sdk)
+      setSdkChainId(web3.chainId)
 
-        setSdk(_sdk)
-        setSdkChainId(web3.chainId)
-
-        // reuse existing messaging token
-        const oldToken = readNxtpMessagingToken()
-        if (oldToken) {
-          try {
-            await _sdk.connectMessaging(oldToken)
-          } catch (e) {
-            console.error(e)
-          }
-        }
-
-        const updateActiveTransactionsWith = (txData: TransactionData, status: NxtpSdkEvent) => {
-          setActiveTransactions((activeTransactions) => {
-            // update existing?
-            let updated = false
-            const updatedTransactions = activeTransactions.map((item) => {
-              if (item.txData.transactionId === txData.transactionId) {
-                item.status = status
-                updated = true
-              }
-              return item
-            })
-
-            if (updated) {
-              return updatedTransactions
-            } else {
-              return [
-                ...activeTransactions,
-                { txData, status },
-              ]
+      // update table helpers
+      const updateActiveTransactionsWith = (txData: TransactionData, status: NxtpSdkEvent) => {
+        setActiveTransactions((activeTransactions) => {
+          // update existing?
+          let updated = false
+          const updatedTransactions = activeTransactions.map((item) => {
+            if (item.txData.transactionId === txData.transactionId) {
+              item.txData = Object.assign(item.txData, txData)
+              item.status = status
+              updated = true
             }
+            return item
           })
-        }
 
-        const removeActiveTransaction = (transactionId: string) => {
-          setActiveTransactions((activeTransactions) => {
-              return activeTransactions.filter((t) => t.txData.transactionId !== transactionId)
-          })
-        }
-
-        // listen to events
-        _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
-          updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared)
+          if (updated) {
+            return updatedTransactions
+          } else {
+            return [
+              ...activeTransactions,
+              { txData, status },
+            ]
+          }
         })
-
-        _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
-          removeActiveTransaction(data.txData.transactionId)
-        })
-
-        _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
-          removeActiveTransaction(data.txData.transactionId)
-        })
-
-        _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
-          updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionPrepared)
-        })
-
-        _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
-          updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionFulfilled)
-        })
-
-        _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
-          removeActiveTransaction(data.txData.transactionId)
-        })
-
-        const transactions = await _sdk.getActiveTransactions()
-        for (const transaction of transactions) {
-          updateActiveTransactionsWith(transaction.txData, transaction.status)
-        }
-
-        return _sdk
-      } catch (e) {
-        throw e
       }
+
+      // const removeActiveTransaction = (transactionId: string) => {
+      //   setActiveTransactions((activeTransactions) => {
+      //       return activeTransactions.filter((t) => t.txData.transactionId !== transactionId)
+      //   })
+      // }
+
+      // listen to events
+      _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared)
+      })
+
+      _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionFulfilled)
+        // removeActiveTransaction(data.txData.transactionId)
+      })
+
+      _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionCancelled)
+        // removeActiveTransaction(data.txData.transactionId)
+      })
+
+      _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionPrepared)
+      })
+
+      _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionFulfilled)
+      })
+
+      _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionCancelled)
+        // removeActiveTransaction(data.txData.transactionId)
+      })
+
+      // get pending transactions
+      const transactions = await _sdk.getActiveTransactions()
+      for (const transaction of transactions) {
+        updateActiveTransactionsWith(transaction.txData, transaction.status)
+      }
+
+      return _sdk
     }
 
     // init only once
@@ -483,18 +470,60 @@ const SwapNxtp = () => {
     return parseFloat(e.currentTarget.value)
   }
 
-  const openSwapModal = () => {
-    setselectedRoute(routes[highlightedIndex])
-    setselectedRouteIndex(highlightedIndex)
+  const updateExecutionRoute = (route: Array<TranferStep>) => {
+    setExecutionRoutes(routes => {
+      let index = routes.findIndex(item => {
+        return item[0].id === route[0].id
+      })
+      const newRoutes = [
+        ...routes.slice(0, index),
+        route,
+        ...routes.slice(index + 1)
+      ]
+      return newRoutes
+    })
   }
 
-  const updateRoute = (route: any, index: number) => {
-    const newRoutes = [
-      ...routes.slice(0, index),
-      route,
-      ...routes.slice(index + 1)
-    ]
-    setRoutes(newRoutes)
+  const openSwapModal = () => {
+    // add execution route
+    const route = deepClone(routes[highlightedIndex]) as Array<TranferStep>
+    route[0].id = getRandomBytes32()
+    setExecutionRoutes(routes => [...routes, route])
+
+    // add as active
+    const crossAction = route[0].action as CrossAction
+    setActiveTransactions((transactions) => [
+      ...transactions,
+      {
+        txData: {
+          user: '',
+          router: '',
+          sendingAssetId: crossAction.fromToken.id,
+          receivingAssetId: crossAction.toToken.id,
+          sendingChainFallback: '',
+          callTo: '',
+          receivingAddress: '',
+          sendingChainId: crossAction.chainId,
+          receivingChainId: getChainByKey(crossAction.toChainKey).id,
+          callDataHash: '',
+          transactionId: route[0].id,
+          amount: crossAction.amount.toString(),
+          preparedBlockNumber: 0,
+          expiry: (Math.floor(Date.now() / 1000) + 3600 * 24 * 3).toString(), // 3 days
+        } as TransactionData,
+        status: 'Started' as NxtpSdkEvent,
+      }
+    ])
+
+    // start execution
+    triggerTransfer(sdk!, web3.account!, route[0], (step: TranferStep, status: Execution) => {
+      console.log('STATUS_CHANGE:', status)
+      step.execution = status
+      updateExecutionRoute(route)
+    })
+
+    // open modal
+    setModalRouteIndex(executionRoutes.length)
   }
 
   const submitButton = () => {
@@ -510,6 +539,9 @@ const SwapNxtp = () => {
     if (!hasSufficientBalance()) {
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
     }
+    if (web3.chainId !== getChainByKey(depositChain).id) {
+      return <Button shape="round" type="primary" size={"large"} onClick={() => switchChain(getChainByKey(depositChain).id)}>Change Chain</Button>
+    }
 
     return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
   }
@@ -518,7 +550,6 @@ const SwapNxtp = () => {
     {
       title: "Transaction Id",
       dataIndex: ["txData", "transactionId"],
-      // key:  "txId",
       render: (id: string) => {
         return <div style={{width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{id}</div>
       }
@@ -526,7 +557,6 @@ const SwapNxtp = () => {
     {
       title: "Sending Chain",
       dataIndex: ["txData", "sendingChainId"],
-      // key: "sendingChain",
       render: (chainId: number) => {
         const chain = getChainById(chainId)
         return <>{chainId} - {chain.name}</>
@@ -535,7 +565,6 @@ const SwapNxtp = () => {
     {
       title: "Receiving Chain",
       dataIndex:["txData", "receivingChainId"],
-      // key: "receivingChain",
       render: (chainId: number) => {
         const chain = getChainById(chainId)
         return <>{chainId} - {chain.name}</>
@@ -544,7 +573,6 @@ const SwapNxtp = () => {
     {
       title: "Asset",
       dataIndex: ["txData"],
-      // key: "asset",
       render: (action: TransactionData) => {
         const chain = getChainById(action.receivingChainId)
         const token = testToken[chain.key].find(token => token.id === action.receivingAssetId.toLowerCase())
@@ -555,7 +583,6 @@ const SwapNxtp = () => {
     {
       title: "Amount",
       dataIndex: ["txData"],
-      // key: "amount",
       render: (action: TransactionData) => {
         const chain = getChainById(action.receivingChainId)
         const token = testToken[chain.key].find(token => token.id === action.receivingAssetId.toLowerCase())
@@ -565,12 +592,10 @@ const SwapNxtp = () => {
     {
       title: "Status",
       dataIndex: "status",
-      // key: "status",
     },
     {
       title: "Expires",
       dataIndex: ["txData", "expiry"],
-      // key: "expires",
       render: (expiry: string) => {
         return parseInt(expiry) > Date.now() / 1000
           ? `${((parseInt(expiry) - Date.now() / 1000) / 3600).toFixed(2)} hours`
@@ -597,6 +622,21 @@ const SwapNxtp = () => {
           return <></>;
         }
       },
+    },
+    {
+      title: "View",
+      dataIndex: ["txData", "transactionId"],
+      render: (id: string) => {
+        const index = executionRoutes.findIndex(item => {
+          return item[0].id === id
+        })
+
+        if (index !== -1) {
+          return <Button onClick={() => setModalRouteIndex(index)}>View</Button>
+        } else {
+          return ''
+        }
+      }
     },
   ]
 
@@ -997,18 +1037,19 @@ const SwapNxtp = () => {
           </Col>
         </Row>
 
+
       </div>
 
-      {selectedRoute.length
+      {modalRouteIndex !== undefined
         ? <Modal
             className="swapModal"
-            visible={selectedRoute.length > 0}
-            onOk={() => setselectedRoute([])}
-            onCancel={() => setselectedRoute([])}
+            visible={true}
+            onOk={() => setModalRouteIndex(undefined)}
+            onCancel={() => setModalRouteIndex(undefined)}
             width={700}
             footer={null}
           >
-            <SwappingNxtp route={selectedRoute} updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}></SwappingNxtp>
+            <SwappingNxtp route={executionRoutes[modalRouteIndex]}></SwappingNxtp>
           </Modal>
         : ''
       }

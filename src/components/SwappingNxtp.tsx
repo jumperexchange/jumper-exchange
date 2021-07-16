@@ -1,6 +1,5 @@
 import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { getRandomBytes32 } from "@connext/nxtp-utils";
+import { NxtpSdk } from '@connext/nxtp-sdk';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
@@ -11,26 +10,24 @@ import { useState } from 'react';
 import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
-import { readNxtpMessagingToken, storeNxtpMessagingToken } from '../services/localStorage';
+import walletIcon from '../assets/wallet.png';
 import { addToken, switchChain } from '../services/metamask';
-import { deepClone, formatTokenAmount } from '../services/utils';
+import { triggerTransfer } from '../services/nxtp';
+import { formatTokenAmount } from '../services/utils';
 import { ChainKey, Token } from '../types';
 import { getChainById, getChainByKey } from '../types/lists';
-import { CrossAction, emptyExecution, Execution, Process, TranferStep } from '../types/server';
+import { Execution, TranferStep } from '../types/server';
 import Clock from './Clock';
 import { injected } from './web3/connectors';
-import walletIcon from '../assets/wallet.png';
 
 
 interface SwappingProps {
   route: Array<TranferStep>,
-  updateRoute: Function,
 }
 
 const ADMIN_MODE = false
 
-const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
-  const [swapDone, setSwapDone] = useState<boolean>(false)
+const SwappingNxtp = ({ route }: SwappingProps) => {
   const [alerts, setAlerts] = useState<Array<JSX.Element>>([])
 
   let activeButton = null
@@ -69,7 +66,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     console.log('STATUS_CHANGE:', status)
     step.execution = status
 
-    updateRoute(route)
+    // updateRoute(route)
   }
 
   const triggerDeposit = (step: TranferStep) => {
@@ -103,207 +100,11 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     //return connext.executeOneInchSwap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
-  const initStatus = (updateStatus?: Function, initialStatus?: Execution,) => {
-    const status = initialStatus || deepClone(emptyExecution)
-    const update = updateStatus || console.log
-    update(status)
-    return { status, update }
+  const triggerNxtp = async (step: TranferStep) => {
+
+    triggerTransfer(await initializeConnext(), web3.account!, step, updateStatus)
   }
 
-  const createAndPushProcess = (updateStatus: Function, status: Execution, message: string, params?: object) => {
-    const newProcess: Process = {
-      startedAt: Date.now(),
-      message: message,
-      status: 'PENDING',
-    }
-    if (params) {
-      for (const [key, value] of Object.entries(params)) {
-        newProcess[key] = value
-      }
-    }
-
-    status.status = 'PENDING'
-    status.process.push(newProcess)
-    updateStatus(status)
-    return newProcess
-  }
-
-  const setStatusFailed = (updateStatus: Function, status: Execution, currentProcess: Process, params?: object) => {
-    status.status = 'FAILED'
-    currentProcess.status = 'FAILED'
-    currentProcess.failedAt = Date.now()
-    if (params) {
-      for (const [key, value] of Object.entries(params)) {
-        currentProcess[key] = value
-      }
-    }
-
-    updateStatus(status)
-  }
-
-  const setStatusDone = (updateStatus: Function, status: Execution, currentProcess: Process, params?: object) => {
-    currentProcess.status = 'DONE'
-    currentProcess.doneAt = Date.now()
-    if (params) {
-      for (const [key, value] of Object.entries(params)) {
-        currentProcess[key] = value
-      }
-    }
-
-    updateStatus(status)
-  }
-
-  const triggerTransfer = async (step: TranferStep) => {
-    if (!web3.account) return
-
-    // status
-    const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
-
-    // login
-    const sdk = await initializeConnext()
-    const loginProcess = createAndPushProcess(update, status, 'Login to Connext')
-    try {
-      const oldToken = readNxtpMessagingToken()
-      if (oldToken) {
-        try {
-          await sdk.connectMessaging(oldToken)
-        } catch {
-          loginProcess.status = 'ACTION_REQUIRED'
-          loginProcess.message = 'Login with Signed Message'
-          update(status)
-          const token = await sdk.connectMessaging()
-          storeNxtpMessagingToken(token)
-        }
-      } else {
-        loginProcess.status = 'ACTION_REQUIRED'
-        loginProcess.message = 'Login with Signed Message'
-        update(status)
-        const token = await sdk.connectMessaging()
-        storeNxtpMessagingToken(token)
-      }
-      loginProcess.message = 'Logged in to Connext'
-      setStatusDone(update, status, loginProcess)
-    } catch (e) {
-      setStatusFailed(update, status, loginProcess)
-      throw e
-    }
-
-    // transfer
-    const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
-    let submitProcess: Process | undefined
-    let proceedProcess: Process | undefined
-
-    const crossAction = step.action as CrossAction
-    const fromChain = getChainByKey(crossAction.chainKey)
-    const toChain = getChainByKey(crossAction.toChainKey)
-
-    const transactionId = getRandomBytes32()
-    const expiry = (Math.floor(Date.now() / 1000) + 3600 * 24 * 3).toString() // 3 days
-    const transferPromise = sdk.transfer({
-      router: undefined,
-      sendingAssetId: crossAction.fromToken.id,
-      sendingChainId: fromChain.id,
-      receivingChainId: toChain.id,
-      receivingAssetId: crossAction.toToken.id,
-      receivingAddress: web3.account,
-      amount: crossAction.amount.toString(),
-      transactionId,
-      expiry
-      // callData?: string;
-    })
-
-    // approve sent => wait
-    sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareTokenApproval, (data) => {
-      approveProcess.status = 'PENDING'
-      approveProcess.txHash = data.transactionResponse.hash
-      approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
-      approveProcess.message = (<>Approve Token - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>)
-      update(status)
-    })
-    // approved = done => next
-    sdk.attachOnce(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
-      approveProcess.message = (<>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
-      setStatusDone(update, status, approveProcess)
-      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
-    })
-
-    // sumbit sent => wait
-    sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareSubmitted, (data) => {
-      if (submitProcess) {
-        submitProcess.status = 'PENDING'
-        submitProcess.txHash = data.transactionResponse.hash
-        submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
-        submitProcess.message = (<>Send Transaction - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>)
-        update(status)
-      }
-    })
-    // sumitted = done => next
-    sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
-      if (submitProcess) {
-        submitProcess.message = (<>Transaction Sent (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
-        setStatusDone(update, status, submitProcess)
-      }
-      proceedProcess = createAndPushProcess(update, status, 'Wait to Proceed Transfer')
-    })
-
-    // ReceiverTransactionPrepared => sign
-    sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
-      console.log('ReceiverTransactionPrepared', data)
-      if (proceedProcess) {
-        proceedProcess.status = 'ACTION_REQUIRED'
-        proceedProcess.message = 'Sign Message to Claim Funds'
-        update(status)
-      }
-    })
-    // fullfilled = done
-    sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
-      console.log('ReceiverTransactionFulfilled', data)
-      if (proceedProcess) {
-        proceedProcess.message = 'Funds Claimed'
-        setStatusDone(update, status, proceedProcess)
-      }
-    })
-    // all done?
-    sdk.attachOnce(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
-      console.log('SenderTransactionFulfilled', data)
-    })
-
-    sdk.attachOnce(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
-      console.log('SenderTransactionCancelled', data)
-    })
-    sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
-      console.log('ReceiverTransactionCancelled', data)
-    })
-
-    try {
-      await transferPromise
-    } catch (e) {
-      if (approveProcess && approveProcess.status !== 'DONE') {
-        setStatusFailed(update, status, approveProcess)
-      }
-      if (submitProcess && submitProcess.status !== 'DONE') {
-        setStatusFailed(update, status, submitProcess)
-      }
-      if (proceedProcess && proceedProcess.status !== 'DONE') {
-        setStatusFailed(update, status, proceedProcess)
-      }
-      throw e
-    }
-
-    // all done?
-    status.status = 'DONE'
-    if (approveProcess && approveProcess.status !== 'DONE') {
-      setStatusDone(update, status, approveProcess)
-    }
-    if (submitProcess && submitProcess.status !== 'DONE') {
-      setStatusDone(update, status, submitProcess)
-    }
-    if (proceedProcess && proceedProcess.status !== 'DONE') {
-      setStatusDone(update, status, proceedProcess)
-    }
-    update(status)
-    return status
-  }
 
   const triggerWithdraw = (step: TranferStep) => {
     // const withdrawAction = step.action as WithdrawAction
@@ -356,7 +157,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
   const parseChainSteps = () => {
     const isDone = web3.chainId === route[0].action.chainId
-    const isActive = !isDone && web3.account && !swapDone
+    const isActive = !isDone && web3.account
 
     const chain = getChainById(route[0].action.chainId)
     const button = <Button type="primary" disabled={!web3.account} onClick={() => switchChain(route[0].action.chainId)}>Switch Chain to {chain.name}</Button>
@@ -395,7 +196,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     }
 
     return execution.process.map((process, index) => {
-      const typeMapping : {[Status: string]: BaseType}= {
+      const typeMapping: { [Status: string]: BaseType } = {
         'DONE': 'success',
         'ACTION_REQUIRED': 'secondary',
         'FAILED': 'danger',
@@ -455,8 +256,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     </Tooltip>
   )
 
-  const crossChain = route.filter(step => step.action.type === 'cross').length > 0
-  const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>{crossChain ? 'Start Cross Chain Swap' : 'Start Swap'}</Button>
 
   const parseStepToTimeline = (step: TranferStep, index: number) => {
     const executionSteps = parseExecution(step.execution)
@@ -569,7 +368,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
         triggerFunc = triggerOneIchSwap
         break
       case 'cross':
-        triggerFunc = triggerTransfer
+        triggerFunc = triggerNxtp
         break
       case 'withdraw':
         triggerFunc = triggerWithdraw
@@ -579,18 +378,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     }
 
     return triggerFunc(step)
-  }
-
-  const startCrossChainSwap = async () => {
-    try {
-      for (const step of route) {
-        await triggerStep(step)
-      }
-    } catch (e) {
-      console.error(e)
-      return
-    }
-    setSwapDone(true)
   }
 
   const getCurrentProcess = () => {
@@ -623,12 +410,6 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
   const lastProcess = getLastProcess()
   const swapDoneAt = lastProcess?.doneAt || lastProcess?.failedAt
 
-  if (!currentProcess) {
-    activeButton = startSwapButton
-  }
-  if (swapDone) {
-    activeButton = <Typography.Text>DONE - Successful Transfered</Typography.Text>
-  }
 
   return (<>
     {alerts}
@@ -656,23 +437,23 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
       </Typography.Text>
     </div>
 
-    { currentProcess && currentProcess.status === 'PENDING' &&
+    {currentProcess && currentProcess.status === 'PENDING' &&
       <>
         <Row justify="center">
-          <Spin  style={{margin: 10}} indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
+          <Spin style={{ margin: 10 }} indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
         </Row>
         <Row justify="center">
-          <Typography.Text style={{marginTop: 10}} className="flashing">{currentProcess.message}</Typography.Text>
+          <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.message}</Typography.Text>
         </Row>
       </>
     }
-    { currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
+    {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
       <>
         <Row justify="center">
-          <img src={walletIcon} alt="Wallet"/>
+          <img src={walletIcon} alt="Wallet" />
         </Row>
         <Row justify="center">
-          <Typography.Text style={{marginTop: 10}}>{currentProcess.message}</Typography.Text>
+          <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
         </Row>
       </>
     }

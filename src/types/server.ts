@@ -49,6 +49,7 @@ export interface TranferStep {
   action: Action
   estimate?: Estimate
   execution?: Execution
+  id?: string
 }
 
 
