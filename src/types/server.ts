@@ -1,4 +1,3 @@
-import { ReactElement } from 'react'
 import { ChainKey, Token } from '.'
 
 export interface BaseEstimate {
@@ -23,12 +22,12 @@ export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | Withdraw
 
 
 
-export type Status = 'NOT_STARTED' | 'PENDING' | 'FAILED' | 'DONE'
+export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE'
 export interface Process {
   startedAt: number
   doneAt?: number
   failedAt?: number
-  message: string | ReactElement
+  message: any
   status: Status
 
   // additional information

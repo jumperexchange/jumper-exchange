@@ -1,9 +1,10 @@
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { getRandomBytes32 } from "@connext/nxtp-utils";
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
+import { BaseType } from 'antd/lib/typography/Base';
 import { providers } from 'ethers';
 import pino from "pino";
 import { useState } from 'react';
@@ -18,6 +19,7 @@ import { getChainById, getChainByKey } from '../types/lists';
 import { CrossAction, emptyExecution, Execution, Process, TranferStep } from '../types/server';
 import Clock from './Clock';
 import { injected } from './web3/connectors';
+import walletIcon from '../assets/wallet.png';
 
 
 interface SwappingProps {
@@ -162,20 +164,27 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
     // login
     const sdk = await initializeConnext()
-    const loginProcess = createAndPushProcess(update, status, 'Sign for Login')
+    const loginProcess = createAndPushProcess(update, status, 'Login to Connext')
     try {
       const oldToken = readNxtpMessagingToken()
       if (oldToken) {
         try {
           await sdk.connectMessaging(oldToken)
         } catch {
+          loginProcess.status = 'ACTION_REQUIRED'
+          loginProcess.message = 'Login with Signed Message'
+          update(status)
           const token = await sdk.connectMessaging()
           storeNxtpMessagingToken(token)
         }
       } else {
+        loginProcess.status = 'ACTION_REQUIRED'
+        loginProcess.message = 'Login with Signed Message'
+        update(status)
         const token = await sdk.connectMessaging()
         storeNxtpMessagingToken(token)
       }
+      loginProcess.message = 'Logged in to Connext'
       setStatusDone(update, status, loginProcess)
     } catch (e) {
       setStatusFailed(update, status, loginProcess)
@@ -183,7 +192,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     }
 
     // transfer
-    const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token')
+    const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
     let submitProcess: Process | undefined
     let proceedProcess: Process | undefined
 
@@ -208,6 +217,7 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
 
     // approve sent => wait
     sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareTokenApproval, (data) => {
+      approveProcess.status = 'PENDING'
       approveProcess.txHash = data.transactionResponse.hash
       approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
       approveProcess.message = (<>Approve Token - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>)
@@ -215,40 +225,42 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     })
     // approved = done => next
     sdk.attachOnce(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
-      approveProcess.message = (<>Approve Token (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
+      approveProcess.message = (<>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
       setStatusDone(update, status, approveProcess)
-      submitProcess = createAndPushProcess(update, status, 'Submit Cross Chain Transfer')
+      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
     })
 
     // sumbit sent => wait
     sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareSubmitted, (data) => {
       if (submitProcess) {
+        submitProcess.status = 'PENDING'
         submitProcess.txHash = data.transactionResponse.hash
         submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
-        submitProcess.message = (<>Submit Transfer - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>)
+        submitProcess.message = (<>Send Transaction - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>)
         update(status)
       }
     })
     // sumitted = done => next
     sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
       if (submitProcess) {
-        submitProcess.message = (<>Submit Transfer (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
+        submitProcess.message = (<>Transaction Sent (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>)
         setStatusDone(update, status, submitProcess)
       }
-      proceedProcess = createAndPushProcess(update, status, 'Proceed Transfer')
+      proceedProcess = createAndPushProcess(update, status, 'Wait to Proceed Transfer')
     })
 
     // ReceiverTransactionPrepared => sign
     sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
       if (proceedProcess) {
-        proceedProcess.message = 'Proceed Transfer - Sign'
+        proceedProcess.status = 'ACTION_REQUIRED'
+        proceedProcess.message = 'Sign Message to Claim Funds'
         update(status)
       }
     })
     // fullfilled = done
     sdk.attachOnce(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
       if (proceedProcess) {
-        proceedProcess.message = 'Proceed Transfer'
+        proceedProcess.message = 'Funds Claimed'
         setStatusDone(update, status, proceedProcess)
       }
     })
@@ -384,7 +396,12 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     }
 
     return execution.process.map((process, index) => {
-      const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
+      const typeMapping : {[Status: string]: BaseType}= {
+        'DONE': 'success',
+        'ACTION_REQUIRED': 'secondary',
+        'FAILED': 'danger',
+      }
+      const type = typeMapping[process.status]
       return (
         <p key={index} style={{ display: 'flex' }}>
           <Typography.Text
@@ -585,11 +602,25 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
     setSwapDone(true)
   }
 
+  const getCurrentProcess = () => {
+    for (const step of route) {
+      if (step.execution?.process) {
+        for (const process of step.execution?.process) {
+          if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
+            return process
+          }
+        }
+      }
+    }
+    return null
+  }
+  const currentProcess = getCurrentProcess()
+
   if (!activeButton && !isSwapping && !swapDone) {
     activeButton = startSwapButton
   }
   if (swapDone) {
-    activeButton = <Typography.Text>DONE - successful transfered</Typography.Text>
+    activeButton = <Typography.Text>DONE - Successful Transfered</Typography.Text>
   }
 
   return (<>
@@ -617,6 +648,27 @@ const SwappingNxtp = ({ route, updateRoute }: SwappingProps) => {
         {swapStartedAt ? <span className="totalTime"><Clock startedAt={swapStartedAt} successAt={swapDoneAt} /></span> : <span>&nbsp;</span>}
       </Typography.Text>
     </div>
+
+    { currentProcess && currentProcess.status === 'PENDING' &&
+      <>
+        <Row justify="center">
+          <Spin  style={{margin: 10}} indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
+        </Row>
+        <Row justify="center">
+          <Typography.Text style={{marginTop: 10}} className="flashing">{currentProcess.message}</Typography.Text>
+        </Row>
+      </>
+    }
+    { currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
+      <>
+        <Row justify="center">
+          <img src={walletIcon} alt="Wallet"/>
+        </Row>
+        <Row justify="center">
+          <Typography.Text style={{marginTop: 10}}>{currentProcess.message}</Typography.Text>
+        </Row>
+      </>
+    }
 
     <div style={{ textAlign: 'center', transform: 'scale(1.5)', marginBottom: 20 }}>
       {activeButton}

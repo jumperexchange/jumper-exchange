@@ -7,7 +7,7 @@ interface ClockProps {
 }
 
 const Clock = ({ startedAt, successAt, failedAt }: ClockProps) => {
-  const [count, setCount] = useState<number>(0)
+  const [count, setCount] = useState<number>(Math.floor((Date.now() - startedAt) / 1000))
   const intervalRef = useRef<NodeJS.Timeout>()
 
   const getCount = () => {
