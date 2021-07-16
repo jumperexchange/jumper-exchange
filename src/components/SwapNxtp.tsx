@@ -17,6 +17,8 @@ import './Swap.css';
 import SwappingNxtp from './SwappingNxtp';
 import ConnectButton from './web3/ConnectButton';
 import { injected } from './web3/connectors';
+import connextWordmark from '../assets/connext_wordmark.svg';
+import lifiWordmark from '../assets/lifi_wordmark.svg';
 
 const BALANCES_REFRESH_INTERVAL = 5000
 
@@ -406,64 +408,92 @@ const SwapNxtp = () => {
     <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)' }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
-        <Row justify="center" style={{marginTop: 24}}>
+        <Row justify="center" style={{ marginTop: 24 }}>
 
           <Alert
             message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
             description={(
-        <>
-          <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
-          <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
+              <>
+                <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
+                <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
 
-          <h3 style={{textAlign: 'center'}}>Your Balance</h3>
-          { web3.account && balances &&
-          <table style={{background: 'white', margin: 'auto'}}>
-            <thead className="ant-table-thead">
-              <tr className="ant-table-row">
-                <th className="ant-table-cell"></th>
-                <th className="ant-table-cell" colSpan={2}>Rinkeby</th>
-                <th className="ant-table-cell" colSpan={2}>Goerli</th>
-              </tr>
-            </thead>
-            <tbody className="ant-table-tbody">
-              <tr className="ant-table-row">
-                <td className="ant-table-cell">ETH</td>
-                <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.RIN][0].amount.toFixed(4)}</td>
-                <td className="ant-table-cell">(<a href="https://faucet.rinkeby.io/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)</td>
-                <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.GOR][0].amount.toFixed(4)}</td>
-                <td className="ant-table-cell">(<a href="https://goerli-faucet.slock.it/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)</td>
-              </tr>
-              <tr className="ant-table-row">
-                <td className="ant-table-cell">TEST</td>
-                <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.RIN][1].amount.toFixed(4)}</td>
-                <td className="ant-table-cell">(
-                  { minting
-                    ? <span className="flashing">minting</span>
-                    : web3.chainId === 4
-                        ? <Button type="link" style={{padding: 0}} onClick={() => mintTestToken(ChainKey.RIN)}>Get TEST <SettingOutlined /></Button>
-                        : <Button type="link" style={{padding: 0}} onClick={() => switchChain(4)}>Change Chain</Button>
-                  }
-                )</td>
-                <td className="ant-table-cell" style={{textAlign: 'right'}}>{balances[ChainKey.GOR][1].amount.toFixed(4)}</td>
-                <td className="ant-table-cell">(
-                  { minting
-                    ? <span className="flashing">minting</span>
-                    : web3.chainId === 5
-                      ? <Button type="link" style={{padding: 0}} onClick={() => mintTestToken(ChainKey.GOR)}>Get TEST <SettingOutlined /></Button>
-                      : <Button type="link" style={{padding: 0}} onClick={() => switchChain(5)}>Change Chain</Button>
-                  }
-                  )</td>
-              </tr>
-            </tbody>
-          </table>
-          }
-          { !web3.account &&
-            <Row justify="center"><ConnectButton></ConnectButton></Row>
-          }
-        </>
-      )}
-      type="info"
-    />
+                <h3 style={{ textAlign: 'center' }}>Your Balance</h3>
+                {web3.account && balances &&
+                  <table style={{ background: 'white', margin: 'auto' }}>
+                    <thead className="ant-table-thead">
+                      <tr className="ant-table-row">
+                        <th className="ant-table-cell"></th>
+                        <th className="ant-table-cell" style={{ textAlign: 'center'}}>Rinkeby</th>
+                        <th className="ant-table-cell" style={{ textAlign: 'center'}}>Goerli</th>
+                      </tr>
+                    </thead>
+                    <tbody className="ant-table-tbody" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                      <tr className="ant-table-row">
+                        <td className="ant-table-cell">ETH</td>
+                        <td className="ant-table-cell">
+                          <Row gutter={16}>
+                            <Col xs={24} sm={12} >
+                              {balances[ChainKey.RIN][0].amount.toFixed(4)}
+                            </Col>
+                            <Col xs={24} sm={12}>
+                              (<a href="https://faucet.rinkeby.io/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)
+                            </Col>
+                          </Row>
+                        </td>
+                        <td className="ant-table-cell">
+                          <Row gutter={16}>
+                            <Col xs={24} sm={12} >
+                              {balances[ChainKey.GOR][0].amount.toFixed(4)}
+                            </Col>
+                            <Col xs={24} sm={12}>
+                              (<a href="https://goerli-faucet.slock.it/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)
+                            </Col>
+                          </Row>
+                        </td>
+                      </tr>
+                      <tr className="ant-table-row" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <td className="ant-table-cell">TEST</td>
+                        <td className="ant-table-cell" >
+                          <Row gutter={16}>
+                            <Col xs={24} sm={12} >
+                              {balances[ChainKey.RIN][1].amount.toFixed(4)}
+                            </Col>
+                            <Col xs={24} sm={12}>
+                              ({minting
+                                ? <span className="flashing">minting</span>
+                                : web3.chainId === 4
+                                  ? <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => mintTestToken(ChainKey.RIN)}>Mint TEST <SettingOutlined /></Button>
+                                  : <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => switchChain(4)}>Change Chain</Button>
+                              })
+                            </Col>
+                          </Row>
+                        </td>
+                        <td className="ant-table-cell">
+                          <Row gutter={16}>
+                            <Col xs={24} sm={12} >
+                              {balances[ChainKey.GOR][1].amount.toFixed(4)}
+                            </Col>
+                            <Col xs={24} sm={12}>
+                              ({minting
+                                ? <span className="flashing">minting</span>
+                                : web3.chainId === 5
+                                  ? <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => mintTestToken(ChainKey.GOR)}>Mint TEST <SettingOutlined /></Button>
+                                  : <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => switchChain(5)}>Change Chain</Button>
+                              })
+                            </Col>
+                          </Row>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                }
+                {!web3.account &&
+                  <Row justify="center"><ConnectButton></ConnectButton></Row>
+                }
+              </>
+            )}
+            type="info"
+          />
         </Row>
 
         {/* Swap Form */}
@@ -729,19 +759,41 @@ const SwapNxtp = () => {
           </Col>
         </Row>
 
+        <Row justify="center" style={{marginTop: 48, marginBottom: 8}}>
+          <Col>
+            Powered by
+          </Col>
+        </Row>
+        <Row justify="center" align="middle">
+          <Col span={8} style={{textAlign: 'right'}}>
+            <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
+              <img src={connextWordmark} alt="Connext" style={{width: '100%', maxWidth: '200px'}}/>
+            </a>
+          </Col>
+          <Col span={2} style={{textAlign: 'center'}}>
+            x
+          </Col>
+          <Col span={8} style={{textAlign: 'left'}}>
+            <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
+              <img src={lifiWordmark} alt="Li.Finance" style={{width: '100%', maxWidth: '200px'}}/>
+            </a>
+          </Col>
+        </Row>
+
       </div>
 
-      {selectedRoute.length &&
-        <Modal
-          className="swapModal"
-          visible={selectedRoute.length > 0}
-          onOk={() => setselectedRoute([])}
-          onCancel={() => setselectedRoute([])}
-          width={700}
-          footer={null}
-        >
-          <SwappingNxtp route={selectedRoute} updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}></SwappingNxtp>
-        </Modal>
+      {selectedRoute.length
+        ? <Modal
+            className="swapModal"
+            visible={selectedRoute.length > 0}
+            onOk={() => setselectedRoute([])}
+            onCancel={() => setselectedRoute([])}
+            width={700}
+            footer={null}
+          >
+            <SwappingNxtp route={selectedRoute} updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}></SwappingNxtp>
+          </Modal>
+        : ''
       }
     </Content>
   )

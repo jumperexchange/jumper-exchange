@@ -623,7 +623,7 @@ const Dashboard = () => {
 
   let summaryIndex = 0
   return (
-    <Content className="site-layout">
+    <Content className="site-layout dashboard">
       <div className="site-layout-background" style={{ minHeight: 'calc(100vh - 64px)' }}>
         <Table
           columns={columns}
