@@ -548,6 +548,21 @@ const SwapNxtp = () => {
 
   const activeTransactionsColumns = [
     {
+      title: "View",
+      dataIndex: ["txData", "transactionId"],
+      render: (id: string) => {
+        const index = executionRoutes.findIndex(item => {
+          return item[0].id === id
+        })
+
+        if (index !== -1) {
+          return <Button onClick={() => setModalRouteIndex(index)}>View</Button>
+        } else {
+          return ''
+        }
+      }
+    },
+    {
       title: "Transaction Id",
       dataIndex: ["txData", "transactionId"],
       render: (id: string) => {
@@ -605,7 +620,6 @@ const SwapNxtp = () => {
     {
       title: "Action",
       dataIndex: "txData",
-      // key: "action",
       render: (action: TransactionData) => {
         if (Date.now() / 1000 > parseInt(action.expiry)) {
           return (
@@ -623,29 +637,13 @@ const SwapNxtp = () => {
         }
       },
     },
-    {
-      title: "View",
-      dataIndex: ["txData", "transactionId"],
-      render: (id: string) => {
-        const index = executionRoutes.findIndex(item => {
-          return item[0].id === id
-        })
-
-        if (index !== -1) {
-          return <Button onClick={() => setModalRouteIndex(index)}>View</Button>
-        } else {
-          return ''
-        }
-      }
-    },
   ]
 
   return (
-    <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)' }}>
+    <Content className="site-layout" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
-        <Row justify="center" style={{ marginTop: 24 }}>
-
+        <Row justify="center" style={{ padding: 20 }}>
           <Alert
             message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
             description={(
@@ -732,15 +730,14 @@ const SwapNxtp = () => {
           />
         </Row>
 
-
         {/* Active Transactions */}
-        { activeTransactions.length &&
+        { activeTransactions.length ?
           <>
             <Row justify="center" style={{marginTop: 24}}>
               <h2>Active Transactions</h2>
             </Row>
             <Row justify="center">
-              <div style={{overflow: 'scroll', padding: 10}}>
+              <div style={{overflow: 'scroll', background: 'white', margin: '10px 20px'}}>
                 <Table
                   columns={activeTransactionsColumns}
                   dataSource={activeTransactions}
@@ -750,7 +747,7 @@ const SwapNxtp = () => {
                 ></Table>
               </div>
             </Row>
-          </>
+          </> : <></>
         }
 
         {/* Swap Form */}
@@ -1021,7 +1018,7 @@ const SwapNxtp = () => {
             Powered by
           </Col>
         </Row>
-        <Row justify="center" align="middle">
+        <Row justify="center" align="middle" style={{marginBottom: 24}}>
           <Col span={8} style={{textAlign: 'right'}}>
             <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
               <img src={connextWordmark} alt="Connext" style={{width: '100%', maxWidth: '200px'}}/>
