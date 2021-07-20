@@ -1,9 +1,9 @@
-import { ArrowUpOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { ArrowUpOutlined, CheckOutlined, LoadingOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { TransactionData } from '@connext/nxtp-utils';
+import { TransactionData, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Avatar, Button, Col, Input, Modal, Row, Select, Table } from 'antd';
+import { Alert, Avatar, Button, Col, Input, Modal, Row, Select, Spin, Table } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { RefSelectProps } from 'antd/lib/select';
 import Title from 'antd/lib/typography/Title';
@@ -12,7 +12,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import connextWordmark from '../assets/connext_wordmark.svg';
 import lifiWordmark from '../assets/lifi_wordmark.svg';
 import { switchChain } from '../services/metamask';
-import { setup, triggerTransfer } from '../services/nxtp';
+import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../services/nxtp';
 import { getBalance as getBalanceTest, mintTokens } from '../services/testToken';
 import { deepClone, formatTokenAmountOnly } from '../services/utils';
 import { ChainKey, ChainPortfolio, CoinKey, Token } from '../types';
@@ -22,7 +22,6 @@ import './Swap.css';
 import SwappingNxtp from './SwappingNxtp';
 import ConnectButton from './web3/ConnectButton';
 import { injected } from './web3/connectors';
-import { getRandomBytes32 } from "@connext/nxtp-utils";
 
 const BALANCES_REFRESH_INTERVAL = 30000
 
@@ -85,31 +84,46 @@ const SwapNxtp = () => {
   const [minting, setMinting] = useState<boolean>(false)
   const [sdkChainId, setSdkChainId] = useState<number>()
   const [sdk, setSdk] = useState<NxtpSdk>()
-  const [activeTransactions, setActiveTransactions] = useState<{ txData: TransactionData; status: NxtpSdkEvent }[]>([])
+  const [activeTransactions, setActiveTransactions] = useState<{ txData: TransactionData; status: NxtpSdkEvent; event: TransactionPreparedEvent }[]>([])
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React();
   const intervalRef = useRef<NodeJS.Timeout>()
 
+  // auto-trigger finish if corresponding modal is opend
+  useEffect(() => {
+    // is modal open?
+    if (modalRouteIndex !== undefined) {
+      const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
+      const transaction = activeTransactions.find((item) => item.txData.transactionId === crossEstimate.quote.bid.transactionId)
+      if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
+        finishTransfer(sdk!, transaction.event)
+      }
+    }
+    // eslint-disable-next-line
+  }, [modalRouteIndex, executionRoutes, sdk])
 
   useEffect(() => {
     const initializeConnext = async () => {
       if (sdk && sdkChainId === web3.chainId) {
         return sdk
       }
-      if (!web3.library) {
+      if (!web3.library || !web3.account) {
         throw Error('Connect Wallet first.')
       }
 
       const signer = web3.library.getSigner()
 
+      if (sdk) {
+        sdk.removeAllListeners()
+      }
       const _sdk = await setup(signer)
       setSdk(_sdk)
       setSdkChainId(web3.chainId)
 
       // update table helpers
-      const updateActiveTransactionsWith = (txData: TransactionData, status: NxtpSdkEvent) => {
+      const updateActiveTransactionsWith = (txData: TransactionData, status: NxtpSdkEvent, event: any) => {
         setActiveTransactions((activeTransactions) => {
           // update existing?
           let updated = false
@@ -117,6 +131,7 @@ const SwapNxtp = () => {
             if (item.txData.transactionId === txData.transactionId) {
               item.txData = Object.assign(item.txData, txData)
               item.status = status
+              item.event = event
               updated = true
             }
             return item
@@ -127,57 +142,48 @@ const SwapNxtp = () => {
           } else {
             return [
               ...activeTransactions,
-              { txData, status },
+              { txData, status, event },
             ]
           }
         })
       }
 
-      // const removeActiveTransaction = (transactionId: string) => {
-      //   setActiveTransactions((activeTransactions) => {
-      //       return activeTransactions.filter((t) => t.txData.transactionId !== transactionId)
-      //   })
-      // }
-
       // listen to events
       _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared)
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared, data)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionFulfilled)
-        // removeActiveTransaction(data.txData.transactionId)
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionFulfilled, data)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionCancelled)
-        // removeActiveTransaction(data.txData.transactionId)
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionCancelled, data)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionPrepared)
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionPrepared, data)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionFulfilled)
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionFulfilled, data)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionCancelled)
-        // removeActiveTransaction(data.txData.transactionId)
+        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionCancelled, data)
       })
 
       // get pending transactions
       const transactions = await _sdk.getActiveTransactions()
       for (const transaction of transactions) {
-        updateActiveTransactionsWith(transaction.txData, transaction.status)
+        updateActiveTransactionsWith(transaction.txData, transaction.status, transaction)
       }
 
       return _sdk
     }
 
     // init only once
-    if (web3.library && (!sdk || (sdk && sdkChainId))) {
+    if (web3.library && web3.account && (!sdk || (sdk && sdkChainId))) {
       initializeConnext()
     }
   }, [web3, sdk, sdkChainId])
@@ -416,47 +422,73 @@ const SwapNxtp = () => {
     setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
 
+    if (!sdk || !web3.account) {
+      return
+    }
+
     if (((isFinite(depositAmount) && depositAmount > 0) || (isFinite(withdrawAmount) && withdrawAmount > 0)) && depositChain && depositToken && withdrawChain && withdrawToken) {
       setRoutesLoading(true)
       const dToken = findToken(depositChain, depositToken)
       const wToken = findToken(withdrawChain, withdrawToken)
       const dAmount = depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
-      const sortedRoutes: Array<Array<TranferStep>> = [[
-        {
-          action: {
-            type: 'cross',
-            method: 'nxtp',
-            chainId: getChainByKey(depositChain).id,
-            chainKey: depositChain,
-            toChainKey: withdrawChain,
-            amount: dAmount,
-            fromToken: dToken,
-            toToken: wToken,
-          } as CrossAction,
-          estimate: {
-            fromAmount: dAmount,
-            toAmount: dAmount * 0.995,
-            fees: {
-              included: true,
-              percentage: 0.5,
-              token: dToken,
-              amount: dAmount * 0.005,
-            },
-          } as CrossEstimate,
-        }
-      ]]
 
-      setRoutes(sortedRoutes)
-      setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
-      setNoRoutesAvailable(sortedRoutes.length === 0)
-      setRoutesLoading(false)
+      try {
+        const quote = await getTransferQuote(
+          sdk,
+          getChainByKey(depositChain).id,
+          dToken.id,
+          getChainByKey(withdrawChain).id,
+          wToken.id,
+          dAmount.toString(),
+          web3.account,
+        )
+        if (!quote) {
+          throw new Error('Empty Quote')
+        }
+
+        const toAmount = parseInt(quote.bid.amountReceived)
+        const sortedRoutes: Array<Array<TranferStep>> = [[
+          {
+            action: {
+              type: 'cross',
+              method: 'nxtp',
+              chainId: getChainByKey(depositChain).id,
+              chainKey: depositChain,
+              toChainKey: withdrawChain,
+              amount: dAmount,
+              fromToken: dToken,
+              toToken: wToken,
+            } as CrossAction,
+            estimate: {
+              fromAmount: dAmount,
+              toAmount: toAmount,
+              fees: {
+                included: true,
+                percentage: (dAmount - toAmount) / dAmount * 100,
+                token: dToken,
+                amount: dAmount - toAmount,
+              },
+              quote: quote,
+            } as CrossEstimate,
+          }
+        ]]
+
+        setRoutes(sortedRoutes)
+        setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
+        setNoRoutesAvailable(sortedRoutes.length === 0)
+      } catch (e) {
+        console.error(e)
+        setNoRoutesAvailable(true)
+      } finally {
+        setRoutesLoading(false)
+      }
     }
   }
 
   useEffect(() => {
     getTransferRoutes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken])
+  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, web3, sdk])
 
   const onChangeDepositAmount = (amount: number) => {
     setDepositAmount(amount)
@@ -487,11 +519,11 @@ const SwapNxtp = () => {
   const openSwapModal = () => {
     // add execution route
     const route = deepClone(routes[highlightedIndex]) as Array<TranferStep>
-    route[0].id = getRandomBytes32()
     setExecutionRoutes(routes => [...routes, route])
 
     // add as active
     const crossAction = route[0].action as CrossAction
+    const crossEstimate = route[0].estimate as CrossEstimate
     setActiveTransactions((transactions) => [
       ...transactions,
       {
@@ -506,24 +538,37 @@ const SwapNxtp = () => {
           sendingChainId: crossAction.chainId,
           receivingChainId: getChainByKey(crossAction.toChainKey).id,
           callDataHash: '',
-          transactionId: route[0].id,
+          transactionId: crossEstimate.quote.bid.transactionId,
           amount: crossAction.amount.toString(),
           preparedBlockNumber: 0,
-          expiry: (Math.floor(Date.now() / 1000) + 3600 * 24 * 3).toString(), // 3 days
+          expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
         } as TransactionData,
         status: 'Started' as NxtpSdkEvent,
+        event: {} as TransactionPreparedEvent,
       }
     ])
 
     // start execution
-    triggerTransfer(sdk!, web3.account!, route[0], (step: TranferStep, status: Execution) => {
-      console.log('STATUS_CHANGE:', status)
+    triggerTransfer(sdk!, route[0], (step: TranferStep, status: Execution) => {
       step.execution = status
       updateExecutionRoute(route)
     })
 
     // open modal
     setModalRouteIndex(executionRoutes.length)
+  }
+
+  const openSwapModalFinish = (event: TransactionPreparedEvent) => {
+    // trigger sdk
+    finishTransfer(sdk!, event)
+
+    // open modal
+    const index = executionRoutes.findIndex(item => {
+      return item[0].id === event.txData.transactionId
+    })
+    if (index !== -1) {
+      setModalRouteIndex(index)
+    }
   }
 
   const submitButton = () => {
@@ -552,7 +597,7 @@ const SwapNxtp = () => {
       dataIndex: ["txData", "transactionId"],
       render: (id: string) => {
         const index = executionRoutes.findIndex(item => {
-          return item[0].id === id
+          return (item[0].estimate as CrossEstimate).quote.bid.transactionId === id
         })
 
         if (index !== -1) {
@@ -566,7 +611,7 @@ const SwapNxtp = () => {
       title: "Transaction Id",
       dataIndex: ["txData", "transactionId"],
       render: (id: string) => {
-        return <div style={{width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{id}</div>
+        return <div style={{ width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{id}</div>
       }
     },
     {
@@ -579,7 +624,7 @@ const SwapNxtp = () => {
     },
     {
       title: "Receiving Chain",
-      dataIndex:["txData", "receivingChainId"],
+      dataIndex: ["txData", "receivingChainId"],
       render: (chainId: number) => {
         const chain = getChainById(chainId)
         return <>{chainId} - {chain.name}</>
@@ -601,7 +646,7 @@ const SwapNxtp = () => {
       render: (action: TransactionData) => {
         const chain = getChainById(action.receivingChainId)
         const token = testToken[chain.key].find(token => token.id === action.receivingAssetId.toLowerCase())
-        return (parseInt(action.amount) / (10**(token?.decimals || 18))).toFixed(4)
+        return (parseInt(action.amount) / (10 ** (token?.decimals || 18))).toFixed(4)
       }
     },
     {
@@ -619,9 +664,9 @@ const SwapNxtp = () => {
     },
     {
       title: "Action",
-      dataIndex: "txData",
-      render: (action: TransactionData) => {
-        if (Date.now() / 1000 > parseInt(action.expiry)) {
+      dataIndex: "",
+      render: (action: any) => {
+        if (Date.now() / 1000 > action.txData.expiry) {
           return (
             <Button
               type="link"
@@ -632,8 +677,21 @@ const SwapNxtp = () => {
               Cancel
             </Button>
           );
+        } else if (action.status === NxtpSdkEvents.ReceiverTransactionPrepared && action.event) {
+          return (
+            <Button
+              onClick={() => openSwapModalFinish(action.event)}
+            >
+              Finish
+            </Button>
+          )
+        } else if (
+          action.status === NxtpSdkEvents.ReceiverTransactionFulfilled
+          || action.status === NxtpSdkEvents.SenderTransactionFulfilled
+        ) {
+          return <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
         } else {
-          return <></>;
+          return <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
         }
       },
     },
@@ -657,8 +715,8 @@ const SwapNxtp = () => {
                     <thead className="ant-table-thead">
                       <tr className="ant-table-row">
                         <th className="ant-table-cell"></th>
-                        <th className="ant-table-cell" style={{ textAlign: 'center'}}>Rinkeby</th>
-                        <th className="ant-table-cell" style={{ textAlign: 'center'}}>Goerli</th>
+                        <th className="ant-table-cell" style={{ textAlign: 'center' }}>Rinkeby</th>
+                        <th className="ant-table-cell" style={{ textAlign: 'center' }}>Goerli</th>
                       </tr>
                     </thead>
                     <tbody className="ant-table-tbody" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
@@ -731,17 +789,17 @@ const SwapNxtp = () => {
         </Row>
 
         {/* Active Transactions */}
-        { activeTransactions.length ?
+        {activeTransactions.length ?
           <>
-            <Row justify="center" style={{marginTop: 24}}>
+            <Row justify="center" style={{ marginTop: 24 }}>
               <h2>Active Transactions</h2>
             </Row>
             <Row justify="center">
-              <div style={{overflow: 'scroll', background: 'white', margin: '10px 20px'}}>
+              <div style={{ overflow: 'scroll', background: 'white', margin: '10px 20px' }}>
                 <Table
                   columns={activeTransactionsColumns}
                   dataSource={activeTransactions}
-                  style={{whiteSpace: 'nowrap'}}
+                  style={{ whiteSpace: 'nowrap' }}
                   pagination={false}
                   rowKey={(row) => row.txData.transactionId}
                 ></Table>
@@ -1013,23 +1071,23 @@ const SwapNxtp = () => {
           </Col>
         </Row>
 
-        <Row justify="center" style={{marginTop: 48, marginBottom: 8}}>
+        <Row justify="center" style={{ marginTop: 48, marginBottom: 8 }}>
           <Col>
             Powered by
           </Col>
         </Row>
-        <Row justify="center" align="middle" style={{marginBottom: 24}}>
-          <Col span={8} style={{textAlign: 'right'}}>
+        <Row justify="center" align="middle" style={{ marginBottom: 24 }}>
+          <Col span={8} style={{ textAlign: 'right' }}>
             <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
-              <img src={connextWordmark} alt="Connext" style={{width: '100%', maxWidth: '200px'}}/>
+              <img src={connextWordmark} alt="Connext" style={{ width: '100%', maxWidth: '200px' }} />
             </a>
           </Col>
-          <Col span={2} style={{textAlign: 'center'}}>
+          <Col span={2} style={{ textAlign: 'center' }}>
             x
           </Col>
-          <Col span={8} style={{textAlign: 'left'}}>
+          <Col span={8} style={{ textAlign: 'left' }}>
             <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
-              <img src={lifiWordmark} alt="Li.Finance" style={{width: '100%', maxWidth: '200px'}}/>
+              <img src={lifiWordmark} alt="Li.Finance" style={{ width: '100%', maxWidth: '200px' }} />
             </a>
           </Col>
         </Row>
@@ -1039,15 +1097,15 @@ const SwapNxtp = () => {
 
       {modalRouteIndex !== undefined
         ? <Modal
-            className="swapModal"
-            visible={true}
-            onOk={() => setModalRouteIndex(undefined)}
-            onCancel={() => setModalRouteIndex(undefined)}
-            width={700}
-            footer={null}
-          >
-            <SwappingNxtp route={executionRoutes[modalRouteIndex]}></SwappingNxtp>
-          </Modal>
+          className="swapModal"
+          visible={true}
+          onOk={() => setModalRouteIndex(undefined)}
+          onCancel={() => setModalRouteIndex(undefined)}
+          width={700}
+          footer={null}
+        >
+          <SwappingNxtp route={executionRoutes[modalRouteIndex]}></SwappingNxtp>
+        </Modal>
         : ''
       }
     </Content>

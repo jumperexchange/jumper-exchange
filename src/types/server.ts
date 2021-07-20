@@ -1,3 +1,4 @@
+import { AuctionResponse } from "@connext/nxtp-utils";
 import { ChainKey, Token } from '.'
 
 export interface BaseEstimate {
@@ -15,7 +16,9 @@ export interface DepositEstimate extends BaseEstimate { }
 export interface SwapEstimate extends BaseEstimate {
   path: Array<string>
 }
-export interface CrossEstimate extends BaseEstimate { }
+export interface CrossEstimate extends BaseEstimate {
+  quote: AuctionResponse
+}
 export interface WithdrawEstimate extends BaseEstimate { }
 
 export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate

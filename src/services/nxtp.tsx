@@ -1,35 +1,82 @@
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
-import { getRandomBytes32 } from "@connext/nxtp-utils";
+import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { providers } from 'ethers';
 import pino from 'pino';
-import { getChainByKey } from '../types/lists'
-import { CrossAction, Execution, Process, TranferStep } from '../types/server'
-import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage'
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
+import { getChainByKey } from '../types/lists';
+import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
+import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
 
 export const setup = async (signer: providers.JsonRpcSigner) => {
-  const chainProviders: { [chainId: number]: providers.JsonRpcProvider } = {
-    4: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_RINKEBY),
-    5: new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_GORLI),
+  const chainConfig: Record<number, { provider: string[]; subgraph?: string; transactionManagerAddress?: string }> = {
+    4: {
+      provider: [process.env.REACT_APP_RPC_URL_RINKEBY!],
+    },
+    5: {
+      provider: [process.env.REACT_APP_RPC_URL_GORLI!],
+    },
   }
 
-  const sdk = await NxtpSdk.init(chainProviders, signer, pino({ level: "info" }));
+  const chainProviders: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
+  Object.entries(chainConfig).forEach(([chainId, { provider, subgraph, transactionManagerAddress }]) => {
+    chainProviders[parseInt(chainId)] = {
+      provider: new providers.FallbackProvider(provider.map((p) => new providers.JsonRpcProvider(p, parseInt(chainId)))),
+      subgraph,
+      transactionManagerAddress,
+    }
+  })
+
+  const sdk = new NxtpSdk(chainProviders, signer, pino({ level: "info" }));
 
   // reuse existing messaging token
-  const oldToken = readNxtpMessagingToken()
-  if (oldToken) {
-    try {
-      await sdk.connectMessaging(oldToken)
-    } catch (e) {
-      console.error(e)
+  try {
+    const oldToken = readNxtpMessagingToken()
+    if (oldToken) {
+      try {
+        await sdk.connectMessaging(oldToken)
+      } catch (e) {
+        console.error(e)
+        const token = await sdk.connectMessaging()
+        storeNxtpMessagingToken(token)
+      }
+    } else {
+      const token = await sdk.connectMessaging()
+      storeNxtpMessagingToken(token)
     }
+  } catch (e) {
+    console.error(e)
   }
 
   return sdk
 }
 
-export const triggerTransfer = async (sdk: NxtpSdk, receivingAddress: string, step: TranferStep, updateStatus: Function) => {
+export const getTransferQuote = async (
+  sdk: NxtpSdk,
+  sendingChainId: number,
+  sendingAssetId: string,
+  receivingChainId: number,
+  receivingAssetId: string,
+  amount: string,
+  receivingAddress: string,
+): Promise<AuctionResponse | undefined> => {
+  // Create txid
+  const transactionId = getRandomBytes32();
+
+  const response = await sdk.getTransferQuote({
+    sendingAssetId,
+    sendingChainId,
+    receivingChainId,
+    receivingAssetId,
+    receivingAddress,
+    amount,
+    transactionId,
+    expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
+  });
+  return response;
+}
+
+export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateStatus: Function) => {
 
   // status
   const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
@@ -37,25 +84,27 @@ export const triggerTransfer = async (sdk: NxtpSdk, receivingAddress: string, st
   // login
   const loginProcess = createAndPushProcess(update, status, 'Login to Connext')
   try {
-    const oldToken = readNxtpMessagingToken()
-    if (oldToken) {
-      try {
-        await sdk.connectMessaging(oldToken)
-      } catch {
+    if (!(sdk as any).messaging.isConnected()) {
+      const oldToken = readNxtpMessagingToken()
+      if (oldToken) {
+        try {
+          await sdk.connectMessaging(oldToken!)
+        } catch {
+          loginProcess.status = 'ACTION_REQUIRED'
+          loginProcess.message = 'Login with Signed Message'
+          update(status)
+          const token = await sdk.connectMessaging()
+          storeNxtpMessagingToken(token)
+        }
+      } else {
         loginProcess.status = 'ACTION_REQUIRED'
         loginProcess.message = 'Login with Signed Message'
         update(status)
         const token = await sdk.connectMessaging()
         storeNxtpMessagingToken(token)
       }
-    } else {
-      loginProcess.status = 'ACTION_REQUIRED'
-      loginProcess.message = 'Login with Signed Message'
-      update(status)
-      const token = await sdk.connectMessaging()
-      storeNxtpMessagingToken(token)
+      loginProcess.message = 'Logged in to Connext'
     }
-    loginProcess.message = 'Logged in to Connext'
     setStatusDone(update, status, loginProcess)
   } catch (e) {
     setStatusFailed(update, status, loginProcess)
@@ -68,23 +117,12 @@ export const triggerTransfer = async (sdk: NxtpSdk, receivingAddress: string, st
   let proceedProcess: Process | undefined
 
   const crossAction = step.action as CrossAction
+  const crossEstimate = step.estimate as CrossEstimate
   const fromChain = getChainByKey(crossAction.chainKey)
-  const toChain = getChainByKey(crossAction.toChainKey)
+  // const toChain = getChainByKey(crossAction.toChainKey)
 
-  const transactionId = step.id ?? getRandomBytes32()
-  const expiry = (Math.floor(Date.now() / 1000) + 3600 * 24 * 3).toString() // 3 days
-  const transferPromise = sdk.transfer({
-    router: undefined,
-    sendingAssetId: crossAction.fromToken.id,
-    sendingChainId: fromChain.id,
-    receivingChainId: toChain.id,
-    receivingAssetId: crossAction.toToken.id,
-    receivingAddress,
-    amount: crossAction.amount.toString(),
-    transactionId,
-    expiry
-    // callData?: string;
-  })
+  const transactionId = crossEstimate.quote.bid.transactionId
+  const transferPromise = sdk.startTransfer(crossEstimate.quote)
 
   // approve sent => wait
   sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareTokenApproval, (data) => {
@@ -134,6 +172,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, receivingAddress: string, st
   sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
     if (data.txData.transactionId !== transactionId) return
     if (proceedProcess) {
+      status.status = 'DONE'
       proceedProcess.message = 'Funds Claimed'
       setStatusDone(update, status, proceedProcess)
     }
@@ -142,6 +181,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, receivingAddress: string, st
   sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
     if (data.txData.transactionId !== transactionId) return
     if (proceedProcess && proceedProcess.status !== 'DONE') {
+      status.status = 'DONE'
       proceedProcess.message = 'Funds Claimed'
       setStatusDone(update, status, proceedProcess)
     }
@@ -172,17 +212,17 @@ export const triggerTransfer = async (sdk: NxtpSdk, receivingAddress: string, st
     throw e
   }
 
-  // all done?
-  status.status = 'DONE'
-  if (approveProcess && approveProcess.status !== 'DONE') {
-    setStatusDone(update, status, approveProcess)
-  }
-  if (submitProcess && submitProcess.status !== 'DONE') {
-    setStatusDone(update, status, submitProcess)
-  }
-  if (proceedProcess && proceedProcess.status !== 'DONE') {
-    setStatusDone(update, status, proceedProcess)
-  }
-  update(status)
   return status
+}
+
+export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEvent) => {
+  console.log('#### finish triggered')
+  await sdk.finishTransfer(event)
+  console.log('#### finish wait')
+  await sdk.waitFor(
+    NxtpSdkEvents.ReceiverTransactionFulfilled,
+    100_000,
+    (data) => data.txData.transactionId === event.txData.transactionId,
+  )
+  console.log('#### finish done')
 }
