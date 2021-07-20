@@ -104,6 +104,38 @@ const SwapNxtp = () => {
     // eslint-disable-next-line
   }, [modalRouteIndex, executionRoutes, sdk])
 
+  // update table helpers
+  const updateActiveTransactionsWith = (txData: TransactionData, status: NxtpSdkEvent, event: any) => {
+    setActiveTransactions((activeTransactions) => {
+      // update existing?
+      let updated = false
+      const updatedTransactions = activeTransactions.map((item) => {
+        if (item.txData.transactionId === txData.transactionId) {
+          item.txData = Object.assign(item.txData, txData)
+          item.status = status
+          item.event = event
+          updated = true
+        }
+        return item
+      })
+
+      if (updated) {
+        return updatedTransactions
+      } else {
+        return [
+          ...activeTransactions,
+          { txData, status, event },
+        ]
+      }
+    })
+  }
+
+  const removeActiveTransaction = (transactionId: string) => {
+    setActiveTransactions((activeTransactions) => {
+        return activeTransactions.filter((t) => t.txData.transactionId !== transactionId)
+    })
+  }
+
   useEffect(() => {
     const initializeConnext = async () => {
       if (sdk && sdkChainId === web3.chainId) {
@@ -122,43 +154,21 @@ const SwapNxtp = () => {
       setSdk(_sdk)
       setSdkChainId(web3.chainId)
 
-      // update table helpers
-      const updateActiveTransactionsWith = (txData: TransactionData, status: NxtpSdkEvent, event: any) => {
-        setActiveTransactions((activeTransactions) => {
-          // update existing?
-          let updated = false
-          const updatedTransactions = activeTransactions.map((item) => {
-            if (item.txData.transactionId === txData.transactionId) {
-              item.txData = Object.assign(item.txData, txData)
-              item.status = status
-              item.event = event
-              updated = true
-            }
-            return item
-          })
-
-          if (updated) {
-            return updatedTransactions
-          } else {
-            return [
-              ...activeTransactions,
-              { txData, status, event },
-            ]
-          }
-        })
-      }
 
       // listen to events
       _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared, data)
+        setRefreshBalances(true)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionFulfilled, data)
+        removeActiveTransaction(data.txData.transactionId)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionCancelled, data)
+        removeActiveTransaction(data.txData.transactionId)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
@@ -167,10 +177,13 @@ const SwapNxtp = () => {
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionFulfilled, data)
+        removeActiveTransaction(data.txData.transactionId)
+        setRefreshBalances(true)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionCancelled, data)
+        removeActiveTransaction(data.txData.transactionId)
       })
 
       // get pending transactions
@@ -521,53 +534,59 @@ const SwapNxtp = () => {
     const route = deepClone(routes[highlightedIndex]) as Array<TranferStep>
     setExecutionRoutes(routes => [...routes, route])
 
+    // get new route to avoid triggering the same quote twice
+    getTransferRoutes()
+
     // add as active
     const crossAction = route[0].action as CrossAction
     const crossEstimate = route[0].estimate as CrossEstimate
-    setActiveTransactions((transactions) => [
-      ...transactions,
-      {
-        txData: {
-          user: '',
-          router: '',
-          sendingAssetId: crossAction.fromToken.id,
-          receivingAssetId: crossAction.toToken.id,
-          sendingChainFallback: '',
-          callTo: '',
-          receivingAddress: '',
-          sendingChainId: crossAction.chainId,
-          receivingChainId: getChainByKey(crossAction.toChainKey).id,
-          callDataHash: '',
-          transactionId: crossEstimate.quote.bid.transactionId,
-          amount: crossAction.amount.toString(),
-          preparedBlockNumber: 0,
-          expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
-        } as TransactionData,
-        status: 'Started' as NxtpSdkEvent,
-        event: {} as TransactionPreparedEvent,
-      }
-    ])
+    const txData = {
+      user: '',
+      router: '',
+      sendingAssetId: crossAction.fromToken.id,
+      receivingAssetId: crossAction.toToken.id,
+      sendingChainFallback: '',
+      callTo: '',
+      receivingAddress: '',
+      sendingChainId: crossAction.chainId,
+      receivingChainId: getChainByKey(crossAction.toChainKey).id,
+      callDataHash: '',
+      transactionId: crossEstimate.quote.bid.transactionId,
+      amount: crossAction.amount.toString(),
+      preparedBlockNumber: 0,
+      expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
+    } as TransactionData
+    updateActiveTransactionsWith(txData, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent)
 
     // start execution
-    triggerTransfer(sdk!, route[0], (step: TranferStep, status: Execution) => {
+    const update = (step: TranferStep, status: Execution) => {
       step.execution = status
       updateExecutionRoute(route)
-    })
+    }
+    triggerTransfer(sdk!, route[0], update, true)
 
     // open modal
     setModalRouteIndex(executionRoutes.length)
   }
 
   const openSwapModalFinish = (event: TransactionPreparedEvent) => {
-    // trigger sdk
-    finishTransfer(sdk!, event)
-
     // open modal
     const index = executionRoutes.findIndex(item => {
       return item[0].id === event.txData.transactionId
     })
+
     if (index !== -1) {
       setModalRouteIndex(index)
+
+      // trigger sdk
+      const route = executionRoutes[index]
+      const update = (step: TranferStep, status: Execution) => {
+        step.execution = status
+        updateExecutionRoute(route)
+      }
+      finishTransfer(sdk!, event, route[0], update)
+    } else {
+      finishTransfer(sdk!, event)
     }
   }
 

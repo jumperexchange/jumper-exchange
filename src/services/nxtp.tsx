@@ -76,40 +76,40 @@ export const getTransferQuote = async (
   return response;
 }
 
-export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateStatus: Function) => {
+export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateStatus: Function, infinteApproval: boolean = false) => {
 
   // status
   const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
 
   // login
-  const loginProcess = createAndPushProcess(update, status, 'Login to Connext')
-  try {
-    if (!(sdk as any).messaging.isConnected()) {
-      const oldToken = readNxtpMessagingToken()
-      if (oldToken) {
-        try {
-          await sdk.connectMessaging(oldToken!)
-        } catch {
-          loginProcess.status = 'ACTION_REQUIRED'
-          loginProcess.message = 'Login with Signed Message'
-          update(status)
-          const token = await sdk.connectMessaging()
-          storeNxtpMessagingToken(token)
-        }
-      } else {
-        loginProcess.status = 'ACTION_REQUIRED'
-        loginProcess.message = 'Login with Signed Message'
-        update(status)
-        const token = await sdk.connectMessaging()
-        storeNxtpMessagingToken(token)
-      }
-      loginProcess.message = 'Logged in to Connext'
-    }
-    setStatusDone(update, status, loginProcess)
-  } catch (e) {
-    setStatusFailed(update, status, loginProcess)
-    throw e
-  }
+  // const loginProcess = createAndPushProcess(update, status, 'Login to Connext')
+  // try {
+  //   if (!(sdk as any).messaging.isConnected()) {
+  //     const oldToken = readNxtpMessagingToken()
+  //     if (oldToken) {
+  //       try {
+  //         await sdk.connectMessaging(oldToken!)
+  //       } catch {
+  //         loginProcess.status = 'ACTION_REQUIRED'
+  //         loginProcess.message = 'Login with Signed Message'
+  //         update(status)
+  //         const token = await sdk.connectMessaging()
+  //         storeNxtpMessagingToken(token)
+  //       }
+  //     } else {
+  //       loginProcess.status = 'ACTION_REQUIRED'
+  //       loginProcess.message = 'Login with Signed Message'
+  //       update(status)
+  //       const token = await sdk.connectMessaging()
+  //       storeNxtpMessagingToken(token)
+  //     }
+  //     loginProcess.message = 'Logged in to Connext'
+  //   }
+  //   setStatusDone(update, status, loginProcess)
+  // } catch (e) {
+  //   setStatusFailed(update, status, loginProcess)
+  //   throw e
+  // }
 
   // transfer
   const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
@@ -122,7 +122,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   // const toChain = getChainByKey(crossAction.toChainKey)
 
   const transactionId = crossEstimate.quote.bid.transactionId
-  const transferPromise = sdk.startTransfer(crossEstimate.quote)
+  const transferPromise = sdk.startTransfer(crossEstimate.quote, infinteApproval)
 
   // approve sent => wait
   sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareTokenApproval, (data) => {
@@ -142,13 +142,17 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 
   // sumbit sent => wait
   sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareSubmitted, (data) => {
-    if (submitProcess) {
-      submitProcess.status = 'PENDING'
-      submitProcess.txHash = data.transactionResponse.hash
-      submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
-      submitProcess.message = <>Send Transaction - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-      update(status)
+    if (approveProcess && approveProcess.status !== 'DONE') {
+      setStatusDone(update, status, approveProcess)
     }
+    if (!submitProcess) {
+      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+    }
+    submitProcess.status = 'PENDING'
+    submitProcess.txHash = data.transactionResponse.hash
+    submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
+    submitProcess.message = <>Send Transaction - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+    update(status)
   })
   // sumitted = done => next
   sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
@@ -156,7 +160,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
       submitProcess.message = <>Transaction Sent (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
       setStatusDone(update, status, submitProcess)
     }
-    proceedProcess = createAndPushProcess(update, status, 'Wait to Proceed Transfer')
+    proceedProcess = createAndPushProcess(update, status, 'Wait to Proceed Transfer', { type: 'claim' })
   })
 
   // ReceiverTransactionPrepared => sign
@@ -164,7 +168,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     if (data.txData.transactionId !== transactionId) return
     if (proceedProcess) {
       proceedProcess.status = 'ACTION_REQUIRED'
-      proceedProcess.message = 'Sign Message to Claim Funds'
+      proceedProcess.message = 'Ready to be signed'
       update(status)
     }
   })
@@ -215,14 +219,33 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   return status
 }
 
-export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEvent) => {
-  console.log('#### finish triggered')
-  await sdk.finishTransfer(event)
-  console.log('#### finish wait')
-  await sdk.waitFor(
-    NxtpSdkEvents.ReceiverTransactionFulfilled,
-    100_000,
-    (data) => data.txData.transactionId === event.txData.transactionId,
-  )
-  console.log('#### finish done')
+export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEvent, step?: TranferStep, updateStatus?: Function) => {
+  let status : Execution | undefined = undefined
+  let lastProcess : Process | undefined = undefined
+
+  if (step && step.execution && updateStatus) {
+    status = step.execution
+    lastProcess = status.process[status.process.length - 1]
+    console.log('lastProcess', lastProcess)
+
+    lastProcess.status = 'ACTION_REQUIRED'
+    lastProcess.message = 'Sign Message to Claim Funds'
+    updateStatus(status)
+  }
+
+  try {
+    await sdk.finishTransfer(event)
+
+    await sdk.waitFor(
+      NxtpSdkEvents.ReceiverTransactionFulfilled,
+      100_000,
+      (data) => data.txData.transactionId === event.txData.transactionId,
+    )
+  } catch (e) {
+    console.error(e)
+    if (lastProcess && updateStatus) {
+      lastProcess.message = 'Ready to be signed'
+      updateStatus(status)
+    }
+  }
 }
