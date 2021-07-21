@@ -176,6 +176,17 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
       update(status)
     }
   })
+
+  // signed => wait
+  sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
+    if (data.transactionId !== transactionId) return
+    if (proceedProcess) {
+      proceedProcess.status = 'PENDING'
+      proceedProcess.message = 'Signed - Wait for claim'
+      update(status)
+    }
+  })
+
   // fullfilled = done
   sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
     if (data.txData.transactionId !== transactionId) return

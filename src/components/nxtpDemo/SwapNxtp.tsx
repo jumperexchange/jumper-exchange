@@ -164,6 +164,10 @@ const SwapNxtp = () => {
         removeActiveTransaction(data.txData.transactionId)
       })
 
+      _sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
+        updateActiveTransactionsWith({} as TransactionData, NxtpSdkEvents.ReceiverPrepareSigned, data)
+      })
+
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionPrepared, data)
       })
@@ -305,7 +309,7 @@ const SwapNxtp = () => {
     return token
   }
 
-  const generateRoutes = async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, optionReceivingAddress: string, optionContractAddress: string, optionCallData: string) => {
+  const generateRoutes = async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
     setRoutesLoading(true)
     const dToken = findToken(depositChain, depositToken)
     const wToken = findToken(withdrawChain, withdrawToken)
@@ -319,9 +323,9 @@ const SwapNxtp = () => {
         getChainByKey(withdrawChain).id,
         wToken.id,
         dAmount.toString(),
-        optionReceivingAddress || web3.account!,
-        optionContractAddress !== '' ? optionContractAddress : undefined,
-        optionCallData !== '' ? optionCallData : undefined,
+        receivingAddress,
+        callTo,
+        callData,
       )
 
       if (!quote) {
@@ -378,7 +382,11 @@ const SwapNxtp = () => {
     }
 
     if (((isFinite(depositAmount) && depositAmount > 0) || (isFinite(withdrawAmount) && withdrawAmount > 0)) && depositChain && depositToken && withdrawChain && withdrawToken) {
-      debouncedSave(sdk, depositChain, depositToken, withdrawChain, withdrawToken, depositAmount, optionReceivingAddress, optionContractAddress, optionCallData)
+      const receiving = optionReceivingAddress  !== '' ? optionReceivingAddress : web3.account
+      const callTo =  optionContractAddress !== '' ? optionContractAddress : undefined
+      const callData  = optionCallData !== '' ? optionCallData : undefined
+
+      debouncedSave(sdk, depositChain, depositToken, withdrawChain, withdrawToken, depositAmount, receiving, callTo, callData)
     }
   }
 
