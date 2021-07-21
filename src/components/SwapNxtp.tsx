@@ -3,7 +3,7 @@ import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { TransactionData, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Avatar, Button, Col, Input, Modal, Row, Select, Spin, Table } from 'antd';
+import { Alert, Avatar, Button, Checkbox, Col, Collapse, Input, Modal, Row, Select, Spin, Table } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { RefSelectProps } from 'antd/lib/select';
 import Title from 'antd/lib/typography/Title';
@@ -62,6 +62,12 @@ interface TokenWithAmounts extends Token {
   amountRendered?: string
 }
 
+interface ActiveTransaction {
+  txData: TransactionData
+  status: NxtpSdkEvent
+  event: TransactionPreparedEvent
+}
+
 const SwapNxtp = () => {
   const [stateUpdate, setStateUpdate] = useState<number>(0)
   const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
@@ -84,7 +90,13 @@ const SwapNxtp = () => {
   const [minting, setMinting] = useState<boolean>(false)
   const [sdkChainId, setSdkChainId] = useState<number>()
   const [sdk, setSdk] = useState<NxtpSdk>()
-  const [activeTransactions, setActiveTransactions] = useState<{ txData: TransactionData; status: NxtpSdkEvent; event: TransactionPreparedEvent }[]>([])
+  const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
+
+  // advanced Options
+  const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
+  const [optionReceivingAddress, setOptionReceivingAddress] = useState<string>('')
+  const [optionContractAddress, setOptionContractAddress] = useState<string>('')
+  const [optionCallData, setOptionCallData] = useState<string>('')
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -132,7 +144,7 @@ const SwapNxtp = () => {
 
   const removeActiveTransaction = (transactionId: string) => {
     setActiveTransactions((activeTransactions) => {
-        return activeTransactions.filter((t) => t.txData.transactionId !== transactionId)
+      return activeTransactions.filter((t) => t.txData.transactionId !== transactionId)
     })
   }
 
@@ -453,8 +465,11 @@ const SwapNxtp = () => {
           getChainByKey(withdrawChain).id,
           wToken.id,
           dAmount.toString(),
-          web3.account,
+          optionReceivingAddress || web3.account,
+          optionContractAddress !== '' ? optionContractAddress : undefined,
+          optionCallData !== '' ? optionCallData : undefined,
         )
+
         if (!quote) {
           throw new Error('Empty Quote')
         }
@@ -498,10 +513,23 @@ const SwapNxtp = () => {
     }
   }
 
+
   useEffect(() => {
     getTransferRoutes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, web3, sdk])
+  }, [
+    depositAmount,
+    depositChain,
+    depositToken,
+    withdrawChain,
+    withdrawToken,
+    web3,
+    sdk,
+    optionInfiniteApproval,
+    optionReceivingAddress,
+    optionContractAddress,
+    optionCallData,
+  ])
 
   const onChangeDepositAmount = (amount: number) => {
     setDepositAmount(amount)
@@ -563,7 +591,7 @@ const SwapNxtp = () => {
       step.execution = status
       updateExecutionRoute(route)
     }
-    triggerTransfer(sdk!, route[0], update, true)
+    triggerTransfer(sdk!, route[0], update, optionInfiniteApproval)
 
     // open modal
     setModalRouteIndex(executionRoutes.length)
@@ -684,13 +712,13 @@ const SwapNxtp = () => {
     {
       title: "Action",
       dataIndex: "",
-      render: (action: any) => {
+      render: (action: ActiveTransaction) => {
         if (Date.now() / 1000 > action.txData.expiry) {
           return (
             <Button
               type="link"
               onClick={() =>
-                sdk?.cancelExpired({ relayerFee: "0", signature: "0x", txData: action }, action.sendingChainId)
+                sdk?.cancelExpired({ relayerFee: "0", signature: "0x", txData: action.txData }, action.txData.sendingChainId)
               }
             >
               Cancel
@@ -1077,14 +1105,49 @@ const SwapNxtp = () => {
                 {submitButton()}
               </Row>
 
-              {/* Add when withdraw to other address is included */}
-              {/* <Row style={{marginBottom: 32}} justify={"center"} >
-              <Collapse ghost>
-                <Panel header ={`Send swapped ${withdrawToken} to another wallet`}  key="1">
-                  <Input placeholder="0x0....." style={{border:"2px solid #f0f0f0", borderRadius: 20}}/>
-                </Panel>
-              </Collapse>
-            </Row> */}
+              {/* Advanced Options */}
+              <Row justify={"center"} >
+                <Collapse ghost>
+                  <Collapse.Panel header={`Advanced Options`} key="1">
+                    Infinite Approval
+                    <div>
+                      <Checkbox
+                        checked={optionInfiniteApproval}
+                        onChange={(e) => setOptionInfiniteApproval(e.target.value)}
+                      >
+                        Activate Infinite Approval
+                      </Checkbox>
+                    </div>
+
+                    Receiving Address
+                    <Input
+                      value={optionReceivingAddress}
+                      onChange={(e) => setOptionReceivingAddress(e.target.value)}
+                      pattern="^0x[a-fA-F0-9]{40}$"
+                      placeholder="Only when other than your sending wallet"
+                      style={{ border: '1px solid rgba(0,0,0,0.25)', borderRadius: 6 }}
+                    />
+
+                    Contract Address
+                    <Input
+                      value={optionContractAddress}
+                      onChange={(e) => setOptionContractAddress(e.target.value)}
+                      pattern="^0x[a-fA-F0-9]{40}$"
+                      placeholder="To call a contract"
+                      style={{ border: '1px solid rgba(0,0,0,0.25)', borderRadius: 6 }}
+                    />
+
+                    CallData
+                    <Input
+                      value={optionCallData}
+                      onChange={(e) => setOptionCallData(e.target.value)}
+                      pattern="^0x[a-fA-F0-9]{64}$"
+                      placeholder="Only when calling a contract directly"
+                      style={{ border: '1px solid rgba(0,0,0,0.25)', borderRadius: 6 }}
+                    />
+                  </Collapse.Panel>
+                </Collapse>
+              </Row>
 
             </div>
           </Col>

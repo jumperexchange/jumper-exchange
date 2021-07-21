@@ -199,3 +199,7 @@ h4.swap-title {
 .totalTime {
   border-top: 1px solid rgba(0, 0, 0, 0.85);
 }
+
+.ant-collapse-header {
+  text-align: center;
+}

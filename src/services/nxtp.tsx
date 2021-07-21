@@ -59,6 +59,8 @@ export const getTransferQuote = async (
   receivingAssetId: string,
   amount: string,
   receivingAddress: string,
+  callTo?: string,
+  callData?: string,
 ): Promise<AuctionResponse | undefined> => {
   // Create txid
   const transactionId = getRandomBytes32();
@@ -71,7 +73,9 @@ export const getTransferQuote = async (
     receivingAddress,
     amount,
     transactionId,
-    expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
+    expiry: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 3), // 3 days
+    callTo,
+    callData,
   });
   return response;
 }
@@ -220,13 +224,12 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 }
 
 export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEvent, step?: TranferStep, updateStatus?: Function) => {
-  let status : Execution | undefined = undefined
-  let lastProcess : Process | undefined = undefined
+  let status: Execution | undefined = undefined
+  let lastProcess: Process | undefined = undefined
 
   if (step && step.execution && updateStatus) {
     status = step.execution
     lastProcess = status.process[status.process.length - 1]
-    console.log('lastProcess', lastProcess)
 
     lastProcess.status = 'ACTION_REQUIRED'
     lastProcess.message = 'Sign Message to Claim Funds'
