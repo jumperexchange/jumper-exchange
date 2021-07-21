@@ -68,6 +68,16 @@ interface ActiveTransaction {
   event: TransactionPreparedEvent
 }
 
+function debounce(func: Function, timeout: number = 300) {
+  let timer: NodeJS.Timeout
+  return (...args: any) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args)
+    }, timeout)
+  };
+}
+
 const SwapNxtp = () => {
   const [stateUpdate, setStateUpdate] = useState<number>(0)
   const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
@@ -442,6 +452,69 @@ const SwapNxtp = () => {
     return token
   }
 
+  const generateRoutes = async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, optionReceivingAddress: string, optionContractAddress: string, optionCallData: string) => {
+    setRoutesLoading(true)
+    const dToken = findToken(depositChain, depositToken)
+    const wToken = findToken(withdrawChain, withdrawToken)
+    const dAmount = depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
+
+    try {
+      const quote = await getTransferQuote(
+        sdk!,
+        getChainByKey(depositChain).id,
+        dToken.id,
+        getChainByKey(withdrawChain).id,
+        wToken.id,
+        dAmount.toString(),
+        optionReceivingAddress || web3.account!,
+        optionContractAddress !== '' ? optionContractAddress : undefined,
+        optionCallData !== '' ? optionCallData : undefined,
+      )
+
+      if (!quote) {
+        throw new Error('Empty Quote')
+      }
+
+      const toAmount = parseInt(quote.bid.amountReceived)
+      const sortedRoutes: Array<Array<TranferStep>> = [[
+        {
+          action: {
+            type: 'cross',
+            method: 'nxtp',
+            chainId: getChainByKey(depositChain).id,
+            chainKey: depositChain,
+            toChainKey: withdrawChain,
+            amount: dAmount,
+            fromToken: dToken,
+            toToken: wToken,
+          } as CrossAction,
+          estimate: {
+            fromAmount: dAmount,
+            toAmount: toAmount,
+            fees: {
+              included: true,
+              percentage: (dAmount - toAmount) / dAmount * 100,
+              token: dToken,
+              amount: dAmount - toAmount,
+            },
+            quote: quote,
+          } as CrossEstimate,
+        }
+      ]]
+
+      setRoutes(sortedRoutes)
+      setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
+      setNoRoutesAvailable(sortedRoutes.length === 0)
+    } catch (e) {
+      console.error(e)
+      setNoRoutesAvailable(true)
+    } finally {
+      setRoutesLoading(false)
+    }
+  }
+
+  const debouncedSave = useRef(debounce(generateRoutes, 500)).current
+
   const getTransferRoutes = async () => {
     setRoutes([])
     setHighlightedIndex(-1)
@@ -452,64 +525,7 @@ const SwapNxtp = () => {
     }
 
     if (((isFinite(depositAmount) && depositAmount > 0) || (isFinite(withdrawAmount) && withdrawAmount > 0)) && depositChain && depositToken && withdrawChain && withdrawToken) {
-      setRoutesLoading(true)
-      const dToken = findToken(depositChain, depositToken)
-      const wToken = findToken(withdrawChain, withdrawToken)
-      const dAmount = depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
-
-      try {
-        const quote = await getTransferQuote(
-          sdk,
-          getChainByKey(depositChain).id,
-          dToken.id,
-          getChainByKey(withdrawChain).id,
-          wToken.id,
-          dAmount.toString(),
-          optionReceivingAddress || web3.account,
-          optionContractAddress !== '' ? optionContractAddress : undefined,
-          optionCallData !== '' ? optionCallData : undefined,
-        )
-
-        if (!quote) {
-          throw new Error('Empty Quote')
-        }
-
-        const toAmount = parseInt(quote.bid.amountReceived)
-        const sortedRoutes: Array<Array<TranferStep>> = [[
-          {
-            action: {
-              type: 'cross',
-              method: 'nxtp',
-              chainId: getChainByKey(depositChain).id,
-              chainKey: depositChain,
-              toChainKey: withdrawChain,
-              amount: dAmount,
-              fromToken: dToken,
-              toToken: wToken,
-            } as CrossAction,
-            estimate: {
-              fromAmount: dAmount,
-              toAmount: toAmount,
-              fees: {
-                included: true,
-                percentage: (dAmount - toAmount) / dAmount * 100,
-                token: dToken,
-                amount: dAmount - toAmount,
-              },
-              quote: quote,
-            } as CrossEstimate,
-          }
-        ]]
-
-        setRoutes(sortedRoutes)
-        setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
-        setNoRoutesAvailable(sortedRoutes.length === 0)
-      } catch (e) {
-        console.error(e)
-        setNoRoutesAvailable(true)
-      } finally {
-        setRoutesLoading(false)
-      }
+      debouncedSave(sdk, depositChain, depositToken, withdrawChain, withdrawToken, depositAmount, optionReceivingAddress, optionContractAddress, optionCallData)
     }
   }
 
