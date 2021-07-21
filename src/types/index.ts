@@ -17,6 +17,11 @@ export interface Token {
   key: CoinKey
 }
 
+export interface TokenWithAmounts extends Token {
+  amount?: number
+  amountRendered?: string
+}
+
 export interface Coin {
   key: CoinKey;
   name: string;

@@ -9,7 +9,6 @@ import AboutPage from './components/AboutPage';
 import Dashboard from './components/Dashboard';
 import NotFoundPage from './components/NotFoundPage';
 import Swap from './components/Swap';
-import SwapNxtp from './components/SwapNxtp';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
@@ -54,10 +53,6 @@ function App() {
                   <span className="beta-badge">Beta</span>
                   <Link to="/swap">Swap</Link>
                 </Menu.Item>
-                <Menu.Item key="/nxtp">
-                  <span className="beta-badge">Test</span>
-                  <Link to="/nxtp">Nxtp</Link>
-                </Menu.Item>
                 <Menu.Item key="/about">
                   <Link to="/about">About</Link>
                 </Menu.Item>
@@ -84,13 +79,6 @@ function App() {
                 })
                 initStomt('swap')
                 return <Swap/>
-              }}/>
-              <Route path="/nxtp" render={() => {
-                setMetatags({
-                  title: 'Li.Finance - NXTP',
-                })
-                initStomt('swap')
-                return <SwapNxtp/>
               }}/>
               <Route path="/about" render={() => {
                 setMetatags({

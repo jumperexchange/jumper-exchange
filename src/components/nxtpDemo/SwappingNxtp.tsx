@@ -3,16 +3,15 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BaseType } from 'antd/lib/typography/Base';
-import connextIcon from '../assets/icons/connext.png';
-import walletIcon from '../assets/wallet.png';
-import { switchChain } from '../services/metamask';
-import { formatTokenAmount } from '../services/utils';
-import { ChainKey } from '../types';
-import { getChainById, getChainByKey } from '../types/lists';
-import { Execution, TranferStep } from '../types/server';
-import Clock from './Clock';
-import { injected } from './web3/connectors';
-
+import connextIcon from '../../assets/icons/connext.png';
+import walletIcon from '../../assets/wallet.png';
+import { switchChain } from '../../services/metamask';
+import { formatTokenAmount } from '../../services/utils';
+import { ChainKey } from '../../types';
+import { getChainById, getChainByKey } from '../../types/lists';
+import { Execution, TranferStep } from '../../types/server';
+import Clock from '../Clock';
+import { injected } from '../web3/connectors';
 
 interface SwappingProps {
   route: Array<TranferStep>,

@@ -10,7 +10,7 @@ import honey from "../assets/icons/honey.png";
 import xdai from "../assets/icons/xdai.png";
 import uniswap from "../assets/icons/uniswap.png";
 
-interface AddEthereumChainParameter {
+export interface AddEthereumChainParameter {
   chainId: string;
   blockExplorerUrls: string[];
   chainName: string;
@@ -23,7 +23,7 @@ interface AddEthereumChainParameter {
   rpcUrls: string[];
 }
 
-interface Exchange {
+export interface Exchange {
   name: string
   iconUrl: string
   logoUrl: string
@@ -32,7 +32,7 @@ interface Exchange {
   tokenlistUrl: string
 }
 
-interface Chain {
+export interface Chain {
   key: ChainKey
   name: string
   coin: CoinKey

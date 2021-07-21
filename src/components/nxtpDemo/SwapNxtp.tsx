@@ -3,25 +3,24 @@ import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { TransactionData, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Avatar, Button, Checkbox, Col, Collapse, Input, Modal, Row, Select, Spin, Table } from 'antd';
+import { Alert, Button, Checkbox, Col, Collapse, Input, Modal, Row, Spin, Table } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
-import { RefSelectProps } from 'antd/lib/select';
 import Title from 'antd/lib/typography/Title';
-import { BigNumber, constants, providers } from "ethers";
 import React, { useEffect, useRef, useState } from 'react';
-import connextWordmark from '../assets/connext_wordmark.svg';
-import lifiWordmark from '../assets/lifi_wordmark.svg';
-import { switchChain } from '../services/metamask';
-import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../services/nxtp';
-import { getBalance as getBalanceTest, mintTokens } from '../services/testToken';
-import { deepClone, formatTokenAmountOnly } from '../services/utils';
-import { ChainKey, ChainPortfolio, CoinKey, Token } from '../types';
-import { getChainById, getChainByKey } from '../types/lists';
-import { CrossAction, CrossEstimate, Execution, TranferStep } from '../types/server';
-import './Swap.css';
+import connextWordmark from '../../assets/connext_wordmark.svg';
+import lifiWordmark from '../../assets/lifi_wordmark.svg';
+import { switchChain } from '../../services/metamask';
+import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
+import { getBalancesForWallet, mintTokens, testToken } from '../../services/testToken';
+import { deepClone, formatTokenAmountOnly } from '../../services/utils';
+import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types';
+import { getChainById, getChainByKey } from '../../types/lists';
+import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
+import '../Swap.css';
+import SwapForm from '../SwapForm';
+import ConnectButton from '../web3/ConnectButton';
+import { injected } from '../web3/connectors';
 import SwappingNxtp from './SwappingNxtp';
-import ConnectButton from './web3/ConnectButton';
-import { injected } from './web3/connectors';
 
 const BALANCES_REFRESH_INTERVAL = 30000
 
@@ -29,38 +28,6 @@ const transferChains = [
   getChainByKey(ChainKey.GOR),
   getChainByKey(ChainKey.RIN),
 ]
-
-const testToken: { [ChainKey: string]: Array<TokenWithAmounts> } = {
-  [ChainKey.RIN]: [
-    {
-      id: '0x9ac2c46d7acc21c881154d57c0dc1c55a3139198',
-      symbol: CoinKey.TEST,
-      decimals: 18,
-      chainId: 4,
-      chainKey: ChainKey.RIN,
-      key: CoinKey.TEST,
-      name: CoinKey.TEST,
-      logoURI: '',
-    },
-  ],
-  [ChainKey.GOR]: [
-    {
-      id: '0x8a1cad3703e0beae0e0237369b4fcd04228d1682',
-      symbol: CoinKey.TEST,
-      decimals: 18,
-      chainId: 5,
-      chainKey: ChainKey.GOR,
-      key: CoinKey.TEST,
-      name: CoinKey.TEST,
-      logoURI: '',
-    },
-  ],
-}
-
-interface TokenWithAmounts extends Token {
-  amount?: number
-  amountRendered?: string
-}
 
 interface ActiveTransaction {
   txData: TransactionData
@@ -80,33 +47,37 @@ function debounce(func: Function, timeout: number = 300) {
 
 const SwapNxtp = () => {
   const [stateUpdate, setStateUpdate] = useState<number>(0)
-  const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
-  const [executionRoutes, setExecutionRoutes] = useState<Array<Array<TranferStep>>>([])
-  const [modalRouteIndex, setModalRouteIndex] = useState<number>()
-  const [routesLoading, setRoutesLoading] = useState<boolean>(false)
-  const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
+
+  // Form
   const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.RIN);
   const [depositAmount, setDepositAmount] = useState<number>(1);
   const [depositToken, setDepositToken] = useState<string>(testToken[ChainKey.RIN][0].id);
-  const depositSelectRef = useRef<RefSelectProps>()
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.GOR);
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity);
   const [withdrawToken, setWithdrawToken] = useState<string>(testToken[ChainKey.GOR][0].id);
-  const withdrawSelectRef = useRef<RefSelectProps>()
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(testToken)
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-  const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [minting, setMinting] = useState<boolean>(false)
-  const [sdkChainId, setSdkChainId] = useState<number>()
-  const [sdk, setSdk] = useState<NxtpSdk>()
-  const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
+  const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
 
-  // advanced Options
+  // Advanced Options
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
   const [optionReceivingAddress, setOptionReceivingAddress] = useState<string>('')
   const [optionContractAddress, setOptionContractAddress] = useState<string>('')
   const [optionCallData, setOptionCallData] = useState<string>('')
+
+  // Routes
+  const [routesLoading, setRoutesLoading] = useState<boolean>(false)
+  const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
+  const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
+  const [executionRoutes, setExecutionRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [modalRouteIndex, setModalRouteIndex] = useState<number>()
+
+  // nxtp
+  const [minting, setMinting] = useState<boolean>(false)
+  const [sdk, setSdk] = useState<NxtpSdk>()
+  const [sdkChainId, setSdkChainId] = useState<number>()
+  const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -241,71 +212,6 @@ const SwapNxtp = () => {
     }
   }
 
-  const getBalancesForWallet = async (address: string) => {
-    const providerRIN = new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_RINKEBY)
-    const providerGOR = new providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_GORLI)
-
-    const pBalenceEthRin = getBalanceTest(
-      address,
-      constants.AddressZero,
-      providerRIN,
-    )
-    const pBalenceTestRin = getBalanceTest(
-      address,
-      testToken[ChainKey.RIN][0].id,
-      providerRIN,
-    )
-    const pBalenceEthGor = getBalanceTest(
-      address,
-      constants.AddressZero,
-      providerGOR,
-    )
-    const pBalenceTestGor = getBalanceTest(
-      address,
-      testToken[ChainKey.GOR][0].id,
-      providerGOR,
-    )
-
-    const portfolio = {
-      [ChainKey.RIN]: [
-        {
-          id: '0x0000000000000000000000000000000000000000',
-          name: 'ETH',
-          symbol: 'ETH',
-          img_url: '',
-          amount: (await pBalenceEthRin).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
-          pricePerCoin: 0,
-        },
-        {
-          id: '0x9ac2c46d7acc21c881154d57c0dc1c55a3139198',
-          name: 'TEST',
-          symbol: 'TEST',
-          img_url: '',
-          amount: (await pBalenceTestRin).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
-          pricePerCoin: 0,
-        },
-      ],
-      [ChainKey.GOR]: [
-        {
-          id: '0x0000000000000000000000000000000000000000',
-          name: 'ETH',
-          symbol: 'ETH',
-          img_url: '',
-          amount: (await pBalenceEthGor).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
-          pricePerCoin: 0,
-        },
-        {
-          id: '0x8a1cad3703e0beae0e0237369b4fcd04228d1682',
-          name: 'TEST',
-          symbol: 'TEST',
-          img_url: '',
-          amount: (await pBalenceTestGor).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
-          pricePerCoin: 0,
-        },
-      ],
-    }
-    return portfolio
-  }
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
@@ -389,59 +295,6 @@ const SwapNxtp = () => {
       return true
     }
     return depositAmount <= getBalance(depositChain, depositToken)
-  }
-
-  const onChangeDepositChain = (chainKey: ChainKey) => {
-    setWithdrawChain(depositChain)
-    setWithdrawToken(depositToken)
-    setDepositChain(chainKey)
-    setDepositToken(testToken[chainKey][0].id)
-  }
-
-  const onChangeWithdrawChain = (chainKey: ChainKey) => {
-    setDepositChain(withdrawChain)
-    setDepositToken(withdrawToken)
-    setDepositChain(chainKey)
-    setDepositToken(testToken[chainKey][0].id)
-  }
-
-  const onChangeDepositToken = (tokenId: string) => {
-    // unselect
-    depositSelectRef?.current?.blur()
-
-    // connect
-    if (tokenId === 'connect') {
-      activate(injected)
-      return
-    }
-
-    // set token
-    setDepositToken(tokenId)
-    const balance = getBalance(depositChain, tokenId)
-    if (balance < depositAmount && balance > 0) {
-      setDepositAmount(Math.floor(balance * 10000) / 10000)
-    }
-  }
-
-  const onChangeWithdrawToken = (tokenId: string) => {
-    // unselect
-    withdrawSelectRef?.current?.blur()
-
-    // connect
-    if (tokenId === 'connect') {
-      activate(injected)
-      return
-    }
-
-    // set token
-    setWithdrawToken(tokenId)
-  }
-
-  const changeDirection = () => {
-    setWithdrawChain(depositChain)
-    setDepositChain(withdrawChain)
-    setWithdrawToken(depositToken)
-    setDepositToken(withdrawToken)
   }
 
   const findToken = (chainKey: ChainKey, tokenId: string) => {
@@ -546,18 +399,6 @@ const SwapNxtp = () => {
     optionContractAddress,
     optionCallData,
   ])
-
-  const onChangeDepositAmount = (amount: number) => {
-    setDepositAmount(amount)
-    setWithdrawAmount(Infinity)
-  }
-  const onChangeWithdrawAmount = (amount: number) => {
-    setDepositAmount(Infinity)
-    setWithdrawAmount(amount)
-  }
-  const formatAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    return parseFloat(e.currentTarget.value)
-  }
 
   const updateExecutionRoute = (route: Array<TranferStep>) => {
     setExecutionRoutes(routes => {
@@ -879,243 +720,26 @@ const SwapNxtp = () => {
                 <Title className="swap-title" level={4}>Please Specify Your Transaction</Title>
               </Row>
 
-              <Row gutter={[{ xs: 8, sm: 16 }, { xs: 8, sm: 16 }]}>
-                <Col span={10}>
-                  <div className="form-text">
-                    From:
-                  </div>
-                </Col>
-                <Col span={14}>
-                  <div className="form-input-wrapper">
-                    <Avatar
-                      size="small"
-                      src={getChainByKey(depositChain).iconUrl}
-                      alt={getChainByKey(depositChain).name}
-                    >{getChainByKey(depositChain).name[0]}</Avatar>
-                    <Select
-                      placeholder="Select Chain"
-                      value={depositChain}
-                      onChange={((v: ChainKey) => onChangeDepositChain(v))}
-                      bordered={false}
-                    >
-                      {transferChains.map(chain => (
-                        <Select.Option key={chain.key} value={chain.key}>{chain.name}</Select.Option>
-                      ))}
-                    </Select>
-                  </div>
-                </Col>
+              <SwapForm
+                depositChain={depositChain}
+                setDepositChain={setDepositChain}
+                depositToken={depositToken}
+                setDepositToken={setDepositToken}
+                depositAmount={depositAmount}
+                setDepositAmount={setDepositAmount}
 
-                <Col span={10}>
-                  <div className="form-input-wrapper">
-                    <Input
-                      type="number"
-                      defaultValue={0.0}
-                      min={0}
-                      max={10}
-                      value={isFinite(depositAmount) ? depositAmount : ''}
-                      onChange={((event) => onChangeDepositAmount(formatAmountInput(event)))}
-                      placeholder="0.0"
-                      bordered={false}
-                      className={web3.account && !hasSufficientBalance() ? 'insufficient' : ''}
-                    />
-                  </div>
-                </Col>
-                <Col span={14}>
-                  <div className="form-input-wrapper">
-                    <Avatar
-                      size="small"
-                      src={depositToken ? findToken(depositChain, depositToken).logoURI : undefined}
-                      alt={depositToken ? findToken(depositChain, depositToken).name : undefined}
-                    >{depositToken ? findToken(depositChain, depositToken).name[0] : '?'}</Avatar>
-                    <Select
-                      placeholder="Select Coin"
-                      value={depositToken}
-                      onChange={((v) => onChangeDepositToken(v))}
-                      optionLabelProp="data-label"
-                      bordered={false}
-                      dropdownStyle={{ minWidth: 300 }}
-                      showSearch
-                      ref={(select) => {
-                        if (select) {
-                          depositSelectRef.current = select
-                        }
-                      }}
-                      filterOption={(input, option) => {
-                        return (option?.label as string || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }}
-                    >
-                      <Select.OptGroup label="Owned Token">
-                        {!web3.account &&
-                          <Select.Option key="Select Coin" value="connect">
-                            Connect your wallet
-                          </Select.Option>
-                        }
-                        {balances && tokens[depositChain].filter(token => token.amount).map(token => (
-                          <Select.Option key={'own_' + token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
-                            <div className="option-item">
-                              <span role="img" aria-label={token.symbol}>
-                                <Avatar
-                                  size="small"
-                                  src={token.logoURI}
-                                  alt={token.symbol}
-                                  style={{ marginRight: 10 }}
-                                >{token.symbol[0]}</Avatar>
-                              </span>
-                              <span className="option-name">{token.symbol} - {token.name}</span>
-                              <span className="option-balance">
-                                {token.amountRendered}
-                              </span>
-                            </div>
-                          </Select.Option>
-                        ))}
-                      </Select.OptGroup>
+                withdrawChain={withdrawChain}
+                setWithdrawChain={setWithdrawChain}
+                withdrawToken={withdrawToken}
+                setWithdrawToken={setWithdrawToken}
+                withdrawAmount={withdrawAmount}
+                setWithdrawAmount={setWithdrawAmount}
+                estimatedWithdrawAmount={getSelectedWithdraw()}
 
-                      <Select.OptGroup label="All Token">
-                        {tokens[depositChain].map(token => (
-                          <Select.Option key={token.id} value={token.id} label={token.symbol + '       - ' + token.name} data-label={token.symbol}>
-                            <div className={'option-item ' + (token.amount === 0 ? 'disabled' : '')}>
-                              <span role="img" aria-label={token.symbol}>
-                                <Avatar
-                                  size="small"
-                                  src={token.logoURI}
-                                  alt={token.symbol}
-                                  style={{ marginRight: 10 }}
-                                >{token.symbol[0]}</Avatar>
-                              </span>
-                              <span className="option-name">{token.symbol} - {token.name}</span>
-                              <span className="option-balance">
-                                {token.amountRendered}
-                              </span>
-                            </div>
-                          </Select.Option>
-                        ))}
-                      </Select.OptGroup>
-                    </Select>
-                  </div>
-                </Col>
-              </Row>
-
-              <Row style={{ margin: 32 }} justify={"center"} >
-                <SwapOutlined onClick={() => changeDirection()} />
-              </Row>
-
-              <Row gutter={[{ xs: 8, sm: 16 }, { xs: 8, sm: 16 }]}>
-                <Col span={10}>
-                  <div className="form-text">
-                    To:
-                  </div>
-                </Col>
-                <Col span={14}>
-                  <div className="form-input-wrapper">
-                    <Avatar
-                      size="small"
-                      src={getChainByKey(withdrawChain).iconUrl}
-                      alt={getChainByKey(withdrawChain).name}
-                    >{getChainByKey(withdrawChain).name[0]}</Avatar>
-                    <Select
-                      placeholder="Select Chain"
-                      value={withdrawChain}
-                      onChange={((v: ChainKey) => onChangeWithdrawChain(v))}
-                      bordered={false}
-                    >
-                      {transferChains.map(chain => (
-                        <Select.Option key={chain.key} value={chain.key}>{chain.name}</Select.Option>
-                      ))}
-                    </Select>
-                  </div>
-                </Col>
-
-                <Col span={10}>
-                  <div className="form-input-wrapper disabled">
-                    <Input
-                      type="number"
-                      defaultValue={0.0}
-                      min={0}
-                      max={10}
-                      value={getSelectedWithdraw()}
-                      // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
-                      onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
-                      placeholder="0.0"
-                      bordered={false}
-                      disabled
-                    />
-                  </div>
-                </Col>
-                <Col span={14}>
-                  <div className="form-input-wrapper">
-                    <Avatar
-                      size="small"
-                      src={withdrawToken ? findToken(withdrawChain, withdrawToken).logoURI : undefined}
-                      alt={withdrawToken ? findToken(withdrawChain, withdrawToken).name : undefined}
-                    >{withdrawToken ? findToken(withdrawChain, withdrawToken).name[0] : '?'}</Avatar>
-                    <Select
-                      placeholder="Select Coin"
-                      value={withdrawToken}
-                      onChange={((v) => onChangeWithdrawToken(v))}
-                      optionLabelProp="data-label"
-                      bordered={false}
-                      dropdownStyle={{ minWidth: 300 }}
-                      showSearch
-                      ref={(select) => {
-                        if (select) {
-                          withdrawSelectRef.current = select
-                        }
-                      }}
-                      filterOption={(input, option) => {
-                        return (option?.label as string || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }}
-                    >
-                      <Select.OptGroup label="Owned Token">
-                        {!web3.account &&
-                          <Select.Option key="Select Coin" value="connect">
-                            Connect your wallet
-                          </Select.Option>
-                        }
-                        {balances && tokens[withdrawChain].filter(token => token.amount).map(token => (
-                          <Select.Option key={'own_' + token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
-                            <div className="option-item">
-                              <span role="img" aria-label={token.symbol}>
-                                <Avatar
-                                  size="small"
-                                  src={token.logoURI}
-                                  alt={token.symbol}
-                                  style={{ marginRight: 10 }}
-                                >{token.symbol[0]}</Avatar>
-                              </span>
-                              <span className="option-name">{token.symbol} - {token.name}</span>
-                              <span className="option-balance">
-                                {token.amountRendered}
-                              </span>
-                            </div>
-                          </Select.Option>
-                        ))}
-                      </Select.OptGroup>
-
-                      <Select.OptGroup label="All Token">
-                        {tokens[withdrawChain].map(token => (
-                          <Select.Option key={token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
-                            <div className="option-item">
-                              <span role="img" aria-label={token.symbol}>
-                                <Avatar
-                                  size="small"
-                                  src={token.logoURI}
-                                  alt={token.symbol}
-                                  style={{ marginRight: 10 }}
-                                >{token.symbol[0]}</Avatar>
-                              </span>
-                              <span className="option-name">{token.symbol} - {token.name}</span>
-                              <span className="option-balance">
-                                {token.amountRendered}
-                              </span>
-                            </div>
-                          </Select.Option>
-                        ))}
-                      </Select.OptGroup>
-                    </Select>
-                  </div>
-                </Col>
-              </Row>
-
+                transferChains={transferChains}
+                tokens={tokens}
+                balances={balances}
+              />
 
               <Row style={{ marginTop: 24 }} justify={"center"}>
                 {submitButton()}
@@ -1169,6 +793,7 @@ const SwapNxtp = () => {
           </Col>
         </Row>
 
+        {/* Footer */}
         <Row justify="center" style={{ marginTop: 48, marginBottom: 8 }}>
           <Col>
             Powered by
@@ -1189,7 +814,6 @@ const SwapNxtp = () => {
             </a>
           </Col>
         </Row>
-
 
       </div>
 
