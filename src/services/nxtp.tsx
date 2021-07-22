@@ -172,7 +172,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     if (data.txData.transactionId !== transactionId) return
     if (proceedProcess) {
       proceedProcess.status = 'ACTION_REQUIRED'
-      proceedProcess.message = 'Ready to be signed'
+      proceedProcess.message = 'Ready to be Signed'
       update(status)
     }
   })
@@ -182,7 +182,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     if (data.transactionId !== transactionId) return
     if (proceedProcess) {
       proceedProcess.status = 'PENDING'
-      proceedProcess.message = 'Signed - Wait for claim'
+      proceedProcess.message = 'Signed - Wait for Claim'
       update(status)
     }
   })
@@ -241,6 +241,11 @@ export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEve
   if (step && step.execution && updateStatus) {
     status = step.execution
     lastProcess = status.process[status.process.length - 1]
+
+    if (lastProcess.message === 'Sign Message to Claim Funds') {
+      // already in signing process, do not trigger again
+      return
+    }
 
     lastProcess.status = 'ACTION_REQUIRED'
     lastProcess.message = 'Sign Message to Claim Funds'

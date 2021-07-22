@@ -91,7 +91,13 @@ const SwapNxtp = () => {
       const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
       const transaction = activeTransactions.find((item) => item.txData.transactionId === crossEstimate.quote.bid.transactionId)
       if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
-        finishTransfer(sdk!, transaction.event)
+        const route = executionRoutes[modalRouteIndex]
+        const update = (step: TranferStep, status: Execution) => {
+          step.execution = status
+          updateExecutionRoute(route)
+        }
+
+        finishTransfer(sdk!, transaction.event, route[0], update)
       }
     }
     // eslint-disable-next-line
@@ -104,7 +110,7 @@ const SwapNxtp = () => {
       let updated = false
       const updatedTransactions = activeTransactions.map((item) => {
         if (item.txData.transactionId === txData.transactionId) {
-          item.txData = Object.assign(item.txData, txData)
+          item.txData = Object.assign({}, item.txData, txData)
           item.status = status
           item.event = event
           updated = true
@@ -165,7 +171,7 @@ const SwapNxtp = () => {
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
-        updateActiveTransactionsWith({} as TransactionData, NxtpSdkEvents.ReceiverPrepareSigned, data)
+        updateActiveTransactionsWith({ transactionId: data.transactionId } as TransactionData, NxtpSdkEvents.ReceiverPrepareSigned, data)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
