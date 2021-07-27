@@ -11,14 +11,14 @@ import { injected } from './web3/connectors';
 interface SwapFormProps {
   depositChain: ChainKey,
   setDepositChain: Function,
-  depositToken: string,
+  depositToken?: string,
   setDepositToken: Function,
   depositAmount: number,
   setDepositAmount: Function,
 
   withdrawChain: ChainKey,
   setWithdrawChain: Function,
-  withdrawToken: string,
+  withdrawToken?: string,
   setWithdrawToken: Function,
   withdrawAmount: number,
   setWithdrawAmount: Function,
@@ -224,6 +224,11 @@ const SwapForm = ({
                     Connect your wallet
                   </Select.Option>
                 }
+                {balances && balances[depositChain].length === 0 &&
+                  <Select.Option key="No Owned" value="no" disabled={true}>
+                    You don't own any token on this chain.
+                  </Select.Option>
+                }
                 {balances && tokens[depositChain].filter(token => token.amount).map(token => (
                   <Select.Option key={'own_' + token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
                     <div className="option-item">
@@ -343,6 +348,11 @@ const SwapForm = ({
                 {!web3.account &&
                   <Select.Option key="Select Coin" value="connect">
                     Connect your wallet
+                  </Select.Option>
+                }
+                {balances && balances[withdrawChain].length === 0 &&
+                  <Select.Option key="No Owned" value="no" disabled={true}>
+                    You don't own any token on this chain.
                   </Select.Option>
                 }
                 {balances && tokens[withdrawChain].filter(token => token.amount).map(token => (
