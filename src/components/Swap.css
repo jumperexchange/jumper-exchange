@@ -66,7 +66,7 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-top: 36px;
 }
 h4.swap-title {
-  color: #1e1451;
+  /* color: #1e1451; */
   margin: 0px auto 24px;
   font-size: 16px;
 }
@@ -139,8 +139,8 @@ h4.swap-title {
 
   h4.swap-title {
     font-size: 20px;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-top: 4px;
+    margin-bottom: 28px;
   }
 }
 

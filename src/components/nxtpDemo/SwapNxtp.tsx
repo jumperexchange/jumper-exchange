@@ -3,7 +3,7 @@ import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { TransactionData, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Button, Checkbox, Col, Collapse, Input, Modal, Row, Spin, Table } from 'antd';
+import { Alert, Button, Checkbox, Col, Collapse, Form, Input, Modal, Row, Spin, Table } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import React, { useEffect, useRef, useState } from 'react';
@@ -38,25 +38,26 @@ interface ActiveTransaction {
 function debounce(func: Function, timeout: number = 300) {
   let timer: NodeJS.Timeout
   return (...args: any) => {
-    clearTimeout(timer);
+    clearTimeout(timer)
     timer = setTimeout(() => {
       func(...args)
     }, timeout)
-  };
+  }
 }
 
 const SwapNxtp = () => {
   const [stateUpdate, setStateUpdate] = useState<number>(0)
 
   // Form
-  const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.RIN);
-  const [depositAmount, setDepositAmount] = useState<number>(1);
-  const [depositToken, setDepositToken] = useState<string>(testToken[ChainKey.RIN][0].id);
-  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.GOR);
-  const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity);
-  const [withdrawToken, setWithdrawToken] = useState<string>(testToken[ChainKey.GOR][0].id);
+  const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.RIN)
+  const [depositAmount, setDepositAmount] = useState<number>(1)
+  const [depositToken, setDepositToken] = useState<string>(testToken[ChainKey.RIN][0].id)
+  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.GOR)
+  const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
+  const [withdrawToken, setWithdrawToken] = useState<string>(testToken[ChainKey.GOR][0].id)
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(testToken)
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
+  const [updatingBalances, setUpdatingBalances] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
 
   // Advanced Options
@@ -81,7 +82,7 @@ const SwapNxtp = () => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { activate } = useWeb3React();
+  const { activate } = useWeb3React()
   const intervalRef = useRef<NodeJS.Timeout>()
 
   // auto-trigger finish if corresponding modal is opend
@@ -153,16 +154,16 @@ const SwapNxtp = () => {
       setSdk(_sdk)
       setSdkChainId(web3.chainId)
 
-
       // listen to events
       _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared, data)
-        setRefreshBalances(true)
+        updateBalances(web3.account!)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionFulfilled, data)
         removeActiveTransaction(data.txData.transactionId)
+        updateBalances(web3.account!)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
@@ -181,7 +182,7 @@ const SwapNxtp = () => {
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionFulfilled, data)
         removeActiveTransaction(data.txData.transactionId)
-        setRefreshBalances(true)
+        updateBalances(web3.account!)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
@@ -222,13 +223,17 @@ const SwapNxtp = () => {
     }
   }
 
+  const updateBalances = async (address: string) => {
+    setUpdatingBalances(true)
+    await getBalancesForWallet(address).then(setBalances)
+    setUpdatingBalances(false)
+  }
+
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
       setRefreshBalances(false)
-
-      getBalancesForWallet(web3.account)
-        .then(setBalances)
+      updateBalances(web3.account)
     }
   }, [refreshBalances, web3.account])
 
@@ -236,9 +241,7 @@ const SwapNxtp = () => {
     if (!web3.account) {
       setBalances(undefined) // reset old balances
     } else {
-      setRefreshBalances(false)
-      getBalancesForWallet(web3.account)
-        .then(setBalances)
+      setRefreshBalances(true)
     }
   }, [web3.account])
 
@@ -251,7 +254,7 @@ const SwapNxtp = () => {
     try {
       const res = await mintTokens(web3.library?.getSigner(), testToken[chainKey][0].id)
       await res.wait(1)
-      await getBalancesForWallet(web3.account).then(setBalances)
+      await updateBalances(web3.account)
     } finally {
       setMinting(false)
     }
@@ -388,9 +391,9 @@ const SwapNxtp = () => {
     }
 
     if (((isFinite(depositAmount) && depositAmount > 0) || (isFinite(withdrawAmount) && withdrawAmount > 0)) && depositChain && depositToken && withdrawChain && withdrawToken) {
-      const receiving = optionReceivingAddress  !== '' ? optionReceivingAddress : web3.account
-      const callTo =  optionContractAddress !== '' ? optionContractAddress : undefined
-      const callData  = optionCallData !== '' ? optionCallData : undefined
+      const receiving = optionReceivingAddress !== '' ? optionReceivingAddress : web3.account
+      const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
+      const callData = optionCallData !== '' ? optionCallData : undefined
 
       debouncedSave(sdk, depositChain, depositToken, withdrawChain, withdrawToken, depositAmount, receiving, callTo, callData)
     }
@@ -398,7 +401,7 @@ const SwapNxtp = () => {
 
 
   useEffect(() => {
-    getTransferRoutes();
+    getTransferRoutes()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     depositAmount,
@@ -491,7 +494,7 @@ const SwapNxtp = () => {
 
   const submitButton = () => {
     if (!web3.account) {
-      return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} onClick={() => activate(injected)}>Connect Wallet</Button>
+      return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} htmlType="submit" onClick={() => activate(injected)}>Connect Wallet</Button>
     }
     if (routesLoading) {
       return <Button disabled={true} shape="round" type="primary" icon={<SyncOutlined spin />} size={"large"}>Searching Routes...</Button>
@@ -503,10 +506,10 @@ const SwapNxtp = () => {
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
     }
     if (web3.chainId !== getChainByKey(depositChain).id) {
-      return <Button shape="round" type="primary" size={"large"} onClick={() => switchChain(getChainByKey(depositChain).id)}>Change Chain</Button>
+      return <Button shape="round" type="primary" size={"large"} htmlType="submit" onClick={() => switchChain(getChainByKey(depositChain).id)}>Change Chain</Button>
     }
 
-    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
+    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} htmlType="submit" size={"large"} onClick={() => openSwapModal()}>Swap</Button>
   }
 
   const activeTransactionsColumns = [
@@ -594,7 +597,7 @@ const SwapNxtp = () => {
             >
               Cancel
             </Button>
-          );
+          )
         } else if (action.status === NxtpSdkEvents.ReceiverTransactionPrepared && action.event) {
           return (
             <Button
@@ -609,7 +612,14 @@ const SwapNxtp = () => {
         ) {
           return <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
         } else {
-          return <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
+          const index = executionRoutes.findIndex(item => {
+            return (item[0].estimate as CrossEstimate).quote.bid.transactionId === action.txData.transactionId
+          })
+          if (index !== -1 && executionRoutes[index][0].execution?.status === 'FAILED') {
+            return 'Failed'
+          } else {
+            return <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
+          }
         }
       },
     },
@@ -627,14 +637,17 @@ const SwapNxtp = () => {
                 <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
                 <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
 
-                <h3 style={{ textAlign: 'center' }}>Your Balance</h3>
-                {web3.account && balances &&
+                <h2 style={{ textAlign: 'center' }}>Your Balance</h2>
+                {web3.account &&
                   <table style={{ background: 'white', margin: 'auto' }}>
                     <thead className="ant-table-thead">
                       <tr className="ant-table-row">
                         <th className="ant-table-cell"></th>
                         <th className="ant-table-cell" style={{ textAlign: 'center' }}>Rinkeby</th>
                         <th className="ant-table-cell" style={{ textAlign: 'center' }}>Goerli</th>
+                        <th>
+                          <SyncOutlined onClick={() => updateBalances(web3.account!)} spin={updatingBalances} />
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="ant-table-tbody" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
@@ -643,7 +656,7 @@ const SwapNxtp = () => {
                         <td className="ant-table-cell">
                           <Row gutter={16}>
                             <Col xs={24} sm={12} >
-                              {balances[ChainKey.RIN][0].amount.toFixed(4)}
+                              {balances && balances[ChainKey.RIN][0].amount.toFixed(4)}
                             </Col>
                             <Col xs={24} sm={12}>
                               (<a href="https://faucet.rinkeby.io/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)
@@ -653,20 +666,21 @@ const SwapNxtp = () => {
                         <td className="ant-table-cell">
                           <Row gutter={16}>
                             <Col xs={24} sm={12} >
-                              {balances[ChainKey.GOR][0].amount.toFixed(4)}
+                              {balances && balances[ChainKey.GOR][0].amount.toFixed(4)}
                             </Col>
                             <Col xs={24} sm={12}>
                               (<a href="https://goerli-faucet.slock.it/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)
                             </Col>
                           </Row>
                         </td>
+                        <td className="ant-table-cell"></td>
                       </tr>
                       <tr className="ant-table-row" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                         <td className="ant-table-cell">TEST</td>
                         <td className="ant-table-cell" >
                           <Row gutter={16}>
                             <Col xs={24} sm={12} >
-                              {balances[ChainKey.RIN][1].amount.toFixed(4)}
+                              {balances && balances[ChainKey.RIN][1].amount.toFixed(4)}
                             </Col>
                             <Col xs={24} sm={12}>
                               ({minting
@@ -681,7 +695,7 @@ const SwapNxtp = () => {
                         <td className="ant-table-cell">
                           <Row gutter={16}>
                             <Col xs={24} sm={12} >
-                              {balances[ChainKey.GOR][1].amount.toFixed(4)}
+                              {balances && balances[ChainKey.GOR][1].amount.toFixed(4)}
                             </Col>
                             <Col xs={24} sm={12}>
                               ({minting
@@ -693,6 +707,7 @@ const SwapNxtp = () => {
                             </Col>
                           </Row>
                         </td>
+                        <td className="ant-table-cell"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -709,7 +724,7 @@ const SwapNxtp = () => {
         {/* Active Transactions */}
         {activeTransactions.length ?
           <>
-            <Row justify="center" style={{ marginTop: 24 }}>
+            <Row justify="center">
               <h2>Active Transactions</h2>
             </Row>
             <Row justify="center">
@@ -734,30 +749,32 @@ const SwapNxtp = () => {
                 <Title className="swap-title" level={4}>Please Specify Your Transaction</Title>
               </Row>
 
-              <SwapForm
-                depositChain={depositChain}
-                setDepositChain={setDepositChain}
-                depositToken={depositToken}
-                setDepositToken={setDepositToken}
-                depositAmount={depositAmount}
-                setDepositAmount={setDepositAmount}
+              <Form>
+                <SwapForm
+                  depositChain={depositChain}
+                  setDepositChain={setDepositChain}
+                  depositToken={depositToken}
+                  setDepositToken={setDepositToken}
+                  depositAmount={depositAmount}
+                  setDepositAmount={setDepositAmount}
 
-                withdrawChain={withdrawChain}
-                setWithdrawChain={setWithdrawChain}
-                withdrawToken={withdrawToken}
-                setWithdrawToken={setWithdrawToken}
-                withdrawAmount={withdrawAmount}
-                setWithdrawAmount={setWithdrawAmount}
-                estimatedWithdrawAmount={getSelectedWithdraw()}
+                  withdrawChain={withdrawChain}
+                  setWithdrawChain={setWithdrawChain}
+                  withdrawToken={withdrawToken}
+                  setWithdrawToken={setWithdrawToken}
+                  withdrawAmount={withdrawAmount}
+                  setWithdrawAmount={setWithdrawAmount}
+                  estimatedWithdrawAmount={getSelectedWithdraw()}
 
-                transferChains={transferChains}
-                tokens={tokens}
-                balances={balances}
-              />
+                  transferChains={transferChains}
+                  tokens={tokens}
+                  balances={balances}
+                />
 
-              <Row style={{ marginTop: 24 }} justify={"center"}>
-                {submitButton()}
-              </Row>
+                <Row style={{ marginTop: 24 }} justify={"center"}>
+                  {submitButton()}
+                </Row>
+              </Form>
 
               {/* Advanced Options */}
               <Row justify={"center"} >

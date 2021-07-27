@@ -85,36 +85,6 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   // status
   const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
 
-  // login
-  // const loginProcess = createAndPushProcess(update, status, 'Login to Connext')
-  // try {
-  //   if (!(sdk as any).messaging.isConnected()) {
-  //     const oldToken = readNxtpMessagingToken()
-  //     if (oldToken) {
-  //       try {
-  //         await sdk.connectMessaging(oldToken!)
-  //       } catch {
-  //         loginProcess.status = 'ACTION_REQUIRED'
-  //         loginProcess.message = 'Login with Signed Message'
-  //         update(status)
-  //         const token = await sdk.connectMessaging()
-  //         storeNxtpMessagingToken(token)
-  //       }
-  //     } else {
-  //       loginProcess.status = 'ACTION_REQUIRED'
-  //       loginProcess.message = 'Login with Signed Message'
-  //       update(status)
-  //       const token = await sdk.connectMessaging()
-  //       storeNxtpMessagingToken(token)
-  //     }
-  //     loginProcess.message = 'Logged in to Connext'
-  //   }
-  //   setStatusDone(update, status, loginProcess)
-  // } catch (e) {
-  //   setStatusFailed(update, status, loginProcess)
-  //   throw e
-  // }
-
   // transfer
   const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
   let submitProcess: Process | undefined
@@ -219,6 +189,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   try {
     await transferPromise
   } catch (e) {
+    console.error(e)
     if (approveProcess && approveProcess.status !== 'DONE') {
       setStatusFailed(update, status, approveProcess)
     }
@@ -228,7 +199,6 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     if (proceedProcess && proceedProcess.status !== 'DONE') {
       setStatusFailed(update, status, proceedProcess)
     }
-    throw e
   }
 
   return status
@@ -254,12 +224,6 @@ export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEve
 
   try {
     await sdk.finishTransfer(event)
-
-    await sdk.waitFor(
-      NxtpSdkEvents.ReceiverTransactionFulfilled,
-      100_000,
-      (data) => data.txData.transactionId === event.txData.transactionId,
-    )
   } catch (e) {
     console.error(e)
     if (lastProcess && updateStatus) {
