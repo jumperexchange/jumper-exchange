@@ -54,14 +54,16 @@ async function covalentGetCoinsOnChain(walletAdress: string, chainId: number) {
 
   const portfolio : Array<ChainPortfolio> = []
   for (const token of result.data.data.items) {
-    portfolio.push({
-      id: token.contract_address,
-      name: token.contract_name,
-      symbol: token.contract_ticker_symbol,
-      img_url: token.logo_url,
-      amount: parseInt(token.balance),
-      pricePerCoin: token.quote_rate || 0,
-    })
+    if (token.balance !== '0') {
+      portfolio.push({
+        id: token.contract_address,
+        name: token.contract_name,
+        symbol: token.contract_ticker_symbol,
+        img_url: token.logo_url,
+        amount: parseInt(token.balance) / (10**token.contract_decimals),
+        pricePerCoin: token.quote_rate || 0,
+      })
+    }
   }
 
   return portfolio
