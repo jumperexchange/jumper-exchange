@@ -6,7 +6,7 @@ import { Button, Col, Form, Image, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import heroImage from '../assets/swap-3chain-dexagg.png';
 import { getBalancesForWallet } from '../services/balanceService';
 import { loadTokenListAsTokens } from '../services/tokenListService';
@@ -33,7 +33,8 @@ interface TokenWithAmounts extends Token {
 let source: CancelTokenSource | undefined = undefined
 
 const Swap = () => {
-  const [stateUpdate, setStateUpdate] = useState<number>(0)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [unused, setStateUpdate] = useState<number>(0)
 
   // From
   const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.POL)
@@ -85,7 +86,7 @@ const Swap = () => {
           [chain.key]: (await loadTokenListAsTokens(chain.id))
         }
         setTokens(tokens => Object.assign(tokens, newTokens))
-        setStateUpdate(stateUpdate => stateUpdate + 1)
+        setStateUpdate((stateUpdate) => stateUpdate + 1)
       })
     }
   }, [refreshTokens])
@@ -108,12 +109,12 @@ const Swap = () => {
   }, [web3.account])
 
 
-  const getBalance = (chainKey: ChainKey, tokenId: string) => {
-    if (!balances) {
+  const getBalance = (currentBalances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined, chainKey: ChainKey, tokenId: string) => {
+    if (!currentBalances) {
       return 0
     }
 
-    const tokenBalance = balances[chainKey].find(portfolio => portfolio.id === tokenId)
+    const tokenBalance = currentBalances[chainKey].find(portfolio => portfolio.id === tokenId)
     return tokenBalance?.amount || 0
   }
 
@@ -129,110 +130,108 @@ const Swap = () => {
     } else {
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
-          token.amount = getBalance(chain.key, token.id)
+          token.amount = getBalance(balances, chain.key, token.id)
           token.amountRendered = token.amount.toFixed(4)
         }
       }
     }
 
     setTokens(tokens)
-    setStateUpdate(stateUpdate + 1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setStateUpdate((stateUpdate) => stateUpdate + 1)
   }, [tokens, balances])
 
   const hasSufficientBalance = () => {
     if (!depositToken) {
       return true
     }
-    return depositAmount <= getBalance(depositChain, depositToken)
+    return depositAmount <= getBalance(balances, depositChain, depositToken)
   }
 
-  const findToken = (chainKey: ChainKey, tokenId: string) => {
+  const findToken = useCallback((chainKey: ChainKey, tokenId: string) => {
     const token = tokens[chainKey].find(token => token.id === tokenId)
     if (!token) {
       throw new Error('Token not found')
     }
     return token
-  }
-
-  const getTransferRoutes = async () => {
-    setRoutes([])
-    setHighlightedIndex(-1)
-    setNoRoutesAvailable(false)
-
-    if (((isFinite(depositAmount) && depositAmount > 0) || (isFinite(withdrawAmount) && withdrawAmount > 0)) && depositChain && depositToken && withdrawChain && withdrawToken) {
-      setRoutesLoading(true)
-      const dToken = findToken(depositChain, depositToken)
-      const deposit: DepositAction = {
-        type: 'deposit',
-        chainKey: depositChain,
-        chainId: getChainByKey(depositChain).id,
-        token: dToken,
-        amount: depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
-      }
-
-      const wToken = findToken(withdrawChain, withdrawToken)
-      const withdraw: WithdrawAction = {
-        type: 'withdraw',
-        chainKey: withdrawChain,
-        chainId: getChainByKey(withdrawChain).id,
-        token: wToken,
-        amount: withdrawAmount ? Math.floor(withdrawAmount * (10 ** wToken.decimals)) : Infinity
-      }
-
-      // cancel previously running requests
-      if (source) {
-        source.cancel('cancel for new request')
-      }
-      source = axios.CancelToken.source()
-      const cancelToken = source.token
-      const config = {
-        cancelToken
-      }
-
-      try {
-        const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
-
-        // remove swaps with native coins
-        const filteredRoutes: Array<Array<TranferStep>> = result.data.filter((path: Array<TranferStep>) => {
-          for (const step of path) {
-            if (step.action.type === 'swap') {
-              if (step.action.fromToken.id === '0x0000000000000000000000000000000000000000' || step.action.toToken.id === '0x0000000000000000000000000000000000000000') {
-                return false
-              }
-            }
-          }
-          return true
-        })
-
-        // sortedRoutes
-        const sortedRoutes = filteredRoutes.sort((routeA, routeB) => {
-          const routeAResult = routeA[routeA.length - 1].estimate?.toAmount || 0
-          const routeBResult = routeB[routeB.length - 1].estimate?.toAmount || 0
-
-          return routeBResult - routeAResult
-        })
-
-        setRoutes(sortedRoutes)
-        setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
-        setNoRoutesAvailable(filteredRoutes.length === 0)
-        setRoutesLoading(false)
-      } catch (err) {
-        // check if it we are still loading a new request
-        if (!axios.isCancel(err)) {
-          setNoRoutesAvailable(true)
-          setRoutesLoading(false)
-        }
-      } finally {
-        source = undefined
-      }
-    }
-  }
+  }, [tokens])
 
   useEffect(() => {
+    const getTransferRoutes = async () => {
+      setRoutes([])
+      setHighlightedIndex(-1)
+      setNoRoutesAvailable(false)
+
+      if ((isFinite(depositAmount) && depositAmount > 0) && depositChain && depositToken && withdrawChain && withdrawToken) {
+        setRoutesLoading(true)
+        const dToken = findToken(depositChain, depositToken)
+        const deposit: DepositAction = {
+          type: 'deposit',
+          chainKey: depositChain,
+          chainId: getChainByKey(depositChain).id,
+          token: dToken,
+          amount: depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
+        }
+
+        const wToken = findToken(withdrawChain, withdrawToken)
+        const withdraw: WithdrawAction = {
+          type: 'withdraw',
+          chainKey: withdrawChain,
+          chainId: getChainByKey(withdrawChain).id,
+          token: wToken,
+          amount: Infinity
+        }
+
+        // cancel previously running requests
+        if (source) {
+          source.cancel('cancel for new request')
+        }
+        source = axios.CancelToken.source()
+        const cancelToken = source.token
+        const config = {
+          cancelToken
+        }
+
+        try {
+          const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
+
+          // remove swaps with native coins
+          const filteredRoutes: Array<Array<TranferStep>> = result.data.filter((path: Array<TranferStep>) => {
+            for (const step of path) {
+              if (step.action.type === 'swap') {
+                if (step.action.fromToken.id === '0x0000000000000000000000000000000000000000' || step.action.toToken.id === '0x0000000000000000000000000000000000000000') {
+                  return false
+                }
+              }
+            }
+            return true
+          })
+
+          // sortedRoutes
+          const sortedRoutes = filteredRoutes.sort((routeA, routeB) => {
+            const routeAResult = routeA[routeA.length - 1].estimate?.toAmount || 0
+            const routeBResult = routeB[routeB.length - 1].estimate?.toAmount || 0
+
+            return routeBResult - routeAResult
+          })
+
+          setRoutes(sortedRoutes)
+          setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
+          setNoRoutesAvailable(filteredRoutes.length === 0)
+          setRoutesLoading(false)
+        } catch (err) {
+          // check if it we are still loading a new request
+          if (!axios.isCancel(err)) {
+            setNoRoutesAvailable(true)
+            setRoutesLoading(false)
+          }
+        } finally {
+          source = undefined
+        }
+      }
+    }
+
     getTransferRoutes()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken])
+  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, findToken])
 
   const openSwapModal = () => {
     setselectedRoute(routes[highlightedIndex])
