@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@connext/nxtp-sdk": "^0.0.13",
+    "@connext/nxtp-sdk": "^0.0.14",
     "@connext/vector-browser-node": "^0.2.5-beta.20",
     "@connext/vector-utils": "^0.2.5-beta.20",
     "@ethersproject/providers": "^5.4.0",
