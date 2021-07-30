@@ -313,14 +313,14 @@ const SwapForm = ({
         <Col span={10}>
           <div className="form-input-wrapper disabled">
             <Input
-              type="number"
+              type="text"
               defaultValue={0.0}
               min={0}
               max={10}
               value={estimatedWithdrawAmount}
               // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
               onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
-              placeholder="0.0"
+              placeholder="..."
               bordered={false}
               disabled
             />

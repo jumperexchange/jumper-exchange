@@ -1,12 +1,12 @@
 import { ArrowUpOutlined, CheckOutlined, LoadingOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { TransactionData, TransactionPreparedEvent } from '@connext/nxtp-utils';
+import { AuctionResponse, TransactionData, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Alert, Button, Checkbox, Col, Collapse, Form, Input, Modal, Row, Spin, Table } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import connextWordmark from '../../assets/connext_wordmark.svg';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
 import { switchChain } from '../../services/metamask';
@@ -70,6 +70,8 @@ const SwapNxtp = () => {
   const [optionCallData, setOptionCallData] = useState<string>('')
 
   // Routes
+  const [routeRequest, setRouteRequest] = useState<any>()
+  const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
@@ -152,6 +154,7 @@ const SwapNxtp = () => {
 
       if (sdk) {
         sdk.removeAllListeners()
+        return null
       }
       const _sdk = await setup(signer)
       setSdk(_sdk)
@@ -209,7 +212,7 @@ const SwapNxtp = () => {
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
-      return '0.0'
+      return '...'
     } else {
       const selectedRoute = routes[highlightedIndex]
       const lastStep = selectedRoute[selectedRoute.length - 1]
@@ -220,7 +223,7 @@ const SwapNxtp = () => {
       } else if (lastStep.action.type === 'cross') {
         return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
       } else {
-        return '0.0'
+        return '...'
       }
     }
   }
@@ -312,28 +315,95 @@ const SwapNxtp = () => {
     return depositAmount <= getBalance(depositChain, depositToken)
   }
 
-  const findToken = (chainKey: ChainKey, tokenId: string) => {
+  const findToken = useCallback((chainKey: ChainKey, tokenId: string) => {
     const token = tokens[chainKey].find(token => token.id === tokenId)
     if (!token) {
       throw new Error('Token not found')
     }
     return token
+  }, [tokens])
+
+  const doRequestAndBidMatch = (request: any, quote: AuctionResponse) => {
+    if (
+         getChainByKey(request.depositChain).id !== quote.bid.sendingChainId
+      || request.depositToken !== quote.bid.sendingAssetId
+      || getChainByKey(request.withdrawChain).id !== quote.bid.receivingChainId
+      || request.withdrawToken !== quote.bid.receivingAssetId
+      || request.depositAmount !== quote.bid.amount
+      || request.receivingAddress !== quote.bid.receivingAddress
+      // || request.callTo !== quote.bid.callTo
+      // || request.callData !== quote.bid.callDataHash
+    ) {
+      return false
+    }
+
+    return true
   }
 
-  const generateRoutes = async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
+  // update request based on UI
+  const defineRoute = (depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
+    setRouteRequest({
+      depositChain,
+      depositToken,
+      withdrawChain,
+      withdrawToken,
+      depositAmount,
+      receivingAddress,
+      callTo,
+      callData,
+    })
+  }
+  const debouncedSave = useRef(debounce(defineRoute, 500)).current
+  const getTransferRoutes = useCallback(async () => {
+    setRoutes([])
+    setHighlightedIndex(-1)
+    setNoRoutesAvailable(false)
+
+    if (!sdk || !web3.account) {
+      return
+    }
+
+    if ((isFinite(depositAmount) && depositAmount > 0) && depositChain && depositToken && withdrawChain && withdrawToken) {
+      const receiving = optionReceivingAddress !== '' ? optionReceivingAddress : web3.account
+      const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
+      const callData = optionCallData !== '' ? optionCallData : undefined
+      const dToken = findToken(depositChain, depositToken)
+      const dAmount = Math.floor(depositAmount * (10 ** dToken.decimals)).toString()
+
+      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount, receiving, callTo, callData)
+    }
+  }, [
+    depositAmount,
+    depositChain,
+    depositToken,
+    withdrawChain,
+    withdrawToken,
+    web3,
+    sdk,
+    optionReceivingAddress,
+    optionContractAddress,
+    optionCallData,
+    debouncedSave,
+    findToken,
+  ])
+  useEffect(() => {
+    getTransferRoutes()
+  }, [
+    getTransferRoutes,
+  ])
+
+  // route generation if needed
+  const generateRoutes = useCallback(async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
     setRoutesLoading(true)
-    const dToken = findToken(depositChain, depositToken)
-    const wToken = findToken(withdrawChain, withdrawToken)
-    const dAmount = depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
 
     try {
       const quote = await getTransferQuote(
         sdk!,
         getChainByKey(depositChain).id,
-        dToken.id,
+        depositToken,
         getChainByKey(withdrawChain).id,
-        wToken.id,
-        dAmount.toString(),
+        withdrawToken,
+        depositAmount.toString(),
         receivingAddress,
         callTo,
         callData,
@@ -343,81 +413,78 @@ const SwapNxtp = () => {
         throw new Error('Empty Quote')
       }
 
-      const toAmount = parseInt(quote.bid.amountReceived)
-      const sortedRoutes: Array<Array<TranferStep>> = [[
-        {
-          action: {
-            type: 'cross',
-            method: 'nxtp',
-            chainId: getChainByKey(depositChain).id,
-            chainKey: depositChain,
-            toChainKey: withdrawChain,
-            amount: dAmount,
-            fromToken: dToken,
-            toToken: wToken,
-          } as CrossAction,
-          estimate: {
-            fromAmount: dAmount,
-            toAmount: toAmount,
-            fees: {
-              included: true,
-              percentage: (dAmount - toAmount) / dAmount * 100,
-              token: dToken,
-              amount: dAmount - toAmount,
-            },
-            quote: quote,
-          } as CrossEstimate,
-        }
-      ]]
+      setRouteQuote(quote)
 
-      setRoutes(sortedRoutes)
-      setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
-      setNoRoutesAvailable(sortedRoutes.length === 0)
     } catch (e) {
       console.error(e)
       setNoRoutesAvailable(true)
-    } finally {
       setRoutesLoading(false)
     }
-  }
+  }, [])
+  useEffect(() => {
+    if (routeRequest && routeQuote && doRequestAndBidMatch(routeRequest, routeQuote)) {
+      return // already calculated
+    }
 
-  const debouncedSave = useRef(debounce(generateRoutes, 500)).current
+    if (sdk && routeRequest) {
+      generateRoutes(
+        sdk,
+        routeRequest.depositChain,
+        routeRequest.depositToken,
+        routeRequest.withdrawChain,
+        routeRequest.withdrawToken,
+        routeRequest.depositAmount,
+        routeRequest.receivingAddress,
+        routeRequest.callTo,
+        routeRequest.callData,
+      )
+    }
+  }, [sdk, routeRequest, routeQuote, generateRoutes])
 
-  const getTransferRoutes = async () => {
-    setRoutes([])
-    setHighlightedIndex(-1)
-    setNoRoutesAvailable(false)
-
-    if (!sdk || !web3.account) {
+  // parse routeQuote if still it matches current request
+  useEffect(() => {
+    if (!routeRequest || !routeQuote) {
+      return
+    }
+    if (!doRequestAndBidMatch(routeRequest, routeQuote)) {
       return
     }
 
-    if (((isFinite(depositAmount) && depositAmount > 0) || (isFinite(withdrawAmount) && withdrawAmount > 0)) && depositChain && depositToken && withdrawChain && withdrawToken) {
-      const receiving = optionReceivingAddress !== '' ? optionReceivingAddress : web3.account
-      const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
-      const callData = optionCallData !== '' ? optionCallData : undefined
+    const dAmount = routeRequest.depositAmount
+    const dToken = findToken(routeRequest.depositChain, routeRequest.depositToken)
+    const wToken = findToken(routeRequest.withdrawChain, routeRequest.withdrawToken)
+    const toAmount = parseInt(routeQuote.bid.amountReceived)
+    const sortedRoutes: Array<Array<TranferStep>> = [[
+      {
+        action: {
+          type: 'cross',
+          method: 'nxtp',
+          chainId: getChainByKey(routeRequest.depositChain).id,
+          chainKey: routeRequest.depositChain,
+          toChainKey: routeRequest.withdrawChain,
+          amount: dAmount,
+          fromToken: dToken,
+          toToken: wToken,
+        } as CrossAction,
+        estimate: {
+          fromAmount: dAmount,
+          toAmount: toAmount,
+          fees: {
+            included: true,
+            percentage: (dAmount - toAmount) / dAmount * 100,
+            token: dToken,
+            amount: dAmount - toAmount,
+          },
+          quote: routeQuote,
+        } as CrossEstimate,
+      }
+    ]]
 
-      debouncedSave(sdk, depositChain, depositToken, withdrawChain, withdrawToken, depositAmount, receiving, callTo, callData)
-    }
-  }
-
-
-  useEffect(() => {
-    getTransferRoutes()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    depositAmount,
-    depositChain,
-    depositToken,
-    withdrawChain,
-    withdrawToken,
-    web3,
-    sdk,
-    optionInfiniteApproval,
-    optionReceivingAddress,
-    optionContractAddress,
-    optionCallData,
-  ])
+    setRoutes(sortedRoutes)
+    setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
+    setNoRoutesAvailable(sortedRoutes.length === 0)
+    setRoutesLoading(false)
+  }, [routeRequest, routeQuote, findToken])
 
   const updateExecutionRoute = (route: Array<TranferStep>) => {
     setExecutionRoutes(routes => {
@@ -439,7 +506,7 @@ const SwapNxtp = () => {
     setExecutionRoutes(routes => [...routes, route])
 
     // get new route to avoid triggering the same quote twice
-    getTransferRoutes()
+    setRouteQuote(undefined)
 
     // add as active
     const crossAction = route[0].action as CrossAction
@@ -663,7 +730,7 @@ const SwapNxtp = () => {
                                 {balances && balances[chain.key][0].amount.toFixed(4)}
                               </Col>
                               <Col xs={24} sm={12}>
-                                { chain.faucetUrls && (
+                                {chain.faucetUrls && (
                                   <a href={chain.faucetUrls[0]} target="_blank" rel="nofollow noreferrer">Get {chain.coin} <ArrowUpOutlined rotate={45} /></a>
                                 )}
                               </Col>
