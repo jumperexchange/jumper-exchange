@@ -10,7 +10,7 @@ const testTokenAddresses: Record<number, string> = {
   // 5 - Goerli
   5: '0x8a1cad3703e0beae0e0237369b4fcd04228d1682',
   // 80001 - Mumbai Polygon Testnet
-  80001: '0xBA3171e092705A09ef68DEaeC86F184B92026236',
+  80001: '0xe71678794fff8846bFF855f716b0Ce9d9a78E844',
   // 421611 - Arbitrum Testnet
   421611: '0xe71678794fff8846bFF855f716b0Ce9d9a78E844',
   // 69 - Optimistic Ethereum (Kovan)

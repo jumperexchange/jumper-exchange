@@ -27,6 +27,7 @@ interface SwapFormProps {
   transferChains: Array<Chain>,
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> },
   balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined,
+  allowSameChains?: boolean,
 }
 
 const SwapForm = ({
@@ -48,6 +49,7 @@ const SwapForm = ({
   transferChains,
   tokens,
   balances,
+  allowSameChains,
 }: SwapFormProps) => {
 
   const depositSelectRef = useRef<RefSelectProps>()
@@ -62,17 +64,21 @@ const SwapForm = ({
   }
 
   const onChangeDepositChain = (chainKey: ChainKey) => {
-    setWithdrawChain(depositChain)
-    setWithdrawToken(depositToken)
+    if (!allowSameChains && withdrawChain === chainKey) {
+      setWithdrawChain(depositChain)
+      setWithdrawToken(depositToken)
+    }
     setDepositChain(chainKey)
     setDepositToken(tokens[chainKey][0].id)
   }
 
   const onChangeWithdrawChain = (chainKey: ChainKey) => {
-    setDepositChain(withdrawChain)
-    setDepositToken(withdrawToken)
-    setDepositChain(chainKey)
-    setDepositToken(tokens[chainKey][0].id)
+    if (!allowSameChains && depositChain === chainKey) {
+      setDepositChain(withdrawChain)
+      setDepositToken(withdrawToken)
+    }
+    setWithdrawChain(chainKey)
+    setWithdrawToken(tokens[chainKey][0].id)
   }
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {

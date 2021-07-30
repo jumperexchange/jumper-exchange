@@ -11,9 +11,9 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 const testChains = [
   4,
   5,
-  // 80001,
-  // 421611,
-  // 69,
+  80001,
+  421611,
+  69,
 ]
 const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
 

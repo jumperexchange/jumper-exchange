@@ -27,9 +27,9 @@ const BALANCES_REFRESH_INTERVAL = 30000
 const transferChains = [
   getChainByKey(ChainKey.GOR),
   getChainByKey(ChainKey.RIN),
-  // getChainByKey(ChainKey.MUM),
-  // getChainByKey(ChainKey.ARBT),
-  // getChainByKey(ChainKey.OPTT),
+  getChainByKey(ChainKey.MUM),
+  getChainByKey(ChainKey.ARBT),
+  getChainByKey(ChainKey.OPTT),
 ]
 
 interface ActiveTransaction {
@@ -160,7 +160,6 @@ const SwapNxtp = () => {
       // listen to events
       _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
         updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared, data)
-        updateBalances(web3.account!)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
