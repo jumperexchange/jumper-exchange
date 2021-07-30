@@ -1,5 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from '@web3-react/network-connector';
+import { providers } from 'ethers';
 
 const CHAINS = {
   MAINNET: 1,
@@ -7,12 +8,14 @@ const CHAINS = {
   RINKEBY: 4,
   GOERLI: 5,
   KOVAN: 42,
+  ARBITRUM_RINKEBY: 421611,
+  OPTIMISM_KOVAN: 69,
 
   BSC: 56,
-  // BSC_TESTNET: 97,
+  BSC_TESTNET: 97,
 
   POLYGON: 137,
-  MUMBAI: 80001,
+  POLYGON_TESTNET: 80001,
 
   XDAI: 100,
 };
@@ -23,15 +26,41 @@ const RPC_URLS: { [chainId: number]: string } = {
   [CHAINS.RINKEBY]: process.env.REACT_APP_RPC_URL_RINKEBY as string,
   [CHAINS.GOERLI]: process.env.REACT_APP_RPC_URL_GORLI as string,
   [CHAINS.KOVAN]: process.env.REACT_APP_RPC_URL_KOVAN as string,
+  [CHAINS.ARBITRUM_RINKEBY]: process.env.REACT_APP_RPC_URL_ARBITRUM_RINKEBY as string,
+  [CHAINS.OPTIMISM_KOVAN]: process.env.REACT_APP_RPC_URL_OPTIMISM_KOVAN as string,
 
   [CHAINS.BSC]: process.env.REACT_APP_RPC_URL_BSC as string,
-  // [CHAINS.BSC_TESTNET]: process.env.REACT_APP_RPC_URL_BSC_TESTNET as string,
+  [CHAINS.BSC_TESTNET]: process.env.REACT_APP_RPC_URL_BSC_TESTNET as string,
 
   [CHAINS.POLYGON]: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET as string,
-  [CHAINS.MUMBAI]: process.env.REACT_APP_RPC_URL_POLYGON_MUMBAI as string,
+  [CHAINS.POLYGON_TESTNET]: process.env.REACT_APP_RPC_URL_POLYGON_MUMBAI as string,
 
   [CHAINS.XDAI]: process.env.REACT_APP_RPC_URL_XDAI as string,
 };
+
+// cached providers
+const chainProviders: Record<number, providers.FallbackProvider> = {};
+
+export const getRpcUrls = (chainIds: Array<number>) => {
+  const rpcs : Record<number, string> = {}
+  chainIds.forEach((chainId) => {
+    rpcs[chainId] = RPC_URLS[chainId]
+  })
+  return rpcs
+}
+
+export const getRpcProviders = (chainIds: Array<number>) => {
+  const selectedProviders: Record<number, providers.FallbackProvider> = {};
+
+  chainIds.forEach((chainId) => {
+    if (!chainProviders[chainId]) {
+      chainProviders[chainId] = new providers.FallbackProvider([new providers.JsonRpcProvider(RPC_URLS[chainId], chainId)])
+    }
+    selectedProviders[chainId] = chainProviders[chainId]
+  })
+
+  return selectedProviders
+}
 
 export const injected = new InjectedConnector({
   supportedChainIds: Object.values<number>(CHAINS),

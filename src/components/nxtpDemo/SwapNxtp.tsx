@@ -27,6 +27,9 @@ const BALANCES_REFRESH_INTERVAL = 30000
 const transferChains = [
   getChainByKey(ChainKey.GOR),
   getChainByKey(ChainKey.RIN),
+  // getChainByKey(ChainKey.MUM),
+  // getChainByKey(ChainKey.ARBT),
+  // getChainByKey(ChainKey.OPTT),
 ]
 
 interface ActiveTransaction {
@@ -643,8 +646,9 @@ const SwapNxtp = () => {
                     <thead className="ant-table-thead">
                       <tr className="ant-table-row">
                         <th className="ant-table-cell"></th>
-                        <th className="ant-table-cell" style={{ textAlign: 'center' }}>Rinkeby</th>
-                        <th className="ant-table-cell" style={{ textAlign: 'center' }}>Goerli</th>
+                        {transferChains.map((chain) => (
+                          <th key={chain.key} className="ant-table-cell" style={{ textAlign: 'center' }}>{chain.name}</th>
+                        ))}
                         <th>
                           <SyncOutlined onClick={() => updateBalances(web3.account!)} spin={updatingBalances} />
                         </th>
@@ -653,60 +657,41 @@ const SwapNxtp = () => {
                     <tbody className="ant-table-tbody" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                       <tr className="ant-table-row">
                         <td className="ant-table-cell">ETH</td>
-                        <td className="ant-table-cell">
-                          <Row gutter={16}>
-                            <Col xs={24} sm={12} >
-                              {balances && balances[ChainKey.RIN][0].amount.toFixed(4)}
-                            </Col>
-                            <Col xs={24} sm={12}>
-                              (<a href="https://faucet.rinkeby.io/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)
-                            </Col>
-                          </Row>
-                        </td>
-                        <td className="ant-table-cell">
-                          <Row gutter={16}>
-                            <Col xs={24} sm={12} >
-                              {balances && balances[ChainKey.GOR][0].amount.toFixed(4)}
-                            </Col>
-                            <Col xs={24} sm={12}>
-                              (<a href="https://goerli-faucet.slock.it/" target="_blank" rel="nofollow noreferrer">Get ETH <ArrowUpOutlined rotate={45} /></a>)
-                            </Col>
-                          </Row>
-                        </td>
+                        {transferChains.map((chain) => (
+                          <td key={chain.key} className="ant-table-cell">
+                            <Row gutter={16}>
+                              <Col xs={24} sm={12} >
+                                {balances && balances[chain.key][0].amount.toFixed(4)}
+                              </Col>
+                              <Col xs={24} sm={12}>
+                                { chain.faucetUrls && (
+                                  <a href={chain.faucetUrls[0]} target="_blank" rel="nofollow noreferrer">Get {chain.coin} <ArrowUpOutlined rotate={45} /></a>
+                                )}
+                              </Col>
+                            </Row>
+                          </td>
+                        ))}
                         <td className="ant-table-cell"></td>
                       </tr>
                       <tr className="ant-table-row" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                         <td className="ant-table-cell">TEST</td>
-                        <td className="ant-table-cell" >
-                          <Row gutter={16}>
-                            <Col xs={24} sm={12} >
-                              {balances && balances[ChainKey.RIN][1].amount.toFixed(4)}
-                            </Col>
-                            <Col xs={24} sm={12}>
-                              ({minting
-                                ? <span className="flashing">minting</span>
-                                : web3.chainId === 4
-                                  ? <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => mintTestToken(ChainKey.RIN)}>Mint TEST <SettingOutlined /></Button>
-                                  : <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => switchChain(4)}>Change Chain</Button>
-                              })
-                            </Col>
-                          </Row>
-                        </td>
-                        <td className="ant-table-cell">
-                          <Row gutter={16}>
-                            <Col xs={24} sm={12} >
-                              {balances && balances[ChainKey.GOR][1].amount.toFixed(4)}
-                            </Col>
-                            <Col xs={24} sm={12}>
-                              ({minting
-                                ? <span className="flashing">minting</span>
-                                : web3.chainId === 5
-                                  ? <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => mintTestToken(ChainKey.GOR)}>Mint TEST <SettingOutlined /></Button>
-                                  : <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => switchChain(5)}>Change Chain</Button>
-                              })
-                            </Col>
-                          </Row>
-                        </td>
+                        {transferChains.map((chain) => (
+                          <td key={chain.key} className="ant-table-cell" >
+                            <Row gutter={16}>
+                              <Col xs={24} sm={12} >
+                                {balances && balances[chain.key][1].amount.toFixed(4)}
+                              </Col>
+                              <Col xs={24} sm={12}>
+                                {minting
+                                  ? <span className="flashing">minting</span>
+                                  : web3.chainId === chain.id
+                                    ? <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => mintTestToken(chain.key)}>Mint TEST <SettingOutlined /></Button>
+                                    : <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => switchChain(chain.id)}>Change Chain</Button>
+                                }
+                              </Col>
+                            </Row>
+                          </td>
+                        ))}
                         <td className="ant-table-cell"></td>
                       </tr>
                     </tbody>

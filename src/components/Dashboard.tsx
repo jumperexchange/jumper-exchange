@@ -261,6 +261,18 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
         <span>The Goerli Testnet requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
         <Button type="default" block onClick={() => showGasModal(ChainKey.GOR)}>Get ETH</Button>
       </>),
+    [ChainKey.MUM]:
+      (<>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.MUM)}>Get MATIC</Button>
+      </>),
+    [ChainKey.ARBT]:
+      (<>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.ARBT)}>Get ETH</Button>
+      </>),
+    [ChainKey.OPTT]:
+      (<>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.OPTT)}>Get ETH</Button>
+      </>),
   }
   const tooltipEmpty = tooltipsEmpty[chain];
   const tooltips = {
@@ -272,7 +284,10 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
     [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas.</>),
     [ChainKey.AVA]: (<>The Avalanche chain requires AVAX to pay for gas.</>),
     [ChainKey.RIN]: (<>The Rinkeby Testnet requires ETH to pay for gas.</>),
-    [ChainKey.GOR]: (<>The Rinkeby Testnet requires ETH to pay for gas.</>),
+    [ChainKey.GOR]: (<>The Goerli Testnet requires ETH to pay for gas.</>),
+    [ChainKey.MUM]: (<>The Mumbai Testnet requires MATIC to pay for gas.</>),
+    [ChainKey.ARBT]: (<>The Arbitrum Testnet requires ETH to pay for gas.</>),
+    [ChainKey.OPTT]: (<>The Optimism Testnet requires ETH to pay for gas.</>),
   }
   const tooltip = tooltips[chain];
   return (

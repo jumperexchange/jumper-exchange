@@ -50,6 +50,9 @@ export enum ChainKey {
   // Testnets
   RIN = 'rin',
   GOR = 'gor',
+  MUM = 'mum',
+  ARBT = 'arbt',
+  OPTT = 'optt',
 }
 
 export function chainKeysToObject(val: any) {
@@ -118,6 +121,9 @@ export interface WalletSummary {
   [ChainKey.AVA]: SummaryAmounts;
   [ChainKey.RIN]: SummaryAmounts;
   [ChainKey.GOR]: SummaryAmounts;
+  [ChainKey.MUM]: SummaryAmounts;
+  [ChainKey.ARBT]: SummaryAmounts;
+  [ChainKey.OPTT]: SummaryAmounts;
 }
 
 export interface ProgressStep {

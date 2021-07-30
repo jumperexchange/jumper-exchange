@@ -2,32 +2,32 @@ import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { providers } from 'ethers';
 import pino from 'pino';
+import { getRpcProviders } from '../components/web3/connectors';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
+const testChains = [
+  4,
+  5,
+  // 80001,
+  // 421611,
+  // 69,
+]
+const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
 
 export const setup = async (signer: providers.JsonRpcSigner) => {
-  const chainConfig: Record<number, { provider: string[]; subgraph?: string; transactionManagerAddress?: string }> = {
-    4: {
-      provider: [process.env.REACT_APP_RPC_URL_RINKEBY!],
-    },
-    5: {
-      provider: [process.env.REACT_APP_RPC_URL_GORLI!],
-    },
-  }
-
-  const chainProviders: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
-  Object.entries(chainConfig).forEach(([chainId, { provider, subgraph, transactionManagerAddress }]) => {
-    chainProviders[parseInt(chainId)] = {
-      provider: new providers.FallbackProvider(provider.map((p) => new providers.JsonRpcProvider(p, parseInt(chainId)))),
-      subgraph,
-      transactionManagerAddress,
+  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
+  Object.entries(chainProviders).forEach(([chainId, provider]) => {
+    chainConfig[parseInt(chainId)] = {
+      provider: provider,
+      subgraph: undefined,
+      transactionManagerAddress: undefined,
     }
   })
 
-  const sdk = new NxtpSdk(chainProviders, signer, pino({ level: "info" }));
+  const sdk = new NxtpSdk(chainConfig, signer, pino({ level: "info" }));
 
   // reuse existing messaging token
   try {

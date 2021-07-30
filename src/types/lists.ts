@@ -40,6 +40,7 @@ export interface Chain {
   visible: boolean
   iconUrl?: string
   exchange?: Exchange
+  faucetUrls?: string[]
   metamask: AddEthereumChainParameter
 }
 
@@ -48,6 +49,7 @@ const prefixChainId = (chainId: number) => {
 }
 
 export const supportedChains: Array<Chain> = [
+  // 1 - Ethereum
   {
     key: ChainKey.ETH,
     name: 'Ethereum',
@@ -82,6 +84,7 @@ export const supportedChains: Array<Chain> = [
       ],
     },
   },
+  // 137 - Polygon
   {
     key: ChainKey.POL,
     name: 'Polygon',
@@ -118,6 +121,7 @@ export const supportedChains: Array<Chain> = [
       ],
     },
   },
+  // 56 - Binance Smart Chain
   {
     key: ChainKey.BSC,
     name: 'BSC',
@@ -155,6 +159,7 @@ export const supportedChains: Array<Chain> = [
       ],
     },
   },
+  // 100 - xDai
   {
     key: ChainKey.DAI,
     name: 'xDai',
@@ -193,6 +198,7 @@ export const supportedChains: Array<Chain> = [
       ],
     },
   },
+  // 250 - Fantom
   {
     key: ChainKey.FTM,
     name: 'Fantom',
@@ -218,6 +224,7 @@ export const supportedChains: Array<Chain> = [
       ],
     },
   },
+  // 66 - OKExCHain
   {
     key: ChainKey.OKT,
     name: 'OKExCHain',
@@ -243,6 +250,7 @@ export const supportedChains: Array<Chain> = [
       ],
     },
   },
+  // 43114 - Avalanche
   {
     key: ChainKey.AVA,
     name: 'Avalanche',
@@ -268,6 +276,7 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+  // 32659 - FSN-MAIN (anyswap)
   // {
   //   key: ChainKey.FSN,
   //   name: 'FSN-MAIN (anyswap)',
@@ -293,6 +302,8 @@ export const supportedChains: Array<Chain> = [
   //     ],
   //   }
   // },
+
+  // 1666600000 - Harmony Mainnet Shard 0
   // {
   //   key: ChainKey.HAR,
   //   name: 'Harmony Mainnet Shard 0',
@@ -319,12 +330,16 @@ export const supportedChains: Array<Chain> = [
   // },
 
   // TESTNETS
+  // 4 - Rinkeby
   {
     key: ChainKey.RIN,
     name: 'Rinkeby',
     coin: CoinKey.ETH,
     id: 4,
     visible: false,
+    faucetUrls: [
+      'https://faucet.rinkeby.io/',
+    ],
 
     metamask: {
       chainId: prefixChainId(4),
@@ -343,12 +358,16 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+  // 5 - Goerli
   {
     key: ChainKey.GOR,
     name: 'Goerli',
     coin: CoinKey.ETH,
     id: 5,
     visible: false,
+    faucetUrls: [
+      'https://goerli-faucet.slock.it/',
+    ],
 
     metamask: {
       chainId: prefixChainId(5),
@@ -367,6 +386,93 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+
+  // 80001 - Mumbai Polygon Testnet
+  {
+    key: ChainKey.MUM,
+    name: 'Polygon Testnet',
+    coin: CoinKey.MATIC,
+    id: 80001,
+    visible: false,
+    faucetUrls: [
+      'https://faucet.matic.network/',
+    ],
+
+    metamask: {
+      chainId: prefixChainId(80001),
+      blockExplorerUrls: [
+        'https://explorer-mumbai.maticvigil.com/',
+      ],
+      chainName: 'Mumbai Polygon Testnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'tMATIC',
+        symbol: 'tMATIC',
+        decimals: 18, // TODO: Check
+      },
+      rpcUrls: [
+        'https://rpc-mumbai.matic.today',
+      ],
+    }
+  },
+  // 421611 - Arbitrum Testnet
+  {
+    key: ChainKey.ARBT,
+    name: 'Arbitrum Testnet',
+    coin: CoinKey.ETH,
+    id: 421611,
+    visible: false,
+    faucetUrls: [
+      'https://bridge.arbitrum.io/'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(421611),
+      blockExplorerUrls: [
+        'https://rinkeby-explorer.arbitrum.io/#/',
+      ],
+      chainName: 'Arbitrum Testnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'tETH',
+        symbol: 'tETH',
+        decimals: 18, // TODO: Check
+      },
+      rpcUrls: [
+        'https://rinkeby.arbitrum.io/rpc',
+      ],
+    }
+  },
+  // 69 - Optimistic Ethereum (Kovan)
+  {
+    key: ChainKey.OPTT,
+    name: 'Optimism Testnet',
+    coin: CoinKey.ETH,
+    id: 69,
+    visible: false,
+    faucetUrls: [
+      'https://gateway.optimism.io/'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(69),
+      blockExplorerUrls: [
+        'https://kovan-optimistic.etherscan.io',
+      ],
+      chainName: 'Optimism Testnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'tETH',
+        symbol: 'tETH',
+        decimals: 18, // TODO: Check
+      },
+      rpcUrls: [
+        'https://kovan.optimism.io',
+      ],
+    }
+  },
+
+  // https://faucet.buni.finance/
 ]
 
 export const getChainByKey = (chainKey: ChainKey) => {
