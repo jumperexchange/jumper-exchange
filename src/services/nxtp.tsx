@@ -99,7 +99,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   const transferPromise = sdk.startTransfer(crossEstimate.quote, infinteApproval)
 
   // approve sent => wait
-  sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareTokenApproval, (data) => {
+  sdk.attachOnce(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
     approveProcess.status = 'PENDING'
     approveProcess.txHash = data.transactionResponse.hash
     approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
