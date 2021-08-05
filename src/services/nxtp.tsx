@@ -96,7 +96,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   // const toChain = getChainByKey(crossAction.toChainKey)
 
   const transactionId = crossEstimate.quote.bid.transactionId
-  const transferPromise = sdk.startTransfer(crossEstimate.quote, infinteApproval)
+  const transferPromise = sdk.prepareTransfer(crossEstimate.quote, infinteApproval)
 
   // approve sent => wait
   sdk.attachOnce(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
@@ -223,7 +223,7 @@ export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEve
   }
 
   try {
-    await sdk.finishTransfer(event)
+    await sdk.fulfillTransfer(event)
   } catch (e) {
     console.error(e)
     if (lastProcess && updateStatus) {
