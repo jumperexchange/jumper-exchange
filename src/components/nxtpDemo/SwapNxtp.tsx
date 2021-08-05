@@ -198,7 +198,15 @@ const SwapNxtp = () => {
       // get pending transactions
       const transactions = await _sdk.getActiveTransactions()
       for (const transaction of transactions) {
-        updateActiveTransactionsWith(transaction.txData, transaction.status, transaction)
+        updateActiveTransactionsWith(
+          {
+            ...transaction.crosschainTx.invariant,
+            ...(transaction.crosschainTx.receiving ??
+              transaction.crosschainTx.sending),
+          },
+          transaction.status,
+          transaction
+        );
       }
 
       return _sdk
@@ -661,7 +669,7 @@ const SwapNxtp = () => {
             <Button
               type="link"
               onClick={() =>
-                sdk?.cancelExpired({ relayerFee: "0", signature: "0x", txData: action.txData }, action.txData.sendingChainId)
+                sdk?.cancel({ relayerFee: "0", signature: "0x", txData: action.txData }, action.txData.sendingChainId)
               }
             >
               Cancel
