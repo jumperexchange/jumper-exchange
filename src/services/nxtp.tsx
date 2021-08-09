@@ -124,14 +124,14 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     }
     submitProcess.status = 'PENDING'
     submitProcess.txHash = data.transactionResponse.hash
-    submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
-    submitProcess.message = <>Send Transaction - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+    submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + submitProcess.txHash
+    submitProcess.message = <>Send Transaction - Wait for <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
     update(status)
   })
   // sumitted = done => next
   sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
     if (submitProcess) {
-      submitProcess.message = <>Transaction Sent (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+      submitProcess.message = <>Transaction Sent (<a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
       setStatusDone(update, status, submitProcess)
     }
     proceedProcess = createAndPushProcess(update, status, 'Wait to Proceed Transfer', { type: 'claim' })
