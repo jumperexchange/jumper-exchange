@@ -151,14 +151,13 @@ const SwapNxtp = () => {
       }
 
       const signer = web3.library.getSigner()
+      setSdkChainId(web3.chainId)
 
       if (sdk) {
         sdk.removeAllListeners()
-        return null
       }
       const _sdk = await setup(signer)
       setSdk(_sdk)
-      setSdkChainId(web3.chainId)
 
       // listen to events
       _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
@@ -213,7 +212,7 @@ const SwapNxtp = () => {
     }
 
     // init only once
-    if (web3.library && web3.account && (!sdk || (sdk && sdkChainId))) {
+    if (web3.library && web3.account && (!sdk || (sdk && !!sdkChainId))) {
       initializeConnext()
     }
   }, [web3, sdk, sdkChainId])
@@ -573,6 +572,9 @@ const SwapNxtp = () => {
     if (!web3.account) {
       return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} htmlType="submit" onClick={() => activate(injected)}>Connect Wallet</Button>
     }
+    if (web3.chainId !== getChainByKey(depositChain).id) {
+      return <Button shape="round" type="primary" size={"large"} htmlType="submit" onClick={() => switchChain(getChainByKey(depositChain).id)}>Change Chain</Button>
+    }
     if (routesLoading) {
       return <Button disabled={true} shape="round" type="primary" icon={<SyncOutlined spin />} size={"large"}>Searching Routes...</Button>
     }
@@ -581,9 +583,6 @@ const SwapNxtp = () => {
     }
     if (!hasSufficientBalance()) {
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
-    }
-    if (web3.chainId !== getChainByKey(depositChain).id) {
-      return <Button shape="round" type="primary" size={"large"} htmlType="submit" onClick={() => switchChain(getChainByKey(depositChain).id)}>Change Chain</Button>
     }
 
     return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} htmlType="submit" size={"large"} onClick={() => openSwapModal()}>Swap</Button>
