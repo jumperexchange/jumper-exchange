@@ -93,7 +93,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   const crossAction = step.action as CrossAction
   const crossEstimate = step.estimate as CrossEstimate
   const fromChain = getChainByKey(crossAction.chainKey)
-  // const toChain = getChainByKey(crossAction.toChainKey)
+  const toChain = getChainByKey(crossAction.toChainKey)
 
   const transactionId = crossEstimate.quote.bid.transactionId
   const transferPromise = sdk.prepareTransfer(crossEstimate.quote, infinteApproval)
@@ -162,7 +162,9 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     if (data.txData.transactionId !== transactionId) return
     if (proceedProcess) {
       status.status = 'DONE'
-      proceedProcess.message = 'Funds Claimed'
+      proceedProcess.txHash = data.transactionHash
+      proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
+      proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
       setStatusDone(update, status, proceedProcess)
     }
   })
@@ -171,7 +173,9 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     if (data.txData.transactionId !== transactionId) return
     if (proceedProcess && proceedProcess.status !== 'DONE') {
       status.status = 'DONE'
-      proceedProcess.message = 'Funds Claimed'
+      proceedProcess.txHash = data.transactionHash
+      proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
+      proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
       setStatusDone(update, status, proceedProcess)
     }
   })
