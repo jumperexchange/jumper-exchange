@@ -1,9 +1,9 @@
-import { ArrowUpOutlined, CheckOutlined, LoadingOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { ArrowUpOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { AuctionResponse, TransactionData, TransactionPreparedEvent } from '@connext/nxtp-utils';
+import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Button, Checkbox, Col, Collapse, Form, Input, Modal, Row, Spin, Table } from 'antd';
+import { Alert, Button, Checkbox, Col, Collapse, Form, Input, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -14,13 +14,15 @@ import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../
 import { getBalancesForWallet, mintTokens, testToken } from '../../services/testToken';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
 import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types';
-import { getChainById, getChainByKey } from '../../types/lists';
+import { getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import ConnectButton from '../web3/ConnectButton';
 import { injected } from '../web3/connectors';
 import SwappingNxtp from './SwappingNxtp';
+import TransactionsTableNxtp from './TransactionsTableNxtp';
+import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
 
 const BALANCES_REFRESH_INTERVAL = 30000
 
@@ -31,12 +33,6 @@ const transferChains = [
   getChainByKey(ChainKey.ARBT),
   getChainByKey(ChainKey.OPTT),
 ]
-
-interface ActiveTransaction {
-  txData: TransactionData
-  status: NxtpSdkEvent
-  event: TransactionPreparedEvent
-}
 
 function debounce(func: Function, timeout: number = 300) {
   let timer: NodeJS.Timeout
@@ -95,7 +91,7 @@ const SwapNxtp = () => {
     // is modal open?
     if (modalRouteIndex !== undefined) {
       const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
-      const transaction = activeTransactions.find((item) => item.txData.transactionId === crossEstimate.quote.bid.transactionId)
+      const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === crossEstimate.quote.bid.transactionId)
       if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
         const route = executionRoutes[modalRouteIndex]
         const update = (step: TranferStep, status: Execution) => {
@@ -110,13 +106,15 @@ const SwapNxtp = () => {
   }, [modalRouteIndex, executionRoutes, sdk])
 
   // update table helpers
-  const updateActiveTransactionsWith = (txData: TransactionData, status: NxtpSdkEvent, event: any) => {
+  const updateActiveTransactionsWith = (transactionId: string, status: NxtpSdkEvent, event: any, txData?: CrosschainTransaction) => {
     setActiveTransactions((activeTransactions) => {
       // update existing?
       let updated = false
       const updatedTransactions = activeTransactions.map((item) => {
-        if (item.txData.transactionId === txData.transactionId) {
-          item.txData = Object.assign({}, item.txData, txData)
+        if (item.txData.invariant.transactionId === transactionId) {
+          if (txData) {
+            item.txData = Object.assign({}, item.txData, txData)
+          }
           item.status = status
           item.event = event
           updated = true
@@ -129,7 +127,7 @@ const SwapNxtp = () => {
       } else {
         return [
           ...activeTransactions,
-          { txData, status, event },
+          { txData: txData!, status, event },
         ]
       }
     })
@@ -137,7 +135,7 @@ const SwapNxtp = () => {
 
   const removeActiveTransaction = (transactionId: string) => {
     setActiveTransactions((activeTransactions) => {
-      return activeTransactions.filter((t) => t.txData.transactionId !== transactionId)
+      return activeTransactions.filter((t) => t.txData.invariant.transactionId !== transactionId)
     })
   }
 
@@ -161,51 +159,54 @@ const SwapNxtp = () => {
 
       // listen to events
       _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionPrepared, data)
+        updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionPrepared, data, { invariant: data.txData, sending: data.txData })
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionFulfilled, data)
+        updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionFulfilled, data, { invariant: data.txData, sending: data.txData })
         removeActiveTransaction(data.txData.transactionId)
         updateBalances(web3.account!)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.SenderTransactionCancelled, data)
+        updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionCancelled, data, { invariant: data.txData, sending: data.txData })
         removeActiveTransaction(data.txData.transactionId)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
-        updateActiveTransactionsWith({ transactionId: data.transactionId } as TransactionData, NxtpSdkEvents.ReceiverPrepareSigned, data)
+        updateActiveTransactionsWith(data.transactionId, NxtpSdkEvents.ReceiverPrepareSigned, data)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionPrepared, data)
+        updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionPrepared, data, { invariant: data.txData, receiving: data.txData })
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionFulfilled, data)
+        updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionFulfilled, data, { invariant: data.txData, receiving: data.txData })
         removeActiveTransaction(data.txData.transactionId)
         updateBalances(web3.account!)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
-        updateActiveTransactionsWith(data.txData, NxtpSdkEvents.ReceiverTransactionCancelled, data)
+        updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionCancelled, data, { invariant: data.txData, receiving: data.txData })
         removeActiveTransaction(data.txData.transactionId)
       })
 
       // get pending transactions
       const transactions = await _sdk.getActiveTransactions()
       for (const transaction of transactions) {
+        // merge to txData to be able to pass event to fulfillTransfer
+        (transaction as any).txData = {
+          ...transaction.crosschainTx.invariant,
+          ...(transaction.crosschainTx.receiving ??
+            transaction.crosschainTx.sending),
+        }
         updateActiveTransactionsWith(
-          {
-            ...transaction.crosschainTx.invariant,
-            ...(transaction.crosschainTx.receiving ??
-              transaction.crosschainTx.sending),
-          },
+          transaction.crosschainTx.invariant.transactionId,
           transaction.status,
-          transaction
-        );
+          transaction,
+          transaction.crosschainTx
+        )
       }
 
       return _sdk
@@ -332,7 +333,7 @@ const SwapNxtp = () => {
 
   const doRequestAndBidMatch = (request: any, quote: AuctionResponse) => {
     if (
-         getChainByKey(request.depositChain).id !== quote.bid.sendingChainId
+      getChainByKey(request.depositChain).id !== quote.bid.sendingChainId
       || request.depositToken !== quote.bid.sendingAssetId
       || getChainByKey(request.withdrawChain).id !== quote.bid.receivingChainId
       || request.withdrawToken !== quote.bid.receivingAssetId
@@ -519,22 +520,26 @@ const SwapNxtp = () => {
     const crossAction = route[0].action as CrossAction
     const crossEstimate = route[0].estimate as CrossEstimate
     const txData = {
-      user: '',
-      router: '',
-      sendingAssetId: crossAction.fromToken.id,
-      receivingAssetId: crossAction.toToken.id,
-      sendingChainFallback: '',
-      callTo: '',
-      receivingAddress: '',
-      sendingChainId: crossAction.chainId,
-      receivingChainId: getChainByKey(crossAction.toChainKey).id,
-      callDataHash: '',
-      transactionId: crossEstimate.quote.bid.transactionId,
-      amount: crossAction.amount.toString(),
-      preparedBlockNumber: 0,
-      expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
-    } as TransactionData
-    updateActiveTransactionsWith(txData, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent)
+      invariant: {
+        user: '',
+        router: '',
+        sendingAssetId: crossAction.fromToken.id,
+        receivingAssetId: crossAction.toToken.id,
+        sendingChainFallback: '',
+        callTo: '',
+        receivingAddress: '',
+        sendingChainId: crossAction.chainId,
+        receivingChainId: getChainByKey(crossAction.toChainKey).id,
+        callDataHash: '',
+        transactionId: crossEstimate.quote.bid.transactionId,
+      },
+      sending: {
+        amount: crossAction.amount.toString(),
+        preparedBlockNumber: 0,
+        expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
+      },
+    }
+    updateActiveTransactionsWith(crossEstimate.quote.bid.transactionId, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent, txData)
 
     // start execution
     const update = (step: TranferStep, status: Execution) => {
@@ -547,10 +552,10 @@ const SwapNxtp = () => {
     setModalRouteIndex(executionRoutes.length)
   }
 
-  const openSwapModalFinish = (event: TransactionPreparedEvent) => {
+  const openSwapModalFinish = (action: ActiveTransaction) => {
     // open modal
     const index = executionRoutes.findIndex(item => {
-      return item[0].id === event.txData.transactionId
+      return item[0].id === action.txData.invariant.transactionId
     })
 
     if (index !== -1) {
@@ -562,9 +567,9 @@ const SwapNxtp = () => {
         step.execution = status
         updateExecutionRoute(route)
       }
-      finishTransfer(sdk!, event, route[0], update)
+      finishTransfer(sdk!, action.event, route[0], update)
     } else {
-      finishTransfer(sdk!, event)
+      finishTransfer(sdk!, action.event)
     }
   }
 
@@ -588,123 +593,20 @@ const SwapNxtp = () => {
     return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} htmlType="submit" size={"large"} onClick={() => openSwapModal()}>Swap</Button>
   }
 
-  const activeTransactionsColumns = [
-    {
-      title: "View",
-      dataIndex: ["txData", "transactionId"],
-      render: (id: string) => {
-        const index = executionRoutes.findIndex(item => {
-          return (item[0].estimate as CrossEstimate).quote.bid.transactionId === id
-        })
-
-        if (index !== -1) {
-          return <Button onClick={() => setModalRouteIndex(index)}>View</Button>
-        } else {
-          return ''
-        }
-      }
-    },
-    {
-      title: "Transaction Id",
-      dataIndex: ["txData", "transactionId"],
-      render: (id: string) => {
-        return <div style={{ width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{id}</div>
-      }
-    },
-    {
-      title: "Sending Chain",
-      dataIndex: ["txData", "sendingChainId"],
-      render: (chainId: number) => {
-        const chain = getChainById(chainId)
-        return <>{chainId} - {chain.name}</>
-      }
-    },
-    {
-      title: "Receiving Chain",
-      dataIndex: ["txData", "receivingChainId"],
-      render: (chainId: number) => {
-        const chain = getChainById(chainId)
-        return <>{chainId} - {chain.name}</>
-      }
-    },
-    {
-      title: "Asset",
-      dataIndex: ["txData"],
-      render: (action: TransactionData) => {
-        const chain = getChainById(action.receivingChainId)
-        const token = testToken[chain.key].find(token => token.id === action.receivingAssetId.toLowerCase())
-        const link = chain.metamask.blockExplorerUrls[0] + 'token/' + action.receivingAssetId
-        return <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a>
-      }
-    },
-    {
-      title: "Amount",
-      dataIndex: ["txData"],
-      render: (action: TransactionData) => {
-        const chain = getChainById(action.receivingChainId)
-        const token = testToken[chain.key].find(token => token.id === action.receivingAssetId.toLowerCase())
-        return (parseInt(action.amount) / (10 ** (token?.decimals || 18))).toFixed(4)
-      }
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-    },
-    {
-      title: "Expires",
-      dataIndex: ["txData", "expiry"],
-      render: (expiry: string) => {
-        return parseInt(expiry) > Date.now() / 1000
-          ? `${((parseInt(expiry) - Date.now() / 1000) / 3600).toFixed(2)} hours`
-          : "Expired"
-      }
-    },
-    {
-      title: "Action",
-      dataIndex: "",
-      render: (action: ActiveTransaction) => {
-        if (Date.now() / 1000 > action.txData.expiry) {
-          return (
-            <Button
-              type="link"
-              onClick={() =>
-                sdk?.cancel({ relayerFee: "0", signature: "0x", txData: action.txData }, action.txData.sendingChainId)
-              }
-            >
-              Cancel
-            </Button>
-          )
-        } else if (action.status === NxtpSdkEvents.ReceiverTransactionPrepared && action.event) {
-          return (
-            <Button
-              onClick={() => openSwapModalFinish(action.event)}
-            >
-              Finish
-            </Button>
-          )
-        } else if (
-          action.status === NxtpSdkEvents.ReceiverTransactionFulfilled
-          || action.status === NxtpSdkEvents.SenderTransactionFulfilled
-        ) {
-          return <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
-        } else {
-          const index = executionRoutes.findIndex(item => {
-            return (item[0].estimate as CrossEstimate).quote.bid.transactionId === action.txData.transactionId
-          })
-          if (index !== -1 && executionRoutes[index][0].execution?.status === 'FAILED') {
-            return 'Failed'
-          } else {
-            return <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
-          }
-        }
-      },
-    },
-  ]
+  const cancelTransfer = async (txData: CrosschainTransaction) => {
+    try {
+      await sdk?.cancel({ relayerFee: '0', signature: '0x', txData: { ...txData.invariant, ...txData.sending! } }, txData.invariant.sendingChainId)
+      removeActiveTransaction(txData.invariant.transactionId)
+    } catch (e) {
+      console.error('Failed to cancel', e)
+    }
+  }
 
   return (
     <Content className="site-layout" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
+        {/* Infos */}
         <Row justify="center" style={{ padding: 20 }}>
           <Alert
             message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
@@ -787,13 +689,14 @@ const SwapNxtp = () => {
             </Row>
             <Row justify="center">
               <div style={{ overflow: 'scroll', background: 'white', margin: '10px 20px' }}>
-                <Table
-                  columns={activeTransactionsColumns}
-                  dataSource={activeTransactions}
-                  style={{ whiteSpace: 'nowrap' }}
-                  pagination={false}
-                  rowKey={(row) => row.txData.transactionId}
-                ></Table>
+                <TransactionsTableNxtp
+                  activeTransactions={activeTransactions}
+                  executionRoutes={executionRoutes}
+                  setModalRouteIndex={setModalRouteIndex}
+                  openSwapModalFinish={openSwapModalFinish}
+                  switchChain={switchChain}
+                  cancelTransfer={cancelTransfer}
+                />
               </div>
             </Row>
           </> : <></>

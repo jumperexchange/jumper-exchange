@@ -10,11 +10,11 @@ const testTokenAddresses: Record<number, string> = {
   // 5 - Goerli
   5: '0x8a1cad3703e0beae0e0237369b4fcd04228d1682',
   // 80001 - Mumbai Polygon Testnet
-  80001: '0xe71678794fff8846bFF855f716b0Ce9d9a78E844',
+  80001: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 421611 - Arbitrum Testnet
-  421611: '0xe71678794fff8846bFF855f716b0Ce9d9a78E844',
+  421611: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 69 - Optimistic Ethereum (Kovan)
-  69: '0xe71678794fff8846bFF855f716b0Ce9d9a78E844',
+  69: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
 }
 
 const testChains = [4, 5, 80001, 421611, 69]
