@@ -843,7 +843,7 @@ const SwapNxtp = () => {
                     <div>
                       <Checkbox
                         checked={optionInfiniteApproval}
-                        onChange={(e) => setOptionInfiniteApproval(e.target.value)}
+                        onChange={(e) => setOptionInfiniteApproval(e.target.checked)}
                       >
                         Activate Infinite Approval
                       </Checkbox>
