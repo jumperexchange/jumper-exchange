@@ -15,6 +15,12 @@ const isSupported = () => {
   }
 }
 
+const clearLocalStorage = () => {
+  if (isSupported()) {
+    localStorage.clear()
+  }
+}
+
 const storeWallets = (wallets: Array<Wallet>) => {
   if (isSupported()) {
     localStorage.setItem('wallets', JSON.stringify(wallets.map(item => item.address)))
@@ -60,4 +66,11 @@ const readNxtpMessagingToken = () => {
   return localStorage.getItem('nxtpMessagingToken')
 }
 
-export { isSupported, storeWallets, readWallets, storeNxtpMessagingToken, readNxtpMessagingToken }
+export {
+  isSupported,
+  clearLocalStorage,
+  storeWallets,
+  readWallets,
+  storeNxtpMessagingToken,
+  readNxtpMessagingToken,
+}

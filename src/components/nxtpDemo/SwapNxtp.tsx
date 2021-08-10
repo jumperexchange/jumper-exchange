@@ -1,24 +1,24 @@
-import { ArrowUpOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { ArrowUpOutlined, DownOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Button, Checkbox, Col, Collapse, Form, Input, Modal, Row } from 'antd';
+import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import connextWordmark from '../../assets/connext_wordmark.svg';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
+import { clearLocalStorage } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { getBalancesForWallet, mintTokens, testToken } from '../../services/testToken';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
 import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types';
-import { getChainByKey } from '../../types/lists';
+import { getChainById, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
-import ConnectButton from '../web3/ConnectButton';
 import { injected } from '../web3/connectors';
 import SwappingNxtp from './SwappingNxtp';
 import TransactionsTableNxtp from './TransactionsTableNxtp';
@@ -83,7 +83,7 @@ const SwapNxtp = () => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { activate } = useWeb3React()
+  const { activate, deactivate } = useWeb3React()
   const intervalRef = useRef<NodeJS.Timeout>()
 
   // auto-trigger finish if corresponding modal is opend
@@ -216,6 +216,20 @@ const SwapNxtp = () => {
     if (web3.library && web3.account && (!sdk || (sdk && !!sdkChainId))) {
       initializeConnext()
     }
+
+    // deactivate
+    if (!web3.account) {
+      setHighlightedIndex(-1)
+      setActiveTransactions([])
+      setExecutionRoutes([])
+      setSdkChainId(undefined)
+      if (sdk) {
+        sdk.removeAllListeners()
+        sdk.detach()
+        setSdk(undefined)
+      }
+    }
+
   }, [web3, sdk, sdkChainId])
 
   const getSelectedWithdraw = () => {
@@ -602,83 +616,131 @@ const SwapNxtp = () => {
     }
   }
 
+  const handleMenuClick = (e: any) => {
+    switchChain(parseInt(e.key))
+  }
+
+  const currentChain = web3.chainId ? getChainById(web3.chainId) : undefined
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      {transferChains.map((chain) => {
+        return (
+          <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
+            {chain.name}
+          </Menu.Item>
+        )
+      })}
+    </Menu>
+  )
+
+  const disconnect = () => {
+    deactivate()
+    clearLocalStorage()
+  }
+
   return (
     <Content className="site-layout" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
+        <Row justify="end" style={{ padding: 20 }}>
+
+          {web3.account ? (
+            <>
+              <Button shape="round" type="link" onClick={() => disconnect()}>Disconnect</Button>
+              <Dropdown overlay={menu}>
+                <Button>
+                  <Badge color="green" text={currentChain?.name} /> <DownOutlined />
+                </Button>
+              </Dropdown>
+            </>
+          ) : (
+            <Button shape="round" type="link" icon={<LoginOutlined />} onClick={() => activate(injected)}>Connect Wallet</Button>
+          )}
+        </Row>
+
         {/* Infos */}
-        <Row justify="center" style={{ padding: 20 }}>
+        <Row justify="center" style={{ padding: 20, paddingTop: 0 }}>
           <Alert
             message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
             description={(
               <>
                 <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
                 <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
-
-                <h2 style={{ textAlign: 'center' }}>Your Balance</h2>
-                {web3.account &&
-                  <table style={{ background: 'white', margin: 'auto' }}>
-                    <thead className="ant-table-thead">
-                      <tr className="ant-table-row">
-                        <th className="ant-table-cell"></th>
-                        {transferChains.map((chain) => (
-                          <th key={chain.key} className="ant-table-cell" style={{ textAlign: 'center' }}>{chain.name}</th>
-                        ))}
-                        <th>
-                          <SyncOutlined onClick={() => updateBalances(web3.account!)} spin={updatingBalances} />
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="ant-table-tbody" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                      <tr className="ant-table-row">
-                        <td className="ant-table-cell">ETH</td>
-                        {transferChains.map((chain) => (
-                          <td key={chain.key} className="ant-table-cell">
-                            <Row gutter={16}>
-                              <Col xs={24} sm={12} >
-                                {balances && balances[chain.key][0].amount.toFixed(4)}
-                              </Col>
-                              <Col xs={24} sm={12}>
-                                {chain.faucetUrls && (
-                                  <a href={chain.faucetUrls[0]} target="_blank" rel="nofollow noreferrer">Get {chain.coin} <ArrowUpOutlined rotate={45} /></a>
-                                )}
-                              </Col>
-                            </Row>
-                          </td>
-                        ))}
-                        <td className="ant-table-cell"></td>
-                      </tr>
-                      <tr className="ant-table-row" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                        <td className="ant-table-cell">TEST</td>
-                        {transferChains.map((chain) => (
-                          <td key={chain.key} className="ant-table-cell" >
-                            <Row gutter={16}>
-                              <Col xs={24} sm={12} >
-                                {balances && balances[chain.key][1].amount.toFixed(4)}
-                              </Col>
-                              <Col xs={24} sm={12}>
-                                {minting
-                                  ? <span className="flashing">minting</span>
-                                  : web3.chainId === chain.id
-                                    ? <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => mintTestToken(chain.key)}>Mint TEST <SettingOutlined /></Button>
-                                    : <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => switchChain(chain.id)}>Change Chain</Button>
-                                }
-                              </Col>
-                            </Row>
-                          </td>
-                        ))}
-                        <td className="ant-table-cell"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                }
-                {!web3.account &&
-                  <Row justify="center"><ConnectButton></ConnectButton></Row>
-                }
               </>
             )}
             type="info"
           />
+        </Row>
+
+        {/* Balances */}
+        <Row justify="center">
+          <h2>Your Balances & Mint TEST Token</h2>
+        </Row>
+        <Row justify="center">
+          {web3.account &&
+            <div style={{ overflow: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <table style={{ background: 'white', margin: 'auto' }}>
+                <thead className="ant-table-thead">
+                  <tr className="ant-table-row">
+                    <th className="ant-table-cell"></th>
+                    {transferChains.map((chain) => (
+                      <th key={chain.key} className="ant-table-cell" style={{ textAlign: 'center' }}>{chain.name}</th>
+                    ))}
+                    <th>
+                      <SyncOutlined onClick={() => updateBalances(web3.account!)} spin={updatingBalances} />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="ant-table-tbody" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                  <tr className="ant-table-row">
+                    <td className="ant-table-cell">ETH</td>
+                    {transferChains.map((chain) => (
+                      <td key={chain.key} className="ant-table-cell">
+                        <Row gutter={16}>
+                          <Col xs={24} sm={12} >
+                            {balances && balances[chain.key][0].amount.toFixed(4)}
+                          </Col>
+                          <Col xs={24} sm={12}>
+                            {chain.faucetUrls && (
+                              <a href={chain.faucetUrls[0]} target="_blank" rel="nofollow noreferrer">Get {chain.coin} <ArrowUpOutlined rotate={45} /></a>
+                            )}
+                          </Col>
+                        </Row>
+                      </td>
+                    ))}
+                    <td className="ant-table-cell"></td>
+                  </tr>
+                  <tr className="ant-table-row" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
+                    <td className="ant-table-cell">TEST</td>
+                    {transferChains.map((chain) => (
+                      <td key={chain.key} className="ant-table-cell" >
+                        <Row gutter={16}>
+                          <Col xs={24} sm={12} >
+                            {balances && balances[chain.key][1].amount.toFixed(4)}
+                          </Col>
+                          <Col xs={24} sm={12}>
+                            {minting
+                              ? <span className="flashing">minting</span>
+                              : web3.chainId === chain.id
+                                ? <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => mintTestToken(chain.key)}>Mint TEST <SettingOutlined /></Button>
+                                : <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => switchChain(chain.id)}>Change Chain</Button>
+                            }
+                          </Col>
+                        </Row>
+                      </td>
+                    ))}
+                    <td className="ant-table-cell"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          }
+
+          {!web3.account &&
+            <Row justify="center">
+              <Button shape="round" type="link" icon={<LoginOutlined />} size={"large"} htmlType="submit" onClick={() => activate(injected)}>Connect Wallet</Button>
+            </Row>
+          }
         </Row>
 
         {/* Active Transactions */}
