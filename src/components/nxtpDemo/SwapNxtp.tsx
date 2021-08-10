@@ -213,7 +213,7 @@ const SwapNxtp = () => {
     }
 
     // init only once
-    if (web3.library && web3.account && (!sdk || (sdk && !!sdkChainId))) {
+    if (web3.library && web3.account && ((!sdk && !sdkChainId) || (sdk && sdkChainId))) {
       initializeConnext()
     }
 
