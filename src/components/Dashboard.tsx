@@ -615,9 +615,9 @@ const Dashboard = () => {
     }
 
     if (ethers.utils.isAddress(address)) {
-      addWallet(address)
       setWalletModalVisible(false)
       setWalletModalAddress(' ')
+      addWallet(address)
     }
     setWalletModalLoading(false);
   };

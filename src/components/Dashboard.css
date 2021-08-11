@@ -47,3 +47,7 @@
   font-weight: bold;
   text-align: center;
 }
+
+.gas .amount_coin {
+  padding-top: 2px;
+}

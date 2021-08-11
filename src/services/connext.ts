@@ -13,8 +13,9 @@ import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import U
 import { deepClone } from './utils'
 
 const connext = "vector892GMZ3CuUkpyW8eeXfW2bt5W73TWEXtgV71nphXUXAmpncnj8" // referenced in https://docs.connext.network/connext-mainnet
-const xpollinate = "vector52rjrwRFUkaJai2J4TrngZ6doTUXGZhizHmrZ6J15xVv4YFgFC" // used by https://www.xpollinate.io/
-const routerPublicIdentifier = xpollinate || connext
+const xpollinate_old = "vector52rjrwRFUkaJai2J4TrngZ6doTUXGZhizHmrZ6J15xVv4YFgFC"
+const xpollinate = "vector5AGCU8oedG9HDmrC7mU9fDyQkpVRovFtEauVq3fHGcmRdbg7iu" // used by https://www.xpollinate.io/
+const routerPublicIdentifier = xpollinate || connext || xpollinate_old
 
 const chainProviders: { [chainId: number]: string } = {
   1: process.env.REACT_APP_RPC_URL_MAINNET || '',

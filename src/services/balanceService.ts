@@ -46,14 +46,16 @@ async function covalentGetCoinsOnChain(walletAdress: string, chainId: number) {
 
   const portfolio : Array<ChainPortfolio> = []
   for (const token of result.data.data.items) {
-    portfolio.push({
-      id: token.contract_address,
-      name: token.contract_name,
-      symbol: token.contract_ticker_symbol,
-      img_url: token.logo_url,
-      amount: parseInt(token.balance),
-      pricePerCoin: token.quote_rate || 0,
-    })
+    if (token.balance !== '0') {
+      portfolio.push({
+        id: token.contract_address,
+        name: token.contract_name,
+        symbol: token.contract_ticker_symbol,
+        img_url: token.logo_url,
+        amount: parseInt(token.balance) / (10**token.contract_decimals),
+        pricePerCoin: token.quote_rate || 0,
+      })
+    }
   }
 
   return portfolio
@@ -100,6 +102,19 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
   return balanceArray
 }
 
+const chainNameMapping : {[ChainName: string]: ChainKey} = {
+  'eth': ChainKey.ETH,
+  'bsc': ChainKey.BSC,
+  'xdai': ChainKey.DAI,
+  'matic': ChainKey.POL,
+  'ftm': ChainKey.FTM,
+  'okt': ChainKey.OKT,
+  // 'heco': ChainKey.??,
+}
+function mapDebankChainNameToChainKey(chainName: string) {
+  return chainNameMapping[chainName]
+}
+
 async function getBalancesForWallet(walletAdress: string){
   walletAdress = walletAdress.toLowerCase()
 
@@ -116,18 +131,13 @@ async function getBalancesForWallet(walletAdress: string){
     return deepClone(EMPTY_PORTFOLIO)
   }
 
-  var tokenList: Array<tokenListDebankT>;
   // response body is empty?
-  if (Object.keys(result.data).length === 0){
-    return deepClone(EMPTY_PORTFOLIO);
-  } else{
-    tokenList = result.data
-  }
+  var tokenList: Array<tokenListDebankT> = (Object.keys(result.data).length === 0) ? [] : result.data
 
   // build return object
   const totalPortfolio : {[ChainKey: string]: Array<ChainPortfolio>} = deepClone(EMPTY_PORTFOLIO)
   for (const token of tokenList) {
-    totalPortfolio[token.chain]?.push({
+    totalPortfolio[mapDebankChainNameToChainKey(token.chain)]?.push({
       id: ethers.utils.isAddress(token.id) ? token.id : '0x0000000000000000000000000000000000000000',
       name: token.name,
       symbol: token.optimized_symbol,
@@ -138,7 +148,6 @@ async function getBalancesForWallet(walletAdress: string){
   }
 
   totalPortfolio[ChainKey.AVA] = await covalentAVAPromise
-
   return totalPortfolio
 }
 
