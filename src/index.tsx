@@ -1,21 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './services/reportWebVitals';
 import analytics from './services/analytics';
-import { BrowserRouter } from 'react-router-dom';
 
 analytics.initialize(process.env.REACT_APP_ANALYTICS_ID)
 
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+switch(process.env.REACT_APP_PACKAGE) {
+  case 'lifi':
+    import('./App')
+      .then(({App}) => {
+        ReactDOM.render(
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>,
+          document.getElementById('root')
+        )
+      })
+    break
+
+  case 'nxtp':
+    import('./AppNxtp')
+      .then(({AppNxtp}) => {
+        ReactDOM.render(
+          <React.StrictMode>
+            <AppNxtp/>
+          </React.StrictMode>,
+          document.getElementById('root')
+        )
+      })
+    break
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

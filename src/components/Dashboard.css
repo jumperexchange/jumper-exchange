@@ -1,15 +1,15 @@
 
 /* Table */
-.ant-table-thead {
+.dashboard .ant-table-thead {
   white-space: nowrap;
 }
-.ant-table-thead > tr > th {
+.dashboard .ant-table-thead > tr > th {
   text-align: center;
 }
-.ant-table-body {
+.dashboard .ant-table-body {
   border-bottom: 1px solid gray;
 }
-.ant-table-row .ant-table-cell:last-child {
+.dashboard .ant-table-row .ant-table-cell:last-child {
   border: none;
 }
 
@@ -46,4 +46,8 @@
 .sum {
   font-weight: bold;
   text-align: center;
+}
+
+.gas .amount_coin {
+  padding-top: 2px;
 }

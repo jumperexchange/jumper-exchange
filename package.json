@@ -4,8 +4,9 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@connext/vector-browser-node": "^0.2.5-beta.20",
-    "@connext/vector-utils": "^0.2.5-beta.20",
+    "@connext/nxtp-sdk": "^0.0.18",
+    "@connext/vector-browser-node": "^0.2.5-beta.21",
+    "@connext/vector-utils": "^0.2.5-beta.21",
     "@ethersproject/providers": "^5.4.0",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
@@ -16,18 +17,20 @@
     "dayjs": "^1.8.30",
     "ethers": "^5.2.0",
     "paraswap": "^4.19.1",
+    "pino": "^6.12.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^2.1.0"
   },
   "devDependencies": {
-    "@testing-library/dom": "^7.31.0",
+    "@testing-library/dom": "^8.1.0",
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
+    "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.1.9",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^15.6.0",
+    "@types/jest": "^27.0.0",
+    "@types/node": "^16.3.0",
+    "@types/pino": "^6.3.9",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
@@ -37,11 +40,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:nxtp": "bash -ac '. .env.nxtp.development; react-scripts start'",
     "build": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
     "build:staging": "REACT_APP_ENV=staging npm run build",
     "build:production": "REACT_APP_ENV=production npm run build",
-    "test": "echo 'Not defined'",
-    "eject": "react-scripts eject"
+    "build:nxtp": "REACT_APP_ENV=nxtp npm run build",
+    "test": "echo 'Not defined'"
   },
   "eslintConfig": {
     "extends": [
