@@ -251,6 +251,11 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
         <span>The Avalanche chain requires AVAX to pay for gas. Without it you won't be able to do anything on this chain.</span>
         <Button type="default" block onClick={() => showGasModal(ChainKey.AVA)}>Get AVAX</Button>
       </>),
+    [ChainKey.ROP]:
+      (<>
+        <span>The Ropsten Testnet requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.ROP)}>Get ETH</Button>
+      </>),
     [ChainKey.RIN]:
       (<>
         <span>The Rinkeby Testnet requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
@@ -283,6 +288,7 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
     [ChainKey.FTM]: (<>The Fantom chain requires FTM to pay for gas.</>),
     [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas.</>),
     [ChainKey.AVA]: (<>The Avalanche chain requires AVAX to pay for gas.</>),
+    [ChainKey.ROP]: (<>The Ropsten Testnet requires ETH to pay for gas.</>),
     [ChainKey.RIN]: (<>The Rinkeby Testnet requires ETH to pay for gas.</>),
     [ChainKey.GOR]: (<>The Goerli Testnet requires ETH to pay for gas.</>),
     [ChainKey.MUM]: (<>The Mumbai Testnet requires MATIC to pay for gas.</>),

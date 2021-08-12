@@ -27,8 +27,9 @@ import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
 const BALANCES_REFRESH_INTERVAL = 30000
 
 const transferChains = [
-  getChainByKey(ChainKey.GOR),
+  // getChainByKey(ChainKey.ROP),
   getChainByKey(ChainKey.RIN),
+  getChainByKey(ChainKey.GOR),
   getChainByKey(ChainKey.MUM),
   getChainByKey(ChainKey.ARBT),
   getChainByKey(ChainKey.OPTT),

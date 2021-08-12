@@ -5,6 +5,8 @@ import { ChainPortfolio, CoinKey, TokenWithAmounts } from '../types'
 import { getChainById } from '../types/lists'
 
 const testTokenAddresses: Record<number, string> = {
+  // 3 - Ropsten
+  3: '0xe71678794fff8846bFF855f716b0Ce9d9a78E844',
   // 4 - Rinkeby
   4: '0x9ac2c46d7acc21c881154d57c0dc1c55a3139198',
   // 5 - Goerli
@@ -17,7 +19,7 @@ const testTokenAddresses: Record<number, string> = {
   69: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
 }
 
-const testChains = [4, 5, 80001, 421611, 69]
+const testChains = [3, 4, 5, 80001, 421611, 69]
 
 const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
 

@@ -330,6 +330,34 @@ export const supportedChains: Array<Chain> = [
   // },
 
   // TESTNETS
+  // 3 - Ropsten
+  {
+    key: ChainKey.ROP,
+    name: 'Ropsten',
+    coin: CoinKey.ETH,
+    id: 3,
+    visible: false,
+    faucetUrls: [
+      'https://faucet.ropsten.be/',
+    ],
+
+    metamask: {
+      chainId: prefixChainId(3),
+      blockExplorerUrls: [
+        'https://ropsten.etherscan.io/',
+      ],
+      chainName: 'Ropsten Testnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'ETH',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://ropsten.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
+      ],
+    }
+  },
   // 4 - Rinkeby
   {
     key: ChainKey.RIN,

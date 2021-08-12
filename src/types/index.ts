@@ -48,6 +48,7 @@ export enum ChainKey {
   AVA = 'ava',
 
   // Testnets
+  ROP = 'rop',
   RIN = 'rin',
   GOR = 'gor',
   MUM = 'mum',
@@ -119,6 +120,7 @@ export interface WalletSummary {
   [ChainKey.OKT]: SummaryAmounts;
   [ChainKey.FTM]: SummaryAmounts;
   [ChainKey.AVA]: SummaryAmounts;
+  [ChainKey.ROP]: SummaryAmounts;
   [ChainKey.RIN]: SummaryAmounts;
   [ChainKey.GOR]: SummaryAmounts;
   [ChainKey.MUM]: SummaryAmounts;

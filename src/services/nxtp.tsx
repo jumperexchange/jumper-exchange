@@ -9,6 +9,7 @@ import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
 const testChains = [
+  3,
   4,
   5,
   80001,
