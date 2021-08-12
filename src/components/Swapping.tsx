@@ -16,6 +16,7 @@ import { CrossAction, DepositAction, Execution, ParaswapAction, SwapAction, Swap
 import Clock from './Clock';
 import StateChannelBalances from './StateChannelBalances';
 import { injected } from './web3/connectors';
+import { addToken, switchChain } from '../services/metamask';
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -124,67 +125,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const recipient = withdrawAction.recipient ?? web3.account
 
     return connext.triggerWithdraw(node, chainId, recipient, withdrawAction.token.id, withdrawAction.amount, (status: Execution) => updateStatus(step, status))
-  }
-
-  // TODO: move in own component
-  const switchChain = async (chainId: number) => {
-    if (web3.chainId === chainId) return // already on right chain
-
-    const ethereum = (window as any).ethereum
-    if (typeof ethereum === 'undefined') return
-
-    try {
-      await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: getChainById(chainId).metamask?.chainId }],
-      })
-    } catch (error) {
-      console.error(error)
-      if (error.code === 4902) {
-        addChain(chainId)
-      }
-    }
-  }
-  // TODO: move in own component
-  const addChain = async (chainId: number) => {
-    const ethereum = (window as any).ethereum
-    if (typeof ethereum === 'undefined') return
-
-    const params = getChainById(chainId).metamask
-    try {
-      await ethereum.request({
-        method: 'wallet_addEthereumChain',
-        params: [params],
-      })
-    } catch (error) {
-      console.error(`Error adding chain ${chainId}: ${error.message}`)
-    }
-  }
-  // TODO: move in own component
-  const addToken = async (token: Token) => {
-    try {
-      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
-      const wasAdded = await (window as any).ethereum.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20', // Initially only supports ERC20, but eventually more!
-          options: {
-            address: token.id, // The address that the token is at.
-            symbol: token.symbol, // A ticker symbol or shorthand, up to 5 chars.
-            decimals: token.decimals, // The number of decimals in the token
-            image: token.logoURI, // A string url of the token logo
-          },
-        },
-      });
-
-      if (wasAdded) {
-        console.log('Token Added');
-      } else {
-        console.log('Token not Added');
-      }
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   const switchAndAddToken = async (token: Token) => {

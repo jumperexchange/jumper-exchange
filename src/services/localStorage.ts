@@ -1,4 +1,4 @@
-import { ChainKey, Wallet } from '../types';
+import { chainKeysToObject, Wallet } from '../types';
 
 const isSupported = () => {
   try {
@@ -12,6 +12,12 @@ const isSupported = () => {
   }
   catch (e) {
     return false;
+  }
+}
+
+const clearLocalStorage = () => {
+  if (isSupported()) {
+    localStorage.clear()
   }
 }
 
@@ -34,15 +40,7 @@ const readWallets = (): Array<Wallet> => {
         return {
           address: address,
           loading: false,
-          portfolio:{
-            [ChainKey.ETH]:[],
-            [ChainKey.BSC]:[],
-            [ChainKey.POL]:[],
-            [ChainKey.DAI]:[],
-            [ChainKey.FTM]:[],
-            [ChainKey.OKT]:[],
-            [ChainKey.AVA]:[],
-          }
+          portfolio: chainKeysToObject([]),
         }
       })
     }
@@ -54,6 +52,25 @@ const readWallets = (): Array<Wallet> => {
   }
 }
 
+const storeNxtpMessagingToken = (token: string) => {
+  if (isSupported()) {
+    localStorage.setItem('nxtpMessagingToken', token)
+  }
+}
 
+const readNxtpMessagingToken = () => {
+  if (!isSupported()) {
+    return null
+  }
 
-export { isSupported, storeWallets, readWallets }
+  return localStorage.getItem('nxtpMessagingToken')
+}
+
+export {
+  isSupported,
+  clearLocalStorage,
+  storeWallets,
+  readWallets,
+  storeNxtpMessagingToken,
+  readNxtpMessagingToken,
+}

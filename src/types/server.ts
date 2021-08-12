@@ -1,3 +1,4 @@
+import { AuctionResponse } from "@connext/nxtp-utils";
 import { ChainKey, Token } from '.'
 
 export interface BaseEstimate {
@@ -15,19 +16,21 @@ export interface DepositEstimate extends BaseEstimate { }
 export interface SwapEstimate extends BaseEstimate {
   path: Array<string>
 }
-export interface CrossEstimate extends BaseEstimate { }
+export interface CrossEstimate extends BaseEstimate {
+  quote: AuctionResponse
+}
 export interface WithdrawEstimate extends BaseEstimate { }
 
 export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate
 
 
 
-export type Status = 'NOT_STARTED' | 'PENDING' | 'FAILED' | 'DONE'
+export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE'
 export interface Process {
   startedAt: number
   doneAt?: number
   failedAt?: number
-  message: string
+  message: any
   status: Status
 
   // additional information
@@ -49,6 +52,7 @@ export interface TranferStep {
   action: Action
   estimate?: Estimate
   execution?: Execution
+  id?: string
 }
 
 
@@ -102,6 +106,7 @@ export interface OneInchAction extends ActionBase {
 
 export interface CrossAction extends ActionBase {
   type: 'cross'
+  method: 'vector' | 'nxtp'
   toChainKey: ChainKey
   amount: number
   fromToken: Token

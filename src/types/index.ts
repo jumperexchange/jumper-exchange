@@ -17,6 +17,11 @@ export interface Token {
   key: CoinKey
 }
 
+export interface TokenWithAmounts extends Token {
+  amount?: number
+  amountRendered?: string
+}
+
 export interface Coin {
   key: CoinKey;
   name: string;
@@ -35,12 +40,28 @@ export interface DataType {
 
 export enum ChainKey {
   ETH = 'eth',
-  POL = 'matic',
+  POL = 'pol',
   BSC = 'bsc',
-  DAI = 'xdai',
+  DAI = 'dai',
   OKT = 'okt',
   FTM = 'ftm',
   AVA = 'ava',
+
+  // Testnets
+  ROP = 'rop',
+  RIN = 'rin',
+  GOR = 'gor',
+  MUM = 'mum',
+  ARBT = 'arbt',
+  OPTT = 'optt',
+}
+
+export function chainKeysToObject(val: any) {
+  const result : { [ChainKey: string]: any } = {}
+  for (const key in ChainKey) {
+    result[key.toLowerCase()] = JSON.parse(JSON.stringify(val))
+  }
+  return result
 }
 
 export interface ColomnType extends TableColumnType<DataType> {
@@ -75,6 +96,9 @@ export enum CoinKey {
   FTM = 'FTM',
   OKT = 'OKT',
   AVAX = 'AVAX',
+
+  // Testnet
+  TEST = 'TEST',
 }
 
 export enum Currencies {
@@ -96,6 +120,12 @@ export interface WalletSummary {
   [ChainKey.OKT]: SummaryAmounts;
   [ChainKey.FTM]: SummaryAmounts;
   [ChainKey.AVA]: SummaryAmounts;
+  [ChainKey.ROP]: SummaryAmounts;
+  [ChainKey.RIN]: SummaryAmounts;
+  [ChainKey.GOR]: SummaryAmounts;
+  [ChainKey.MUM]: SummaryAmounts;
+  [ChainKey.ARBT]: SummaryAmounts;
+  [ChainKey.OPTT]: SummaryAmounts;
 }
 
 export interface ProgressStep {

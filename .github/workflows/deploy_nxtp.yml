@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy Staging Web via SSH
+name: Deploy NXTP via SSH
 
 # Controls when the action will run.
 on:
@@ -32,10 +32,7 @@ jobs:
         run: yarn install
 
       - name: Build WebApp
-        run: yarn build:staging
-
-      - name: Insert DataUnlocker
-        run: output=$(curl --fail -F html=@build/index.html 'https://api.dataunlocker.com/properties/46555a39346d356231644a4f/scripts/latest/inject?endpoint=paru601nzh8t') && echo "$output" > build/index.html || echo "Failed to inject DataUnlocker's script"
+        run: yarn build:nxtp
 
       # Runs a set of commands using the runners shell
       - name: ssh deploy
@@ -52,7 +49,7 @@ jobs:
           # Source directory
           SOURCE: "build/" # optional, default is
           # Target directory
-          TARGET: ${{ secrets.REMOTE_TARGET }}/test/web # optional, default is /home/REMOTE_USER/
+          TARGET: ${{ secrets.REMOTE_TARGET }}/prod/nxtp # optional, default is /home/REMOTE_USER/
           # Arguments to pass to rsync
           #ARGS: # optional, default is -rltgoDzvO
           # An array of folder to exclude
@@ -65,21 +62,14 @@ jobs:
           CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ONE }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
-          PURGE_URLS: '["https://test.li.finance/"]'
-      - name: Purge cache
-        uses: jakejarvis/cloudflare-purge-action@master
-        env:
-          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_TWO }}
-          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
-          CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
-          PURGE_URLS: '["https://test.transferto.xyz/"]'
+          PURGE_URLS: '["https://nxtp.li.finance/", "https://test.nxtp.li.finance/"]'
 
       # Notify Rollbar about release
       - name: Notify deploy to Rollbar
         uses: rollbar/github-deploy-action@2.1.1
         id: rollbar_deploy
         with:
-          environment: 'staging'
+          environment: 'nxtp'
           version: ${{ github.sha }}
         env:
           ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}

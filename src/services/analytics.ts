@@ -85,16 +85,27 @@ const initialize = (gaCode: string | undefined) => {
   })
 }
 
-const sendWebVitals = ({ id, name, value }: Metric) => {
-  const data = {
-    eventCategory: 'Web Vitals',
-    eventAction: name,
-    eventValue: Math.round(name === 'CLS' ? value * 1000 : value), // values must be integers
-    eventLabel: id, // id unique to current page load
-    nonInteraction: true, // avoids affecting bounce rate
-  };
+const sendWebVitals = ({ id, name, value, delta }: Metric) => {
+  // Universal Analytics
+  // const data = {
+  //   eventCategory: 'Web Vitals',
+  //   eventAction: name,
+  //   eventValue: Math.round(name === 'CLS' ? value * 1000 : value), // values must be integers
+  //   eventLabel: id, // id unique to current page load
+  //   nonInteraction: true, // avoids affecting bounce rate
+  //   transport: 'beacon', // if browser supports it
+  // };
 
-  gtag('event', data);
+  // Google Analytics 4
+  const data = {
+    value: delta, // Use `delta` so the value can be summed.
+    // Custom params:
+    metric_id: id, // Needed to aggregate events
+    metric_value: value,
+    metric_delta: delta,
+  }
+
+  gtag('event', name, data);
 }
 
 const sendEvent = (action: any, label: any, category: any, nonInteraction: boolean = false): any => {
