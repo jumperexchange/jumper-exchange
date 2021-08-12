@@ -304,6 +304,7 @@ const Swap = () => {
                   transferChains={transferChains}
                   tokens={tokens}
                   balances={balances}
+                  allowSameChains={true}
                 />
 
                 <Row style={{ marginTop: 24 }} justify={"center"}>

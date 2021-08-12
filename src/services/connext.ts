@@ -446,7 +446,7 @@ async function swapInChannel(evt: EvtContainer, node: BrowserNode, channel: Full
   // -> try to reconcile
   let postSwapBalance: string = '0'
   let retries = 0
-  const MAX_RETRIES = 5
+  const MAX_RETRIES = 50
   while (postSwapBalance === '0' && retries < MAX_RETRIES) {
     // reconcile deposit on toChain
     const depositRes = await node.reconcileDeposit({
