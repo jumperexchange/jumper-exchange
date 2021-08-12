@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@connext/nxtp-sdk": "^0.0.17",
+    "@connext/nxtp-sdk": "^0.0.18",
     "@connext/vector-browser-node": "^0.2.5-beta.21",
     "@connext/vector-utils": "^0.2.5-beta.21",
     "@ethersproject/providers": "^5.4.0",
@@ -28,7 +28,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.1.9",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^27.0.0",
     "@types/node": "^16.3.0",
     "@types/pino": "^6.3.9",
     "@types/react": "^17.0.0",
