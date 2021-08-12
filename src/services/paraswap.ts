@@ -1,19 +1,12 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import { NetworkID, ParaSwap } from 'paraswap'
 import { Allowance, OptimalRatesWithPartnerFees, Transaction } from 'paraswap/build/types'
-
-const PARTNER_NAME = 'li.finance'
+import { sleep } from './utils'
 
 const instances: {[key: number] : ParaSwap | null} = {
   1: null,
   56: null,
   137: null,
-}
-
-const sleep = (mills: number) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, mills)
-  })
 }
 
 const getParaswap = (chainId: number) => {
@@ -72,7 +65,7 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
     rate.destAmount,
     rate,
     userAddress,
-    PARTNER_NAME,
+    process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
     receiver ?? userAddress,
   ) as Transaction
 

@@ -37,13 +37,32 @@ const checkTokenAddress = (address:string ) =>{
 
 
 const getTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: number,fromAddress:string, destReceiver:string) => {
-/* TODO: 1inch API supports custom gasPrices
-use transactionSpeed to get gasprice
-*/
+  // https://docs.1inch.io/api/quote-swap
+  /* TODO: 1inch API supports custom gasPrices use transactionSpeed to get gasprice */
+  /* TODO: slippage hardcoded to 1 */
+  const params = {
+    fromTokenAddress: checkTokenAddress(fromTokenAddress), //REQUIRED, string, contract address of a token to sell
+    toTokenAddress: checkTokenAddress(toTokenAddress), // REQUIRED, string, contract address of a token to buy
+    amount: amount, // REQUIRED, integer, amount of a token to sell
+    fromAddress: fromAddress, // REQUIRED, string, address of a seller
+    slippage: 1, // REQUIRED, number, additional slippage in percentage
+    // protocols: // OPTIONAL, string, protocols that can be used in a swap
+    destReceiver: destReceiver, // OPTIONAL, string, address that will receive a purchased token
+    referrerAddress: process.env.REACT_APP_ONEINCH_REFERRER_WALLET,// OPTIONAL, string, referrer's address
+    fee: process.env.REACT_APP_ONEINCH_FEE, // OPTIONAL, number, referrer's fee in percentage
+    // gasPrice: // OPTIONAL, string, gas price
+    // burnChi: // OPTIONAL, boolean, if true, CHI will be burned from fromAddress to compensate gas
+    // complexityLevel: // OPTIONAL, string, how many connectorTokens can be used
+    // connectorTokens: // OPTIONAL, string, contract addresses of connector tokens
+    // allowPartialFill: // OPTIONAL, boolean, if true, accept the partial order execution
+    // disableEstimate: // OPTIONAL, boolean, if true, checks of the required quantities are disabled
+    // gasLimit: // OPTIONAL, integer, maximum amount of gas for a swap
+    // parts: // OPTIONAL, integer, maximum number of parts each main route part can be split into
+    // mainRouteParts: // OPTIONAL, integer, maximum number of main route parts
+  }
 
-/* TODO: slippage hardcoded to 1 */
-
-  const result = await axios.get(`${baseURL}${chainId}/swap?fromTokenAddress=${checkTokenAddress(fromTokenAddress)}&toTokenAddress=${checkTokenAddress(toTokenAddress)}&amount=${amount}&slippage=1&fromAddress=${fromAddress}&destReceiver=${destReceiver}`)
+  const result = await axios.get(`${baseURL}${chainId}/swap`, { params })
+  //const result = await axios.get(`${baseURL}${chainId}/swap?fromTokenAddress=${checkTokenAddress(fromTokenAddress)}&toTokenAddress=${checkTokenAddress(toTokenAddress)}&amount=${amount}&slippage=1&fromAddress=${fromAddress}&destReceiver=${destReceiver}`)
   const toAmount: number = result.data.toTokenAmount? result.data.toTokenAmount : -1
   const path: Array<any> = result.data.protocols ? result.data.protocols[0].map((step:Array<any>) => step[0]) : []
   const tx = result.data.tx
