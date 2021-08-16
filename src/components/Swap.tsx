@@ -67,13 +67,7 @@ const Swap = () => {
     } else {
       const selectedRoute = routes[highlightedIndex]
       const lastStep = selectedRoute[selectedRoute.length - 1]
-      if (lastStep.action.type === 'withdraw') {
-        return formatTokenAmountOnly(lastStep.action.token, lastStep.estimate?.toAmount)
-      } else if (lastStep.action.type === '1inch' || lastStep.action.type === 'paraswap') {
-        return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
-      } else {
-        return '0.0'
-      }
+      return formatTokenAmountOnly((lastStep.action as any).toToken, lastStep.estimate?.toAmount)
     }
   }
 
@@ -194,17 +188,8 @@ const Swap = () => {
         try {
           const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
 
-          // remove swaps with native coins
-          const filteredRoutes: Array<Array<TranferStep>> = result.data.filter((path: Array<TranferStep>) => {
-            for (const step of path) {
-              if (step.action.type === 'swap') {
-                if (step.action.fromToken.id === '0x0000000000000000000000000000000000000000' || step.action.toToken.id === '0x0000000000000000000000000000000000000000') {
-                  return false
-                }
-              }
-            }
-            return true
-          })
+          // filter if needed
+          const filteredRoutes: Array<Array<TranferStep>> = result.data
 
           // sortedRoutes
           const sortedRoutes = filteredRoutes.sort((routeA, routeB) => {

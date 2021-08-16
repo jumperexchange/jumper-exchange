@@ -9,14 +9,16 @@ import connextIcon from '../assets/icons/connext.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import * as connext from '../services/connext';
-import { formatTokenAmount } from '../services/utils';
+import { deepClone, formatTokenAmount } from '../services/utils';
 import { ChainKey, Token } from '../types';
 import { getChainById, getChainByKey } from '../types/lists';
-import { CrossAction, DepositAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep, WithdrawAction } from '../types/server';
+import { CrossAction, DepositAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep, WithdrawAction, emptyExecution } from '../types/server';
 import Clock from './Clock';
 import StateChannelBalances from './StateChannelBalances';
 import { injected } from './web3/connectors';
 import { addToken, switchChain } from '../services/metamask';
+import { executeParaswap } from '../services/paraswap.execute';
+import { executeOneInchSwap } from '../services/1inch.execute';
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -96,7 +98,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const fromAddress = web3.account
     const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
 
-    return connext.executeParaswap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+    return executeParaswap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerOneIchSwap = async (step: TranferStep) => {
@@ -106,16 +108,19 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const fromAddress = web3.account
     const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
 
-    return connext.executeOneInchSwap(chainId, web3.library.getSigner(), node, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+    return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
-  const triggerTransfer = (step: TranferStep) => {
-    if (!node) return
+  const triggerTransfer = async (step: TranferStep) => {
+    if (!node || !web3.library || !web3.account) return
     const crossAction = step.action as CrossAction
     const fromChainId = getChainByKey(crossAction.chainKey).id // will be replaced by crossAction.chainId
     const toChainId = getChainByKey(crossAction.toChainKey).id // will be replaced by crossAction.toChainId
 
-    return connext.triggerTransfer(node, fromChainId, toChainId, crossAction.fromToken.id, crossAction.toToken.id, crossAction.amount, (status: Execution) => updateStatus(step, status))
+    const status = deepClone(emptyExecution)
+    await connext.triggerDeposit(node, web3.library.getSigner(), fromChainId, crossAction.fromToken.id, BigInt(crossAction.amount), (status: Execution) => updateStatus(step, status), status)
+    await connext.triggerTransfer(node, fromChainId, toChainId, crossAction.fromToken.id, crossAction.toToken.id, crossAction.amount, (status: Execution) => updateStatus(step, status), status)
+    return connext.triggerWithdraw(node, toChainId, web3.account, crossAction.toToken.id, 0, (status: Execution) => updateStatus(step, status), status)
   }
 
   const triggerWithdraw = (step: TranferStep) => {

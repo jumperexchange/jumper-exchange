@@ -3,12 +3,10 @@ import { ConditionalTransferCreatedPayload, ConditionalTransferResolvedPayload, 
 import { getBalanceForAssetId, getRandomBytes32 } from "@connext/vector-utils"
 import { BigNumber } from "@ethersproject/bignumber"
 import { AddressZero } from "@ethersproject/constants"
-import { JsonRpcProvider, JsonRpcSigner } from "@ethersproject/providers"
+import { JsonRpcProvider } from "@ethersproject/providers"
 import { Contract, ContractReceipt, ethers, providers, utils } from "ethers"
 import { Evt } from "evt"
-import * as paraswap from '../services/paraswap'
 import { emptyExecution, Execution, Process } from '../types/server'
-import { oneInch } from './1Inch'
 import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
 import { deepClone } from './utils'
 
@@ -628,155 +626,6 @@ async function withdrawFromChannel(evt: EvtContainer, node: BrowserNode, channel
   // TODO: set final amounts
   // TODO: add transaction
   setStatusDone(update, status, withdrawProcess)
-
-  // DONE
-  return status
-}
-
-export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner, node: BrowserNode, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
-  // setup
-  const { status, update } = initStatus(updateStatus, initialStatus)
-
-  // Ask user to set allowance
-  // -> set status
-  const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
-
-  // -> check allowance
-  try {
-    await oneInch.setAllowance(chainId, srcAmount, srcToken, signer)
-  } catch (e) {
-    // -> set status
-    setStatusFailed(update, status, allowanceProcess)
-    throw e
-  }
-
-  // -> set status
-  setStatusDone(update, status, allowanceProcess)
-
-  // Swap via Paraswap
-  // -> set status
-  const swapProcess = createAndPushProcess(update, status, 'Swap via 1inch')
-
-  // -> swapping
-  let tx
-  try {
-    tx = await oneInch.transfer(signer, chainId, srcToken, destToken, srcAmount, destAddress)
-  } catch (e) {
-    // -> set status
-    setStatusFailed(update, status, swapProcess)
-    throw e
-  }
-
-  // -> set status
-  setStatusDone(update, status, swapProcess)
-
-
-  // Wait for transaction
-  // -> set status
-  const waitingProcess = createAndPushProcess(update, status, 'Wait for Transaction')
-
-  // -> waiting
-  try {
-    await tx.wait()
-  } catch (e) {
-    // -> set status
-    setStatusFailed(update, status, waitingProcess)
-    throw e
-  }
-
-  // -> set status
-  setStatusDone(update, status, waitingProcess)
-
-  if (srcAddress !== destAddress) {
-    // Reconcile Deposit
-    // -> set status
-    const reconcileProcess = createAndPushProcess(update, status, 'Claim Transfer')
-
-    // -> reconciling
-    await reconcileDeposit(node, chainId, destToken)
-
-    // -> set status
-    setStatusDone(update, status, reconcileProcess)
-  }
-
-  // -> set status
-  status.status = 'DONE'
-  update(status)
-
-  // DONE
-  return status
-}
-
-export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, node: BrowserNode, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
-  // setup
-  const { status, update } = initStatus(updateStatus, initialStatus)
-
-  // Ask user to set allowance
-  // -> set status
-  const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
-
-  // -> check allowance
-  try {
-    await paraswap.updateAllowance(chainId, srcAddress, srcToken, srcAmount)
-  } catch (e) {
-    // -> set status
-    setStatusFailed(update, status, allowanceProcess)
-    throw e
-  }
-
-  // -> set status
-  setStatusDone(update, status, allowanceProcess)
-
-
-  // Swap via Paraswap
-  // -> set status
-  const swapProcess = createAndPushProcess(update, status, 'Swap via Paraswap')
-
-  // -> swapping
-  let tx
-  try {
-    tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken, destToken, srcAmount, destAddress)
-  } catch (e) {
-    // -> set status
-    setStatusFailed(update, status, swapProcess)
-    throw e
-  }
-
-  // -> set status
-  setStatusDone(update, status, swapProcess)
-
-
-  // Wait for transaction
-  // -> set status
-  const waitingProcess = createAndPushProcess(update, status, 'Wait for Transaction')
-
-  // -> waiting
-  try {
-    await tx.wait()
-  } catch (e) {
-    // -> set status
-    setStatusFailed(update, status, waitingProcess)
-    throw e
-  }
-
-  // -> set status
-  setStatusDone(update, status, waitingProcess)
-
-  if (srcAddress !== destAddress) {
-    // Reconcile Deposit
-    // -> set status
-    const reconcileProcess = createAndPushProcess(update, status, 'Claim Transfer')
-
-    // -> reconciling
-    await reconcileDeposit(node, chainId, destToken)
-
-    // -> set status
-    setStatusDone(update, status, reconcileProcess)
-  }
-
-  // -> set status
-  status.status = 'DONE'
-  update(status)
 
   // DONE
   return status
