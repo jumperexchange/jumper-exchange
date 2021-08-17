@@ -301,7 +301,7 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
 
   // Ask user to transfer to channel
   // -> set status
-  const approveProcess = createAndPushProcess(update, status, 'Approve Transaction')
+  const depositProcess = createAndPushProcess(update, status, 'Depoit Tokens', { status: 'ACTION_REQUIRED'})
 
   // -> start transaction
   let tx
@@ -314,16 +314,18 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
         })
         : await new Contract(token, ERC20Abi, signer).transfer(channel.channelAddress, amount);
   } catch (e) {
-    setStatusFailed(update, status, approveProcess)
+    setStatusFailed(update, status, depositProcess)
     throw e
   }
 
-  // -> set status
-  setStatusDone(update, status, approveProcess, { transaction: tx.hash })
-
   // Wait for transaction
   // -> set status
-  const waitingProcess = createAndPushProcess(update, status, 'Wait for Transaction', { transaction: tx.hash })
+  const chain = getChainById(channel.networkContext.chainId)
+  depositProcess.status = 'PENDING'
+  depositProcess.txHash = tx.hash
+  depositProcess.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + depositProcess.txHash
+  depositProcess.message = <>Deposit - Wait for (<a href={depositProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+  update(status)
 
   // -> waiting...
   try {
@@ -331,7 +333,7 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
     // TODO: set used fees
     console.log('receipt: status', receipt.status, 'gasUsed', receipt.gasUsed.toString())
   } catch (e) {
-    setStatusFailed(update, status, waitingProcess)
+    setStatusFailed(update, status, depositProcess)
     throw e
     // TODO: try again with new id
     // if (error.replacement) {
@@ -340,12 +342,11 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
     //   throw error
     // }
   }
-  // -> set status
-  setStatusDone(update, status, waitingProcess)
 
   // claim transaction
   // -> set status
-  const claimProcess = createAndPushProcess(update, status, 'Claim Transfer')
+  depositProcess.message = <>Deposit (<a href={depositProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>) - Claiming</>
+  update(status)
 
   // -> claiming
   let depositRes
@@ -355,19 +356,20 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
       assetId: token,
     })
   } catch (e) {
-    setStatusFailed(update, status, claimProcess)
+    setStatusFailed(update, status, depositProcess)
     throw e
   }
 
   if (depositRes.isError) {
-    setStatusFailed(update, status, claimProcess)
+    setStatusFailed(update, status, depositProcess)
     throw depositRes.getError()
   }
 
   // -> set status
   status.status = 'DONE'
   status.fromAmount = parseInt(amount.toString())
-  setStatusDone(update, status, claimProcess)
+  depositProcess.message = <>Deposited (<a href={depositProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+  setStatusDone(update, status, depositProcess)
 
   // DONE
   return status
@@ -552,13 +554,6 @@ async function transferBetweenChains(node: BrowserNode, fromChannel: FullChannel
     throw e
   }
 
-  // -> set status
-  setStatusDone(update, status, waitProcess)
-
-  // resolve transfer
-  // -> set status
-  const resolveProcess = createAndPushProcess(update, status, 'Resolve Transfer')
-
   // -> resolving
   let resolveRes
   try {
@@ -573,16 +568,13 @@ async function transferBetweenChains(node: BrowserNode, fromChannel: FullChannel
       throw resolveRes.getError()
     }
   } catch (e) {
-    setStatusFailed(update, status, resolveProcess)
+    setStatusFailed(update, status, waitProcess)
     throw e
   }
 
   // -> set status
-  // TODO: set final amounts
-  // const resolve = resolveRes.getValue()
-  // console.log("resolve: ", resolve)
   status.status = 'DONE'
-  setStatusDone(update, status, resolveProcess)
+  setStatusDone(update, status, waitProcess)
 
   // DONE
   return status
