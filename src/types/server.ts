@@ -39,6 +39,8 @@ export interface Process {
 export interface Execution {
   status: Status
   process: Array<Process>
+  fromAmount?: number
+  toAmount?: number
 }
 export const emptyExecution : Execution = {
   status: 'NOT_STARTED',

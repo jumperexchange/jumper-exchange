@@ -12,7 +12,7 @@ import * as connext from '../services/connext';
 import { deepClone, formatTokenAmount } from '../services/utils';
 import { ChainKey, Token } from '../types';
 import { getChainById, getChainByKey } from '../types/lists';
-import { CrossAction, DepositAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep, WithdrawAction, emptyExecution } from '../types/server';
+import { CrossAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep, emptyExecution } from '../types/server';
 import Clock from './Clock';
 import StateChannelBalances from './StateChannelBalances';
 import { injected } from './web3/connectors';
@@ -75,14 +75,14 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     updateRoute(route)
   }
 
-  const triggerDeposit = (step: TranferStep) => {
-    if (!node || !web3.library) return
-    const depositAction = step.action as DepositAction
+  // const triggerDeposit = (step: TranferStep) => {
+  //   if (!node || !web3.library) return
+  //   const depositAction = step.action as DepositAction
 
-    return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, BigInt(depositAction.amount), (status: Execution) => updateStatus(step, status))
-  }
+  //   return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, BigInt(depositAction.amount), (status: Execution) => updateStatus(step, status))
+  // }
 
-  const triggerSwap = (step: TranferStep) => {
+  const triggerSwap = (step: TranferStep, previousStep?: TranferStep) => {
     if (!node) return
     const swapAction = step.action as SwapAction
     const swapEstimate = step.estimate as SwapEstimate
@@ -91,7 +91,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     return connext.triggerSwap(node, chainId, swapEstimate.path, swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, (status: Execution) => updateStatus(step, status))
   }
 
-  const triggerParaswap = async (step: TranferStep) => {
+  const triggerParaswap = async (step: TranferStep, previousStep?: TranferStep) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as ParaswapAction
     const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
@@ -101,7 +101,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     return executeParaswap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
-  const triggerOneIchSwap = async (step: TranferStep) => {
+  const triggerOneIchSwap = async (step: TranferStep, previousStep?: TranferStep) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as ParaswapAction
     const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
@@ -111,26 +111,33 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
-  const triggerTransfer = async (step: TranferStep) => {
+  const triggerTransfer = async (step: TranferStep, previousStep?: TranferStep) => {
     if (!node || !web3.library || !web3.account) return
     const crossAction = step.action as CrossAction
     const fromChainId = getChainByKey(crossAction.chainKey).id // will be replaced by crossAction.chainId
     const toChainId = getChainByKey(crossAction.toChainKey).id // will be replaced by crossAction.toChainId
+    let fromAmount : bigint
+    console.log('previousStep', previousStep)
+    if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+      fromAmount = BigInt(previousStep.execution.toAmount)
+    } else {
+      fromAmount = BigInt(crossAction.amount)
+    }
 
     const status = deepClone(emptyExecution)
-    await connext.triggerDeposit(node, web3.library.getSigner(), fromChainId, crossAction.fromToken.id, BigInt(crossAction.amount), (status: Execution) => updateStatus(step, status), status)
-    await connext.triggerTransfer(node, fromChainId, toChainId, crossAction.fromToken.id, crossAction.toToken.id, crossAction.amount, (status: Execution) => updateStatus(step, status), status)
+    await connext.triggerDeposit(node, web3.library.getSigner(), fromChainId, crossAction.fromToken.id, fromAmount, (status: Execution) => updateStatus(step, status), status)
+    await connext.triggerTransfer(node, fromChainId, toChainId, crossAction.fromToken.id, crossAction.toToken.id, fromAmount, (status: Execution) => updateStatus(step, status), status)
     return connext.triggerWithdraw(node, toChainId, web3.account, crossAction.toToken.id, 0, (status: Execution) => updateStatus(step, status), status)
   }
 
-  const triggerWithdraw = (step: TranferStep) => {
-    if (!node || !web3.account) return
-    const withdrawAction = step.action as WithdrawAction
-    const chainId = getChainByKey(withdrawAction.chainKey).id // will be replaced by withdrawAction.chainId
-    const recipient = withdrawAction.recipient ?? web3.account
+  // const triggerWithdraw = (step: TranferStep) => {
+  //   if (!node || !web3.account) return
+  //   const withdrawAction = step.action as WithdrawAction
+  //   const chainId = getChainByKey(withdrawAction.chainKey).id // will be replaced by withdrawAction.chainId
+  //   const recipient = withdrawAction.recipient ?? web3.account
 
-    return connext.triggerWithdraw(node, chainId, recipient, withdrawAction.token.id, withdrawAction.amount, (status: Execution) => updateStatus(step, status))
-  }
+  //   return connext.triggerWithdraw(node, chainId, recipient, withdrawAction.token.id, withdrawAction.amount, (status: Execution) => updateStatus(step, status))
+  // }
 
   const switchAndAddToken = async (token: Token) => {
     await switchChain(token.chainId)
@@ -318,14 +325,14 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const crossChain = route.filter(step => step.action.type === 'cross').length > 0
   const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>{crossChain ? 'Start Cross Chain Swap' : 'Start Swap'}</Button>
 
-  const parseStepToTimeline = (step: TranferStep, index: number) => {
+  const parseStepToTimeline = (step: TranferStep, index: number, route: Array<TranferStep>) => {
     const executionSteps = parseExecution(step.execution)
     const color = step.execution && step.execution.status === 'DONE' ? 'green' : (step.execution ? 'blue' : 'gray')
     const hasFailed = step.execution && step.execution.status === 'FAILED'
 
     switch (step.action.type) {
       case 'deposit': {
-        const triggerButton = <Button type="primary" disabled={!node || !web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerStep(step)}>trigger Deposit</Button>
+        const triggerButton = <Button type="primary" disabled={!node || !web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerStep(index, route)}>trigger Deposit</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Deposit from {web3.account ? web3.account.substr(0, 4) : '0x'}...</h4>
@@ -340,7 +347,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'swap': {
-        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Swap</Button>
+        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(index, route)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Swap on {getExchangeAvatar(step.action.chainKey)}</h4>
@@ -354,7 +361,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'paraswap': {
-        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerParaswap(step)} >trigger Swap</Button>
+        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(index, route)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Swap{step.action.target === 'channel' ? ' & Deposit' : ''} on {paraswapAvatar}</h4>
@@ -368,7 +375,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case '1inch': {
-        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerOneIchSwap(step)} >trigger Swap</Button>
+        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(index, route)} >trigger Swap</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Swap{step.action.target === 'channel' ? ' & Deposit' : ''} on {oneinchAvatar}</h4>
@@ -382,7 +389,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'cross': {
-        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(step)} >trigger Transfer</Button>
+        const triggerButton = <Button type="primary" disabled={!node} onClick={() => triggerStep(index, route)} >trigger Transfer</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)} via {connextAvatar}</h4>
@@ -396,7 +403,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'withdraw':
-        const triggerButton = <Button type="primary" disabled={!node || !web3.account} onClick={() => triggerStep(step)}>trigger Withdraw</Button>
+        const triggerButton = <Button type="primary" disabled={!node || !web3.account} onClick={() => triggerStep(index, route)}>trigger Withdraw</Button>
         const token = step.action.token
         return [
           <Timeline.Item key={index + '_left'} color={color}>
@@ -414,12 +421,11 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
   }
 
-  const triggerStep = async (step: TranferStep) => {
+  const triggerStep = async (index: number, route: Array<TranferStep>) => {
     let triggerFunc
+    const step = route[index]
+    const previousStep = index > 0 ? route[index - 1] : undefined
     switch (step.action.type) {
-      case 'deposit':
-        triggerFunc = triggerDeposit
-        break
       case 'swap':
         triggerFunc = triggerSwap
         break
@@ -432,14 +438,11 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       case 'cross':
         triggerFunc = triggerTransfer
         break
-      case 'withdraw':
-        triggerFunc = triggerWithdraw
-        break
       default:
         throw new Error('Invalid Step')
     }
 
-    return triggerFunc(step)
+    return triggerFunc(step, previousStep)
   }
 
   const startCrossChainSwap = async () => {
@@ -447,8 +450,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     setSwapStartedAt(Date.now())
 
     try {
-      for (const step of route) {
-        await triggerStep(step)
+      for (let index = 0; index < route.length; index++) {
+        await triggerStep(index, route)
       }
     } catch (e) {
       console.error(e)

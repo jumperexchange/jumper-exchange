@@ -1,5 +1,5 @@
-
 import { JsonRpcSigner } from '@ethersproject/providers'
+import { getChainById } from '../types/lists'
 import { Execution } from '../types/server'
 import { oneInch } from './1Inch'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
@@ -40,9 +40,10 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
   }
 
   // -> set status
+  const fromChain = getChainById(chainId)
   swapProcess.status = 'PENDING'
   swapProcess.txHash = tx.hash
-  swapProcess.txLink = "fromChain.metamask.blockExplorerUrls[0]" + 'tx/' + swapProcess.txHash
+  swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
   swapProcess.message = <>Swap via 1inch - Wait for <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   update(status)
 

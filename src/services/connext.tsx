@@ -6,6 +6,7 @@ import { AddressZero } from "@ethersproject/constants"
 import { JsonRpcProvider } from "@ethersproject/providers"
 import { Contract, ContractReceipt, ethers, providers, utils } from "ethers"
 import { Evt } from "evt"
+import { getChainById } from '../types/lists'
 import { emptyExecution, Execution, Process } from '../types/server'
 import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
 import { deepClone } from './utils'
@@ -194,6 +195,7 @@ async function handleNodeResponse(channel: FullChannelState, nodeResponsePromise
       resolvedHash!
     )
     console.log("nodeResponse tx receipt: ", receipt)
+    return receipt
   }
 }
 
@@ -364,7 +366,7 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
 
   // -> set status
   status.status = 'DONE'
-  // TODO: set final amounts
+  status.fromAmount = parseInt(amount.toString())
   setStatusDone(update, status, claimProcess)
 
   // DONE
@@ -610,21 +612,23 @@ async function withdrawFromChannel(evt: EvtContainer, node: BrowserNode, channel
     recipient,
   })
 
+  let receipt
   try {
-    await evt.WITHDRAWAL_RESOLVED.waitFor(30_000)
-  } catch {
-    try {
-      await handleNodeResponse(channel, withdrawPromise)
-    } catch (e) {
-      setStatusFailed(update, status, withdrawProcess)
-      throw e
-    }
+    receipt = await handleNodeResponse(channel, withdrawPromise)
+  } catch (e) {
+    setStatusFailed(update, status, withdrawProcess)
+    throw e
   }
 
   // -> set status
   status.status = 'DONE'
-  // TODO: set final amounts
-  // TODO: add transaction
+  status.toAmount = parseInt(amount.toString())
+  if (receipt) {
+    const toChain = getChainById(channel.networkContext.chainId)
+    withdrawProcess.txHash = receipt.transactionHash
+    withdrawProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + withdrawProcess.txHash
+    withdrawProcess.message = <>Withdrawed (<a href={withdrawProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+  }
   setStatusDone(update, status, withdrawProcess)
 
   // DONE
