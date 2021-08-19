@@ -547,6 +547,7 @@ const SwapNxtp = () => {
         receivingChainId: getChainByKey(crossAction.toChainKey).id,
         callDataHash: '',
         transactionId: crossEstimate.quote.bid.transactionId,
+        receivingChainTxManagerAddress: ''
       },
       sending: {
         amount: crossAction.amount.toString(),
