@@ -48,6 +48,7 @@ const prefixChainId = (chainId: number) => {
   return '0x' + BigNumber.from(chainId)._hex.split('0x')[1].replace(/\b0+/g, '')
 }
 
+// chainNames aligned with https://github.com/ethereum-lists/chains/tree/master/_data/chains
 export const supportedChains: Array<Chain> = [
   // 1 - Ethereum
   {
@@ -109,7 +110,7 @@ export const supportedChains: Array<Chain> = [
         'https://polygonscan.com/',
         'https://explorer-mainnet.maticvigil.com/',
       ],
-      chainName: 'Matic Mainnet',
+      chainName: 'Matic(Polygon) Mainnet',
       iconUrls: [],
       nativeCurrency: {
         name: 'MATIC',
@@ -147,7 +148,7 @@ export const supportedChains: Array<Chain> = [
         'https://bsc-dataseed1.defibit.io/',
         'https://bsc-dataseed1.ninicoin.io/',
       ],
-      chainName: 'Binance Smart Chain',
+      chainName: 'Binance Smart Chain Mainnet',
       iconUrls: [],
       nativeCurrency: {
         name: 'BNB',
@@ -186,7 +187,7 @@ export const supportedChains: Array<Chain> = [
         'https://xdai.poanetwork.dev/',
         'https://xdai.1hive.org/',
       ],
-      chainName: 'xDai',
+      chainName: 'xDAI Chain',
       iconUrls: [],
       nativeCurrency: {
         name: 'xDai',
@@ -217,7 +218,7 @@ export const supportedChains: Array<Chain> = [
       nativeCurrency: {
         name: 'FTM',
         symbol: 'FTM',
-        decimals: 18, // TODO: check
+        decimals: 18,
       },
       rpcUrls: [
         'https://ftmscan.com/',
@@ -243,7 +244,7 @@ export const supportedChains: Array<Chain> = [
       nativeCurrency: {
         name: 'OKT',
         symbol: 'OKT',
-        decimals: 18, // TODO: check
+        decimals: 18,
       },
       rpcUrls: [
         'https://exchainrpc.okex.org',
@@ -264,12 +265,12 @@ export const supportedChains: Array<Chain> = [
       blockExplorerUrls: [
         'https://cchain.explorer.avax.network/',
       ],
-      chainName: 'Avalanche Network',
+      chainName: 'Avalanche Mainnet',
       iconUrls: [],
       nativeCurrency: {
         name: 'AVAX',
         symbol: 'AVAX',
-        decimals: 18, // TODO: check
+        decimals: 18,
       },
       rpcUrls: [
         'https://api.avax.network/ext/bc/C/rpc',
@@ -290,12 +291,12 @@ export const supportedChains: Array<Chain> = [
   //     blockExplorerUrls: [
   //       'https://fsnex.com',
   //     ],
-  //     chainName: 'FSN-MAIN',
+  //     chainName: 'Fusion Mainnet',
   //     iconUrls: [],
   //     nativeCurrency: {
   //       name: 'FSN',
   //       symbol: 'FSN',
-  //       decimals: 18, // TODO: check
+  //       decimals: 18,
   //     },
   //     rpcUrls: [
   //       'https://fsnmainnet2.anyswap.exchange',
@@ -316,7 +317,7 @@ export const supportedChains: Array<Chain> = [
   //     blockExplorerUrls: [
   //       'https://www.harmony.one/',
   //     ],
-  //     chainName: 'Harmony Mainnet Shard 0',,
+  //     chainName: 'Harmony Mainnet Shard 0',
   //     iconUrls: [],
   //     nativeCurrency: {
   //       name: 'ONE',
@@ -346,7 +347,7 @@ export const supportedChains: Array<Chain> = [
       blockExplorerUrls: [
         'https://ropsten.etherscan.io/',
       ],
-      chainName: 'Ropsten Testnet',
+      chainName: 'Ethereum Testnet Ropsten',
       iconUrls: [],
       nativeCurrency: {
         name: 'ETH',
@@ -374,7 +375,7 @@ export const supportedChains: Array<Chain> = [
       blockExplorerUrls: [
         'https://rinkeby.etherscan.io/',
       ],
-      chainName: 'Rinkeby Testnet',
+      chainName: 'Ethereum Testnet Rinkeby',
       iconUrls: [],
       nativeCurrency: {
         name: 'ETH',
@@ -402,7 +403,7 @@ export const supportedChains: Array<Chain> = [
       blockExplorerUrls: [
         'https://goerli.etherscan.io/',
       ],
-      chainName: 'Goerli Testnet',
+      chainName: 'Ethereum Testnet Görli',
       iconUrls: [],
       nativeCurrency: {
         name: 'ETH',
@@ -431,12 +432,12 @@ export const supportedChains: Array<Chain> = [
       blockExplorerUrls: [
         'https://explorer-mumbai.maticvigil.com/',
       ],
-      chainName: 'Mumbai Polygon Testnet',
+      chainName: 'Matic(Polygon) Testnet Mumbai',
       iconUrls: [],
       nativeCurrency: {
-        name: 'tMATIC',
+        name: 'MATIC',
         symbol: 'tMATIC',
-        decimals: 18, // TODO: Check
+        decimals: 18,
       },
       rpcUrls: [
         'https://rpc-mumbai.matic.today',
@@ -459,12 +460,12 @@ export const supportedChains: Array<Chain> = [
       blockExplorerUrls: [
         'https://rinkeby-explorer.arbitrum.io/#/',
       ],
-      chainName: 'Arbitrum Testnet',
+      chainName: 'Arbitrum Testnet Rinkeby',
       iconUrls: [],
       nativeCurrency: {
-        name: 'tETH',
-        symbol: 'tETH',
-        decimals: 18, // TODO: Check
+        name: 'ARETH',
+        symbol: 'ARETH',
+        decimals: 18,
       },
       rpcUrls: [
         'https://rinkeby.arbitrum.io/rpc',
@@ -487,12 +488,12 @@ export const supportedChains: Array<Chain> = [
       blockExplorerUrls: [
         'https://kovan-optimistic.etherscan.io',
       ],
-      chainName: 'Optimism Testnet',
+      chainName: 'Optimistic Ethereum Testnet Kovan',
       iconUrls: [],
       nativeCurrency: {
         name: 'tETH',
         symbol: 'tETH',
-        decimals: 18, // TODO: Check
+        decimals: 18,
       },
       rpcUrls: [
         'https://kovan.optimism.io',
