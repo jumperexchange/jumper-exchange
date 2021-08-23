@@ -30,6 +30,18 @@ switch(process.env.REACT_APP_PACKAGE) {
         )
       })
     break
+
+  case 'xpollinate':
+    import('./AppXpollinate')
+      .then(({AppXpollinate}) => {
+        ReactDOM.render(
+          <React.StrictMode>
+            <AppXpollinate/>
+          </React.StrictMode>,
+          document.getElementById('root')
+        )
+      })
+    break
 }
 
 // If you want to start measuring performance in your app, pass a function
