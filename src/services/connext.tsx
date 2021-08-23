@@ -366,7 +366,7 @@ async function deposit(node: BrowserNode, channel: FullChannelState, signer: any
   }
 
   // -> set status
-  status.status = 'DONE'
+  // status.status = 'DONE'
   status.fromAmount = parseInt(amount.toString())
   depositProcess.message = <>Deposited (<a href={depositProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
   setStatusDone(update, status, depositProcess)
@@ -519,12 +519,10 @@ async function transferBetweenChains(node: BrowserNode, fromChannel: FullChannel
     throw e
   }
 
-  // -> set status
-  setStatusDone(update, status, startProcess)
-
   // wait for transfer on receiving chain
   // -> set status
-  const waitProcess = createAndPushProcess(update, status, 'Wait for Transfer on Receiving Chain')
+  startProcess.message = 'Transfer - Wait for Receiving Chain'
+  update(status)
 
   // -> waiting
   let toTransferData
@@ -550,7 +548,7 @@ async function transferBetweenChains(node: BrowserNode, fromChannel: FullChannel
       }
     )
   } catch (e) {
-    setStatusFailed(update, status, waitProcess)
+    setStatusFailed(update, status, startProcess)
     throw e
   }
 
@@ -568,13 +566,14 @@ async function transferBetweenChains(node: BrowserNode, fromChannel: FullChannel
       throw resolveRes.getError()
     }
   } catch (e) {
-    setStatusFailed(update, status, waitProcess)
+    setStatusFailed(update, status, startProcess)
     throw e
   }
 
   // -> set status
-  status.status = 'DONE'
-  setStatusDone(update, status, waitProcess)
+  // status.status = 'DONE'
+  startProcess.message = 'Transferred'
+  setStatusDone(update, status, startProcess)
 
   // DONE
   return status

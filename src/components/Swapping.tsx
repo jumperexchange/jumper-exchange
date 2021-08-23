@@ -1,7 +1,7 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { BrowserNode } from '@connext/vector-browser-node';
 import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { useWeb3React, getWeb3ReactContext } from '@web3-react/core';
 import { Alert, Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -46,8 +46,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     setLoggingIn(true)
     setConnextLoginStartedAt(Date.now())
     setAlerts([])
+    let _node
     try {
-      const _node = await connext.initNode()
+      _node = await connext.initNode()
       setNode(_node)
       setConnextLoginDoneAt(Date.now())
     } catch (e) {
@@ -62,6 +63,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     } finally {
       setLoggingIn(false)
     }
+    return _node
   }
 
   // Wallet
@@ -75,13 +77,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     updateRoute(route)
   }
 
-  // const triggerDeposit = (step: TranferStep) => {
-  //   if (!node || !web3.library) return
-  //   const depositAction = step.action as DepositAction
-
-  //   return connext.triggerDeposit(node, web3.library.getSigner(), depositAction.chainId, depositAction.token.id, BigInt(depositAction.amount), (status: Execution) => updateStatus(step, status))
-  // }
-
   const triggerSwap = (step: TranferStep, previousStep?: TranferStep) => {
     if (!node) return
     const swapAction = step.action as SwapAction
@@ -94,11 +89,13 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const triggerParaswap = async (step: TranferStep, previousStep?: TranferStep) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as ParaswapAction
-    const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
     const fromAddress = web3.account
-    const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
+    const toAddress = fromAddress //swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
 
-    return executeParaswap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+    // if (web3.chainId !== swapAction.chainId) {
+    //   await switchChain(swapAction.chainId)
+    // }
+    return executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerOneIchSwap = async (step: TranferStep, previousStep?: TranferStep) => {
@@ -106,159 +103,40 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const swapAction = step.action as ParaswapAction
     const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
     const fromAddress = web3.account
-    const toAddress = swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
+    const toAddress = fromAddress // swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
 
+    // if (web3.chainId !== chainId) {
+    //   await switchChain(chainId)
+    // }
     return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
   const triggerTransfer = async (step: TranferStep, previousStep?: TranferStep) => {
-    if (!node || !web3.library || !web3.account) return
     const crossAction = step.action as CrossAction
     const fromChainId = getChainByKey(crossAction.chainKey).id // will be replaced by crossAction.chainId
     const toChainId = getChainByKey(crossAction.toChainKey).id // will be replaced by crossAction.toChainId
+
     let fromAmount : bigint
-    console.log('previousStep', previousStep)
     if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
       fromAmount = BigInt(previousStep.execution.toAmount)
     } else {
       fromAmount = BigInt(crossAction.amount)
     }
 
+    // if (web3.chainId !== crossAction.chainId) {
+    //   await switchChain(crossAction.chainId)
+    // }
     const status = deepClone(emptyExecution)
-    await connext.triggerDeposit(node, web3.library.getSigner(), fromChainId, crossAction.fromToken.id, fromAmount, (status: Execution) => updateStatus(step, status), status)
-    await connext.triggerTransfer(node, fromChainId, toChainId, crossAction.fromToken.id, crossAction.toToken.id, fromAmount, (status: Execution) => updateStatus(step, status), status)
-    return connext.triggerWithdraw(node, toChainId, web3.account, crossAction.toToken.id, 0, (status: Execution) => updateStatus(step, status), status)
+    let _node = node || (await initializeConnext())
+    await connext.triggerDeposit(_node, web3.library!.getSigner(), fromChainId, crossAction.fromToken.id, fromAmount, (status: Execution) => updateStatus(step, status), status)
+    await connext.triggerTransfer(_node, fromChainId, toChainId, crossAction.fromToken.id, crossAction.toToken.id, fromAmount, (status: Execution) => updateStatus(step, status), status)
+    return connext.triggerWithdraw(_node, toChainId, web3.account!, crossAction.toToken.id, 0, (status: Execution) => updateStatus(step, status), status)
   }
-
-  // const triggerWithdraw = (step: TranferStep) => {
-  //   if (!node || !web3.account) return
-  //   const withdrawAction = step.action as WithdrawAction
-  //   const chainId = getChainByKey(withdrawAction.chainKey).id // will be replaced by withdrawAction.chainId
-  //   const recipient = withdrawAction.recipient ?? web3.account
-
-  //   return connext.triggerWithdraw(node, chainId, recipient, withdrawAction.token.id, withdrawAction.amount, (status: Execution) => updateStatus(step, status))
-  // }
 
   const switchAndAddToken = async (token: Token) => {
     await switchChain(token.chainId)
 
     setTimeout(() => addToken(token), 100)
-  }
-
-  const parseWalletSteps = () => {
-    const isDone = !!web3.account
-    const isActive = !isDone
-
-    const button = <Button type="primary" onClick={() => activate(injected)}>Connect with MetaMask</Button>
-    const buttonText = <Typography.Text onClick={() => activate(injected)}>Connect with MetaMask</Typography.Text>
-
-    if (isActive) {
-      activeButton = button
-    }
-
-    const color = isDone ? 'green' : 'blue'
-    return [
-      <Timeline.Item key="wallet_left" color={color}>
-        <h4 style={{ marginBottom: 0 }}>
-          Connect your Wallet
-        </h4>
-      </Timeline.Item>,
-      <Timeline.Item key="wallet_right" color={color}>
-        {!web3.account ?
-          buttonText
-          :
-          <p style={{display: 'flex'}}>
-            <Typography.Text type="success">
-              Connected with {web3.account.substr(0, 4)}...
-            </Typography.Text>
-            <Typography.Text style={{marginLeft: 'auto'}}>
-              <Clock startedAt={1} successAt={1}/>
-            </Typography.Text>
-          </p>
-        }
-      </Timeline.Item>,
-    ]
-  }
-
-  const parseChainSteps = () => {
-    const isDone = web3.chainId === route[0].action.chainId
-    const isActive = !isDone && web3.account && !swapDone
-
-    const chain = getChainById(route[0].action.chainId)
-    const button = <Button type="primary" disabled={!web3.account} onClick={() => switchChain(route[0].action.chainId)}>Switch Chain to {chain.name}</Button>
-    const buttonText = <Typography.Text onClick={() => switchChain(route[0].action.chainId)}>Switch Chain to {chain.name}</Typography.Text>
-    if (isActive) {
-      activeButton = button
-    }
-
-    const color = isDone ? 'green' : (isActive ? 'blue' : 'gray')
-    return [
-      <Timeline.Item key="chain_left" color={color}>
-        <h4 style={{ marginBottom: 0 }}>
-          Switch to {chain.name}
-        </h4>
-      </Timeline.Item>,
-      <Timeline.Item key="chain_right" color={color}>
-        {web3.chainId !== route[0].action.chainId ?
-          buttonText
-          :
-          <p style={{display: 'flex'}}>
-            <Typography.Text type="success">
-              On {chain.name} Chain
-            </Typography.Text>
-            <Typography.Text style={{marginLeft: 'auto'}}>
-              <Clock startedAt={1} successAt={1}/>
-            </Typography.Text>
-          </p>
-        }
-      </Timeline.Item>,
-    ]
-  }
-
-  const parseConnextSteps = () => {
-    if (route.filter(step => step.action.type === 'cross').length === 0) {
-      return []
-    }
-    const isDone = !!node
-    const isActive = !isDone && web3.chainId === route[0].action.chainId
-
-    const button = <Button type="primary" disabled={!isActive} onClick={() => initializeConnext()}>Login to Connext</Button>
-    const buttonText = <Typography.Text onClick={() => initializeConnext()}>Login to Connext</Typography.Text>
-    if (isActive) {
-      activeButton = button
-    }
-
-    const color = isDone ? 'green' : (isActive ? 'blue' : 'gray')
-    return [
-      <Timeline.Item key="connext_left" color={color}>
-        <h4 style={{ marginBottom: 0 }}>
-          Login to Connext
-        </h4>
-      </Timeline.Item>,
-      <Timeline.Item key="connext_right" color={color}>
-        {!node && !loggingIn && buttonText}
-        {!node && loggingIn &&
-          <p style={{display: 'flex'}}>
-            <Typography.Text className="flashing">
-              In Progress
-            </Typography.Text>
-            <Typography.Text style={{marginLeft: 'auto'}}>
-              { connextLoginStartedAt && <Clock startedAt={connextLoginStartedAt}/> }
-            </Typography.Text>
-          </p>
-        }
-        {node &&
-          <p style={{display: 'flex'}}>
-            <Typography.Text type="success">
-              Login successful
-            </Typography.Text>
-            <Typography.Text style={{marginLeft: 'auto'}}>
-              <Clock startedAt={connextLoginStartedAt || 1} successAt={connextLoginDoneAt || 1}/>
-            </Typography.Text>
-          </p>
-        }
-      </Timeline.Item>,
-    ]
   }
 
   const parseExecution = (execution?: Execution) => {
@@ -478,15 +356,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     <Timeline mode="alternate">
       <Timeline.Item color="green"></Timeline.Item>
-
-      {/* Wallet */}
-      {parseWalletSteps()}
-
-      {/* Chain */}
-      {parseChainSteps()}
-
-      {/* Connext */}
-      {parseConnextSteps()}
 
       {/* Steps */}
       {route.map(parseStepToTimeline)}

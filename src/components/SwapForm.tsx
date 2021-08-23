@@ -191,7 +191,6 @@ const SwapForm = ({
               type="number"
               defaultValue={0.0}
               min={0}
-              max={10}
               value={isFinite(depositAmount) ? depositAmount : ''}
               onChange={((event) => onChangeDepositAmount(formatAmountInput(event)))}
               placeholder="0.0"
@@ -316,7 +315,6 @@ const SwapForm = ({
               type="text"
               defaultValue={0.0}
               min={0}
-              max={10}
               value={estimatedWithdrawAmount}
               // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
               onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
