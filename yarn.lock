@@ -1282,75 +1282,76 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.19.tgz#aef9a71dad07f437d2372ce3ef592d30c45db37b"
-  integrity sha512-H6XLavtvVAsFcMi/Xa7Os8CNc/lw8RNqfw7IvM2T+4GDfzCUWUI9lQ7GKecYQZ6UjcmT2naz+r6BCGtIPONFPA==
+"@connext/nxtp-contracts@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.20.tgz#f7d85f8454d05df94096c61e7aa6d7d9bb266492"
+  integrity sha512-RfIPii/YEnJWzAQ4ruXb59EoO84UjmuuPT7ORaEIBjdMbspx7RmYCB2iv7xzyszc3UfiH9hl+PXgICy2d5NEvA==
   dependencies:
-    "@connext/nxtp-utils" "0.0.19"
-    "@typescript-eslint/eslint-plugin" "^4.28.5"
+    "@connext/nxtp-utils" "0.0.20"
+    "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
     dotenv "^10.0.0"
-    eslint "^7.31.0"
+    eslint "^7.32.0"
     hardhat-deploy "^0.8.11"
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@^0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.19.tgz#ff06798e8b1392260f2cda25d63ddce9e875b6eb"
-  integrity sha512-sVdXPzv6qwkNt0T3yWieEcmdEYHqe4ahLjY32IQHA3xuUtUbkIiIzJ37xt7soqztpcfAYbT+B58U067eaC93cA==
+"@connext/nxtp-sdk@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.20.tgz#56b49d028dfc4786cf6e21909fe276adc779f2be"
+  integrity sha512-KCE5tgJvV/SZaCkIx+aqjqH5J2my+VyfzLGMYa4j/Cw6zLd52Mj3TPV0PvR2uRKDilcSjk5AxFgBSgJ2AmWqvg==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.19"
-    "@connext/nxtp-txservice" "0.0.19"
-    "@connext/nxtp-utils" "0.0.19"
+    "@connext/nxtp-contracts" "0.0.20"
+    "@connext/nxtp-txservice" "0.0.20"
+    "@connext/nxtp-utils" "0.0.20"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
-    ajv-formats "^2.1.0"
-    ethers "^5.4.2"
+    ajv-formats "^2.1.1"
+    ethers "^5.4.4"
     evt "^1.10.1"
     graphql "^15.5.1"
     graphql-request "^3.5.0"
     graphql-tag "^2.12.5"
-    neverthrow "^4.2.2"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.19.tgz#6fb813447780e9efc62caa1f5a4284da1b01bc5c"
-  integrity sha512-2SVSSo50mg6ejdKzdAa862hqueb/45IcgMQRnQs+rvr6HtQyK4QwdCWbIWv78sj8yXiojPzRx6AtELKLHHb0iQ==
+"@connext/nxtp-txservice@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.20.tgz#3eabc7afc2a36ab37e099e72a4f2f2b0b83c4924"
+  integrity sha512-cruQFeg5Cl/UCpX+ODNryd6Uex24FdJf5OXh9AIxr+7pTvS4WCmloRSsxQ5jpcTaqYz9ozsiTEF+G8XPXPhEtQ==
   dependencies:
-    "@connext/nxtp-utils" "0.0.19"
+    "@connext/nxtp-utils" "0.0.20"
     "@sinclair/typebox" "^0.20.4"
-    "@typescript-eslint/eslint-plugin" "^4.28.5"
+    "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
-    ajv-formats "^2.1.0"
+    ajv-formats "^2.1.1"
     axios "^0.21.1"
-    eslint "^7.31.0"
-    ethers "^5.4.2"
+    eslint "^7.32.0"
+    ethers "^5.4.4"
     evt "^1.10.1"
+    neverthrow "^4.2.2"
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.19.tgz#30c3d1e86ff8481e4e56d2e993a0cd37f0e6056d"
-  integrity sha512-iKBES2Z1+RmvjmWO1ofSjdxvy23wxgK/3byxUhJDwwWWyu6804c2+RuM6x1xm36Z/dFzIdsSyB7ni/ESprFYSw==
+"@connext/nxtp-utils@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.20.tgz#919e5327ab9081c3770e6064c8714c8d68c9e050"
+  integrity sha512-fX4JZHur7LAtj6B/B84rXStKfi1NHKsZ+8JHWk/weN4bMT5wsHfwYrRn8YiAuL4UM4ALyrk3SHZuVkjf3lb9ZA==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
-    "@typescript-eslint/eslint-plugin" "^4.28.5"
+    "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
-    ajv-formats "^2.1.0"
+    ajv-formats "^2.1.1"
     axios "^0.21.1"
     chai "4.3.4"
     chai-as-promised "7.1.1"
     chai-subset "^1.6.0"
     eccrypto-js "5.4.0"
-    eslint "^7.31.0"
-    ethers "^5.4.2"
+    eslint "^7.32.0"
+    ethers "^5.4.4"
     hyperid "^2.3.1"
     pino "^6.13.0"
+    sinon-chai "^3.7.0"
     ts-natsutil "^1.1.1"
 
 "@connext/pure-evm-wasm@0.1.4":
@@ -3328,7 +3329,20 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@^4.28.5", "@typescript-eslint/eslint-plugin@^4.5.0":
+"@typescript-eslint/eslint-plugin@^4.29.2":
+  version "4.29.3"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.29.3.tgz#95cb8029a8bd8bd9c7f4ab95074a7cb2115adefa"
+  integrity sha512-tBgfA3K/3TsZY46ROGvoRxQr1wBkclbVqRQep97MjVHJzcRBURRY3sNFqLk0/Xr//BY5hM9H2p/kp+6qim85SA==
+  dependencies:
+    "@typescript-eslint/experimental-utils" "4.29.3"
+    "@typescript-eslint/scope-manager" "4.29.3"
+    debug "^4.3.1"
+    functional-red-black-tree "^1.0.1"
+    regexpp "^3.1.0"
+    semver "^7.3.5"
+    tsutils "^3.21.0"
+
+"@typescript-eslint/eslint-plugin@^4.5.0":
   version "4.29.2"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-4.29.2.tgz#f54dc0a32b8f61c6024ab8755da05363b733838d"
   integrity sha512-x4EMgn4BTfVd9+Z+r+6rmWxoAzBaapt4QFqE+d8L8sUtYZYLDTK6VG/y/SMMWA5t1/BVU5Kf+20rX4PtWzUYZg==
@@ -3350,6 +3364,18 @@
     "@typescript-eslint/scope-manager" "4.29.2"
     "@typescript-eslint/types" "4.29.2"
     "@typescript-eslint/typescript-estree" "4.29.2"
+    eslint-scope "^5.1.1"
+    eslint-utils "^3.0.0"
+
+"@typescript-eslint/experimental-utils@4.29.3":
+  version "4.29.3"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-4.29.3.tgz#52e437a689ccdef73e83c5106b34240a706f15e1"
+  integrity sha512-ffIvbytTVWz+3keg+Sy94FG1QeOvmV9dP2YSdLFHw/ieLXWCa3U1TYu8IRCOpMv2/SPS8XqhM1+ou1YHsdzKrg==
+  dependencies:
+    "@types/json-schema" "^7.0.7"
+    "@typescript-eslint/scope-manager" "4.29.3"
+    "@typescript-eslint/types" "4.29.3"
+    "@typescript-eslint/typescript-estree" "4.29.3"
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
 
@@ -3382,6 +3408,14 @@
     "@typescript-eslint/types" "4.29.2"
     "@typescript-eslint/visitor-keys" "4.29.2"
 
+"@typescript-eslint/scope-manager@4.29.3":
+  version "4.29.3"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-4.29.3.tgz#497dec66f3a22e459f6e306cf14021e40ec86e19"
+  integrity sha512-x+w8BLXO7iWPkG5mEy9bA1iFRnk36p/goVlYobVWHyDw69YmaH9q6eA+Fgl7kYHmFvWlebUTUfhtIg4zbbl8PA==
+  dependencies:
+    "@typescript-eslint/types" "4.29.3"
+    "@typescript-eslint/visitor-keys" "4.29.3"
+
 "@typescript-eslint/types@3.10.1":
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-3.10.1.tgz#1d7463fa7c32d8a23ab508a803ca2fe26e758727"
@@ -3391,6 +3425,11 @@
   version "4.29.2"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-4.29.2.tgz#fc0489c6b89773f99109fb0aa0aaddff21f52fcd"
   integrity sha512-K6ApnEXId+WTGxqnda8z4LhNMa/pZmbTFkDxEBLQAbhLZL50DjeY0VIDCml/0Y3FlcbqXZrABqrcKxq+n0LwzQ==
+
+"@typescript-eslint/types@4.29.3":
+  version "4.29.3"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-4.29.3.tgz#d7980c49aef643d0af8954c9f14f656b7fd16017"
+  integrity sha512-s1eV1lKNgoIYLAl1JUba8NhULmf+jOmmeFO1G5MN/RBCyyzg4TIOfIOICVNC06lor+Xmy4FypIIhFiJXOknhIg==
 
 "@typescript-eslint/typescript-estree@3.10.1":
   version "3.10.1"
@@ -3419,6 +3458,19 @@
     semver "^7.3.5"
     tsutils "^3.21.0"
 
+"@typescript-eslint/typescript-estree@4.29.3":
+  version "4.29.3"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-4.29.3.tgz#1bafad610015c4ded35c85a70b6222faad598b40"
+  integrity sha512-45oQJA0bxna4O5TMwz55/TpgjX1YrAPOI/rb6kPgmdnemRZx/dB0rsx+Ku8jpDvqTxcE1C/qEbVHbS3h0hflag==
+  dependencies:
+    "@typescript-eslint/types" "4.29.3"
+    "@typescript-eslint/visitor-keys" "4.29.3"
+    debug "^4.3.1"
+    globby "^11.0.3"
+    is-glob "^4.0.1"
+    semver "^7.3.5"
+    tsutils "^3.21.0"
+
 "@typescript-eslint/visitor-keys@3.10.1":
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-3.10.1.tgz#cd4274773e3eb63b2e870ac602274487ecd1e931"
@@ -3432,6 +3484,14 @@
   integrity sha512-bDgJLQ86oWHJoZ1ai4TZdgXzJxsea3Ee9u9wsTAvjChdj2WLcVsgWYAPeY7RQMn16tKrlQaBnpKv7KBfs4EQag==
   dependencies:
     "@typescript-eslint/types" "4.29.2"
+    eslint-visitor-keys "^2.0.0"
+
+"@typescript-eslint/visitor-keys@4.29.3":
+  version "4.29.3"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-4.29.3.tgz#c691760a00bd86bf8320d2a90a93d86d322f1abf"
+  integrity sha512-MGGfJvXT4asUTeVs0Q2m+sY63UsfnA+C/FDgBKV3itLBmM9H0u+URcneePtkd0at1YELmZK6HSolCqM4Fzs6yA==
+  dependencies:
+    "@typescript-eslint/types" "4.29.3"
     eslint-visitor-keys "^2.0.0"
 
 "@web3-react/abstract-connector@^6.0.7":
@@ -3803,7 +3863,7 @@ ajv-errors@^1.0.0:
   resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
   integrity sha512-DCRfO/4nQ+89p/RK43i8Ezd41EqdGIU4ld7nGF8OQ14oc/we5rEntLCUa7+jrn3nn83BosfwZA0wb4pon2o8iQ==
 
-ajv-formats@^2.1.0:
+ajv-formats@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-2.1.1.tgz#6e669400659eb74973bbf2e33327180a0996b520"
   integrity sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==
@@ -7528,7 +7588,7 @@ eslint-webpack-plugin@^2.5.2:
     normalize-path "^3.0.0"
     schema-utils "^3.0.0"
 
-eslint@^7.11.0, eslint@^7.31.0:
+eslint@^7.11.0, eslint@^7.32.0:
   version "7.32.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.32.0.tgz#c6d328a14be3fb08c8d1d21e12c02fdb7a2a812d"
   integrity sha512-VHZ8gX+EDfz+97jGcgyGCyRia/dPOd6Xh9yPv8Bl1+SoaIwD+a/vlrOmGRUyOYu7MwUhc7CxqeaDZU13S4+EpA==
@@ -8179,7 +8239,7 @@ ethers@^4.0.40, ethers@~4.0.4:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@^5.0.0, ethers@^5.0.1, ethers@^5.2.0, ethers@^5.4.2:
+ethers@^5.0.0, ethers@^5.0.1, ethers@^5.2.0, ethers@^5.4.4:
   version "5.4.5"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.4.5.tgz#cec133b9f5b514dc55e2561ee7aa7218c33affd7"
   integrity sha512-PPZ6flOAj230sXEWf/r/It6ZZ5c7EOVWx+PU87Glkbg79OtT7pLE1WgL4MRdwx6iF7HzSOvUUI+8cAmcdzo12w==
@@ -16021,6 +16081,11 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
+
+sinon-chai@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/sinon-chai/-/sinon-chai-3.7.0.tgz#cfb7dec1c50990ed18c153f1840721cf13139783"
+  integrity sha512-mf5NURdUaSdnatJx3uhoBOrY9dtL19fiOtAdT1Azxg3+lNJFiuN0uzaU3xX1LeAfL17kHQhTAJgpsfhbMJMY2g==
 
 sisteransi@^1.0.5:
   version "1.0.5"
