@@ -7,7 +7,7 @@ import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, M
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import connextWordmark from '../../assets/connext_wordmark.svg';
+import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
 import { clearLocalStorage } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';

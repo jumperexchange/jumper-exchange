@@ -11,7 +11,7 @@ import { createBrowserHistory } from 'history';
 import QueryString from 'qs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import onehiveWordmark from '../../assets/1hive_wordmark.svg';
-import connextWordmark from '../../assets/connext_wordmark.svg';
+import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
 import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
 import { clearLocalStorage } from '../../services/localStorage';
@@ -40,7 +40,7 @@ const transferChains = [
   getChainByKey(ChainKey.GOR),
   getChainByKey(ChainKey.MUM),
   getChainByKey(ChainKey.ARBT),
-  getChainByKey(ChainKey.OPTT),
+  // getChainByKey(ChainKey.OPTT), // disabled for now
 ]
 
 const getDefaultParams = () => {
@@ -142,6 +142,7 @@ const SwapXpollinate = () => {
   const [optionCallData, setOptionCallData] = useState<string>('')
 
   // Routes
+  const [routeUpdate, setRouteUpdate] = useState<number>(1)
   const [routeRequest, setRouteRequest] = useState<any>()
   const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
@@ -457,7 +458,7 @@ const SwapXpollinate = () => {
     setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
 
-    if (!sdk || !web3.account) {
+    if (!sdk || !web3.account || !routeUpdate) {
       return
     }
 
@@ -483,6 +484,7 @@ const SwapXpollinate = () => {
     optionCallData,
     debouncedSave,
     findToken,
+    routeUpdate,
   ])
   useEffect(() => {
     getTransferRoutes()
@@ -675,7 +677,7 @@ const SwapXpollinate = () => {
       return <Button disabled={true} shape="round" type="primary" icon={<SyncOutlined spin />} size={"large"}>Searching Routes...</Button>
     }
     if (noRoutesAvailable) {
-      return <Button disabled={true} shape="round" type="primary" size={"large"}>No Route Found</Button>
+      return <Button shape="round" type="primary" size={"large"} className="grayed" onClick={() => {setRouteUpdate(routeUpdate + 1)}}>No Route Found (Retry)</Button>
     }
     if (!hasSufficientBalance()) {
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
@@ -773,6 +775,7 @@ const SwapXpollinate = () => {
               </>
             )}
             type="info"
+            closable={true}
           />
         </Row>
 

@@ -13,12 +13,16 @@
   border: none;
   color: black;
   min-width: 150px;
-  background-size: 300px 40px;
+  background-size: 340px 40px;
   background-position: -100px;
 }
 
 .xpollinate .ant-btn-primary:hover {
-  background-position: 00px;
+  background-position: 0px;
+}
+
+.xpollinate .ant-btn-primary.grayed {
+  opacity: 0.8;
 }
 
 .xpollinate .ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
