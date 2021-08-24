@@ -6,7 +6,9 @@ import { useWeb3React } from '@web3-react/core';
 import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
-import { BigNumber } from 'ethers';
+import { BigNumber, FixedNumber } from 'ethers';
+import { createBrowserHistory } from 'history';
+import QueryString from 'qs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import onehiveWordmark from '../../assets/1hive_wordmark.svg';
 import connextWordmark from '../../assets/connext_wordmark.svg';
@@ -28,6 +30,8 @@ import SwapForm from '../SwapForm';
 import { injected } from '../web3/connectors';
 import './xpollinate.css';
 
+const history = createBrowserHistory()
+
 const BALANCES_REFRESH_INTERVAL = 30000
 
 const transferChains = [
@@ -39,6 +43,72 @@ const transferChains = [
   getChainByKey(ChainKey.OPTT),
 ]
 
+const getDefaultParams = () => {
+  const defaultParams = {
+    depositChain: ChainKey.RIN,
+    depositToken: testToken[ChainKey.RIN][0].id,
+    depositAmount: 1,
+    withdrawChain: ChainKey.GOR,
+    withdrawToken: testToken[ChainKey.GOR][0].id
+  }
+
+  const search = history.location.search
+  const params = QueryString.parse(search, { ignoreQueryPrefix: true })
+
+  // fromChain + old: senderChainId
+  if ((params.fromChain && typeof params.fromChain === 'string') || (params.senderChainId && typeof params.senderChainId === 'string')) {
+    try {
+      const newFromChainId = parseInt(typeof params.fromChain === 'string' ? params.fromChain : params.senderChainId as string)
+      const newFromChain = transferChains.find((chain) => chain.id === newFromChainId)
+
+      if (newFromChain) {
+        if (newFromChain.key === defaultParams.withdrawChain) {
+          // switch with withdraw chain
+          defaultParams.withdrawChain = defaultParams.depositChain
+          defaultParams.withdrawToken = defaultParams.depositToken
+        }
+
+        defaultParams.depositChain = newFromChain.key
+        defaultParams.depositToken = testToken[defaultParams.depositChain][0].id
+      }
+    } catch (e) { console.error(e) }
+  }
+
+  // fromToken
+  // TODO: add with more token available
+
+  // fromAmount
+  if (params.fromAmount && typeof params.fromAmount === 'string') {
+    try {
+      const newAmount = parseFloat(params.fromAmount)
+      if (newAmount > 0) {
+        defaultParams.depositAmount = parseFloat(params.fromAmount)
+      }
+    } catch (e) { console.error(e) }
+  }
+
+  // toChain + old: receiverChainId
+  if ((params.toChain && typeof params.toChain === 'string') || (params.receiverChainId && typeof params.receiverChainId === 'string')) {
+    try {
+      const newToChainId = parseInt(typeof params.toChain === 'string' ? params.toChain : params.receiverChainId as string)
+      const newToChain = transferChains.find((chain) => chain.id === newToChainId)
+
+      if (newToChain && newToChain.key !== defaultParams.depositChain) {
+        // only set if different chain
+        defaultParams.withdrawChain = newToChain.key
+        defaultParams.withdrawToken = testToken[defaultParams.withdrawChain][0].id
+      }
+    } catch (e) { console.error(e) }
+  }
+
+  // toToken
+  // TODO: add with more token available
+
+  // old: assset
+  // TODO: add with more token available
+  return defaultParams
+}
+
 function debounce(func: Function, timeout: number = 300) {
   let timer: NodeJS.Timeout
   return (...args: any) => {
@@ -49,16 +119,18 @@ function debounce(func: Function, timeout: number = 300) {
   }
 }
 
+const defaultParams = getDefaultParams()
+
 const SwapXpollinate = () => {
   const [stateUpdate, setStateUpdate] = useState<number>(0)
 
   // Form
-  const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.RIN)
-  const [depositAmount, setDepositAmount] = useState<number>(1)
-  const [depositToken, setDepositToken] = useState<string>(testToken[ChainKey.RIN][0].id)
-  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.GOR)
+  const [depositChain, setDepositChain] = useState<ChainKey>(defaultParams.depositChain)
+  const [depositAmount, setDepositAmount] = useState<number>(defaultParams.depositAmount)
+  const [depositToken, setDepositToken] = useState<string>(defaultParams.depositToken)
+  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(defaultParams.withdrawChain)
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
-  const [withdrawToken, setWithdrawToken] = useState<string>(testToken[ChainKey.GOR][0].id)
+  const [withdrawToken, setWithdrawToken] = useState<string>(defaultParams.withdrawToken)
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(testToken)
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
@@ -89,6 +161,21 @@ const SwapXpollinate = () => {
   const web3 = useWeb3React<Web3Provider>()
   const { activate, deactivate } = useWeb3React()
   const intervalRef = useRef<NodeJS.Timeout>()
+
+  // update query string
+  useEffect(() => {
+    const params = {
+      fromChain: getChainByKey(depositChain).id,
+      fromToken: depositToken,
+      toChain: getChainByKey(withdrawChain).id,
+      toToken: withdrawToken,
+      fromAmount: depositAmount,
+    }
+    const search = QueryString.stringify(params)
+    history.push({
+      search,
+    });
+  }, [depositChain, withdrawChain, depositToken, withdrawToken, depositAmount]);
 
   // auto-trigger finish if corresponding modal is opend
   useEffect(() => {
@@ -379,7 +466,8 @@ const SwapXpollinate = () => {
       const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
       const callData = optionCallData !== '' ? optionCallData : undefined
       const dToken = findToken(depositChain, depositToken)
-      const dAmount = BigNumber.from(depositAmount).mul(BigNumber.from(10).pow(dToken.decimals)).toBigInt().toString()
+      const dAmountFloat = FixedNumber.from(depositAmount.toFixed()).mulUnsafe(FixedNumber.from(BigNumber.from(10).pow(dToken.decimals))).round(0).toString()
+      const dAmount = dAmountFloat.substr(0, dAmountFloat.length - 2)
       debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount, receiving, callTo, callData)
     }
   }, [
