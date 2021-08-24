@@ -52,9 +52,9 @@ const readWallets = (): Array<Wallet> => {
   }
 }
 
-const storeNxtpMessagingToken = (token: string) => {
+const storeNxtpMessagingToken = (token: string, account: string) => {
   if (isSupported()) {
-    localStorage.setItem('nxtpMessagingToken', token)
+    localStorage.setItem('nxtpMessagingToken', token + ':' + account)
   }
 }
 
@@ -62,8 +62,15 @@ const readNxtpMessagingToken = () => {
   if (!isSupported()) {
     return null
   }
-
-  return localStorage.getItem('nxtpMessagingToken')
+  const value = localStorage.getItem('nxtpMessagingToken')
+  if (!value) {
+    return null
+  }
+  const parts = value.split(':')
+  return {
+    token: parts[0],
+    account: parts.length > 1 && parts[1] ? parts[1] : null
+  }
 }
 
 export {

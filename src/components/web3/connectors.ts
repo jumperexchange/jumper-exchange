@@ -18,6 +18,12 @@ const CHAINS = {
   POLYGON_TESTNET: 80001,
 
   XDAI: 100,
+
+  FANTOM: 250,
+  OKEX: 66,
+  AVALANCHE: 43114,
+  FSN: 32659,
+  HARMONY: 1666600000,
 };
 
 const RPC_URLS: { [chainId: number]: string } = {
@@ -36,6 +42,12 @@ const RPC_URLS: { [chainId: number]: string } = {
   [CHAINS.POLYGON_TESTNET]: process.env.REACT_APP_RPC_URL_POLYGON_MUMBAI as string,
 
   [CHAINS.XDAI]: process.env.REACT_APP_RPC_URL_XDAI as string,
+
+  [CHAINS.FANTOM]: 'https://ftmscan.com/',
+  [CHAINS.OKEX]: 'https://exchainrpc.okex.org',
+  [CHAINS.AVALANCHE]: 'https://api.avax.network/ext/bc/C/rpc',
+  [CHAINS.FSN]: 'https://fsnmainnet2.anyswap.exchange',
+  [CHAINS.HARMONY]: 'https://api.harmony.one',
 };
 
 // cached providers

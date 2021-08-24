@@ -31,19 +31,20 @@ export const setup = async (signer: providers.JsonRpcSigner) => {
   const sdk = new NxtpSdk(chainConfig, signer, pino({ level: "info" }));
 
   // reuse existing messaging token
+  const account = await signer.getAddress()
   try {
     const oldToken = readNxtpMessagingToken()
-    if (oldToken) {
+    if (oldToken?.token && oldToken.account === account) {
       try {
-        await sdk.connectMessaging(oldToken)
+        await sdk.connectMessaging(oldToken.token)
       } catch (e) {
         console.error(e)
         const token = await sdk.connectMessaging()
-        storeNxtpMessagingToken(token)
+        storeNxtpMessagingToken(token, account)
       }
     } else {
       const token = await sdk.connectMessaging()
-      storeNxtpMessagingToken(token)
+      storeNxtpMessagingToken(token, account)
     }
   } catch (e) {
     console.error(e)

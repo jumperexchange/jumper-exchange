@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
+import { BigNumber } from 'ethers';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import onehiveWordmark from '../../assets/1hive_wordmark.svg';
 import connextWordmark from '../../assets/connext_wordmark.svg';
@@ -81,6 +82,7 @@ const SwapXpollinate = () => {
   // nxtp
   const [sdk, setSdk] = useState<NxtpSdk>()
   const [sdkChainId, setSdkChainId] = useState<number>()
+  const [sdkAccount, setSdkAccount] = useState<string>()
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
 
   // Wallet
@@ -143,7 +145,7 @@ const SwapXpollinate = () => {
 
   useEffect(() => {
     const initializeConnext = async () => {
-      if (sdk && sdkChainId === web3.chainId) {
+      if (sdk && sdkChainId === web3.chainId && sdkAccount === web3.account) {
         return sdk
       }
       if (!web3.library || !web3.account) {
@@ -152,6 +154,7 @@ const SwapXpollinate = () => {
 
       const signer = web3.library.getSigner()
       setSdkChainId(web3.chainId)
+      setSdkAccount(web3.account)
 
       if (sdk) {
         sdk.removeAllListeners()
@@ -232,7 +235,7 @@ const SwapXpollinate = () => {
       }
     }
 
-  }, [web3, sdk, sdkChainId])
+  }, [web3, sdk, sdkChainId, sdkAccount])
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -376,8 +379,7 @@ const SwapXpollinate = () => {
       const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
       const callData = optionCallData !== '' ? optionCallData : undefined
       const dToken = findToken(depositChain, depositToken)
-      const dAmount = Math.floor(depositAmount * (10 ** dToken.decimals)).toString()
-
+      const dAmount = BigNumber.from(depositAmount).mul(BigNumber.from(10).pow(dToken.decimals)).toBigInt().toString()
       debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount, receiving, callTo, callData)
     }
   }, [
@@ -401,7 +403,7 @@ const SwapXpollinate = () => {
   ])
 
   // route generation if needed
-  const generateRoutes = useCallback(async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
+  const generateRoutes = useCallback(async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: string, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
     setRoutesLoading(true)
 
     try {
@@ -411,7 +413,7 @@ const SwapXpollinate = () => {
         depositToken,
         getChainByKey(withdrawChain).id,
         withdrawToken,
-        depositAmount.toString(),
+        depositAmount,
         receivingAddress,
         callTo,
         callData,
@@ -608,6 +610,7 @@ const SwapXpollinate = () => {
   }
 
   const currentChain = web3.chainId ? getChainById(web3.chainId) : undefined
+  const isSupported = !!transferChains.find((chain) => chain.id === currentChain?.id)
   const menuChain = (
     <Menu onClick={handleMenuClick}>
       {transferChains.map((chain) => {
@@ -633,43 +636,42 @@ const SwapXpollinate = () => {
 
   return (
     <Content className="site-layout xpollinate" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
-      <div style={{borderBottom: '1px solid #c6c6c6', marginBottom: 40}}>
-      <Row justify="space-between" style={{ padding: 20,  maxWidth: 1600, margin: 'auto' }}>
-        <a href="/">
-          <img src={xpollinateWordmark} alt="xPollinate" style={{ width: '100%', maxWidth: '160px' }} />
-          <span className="version">v2</span>
-        </a>
-
-        <span className="header-options">
-        {web3.account ? (
-          <>
-            <Dropdown overlay={menuChain}>
-              <Button className="header-button">
-                <Badge color="green" text={currentChain?.name} /> <DownOutlined />
-              </Button>
-            </Dropdown>
-
-            <Dropdown overlay={menuAccount}>
-              <Button className="header-button">
-               {web3.account.substr(0,6)}...{web3.account.substr(-4,4)}
-              </Button>
-            </Dropdown>
-          </>
-        ) : (
-          <Button shape="round" type="link" icon={<LoginOutlined />} onClick={() => activate(injected)}>Connect Wallet</Button>
-        )}
-
-          <a href="https://support.connext.network/hc/en-us" target="_blank" rel="nofollow noreferrer" className="header-button support-link">
-            <span>Support <LinkOutlined /></span>
+      <div style={{ borderBottom: '1px solid #c6c6c6', marginBottom: 40 }}>
+        <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
+          <a href="/">
+            <img src={xpollinateWordmark} alt="xPollinate" style={{ width: '100%', maxWidth: '160px' }} />
+            <span className="version">v2</span>
           </a>
 
-        </span>
+          <span className="header-options">
+
+            {web3.account ? (
+              <>
+                <Dropdown overlay={menuChain}>
+                  <Button className="header-button">
+                    <Badge color={isSupported ? 'green' : 'orange'} text={currentChain?.name || 'Unsupported Chain'} /> <DownOutlined />
+                  </Button>
+                </Dropdown>
+
+                <Dropdown overlay={menuAccount}>
+                  <Button className="header-button">
+                    {web3.account.substr(0, 6)}...{web3.account.substr(-4, 4)}
+                  </Button>
+                </Dropdown>
+              </>
+            ) : (
+              <Button shape="round" type="link" icon={<LoginOutlined />} onClick={() => activate(injected)}>Connect Wallet</Button>
+            )}
+
+            <a href="https://support.connext.network/hc/en-us" target="_blank" rel="nofollow noreferrer" className="header-button support-link">
+              <span>Support <LinkOutlined /></span>
+            </a>
+
+          </span>
         </Row>
-        </div>
+      </div>
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
-
-
 
         {/* Infos */}
         <Row justify="center" style={{ padding: 20, paddingTop: 0 }}>
