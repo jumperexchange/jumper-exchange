@@ -15,11 +15,13 @@ const testTokenAddresses: Record<number, string> = {
   80001: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 421611 - Arbitrum Testnet
   421611: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
+  // 97 - Binance Smart Chain Testnet
+  97: '0xd86bCB7D85163Fbc81756bb9cc22225D6ABCCadB',
   // 69 - Optimistic Ethereum (Kovan)
   69: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
 }
 
-const testChains = [3, 4, 5, 80001, 421611, 69]
+const testChains = [3, 4, 5, 80001, 421611, 97, 69]
 
 const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
 

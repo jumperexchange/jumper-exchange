@@ -278,6 +278,10 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
       (<>
         <Button type="default" block onClick={() => showGasModal(ChainKey.OPTT)}>Get ETH</Button>
       </>),
+    [ChainKey.BSCT]:
+      (<>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.BSCT)}>Get BNB</Button>
+      </>),
   }
   const tooltipEmpty = tooltipsEmpty[chain];
   const tooltips = {
@@ -294,6 +298,7 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
     [ChainKey.MUM]: (<>The Mumbai Testnet requires MATIC to pay for gas.</>),
     [ChainKey.ARBT]: (<>The Arbitrum Testnet requires ETH to pay for gas.</>),
     [ChainKey.OPTT]: (<>The Optimism Testnet requires ETH to pay for gas.</>),
+    [ChainKey.BSCT]: (<>The Optimism Testnet requires BNB to pay for gas.</>),
   }
   const tooltip = tooltips[chain];
   return (

@@ -40,6 +40,7 @@ const transferChains = [
   getChainByKey(ChainKey.GOR),
   getChainByKey(ChainKey.MUM),
   getChainByKey(ChainKey.ARBT),
+  // getChainByKey(ChainKey.BSCT), // disabled for now
   // getChainByKey(ChainKey.OPTT), // disabled for now
 ]
 

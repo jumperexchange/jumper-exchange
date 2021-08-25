@@ -12,9 +12,10 @@ const testChains = [
   3,
   4,
   5,
+  69,
+  97,
   80001,
   421611,
-  69,
 ]
 const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
 

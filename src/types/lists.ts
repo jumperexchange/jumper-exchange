@@ -500,6 +500,34 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+  // 97 - Binance Smart Chain Testnet
+  {
+    key: ChainKey.BSCT,
+    name: 'Binance Smart Chain Testnet',
+    coin: CoinKey.BNB,
+    id: 97,
+    visible: false,
+    faucetUrls: [
+      'https://testnet.binance.org/faucet-smart'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(97),
+      blockExplorerUrls: [
+        'https://testnet.bscscan.com/',
+      ],
+      chainName: 'Binance Smart Chain Testnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'tBNB',
+        symbol: 'tBNB',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://data-seed-prebsc-1-s1.binance.org:8545/',
+      ],
+    }
+  },
 
   // https://faucet.buni.finance/
 ]
