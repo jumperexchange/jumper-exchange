@@ -3,25 +3,18 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BaseType } from 'antd/lib/typography/Base';
-import connextIcon from '../../assets/icons/connext.png';
 import walletIcon from '../../assets/wallet.png';
 import { switchChain } from '../../services/metamask';
 import { formatTokenAmount } from '../../services/utils';
 import { ChainKey } from '../../types';
 import { getChainById, getChainByKey } from '../../types/lists';
-import { Execution, TranferStep } from '../../types/server';
+import { CrossAction, Execution, TranferStep } from '../../types/server';
 import Clock from '../Clock';
 import { injected } from '../web3/connectors';
 
 interface SwappingProps {
   route: Array<TranferStep>,
 }
-
-const connextAvatar = (
-  <Tooltip title="Connext">
-    <Avatar size="small" src={connextIcon} alt="Connext"></Avatar>
-  </Tooltip>
-)
 
 const SwappingNxtp = ({ route }: SwappingProps) => {
   let activeButton = null
@@ -110,18 +103,29 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
         'FAILED': 'danger',
       }
       const type = typeMapping[process.status]
+
+      const colorMapping: { [Status: string]: string } = {
+        'DONE': 'green',
+        'ACTION_REQUIRED': 'blue',
+        'PENDING': 'blue',
+        'FAILED': 'red',
+      }
+      const color = colorMapping[process.status]
+
       return (
-        <p key={index} style={{ display: 'flex' }}>
-          <Typography.Text
-            type={type}
-            className={process.status === 'PENDING' ? 'flashing' : undefined}
-          >
-            {process.message}
-          </Typography.Text>
-          <Typography.Text style={{ marginLeft: 'auto' }}>
-            <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
-          </Typography.Text>
-        </p>
+        <Timeline.Item key={index + '_right'} color={color}>
+          <span style={{ display: 'flex' }}>
+            <Typography.Text
+              type={type}
+              className={process.status === 'PENDING' ? 'flashing' : undefined}
+            >
+              {process.message}
+            </Typography.Text>
+            <Typography.Text style={{ marginLeft: 'auto' }}>
+              <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
+            </Typography.Text>
+          </span>
+        </Timeline.Item>
       )
     })
   }
@@ -131,26 +135,17 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
 
     return (
       <Tooltip title={chain.name}>
-        <Avatar size="small" src={chain.iconUrl} alt={chain.name}>{chain.name[0]}</Avatar>
+        <Avatar size="small" src={chain.iconUrl} alt={chain.name} style={{ marginTop: '-3px' }}>{chain.name[0]}</Avatar>
       </Tooltip>
     )
   }
 
   const parseStepToTimeline = (step: TranferStep, index: number) => {
     const executionSteps = parseExecution(step.execution)
-    const color = step.execution && step.execution.status === 'DONE' ? 'green' : (step.execution ? 'blue' : 'gray')
 
     switch (step.action.type) {
       case 'cross': {
-        return [
-          <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)} via {connextAvatar}</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
-          </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
-            {executionSteps}
-          </Timeline.Item>,
-        ]
+        return executionSteps
       }
 
       default:
@@ -188,22 +183,33 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
   const lastProcess = getLastProcess()
   const swapDoneAt = lastProcess?.doneAt || lastProcess?.failedAt
 
-  const mode = window.innerWidth > 500 ? 'alternate' : 'left'
+  const mode = 'left'
+  const step = route[0]
+  step.action = step.action as CrossAction
   return (<>
-    <Timeline mode={mode}>
+    <h2 style={{ textAlign: 'center' }}>
+      Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)}
+    </h2>
+    <p style={{ textAlign: 'center' }}>
+      {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}
+      <ArrowRightOutlined />
+      {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
+    </p>
+
+    <Timeline mode={mode} style={{ maxWidth: 400, margin: 'auto' }}>
       <Timeline.Item color="green"></Timeline.Item>
 
       {/* Wallet */}
-      {parseWalletSteps()}
+      {!web3.account && parseWalletSteps()}
 
       {/* Chain */}
-      {parseChainSteps()}
+      {web3.chainId !== route[0].action.chainId && parseChainSteps()}
 
       {/* Steps */}
       {route.map(parseStepToTimeline)}
     </Timeline>
 
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', maxWidth: 400, margin: 'auto' }}>
       <Typography.Text style={{ marginLeft: 'auto' }}>
         {swapStartedAt ? <span className="totalTime"><Clock startedAt={swapStartedAt} successAt={swapDoneAt} /></span> : <span>&nbsp;</span>}
       </Typography.Text>

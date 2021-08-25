@@ -40,7 +40,7 @@ const transferChains = [
   getChainByKey(ChainKey.GOR),
   getChainByKey(ChainKey.MUM),
   getChainByKey(ChainKey.ARBT),
-  // getChainByKey(ChainKey.BSCT), // disabled for now
+  getChainByKey(ChainKey.BSCT),
   // getChainByKey(ChainKey.OPTT), // disabled for now
 ]
 
@@ -787,7 +787,7 @@ const SwapXpollinate = () => {
               <h2>Active Transactions</h2>
             </Row>
             <Row justify="center">
-              <div style={{ overflow: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
                 <TransactionsTableNxtp
                   activeTransactions={activeTransactions}
                   executionRoutes={executionRoutes}

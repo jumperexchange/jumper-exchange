@@ -30,76 +30,6 @@ const TransactionsTableNxtp = ({
 
   const activeTransactionsColumns = [
     {
-      title: 'View',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        const index = executionRoutes.findIndex(item => {
-          return (item[0].estimate as CrossEstimate).quote.bid.transactionId === txData.invariant.transactionId
-        })
-
-        if (index !== -1) {
-          return <Button onClick={() => setModalRouteIndex(index)}>View</Button>
-        } else {
-          return ''
-        }
-      }
-    },
-    {
-      title: 'Transaction Id',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        return <div style={{ width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{txData.invariant.transactionId}</div>
-      }
-    },
-    {
-      title: 'Sending Chain',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        const chain = getChainById(txData.invariant.sendingChainId)
-        return <>{chain.id} - {chain.name}</>
-      }
-    },
-    {
-      title: 'Receiving Chain',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        const chain = getChainById(txData.invariant.receivingChainId)
-        return <>{chain.id} - {chain.name}</>
-      }
-    },
-    {
-      title: 'Asset',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        const chain = getChainById(txData.invariant.receivingChainId)
-        const token = testToken[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
-        const link = chain.metamask.blockExplorerUrls[0] + 'token/' + txData.invariant.receivingAssetId
-        return <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a>
-      }
-    },
-    {
-      title: 'Amount',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        const chain = getChainById(txData.invariant.receivingChainId)
-        const token = testToken[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
-        return (parseInt(txData.sending?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
-      }
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-    },
-    {
-      title: 'Expires',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        return (txData.sending?.expiry || 0) > Date.now() / 1000
-          ? `${(((txData.sending?.expiry || 0) - Date.now() / 1000) / 3600).toFixed(2)} hours`
-          : 'Expired'
-      }
-    },
-    {
       title: 'Action',
       dataIndex: '',
       render: (action: ActiveTransaction) => {
@@ -148,6 +78,73 @@ const TransactionsTableNxtp = ({
           }
         }
       },
+    },
+    {
+      title: 'Status',
+      dataIndex: '',
+      render: (action: ActiveTransaction) => {
+        const index = executionRoutes.findIndex(item => {
+          return (item[0].estimate as CrossEstimate).quote.bid.transactionId === action.txData.invariant.transactionId
+        })
+
+        if (index !== -1) {
+          return <Button onClick={() => setModalRouteIndex(index)}>{action.status}</Button>
+        } else {
+          return action.status
+        }
+      }
+    },
+    {
+      title: 'Sending Chain',
+      dataIndex: ['txData'],
+      render: (txData: CrosschainTransaction) => {
+        const chain = getChainById(txData.invariant.sendingChainId)
+        return <>{chain.id} - {chain.name}</>
+      }
+    },
+    {
+      title: 'Receiving Chain',
+      dataIndex: ['txData'],
+      render: (txData: CrosschainTransaction) => {
+        const chain = getChainById(txData.invariant.receivingChainId)
+        return <>{chain.id} - {chain.name}</>
+      }
+    },
+    {
+      title: 'Asset',
+      dataIndex: ['txData'],
+      render: (txData: CrosschainTransaction) => {
+        const chain = getChainById(txData.invariant.receivingChainId)
+        const token = testToken[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
+        const link = chain.metamask.blockExplorerUrls[0] + 'token/' + txData.invariant.receivingAssetId
+        return <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a>
+      }
+    },
+    {
+      title: 'Amount',
+      dataIndex: ['txData'],
+      render: (txData: CrosschainTransaction) => {
+        const chain = getChainById(txData.invariant.receivingChainId)
+        const token = testToken[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
+        return (parseInt(txData.sending?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
+      }
+    },
+
+    {
+      title: 'Expires',
+      dataIndex: ['txData'],
+      render: (txData: CrosschainTransaction) => {
+        return (txData.sending?.expiry || 0) > Date.now() / 1000
+          ? `${(((txData.sending?.expiry || 0) - Date.now() / 1000) / 3600).toFixed(2)} hours`
+          : 'Expired'
+      }
+    },
+    {
+      title: 'Transaction Id',
+      dataIndex: ['txData'],
+      render: (txData: CrosschainTransaction) => {
+        return <div style={{ width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{txData.invariant.transactionId}</div>
+      }
     },
   ]
 
