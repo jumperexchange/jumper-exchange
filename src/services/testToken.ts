@@ -6,7 +6,7 @@ import { getChainById } from '../types/lists'
 
 const testTokenAddresses: Record<number, string> = {
   // 3 - Ropsten
-  3: '0xe71678794fff8846bFF855f716b0Ce9d9a78E844',
+  3: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 4 - Rinkeby
   4: '0x9ac2c46d7acc21c881154d57c0dc1c55a3139198',
   // 5 - Goerli
@@ -16,7 +16,7 @@ const testTokenAddresses: Record<number, string> = {
   // 421611 - Arbitrum Testnet
   421611: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 97 - Binance Smart Chain Testnet
-  97: '0xd86bCB7D85163Fbc81756bb9cc22225D6ABCCadB',
+  97: '0xd86bcb7d85163fbc81756bb9cc22225d6abccadb',
   // 69 - Optimistic Ethereum (Kovan)
   69: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
 }

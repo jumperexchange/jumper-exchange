@@ -1,5 +1,5 @@
 import { DownOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
-import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -22,6 +22,7 @@ import { deepClone, formatTokenAmountOnly } from '../../services/utils';
 import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types';
 import { getChainById, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
+import HistoricTransactionsTableNxtp from '../nxtpDemo/HistoricTransactionsTableNxtp';
 import SwappingNxtp from '../nxtpDemo/SwappingNxtp';
 import TransactionsTableNxtp from '../nxtpDemo/TransactionsTableNxtp';
 import { ActiveTransaction, CrosschainTransaction } from '../nxtpDemo/typesNxtp';
@@ -158,6 +159,7 @@ const SwapXpollinate = () => {
   const [sdkChainId, setSdkChainId] = useState<number>()
   const [sdkAccount, setSdkAccount] = useState<string>()
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
+  const [historicTransaction, setHistoricTransactions] = useState<Array<HistoricalTransaction>>([])
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -302,6 +304,8 @@ const SwapXpollinate = () => {
           transaction.crosschainTx
         )
       }
+
+      setHistoricTransactions(await _sdk.getHistoricalTransactions())
 
       return _sdk
     }
@@ -678,7 +682,7 @@ const SwapXpollinate = () => {
       return <Button disabled={true} shape="round" type="primary" icon={<SyncOutlined spin />} size={"large"}>Searching Routes...</Button>
     }
     if (noRoutesAvailable) {
-      return <Button shape="round" type="primary" size={"large"} className="grayed" onClick={() => {setRouteUpdate(routeUpdate + 1)}}>No Route Found (Retry)</Button>
+      return <Button shape="round" type="primary" size={"large"} className="grayed" onClick={() => { setRouteUpdate(routeUpdate + 1) }}>No Route Found (Retry)</Button>
     }
     if (!hasSufficientBalance()) {
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
@@ -781,13 +785,9 @@ const SwapXpollinate = () => {
         </Row>
 
         {/* Active Transactions */}
-        {activeTransactions.length ?
-          <>
-            <Row justify="center">
-              <h2>Active Transactions</h2>
-            </Row>
-            <Row justify="center">
-              <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+        <Collapse defaultActiveKey={['1']} ghost>
+          <Collapse.Panel header={(<h2 style={{ display: 'inline' }}>Active Transactions ({activeTransactions.length})</h2>)} key="1">
+            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
                 <TransactionsTableNxtp
                   activeTransactions={activeTransactions}
                   executionRoutes={executionRoutes}
@@ -797,9 +797,19 @@ const SwapXpollinate = () => {
                   cancelTransfer={cancelTransfer}
                 />
               </div>
-            </Row>
-          </> : <></>
-        }
+          </Collapse.Panel>
+        </Collapse>
+
+        {/* Historical Transactions */}
+        <Collapse defaultActiveKey={['']} ghost>
+          <Collapse.Panel header={(<h2 style={{ display: 'inline' }}>Historical Transactions ({historicTransaction.length})</h2>)} key="1">
+            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <HistoricTransactionsTableNxtp
+                historicTransactions={historicTransaction}
+              />
+            </div>
+          </Collapse.Panel>
+        </Collapse>
 
         {/* Swap Form */}
         <Row style={{ margin: 20 }} justify={"center"}>
