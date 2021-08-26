@@ -3,20 +3,22 @@ import React, { useEffect } from 'react';
 import './App.css';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
-import analytics from './services/analytics';
 import SwapXpollinate from './components/nxtp/SwapXpollinate';
-import { defaultTokens, getChainByKey } from './types/lists';
+import analytics from './services/analytics';
+import { getBalancesForWallet, testToken } from './services/testToken';
 import { ChainKey } from './types';
-import { getBalancesForWallet } from './services/balanceService';
+import { getChainByKey } from './types/lists';
 
 const transferChains = [
-  getChainByKey(ChainKey.BSC),
-  getChainByKey(ChainKey.POL),
-  getChainByKey(ChainKey.DAI),
+  getChainByKey(ChainKey.ROP),
+  getChainByKey(ChainKey.RIN),
+  getChainByKey(ChainKey.GOR),
+  getChainByKey(ChainKey.MUM),
+  getChainByKey(ChainKey.ARBT),
+  getChainByKey(ChainKey.OPTT),
 ]
 
-const transferTokens = defaultTokens
-
+const transferTokens = testToken
 
 function usePageViews() {
   let location = (window as any).location
@@ -25,21 +27,19 @@ function usePageViews() {
   }, [location])
 }
 
-function AppXpollinate() {
+function AppXpollinateTestnet() {
   usePageViews()
 
   const alert = (
     <Alert
-      message={(<h1>Welcome to xPollinate.io</h1>)}
+      message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
       description={(
         <>
-          <p>This interface gives access to the NXTP protocol of connext - Cross-Chain-Transfers in minutes.</p>
-          <p>It allows you to transfer Stablecoins (USDC, USDT, DAI) betwen multiple EVM based chains (Polygon, BSC, xDAI).</p>
-          <p> Simply select the chains, an amount, the token to transfer and click Swap.</p>
+          <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
+          <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
         </>
       )}
       type="info"
-      closable={true}
     />
   )
 
@@ -52,6 +52,7 @@ function AppXpollinate() {
             transferChains={transferChains}
             transferTokens={transferTokens}
             getBalancesForWallet={getBalancesForWallet}
+            testnet={true}
           />
         </Layout>
       </Web3ConnectionManager>
@@ -59,4 +60,4 @@ function AppXpollinate() {
   );
 }
 
-export { AppXpollinate };
+export { AppXpollinateTestnet };

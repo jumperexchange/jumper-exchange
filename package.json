@@ -40,13 +40,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:nxtp": "bash -ac '. .env.nxtp.development; react-scripts start'",
-    "start:xpollinate": "bash -ac '. .env.xpollinate.development; react-scripts start'",
+    "start:xpollinate": "bash -ac '. .env.xpollinate-mainnet.development; react-scripts start'",
+    "start:xpollinate:testnet": "bash -ac '. .env.xpollinate-testnet.development; react-scripts start'",
     "build": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
     "build:staging": "REACT_APP_ENV=staging npm run build",
     "build:production": "REACT_APP_ENV=production npm run build",
-    "build:nxtp": "REACT_APP_ENV=nxtp npm run build",
-    "build:xpollinate": "REACT_APP_ENV=xpollinate npm run build",
+    "build:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet npm run build",
+    "build:xpollinate": "REACT_APP_ENV=xpollinate-mainnet npm run build",
     "test": "echo 'Not defined'"
   },
   "eslintConfig": {

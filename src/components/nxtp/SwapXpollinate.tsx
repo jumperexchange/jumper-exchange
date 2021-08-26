@@ -1,9 +1,9 @@
-import { DownOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { CheckOutlined, DownOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
+import { Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import { BigNumber, FixedNumber, providers } from 'ethers';
@@ -17,33 +17,25 @@ import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
 import { clearLocalStorage } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
-import { getBalancesForWallet } from '../../services/balanceService';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types';
-import { getChainById, defaultTokens, getChainByKey } from '../../types/lists';
+import { ChainKey, ChainPortfolio, Token, TokenWithAmounts } from '../../types';
+import { Chain, getChainById, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
-import HistoricTransactionsTableNxtp from '../nxtpDemo/HistoricTransactionsTableNxtp';
-import SwappingNxtp from '../nxtpDemo/SwappingNxtp';
-import TransactionsTableNxtp from '../nxtpDemo/TransactionsTableNxtp';
-import { ActiveTransaction, CrosschainTransaction } from '../nxtpDemo/typesNxtp';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
-import './xpollinate.css';
+import HistoricTransactionsTableNxtp from './HistoricTransactionsTableNxtp';
+import SwappingNxtp from './SwappingNxtp';
+import './SwapXpollinate.css';
+import TestBalanceOverview from './TestBalanceOverview';
+import TransactionsTableNxtp from './TransactionsTableNxtp';
+import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
 
 const history = createBrowserHistory()
 
 const BALANCES_REFRESH_INTERVAL = 30000
 
-const transferChains = [
-  getChainByKey(ChainKey.BSC),
-  getChainByKey(ChainKey.POL),
-  getChainByKey(ChainKey.DAI),
-]
-
-const transferTokens = defaultTokens
-
-const getDefaultParams = () => {
+const getDefaultParams = (search: string, transferChains: Chain[], transferTokens: { [ChainKey: string]: Array<Token> }) => {
   const defaultParams = {
     depositChain: transferChains[0].key,
     depositToken: transferTokens[transferChains[0].key][0].id,
@@ -52,7 +44,6 @@ const getDefaultParams = () => {
     withdrawToken: transferTokens[transferChains[1].key][0].id,
   }
 
-  const search = history.location.search
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
 
   // fromChain + old: senderChainId
@@ -142,23 +133,48 @@ function debounce(func: Function, timeout: number = 300) {
   }
 }
 
-const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(transferChains.map(chain => chain.id))
+let chainProviders: Record<number, providers.FallbackProvider>
 
-const defaultParams = getDefaultParams()
+let startParams: {
+  depositChain: ChainKey;
+  depositToken: string;
+  depositAmount: number;
+  withdrawChain: ChainKey;
+  withdrawToken: string;
+}
 
-const SwapXpollinate = () => {
+interface SwapXpollinateProps {
+  alert: any
+  transferChains: Chain[]
+  transferTokens: { [ChainKey: string]: Array<Token> }
+  getBalancesForWallet: Function
+  testnet?: boolean
+}
+
+const SwapXpollinate = ({
+  alert,
+  transferChains,
+  transferTokens,
+  getBalancesForWallet,
+  testnet,
+}: SwapXpollinateProps) => {
+  // INIT
+  startParams = startParams ?? getDefaultParams(history.location.search, transferChains, transferTokens)
+  chainProviders = chainProviders ?? getRpcProviders(transferChains.map(chain => chain.id))
+
   const [stateUpdate, setStateUpdate] = useState<number>(0)
 
   // Form
-  const [depositChain, setDepositChain] = useState<ChainKey>(defaultParams.depositChain)
-  const [depositAmount, setDepositAmount] = useState<number>(defaultParams.depositAmount)
-  const [depositToken, setDepositToken] = useState<string>(defaultParams.depositToken)
-  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(defaultParams.withdrawChain)
+  const [depositChain, setDepositChain] = useState<ChainKey>(startParams.depositChain)
+  const [depositAmount, setDepositAmount] = useState<number>(startParams.depositAmount)
+  const [depositToken, setDepositToken] = useState<string>(startParams.depositToken)
+  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(startParams.withdrawChain)
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
-  const [withdrawToken, setWithdrawToken] = useState<string>(defaultParams.withdrawToken)
+  const [withdrawToken, setWithdrawToken] = useState<string>(startParams.withdrawToken)
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
+  const [updatingBalances, setUpdatingBalances] = useState<boolean>(false)
 
   // Advanced Options
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
@@ -277,6 +293,7 @@ const SwapXpollinate = () => {
       if (sdk) {
         sdk.removeAllListeners()
       }
+
       const _sdk = await setup(signer, chainProviders)
       setSdk(_sdk)
 
@@ -288,7 +305,7 @@ const SwapXpollinate = () => {
       _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionFulfilled, data, { invariant: data.txData, sending: data.txData })
         removeActiveTransaction(data.txData.transactionId)
-        updateBalances(web3.account!)
+        setRefreshBalances(true)
         setUpdateHistoricTransactions(true)
       })
 
@@ -310,7 +327,7 @@ const SwapXpollinate = () => {
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionFulfilled, data, { invariant: data.txData, receiving: data.txData })
         removeActiveTransaction(data.txData.transactionId)
-        updateBalances(web3.account!)
+        setRefreshBalances(true)
         setUpdateHistoricTransactions(true)
       })
 
@@ -400,16 +417,18 @@ const SwapXpollinate = () => {
     }
   }, [sdk, updateHistoricTransactions, updatingHistoricTransactions, loadHistoricTransactions])
 
-  const updateBalances = async (address: string) => {
+  const updateBalances = useCallback(async (address: string) => {
+    setUpdatingBalances(true)
     await getBalancesForWallet(address).then(setBalances)
-  }
+    setUpdatingBalances(false)
+  }, [getBalancesForWallet])
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
       setRefreshBalances(false)
       updateBalances(web3.account)
     }
-  }, [refreshBalances, web3.account])
+  }, [refreshBalances, web3.account, updateBalances])
 
   useEffect(() => {
     if (!web3.account) {
@@ -787,7 +806,7 @@ const SwapXpollinate = () => {
         <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
           <a href="/">
             <img src={xpollinateWordmark} alt="xPollinate" style={{ width: '100%', maxWidth: '160px' }} />
-            <span className="version">v2</span>
+            <span className="version">v2 {testnet && 'Testnet'}</span>
           </a>
 
           <span className="header-options">
@@ -822,24 +841,41 @@ const SwapXpollinate = () => {
 
         {/* Infos */}
         <Row justify="center" style={{ padding: 20, paddingTop: 0 }}>
-          <Alert
-            message={(<h1>Welcome to xPollinate.io</h1>)}
-            description={(
-              <>
-                <p>This interface gives access to the NXTP protocol of connext - Cross-Chain-Transfers in minutes.</p>
-                <p>It allows you to transfer Stablecoins (USDC, USDT, DAI) betwen multiple EVM based chains (Polygon, BSC, xDAI).</p>
-                <p> Simply select the chains, an amount, the token to transfer and click Swap.</p>
-              </>
-            )}
-            type="info"
-            closable={true}
-          />
+          {alert}
         </Row>
 
         <Collapse activeKey={activeKeyTransactions} accordion ghost>
 
+          {/* Balances */}
+          {testnet &&
+            <Collapse.Panel header={(
+              <h2
+                onClick={() => setActiveKeyTransactions((key) => key === 'balances' ? '' : 'balances')}
+                style={{ display: 'inline' }}
+              >
+                Balances ({(updatingBalances ? <SyncOutlined spin /> : <CheckOutlined />)})
+              </h2>
+            )} key="balances">
+              <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+                <TestBalanceOverview
+                  transferChains={transferChains}
+                  updateBalances={() => updateBalances(web3.account!)}
+                  updatingBalances={updatingBalances}
+                  balances={balances}
+                />
+              </div>
+            </Collapse.Panel>
+          }
+
           {/* Active Transactions */}
-          <Collapse.Panel className={activeTransactions.length ? '' : 'empty'} header={(<h2 onClick={() => setActiveKeyTransactions((key) => key === 'active' ? '' : 'active')} style={{ display: 'inline' }}>Active Transactions ({!sdk ? '-' : (updatingActiveTransactions ? <SyncOutlined spin /> : activeTransactions.length)})</h2>)} key="active">
+          <Collapse.Panel className={activeTransactions.length ? '' : 'empty'} header={(
+            <h2
+              onClick={() => setActiveKeyTransactions((key) => key === 'active' ? '' : 'active')}
+              style={{ display: 'inline' }}
+            >
+              Active Transactions ({!sdk ? '-' : (updatingActiveTransactions ? <SyncOutlined spin /> : activeTransactions.length)})
+            </h2>
+          )} key="active">
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
               <TransactionsTableNxtp
                 activeTransactions={activeTransactions}
@@ -853,7 +889,14 @@ const SwapXpollinate = () => {
           </Collapse.Panel>
 
           {/* Historical Transactions */}
-          <Collapse.Panel className={historicTransaction.length ? '' : 'empty'} header={(<h2 onClick={() => setActiveKeyTransactions((key) => key === 'historic' ? '' : 'historic')} style={{ display: 'inline' }}>Historical Transactions ({!sdk ? '-' : (updatingHistoricTransactions ? <SyncOutlined spin /> : historicTransaction.length)})</h2>)} key="historic">
+          <Collapse.Panel className={historicTransaction.length ? '' : 'empty'} header={(
+            <h2
+              onClick={() => setActiveKeyTransactions((key) => key === 'historic' ? '' : 'historic')}
+              style={{ display: 'inline' }}
+            >
+              Historical Transactions ({!sdk ? '-' : (updatingHistoricTransactions ? <SyncOutlined spin /> : historicTransaction.length)})
+            </h2>
+          )} key="historic">
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
               <HistoricTransactionsTableNxtp
                 historicTransactions={historicTransaction}

@@ -1,12 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy xPollinate (prod) via SSH
+name: Deploy xPollinate Testnet (production) via SSH
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches:
+      - main
       - develop
       - feature/xpollinate
 
@@ -33,7 +34,7 @@ jobs:
         run: yarn install
 
       - name: Build WebApp
-        run: yarn build:xpollinate
+        run: yarn build:xpollinate-testnet
 
       # Runs a set of commands using the runners shell
       - name: ssh deploy
@@ -50,7 +51,7 @@ jobs:
           # Source directory
           SOURCE: "build/" # optional, default is
           # Target directory
-          TARGET: ${{ secrets.REMOTE_TARGET }}/prod/connext # optional, default is /home/REMOTE_USER/
+          TARGET: ${{ secrets.REMOTE_TARGET }}/prod/connext-testnet # optional, default is /home/REMOTE_USER/
           # Arguments to pass to rsync
           #ARGS: # optional, default is -rltgoDzvO
           # An array of folder to exclude
@@ -63,14 +64,14 @@ jobs:
           CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ONE }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
-          PURGE_URLS: '["https://connext.li.finance/"]'
+          PURGE_URLS: '["https://testnet.connext.li.finance/"]'
 
       # Notify Rollbar about release
       - name: Notify deploy to Rollbar
         uses: rollbar/github-deploy-action@2.1.1
         id: rollbar_deploy
         with:
-          environment: 'xpollinate'
+          environment: 'xpollinate-testnet'
           version: ${{ github.sha }}
         env:
           ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}
