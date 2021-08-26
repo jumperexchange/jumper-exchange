@@ -542,7 +542,7 @@ const SwapXpollinate = ({
       const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
       const callData = optionCallData !== '' ? optionCallData : undefined
       const dToken = findToken(depositChain, depositToken)
-      const dAmountFloat = FixedNumber.from(depositAmount.toFixed()).mulUnsafe(FixedNumber.from(BigNumber.from(10).pow(dToken.decimals))).round(0).toString()
+      const dAmountFloat = FixedNumber.from(depositAmount.toFixed(10)).mulUnsafe(FixedNumber.from(BigNumber.from(10).pow(dToken.decimals))).round(0).toString()
       const dAmount = dAmountFloat.substr(0, dAmountFloat.length - 2)
       debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount, receiving, callTo, callData)
     }

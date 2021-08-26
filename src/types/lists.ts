@@ -144,9 +144,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(56),
       blockExplorerUrls: [
-        'https://bsc-dataseed.binance.org/',
-        'https://bsc-dataseed1.defibit.io/',
-        'https://bsc-dataseed1.ninicoin.io/',
+        'https://bscscan.com/',
       ],
       chainName: 'Binance Smart Chain Mainnet',
       iconUrls: [],
@@ -156,7 +154,9 @@ export const supportedChains: Array<Chain> = [
         decimals: 18,
       },
       rpcUrls: [
-        'https://bscscan.com/',
+        'https://bsc-dataseed.binance.org/',
+        'https://bsc-dataseed1.defibit.io/',
+        'https://bsc-dataseed1.ninicoin.io/',
       ],
     },
   },
@@ -182,10 +182,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(100),
       blockExplorerUrls: [
-        'https://rpc.xdaichain.com/',
-        'https://dai.poa.network/',
-        'https://xdai.poanetwork.dev/',
-        'https://xdai.1hive.org/',
+        'https://blockscout.com/xdai/mainnet',
       ],
       chainName: 'xDAI Chain',
       iconUrls: [],
@@ -195,7 +192,10 @@ export const supportedChains: Array<Chain> = [
         decimals: 18,
       },
       rpcUrls: [
-        'https://blockscout.com/xdai/mainnet',
+        'https://rpc.xdaichain.com/',
+        'https://dai.poa.network/',
+        'https://xdai.poanetwork.dev/',
+        'https://xdai.1hive.org/',
       ],
     },
   },
@@ -211,7 +211,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(250),
       blockExplorerUrls: [
-        'https://rpcapi.fantom.network',
+        'https://ftmscan.com/',
       ],
       chainName: 'Fantom Opera',
       iconUrls: [],
@@ -221,7 +221,7 @@ export const supportedChains: Array<Chain> = [
         decimals: 18,
       },
       rpcUrls: [
-        'https://ftmscan.com/',
+        'https://rpcapi.fantom.network',
       ],
     },
   },

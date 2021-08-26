@@ -126,8 +126,8 @@ const TransactionsTableNxtp = ({
       title: 'Amount',
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
-        const chain = getChainById(txData.invariant.receivingChainId)
-        const token = tokens[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
+        const chain = getChainById(txData.invariant.sendingChainId)
+        const token = tokens[chain.key].find(token => token.id === txData.invariant.sendingAssetId.toLowerCase())
         return (parseInt(txData.sending?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
       }
     },
