@@ -4,7 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Button, Spin, Table } from 'antd';
 import React from 'react';
-import { testToken } from '../../services/testToken';
+import { TokenWithAmounts } from '../../types';
 import { getChainById } from '../../types/lists';
 import { CrossEstimate, TranferStep } from '../../types/server';
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
@@ -16,6 +16,7 @@ interface TransactionsTableNxtpProps {
   openSwapModalFinish: Function
   switchChain: Function
   cancelTransfer: Function
+  tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
 }
 
 const TransactionsTableNxtp = ({
@@ -25,6 +26,7 @@ const TransactionsTableNxtp = ({
   openSwapModalFinish,
   switchChain,
   cancelTransfer,
+  tokens,
 }: TransactionsTableNxtpProps) => {
   const web3 = useWeb3React<Web3Provider>()
 
@@ -115,7 +117,7 @@ const TransactionsTableNxtp = ({
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.receivingChainId)
-        const token = testToken[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
+        const token = tokens[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
         const link = chain.metamask.blockExplorerUrls[0] + 'token/' + txData.invariant.receivingAssetId
         return <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a>
       }
@@ -125,7 +127,7 @@ const TransactionsTableNxtp = ({
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.receivingChainId)
-        const token = testToken[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
+        const token = tokens[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
         return (parseInt(txData.sending?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
       }
     },

@@ -2,15 +2,17 @@ import { HistoricalTransaction } from '@connext/nxtp-sdk';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import React from 'react';
-import { testToken } from '../../services/testToken';
+import { TokenWithAmounts } from '../../types';
 import { getChainById } from '../../types/lists';
 
 interface HistoricTransactionsTableNxtpProps {
   historicTransactions: Array<HistoricalTransaction>
+  tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
 }
 
 const HistoricTransactionsTableNxtp = ({
   historicTransactions,
+  tokens,
 }: HistoricTransactionsTableNxtpProps) => {
 
   const historicTransactionsColumns: ColumnsType<HistoricalTransaction> = [
@@ -50,7 +52,7 @@ const HistoricTransactionsTableNxtp = ({
       align: 'right',
       render: (transaction: HistoricalTransaction) => {
         const chain = getChainById(transaction.crosschainTx.invariant.sendingChainId)
-        const token = testToken[chain.key].find(token => token.id === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase())
+        const token = tokens[chain.key].find(token => token.id === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase())
         const amount = (parseInt(transaction.crosschainTx.sending?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
         const link = chain.metamask.blockExplorerUrls[0] + 'token/' + transaction.crosschainTx.invariant.sendingAssetId
         return <>{amount} <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
@@ -73,7 +75,7 @@ const HistoricTransactionsTableNxtp = ({
       align: 'right',
       render: (transaction: HistoricalTransaction) => {
         const chain = getChainById(transaction.crosschainTx.invariant.receivingChainId)
-        const token = testToken[chain.key].find(token => token.id === transaction.crosschainTx.invariant.receivingAssetId.toLowerCase())
+        const token = tokens[chain.key].find(token => token.id === transaction.crosschainTx.invariant.receivingAssetId.toLowerCase())
         const amount = (parseInt(transaction.crosschainTx.receiving?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
 
         const toChain = getChainById(transaction.crosschainTx.invariant.receivingChainId)

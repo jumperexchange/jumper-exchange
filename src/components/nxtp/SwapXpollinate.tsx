@@ -884,6 +884,7 @@ const SwapXpollinate = ({
                 openSwapModalFinish={openSwapModalFinish}
                 switchChain={switchChain}
                 cancelTransfer={cancelTransfer}
+                tokens={tokens}
               />
             </div>
           </Collapse.Panel>
@@ -900,6 +901,7 @@ const SwapXpollinate = ({
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
               <HistoricTransactionsTableNxtp
                 historicTransactions={historicTransaction}
+                tokens={tokens}
               />
             </div>
           </Collapse.Panel>
