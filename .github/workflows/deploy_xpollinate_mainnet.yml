@@ -34,7 +34,7 @@ jobs:
         run: yarn install
 
       - name: Build WebApp
-        run: yarn build:xpollinate-mainnet
+        run: yarn build:xpollinate
 
       # Runs a set of commands using the runners shell
       - name: ssh deploy
