@@ -82,3 +82,19 @@
 .ant-timeline-item-last > .ant-timeline-item-content {
   min-height: auto;
 }
+
+.ant-collapse-item.empty .ant-collapse-header h2 {
+  color: #adadad;
+}
+
+.ant-collapse-item.empty svg {
+  fill: #adadad;
+}
+
+.ant-collapse-item .ant-collapse-header h2.empty {
+  color: #adadad;
+}
+
+.ant-collapse-item.empty svg {
+  fill: #adadad;
+}

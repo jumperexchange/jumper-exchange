@@ -159,7 +159,11 @@ const SwapXpollinate = () => {
   const [sdkChainId, setSdkChainId] = useState<number>()
   const [sdkAccount, setSdkAccount] = useState<string>()
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
+  const [updatingActiveTransactions, setUpdatingActiveTransactions] = useState<boolean>(false)
   const [historicTransaction, setHistoricTransactions] = useState<Array<HistoricalTransaction>>([])
+  const [updateHistoricTransactions, setUpdateHistoricTransactions] = useState<boolean>(true)
+  const [updatingHistoricTransactions, setUpdatingHistoricTransactions] = useState<boolean>(false)
+  const [activeKeyTransactions, setActiveKeyTransactions] = useState<string>('')
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -258,37 +262,46 @@ const SwapXpollinate = () => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionPrepared, data, { invariant: data.txData, sending: data.txData })
       })
 
-      _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
+      _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionFulfilled, data, { invariant: data.txData, sending: data.txData })
         removeActiveTransaction(data.txData.transactionId)
         updateBalances(web3.account!)
+        setUpdateHistoricTransactions(true)
       })
 
-      _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
+      _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionCancelled, data, { invariant: data.txData, sending: data.txData })
         removeActiveTransaction(data.txData.transactionId)
+        setUpdateHistoricTransactions(true)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
         updateActiveTransactionsWith(data.transactionId, NxtpSdkEvents.ReceiverPrepareSigned, data)
+        setActiveKeyTransactions('active')
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionPrepared, data, { invariant: data.txData, receiving: data.txData })
       })
 
-      _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
+      _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionFulfilled, data, { invariant: data.txData, receiving: data.txData })
         removeActiveTransaction(data.txData.transactionId)
         updateBalances(web3.account!)
+        setUpdateHistoricTransactions(true)
       })
 
-      _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
+      _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionCancelled, data, { invariant: data.txData, receiving: data.txData })
         removeActiveTransaction(data.txData.transactionId)
+        setUpdateHistoricTransactions(true)
       })
 
+      // fetch historic transactions
+      setUpdateHistoricTransactions(true)
+
       // get pending transactions
+      setUpdatingActiveTransactions(true)
       const transactions = await _sdk.getActiveTransactions()
       for (const transaction of transactions) {
         // merge to txData to be able to pass event to fulfillTransfer
@@ -304,8 +317,10 @@ const SwapXpollinate = () => {
           transaction.crosschainTx
         )
       }
-
-      setHistoricTransactions(await _sdk.getHistoricalTransactions())
+      if (transactions.length) {
+        setActiveKeyTransactions('active')
+      }
+      setUpdatingActiveTransactions(false)
 
       return _sdk
     }
@@ -319,6 +334,7 @@ const SwapXpollinate = () => {
     if (!web3.account) {
       setHighlightedIndex(-1)
       setActiveTransactions([])
+      setHistoricTransactions([])
       setExecutionRoutes([])
       setSdkChainId(undefined)
       if (sdk) {
@@ -348,10 +364,22 @@ const SwapXpollinate = () => {
     }
   }
 
+  const loadHistoricTransactions = useCallback(async () => {
+    setUpdatingHistoricTransactions(true)
+    setHistoricTransactions(await sdk!.getHistoricalTransactions())
+    setUpdateHistoricTransactions(false)
+    setUpdatingHistoricTransactions(false)
+  }, [sdk])
+
+  useEffect(() => {
+    if (sdk && updateHistoricTransactions && !updatingHistoricTransactions) {
+      loadHistoricTransactions()
+    }
+  }, [sdk, updateHistoricTransactions, updatingHistoricTransactions, loadHistoricTransactions])
+
   const updateBalances = async (address: string) => {
     await getBalancesForWallet(address).then(setBalances)
   }
-
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
@@ -638,6 +666,7 @@ const SwapXpollinate = () => {
       },
     }
     updateActiveTransactionsWith(crossEstimate.quote.bid.transactionId, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent, txData)
+    setActiveKeyTransactions('active')
 
     // start execution
     const update = (step: TranferStep, status: Execution) => {
@@ -784,25 +813,24 @@ const SwapXpollinate = () => {
           />
         </Row>
 
-        {/* Active Transactions */}
-        <Collapse defaultActiveKey={['1']} ghost>
-          <Collapse.Panel header={(<h2 style={{ display: 'inline' }}>Active Transactions ({activeTransactions.length})</h2>)} key="1">
-            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
-                <TransactionsTableNxtp
-                  activeTransactions={activeTransactions}
-                  executionRoutes={executionRoutes}
-                  setModalRouteIndex={setModalRouteIndex}
-                  openSwapModalFinish={openSwapModalFinish}
-                  switchChain={switchChain}
-                  cancelTransfer={cancelTransfer}
-                />
-              </div>
-          </Collapse.Panel>
-        </Collapse>
+        <Collapse activeKey={activeKeyTransactions} accordion ghost>
 
-        {/* Historical Transactions */}
-        <Collapse defaultActiveKey={['']} ghost>
-          <Collapse.Panel header={(<h2 style={{ display: 'inline' }}>Historical Transactions ({historicTransaction.length})</h2>)} key="1">
+          {/* Active Transactions */}
+          <Collapse.Panel className={activeTransactions.length ? '' : 'empty'} header={(<h2 onClick={() => setActiveKeyTransactions((key) => key === 'active' ? '' : 'active')} style={{ display: 'inline' }}>Active Transactions ({!sdk ? '-' : (updatingActiveTransactions ? <SyncOutlined spin /> : activeTransactions.length)})</h2>)} key="active">
+            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <TransactionsTableNxtp
+                activeTransactions={activeTransactions}
+                executionRoutes={executionRoutes}
+                setModalRouteIndex={setModalRouteIndex}
+                openSwapModalFinish={openSwapModalFinish}
+                switchChain={switchChain}
+                cancelTransfer={cancelTransfer}
+              />
+            </div>
+          </Collapse.Panel>
+
+          {/* Historical Transactions */}
+          <Collapse.Panel className={historicTransaction.length ? '' : 'empty'} header={(<h2 onClick={() => setActiveKeyTransactions((key) => key === 'historic' ? '' : 'historic')} style={{ display: 'inline' }}>Historical Transactions ({!sdk ? '-' : (updatingHistoricTransactions ? <SyncOutlined spin /> : historicTransaction.length)})</h2>)} key="historic">
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
               <HistoricTransactionsTableNxtp
                 historicTransactions={historicTransaction}
