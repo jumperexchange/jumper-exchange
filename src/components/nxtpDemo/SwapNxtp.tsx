@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
+import { providers } from 'ethers';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
@@ -19,7 +20,7 @@ import { getChainById, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
-import { injected } from '../web3/connectors';
+import { getRpcProviders, injected } from '../web3/connectors';
 import SwappingNxtp from './SwappingNxtp';
 import TransactionsTableNxtp from './TransactionsTableNxtp';
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
@@ -44,6 +45,17 @@ function debounce(func: Function, timeout: number = 300) {
     }, timeout)
   }
 }
+
+const testChains = [
+  3,
+  4,
+  5,
+  69,
+  97,
+  80001,
+  421611,
+]
+const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
 
 const SwapNxtp = () => {
   const [stateUpdate, setStateUpdate] = useState<number>(0)
@@ -155,7 +167,7 @@ const SwapNxtp = () => {
       if (sdk) {
         sdk.removeAllListeners()
       }
-      const _sdk = await setup(signer)
+      const _sdk = await setup(signer, chainProviders)
       setSdk(_sdk)
 
       // listen to events

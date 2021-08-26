@@ -28,6 +28,7 @@ interface SwapFormProps {
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> },
   balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined,
   allowSameChains?: boolean,
+  forceSameToken?: boolean,
 }
 
 const SwapForm = ({
@@ -50,6 +51,7 @@ const SwapForm = ({
   tokens,
   balances,
   allowSameChains,
+  forceSameToken,
 }: SwapFormProps) => {
 
   const depositSelectRef = useRef<RefSelectProps>()
@@ -69,7 +71,11 @@ const SwapForm = ({
       setWithdrawToken(depositToken)
     }
     setDepositChain(chainKey)
-    setDepositToken(tokens[chainKey][0].id)
+
+    // find same deposit token
+    const symbol = tokens[depositChain].find(token => token.id === depositToken)?.symbol
+    const tokenId = tokens[chainKey].find(token => token.symbol === symbol)?.id
+    setDepositToken(tokenId)
   }
 
   const onChangeWithdrawChain = (chainKey: ChainKey) => {
@@ -78,7 +84,11 @@ const SwapForm = ({
       setDepositToken(withdrawToken)
     }
     setWithdrawChain(chainKey)
-    setWithdrawToken(tokens[chainKey][0].id)
+
+    // find same withdraw token
+    const symbol = tokens[withdrawChain].find(token => token.id === withdrawToken)?.symbol
+    const tokenId = tokens[chainKey].find(token => token.symbol === symbol)?.id
+    setWithdrawToken(tokenId)
   }
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
@@ -107,6 +117,13 @@ const SwapForm = ({
     if (balance < depositAmount && balance > 0) {
       setDepositAmount(Math.floor(balance * 10000) / 10000)
     }
+
+    // set withdraw token?
+    if (forceSameToken) {
+      const symbol = tokens[depositChain].find(token => token.id === tokenId)?.symbol
+      const withdrawToken = tokens[withdrawChain].find(token => token.symbol === symbol)?.id
+      setWithdrawToken(withdrawToken)
+    }
   }
 
   const onChangeWithdrawToken = (tokenId: string) => {
@@ -121,6 +138,13 @@ const SwapForm = ({
 
     // set token
     setWithdrawToken(tokenId)
+
+    // set withdraw token?
+    if (forceSameToken) {
+      const symbol = tokens[withdrawChain].find(token => token.id === tokenId)?.symbol
+      const depositToken = tokens[depositChain].find(token => token.symbol === symbol)?.id
+      setDepositToken(depositToken)
+    }
   }
 
   const onChangeDepositAmount = (amount: number) => {
@@ -223,6 +247,7 @@ const SwapForm = ({
                 return (option?.label as string || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
               }}
             >
+              { tokens[depositChain].length > 6 &&
               <Select.OptGroup label="Owned Token">
                 {!web3.account &&
                   <Select.Option key="Select Coin" value="connect">
@@ -253,6 +278,7 @@ const SwapForm = ({
                   </Select.Option>
                 ))}
               </Select.OptGroup>
+              }
 
               <Select.OptGroup label="All Token">
                 {tokens[depositChain].map(token => (
@@ -348,6 +374,7 @@ const SwapForm = ({
                 return (option?.label as string || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
               }}
             >
+              { tokens[withdrawChain].length > 6 &&
               <Select.OptGroup label="Owned Token">
                 {!web3.account &&
                   <Select.Option key="Select Coin" value="connect">
@@ -378,6 +405,7 @@ const SwapForm = ({
                   </Select.Option>
                 ))}
               </Select.OptGroup>
+              }
 
               <Select.OptGroup label="All Token">
                 {tokens[withdrawChain].map(token => (

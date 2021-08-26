@@ -2,24 +2,12 @@ import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { providers } from 'ethers';
 import pino from 'pino';
-import { getRpcProviders } from '../components/web3/connectors';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
-const testChains = [
-  3,
-  4,
-  5,
-  69,
-  97,
-  80001,
-  421611,
-]
-const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
-
-export const setup = async (signer: providers.JsonRpcSigner) => {
+export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
   const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {

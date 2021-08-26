@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
-import { BigNumber, FixedNumber } from 'ethers';
+import { BigNumber, FixedNumber, providers } from 'ethers';
 import { createBrowserHistory } from 'history';
 import QueryString from 'qs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -17,10 +17,10 @@ import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
 import { clearLocalStorage } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
-import { getBalancesForWallet, testToken } from '../../services/testToken';
+import { getBalancesForWallet } from '../../services/balanceService';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
 import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types';
-import { getChainById, getChainByKey } from '../../types/lists';
+import { getChainById, defaultTokens, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
 import HistoricTransactionsTableNxtp from '../nxtpDemo/HistoricTransactionsTableNxtp';
 import SwappingNxtp from '../nxtpDemo/SwappingNxtp';
@@ -28,7 +28,7 @@ import TransactionsTableNxtp from '../nxtpDemo/TransactionsTableNxtp';
 import { ActiveTransaction, CrosschainTransaction } from '../nxtpDemo/typesNxtp';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
-import { injected } from '../web3/connectors';
+import { getRpcProviders, injected } from '../web3/connectors';
 import './xpollinate.css';
 
 const history = createBrowserHistory()
@@ -36,22 +36,20 @@ const history = createBrowserHistory()
 const BALANCES_REFRESH_INTERVAL = 30000
 
 const transferChains = [
-  getChainByKey(ChainKey.ROP),
-  getChainByKey(ChainKey.RIN),
-  getChainByKey(ChainKey.GOR),
-  getChainByKey(ChainKey.MUM),
-  getChainByKey(ChainKey.ARBT),
-  getChainByKey(ChainKey.BSCT),
-  // getChainByKey(ChainKey.OPTT), // disabled for now
+  getChainByKey(ChainKey.BSC),
+  getChainByKey(ChainKey.POL),
+  getChainByKey(ChainKey.DAI),
 ]
+
+const transferTokens = defaultTokens
 
 const getDefaultParams = () => {
   const defaultParams = {
-    depositChain: ChainKey.RIN,
-    depositToken: testToken[ChainKey.RIN][0].id,
+    depositChain: transferChains[0].key,
+    depositToken: transferTokens[transferChains[0].key][0].id,
     depositAmount: 1,
-    withdrawChain: ChainKey.GOR,
-    withdrawToken: testToken[ChainKey.GOR][0].id
+    withdrawChain: transferChains[1].key,
+    withdrawToken: transferTokens[transferChains[1].key][0].id,
   }
 
   const search = history.location.search
@@ -70,14 +68,22 @@ const getDefaultParams = () => {
           defaultParams.withdrawToken = defaultParams.depositToken
         }
 
+        const foundTokenSymbol = transferTokens[defaultParams.depositChain].find(token => token.id === defaultParams.depositToken)!.symbol
         defaultParams.depositChain = newFromChain.key
-        defaultParams.depositToken = testToken[defaultParams.depositChain][0].id
+        defaultParams.depositToken = transferTokens[newFromChain.key].find(token => token.symbol === foundTokenSymbol)!.id
       }
     } catch (e) { console.error(e) }
   }
 
   // fromToken
-  // TODO: add with more token available
+  if (params.fromToken && typeof params.fromToken === 'string') {
+    // does token exist?
+    const foundToken = transferTokens[defaultParams.depositChain].find(token => token.id === params.fromToken)
+    if (foundToken) {
+      defaultParams.depositToken = foundToken.id
+      defaultParams.withdrawToken = transferTokens[defaultParams.withdrawChain].find(token => token.symbol === foundToken.symbol)!.id
+    }
+  }
 
   // fromAmount
   if (params.fromAmount && typeof params.fromAmount === 'string') {
@@ -97,17 +103,32 @@ const getDefaultParams = () => {
 
       if (newToChain && newToChain.key !== defaultParams.depositChain) {
         // only set if different chain
+        const foundTokenSymbol = transferTokens[defaultParams.depositChain].find(token => token.id === defaultParams.depositToken)!.symbol
         defaultParams.withdrawChain = newToChain.key
-        defaultParams.withdrawToken = testToken[defaultParams.withdrawChain][0].id
+        defaultParams.withdrawToken = transferTokens[newToChain.key].find(token => token.symbol === foundTokenSymbol)!.id
       }
     } catch (e) { console.error(e) }
   }
 
   // toToken
-  // TODO: add with more token available
+  if (params.toToken && typeof params.toToken === 'string') {
+    // does token exist?
+    const foundToken = transferTokens[defaultParams.withdrawChain].find(token => token.id === params.toToken)
+    if (foundToken) {
+      defaultParams.withdrawToken = foundToken.id
+      defaultParams.depositToken = transferTokens[defaultParams.depositChain].find(token => token.symbol === foundToken.symbol)!.id
+    }
+  }
 
   // old: assset
-  // TODO: add with more token available
+  if (params.asset && typeof params.asset === 'string') {
+    const foundToken = transferTokens[defaultParams.depositChain].find(token => token.symbol === params.asset)
+    if (foundToken) {
+      defaultParams.depositToken = foundToken.id
+      defaultParams.withdrawToken = transferTokens[defaultParams.withdrawChain].find(token => token.symbol === foundToken.symbol)!.id
+    }
+  }
+
   return defaultParams
 }
 
@@ -121,6 +142,8 @@ function debounce(func: Function, timeout: number = 300) {
   }
 }
 
+const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(transferChains.map(chain => chain.id))
+
 const defaultParams = getDefaultParams()
 
 const SwapXpollinate = () => {
@@ -133,7 +156,7 @@ const SwapXpollinate = () => {
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(defaultParams.withdrawChain)
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
   const [withdrawToken, setWithdrawToken] = useState<string>(defaultParams.withdrawToken)
-  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(testToken)
+  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
 
@@ -254,7 +277,7 @@ const SwapXpollinate = () => {
       if (sdk) {
         sdk.removeAllListeners()
       }
-      const _sdk = await setup(signer)
+      const _sdk = await setup(signer, chainProviders)
       setSdk(_sdk)
 
       // listen to events
@@ -804,7 +827,7 @@ const SwapXpollinate = () => {
             description={(
               <>
                 <p>This interface gives access to the NXTP protocol of connext - Cross-Chain-Transfers in minutes.</p>
-                <p>It allows you to transfer Stablecoins (USDC, USDT, DAI) betwen multiple EVM based chains (Ethereum, Polygon, BSC, xDAI).</p>
+                <p>It allows you to transfer Stablecoins (USDC, USDT, DAI) betwen multiple EVM based chains (Polygon, BSC, xDAI).</p>
                 <p> Simply select the chains, an amount, the token to transfer and click Swap.</p>
               </>
             )}
@@ -867,6 +890,7 @@ const SwapXpollinate = () => {
                   transferChains={transferChains}
                   tokens={tokens}
                   balances={balances}
+                  forceSameToken={true}
                 />
 
                 <Row style={{ marginTop: 24 }} justify={"center"}>
