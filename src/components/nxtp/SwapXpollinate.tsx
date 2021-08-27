@@ -998,7 +998,7 @@ const SwapXpollinate = ({
           </Col>
         </Row>
         <Row justify="center" align="middle" style={{ marginBottom: 24 }}>
-          <Col span={4} style={{ textAlign: 'right' }}>
+          <Col span={6} style={{ textAlign: 'right' }}>
             <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
               <img src={connextWordmark} alt="Connext" style={{ width: '100%', maxWidth: '200px' }} />
             </a>
@@ -1006,7 +1006,7 @@ const SwapXpollinate = ({
           <Col span={1} style={{ textAlign: 'center' }}>
             x
           </Col>
-          <Col span={4} style={{ textAlign: 'center' }}>
+          <Col span={6} style={{ textAlign: 'center' }}>
             <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
               <img src={lifiWordmark} alt="Li.Finance" style={{ width: '100%', maxWidth: '200px' }} />
             </a>
@@ -1014,7 +1014,7 @@ const SwapXpollinate = ({
           <Col span={1} style={{ textAlign: 'center' }}>
             x
           </Col>
-          <Col span={4} style={{ textAlign: 'left' }}>
+          <Col span={6} style={{ textAlign: 'left' }}>
             <a href="https://about.1hive.org/" target="_blank" rel="nofollow noreferrer">
               <img src={onehiveWordmark} alt="1hive" style={{ width: '80%', maxWidth: '160px' }} />
             </a>
