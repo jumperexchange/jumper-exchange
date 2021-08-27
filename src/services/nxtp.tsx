@@ -10,13 +10,9 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
   const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
-    let subgraph: string | undefined;
-    if (chainId === "56") {
-      subgraph = "http://18.220.212.104:8000/subgraphs/name/connext/nxtp-bsc";
-    }
     chainConfig[parseInt(chainId)] = {
       provider: provider,
-      subgraph,
+      subgraph: undefined,
       transactionManagerAddress: undefined,
     }
   })
