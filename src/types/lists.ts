@@ -9,6 +9,7 @@ import quick from "../assets/icons/quick.png";
 import honey from "../assets/icons/honey.png";
 import xdai from "../assets/icons/xdai.png";
 import uniswap from "../assets/icons/uniswap.png";
+import fantom from "../assets/icons/fantom.png";
 
 export interface AddEthereumChainParameter {
   chainId: string;
@@ -206,6 +207,7 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.FTM,
     id: 250,
     visible: true,
+    iconUrl: fantom,
 
     // https://docs.fantom.foundation/tutorials/set-up-metamask
     metamask: {
@@ -736,6 +738,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.DAI,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
       },
+      [ChainKey.FTM]: {
+        id: '0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e',
+        symbol: CoinKey.DAI,
+        decimals: 18, // TODO: check
+        chainId: 100,
+        chainKey: ChainKey.FTM,
+        key: CoinKey.DAI,
+        name: CoinKey.DAI,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
+      },
     },
   },
 
@@ -782,6 +794,16 @@ export const defaultCoins: Array<Coin> = [
         decimals: 6,
         chainId: 100,
         chainKey: ChainKey.DAI,
+        key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+      },
+      [ChainKey.FTM]: {
+        id: '0x049d68029688eabf473097a2fc38ef61633a3c7a',
+        symbol: CoinKey.USDT,
+        decimals: 6, // TODO: check
+        chainId: 100,
+        chainKey: ChainKey.FTM,
         key: CoinKey.USDT,
         name: CoinKey.USDT,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
@@ -833,6 +855,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.USDC,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
       },
+      [ChainKey.FTM]: {
+        id: '0x04068da6c83afcfa0e13ba15a6696662335d5b75',
+        symbol: CoinKey.USDC,
+        decimals: 6, // Check
+        chainId: 250,
+        chainKey: ChainKey.FTM,
+        key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+      },
     },
   },
 ]
@@ -866,6 +898,11 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.DAI],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.DAI],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.DAI],
+  ],
+  [ChainKey.FTM]: [
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.FTM],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.FTM],
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.FTM],
   ],
 }
 

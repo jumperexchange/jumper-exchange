@@ -15,7 +15,8 @@ const transferChains = [
   getChainByKey(ChainKey.GOR),
   getChainByKey(ChainKey.MUM),
   getChainByKey(ChainKey.ARBT),
-  getChainByKey(ChainKey.OPTT),
+  getChainByKey(ChainKey.BSCT),
+  // getChainByKey(ChainKey.OPTT),
 ]
 
 const transferTokens = testToken

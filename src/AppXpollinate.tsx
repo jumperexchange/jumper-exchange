@@ -10,9 +10,10 @@ import { ChainKey } from './types';
 import { getBalancesForWallet } from './services/balanceService';
 
 const transferChains = [
-  getChainByKey(ChainKey.BSC),
+  // getChainByKey(ChainKey.BSC),
   getChainByKey(ChainKey.POL),
   getChainByKey(ChainKey.DAI),
+  getChainByKey(ChainKey.FTM),
 ]
 
 const transferTokens = defaultTokens
