@@ -1,6 +1,7 @@
 import { HistoricalTransaction } from '@connext/nxtp-sdk';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 import { TokenWithAmounts } from '../../types';
 import { getChainById } from '../../types/lists';
@@ -53,9 +54,9 @@ const HistoricTransactionsTableNxtp = ({
       render: (transaction: HistoricalTransaction) => {
         const chain = getChainById(transaction.crosschainTx.invariant.sendingChainId)
         const token = tokens[chain.key].find(token => token.id === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase())
-        const amount = (parseInt(transaction.crosschainTx.sending?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
+        const amount = new BigNumber(transaction.crosschainTx.sending?.amount || '0').shiftedBy(-(token?.decimals || 18))
         const link = chain.metamask.blockExplorerUrls[0] + 'token/' + transaction.crosschainTx.invariant.sendingAssetId
-        return <>{amount} <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
+        return <>{amount.toFixed(4)} <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
 
       },
       sorter: (a: HistoricalTransaction, b: HistoricalTransaction) => parseInt(a.crosschainTx.sending?.amount || '0') - parseInt(b.crosschainTx.sending?.amount || '0')
@@ -76,7 +77,7 @@ const HistoricTransactionsTableNxtp = ({
       render: (transaction: HistoricalTransaction) => {
         const chain = getChainById(transaction.crosschainTx.invariant.receivingChainId)
         const token = tokens[chain.key].find(token => token.id === transaction.crosschainTx.invariant.receivingAssetId.toLowerCase())
-        const amount = (parseInt(transaction.crosschainTx.receiving?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
+        const amount = new BigNumber(transaction.crosschainTx.receiving?.amount || '0').shiftedBy(-(token?.decimals || 18))
 
         const toChain = getChainById(transaction.crosschainTx.invariant.receivingChainId)
         const txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + transaction.fulfilledTxHash
@@ -84,9 +85,9 @@ const HistoricTransactionsTableNxtp = ({
         const link = chain.metamask.blockExplorerUrls[0] + 'token/' + transaction.crosschainTx.invariant.receivingAssetId
 
         if (transaction.fulfilledTxHash) {
-          return <><a href={txLink} target="_blank" rel="nofollow noreferrer">{amount}</a> <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
+          return <><a href={txLink} target="_blank" rel="nofollow noreferrer">{amount.toFixed(4)}</a> <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
         } else {
-          return <>amount <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
+          return <>{amount.toFixed(4)} <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
         }
       },
       sorter: (a: HistoricalTransaction, b: HistoricalTransaction) => parseInt(a.crosschainTx.receiving?.amount || '0') - parseInt(b.crosschainTx.receiving?.amount || '0')
@@ -97,11 +98,17 @@ const HistoricTransactionsTableNxtp = ({
       align: 'right',
       render: (transaction: HistoricalTransaction) => {
         if (transaction.crosschainTx.sending && transaction.crosschainTx.receiving) {
-          const fromAmount = parseInt(transaction.crosschainTx.sending.amount || '0')
-          const toAmount = parseInt(transaction.crosschainTx.receiving.amount || '0')
-          const diff = fromAmount - toAmount
-          const fee = diff / fromAmount
-          return fee * 100 + '%'
+          const fromChain = getChainById(transaction.crosschainTx.invariant.sendingChainId)
+          const fromToken = tokens[fromChain.key].find(token => token.id === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase())
+          const fromAmount = new BigNumber(transaction.crosschainTx.sending.amount).shiftedBy(-(fromToken?.decimals || 18))
+
+          const toChain = getChainById(transaction.crosschainTx.invariant.receivingChainId)
+          const toToken = tokens[toChain.key].find(token => token.id === transaction.crosschainTx.invariant.receivingAssetId.toLowerCase())
+          const toAmount = new BigNumber(transaction.crosschainTx.receiving.amount).shiftedBy(-(toToken?.decimals || 18))
+
+          const diff = fromAmount.minus(toAmount)
+          const fee = diff.div(fromAmount)
+          return fee.shiftedBy(2).toFixed(2) + '%'
         }
       },
       //sorter: (a: HistoricalTransaction, b: HistoricalTransaction) => parseInt(a.crosschainTx.receiving?.amount || '0') - parseInt(b.crosschainTx.receiving?.amount || '0')

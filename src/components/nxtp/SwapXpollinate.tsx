@@ -6,7 +6,8 @@ import { useWeb3React } from '@web3-react/core';
 import { Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
-import { BigNumber, FixedNumber, providers } from 'ethers';
+import BigNumber from 'bignumber.js';
+import { providers } from 'ethers';
 import { createBrowserHistory } from 'history';
 import QueryString from 'qs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -542,9 +543,8 @@ const SwapXpollinate = ({
       const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
       const callData = optionCallData !== '' ? optionCallData : undefined
       const dToken = findToken(depositChain, depositToken)
-      const dAmountFloat = FixedNumber.from(depositAmount.toFixed(10)).mulUnsafe(FixedNumber.from(BigNumber.from(10).pow(dToken.decimals))).round(0).toString()
-      const dAmount = dAmountFloat.substr(0, dAmountFloat.length - 2)
-      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount, receiving, callTo, callData)
+      const dAmount = new BigNumber(depositAmount).shiftedBy(dToken.decimals)
+      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount.toString(), receiving, callTo, callData)
     }
   }, [
     depositAmount,
