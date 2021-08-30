@@ -516,7 +516,7 @@ const SwapXpollinate = ({
   }
 
   // update request based on UI
-  const defineRoute = (depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
+  const defineRoute = (depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: string, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
     setRouteRequest({
       depositChain,
       depositToken,
@@ -544,7 +544,7 @@ const SwapXpollinate = ({
       const callData = optionCallData !== '' ? optionCallData : undefined
       const dToken = findToken(depositChain, depositToken)
       const dAmount = new BigNumber(depositAmount).shiftedBy(dToken.decimals)
-      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount.toString(), receiving, callTo, callData)
+      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount.toFixed(), receiving, callTo, callData)
     }
   }, [
     depositAmount,
