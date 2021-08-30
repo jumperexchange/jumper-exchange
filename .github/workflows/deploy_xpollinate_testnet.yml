@@ -64,7 +64,7 @@ jobs:
           CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ONE }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
-          PURGE_URLS: '["https://testnet.connext.li.finance/"]'
+          PURGE_URLS: '["https://testnet-connext.li.finance/", "https://nxtp.li.finance/"]'
 
       # Notify Rollbar about release
       - name: Notify deploy to Rollbar
