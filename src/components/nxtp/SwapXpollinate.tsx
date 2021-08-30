@@ -173,7 +173,7 @@ const SwapXpollinate = ({
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
   const [withdrawToken, setWithdrawToken] = useState<string>(startParams.withdrawToken)
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
-  const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
+  const [refreshBalances, setRefreshBalances] = useState<number>(1)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [updatingBalances, setUpdatingBalances] = useState<boolean>(false)
 
@@ -301,12 +301,13 @@ const SwapXpollinate = ({
       // listen to events
       _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionPrepared, data, { invariant: data.txData, sending: data.txData })
+        setRefreshBalances(state => state + 1)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionFulfilled, data, { invariant: data.txData, sending: data.txData })
         removeActiveTransaction(data.txData.transactionId)
-        setRefreshBalances(true)
+        setRefreshBalances(state => state + 1)
         setUpdateHistoricTransactions(true)
       })
 
@@ -328,7 +329,7 @@ const SwapXpollinate = ({
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionFulfilled, data, { invariant: data.txData, receiving: data.txData })
         removeActiveTransaction(data.txData.transactionId)
-        setRefreshBalances(true)
+        setRefreshBalances(state => state + 1)
         setUpdateHistoricTransactions(true)
       })
 
@@ -426,7 +427,7 @@ const SwapXpollinate = ({
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
-      setRefreshBalances(false)
+      setRefreshBalances(state => 0)
       updateBalances(web3.account)
     }
   }, [refreshBalances, web3.account, updateBalances])
@@ -435,7 +436,7 @@ const SwapXpollinate = ({
     if (!web3.account) {
       setBalances(undefined) // reset old balances
     } else {
-      setRefreshBalances(true)
+      setRefreshBalances(state => state + 1)
     }
   }, [web3.account])
 
@@ -474,7 +475,7 @@ const SwapXpollinate = ({
   }, [tokens, balances])
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => setRefreshBalances(true), BALANCES_REFRESH_INTERVAL)
+    intervalRef.current = setInterval(() => setRefreshBalances(state => state + 1), BALANCES_REFRESH_INTERVAL)
 
     return () => {
       if (intervalRef.current) {
@@ -848,12 +849,12 @@ const SwapXpollinate = ({
 
           {/* Balances */}
           {testnet &&
-            <Collapse.Panel header={(
+            <Collapse.Panel className={balances ? '' : 'empty'} header={(
               <h2
                 onClick={() => setActiveKeyTransactions((key) => key === 'balances' ? '' : 'balances')}
                 style={{ display: 'inline' }}
               >
-                Balances ({(updatingBalances ? <SyncOutlined spin /> : <CheckOutlined />)})
+                Balances ({updatingBalances ? <SyncOutlined spin /> : (!balances ? '-' : <CheckOutlined />)})
               </h2>
             )} key="balances">
               <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>

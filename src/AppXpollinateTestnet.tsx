@@ -36,8 +36,8 @@ function AppXpollinateTestnet() {
       message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
       description={(
         <>
-          <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
-          <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
+          <p>The demo allows to transfer custom <b>TEST</b> token between different testnets.</p>
+          <p>To use the demo you need gas (ETH/MATIC/BNB) and test token (TEST) on one of the chains. You can get free gas for testing from public faucets and mint your own TEST here on the website.</p>
         </>
       )}
       type="info"
