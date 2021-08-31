@@ -1,9 +1,9 @@
 import { BigNumber } from 'ethers';
 import { ChainKey, Coin, CoinKey, Token } from '.';
 
-import bsc from "../assets/icons/bsc.png";
+// import bsc from "../assets/icons/bsc.png";
 import eth from "../assets/icons/ethereum.png";
-import pancake from "../assets/icons/pancake.png";
+// import pancake from "../assets/icons/pancake.png";
 import polygon from "../assets/icons/polygon.png";
 import quick from "../assets/icons/quick.png";
 import honey from "../assets/icons/honey.png";
