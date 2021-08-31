@@ -1,4 +1,4 @@
-import { CheckOutlined, DownOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { CheckOutlined, DownOutlined, ExportOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
@@ -36,6 +36,8 @@ const history = createBrowserHistory()
 
 const BALANCES_REFRESH_INTERVAL = 30000
 const DEBOUNCE_TIMEOUT = 800
+const MAINNET_LINK = 'https://connext.li.finance'
+const TESTNET_LINK = 'https://testnet-connext.li.finance'
 
 const getDefaultParams = (search: string, transferChains: Chain[], transferTokens: { [ChainKey: string]: Array<Token> }) => {
   const defaultParams = {
@@ -774,20 +776,41 @@ const SwapXpollinate = ({
   }
 
   const handleMenuClick = (e: any) => {
-    switchChain(parseInt(e.key))
+    if (e.key === 'mainnet' || e.key === 'testnet') {
+      // open link
+    } else {
+      switchChain(parseInt(e.key))
+    }
   }
 
   const currentChain = web3.chainId ? getChainById(web3.chainId) : undefined
   const isSupported = !!transferChains.find((chain) => chain.id === currentChain?.id)
   const menuChain = (
     <Menu onClick={handleMenuClick}>
-      {transferChains.map((chain) => {
-        return (
-          <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
-            {chain.name}
+      <Menu.ItemGroup title="Supported Chains">
+        {transferChains.map((chain) => {
+          return (
+            <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
+              {chain.name}
+            </Menu.Item>
+          )
+        })}
+      </Menu.ItemGroup>
+      <Menu.ItemGroup title="Other Chains">
+        {testnet ? (
+          <Menu.Item key="mainnet" icon={<ExportOutlined />}>
+            <a href={MAINNET_LINK} target="_blank" rel="nofollow noreferrer">
+              Visit Mainnet Version
+            </a>
           </Menu.Item>
-        )
-      })}
+        ) : (
+          <Menu.Item key="testnet" icon={<ExportOutlined />}>
+            <a href={TESTNET_LINK} target="_blank" rel="nofollow noreferrer">
+              Visit Testnet Version
+            </a>
+          </Menu.Item>
+        )}
+      </Menu.ItemGroup>
     </Menu>
   )
 
