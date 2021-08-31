@@ -1,9 +1,9 @@
 import { BigNumber } from 'ethers';
 import { ChainKey, Coin, CoinKey, Token } from '.';
 
-// import bsc from "../assets/icons/bsc.png";
+import bsc from "../assets/icons/bsc.png";
 import eth from "../assets/icons/ethereum.png";
-// import pancake from "../assets/icons/pancake.png";
+import pancake from "../assets/icons/pancake.png";
 import polygon from "../assets/icons/polygon.png";
 import quick from "../assets/icons/quick.png";
 import honey from "../assets/icons/honey.png";
@@ -124,43 +124,43 @@ export const supportedChains: Array<Chain> = [
     },
   },
   // 56 - Binance Smart Chain
-  // {
-  //   key: ChainKey.BSC,
-  //   name: 'BSC',
-  //   coin: CoinKey.BNB,
-  //   id: 56,
-  //   visible: true,
-  //   iconUrl: bsc,
+  {
+    key: ChainKey.BSC,
+    name: 'BSC',
+    coin: CoinKey.BNB,
+    id: 56,
+    visible: true,
+    iconUrl: bsc,
 
-  //   exchange: {
-  //     name: 'Pancake',
-  //     logoUrl: pancake,
-  //     iconUrl: 'https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png',
-  //     webUrl: 'https://exchange.pancakeswap.finance/',
-  //     graph: 'https://api.thegraph.com/subgraphs/name/bscnodes/pancakeswap', // https://thegraph.com/explorer/subgraph/bscnodes/pancakeswap
-  //     tokenlistUrl: 'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
-  //   },
+    exchange: {
+      name: 'Pancake',
+      logoUrl: pancake,
+      iconUrl: 'https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png',
+      webUrl: 'https://exchange.pancakeswap.finance/',
+      graph: 'https://api.thegraph.com/subgraphs/name/bscnodes/pancakeswap', // https://thegraph.com/explorer/subgraph/bscnodes/pancakeswap
+      tokenlistUrl: 'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
+    },
 
-  //   // https://docs.binance.org/smart-chain/wallet/metamask.html
-  //   metamask: {
-  //     chainId: prefixChainId(56),
-  //     blockExplorerUrls: [
-  //       'https://bscscan.com/',
-  //     ],
-  //     chainName: 'Binance Smart Chain Mainnet',
-  //     iconUrls: [],
-  //     nativeCurrency: {
-  //       name: 'BNB',
-  //       symbol: 'BNB',
-  //       decimals: 18,
-  //     },
-  //     rpcUrls: [
-  //       'https://bsc-dataseed.binance.org/',
-  //       'https://bsc-dataseed1.defibit.io/',
-  //       'https://bsc-dataseed1.ninicoin.io/',
-  //     ],
-  //   },
-  // },
+    // https://docs.binance.org/smart-chain/wallet/metamask.html
+    metamask: {
+      chainId: prefixChainId(56),
+      blockExplorerUrls: [
+        'https://bscscan.com/',
+      ],
+      chainName: 'Binance Smart Chain Mainnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'BNB',
+        symbol: 'BNB',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://bsc-dataseed.binance.org/',
+        'https://bsc-dataseed1.defibit.io/',
+        'https://bsc-dataseed1.ninicoin.io/',
+      ],
+    },
+  },
   // 100 - xDai
   {
     key: ChainKey.DAI,
