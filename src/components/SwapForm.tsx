@@ -1,11 +1,12 @@
 import { SwapOutlined } from '@ant-design/icons';
-import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Col, Input, Row, Select } from 'antd';
+import { Col, Input, Row } from 'antd';
 import { RefSelectProps } from 'antd/lib/select';
 import React, { useRef } from 'react';
 import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../types';
-import { Chain, getChainByKey } from '../types/lists';
+import { Chain } from '../types/lists';
+import ChainSelect from './ChainSelect';
+import TokenSelect from './TokenSelect';
 import { injected } from './web3/connectors';
 
 interface SwapFormProps {
@@ -58,7 +59,6 @@ const SwapForm = ({
   const withdrawSelectRef = useRef<RefSelectProps>()
 
   // Wallet
-  const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React()
 
   const connectWallet = () => {
@@ -166,14 +166,6 @@ const SwapForm = ({
     setDepositToken(withdrawToken)
   }
 
-  const findToken = (chainKey: ChainKey, tokenId: string) => {
-    const token = tokens[chainKey].find(token => token.id === tokenId)
-    if (!token) {
-      throw new Error('Token not found')
-    }
-    return token
-  }
-
   const hasSufficientBalance = () => {
     if (!depositToken) {
       return true
@@ -191,21 +183,11 @@ const SwapForm = ({
         </Col>
         <Col span={14}>
           <div className="form-input-wrapper">
-            <Avatar
-              size="small"
-              src={getChainByKey(depositChain).iconUrl}
-              alt={getChainByKey(depositChain).name}
-            >{getChainByKey(depositChain).name[0]}</Avatar>
-            <Select
-              placeholder="Select Chain"
-              value={depositChain}
-              onChange={((v: ChainKey) => onChangeDepositChain(v))}
-              bordered={false}
-            >
-              {transferChains.map(chain => (
-                <Select.Option key={chain.key} value={chain.key}>{chain.name}</Select.Option>
-              ))}
-            </Select>
+            <ChainSelect
+              transferChains={transferChains}
+              selectedChain={depositChain}
+              onChangeSelectedChain={onChangeDepositChain}
+            />
           </div>
         </Col>
 
@@ -225,82 +207,15 @@ const SwapForm = ({
         </Col>
         <Col span={14}>
           <div className="form-input-wrapper">
-            <Avatar
-              size="small"
-              src={depositToken ? findToken(depositChain, depositToken).logoURI : undefined}
-              alt={depositToken ? findToken(depositChain, depositToken).name : undefined}
-            >{depositToken ? findToken(depositChain, depositToken).name[0] : '?'}</Avatar>
-            <Select
-              placeholder="Select Coin"
-              value={depositToken}
-              onChange={((v) => onChangeDepositToken(v))}
-              optionLabelProp="data-label"
-              bordered={false}
-              dropdownStyle={{ minWidth: 300 }}
-              showSearch
-              ref={(select) => {
-                if (select) {
-                  depositSelectRef.current = select
-                }
-              }}
-              filterOption={(input, option) => {
-                return (option?.label as string || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }}
-            >
-              { tokens[depositChain].length > 6 &&
-              <Select.OptGroup label="Owned Token">
-                {!web3.account &&
-                  <Select.Option key="Select Coin" value="connect">
-                    Connect your wallet
-                  </Select.Option>
-                }
-                {balances && balances[depositChain].length === 0 &&
-                  <Select.Option key="No Owned" value="no" disabled={true}>
-                    You don't own any token on this chain.
-                  </Select.Option>
-                }
-                {balances && tokens[depositChain].filter(token => token.amount).map(token => (
-                  <Select.Option key={'own_' + token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
-                    <div className="option-item">
-                      <span role="img" aria-label={token.symbol}>
-                        <Avatar
-                          size="small"
-                          src={token.logoURI}
-                          alt={token.symbol}
-                          style={{ marginRight: 10 }}
-                        >{token.symbol[0]}</Avatar>
-                      </span>
-                      <span className="option-name">{token.symbol} - {token.name}</span>
-                      <span className="option-balance">
-                        {token.amountRendered}
-                      </span>
-                    </div>
-                  </Select.Option>
-                ))}
-              </Select.OptGroup>
-              }
-
-              <Select.OptGroup label="All Token">
-                {tokens[depositChain].map(token => (
-                  <Select.Option key={token.id} value={token.id} label={token.symbol + '       - ' + token.name} data-label={token.symbol}>
-                    <div className={'option-item ' + (token.amount === 0 ? 'disabled' : '')}>
-                      <span role="img" aria-label={token.symbol}>
-                        <Avatar
-                          size="small"
-                          src={token.logoURI}
-                          alt={token.symbol}
-                          style={{ marginRight: 10 }}
-                        >{token.symbol[0]}</Avatar>
-                      </span>
-                      <span className="option-name">{token.symbol} - {token.name}</span>
-                      <span className="option-balance">
-                        {token.amountRendered}
-                      </span>
-                    </div>
-                  </Select.Option>
-                ))}
-              </Select.OptGroup>
-            </Select>
+            <TokenSelect
+              tokens={tokens}
+              balances={balances}
+              selectedChain={depositChain}
+              selectedToken={depositToken}
+              onChangeSelectedToken={onChangeDepositToken}
+              selectReference={depositSelectRef}
+              grayed={true}
+            />
           </div>
         </Col>
       </Row>
@@ -317,21 +232,11 @@ const SwapForm = ({
         </Col>
         <Col span={14}>
           <div className="form-input-wrapper">
-            <Avatar
-              size="small"
-              src={getChainByKey(withdrawChain).iconUrl}
-              alt={getChainByKey(withdrawChain).name}
-            >{getChainByKey(withdrawChain).name[0]}</Avatar>
-            <Select
-              placeholder="Select Chain"
-              value={withdrawChain}
-              onChange={((v: ChainKey) => onChangeWithdrawChain(v))}
-              bordered={false}
-            >
-              {transferChains.map(chain => (
-                <Select.Option key={chain.key} value={chain.key}>{chain.name}</Select.Option>
-              ))}
-            </Select>
+            <ChainSelect
+              transferChains={transferChains}
+              selectedChain={withdrawChain}
+              onChangeSelectedChain={onChangeWithdrawChain}
+            />
           </div>
         </Col>
 
@@ -352,82 +257,15 @@ const SwapForm = ({
         </Col>
         <Col span={14}>
           <div className="form-input-wrapper">
-            <Avatar
-              size="small"
-              src={withdrawToken ? findToken(withdrawChain, withdrawToken).logoURI : undefined}
-              alt={withdrawToken ? findToken(withdrawChain, withdrawToken).name : undefined}
-            >{withdrawToken ? findToken(withdrawChain, withdrawToken).name[0] : '?'}</Avatar>
-            <Select
-              placeholder="Select Coin"
-              value={withdrawToken}
-              onChange={((v) => onChangeWithdrawToken(v))}
-              optionLabelProp="data-label"
-              bordered={false}
-              dropdownStyle={{ minWidth: 300 }}
-              showSearch
-              ref={(select) => {
-                if (select) {
-                  withdrawSelectRef.current = select
-                }
-              }}
-              filterOption={(input, option) => {
-                return (option?.label as string || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }}
-            >
-              { tokens[withdrawChain].length > 6 &&
-              <Select.OptGroup label="Owned Token">
-                {!web3.account &&
-                  <Select.Option key="Select Coin" value="connect">
-                    Connect your wallet
-                  </Select.Option>
-                }
-                {balances && balances[withdrawChain].length === 0 &&
-                  <Select.Option key="No Owned" value="no" disabled={true}>
-                    You don't own any token on this chain.
-                  </Select.Option>
-                }
-                {balances && tokens[withdrawChain].filter(token => token.amount).map(token => (
-                  <Select.Option key={'own_' + token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
-                    <div className="option-item">
-                      <span role="img" aria-label={token.symbol}>
-                        <Avatar
-                          size="small"
-                          src={token.logoURI}
-                          alt={token.symbol}
-                          style={{ marginRight: 10 }}
-                        >{token.symbol[0]}</Avatar>
-                      </span>
-                      <span className="option-name">{token.symbol} - {token.name}</span>
-                      <span className="option-balance">
-                        {token.amountRendered}
-                      </span>
-                    </div>
-                  </Select.Option>
-                ))}
-              </Select.OptGroup>
-              }
-
-              <Select.OptGroup label="All Token">
-                {tokens[withdrawChain].map(token => (
-                  <Select.Option key={token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
-                    <div className="option-item">
-                      <span role="img" aria-label={token.symbol}>
-                        <Avatar
-                          size="small"
-                          src={token.logoURI}
-                          alt={token.symbol}
-                          style={{ marginRight: 10 }}
-                        >{token.symbol[0]}</Avatar>
-                      </span>
-                      <span className="option-name">{token.symbol} - {token.name}</span>
-                      <span className="option-balance">
-                        {token.amountRendered}
-                      </span>
-                    </div>
-                  </Select.Option>
-                ))}
-              </Select.OptGroup>
-            </Select>
+            <TokenSelect
+              tokens={tokens}
+              balances={balances}
+              selectedChain={withdrawChain}
+              selectedToken={withdrawToken}
+              onChangeSelectedToken={onChangeWithdrawToken}
+              selectReference={withdrawSelectRef}
+              grayed={false}
+            />
           </div>
         </Col>
       </Row>
