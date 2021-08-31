@@ -1,6 +1,8 @@
+import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json";
+import { IERC20Minimal } from "@connext/nxtp-contracts/typechain";
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { providers } from 'ethers';
+import { BigNumber, Contract, providers } from 'ethers';
 import pino from 'pino';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
@@ -71,6 +73,14 @@ export const getTransferQuote = async (
   return response;
 }
 
+const getApproved = async (signer: providers.JsonRpcSigner, tokenAddress: string, contractAddress: string) => {
+  const signerAddress = await signer.getAddress()
+  const erc20 = new Contract(tokenAddress, ERC20.abi, signer) as IERC20Minimal
+
+  const approved = await erc20.allowance(signerAddress, contractAddress) as BigNumber
+  return approved
+}
+
 export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateStatus: Function, infinteApproval: boolean = false) => {
 
   // status
@@ -85,6 +95,15 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   const crossEstimate = step.estimate as CrossEstimate
   const fromChain = getChainByKey(crossAction.chainKey)
   const toChain = getChainByKey(crossAction.toChainKey)
+
+  // Check Token Approval
+  const contractAddress = (sdk as any).transactionManager.address
+  const approved = await getApproved((sdk as any).signer, crossEstimate.quote.bid.sendingAssetId, contractAddress)
+  if (approved.gte(crossEstimate.quote.bid.amount)) {
+    // approval already done, jump to next step
+    setStatusDone(update, status, approveProcess)
+    submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+  }
 
   const transactionId = crossEstimate.quote.bid.transactionId
   const transferPromise = sdk.prepareTransfer(crossEstimate.quote, infinteApproval)
