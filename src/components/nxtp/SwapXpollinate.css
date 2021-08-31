@@ -66,7 +66,7 @@
   color: white;
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 580px) {
   .support-link {
     position: absolute;
     top: 20px;

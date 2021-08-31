@@ -35,12 +35,13 @@ import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
 const history = createBrowserHistory()
 
 const BALANCES_REFRESH_INTERVAL = 30000
+const DEBOUNCE_TIMEOUT = 800
 
 const getDefaultParams = (search: string, transferChains: Chain[], transferTokens: { [ChainKey: string]: Array<Token> }) => {
   const defaultParams = {
     depositChain: transferChains[0].key,
     depositToken: transferTokens[transferChains[0].key][0].id,
-    depositAmount: 1,
+    depositAmount: 0,
     withdrawChain: transferChains[1].key,
     withdrawToken: transferTokens[transferChains[1].key][0].id,
   }
@@ -529,7 +530,7 @@ const SwapXpollinate = ({
       callData,
     })
   }
-  const debouncedSave = useRef(debounce(defineRoute, 500)).current
+  const debouncedSave = useRef(debounce(defineRoute, DEBOUNCE_TIMEOUT)).current
   const getTransferRoutes = useCallback(async () => {
     setRoutes([])
     setHighlightedIndex(-1)
