@@ -223,6 +223,7 @@ export const supportedChains: Array<Chain> = [
         decimals: 18,
       },
       rpcUrls: [
+        'https://rpc.ftm.tools/',
         'https://rpcapi.fantom.network',
       ],
     },

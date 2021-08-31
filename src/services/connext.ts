@@ -21,14 +21,14 @@ const chainProviders: { [chainId: number]: string } = {
   1: process.env.REACT_APP_RPC_URL_MAINNET || '',
   56: process.env.REACT_APP_RPC_URL_BSC || '',
   100: process.env.REACT_APP_RPC_URL_XDAI || '',
-  137: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET || '',
+  137: process.env.REACT_APP_RPC_URL_POLYGON || '',
 }
 
 const chainJsonProviders: { [chainId: number]: JsonRpcProvider } = {
   1: new JsonRpcProvider(process.env.REACT_APP_RPC_URL_MAINNET),
   56: new JsonRpcProvider(process.env.REACT_APP_RPC_URL_BSC),
   100: new JsonRpcProvider(process.env.REACT_APP_RPC_URL_XDAI),
-  137: new JsonRpcProvider(process.env.REACT_APP_RPC_URL_POLYGON_MAINNET),
+  137: new JsonRpcProvider(process.env.REACT_APP_RPC_URL_POLYGON),
 }
 
 // Custom contracts to connect DEX with stateChannel ownend/deployed by ??? (TODO: depoly own versions)

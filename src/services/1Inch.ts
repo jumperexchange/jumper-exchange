@@ -8,7 +8,7 @@ const baseURL =  'https://api.1inch.exchange/v3.0/'
 // const RpcUrls = {
 //   1: process.env.REACT_APP_RPC_URL_MAINNET,
 //   56: process.env.REACT_APP_RPC_URL_BSC,
-//   137: process.env.REACT_APP_RPC_URL_POLYGON_MAINNET,
+//   137: process.env.REACT_APP_RPC_URL_POLYGON,
 // }
 
 // const provider:{[key: number] : JsonRpcProvider | null} = {

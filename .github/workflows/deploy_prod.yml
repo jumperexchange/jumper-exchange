@@ -32,7 +32,7 @@ jobs:
         run: yarn install
 
       - name: Build WebApp
-        run: yarn build:production
+        run: yarn build:lifinance
 
       - name: Insert DataUnlocker
         run: output=$(curl --fail -F html=@build/index.html 'https://api.dataunlocker.com/properties/5a4772356437636b6951582d/scripts/latest/inject?endpoint=99g3ddw952aq') && echo "$output" > build/index.html || echo "Failed to inject DataUnlocker's script"
