@@ -43,7 +43,7 @@ const RPC_URLS: { [chainId: number]: string } = {
 
   [CHAINS.XDAI]: process.env.REACT_APP_RPC_URL_XDAI as string,
 
-  [CHAINS.FANTOM]: 'https://ftmscan.com/',
+  [CHAINS.FANTOM]: 'https://rpc.ftm.tools',
   [CHAINS.OKEX]: 'https://exchainrpc.okex.org',
   [CHAINS.AVALANCHE]: 'https://api.avax.network/ext/bc/C/rpc',
   [CHAINS.FSN]: 'https://fsnmainnet2.anyswap.exchange',
