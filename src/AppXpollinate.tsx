@@ -1,13 +1,13 @@
-import { Alert, Layout } from 'antd';
+import { Layout } from 'antd';
 import React, { useEffect } from 'react';
 import './App.css';
+import SwapXpollinate from './components/nxtp/SwapXpollinate';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
-import SwapXpollinate from './components/nxtp/SwapXpollinate';
-import { defaultTokens, getChainByKey } from './types/lists';
-import { ChainKey } from './types';
 import { getBalancesForWallet } from './services/balanceService';
+import { ChainKey } from './types';
+import { defaultTokens, getChainByKey } from './types/lists';
 
 const transferChains = [
   getChainByKey(ChainKey.BSC),
@@ -29,19 +29,22 @@ function usePageViews() {
 function AppXpollinate() {
   usePageViews()
 
-  const alert = (
-    <Alert
-      message={(<h1>Welcome to xPollinate.io</h1>)}
-      description={(
-        <>
-          <p>This interface gives access to the NXTP protocol of connext - Cross-Chain-Transfers in minutes.</p>
-          <p>It allows you to transfer Stablecoins (USDC, USDT, DAI) betwen multiple EVM based chains (Polygon, BSC, xDAI).</p>
-          <p> Simply select the chains, an amount, the token to transfer and click Swap.</p>
-        </>
-      )}
-      type="info"
-      closable={true}
-    />
+  const aboutMessage = (<h1>Welcome to xPollinate.io</h1>)
+  const aboutDescription = (
+    <>
+      <p>
+        This interface gives access to the NXTP protocol of Connext.
+        It allows you to transfer Stablecoins (USDC, USDT, DAI) between multiple EVM based chains (Polygon, BSC, xDAI, Fantom).</p>
+      <p>Simply select the chains, an amount, the token to transfer and click Swap.</p>
+      <p>
+        Made for you by<br />
+        &nbsp;&nbsp;~ Connext (Protocol)
+        <br />
+        &nbsp;&nbsp;~ Li.Finance (UI & Swaps - soon)
+        <br />
+        &nbsp;&nbsp;~ 1Hive (DEX - soon)
+      </p>
+    </>
   )
 
   return (
@@ -49,7 +52,8 @@ function AppXpollinate() {
       <Web3ConnectionManager>
         <Layout>
           <SwapXpollinate
-            alert={alert}
+            aboutMessage={aboutMessage}
+            aboutDescription={aboutDescription}
             transferChains={transferChains}
             transferTokens={transferTokens}
             getBalancesForWallet={getBalancesForWallet}

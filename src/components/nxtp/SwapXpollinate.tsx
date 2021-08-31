@@ -3,7 +3,7 @@ import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@co
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
+import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import BigNumber from 'bignumber.js';
@@ -15,7 +15,7 @@ import onehiveWordmark from '../../assets/1hive_wordmark.svg';
 import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
 import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
-import { clearLocalStorage } from '../../services/localStorage';
+import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
@@ -148,7 +148,8 @@ let startParams: {
 }
 
 interface SwapXpollinateProps {
-  alert: any
+  aboutMessage?: React.ReactNode
+  aboutDescription?: React.ReactNode
   transferChains: Chain[]
   transferTokens: { [ChainKey: string]: Array<Token> }
   getBalancesForWallet: Function
@@ -156,7 +157,8 @@ interface SwapXpollinateProps {
 }
 
 const SwapXpollinate = ({
-  alert,
+  aboutMessage,
+  aboutDescription,
   transferChains,
   transferTokens,
   getBalancesForWallet,
@@ -167,6 +169,7 @@ const SwapXpollinate = ({
   chainProviders = chainProviders ?? getRpcProviders(transferChains.map(chain => chain.id))
 
   const [stateUpdate, setStateUpdate] = useState<number>(0)
+  const [showAbout, setShowAbout] = useState<boolean>(!readHideAbout())
 
   // Form
   const [depositChain, setDepositChain] = useState<ChainKey>(startParams.depositChain)
@@ -226,7 +229,12 @@ const SwapXpollinate = ({
     history.push({
       search,
     });
-  }, [depositChain, withdrawChain, depositToken, withdrawToken, depositAmount]);
+  }, [depositChain, withdrawChain, depositToken, withdrawToken, depositAmount])
+
+  // hide about
+  useEffect(() => {
+    storeHideAbout(!showAbout)
+  }, [showAbout])
 
   // auto-trigger finish if corresponding modal is opend
   useEffect(() => {
@@ -827,7 +835,7 @@ const SwapXpollinate = ({
 
   return (
     <Content className="site-layout xpollinate" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
-      <div style={{ borderBottom: '1px solid #c6c6c6', marginBottom: 40 }}>
+      <div style={{ borderBottom: '1px solid #c6c6c6', marginBottom: 0 }}>
         <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
           <a href="/">
             <img src={xpollinateWordmark} alt="xPollinate" style={{ width: '100%', maxWidth: '160px' }} />
@@ -835,6 +843,9 @@ const SwapXpollinate = ({
           </a>
 
           <span className="header-options">
+            <Button className="header-button" onClick={() => setShowAbout(about => !about)}>
+              About
+            </Button>
 
             {web3.account ? (
               <>
@@ -865,8 +876,17 @@ const SwapXpollinate = ({
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Infos */}
-        <Row justify="center" style={{ padding: 20, paddingTop: 0 }}>
-          {alert}
+        <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+          {showAbout && (
+            <Alert
+              style={{ maxWidth: 700 }}
+              afterClose={() => setShowAbout(false)}
+              message={aboutMessage}
+              description={aboutDescription}
+              type="info"
+              closable={true}
+            />
+          )}
         </Row>
 
         <Collapse activeKey={activeKeyTransactions} accordion ghost>
@@ -878,7 +898,7 @@ const SwapXpollinate = ({
                 onClick={() => setActiveKeyTransactions((key) => key === 'balances' ? '' : 'balances')}
                 style={{ display: 'inline' }}
               >
-                Balances ({updatingBalances ? <SyncOutlined spin /> : (!balances ? '-' : <CheckOutlined />)})
+                Balances ({updatingBalances ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : (!balances ? '-' : <CheckOutlined />)})
               </h2>
             )} key="balances">
               <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
@@ -898,7 +918,7 @@ const SwapXpollinate = ({
               onClick={() => setActiveKeyTransactions((key) => key === 'active' ? '' : 'active')}
               style={{ display: 'inline' }}
             >
-              Active Transactions ({!sdk ? '-' : (updatingActiveTransactions ? <SyncOutlined spin /> : activeTransactions.length)})
+              Active Transactions ({!sdk ? '-' : (updatingActiveTransactions ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : activeTransactions.length)})
             </h2>
           )} key="active">
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
@@ -920,7 +940,7 @@ const SwapXpollinate = ({
               onClick={() => setActiveKeyTransactions((key) => key === 'historic' ? '' : 'historic')}
               style={{ display: 'inline' }}
             >
-              Historical Transactions ({!sdk ? '-' : (updatingHistoricTransactions ? <SyncOutlined spin /> : historicTransaction.length)})
+              Historical Transactions ({!sdk ? '-' : (updatingHistoricTransactions ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : historicTransaction.length)})
             </h2>
           )} key="historic">
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
@@ -933,7 +953,7 @@ const SwapXpollinate = ({
         </Collapse>
 
         {/* Swap Form */}
-        <Row style={{ margin: 20 }} justify={"center"}>
+        <Row style={{ margin: 20, marginTop: 0 }} justify={"center"}>
           <Col className="swap-form">
             <div className="swap-input" style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: "0 auto" }}>
               <Row>

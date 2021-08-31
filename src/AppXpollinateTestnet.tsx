@@ -1,9 +1,9 @@
-import { Alert, Layout } from 'antd';
+import { Layout } from 'antd';
 import React, { useEffect } from 'react';
 import './App.css';
+import SwapXpollinate from './components/nxtp/SwapXpollinate';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
-import SwapXpollinate from './components/nxtp/SwapXpollinate';
 import analytics from './services/analytics';
 import { getBalancesForWallet, testToken } from './services/testToken';
 import { ChainKey } from './types';
@@ -31,17 +31,18 @@ function usePageViews() {
 function AppXpollinateTestnet() {
   usePageViews()
 
-  const alert = (
-    <Alert
-      message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
-      description={(
-        <>
-          <p>The demo allows to transfer custom <b>TEST</b> token between different testnets.</p>
-          <p>To use the demo you need gas (ETH/MATIC/BNB) and test token (TEST) on one of the chains. You can get free gas for testing from public faucets and mint your own TEST here on the website.</p>
-        </>
-      )}
-      type="info"
-    />
+  const aboutMessage = (<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)
+  const aboutDescription = (
+    <>
+      <p>The demo allows to transfer custom <b>TEST</b> token between different testnets.</p>
+      <p>To use the demo you need gas (ETH/MATIC/BNB) and test token (TEST) on one of the chains. You can get free gas for testing from public faucets and mint your own TEST here on the website.</p>
+      <p>
+        Made for you by<br/>
+        &nbsp;&nbsp;~ Connext (Protocol)
+        <br/>
+        &nbsp;&nbsp;~ Li.Finance (UI & Swaps - soon)
+      </p>
+    </>
   )
 
   return (
@@ -49,7 +50,8 @@ function AppXpollinateTestnet() {
       <Web3ConnectionManager>
         <Layout>
           <SwapXpollinate
-            alert={alert}
+            aboutMessage={aboutMessage}
+            aboutDescription={aboutDescription}
             transferChains={transferChains}
             transferTokens={transferTokens}
             getBalancesForWallet={getBalancesForWallet}

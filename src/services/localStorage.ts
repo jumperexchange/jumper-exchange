@@ -73,6 +73,19 @@ const readNxtpMessagingToken = () => {
   }
 }
 
+const storeHideAbout = (hide: boolean) => {
+  if (isSupported()) {
+    localStorage.setItem('nxtpHideDemo', hide ? 'true' : 'false')
+  }
+}
+const readHideAbout = () => {
+  if (!isSupported()) {
+    return false
+  }
+  const value = localStorage.getItem('nxtpHideDemo')
+  return value === 'true'
+}
+
 export {
   isSupported,
   clearLocalStorage,
@@ -80,4 +93,6 @@ export {
   readWallets,
   storeNxtpMessagingToken,
   readNxtpMessagingToken,
+  storeHideAbout,
+  readHideAbout,
 }
