@@ -43,7 +43,7 @@ const getDefaultParams = (search: string, transferChains: Chain[], transferToken
   const defaultParams = {
     depositChain: transferChains[0].key,
     depositToken: transferTokens[transferChains[0].key][0].id,
-    depositAmount: 0,
+    depositAmount: -1,
     withdrawChain: transferChains[1].key,
     withdrawToken: transferTokens[transferChains[1].key][0].id,
   }
@@ -223,7 +223,7 @@ const SwapXpollinate = ({
       fromToken: depositToken,
       toChain: getChainByKey(withdrawChain).id,
       toToken: withdrawToken,
-      fromAmount: depositAmount,
+      fromAmount: depositAmount > 0 ? depositAmount : undefined,
     }
     const search = QueryString.stringify(params)
     history.push({
