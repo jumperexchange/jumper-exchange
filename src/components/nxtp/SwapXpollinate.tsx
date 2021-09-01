@@ -693,6 +693,8 @@ const SwapXpollinate = ({
     setExecutionRoutes(routes => [...routes, route])
 
     // get new route to avoid triggering the same quote twice
+    setDepositAmount(-1)
+    setRouteRequest(undefined)
     setRouteQuote(undefined)
 
     // add as active

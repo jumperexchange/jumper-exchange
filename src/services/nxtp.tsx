@@ -97,7 +97,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   const toChain = getChainByKey(crossAction.toChainKey)
 
   // Check Token Approval
-  const contractAddress = (sdk as any).transactionManager.address
+  const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.quote.bid.sendingChainId)
   const approved = await getApproved((sdk as any).signer, crossEstimate.quote.bid.sendingAssetId, contractAddress)
   if (approved.gte(crossEstimate.quote.bid.amount)) {
     // approval already done, jump to next step
