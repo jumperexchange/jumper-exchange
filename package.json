@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@connext/nxtp-sdk": "^0.0.31",
+    "@connext/nxtp-sdk": "^0.0.32",
     "@connext/vector-browser-node": "^0.2.5-beta.21",
     "@connext/vector-utils": "^0.2.5-beta.21",
     "@ethersproject/providers": "^5.4.0",
@@ -42,13 +42,11 @@
     "start": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts start'",
     "start:xpollinate": "REACT_APP_ENV=xpollinate-mainnet.development npm run start",
     "start:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet.development npm run start",
-
     "build": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
     "build:lifinance:staging": "REACT_APP_ENV=lifinance-mainnet.staging npm run build",
     "build:lifinance": "REACT_APP_ENV=lifinance-mainnet npm run build",
     "build:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet npm run build",
     "build:xpollinate": "REACT_APP_ENV=xpollinate-mainnet npm run build",
-
     "test": "echo 'Not defined'"
   },
   "eslintConfig": {
