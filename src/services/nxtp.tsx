@@ -3,23 +3,34 @@ import { IERC20Minimal } from "@connext/nxtp-contracts/typechain";
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { BigNumber, Contract, providers } from 'ethers';
-import pino from 'pino';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
+
+// Add overwrites to specific chains here. They will only be applied if the chain is used.
+const chainConfigOverwrites : {
+  [chainId: number]: {
+    transactionManagerAddress?: string;
+    subgraph?: string;
+  }
+} = {
+  56: {
+    subgraph: 'https://bwarelabs-connext-bsc-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-bsc',
+  },
+}
 
 export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
   const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
-      subgraph: undefined,
-      transactionManagerAddress: undefined,
+      subgraph: chainConfigOverwrites[parseInt(chainId)]?.subgraph,
+      transactionManagerAddress: chainConfigOverwrites[parseInt(chainId)]?.transactionManagerAddress,
     }
   })
 
-  const sdk = new NxtpSdk(chainConfig, signer, pino({ level: "info" }));
+  const sdk = new NxtpSdk(chainConfig, signer);
 
   // reuse existing messaging token
   const account = await signer.getAddress()

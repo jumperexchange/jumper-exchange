@@ -10,7 +10,7 @@ import { ChainKey } from './types';
 import { defaultTokens, getChainByKey } from './types/lists';
 
 const transferChains = [
-  // getChainByKey(ChainKey.BSC),
+  getChainByKey(ChainKey.BSC),
   getChainByKey(ChainKey.POL),
   getChainByKey(ChainKey.DAI),
   getChainByKey(ChainKey.FTM),
