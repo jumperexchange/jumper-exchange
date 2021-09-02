@@ -867,8 +867,12 @@ const SwapXpollinate = ({
               <Button shape="round" type="link" icon={<LoginOutlined />} onClick={() => activate(injected)}>Connect Wallet</Button>
             )}
 
-            <a href="https://support.connext.network/hc/en-us" target="_blank" rel="nofollow noreferrer" className="header-button support-link">
+            <a href="https://chat.connext.network/" target="_blank" rel="nofollow noreferrer" className="header-button support-link">
               <span>Support <LinkOutlined /></span>
+            </a>
+
+            <a href="https://v1.xpollinate.io" target="_blank" rel="nofollow noreferrer" className="header-button support-link">
+              <span>Looking for V1?</span>
             </a>
 
           </span>
