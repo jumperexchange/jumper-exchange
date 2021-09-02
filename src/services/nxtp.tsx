@@ -9,13 +9,25 @@ import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
+// Add overwrites to specific chains here. They will only be applied if the chain is used.
+const chainConfigOverwrites : {
+  [chainId: number]: {
+    transactionManagerAddress?: string;
+    subgraph?: string;
+  }
+} = {
+  56: {
+    subgraph: 'https://bwarelabs-connext-bsc-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-bsc',
+  },
+}
+
 export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
   const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
-      subgraph: undefined,
-      transactionManagerAddress: undefined,
+      subgraph: chainConfigOverwrites[parseInt(chainId)]?.subgraph,
+      transactionManagerAddress: chainConfigOverwrites[parseInt(chainId)]?.transactionManagerAddress,
     }
   })
 
