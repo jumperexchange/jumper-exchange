@@ -18,7 +18,6 @@ const transferChains = [
 
 const transferTokens = defaultTokens
 
-
 function usePageViews() {
   let location = (window as any).location
   useEffect(() => {
