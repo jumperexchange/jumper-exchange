@@ -101,7 +101,7 @@ const TransactionsTableNxtp = ({
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.sendingChainId)
-        return <>{chain.id} - {chain.name}</>
+        return <>{chain.name}</>
       }
     },
     {
@@ -109,7 +109,7 @@ const TransactionsTableNxtp = ({
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.receivingChainId)
-        return <>{chain.id} - {chain.name}</>
+        return <>{chain.name}</>
       }
     },
     {

@@ -44,7 +44,7 @@ const HistoricTransactionsTableNxtp = ({
       dataIndex: '',
       render: (transaction: HistoricalTransaction) => {
         const chain = getChainById(transaction.crosschainTx.invariant.sendingChainId)
-        return <>{chain.id} - {chain.name}</>
+        return <>{chain.name}</>
       },
       sorter: (a: HistoricalTransaction, b: HistoricalTransaction) => a.crosschainTx.invariant.sendingChainId - b.crosschainTx.invariant.sendingChainId,
     }, {
@@ -66,7 +66,7 @@ const HistoricTransactionsTableNxtp = ({
       dataIndex: '',
       render: (transaction: HistoricalTransaction) => {
         const chain = getChainById(transaction.crosschainTx.invariant.receivingChainId)
-        return <>{chain.id} - {chain.name}</>
+        return <>{chain.name}</>
       },
       sorter: (a: HistoricalTransaction, b: HistoricalTransaction) => a.crosschainTx.invariant.receivingChainId - b.crosschainTx.invariant.receivingChainId,
     },
