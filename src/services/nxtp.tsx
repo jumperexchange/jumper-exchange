@@ -13,20 +13,23 @@ const chainConfigOverwrites : {
   [chainId: number]: {
     transactionManagerAddress?: string;
     subgraph?: string;
+    subgraphSyncBuffer?: number;
   }
 } = {
   56: {
     subgraph: 'https://bwarelabs-connext-bsc-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-bsc',
+    subgraphSyncBuffer: 150
   },
 }
 
 export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
-  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
+  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string,subgraphSyncBuffer?: number; }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
       subgraph: chainConfigOverwrites[parseInt(chainId)]?.subgraph,
       transactionManagerAddress: chainConfigOverwrites[parseInt(chainId)]?.transactionManagerAddress,
+      subgraphSyncBuffer: chainConfigOverwrites[parseInt(chainId)]?.subgraphSyncBuffer
     }
   })
 
