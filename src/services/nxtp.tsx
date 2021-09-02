@@ -3,7 +3,6 @@ import { IERC20Minimal } from "@connext/nxtp-contracts/typechain";
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { BigNumber, Contract, providers } from 'ethers';
-import pino from 'pino';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
@@ -31,7 +30,7 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
     }
   })
 
-  const sdk = new NxtpSdk(chainConfig, signer, pino({ level: "info" }));
+  const sdk = new NxtpSdk(chainConfig, signer);
 
   // reuse existing messaging token
   const account = await signer.getAddress()
