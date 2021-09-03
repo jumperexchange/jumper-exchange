@@ -884,7 +884,7 @@ const SwapXpollinate = ({
         <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
           <Alert
             style={{ maxWidth: 700 }}
-            message="Do not use this app with Trust Wallet! Fix is coming soon."
+            message="Do not use this app with Trust Wallet! Trust Wallet users, please use V1. Fix coming soon."
             description=""
             type="error"
           />
