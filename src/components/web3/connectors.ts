@@ -2,6 +2,7 @@ import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from '@web3-react/network-connector';
 import { providers } from 'ethers';
 import { getChainById } from '../../types/lists';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 
 const CHAINS = {
   // Mainnet
@@ -81,11 +82,17 @@ export const getRpcProviders = (chainIds: Array<number>) => {
 
 export const injected = new InjectedConnector({
   supportedChainIds: Object.values<number>(CHAINS),
-});
+})
 
 export const network = new NetworkConnector({
   urls: Object.fromEntries(
     Object.values<number>(CHAINS).map(i => [i, RPC_URLS[i]])
   ),
-  defaultChainId: CHAINS.MAINNET,
-});
+  defaultChainId: CHAINS.POLYGON,
+})
+
+export const walletConnectConnector = new WalletConnectConnector({
+  rpc: Object.fromEntries(
+    Object.values<number>(CHAINS).map(i => [i, RPC_URLS[i]])
+  ),
+})

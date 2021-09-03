@@ -14,6 +14,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import onehiveWordmark from '../../assets/1hive_wordmark.svg';
 import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
+import metamaskIcon from '../../assets/wallets/metamask.svg';
+import walletconnectIcon from '../../assets/wallets/walletconnect.svg';
 import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
@@ -24,7 +26,7 @@ import { Chain, getChainById, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
-import { getRpcProviders, injected } from '../web3/connectors';
+import { getRpcProviders, injected, walletConnectConnector } from '../web3/connectors';
 import HistoricTransactionsTableNxtp from './HistoricTransactionsTableNxtp';
 import SwappingNxtp from './SwappingNxtp';
 import './SwapXpollinate.css';
@@ -212,6 +214,7 @@ const SwapXpollinate = ({
   const [activeKeyTransactions, setActiveKeyTransactions] = useState<string>('')
 
   // Wallet
+  const [showLoginModal, setShowLoginModal] = useState<boolean>(false)
   const web3 = useWeb3React<Web3Provider>()
   const { activate, deactivate } = useWeb3React()
   const intervalRef = useRef<NodeJS.Timeout>()
@@ -758,7 +761,7 @@ const SwapXpollinate = ({
 
   const submitButton = () => {
     if (!web3.account) {
-      return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} htmlType="submit" onClick={() => activate(injected)}>Connect Wallet</Button>
+      return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} htmlType="submit" onClick={() => setShowLoginModal(true)}>Connect Wallet</Button>
     }
     if (web3.chainId !== getChainByKey(depositChain).id) {
       return <Button shape="round" type="primary" size={"large"} htmlType="submit" onClick={() => switchChain(getChainByKey(depositChain).id)}>Change Chain</Button>
@@ -864,7 +867,7 @@ const SwapXpollinate = ({
                 </Dropdown>
               </>
             ) : (
-              <Button shape="round" type="link" icon={<LoginOutlined />} onClick={() => activate(injected)}>Connect Wallet</Button>
+              <Button shape="round" type="link" icon={<LoginOutlined />} onClick={() => setShowLoginModal(true)}>Connect Wallet</Button>
             )}
 
             <a href="https://chat.connext.network/" target="_blank" rel="nofollow noreferrer" className="header-button support-link">
@@ -1096,6 +1099,36 @@ const SwapXpollinate = ({
         </Modal>
         : ''
       }
+
+      <Modal
+        className="loginModal"
+        closable={false}
+        visible={showLoginModal}
+        footer={null}
+        onOk={() => setShowLoginModal(false)}
+        onCancel={() => setShowLoginModal(false)}
+      >
+        <Row gutter={[8, 8]}>
+          <Col span={24}>
+            <button onClick={() => {setShowLoginModal(false); activate(injected)}}>
+              <Row justify="center">
+                <img src={metamaskIcon} alt="MetaMask" />
+              </Row>
+              <Row className="loginModal-name" justify="center">MetaMask</Row>
+              <Row className="loginModal-description" justify="center"> Connect to your MetaMask Wallet</Row>
+            </button>
+          </Col>
+          <Col span={24}>
+            <button onClick={() => {setShowLoginModal(false); activate(walletConnectConnector)}}>
+              <Row justify="center">
+                <img src={walletconnectIcon} alt="WalletConnect" />
+              </Row>
+              <Row className="loginModal-name" justify="center">WalletConnect</Row>
+              <Row className="loginModal-description" justify="center">Scan with WalletConnect to connect</Row>
+            </button>
+          </Col>
+        </Row>
+      </Modal>
     </Content>
   )
 }
