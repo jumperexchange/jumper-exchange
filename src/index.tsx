@@ -19,12 +19,24 @@ switch(process.env.REACT_APP_PACKAGE) {
       })
     break
 
-  case 'nxtp':
-    import('./AppNxtp')
-      .then(({AppNxtp}) => {
+  case 'xpollinate-testnet':
+    import('./AppXpollinateTestnet')
+      .then(({AppXpollinateTestnet}) => {
         ReactDOM.render(
           <React.StrictMode>
-            <AppNxtp/>
+            <AppXpollinateTestnet/>
+          </React.StrictMode>,
+          document.getElementById('root')
+        )
+      })
+    break
+
+  case 'xpollinate-mainnet':
+    import('./AppXpollinate')
+      .then(({AppXpollinate}) => {
+        ReactDOM.render(
+          <React.StrictMode>
+            <AppXpollinate/>
           </React.StrictMode>,
           document.getElementById('root')
         )

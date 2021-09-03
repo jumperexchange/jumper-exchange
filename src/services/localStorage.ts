@@ -52,9 +52,9 @@ const readWallets = (): Array<Wallet> => {
   }
 }
 
-const storeNxtpMessagingToken = (token: string) => {
+const storeNxtpMessagingToken = (token: string, account: string) => {
   if (isSupported()) {
-    localStorage.setItem('nxtpMessagingToken', token)
+    localStorage.setItem('nxtpMessagingToken', token + ':' + account)
   }
 }
 
@@ -62,8 +62,28 @@ const readNxtpMessagingToken = () => {
   if (!isSupported()) {
     return null
   }
+  const value = localStorage.getItem('nxtpMessagingToken')
+  if (!value) {
+    return null
+  }
+  const parts = value.split(':')
+  return {
+    token: parts[0],
+    account: parts.length > 1 && parts[1] ? parts[1] : null
+  }
+}
 
-  return localStorage.getItem('nxtpMessagingToken')
+const storeHideAbout = (hide: boolean) => {
+  if (isSupported()) {
+    localStorage.setItem('nxtpHideDemo', hide ? 'true' : 'false')
+  }
+}
+const readHideAbout = () => {
+  if (!isSupported()) {
+    return false
+  }
+  const value = localStorage.getItem('nxtpHideDemo')
+  return value === 'true'
 }
 
 export {
@@ -73,4 +93,6 @@ export {
   readWallets,
   storeNxtpMessagingToken,
   readNxtpMessagingToken,
+  storeHideAbout,
+  readHideAbout,
 }
