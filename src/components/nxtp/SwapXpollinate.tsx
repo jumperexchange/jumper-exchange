@@ -778,7 +778,7 @@ const SwapXpollinate = ({
 
   const cancelTransfer = async (txData: CrosschainTransaction) => {
     try {
-      await sdk?.cancel({ relayerFee: '0', signature: '0x', txData: { ...txData.invariant, ...txData.sending! } }, txData.invariant.sendingChainId)
+      await sdk?.cancel({ signature: '0x', txData: { ...txData.invariant, ...txData.sending! } }, txData.invariant.sendingChainId)
       removeActiveTransaction(txData.invariant.transactionId)
     } catch (e) {
       console.error('Failed to cancel', e)
