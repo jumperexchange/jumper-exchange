@@ -880,6 +880,15 @@ const SwapXpollinate = ({
       </div>
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
+        {/* Warning Message */}
+        <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+          <Alert
+            style={{ maxWidth: 700 }}
+            message="Do not use this app with Trust Wallet! Fix is coming soon."
+            description=""
+            type="error"
+          />
+        </Row>
 
         {/* Infos */}
         <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
