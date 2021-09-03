@@ -2,7 +2,7 @@
 
 What we are aiming at (blue parts are already implemented):
 
-![Screenshot](./src/assets/lifi-goal.jpg?raw=true)
+![Screenshot](./src/assets/lifi_overview.jpg?raw=true)
 
 
 ## Setup
