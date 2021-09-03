@@ -18,7 +18,7 @@ const chainConfigOverwrites : {
 } = {
   56: {
     subgraph: 'https://bwarelabs-connext-bsc-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-bsc',
-    subgraphSyncBuffer: 150
+    // subgraphSyncBuffer: 150
   },
 }
 
