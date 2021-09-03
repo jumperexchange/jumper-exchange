@@ -2,7 +2,7 @@ import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20
 import { IERC20Minimal } from "@connext/nxtp-contracts/typechain";
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { BigNumber, Contract, providers } from 'ethers';
+import { BigNumber, constants, Contract, providers } from 'ethers';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
@@ -111,12 +111,14 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   const toChain = getChainByKey(crossAction.toChainKey)
 
   // Check Token Approval
-  const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.quote.bid.sendingChainId)
-  const approved = await getApproved((sdk as any).signer, crossEstimate.quote.bid.sendingAssetId, contractAddress)
-  if (approved.gte(crossEstimate.quote.bid.amount)) {
-    // approval already done, jump to next step
-    setStatusDone(update, status, approveProcess)
-    submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+  if (crossEstimate.quote.bid.sendingAssetId !== constants.AddressZero) {
+    const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.quote.bid.sendingChainId)
+    const approved = await getApproved((sdk as any).signer, crossEstimate.quote.bid.sendingAssetId, contractAddress)
+    if (approved.gte(crossEstimate.quote.bid.amount)) {
+      // approval already done, jump to next step
+      setStatusDone(update, status, approveProcess)
+      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+    }
   }
 
   const transactionId = crossEstimate.quote.bid.transactionId
