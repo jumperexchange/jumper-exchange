@@ -36,8 +36,8 @@ const history = createBrowserHistory()
 
 const BALANCES_REFRESH_INTERVAL = 30000
 const DEBOUNCE_TIMEOUT = 800
-const MAINNET_LINK = 'https://connext.li.finance'
-const TESTNET_LINK = 'https://testnet-connext.li.finance'
+const MAINNET_LINK = 'https://xpollinate.io'
+const TESTNET_LINK = 'https://testnet.xpollinate.io'
 
 const getDefaultParams = (search: string, transferChains: Chain[], transferTokens: { [ChainKey: string]: Array<Token> }) => {
   const defaultParams = {
