@@ -9,6 +9,22 @@ interface RouteProps {
   onSelect: Function
 }
 
+const getUniswapCloneName = (chainId: number) =>{
+  switch (chainId){
+    case 1:
+      return "Uniswap"
+    case 56:
+      return "PancakeSwap"
+    case 100:
+      return "Honeyswap"
+    case 137:
+      return "Quickswap"
+    default:
+      return ""
+  }
+}
+
+
 const Route = ({ route, selected, onSelect }: RouteProps) => {
 
   const parseStep = (step: TranferStep) => {
@@ -16,7 +32,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
       case "swap":
         return {
           title: "Swap Tokens",
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on ${step.action.chainKey}`,
+          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on ${getUniswapCloneName(step.action.chainId)}`,
         }
       case "paraswap":
         return {

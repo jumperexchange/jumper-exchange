@@ -4,6 +4,7 @@ import './index.css';
 import reportWebVitals from './services/reportWebVitals';
 import analytics from './services/analytics';
 
+
 analytics.initialize(process.env.REACT_APP_ANALYTICS_ID)
 
 switch(process.env.REACT_APP_PACKAGE) {

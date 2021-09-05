@@ -3,7 +3,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import React from 'react';
 
 function getLibrary(provider: any): Web3Provider {
-  const library = new Web3Provider(provider);
+  const library = new Web3Provider(provider, "any"); // added "any" because of https://github.com/ethers-io/ethers.js/issues/866
   library.pollingInterval = 12000;
   return library;
 }
