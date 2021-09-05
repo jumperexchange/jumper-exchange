@@ -30,6 +30,8 @@ export interface Process {
   startedAt: number
   doneAt?: number
   failedAt?: number
+  errorMessage?: any
+  errorCode?: any
   message: any
   status: Status
 

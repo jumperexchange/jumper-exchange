@@ -5,7 +5,6 @@ import * as uniswap from './uniswaps'
 import { JsonRpcProvider, JsonRpcSigner, } from '@ethersproject/providers'
 import { Execution } from '../types/server'
 import {ethers} from 'ethers'
-import {switchChain} from './metamask'
 
 
 const chainJsonProviders: { [chainId: number]: JsonRpcProvider } = {
@@ -42,20 +41,6 @@ const uniswapRouter02Contract: {[chainId: number]: ethers.Contract } = {
   137: new ethers.Contract(uniswapRouters[137], uniswapRouter02ABI, chainJsonProviders[137])
 }
 
-/*
-
-        let abi = ["function approve(address _spender, uint256 _value) public returns (bool success)"];
-
-        let contract = new ethers.Contract(INPUT_TOKEN.address, abi, signer);
-
-        let aproveResponse = await contract.approve(PANCAKE_ROUTER, ethers.utils.parseUnits('1000.0', 18), {gasLimit: 100000, gasPrice: 5e9});
-
-        console.log(JSON.stringify(aproveResponse));
-
-        */
-
-
-
 export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, srcAmount: number, srcAddress: string, destAddress: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) => {
 
   // setup
@@ -68,9 +53,6 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     to: destAddress,
     deadline: Math.floor(Date.now() / 1000) + 60 * 20, // 20 minutes from now on -> https://docs.uniswap.org/sdk/2.0.0/guides/trading
   }
-
-
-
   // Ask user to set allowance
   // -> set status
   const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
@@ -80,6 +62,8 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     await uniswap.setAllowance(signer, uniswapRouters[chainId], srcAddress, srcToken, srcAmount)
   } catch (e) {
     // -> set status
+    allowanceProcess.errorCode = e.code
+    allowanceProcess.errorMessage = e.message
     setStatusFailed(update, status, allowanceProcess)
     throw e
   }
@@ -98,7 +82,8 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     tx = await contractWithSigner.swapExactTokensForTokens(swapData.amountIn.toString(), swapData.amountOutMin, swapData.path, swapData.to, swapData.deadline)
   } catch (e) {
     // -> set status
-    console.log("here")
+    allowanceProcess.errorCode = e.code
+    allowanceProcess.errorMessage = e.message
     setStatusFailed(update, status, swapProcess)
     throw e
   }
@@ -117,6 +102,8 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     receipt = await tx.wait()
   } catch (e) {
     // -> set status
+    allowanceProcess.errorCode = e.code
+    allowanceProcess.errorMessage = e.message
     setStatusFailed(update, status, waitingProcess)
     throw e
   }

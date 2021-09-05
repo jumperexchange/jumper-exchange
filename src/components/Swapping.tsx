@@ -88,7 +88,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     if (web3.chainId !== swapAction.chainId) {
       await switchChain(swapAction.chainId)
     }
-    return executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.fromAmount, fromAddress, toAddress, swapEstimate.path, (status: Execution) => updateStatus(step, status))
+    const swapExecution = await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.fromAmount, fromAddress, toAddress, swapEstimate.path, (status: Execution) => updateStatus(step, status))
+    console.log("-----------");
+    console.log(swapExecution)
+    return swapExecution
   }
 
   const triggerParaswap = async (step: TranferStep, previousStep?: TranferStep) => {
@@ -151,13 +154,17 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     return execution.process.map((process, index) => {
       const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
+      const hasFailed = process.status === 'FAILED'
       return (
         <p key={index} style={{display: 'flex'}}>
           <Typography.Text
             type={type}
             className={process.status === 'PENDING' ? 'flashing' : undefined}
           >
-            {process.message}
+            <p>{process.message}</p>
+            {hasFailed && <span>Error Code: {process.errorCode}</span>}
+            {hasFailed && <br />}
+            {hasFailed && <span>{process.errorMessage}</span>}
           </Typography.Text>
           <Typography.Text style={{marginLeft: 'auto'}}>
             <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt}/>
@@ -244,10 +251,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case 'paraswap': {
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >trigger Swap</Button>
+        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap{step.action.target === 'channel' ? ' & Deposit' : ''} on {paraswapAvatar}</h4>
+            <h4>Swap on {paraswapAvatar}</h4>
             <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
@@ -258,21 +265,22 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       }
 
       case '1inch': {
-        const triggerButton = <Button type="primary"  disabled={!hasFailed} onClick={() => triggerStep(index, route)} >trigger Swap</Button>
+        const triggerButton = <Button type="primary"  disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap{step.action.target === 'channel' ? ' & Deposit' : ''} on {oneinchAvatar}</h4>
+            <h4>Swap on {oneinchAvatar}</h4>
             <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
             {hasFailed ? triggerButton : undefined}
+            <span>test</span>
           </Timeline.Item>,
         ]
       }
 
       case 'cross': {
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >trigger Transfer</Button>
+        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)} via {connextAvatar}</h4>
