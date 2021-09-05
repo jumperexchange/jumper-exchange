@@ -1,7 +1,6 @@
 import { ChainKey, chainKeysToObject, ChainPortfolio } from '../types';
 import axios from 'axios'
 import { ethers } from 'ethers';
-import { getChainByKey } from '../types/lists';
 import { deepClone } from './utils';
 
 type tokenListDebankT = {
@@ -34,7 +33,7 @@ const COVALENT_API_URI = 'https://api.covalenthq.com/v1'
 //   43113: 'Fuji C-Chain Testnet',
 //   250: 'Fantom Opera Mainnet',
 // }
-async function covalentGetCoinsOnChain(walletAdress: string, chainId: number) {
+export async function covalentGetCoinsOnChain(walletAdress: string, chainId: number) {
   const url = `${COVALENT_API_URI}/${chainId}/address/${walletAdress}/balances_v2/?key=${COVALENT_API_KEY}`
   let result
   try {
@@ -102,6 +101,7 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey){
   return balanceArray
 }
 
+// Crazy Wallet for testing token parsing: 0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85
 const chainNameMapping : {[ChainName: string]: ChainKey} = {
   'eth': ChainKey.ETH,
   'bsc': ChainKey.BSC,
@@ -109,7 +109,10 @@ const chainNameMapping : {[ChainName: string]: ChainKey} = {
   'matic': ChainKey.POL,
   'ftm': ChainKey.FTM,
   'okt': ChainKey.OKT,
-  // 'heco': ChainKey.??,
+  'avax': ChainKey.AVA,
+  // 'heco': ChainKey.??, // - HECO
+  // // - Optimistic Ethereum
+  // // - Arbitrum
 }
 function mapDebankChainNameToChainKey(chainName: string) {
   return chainNameMapping[chainName]
@@ -117,8 +120,6 @@ function mapDebankChainNameToChainKey(chainName: string) {
 
 async function getBalancesForWallet(walletAdress: string){
   walletAdress = walletAdress.toLowerCase()
-
-  const covalentAVAPromise = covalentGetCoinsOnChain(walletAdress, getChainByKey(ChainKey.AVA).id)
 
   const tokenListUrl = `https://openapi.debank.com/v1/user/token_list?id=${walletAdress}&is_all=true`
 
@@ -147,7 +148,6 @@ async function getBalancesForWallet(walletAdress: string){
     })
   }
 
-  totalPortfolio[ChainKey.AVA] = await covalentAVAPromise
   return totalPortfolio
 }
 
