@@ -475,7 +475,7 @@ const SwapXpollinate = ({
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
           token.amount = getBalance(chain.key, token.id)
-          token.amountRendered = token.amount.toFixed(4)
+          token.amountRendered = token.amount >= 0.0001 ? token.amount.toFixed(4) : token.amount.toFixed()
         }
       }
     }

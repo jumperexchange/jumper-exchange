@@ -85,3 +85,9 @@
   background: #c53030;
   color: white;
 }
+
+.ant-btn .anticon-spin {
+  height: 18px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
