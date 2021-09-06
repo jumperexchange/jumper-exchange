@@ -1,49 +1,55 @@
+import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json";
+import { IERC20Minimal } from "@connext/nxtp-contracts/typechain";
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { providers } from 'ethers';
-import pino from 'pino';
-import { getRpcProviders } from '../components/web3/connectors';
+import { BigNumber, constants, Contract, providers } from 'ethers';
 import { getChainByKey } from '../types/lists';
 import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
-const testChains = [
-  3,
-  4,
-  5,
-  80001,
-  421611,
-  69,
-]
-const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
+// Add overwrites to specific chains here. They will only be applied if the chain is used.
+const chainConfigOverwrites : {
+  [chainId: number]: {
+    transactionManagerAddress?: string;
+    subgraph?: string;
+    subgraphSyncBuffer?: number;
+  }
+} = {
+  56: {
+    subgraph: 'https://connext-bsc-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-bsc',
+    subgraphSyncBuffer: 150
+  },
+}
 
-export const setup = async (signer: providers.JsonRpcSigner) => {
-  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string }> = {};
+export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
+  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string,subgraphSyncBuffer?: number; }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
-      subgraph: undefined,
-      transactionManagerAddress: undefined,
+      subgraph: chainConfigOverwrites[parseInt(chainId)]?.subgraph,
+      transactionManagerAddress: chainConfigOverwrites[parseInt(chainId)]?.transactionManagerAddress,
+      subgraphSyncBuffer: chainConfigOverwrites[parseInt(chainId)]?.subgraphSyncBuffer
     }
   })
 
-  const sdk = new NxtpSdk(chainConfig, signer, pino({ level: "info" }));
+  const sdk = new NxtpSdk(chainConfig, signer);
 
   // reuse existing messaging token
+  const account = await signer.getAddress()
   try {
     const oldToken = readNxtpMessagingToken()
-    if (oldToken) {
+    if (oldToken?.token && oldToken.account === account) {
       try {
-        await sdk.connectMessaging(oldToken)
+        await sdk.connectMessaging(oldToken.token)
       } catch (e) {
         console.error(e)
         const token = await sdk.connectMessaging()
-        storeNxtpMessagingToken(token)
+        storeNxtpMessagingToken(token, account)
       }
     } else {
       const token = await sdk.connectMessaging()
-      storeNxtpMessagingToken(token)
+      storeNxtpMessagingToken(token, account)
     }
   } catch (e) {
     console.error(e)
@@ -81,6 +87,14 @@ export const getTransferQuote = async (
   return response;
 }
 
+const getApproved = async (signer: providers.JsonRpcSigner, tokenAddress: string, contractAddress: string) => {
+  const signerAddress = await signer.getAddress()
+  const erc20 = new Contract(tokenAddress, ERC20.abi, signer) as IERC20Minimal
+
+  const approved = await erc20.allowance(signerAddress, contractAddress) as BigNumber
+  return approved
+}
+
 export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateStatus: Function, infinteApproval: boolean = false) => {
 
   // status
@@ -95,6 +109,17 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   const crossEstimate = step.estimate as CrossEstimate
   const fromChain = getChainByKey(crossAction.chainKey)
   const toChain = getChainByKey(crossAction.toChainKey)
+
+  // Check Token Approval
+  if (crossEstimate.quote.bid.sendingAssetId !== constants.AddressZero) {
+    const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.quote.bid.sendingChainId)
+    const approved = await getApproved((sdk as any).signer, crossEstimate.quote.bid.sendingAssetId, contractAddress)
+    if (approved.gte(crossEstimate.quote.bid.amount)) {
+      // approval already done, jump to next step
+      setStatusDone(update, status, approveProcess)
+      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+    }
+  }
 
   const transactionId = crossEstimate.quote.bid.transactionId
   const transferPromise = sdk.prepareTransfer(crossEstimate.quote, infinteApproval)

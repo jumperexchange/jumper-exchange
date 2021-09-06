@@ -68,3 +68,20 @@
 @keyframes blinker {
   50% { opacity: 0.2; }
 }
+
+.lifiSupport {
+  color: #c53030;
+  border: 1px solid #c53030;
+  background: white;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  line-height: 1;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.lifiSupport:hover {
+  background: #c53030;
+  color: white;
+}

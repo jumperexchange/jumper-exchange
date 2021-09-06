@@ -24,7 +24,7 @@ function AboutPage() {
                     <h1 className="hero-title mt-0">Cross-Chain Swap Aggregation</h1>
                     <p className="hero-paragraph">Li.Finance provides the best cross-chain swap across all liquidity pools and bridges.</p>
                     <div className="hero-cta">
-                      <a className="button button-primary" href="https://twitter.com/lifimesh" target="_blank" rel="nofollow noreferrer">Follow on Twitter</a>
+                      <a className="button button-primary" href="https://twitter.com/lifiprotocol" target="_blank" rel="nofollow noreferrer">Follow on Twitter</a>
                       <a className="button" href="https://gitcoin.co/grants/3133/lifinance-the-cross-chain-defi-mesh-widget" target="_blank" rel="nofollow noreferrer">Support on Gitcoin</a>
                     </div>
                   </div>

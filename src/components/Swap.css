@@ -88,9 +88,11 @@ h4.swap-title {
 }
 .form-input-wrapper .ant-avatar {
   margin-left: 4px;
+  flex-shrink: 0;
 }
 .form-input-wrapper .ant-select {
   flex-grow: 1;
+  overflow: hidden;
 }
 .form-input-wrapper input {
   font-weight: 700;

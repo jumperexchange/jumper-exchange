@@ -62,6 +62,8 @@ function App() {
                   </Button>
                 </Menu.Item> }
               </Menu>
+
+              <a className="lifiSupport" href="https://discord.com/invite/G9uAbE439B" target="_blank" rel="nofollow noreferrer">Support</a>
             </Header>
 
             <Switch>

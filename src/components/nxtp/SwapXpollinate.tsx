@@ -1,39 +1,131 @@
-import { ArrowUpOutlined, DownOutlined, LoginOutlined, SettingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
-import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { CheckOutlined, DownOutlined, ExportOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
+import BigNumber from 'bignumber.js';
+import { providers } from 'ethers';
+import { createBrowserHistory } from 'history';
+import QueryString from 'qs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import connextWordmark from '../../assets/connext_wordmark.svg';
+import onehiveWordmark from '../../assets/1hive_wordmark.svg';
+import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
-import { clearLocalStorage } from '../../services/localStorage';
+import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
+import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
-import { getBalancesForWallet, mintTokens, testToken } from '../../services/testToken';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types';
-import { getChainById, getChainByKey } from '../../types/lists';
+import { ChainKey, ChainPortfolio, Token, TokenWithAmounts } from '../../types';
+import { Chain, getChainById, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
-import { injected } from '../web3/connectors';
+import { getRpcProviders, injected } from '../web3/connectors';
+import HistoricTransactionsTableNxtp from './HistoricTransactionsTableNxtp';
 import SwappingNxtp from './SwappingNxtp';
+import './SwapXpollinate.css';
+import TestBalanceOverview from './TestBalanceOverview';
 import TransactionsTableNxtp from './TransactionsTableNxtp';
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
 
-const BALANCES_REFRESH_INTERVAL = 30000
+const history = createBrowserHistory()
 
-const transferChains = [
-  getChainByKey(ChainKey.ROP),
-  getChainByKey(ChainKey.RIN),
-  getChainByKey(ChainKey.GOR),
-  getChainByKey(ChainKey.MUM),
-  getChainByKey(ChainKey.ARBT),
-  getChainByKey(ChainKey.OPTT),
-]
+const BALANCES_REFRESH_INTERVAL = 30000
+const DEBOUNCE_TIMEOUT = 800
+const MAINNET_LINK = 'https://xpollinate.io'
+const TESTNET_LINK = 'https://testnet.xpollinate.io'
+
+const getDefaultParams = (search: string, transferChains: Chain[], transferTokens: { [ChainKey: string]: Array<Token> }) => {
+  const defaultParams = {
+    depositChain: transferChains[0].key,
+    depositToken: transferTokens[transferChains[0].key][0].id,
+    depositAmount: -1,
+    withdrawChain: transferChains[1].key,
+    withdrawToken: transferTokens[transferChains[1].key][0].id,
+  }
+
+  const params = QueryString.parse(search, { ignoreQueryPrefix: true })
+
+  // fromChain + old: senderChainId
+  if ((params.fromChain && typeof params.fromChain === 'string') || (params.senderChainId && typeof params.senderChainId === 'string')) {
+    try {
+      const newFromChainId = parseInt(typeof params.fromChain === 'string' ? params.fromChain : params.senderChainId as string)
+      const newFromChain = transferChains.find((chain) => chain.id === newFromChainId)
+
+      if (newFromChain) {
+        if (newFromChain.key === defaultParams.withdrawChain) {
+          // switch with withdraw chain
+          defaultParams.withdrawChain = defaultParams.depositChain
+          defaultParams.withdrawToken = defaultParams.depositToken
+        }
+
+        const foundTokenSymbol = transferTokens[defaultParams.depositChain].find(token => token.id === defaultParams.depositToken)!.symbol
+        defaultParams.depositChain = newFromChain.key
+        defaultParams.depositToken = transferTokens[newFromChain.key].find(token => token.symbol === foundTokenSymbol)!.id
+      }
+    } catch (e) { console.error(e) }
+  }
+
+  // fromToken
+  if (params.fromToken && typeof params.fromToken === 'string') {
+    // does token exist?
+    const foundToken = transferTokens[defaultParams.depositChain].find(token => token.id === params.fromToken)
+    if (foundToken) {
+      defaultParams.depositToken = foundToken.id
+      defaultParams.withdrawToken = transferTokens[defaultParams.withdrawChain].find(token => token.symbol === foundToken.symbol)!.id
+    }
+  }
+
+  // fromAmount
+  if (params.fromAmount && typeof params.fromAmount === 'string') {
+    try {
+      const newAmount = parseFloat(params.fromAmount)
+      if (newAmount > 0) {
+        defaultParams.depositAmount = parseFloat(params.fromAmount)
+      }
+    } catch (e) { console.error(e) }
+  }
+
+  // toChain + old: receiverChainId
+  if ((params.toChain && typeof params.toChain === 'string') || (params.receiverChainId && typeof params.receiverChainId === 'string')) {
+    try {
+      const newToChainId = parseInt(typeof params.toChain === 'string' ? params.toChain : params.receiverChainId as string)
+      const newToChain = transferChains.find((chain) => chain.id === newToChainId)
+
+      if (newToChain && newToChain.key !== defaultParams.depositChain) {
+        // only set if different chain
+        const foundTokenSymbol = transferTokens[defaultParams.depositChain].find(token => token.id === defaultParams.depositToken)!.symbol
+        defaultParams.withdrawChain = newToChain.key
+        defaultParams.withdrawToken = transferTokens[newToChain.key].find(token => token.symbol === foundTokenSymbol)!.id
+      }
+    } catch (e) { console.error(e) }
+  }
+
+  // toToken
+  if (params.toToken && typeof params.toToken === 'string') {
+    // does token exist?
+    const foundToken = transferTokens[defaultParams.withdrawChain].find(token => token.id === params.toToken)
+    if (foundToken) {
+      defaultParams.withdrawToken = foundToken.id
+      defaultParams.depositToken = transferTokens[defaultParams.depositChain].find(token => token.symbol === foundToken.symbol)!.id
+    }
+  }
+
+  // old: assset
+  if (params.asset && typeof params.asset === 'string') {
+    const foundToken = transferTokens[defaultParams.depositChain].find(token => token.symbol === params.asset)
+    if (foundToken) {
+      defaultParams.depositToken = foundToken.id
+      defaultParams.withdrawToken = transferTokens[defaultParams.withdrawChain].find(token => token.symbol === foundToken.symbol)!.id
+    }
+  }
+
+  return defaultParams
+}
 
 function debounce(func: Function, timeout: number = 300) {
   let timer: NodeJS.Timeout
@@ -45,20 +137,51 @@ function debounce(func: Function, timeout: number = 300) {
   }
 }
 
-const SwapNxtp = () => {
+let chainProviders: Record<number, providers.FallbackProvider>
+
+let startParams: {
+  depositChain: ChainKey;
+  depositToken: string;
+  depositAmount: number;
+  withdrawChain: ChainKey;
+  withdrawToken: string;
+}
+
+interface SwapXpollinateProps {
+  aboutMessage?: React.ReactNode
+  aboutDescription?: React.ReactNode
+  transferChains: Chain[]
+  transferTokens: { [ChainKey: string]: Array<Token> }
+  getBalancesForWallet: Function
+  testnet?: boolean
+}
+
+const SwapXpollinate = ({
+  aboutMessage,
+  aboutDescription,
+  transferChains,
+  transferTokens,
+  getBalancesForWallet,
+  testnet,
+}: SwapXpollinateProps) => {
+  // INIT
+  startParams = startParams ?? getDefaultParams(history.location.search, transferChains, transferTokens)
+  chainProviders = chainProviders ?? getRpcProviders(transferChains.map(chain => chain.id))
+
   const [stateUpdate, setStateUpdate] = useState<number>(0)
+  const [showAbout, setShowAbout] = useState<boolean>(!readHideAbout())
 
   // Form
-  const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.RIN)
-  const [depositAmount, setDepositAmount] = useState<number>(1)
-  const [depositToken, setDepositToken] = useState<string>(testToken[ChainKey.RIN][0].id)
-  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.GOR)
+  const [depositChain, setDepositChain] = useState<ChainKey>(startParams.depositChain)
+  const [depositAmount, setDepositAmount] = useState<number>(startParams.depositAmount)
+  const [depositToken, setDepositToken] = useState<string>(startParams.depositToken)
+  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(startParams.withdrawChain)
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
-  const [withdrawToken, setWithdrawToken] = useState<string>(testToken[ChainKey.GOR][0].id)
-  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(testToken)
-  const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [updatingBalances, setUpdatingBalances] = useState<boolean>(false)
+  const [withdrawToken, setWithdrawToken] = useState<string>(startParams.withdrawToken)
+  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
+  const [refreshBalances, setRefreshBalances] = useState<number>(1)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
+  const [updatingBalances, setUpdatingBalances] = useState<boolean>(false)
 
   // Advanced Options
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
@@ -67,6 +190,7 @@ const SwapNxtp = () => {
   const [optionCallData, setOptionCallData] = useState<string>('')
 
   // Routes
+  const [routeUpdate, setRouteUpdate] = useState<number>(1)
   const [routeRequest, setRouteRequest] = useState<any>()
   const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
@@ -77,15 +201,40 @@ const SwapNxtp = () => {
   const [modalRouteIndex, setModalRouteIndex] = useState<number>()
 
   // nxtp
-  const [minting, setMinting] = useState<boolean>(false)
   const [sdk, setSdk] = useState<NxtpSdk>()
   const [sdkChainId, setSdkChainId] = useState<number>()
+  const [sdkAccount, setSdkAccount] = useState<string>()
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
+  const [updatingActiveTransactions, setUpdatingActiveTransactions] = useState<boolean>(false)
+  const [historicTransaction, setHistoricTransactions] = useState<Array<HistoricalTransaction>>([])
+  const [updateHistoricTransactions, setUpdateHistoricTransactions] = useState<boolean>(true)
+  const [updatingHistoricTransactions, setUpdatingHistoricTransactions] = useState<boolean>(false)
+  const [activeKeyTransactions, setActiveKeyTransactions] = useState<string>('')
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
   const { activate, deactivate } = useWeb3React()
   const intervalRef = useRef<NodeJS.Timeout>()
+
+  // update query string
+  useEffect(() => {
+    const params = {
+      fromChain: getChainByKey(depositChain).id,
+      fromToken: depositToken,
+      toChain: getChainByKey(withdrawChain).id,
+      toToken: withdrawToken,
+      fromAmount: depositAmount > 0 ? depositAmount : undefined,
+    }
+    const search = QueryString.stringify(params)
+    history.push({
+      search,
+    });
+  }, [depositChain, withdrawChain, depositToken, withdrawToken, depositAmount])
+
+  // hide about
+  useEffect(() => {
+    storeHideAbout(!showAbout)
+  }, [showAbout])
 
   // auto-trigger finish if corresponding modal is opend
   useEffect(() => {
@@ -142,7 +291,7 @@ const SwapNxtp = () => {
 
   useEffect(() => {
     const initializeConnext = async () => {
-      if (sdk && sdkChainId === web3.chainId) {
+      if (sdk && sdkChainId === web3.chainId && sdkAccount === web3.account) {
         return sdk
       }
       if (!web3.library || !web3.account) {
@@ -151,49 +300,61 @@ const SwapNxtp = () => {
 
       const signer = web3.library.getSigner()
       setSdkChainId(web3.chainId)
+      setSdkAccount(web3.account)
 
       if (sdk) {
         sdk.removeAllListeners()
       }
-      const _sdk = await setup(signer)
+
+      const _sdk = await setup(signer, chainProviders)
       setSdk(_sdk)
 
       // listen to events
       _sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionPrepared, data, { invariant: data.txData, sending: data.txData })
+        setRefreshBalances(state => state + 1)
       })
 
-      _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, (data) => {
+      _sdk.attach(NxtpSdkEvents.SenderTransactionFulfilled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionFulfilled, data, { invariant: data.txData, sending: data.txData })
         removeActiveTransaction(data.txData.transactionId)
-        updateBalances(web3.account!)
+        setRefreshBalances(state => state + 1)
+        setUpdateHistoricTransactions(true)
       })
 
-      _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
+      _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.SenderTransactionCancelled, data, { invariant: data.txData, sending: data.txData })
         removeActiveTransaction(data.txData.transactionId)
+        setUpdateHistoricTransactions(true)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
         updateActiveTransactionsWith(data.transactionId, NxtpSdkEvents.ReceiverPrepareSigned, data)
+        setActiveKeyTransactions('active')
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionPrepared, data, { invariant: data.txData, receiving: data.txData })
       })
 
-      _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
+      _sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionFulfilled, data, { invariant: data.txData, receiving: data.txData })
         removeActiveTransaction(data.txData.transactionId)
-        updateBalances(web3.account!)
+        setRefreshBalances(state => state + 1)
+        setUpdateHistoricTransactions(true)
       })
 
-      _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
+      _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, async (data) => {
         updateActiveTransactionsWith(data.txData.transactionId, NxtpSdkEvents.ReceiverTransactionCancelled, data, { invariant: data.txData, receiving: data.txData })
         removeActiveTransaction(data.txData.transactionId)
+        setUpdateHistoricTransactions(true)
       })
 
+      // fetch historic transactions
+      setUpdateHistoricTransactions(true)
+
       // get pending transactions
+      setUpdatingActiveTransactions(true)
       const transactions = await _sdk.getActiveTransactions()
       for (const transaction of transactions) {
         // merge to txData to be able to pass event to fulfillTransfer
@@ -209,6 +370,10 @@ const SwapNxtp = () => {
           transaction.crosschainTx
         )
       }
+      if (transactions.length) {
+        setActiveKeyTransactions('active')
+      }
+      setUpdatingActiveTransactions(false)
 
       return _sdk
     }
@@ -222,6 +387,7 @@ const SwapNxtp = () => {
     if (!web3.account) {
       setHighlightedIndex(-1)
       setActiveTransactions([])
+      setHistoricTransactions([])
       setExecutionRoutes([])
       setSdkChainId(undefined)
       if (sdk) {
@@ -231,7 +397,7 @@ const SwapNxtp = () => {
       }
     }
 
-  }, [web3, sdk, sdkChainId])
+  }, [web3, sdk, sdkChainId, sdkAccount])
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -251,42 +417,40 @@ const SwapNxtp = () => {
     }
   }
 
-  const updateBalances = async (address: string) => {
+  const loadHistoricTransactions = useCallback(async () => {
+    setUpdatingHistoricTransactions(true)
+    setHistoricTransactions(await sdk!.getHistoricalTransactions())
+    setUpdateHistoricTransactions(false)
+    setUpdatingHistoricTransactions(false)
+  }, [sdk])
+
+  useEffect(() => {
+    if (sdk && updateHistoricTransactions && !updatingHistoricTransactions) {
+      loadHistoricTransactions()
+    }
+  }, [sdk, updateHistoricTransactions, updatingHistoricTransactions, loadHistoricTransactions])
+
+  const updateBalances = useCallback(async (address: string) => {
     setUpdatingBalances(true)
     await getBalancesForWallet(address).then(setBalances)
     setUpdatingBalances(false)
-  }
-
+  }, [getBalancesForWallet])
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
-      setRefreshBalances(false)
+      setRefreshBalances(state => 0)
       updateBalances(web3.account)
     }
-  }, [refreshBalances, web3.account])
+  }, [refreshBalances, web3.account, updateBalances])
 
   useEffect(() => {
     if (!web3.account) {
       setBalances(undefined) // reset old balances
     } else {
-      setRefreshBalances(true)
+      setRefreshBalances(state => state + 1)
     }
   }, [web3.account])
 
-  const mintTestToken = async (chainKey: ChainKey) => {
-    if (!web3.library || !web3.account) return
-    const chainId = getChainByKey(chainKey).id
-    await switchChain(chainId)
-    if (web3.chainId !== chainId) return
-    setMinting(true)
-    try {
-      const res = await mintTokens(web3.library?.getSigner(), testToken[chainKey][0].id)
-      await res.wait(1)
-      await updateBalances(web3.account)
-    } finally {
-      setMinting(false)
-    }
-  }
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
     if (!balances) {
@@ -322,7 +486,7 @@ const SwapNxtp = () => {
   }, [tokens, balances])
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => setRefreshBalances(true), BALANCES_REFRESH_INTERVAL)
+    intervalRef.current = setInterval(() => setRefreshBalances(state => state + 1), BALANCES_REFRESH_INTERVAL)
 
     return () => {
       if (intervalRef.current) {
@@ -364,7 +528,7 @@ const SwapNxtp = () => {
   }
 
   // update request based on UI
-  const defineRoute = (depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
+  const defineRoute = (depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: string, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
     setRouteRequest({
       depositChain,
       depositToken,
@@ -376,13 +540,13 @@ const SwapNxtp = () => {
       callData,
     })
   }
-  const debouncedSave = useRef(debounce(defineRoute, 500)).current
+  const debouncedSave = useRef(debounce(defineRoute, DEBOUNCE_TIMEOUT)).current
   const getTransferRoutes = useCallback(async () => {
     setRoutes([])
     setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
 
-    if (!sdk || !web3.account) {
+    if (!sdk || !web3.account || !routeUpdate) {
       return
     }
 
@@ -391,9 +555,8 @@ const SwapNxtp = () => {
       const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
       const callData = optionCallData !== '' ? optionCallData : undefined
       const dToken = findToken(depositChain, depositToken)
-      const dAmount = Math.floor(depositAmount * (10 ** dToken.decimals)).toString()
-
-      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount, receiving, callTo, callData)
+      const dAmount = new BigNumber(depositAmount).shiftedBy(dToken.decimals)
+      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount.toFixed(), receiving, callTo, callData)
     }
   }, [
     depositAmount,
@@ -408,6 +571,7 @@ const SwapNxtp = () => {
     optionCallData,
     debouncedSave,
     findToken,
+    routeUpdate,
   ])
   useEffect(() => {
     getTransferRoutes()
@@ -416,7 +580,7 @@ const SwapNxtp = () => {
   ])
 
   // route generation if needed
-  const generateRoutes = useCallback(async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: number, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
+  const generateRoutes = useCallback(async (sdk: NxtpSdk, depositChain: ChainKey, depositToken: string, withdrawChain: ChainKey, withdrawToken: string, depositAmount: string, receivingAddress: string, callTo: string | undefined, callData: string | undefined) => {
     setRoutesLoading(true)
 
     try {
@@ -426,7 +590,7 @@ const SwapNxtp = () => {
         depositToken,
         getChainByKey(withdrawChain).id,
         withdrawToken,
-        depositAmount.toString(),
+        depositAmount,
         receivingAddress,
         callTo,
         callData,
@@ -529,6 +693,8 @@ const SwapNxtp = () => {
     setExecutionRoutes(routes => [...routes, route])
 
     // get new route to avoid triggering the same quote twice
+    setDepositAmount(-1)
+    setRouteRequest(undefined)
     setRouteQuote(undefined)
 
     // add as active
@@ -547,6 +713,7 @@ const SwapNxtp = () => {
         receivingChainId: getChainByKey(crossAction.toChainKey).id,
         callDataHash: '',
         transactionId: crossEstimate.quote.bid.transactionId,
+        receivingChainTxManagerAddress: ''
       },
       sending: {
         amount: crossAction.amount.toString(),
@@ -555,6 +722,7 @@ const SwapNxtp = () => {
       },
     }
     updateActiveTransactionsWith(crossEstimate.quote.bid.transactionId, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent, txData)
+    setActiveKeyTransactions('active')
 
     // start execution
     const update = (step: TranferStep, status: Execution) => {
@@ -599,7 +767,7 @@ const SwapNxtp = () => {
       return <Button disabled={true} shape="round" type="primary" icon={<SyncOutlined spin />} size={"large"}>Searching Routes...</Button>
     }
     if (noRoutesAvailable) {
-      return <Button disabled={true} shape="round" type="primary" size={"large"}>No Route Found</Button>
+      return <Button shape="round" type="primary" size={"large"} className="grayed" onClick={() => { setRouteUpdate(routeUpdate + 1) }}>No Route Found (Retry)</Button>
     }
     if (!hasSufficientBalance()) {
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
@@ -610,7 +778,7 @@ const SwapNxtp = () => {
 
   const cancelTransfer = async (txData: CrosschainTransaction) => {
     try {
-      await sdk?.cancel({ relayerFee: '0', signature: '0x', txData: { ...txData.invariant, ...txData.sending! } }, txData.invariant.sendingChainId)
+      await sdk?.cancel({ signature: '0x', txData: { ...txData.invariant, ...txData.sending! } }, txData.invariant.sendingChainId)
       removeActiveTransaction(txData.invariant.transactionId)
     } catch (e) {
       console.error('Failed to cancel', e)
@@ -618,19 +786,47 @@ const SwapNxtp = () => {
   }
 
   const handleMenuClick = (e: any) => {
-    switchChain(parseInt(e.key))
+    if (e.key === 'mainnet' || e.key === 'testnet') {
+      // open link
+    } else {
+      switchChain(parseInt(e.key))
+    }
   }
 
   const currentChain = web3.chainId ? getChainById(web3.chainId) : undefined
-  const menu = (
+  const isSupported = !!transferChains.find((chain) => chain.id === currentChain?.id)
+  const menuChain = (
     <Menu onClick={handleMenuClick}>
-      {transferChains.map((chain) => {
-        return (
-          <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
-            {chain.name}
+      <Menu.ItemGroup title="Supported Chains">
+        {transferChains.map((chain) => {
+          return (
+            <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
+              {chain.name}
+            </Menu.Item>
+          )
+        })}
+      </Menu.ItemGroup>
+      <Menu.ItemGroup title="Other Chains">
+        {testnet ? (
+          <Menu.Item key="mainnet" icon={<ExportOutlined />}>
+            <a href={MAINNET_LINK} target="_blank" rel="nofollow noreferrer">
+              Visit Mainnet Version
+            </a>
           </Menu.Item>
-        )
-      })}
+        ) : (
+          <Menu.Item key="testnet" icon={<ExportOutlined />}>
+            <a href={TESTNET_LINK} target="_blank" rel="nofollow noreferrer">
+              Visit Testnet Version
+            </a>
+          </Menu.Item>
+        )}
+      </Menu.ItemGroup>
+    </Menu>
+  )
+
+  const menuAccount = (
+    <Menu >
+      <Menu.Item key="disconnect" onClick={() => disconnect()}>Disconnect</Menu.Item>
     </Menu>
   )
 
@@ -640,134 +836,140 @@ const SwapNxtp = () => {
   }
 
   return (
-    <Content className="site-layout" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
-      <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
+    <Content className="site-layout xpollinate" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
+      <div style={{ borderBottom: '1px solid #c6c6c6', marginBottom: 0 }}>
+        <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
+          <a href="/">
+            <img src={xpollinateWordmark} alt="xPollinate" style={{ width: '100%', maxWidth: '160px' }} />
+            <span className="version">v2 {testnet && 'Testnet'}</span>
+          </a>
 
-        <Row justify="end" style={{ padding: 20 }}>
+          <span className="header-options">
+            <Button className="header-button" onClick={() => setShowAbout(about => !about)}>
+              About
+            </Button>
 
-          {web3.account ? (
-            <>
-              <Button shape="round" type="link" onClick={() => disconnect()}>Disconnect</Button>
-              <Dropdown overlay={menu}>
-                <Button>
-                  <Badge color="green" text={currentChain?.name} /> <DownOutlined />
-                </Button>
-              </Dropdown>
-            </>
-          ) : (
-            <Button shape="round" type="link" icon={<LoginOutlined />} onClick={() => activate(injected)}>Connect Wallet</Button>
-          )}
-        </Row>
-
-        {/* Infos */}
-        <Row justify="center" style={{ padding: 20, paddingTop: 0 }}>
-          <Alert
-            message={(<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)}
-            description={(
+            {web3.account ? (
               <>
-                <p>The demo allows to transfer custom <b>TEST</b> token between Rinkeby and Goerli testnet.</p>
-                <p>To use the demo you need gas (ETH) and test token (TEST) on one of the chains. You can get free ETH for testing from public faucets and mint your own TEST here on the website.</p>
+                <Dropdown overlay={menuChain}>
+                  <Button className="header-button">
+                    <Badge color={isSupported ? 'green' : 'orange'} text={currentChain?.name || 'Unsupported Chain'} /> <DownOutlined />
+                  </Button>
+                </Dropdown>
+
+                <Dropdown overlay={menuAccount}>
+                  <Button className="header-button">
+                    {web3.account.substr(0, 6)}...{web3.account.substr(-4, 4)}
+                  </Button>
+                </Dropdown>
               </>
+            ) : (
+              <Button shape="round" type="link" icon={<LoginOutlined />} onClick={() => activate(injected)}>Connect Wallet</Button>
             )}
-            type="info"
+
+            <a href="https://chat.connext.network/" target="_blank" rel="nofollow noreferrer" className="header-button support-link">
+              <span>Support <LinkOutlined /></span>
+            </a>
+
+            <a href="https://xdai-matic-connext-beta.vercel.app/" target="_blank" rel="nofollow noreferrer" className="header-button">
+              <span>Looking for V1?</span>
+            </a>
+
+          </span>
+        </Row>
+      </div>
+
+      <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
+        {/* Warning Message */}
+        <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+          <Alert
+            style={{ maxWidth: 700 }}
+            message="Do not use this app with Trust Wallet! Trust Wallet users, please use V1. Fix coming soon."
+            description=""
+            type="error"
           />
         </Row>
 
-        {/* Balances */}
-        <Row justify="center">
-          <h2>Your Balances & Mint TEST Token</h2>
-        </Row>
-        <Row justify="center">
-          {web3.account &&
-            <div style={{ overflow: 'scroll', background: 'white', margin: '10px 20px' }}>
-              <table style={{ background: 'white', margin: 'auto' }}>
-                <thead className="ant-table-thead">
-                  <tr className="ant-table-row">
-                    <th className="ant-table-cell"></th>
-                    {transferChains.map((chain) => (
-                      <th key={chain.key} className="ant-table-cell" style={{ textAlign: 'center' }}>{chain.name}</th>
-                    ))}
-                    <th>
-                      <SyncOutlined onClick={() => updateBalances(web3.account!)} spin={updatingBalances} />
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="ant-table-tbody" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                  <tr className="ant-table-row">
-                    <td className="ant-table-cell">ETH</td>
-                    {transferChains.map((chain) => (
-                      <td key={chain.key} className="ant-table-cell">
-                        <Row gutter={16}>
-                          <Col xs={24} sm={12} >
-                            {balances && balances[chain.key][0].amount.toFixed(4)}
-                          </Col>
-                          <Col xs={24} sm={12}>
-                            {chain.faucetUrls && (
-                              <a href={chain.faucetUrls[0]} target="_blank" rel="nofollow noreferrer">Get {chain.coin} <ArrowUpOutlined rotate={45} /></a>
-                            )}
-                          </Col>
-                        </Row>
-                      </td>
-                    ))}
-                    <td className="ant-table-cell"></td>
-                  </tr>
-                  <tr className="ant-table-row" style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
-                    <td className="ant-table-cell">TEST</td>
-                    {transferChains.map((chain) => (
-                      <td key={chain.key} className="ant-table-cell" >
-                        <Row gutter={16}>
-                          <Col xs={24} sm={12} >
-                            {balances && balances[chain.key][1].amount.toFixed(4)}
-                          </Col>
-                          <Col xs={24} sm={12}>
-                            {minting
-                              ? <span className="flashing">minting</span>
-                              : web3.chainId === chain.id
-                                ? <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => mintTestToken(chain.key)}>Mint TEST <SettingOutlined /></Button>
-                                : <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={() => switchChain(chain.id)}>Change Chain</Button>
-                            }
-                          </Col>
-                        </Row>
-                      </td>
-                    ))}
-                    <td className="ant-table-cell"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          }
-
-          {!web3.account &&
-            <Row justify="center">
-              <Button shape="round" type="link" icon={<LoginOutlined />} size={"large"} htmlType="submit" onClick={() => activate(injected)}>Connect Wallet</Button>
-            </Row>
-          }
+        {/* Infos */}
+        <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+          {showAbout && (
+            <Alert
+              style={{ maxWidth: 700 }}
+              afterClose={() => setShowAbout(false)}
+              message={aboutMessage}
+              description={aboutDescription}
+              type="info"
+              closable={true}
+            />
+          )}
         </Row>
 
-        {/* Active Transactions */}
-        {activeTransactions.length ?
-          <>
-            <Row justify="center">
-              <h2>Active Transactions</h2>
-            </Row>
-            <Row justify="center">
-              <div style={{ overflow: 'scroll', background: 'white', margin: '10px 20px' }}>
-                <TransactionsTableNxtp
-                  activeTransactions={activeTransactions}
-                  executionRoutes={executionRoutes}
-                  setModalRouteIndex={setModalRouteIndex}
-                  openSwapModalFinish={openSwapModalFinish}
-                  switchChain={switchChain}
-                  cancelTransfer={cancelTransfer}
+        <Collapse activeKey={activeKeyTransactions} accordion ghost>
+
+          {/* Balances */}
+          {testnet &&
+            <Collapse.Panel className={balances ? '' : 'empty'} header={(
+              <h2
+                onClick={() => setActiveKeyTransactions((key) => key === 'balances' ? '' : 'balances')}
+                style={{ display: 'inline' }}
+              >
+                Balances ({updatingBalances ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : (!balances ? '-' : <CheckOutlined />)})
+              </h2>
+            )} key="balances">
+              <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+                <TestBalanceOverview
+                  transferChains={transferChains}
+                  updateBalances={() => updateBalances(web3.account!)}
+                  updatingBalances={updatingBalances}
+                  balances={balances}
                 />
               </div>
-            </Row>
-          </> : <></>
-        }
+            </Collapse.Panel>
+          }
+
+          {/* Active Transactions */}
+          <Collapse.Panel className={activeTransactions.length ? '' : 'empty'} header={(
+            <h2
+              onClick={() => setActiveKeyTransactions((key) => key === 'active' ? '' : 'active')}
+              style={{ display: 'inline' }}
+            >
+              Active Transactions ({!sdk ? '-' : (updatingActiveTransactions ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : activeTransactions.length)})
+            </h2>
+          )} key="active">
+            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <TransactionsTableNxtp
+                activeTransactions={activeTransactions}
+                executionRoutes={executionRoutes}
+                setModalRouteIndex={setModalRouteIndex}
+                openSwapModalFinish={openSwapModalFinish}
+                switchChain={switchChain}
+                cancelTransfer={cancelTransfer}
+                tokens={tokens}
+              />
+            </div>
+          </Collapse.Panel>
+
+          {/* Historical Transactions */}
+          <Collapse.Panel className={historicTransaction.length ? '' : 'empty'} header={(
+            <h2
+              onClick={() => setActiveKeyTransactions((key) => key === 'historic' ? '' : 'historic')}
+              style={{ display: 'inline' }}
+            >
+              Historical Transactions ({!sdk ? '-' : (updatingHistoricTransactions ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : historicTransaction.length)})
+            </h2>
+          )} key="historic">
+            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <HistoricTransactionsTableNxtp
+                historicTransactions={historicTransaction}
+                tokens={tokens}
+              />
+            </div>
+          </Collapse.Panel>
+        </Collapse>
 
         {/* Swap Form */}
-        <Row style={{ margin: 20 }} justify={"center"} className="swap-form">
-          <Col>
+        <Row style={{ margin: 20, marginTop: 0 }} justify={"center"}>
+          <Col className="swap-form">
             <div className="swap-input" style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: "0 auto" }}>
               <Row>
                 <Title className="swap-title" level={4}>Please Specify Your Transaction</Title>
@@ -793,6 +995,7 @@ const SwapNxtp = () => {
                   transferChains={transferChains}
                   tokens={tokens}
                   balances={balances}
+                  forceSameToken={true}
                 />
 
                 <Row style={{ marginTop: 24 }} justify={"center"}>
@@ -855,17 +1058,25 @@ const SwapNxtp = () => {
           </Col>
         </Row>
         <Row justify="center" align="middle" style={{ marginBottom: 24 }}>
-          <Col span={8} style={{ textAlign: 'right' }}>
+          <Col span={6} style={{ textAlign: 'right' }}>
             <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
               <img src={connextWordmark} alt="Connext" style={{ width: '100%', maxWidth: '200px' }} />
             </a>
           </Col>
-          <Col span={2} style={{ textAlign: 'center' }}>
+          <Col span={1} style={{ textAlign: 'center' }}>
             x
           </Col>
-          <Col span={8} style={{ textAlign: 'left' }}>
+          <Col span={6} style={{ textAlign: 'center' }}>
             <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
               <img src={lifiWordmark} alt="Li.Finance" style={{ width: '100%', maxWidth: '200px' }} />
+            </a>
+          </Col>
+          <Col span={1} style={{ textAlign: 'center' }}>
+            x
+          </Col>
+          <Col span={6} style={{ textAlign: 'left' }}>
+            <a href="https://about.1hive.org/" target="_blank" rel="nofollow noreferrer">
+              <img src={onehiveWordmark} alt="1hive" style={{ width: '80%', maxWidth: '160px' }} />
             </a>
           </Col>
         </Row>
@@ -889,4 +1100,4 @@ const SwapNxtp = () => {
   )
 }
 
-export default SwapNxtp
+export default SwapXpollinate

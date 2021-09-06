@@ -54,6 +54,7 @@ export enum ChainKey {
   MUM = 'mum',
   ARBT = 'arbt',
   OPTT = 'optt',
+  BSCT = 'bsct',
 }
 
 export function chainKeysToObject(val: any) {
@@ -126,6 +127,7 @@ export interface WalletSummary {
   [ChainKey.MUM]: SummaryAmounts;
   [ChainKey.ARBT]: SummaryAmounts;
   [ChainKey.OPTT]: SummaryAmounts;
+  [ChainKey.BSCT]: SummaryAmounts;
 }
 
 export interface ProgressStep {

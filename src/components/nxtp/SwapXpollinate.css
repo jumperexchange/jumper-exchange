@@ -1,0 +1,109 @@
+
+.xpollinate {
+  background: url('../../assets/xpollinate-bg-pattern.svg') center center / cover no-repeat fixed;
+}
+
+.xpollinate .swap-form {
+  box-shadow: rgb(204 218 238 / 80%) 0px 1rem 2rem;
+}
+
+.xpollinate .ant-btn-primary {
+  background: linear-gradient(257.5deg, rgb(235, 0, 85) -9.73%, rgb(255, 250, 128) 77.97%);
+  transition: background 300ms linear;
+  border: none;
+  color: black;
+  min-width: 150px;
+  background-size: 340px 40px;
+  background-position: -100px;
+}
+
+.xpollinate .ant-btn-primary:hover {
+  background-position: 0px;
+}
+
+.xpollinate .ant-btn-primary.grayed {
+  opacity: 0.8;
+}
+
+.xpollinate .ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
+  color: rgba(0, 0, 0, 0.25);
+  border-color: #d9d9d9;
+  background: #f5f5f5;
+  text-shadow: none;
+  box-shadow: none;
+}
+
+.xpollinate .ant-alert-info {
+  background: linear-gradient(257.5deg, rgba(235, 0, 85, 0.3) -39.73%, rgba(255, 250, 128, 0.3) 107.97%);
+  border: none;
+}
+
+.version {
+  color: black;
+  font-weight: bold;
+  position: absolute;
+}
+
+.header-button {
+  border: 1px solid white;
+  background: white;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 16px;
+  margin-left: 10px;
+  height: auto;
+  display: inline-block;
+}
+
+.support-link {
+  color: #C53030;
+  border: 1px solid #C53030;
+  background: transparent;
+}
+
+.support-link:hover {
+  background:#C53030;
+  color: white;
+}
+
+@media only screen and (max-width: 580px) {
+  .support-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  .header-options {
+    text-align: center;
+    margin: auto;
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+.ant-timeline-item-last > .ant-timeline-item-content {
+  min-height: auto;
+}
+
+.ant-collapse-item.empty .ant-collapse-header h2 {
+  color: #adadad;
+}
+
+.ant-collapse-item.empty svg {
+  fill: #adadad;
+}
+
+.ant-collapse-item .ant-collapse-header h2.empty {
+  color: #adadad;
+}
+
+.ant-collapse-item.empty svg {
+  fill: #adadad;
+}
+
+@media only screen and (min-width: 480px) {
+  .ant-modal-body,
+  .ant-timeline,
+  .ant-timeline-item {
+    font-size: 16px;
+  }
+}

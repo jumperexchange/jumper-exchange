@@ -7,7 +7,7 @@ import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
-import heroImage from '../assets/swap-3chain-dexagg.png';
+import heroImage from '../assets/info_header.png';
 import { getBalancesForWallet } from '../services/balanceService';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';

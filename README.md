@@ -2,18 +2,26 @@
 
 What we are aiming at (blue parts are already implemented):
 
-![Screenshot](./src/assets/lifi-goal.jpg?raw=true)
+![Screenshot](./src/assets/lifi_overview.jpg?raw=true)
 
 
 ## Setup
 
-Use [nvm](https://github.com/nvm-sh/nvm) to run the app with an up-to-date node verion: `nvm use`.
+Use [nvm](https://github.com/nvm-sh/nvm) to run the app with the latest node version you have installed run: `nvm use`. Version `16` works great, install it using `nvm install 16`.
 
 [EditorConfig](https://editorconfig.org/) defines basic formatting, use a [plugin](https://editorconfig.org/#download) for your IDE.
 
-```
+```sh
+# install dependencies
 yarn install
+
+# server local development version
+# > li.finance
 yarn start
+# > xpollinate.io
+yarn start:xpollinate
+# > testnet.xpollinate.io
+yarn start:xpollinate:testnet
 ```
 
 The setup includes [antd](https://ant.design/components/overview/) for styled components.
@@ -55,7 +63,7 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
-## Contributors
+## Main Contributors
 
 - Max Klenk ([GitHub](https://github.com/maxklenk), [LinkedIn](https://www.linkedin.com/in/maxklenk/), [Gitcoin](https://gitcoin.co/maxklenk))
 - Adrian Weniger ([GitHub](https://github.com/Addminus), [LinkedIn](https://www.linkedin.com/in/adrian-weniger-8a35b6132/), [Gitcoin](https://gitcoin.co/addminus))

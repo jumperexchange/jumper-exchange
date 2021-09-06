@@ -12,8 +12,9 @@ export const switchChain = async (chainId: number) => {
     })
     return true
   } catch (error) {
-    console.error(error)
-    if (error.code === 4902) {
+    // const ERROR_CODE_UNKNOWN_CHAIN = 4902
+    const ERROR_CODE_USER_REJECTED = 4001
+    if (error.code !== ERROR_CODE_USER_REJECTED) {
       return await addChain(chainId)
     }
   }

@@ -1,19 +1,16 @@
-//CSS
-import "animate.css";
-import './Dashboard.css';
-//LIBS
-import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip, } from 'antd';
 import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
-import { Content } from 'antd/lib/layout/layout';
-import React, { useEffect, useState } from 'react';
-// OWN STUFF
-import { getBalancesForWallet } from '../services/balanceService';
-import { Amounts, ChainKey, CoinKey, ColomnType, DataType, Wallet, Coin, WalletSummary, SummaryAmounts, ChainPortfolio, Token, chainKeysToObject } from '../types';
-import { supportedChains, defaultCoins } from '../types/lists';
 import { useWeb3React } from "@web3-react/core";
-import ConnectButton from "./web3/ConnectButton";
+import "animate.css";
+import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
 import { ethers } from "ethers";
+import React, { useEffect, useState } from 'react';
+import { getBalancesForWallet } from '../services/balanceService';
 import { readWallets, storeWallets } from '../services/localStorage';
+import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, SummaryAmounts, Token, Wallet, WalletSummary } from '../types';
+import { defaultCoins, supportedChains } from '../types/lists';
+import './Dashboard.css';
+import ConnectButton from "./web3/ConnectButton";
 
 const emptySummaryAmounts = {
   amount_usd: 0,
@@ -210,9 +207,9 @@ const showGasModal = (gas: ChainKey) => {
 
 // render formatters
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
-  const coin = coins.find(coin => coin.key === coinName) as Coin
+  const coin = coins.find(coin => coin.key === coinName)
   const isChainUsed = wallet.portfolio[chain]?.length > 0
-  const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === coin.chains[chain].id)
+  const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === coin?.chains[chain].id)
   const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : { amount_coin: 0, amount_usd: 0 }
 
   const tooltipsEmpty = {
@@ -278,6 +275,10 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
       (<>
         <Button type="default" block onClick={() => showGasModal(ChainKey.OPTT)}>Get ETH</Button>
       </>),
+    [ChainKey.BSCT]:
+      (<>
+        <Button type="default" block onClick={() => showGasModal(ChainKey.BSCT)}>Get BNB</Button>
+      </>),
   }
   const tooltipEmpty = tooltipsEmpty[chain];
   const tooltips = {
@@ -294,6 +295,7 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
     [ChainKey.MUM]: (<>The Mumbai Testnet requires MATIC to pay for gas.</>),
     [ChainKey.ARBT]: (<>The Arbitrum Testnet requires ETH to pay for gas.</>),
     [ChainKey.OPTT]: (<>The Optimism Testnet requires ETH to pay for gas.</>),
+    [ChainKey.BSCT]: (<>The Optimism Testnet requires BNB to pay for gas.</>),
   }
   const tooltip = tooltips[chain];
   return (
@@ -437,9 +439,7 @@ const Dashboard = () => {
 
 
   const deleteWallet = (wallet: Wallet) => {
-    const newWallets = registeredWallets.filter(item => item.address !== wallet.address)
-    storeWallets(newWallets)
-    setRegisteredWallets(newWallets)
+    setRegisteredWallets(registeredWallets => registeredWallets.filter(item => item.address !== wallet.address))
   }
 
   const buildWalletColumns = () => {
@@ -570,7 +570,6 @@ const Dashboard = () => {
       setColumns(buildColumns(false))
       setData(buildRows)
     }
-
   }
 
   const updateEntirePortfolio = () => {
@@ -580,6 +579,13 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
+    setIsSubscribed(true)
+
+    return () => {
+      setIsSubscribed(false)
+    }
+  }, [])
+  useEffect(() => {
     if (!registeredWallets.length) {
       setWalletModalVisible(true)
       setColumns(initialColumns);
@@ -588,12 +594,9 @@ const Dashboard = () => {
       updateEntirePortfolio()
       setColumns(buildColumns());
       setData(buildRows)
-
     }
-    return () => { setIsSubscribed(false) }
     // eslint-disable-next-line
   }, [registeredWallets.length])
-
 
   const addWallet = (address: string) => {
     const newWallet = {
@@ -601,9 +604,12 @@ const Dashboard = () => {
       loading: true,
       portfolio: chainKeysToObject([]),
     }
-    setRegisteredWallets([...registeredWallets, newWallet])
-    storeWallets([...registeredWallets, newWallet])
+    setRegisteredWallets(registeredWallets => [...registeredWallets, newWallet])
   }
+
+  useEffect(() => {
+    storeWallets(registeredWallets)
+  }, [registeredWallets])
 
 
   // Add Wallet Modal Handlers
