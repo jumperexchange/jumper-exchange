@@ -1,6 +1,6 @@
 import { SwapOutlined } from '@ant-design/icons';
 import { useWeb3React } from '@web3-react/core';
-import { Col, Input, Row } from 'antd';
+import { Button, Col, Input, Row } from 'antd';
 import { RefSelectProps } from 'antd/lib/select';
 import React, { useRef } from 'react';
 import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../types';
@@ -159,6 +159,11 @@ const SwapForm = ({
     return parseFloat(e.currentTarget.value)
   }
 
+  const setMaxDeposit = () => {
+    const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
+    setDepositAmount(selectedToken?.amount)
+  }
+
   const changeDirection = () => {
     setWithdrawChain(depositChain)
     setDepositChain(withdrawChain)
@@ -203,6 +208,7 @@ const SwapForm = ({
               bordered={false}
               className={!hasSufficientBalance() ? 'insufficient' : ''}
             />
+            <Button className="maxButton" type="text" onClick={() => setMaxDeposit()} >MAX</Button>
           </div>
         </Col>
         <Col span={14}>

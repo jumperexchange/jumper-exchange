@@ -205,3 +205,14 @@ h4.swap-title {
 .ant-collapse-header {
   text-align: center;
 }
+
+.maxButton {
+  padding: 0;
+  padding-right: 5px;
+  font-weight: bold;
+  opacity: 0.5;
+}
+
+.maxButton:hover {
+  opacity: 1.0;
+}
