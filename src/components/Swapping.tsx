@@ -1,5 +1,4 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
-// import { BrowserNode } from '@connext/vector-browser-node';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React,  } from '@web3-react/core';
 import { Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
@@ -8,13 +7,11 @@ import { Link } from 'react-router-dom';
 import connextIcon from '../assets/icons/connext.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
-// import * as connext from '../services/connext';
 import { formatTokenAmount } from '../services/utils';
 import { ChainKey } from '../types';
 import { getChainByKey } from '../types/lists';
 import { Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep } from '../types/server';
 import Clock from './Clock';
-// import StateChannelBalances from './StateChannelBalances';
 import { switchChain } from '../services/metamask';
 import { executeParaswap } from '../services/paraswap.execute';
 import { executeOneInchSwap } from '../services/1inch.execute';
@@ -28,11 +25,7 @@ interface SwappingProps {
 const ADMIN_MODE = false
 
 const Swapping = ({ route, updateRoute }: SwappingProps) => {
-  // Connext
-  // const [node, setNode] = useState<BrowserNode>(connext.getNode())
-  // const [loggingIn, setLoggingIn] = useState<boolean>(false)
-  // const [connextLoginStartedAt, setConnextLoginStartedAt] = useState<number>()
-  // const [connextLoginDoneAt, setConnextLoginDoneAt] = useState<number>()
+
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
@@ -41,30 +34,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   let activeButton = null
   // const { activate } = useWeb3React();
-
-  // const initializeConnext = async () => {
-  //   setLoggingIn(true)
-  //   setConnextLoginStartedAt(Date.now())
-  //   setAlerts([])
-  //   let _node
-  //   try {
-  //     _node = await connext.initNode()
-  //     setNode(_node)
-  //     setConnextLoginDoneAt(Date.now())
-  //   } catch (e) {
-  //     setAlerts([
-  //       <Alert
-  //         message="Failed to connect to Connext"
-  //         description="Please disable shields or ad blockers or allow third party cookies in your browser and try again. Connext requires cross-site cookies to store your channel states."
-  //         type="error"
-  //         showIcon
-  //       />
-  //     ])
-  //   } finally {
-  //     setLoggingIn(false)
-  //   }
-  //   return _node
-  // }
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -89,8 +58,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       await switchChain(swapAction.chainId)
     }
     const swapExecution = await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.fromAmount, fromAddress, toAddress, swapEstimate.path, (status: Execution) => updateStatus(step, status))
-    console.log("-----------");
-    console.log(swapExecution)
     return swapExecution
   }
 
@@ -221,20 +188,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const hasFailed = step.execution && step.execution.status === 'FAILED'
 
     switch (step.action.type) {
-      // case 'deposit': {
-      //   const triggerButton = <Button type="primary" disabled={!node || !web3.library || web3.chainId !== route[0].action.chainId} onClick={() => triggerStep(index, route)}>trigger Deposit</Button>
-      //   return [
-      //     <Timeline.Item key={index + '_left'} color={color}>
-      //       <h4>Deposit from {web3.account ? web3.account.substr(0, 4) : '0x'}...</h4>
-      //       <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)}</span>
-      //     </Timeline.Item>,
-      //     <Timeline.Item key={index + '_right'} color={color}>
-      //       {ADMIN_MODE && triggerButton}
-      //       {step.execution && executionSteps}
-      //       {hasFailed ? triggerButton : undefined}
-      //     </Timeline.Item>,
-      //   ]
-      // }
 
       case 'swap': {
         const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
@@ -292,20 +245,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
           </Timeline.Item>,
         ]
       }
-
-      // case 'withdraw':
-      //   const triggerButton = <Button type="primary" disabled={!node || !web3.account} onClick={() => triggerStep(index, route)}>trigger Withdraw</Button>
-      //   const token = step.action.token
-      //   return [
-      //     <Timeline.Item key={index + '_left'} color={color}>
-      //       <h4>Withdraw to {web3.account ? web3.account.substr(0, 4) : '0x'}...</h4>
-      //       <span>{formatTokenAmount(step.action.token, step.estimate?.toAmount)} (<span onClick={() => switchAndAddToken(token)}>Add Token</span>)</span>
-      //     </Timeline.Item>,
-      //     <Timeline.Item key={index + '_right'} color={color}>
-      //       {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
-      //       {hasFailed ? triggerButton : undefined}
-      //     </Timeline.Item>,
-      //   ]
 
       default:
         console.warn('should never reach here')
