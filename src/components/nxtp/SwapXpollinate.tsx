@@ -1,5 +1,5 @@
 import { CheckOutlined, DownOutlined, ExportOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
-import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk';
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -204,6 +204,7 @@ const SwapXpollinate = ({
   const [sdk, setSdk] = useState<NxtpSdk>()
   const [sdkChainId, setSdkChainId] = useState<number>()
   const [sdkAccount, setSdkAccount] = useState<string>()
+  const [syncStatus, setSyncStatus] = useState<Record<number, SubgraphSyncRecord>>()
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
   const [updatingActiveTransactions, setUpdatingActiveTransactions] = useState<boolean>(false)
   const [historicTransaction, setHistoricTransactions] = useState<Array<HistoricalTransaction>>([])
@@ -254,6 +255,14 @@ const SwapXpollinate = ({
     }
     // eslint-disable-next-line
   }, [modalRouteIndex, executionRoutes, sdk])
+
+  const updateSyncStatus = useCallback((sdk: NxtpSdk) => {
+    const newSyncStatus : { [ChainKey: number]: SubgraphSyncRecord } = {}
+    transferChains.forEach((chain) => {
+      newSyncStatus[chain.id] = sdk.getSubgraphSyncStatus(chain.id)
+    })
+    setSyncStatus(newSyncStatus)
+  }, [transferChains])
 
   // update table helpers
   const updateActiveTransactionsWith = (transactionId: string, status: NxtpSdkEvent, event: any, txData?: CrosschainTransaction) => {
@@ -375,6 +384,8 @@ const SwapXpollinate = ({
       }
       setUpdatingActiveTransactions(false)
 
+      updateSyncStatus(_sdk)
+
       return _sdk
     }
 
@@ -397,7 +408,7 @@ const SwapXpollinate = ({
       }
     }
 
-  }, [web3, sdk, sdkChainId, sdkAccount])
+  }, [web3, sdk, sdkChainId, sdkAccount, updateSyncStatus])
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -606,8 +617,9 @@ const SwapXpollinate = ({
       console.error(e)
       setNoRoutesAvailable(true)
       setRoutesLoading(false)
+      updateSyncStatus(sdk)
     }
-  }, [])
+  }, [updateSyncStatus])
   useEffect(() => {
     if (routeRequest && routeQuote && doRequestAndBidMatch(routeRequest, routeQuote)) {
       return // already calculated
@@ -794,14 +806,13 @@ const SwapXpollinate = ({
   }
 
   const currentChain = web3.chainId ? getChainById(web3.chainId) : undefined
-  const isSupported = !!transferChains.find((chain) => chain.id === currentChain?.id)
   const menuChain = (
     <Menu onClick={handleMenuClick}>
       <Menu.ItemGroup title="Supported Chains">
         {transferChains.map((chain) => {
           return (
             <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
-              {chain.name}
+              <Badge color={syncStatus ? (syncStatus[chain.id].synced ? 'green' : 'orange') : 'gray'} text={chain.name} />
             </Menu.Item>
           )
         })}
@@ -853,7 +864,7 @@ const SwapXpollinate = ({
               <>
                 <Dropdown overlay={menuChain}>
                   <Button className="header-button">
-                    <Badge color={isSupported ? 'green' : 'orange'} text={currentChain?.name || 'Unsupported Chain'} /> <DownOutlined />
+                    <Badge color={syncStatus && currentChain && syncStatus[currentChain.id] ? (syncStatus[currentChain.id].synced ? 'green' : 'orange') : 'gray'} text={currentChain?.name || 'Unsupported Chain'} /> <DownOutlined />
                   </Button>
                 </Dropdown>
 
@@ -996,6 +1007,7 @@ const SwapXpollinate = ({
                   tokens={tokens}
                   balances={balances}
                   forceSameToken={true}
+                  syncStatus={syncStatus}
                 />
 
                 <Row style={{ marginTop: 24 }} justify={"center"}>
