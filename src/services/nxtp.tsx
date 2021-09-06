@@ -221,12 +221,15 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   } catch (e) {
     console.error(e)
     if (approveProcess && approveProcess.status !== 'DONE') {
+      approveProcess.errorMessage = e.msg
       setStatusFailed(update, status, approveProcess)
     }
     if (submitProcess && submitProcess.status !== 'DONE') {
+      submitProcess.errorMessage = e.msg
       setStatusFailed(update, status, submitProcess)
     }
     if (proceedProcess && proceedProcess.status !== 'DONE') {
+      proceedProcess.errorMessage = e.msg
       setStatusFailed(update, status, proceedProcess)
     }
   }

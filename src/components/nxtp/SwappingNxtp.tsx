@@ -1,7 +1,7 @@
 import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
+import { Alert, Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BaseType } from 'antd/lib/typography/Base';
 import walletIcon from '../../assets/wallet.png';
 import { switchChain } from '../../services/metamask';
@@ -91,6 +91,10 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
     ]
   }
 
+  const refreshPage = () => {
+    window.location.reload()
+  }
+
   const parseExecution = (execution?: Execution) => {
     if (!execution) {
       return []
@@ -125,6 +129,10 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
               <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
             </Typography.Text>
           </span>
+
+          { process.status === 'FAILED' && process.errorMessage && (
+            <Alert message={process.errorMessage} type="error" />
+          )}
         </Timeline.Item>
       )
     })
@@ -232,6 +240,14 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
         </Row>
         <Row justify="center">
           <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
+        </Row>
+      </>
+    }
+
+    {lastProcess && lastProcess.status === 'FAILED' &&
+      <>
+        <Row justify="center">
+          <Button type="primary" size="large" onClick={() => refreshPage()}>Refresh Page and Retry</Button>
         </Row>
       </>
     }
