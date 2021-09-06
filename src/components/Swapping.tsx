@@ -129,9 +129,11 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
             className={process.status === 'PENDING' ? 'flashing' : undefined}
           >
             <p>{process.message}</p>
-            {hasFailed && <span>Error Code: {process.errorCode}</span>}
-            {hasFailed && <br />}
-            {hasFailed && <span>{process.errorMessage}</span>}
+            {hasFailed && <Typography.Text type="secondary" style={{whiteSpace: "pre-wrap"}}>
+              {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
+              {process.errorMessage}
+            </Typography.Text>}
+
           </Typography.Text>
           <Typography.Text style={{marginLeft: 'auto'}}>
             <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt}/>
@@ -227,7 +229,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
             {hasFailed ? triggerButton : undefined}
-            <span>test</span>
           </Timeline.Item>,
         ]
       }

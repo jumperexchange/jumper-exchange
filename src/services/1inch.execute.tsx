@@ -1,4 +1,5 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
+import { AnyRecord } from 'dns'
 import { getChainById } from '../types/lists'
 import { Execution } from '../types/server'
 import { oneInch } from './1Inch'
@@ -16,8 +17,10 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
   // -> check allowance
   try {
     await oneInch.setAllowance(chainId, srcAmount, srcToken, signer)
-  } catch (e) {
+  } catch (e:any) {
     // -> set status
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, allowanceProcess)
     throw e
   }
@@ -33,8 +36,10 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
   let tx
   try {
     tx = await oneInch.transfer(signer, chainId, srcToken, destToken, srcAmount, destAddress)
-  } catch (e) {
+  } catch (e:any) {
     // -> set status
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, swapProcess)
     throw e
   }
@@ -51,8 +56,10 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
   let receipt
   try {
     receipt = await tx.wait()
-  } catch (e) {
+  } catch (e: any) {
     // -> set status
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, swapProcess)
     throw e
   }

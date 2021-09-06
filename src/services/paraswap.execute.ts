@@ -15,8 +15,10 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   // -> check allowance
   try {
     await paraswap.updateAllowance(signer, chainId, srcAddress, srcToken, srcAmount)
-  } catch (e) {
+  } catch (e:any) {
     // -> set status
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, allowanceProcess)
     throw e
   }
@@ -33,8 +35,10 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   let tx
   try {
     tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken, destToken, srcAmount, destAddress)
-  } catch (e) {
+  } catch (e: any) {
     // -> set status
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, swapProcess)
     throw e
   }
@@ -51,8 +55,10 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   let receipt
   try {
     receipt = await tx.wait()
-  } catch (e) {
+  } catch (e: any) {
     // -> set status
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, waitingProcess)
     throw e
   }

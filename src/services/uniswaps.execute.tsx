@@ -3,7 +3,7 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 
 import * as uniswap from './uniswaps'
 import { JsonRpcProvider, JsonRpcSigner, } from '@ethersproject/providers'
-import { Execution } from '../types/server'
+import { Execution, Process } from '../types/server'
 import {ethers} from 'ethers'
 
 
@@ -60,10 +60,10 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   // -> check allowance
   try {
     await uniswap.setAllowance(signer, uniswapRouters[chainId], srcAddress, srcToken, srcAmount)
-  } catch (e) {
+  } catch (e:any) {
     // -> set status
-    allowanceProcess.errorCode = e.code
-    allowanceProcess.errorMessage = e.message
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, allowanceProcess)
     throw e
   }
@@ -80,10 +80,10 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   let tx
   try {
     tx = await contractWithSigner.swapExactTokensForTokens(swapData.amountIn.toString(), swapData.amountOutMin, swapData.path, swapData.to, swapData.deadline)
-  } catch (e) {
+  } catch (e: any) {
     // -> set status
-    allowanceProcess.errorCode = e.code
-    allowanceProcess.errorMessage = e.message
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, swapProcess)
     throw e
   }
@@ -100,10 +100,10 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   let receipt
   try {
     receipt = await tx.wait()
-  } catch (e) {
+  } catch (e: any) {
     // -> set status
-    allowanceProcess.errorCode = e.code
-    allowanceProcess.errorMessage = e.message
+    if (e.message) allowanceProcess.errorMessage = e.message
+    if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, waitingProcess)
     throw e
   }
