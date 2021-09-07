@@ -1,5 +1,4 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { AnyRecord } from 'dns'
 import { getChainById } from '../types/lists'
 import { Execution } from '../types/server'
 import { oneInch } from './1Inch'

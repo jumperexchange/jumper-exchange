@@ -3,7 +3,7 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 
 import * as uniswap from './uniswaps'
 import { JsonRpcProvider, JsonRpcSigner, } from '@ethersproject/providers'
-import { Execution, Process } from '../types/server'
+import { Execution } from '../types/server'
 import {ethers} from 'ethers'
 
 
