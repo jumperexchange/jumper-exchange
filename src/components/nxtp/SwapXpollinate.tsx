@@ -38,6 +38,7 @@ const BALANCES_REFRESH_INTERVAL = 30000
 const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
+const DISABLED = true
 
 const getDefaultParams = (search: string, transferChains: Chain[], transferTokens: { [ChainKey: string]: Array<Token> }) => {
   const defaultParams = {
@@ -769,6 +770,9 @@ const SwapXpollinate = ({
   }
 
   const submitButton = () => {
+    if (DISABLED) {
+      return <Button disabled={true} shape="round" type="primary" size={"large"}>Down for Maintenance</Button>
+    }
     if (!web3.account) {
       return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} htmlType="submit" onClick={() => activate(injected)}>Connect Wallet</Button>
     }
