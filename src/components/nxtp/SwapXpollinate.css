@@ -1,6 +1,13 @@
 
 .xpollinate {
   background: url('../../assets/xpollinate-bg-pattern.svg') center center / cover no-repeat fixed;
+  min-height: calc(100vh);
+  margin-top: 0;
+}
+
+.xpollinate-header {
+  border-bottom: 1px solid #c6c6c6;
+  margin-bottom: 0;
 }
 
 .xpollinate .swap-form {
@@ -106,4 +113,16 @@
   .ant-timeline-item {
     font-size: 16px;
   }
+}
+
+.lifiWrap .xpollinate {
+  margin-top: 64px;
+}
+.lifiWrap .warning-trustWallet,
+.lifiWrap .xpollinate-header,
+.lifiWrap .xpollinate-footer {
+  display: none;
+}
+.lifiWarp .swap-view {
+  padding-bottom: 20px;
 }

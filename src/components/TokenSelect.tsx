@@ -77,7 +77,12 @@ const TokenSelect = ({
               </Select.Option>
             }
             {balances && tokens[selectedChain].filter(token => token.amount).map(token => (
-              <Select.Option key={'own_' + token.id} value={token.id} label={token.symbol + ' ' + token.name} data-label={token.symbol}>
+              <Select.Option
+                key={'own_' + token.id}
+                value={token.id}
+                label={token.symbol + ' ' + token.name}
+                data-label={token.symbol + (balances ? (' (' + token.amountRendered + ')') : '')}
+              >
                 <div className="option-item">
                   <span role="img" aria-label={token.symbol}>
                     <Avatar
@@ -100,7 +105,12 @@ const TokenSelect = ({
         {/* All Token */}
         <Select.OptGroup label="All Token">
           {tokens[selectedChain].map(token => (
-            <Select.Option key={token.id} value={token.id} label={token.symbol + ' - ' + token.name} data-label={token.symbol}>
+            <Select.Option
+              key={token.id}
+              value={token.id}
+              label={token.symbol + ' - ' + token.name}
+              data-label={token.symbol + (balances ? (' (' + token.amountRendered + ')') : '')}
+            >
               <div className={'option-item ' + (grayed && token.amount === 0 ? 'disabled' : '')}>
                 <span role="img" aria-label={token.symbol}>
                   <Avatar
