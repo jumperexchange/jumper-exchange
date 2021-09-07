@@ -847,8 +847,8 @@ const SwapXpollinate = ({
   }
 
   return (
-    <Content className="site-layout xpollinate" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
-      <div style={{ borderBottom: '1px solid #c6c6c6', marginBottom: 0 }}>
+    <Content className="site-layout xpollinate">
+      <div className="xpollinate-header">
         <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
           <a href="/">
             <img src={xpollinateWordmark} alt="xPollinate" style={{ width: '100%', maxWidth: '160px' }} />
@@ -892,7 +892,7 @@ const SwapXpollinate = ({
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
         {/* Warning Message */}
-        <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+        <Row className="warning-trustWallet" justify="center" style={{ padding: 20, paddingBottom: 0 }}>
           <Alert
             style={{ maxWidth: 700 }}
             message="Do not use this app with Trust Wallet! Trust Wallet users, please use V1. Fix coming soon."
@@ -1064,34 +1064,36 @@ const SwapXpollinate = ({
         </Row>
 
         {/* Footer */}
-        <Row justify="center" style={{ marginTop: 48, marginBottom: 8 }}>
-          <Col>
-            Powered by
-          </Col>
-        </Row>
-        <Row justify="center" align="middle" style={{ marginBottom: 24 }}>
-          <Col span={6} style={{ textAlign: 'right' }}>
-            <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
-              <img src={connextWordmark} alt="Connext" style={{ width: '100%', maxWidth: '200px' }} />
-            </a>
-          </Col>
-          <Col span={1} style={{ textAlign: 'center' }}>
-            x
-          </Col>
-          <Col span={6} style={{ textAlign: 'center' }}>
-            <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
-              <img src={lifiWordmark} alt="Li.Finance" style={{ width: '100%', maxWidth: '200px' }} />
-            </a>
-          </Col>
-          <Col span={1} style={{ textAlign: 'center' }}>
-            x
-          </Col>
-          <Col span={6} style={{ textAlign: 'left' }}>
-            <a href="https://about.1hive.org/" target="_blank" rel="nofollow noreferrer">
-              <img src={onehiveWordmark} alt="1hive" style={{ width: '80%', maxWidth: '160px' }} />
-            </a>
-          </Col>
-        </Row>
+        <div className="xpollinate-footer">
+          <Row justify="center" style={{ marginTop: 48, marginBottom: 8 }}>
+            <Col>
+              Powered by
+            </Col>
+          </Row>
+          <Row justify="center" align="middle" style={{ marginBottom: 24 }}>
+            <Col span={6} style={{ textAlign: 'right' }}>
+              <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
+                <img src={connextWordmark} alt="Connext" style={{ width: '100%', maxWidth: '200px' }} />
+              </a>
+            </Col>
+            <Col span={1} style={{ textAlign: 'center' }}>
+              x
+            </Col>
+            <Col span={6} style={{ textAlign: 'center' }}>
+              <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
+                <img src={lifiWordmark} alt="Li.Finance" style={{ width: '100%', maxWidth: '200px' }} />
+              </a>
+            </Col>
+            <Col span={1} style={{ textAlign: 'center' }}>
+              x
+            </Col>
+            <Col span={6} style={{ textAlign: 'left' }}>
+              <a href="https://about.1hive.org/" target="_blank" rel="nofollow noreferrer">
+                <img src={onehiveWordmark} alt="1hive" style={{ width: '80%', maxWidth: '160px' }} />
+              </a>
+            </Col>
+          </Row>
+        </div>
 
       </div>
 
