@@ -1,5 +1,5 @@
 import { CheckOutlined, DownOutlined, ExportOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
-import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk';
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -204,6 +204,7 @@ const SwapXpollinate = ({
   const [sdk, setSdk] = useState<NxtpSdk>()
   const [sdkChainId, setSdkChainId] = useState<number>()
   const [sdkAccount, setSdkAccount] = useState<string>()
+  const [syncStatus, setSyncStatus] = useState<Record<number, SubgraphSyncRecord>>()
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
   const [updatingActiveTransactions, setUpdatingActiveTransactions] = useState<boolean>(false)
   const [historicTransaction, setHistoricTransactions] = useState<Array<HistoricalTransaction>>([])
@@ -254,6 +255,14 @@ const SwapXpollinate = ({
     }
     // eslint-disable-next-line
   }, [modalRouteIndex, executionRoutes, sdk])
+
+  const updateSyncStatus = useCallback((sdk: NxtpSdk) => {
+    const newSyncStatus : { [ChainKey: number]: SubgraphSyncRecord } = {}
+    transferChains.forEach((chain) => {
+      newSyncStatus[chain.id] = sdk.getSubgraphSyncStatus(chain.id)
+    })
+    setSyncStatus(newSyncStatus)
+  }, [transferChains])
 
   // update table helpers
   const updateActiveTransactionsWith = (transactionId: string, status: NxtpSdkEvent, event: any, txData?: CrosschainTransaction) => {
@@ -375,6 +384,8 @@ const SwapXpollinate = ({
       }
       setUpdatingActiveTransactions(false)
 
+      updateSyncStatus(_sdk)
+
       return _sdk
     }
 
@@ -397,7 +408,7 @@ const SwapXpollinate = ({
       }
     }
 
-  }, [web3, sdk, sdkChainId, sdkAccount])
+  }, [web3, sdk, sdkChainId, sdkAccount, updateSyncStatus])
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -475,7 +486,7 @@ const SwapXpollinate = ({
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
           token.amount = getBalance(chain.key, token.id)
-          token.amountRendered = token.amount.toFixed(4)
+          token.amountRendered = token.amount >= 0.0001 ? token.amount.toFixed(4) : token.amount.toFixed()
         }
       }
     }
@@ -606,8 +617,9 @@ const SwapXpollinate = ({
       console.error(e)
       setNoRoutesAvailable(true)
       setRoutesLoading(false)
+      updateSyncStatus(sdk)
     }
-  }, [])
+  }, [updateSyncStatus])
   useEffect(() => {
     if (routeRequest && routeQuote && doRequestAndBidMatch(routeRequest, routeQuote)) {
       return // already calculated
@@ -794,14 +806,13 @@ const SwapXpollinate = ({
   }
 
   const currentChain = web3.chainId ? getChainById(web3.chainId) : undefined
-  const isSupported = !!transferChains.find((chain) => chain.id === currentChain?.id)
   const menuChain = (
     <Menu onClick={handleMenuClick}>
       <Menu.ItemGroup title="Supported Chains">
         {transferChains.map((chain) => {
           return (
             <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
-              {chain.name}
+              <Badge color={syncStatus ? (syncStatus[chain.id].synced ? 'green' : 'orange') : 'gray'} text={chain.name} />
             </Menu.Item>
           )
         })}
@@ -836,8 +847,8 @@ const SwapXpollinate = ({
   }
 
   return (
-    <Content className="site-layout xpollinate" style={{ minHeight: 'calc(100vh)', marginTop: 0 }}>
-      <div style={{ borderBottom: '1px solid #c6c6c6', marginBottom: 0 }}>
+    <Content className="site-layout xpollinate">
+      <div className="xpollinate-header">
         <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
           <a href="/">
             <img src={xpollinateWordmark} alt="xPollinate" style={{ width: '100%', maxWidth: '160px' }} />
@@ -853,7 +864,7 @@ const SwapXpollinate = ({
               <>
                 <Dropdown overlay={menuChain}>
                   <Button className="header-button">
-                    <Badge color={isSupported ? 'green' : 'orange'} text={currentChain?.name || 'Unsupported Chain'} /> <DownOutlined />
+                    <Badge color={syncStatus && currentChain && syncStatus[currentChain.id] ? (syncStatus[currentChain.id].synced ? 'green' : 'orange') : 'gray'} text={currentChain?.name || 'Unsupported Chain'} /> <DownOutlined />
                   </Button>
                 </Dropdown>
 
@@ -881,7 +892,7 @@ const SwapXpollinate = ({
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
         {/* Warning Message */}
-        <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+        <Row className="warning-trustWallet" justify="center" style={{ padding: 20, paddingBottom: 0 }}>
           <Alert
             style={{ maxWidth: 700 }}
             message="Do not use this app with Trust Wallet! Trust Wallet users, please use V1. Fix coming soon."
@@ -996,6 +1007,7 @@ const SwapXpollinate = ({
                   tokens={tokens}
                   balances={balances}
                   forceSameToken={true}
+                  syncStatus={syncStatus}
                 />
 
                 <Row style={{ marginTop: 24 }} justify={"center"}>
@@ -1052,34 +1064,36 @@ const SwapXpollinate = ({
         </Row>
 
         {/* Footer */}
-        <Row justify="center" style={{ marginTop: 48, marginBottom: 8 }}>
-          <Col>
-            Powered by
-          </Col>
-        </Row>
-        <Row justify="center" align="middle" style={{ marginBottom: 24 }}>
-          <Col span={6} style={{ textAlign: 'right' }}>
-            <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
-              <img src={connextWordmark} alt="Connext" style={{ width: '100%', maxWidth: '200px' }} />
-            </a>
-          </Col>
-          <Col span={1} style={{ textAlign: 'center' }}>
-            x
-          </Col>
-          <Col span={6} style={{ textAlign: 'center' }}>
-            <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
-              <img src={lifiWordmark} alt="Li.Finance" style={{ width: '100%', maxWidth: '200px' }} />
-            </a>
-          </Col>
-          <Col span={1} style={{ textAlign: 'center' }}>
-            x
-          </Col>
-          <Col span={6} style={{ textAlign: 'left' }}>
-            <a href="https://about.1hive.org/" target="_blank" rel="nofollow noreferrer">
-              <img src={onehiveWordmark} alt="1hive" style={{ width: '80%', maxWidth: '160px' }} />
-            </a>
-          </Col>
-        </Row>
+        <div className="xpollinate-footer">
+          <Row justify="center" style={{ marginTop: 48, marginBottom: 8 }}>
+            <Col>
+              Powered by
+            </Col>
+          </Row>
+          <Row justify="center" align="middle" style={{ marginBottom: 24 }}>
+            <Col span={6} style={{ textAlign: 'right' }}>
+              <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
+                <img src={connextWordmark} alt="Connext" style={{ width: '100%', maxWidth: '200px' }} />
+              </a>
+            </Col>
+            <Col span={1} style={{ textAlign: 'center' }}>
+              x
+            </Col>
+            <Col span={6} style={{ textAlign: 'center' }}>
+              <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
+                <img src={lifiWordmark} alt="Li.Finance" style={{ width: '100%', maxWidth: '200px' }} />
+              </a>
+            </Col>
+            <Col span={1} style={{ textAlign: 'center' }}>
+              x
+            </Col>
+            <Col span={6} style={{ textAlign: 'left' }}>
+              <a href="https://about.1hive.org/" target="_blank" rel="nofollow noreferrer">
+                <img src={onehiveWordmark} alt="1hive" style={{ width: '80%', maxWidth: '160px' }} />
+              </a>
+            </Col>
+          </Row>
+        </div>
 
       </div>
 

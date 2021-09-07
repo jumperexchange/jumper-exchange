@@ -9,7 +9,7 @@ import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
 // Add overwrites to specific chains here. They will only be applied if the chain is used.
-const chainConfigOverwrites : {
+const chainConfigOverwrites: {
   [chainId: number]: {
     transactionManagerAddress?: string;
     subgraph?: string;
@@ -23,7 +23,7 @@ const chainConfigOverwrites : {
 }
 
 export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
-  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string,subgraphSyncBuffer?: number; }> = {};
+  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string, subgraphSyncBuffer?: number; }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
@@ -112,8 +112,8 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 
   // Before approving/transferring, check router liquidity
   const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
-    crossEstimate.quote.bid.receivingChainId, 
-    crossEstimate.quote.bid.router, 
+    crossEstimate.quote.bid.receivingChainId,
+    crossEstimate.quote.bid.router,
     crossEstimate.quote.bid.receivingAssetId
   );
   if (liquidity.lt(crossEstimate.quote.bid.amountReceived)) {
@@ -228,15 +228,19 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 
   try {
     await transferPromise
-  } catch (e) {
+  } catch (_e: unknown) {
+    const e = _e as Error
     console.error(e)
     if (approveProcess && approveProcess.status !== 'DONE') {
+      approveProcess.errorMessage = e.message
       setStatusFailed(update, status, approveProcess)
     }
     if (submitProcess && submitProcess.status !== 'DONE') {
+      submitProcess.errorMessage = e.message
       setStatusFailed(update, status, submitProcess)
     }
     if (proceedProcess && proceedProcess.status !== 'DONE') {
+      proceedProcess.errorMessage = e.message
       setStatusFailed(update, status, proceedProcess)
     }
   }

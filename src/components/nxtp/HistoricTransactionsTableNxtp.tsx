@@ -56,7 +56,7 @@ const HistoricTransactionsTableNxtp = ({
         const token = tokens[chain.key].find(token => token.id === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase())
         const amount = new BigNumber(transaction.crosschainTx.sending?.amount || '0').shiftedBy(-(token?.decimals || 18))
         const link = chain.metamask.blockExplorerUrls[0] + 'token/' + transaction.crosschainTx.invariant.sendingAssetId
-        return <>{amount.toFixed(4)} <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
+        return <>{amount.gte(0.0001) ? amount.toFixed(4, 1) : amount.toFixed()} <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
 
       },
       sorter: (a: HistoricalTransaction, b: HistoricalTransaction) => parseInt(a.crosschainTx.sending?.amount || '0') - parseInt(b.crosschainTx.sending?.amount || '0')
@@ -84,10 +84,12 @@ const HistoricTransactionsTableNxtp = ({
 
         const link = chain.metamask.blockExplorerUrls[0] + 'token/' + transaction.crosschainTx.invariant.receivingAssetId
 
-        if (transaction.fulfilledTxHash) {
-          return <><a href={txLink} target="_blank" rel="nofollow noreferrer">{amount.toFixed(4)}</a> <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
+        if (amount.isZero()) {
+          return <></>
+        } else if (transaction.fulfilledTxHash) {
+          return <><a href={txLink} target="_blank" rel="nofollow noreferrer">{amount.gte(0.0001) ? amount.toFixed(4, 1) : amount.toFixed()}</a> <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
         } else {
-          return <>{amount.toFixed(4)} <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
+          return <>{amount.gte(0.0001) ? amount.toFixed(4, 1) : amount.toFixed()} <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a></>
         }
       },
       sorter: (a: HistoricalTransaction, b: HistoricalTransaction) => parseInt(a.crosschainTx.receiving?.amount || '0') - parseInt(b.crosschainTx.receiving?.amount || '0')
