@@ -110,6 +110,16 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   const fromChain = getChainByKey(crossAction.chainKey)
   const toChain = getChainByKey(crossAction.toChainKey)
 
+  // Before approving/transferring, check router liquidity
+  const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
+    crossEstimate.quote.bid.receivingChainId, 
+    crossEstimate.quote.bid.router, 
+    crossEstimate.quote.bid.receivingAssetId
+  );
+  if (liquidity.lt(crossEstimate.quote.bid.amountReceived)) {
+    throw new Error(`Router (${crossEstimate.quote.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.quote.bid.amountReceived}.`)
+  }
+
   // Check Token Approval
   if (crossEstimate.quote.bid.sendingAssetId !== constants.AddressZero) {
     const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.quote.bid.sendingChainId)
