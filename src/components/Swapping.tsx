@@ -10,12 +10,16 @@ import oneinchIcon from '../assets/icons/oneinch.png';
 import { formatTokenAmount } from '../services/utils';
 import { ChainKey } from '../types';
 import { getChainByKey } from '../types/lists';
-import { Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep } from '../types/server';
+import { CrossAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep } from '../types/server';
 import Clock from './Clock';
 import { switchChain } from '../services/metamask';
 import { executeParaswap } from '../services/paraswap.execute';
 import { executeOneInchSwap } from '../services/1inch.execute';
 import { executeUniswap } from '../services/uniswaps.execute';
+import { getRpcProviders } from './web3/connectors';
+import * as nxtp from '../services/nxtp'
+import { executeNXTPCross } from '../services/nxtp.execute';
+
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -86,33 +90,32 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
   }
 
-  // const triggerTransfer = async (step: TranferStep, previousStep?: TranferStep) => {
-  //   const crossAction = step.action as CrossAction
-  //   const fromChainId = getChainByKey(crossAction.chainKey).id // will be replaced by crossAction.chainId
-  //   const toChainId = getChainByKey(crossAction.toChainKey).id // will be replaced by crossAction.toChainId
+  const triggerCross = async (step: TranferStep, previousStep?: TranferStep) => {
+    if (!web3.account || !web3.library) return
+    const crossAction = step.action as CrossAction
+    let fromAmount : bigint
+    if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+      fromAmount = BigInt(previousStep.execution.toAmount)
+    } else {
+      fromAmount = BigInt(crossAction.amount)
+    }
 
-  //   let fromAmount : bigint
-  //   if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
-  //     fromAmount = BigInt(previousStep.execution.toAmount)
-  //   } else {
-  //     fromAmount = BigInt(crossAction.amount)
-  //   }
+      if (web3.chainId !== crossAction.chainId) {
+      await switchChain(crossAction.chainId)
+    }
 
-  //   // if (web3.chainId !== crossAction.chainId) {
-  //   //   await switchChain(crossAction.chainId)
-  //   // }
-  //   const status = deepClone(emptyExecution)
-  //   // let _node = node || (await initializeConnext())
-  //   await connext.triggerDeposit(_node, web3.library!.getSigner(), fromChainId, crossAction.fromToken.id, fromAmount, (status: Execution) => updateStatus(step, status), status)
-  //   await connext.triggerTransfer(_node, fromChainId, toChainId, crossAction.fromToken.id, crossAction.toToken.id, fromAmount, (status: Execution) => updateStatus(step, status), status)
-  //   return connext.triggerWithdraw(_node, toChainId, web3.account!, crossAction.toToken.id, 0, (status: Execution) => updateStatus(step, status), status)
-  // }
+    const chainProviders = getRpcProviders([ 56, 100, 137])
+    const nxtpSDK = await nxtp.setup(web3.library.getSigner(), chainProviders)
+    const cross = executeNXTPCross(nxtpSDK, step, fromAmount.toString(), web3.account, (status: Execution) => updateStatus(step, status));
 
-  // const switchAndAddToken = async (token: Token) => {
-  //   await switchChain(token.chainId)
+    // const switchAndAddToken = async (token: Token) => {
+    //     await switchChain(token.chainId)
+    //     setTimeout(() => addToken(token), 100)
+    // }
 
-  //   setTimeout(() => addToken(token), 100)
-  // }
+    return cross
+  }
+
 
   const parseExecution = (execution?: Execution) => {
     if (!execution) {
@@ -266,9 +269,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       case '1inch':
         triggerFunc = triggerOneIchSwap
         break
-      // case 'cross':
-        // triggerFunc = triggerTransfer
-        // break
+      case 'cross':
+        triggerFunc = triggerCross
+        break
       default:
         throw new Error('Invalid Step')
     }
