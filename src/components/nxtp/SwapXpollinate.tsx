@@ -882,7 +882,7 @@ const SwapXpollinate = ({
               <span>Support <LinkOutlined /></span>
             </a>
 
-            <a href="https://xdai-matic-connext-beta.vercel.app/" target="_blank" rel="nofollow noreferrer" className="header-button">
+            <a href="https://v1.xpollinate.io/" target="_blank" rel="nofollow noreferrer" className="header-button">
               <span>Looking for V1?</span>
             </a>
 
