@@ -9,7 +9,7 @@ import paraswapIcon from '../assets/icons/paraswap.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import { formatTokenAmount } from '../services/utils';
 import { ChainKey } from '../types';
-import { getChainByKey } from '../types/lists';
+import { getChainByKey, supportedChains } from '../types/lists';
 import { CrossAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep } from '../types/server';
 import Clock from './Clock';
 import { switchChain } from '../services/metamask';
@@ -103,10 +103,11 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       if (web3.chainId !== crossAction.chainId) {
       await switchChain(crossAction.chainId)
     }
-
-    const chainProviders = getRpcProviders([ 56, 100, 137])
+    const excludedChains = [1, 66, 43114] // exclude these for now because of no config error
+    const crossableChains = supportedChains.flatMap(chain => excludedChains.includes(chain.id)? []: [chain.id])
+    const chainProviders = getRpcProviders(crossableChains)
     const nxtpSDK = await nxtp.setup(web3.library.getSigner(), chainProviders)
-    const cross = executeNXTPCross(nxtpSDK, step, fromAmount.toString(), web3.account, (status: Execution) => updateStatus(step, status));
+    const cross = await executeNXTPCross(nxtpSDK, step, fromAmount.toString(), web3.account, (status: Execution) => updateStatus(step, status));
 
     // const switchAndAddToken = async (token: Token) => {
     //     await switchChain(token.chainId)

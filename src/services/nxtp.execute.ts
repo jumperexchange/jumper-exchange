@@ -10,66 +10,56 @@ import { AuctionResponse } from '@connext/nxtp-utils';
 
 
 export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, fromAmount: string, userAddress:string,  updateStatus?: Function, initialStatus?: Execution) => {
-  // setup
-  let { status, update } = initStatus(updateStatus, initialStatus)
-  const crossAction = step.action as CrossAction
-  const fromChainId = getChainByKey(crossAction.chainKey).id
-  const toChainId = getChainByKey(crossAction.toChainKey).id
-  const srcTokenAddress = crossAction.fromToken.id
-  const destTokenAddress = crossAction.toToken.id
+  return new Promise (async (resolve, reject) => {
+    // setup
+    let { status, update } = initStatus(updateStatus, initialStatus)
+    const crossAction = step.action as CrossAction
+    const fromChainId = getChainByKey(crossAction.chainKey).id
+    const toChainId = getChainByKey(crossAction.toChainKey).id
+    const srcTokenAddress = crossAction.fromToken.id
+    const destTokenAddress = crossAction.toToken.id
 
-  // get Quote
-  // -> set status
-  const quoteProcess = createAndPushProcess(update, status, 'Get Quote')
-  let quote: AuctionResponse | undefined;
-  try{
-    quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount, userAddress )
-    if (!quote) throw Error("Quote confirmation failed!")
-  } catch (e) {
-    cleanUp(nxtpSDK, update, status, quoteProcess )
-    throw e
-  }
-  setStatusDone(update, status, quoteProcess)
+    // get Quote
+    // -> set status
+    const quoteProcess = createAndPushProcess(update, status, 'Confirm Quote')
+    let quote: AuctionResponse | undefined;
+    try{
+      quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount, userAddress )
+      if (!quote) throw Error("Quote confirmation failed!")
+    } catch (_e) {
+      const e = _e as Error
+      quoteProcess.errorMessage = e.message
+      cleanUp(nxtpSDK, update, status, quoteProcess )
+      // reject()
+      throw e
+    }
+    setStatusDone(update, status, quoteProcess)
 
-  // trigger transfer
-  const triggerTransferProcess = createAndPushProcess(update, status, 'Trigger Transfer')
-  try{
-    status = await nxtp.triggerTransferWithPreexistingStatus(nxtpSDK, step, quote, update, status )
-  } catch (e){
-    cleanUp(nxtpSDK, update, status, triggerTransferProcess )
-    throw e
-  }
+    // trigger transfer
+    try{
+      status = await nxtp.triggerTransferWithPreexistingStatus(nxtpSDK, step, quote, update, status )
+    } catch (e){
+      nxtpSDK.removeAllListeners()
+      // reject()
+      throw e
+    }
 
-  let preparedTx
-  try {
-    console.log("waiting for tx")
-    preparedTx = await nxtpSDK.waitFor(
-      NxtpSdkEvents.ReceiverTransactionPrepared,
-      100_000,
-      (data) => data.txData.transactionId === quote?.bid.transactionId // filter function
-    );
-  } catch (e) {
-    cleanUp(nxtpSDK, update, status, triggerTransferProcess )
-    throw e
-  }
-  setStatusDone(update, status, triggerTransferProcess)
+    nxtpSDK.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
+      try{
+        await nxtp.finishTransfer(nxtpSDK, data, step, update)
+      } catch (e) {
+        nxtpSDK.removeAllListeners()
+        // reject()
+        throw e
+      }
 
+      nxtpSDK.removeAllListeners()
+      status.status = 'DONE'
+      update(status)
+      resolve (status)
 
-  // finish transfer
-  const finishProcess = createAndPushProcess(update, status, 'Finish Transfer')
-  try{
-    await nxtp.finishTransfer(nxtpSDK, preparedTx, step, update)
-  } catch (e) {
-    cleanUp(nxtpSDK, update, status, finishProcess )
-    throw e
-  }
-  setStatusDone(update, status, finishProcess)
-
-  nxtpSDK.removeAllListeners()
-
-  status.status = 'DONE'
-  update(status)
-  return status
+    })
+  })
 }
 
 const cleanUp = (sdk:NxtpSdk, update: Function, status:any, process: Process) => {
