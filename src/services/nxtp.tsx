@@ -273,7 +273,16 @@ export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: T
   // Check Token Approval
   if (quote.bid.sendingAssetId !== constants.AddressZero) {
     const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(quote.bid.sendingChainId)
-    const approved = await getApproved((sdk as any).signer, quote.bid.sendingAssetId, contractAddress)
+    let approved
+    try{
+      approved = await getApproved((sdk as any).signer, quote.bid.sendingAssetId, contractAddress)
+    } catch (_e){
+      const e = _e as Error
+      approveProcess.errorMessage = e.message
+      setStatusFailed(update, status, approveProcess)
+      return status
+    }
+
     if (approved.gte(quote.bid.amount)) {
       // approval already done, jump to next step
       setStatusDone(update, status, approveProcess)

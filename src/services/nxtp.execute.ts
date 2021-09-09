@@ -10,7 +10,6 @@ import { AuctionResponse } from '@connext/nxtp-utils';
 
 
 export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, fromAmount: string, userAddress:string,  updateStatus?: Function, initialStatus?: Execution) => {
-  return new Promise (async (resolve, reject) => {
     // setup
     let { status, update } = initStatus(updateStatus, initialStatus)
     const crossAction = step.action as CrossAction
@@ -30,7 +29,6 @@ export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, from
       const e = _e as Error
       quoteProcess.errorMessage = e.message
       cleanUp(nxtpSDK, update, status, quoteProcess )
-      // reject()
       throw e
     }
     setStatusDone(update, status, quoteProcess)
@@ -39,17 +37,17 @@ export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, from
     try{
       status = await nxtp.triggerTransferWithPreexistingStatus(nxtpSDK, step, quote, update, status )
     } catch (e){
+      console.log(status)
       nxtpSDK.removeAllListeners()
-      // reject()
       throw e
     }
 
+    return new Promise (async (resolve, reject) => {
     nxtpSDK.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
       try{
         await nxtp.finishTransfer(nxtpSDK, data, step, update)
       } catch (e) {
         nxtpSDK.removeAllListeners()
-        // reject()
         throw e
       }
 
