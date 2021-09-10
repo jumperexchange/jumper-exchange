@@ -20,6 +20,7 @@ import { getRpcProviders } from './web3/connectors';
 import * as nxtp from '../services/nxtp'
 import { executeNXTPCross } from '../services/nxtp.execute';
 
+const nxtpExcludedChainIds = [1, 66, 43114] // exclude these for now because of no config error
 
 interface SwappingProps {
   route: Array<TranferStep>,
@@ -103,8 +104,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       if (web3.chainId !== crossAction.chainId) {
       await switchChain(crossAction.chainId)
     }
-    const excludedChains = [1, 66, 43114] // exclude these for now because of no config error
-    const crossableChains = supportedChains.flatMap(chain => excludedChains.includes(chain.id)? []: [chain.id])
+
+    const crossableChains = supportedChains.flatMap(chain => nxtpExcludedChainIds.includes(chain.id)? []: [chain.id])
     const chainProviders = getRpcProviders(crossableChains)
     const nxtpSDK = await nxtp.setup(web3.library.getSigner(), chainProviders)
     const cross = await executeNXTPCross(nxtpSDK, step, fromAmount.toString(), web3.account, (status: Execution) => updateStatus(step, status));
