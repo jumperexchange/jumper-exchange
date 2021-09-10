@@ -49,7 +49,7 @@ export const emptyExecution : Execution = {
   process: []
 }
 
-export type Action = DepositAction | WithdrawAction | SwapAction | ParaswapAction | OneInchAction | CrossAction
+export type Action = DepositAction | WithdrawAction | SwapAction | CrossAction
 
 
 export interface TranferStep {
@@ -81,38 +81,51 @@ export interface WithdrawAction extends ActionBase {
 
 export interface SwapAction extends ActionBase {
   type: 'swap'
+  tool: string
+  fromChainId: number
   fromToken: Token
   toToken: Token
-
-  fromAmount: number
-  toAmount: number
+  fromAmount: string
+  // toAmount: string
 }
 
-export interface ParaswapAction extends ActionBase {
-  type: 'paraswap'
-  fromToken: Token
-  toToken: Token
+// export interface SwapAction extends ActionBase {
+//   type: 'swap'
+//   fromToken: Token
+//   toToken: Token
 
-  fromAmount: number
-  toAmount: number
-  target: 'wallet' | 'channel'
-}
+//   fromAmount: number
+//   toAmount: number
+// }
 
-export interface OneInchAction extends ActionBase {
-  type: '1inch'
-  fromToken: Token
-  toToken: Token
+// export interface ParaswapAction extends ActionBase {
+//   type: 'paraswap'
+//   fromToken: Token
+//   toToken: Token
 
-  fromAmount: number
-  toAmount: number
-  target: 'wallet' | 'channel'
-}
+//   fromAmount: number
+//   toAmount: number
+//   target: 'wallet' | 'channel'
+// }
+
+// export interface OneInchAction extends ActionBase {
+//   type: '1inch'
+//   fromToken: Token
+//   toToken: Token
+
+//   fromAmount: number
+//   toAmount: number
+//   target: 'wallet' | 'channel'
+// }
+
 
 export interface CrossAction extends ActionBase {
   type: 'cross'
-  method: 'vector' | 'nxtp'
-  toChainKey: ChainKey
-  amount: number
+  tool: string
+  fromChainId: number
+  toChainId: number
+  fromAmount: string
   fromToken: Token
   toToken: Token
+  toAddress: string
 }

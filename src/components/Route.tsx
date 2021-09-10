@@ -1,7 +1,7 @@
 import { Button, Steps } from 'antd';
-import React from 'react';
 import { formatTokenAmount } from '../services/utils';
-import { TranferStep } from '../types/server';
+import { getChainById } from '../types/lists';
+import { CrossAction, CrossEstimate, SwapAction, SwapEstimate, TranferStep } from '../types/server';
 
 interface RouteProps {
   route: Array<TranferStep>
@@ -9,45 +9,23 @@ interface RouteProps {
   onSelect: Function
 }
 
-const getUniswapCloneName = (chainId: number) =>{
-  switch (chainId){
-    case 1:
-      return "Uniswap"
-    case 56:
-      return "PancakeSwap"
-    case 100:
-      return "Honeyswap"
-    case 137:
-      return "Quickswap"
-    default:
-      return ""
-  }
-}
-
-
 const Route = ({ route, selected, onSelect }: RouteProps) => {
 
   const parseStep = (step: TranferStep) => {
     switch (step.action.type) {
       case "swap":
+        const swapAction = step.action as SwapAction
+        const swapEstimate = step.estimate as SwapEstimate
         return {
           title: "Swap Tokens",
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via ${getUniswapCloneName(step.action.chainId)}`,
-        }
-      case "paraswap":
-        return {
-          title: `Swap ${step.action.target === 'channel' ? ' and Deposit' : ''} Tokens`,
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via Paraswap`
-        }
-      case "1inch":
-        return {
-          title: `Swap ${step.action.target === 'channel' ? ' and Deposit' : ''} Tokens`,
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} for ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} via 1Inch`
+          description: `${formatTokenAmount(swapAction.fromToken, swapEstimate.fromAmount)} for ${formatTokenAmount(swapAction.toToken, swapEstimate.toAmount)} via ${swapAction.tool}}`,
         }
       case "cross":
+        const crossAction = step.action as CrossAction
+        const crossEstimate = step.estimate as CrossEstimate
         return {
           title: "Cross Chains",
-          description: `${formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} on ${step.action.chainKey} to ${formatTokenAmount(step.action.toToken, step.estimate?.toAmount)} on ${step.action.toChainKey}`,
+          description: `${formatTokenAmount(crossAction.fromToken, crossEstimate.fromAmount)} on ${getChainById(crossAction.fromChainId).key} to ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} on ${getChainById(crossAction.toChainId).key}`,
         }
       case "withdraw":
         return {

@@ -9,8 +9,8 @@ import paraswapIcon from '../assets/icons/paraswap.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import { formatTokenAmount } from '../services/utils';
 import { ChainKey } from '../types';
-import { getChainByKey, supportedChains } from '../types/lists';
-import { CrossAction, Execution, ParaswapAction, SwapAction, SwapEstimate, TranferStep } from '../types/server';
+import { getChainById, getChainByKey, supportedChains } from '../types/lists';
+import { CrossAction, CrossEstimate, Execution, SwapAction, SwapEstimate, TranferStep } from '../types/server';
 import Clock from './Clock';
 import { switchChain } from '../services/metamask';
 import { executeParaswap } from '../services/paraswap.execute';
@@ -19,6 +19,7 @@ import { executeUniswap } from '../services/uniswaps.execute';
 import { getRpcProviders } from './web3/connectors';
 import * as nxtp from '../services/nxtp'
 import { executeNXTPCross } from '../services/nxtp.execute';
+import { BigNumber } from 'bignumber.js';
 
 const nxtpExcludedChainIds = [1, 66, 43114] // exclude these for now because of no config error
 
@@ -59,63 +60,85 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const swapEstimate = step.estimate as SwapEstimate
     const fromAddress = web3.account
     const toAddress = fromAddress
+    const fromAmount = new BigNumber(swapAction.fromAmount)
     if (web3.chainId !== swapAction.chainId) {
       await switchChain(swapAction.chainId)
     }
-    const swapExecution = await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.fromAmount, fromAddress, toAddress, swapEstimate.path, (status: Execution) => updateStatus(step, status))
-    return swapExecution
-  }
 
-  const triggerParaswap = async (step: TranferStep, previousStep?: TranferStep) => {
-    if (!web3.account || !web3.library) return
-    const swapAction = step.action as ParaswapAction
-    const fromAddress = web3.account
-    const toAddress = fromAddress //swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
-
-    if (web3.chainId !== swapAction.chainId) {
-      await switchChain(swapAction.chainId)
+    switch(swapAction.tool){
+      case 'uniswap' || 'pancakeswap' || 'honeyswap' || 'quickswap':
+        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, fromAmount, fromAddress, toAddress, swapEstimate.path, (status: Execution) => updateStatus(step, status))
+      case 'paraswap':
+        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+      case '1inch':
+        return await executeOneInchSwap(swapAction.fromChainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+      default:
+        console.warn('should never reach here')
     }
-    return executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+
   }
 
-  const triggerOneIchSwap = async (step: TranferStep, previousStep?: TranferStep) => {
-    if (!web3.account || !web3.library) return
-    const swapAction = step.action as ParaswapAction
-    const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
-    const fromAddress = web3.account
-    const toAddress = fromAddress // swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
+  // const triggerParaswap = async (step: TranferStep, previousStep?: TranferStep) => {
+  //   if (!web3.account || !web3.library) return
+  //   const swapAction = step.action as SwapAction
+  //   const fromAddress = web3.account
+  //   const toAddress = fromAddress //swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
 
-    if (web3.chainId !== chainId) {
-      await switchChain(chainId)
-    }
-    return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
-  }
+  //   if (web3.chainId !== swapAction.chainId) {
+  //     await switchChain(swapAction.chainId)
+  //   }
+  //   return executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+  // }
+
+  // const triggerOneIchSwap = async (step: TranferStep, previousStep?: TranferStep) => {
+  //   if (!web3.account || !web3.library) return
+  //   const swapAction = step.action as SwapAction
+  //   const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
+  //   const fromAddress = web3.account
+  //   const toAddress = fromAddress // swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
+
+  //   if (web3.chainId !== chainId) {
+  //     await switchChain(chainId)
+  //   }
+  //   return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+  // }
 
   const triggerCross = async (step: TranferStep, previousStep?: TranferStep) => {
     if (!web3.account || !web3.library) return
     const crossAction = step.action as CrossAction
-    let fromAmount : bigint
+    let fromAmount : BigNumber
     if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
-      fromAmount = BigInt(previousStep.execution.toAmount)
+      fromAmount = new BigNumber(previousStep.execution.toAmount)
     } else {
-      fromAmount = BigInt(crossAction.amount)
+      fromAmount = new BigNumber(crossAction.fromAmount)
     }
 
       if (web3.chainId !== crossAction.chainId) {
       await switchChain(crossAction.chainId)
     }
 
-    const crossableChains = supportedChains.flatMap(chain => nxtpExcludedChainIds.includes(chain.id)? []: [chain.id])
-    const chainProviders = getRpcProviders(crossableChains)
-    const nxtpSDK = await nxtp.setup(web3.library.getSigner(), chainProviders)
-    const cross = await executeNXTPCross(nxtpSDK, step, fromAmount.toString(), web3.account, (status: Execution) => updateStatus(step, status));
+    switch(crossAction.tool){
+      case 'nxtp':
+        const crossableChains = supportedChains.flatMap(chain => nxtpExcludedChainIds.includes(chain.id)? []: [chain.id])
+        const chainProviders = getRpcProviders(crossableChains)
+        const nxtpSDK = await nxtp.setup(web3.library.getSigner(), chainProviders)
+        await executeNXTPCross(nxtpSDK, step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status));
+        nxtpSDK.detach()
+        break
+      default:
+        console.warn('should never reach here')
+    }
+
+
+
+
 
     // const switchAndAddToken = async (token: Token) => {
     //     await switchChain(token.chainId)
     //     setTimeout(() => addToken(token), 100)
     // }
 
-    return cross
+    // return cross
   }
 
 
@@ -200,7 +223,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap on {getExchangeAvatar(step.action.chainKey)}</h4>
+            {/* <h4>Swap on {getExchangeAvatar(step.action.chainKey)}</h4> */}
+            <h4>Swap on {step.action.tool}</h4>
             <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
@@ -210,40 +234,50 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         ]
       }
 
-      case 'paraswap': {
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
-        return [
-          <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap on {paraswapAvatar}</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
-          </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
-            {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
-            {hasFailed ? triggerButton : undefined}
-          </Timeline.Item>,
-        ]
-      }
+      // case 'paraswap': {
+      //   const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
+      //   return [
+      //     <Timeline.Item key={index + '_left'} color={color}>
+      //       <h4>Swap on {paraswapAvatar}</h4>
+      //       <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
+      //     </Timeline.Item>,
+      //     <Timeline.Item key={index + '_right'} color={color}>
+      //       {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
+      //       {hasFailed ? triggerButton : undefined}
+      //     </Timeline.Item>,
+      //   ]
+      // }
 
-      case '1inch': {
-        const triggerButton = <Button type="primary"  disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
-        return [
-          <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Swap on {oneinchAvatar}</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
-          </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
-            {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
-            {hasFailed ? triggerButton : undefined}
-          </Timeline.Item>,
-        ]
-      }
+      // case '1inch': {
+      //   const triggerButton = <Button type="primary"  disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
+      //   return [
+      //     <Timeline.Item key={index + '_left'} color={color}>
+      //       <h4>Swap on {oneinchAvatar}</h4>
+      //       <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
+      //     </Timeline.Item>,
+      //     <Timeline.Item key={index + '_right'} color={color}>
+      //       {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
+      //       {hasFailed ? triggerButton : undefined}
+      //     </Timeline.Item>,
+      //   ]
+      // }
 
       case 'cross': {
+        const crossAction = step.action as CrossAction
+        const crossEstimate = step.estimate as CrossEstimate
         const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
+        let avatar;
+        switch(crossAction.tool){
+          case 'nxtp':
+            avatar = connextAvatar
+            break;
+          default:
+            return
+        }
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            <h4>Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)} via {connextAvatar}</h4>
-            <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
+            <h4>Transfer from {getChainAvatar(getChainById(crossAction.fromChainId).key)} to {getChainAvatar(getChainById(crossAction.toChainId).key)} via {avatar}</h4>
+            <span>{formatTokenAmount(crossAction.fromToken, crossEstimate.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
             {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
@@ -264,12 +298,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     switch (step.action.type) {
       case 'swap':
         triggerFunc = triggerSwap
-        break
-      case 'paraswap':
-        triggerFunc = triggerParaswap
-        break
-      case '1inch':
-        triggerFunc = triggerOneIchSwap
         break
       case 'cross':
         triggerFunc = triggerCross

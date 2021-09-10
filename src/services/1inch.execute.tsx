@@ -1,10 +1,11 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
+import BigNumber from 'bignumber.js'
 import { getChainById } from '../types/lists'
 import { Execution } from '../types/server'
 import { oneInch } from './1Inch'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 
-export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
 
   // setup
   const { status, update } = initStatus(updateStatus, initialStatus)
@@ -15,7 +16,7 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
 
   // -> check allowance
   try {
-    await oneInch.setAllowance(chainId, srcAmount, srcToken, signer)
+    await oneInch.setAllowance(chainId, srcAmount.toNumber(), srcToken, signer)
   } catch (e:any) {
     // -> set status
     if (e.message) allowanceProcess.errorMessage = e.message
@@ -34,7 +35,7 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
   // -> swapping
   let tx
   try {
-    tx = await oneInch.transfer(signer, chainId, srcToken, destToken, srcAmount, destAddress)
+    tx = await oneInch.transfer(signer, chainId, srcToken, destToken, srcAmount.toNumber(), destAddress)
   } catch (e:any) {
     // -> set status
     if (e.message) allowanceProcess.errorMessage = e.message

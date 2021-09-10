@@ -196,7 +196,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
   step.action = step.action as CrossAction
   return (<>
     <h2 style={{ textAlign: 'center' }}>
-      Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(step.action.toChainKey)}
+      Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(getChainById(step.action.toChainId).key)}
     </h2>
     <p style={{ textAlign: 'center' }}>
       {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}

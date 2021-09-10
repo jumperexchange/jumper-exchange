@@ -3,8 +3,9 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 import * as paraswap from '../services/paraswap'
 import { JsonRpcSigner } from '@ethersproject/providers'
 import { Execution } from '../types/server'
+import BigNumber from 'bignumber.js'
 
-export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: number, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
   // setup
   const { status, update } = initStatus(updateStatus, initialStatus)
 
@@ -14,7 +15,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
 
   // -> check allowance
   try {
-    await paraswap.updateAllowance(signer, chainId, srcAddress, srcToken, srcAmount)
+    await paraswap.updateAllowance(signer, chainId, srcAddress, srcToken, srcAmount.toNumber())
   } catch (e:any) {
     // -> set status
     if (e.message) allowanceProcess.errorMessage = e.message
@@ -34,7 +35,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   // -> swapping
   let tx
   try {
-    tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken, destToken, srcAmount, destAddress)
+    tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken, destToken, srcAmount.toNumber(), destAddress)
   } catch (e: any) {
     // -> set status
     if (e.message) allowanceProcess.errorMessage = e.message

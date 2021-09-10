@@ -418,7 +418,8 @@ const SwapXpollinate = ({
       const lastStep = selectedRoute[selectedRoute.length - 1]
       if (lastStep.action.type === 'withdraw') {
         return formatTokenAmountOnly(lastStep.action.token, lastStep.estimate?.toAmount)
-      } else if (lastStep.action.type === '1inch' || lastStep.action.type === 'paraswap') {
+      // } else if (lastStep.action.tool === '1inch' || lastStep.action.tool === 'paraswap') {
+      } else if (lastStep.action.type === 'swap') {
         return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
       } else if (lastStep.action.type === 'cross') {
         return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
@@ -657,11 +658,12 @@ const SwapXpollinate = ({
       {
         action: {
           type: 'cross',
-          method: 'nxtp',
-          chainId: getChainByKey(routeRequest.depositChain).id,
-          chainKey: routeRequest.depositChain,
-          toChainKey: routeRequest.withdrawChain,
-          amount: dAmount,
+          tool: 'nxtp',
+          fromChainId: getChainByKey(routeRequest.depositChain).id,
+          toChainId: getChainByKey(routeRequest.withdrawChain).id,
+          // chainKey: routeRequest.depositChain,
+          // toChainKey: routeRequest.withdrawChain,
+          fromAmount: dAmount,
           fromToken: dToken,
           toToken: wToken,
         } as CrossAction,
@@ -722,13 +724,13 @@ const SwapXpollinate = ({
         callTo: '',
         receivingAddress: '',
         sendingChainId: crossAction.chainId,
-        receivingChainId: getChainByKey(crossAction.toChainKey).id,
+        receivingChainId: crossAction.toChainId,
         callDataHash: '',
         transactionId: crossEstimate.quote.bid.transactionId,
         receivingChainTxManagerAddress: ''
       },
       sending: {
-        amount: crossAction.amount.toString(),
+        amount: crossAction.fromAmount,
         preparedBlockNumber: 0,
         expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
       },

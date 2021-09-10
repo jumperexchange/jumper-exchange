@@ -3,7 +3,7 @@ import { IERC20Minimal } from "@connext/nxtp-contracts/typechain";
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { BigNumber, constants, Contract, providers } from 'ethers';
-import { getChainByKey } from '../types/lists';
+import { getChainById } from '../types/lists';
 import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
@@ -107,8 +107,8 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 
   const crossAction = step.action as CrossAction
   const crossEstimate = step.estimate as CrossEstimate
-  const fromChain = getChainByKey(crossAction.chainKey)
-  const toChain = getChainByKey(crossAction.toChainKey)
+  const fromChain = getChainById(crossAction.fromChainId)
+  const toChain = getChainById(crossAction.toChainId)
 
   // Before approving/transferring, check router liquidity
   const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
@@ -262,8 +262,8 @@ export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: T
   let proceedProcess: Process | undefined
 
   const crossAction = step.action as CrossAction
-  const fromChain = getChainByKey(crossAction.chainKey)
-  const toChain = getChainByKey(crossAction.toChainKey)
+  const fromChain = getChainById(crossAction.fromChainId)
+  const toChain = getChainById(crossAction.toChainId)
 
   // Before approving/transferring, check router liquidity
   const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(

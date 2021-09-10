@@ -4,17 +4,17 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 import * as nxtp from './nxtp'
 import { CrossAction, Execution, Process, TranferStep } from '../types/server'
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { getChainByKey } from '../types/lists';
 import { AuctionResponse } from '@connext/nxtp-utils';
+import BigNumber from 'bignumber.js';
 
 
 
-export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, fromAmount: string, userAddress:string,  updateStatus?: Function, initialStatus?: Execution) => {
+export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, fromAmount: BigNumber, userAddress:string,  updateStatus?: Function, initialStatus?: Execution) => {
     // setup
     let { status, update } = initStatus(updateStatus, initialStatus)
     const crossAction = step.action as CrossAction
-    const fromChainId = getChainByKey(crossAction.chainKey).id
-    const toChainId = getChainByKey(crossAction.toChainKey).id
+    const fromChainId = crossAction.fromChainId
+    const toChainId = crossAction.toChainId
     const srcTokenAddress = crossAction.fromToken.id
     const destTokenAddress = crossAction.toToken.id
 
@@ -23,7 +23,7 @@ export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, from
     const quoteProcess = createAndPushProcess(update, status, 'Confirm Quote')
     let quote: AuctionResponse | undefined;
     try{
-      quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount, userAddress )
+      quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress )
       if (!quote) throw Error("Quote confirmation failed!")
     } catch (_e) {
       const e = _e as Error
