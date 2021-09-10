@@ -135,7 +135,8 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   const transferPromise = sdk.prepareTransfer(crossEstimate.quote, infinteApproval)
 
   // approve sent => wait
-  sdk.attachOnce(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
+  sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
+    if (data.chainId !== fromChain.id || data.assetId !== crossAction.fromToken.id) return
     approveProcess.status = 'PENDING'
     approveProcess.txHash = data.transactionResponse.hash
     approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
@@ -144,14 +145,16 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   })
 
   // approved = done => next
-  sdk.attachOnce(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
+  sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
+    if (data.chainId !== fromChain.id || data.assetId !== crossAction.fromToken.id) return
     approveProcess.message = <>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
     setStatusDone(update, status, approveProcess)
     submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
   })
 
   // sumbit sent => wait
-  sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepareSubmitted, (data) => {
+  sdk.attach(NxtpSdkEvents.SenderTransactionPrepareSubmitted, (data) => {
+    if (data.prepareParams.txData.transactionId !== transactionId) return
     if (approveProcess && approveProcess.status !== 'DONE') {
       setStatusDone(update, status, approveProcess)
     }
@@ -164,8 +167,10 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     submitProcess.message = <>Send Transaction - Wait for <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
     update(status)
   })
+
   // sumitted = done => next
-  sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
+  sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
+    if (data.txData.transactionId !== transactionId) return
     if (submitProcess) {
       submitProcess.message = <>Transaction Sent (<a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
       setStatusDone(update, status, submitProcess)

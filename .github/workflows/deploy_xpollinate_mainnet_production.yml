@@ -37,6 +37,9 @@ jobs:
       - name: Copy xPollinate Icons
         run: cp ./public/xpollinate/* ./build/
 
+      - name: Insert DataUnlocker
+        run: output=$(curl --fail -F html=@build/index.html 'https://api.dataunlocker.com/properties/6c496359464b326a7569474a/scripts/latest/inject?endpoint=wicanxvt2nvg') && echo "$output" > build/index.html || echo "Failed to inject DataUnlocker's script"
+
       # Runs a set of commands using the runners shell
       - name: ssh deploy
         uses: easingthemes/ssh-deploy@c711f2c3391cac2876bf4c833590077f02e4bcb8 # easingthemes/ssh-deploy@v2.2.11
