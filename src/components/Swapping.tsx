@@ -181,8 +181,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     )
   }
 
-  const getExchangeAvatar = (chainKey: ChainKey) => {
-    const chain = getChainByKey(chainKey)
+  const getExchangeAvatar = (chainId: number) => {
+    const chain = getChainById(chainId)
 
     return (
       <Tooltip title={chain.exchange?.name}>
@@ -223,8 +223,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
-            {/* <h4>Swap on {getExchangeAvatar(step.action.chainKey)}</h4> */}
-            <h4>Swap on {step.action.tool}</h4>
+            <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.fromChainId))}</h4>
             <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item key={index + '_right'} color={color}>
@@ -233,34 +232,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
           </Timeline.Item>,
         ]
       }
-
-      // case 'paraswap': {
-      //   const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
-      //   return [
-      //     <Timeline.Item key={index + '_left'} color={color}>
-      //       <h4>Swap on {paraswapAvatar}</h4>
-      //       <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
-      //     </Timeline.Item>,
-      //     <Timeline.Item key={index + '_right'} color={color}>
-      //       {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
-      //       {hasFailed ? triggerButton : undefined}
-      //     </Timeline.Item>,
-      //   ]
-      // }
-
-      // case '1inch': {
-      //   const triggerButton = <Button type="primary"  disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
-      //   return [
-      //     <Timeline.Item key={index + '_left'} color={color}>
-      //       <h4>Swap on {oneinchAvatar}</h4>
-      //       <span>{formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
-      //     </Timeline.Item>,
-      //     <Timeline.Item key={index + '_right'} color={color}>
-      //       {!step.execution && ADMIN_MODE ? triggerButton : executionSteps}
-      //       {hasFailed ? triggerButton : undefined}
-      //     </Timeline.Item>,
-      //   ]
-      // }
 
       case 'cross': {
         const crossAction = step.action as CrossAction
