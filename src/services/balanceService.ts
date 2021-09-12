@@ -91,6 +91,7 @@ export async function covalentGetCoinsOnChain(walletAdress: string, chainId: num
         img_url: token.logo_url,
         amount: parseInt(token.balance) / (10 ** token.contract_decimals),
         pricePerCoin: token.quote_rate || 0,
+        verified: false,
       })
     }
   }
@@ -133,6 +134,7 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
       img_url: token.logo_url,
       amount: token.amount as number,
       pricePerCoin: token.price as number,
+      verified: token.is_verified,
     })
   }
 
@@ -181,8 +183,9 @@ const getBalancesForWallet = async (walletAdress: string): Promise<Portfolio> =>
       name: token.name,
       symbol: token.optimized_symbol,
       img_url: token.logo_url,
-      amount: token.amount as number,
-      pricePerCoin: token.price as number,
+      amount: token.amount,
+      pricePerCoin: token.price,
+      verified: token.is_verified,
     })
   }
 

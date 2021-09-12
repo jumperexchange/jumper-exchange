@@ -557,6 +557,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.ETH,
     name: CoinKey.ETH,
     logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0x0000000000000000000000000000000000000000',
@@ -604,6 +605,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.MATIC,
     name: CoinKey.MATIC,
     logoURI: 'https://etherscan.io/token/images/matictoken_28.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
@@ -651,6 +653,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.BNB,
     name: CoinKey.BNB,
     logoURI: 'https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png?1547034615',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
@@ -698,6 +701,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.DAI,
     name: CoinKey.DAI,
     logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0x6b175474e89094c44da98b954eedeac495271d0f',
@@ -758,6 +762,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.USDT,
     name: CoinKey.USDT,
     logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0xdac17f958d2ee523a2206206994597c13d831ec7',
@@ -815,6 +820,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.USDC,
     name: CoinKey.USDC,
     logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',

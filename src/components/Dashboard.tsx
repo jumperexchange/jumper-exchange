@@ -1,4 +1,4 @@
-import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, CloseCircleTwoTone, DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
 import { useWeb3React } from "@web3-react/core";
 import "animate.css";
 import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
@@ -61,13 +61,14 @@ function renderAmounts(amounts: Amounts = { amount_coin: -1, amount_usd: -1 }) {
 function renderCoin(coin: Coin) {
   return (
     <div className="coin">
-      <Tooltip title={coin.name}>
+      <Tooltip title={coin.name + (coin.verified ? ' (verified)' : '')}>
         <Avatar
           src={coin.logoURI}
           alt={coin.name}
         >
           {coin.key}
         </Avatar>
+        <Badge className="coin_verify" count={coin.verified ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <CloseCircleTwoTone twoToneColor="#eb2f96" />}></Badge>
       </Tooltip>
     </div>
   )
@@ -553,6 +554,7 @@ const Dashboard = () => {
             name: coin.name,
             logoURI: coin.img_url,
             chains: chainKeysToObject(newToken),
+            verified: coin.verified,
           }
           coins.push(newCoin)
         }
