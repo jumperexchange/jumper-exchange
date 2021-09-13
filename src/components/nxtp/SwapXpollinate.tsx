@@ -419,8 +419,6 @@ const SwapXpollinate = ({
       const lastStep = selectedRoute[selectedRoute.length - 1]
       if (lastStep.action.type === 'withdraw') {
         return formatTokenAmountOnly(lastStep.action.token, lastStep.estimate?.toAmount)
-      } else if (lastStep.action.type === '1inch' || lastStep.action.type === 'paraswap') {
-        return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
       } else if (lastStep.action.type === 'cross') {
         return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
       } else {
