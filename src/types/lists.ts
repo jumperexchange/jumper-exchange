@@ -280,6 +280,93 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+  // 42161 - Arbitrum One
+  {
+    key: ChainKey.ARB,
+    name: 'Arbitrum One',
+    coin: CoinKey.ETH,
+    id: 42161,
+    visible: true,
+    faucetUrls: [
+      'https://bridge.arbitrum.io/'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(42161),
+      blockExplorerUrls: [
+        'https://arbiscan.io',
+      ],
+      chainName: 'Arbitrum One',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'AETH',
+        symbol: 'AETH',
+        decimals: 18, // check
+      },
+      rpcUrls: [
+        'https://arb1.arbitrum.io/rpc',
+      ],
+    }
+  },
+
+  // 128 - Huobi ECO Chain Mainnet
+  {
+    key: ChainKey.HEC,
+    name: 'Huobi ECO Chain Mainnet',
+    coin: 'HT' as CoinKey,
+    id: 128,
+    visible: true,
+    faucetUrls: [
+      'https://bridge.arbitrum.io/'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(128),
+      blockExplorerUrls: [
+        'https://hecoinfo.com',
+      ],
+      chainName: 'Huobi ECO Chain Mainnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'HT',
+        symbol: 'HT',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://http-mainnet.hecochain.com',
+      ],
+    }
+  },
+
+  // 10 - Optimistic Ethereum
+  {
+    key: ChainKey.OPT,
+    name: 'Optimistic Ethereum',
+    coin: CoinKey.ETH,
+    id: 10,
+    visible: true,
+    faucetUrls: [
+      'https://gateway.optimism.io/'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(10),
+      blockExplorerUrls: [
+        'https://optimistic.etherscan.io',
+      ],
+      chainName: 'Optimistic Ethereum',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'OETH',
+        symbol: 'OETH',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://mainnet.optimism.io/',
+      ],
+    }
+  },
+
   // 32659 - FSN-MAIN (anyswap)
   // {
   //   key: ChainKey.FSN,
@@ -532,6 +619,36 @@ export const supportedChains: Array<Chain> = [
     }
   },
 
+  // 256 - Huobi ECO Chain Testnet
+  {
+    key: ChainKey.HECT,
+    name: 'Huobi ECO Chain Testnet',
+    coin: 'HTT' as CoinKey,
+    id: 256,
+    visible: false,
+    faucetUrls: [
+      'https://scan-testnet.hecochain.com/faucet'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(256),
+      blockExplorerUrls: [
+        'https://scan-testnet.hecochain.com/',
+      ],
+      chainName: 'Huobi ECO Chain Testnet',
+      iconUrls: [],
+      nativeCurrency: {
+        name: 'HT',
+        symbol: 'HT',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://http-testnet.hecochain.com',
+        'wss://ws-testnet.hecochain.com',
+      ],
+    }
+  },
+
   // https://faucet.buni.finance/
 ]
 
@@ -598,6 +715,36 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.ETH,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
       },
+      [ChainKey.OPT]: { // guessed from debank api
+        id: '0x4200000000000000000000000000000000000006',
+        symbol: CoinKey.ETH,
+        decimals: 18,
+        chainId: 100,
+        chainKey: ChainKey.OPT,
+        key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+      },
+      [ChainKey.OKT]: { // guessed from debank api
+        id: '0xef71ca2ee68f45b9ad6f72fbdb33d707b872315c',
+        symbol: CoinKey.ETH,
+        decimals: 18,
+        chainId: 100,
+        chainKey: ChainKey.OKT,
+        key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+      },
+      // [ChainKey.ARB]: { // WETH
+      //   id: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+      //   symbol: CoinKey.ETH,
+      //   decimals: 18,
+      //   chainId: 42161,
+      //   chainKey: ChainKey.ARB,
+      //   key: CoinKey.ETH,
+      //   name: CoinKey.ETH,
+      //   logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+      // },
     },
   },
   {
@@ -809,6 +956,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.USDT,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
       },
+      [ChainKey.ARB]: {
+        id: '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
+        symbol: CoinKey.USDT,
+        decimals: 6,
+        chainId: 42161,
+        chainKey: ChainKey.ARB,
+        key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+      },
     },
   },
   {
@@ -866,6 +1023,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.USDC,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
       },
+      [ChainKey.ARB]: {
+        id: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+        symbol: CoinKey.USDC,
+        decimals: 6,
+        chainId: 42161,
+        chainKey: ChainKey.ARB,
+        key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+      },
     },
   },
 ]
@@ -904,6 +1071,11 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.FTM],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.FTM],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.FTM],
+  ],
+  [ChainKey.ARB]: [
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.ARB],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.ARB],
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.ARB],
   ],
 }
 

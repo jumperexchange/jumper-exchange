@@ -41,6 +41,7 @@ const transferChains = [
   getChainByKey(ChainKey.POL),
   getChainByKey(ChainKey.DAI),
   getChainByKey(ChainKey.FTM),
+  // getChainByKey(ChainKey.ARB),
 ]
 
 const transferTokens = defaultTokens
