@@ -239,23 +239,21 @@ const SwapXpollinate = ({
   }, [showAbout])
 
   // auto-trigger finish if corresponding modal is opend
-  useEffect(() => {
-    // is modal open?
-    if (modalRouteIndex !== undefined) {
-      const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
-      const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === crossEstimate.quote.bid.transactionId)
-      if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
-        const route = executionRoutes[modalRouteIndex]
-        const update = (step: TranferStep, status: Execution) => {
-          step.execution = status
-          updateExecutionRoute(route)
-        }
-
-        finishTransfer(sdk!, transaction.event, route[0], update)
-      }
-    }
-    // eslint-disable-next-line
-  }, [modalRouteIndex, executionRoutes, sdk])
+  // useEffect(() => {
+  //   // is modal open?
+  //   if (modalRouteIndex !== undefined) {
+  //     const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
+  //     const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === crossEstimate.quote.bid.transactionId)
+  //     if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
+  //       const route = executionRoutes[modalRouteIndex]
+  //       const update = (step: TranferStep, status: Execution) => {
+  //         step.execution = status
+  //         updateExecutionRoute(route)
+  //       }
+  //       finishTransfer(sdk!, transaction.event, route[0], update)
+  //     }
+  //   }
+  // }, [modalRouteIndex, executionRoutes, sdk, activeTransactions])
 
   const updateSyncStatus = useCallback((sdk: NxtpSdk) => {
     const newSyncStatus : { [ChainKey: number]: SubgraphSyncRecord } = {}

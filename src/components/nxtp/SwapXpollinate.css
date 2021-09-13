@@ -14,6 +14,7 @@
   box-shadow: rgb(204 218 238 / 80%) 0px 1rem 2rem;
 }
 
+.xpollinate-button.ant-btn-primary,
 .xpollinate .ant-btn-primary {
   background: linear-gradient(257.5deg, rgb(235, 0, 85) -9.73%, rgb(255, 250, 128) 77.97%);
   transition: background 300ms linear;
@@ -24,10 +25,12 @@
   background-position: -100px;
 }
 
+.xpollinate-button.ant-btn-primary:hover,
 .xpollinate .ant-btn-primary:hover {
   background-position: 0px;
 }
 
+.xpollinate-button.ant-btn-primary.grayed,
 .xpollinate .ant-btn-primary.grayed {
   opacity: 0.8;
 }
