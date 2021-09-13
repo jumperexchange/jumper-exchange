@@ -10,6 +10,7 @@ import honey from "../assets/icons/honey.png";
 import xdai from "../assets/icons/xdai.png";
 import uniswap from "../assets/icons/uniswap.png";
 import fantom from "../assets/icons/fantom.png";
+import arbitrum from "../assets/icons/arbitrum.svg";
 
 export interface AddEthereumChainParameter {
   chainId: string;
@@ -286,6 +287,7 @@ export const supportedChains: Array<Chain> = [
     name: 'Arbitrum One',
     coin: CoinKey.ETH,
     id: 42161,
+    iconUrl: arbitrum,
     visible: true,
     faucetUrls: [
       'https://bridge.arbitrum.io/'
@@ -317,7 +319,7 @@ export const supportedChains: Array<Chain> = [
     id: 128,
     visible: true,
     faucetUrls: [
-      'https://bridge.arbitrum.io/'
+
     ],
 
     metamask: {
@@ -540,6 +542,7 @@ export const supportedChains: Array<Chain> = [
     name: 'Arbitrum Testnet',
     coin: CoinKey.ETH,
     id: 421611,
+    iconUrl: arbitrum,
     visible: false,
     faucetUrls: [
       'https://bridge.arbitrum.io/'
@@ -1075,7 +1078,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ARB]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.ARB],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.ARB],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.ARB],
+    //findDefaultCoin(CoinKey.DAI).chains[ChainKey.ARB],
   ],
 }
 
