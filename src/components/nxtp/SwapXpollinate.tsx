@@ -38,6 +38,7 @@ const BALANCES_REFRESH_INTERVAL = 30000
 const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
+const DISABLED = true
 
 const getDefaultParams = (search: string, transferChains: Chain[], transferTokens: { [ChainKey: string]: Array<Token> }) => {
   const defaultParams = {
@@ -769,6 +770,9 @@ const SwapXpollinate = ({
   }
 
   const submitButton = () => {
+    if (DISABLED) {
+      return <Button disabled={true} shape="round" type="primary" size={"large"}>Down for Maintenance</Button>
+    }
     if (!web3.account) {
       return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} htmlType="submit" onClick={() => activate(injected)}>Connect Wallet</Button>
     }
@@ -895,7 +899,8 @@ const SwapXpollinate = ({
         <Row className="warning-trustWallet" justify="center" style={{ padding: 20, paddingBottom: 0 }}>
           <Alert
             style={{ maxWidth: 700 }}
-            message="Do not use this app with Trust Wallet! Trust Wallet users, please use V1. Fix coming soon."
+            // message="Do not use this app with Trust Wallet! Trust Wallet users, please use V1. Fix coming soon."
+            message="We are experiencing some issues with v2. Please use v1 if the transactions are urgent. Thank you for your patience."
             description=""
             type="error"
           />

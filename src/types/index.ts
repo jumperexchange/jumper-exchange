@@ -26,6 +26,7 @@ export interface Coin {
   key: CoinKey;
   name: string;
   logoURI: string;
+  verified: boolean;
   chains: {
     [ChainKey: string]: Token,
   }
@@ -80,6 +81,7 @@ export interface ChainPortfolio {
   img_url: string,
   pricePerCoin: number,
   amount: number,
+  verified: boolean,
 }
 
 export interface Wallet {

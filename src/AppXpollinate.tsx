@@ -46,7 +46,7 @@ function AppXpollinate() {
         &nbsp;&nbsp;~ 1Hive (DEX - soon)
       </p>
       <p>
-        Note: BSC is experiencing issues with subgraph sync. We are working on a fix but in the meantime BSC transfers might not find any routes or be delayed by up to 5 minutes.
+        Note: We are experiencing some issues with v2. Please use v1 if the transactions are urgent. Thank you for your patience.
       </p>
     </>
   )
