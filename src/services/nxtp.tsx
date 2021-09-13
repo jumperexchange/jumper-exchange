@@ -189,7 +189,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     if (data.txData.transactionId !== transactionId) return
 
     // receiver done
-    if (receiverProcess) {
+    if (receiverProcess && receiverProcess.status !== 'DONE') {
       receiverProcess.txHash = data.transactionHash
       receiverProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + receiverProcess.txHash
       receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, 1 Confirmation</a>)</>
@@ -198,7 +198,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
       // track confirmations
       trackConfirmations(sdk, data.txData.receivingChainId, data.transactionHash, 30, (count: number) => {
         if (receiverProcess) {
-          receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, {count} Confirmations</a>)</>
+          receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, {count}{count === 30 ? '+' : ''} Confirmations</a>)</>
           update(status)
         }
       })
@@ -224,7 +224,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
   // fullfilled = done
   sdk.attach(NxtpSdkEvents.ReceiverTransactionFulfilled, (data) => {
     if (data.txData.transactionId !== transactionId) return
-    if (proceedProcess) {
+    if (proceedProcess && proceedProcess.status !== 'DONE') {
       status.status = 'DONE'
       proceedProcess.txHash = data.transactionHash
       proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
@@ -234,7 +234,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
       // track confirmations
       trackConfirmations(sdk, data.txData.receivingChainId, data.transactionHash, 30, (count: number) => {
         if (proceedProcess) {
-          proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, {count} Confirmations</a>)</>
+          proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, {count}{count === 30 ? '+' : ''} Confirmations</a>)</>
           update(status)
         }
       })
@@ -249,14 +249,6 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
       proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
       proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
       setStatusDone(update, status, proceedProcess)
-
-      // track confirmations
-      trackConfirmations(sdk, data.txData.receivingChainId, data.transactionHash, 30, (count: number) => {
-        if (proceedProcess) {
-          proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, {count} Confirmations</a>)</>
-          update(status)
-        }
-      })
     }
   })
 
