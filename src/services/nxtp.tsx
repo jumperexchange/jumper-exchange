@@ -107,7 +107,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 
   const crossAction = step.action as CrossAction
   const crossEstimate = step.estimate as CrossEstimate
-  const fromChain = getChainById(crossAction.fromChainId)
+  const fromChain = getChainById(crossAction.chainId)
   const toChain = getChainById(crossAction.toChainId)
 
   // Before approving/transferring, check router liquidity
@@ -136,7 +136,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 
   // approve sent => wait
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
-    if (data.chainId !== fromChain.id || data.assetId !== crossAction.fromToken.id) return
+    if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
     approveProcess.status = 'PENDING'
     approveProcess.txHash = data.transactionResponse.hash
     approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
@@ -146,7 +146,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 
   // approved = done => next
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
-    if (data.chainId !== fromChain.id || data.assetId !== crossAction.fromToken.id) return
+    if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
     approveProcess.message = <>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
     setStatusDone(update, status, approveProcess)
     submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
@@ -262,7 +262,7 @@ export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: T
   let proceedProcess: Process | undefined
 
   const crossAction = step.action as CrossAction
-  const fromChain = getChainById(crossAction.fromChainId)
+  const fromChain = getChainById(crossAction.chainId)
   const toChain = getChainById(crossAction.toChainId)
 
   // Before approving/transferring, check router liquidity

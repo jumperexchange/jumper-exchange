@@ -1,5 +1,5 @@
 import { AuctionResponse } from "@connext/nxtp-utils";
-import { ChainKey, Token } from '.'
+import { Token } from '.'
 
 export interface BaseEstimate {
   fromAmount: number
@@ -59,73 +59,32 @@ export interface TranferStep {
   id?: string
 }
 
-
 interface ActionBase {
   type: string
-  chainKey: ChainKey
   chainId: number
+  amount: string
+  token: Token
 }
 
 export interface DepositAction extends ActionBase {
   type: 'deposit'
-  amount: number
-  token: Token
 }
 
 export interface WithdrawAction extends ActionBase {
   type: 'withdraw'
-  amount: number
-  token: Token
-  recipient?: string
+  toAddress: string
 }
 
 export interface SwapAction extends ActionBase {
   type: 'swap'
   tool: string
-  fromChainId: number
-  fromToken: Token
   toToken: Token
-  fromAmount: string
-  // toAmount: string
 }
-
-// export interface SwapAction extends ActionBase {
-//   type: 'swap'
-//   fromToken: Token
-//   toToken: Token
-
-//   fromAmount: number
-//   toAmount: number
-// }
-
-// export interface ParaswapAction extends ActionBase {
-//   type: 'paraswap'
-//   fromToken: Token
-//   toToken: Token
-
-//   fromAmount: number
-//   toAmount: number
-//   target: 'wallet' | 'channel'
-// }
-
-// export interface OneInchAction extends ActionBase {
-//   type: '1inch'
-//   fromToken: Token
-//   toToken: Token
-
-//   fromAmount: number
-//   toAmount: number
-//   target: 'wallet' | 'channel'
-// }
-
 
 export interface CrossAction extends ActionBase {
   type: 'cross'
   tool: string
-  fromChainId: number
   toChainId: number
-  fromAmount: string
-  fromToken: Token
   toToken: Token
   toAddress: string
 }

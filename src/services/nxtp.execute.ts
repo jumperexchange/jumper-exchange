@@ -1,21 +1,17 @@
-
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
-
 import * as nxtp from './nxtp'
 import { CrossAction, Execution, Process, TranferStep } from '../types/server'
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse } from '@connext/nxtp-utils';
 import BigNumber from 'bignumber.js';
 
-
-
 export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, fromAmount: BigNumber, userAddress:string,  updateStatus?: Function, initialStatus?: Execution) => {
     // setup
     let { status, update } = initStatus(updateStatus, initialStatus)
     const crossAction = step.action as CrossAction
-    const fromChainId = crossAction.fromChainId
+    const fromChainId = crossAction.chainId
     const toChainId = crossAction.toChainId
-    const srcTokenAddress = crossAction.fromToken.id
+    const srcTokenAddress = crossAction.token.id
     const destTokenAddress = crossAction.toToken.id
 
     // get Quote

@@ -659,13 +659,11 @@ const SwapXpollinate = ({
         action: {
           type: 'cross',
           tool: 'nxtp',
-          fromChainId: getChainByKey(routeRequest.depositChain).id,
+          chainId: getChainByKey(routeRequest.depositChain).id,
           toChainId: getChainByKey(routeRequest.withdrawChain).id,
-          // chainKey: routeRequest.depositChain,
-          // toChainKey: routeRequest.withdrawChain,
-          fromAmount: dAmount,
-          fromToken: dToken,
+          token: dToken,
           toToken: wToken,
+          amount: dAmount,
         } as CrossAction,
         estimate: {
           fromAmount: dAmount,
@@ -718,7 +716,7 @@ const SwapXpollinate = ({
       invariant: {
         user: '',
         router: '',
-        sendingAssetId: crossAction.fromToken.id,
+        sendingAssetId: crossAction.token.id,
         receivingAssetId: crossAction.toToken.id,
         sendingChainFallback: '',
         callTo: '',
@@ -730,7 +728,7 @@ const SwapXpollinate = ({
         receivingChainTxManagerAddress: ''
       },
       sending: {
-        amount: crossAction.fromAmount,
+        amount: crossAction.amount,
         preparedBlockNumber: 0,
         expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
       },

@@ -6,6 +6,7 @@ import { Button, Col, Form, Image, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
+import BigNumber from 'bignumber.js';
 import React, { useCallback, useEffect, useState } from 'react';
 import heroImage from '../assets/info_header.png';
 import { getBalancesForWallet } from '../services/balanceService';
@@ -160,19 +161,18 @@ const Swap = () => {
         const dToken = findToken(depositChain, depositToken)
         const deposit: DepositAction = {
           type: 'deposit',
-          chainKey: depositChain,
           chainId: getChainByKey(depositChain).id,
           token: dToken,
-          amount: depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
+          amount: new BigNumber(depositAmount).shiftedBy(dToken.decimals).toFixed(0)
         }
 
         const wToken = findToken(withdrawChain, withdrawToken)
         const withdraw: WithdrawAction = {
           type: 'withdraw',
-          chainKey: withdrawChain,
           chainId: getChainByKey(withdrawChain).id,
           token: wToken,
-          amount: Infinity
+          amount: '',
+          toAddress: '',
         }
 
         // cancel previously running requests
