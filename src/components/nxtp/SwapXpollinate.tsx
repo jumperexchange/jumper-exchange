@@ -7,7 +7,7 @@ import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, M
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import BigNumber from 'bignumber.js';
-import { providers } from 'ethers';
+import { providers, utils } from 'ethers';
 import { createBrowserHistory } from 'history';
 import QueryString from 'qs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -21,7 +21,7 @@ import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
 import { ChainKey, ChainPortfolio, Token, TokenWithAmounts } from '../../types';
-import { Chain, getChainById, getChainByKey } from '../../types/lists';
+import { Chain, defaultCoins, getChainById, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
@@ -388,15 +388,17 @@ const SwapXpollinate = ({
 
       updateSyncStatus(_sdk)
 
-      const liq = await getLiquidity(transferChains)
-      setLiquidity(liq)
-
       return _sdk
     }
 
     // init only once
     if (web3.library && web3.account && ((!sdk && !sdkChainId) || (sdk && sdkChainId))) {
       initializeConnext()
+      console.log("GETTING LIQUIDITY");
+      getLiquidity(transferChains).then(liq => {
+        console.log('liq: ', liq);
+        setLiquidity(liq)
+      })
     }
 
     // deactivate
@@ -425,7 +427,7 @@ const SwapXpollinate = ({
         }
       }
     `
-    return await Promise.all(
+    const liq = await Promise.all(
       chains.map(async (c) => {
         let sub = getDeployedSubgraphUri(c.id)
         if (!sub) {
@@ -440,15 +442,18 @@ const SwapXpollinate = ({
         })
         return res.router?.assetBalances?.map((bal: {amount: string, id: string}) => {
           const assetId = bal.id.split("-")[0]
+          const coin = defaultCoins.find(coin => coin.chains[c.key]?.id.toLowerCase() === assetId.toLowerCase())
+          const token = coin?.chains[c.key]
           return {
-            key: bal.id,
+            key: `${bal.id}-${c.id}`,
             chain: c.name,
-            asset: assetId,
-            liquidity: bal.amount,
+            asset: token?.name ?? assetId,
+            liquidity: utils.formatUnits(bal.amount, token?.decimals ?? 18),
           }
         })
       })
     )
+    return liq.filter(x => !!x).flat()
   }
 
   const getSelectedWithdraw = () => {
