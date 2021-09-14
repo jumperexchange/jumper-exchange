@@ -16,6 +16,7 @@
     "animate.css": "^4.1.1",
     "antd": "^4.16.0",
     "axios": "^0.21.1",
+    "bignumber.js": "^9.0.1",
     "dayjs": "^1.8.30",
     "ethers": "^5.2.0",
     "graphql": "^15.5.3",
