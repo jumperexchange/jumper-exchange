@@ -35,7 +35,7 @@ function AppXpollinate() {
     <>
       <p>
         This interface gives access to the NXTP protocol of Connext.
-        It allows you to transfer Stablecoins (USDC, USDT, DAI) between multiple EVM based chains (Polygon, BSC, xDAI, Fantom). THIS IS AN ALPHA RELEASE! PLEASE USE WITH CAUTION</p>
+        It allows you to transfer Stablecoins (USDC, USDT, DAI) between multiple EVM based chains (Polygon, BSC, xDAI, Fantom).</p>
       <p>Simply select the chains, an amount, the token to transfer and click Swap.</p>
       <p>
         Made for you by<br />
@@ -44,9 +44,6 @@ function AppXpollinate() {
         &nbsp;&nbsp;~ Li.Finance (UI & Swaps - soon)
         <br />
         &nbsp;&nbsp;~ 1Hive (DEX - soon)
-      </p>
-      <p>
-        Note: We are experiencing some issues with v2. Please use v1 if the transactions are urgent. Thank you for your patience.
       </p>
     </>
   )
