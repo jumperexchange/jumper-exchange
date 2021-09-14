@@ -1,6 +1,6 @@
 import { CheckOutlined, DownOutlined, ExportOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk';
-import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
+import { AuctionResponse, TransactionPreparedEvent, getDeployedSubgraphUri } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
@@ -11,6 +11,7 @@ import { providers } from 'ethers';
 import { createBrowserHistory } from 'history';
 import QueryString from 'qs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { request, gql } from 'graphql-request'
 import onehiveWordmark from '../../assets/1hive_wordmark.svg';
 import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
@@ -26,6 +27,7 @@ import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
 import HistoricTransactionsTableNxtp from './HistoricTransactionsTableNxtp';
+import LiquidityTableNxtp from './LiquidityTableNxtp';
 import SwappingNxtp from './SwappingNxtp';
 import './SwapXpollinate.css';
 import TestBalanceOverview from './TestBalanceOverview';
@@ -407,7 +409,34 @@ const SwapXpollinate = ({
       }
     }
 
-  }, [web3, sdk, sdkChainId, sdkAccount, updateSyncStatus])
+    getLiquidity(transferChains)
+
+  }, [web3, sdk, sdkChainId, sdkAccount, updateSyncStatus, transferChains])
+
+  const getLiquidity = async (chains: Chain[]) => {
+    const query = gql`
+      query GetLiquidity($routerId: ID!) {
+        router(id: $routerId) {
+          assetBalances {
+            id
+            amount
+          }
+        }
+      }
+    `
+    await Promise.all(
+      chains.map(async (c) => {
+        const sub = getDeployedSubgraphUri(c.id)
+        if (!sub) {
+          throw new Error("No subgraph URI available")
+        }
+        const res = await request(sub, query, {
+          routerId: "0x29a519e21d6a97cdb82270b69c98bac6426cdcf9",
+        })
+        console.log('res: ', res)
+      })
+    )
+  }
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -975,6 +1004,20 @@ const SwapXpollinate = ({
                 historicTransactions={historicTransaction}
                 tokens={tokens}
               />
+            </div>
+          </Collapse.Panel>
+
+          {/* Liquidity */}
+          <Collapse.Panel className={historicTransaction.length ? '' : 'empty'} header={(
+            <h2
+              onClick={() => setActiveKeyTransactions((key) => key === 'liquidity' ? '' : 'liquidity')}
+              style={{ display: 'inline' }}
+            >
+              Available Liquidity
+            </h2>
+          )} key="liquidity">
+            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <LiquidityTableNxtp/>
             </div>
           </Collapse.Panel>
         </Collapse>

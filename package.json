@@ -18,6 +18,8 @@
     "axios": "^0.21.1",
     "dayjs": "^1.8.30",
     "ethers": "^5.2.0",
+    "graphql": "^15.5.3",
+    "graphql-request": "^3.5.0",
     "paraswap": "^4.19.1",
     "pino": "^6.12.0",
     "react": "^17.0.2",
