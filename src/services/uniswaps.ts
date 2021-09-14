@@ -48,7 +48,13 @@ interface Swapped {
 }
 
 export const getAllowance = async (contract: ethers.Contract, userAddress: string, tokenAddress: string) => {
-  const tx  = await contract.allowance(userAddress, tokenAddress)
+  let tx;
+  try {
+    tx  = await contract.allowance(userAddress, tokenAddress)
+  } catch(e){
+    throw e
+  }
+
   return parseInt(tx)
 
 }
@@ -56,7 +62,6 @@ export const getAllowance = async (contract: ethers.Contract, userAddress: strin
 export const setAllowance = async (signer: JsonRpcSigner, uniSwapRouter: string, userAddress: string, tokenAddress: string, amount: number) => {
   const contract = new ethers.Contract(tokenAddress, abi, signer);
   const tx = await contract.approve(uniSwapRouter, amount, {gasLimit: 100000, gasPrice: 5e9});
-  console.log(JSON.stringify(tx));
   try {
     await tx.wait()
   } catch (e) {

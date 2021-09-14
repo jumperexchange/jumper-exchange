@@ -80,6 +80,7 @@ export const setAllowance = async (signer: JsonRpcSigner, chainId: number, userA
 }
 
 export const updateAllowance = async (signer: JsonRpcSigner, chainId: number, userAddress: string, tokenAddress: string, amount: number) => {
+
   const allowance = await getAllowance(chainId, userAddress, tokenAddress)
   if (allowance === amount) {
     return allowance
@@ -95,25 +96,30 @@ export const updateAllowance = async (signer: JsonRpcSigner, chainId: number, us
 export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddress: string, srcToken: string, destToken: string, srcAmount: number, receiver?: string) => {
   const SLIPPAGE = 1 // =1%
   const para = getParaswap(chainId)
+  let rate;
+  try{
+    rate = await para.getRate(
+      srcToken,
+      destToken,
+      srcAmount.toString(),
+      SwapSide.SELL,
+      {
+        // excludeDEXS?: string;
+        // includeDEXS?: string;
+        // excludePools?: string;
+        // excludePricingMethods?: PricingMethod[];
+        // excludeContractMethods?: ContractMethod[];
+        // includeContractMethods?: ContractMethod[];
+        // adapterVersion?: string;
+        referrer: process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
+        // maxImpact?: number;
+        // maxUSDImpact?: number;
+      }
+    ) as OptimalRatesWithPartnerFees
+  } catch (e){
+    throw e
+  }
 
-  const rate = await para.getRate(
-    srcToken,
-    destToken,
-    srcAmount.toString(),
-    SwapSide.SELL,
-    {
-      // excludeDEXS?: string;
-      // includeDEXS?: string;
-      // excludePools?: string;
-      // excludePricingMethods?: PricingMethod[];
-      // excludeContractMethods?: ContractMethod[];
-      // includeContractMethods?: ContractMethod[];
-      // adapterVersion?: string;
-      referrer: process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
-      // maxImpact?: number;
-      // maxUSDImpact?: number;
-    }
-  ) as OptimalRatesWithPartnerFees
 
   const minAmount = new BN(rate.destAmount).times(1 - (SLIPPAGE / 100)).toFixed(0)
   const txParams = await para.buildTx(

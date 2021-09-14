@@ -14,7 +14,8 @@ export interface BaseEstimate {
 
 export interface DepositEstimate extends BaseEstimate { }
 export interface SwapEstimate extends BaseEstimate {
-  path: Array<string>
+  type: 'swap'
+  data: any
 }
 export interface CrossEstimate extends BaseEstimate {
   quote: AuctionResponse

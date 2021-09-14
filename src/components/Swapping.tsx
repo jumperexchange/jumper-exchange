@@ -61,15 +61,18 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const fromAddress = web3.account
     const toAddress = fromAddress
     const fromAmount = new BigNumber(swapAction.fromAmount)
-    if (web3.chainId !== swapAction.chainId) {
-      await switchChain(swapAction.chainId)
+    if (web3.chainId !== swapAction.fromChainId) {
+      await switchChain(swapAction.fromChainId)
     }
 
     switch(swapAction.tool){
-      case 'uniswap' || 'pancakeswap' || 'honeyswap' || 'quickswap':
-        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, fromAmount, fromAddress, toAddress, swapEstimate.path, (status: Execution) => updateStatus(step, status))
+      case 'uniswap':
+      case 'honeyswap':
+      case 'quickswap':
+      case 'pancakeswap':
+        return await executeUniswap(swapAction.fromChainId, web3.library.getSigner(), swapAction.fromToken.id, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
-        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+        return await executeParaswap(swapAction.fromChainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       case '1inch':
         return await executeOneInchSwap(swapAction.fromChainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       default:
@@ -77,31 +80,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
   }
-
-  // const triggerParaswap = async (step: TranferStep, previousStep?: TranferStep) => {
-  //   if (!web3.account || !web3.library) return
-  //   const swapAction = step.action as SwapAction
-  //   const fromAddress = web3.account
-  //   const toAddress = fromAddress //swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
-
-  //   if (web3.chainId !== swapAction.chainId) {
-  //     await switchChain(swapAction.chainId)
-  //   }
-  //   return executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
-  // }
-
-  // const triggerOneIchSwap = async (step: TranferStep, previousStep?: TranferStep) => {
-  //   if (!web3.account || !web3.library) return
-  //   const swapAction = step.action as SwapAction
-  //   const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
-  //   const fromAddress = web3.account
-  //   const toAddress = fromAddress // swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
-
-  //   if (web3.chainId !== chainId) {
-  //     await switchChain(chainId)
-  //   }
-  //   return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
-  // }
 
   const triggerCross = async (step: TranferStep, previousStep?: TranferStep) => {
     if (!web3.account || !web3.library) return
@@ -113,9 +91,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       fromAmount = new BigNumber(crossAction.fromAmount)
     }
 
-      if (web3.chainId !== crossAction.chainId) {
-      await switchChain(crossAction.chainId)
-    }
+      if (web3.chainId !== crossAction.fromChainId) {
+        await switchChain(crossAction.fromChainId)
+      }
 
     switch(crossAction.tool){
       case 'nxtp':
