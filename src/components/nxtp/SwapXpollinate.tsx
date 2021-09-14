@@ -38,7 +38,7 @@ const BALANCES_REFRESH_INTERVAL = 30000
 const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
-const DISABLED = true
+const DISABLED = false
 
 const getDefaultParams = (search: string, transferChains: Chain[], transferTokens: { [ChainKey: string]: Array<Token> }) => {
   const defaultParams = {
@@ -239,23 +239,21 @@ const SwapXpollinate = ({
   }, [showAbout])
 
   // auto-trigger finish if corresponding modal is opend
-  useEffect(() => {
-    // is modal open?
-    if (modalRouteIndex !== undefined) {
-      const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
-      const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === crossEstimate.quote.bid.transactionId)
-      if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
-        const route = executionRoutes[modalRouteIndex]
-        const update = (step: TranferStep, status: Execution) => {
-          step.execution = status
-          updateExecutionRoute(route)
-        }
-
-        finishTransfer(sdk!, transaction.event, route[0], update)
-      }
-    }
-    // eslint-disable-next-line
-  }, [modalRouteIndex, executionRoutes, sdk])
+  // useEffect(() => {
+  //   // is modal open?
+  //   if (modalRouteIndex !== undefined) {
+  //     const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
+  //     const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === crossEstimate.quote.bid.transactionId)
+  //     if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
+  //       const route = executionRoutes[modalRouteIndex]
+  //       const update = (step: TranferStep, status: Execution) => {
+  //         step.execution = status
+  //         updateExecutionRoute(route)
+  //       }
+  //       finishTransfer(sdk!, transaction.event, route[0], update)
+  //     }
+  //   }
+  // }, [modalRouteIndex, executionRoutes, sdk, activeTransactions])
 
   const updateSyncStatus = useCallback((sdk: NxtpSdk) => {
     const newSyncStatus : { [ChainKey: number]: SubgraphSyncRecord } = {}
@@ -419,8 +417,6 @@ const SwapXpollinate = ({
       const lastStep = selectedRoute[selectedRoute.length - 1]
       if (lastStep.action.type === 'withdraw') {
         return formatTokenAmountOnly(lastStep.action.token, lastStep.estimate?.toAmount)
-      } else if (lastStep.action.type === '1inch' || lastStep.action.type === 'paraswap') {
-        return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
       } else if (lastStep.action.type === 'cross') {
         return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
       } else {
@@ -855,7 +851,7 @@ const SwapXpollinate = ({
       <div className="xpollinate-header">
         <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
           <a href="/">
-            <img src={xpollinateWordmark} alt="xPollinate" style={{ width: '100%', maxWidth: '160px' }} />
+            <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
             <span className="version">v2 {testnet && 'Testnet'}</span>
           </a>
 
@@ -886,7 +882,7 @@ const SwapXpollinate = ({
               <span>Support <LinkOutlined /></span>
             </a>
 
-            <a href="https://xdai-matic-connext-beta.vercel.app/" target="_blank" rel="nofollow noreferrer" className="header-button">
+            <a href="https://v1.xpollinate.io/" target="_blank" rel="nofollow noreferrer" className="header-button">
               <span>Looking for V1?</span>
             </a>
 
@@ -1078,7 +1074,13 @@ const SwapXpollinate = ({
           <Row justify="center" align="middle" style={{ marginBottom: 24 }}>
             <Col span={6} style={{ textAlign: 'right' }}>
               <a href="https://connext.network/" target="_blank" rel="nofollow noreferrer">
-                <img src={connextWordmark} alt="Connext" style={{ width: '100%', maxWidth: '200px' }} />
+                <img
+                  src={connextWordmark}
+                  alt="Connext"
+                  width="200"
+                  height="50"
+                  style={{ width: '100%', maxWidth: '200px', height: 'auto' }}
+                />
               </a>
             </Col>
             <Col span={1} style={{ textAlign: 'center' }}>
@@ -1086,7 +1088,13 @@ const SwapXpollinate = ({
             </Col>
             <Col span={6} style={{ textAlign: 'center' }}>
               <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
-                <img src={lifiWordmark} alt="Li.Finance" style={{ width: '100%', maxWidth: '200px' }} />
+                <img
+                  src={lifiWordmark}
+                  alt="Li.Finance"
+                  width="200"
+                  height="50"
+                  style={{ width: '100%', maxWidth: '200px', height: 'auto' }}
+                />
               </a>
             </Col>
             <Col span={1} style={{ textAlign: 'center' }}>
@@ -1094,7 +1102,13 @@ const SwapXpollinate = ({
             </Col>
             <Col span={6} style={{ textAlign: 'left' }}>
               <a href="https://about.1hive.org/" target="_blank" rel="nofollow noreferrer">
-                <img src={onehiveWordmark} alt="1hive" style={{ width: '80%', maxWidth: '160px' }} />
+                <img
+                  src={onehiveWordmark}
+                  alt="1hive"
+                  width="160"
+                  height="42"
+                  style={{ width: '80%', maxWidth: '160px', height: 'auto' }}
+                />
               </a>
             </Col>
           </Row>

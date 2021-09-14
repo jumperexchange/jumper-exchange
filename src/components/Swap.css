@@ -110,15 +110,11 @@ h4.swap-title {
 
 /* mobile screen */
 @media only screen and (max-width: 480px) {
-  .hero-image {
-    display: none;
-  }
   .swap-form {
     margin-top: 0;
   }
   .only-mobile {
     display: block;
-
   }
 
   .ant-select-dropdown {

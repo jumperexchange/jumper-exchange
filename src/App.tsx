@@ -41,6 +41,7 @@ const transferChains = [
   getChainByKey(ChainKey.POL),
   getChainByKey(ChainKey.DAI),
   getChainByKey(ChainKey.FTM),
+  // getChainByKey(ChainKey.ARB),
 ]
 
 const transferTokens = defaultTokens
@@ -68,7 +69,7 @@ function App() {
           <Layout>
             <Header style={{ position: 'fixed', zIndex: 900, width: '100%', padding: 0 }}>
               <Link to="/" className="wordmark">
-                <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} />
+                <img src={logo} className="logo" alt={process.env.REACT_APP_PROJECT_NAME} width="36" height="36" />
                 <span>Li.Finance</span>
               </Link>
               <Menu theme="light" mode="horizontal" defaultSelectedKeys={path ? [path] : []}>

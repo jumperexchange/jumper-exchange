@@ -206,6 +206,7 @@ const SwapForm = ({
               type="number"
               defaultValue={0.0}
               min={0}
+              step={0.000000000000000001}
               value={isFinite(depositAmount) && depositAmount >= 0 ? depositAmount : ''}
               onChange={((event) => onChangeDepositAmount(formatAmountInput(event)))}
               placeholder="0.0"

@@ -10,6 +10,7 @@ const CHAINS = {
   BSC: 56,
   XDAI: 100,
   FANTOM: 250,
+  ARBITRUM: 42161,
 
   // Testnet
   ROPSTEN: 3,
@@ -35,6 +36,7 @@ const RPC_URLS: { [chainId: number]: string } = {
   [CHAINS.BSC]: process.env.REACT_APP_RPC_URL_BSC || getChainById(CHAINS.BSC).metamask.rpcUrls[0],
   [CHAINS.XDAI]: process.env.REACT_APP_RPC_URL_XDAI || getChainById(CHAINS.XDAI).metamask.rpcUrls[0],
   [CHAINS.FANTOM]: process.env.REACT_APP_RPC_URL_FANTOM || getChainById(CHAINS.FANTOM).metamask.rpcUrls[0],
+  [CHAINS.ARBITRUM]: process.env.REACT_APP_RPC_URL_ARBITRUM || getChainById(CHAINS.ARBITRUM).metamask.rpcUrls[0],
 
   // Testnet
   [CHAINS.ROPSTEN]: process.env.REACT_APP_RPC_URL_ROPSTEN || getChainById(CHAINS.ROPSTEN).metamask.rpcUrls[0],

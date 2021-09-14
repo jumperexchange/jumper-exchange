@@ -47,6 +47,9 @@ export enum ChainKey {
   OKT = 'okt',
   FTM = 'ftm',
   AVA = 'ava',
+  ARB = 'arb',
+  HEC = 'hec',
+  OPT = 'opt',
 
   // Testnets
   ROP = 'rop',
@@ -56,6 +59,7 @@ export enum ChainKey {
   ARBT = 'arbt',
   OPTT = 'optt',
   BSCT = 'bsct',
+  HECT = 'hect'
 }
 
 export function chainKeysToObject(val: any) {
@@ -123,6 +127,10 @@ export interface WalletSummary {
   [ChainKey.OKT]: SummaryAmounts;
   [ChainKey.FTM]: SummaryAmounts;
   [ChainKey.AVA]: SummaryAmounts;
+  [ChainKey.HEC]: SummaryAmounts;
+  [ChainKey.OPT]: SummaryAmounts;
+  [ChainKey.ARB]: SummaryAmounts;
+
   [ChainKey.ROP]: SummaryAmounts;
   [ChainKey.RIN]: SummaryAmounts;
   [ChainKey.GOR]: SummaryAmounts;
@@ -130,6 +138,7 @@ export interface WalletSummary {
   [ChainKey.ARBT]: SummaryAmounts;
   [ChainKey.OPTT]: SummaryAmounts;
   [ChainKey.BSCT]: SummaryAmounts;
+  [ChainKey.HECT]: SummaryAmounts;
 }
 
 export interface ProgressStep {

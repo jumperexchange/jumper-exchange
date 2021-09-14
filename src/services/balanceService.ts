@@ -150,9 +150,10 @@ const chainNameMapping: { [ChainName: string]: ChainKey } = {
   'ftm': ChainKey.FTM,
   'okt': ChainKey.OKT,
   'avax': ChainKey.AVA,
-  // 'heco': ChainKey.??, // - HECO
-  // // - Optimistic Ethereum
-  // // - Arbitrum
+  'heco': ChainKey.HEC,
+  'op': ChainKey.OPT,
+  'arb': ChainKey.ARB,
+  // 'celo': Celo
 }
 function mapDebankChainNameToChainKey(chainName: string) {
   return chainNameMapping[chainName]

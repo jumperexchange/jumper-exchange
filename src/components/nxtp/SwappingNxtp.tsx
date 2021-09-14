@@ -236,7 +236,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
     {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
       <>
         <Row justify="center">
-          <img src={walletIcon} alt="Wallet" />
+          <img src={walletIcon} alt="Wallet" width="92" height="100" />
         </Row>
         <Row justify="center">
           <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
