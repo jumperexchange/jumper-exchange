@@ -8,6 +8,9 @@ const instances: { [key: number]: ParaSwap | null } = {
   1: null,
   56: null,
   137: null,
+  // testnet
+  3: null, // ropsten
+
 }
 
 const swappedTypes: Array<ethers.utils.ParamType> = [

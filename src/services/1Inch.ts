@@ -5,18 +5,6 @@ import { BigNumber, ethers } from 'ethers'
 const SUPPORTED_CHAINS = [1, 56, 137]
 const baseURL =  'https://api.1inch.exchange/v3.0/'
 
-// const RpcUrls = {
-//   1: process.env.REACT_APP_RPC_URL_MAINNET,
-//   56: process.env.REACT_APP_RPC_URL_BSC,
-//   137: process.env.REACT_APP_RPC_URL_POLYGON,
-// }
-
-// const provider:{[key: number] : JsonRpcProvider | null} = {
-//   1: new JsonRpcProvider(RpcUrls[1]),
-//   56: new JsonRpcProvider(RpcUrls[56]),
-//   137: new JsonRpcProvider(RpcUrls[137]),
-// }
-
 const swappedTypes : Array<ethers.utils.ParamType> = [
   ethers.utils.ParamType.from({
       "indexed": false,
