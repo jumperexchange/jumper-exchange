@@ -211,6 +211,7 @@ const SwapXpollinate = ({
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
   const [updatingActiveTransactions, setUpdatingActiveTransactions] = useState<boolean>(false)
   const [historicTransaction, setHistoricTransactions] = useState<Array<HistoricalTransaction>>([])
+  const [liquidity, setLiquidity] = useState<Array<any>>([])
   const [updateHistoricTransactions, setUpdateHistoricTransactions] = useState<boolean>(true)
   const [updatingHistoricTransactions, setUpdatingHistoricTransactions] = useState<boolean>(false)
   const [activeKeyTransactions, setActiveKeyTransactions] = useState<string>('')
@@ -387,6 +388,9 @@ const SwapXpollinate = ({
 
       updateSyncStatus(_sdk)
 
+      const liq = await getLiquidity(transferChains)
+      setLiquidity(liq)
+
       return _sdk
     }
 
@@ -408,9 +412,6 @@ const SwapXpollinate = ({
         setSdk(undefined)
       }
     }
-
-    getLiquidity(transferChains)
-
   }, [web3, sdk, sdkChainId, sdkAccount, updateSyncStatus, transferChains])
 
   const getLiquidity = async (chains: Chain[]) => {
@@ -424,16 +425,28 @@ const SwapXpollinate = ({
         }
       }
     `
-    await Promise.all(
+    return await Promise.all(
       chains.map(async (c) => {
-        const sub = getDeployedSubgraphUri(c.id)
+        let sub = getDeployedSubgraphUri(c.id)
         if (!sub) {
           throw new Error("No subgraph URI available")
+        }
+        // TODO: remove this after new SDK release
+        if (sub === "https://thegraph.com/legacy-explorer/subgraph/connext/nxtp-arbitrum-one") {
+          sub = "https://api.thegraph.com/subgraphs/name/connext/nxtp-arbitrum-one"
         }
         const res = await request(sub, query, {
           routerId: "0x29a519e21d6a97cdb82270b69c98bac6426cdcf9",
         })
-        console.log('res: ', res)
+        return res.router?.assetBalances?.map((bal: {amount: string, id: string}) => {
+          const assetId = bal.id.split("-")[0]
+          return {
+            key: bal.id,
+            chain: c.name,
+            asset: assetId,
+            liquidity: bal.amount,
+          }
+        })
       })
     )
   }
@@ -1017,7 +1030,7 @@ const SwapXpollinate = ({
             </h2>
           )} key="liquidity">
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
-              <LiquidityTableNxtp/>
+              <LiquidityTableNxtp liquidity={liquidity}/>
             </div>
           </Collapse.Panel>
         </Collapse>
