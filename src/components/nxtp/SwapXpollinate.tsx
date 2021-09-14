@@ -1,13 +1,14 @@
 import { CheckOutlined, DownOutlined, ExportOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk';
-import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils';
+import { AuctionResponse, getDeployedSubgraphUri, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import BigNumber from 'bignumber.js';
-import { providers } from 'ethers';
+import { providers, utils } from 'ethers';
+import { gql, request } from 'graphql-request';
 import { createBrowserHistory } from 'history';
 import QueryString from 'qs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -20,12 +21,13 @@ import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
 import { ChainKey, ChainPortfolio, Token, TokenWithAmounts } from '../../types';
-import { Chain, getChainById, getChainByKey } from '../../types/lists';
+import { Chain, defaultCoins, getChainById, getChainByKey } from '../../types/lists';
 import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
 import HistoricTransactionsTableNxtp from './HistoricTransactionsTableNxtp';
+import LiquidityTableNxtp from './LiquidityTableNxtp';
 import SwappingNxtp from './SwappingNxtp';
 import './SwapXpollinate.css';
 import TestBalanceOverview from './TestBalanceOverview';
@@ -209,6 +211,8 @@ const SwapXpollinate = ({
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
   const [updatingActiveTransactions, setUpdatingActiveTransactions] = useState<boolean>(false)
   const [historicTransaction, setHistoricTransactions] = useState<Array<HistoricalTransaction>>([])
+  const [liquidity, setLiquidity] = useState<Array<any>>([])
+  const [updatingLiquidity, setUpdatingLiquidity] = useState<boolean>(false)
   const [updateHistoricTransactions, setUpdateHistoricTransactions] = useState<boolean>(true)
   const [updatingHistoricTransactions, setUpdatingHistoricTransactions] = useState<boolean>(false)
   const [activeKeyTransactions, setActiveKeyTransactions] = useState<string>('')
@@ -256,12 +260,83 @@ const SwapXpollinate = ({
   // }, [modalRouteIndex, executionRoutes, sdk, activeTransactions])
 
   const updateSyncStatus = useCallback((sdk: NxtpSdk) => {
-    const newSyncStatus : { [ChainKey: number]: SubgraphSyncRecord } = {}
+    const newSyncStatus: { [ChainKey: number]: SubgraphSyncRecord } = {}
     transferChains.forEach((chain) => {
       newSyncStatus[chain.id] = sdk.getSubgraphSyncStatus(chain.id)
     })
     setSyncStatus(newSyncStatus)
   }, [transferChains])
+
+  const updateLiquidity = useCallback(async () => {
+    setUpdatingLiquidity(true)
+    setLiquidity(await getLiquidity(transferChains))
+    setUpdatingLiquidity(false)
+  }, [transferChains])
+
+  useEffect(() => {
+    if (sdk) {
+      updateLiquidity()
+    }
+  }, [sdk, updateLiquidity])
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => updateLiquidity(), BALANCES_REFRESH_INTERVAL)
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [updateLiquidity])
+
+  const getLiquidity = async (chains: Chain[]) => {
+    const query = gql`
+      query GetLiquidity($routerId: ID!) {
+        router(id: $routerId) {
+          assetBalances {
+            id
+            amount
+          }
+        }
+      }
+    `
+    const liq = await Promise.all(
+      chains.map(async (chain) => {
+        // get graph
+        let sub = getDeployedSubgraphUri(chain.id)
+        if (!sub) {
+          console.error(`No subgraph URI available for ${chain.id}`)
+          return null
+        }
+        // TODO: remove this after new SDK release
+        if (sub === 'https://thegraph.com/legacy-explorer/subgraph/connext/nxtp-arbitrum-one') {
+          sub = 'https://api.thegraph.com/subgraphs/name/connext/nxtp-arbitrum-one'
+        }
+
+        // request
+        const res = await request(sub, query, {
+          routerId: '0x29a519e21d6a97cdb82270b69c98bac6426cdcf9',
+        })
+
+        // parse
+        return res.router?.assetBalances?.map((bal: { amount: string, id: string }) => {
+          const assetId = bal.id.split('-')[0].toLowerCase()
+          const coin = defaultCoins.find(coin => coin.chains[chain.key]?.id === assetId)
+          const token = coin?.chains[chain.key]
+          if (!coin || !token) {
+            return null
+          }
+          return {
+            key: `${bal.id}-${chain.id}`,
+            chain: chain,
+            asset: token,
+            liquidity: new BigNumber(utils.formatUnits(bal.amount, token.decimals)),
+          }
+        }).filter((x: any) => !!x)
+      })
+    )
+    return liq.filter(x => !!x).flat()
+  }
 
   // update table helpers
   const updateActiveTransactionsWith = (transactionId: string, status: NxtpSdkEvent, event: any, txData?: CrosschainTransaction) => {
@@ -406,8 +481,7 @@ const SwapXpollinate = ({
         setSdk(undefined)
       }
     }
-
-  }, [web3, sdk, sdkChainId, sdkAccount, updateSyncStatus])
+  }, [web3, sdk, sdkChainId, sdkAccount, updateSyncStatus, transferChains])
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -975,6 +1049,20 @@ const SwapXpollinate = ({
                 historicTransactions={historicTransaction}
                 tokens={tokens}
               />
+            </div>
+          </Collapse.Panel>
+
+          {/* Liquidity */}
+          <Collapse.Panel className={liquidity.length ? '' : 'empty'} header={(
+            <h2
+              onClick={() => setActiveKeyTransactions((key) => key === 'liquidity' ? '' : 'liquidity')}
+              style={{ display: 'inline' }}
+            >
+              Available Liquidity ({!sdk ? '-' : (updatingLiquidity ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : liquidity.reduce((prev: BigNumber, cur) => prev.plus(cur.liquidity), new BigNumber(0)).shiftedBy(-3).toFixed(0) + 'k')})
+            </h2>
+          )} key="liquidity">
+            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <LiquidityTableNxtp liquidity={liquidity} />
             </div>
           </Collapse.Panel>
         </Collapse>
