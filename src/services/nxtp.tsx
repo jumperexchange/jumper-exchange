@@ -1,11 +1,10 @@
-import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json";
-import { IERC20Minimal } from "@connext/nxtp-contracts/typechain";
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { BigNumber, constants, Contract, providers } from 'ethers';
+import { constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TranferStep } from '../types';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
+import { getApproved } from './utils';
 
 // Add overwrites to specific chains here. They will only be applied if the chain is used.
 const chainConfigOverwrites: {
@@ -86,14 +85,6 @@ export const getTransferQuote = async (
   return response;
 }
 
-const getApproved = async (signer: providers.JsonRpcSigner, tokenAddress: string, contractAddress: string) => {
-  const signerAddress = await signer.getAddress()
-  const erc20 = new Contract(tokenAddress, ERC20.abi, signer) as IERC20Minimal
-
-  const approved = await erc20.allowance(signerAddress, contractAddress) as BigNumber
-  return approved
-}
-
 export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateStatus: Function, infinteApproval: boolean = false) => {
 
   // status
@@ -114,9 +105,11 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
     crossEstimate.data.bid.receivingChainId,
     crossEstimate.data.bid.router,
     crossEstimate.data.bid.receivingAssetId
-  );
+  )
   if (liquidity.lt(crossEstimate.data.bid.amountReceived)) {
-    throw new Error(`Router (${crossEstimate.data.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.data.bid.amountReceived}.`)
+    approveProcess.errorMessage = `Router (${crossEstimate.data.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.data.bid.amountReceived}.`
+    setStatusFailed(update, status, approveProcess)
+    return
   }
 
   // Check Token Approval
@@ -253,7 +246,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 }
 
 
-export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: TranferStep, quote: AuctionResponse, update: Function, status: any,  infinteApproval: boolean = false) => {
+export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: TranferStep, quote: AuctionResponse, update: Function, status: any, infinteApproval: boolean = false) => {
 
   // transfer
   const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
@@ -278,9 +271,9 @@ export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: T
   if (quote.bid.sendingAssetId !== constants.AddressZero) {
     const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(quote.bid.sendingChainId)
     let approved
-    try{
+    try {
       approved = await getApproved((sdk as any).signer, quote.bid.sendingAssetId, contractAddress)
-    } catch (_e){
+    } catch (_e) {
       const e = _e as Error
       approveProcess.errorMessage = e.message
       setStatusFailed(update, status, approveProcess)

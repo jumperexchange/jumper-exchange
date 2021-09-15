@@ -64,7 +64,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
     switch(swapAction.tool){
-      case 'uniswap' || 'pancakeswap' || 'honeyswap' || 'quickswap':
+      case 'uniswap':
+      case 'pancakeswap':
+      case 'honeyswap':
+      case 'quickswap':
         return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
         return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
@@ -73,33 +76,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       default:
         console.warn('should never reach here')
     }
-
   }
-
-  // const triggerParaswap = async (step: TranferStep, previousStep?: TranferStep) => {
-  //   if (!web3.account || !web3.library) return
-  //   const swapAction = step.action as SwapAction
-  //   const fromAddress = web3.account
-  //   const toAddress = fromAddress //swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
-
-  //   if (web3.chainId !== swapAction.chainId) {
-  //     await switchChain(swapAction.chainId)
-  //   }
-  //   return executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
-  // }
-
-  // const triggerOneIchSwap = async (step: TranferStep, previousStep?: TranferStep) => {
-  //   if (!web3.account || !web3.library) return
-  //   const swapAction = step.action as SwapAction
-  //   const chainId = getChainByKey(swapAction.chainKey).id // will be replaced by swapAction.chainId
-  //   const fromAddress = web3.account
-  //   const toAddress = fromAddress // swapAction.target === 'wallet' ? fromAddress : await connext.getChannelAddress(node, chainId)
-
-  //   if (web3.chainId !== chainId) {
-  //     await switchChain(chainId)
-  //   }
-  //   return executeOneInchSwap(chainId, web3.library.getSigner(), swapAction.fromToken.id, swapAction.toToken.id, swapAction.fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
-  // }
 
   const triggerCross = async (step: TranferStep, previousStep?: TranferStep) => {
     if (!web3.account || !web3.library) return
@@ -126,17 +103,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       default:
         console.warn('should never reach here')
     }
-
-
-
-
-
-    // const switchAndAddToken = async (token: Token) => {
-    //     await switchChain(token.chainId)
-    //     setTimeout(() => addToken(token), 100)
-    // }
-
-    // return cross
   }
 
 
@@ -149,7 +115,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
       const hasFailed = process.status === 'FAILED'
       return (
-        <p key={index} style={{display: 'flex'}}>
+        <span key={index} style={{display: 'flex'}}>
           <Typography.Text
             type={type}
             className={process.status === 'PENDING' ? 'flashing' : undefined}
@@ -164,7 +130,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
           <Typography.Text style={{marginLeft: 'auto'}}>
             <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt}/>
           </Typography.Text>
-        </p>
+        </span>
       )
     })
   }

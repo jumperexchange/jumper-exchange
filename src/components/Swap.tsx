@@ -187,19 +187,11 @@ const Swap = () => {
           const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
 
           // filter if needed
-          const filteredRoutes: Array<Array<TranferStep>> = result.data
+          const routes: Array<Array<TranferStep>> = result.data
 
-          // sortedRoutes
-          const sortedRoutes = filteredRoutes.sort((routeA, routeB) => {
-            const routeAResult = routeA[routeA.length - 1].estimate?.toAmount || 0
-            const routeBResult = routeB[routeB.length - 1].estimate?.toAmount || 0
-
-            return new BigNumber(routeAResult).minus(routeBResult).toNumber()
-          })
-
-          setRoutes(sortedRoutes)
-          setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
-          setNoRoutesAvailable(filteredRoutes.length === 0)
+          setRoutes(routes)
+          setHighlightedIndex(routes.length === 0 ? -1 : 0)
+          setNoRoutesAvailable(routes.length === 0)
           setRoutesLoading(false)
         } catch (err) {
           // check if it we are still loading a new request

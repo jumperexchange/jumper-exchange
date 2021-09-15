@@ -60,6 +60,11 @@ const getParaswap = (chainId: number) => {
   return instances[chainId] as ParaSwap
 }
 
+export const getContractAddress = async (chainId: number) => {
+  const para = getParaswap(chainId)
+  return para.getSpender()
+}
+
 export const getAllowance = async (chainId: number, userAddress: string, tokenAddress: string) => {
   const para = getParaswap(chainId)
   const result = (await para.getAllowance(userAddress, tokenAddress)) as Allowance
@@ -81,25 +86,26 @@ export const setAllowance = async (signer: JsonRpcSigner, chainId: number, userA
 
 export const updateAllowance = async (signer: JsonRpcSigner, chainId: number, userAddress: string, tokenAddress: string, amount: number) => {
   const allowance = await getAllowance(chainId, userAddress, tokenAddress)
+  console.log(allowance, amount)
   if (allowance === amount) {
     return allowance
   }
 
   // -> set allowance
-  if (allowance > 0) {
-    await setAllowance(signer, chainId, userAddress, tokenAddress, 0)
-  }
+  // if (allowance > 0) {
+  //   await setAllowance(signer, chainId, userAddress, tokenAddress, 0)
+  // }
   await setAllowance(signer, chainId, userAddress, tokenAddress, amount)
 }
 
-export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddress: string, srcToken: string, destToken: string, srcAmount: number, receiver?: string) => {
+export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddress: string, srcToken: string, destToken: string, srcAmount: string, receiver?: string) => {
   const SLIPPAGE = 1 // =1%
   const para = getParaswap(chainId)
 
   const rate = await para.getRate(
     srcToken,
     destToken,
-    srcAmount.toString(),
+    srcAmount,
     SwapSide.SELL,
     {
       // excludeDEXS?: string;
@@ -119,7 +125,7 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
   const txParams = await para.buildTx(
     srcToken,
     destToken,
-    srcAmount.toString(),
+    srcAmount,
     minAmount,
     rate,
     userAddress,
@@ -138,26 +144,25 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
   const result = {
-    fromAmount: 0,
-    toAmount: 0,
-    gasUsed: 0,
-    gasPrice: 0,
-    gasFee: 0,
+    fromAmount: '0',
+    toAmount: '0',
+    gasUsed: '0',
+    gasPrice: '0',
+    gasFee: '0',
   }
   const decoder = new ethers.utils.AbiCoder()
 
   // gas
-  result.gasUsed = receipt.gasUsed.toNumber()
-  result.gasPrice = tx.gasPrice?.toNumber() || 0
-  result.gasFee = result.gasUsed * result.gasPrice
+  result.gasUsed = receipt.gasUsed.toString()
+  result.gasPrice = tx.gasPrice?.toString() || '0'
+  result.gasFee = receipt.gasUsed.mul(result.gasPrice).toString()
 
   // log
-  const logs = receipt.logs.filter((log) => log.address === receipt.to)
-  const log = logs[logs.length - 1]
+  const log = receipt.logs.find((log) => log.address === receipt.to)
   if (log) {
     const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
-    result.fromAmount = parsed.srcAmount.toNumber()
-    result.toAmount = parsed.receivedAmount.toNumber()
+    result.fromAmount = parsed.srcAmount.toString()
+    result.toAmount = parsed.receivedAmount.toString()
   }
 
   return result

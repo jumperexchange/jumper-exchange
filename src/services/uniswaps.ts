@@ -1,11 +1,9 @@
 import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { BigNumber, ethers } from 'ethers'
 
-const abi = [
-  "function approve(address _spender, uint256 _value) public returns (bool success)",
-  "function allowance(address _owner, address _spender) public view returns (uint256 remaining)"
-];
-
+const uniswapRouter02ABI = [
+  "function swapExactTokensForTokens (uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+]
 
 const swappedTypes: Array<ethers.utils.ParamType> = [
   ethers.utils.ParamType.from({
@@ -47,51 +45,67 @@ interface Swapped {
   referrer: string
 }
 
-export const getAllowance = async (contract: ethers.Contract, userAddress: string, tokenAddress: string) => {
-  const tx  = await contract.allowance(userAddress, tokenAddress)
-  return parseInt(tx)
+// Official routers
+const uniswapRouters: { [chainId: number]: string } = {
+  // Uniswap https://app.uniswap.org/#/swap
+  1: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D", // router v2 https://uniswap.org/docs/v2/smart-contracts/router02/#address
 
+  // BSC PancakeSwap https://docs.pancakeswap.finance/
+  56: "0x05ff2b0db69458a0750badebc4f9e13add608c7f", // router v1 https://bscscan.com/address/0x05ff2b0db69458a0750badebc4f9e13add608c7f#contracts
+  //56: "0x10ED43C718714eb63d5aA57B78B54704E256024E", // router v2 https://bscscan.com/address/0x10ED43C718714eb63d5aA57B78B54704E256024E#code
+
+  // xDAI Honeyswap https://wiki.1hive.org/projects/honeyswap/honeyswap-on-xdai-1
+  100: "0x1C232F01118CB8B424793ae03F870aa7D0ac7f77", // router v2 https://blockscout.com/poa/xdai/address/0x1C232F01118CB8B424793ae03F870aa7D0ac7f77/contracts
+
+  // Polygon QuickSwap https://github.com/QuickSwap/QuickSwap-subgraph/blob/master/subgraph.yaml => Factory 0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32
+  137: "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff", // router v2 https://explorer-mainnet.maticvigil.com/address/0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff/contracts
+
+  //TESTNET
+  //UNiswap Testnet Router v2
+  3: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+  4: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+  5: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
 }
 
-export const setAllowance = async (signer: JsonRpcSigner, uniSwapRouter: string, userAddress: string, tokenAddress: string, amount: number) => {
-  const contract = new ethers.Contract(tokenAddress, abi, signer);
-  const tx = await contract.approve(uniSwapRouter, amount, {gasLimit: 100000, gasPrice: 5e9});
-  console.log(JSON.stringify(tx));
-  try {
-    await tx.wait()
-  } catch (e) {
-    throw e
+export const getContractAddress = (chainId: number) => {
+  return uniswapRouters[chainId]
+}
+
+export const swap = async (signer: JsonRpcSigner, chainId: number, destAddress: string, srcAmount: string, path: Array<string>) => {
+  const contract = new ethers.Contract(getContractAddress(chainId), uniswapRouter02ABI, signer)
+
+  const swapData = {
+    amountIn: srcAmount,
+    amountOutMin: '1', // TODO: maybe change this, but this will make the swap always succeed
+    path,
+    to: destAddress,
+    deadline: Math.floor(Date.now() / 1000) + 60 * 20, // 20 minutes from now on -> https://docs.uniswap.org/sdk/2.0.0/guides/trading
   }
-  const allowance = await getAllowance(contract, userAddress, tokenAddress)
-  console.log(allowance)
-  return allowance
+  const tx = await contract.swapExactTokensForTokens(swapData.amountIn, swapData.amountOutMin, swapData.path, swapData.to, swapData.deadline)
+  return tx
 }
-
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
-  console.log(tx)
-  console.log(receipt)
   const result = {
-    fromAmount: 0,
-    toAmount: 0,
-    gasUsed: 0,
-    gasPrice: 0,
-    gasFee: 0,
+    fromAmount: '0',
+    toAmount: '0',
+    gasUsed: '0',
+    gasPrice: '0',
+    gasFee: '0',
   }
   const decoder = new ethers.utils.AbiCoder()
 
   // gas
-  result.gasUsed = receipt.gasUsed.toNumber()
-  result.gasPrice = tx.gasPrice?.toNumber() || 0
-  result.gasFee = result.gasUsed * result.gasPrice
+  result.gasUsed = receipt.gasUsed.toString()
+  result.gasPrice = tx.gasPrice?.toString() || '0'
+  result.gasFee = receipt.gasUsed.mul(result.gasPrice).toString()
 
   // log
-  const logs = receipt.logs.filter((log) => log.address === receipt.to)
-  const log = logs[logs.length - 1]
+  const log = receipt.logs.find((log) => log.address === receipt.to)
   if (log) {
     const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
-    result.fromAmount = parsed.srcAmount.toNumber()
-    result.toAmount = parsed.receivedAmount.toNumber()
+    result.fromAmount = parsed.srcAmount.toString()
+    result.toAmount = parsed.receivedAmount.toString()
   }
 
   return result
