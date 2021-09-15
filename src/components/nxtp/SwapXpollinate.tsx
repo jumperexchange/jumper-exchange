@@ -969,8 +969,7 @@ const SwapXpollinate = ({
         <Row className="warning-trustWallet" justify="center" style={{ padding: 20, paddingBottom: 0 }}>
           <Alert
             style={{ maxWidth: 700 }}
-            // message="Do not use this app with Trust Wallet! Trust Wallet users, please use V1. Fix coming soon."
-            message="This is an Alpha release, please use with caution!"
+            message="This is an Alpha release, please use with caution! Usage with Metamask wallets is preferred."
             description=""
             type="error"
           />
