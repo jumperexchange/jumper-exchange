@@ -3,8 +3,7 @@ import { Button } from 'antd';
 import React, { useState } from 'react';
 import * as connext from '../services/connext';
 import { formatTokenAmount } from '../services/utils';
-import { ChainKey, CoinKey } from '../types';
-import { defaultCoins, findDefaultCoin, getChainByKey } from '../types/lists';
+import { ChainKey, CoinKey, defaultCoins, findDefaultCoin, getChainByKey } from '../types';
 
 const transferableCoins = [
   findDefaultCoin(CoinKey.DAI),
@@ -18,7 +17,6 @@ const transferChains = [
   getChainByKey(ChainKey.BSC),
   getChainByKey(ChainKey.DAI),
 ]
-
 
 interface StateChannelBalancesProps {
   node: BrowserNode

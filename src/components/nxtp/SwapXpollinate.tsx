@@ -19,9 +19,7 @@ import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { ChainKey, ChainPortfolio, Token, TokenWithAmounts } from '../../types';
-import { Chain, getChainById, getChainByKey } from '../../types/lists';
-import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TranferStep } from '../../types';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
@@ -242,7 +240,7 @@ const SwapXpollinate = ({
     // is modal open?
     if (modalRouteIndex !== undefined) {
       const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
-      const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === crossEstimate.quote.bid.transactionId)
+      const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === crossEstimate.data.bid.transactionId)
       if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
         const route = executionRoutes[modalRouteIndex]
         const update = (step: TranferStep, status: Execution) => {
@@ -653,29 +651,35 @@ const SwapXpollinate = ({
     const dAmount = routeRequest.depositAmount
     const dToken = findToken(routeRequest.depositChain, routeRequest.depositToken)
     const wToken = findToken(routeRequest.withdrawChain, routeRequest.withdrawToken)
-    const toAmount = parseInt(routeQuote.bid.amountReceived)
+
+    const crossAction: CrossAction = {
+        type: 'cross',
+        tool: 'nxtp',
+        chainId: getChainByKey(routeRequest.depositChain).id,
+        toChainId: getChainByKey(routeRequest.withdrawChain).id,
+        token: dToken,
+        toToken: wToken,
+        amount: dAmount,
+        toAddress: '',
+    }
+    // TODO: calculate real fee
+    const crossEstimate: CrossEstimate = {
+      type: 'cross',
+      fromAmount: routeQuote.bid.amount,
+      toAmount: routeQuote.bid.amountReceived,
+      fees: {
+        included: true,
+        percentage: '0.0005',
+        token: crossAction.token,
+        amount: new BigNumber(crossAction.amount).times('0.0005').toString(),
+      },
+      data: routeQuote,
+    }
+
     const sortedRoutes: Array<Array<TranferStep>> = [[
       {
-        action: {
-          type: 'cross',
-          tool: 'nxtp',
-          chainId: getChainByKey(routeRequest.depositChain).id,
-          toChainId: getChainByKey(routeRequest.withdrawChain).id,
-          token: dToken,
-          toToken: wToken,
-          amount: dAmount,
-        } as CrossAction,
-        estimate: {
-          fromAmount: dAmount,
-          toAmount: toAmount,
-          fees: {
-            included: true,
-            percentage: (dAmount - toAmount) / dAmount * 100,
-            token: dToken,
-            amount: dAmount - toAmount,
-          },
-          quote: routeQuote,
-        } as CrossEstimate,
+        action: crossAction,
+        estimate: crossEstimate,
       }
     ]]
 
@@ -724,7 +728,7 @@ const SwapXpollinate = ({
         sendingChainId: crossAction.chainId,
         receivingChainId: crossAction.toChainId,
         callDataHash: '',
-        transactionId: crossEstimate.quote.bid.transactionId,
+        transactionId: crossEstimate.data.bid.transactionId,
         receivingChainTxManagerAddress: ''
       },
       sending: {
@@ -733,7 +737,7 @@ const SwapXpollinate = ({
         expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
       },
     }
-    updateActiveTransactionsWith(crossEstimate.quote.bid.transactionId, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent, txData)
+    updateActiveTransactionsWith(crossEstimate.data.bid.transactionId, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent, txData)
     setActiveKeyTransactions('active')
 
     // start execution

@@ -6,8 +6,7 @@ import { BaseType } from 'antd/lib/typography/Base';
 import walletIcon from '../../assets/wallet.png';
 import { switchChain } from '../../services/metamask';
 import { formatTokenAmount } from '../../services/utils';
-import { getChainById } from '../../types/lists';
-import { CrossAction, Execution, TranferStep } from '../../types/server';
+import { CrossAction, Execution, getChainById, TranferStep } from '../../types';
 import Clock from '../Clock';
 import { injected } from '../web3/connectors';
 

@@ -1,30 +1,41 @@
-import { AuctionResponse } from "@connext/nxtp-utils";
-import { Token } from '.'
+import { Token } from './base.types'
 
+// ESTIMATE
 export interface BaseEstimate {
-  fromAmount: number
-  toAmount: number
+  type: string
+  fromAmount: string
+  toAmount: string
   fees: {
     included: boolean
-    percentage: number | null
+    percentage: string | null
     token: Token
-    amount: number
+    amount: string
   }
 }
 
 export interface DepositEstimate extends BaseEstimate { }
+
 export interface SwapEstimate extends BaseEstimate {
-  path: Array<string>
+  type: 'swap'
+  data: any
 }
+
 export interface CrossEstimate extends BaseEstimate {
-  quote: AuctionResponse
+  type: 'cross'
+  data: any
 }
+
 export interface WithdrawEstimate extends BaseEstimate { }
+
+export interface FailedEstimate {
+  type: 'error'
+  error: string
+  message: string
+}
 
 export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate
 
-
-
+// EXECUTION
 export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE'
 export interface Process {
   startedAt: number
@@ -38,27 +49,21 @@ export interface Process {
   // additional information
   [key: string]: any
 }
+
 export interface Execution {
   status: Status
   process: Array<Process>
   fromAmount?: number
   toAmount?: number
 }
+
 export const emptyExecution : Execution = {
   status: 'NOT_STARTED',
   process: []
 }
 
-export type Action = DepositAction | WithdrawAction | SwapAction | CrossAction
 
-
-export interface TranferStep {
-  action: Action
-  estimate?: Estimate
-  execution?: Execution
-  id?: string
-}
-
+// ACTION
 interface ActionBase {
   type: string
   chainId: number
@@ -87,4 +92,23 @@ export interface CrossAction extends ActionBase {
   toChainId: number
   toToken: Token
   toAddress: string
+}
+
+export type Action = DepositAction | WithdrawAction | SwapAction | CrossAction
+
+// STEP
+export interface Step {
+  action: Action
+  estimate?: Estimate
+  execution?: Execution
+}
+
+export interface SwapStep {
+  action: SwapAction
+  estimate: SwapEstimate
+}
+
+export interface CrossStep {
+  action: CrossAction
+  estimate: CrossEstimate
 }

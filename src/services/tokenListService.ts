@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { CoinKey, Token } from '../types'
-import { findDefaultCoin, getChainById } from '../types/lists'
+import { CoinKey, findDefaultCoin, getChainById, Token } from '../types'
 
 export interface TokenListToken {
   chainId: number

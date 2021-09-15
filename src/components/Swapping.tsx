@@ -1,25 +1,23 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React,  } from '@web3-react/core';
+import { useWeb3React } from '@web3-react/core';
 import { Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
+import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import connextIcon from '../assets/icons/connext.png';
-import paraswapIcon from '../assets/icons/paraswap.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
-import { formatTokenAmount } from '../services/utils';
-import { ChainKey } from '../types';
-import { getChainById, getChainByKey, supportedChains } from '../types/lists';
-import { CrossAction, CrossEstimate, Execution, SwapAction, SwapEstimate, TranferStep } from '../types/server';
-import Clock from './Clock';
-import { switchChain } from '../services/metamask';
-import { executeParaswap } from '../services/paraswap.execute';
+import paraswapIcon from '../assets/icons/paraswap.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
-import { executeUniswap } from '../services/uniswaps.execute';
-import { getRpcProviders } from './web3/connectors';
-import * as nxtp from '../services/nxtp'
+import { switchChain } from '../services/metamask';
+import * as nxtp from '../services/nxtp';
 import { executeNXTPCross } from '../services/nxtp.execute';
-import { BigNumber } from 'bignumber.js';
+import { executeParaswap } from '../services/paraswap.execute';
+import { executeUniswap } from '../services/uniswaps.execute';
+import { formatTokenAmount } from '../services/utils';
+import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, supportedChains, SwapAction, SwapEstimate, TranferStep } from '../types';
+import Clock from './Clock';
+import { getRpcProviders } from './web3/connectors';
 
 const nxtpExcludedChainIds = [1, 66, 43114] // exclude these for now because of no config error
 
@@ -67,7 +65,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     switch(swapAction.tool){
       case 'uniswap' || 'pancakeswap' || 'honeyswap' || 'quickswap':
-        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, fromAmount, fromAddress, toAddress, swapEstimate.path, (status: Execution) => updateStatus(step, status))
+        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
         return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       case '1inch':
@@ -176,7 +174,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     return (
       <Tooltip title={chain.name}>
-        <Avatar size="small" src={chain.iconUrl} alt={chain.name}></Avatar>
+        <Avatar size="small" src={getIcon(chain.key)} alt={chain.name}></Avatar>
       </Tooltip>
     )
   }
@@ -186,7 +184,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     return (
       <Tooltip title={chain.exchange?.name}>
-        <Avatar size="small" src={chain.exchange?.iconUrl} alt={chain.exchange?.name}></Avatar>
+        <Avatar size="small" src={getIcon(chain.exchange?.name)} alt={chain.exchange?.name}></Avatar>
       </Tooltip>
     )
   }

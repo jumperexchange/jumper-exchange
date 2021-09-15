@@ -3,8 +3,7 @@ import { IERC20Minimal } from "@connext/nxtp-contracts/typechain";
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { BigNumber, constants, Contract, providers } from 'ethers';
-import { getChainById } from '../types/lists';
-import { CrossAction, CrossEstimate, Execution, Process, TranferStep } from '../types/server';
+import { CrossAction, CrossEstimate, Execution, getChainById, Process, TranferStep } from '../types';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
@@ -112,27 +111,27 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 
   // Before approving/transferring, check router liquidity
   const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
-    crossEstimate.quote.bid.receivingChainId,
-    crossEstimate.quote.bid.router,
-    crossEstimate.quote.bid.receivingAssetId
+    crossEstimate.data.bid.receivingChainId,
+    crossEstimate.data.bid.router,
+    crossEstimate.data.bid.receivingAssetId
   );
-  if (liquidity.lt(crossEstimate.quote.bid.amountReceived)) {
-    throw new Error(`Router (${crossEstimate.quote.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.quote.bid.amountReceived}.`)
+  if (liquidity.lt(crossEstimate.data.bid.amountReceived)) {
+    throw new Error(`Router (${crossEstimate.data.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.data.bid.amountReceived}.`)
   }
 
   // Check Token Approval
-  if (crossEstimate.quote.bid.sendingAssetId !== constants.AddressZero) {
-    const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.quote.bid.sendingChainId)
-    const approved = await getApproved((sdk as any).signer, crossEstimate.quote.bid.sendingAssetId, contractAddress)
-    if (approved.gte(crossEstimate.quote.bid.amount)) {
+  if (crossEstimate.data.bid.sendingAssetId !== constants.AddressZero) {
+    const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.data.bid.sendingChainId)
+    const approved = await getApproved((sdk as any).signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
+    if (approved.gte(crossEstimate.data.bid.amount)) {
       // approval already done, jump to next step
       setStatusDone(update, status, approveProcess)
       // submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
     }
   }
 
-  const transactionId = crossEstimate.quote.bid.transactionId
-  const transferPromise = sdk.prepareTransfer(crossEstimate.quote, infinteApproval)
+  const transactionId = crossEstimate.data.bid.transactionId
+  const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
 
   // approve sent => wait
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {

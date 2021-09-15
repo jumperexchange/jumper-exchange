@@ -6,8 +6,7 @@ import { AddressZero } from "@ethersproject/constants"
 import { JsonRpcProvider } from "@ethersproject/providers"
 import { Contract, ContractReceipt, ethers, providers, utils } from "ethers"
 import { Evt } from "evt"
-import { getChainById } from '../types/lists'
-import { emptyExecution, Execution, Process } from '../types/server'
+import { emptyExecution, Execution, getChainById, Process } from '../types'
 import UniswapWithdrawHelper from "./ABI/UniswapWithdrawHelper.json" // import UniswapWithdrawHelper from "@connext/vector-withdraw-helpers/artifacts/contracts/UniswapWithdrawHelper/UniswapWithdrawHelper.sol/UniswapWithdrawHelper.json"
 import { deepClone } from './utils'
 

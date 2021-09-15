@@ -1,12 +1,10 @@
 
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
-
-import * as uniswap from './uniswaps'
-import { JsonRpcProvider, JsonRpcSigner, } from '@ethersproject/providers'
-import { Execution } from '../types/server'
-import {ethers} from 'ethers'
+import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
-
+import { ethers } from 'ethers'
+import { Execution } from '../types'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
+import * as uniswap from './uniswaps'
 
 const chainJsonProviders: { [chainId: number]: JsonRpcProvider } = {
   1: new JsonRpcProvider(process.env.REACT_APP_RPC_URL_MAINNET),

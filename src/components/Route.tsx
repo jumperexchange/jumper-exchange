@@ -1,7 +1,6 @@
 import { Button, Steps } from 'antd';
 import { formatTokenAmount } from '../services/utils';
-import { getChainById } from '../types/lists';
-import { CrossAction, CrossEstimate, SwapAction, SwapEstimate, TranferStep } from '../types/server';
+import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TranferStep } from '../types';
 
 interface RouteProps {
   route: Array<TranferStep>

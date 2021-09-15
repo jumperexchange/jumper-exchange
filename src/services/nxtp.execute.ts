@@ -1,9 +1,9 @@
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
-import * as nxtp from './nxtp'
-import { CrossAction, Execution, Process, TranferStep } from '../types/server'
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse } from '@connext/nxtp-utils';
 import BigNumber from 'bignumber.js';
+import { CrossAction, Execution, Process, TranferStep } from '../types';
+import * as nxtp from './nxtp';
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
 export const executeNXTPCross = async (nxtpSDK: NxtpSdk, step: TranferStep, fromAmount: BigNumber, userAddress:string,  updateStatus?: Function, initialStatus?: Execution) => {
     // setup

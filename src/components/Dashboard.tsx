@@ -7,8 +7,7 @@ import { ethers } from "ethers";
 import React, { useEffect, useState } from 'react';
 import { getBalancesForWallet } from '../services/balanceService';
 import { readWallets, storeWallets } from '../services/localStorage';
-import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, SummaryAmounts, Token, Wallet, WalletSummary } from '../types';
-import { defaultCoins, supportedChains } from '../types/lists';
+import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, defaultCoins, SummaryAmounts, supportedChains, Token, Wallet, WalletSummary } from '../types';
 import './Dashboard.css';
 import ConnectButton from "./web3/ConnectButton";
 

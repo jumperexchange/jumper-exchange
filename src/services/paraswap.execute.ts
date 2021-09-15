@@ -1,9 +1,8 @@
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
-
-import * as paraswap from '../services/paraswap'
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { Execution } from '../types/server'
 import BigNumber from 'bignumber.js'
+import * as paraswap from '../services/paraswap'
+import { Execution } from '../types'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 
 export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
   // setup

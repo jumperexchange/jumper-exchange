@@ -12,9 +12,7 @@ import heroImage from '../assets/info_header.png';
 import { getBalancesForWallet } from '../services/balanceService';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
-import { ChainKey, ChainPortfolio, Token } from '../types';
-import { defaultTokens, getChainByKey } from '../types/lists';
-import { DepositAction, TranferStep, WithdrawAction } from '../types/server';
+import { ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TranferStep, WithdrawAction } from '../types';
 import Route from './Route';
 import './Swap.css';
 import SwapForm from './SwapForm';
@@ -196,7 +194,7 @@ const Swap = () => {
             const routeAResult = routeA[routeA.length - 1].estimate?.toAmount || 0
             const routeBResult = routeB[routeB.length - 1].estimate?.toAmount || 0
 
-            return routeBResult - routeAResult
+            return new BigNumber(routeAResult).minus(routeBResult).toNumber()
           })
 
           setRoutes(sortedRoutes)

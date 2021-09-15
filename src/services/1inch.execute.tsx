@@ -1,7 +1,6 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
-import { getChainById } from '../types/lists'
-import { Execution } from '../types/server'
+import { Execution, getChainById } from '../types'
 import { oneInch } from './1Inch'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 

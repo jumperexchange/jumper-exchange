@@ -1,7 +1,7 @@
-import { Token } from '../types'
-import { getChainById, wrappedTokens } from '../types/lists'
+import BigNumber from 'bignumber.js'
+import { getChainById, Token, wrappedTokens } from '../types'
 
-export const formatTokenAmount = (token: Token, amount: number | undefined) => {
+export const formatTokenAmount = (token: Token, amount: string | undefined) => {
   if (!amount) {
     return '- ' + token.symbol
   }
@@ -9,12 +9,12 @@ export const formatTokenAmount = (token: Token, amount: number | undefined) => {
   return formatTokenAmountOnly(token, amount) + ' ' + token.symbol
 }
 
-export const formatTokenAmountOnly = (token: Token, amount: number | undefined) => {
+export const formatTokenAmountOnly = (token: Token, amount: string | undefined) => {
   if (!amount) {
     return '0.0'
   }
 
-  const floated = amount / 10 ** token.decimals
+  const floated = new BigNumber(amount).shiftedBy(-token.decimals)
   return floated.toFixed(4)
 }
 
