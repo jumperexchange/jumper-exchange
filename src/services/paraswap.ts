@@ -150,7 +150,6 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
     gasPrice: '0',
     gasFee: '0',
   }
-  const decoder = new ethers.utils.AbiCoder()
 
   // gas
   result.gasUsed = receipt.gasUsed.toString()
@@ -158,12 +157,18 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
   result.gasFee = receipt.gasUsed.mul(result.gasPrice).toString()
 
   // log
-  const log = receipt.logs.find((log) => log.address === receipt.to)
-  if (log) {
-    const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
-    result.fromAmount = parsed.srcAmount.toString()
-    result.toAmount = parsed.receivedAmount.toString()
-  }
+  console.log('LOGS', receipt.logs)
+  const logs = receipt.logs.filter((log) => log.address === receipt.to)
+  const decoder = new ethers.utils.AbiCoder()
+  logs.forEach((log) => {
+    try {
+      const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
+      result.fromAmount = parsed.srcAmount.toString()
+      result.toAmount = parsed.receivedAmount.toString()
+    } catch (e) {
+      // find right log by trying to parse them
+    }
+  })
 
   return result
 }

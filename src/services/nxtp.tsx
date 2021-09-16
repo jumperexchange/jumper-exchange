@@ -285,6 +285,10 @@ export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: T
       setStatusDone(update, status, approveProcess)
       // submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
     }
+  } else {
+    // approval not needed
+    setStatusDone(update, status, approveProcess)
+    submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
   }
 
   const transactionId = quote.bid.transactionId
@@ -319,6 +323,8 @@ export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: T
     submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + submitProcess.txHash
     submitProcess.message = <>Send Transaction - Wait for <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
     update(status)
+
+    // TODO: notify if tx fails, because no further events will happen
   })
   // sumitted = done => next
   sdk.attachOnce(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
