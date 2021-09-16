@@ -1,4 +1,4 @@
-import { emptyExecution, Execution, Process } from '../types/server'
+import { emptyExecution, Execution, Process } from '../types'
 import { deepClone } from './utils'
 
 export const initStatus = (updateStatus?: Function, initialStatus?: Execution) => {

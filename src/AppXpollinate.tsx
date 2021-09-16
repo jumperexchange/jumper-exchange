@@ -6,14 +6,14 @@ import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
 import { getBalancesForWallet } from './services/balanceService';
-import { ChainKey } from './types';
-import { defaultTokens, getChainByKey } from './types/lists';
+import { ChainKey, defaultTokens, getChainByKey } from './types';
 
 const transferChains = [
   getChainByKey(ChainKey.BSC),
   getChainByKey(ChainKey.POL),
   getChainByKey(ChainKey.DAI),
   getChainByKey(ChainKey.FTM),
+  getChainByKey(ChainKey.ARB),
 ]
 
 const transferTokens = defaultTokens
@@ -34,7 +34,7 @@ function AppXpollinate() {
     <>
       <p>
         This interface gives access to the NXTP protocol of Connext.
-        It allows you to transfer Stablecoins (USDC, USDT, DAI) between multiple EVM based chains (Polygon, BSC, xDAI, Fantom). THIS IS AN ALPHA RELEASE! PLEASE USE WITH CAUTION</p>
+        It allows you to transfer Stablecoins (USDC, USDT, DAI) between multiple EVM based chains (Polygon, BSC, xDAI, Fantom).</p>
       <p>Simply select the chains, an amount, the token to transfer and click Swap.</p>
       <p>
         Made for you by<br />
@@ -43,9 +43,6 @@ function AppXpollinate() {
         &nbsp;&nbsp;~ Li.Finance (UI & Swaps - soon)
         <br />
         &nbsp;&nbsp;~ 1Hive (DEX - soon)
-      </p>
-      <p>
-        Note: BSC is experiencing issues with subgraph sync. We are working on a fix but in the meantime BSC transfers might not find any routes or be delayed by up to 5 minutes.
       </p>
     </>
   )

@@ -6,8 +6,7 @@ import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
 import { getBalancesForWallet, testToken } from './services/testToken';
-import { ChainKey } from './types';
-import { getChainByKey } from './types/lists';
+import { ChainKey, getChainByKey } from './types';
 
 const transferChains = [
   getChainByKey(ChainKey.ROP),

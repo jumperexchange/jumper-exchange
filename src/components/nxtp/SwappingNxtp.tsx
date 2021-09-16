@@ -6,9 +6,7 @@ import { BaseType } from 'antd/lib/typography/Base';
 import walletIcon from '../../assets/wallet.png';
 import { switchChain } from '../../services/metamask';
 import { formatTokenAmount } from '../../services/utils';
-import { ChainKey } from '../../types';
-import { getChainById, getChainByKey } from '../../types/lists';
-import { CrossAction, Execution, TranferStep } from '../../types/server';
+import { CrossAction, Execution, getChainById, getIcon, TranferStep } from '../../types';
 import Clock from '../Clock';
 import { injected } from '../web3/connectors';
 
@@ -138,12 +136,12 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
     })
   }
 
-  const getChainAvatar = (chainKey: ChainKey) => {
-    const chain = getChainByKey(chainKey)
+  const getChainAvatar = (chainId: number) => {
+    const chain = getChainById(chainId)
 
     return (
       <Tooltip title={chain.name}>
-        <Avatar size="small" src={chain.iconUrl} alt={chain.name} style={{ marginTop: '-3px' }}>{chain.name[0]}</Avatar>
+        <Avatar size="small" src={getIcon(chain.key)} alt={chain.name} style={{ marginTop: '-3px' }}>{chain.name[0]}</Avatar>
       </Tooltip>
     )
   }
@@ -196,10 +194,10 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
   step.action = step.action as CrossAction
   return (<>
     <h2 style={{ textAlign: 'center' }}>
-      Transfer from {getChainAvatar(step.action.chainKey)} to {getChainAvatar(getChainById(step.action.toChainId).key)}
+      Transfer from {getChainAvatar(step.action.chainId)} to {getChainAvatar(step.action.toChainId)}
     </h2>
     <p style={{ textAlign: 'center' }}>
-      {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}
+      {formatTokenAmount(step.action.token, step.estimate?.fromAmount)}
       <ArrowRightOutlined />
       {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
     </p>

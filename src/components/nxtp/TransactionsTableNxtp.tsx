@@ -4,9 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Button, Spin, Table } from 'antd';
 import React from 'react';
-import { TokenWithAmounts } from '../../types';
-import { getChainById } from '../../types/lists';
-import { CrossEstimate, TranferStep } from '../../types/server';
+import { CrossEstimate, getChainById, TokenWithAmounts, TranferStep } from '../../types';
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
 
 interface TransactionsTableNxtpProps {
@@ -71,7 +69,7 @@ const TransactionsTableNxtp = ({
           return <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
         } else {
           const index = executionRoutes.findIndex(item => {
-            return (item[0].estimate as CrossEstimate).quote.bid.transactionId === action.txData.invariant.transactionId
+            return (item[0].estimate as CrossEstimate).data.bid.transactionId === action.txData.invariant.transactionId
           })
           if (index !== -1 && executionRoutes[index][0].execution?.status === 'FAILED') {
             return 'Failed'
@@ -86,7 +84,7 @@ const TransactionsTableNxtp = ({
       dataIndex: '',
       render: (action: ActiveTransaction) => {
         const index = executionRoutes.findIndex(item => {
-          return (item[0].estimate as CrossEstimate).quote.bid.transactionId === action.txData.invariant.transactionId
+          return (item[0].estimate as CrossEstimate).data.bid.transactionId === action.txData.invariant.transactionId
         })
 
         if (index !== -1) {
