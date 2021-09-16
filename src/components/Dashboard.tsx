@@ -1,6 +1,5 @@
 import { CheckCircleTwoTone, CloseCircleTwoTone, DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
 import { useWeb3React } from "@web3-react/core";
-import "animate.css";
 import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { ethers } from "ethers";

@@ -1,15 +1,16 @@
 
 import { TableColumnType } from 'antd';
 import { Action, ChainKey, Coin, Estimate, Execution, Token } from '.';
-import bsc from "../assets/icons/bsc.png";
-import eth from "../assets/icons/ethereum.png";
-import pancake from "../assets/icons/pancake.png";
-import pol from "../assets/icons/polygon.png";
-import quick from "../assets/icons/quick.png";
-import honey from "../assets/icons/honey.png";
-import dai from "../assets/icons/xdai.png";
-import uniswap from "../assets/icons/uniswap.png";
-import ftm from "../assets/icons/fantom.png";
+import bsc from '../assets/icons/bsc.png';
+import eth from '../assets/icons/ethereum.png';
+import pancake from '../assets/icons/pancake.png';
+import pol from '../assets/icons/polygon.png';
+import quick from '../assets/icons/quick.png';
+import honey from '../assets/icons/honey.png';
+import dai from '../assets/icons/xdai.png';
+import uniswap from '../assets/icons/uniswap.png';
+import ftm from '../assets/icons/fantom.png';
+import arb from '../assets/icons/arbitrum.svg';
 
 export const icons: { [key: string]: string } = {
   bsc,
@@ -17,6 +18,7 @@ export const icons: { [key: string]: string } = {
   pol,
   dai,
   ftm,
+  arb,
 
   'Pancake': pancake,
   'QuickSwap': quick,
