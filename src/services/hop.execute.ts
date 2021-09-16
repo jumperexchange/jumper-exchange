@@ -1,7 +1,7 @@
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 
-import { JsonRpcSigner } from '@ethersproject/providers'
-import { Execution } from '../types/server'
+import { JsonRpcSigner, TransactionReceipt } from '@ethersproject/providers'
+import { Execution } from '../types/'
 import BigNumber from 'bignumber.js'
 import hop from './hop'
 import { CoinKey } from '../types'
@@ -11,13 +11,43 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
   const { status, update } = initStatus(updateStatus, initialStatus)
   hop.init(signer)
 
+  //set allowance AND send
   const allowanceAndCrossProcess = createAndPushProcess(update, status, 'Set Allowance and Cross')
   let tx
   try {
-     tx = hop.setAllowanceAndCrossChains(bridgeCoin, amount, fromChainId, toChainId )
-  } catch (_e) {
-
+     tx = await hop.setAllowanceAndCrossChains(bridgeCoin, amount, fromChainId, toChainId )
+  } catch (e: any) {
+    if (e.message) allowanceAndCrossProcess.errorMessage = e.message
+    if (e.code) allowanceAndCrossProcess.errorCode = e.code
+    setStatusFailed(update, status, allowanceAndCrossProcess)
+    throw e
   }
+  setStatusDone(update, status, allowanceAndCrossProcess)
+
+
+  //wait for transaction
+  const waitForTxProcess = createAndPushProcess(update, status, 'Wait for transaction')
+
+  const receipt = await hop.waitForReceipt(tx.hash, bridgeCoin, fromChainId, toChainId)
+  const parsedReceipt = hop.parseReceipt(tx, receipt as TransactionReceipt)
+
+
+  setStatusDone(update, status, waitForTxProcess, {
+    fromAmount: parsedReceipt.fromAmount,
+    toAmount: parsedReceipt.toAmount,
+    gasUsed: (status.gasUsed || 0) + parsedReceipt.gasUsed,
+  })
+
+  // -> set status
+  status.status = 'DONE'
+  update(status)
+
+  // DONE
+  return status
+
+
+
+
 }
 
 
