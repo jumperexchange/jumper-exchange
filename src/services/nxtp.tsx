@@ -363,7 +363,11 @@ export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: T
       proceedProcess.txHash = data.transactionHash
       proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
       proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
-      setStatusDone(update, status, proceedProcess)
+      setStatusDone(update, status, proceedProcess, {
+        fromAmount: data.txData.amount,
+        toAmount: data.txData.amount,
+        gasUsed: '0',
+      })
     }
   })
   // all done
@@ -374,7 +378,11 @@ export const triggerTransferWithPreexistingStatus = async (sdk: NxtpSdk, step: T
       proceedProcess.txHash = data.transactionHash
       proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
       proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
-      setStatusDone(update, status, proceedProcess)
+      setStatusDone(update, status, proceedProcess, {
+        fromAmount: data.txData.amount,
+        toAmount: data.txData.amount,
+        gasUsed: '0',
+      })
     }
   })
 

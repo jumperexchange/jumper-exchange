@@ -15,11 +15,12 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
 
   // Ask user to set allowance
   // -> set status
+  console.log('set status')
   const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
 
   // -> check allowance
   try {
-    const contractAddress = await uniswap.getContractAddress(chainId)
+    const contractAddress = uniswap.getContractAddress(chainId)
     const approved = await getApproved(signer, srcToken, contractAddress)
 
     if (srcAmount.gt(approved)) {
@@ -41,6 +42,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
       allowanceProcess.message = 'Already Approved'
     }
     setStatusDone(update, status, allowanceProcess)
+    console.log('set done')
   } catch (e: any) {
     // -> set status
     if (e.message) allowanceProcess.errorMessage = e.message
@@ -53,6 +55,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   // Swap via Uniswap
   // -> set status
   const swapProcess = createAndPushProcess(update, status, 'Swap via Uniswap')
+  console.log('set next')
 
   // -> swapping
   let tx

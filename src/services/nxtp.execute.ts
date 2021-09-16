@@ -32,7 +32,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TranferStep,
     const e = _e as Error
     quoteProcess.errorMessage = e.message
     cleanUp(nxtpSDK, update, status, quoteProcess)
-    return
+    throw e
   }
   setStatusDone(update, status, quoteProcess)
 
@@ -42,7 +42,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TranferStep,
   } catch (e) {
     console.log(status)
     nxtpSDK.removeAllListeners()
-    return
+    throw e
   }
 
   return new Promise(async (resolve, reject) => {
@@ -51,14 +51,13 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TranferStep,
         await nxtp.finishTransfer(nxtpSDK, data, step, update)
       } catch (e) {
         nxtpSDK.removeAllListeners()
-        return
+        throw e
       }
 
       nxtpSDK.removeAllListeners()
       status.status = 'DONE'
       update(status)
       resolve(status)
-
     })
   })
 

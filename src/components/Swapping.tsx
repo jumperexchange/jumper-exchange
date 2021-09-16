@@ -27,10 +27,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
-  const [swapDone, setSwapDone] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
 
-  let activeButton = null
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -169,9 +167,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     </Tooltip>
   )
 
-  const crossChain = route.filter(step => step.action.type === 'cross').length > 0
-  const startSwapButton = <Button type="primary" onClick={() => startCrossChainSwap()}>{crossChain ? 'Start Cross Chain Swap' : 'Start Swap'}</Button>
-
   const parseStepToTimeline = (step: TranferStep, index: number, route: Array<TranferStep>) => {
     const executionSteps = parseExecution(step.execution)
     const color = step.execution && step.execution.status === 'DONE' ? 'green' : (step.execution ? 'blue' : 'gray')
@@ -238,28 +233,78 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const startCrossChainSwap = async () => {
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
+  }
 
-    try {
-      for (let index = 0; index < route.length; index++) {
-        await triggerStep(index, route)
+  const restartCrossChainSwap = async () => {
+    // remove failed
+    for (let index = 0; index < route.length; index++) {
+      if (route[index].execution?.status === 'FAILED') {
+        route[index].execution = undefined
+        updateRoute(route)
       }
-    } catch (e) {
-      console.error(e)
-      setIsSwapping(false)
-      setSwapDoneAt(Date.now())
-      return
     }
 
-    setIsSwapping(false)
-    setSwapDoneAt(Date.now())
-    setSwapDone(true)
+    // start again
+    setIsSwapping(true)
   }
 
-  if (!activeButton && !isSwapping && !swapDone) {
-    activeButton = startSwapButton
+  // check where we are an trigger next
+  const checkSwapping = () => {
+    if (!isSwapping) return
+
+    for (let index = 0; index < route.length; index++) {
+      if (route[index].execution?.status === 'DONE') {
+        continue // step is already done, continue
+      }
+
+      if (
+        !route[index].execution                         // not started
+        //|| route[index].execution?.status === 'FAILED'  // failed
+      ) {
+        console.log('trigger swap', route[index].execution?.status)
+        return triggerStep(index, route)
+          .catch(() => {
+            setIsSwapping(false)
+          }) // stop if a step fails
+
+      } else {
+        return // is still running
+      }
+    }
+    setIsSwapping(false)
+    setSwapDoneAt(Date.now())
   }
-  if (swapDone) {
-    activeButton = <Link to="/dashboard"><Button type="link" >DONE - check your balances in our Dashboard</Button></Link>
+  checkSwapping()
+
+  const getMainButton = () => {
+    // PENDING
+    if (isSwapping) {
+      return <></>
+    }
+
+    // DONE
+    const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
+    if (isDone) {
+      const result = route[route.length - 1].execution
+      console.log(result)
+      return <Link to="/dashboard"><Button type="link" >DONE - check your balances in our Dashboard</Button></Link>
+    }
+
+    // FAILED
+    const isFailed = route.filter(step => step.execution?.status === 'FAILED').length > 0
+    if (isFailed) {
+      return <Button type="primary" onClick={() => restartCrossChainSwap()}>
+        Restart from Failed Step
+      </Button>
+    }
+
+    // NOT_STARTED
+    const isCrossChainSwap = route.filter(step => step.action.type === 'cross').length > 0
+    return (
+      <Button type="primary" onClick={() => startCrossChainSwap()}>
+        {isCrossChainSwap ? 'Start Cross Chain Swap' : 'Start Swap'}
+      </Button>
+    )
   }
 
   return (<>
@@ -280,7 +325,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     </div>
 
     <div style={{ textAlign: 'center', transform: 'scale(1.5)', marginBottom: 20 }}>
-      {activeButton}
+      {getMainButton()}
     </div>
   </>)
 }
