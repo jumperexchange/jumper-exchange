@@ -308,10 +308,6 @@ const SwapXpollinate = ({
           console.error(`No subgraph URI available for ${chain.id}`)
           return null
         }
-        // TODO: remove this after new SDK release
-        if (sub === 'https://thegraph.com/legacy-explorer/subgraph/connext/nxtp-arbitrum-one') {
-          sub = 'https://api.thegraph.com/subgraphs/name/connext/nxtp-arbitrum-one'
-        }
 
         // request
         const res = await request(sub, query, {
