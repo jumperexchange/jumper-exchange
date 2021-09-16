@@ -25,7 +25,8 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         const crossEstimate = step.estimate as CrossEstimate
         return {
           title: "Cross Chains",
-          description: `${formatTokenAmount(crossAction.fromToken, crossEstimate.fromAmount)} on ${getChainById(crossAction.fromChainId).key} to ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} on ${getChainById(crossAction.toChainId).key}`,
+          // description: `${formatTokenAmount(crossAction.fromToken, crossEstimate.fromAmount)} on ${getChainById(crossAction.fromChainId).key} to ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} on ${getChainById(crossAction.toChainId).key}`,
+          description: `${getChainById(crossAction.fromChainId).key}: ${formatTokenAmount(crossAction.fromToken, crossEstimate.fromAmount)} to ${getChainById(crossAction.toChainId).key}: ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} via ${crossAction.tool}`,
         }
       case "withdraw":
         return {
