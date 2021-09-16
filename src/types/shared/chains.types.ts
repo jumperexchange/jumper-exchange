@@ -7,7 +7,6 @@ export interface Chain {
   coin: CoinKey
   id: number
   visible: boolean
-  iconUrl?: string
   exchange?: Exchange
   faucetUrls?: string[]
   metamask: AddEthereumChainParameter
@@ -247,6 +246,90 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+  // 42161 - Arbitrum One
+  {
+    key: ChainKey.ARB,
+    name: 'Arbitrum One',
+    coin: CoinKey.ETH,
+    id: 42161,
+    visible: true,
+    faucetUrls: [
+      'https://bridge.arbitrum.io/'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(42161),
+      blockExplorerUrls: [
+        'https://arbiscan.io',
+      ],
+      chainName: 'Arbitrum One',
+      nativeCurrency: {
+        name: 'AETH',
+        symbol: 'AETH',
+        decimals: 18, // check
+      },
+      rpcUrls: [
+        'https://arb1.arbitrum.io/rpc',
+      ],
+    }
+  },
+
+  // 128 - Huobi ECO Chain Mainnet
+  {
+    key: ChainKey.HEC,
+    name: 'Huobi ECO Chain Mainnet',
+    coin: 'HT' as CoinKey,
+    id: 128,
+    visible: true,
+    faucetUrls: [
+
+    ],
+
+    metamask: {
+      chainId: prefixChainId(128),
+      blockExplorerUrls: [
+        'https://hecoinfo.com',
+      ],
+      chainName: 'Huobi ECO Chain Mainnet',
+      nativeCurrency: {
+        name: 'HT',
+        symbol: 'HT',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://http-mainnet.hecochain.com',
+      ],
+    }
+  },
+
+  // 10 - Optimistic Ethereum
+  {
+    key: ChainKey.OPT,
+    name: 'Optimistic Ethereum',
+    coin: CoinKey.ETH,
+    id: 10,
+    visible: true,
+    faucetUrls: [
+      'https://gateway.optimism.io/'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(10),
+      blockExplorerUrls: [
+        'https://optimistic.etherscan.io',
+      ],
+      chainName: 'Optimistic Ethereum',
+      nativeCurrency: {
+        name: 'OETH',
+        symbol: 'OETH',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://mainnet.optimism.io/',
+      ],
+    }
+  },
+
   // 32659 - FSN-MAIN (anyswap)
   // {
   //   key: ChainKey.FSN,
@@ -488,6 +571,35 @@ export const supportedChains: Array<Chain> = [
       },
       rpcUrls: [
         'https://data-seed-prebsc-1-s1.binance.org:8545/',
+      ],
+    }
+  },
+
+  // 256 - Huobi ECO Chain Testnet
+  {
+    key: ChainKey.HECT,
+    name: 'Huobi ECO Chain Testnet',
+    coin: 'HTT' as CoinKey,
+    id: 256,
+    visible: false,
+    faucetUrls: [
+      'https://scan-testnet.hecochain.com/faucet'
+    ],
+
+    metamask: {
+      chainId: prefixChainId(256),
+      blockExplorerUrls: [
+        'https://scan-testnet.hecochain.com/',
+      ],
+      chainName: 'Huobi ECO Chain Testnet',
+      nativeCurrency: {
+        name: 'HT',
+        symbol: 'HT',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://http-testnet.hecochain.com',
+        'wss://ws-testnet.hecochain.com',
       ],
     }
   },

@@ -33,7 +33,6 @@ function usePageViews() {
   return path
 }
 
-
 function App() {
   const path = usePageViews()
 

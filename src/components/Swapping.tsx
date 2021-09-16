@@ -257,15 +257,13 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         continue // step is already done, continue
       }
 
-      if (
-        !route[index].execution                         // not started
-        //|| route[index].execution?.status === 'FAILED'  // failed
-      ) {
-        console.log('trigger swap', route[index].execution?.status)
+      if (!route[index].execution) {
+
         return triggerStep(index, route)
           .catch(() => {
+            // stop if a step fails
             setIsSwapping(false)
-          }) // stop if a step fails
+          })
 
       } else {
         return // is still running

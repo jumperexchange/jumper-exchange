@@ -6,6 +6,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.ETH,
     name: CoinKey.ETH,
     logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0x0000000000000000000000000000000000000000',
@@ -47,12 +48,43 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.ETH,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
       },
+      [ChainKey.OPT]: { // guessed from debank api
+        id: '0x4200000000000000000000000000000000000006',
+        symbol: CoinKey.ETH,
+        decimals: 18,
+        chainId: 100,
+        chainKey: ChainKey.OPT,
+        key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+      },
+      [ChainKey.OKT]: { // guessed from debank api
+        id: '0xef71ca2ee68f45b9ad6f72fbdb33d707b872315c',
+        symbol: CoinKey.ETH,
+        decimals: 18,
+        chainId: 100,
+        chainKey: ChainKey.OKT,
+        key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+      },
+      // [ChainKey.ARB]: { // WETH
+      //   id: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+      //   symbol: CoinKey.ETH,
+      //   decimals: 18,
+      //   chainId: 42161,
+      //   chainKey: ChainKey.ARB,
+      //   key: CoinKey.ETH,
+      //   name: CoinKey.ETH,
+      //   logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+      // },
     },
   },
   {
     key: CoinKey.MATIC,
     name: CoinKey.MATIC,
     logoURI: 'https://etherscan.io/token/images/matictoken_28.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
@@ -100,6 +132,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.BNB,
     name: CoinKey.BNB,
     logoURI: 'https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png?1547034615',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
@@ -147,6 +180,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.DAI,
     name: CoinKey.DAI,
     logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0x6b175474e89094c44da98b954eedeac495271d0f',
@@ -207,6 +241,7 @@ export const defaultCoins: Array<Coin> = [
     key: CoinKey.USDT,
     name: CoinKey.USDT,
     logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0xdac17f958d2ee523a2206206994597c13d831ec7',
@@ -258,12 +293,23 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.USDT,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
       },
+      [ChainKey.ARB]: {
+        id: '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
+        symbol: CoinKey.USDT,
+        decimals: 6,
+        chainId: 42161,
+        chainKey: ChainKey.ARB,
+        key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+      },
     },
   },
   {
     key: CoinKey.USDC,
     name: CoinKey.USDC,
     logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+    verified: true,
     chains: {
       [ChainKey.ETH]: {
         id: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
@@ -315,6 +361,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.USDC,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
       },
+      [ChainKey.ARB]: {
+        id: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+        symbol: CoinKey.USDC,
+        decimals: 6,
+        chainId: 42161,
+        chainKey: ChainKey.ARB,
+        key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+      },
     },
   },
 ]
@@ -357,6 +413,11 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.FTM],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.FTM],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.FTM],
+  ],
+  [ChainKey.ARB]: [
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.ARB],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.ARB],
+    //findDefaultCoin(CoinKey.DAI).chains[ChainKey.ARB],
   ],
 }
 

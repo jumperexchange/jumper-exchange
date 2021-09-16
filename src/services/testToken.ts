@@ -92,6 +92,7 @@ export const getBalancesForWallet = async (address: string) => {
         img_url: '',
         amount: (await ethAmount).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
         pricePerCoin: 0,
+        verified: false,
       },
       // test token
       {
@@ -101,6 +102,7 @@ export const getBalancesForWallet = async (address: string) => {
         img_url: '',
         amount: (await testAmount).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
         pricePerCoin: 0,
+        verified: false,
       },
     ]
   })

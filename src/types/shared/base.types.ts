@@ -24,6 +24,9 @@ export enum ChainKey {
   OKT = 'okt',
   FTM = 'ftm',
   AVA = 'ava',
+  ARB = 'arb',
+  HEC = 'hec',
+  OPT = 'opt',
 
   // Testnets
   ROP = 'rop',
@@ -33,6 +36,7 @@ export enum ChainKey {
   ARBT = 'arbt',
   OPTT = 'optt',
   BSCT = 'bsct',
+  HECT = 'hect',
 }
 
 export enum ChainId {
@@ -43,6 +47,9 @@ export enum ChainId {
   OKT = 66,
   FTM = 250,
   AVA = 43114,
+  ARB = 42161,
+  HEC = 128,
+  OPT = 10,
 
   // Testnets
   ROP = 3,
@@ -52,6 +59,7 @@ export enum ChainId {
   ARBT = 421611,
   OPTT = 69,
   BSCT = 97,
+  HECT = 256,
 }
 
 export interface Token {
@@ -69,6 +77,7 @@ export interface Coin {
   key: CoinKey
   name: string
   logoURI: string
+  verified: boolean
   chains: {
     [ChainKey: string]: Token
   }

@@ -1,4 +1,4 @@
-import { DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
+import { CheckCircleTwoTone, CloseCircleTwoTone, DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
 import { useWeb3React } from "@web3-react/core";
 import "animate.css";
 import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 import React, { useEffect, useState } from 'react';
 import { getBalancesForWallet } from '../services/balanceService';
 import { readWallets, storeWallets } from '../services/localStorage';
-import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, defaultCoins, SummaryAmounts, supportedChains, Token, Wallet, WalletSummary } from '../types';
+import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, defaultCoins, getChainByKey, SummaryAmounts, supportedChains, Token, Wallet, WalletSummary } from '../types';
 import './Dashboard.css';
 import ConnectButton from "./web3/ConnectButton";
 
@@ -60,13 +60,14 @@ function renderAmounts(amounts: Amounts = { amount_coin: -1, amount_usd: -1 }) {
 function renderCoin(coin: Coin) {
   return (
     <div className="coin">
-      <Tooltip title={coin.name}>
+      <Tooltip title={coin.name + (coin.verified ? ' (verified)' : '')}>
         <Avatar
           src={coin.logoURI}
           alt={coin.name}
         >
           {coin.key}
         </Avatar>
+        <Badge className="coin_verify" count={coin.verified ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <CloseCircleTwoTone twoToneColor="#eb2f96" />}></Badge>
       </Tooltip>
     </div>
   )
@@ -204,98 +205,26 @@ const showGasModal = (gas: ChainKey) => {
   }
 }
 
+const tooltipsEmpty: { [ChainKey: string]: JSX.Element } = {}
+const tooltips: { [ChainKey: string]: any } = {}
+for (const k in ChainKey) {
+  const key = k.toLowerCase() as ChainKey
+  const chain = getChainByKey(key)
+  tooltips[key] = (<>The ${chain.name} chain requires ${chain.coin} to pay for gas.</>)
+  tooltipsEmpty[key] = (<>
+    <span>The ${chain.name} requires ${chain.coin} to pay for gas. Without it you won't be able to do anything on this chain.</span>
+    <Button type="default" block onClick={() => showGasModal(key)}>Get ${chain.coin}</Button>
+  </>)
+}
+
 // render formatters
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
   const coin = coins.find(coin => coin.key === coinName)
   const isChainUsed = wallet.portfolio[chain]?.length > 0
-  const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === coin?.chains[chain].id)
+  const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === '0x0000000000000000000000000000000000000000' || e.id ===  coin?.chains[chain]?.id)
   const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : { amount_coin: 0, amount_usd: 0 }
 
-  const tooltipsEmpty = {
-    [ChainKey.ETH]:
-      (<>
-        <span>The Ethereum chain requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.ETH)}>Get ETH</Button>
-      </>),
-    [ChainKey.POL]:
-      (<>
-        <span>The Polygon/Matic chain requires MATIC to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.POL)}>Get MATIC</Button>
-      </>),
-    [ChainKey.BSC]:
-      (<>
-        <span>The Binance Smart Chain requires BNB to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.BSC)}>Get BNB</Button>
-      </>),
-    [ChainKey.DAI]:
-      (<>
-        <span>The xDAI chain requires DAI to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.DAI)}>Get DAI</Button>
-      </>),
-    [ChainKey.FTM]:
-      (<>
-        <span>The Fantom chain requires FTM to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.FTM)}>Get FTM</Button>
-      </>),
-    [ChainKey.OKT]:
-      (<>
-        <span>The OKExCahin chain requires OKT to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.OKT)}>Get OKT</Button>
-      </>),
-    [ChainKey.AVA]:
-      (<>
-        <span>The Avalanche chain requires AVAX to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.AVA)}>Get AVAX</Button>
-      </>),
-    [ChainKey.ROP]:
-      (<>
-        <span>The Ropsten Testnet requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.ROP)}>Get ETH</Button>
-      </>),
-    [ChainKey.RIN]:
-      (<>
-        <span>The Rinkeby Testnet requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.RIN)}>Get ETH</Button>
-      </>),
-    [ChainKey.GOR]:
-      (<>
-        <span>The Goerli Testnet requires ETH to pay for gas. Without it you won't be able to do anything on this chain.</span>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.GOR)}>Get ETH</Button>
-      </>),
-    [ChainKey.MUM]:
-      (<>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.MUM)}>Get MATIC</Button>
-      </>),
-    [ChainKey.ARBT]:
-      (<>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.ARBT)}>Get ETH</Button>
-      </>),
-    [ChainKey.OPTT]:
-      (<>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.OPTT)}>Get ETH</Button>
-      </>),
-    [ChainKey.BSCT]:
-      (<>
-        <Button type="default" block onClick={() => showGasModal(ChainKey.BSCT)}>Get BNB</Button>
-      </>),
-  }
   const tooltipEmpty = tooltipsEmpty[chain];
-  const tooltips = {
-    [ChainKey.ETH]: (<>The Ethereum chain requires ETH to pay for gas.</>),
-    [ChainKey.POL]: (<>The Polygon/Matic chain requires MATIC to pay for gas.</>),
-    [ChainKey.BSC]: (<>The Binance Smart Chain requires BNB to pay for gas.</>),
-    [ChainKey.DAI]: (<>The xDAI chain requires DAI to pay for gas.</>),
-    [ChainKey.FTM]: (<>The Fantom chain requires FTM to pay for gas.</>),
-    [ChainKey.OKT]: (<>The OKExCahin chain requires OKT to pay for gas.</>),
-    [ChainKey.AVA]: (<>The Avalanche chain requires AVAX to pay for gas.</>),
-    [ChainKey.ROP]: (<>The Ropsten Testnet requires ETH to pay for gas.</>),
-    [ChainKey.RIN]: (<>The Rinkeby Testnet requires ETH to pay for gas.</>),
-    [ChainKey.GOR]: (<>The Goerli Testnet requires ETH to pay for gas.</>),
-    [ChainKey.MUM]: (<>The Mumbai Testnet requires MATIC to pay for gas.</>),
-    [ChainKey.ARBT]: (<>The Arbitrum Testnet requires ETH to pay for gas.</>),
-    [ChainKey.OPTT]: (<>The Optimism Testnet requires ETH to pay for gas.</>),
-    [ChainKey.BSCT]: (<>The Optimism Testnet requires BNB to pay for gas.</>),
-  }
   const tooltip = tooltips[chain];
   return (
     <div className="gas">
@@ -552,6 +481,7 @@ const Dashboard = () => {
             name: coin.name,
             logoURI: coin.img_url,
             chains: chainKeysToObject(newToken),
+            verified: coin.verified,
           }
           coins.push(newCoin)
         }

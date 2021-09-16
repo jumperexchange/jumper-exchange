@@ -66,6 +66,7 @@ export interface ChainPortfolio {
   img_url: string,
   pricePerCoin: number,
   amount: number,
+  verified: boolean,
 }
 
 export interface Wallet {
@@ -93,6 +94,10 @@ export interface WalletSummary {
   [ChainKey.OKT]: SummaryAmounts;
   [ChainKey.FTM]: SummaryAmounts;
   [ChainKey.AVA]: SummaryAmounts;
+  [ChainKey.HEC]: SummaryAmounts;
+  [ChainKey.OPT]: SummaryAmounts;
+  [ChainKey.ARB]: SummaryAmounts;
+
   [ChainKey.ROP]: SummaryAmounts;
   [ChainKey.RIN]: SummaryAmounts;
   [ChainKey.GOR]: SummaryAmounts;
@@ -100,6 +105,7 @@ export interface WalletSummary {
   [ChainKey.ARBT]: SummaryAmounts;
   [ChainKey.OPTT]: SummaryAmounts;
   [ChainKey.BSCT]: SummaryAmounts;
+  [ChainKey.HECT]: SummaryAmounts;
 }
 
 export interface ProgressStep {

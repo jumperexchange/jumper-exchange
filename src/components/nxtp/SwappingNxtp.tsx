@@ -6,7 +6,7 @@ import { BaseType } from 'antd/lib/typography/Base';
 import walletIcon from '../../assets/wallet.png';
 import { switchChain } from '../../services/metamask';
 import { formatTokenAmount } from '../../services/utils';
-import { CrossAction, Execution, getChainById, TranferStep } from '../../types';
+import { CrossAction, Execution, getChainById, getIcon, TranferStep } from '../../types';
 import Clock from '../Clock';
 import { injected } from '../web3/connectors';
 
@@ -141,7 +141,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
 
     return (
       <Tooltip title={chain.name}>
-        <Avatar size="small" src={chain.iconUrl} alt={chain.name} style={{ marginTop: '-3px' }}>{chain.name[0]}</Avatar>
+        <Avatar size="small" src={getIcon(chain.key)} alt={chain.name} style={{ marginTop: '-3px' }}>{chain.name[0]}</Avatar>
       </Tooltip>
     )
   }
