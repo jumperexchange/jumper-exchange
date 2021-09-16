@@ -41,6 +41,13 @@
 
 .coin {
   text-align: center;
+  position: relative;
+}
+
+.coin_verify {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .sum {

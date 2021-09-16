@@ -1,5 +1,4 @@
-import { Token } from '../types'
-import { getChainById } from '../types/lists'
+import { getChainById, Token } from '../types'
 
 export const switchChain = async (chainId: number) => {
   const ethereum = (window as any).ethereum

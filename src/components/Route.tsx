@@ -1,7 +1,6 @@
 import { Button, Steps } from 'antd';
 import { formatTokenAmount } from '../services/utils';
-import { getChainById } from '../types/lists';
-import { CrossAction, CrossEstimate, SwapAction, SwapEstimate, TranferStep } from '../types/server';
+import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TranferStep } from '../types';
 
 interface RouteProps {
   route: Array<TranferStep>
@@ -18,14 +17,14 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         const swapEstimate = step.estimate as SwapEstimate
         return {
           title: "Swap Tokens",
-          description: `${formatTokenAmount(swapAction.fromToken, swapEstimate.fromAmount)} for ${formatTokenAmount(swapAction.toToken, swapEstimate.toAmount)} via ${swapAction.tool}`,
+          description: `${formatTokenAmount(swapAction.token, swapEstimate.fromAmount)} for ${formatTokenAmount(swapAction.toToken, swapEstimate.toAmount)} via ${swapAction.tool}`,
         }
       case "cross":
         const crossAction = step.action as CrossAction
         const crossEstimate = step.estimate as CrossEstimate
         return {
           title: "Cross Chains",
-          description: `${formatTokenAmount(crossAction.fromToken, crossEstimate.fromAmount)} on ${getChainById(crossAction.fromChainId).key} to ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} on ${getChainById(crossAction.toChainId).key}`,
+          description: `${formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} on ${getChainById(crossAction.chainId).key} to ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} on ${getChainById(crossAction.toChainId).key}`,
         }
       case "withdraw":
         return {
