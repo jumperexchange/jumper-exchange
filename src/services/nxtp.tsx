@@ -22,6 +22,9 @@ const chainConfigOverwrites: {
     subgraph: 'https://connext-bsc-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-bsc',
     subgraphSyncBuffer: 150
   },
+  250: {
+    subgraph: "https://connext-fantom-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-fantom"
+  },
   42161: {
     subgraph: 'https://api.thegraph.com/subgraphs/name/connext/nxtp-arbitrum-one',
   }
