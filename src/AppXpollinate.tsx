@@ -6,18 +6,19 @@ import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
 import { getBalancesForWallet } from './services/balanceService';
-import { ChainKey, defaultTokens, getChainByKey } from './types';
+import { defaultTokens, getChainById } from './types';
 
-const transferChains = [
-  getChainByKey(ChainKey.BSC),
-  getChainByKey(ChainKey.POL),
-  getChainByKey(ChainKey.DAI),
-  getChainByKey(ChainKey.FTM),
-  getChainByKey(ChainKey.ARB),
-]
+const getTransferChains = () => {
+  try {
+    const chainIds = JSON.parse(process.env.REACT_APP_NXTP_ENABLED_CHAINS_JSON!)
+    return chainIds.map(getChainById)
+  } catch (e) {
+    return []
+  }
+}
+const transferChains = getTransferChains()
 
 const transferTokens = defaultTokens
-
 
 function usePageViews() {
   let location = (window as any).location

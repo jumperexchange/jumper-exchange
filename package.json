@@ -44,8 +44,10 @@
     "build": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
     "build:lifinance:staging": "REACT_APP_ENV=lifinance-mainnet.staging npm run build",
     "build:lifinance": "REACT_APP_ENV=lifinance-mainnet npm run build",
-    "build:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet npm run build",
     "build:xpollinate": "REACT_APP_ENV=xpollinate-mainnet npm run build",
+    "build:xpollinate:staging": "REACT_APP_ENV=xpollinate-mainnet.staging npm run build",
+    "build:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet npm run build",
+    "build:xpollinate:testnet:staging": "REACT_APP_ENV=xpollinate-testnet.staging npm run build",
     "test": "echo 'Not defined'"
   },
   "eslintConfig": {

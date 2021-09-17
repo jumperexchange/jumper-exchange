@@ -9,24 +9,21 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 import { getApproved } from './utils';
 
 // Add overwrites to specific chains here. They will only be applied if the chain is used.
+const getChainConfigOverwrites = () => {
+  try {
+    return JSON.parse(process.env.REACT_APP_NXTP_OVERWRITES_JSON!)
+  } catch (e) {
+    console.error(e)
+    return {}
+  }
+}
 const chainConfigOverwrites: {
   [chainId: number]: {
     transactionManagerAddress?: string;
     subgraph?: string;
     subgraphSyncBuffer?: number;
   }
-} = {
-  56: {
-    subgraph: 'https://connext-bsc-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-bsc',
-    subgraphSyncBuffer: 150
-  },
-  137: {
-    subgraph: "https://connext-polygon-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-matic"
-  },
-  250: {
-    subgraph: "https://connext-fantom-subgraph.apps.bwarelabs.com/subgraphs/name/connext/nxtp-fantom"
-  },
-}
+} = getChainConfigOverwrites()
 
 const DEFAULT_TRANSACTIONS_TO_LOG = 10
 

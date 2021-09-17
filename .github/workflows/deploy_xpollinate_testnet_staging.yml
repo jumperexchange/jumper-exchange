@@ -32,7 +32,7 @@ jobs:
         run: yarn install
 
       - name: Build WebApp
-        run: yarn build:xpollinate:testnet
+        run: yarn build:xpollinate:testnet:staging
 
       - name: Copy xPollinate Icons
         run: cp ./public/xpollinate/* ./build/
