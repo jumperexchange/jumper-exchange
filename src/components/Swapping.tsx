@@ -9,6 +9,7 @@ import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
+import { executeHopCross } from '../services/hop.execute';
 import { switchChain } from '../services/metamask';
 import { executeNXTPCross } from '../services/nxtp.execute';
 import { executeParaswap } from '../services/paraswap.execute';
@@ -94,6 +95,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     switch (crossAction.tool) {
       case 'nxtp':
         return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status));
+      case 'hop':
+        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, crossAction.amount, crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
       default:
         console.warn('should never reach here')
     }
@@ -190,6 +193,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
       case 'cross': {
         const crossAction = step.action as CrossAction
+        console.log(crossAction)
         const crossEstimate = step.estimate as CrossEstimate
         const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         let avatar;
@@ -198,7 +202,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
             avatar = connextAvatar
             break;
           default:
-            return
+            break;
         }
         return [
           <Timeline.Item key={index + '_left'} color={color}>
