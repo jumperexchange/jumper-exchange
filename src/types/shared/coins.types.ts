@@ -1,675 +1,4 @@
-import { BigNumber } from 'ethers';
-import { ChainKey, Coin, CoinKey, Token } from '.';
-
-import bsc from "../assets/icons/bsc.png";
-import eth from "../assets/icons/ethereum.png";
-import pancake from "../assets/icons/pancake.png";
-import polygon from "../assets/icons/polygon.png";
-import quick from "../assets/icons/quick.png";
-import honey from "../assets/icons/honey.png";
-import xdai from "../assets/icons/xdai.png";
-import uniswap from "../assets/icons/uniswap.png";
-import fantom from "../assets/icons/fantom.png";
-import arbitrum from "../assets/icons/arbitrum.svg";
-
-export interface AddEthereumChainParameter {
-  chainId: string;
-  blockExplorerUrls: string[];
-  chainName: string;
-  iconUrls: string[];
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: string[];
-}
-
-export interface Exchange {
-  name: string
-  iconUrl: string
-  logoUrl: string
-  webUrl: string
-  graph: string
-  tokenlistUrl: string
-}
-
-export interface Chain {
-  key: ChainKey
-  name: string
-  coin: CoinKey
-  id: number
-  visible: boolean
-  iconUrl?: string
-  exchange?: Exchange
-  faucetUrls?: string[]
-  metamask: AddEthereumChainParameter
-}
-
-const prefixChainId = (chainId: number) => {
-  return '0x' + BigNumber.from(chainId)._hex.split('0x')[1].replace(/\b0+/g, '')
-}
-
-// chainNames aligned with https://github.com/ethereum-lists/chains/tree/master/_data/chains
-export const supportedChains: Array<Chain> = [
-  // 1 - Ethereum
-  {
-    key: ChainKey.ETH,
-    name: 'Ethereum',
-    coin: CoinKey.ETH,
-    id: 1,
-    visible: true,
-    iconUrl: eth,
-
-    exchange: {
-      name: 'UniswapV2',
-      iconUrl: uniswap,
-      logoUrl: '',
-      webUrl: 'https://app.uniswap.org/#/swap',
-      graph: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2', // https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-      tokenlistUrl: 'https://gateway.ipfs.io/ipns/tokens.uniswap.org',
-    },
-
-    metamask: {
-      chainId: prefixChainId(1),
-      blockExplorerUrls: [
-        'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-      ],
-      chainName: 'Ethereum Mainnet',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://etherscan.io/',
-      ],
-    },
-  },
-  // 137 - Polygon
-  {
-    key: ChainKey.POL,
-    name: 'Polygon',
-    coin: CoinKey.MATIC,
-    id: 137,
-    visible: true,
-    iconUrl: polygon,
-
-    exchange: {
-      name: 'QuickSwap',
-      iconUrl: quick,
-      logoUrl: 'https://quickswap.exchange/static/media/QuickSwap_logo.420e2e01.png',
-      webUrl: 'https://quickswap.exchange/',
-      graph: 'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap06', // https://thegraph.com/explorer/subgraph/sameepsi/quickswap06 (often new versions)
-      tokenlistUrl: 'https://unpkg.com/quickswap-default-token-list@1.0.71/build/quickswap-default.tokenlist.json',
-    },
-
-    // https://docs.matic.network/docs/develop/metamask/config-matic/
-    metamask: {
-      chainId: prefixChainId(137),
-      blockExplorerUrls: [
-        'https://polygonscan.com/',
-        'https://explorer-mainnet.maticvigil.com/',
-      ],
-      chainName: 'Matic(Polygon) Mainnet',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'MATIC',
-        symbol: 'MATIC',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://rpc-mainnet.maticvigil.com/',
-      ],
-    },
-  },
-  // 56 - Binance Smart Chain
-  {
-    key: ChainKey.BSC,
-    name: 'BSC',
-    coin: CoinKey.BNB,
-    id: 56,
-    visible: true,
-    iconUrl: bsc,
-
-    exchange: {
-      name: 'Pancake',
-      logoUrl: pancake,
-      iconUrl: 'https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png',
-      webUrl: 'https://exchange.pancakeswap.finance/',
-      graph: 'https://api.thegraph.com/subgraphs/name/bscnodes/pancakeswap', // https://thegraph.com/explorer/subgraph/bscnodes/pancakeswap
-      tokenlistUrl: 'https://tokens.pancakeswap.finance/pancakeswap-extended.json',
-    },
-
-    // https://docs.binance.org/smart-chain/wallet/metamask.html
-    metamask: {
-      chainId: prefixChainId(56),
-      blockExplorerUrls: [
-        'https://bscscan.com/',
-      ],
-      chainName: 'Binance Smart Chain Mainnet',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'BNB',
-        symbol: 'BNB',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://bsc-dataseed.binance.org/',
-        'https://bsc-dataseed1.defibit.io/',
-        'https://bsc-dataseed1.ninicoin.io/',
-      ],
-    },
-  },
-  // 100 - xDai
-  {
-    key: ChainKey.DAI,
-    name: 'xDai',
-    coin: CoinKey.DAI,
-    id: 100,
-    visible: true,
-    iconUrl: xdai,
-
-    exchange: {
-      name: 'Honeyswap',
-      iconUrl: honey,
-      logoUrl: 'https://app.honeyswap.org/static/media/wordmark_white.svg',
-      webUrl: 'https://app.honeyswap.org/',
-      graph: 'https://api.thegraph.com/subgraphs/name/1hive/honeyswap-xdai',
-      tokenlistUrl: 'https://tokens.honeyswap.org/',
-    },
-
-    // https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup
-    metamask: {
-      chainId: prefixChainId(100),
-      blockExplorerUrls: [
-        'https://blockscout.com/xdai/mainnet',
-      ],
-      chainName: 'xDAI Chain',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'xDai',
-        symbol: 'xDai',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://rpc.xdaichain.com/',
-        'https://dai.poa.network/',
-        'https://xdai.poanetwork.dev/',
-        'https://xdai.1hive.org/',
-      ],
-    },
-  },
-  // 250 - Fantom
-  {
-    key: ChainKey.FTM,
-    name: 'Fantom',
-    coin: CoinKey.FTM,
-    id: 250,
-    visible: true,
-    iconUrl: fantom,
-
-    // https://docs.fantom.foundation/tutorials/set-up-metamask
-    metamask: {
-      chainId: prefixChainId(250),
-      blockExplorerUrls: [
-        'https://ftmscan.com/',
-      ],
-      chainName: 'Fantom Opera',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'FTM',
-        symbol: 'FTM',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://rpc.ftm.tools/',
-        'https://rpcapi.fantom.network',
-      ],
-    },
-  },
-  // 66 - OKExCHain
-  {
-    key: ChainKey.OKT,
-    name: 'OKExCHain',
-    coin: CoinKey.OKT,
-    id: 66,
-    visible: true,
-
-    // https://okexchain-docs.readthedocs.io/en/latest/developers/quick-start-for-mainnet.html
-    metamask: {
-      chainId: prefixChainId(66),
-      blockExplorerUrls: [
-        'https://www.oklink.com/okexchain/',
-      ],
-      chainName: 'OKExChain Mainnet',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'OKT',
-        symbol: 'OKT',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://exchainrpc.okex.org',
-      ],
-    },
-  },
-  // 43114 - Avalanche
-  {
-    key: ChainKey.AVA,
-    name: 'Avalanche',
-    coin: CoinKey.AVAX,
-    id: 43114,
-    visible: true,
-
-    // https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche
-    metamask: {
-      chainId: prefixChainId(43114),
-      blockExplorerUrls: [
-        'https://cchain.explorer.avax.network/',
-      ],
-      chainName: 'Avalanche Mainnet',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'AVAX',
-        symbol: 'AVAX',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://api.avax.network/ext/bc/C/rpc',
-      ],
-    }
-  },
-  // 42161 - Arbitrum One
-  {
-    key: ChainKey.ARB,
-    name: 'Arbitrum One',
-    coin: CoinKey.ETH,
-    id: 42161,
-    iconUrl: arbitrum,
-    visible: true,
-    faucetUrls: [
-      'https://bridge.arbitrum.io/'
-    ],
-
-    metamask: {
-      chainId: prefixChainId(42161),
-      blockExplorerUrls: [
-        'https://arbiscan.io',
-      ],
-      chainName: 'Arbitrum One',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'AETH',
-        symbol: 'AETH',
-        decimals: 18, // check
-      },
-      rpcUrls: [
-        'https://arb1.arbitrum.io/rpc',
-      ],
-    }
-  },
-
-  // 128 - Huobi ECO Chain Mainnet
-  {
-    key: ChainKey.HEC,
-    name: 'Huobi ECO Chain Mainnet',
-    coin: 'HT' as CoinKey,
-    id: 128,
-    visible: true,
-    faucetUrls: [
-
-    ],
-
-    metamask: {
-      chainId: prefixChainId(128),
-      blockExplorerUrls: [
-        'https://hecoinfo.com',
-      ],
-      chainName: 'Huobi ECO Chain Mainnet',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'HT',
-        symbol: 'HT',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://http-mainnet.hecochain.com',
-      ],
-    }
-  },
-
-  // 10 - Optimistic Ethereum
-  {
-    key: ChainKey.OPT,
-    name: 'Optimistic Ethereum',
-    coin: CoinKey.ETH,
-    id: 10,
-    visible: true,
-    faucetUrls: [
-      'https://gateway.optimism.io/'
-    ],
-
-    metamask: {
-      chainId: prefixChainId(10),
-      blockExplorerUrls: [
-        'https://optimistic.etherscan.io',
-      ],
-      chainName: 'Optimistic Ethereum',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'OETH',
-        symbol: 'OETH',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://mainnet.optimism.io/',
-      ],
-    }
-  },
-
-  // 32659 - FSN-MAIN (anyswap)
-  // {
-  //   key: ChainKey.FSN,
-  //   name: 'FSN-MAIN (anyswap)',
-  //   coin: CoinKey.FSN,
-  //   id: 32659,
-  //   visible: false,
-
-  //   // https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche
-  //   metamask: {
-  //     chainId: prefixChainId(32659),
-  //     blockExplorerUrls: [
-  //       'https://fsnex.com',
-  //     ],
-  //     chainName: 'Fusion Mainnet',
-  //     iconUrls: [],
-  //     nativeCurrency: {
-  //       name: 'FSN',
-  //       symbol: 'FSN',
-  //       decimals: 18,
-  //     },
-  //     rpcUrls: [
-  //       'https://fsnmainnet2.anyswap.exchange',
-  //     ],
-  //   }
-  // },
-
-  // 1666600000 - Harmony Mainnet Shard 0
-  // {
-  //   key: ChainKey.HAR,
-  //   name: 'Harmony Mainnet Shard 0',
-  //   coin: CoinKey.HAR,
-  //   id: 1666600000,
-  //   visible: false,
-  //   // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
-  //   metamask: {
-  //     chainId: prefixChainId(1666600000),
-  //     blockExplorerUrls: [
-  //       'https://www.harmony.one/',
-  //     ],
-  //     chainName: 'Harmony Mainnet Shard 0',
-  //     iconUrls: [],
-  //     nativeCurrency: {
-  //       name: 'ONE',
-  //       symbol: 'ONE',
-  //       decimals: 18,
-  //     },
-  //     rpcUrls: [
-  //       'https://api.harmony.one',
-  //     ],
-  //   }
-  // },
-
-  // TESTNETS
-  // 3 - Ropsten
-  {
-    key: ChainKey.ROP,
-    name: 'Ropsten',
-    coin: CoinKey.ETH,
-    id: 3,
-    visible: false,
-    faucetUrls: [
-      'https://faucet.ropsten.be/',
-    ],
-
-    metamask: {
-      chainId: prefixChainId(3),
-      blockExplorerUrls: [
-        'https://ropsten.etherscan.io/',
-      ],
-      chainName: 'Ethereum Testnet Ropsten',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://ropsten.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
-      ],
-    }
-  },
-  // 4 - Rinkeby
-  {
-    key: ChainKey.RIN,
-    name: 'Rinkeby',
-    coin: CoinKey.ETH,
-    id: 4,
-    visible: false,
-    faucetUrls: [
-      'https://faucet.rinkeby.io/',
-    ],
-
-    metamask: {
-      chainId: prefixChainId(4),
-      blockExplorerUrls: [
-        'https://rinkeby.etherscan.io/',
-      ],
-      chainName: 'Ethereum Testnet Rinkeby',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://rinkeby.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
-      ],
-    }
-  },
-  // 5 - Goerli
-  {
-    key: ChainKey.GOR,
-    name: 'Goerli',
-    coin: CoinKey.ETH,
-    id: 5,
-    visible: false,
-    faucetUrls: [
-      'https://goerli-faucet.slock.it/',
-    ],
-
-    metamask: {
-      chainId: prefixChainId(5),
-      blockExplorerUrls: [
-        'https://goerli.etherscan.io/',
-      ],
-      chainName: 'Ethereum Testnet Görli',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
-      ],
-    }
-  },
-
-  // 80001 - Mumbai Polygon Testnet
-  {
-    key: ChainKey.MUM,
-    name: 'Polygon Testnet',
-    coin: CoinKey.MATIC,
-    id: 80001,
-    visible: false,
-    faucetUrls: [
-      'https://faucet.matic.network/',
-    ],
-
-    metamask: {
-      chainId: prefixChainId(80001),
-      blockExplorerUrls: [
-        'https://explorer-mumbai.maticvigil.com/',
-      ],
-      chainName: 'Matic(Polygon) Testnet Mumbai',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'MATIC',
-        symbol: 'tMATIC',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://rpc-mumbai.matic.today',
-      ],
-    }
-  },
-  // 421611 - Arbitrum Testnet
-  {
-    key: ChainKey.ARBT,
-    name: 'Arbitrum Testnet',
-    coin: CoinKey.ETH,
-    id: 421611,
-    iconUrl: arbitrum,
-    visible: false,
-    faucetUrls: [
-      'https://bridge.arbitrum.io/'
-    ],
-
-    metamask: {
-      chainId: prefixChainId(421611),
-      blockExplorerUrls: [
-        'https://rinkeby-explorer.arbitrum.io/#/',
-      ],
-      chainName: 'Arbitrum Testnet Rinkeby',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'ARETH',
-        symbol: 'ARETH',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://rinkeby.arbitrum.io/rpc',
-      ],
-    }
-  },
-  // 69 - Optimistic Ethereum (Kovan)
-  {
-    key: ChainKey.OPTT,
-    name: 'Optimism Testnet',
-    coin: CoinKey.ETH,
-    id: 69,
-    visible: false,
-    faucetUrls: [
-      'https://gateway.optimism.io/'
-    ],
-
-    metamask: {
-      chainId: prefixChainId(69),
-      blockExplorerUrls: [
-        'https://kovan-optimistic.etherscan.io',
-      ],
-      chainName: 'Optimistic Ethereum Testnet Kovan',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'tETH',
-        symbol: 'tETH',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://kovan.optimism.io',
-      ],
-    }
-  },
-  // 97 - Binance Smart Chain Testnet
-  {
-    key: ChainKey.BSCT,
-    name: 'Binance Smart Chain Testnet',
-    coin: CoinKey.BNB,
-    id: 97,
-    visible: false,
-    faucetUrls: [
-      'https://testnet.binance.org/faucet-smart'
-    ],
-
-    metamask: {
-      chainId: prefixChainId(97),
-      blockExplorerUrls: [
-        'https://testnet.bscscan.com/',
-      ],
-      chainName: 'Binance Smart Chain Testnet',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'tBNB',
-        symbol: 'tBNB',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://data-seed-prebsc-1-s1.binance.org:8545/',
-      ],
-    }
-  },
-
-  // 256 - Huobi ECO Chain Testnet
-  {
-    key: ChainKey.HECT,
-    name: 'Huobi ECO Chain Testnet',
-    coin: 'HTT' as CoinKey,
-    id: 256,
-    visible: false,
-    faucetUrls: [
-      'https://scan-testnet.hecochain.com/faucet'
-    ],
-
-    metamask: {
-      chainId: prefixChainId(256),
-      blockExplorerUrls: [
-        'https://scan-testnet.hecochain.com/',
-      ],
-      chainName: 'Huobi ECO Chain Testnet',
-      iconUrls: [],
-      nativeCurrency: {
-        name: 'HT',
-        symbol: 'HT',
-        decimals: 18,
-      },
-      rpcUrls: [
-        'https://http-testnet.hecochain.com',
-        'wss://ws-testnet.hecochain.com',
-      ],
-    }
-  },
-
-  // https://faucet.buni.finance/
-]
-
-export const getChainByKey = (chainKey: ChainKey) => {
-  const chain = supportedChains.find(chain => chain.key === chainKey)
-  if (!chain) {
-    throw new Error('Invalid chainKey')
-  }
-  return chain
-}
-
-export const getChainById = (chainId: number) => {
-  const chain = supportedChains.find(chain => chain.id === chainId)
-  if (!chain) {
-    throw new Error('Invalid chainId')
-  }
-  return chain
-}
+import { ChainKey, Coin, CoinKey, Token } from './base.types';
 
 export const defaultCoins: Array<Coin> = [
   // NATIVE COINS
@@ -1053,10 +382,14 @@ export const findDefaultCoin = (coinKey: CoinKey) => {
   }
   return coin
 }
+export const findDefaultCoinOnChain = (coinKey: CoinKey, chainKey: ChainKey) => {
+  const coin = findDefaultCoin(coinKey)
+  const token = coin.chains[chainKey]
+  return token
+}
 
 export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ETH]: [
-    findDefaultCoin(CoinKey.ETH).chains[ChainKey.ETH],
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.ETH],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.ETH],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.ETH],
@@ -1111,6 +444,7 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     name: 'WBNB',
     logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
   },
+
   [ChainKey.POL]: {
     // https://polygonscan.com/token/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
     id: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
@@ -1133,4 +467,129 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     name: 'WXDAI',
     logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
   },
+}
+
+
+// adapted from https://github.com/1Hive/honeyswap-interface/blob/b25a3cbdec5f43613b1b282ef620f8fad891c82f/src/constants/index.ts
+// https://github.com/pancakeswap/pancake-frontend/blob/a3ff0beeb57a39d7de6c4d7fa0de0e639921eb0c/src/config/constants/index.ts
+// https://github.com/Uniswap/uniswap-interface/blob/b14da2844d3d0ff7d9b6a099499b9402db52629c/src/constants/routing.ts
+//
+export const BASES_TO_CHECK_TRADES_AGAINST = {
+  [ChainKey.ETH]: [
+    wrappedTokens[ChainKey.ETH],
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.ETH],
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.ETH],
+    {
+      id: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+      symbol: 'WBTC',
+      decimals: 18,
+      chainId: 100,
+      chainKey: ChainKey.DAI
+    } as Token,
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.ETH]
+  ],
+  [ChainKey.DAI]: [
+    wrappedTokens[ChainKey.DAI],
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.DAI],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.DAI],
+    {
+      id: '0x8e5bBbb09Ed1ebdE8674Cda39A0c169401db4252',
+      symbol: 'WBTC',
+      decimals: 18,
+      chainId: 100,
+      chainKey: ChainKey.DAI
+    } as Token,
+    {
+      id: '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9',
+      symbol: 'HNY',
+      decimals: 18,
+      chainId: 100,
+      chainKey: ChainKey.DAI
+    } as Token,
+    {
+      id: '0xb7D311E2Eb55F2f68a9440da38e7989210b9A05e',
+      symbol: 'STAKE',
+      decimals: 18,
+      chainId: 100,
+      chainKey: ChainKey.DAI
+    } as Token,
+    {
+      id: '0x3a97704a1b25F08aa230ae53B352e2e72ef52843',
+      symbol: 'AGVE',
+      decimals: 18,
+      chainId: 100,
+      chainKey: ChainKey.DAI
+    } as Token,
+    {
+      id: '0x82dFe19164729949fD66Da1a37BC70dD6c4746ce',
+      symbol: 'BAO',
+      decimals: 18,
+      chainId: 100,
+      chainKey: ChainKey.DAI
+    } as Token,
+  ],
+  [ChainKey.POL]: [
+    // WETH[ChainId.MATIC],
+    wrappedTokens[ChainKey.POL],
+    {
+      id: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
+      symbol: 'HNY',
+      decimals: 18,
+      chainId: 137,
+      chainKey: ChainKey.POL
+    } as Token,
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.POL],
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.POL],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.POL]
+  ],
+  [ChainKey.BSC]: [
+    wrappedTokens[ChainKey.BSC],
+    findDefaultCoin(CoinKey.DAI).chains[ChainKey.BSC],
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.BSC],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.BSC],
+    {
+      id: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+      symbol: 'CAKE',
+      decimals: 18,
+      chainId: 56,
+      chainKey: ChainKey.BSC
+    } as Token,
+    {
+      id: '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',
+      symbol: 'BTCB',
+      decimals: 18,
+      chainId: 56,
+      chainKey: ChainKey.BSC
+    } as Token,
+    {
+      id: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+      symbol: 'ETH',
+      decimals: 18,
+      chainId: 56,
+      chainKey: ChainKey.BSC
+    } as Token,
+    {
+      id: '0x23396cf899ca06c4472205fc903bdb4de249d6fc',
+      symbol: 'ETH',
+      decimals: 18,
+      chainId: 56,
+      chainKey: ChainKey.BSC
+    } as Token,
+  ],
+  [ChainKey.OKT]: [],
+  [ChainKey.FTM]: [],
+  [ChainKey.AVA]: [],
+  [ChainKey.ARB]: [],
+  [ChainKey.HEC]: [],
+  [ChainKey.OPT]: [],
+
+  // Testnets
+  [ChainKey.ROP]: [],
+  [ChainKey.RIN]: [],
+  [ChainKey.GOR]: [],
+  [ChainKey.MUM]: [],
+  [ChainKey.ARBT]: [],
+  [ChainKey.OPTT]: [],
+  [ChainKey.BSCT]: [],
+  [ChainKey.HECT]: [],
 }

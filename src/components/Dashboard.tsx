@@ -1,14 +1,12 @@
 import { CheckCircleTwoTone, CloseCircleTwoTone, DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
 import { useWeb3React } from "@web3-react/core";
-import "animate.css";
 import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import { ethers } from "ethers";
 import React, { useEffect, useState } from 'react';
 import { getBalancesForWallet } from '../services/balanceService';
 import { readWallets, storeWallets } from '../services/localStorage';
-import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, SummaryAmounts, Token, Wallet, WalletSummary } from '../types';
-import { defaultCoins, getChainByKey, supportedChains } from '../types/lists';
+import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, defaultCoins, getChainByKey, SummaryAmounts, supportedChains, Token, Wallet, WalletSummary } from '../types';
 import './Dashboard.css';
 import ConnectButton from "./web3/ConnectButton";
 

@@ -1,23 +1,20 @@
 import { WalletOutlined } from '@ant-design/icons';
-import { Button, Image, Layout, Menu } from 'antd';
+import { Button, Layout, Menu } from 'antd';
 import { Header } from 'antd/lib/layout/layout';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import logo from './assets/icon192.png';
-import heroImage from './assets/info_header.png';
 import AboutPage from './components/AboutPage';
 import Dashboard from './components/Dashboard';
 import NotFoundPage from './components/NotFoundPage';
-import SwapXpollinate from './components/nxtp/SwapXpollinate';
+import Swap from './components/Swap';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
-import { getBalancesForWallet } from './services/balanceService';
 import setMetatags from './services/metatags';
 import { initStomt } from './services/stomt';
-import { ChainKey } from './types';
-import { defaultTokens, getChainByKey } from './types/lists';
+
 
 function usePageViews() {
   const [path, setPath] = useState<string>()
@@ -36,31 +33,8 @@ function usePageViews() {
   return path
 }
 
-const transferChains = [
-  getChainByKey(ChainKey.BSC),
-  getChainByKey(ChainKey.POL),
-  getChainByKey(ChainKey.DAI),
-  getChainByKey(ChainKey.FTM),
-  getChainByKey(ChainKey.ARB),
-]
-
-const transferTokens = defaultTokens
-
 function App() {
   const path = usePageViews()
-
-  const aboutMessage = (<h1>Welcome to the Li.Finance Swap BETA</h1>)
-  const aboutDescription = (
-    <>
-      <Image
-        className="hero-image"
-        src={heroImage}
-      />
-      <p>
-        Note: This is a beta and transfers can take longer then expected. They should be fullfilled in less then 5 minutes, if it takes longer please come back later and check again.
-      </p>
-    </>
-  )
 
   return (
     <BrowserRouter>
@@ -108,13 +82,7 @@ function App() {
                 })
                 initStomt('swap')
                 return <div className="lifiWrap">
-                  <SwapXpollinate
-                    aboutMessage={aboutMessage}
-                    aboutDescription={aboutDescription}
-                    transferChains={transferChains}
-                    transferTokens={transferTokens}
-                    getBalancesForWallet={getBalancesForWallet}
-                  />
+                  <Swap/>
                 </div>
               }}/>
               <Route path="/about" render={() => {

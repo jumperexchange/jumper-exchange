@@ -1,7 +1,7 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from '@web3-react/network-connector';
 import { providers } from 'ethers';
-import { getChainById } from '../../types/lists';
+import { getChainById } from '../../types';
 
 const CHAINS = {
   // Mainnet

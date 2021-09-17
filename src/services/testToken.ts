@@ -1,8 +1,7 @@
 import { FallbackProvider } from '@ethersproject/providers'
 import { BigNumber, constants, Contract, providers, Signer, utils } from "ethers"
 import { getRpcProviders } from '../components/web3/connectors'
-import { ChainPortfolio, CoinKey, TokenWithAmounts } from '../types'
-import { getChainById } from '../types/lists'
+import { ChainPortfolio, CoinKey, getChainById, TokenWithAmounts } from '../types'
 
 const testTokenAddresses: Record<number, string> = {
   // 3 - Ropsten

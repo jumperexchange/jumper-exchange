@@ -1,8 +1,7 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import BigNumber from 'bignumber.js';
-import { Token } from '../../types';
-import { Chain } from '../../types/lists';
+import { Chain, Token } from '../../types';
 
 const LiquidityTableNxtp = ({ liquidity }: any) => {
   const liquidityColumns: ColumnsType<any> = [

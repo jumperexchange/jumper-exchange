@@ -20,9 +20,7 @@ import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { ChainKey, ChainPortfolio, Token, TokenWithAmounts } from '../../types';
-import { Chain, defaultCoins, getChainById, getChainByKey } from '../../types/lists';
-import { CrossAction, CrossEstimate, Execution, TranferStep } from '../../types/server';
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
@@ -198,9 +196,9 @@ const SwapXpollinate = ({
   const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-  const [executionRoutes, setExecutionRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [executionRoutes, setExecutionRoutes] = useState<Array<Array<TransferStep>>>([])
   const [modalRouteIndex, setModalRouteIndex] = useState<number>()
 
   // nxtp
@@ -719,30 +717,35 @@ const SwapXpollinate = ({
     const dAmount = routeRequest.depositAmount
     const dToken = findToken(routeRequest.depositChain, routeRequest.depositToken)
     const wToken = findToken(routeRequest.withdrawChain, routeRequest.withdrawToken)
-    const toAmount = parseInt(routeQuote.bid.amountReceived)
-    const sortedRoutes: Array<Array<TranferStep>> = [[
+
+    const crossAction: CrossAction = {
+        type: 'cross',
+        tool: 'nxtp',
+        chainId: getChainByKey(routeRequest.depositChain).id,
+        toChainId: getChainByKey(routeRequest.withdrawChain).id,
+        token: dToken,
+        toToken: wToken,
+        amount: dAmount,
+        toAddress: '',
+    }
+    // TODO: calculate real fee
+    const crossEstimate: CrossEstimate = {
+      type: 'cross',
+      fromAmount: routeQuote.bid.amount,
+      toAmount: routeQuote.bid.amountReceived,
+      fees: {
+        included: true,
+        percentage: '0.0005',
+        token: crossAction.token,
+        amount: new BigNumber(crossAction.amount).times('0.0005').toString(),
+      },
+      data: routeQuote,
+    }
+
+    const sortedRoutes: Array<Array<TransferStep>> = [[
       {
-        action: {
-          type: 'cross',
-          method: 'nxtp',
-          chainId: getChainByKey(routeRequest.depositChain).id,
-          chainKey: routeRequest.depositChain,
-          toChainKey: routeRequest.withdrawChain,
-          amount: dAmount,
-          fromToken: dToken,
-          toToken: wToken,
-        } as CrossAction,
-        estimate: {
-          fromAmount: dAmount,
-          toAmount: toAmount,
-          fees: {
-            included: true,
-            percentage: (dAmount - toAmount) / dAmount * 100,
-            token: dToken,
-            amount: dAmount - toAmount,
-          },
-          quote: routeQuote,
-        } as CrossEstimate,
+        action: crossAction,
+        estimate: crossEstimate,
       }
     ]]
 
@@ -752,7 +755,7 @@ const SwapXpollinate = ({
     setRoutesLoading(false)
   }, [routeRequest, routeQuote, findToken])
 
-  const updateExecutionRoute = (route: Array<TranferStep>) => {
+  const updateExecutionRoute = (route: Array<TransferStep>) => {
     setExecutionRoutes(routes => {
       let index = routes.findIndex(item => {
         return item[0].id === route[0].id
@@ -768,7 +771,7 @@ const SwapXpollinate = ({
 
   const openSwapModal = () => {
     // add execution route
-    const route = deepClone(routes[highlightedIndex]) as Array<TranferStep>
+    const route = deepClone(routes[highlightedIndex]) as Array<TransferStep>
     setExecutionRoutes(routes => [...routes, route])
 
     // get new route to avoid triggering the same quote twice
@@ -783,32 +786,32 @@ const SwapXpollinate = ({
       invariant: {
         user: '',
         router: '',
-        sendingAssetId: crossAction.fromToken.id,
+        sendingAssetId: crossAction.token.id,
         receivingAssetId: crossAction.toToken.id,
         sendingChainFallback: '',
         callTo: '',
         receivingAddress: '',
         sendingChainId: crossAction.chainId,
-        receivingChainId: getChainByKey(crossAction.toChainKey).id,
+        receivingChainId: crossAction.toChainId,
         callDataHash: '',
-        transactionId: crossEstimate.quote.bid.transactionId,
+        transactionId: crossEstimate.data.bid.transactionId,
         receivingChainTxManagerAddress: ''
       },
       sending: {
-        amount: crossAction.amount.toString(),
+        amount: crossAction.amount,
         preparedBlockNumber: 0,
         expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
       },
     }
-    updateActiveTransactionsWith(crossEstimate.quote.bid.transactionId, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent, txData)
+    updateActiveTransactionsWith(crossEstimate.data.bid.transactionId, 'Started' as NxtpSdkEvent, {} as TransactionPreparedEvent, txData)
     setActiveKeyTransactions('active')
 
     // start execution
-    const update = (step: TranferStep, status: Execution) => {
+    const update = (step: TransferStep, status: Execution) => {
       step.execution = status
       updateExecutionRoute(route)
     }
-    triggerTransfer(sdk!, route[0], update, optionInfiniteApproval)
+    triggerTransfer(sdk!, route[0], (status: Execution) => update(route[0], status), optionInfiniteApproval)
 
     // open modal
     setModalRouteIndex(executionRoutes.length)
@@ -825,7 +828,7 @@ const SwapXpollinate = ({
 
       // trigger sdk
       const route = executionRoutes[index]
-      const update = (step: TranferStep, status: Execution) => {
+      const update = (step: TransferStep, status: Execution) => {
         step.execution = status
         updateExecutionRoute(route)
       }

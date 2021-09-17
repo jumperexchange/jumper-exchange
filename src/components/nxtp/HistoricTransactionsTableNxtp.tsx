@@ -3,8 +3,7 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import BigNumber from 'bignumber.js';
 import React from 'react';
-import { TokenWithAmounts } from '../../types';
-import { getChainById } from '../../types/lists';
+import { getChainById, TokenWithAmounts } from '../../types';
 
 interface HistoricTransactionsTableNxtpProps {
   historicTransactions: Array<HistoricalTransaction>
