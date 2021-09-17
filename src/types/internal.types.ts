@@ -115,7 +115,7 @@ export interface ProgressStep {
   description: string
 }
 
-export interface TranferStep {
+export interface TransferStep {
   action: Action
   estimate?: Estimate
   execution?: Execution

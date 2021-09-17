@@ -54,7 +54,7 @@ export const addToken = async (token: Token) => {
     })
     return wasAdded
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
   return false
 }

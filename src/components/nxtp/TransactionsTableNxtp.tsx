@@ -4,12 +4,12 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Button, Spin, Table } from 'antd';
 import React from 'react';
-import { CrossEstimate, getChainById, TokenWithAmounts, TranferStep } from '../../types';
+import { CrossEstimate, getChainById, TokenWithAmounts, TransferStep } from '../../types';
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
 
 interface TransactionsTableNxtpProps {
   activeTransactions: Array<ActiveTransaction>
-  executionRoutes: Array<Array<TranferStep>>
+  executionRoutes: Array<Array<TransferStep>>
   setModalRouteIndex: Function
   openSwapModalFinish: Function
   switchChain: Function

@@ -6,12 +6,12 @@ import { BaseType } from 'antd/lib/typography/Base';
 import walletIcon from '../../assets/wallet.png';
 import { switchChain } from '../../services/metamask';
 import { formatTokenAmount } from '../../services/utils';
-import { CrossAction, Execution, getChainById, getIcon, TranferStep } from '../../types';
+import { CrossAction, Execution, getChainById, getIcon, TransferStep } from '../../types';
 import Clock from '../Clock';
 import { injected } from '../web3/connectors';
 
 interface SwappingProps {
-  route: Array<TranferStep>,
+  route: Array<TransferStep>,
 }
 
 const SwappingNxtp = ({ route }: SwappingProps) => {
@@ -146,7 +146,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
     )
   }
 
-  const parseStepToTimeline = (step: TranferStep, index: number) => {
+  const parseStepToTimeline = (step: TransferStep, index: number) => {
     const executionSteps = parseExecution(step.execution)
 
     switch (step.action.type) {
