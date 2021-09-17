@@ -2,7 +2,6 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 
 import { JsonRpcSigner, TransactionReceipt } from '@ethersproject/providers'
 import { Execution } from '../types/'
-import BigNumber from 'bignumber.js'
 import hop from './hop'
 import { CoinKey } from '../types'
 

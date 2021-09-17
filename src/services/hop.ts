@@ -133,10 +133,11 @@ const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
 }
 
 
-
-export default {
+const hopExport = {
   init,
   setAllowanceAndCrossChains,
   waitForReceipt,
   parseReceipt
 }
+
+export default hopExport
