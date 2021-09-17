@@ -1,7 +1,7 @@
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { FallbackProvider } from '@ethersproject/providers';
-import { Button } from 'antd';
+import { Badge, Button, Tooltip } from 'antd';
 import { constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
@@ -178,7 +178,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
     if (data.txData.transactionId !== transactionId) return
     if (submitProcess) {
-      submitProcess.message = <>Transaction Sent (<a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, 1 Confirmation</a>)</>
+      submitProcess.message = <>Transaction Sent: <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
       setStatusDone(update, status, submitProcess)
     }
     receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)', { type: 'wait' })
@@ -192,13 +192,13 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     if (receiverProcess && receiverProcess.status !== 'DONE') {
       receiverProcess.txHash = data.transactionHash
       receiverProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + receiverProcess.txHash
-      receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, 1 Confirmation</a>)</>
+      receiverProcess.message = <>Receiver Prepared: <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
       setStatusDone(update, status, receiverProcess)
 
       // track confirmations
       trackConfirmations(sdk, data.txData.receivingChainId, data.transactionHash, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
         if (receiverProcess) {
-          receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, {count}{count === DEFAULT_TRANSACTIONS_TO_LOG ? '+' : ''} Confirmations</a>)</>
+          receiverProcess.message = <>Receiver Prepared: <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
           update(status)
         }
       })
@@ -228,14 +228,14 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       status.status = 'DONE'
       proceedProcess.txHash = data.transactionHash
       proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
-      proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, 1 Confirmation</a>)</>
+      proceedProcess.message = <>Funds Claimed: <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
       status.toAmount = data.txData.amount
       setStatusDone(update, status, proceedProcess)
 
       // track confirmations
       trackConfirmations(sdk, data.txData.receivingChainId, data.transactionHash, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
         if (proceedProcess) {
-          proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, {count}{count === DEFAULT_TRANSACTIONS_TO_LOG ? '+' : ''} Confirmations</a>)</>
+          proceedProcess.message = <>Funds Claimed: <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
           update(status)
         }
       })
@@ -248,7 +248,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       status.status = 'DONE'
       proceedProcess.txHash = data.transactionHash
       proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
-      proceedProcess.message = <>Funds Claimed (<a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+      proceedProcess.message = <>Funds Claimed: <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
       status.toAmount = data.txData.amount
       setStatusDone(update, status, proceedProcess)
     }
@@ -267,7 +267,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   try {
     const result = await transferPromise
     trackConfirmationsForResponse(result.prepareResponse, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
-      submitProcess!.message = <>Transaction Sent (<a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx, {count}{count === DEFAULT_TRANSACTIONS_TO_LOG ? '+' : ''} Confirmations</a>)</>
+      submitProcess!.message = <>Transaction Sent: <a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
       update(status)
     })
   } catch (_e: unknown) {
@@ -290,6 +290,18 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   return status
 }
 
+const renderConfirmations = (count: number, max: number) => {
+  const text = count < max ? `${count}/${max}` : `${max}+`
+  return (
+    <Tooltip title={text + ' Confirmations'}>
+      <Badge
+        count={text}
+        style={{ backgroundColor: '#52c41a', marginBottom: '2px'}}
+      />
+    </Tooltip>
+  )
+}
+
 const trackConfirmations = async (sdk: NxtpSdk, chainId: number, hash: string, confirmations: number, callback: Function) => {
   const receivingProvider: FallbackProvider = (sdk as any).chainConfig[chainId].provider
   const response = await receivingProvider.getTransaction(hash)
@@ -297,7 +309,7 @@ const trackConfirmations = async (sdk: NxtpSdk, chainId: number, hash: string, c
 }
 
 const trackConfirmationsForResponse = async (response: providers.TransactionResponse, confirmations: number, callback: Function) => {
-  for (let i = 2; i <= confirmations; i++) {
+  for (let i = 1; i <= confirmations; i++) {
     await response.wait(i)
     callback(i)
   }
