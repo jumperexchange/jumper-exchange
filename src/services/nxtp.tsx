@@ -181,7 +181,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       submitProcess.message = <>Transaction Sent (<a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, 1 Confirmation</a>)</>
       setStatusDone(update, status, submitProcess)
     }
-    receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', { type: 'wait' })
+    receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)', { type: 'wait' })
   })
 
   // ReceiverTransactionPrepared => sign
