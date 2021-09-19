@@ -296,7 +296,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(42161),
       blockExplorerUrls: [
-        'https://arbiscan.io',
+        'https://arbiscan.io/',
       ],
       chainName: 'Arbitrum One',
       iconUrls: [],
@@ -325,7 +325,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(128),
       blockExplorerUrls: [
-        'https://hecoinfo.com',
+        'https://hecoinfo.com/',
       ],
       chainName: 'Huobi ECO Chain Mainnet',
       iconUrls: [],
