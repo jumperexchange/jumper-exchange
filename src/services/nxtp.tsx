@@ -266,7 +266,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
 
   try {
     const result = await transferPromise
-    trackConfirmationsForResponse(result.prepareResponse, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
+    trackConfirmationsForResponse(sdk, fromChain.id, result.prepareResponse, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
       submitProcess!.message = <>Transaction Sent: <a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
       update(status)
     })
@@ -305,13 +305,21 @@ const renderConfirmations = (count: number, max: number) => {
 const trackConfirmations = async (sdk: NxtpSdk, chainId: number, hash: string, confirmations: number, callback: Function) => {
   const receivingProvider: FallbackProvider = (sdk as any).chainConfig[chainId].provider
   const response = await receivingProvider.getTransaction(hash)
-  trackConfirmationsForResponse(response, confirmations, callback)
+  trackConfirmationsForResponse(sdk, chainId, response, confirmations, callback)
 }
 
-const trackConfirmationsForResponse = async (response: providers.TransactionResponse, confirmations: number, callback: Function) => {
-  for (let i = 1; i <= confirmations; i++) {
-    await response.wait(i)
-    callback(i)
+const trackConfirmationsForResponse = async (sdk: NxtpSdk, chainId: number, response: providers.TransactionResponse, confirmations: number, callback: Function) => {
+  try {
+    for (let i = 2; i <= confirmations; i++) {
+      await response.wait(i)
+      callback(i)
+    }
+  } catch (e: any) {
+    if (e && e.code === 'TRANSACTION_REPLACED' && e.replacement && e.replacement.hash) {
+      trackConfirmations(sdk, chainId, e.replacement.hash, confirmations, callback)
+    } else {
+      console.error(e)
+    }
   }
 }
 
