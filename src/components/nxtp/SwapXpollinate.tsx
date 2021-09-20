@@ -878,7 +878,16 @@ const SwapXpollinate = ({
     }
   }
 
-  const currentChain = web3.chainId ? getChainById(web3.chainId) : undefined
+  const getCurrentChain = () => {
+    if (!web3.chainId) return undefined
+
+    try {
+      return getChainById(web3.chainId)
+    } catch {
+      return undefined
+    }
+  }
+  const currentChain = getCurrentChain()
   const menuChain = (
     <Menu onClick={handleMenuClick}>
       <Menu.ItemGroup title="Supported Chains">
