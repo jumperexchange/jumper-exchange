@@ -105,6 +105,7 @@ function App() {
                   getChainByKey(ChainKey.RIN),
                   getChainByKey(ChainKey.GOR),
                   getChainByKey(ChainKey.ROP),
+                  getChainByKey(ChainKey.MUM),
                 ]
                 return <div className="lifiWrap">
                   <Swap

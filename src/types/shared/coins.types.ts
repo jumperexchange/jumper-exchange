@@ -492,6 +492,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.USDC,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
       },
+      [ChainKey.MUM]: {
+        id: '0x6D4dd09982853F08d9966aC3cA4Eb5885F16f2b2',
+        symbol: CoinKey.USDC,
+        decimals: 6,
+        chainId: ChainId.MUM,
+        chainKey: ChainKey.MUM,
+        key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+      },
       // 42, 0xb7a4f3e9097c08da09517b5ab877f7a917224ede, 6
     },
   },
@@ -644,6 +654,13 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ROP),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ROP),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ROP),
+  ],
+  [ChainKey.MUM]: [
+    // findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.MUM),
+    findDefaultCoinOnChain(CoinKey.TEST, ChainKey.ROP),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MUM),
+    // findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MUM),
+    // findDefaultCoinOnChain(CoinKey.DAI, ChainKey.MUM),
   ],
 }
 

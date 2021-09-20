@@ -498,6 +498,13 @@ export const supportedChains: Array<Chain> = [
       'https://faucet.matic.network/',
     ],
 
+    exchange: {
+      name: 'QuickSwap',
+      webUrl: 'https://quickswap.exchange/',
+      graph: '',
+      tokenlistUrl: 'https://raw.githubusercontent.com/elkfinance/tokens/main/mumbai.tokenlist.json',
+    },
+
     metamask: {
       chainId: prefixChainId(80001),
       blockExplorerUrls: [
