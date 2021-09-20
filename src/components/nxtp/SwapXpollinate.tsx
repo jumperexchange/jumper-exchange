@@ -508,7 +508,7 @@ const SwapXpollinate = ({
 
   const updateBalances = useCallback(async (address: string) => {
     setUpdatingBalances(true)
-    await getBalancesForWallet(address).then(setBalances)
+    await getBalancesForWallet(address, transferChains.map(chain => chain.id)).then(setBalances)
     setUpdatingBalances(false)
   }, [getBalancesForWallet])
 
