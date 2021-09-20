@@ -510,7 +510,7 @@ const SwapXpollinate = ({
     setUpdatingBalances(true)
     await getBalancesForWallet(address, transferChains.map(chain => chain.id)).then(setBalances)
     setUpdatingBalances(false)
-  }, [getBalancesForWallet])
+  }, [getBalancesForWallet, transferChains])
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
