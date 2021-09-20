@@ -1,11 +1,33 @@
 import { Button, Steps } from 'antd';
 import { formatTokenAmount } from '../services/utils';
-import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types';
+import { ChainKey, CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types';
 
 interface RouteProps {
   route: Array<TransferStep>
   selected: boolean
   onSelect: Function
+}
+
+const chainNames: {[k in ChainKey]: string} = {
+  eth: "Ethereum",
+  pol: "Polygon",
+  bsc: "BSC",
+  dai: "xDai",
+  okt: "OKEx",
+  ftm: "Fantom",
+  ava: "Avalance",
+  arb: "Arbitrum",
+  hec: "Huobi ECO",
+  opt: "Optimistic ETH",
+  // testnets
+  rop: "Ropsten TEST",
+  rin: "Rinkeby TEST",
+  gor: "Goerli TEST",
+  mum: "Mumbai TEST",
+  arbt: "Arbitrum TEST",
+  optt: "Optimism TEST",
+  bsct: "BSC TEST",
+  hect: "Huobi TEST"
 }
 
 const Route = ({ route, selected, onSelect }: RouteProps) => {
@@ -24,8 +46,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         const crossEstimate = step.estimate as CrossEstimate
         return {
           title: "Cross Chains",
-          description: `${formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} on ${getChainById(crossAction.chainId).key} to ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} on ${getChainById(crossAction.toChainId).key}`,
-        }
+          description: `${chainNames[getChainById(crossAction.chainId).key]}: ${formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} to ${chainNames[getChainById(crossAction.toChainId).key]}: ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} via ${crossAction.tool}`,        }
       case "withdraw":
         return {
           title: "Withdraw",
