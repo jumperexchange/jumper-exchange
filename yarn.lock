@@ -1282,12 +1282,12 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.0.42":
-  version "0.0.42"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.42.tgz#1e56d5ebbcd48935f2a46e72f1d6fd65b184d95a"
-  integrity sha512-tda9pVD2R92IolkSXuEnFWm/nLBkWyls8QMRn2fEAvp9hPxDpN3t/KvxBO5J+LlgL2xelkTn71b+InXxysYViA==
+"@connext/nxtp-contracts@0.0.45":
+  version "0.0.45"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.45.tgz#30b98999a09f60a0dfa889818e6b521d365f9270"
+  integrity sha512-pHBOmH8bEG7whEGDzRBZC0U56dU9HHy97BRd/bK3loimV5z8tGgo0HT114XMsUyBHgH1aQGGgGMsfrOSg/5fZA==
   dependencies:
-    "@connext/nxtp-utils" "0.0.42"
+    "@connext/nxtp-utils" "0.0.45"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
@@ -1297,14 +1297,14 @@
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@^0.0.42":
-  version "0.0.42"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.42.tgz#a4c3d38ff32cf6d82e41f6c4be80f1c6fb11a70c"
-  integrity sha512-rm9MaOY8m2zINVHimX6OOJK+CMtCc1Qch7vJY/2E/z+rUTOOrBb6VMbXIoRhSHYv1Tu/d0rp0oRJXdtGLYLqjg==
+"@connext/nxtp-sdk@^0.0.45":
+  version "0.0.45"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.45.tgz#8ace0b5a561c82c3fa926fff184de0a278fc29ed"
+  integrity sha512-pd1GlNJkWKvn+jL3aRYWJKvJ/YxDeg01zaxXl0DsCvoKW4ZPzbIkMTHRrDbMu0COWbvivpYEENw1KdyE2L+cyA==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.42"
-    "@connext/nxtp-txservice" "0.0.42"
-    "@connext/nxtp-utils" "0.0.42"
+    "@connext/nxtp-contracts" "0.0.45"
+    "@connext/nxtp-txservice" "0.0.45"
+    "@connext/nxtp-utils" "0.0.45"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
     ajv-formats "^2.1.1"
@@ -1315,12 +1315,12 @@
     graphql-tag "^2.12.5"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.0.42":
-  version "0.0.42"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.42.tgz#a2b3bd1706acae1f2751d7eb4d0ca22e42fdf723"
-  integrity sha512-2k6kJ+2n3g5UE/YOFQ7/VTRM20LpBwL7KIj650D0LO7bbwS8clLAwbfPmiIno70mAilDbt8S9JSi4HeDukU0wA==
+"@connext/nxtp-txservice@0.0.45":
+  version "0.0.45"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.45.tgz#bd2b4535b11dffefad8d8cefee154f648cfaa809"
+  integrity sha512-PLt+RrxEhJ9ixr/lHywesQsU3eNAR/aE1KFVbeBZgM4WXVJdNpwticcxNEwr0CfkoOabG1vkVjWv7EWxrOnnmA==
   dependencies:
-    "@connext/nxtp-utils" "0.0.42"
+    "@connext/nxtp-utils" "0.0.45"
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
@@ -1333,10 +1333,10 @@
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.0.42":
-  version "0.0.42"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.42.tgz#2fdce3ac04cbdb5706d1922295701ab9c21c7ee2"
-  integrity sha512-XIk1WUR5aRhAD3k/Xg9GtHzy16PCobJXMYz6A+eEX62pMkw+E4MR/P31WdOP7cm4QnmX4UTF4+OcjjtKqDkB4w==
+"@connext/nxtp-utils@0.0.45":
+  version "0.0.45"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.45.tgz#1f0efd9fa1b161b420f6d1fb3a5776e3923d307d"
+  integrity sha512-/VPHjfM0qbOBvuegSoUAn4l6WJLXOCD47NQkJQHXenBdSyerFNZsXQxCAe/eVzaV8FK7I4z1pTC+akVBJWLjaw==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
@@ -6094,6 +6094,16 @@ eth-lib@^0.1.26:
     ws "^3.0.0"
     xhr-request-promise "^0.1.2"
 
+eth-sig-util@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/eth-sig-util/-/eth-sig-util-3.0.1.tgz#8753297c83a3f58346bd13547b59c4b2cd110c96"
+  integrity sha512-0Us50HiGGvZgjtWTyAI/+qTzYPMLy5Q451D0Xy68bxq1QMWdoOddDwGvsqcFT27uohKgalM9z/yxplyt+mY2iQ==
+  dependencies:
+    ethereumjs-abi "^0.6.8"
+    ethereumjs-util "^5.1.1"
+    tweetnacl "^1.0.3"
+    tweetnacl-util "^0.15.0"
+
 ethereum-bloom-filters@^1.0.6:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/ethereum-bloom-filters/-/ethereum-bloom-filters-1.0.10.tgz#3ca07f4aed698e75bd134584850260246a5fed8a"
@@ -6130,6 +6140,14 @@ ethereum-types@^2.1.6:
     "@types/node" "*"
     bignumber.js "~8.0.2"
 
+ethereumjs-abi@^0.6.8:
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/ethereumjs-abi/-/ethereumjs-abi-0.6.8.tgz#71bc152db099f70e62f108b7cdfca1b362c6fcae"
+  integrity sha512-Tx0r/iXI6r+lRsdvkFDlut0N08jWMnKRZ6Gkq+Nmw75lZe4e6o3EkSnkaBP5NF6+m5PTGAr9JP43N3LyeoglsA==
+  dependencies:
+    bn.js "^4.11.8"
+    ethereumjs-util "^6.0.0"
+
 ethereumjs-util@6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/ethereumjs-util/-/ethereumjs-util-6.2.0.tgz#23ec79b2488a7d041242f01e25f24e5ad0357960"
@@ -6155,6 +6173,19 @@ ethereumjs-util@^5.1.1:
     ethjs-util "^0.1.3"
     rlp "^2.0.0"
     safe-buffer "^5.1.1"
+
+ethereumjs-util@^6.0.0:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/ethereumjs-util/-/ethereumjs-util-6.2.1.tgz#fcb4e4dd5ceacb9d2305426ab1a5cd93e3163b69"
+  integrity sha512-W2Ktez4L01Vexijrm5EB6w7dg4n/TgpoYU4avuT5T3Vmnw/eCRtiBrJfQYS/DCSvDIOLn2k57GcHdeBcgVxAqw==
+  dependencies:
+    "@types/bn.js" "^4.11.3"
+    bn.js "^4.11.0"
+    create-hash "^1.1.2"
+    elliptic "^6.5.2"
+    ethereum-cryptography "^0.1.3"
+    ethjs-util "0.1.6"
+    rlp "^2.2.3"
 
 ethereumjs-util@^7.0.10, ethereumjs-util@^7.1.0:
   version "7.1.0"
@@ -13896,6 +13927,11 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tweetnacl-util@^0.15.0:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/tweetnacl-util/-/tweetnacl-util-0.15.1.tgz#b80fcdb5c97bcc508be18c44a4be50f022eea00b"
+  integrity sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

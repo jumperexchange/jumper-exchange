@@ -10,6 +10,7 @@ import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
 import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
+import { lifinance } from '../services/lifinance';
 import { switchChain } from '../services/metamask';
 import { executeNXTPCross } from '../services/nxtp.execute';
 import { executeParaswap } from '../services/paraswap.execute';
@@ -250,6 +251,24 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
   }
 
+  const triggerLifi = async () => {
+    // ensure chain is set
+    if (web3.chainId !== route[0].action.chainId) {
+      if (!(await checkChain(route[0]))) return
+    }
+
+    lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) => updateStatus(route[0], status))
+  }
+
+  const isLifiSupported = (route: Array<TransferStep>) => {
+    const crossStep = route.find(step => step.action.type === 'cross')
+    if (!crossStep) return false // perform simple swaps directly
+
+    const crossAction = crossStep.action as CrossAction
+
+    return crossAction.tool === 'nxtp' && lifinance.supportedChains.includes(crossAction.chainId) && lifinance.supportedChains.includes(crossAction.toChainId)
+  }
+
   const startCrossChainSwap = async () => {
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
@@ -271,6 +290,17 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   // check where we are an trigger next
   const checkSwapping = () => {
     if (!isSwapping) return
+
+    // lifi supported?
+    if (isLifiSupported(route)) {
+      if (!route[0].execution) {
+        triggerLifi()
+      } else if (route[0].execution.status === 'DONE') {
+        setIsSwapping(false)
+        setSwapDoneAt(Date.now())
+      }
+      return
+    }
 
     for (let index = 0; index < route.length; index++) {
       if (!route[index].execution) {

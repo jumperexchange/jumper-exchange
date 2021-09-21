@@ -84,26 +84,24 @@ export const getContractAddress = (chainId: number) => {
   return uniswapRouters[chainId]
 }
 
-export const swap = async (signer: JsonRpcSigner, chainId: number, srcToken: string, destToken: string, destAddress: string, srcAmount: string, path: Array<string>) => {
+export const getSwapCall = async (signer: JsonRpcSigner, chainId: number, destAddress: string, srcToken: string, destToken: string, srcAmount: string, destAmount: string, path: Array<string>) => {
   const contract = new ethers.Contract(getContractAddress(chainId), uniswapRouter02ABI, signer)
-
-  const swapData = {
-    amountIn: srcAmount,
-    amountOutMin: '1', // TODO: maybe change this, but this will make the swap always succeed
-    path,
-    to: destAddress,
-    deadline: Math.floor(Date.now() / 1000) + 60 * 20, // 20 minutes from now on -> https://docs.uniswap.org/sdk/2.0.0/guides/trading
-  }
+  const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes from the current Unix time
 
   if (srcToken === ethers.constants.AddressZero) {
-    const data = await contract.populateTransaction.swapExactETHForTokens(swapData.amountOutMin, swapData.path, swapData.to, swapData.deadline)
+    const data = await contract.populateTransaction.swapExactETHForTokens(destAmount, path, destAddress, deadline)
     data.value = BigNumber.from(srcAmount)
-    return signer.sendTransaction(data)
+    return data
   } else if (destToken === ethers.constants.AddressZero) {
-    return contract.swapExactTokensForETH(swapData.amountIn, swapData.amountOutMin, swapData.path, swapData.to, swapData.deadline)
+    return await contract.populateTransaction.swapExactTokensForETH(srcAmount, destAmount, path, destAddress, deadline)
   } else {
-    return contract.swapExactTokensForTokens(swapData.amountIn, swapData.amountOutMin, swapData.path, swapData.to, swapData.deadline)
+    return await contract.populateTransaction.swapExactTokensForTokens(srcAmount, destAmount, path, destAddress, deadline)
   }
+}
+
+export const swap = async (signer: JsonRpcSigner, chainId: number, srcToken: string, destToken: string, destAddress: string, srcAmount: string, path: Array<string>) => {
+  const data = await getSwapCall(signer, chainId, destAddress, srcToken, destToken, srcAmount, '1', path)
+  return signer.sendTransaction(data)
 }
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
