@@ -393,6 +393,7 @@ export const supportedChains: Array<Chain> = [
     visible: false,
     faucetUrls: [
       'https://faucet.ropsten.be/',
+      'https://app.compound.finance/', // https://teller.gitbook.io/teller-1/testing-guide/getting-testnet-tokens-ropsten-1
     ],
 
     exchange: {

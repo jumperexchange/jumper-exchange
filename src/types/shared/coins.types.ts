@@ -268,7 +268,7 @@ export const defaultCoins: Array<Coin> = [
 
       // Testnets
       [ChainKey.ROP]: {
-        id: '0x31f42841c2db5173425b5223809cf3a38fede360',
+        id: '0x31f42841c2db5173425b5223809cf3a38fede360', // on para 0xaD6D458402F60fD3Bd25163575031ACDce07538D, on faucet 0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108
         symbol: CoinKey.DAI,
         decimals: 18,
         chainId: ChainId.ROP,

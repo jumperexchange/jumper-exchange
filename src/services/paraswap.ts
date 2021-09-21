@@ -10,7 +10,6 @@ const instances: { [key: number]: ParaSwap | null } = {
   137: null,
   // testnet
   3: null, // ropsten
-
 }
 
 const swappedTypes: Array<ethers.utils.ParamType> = [
@@ -98,7 +97,7 @@ export const updateAllowance = async (signer: JsonRpcSigner, chainId: number, us
   await setAllowance(signer, chainId, userAddress, tokenAddress, amount)
 }
 
-export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddress: string, srcToken: string, destToken: string, srcAmount: string, receiver?: string) => {
+export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddress: string, srcToken: string, destToken: string, srcAmount: string, receiver?: string, srcDecimals?: number, destDecimals?: number) => {
   const SLIPPAGE = 1 // =1%
   const para = getParaswap(chainId)
 
@@ -118,7 +117,9 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
       referrer: process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
       // maxImpact?: number;
       // maxUSDImpact?: number;
-    }
+    },
+    srcDecimals,
+    destDecimals,
   ) as OptimalRatesWithPartnerFees
 
   const minAmount = new BN(rate.destAmount).times(1 - (SLIPPAGE / 100)).toFixed(0)
@@ -131,6 +132,9 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
     userAddress,
     process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
     receiver ?? userAddress,
+    {},
+    srcDecimals,
+    destDecimals,
   ) as Transaction
 
   const transaction = {
