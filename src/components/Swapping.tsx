@@ -42,23 +42,21 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const checkChain = async (step: TransferStep) => {
-    if (web3.chainId !== step.action.chainId) {
-      const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
-      const chain = getChainById(step.action.chainId)
-      const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`)
-      try {
-        const switched = await switchChain(step.action.chainId)
-        if (!switched) {
-          throw new Error('Chain was not switched')
-        }
-      } catch (e: any) {
-        if (e.message) switchProcess.errorMessage = e.message
-        if (e.code) switchProcess.errorCode = e.code
-        setStatusFailed(update, status, switchProcess)
-        return false
+    const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
+    const chain = getChainById(step.action.chainId)
+    const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`)
+    try {
+      const switched = await switchChain(step.action.chainId)
+      if (!switched) {
+        throw new Error('Chain was not switched')
       }
-      setStatusDone(update, status, switchProcess)
+    } catch (e: any) {
+      if (e.message) switchProcess.errorMessage = e.message
+      if (e.code) switchProcess.errorCode = e.code
+      setStatusFailed(update, status, switchProcess)
+      return false
     }
+    setStatusDone(update, status, switchProcess)
     return true
   }
 
@@ -78,14 +76,15 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
     // ensure chain is set
-    if (!(await checkChain(step))) return
-
+    if (web3.chainId !== step.action.chainId) {
+      if (!(await checkChain(step))) return
+    }
     switch (swapAction.tool) {
       case 'uniswap':
       case 'pancakeswap':
       case 'honeyswap':
       case 'quickswap':
-        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
+        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
         return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       case '1inch':
@@ -108,7 +107,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
     // ensure chain is set
-    if (!(await checkChain(step))) return
+    if (web3.chainId !== step.action.chainId) {
+      if (!(await checkChain(step))) return
+    }
 
     switch (crossAction.tool) {
       case 'nxtp':
