@@ -5,8 +5,7 @@ import { Button, Col, Row } from 'antd';
 import React, { useState } from 'react';
 import { switchChain } from '../../services/metamask';
 import { mintTokens, testToken } from '../../services/testToken';
-import { ChainKey, ChainPortfolio } from '../../types';
-import { Chain, getChainByKey } from '../../types/lists';
+import { Chain, ChainKey, ChainPortfolio, getChainByKey } from '../../types';
 
 interface TestBalanceOverviewProps {
   transferChains: Chain[]

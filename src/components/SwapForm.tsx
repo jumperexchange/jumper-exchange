@@ -4,8 +4,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Button, Col, Input, Row } from 'antd';
 import { RefSelectProps } from 'antd/lib/select';
 import React, { useRef } from 'react';
-import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../types';
-import { Chain } from '../types/lists';
+import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../types';
 import ChainSelect from './ChainSelect';
 import TokenSelect from './TokenSelect';
 import { injected } from './web3/connectors';
@@ -206,6 +205,7 @@ const SwapForm = ({
               type="number"
               defaultValue={0.0}
               min={0}
+              step={0.000000000000000001}
               value={isFinite(depositAmount) && depositAmount >= 0 ? depositAmount : ''}
               onChange={((event) => onChangeDepositAmount(formatAmountInput(event)))}
               placeholder="0.0"

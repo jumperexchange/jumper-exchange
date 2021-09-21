@@ -22,7 +22,7 @@ function getDefaultValues() {
     },
     tags: {
       'twitter:card': 'summary_large_image',
-      'twitter:site': '@lifimesh'
+      'twitter:site': '@lifiprotocol'
     },
     noIndex: false,
     statusCode: 200

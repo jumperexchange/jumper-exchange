@@ -6,14 +6,13 @@ import { Button, Col, Form, Image, Modal, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
+import BigNumber from 'bignumber.js';
 import React, { useCallback, useEffect, useState } from 'react';
 import heroImage from '../assets/info_header.png';
 import { getBalancesForWallet } from '../services/balanceService';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
-import { ChainKey, ChainPortfolio, Token } from '../types';
-import { defaultTokens, getChainByKey } from '../types/lists';
-import { DepositAction, TranferStep, WithdrawAction } from '../types/server';
+import { ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
 import Route from './Route';
 import './Swap.css';
 import SwapForm from './SwapForm';
@@ -49,10 +48,10 @@ const Swap = () => {
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
 
   // Routes
-  const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setselectedRoute] = useState<Array<TranferStep>>([])
+  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
   const [selectedRouteIndex, setselectedRouteIndex] = useState<number>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
 
@@ -67,13 +66,7 @@ const Swap = () => {
     } else {
       const selectedRoute = routes[highlightedIndex]
       const lastStep = selectedRoute[selectedRoute.length - 1]
-      if (lastStep.action.type === 'withdraw') {
-        return formatTokenAmountOnly(lastStep.action.token, lastStep.estimate?.toAmount)
-      } else if (lastStep.action.type === '1inch' || lastStep.action.type === 'paraswap') {
-        return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
-      } else {
-        return '0.0'
-      }
+      return formatTokenAmountOnly((lastStep.action as any).toToken, lastStep.estimate?.toAmount)
     }
   }
 
@@ -166,19 +159,18 @@ const Swap = () => {
         const dToken = findToken(depositChain, depositToken)
         const deposit: DepositAction = {
           type: 'deposit',
-          chainKey: depositChain,
           chainId: getChainByKey(depositChain).id,
           token: dToken,
-          amount: depositAmount ? Math.floor(depositAmount * (10 ** dToken.decimals)) : Infinity
+          amount: new BigNumber(depositAmount).shiftedBy(dToken.decimals).toFixed(0)
         }
 
         const wToken = findToken(withdrawChain, withdrawToken)
         const withdraw: WithdrawAction = {
           type: 'withdraw',
-          chainKey: withdrawChain,
           chainId: getChainByKey(withdrawChain).id,
           token: wToken,
-          amount: Infinity
+          amount: '',
+          toAddress: '',
         }
 
         // cancel previously running requests
@@ -194,29 +186,12 @@ const Swap = () => {
         try {
           const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
 
-          // remove swaps with native coins
-          const filteredRoutes: Array<Array<TranferStep>> = result.data.filter((path: Array<TranferStep>) => {
-            for (const step of path) {
-              if (step.action.type === 'swap') {
-                if (step.action.fromToken.id === '0x0000000000000000000000000000000000000000' || step.action.toToken.id === '0x0000000000000000000000000000000000000000') {
-                  return false
-                }
-              }
-            }
-            return true
-          })
+          // filter if needed
+          const routes: Array<Array<TransferStep>> = result.data
 
-          // sortedRoutes
-          const sortedRoutes = filteredRoutes.sort((routeA, routeB) => {
-            const routeAResult = routeA[routeA.length - 1].estimate?.toAmount || 0
-            const routeBResult = routeB[routeB.length - 1].estimate?.toAmount || 0
-
-            return routeBResult - routeAResult
-          })
-
-          setRoutes(sortedRoutes)
-          setHighlightedIndex(filteredRoutes.length === 0 ? -1 : 0)
-          setNoRoutesAvailable(filteredRoutes.length === 0)
+          setRoutes(routes)
+          setHighlightedIndex(routes.length === 0 ? -1 : 0)
+          setNoRoutesAvailable(routes.length === 0)
           setRoutesLoading(false)
         } catch (err) {
           // check if it we are still loading a new request

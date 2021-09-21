@@ -1,8 +1,7 @@
 import { FallbackProvider } from '@ethersproject/providers'
 import { BigNumber, constants, Contract, providers, Signer, utils } from "ethers"
 import { getRpcProviders } from '../components/web3/connectors'
-import { ChainPortfolio, CoinKey, TokenWithAmounts } from '../types'
-import { getChainById } from '../types/lists'
+import { ChainPortfolio, CoinKey, getChainById, TokenWithAmounts } from '../types'
 
 const testTokenAddresses: Record<number, string> = {
   // 3 - Ropsten
@@ -93,6 +92,7 @@ export const getBalancesForWallet = async (address: string) => {
         img_url: '',
         amount: (await ethAmount).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
         pricePerCoin: 0,
+        verified: false,
       },
       // test token
       {
@@ -102,6 +102,7 @@ export const getBalancesForWallet = async (address: string) => {
         img_url: '',
         amount: (await testAmount).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
         pricePerCoin: 0,
+        verified: false,
       },
     ]
   })

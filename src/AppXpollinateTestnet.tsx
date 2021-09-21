@@ -6,18 +6,17 @@ import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
 import { getBalancesForWallet, testToken } from './services/testToken';
-import { ChainKey } from './types';
-import { getChainByKey } from './types/lists';
+import { getChainById } from './types';
 
-const transferChains = [
-  getChainByKey(ChainKey.ROP),
-  getChainByKey(ChainKey.RIN),
-  getChainByKey(ChainKey.GOR),
-  getChainByKey(ChainKey.MUM),
-  getChainByKey(ChainKey.ARBT),
-  getChainByKey(ChainKey.BSCT),
-  // getChainByKey(ChainKey.OPTT),
-]
+const getTransferChains = () => {
+  try {
+    const chainIds = JSON.parse(process.env.REACT_APP_NXTP_ENABLED_CHAINS_TESTNET_JSON!)
+    return chainIds.map(getChainById)
+  } catch (e) {
+    return []
+  }
+}
+const transferChains = getTransferChains()
 
 const transferTokens = testToken
 
