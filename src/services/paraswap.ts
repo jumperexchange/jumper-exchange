@@ -148,6 +148,8 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
 }
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
+  console.log("------")
+  console.log(receipt)
   const result = {
     fromAmount: '0',
     toAmount: '0',

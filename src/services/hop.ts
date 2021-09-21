@@ -7,52 +7,34 @@ import { ChainKey, CoinKey } from '../types'
 import { getChainByKey } from '../types/shared/chains.types'
 
 
-const swappedTypes: Array<ethers.utils.ParamType> = [
+
+const receivedContractTypes: Array<ethers.utils.ParamType> = [
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "address",
-    "name": "initiator",
-    "type": "address"
-  }),
-  ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "srcAmount",
-    "type": "uint256"
-  }),
-  ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "receivedAmount",
-    "type": "uint256"
-  }),
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "value",
+      "type": "uint256"
+    }),
+
+]
+
+const bondedContractTypes: Array<ethers.utils.ParamType> = [
   ethers.utils.ParamType.from({
     "indexed": false,
     "internalType": "uint256",
-    "name": "expectedAmount",
+    "name": "amount",
     "type": "uint256"
-  }),
-  ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "string",
-    "name": "referrer",
-    "type": "string"
   }),
 ]
-interface Swapped {
-  initiator: string
-  srcAmount: BigNumber
-  receivedAmount: BigNumber
-  expectedAmount: BigNumber
-  referrer: string
+interface BondedSwapped {
+  amount: BigNumber
+}
+interface ReceivedSwapped{
+  value: BigNumber
 }
 
-
 const hop = new Hop('mainnet')
-
-
 let bridges: {[k:string]: HopBridge} = {}
-
 const hopChains : {[k:number]: Chain} = {
   [getChainByKey(ChainKey.ETH).id]: Chain.Ethereum,
   [getChainByKey(ChainKey.POL).id]: Chain.Polygon,
@@ -91,17 +73,18 @@ const setAllowanceAndCrossChains = async (bridgeCoin: CoinKey, amount: string, f
   return tx
 }
 
-const waitForReceipt = (tx:string, coin: CoinKey, fromChainId: number, toChainId:number) => {
-  const hopFromChain = hopChains[fromChainId]
-  const hopToChain = hopChains[toChainId]
+const waitForDestinationChainReceipt = (tx:string, coin: CoinKey, fromChainId: number, toChainId:number): Promise<TransactionReceipt> => {
   return new Promise ((resolve, reject) => {
+    const hopFromChain = hopChains[fromChainId]
+    const hopToChain = hopChains[toChainId]
     hop.watch(tx, hopTokens[coin], hopFromChain, hopToChain)
-    .on('receipt', (data:any) => {
-      const { receipt, chain } = data
-      console.log(receipt, chain)
-      resolve(receipt)
+    .once('destinationTxReceipt', async (data:any) => {
+      const receipt: TransactionReceipt = data.receipt
+      console.log(receipt)
+      console.log("giving backo")
+      if (receipt.status !== 1) reject(receipt)
+      if (receipt.status === 1) resolve(receipt)
     })
-
   })
 }
 
@@ -117,18 +100,25 @@ const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
   const decoder = new ethers.utils.AbiCoder()
 
   // gas
+  console.log("before gas")
   result.gasUsed = receipt.gasUsed.toString()
   result.gasPrice = tx.gasPrice?.toString() || '0'
   result.gasFee = receipt.gasUsed.mul(result.gasPrice).toString()
+  console.log(result)
 
   // log
-  const log = receipt.logs.find((log) => log.address === receipt.to)
-  if (log) {
-    const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
-    result.fromAmount = parsed.srcAmount.toString()
-    result.toAmount = parsed.receivedAmount.toString()
+  console.log("before log")
+  const boondedLog = receipt.logs.find((log) => log.address === receipt.to) // info about initial funds
+  const receivedLog = receipt.logs[2] // info about received funds
+  if (boondedLog) {
+    const parsed = decoder.decode(bondedContractTypes, boondedLog.data) as unknown as BondedSwapped
+    result.fromAmount = parsed.amount.toString()
   }
-
+  if(receivedLog){
+    const parsed = decoder.decode(receivedContractTypes, receivedLog.data) as unknown as ReceivedSwapped
+    result.toAmount = parsed.value.toString()
+  }
+  console.log(result)
   return result
 }
 
@@ -136,7 +126,7 @@ const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
 const hopExport = {
   init,
   setAllowanceAndCrossChains,
-  waitForReceipt,
+  waitForDestinationChainReceipt,
   parseReceipt
 }
 

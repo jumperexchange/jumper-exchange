@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
+import hopIcon from '../assets/icons/hop.png';
 import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
 import { executeHopCross } from '../services/hop.execute';
@@ -177,6 +178,12 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     </Tooltip>
   )
 
+  const hopAvatar = (
+    <Tooltip title="Hop">
+      <Avatar size="small" src={hopIcon} alt="Hop"></Avatar>
+    </Tooltip>
+  )
+
   const paraswapAvatar = (
     <Tooltip title="Paraswap">
       <Avatar size="small" src={paraswapIcon} alt="Paraswap"></Avatar>
@@ -212,13 +219,15 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
       case 'cross': {
         const crossAction = step.action as CrossAction
-        console.log(crossAction)
         const crossEstimate = step.estimate as CrossEstimate
         const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         let avatar;
         switch (crossAction.tool) {
           case 'nxtp':
             avatar = connextAvatar
+            break;
+          case 'hop':
+            avatar = hopAvatar
             break;
           default:
             break;
@@ -266,7 +275,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         updateRoute(route)
       }
     }
-
     // start again
     setIsSwapping(true)
   }
