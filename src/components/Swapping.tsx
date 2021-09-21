@@ -300,8 +300,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     // DONE
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
-      const result = route[route.length - 1].execution
-      console.debug(result)
+      // const result = route[route.length - 1].execution
+      // console.debug(result)
       return <Link to="/dashboard"><Button type="link" >DONE - check your balances in our Dashboard</Button></Link>
     }
 

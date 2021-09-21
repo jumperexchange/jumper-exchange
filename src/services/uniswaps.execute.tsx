@@ -97,6 +97,9 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   })
 
   // -> set status
+  status.fromAmount = parsedReceipt.fromAmount
+  status.toAmount = parsedReceipt.toAmount
+  status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
   status.status = 'DONE'
   update(status)
 

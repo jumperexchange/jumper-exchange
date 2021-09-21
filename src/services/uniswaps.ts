@@ -12,43 +12,50 @@ const uniswapRouter02ABI = [
 ]
 
 const swappedTypes: Array<ethers.utils.ParamType> = [
-  ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "address",
-    "name": "initiator",
-    "type": "address"
-  }),
+  // ethers.utils.ParamType.from({
+  //   "indexed": true,
+  //   "internalType": "address",
+  //   "name": "sender",
+  //   "type": "address"
+  // }),
   ethers.utils.ParamType.from({
     "indexed": false,
     "internalType": "uint256",
-    "name": "srcAmount",
+    "name": "amount0In",
     "type": "uint256"
   }),
   ethers.utils.ParamType.from({
     "indexed": false,
     "internalType": "uint256",
-    "name": "receivedAmount",
+    "name": "amount1In",
     "type": "uint256"
   }),
   ethers.utils.ParamType.from({
     "indexed": false,
     "internalType": "uint256",
-    "name": "expectedAmount",
+    "name": "amount0Out",
     "type": "uint256"
   }),
   ethers.utils.ParamType.from({
     "indexed": false,
-    "internalType": "string",
-    "name": "referrer",
-    "type": "string"
+    "internalType": "uint256",
+    "name": "amount1Out",
+    "type": "uint256"
   }),
+  // ethers.utils.ParamType.from({
+  //   "indexed": true,
+  //   "internalType": "address",
+  //   "name": "to",
+  //   "type": "address"
+  // }),
 ]
 interface Swapped {
-  initiator: string
-  srcAmount: BigNumber
-  receivedAmount: BigNumber
-  expectedAmount: BigNumber
-  referrer: string
+  sender: string
+  amount0In: BigNumber
+  amount1In: BigNumber
+  amount0Out: BigNumber
+  amount1Out: BigNumber
+  to: string
 }
 
 // Official routers
@@ -115,12 +122,17 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
   result.gasFee = receipt.gasUsed.mul(result.gasPrice).toString()
 
   // log
-  const log = receipt.logs.find((log) => log.address === receipt.to)
-  if (log) {
-    const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
-    result.fromAmount = parsed.srcAmount.toString()
-    result.toAmount = parsed.receivedAmount.toString()
-  }
+  receipt.logs.forEach((log) => {
+    try {
+      const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
+      if (result.fromAmount === '0') {
+        result.fromAmount = parsed.amount0In.isZero() ? parsed.amount1In.toString() : parsed.amount0In.toString()
+      }
+      result.toAmount = parsed.amount0Out.isZero() ? parsed.amount1Out.toString() : parsed.amount0Out.toString()
+    } catch {
+      // ignore, only matching will be parsed
+    }
+  })
 
   return result
 }
