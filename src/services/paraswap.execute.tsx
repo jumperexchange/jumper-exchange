@@ -1,18 +1,18 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import * as paraswap from './paraswap'
-import { Execution, getChainById } from '../types'
+import { Execution, getChainById, Token } from '../types'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved, setApproval } from './utils'
 import { constants } from 'ethers'
 
-export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
 
   // setup
   const fromChain = getChainById(chainId)
   const { status, update } = initStatus(updateStatus, initialStatus)
 
-  if (srcToken !== constants.AddressZero) {
+  if (srcToken.id !== constants.AddressZero) {
     // Ask user to set allowance
     // -> set status
     const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance for Paraswap')
@@ -20,10 +20,10 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
     // -> check allowance
     try {
       const contractAddress = await paraswap.getContractAddress(chainId) as string
-      const approved = await getApproved(signer, srcToken, contractAddress)
+      const approved = await getApproved(signer, srcToken.id, contractAddress)
 
       if (srcAmount.gt(approved)) {
-        const approveTx = await setApproval(signer, srcToken, contractAddress, srcAmount.toString())
+        const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toString())
 
         // update status
         allowanceProcess.status = 'PENDING'
@@ -57,7 +57,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   // -> swapping
   let tx
   try {
-    tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken, destToken, srcAmount.toString(), destAddress)
+    tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken.id, destToken.id, srcAmount.toString(), destAddress, srcToken.decimals, destToken.decimals)
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message

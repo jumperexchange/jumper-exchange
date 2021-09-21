@@ -1,26 +1,34 @@
 import { FallbackProvider } from '@ethersproject/providers'
 import { BigNumber, constants, Contract, providers, Signer, utils } from "ethers"
 import { getRpcProviders } from '../components/web3/connectors'
-import { ChainPortfolio, CoinKey, getChainById, TokenWithAmounts } from '../types'
+import { ChainId, chainKeysToObject, ChainPortfolio, CoinKey, defaultTokens, getChainById, TokenWithAmounts } from '../types'
 
 const testTokenAddresses: Record<number, string> = {
   // 3 - Ropsten
-  3: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
+  [ChainId.ROP]: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 4 - Rinkeby
-  4: '0x9ac2c46d7acc21c881154d57c0dc1c55a3139198',
+  [ChainId.RIN]: '0x9ac2c46d7acc21c881154d57c0dc1c55a3139198',
   // 5 - Goerli
-  5: '0x8a1cad3703e0beae0e0237369b4fcd04228d1682',
+  [ChainId.GOR]: '0x8a1cad3703e0beae0e0237369b4fcd04228d1682',
   // 80001 - Mumbai Polygon Testnet
-  80001: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
+  [ChainId.MUM]: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 421611 - Arbitrum Testnet
-  421611: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
-  // 97 - Binance Smart Chain Testnet
-  97: '0xd86bcb7d85163fbc81756bb9cc22225d6abccadb',
+  [ChainId.ARBT]: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 69 - Optimistic Ethereum (Kovan)
-  69: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
+  [ChainId.OPTT]: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
+  // 97 - Binance Smart Chain Testnet
+  [ChainId.BSCT]: '0xd86bcb7d85163fbc81756bb9cc22225d6abccadb',
 }
 
-const testChains = [3, 4, 5, 80001, 421611, 97, 69]
+const testChains = [
+  ChainId.ROP,
+  ChainId.RIN,
+  ChainId.GOR,
+  ChainId.MUM,
+  ChainId.ARBT,
+  ChainId.OPTT,
+  ChainId.BSCT,
+]
 
 const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)
 
@@ -105,6 +113,35 @@ export const getBalancesForWallet = async (address: string) => {
         verified: false,
       },
     ]
+  })
+
+  await Promise.all(promises)
+
+  return portfolio
+}
+
+export const getDefaultTokenBalancesForWallet = async (address: string, onChains?: Array<number>) => {
+  const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
+  const promises: Array<Promise<any>> = []
+
+  Object.entries(defaultTokens).forEach(async ([chainKey, tokens]) => {
+    if (onChains && onChains.indexOf(tokens[0].chainId) === -1) {
+      return
+    }
+
+    tokens.forEach(async (token) => {
+      const amount = getBalance(address, token.id, chainProviders[token.chainId]).catch((e) => { console.warn(e); return BigNumber.from(0) })
+      promises.push(amount)
+      portfolio[chainKey].push({
+        id: token.id,
+        name: token.name,
+        symbol: token.key,
+        img_url: '',
+        amount: (await amount).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
+        pricePerCoin: 0,
+        verified: false,
+      })
+    })
   })
 
   await Promise.all(promises)

@@ -88,7 +88,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       case 'quickswap':
         return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
-        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       case '1inch':
         return await executeOneInchSwap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       default:
