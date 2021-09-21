@@ -37,8 +37,7 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
   }
 
   const parsedReceipt = hop.parseReceipt(tx, destinationTxReceipt)
-  console.log("----------")
-  console.log(parsedReceipt)
+
 
   setStatusDone(update, status, waitForTxProcess, {
     fromAmount: parsedReceipt.fromAmount,
