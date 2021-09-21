@@ -20,7 +20,7 @@ import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TranferStep } from '../../types';
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
@@ -196,9 +196,9 @@ const SwapXpollinate = ({
   const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-  const [executionRoutes, setExecutionRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [executionRoutes, setExecutionRoutes] = useState<Array<Array<TransferStep>>>([])
   const [modalRouteIndex, setModalRouteIndex] = useState<number>()
 
   // nxtp
@@ -305,10 +305,6 @@ const SwapXpollinate = ({
         if (!sub) {
           console.error(`No subgraph URI available for ${chain.id}`)
           return null
-        }
-        // TODO: remove this after new SDK release
-        if (sub === 'https://thegraph.com/legacy-explorer/subgraph/connext/nxtp-arbitrum-one') {
-          sub = 'https://api.thegraph.com/subgraphs/name/connext/nxtp-arbitrum-one'
         }
 
         // request
@@ -512,9 +508,9 @@ const SwapXpollinate = ({
 
   const updateBalances = useCallback(async (address: string) => {
     setUpdatingBalances(true)
-    await getBalancesForWallet(address).then(setBalances)
+    await getBalancesForWallet(address, transferChains.map(chain => chain.id)).then(setBalances)
     setUpdatingBalances(false)
-  }, [getBalancesForWallet])
+  }, [getBalancesForWallet, transferChains])
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
@@ -746,7 +742,7 @@ const SwapXpollinate = ({
       data: routeQuote,
     }
 
-    const sortedRoutes: Array<Array<TranferStep>> = [[
+    const sortedRoutes: Array<Array<TransferStep>> = [[
       {
         action: crossAction,
         estimate: crossEstimate,
@@ -759,7 +755,7 @@ const SwapXpollinate = ({
     setRoutesLoading(false)
   }, [routeRequest, routeQuote, findToken])
 
-  const updateExecutionRoute = (route: Array<TranferStep>) => {
+  const updateExecutionRoute = (route: Array<TransferStep>) => {
     setExecutionRoutes(routes => {
       let index = routes.findIndex(item => {
         return item[0].id === route[0].id
@@ -775,7 +771,7 @@ const SwapXpollinate = ({
 
   const openSwapModal = () => {
     // add execution route
-    const route = deepClone(routes[highlightedIndex]) as Array<TranferStep>
+    const route = deepClone(routes[highlightedIndex]) as Array<TransferStep>
     setExecutionRoutes(routes => [...routes, route])
 
     // get new route to avoid triggering the same quote twice
@@ -811,11 +807,11 @@ const SwapXpollinate = ({
     setActiveKeyTransactions('active')
 
     // start execution
-    const update = (step: TranferStep, status: Execution) => {
+    const update = (step: TransferStep, status: Execution) => {
       step.execution = status
       updateExecutionRoute(route)
     }
-    triggerTransfer(sdk!, route[0], update, optionInfiniteApproval)
+    triggerTransfer(sdk!, route[0], (status: Execution) => update(route[0], status), optionInfiniteApproval)
 
     // open modal
     setModalRouteIndex(executionRoutes.length)
@@ -832,7 +828,7 @@ const SwapXpollinate = ({
 
       // trigger sdk
       const route = executionRoutes[index]
-      const update = (step: TranferStep, status: Execution) => {
+      const update = (step: TransferStep, status: Execution) => {
         step.execution = status
         updateExecutionRoute(route)
       }
@@ -882,7 +878,16 @@ const SwapXpollinate = ({
     }
   }
 
-  const currentChain = web3.chainId ? getChainById(web3.chainId) : undefined
+  const getCurrentChain = () => {
+    if (!web3.chainId) return undefined
+
+    try {
+      return getChainById(web3.chainId)
+    } catch {
+      return undefined
+    }
+  }
+  const currentChain = getCurrentChain()
   const menuChain = (
     <Menu onClick={handleMenuClick}>
       <Menu.ItemGroup title="Supported Chains">

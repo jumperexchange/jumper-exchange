@@ -3,11 +3,11 @@ import { AuctionResponse } from '@connext/nxtp-utils';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import BigNumber from 'bignumber.js';
 import { getRpcProviders } from '../components/web3/connectors';
-import { CrossAction, Execution, Process, TranferStep } from '../types';
+import { CrossAction, CrossEstimate, Execution, Process, TransferStep } from '../types';
 import * as nxtp from './nxtp';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
-export const executeNXTPCross = async (signer: JsonRpcSigner, step: TranferStep, fromAmount: BigNumber, userAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep, fromAmount: BigNumber, userAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
   // setup
   let { status, update } = initStatus(updateStatus, initialStatus)
   const crossAction = step.action as CrossAction
@@ -17,13 +17,18 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TranferStep,
   const destTokenAddress = crossAction.toToken.id
 
   // sdk
+  // -> set status
+  const quoteProcess = createAndPushProcess(update, status, 'Setup NXTP')
+  // -> init sdk
   const crossableChains = [crossAction.chainId, crossAction.toChainId]
   const chainProviders = getRpcProviders(crossableChains)
   const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
   // get Quote
   // -> set status
-  const quoteProcess = createAndPushProcess(update, status, 'Confirm Quote')
+  quoteProcess.message = 'Confirm Quote'
+  update(status)
+
   let quote: AuctionResponse | undefined;
   try {
     quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
@@ -36,11 +41,25 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TranferStep,
   }
   setStatusDone(update, status, quoteProcess)
 
+  // store quote
+  const crossEstimate: CrossEstimate = {
+    type: 'cross',
+    fromAmount: quote.bid.amount,
+    toAmount: quote.bid.amountReceived,
+    fees: {
+      included: true,
+      percentage: '0.0005',
+      token: crossAction.token,
+      amount: new BigNumber(crossAction.amount).times('0.0005').toString(),
+    },
+    data: quote,
+  }
+  step.estimate = crossEstimate
+
   // trigger transfer
   try {
-    status = await nxtp.triggerTransferWithPreexistingStatus(nxtpSDK, step, quote, update, status)
+    await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
   } catch (e) {
-    console.log(status)
     nxtpSDK.removeAllListeners()
     throw e
   }
@@ -60,8 +79,6 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TranferStep,
       resolve(status)
     })
   })
-
-  // nxtpSDK.detach()
 }
 
 const cleanUp = (sdk: NxtpSdk, update: Function, status: any, process: Process) => {

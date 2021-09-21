@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy Staging Web via SSH
+name: Deploy Li.Finance Staging Web via SSH
 
 # Controls when the action will run.
 on:

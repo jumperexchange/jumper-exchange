@@ -1,16 +1,16 @@
 import { Button, Steps } from 'antd';
 import { formatTokenAmount } from '../services/utils';
-import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TranferStep } from '../types';
+import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types';
 
 interface RouteProps {
-  route: Array<TranferStep>
+  route: Array<TransferStep>
   selected: boolean
   onSelect: Function
 }
 
 const Route = ({ route, selected, onSelect }: RouteProps) => {
 
-  const parseStep = (step: TranferStep) => {
+  const parseStep = (step: TransferStep) => {
     switch (step.action.type) {
       case "swap":
         const swapAction = step.action as SwapAction

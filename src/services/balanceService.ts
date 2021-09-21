@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ethers } from 'ethers';
-import { ChainKey, chainKeysToObject, ChainPortfolio } from '../types';
+import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById } from '../types';
 import { deepClone } from './utils';
 
 type tokenListDebankT = {
@@ -62,15 +62,17 @@ const filterPortfolioWithBlacklist = (portfolio: Portfolio, blacklist: Blacklist
 
 const COVALENT_API_KEY = 'ckey_538ec97ac4594396bda51a91df1'
 const COVALENT_API_URI = 'https://api.covalenthq.com/v1'
-// const COVALENT_SUPPORTED_CHAINS = {
-//   1: 'Ethereum Mainnet',
-//   137: 'Polygon/Matic Mainnet',
-//   80001: 'Polygon/Matic Mumbai Testnet',
-//   56: 'Binance Smart Chain',
-//   43114: 'Avalanche C-Chain Mainnet',
-//   43113: 'Fuji C-Chain Testnet',
-//   250: 'Fantom Opera Mainnet',
-// }
+const COVALENT_SUPPORTED_CHAINS = [
+  ChainId.ETH,  // Ethereum Mainnet
+  ChainId.POL,  // Polygon/Matic Mainnet
+  ChainId.BSC,  // Binance Smart Chain
+  ChainId.AVA,  // Avalanche C-Chain Mainnet
+  ChainId.FTM,  // Fantom Opera Mainnet
+
+  // Testnets
+  ChainId.MUM,  // Polygon/Matic Mumbai Testnet
+  //43113,  // Fuji C-Chain Testnet
+]
 export async function covalentGetCoinsOnChain(walletAdress: string, chainId: number) {
   const url = `${COVALENT_API_URI}/${chainId}/address/${walletAdress}/balances_v2/?key=${COVALENT_API_KEY}`
   let result
@@ -97,6 +99,32 @@ export async function covalentGetCoinsOnChain(walletAdress: string, chainId: num
   }
 
   return portfolio
+}
+
+const getBlancesFromCovalent = async (walletAdress: string, onChains?: Array<number>) => {
+  let requestChains: Array<number>
+  if (onChains) {
+    requestChains = onChains.filter((chainId) => {
+      if (COVALENT_SUPPORTED_CHAINS.indexOf(chainId) !== -1) {
+        return true
+      } else {
+        console.warn(`Trying to request unsupported chain ${chainId} from Covalent.`)
+        return false
+      }
+    })
+  } else {
+    requestChains = COVALENT_SUPPORTED_CHAINS
+  }
+
+  const totalPortfolio: Portfolio = deepClone(EMPTY_PORTFOLIO)
+  const promises = requestChains.map(async (chainId) => {
+    const chain = getChainById(chainId)
+    const balances = await covalentGetCoinsOnChain(walletAdress, chainId)
+    totalPortfolio[chain.key] = balances
+  })
+  await Promise.allSettled(promises)
+
+  return totalPortfolio
 }
 
 /* INFO: DEBANK API goes against our initial way of looking on all chains for a given coinId;
@@ -159,9 +187,7 @@ function mapDebankChainNameToChainKey(chainName: string) {
   return chainNameMapping[chainName]
 }
 
-const getBalancesForWallet = async (walletAdress: string): Promise<Portfolio> => {
-  walletAdress = walletAdress.toLowerCase()
-
+const getBlancesFromDebank = async (walletAdress: string) => {
   const tokenListUrl = `https://openapi.debank.com/v1/user/token_list?id=${walletAdress}&is_all=true`
 
   var result
@@ -169,8 +195,7 @@ const getBalancesForWallet = async (walletAdress: string): Promise<Portfolio> =>
     result = await axios.get(tokenListUrl);
   } catch (e) {
     console.warn(`Debank api call for token list failed with status ` + e)
-    console.warn(e)
-    return deepClone(EMPTY_PORTFOLIO)
+    throw e
   }
 
   // response body is empty?
@@ -190,7 +215,20 @@ const getBalancesForWallet = async (walletAdress: string): Promise<Portfolio> =>
     })
   }
 
-  return filterPortfolioWithBlacklist(totalPortfolio, tokenBlacklist)
+  return totalPortfolio
+}
+
+const getBalancesForWallet = async (walletAdress: string, onChains?: Array<number>): Promise<Portfolio> => {
+  walletAdress = walletAdress.toLowerCase()
+
+  let protfolio: Portfolio
+  try {
+    protfolio = await getBlancesFromDebank(walletAdress)
+  } catch {
+    protfolio = await getBlancesFromCovalent(walletAdress, onChains)
+  }
+
+  return filterPortfolioWithBlacklist(protfolio, tokenBlacklist)
 }
 
 export { getCoinsOnChain, getBalancesForWallet };

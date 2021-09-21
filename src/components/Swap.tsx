@@ -12,7 +12,7 @@ import heroImage from '../assets/info_header.png';
 import { getBalancesForWallet } from '../services/balanceService';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
-import { ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TranferStep, WithdrawAction } from '../types';
+import { ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
 import Route from './Route';
 import './Swap.css';
 import SwapForm from './SwapForm';
@@ -48,10 +48,10 @@ const Swap = () => {
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
 
   // Routes
-  const [routes, setRoutes] = useState<Array<Array<TranferStep>>>([])
+  const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setselectedRoute] = useState<Array<TranferStep>>([])
+  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
   const [selectedRouteIndex, setselectedRouteIndex] = useState<number>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
 
@@ -187,7 +187,7 @@ const Swap = () => {
           const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
 
           // filter if needed
-          const routes: Array<Array<TranferStep>> = result.data
+          const routes: Array<Array<TransferStep>> = result.data
 
           setRoutes(routes)
           setHighlightedIndex(routes.length === 0 ? -1 : 0)

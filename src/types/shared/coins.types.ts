@@ -579,6 +579,9 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
   [ChainKey.OKT]: [],
   [ChainKey.FTM]: [],
   [ChainKey.AVA]: [],
+  [ChainKey.ARB]: [],
+  [ChainKey.HEC]: [],
+  [ChainKey.OPT]: [],
 
   // Testnets
   [ChainKey.ROP]: [],
@@ -588,4 +591,5 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
   [ChainKey.ARBT]: [],
   [ChainKey.OPTT]: [],
   [ChainKey.BSCT]: [],
+  [ChainKey.HECT]: [],
 }

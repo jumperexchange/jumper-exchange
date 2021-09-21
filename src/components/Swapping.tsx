@@ -1,25 +1,27 @@
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Timeline, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
+import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
 import { executeHopCross } from '../services/hop.execute';
 import { switchChain } from '../services/metamask';
 import { executeNXTPCross } from '../services/nxtp.execute';
 import { executeParaswap } from '../services/paraswap.execute';
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
 import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
-import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, TranferStep } from '../types';
+import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, TransferStep } from '../types';
 import Clock from './Clock';
 
 interface SwappingProps {
-  route: Array<TranferStep>,
+  route: Array<TransferStep>,
   updateRoute: Function,
 }
 
@@ -35,12 +37,33 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const web3 = useWeb3React<Web3Provider>()
 
   // Swap
-  const updateStatus = (step: TranferStep, status: Execution) => {
+  const updateStatus = (step: TransferStep, status: Execution) => {
     step.execution = status
     updateRoute(route)
   }
 
-  const triggerSwap = async (step: TranferStep, previousStep?: TranferStep) => {
+  const checkChain = async (step: TransferStep) => {
+    if (web3.chainId !== step.action.chainId) {
+      const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
+      const chain = getChainById(step.action.chainId)
+      const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`)
+      try {
+        const switched = await switchChain(step.action.chainId)
+        if (!switched) {
+          throw new Error('Chain was not switched')
+        }
+      } catch (e: any) {
+        if (e.message) switchProcess.errorMessage = e.message
+        if (e.code) switchProcess.errorCode = e.code
+        setStatusFailed(update, status, switchProcess)
+        return false
+      }
+      setStatusDone(update, status, switchProcess)
+    }
+    return true
+  }
+
+  const triggerSwap = async (step: TransferStep, previousStep?: TransferStep) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as SwapAction
     const swapEstimate = step.estimate as SwapEstimate
@@ -56,9 +79,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
     // ensure chain is set
-    if (web3.chainId !== swapAction.chainId) {
-      await switchChain(swapAction.chainId)
-    }
+    if (!(await checkChain(step))) return
 
     switch (swapAction.tool) {
       case 'uniswap':
@@ -75,7 +96,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
   }
 
-  const triggerCross = async (step: TranferStep, previousStep?: TranferStep) => {
+  const triggerCross = async (step: TransferStep, previousStep?: TransferStep) => {
     if (!web3.account || !web3.library) return
     const crossAction = step.action as CrossAction
 
@@ -88,9 +109,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
     // ensure chain is set
-    if (web3.chainId !== crossAction.chainId) {
-      await switchChain(crossAction.chainId)
-    }
+    if (!(await checkChain(step))) return
 
     switch (crossAction.tool) {
       case 'nxtp':
@@ -170,7 +189,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     </Tooltip>
   )
 
-  const parseStepToTimeline = (step: TranferStep, index: number, route: Array<TranferStep>) => {
+  const parseStepToTimeline = (step: TransferStep, index: number, route: Array<TransferStep>) => {
     const executionSteps = parseExecution(step.execution)
     const color = step.execution && step.execution.status === 'DONE' ? 'green' : (step.execution ? 'blue' : 'gray')
     const hasFailed = step.execution && step.execution.status === 'FAILED'
@@ -221,7 +240,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
   }
 
-  const triggerStep = async (index: number, route: Array<TranferStep>) => {
+  const triggerStep = async (index: number, route: Array<TransferStep>) => {
     const step = route[index]
     const previousStep = index > 0 ? route[index - 1] : undefined
     switch (step.action.type) {
@@ -257,22 +276,19 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     if (!isSwapping) return
 
     for (let index = 0; index < route.length; index++) {
-      if (route[index].execution?.status === 'DONE') {
-        continue // step is already done, continue
-      }
-
       if (!route[index].execution) {
-
         return triggerStep(index, route)
           .catch(() => {
             // stop if a step fails
             setIsSwapping(false)
           })
-
+      } else if (route[index].execution?.status === 'DONE') {
+        continue // step is already done, continue
       } else {
-        return // is still running
+        return // step is already runing, wait
       }
     }
+
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
   }
@@ -288,7 +304,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
       const result = route[route.length - 1].execution
-      console.log(result)
+      console.debug(result)
       return <Link to="/dashboard"><Button type="link" >DONE - check your balances in our Dashboard</Button></Link>
     }
 
@@ -309,6 +325,21 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     )
   }
 
+  const getCurrentProcess = () => {
+    for (const step of route) {
+      if (step.execution?.process) {
+        for (const process of step.execution?.process) {
+          if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
+            return process
+          }
+        }
+      }
+    }
+    return null
+  }
+
+  const currentProcess = getCurrentProcess()
+
   return (<>
     {alerts}
     <br />
@@ -325,6 +356,27 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         {swapStartedAt ? <span className="totalTime"><Clock startedAt={swapStartedAt} successAt={swapDoneAt} /></span> : <span>&nbsp;</span>}
       </Typography.Text>
     </div>
+
+    {currentProcess && currentProcess.status === 'PENDING' &&
+      <>
+        <Row justify="center">
+          <Spin style={{ margin: 10 }} indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
+        </Row>
+        <Row justify="center">
+          <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.message}</Typography.Text>
+        </Row>
+      </>
+    }
+    {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
+      <>
+        <Row justify="center">
+          <img src={walletIcon} alt="Wallet" width="92" height="100" />
+        </Row>
+        <Row justify="center">
+          <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
+        </Row>
+      </>
+    }
 
     <div style={{ textAlign: 'center', transform: 'scale(1.5)', marginBottom: 20 }}>
       {getMainButton()}
