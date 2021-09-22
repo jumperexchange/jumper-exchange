@@ -1,6 +1,7 @@
 import { emptyExecution, Execution, Process } from '../types'
 import { deepClone } from './utils'
 
+
 export const initStatus = (updateStatus?: Function, initialStatus?: Execution) => {
   const status = initialStatus || deepClone(emptyExecution)
   const update = updateStatus || console.log

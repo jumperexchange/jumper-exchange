@@ -2,6 +2,7 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { Execution, getChainById } from '../types'
+import localNotifications, { NotificationType } from './localNotifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
 import { getApproved, setApproval } from './utils'
@@ -86,6 +87,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     if (e.message) allowanceProcess.errorMessage = e.message
     if (e.code) allowanceProcess.errorCode = e.code
     setStatusFailed(update, status, waitingProcess)
+    localNotifications.showNotification(NotificationType.SWAP_ERROR)
     throw e
   }
 
@@ -100,6 +102,8 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   // // -> set status
   status.status = 'DONE'
   update(status)
+  localNotifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
+
 
   // DONE
   return status

@@ -17,6 +17,7 @@ import setMetatags from './services/metatags';
 import { initStomt } from './services/stomt';
 import { getDefaultTokenBalancesForWallet as getBalancesForWalletTestnet } from './services/testToken';
 import { ChainKey, getChainByKey } from './types';
+import NotificationOverlay from './components/NotificationsOverlay';
 
 function usePageViews() {
   const [path, setPath] = useState<string>()
@@ -134,6 +135,7 @@ function App() {
                 return <NotFoundPage />
               }} />
             </Switch>
+            <NotificationOverlay />
           </Layout>
         </Web3ConnectionManager>
       </WrappedWeb3ReactProvider>
