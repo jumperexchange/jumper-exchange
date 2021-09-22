@@ -116,7 +116,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       case 'nxtp':
         return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status));
       case 'hop':
-        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, crossAction.amount, crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
+        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toString(), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
       default:
         console.warn('should never reach here')
     }
