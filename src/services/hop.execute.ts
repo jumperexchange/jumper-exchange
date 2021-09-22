@@ -8,7 +8,7 @@ import { CoinKey } from '../types'
 export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey, amount: string, fromChainId: number, toChainId: number, updateStatus?: Function, initialStatus?: Execution) => {
   // setup
   const { status, update } = initStatus(updateStatus, initialStatus)
-  hop.init(signer)
+  hop.init(signer, fromChainId, toChainId)
 
   //set allowance AND send
   const allowanceAndCrossProcess = createAndPushProcess(update, status, 'Set Allowance and Cross')
@@ -25,7 +25,7 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
 
 
   //wait for transaction
-  const waitForTxProcess = createAndPushProcess(update, status, 'Wait for transaction')
+  const waitForTxProcess = createAndPushProcess(update, status, 'Wait for transaction on receiving chain')
   let destinationTxReceipt;
   try{
     destinationTxReceipt = await hop.waitForDestinationChainReceipt(tx.hash, bridgeCoin, fromChainId, toChainId)

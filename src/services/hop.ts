@@ -33,12 +33,20 @@ interface ReceivedSwapped{
   value: BigNumber
 }
 
-const hop = new Hop('mainnet')
+let hop: Hop | undefined = undefined;
+
 let bridges: {[k:string]: HopBridge} = {}
 const hopChains : {[k:number]: Chain} = {
   [getChainByKey(ChainKey.ETH).id]: Chain.Ethereum,
   [getChainByKey(ChainKey.POL).id]: Chain.Polygon,
   [getChainByKey(ChainKey.DAI).id]: Chain.xDai,
+  [getChainByKey(ChainKey.OPT).id]: Chain.Optimism,
+  [getChainByKey(ChainKey.ARB).id]: Chain.Arbitrum,
+
+  // Testnet; Hop SDK changes the underlying id of these chains according to the instance network
+  //network 'goerli'
+  [getChainByKey(ChainKey.GOR).id]: Chain.Ethereum,
+  [getChainByKey(ChainKey.MUM).id]: Chain.Polygon,
 }
 
 // get these from https://github.com/hop-protocol/hop/blob/develop/packages/sdk/src/models/Token.ts
@@ -47,10 +55,13 @@ const hopTokens : {[k:string]: string} = {
   "USDT": Token.USDT,
   "MATIC": Token.MATIC,
 }
-
-
-
-const init = (signer: JsonRpcSigner) => {
+const isInitialized = () =>{
+  if(hop === undefined) throw TypeError('Hop instance is undefined! Please initialize Hop')
+}
+const init = (signer: JsonRpcSigner, chainId: number, toChainId: number) => {
+  // goerli <-> mumbai
+  if (chainId === 5 && toChainId === 80001) hop = new Hop("goerli")
+  hop = new Hop("mainnet")
   bridges = {
     "USDT": hop.connect(signer).bridge('USDC'),
     "USDC": hop.connect(signer).bridge('USDT'),
@@ -59,6 +70,7 @@ const init = (signer: JsonRpcSigner) => {
 }
 
 const getHopBridge = (bridgeCoin: CoinKey) => {
+  isInitialized()
   if(!Object.keys(bridges).length){
     throw Error ('No HopBridge available! Initialize Hop implementation first via init(signer: JsonRpcSigner!)')
   }
@@ -66,6 +78,7 @@ const getHopBridge = (bridgeCoin: CoinKey) => {
 }
 
 const setAllowanceAndCrossChains = async (bridgeCoin: CoinKey, amount: string, fromChainId: number, toChainId:number) => {
+  isInitialized()
   const bridge = getHopBridge(bridgeCoin)
   const hopFromChain = hopChains[fromChainId]
   const hopToChain = hopChains[toChainId]
@@ -75,14 +88,22 @@ const setAllowanceAndCrossChains = async (bridgeCoin: CoinKey, amount: string, f
 
 const waitForDestinationChainReceipt = (tx:string, coin: CoinKey, fromChainId: number, toChainId:number): Promise<TransactionReceipt> => {
   return new Promise ((resolve, reject) => {
+    isInitialized()
     const hopFromChain = hopChains[fromChainId]
     const hopToChain = hopChains[toChainId]
-    hop.watch(tx, hopTokens[coin], hopFromChain, hopToChain)
+    try{
+      hop?.watch(tx, hopTokens[coin], hopFromChain, hopToChain)
     .once('destinationTxReceipt', async (data:any) => {
       const receipt: TransactionReceipt = data.receipt
       if (receipt.status !== 1) reject(receipt)
       if (receipt.status === 1) resolve(receipt)
     })
+    }
+    catch(e){
+      reject(e)
+      throw e
+    }
+
   })
 }
 
