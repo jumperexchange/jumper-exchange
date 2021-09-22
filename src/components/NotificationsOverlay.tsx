@@ -1,7 +1,7 @@
 import './NotificationsOverlay.css';
 import { Button, Typography } from 'antd';
 
-import notifications, { NotificationType } from '../services/localNotifications'
+import notifications  from '../services/localNotifications'
 import { useState } from 'react';
 
 // reset permissions on chrome://settings/content/siteDetails
