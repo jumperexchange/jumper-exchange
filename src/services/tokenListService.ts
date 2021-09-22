@@ -27,7 +27,8 @@ export interface TokenList {
 export const loadTokenList = async (chainId: number): Promise<TokenList> => {
   const chain = getChainById(chainId)
   if (!chain.exchange) {
-    throw new Error('No token list defined for chain')
+    // throw new Error('No token list defined for chain')
+    return {} as TokenList
   }
   const result = await axios.get(chain.exchange?.tokenlistUrl)
   return result.data as TokenList
@@ -35,7 +36,7 @@ export const loadTokenList = async (chainId: number): Promise<TokenList> => {
 
 export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Token>> => {
   const chain = getChainById(chainId)
-  const tokenList = await loadTokenList(chainId)
+   const tokenList = await loadTokenList(chainId)
   const filteredTokens = tokenList.tokens.filter(token => token.chainId === chainId)
   const mappedTokens = filteredTokens.map((token) => {
     return {
