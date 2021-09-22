@@ -36,8 +36,8 @@ export const loadTokenList = async (chainId: number): Promise<TokenList> => {
 
 export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Token>> => {
   const chain = getChainById(chainId)
-   const tokenList = await loadTokenList(chainId)
-  const filteredTokens = tokenList.tokens.filter(token => token.chainId === chainId)
+  const tokenList = await loadTokenList(chainId)
+  const filteredTokens = tokenList.tokens ? tokenList.tokens.filter(token => token.chainId === chainId) : []
   const mappedTokens = filteredTokens.map((token) => {
     return {
       id: token.address.toLowerCase(),
