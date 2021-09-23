@@ -3,7 +3,7 @@ import { Chain, Hop, HopBridge } from '@hop-protocol/sdk'
 import { Token } from '@hop-protocol/sdk/dist/src/models'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { ChainKey, CoinKey } from '../types'
+import { ChainId, ChainKey, CoinKey } from '../types'
 import { getChainByKey } from '../types/shared/chains.types'
 
 
@@ -49,6 +49,11 @@ const hopChains : {[k:number]: Chain} = {
   [getChainByKey(ChainKey.MUM).id]: Chain.Polygon,
 }
 
+const supportedTestnetChains: number[] = [
+  ChainId.GOR,
+  ChainId.MUM,
+]
+
 // get these from https://github.com/hop-protocol/hop/blob/develop/packages/sdk/src/models/Token.ts
 const hopTokens : {[k:string]: string} = {
   "USDC": Token.USDC,
@@ -59,20 +64,23 @@ const isInitialized = () =>{
   if(hop === undefined) throw TypeError('Hop instance is undefined! Please initialize Hop')
 }
 const init = (signer: JsonRpcSigner, chainId: number, toChainId: number) => {
+  const isChainTest = supportedTestnetChains.includes(chainId) ? true : false
+  const isToChainTest = supportedTestnetChains.includes(toChainId) ? true : false
   // goerli <-> mumbai
-  if (chainId === 5 && toChainId === 80001) hop = new Hop("goerli")
+  if (isChainTest && isToChainTest) hop = new Hop("goerli")
   hop = new Hop("mainnet")
   bridges = {
-    "USDT": hop.connect(signer).bridge('USDC'),
-    "USDC": hop.connect(signer).bridge('USDT'),
-    "MATIC": hop.connect(signer).bridge('MATIC'),
+    'USDT': hop.connect(signer).bridge('USDT'),
+    'USDC': hop.connect(signer).bridge('USDC'),
+    'MATIC': hop.connect(signer).bridge('MATIC'),
+    'DAI': hop.connect(signer).bridge('DAI'),
   }
 }
 
 const getHopBridge = (bridgeCoin: CoinKey) => {
   isInitialized()
   if(!Object.keys(bridges).length){
-    throw Error ('No HopBridge available! Initialize Hop implementation first via init(signer: JsonRpcSigner!)')
+    throw Error ('No HopBridge available! Initialize Hop implementation first via init(signer: JsonRpcSigner, chainId: number, toChainId: number)')
   }
   return bridges[bridgeCoin]
 }
