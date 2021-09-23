@@ -12,6 +12,7 @@ import hopIcon from '../assets/icons/hop.png';
 import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
 import { executeHopCross } from '../services/hop.execute';
+import { lifinance } from '../services/lifinance';
 import { switchChain } from '../services/metamask';
 import { executeNXTPCross } from '../services/nxtp.execute';
 import { executeParaswap } from '../services/paraswap.execute';
@@ -44,23 +45,21 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const checkChain = async (step: TransferStep) => {
-    if (web3.chainId !== step.action.chainId) {
-      const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
-      const chain = getChainById(step.action.chainId)
-      const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`)
-      try {
-        const switched = await switchChain(step.action.chainId)
-        if (!switched) {
-          throw new Error('Chain was not switched')
-        }
-      } catch (e: any) {
-        if (e.message) switchProcess.errorMessage = e.message
-        if (e.code) switchProcess.errorCode = e.code
-        setStatusFailed(update, status, switchProcess)
-        return false
+    const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
+    const chain = getChainById(step.action.chainId)
+    const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`)
+    try {
+      const switched = await switchChain(step.action.chainId)
+      if (!switched) {
+        throw new Error('Chain was not switched')
       }
-      setStatusDone(update, status, switchProcess)
+    } catch (e: any) {
+      if (e.message) switchProcess.errorMessage = e.message
+      if (e.code) switchProcess.errorCode = e.code
+      setStatusFailed(update, status, switchProcess)
+      return false
     }
+    setStatusDone(update, status, switchProcess)
     return true
   }
 
@@ -80,14 +79,15 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
     // ensure chain is set
-    if (!(await checkChain(step))) return
-
+    if (web3.chainId !== step.action.chainId) {
+      if (!(await checkChain(step))) return
+    }
     switch (swapAction.tool) {
       case 'uniswap':
       case 'pancakeswap':
       case 'honeyswap':
       case 'quickswap':
-        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
+        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
         return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       case '1inch':
@@ -110,7 +110,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
 
     // ensure chain is set
-    if (!(await checkChain(step))) return
+    if (web3.chainId !== step.action.chainId) {
+      if (!(await checkChain(step))) return
+    }
 
     switch (crossAction.tool) {
       case 'nxtp':
@@ -262,6 +264,24 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     }
   }
 
+  const triggerLifi = async () => {
+    // ensure chain is set
+    if (web3.chainId !== route[0].action.chainId) {
+      if (!(await checkChain(route[0]))) return
+    }
+
+    lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) => updateStatus(route[0], status))
+  }
+
+  const isLifiSupported = (route: Array<TransferStep>) => {
+    const crossStep = route.find(step => step.action.type === 'cross')
+    if (!crossStep) return false // perform simple swaps directly
+
+    const crossAction = crossStep.action as CrossAction
+
+    return crossAction.tool === 'nxtp' && lifinance.supportedChains.includes(crossAction.chainId) && lifinance.supportedChains.includes(crossAction.toChainId)
+  }
+
   const startCrossChainSwap = async () => {
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
@@ -282,6 +302,17 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   // check where we are an trigger next
   const checkSwapping = () => {
     if (!isSwapping) return
+
+    // lifi supported?
+    if (isLifiSupported(route)) {
+      if (!route[0].execution) {
+        triggerLifi()
+      } else if (route[0].execution.status === 'DONE') {
+        setIsSwapping(false)
+        setSwapDoneAt(Date.now())
+      }
+      return
+    }
 
     for (let index = 0; index < route.length; index++) {
       if (!route[index].execution) {
@@ -311,8 +342,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     // DONE
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
-      const result = route[route.length - 1].execution
-      console.debug(result)
+      // const result = route[route.length - 1].execution
+      // console.debug(result)
       return <Link to="/dashboard"><Button type="link" >DONE - check your balances in our Dashboard</Button></Link>
     }
 

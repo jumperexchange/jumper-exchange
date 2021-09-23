@@ -159,6 +159,18 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.MATIC,
         logoURI: 'https://etherscan.io/token/images/matictoken_28.png',
       },
+
+      // Testnet
+      [ChainKey.MUM]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.MATIC,
+        decimals: 18,
+        chainId: ChainId.MUM,
+        chainKey: ChainKey.MUM,
+        key: CoinKey.MATIC,
+        name: CoinKey.MATIC,
+        logoURI: 'https://etherscan.io/token/images/matictoken_28.png',
+      },
     },
   },
   {
@@ -681,8 +693,8 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ROP),
   ],
   [ChainKey.MUM]: [
-    // findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.MUM),
-    findDefaultCoinOnChain(CoinKey.TEST, ChainKey.ROP),
+    findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.MUM),
+    findDefaultCoinOnChain(CoinKey.TEST, ChainKey.MUM),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MUM),
     // findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MUM),
     // findDefaultCoinOnChain(CoinKey.DAI, ChainKey.MUM),
@@ -712,7 +724,6 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     name: 'WBNB',
     logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
   },
-
   [ChainKey.POL]: {
     // https://polygonscan.com/token/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
     id: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
@@ -734,6 +745,52 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     key: 'WXDAI' as CoinKey,
     name: 'WXDAI',
     logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
+  },
+
+  // Testnets
+  [ChainKey.ROP]: {
+    // https://ropsten.etherscan.io/token/0xc778417e063141139fce010982780140aa0cd5ab
+    id: '0xc778417e063141139fce010982780140aa0cd5ab',
+    symbol: 'WETH',
+    decimals: 18,
+    chainId: ChainId.ROP,
+    chainKey: ChainKey.ROP,
+    key: 'WETH' as CoinKey,
+    name: 'WETH',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
+  },
+  [ChainKey.RIN]: {
+    // https://rinkeby.etherscan.io/token/0xc778417e063141139fce010982780140aa0cd5ab
+    id: '0xc778417e063141139fce010982780140aa0cd5ab',
+    symbol: 'WETH',
+    decimals: 18,
+    chainId: ChainId.RIN,
+    chainKey: ChainKey.RIN,
+    key: 'WETH' as CoinKey,
+    name: 'WETH',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
+  },
+  [ChainKey.GOR]: {
+    // https://goerli.etherscan.io/token/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6
+    id: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6',
+    symbol: 'WETH',
+    decimals: 18,
+    chainId: ChainId.GOR,
+    chainKey: ChainKey.GOR,
+    key: 'WETH' as CoinKey,
+    name: 'WETH',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
+  },
+  [ChainKey.MUM]: {
+    // https://mumbai.polygonscan.com/token/0x9c3c9283d3e44854697cd22d3faa240cfb032889
+    id: '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
+    symbol: 'WMATIC',
+    decimals: 18,
+    chainId: ChainId.MUM,
+    chainKey: ChainKey.MUM,
+    key: 'WMATIC' as CoinKey,
+    name: 'WMATIC',
+    logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
   },
 }
 
@@ -852,10 +909,18 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
   [ChainKey.OPT]: [],
 
   // Testnets
-  [ChainKey.ROP]: [],
-  [ChainKey.RIN]: [],
-  [ChainKey.GOR]: [],
-  [ChainKey.MUM]: [],
+  [ChainKey.ROP]: [
+    wrappedTokens[ChainKey.ROP],
+  ],
+  [ChainKey.RIN]: [
+    wrappedTokens[ChainKey.RIN],
+  ],
+  [ChainKey.GOR]: [
+    wrappedTokens[ChainKey.GOR],
+  ],
+  [ChainKey.MUM]: [
+    wrappedTokens[ChainKey.MUM],
+  ],
   [ChainKey.ARBT]: [],
   [ChainKey.OPTT]: [],
   [ChainKey.BSCT]: [],
