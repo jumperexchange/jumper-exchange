@@ -3,6 +3,7 @@ import { ChainKey, Coin, CoinKey, Token } from './base.types';
 
 export const defaultCoins: Array<Coin> = [
   // NATIVE COINS
+  // > ETH
   {
     key: CoinKey.ETH,
     name: CoinKey.ETH,
@@ -113,6 +114,7 @@ export const defaultCoins: Array<Coin> = [
       },
     },
   },
+  // > MATIC
   {
     key: CoinKey.MATIC,
     name: CoinKey.MATIC,
@@ -173,6 +175,7 @@ export const defaultCoins: Array<Coin> = [
       },
     },
   },
+  // > BNB
   {
     key: CoinKey.BNB,
     name: CoinKey.BNB,
@@ -221,6 +224,7 @@ export const defaultCoins: Array<Coin> = [
       },
     },
   },
+  // > DAI
   {
     key: CoinKey.DAI,
     name: CoinKey.DAI,
@@ -310,6 +314,82 @@ export const defaultCoins: Array<Coin> = [
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
       },
       // 42, 0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa, 18
+    },
+  },
+  // > FTM
+  {
+    key: CoinKey.FTM,
+    name: CoinKey.FTM,
+    logoURI: '',
+    verified: true,
+    chains: {
+      [ChainKey.FTM]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.FTM,
+        decimals: 18, // check
+        chainId: ChainId.FTM,
+        chainKey: ChainKey.FTM,
+        key: CoinKey.FTM,
+        name: CoinKey.FTM,
+        logoURI: '',
+      },
+    },
+  },
+  // > OKT
+  {
+    key: CoinKey.OKT,
+    name: CoinKey.OKT,
+    logoURI: '',
+    verified: true,
+    chains: {
+      [ChainKey.OKT]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.OKT,
+        decimals: 18, // check
+        chainId: ChainId.OKT,
+        chainKey: ChainKey.OKT,
+        key: CoinKey.OKT,
+        name: CoinKey.OKT,
+        logoURI: '',
+      },
+    },
+  },
+  // > AVAX
+  {
+    key: CoinKey.AVAX,
+    name: CoinKey.AVAX,
+    logoURI: '',
+    verified: true,
+    chains: {
+      [ChainKey.AVA]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.AVAX,
+        decimals: 18, // check
+        chainId: ChainId.AVA,
+        chainKey: ChainKey.AVA,
+        key: CoinKey.AVAX,
+        name: CoinKey.AVAX,
+        logoURI: '',
+      },
+    },
+  },
+  // > HT
+  {
+    key: CoinKey.HT,
+    name: CoinKey.HT,
+    logoURI: 'https://static.debank.com/image/heco_token/logo_url/heco/c399dcddde07e1944c4dd8f922832b53.png',
+    verified: true,
+    chains: {
+      [ChainKey.HEC]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.HT,
+        decimals: 18,
+        chainId: ChainId.HEC,
+        chainKey: ChainKey.HEC,
+        key: CoinKey.HT,
+        name: CoinKey.HT,
+        logoURI: 'https://static.debank.com/image/heco_token/logo_url/heco/c399dcddde07e1944c4dd8f922832b53.png',
+      },
     },
   },
 

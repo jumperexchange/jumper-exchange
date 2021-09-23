@@ -47,6 +47,7 @@ const tokenBlacklist: Blacklist = {
     '0x6142f62e7996faec5c5bb9d10669d60299d69dfe', // buy SpaceRat.Finance - spam
     '0x19a935cbaaa4099072479d521962588d7857d717', // Litcoin - fake
     '0x0364c8dbde082372e8d6a6137b45613dd0f8138a', // https://polybest.org/ - scam
+    '0x81067076dcb7d3168ccf7036117b9d72051205e2', // DxDex.io - scam
   ]
 }
 
