@@ -14,6 +14,7 @@
     "antd": "^4.16.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
+    "eth-sig-util": "^3.0.1",
     "ethers": "^5.2.0",
     "graphql": "^15.5.3",
     "graphql-request": "^3.5.0",

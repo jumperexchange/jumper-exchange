@@ -11,25 +11,42 @@ import dai from '../assets/icons/xdai.png';
 import uniswap from '../assets/icons/uniswap.png';
 import ftm from '../assets/icons/fantom.png';
 import arb from '../assets/icons/arbitrum.svg';
+import rop from '../assets/icons/ethereum_ropsten.png';
+import rin from '../assets/icons/ethereum_rinkeby.png';
+import gor from '../assets/icons/ethereum_goerli.png';
+import mum from '../assets/icons/polygon_test.png';
+import bsct from '../assets/icons/bsc_test.png';
+import arbt from '../assets/icons/arbitrum_test.png';
 
 export const icons: { [key: string]: string } = {
-  bsc,
-  eth,
-  pol,
-  dai,
-  ftm,
-  arb,
+  // Mainnets
+  [ChainKey.BSC]: bsc,
+  [ChainKey.ETH]: eth,
+  [ChainKey.POL]: pol,
+  [ChainKey.DAI]: dai,
+  [ChainKey.FTM]: ftm,
+  [ChainKey.ARB]: arb,
 
+  // Testnets
+  [ChainKey.ROP]: rop,
+  [ChainKey.RIN]: rin,
+  [ChainKey.GOR]: gor,
+  [ChainKey.MUM]: mum,
+  [ChainKey.BSCT]: bsct,
+  [ChainKey.ARBT]: arbt,
+
+  // Exchanges
   'Pancake': pancake,
   'QuickSwap': quick,
   'Honeyswap': honey,
   'UniswapV2': uniswap,
+  'Uniswap': uniswap,
 }
 export const getIcon = (name: string | undefined) => {
   if (name && icons[name]) {
     return icons[name]
   }
-  return ''
+  return undefined
 }
 
 export interface Amounts {

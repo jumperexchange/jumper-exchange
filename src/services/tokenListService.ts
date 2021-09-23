@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { CoinKey, findDefaultCoin, getChainById, Token } from '../types'
+import { CoinKey, defaultTokens, getChainById, Token } from '../types'
 
 export interface TokenListToken {
   chainId: number
@@ -24,7 +24,7 @@ export interface TokenList {
   tokens: Array<TokenListToken>
 }
 
-export const loadTokenList = async (chainId: number) : Promise<TokenList> => {
+export const loadTokenList = async (chainId: number): Promise<TokenList> => {
   const chain = getChainById(chainId)
   if (!chain.exchange) {
     throw new Error('No token list defined for chain')
@@ -33,7 +33,7 @@ export const loadTokenList = async (chainId: number) : Promise<TokenList> => {
   return result.data as TokenList
 }
 
-export const loadTokenListAsTokens = async (chainId: number) : Promise<Array<Token>> => {
+export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Token>> => {
   const chain = getChainById(chainId)
   const tokenList = await loadTokenList(chainId)
   const filteredTokens = tokenList.tokens.filter(token => token.chainId === chainId)
@@ -50,6 +50,14 @@ export const loadTokenListAsTokens = async (chainId: number) : Promise<Array<Tok
       key: token.symbol as CoinKey,
     } as Token
   })
-  mappedTokens.unshift(findDefaultCoin(chain.coin).chains[chain.key])
+
+  // default token
+  defaultTokens[chain.key].forEach(defaultToken => {
+    const found = !!mappedTokens.find((token) => token.id === defaultToken.id)
+    if (!found) {
+      mappedTokens.unshift(defaultToken)
+    }
+  })
+
   return mappedTokens
 }

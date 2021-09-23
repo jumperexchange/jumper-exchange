@@ -12,9 +12,11 @@ import Swap from './components/Swap';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
+import { getBalancesForWallet as getBalancesForWalletMainnet } from './services/balanceService';
 import setMetatags from './services/metatags';
 import { initStomt } from './services/stomt';
-
+import { getDefaultTokenBalancesForWallet as getBalancesForWalletTestnet } from './services/testToken';
+import { ChainKey, getChainByKey } from './types';
 
 function usePageViews() {
   const [path, setPath] = useState<string>()
@@ -57,11 +59,11 @@ function App() {
                 <Menu.Item key="/about">
                   <Link to="/about">About</Link>
                 </Menu.Item>
-                { false && <Menu.Item key="wallets" style={{float: "right"}}>
+                {false && <Menu.Item key="wallets" style={{ float: "right" }}>
                   <Button shape="round" icon={<WalletOutlined />} >
                     Add Wallets
                   </Button>
-                </Menu.Item> }
+                </Menu.Item>}
               </Menu>
 
               <a className="lifiSupport" href="https://discord.com/invite/G9uAbE439B" target="_blank" rel="nofollow noreferrer">Support</a>
@@ -74,32 +76,59 @@ function App() {
                   title: 'Li.Finance - Dashboard',
                 })
                 initStomt('dashboard')
-                return <Dashboard/>
-              }}/>
+                return <Dashboard />
+              }} />
               <Route path="/swap" render={() => {
                 setMetatags({
                   title: 'Li.Finance - Swap',
                 })
                 initStomt('swap')
+                const transferChains = [
+                  getChainByKey(ChainKey.POL),
+                  getChainByKey(ChainKey.BSC),
+                  getChainByKey(ChainKey.DAI),
+                ]
+
                 return <div className="lifiWrap">
-                  <Swap/>
+                  <Swap
+                    transferChains={transferChains}
+                    getBalancesForWallet={getBalancesForWalletMainnet}
+                  />
                 </div>
-              }}/>
+              }} />
+              <Route path="/testnet" render={() => {
+                setMetatags({
+                  title: 'Li.Finance - Testnet',
+                })
+                initStomt('swap')
+                const transferChains = [
+                  getChainByKey(ChainKey.RIN),
+                  getChainByKey(ChainKey.GOR),
+                  getChainByKey(ChainKey.ROP),
+                  getChainByKey(ChainKey.MUM),
+                ]
+                return <div className="lifiWrap">
+                  <Swap
+                    transferChains={transferChains}
+                    getBalancesForWallet={getBalancesForWalletTestnet}
+                  />
+                </div>
+              }} />
               <Route path="/about" render={() => {
                 setMetatags({
                   title: 'Li.Finance - About',
                 })
                 initStomt('lifi')
-                return <AboutPage/>
-              }}/>
+                return <AboutPage />
+              }} />
               <Route path="*" render={() => {
                 setMetatags({
                   title: 'Li.Finance - Not Found',
                   status: 404,
                 })
                 initStomt('lifi')
-                return <NotFoundPage/>
-              }}/>
+                return <NotFoundPage />
+              }} />
             </Switch>
           </Layout>
         </Web3ConnectionManager>
