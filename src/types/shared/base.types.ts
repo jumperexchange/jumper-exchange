@@ -3,14 +3,14 @@ export enum CoinKey {
   MATIC = 'MATIC',
   BNB = 'BNB',
   DAI = 'DAI',
-  USDT = 'USDT',
-  USDC = 'USDC',
-  UNI = 'UNI',
-  LINK = 'LINK',
-  AAVE = 'AAVE',
   FTM = 'FTM',
   OKT = 'OKT',
   AVAX = 'AVAX',
+  HT = 'HT',
+
+  // Stable coins
+  USDT = 'USDT',
+  USDC = 'USDC',
 
   // Testnet
   TEST = 'TEST',

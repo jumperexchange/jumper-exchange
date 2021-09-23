@@ -94,27 +94,25 @@ const setAllowanceAndCrossChains = async (bridgeCoin: CoinKey, amount: string, f
   return tx
 }
 
-const waitForDestinationChainReceipt = (tx:string, coin: CoinKey, fromChainId: number, toChainId:number): Promise<TransactionReceipt> => {
-  return new Promise ((resolve, reject) => {
+const waitForDestinationChainReceipt = (tx: string, coin: CoinKey, fromChainId: number, toChainId: number): Promise<TransactionReceipt> => {
+  return new Promise((resolve, reject) => {
     isInitialized()
     const hopFromChain = hopChains[fromChainId]
     const hopToChain = hopChains[toChainId]
-    try{
+    try {
       hop?.watch(tx, hopTokens[coin], hopFromChain, hopToChain)
-    .once('destinationTxReceipt', async (data:any) => {
-      const receipt: TransactionReceipt = data.receipt
-      if (receipt.status !== 1) reject(receipt)
-      if (receipt.status === 1) resolve(receipt)
-    })
+        .once('destinationTxReceipt', async (data: any) => {
+          const receipt: TransactionReceipt = data.receipt
+          if (receipt.status !== 1) reject(receipt)
+          if (receipt.status === 1) resolve(receipt)
+        })
     }
-    catch(e){
+    catch (e) {
       reject(e)
       throw e
     }
-
   })
 }
-
 
 const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
   const result = {
@@ -138,7 +136,7 @@ const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
     const parsed = decoder.decode(bondedContractTypes, boondedLog.data) as unknown as BondedSwapped
     result.fromAmount = parsed.amount.toString()
   }
-  if(receivedLog){
+  if (receivedLog) {
     const parsed = decoder.decode(receivedContractTypes, receivedLog.data) as unknown as ReceivedSwapped
     result.toAmount = parsed.value.toString()
   }

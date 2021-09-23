@@ -3,6 +3,7 @@ import { ChainKey, Coin, CoinKey, Token } from './base.types';
 
 export const defaultCoins: Array<Coin> = [
   // NATIVE COINS
+  // > ETH
   {
     key: CoinKey.ETH,
     name: CoinKey.ETH,
@@ -113,6 +114,7 @@ export const defaultCoins: Array<Coin> = [
       },
     },
   },
+  // > MATIC
   {
     key: CoinKey.MATIC,
     name: CoinKey.MATIC,
@@ -159,8 +161,21 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.MATIC,
         logoURI: 'https://etherscan.io/token/images/matictoken_28.png',
       },
+
+      // Testnet
+      [ChainKey.MUM]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.MATIC,
+        decimals: 18,
+        chainId: ChainId.MUM,
+        chainKey: ChainKey.MUM,
+        key: CoinKey.MATIC,
+        name: CoinKey.MATIC,
+        logoURI: 'https://etherscan.io/token/images/matictoken_28.png',
+      },
     },
   },
+  // > BNB
   {
     key: CoinKey.BNB,
     name: CoinKey.BNB,
@@ -209,6 +224,7 @@ export const defaultCoins: Array<Coin> = [
       },
     },
   },
+  // > DAI
   {
     key: CoinKey.DAI,
     name: CoinKey.DAI,
@@ -310,6 +326,82 @@ export const defaultCoins: Array<Coin> = [
       // 42, 0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa, 18
     },
   },
+  // > FTM
+  {
+    key: CoinKey.FTM,
+    name: CoinKey.FTM,
+    logoURI: '',
+    verified: true,
+    chains: {
+      [ChainKey.FTM]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.FTM,
+        decimals: 18, // check
+        chainId: ChainId.FTM,
+        chainKey: ChainKey.FTM,
+        key: CoinKey.FTM,
+        name: CoinKey.FTM,
+        logoURI: '',
+      },
+    },
+  },
+  // > OKT
+  {
+    key: CoinKey.OKT,
+    name: CoinKey.OKT,
+    logoURI: '',
+    verified: true,
+    chains: {
+      [ChainKey.OKT]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.OKT,
+        decimals: 18, // check
+        chainId: ChainId.OKT,
+        chainKey: ChainKey.OKT,
+        key: CoinKey.OKT,
+        name: CoinKey.OKT,
+        logoURI: '',
+      },
+    },
+  },
+  // > AVAX
+  {
+    key: CoinKey.AVAX,
+    name: CoinKey.AVAX,
+    logoURI: '',
+    verified: true,
+    chains: {
+      [ChainKey.AVA]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.AVAX,
+        decimals: 18, // check
+        chainId: ChainId.AVA,
+        chainKey: ChainKey.AVA,
+        key: CoinKey.AVAX,
+        name: CoinKey.AVAX,
+        logoURI: '',
+      },
+    },
+  },
+  // > HT
+  {
+    key: CoinKey.HT,
+    name: CoinKey.HT,
+    logoURI: 'https://static.debank.com/image/heco_token/logo_url/heco/c399dcddde07e1944c4dd8f922832b53.png',
+    verified: true,
+    chains: {
+      [ChainKey.HEC]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.HT,
+        decimals: 18,
+        chainId: ChainId.HEC,
+        chainKey: ChainKey.HEC,
+        key: CoinKey.HT,
+        name: CoinKey.HT,
+        logoURI: 'https://static.debank.com/image/heco_token/logo_url/heco/c399dcddde07e1944c4dd8f922832b53.png',
+      },
+    },
+  },
 
 
   // OTHER STABLECOINS
@@ -375,6 +467,16 @@ export const defaultCoins: Array<Coin> = [
         decimals: 6,
         chainId: ChainId.ARB,
         chainKey: ChainKey.ARB,
+        key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+      },
+      [ChainKey.OPT]: {
+        id: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
+        symbol: CoinKey.USDT,
+        decimals: 6,
+        chainId: ChainId.OPT,
+        chainKey: ChainKey.OPT,
         key: CoinKey.USDT,
         name: CoinKey.USDT,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
@@ -466,6 +568,16 @@ export const defaultCoins: Array<Coin> = [
         decimals: 6,
         chainId: ChainId.ARB,
         chainKey: ChainKey.ARB,
+        key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+      },
+      [ChainKey.OPT]: {
+        id: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+        symbol: CoinKey.USDC,
+        decimals: 6,
+        chainId: ChainId.OPT,
+        chainKey: ChainKey.OPT,
         key: CoinKey.USDC,
         name: CoinKey.USDC,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
@@ -616,7 +728,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ETH]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.ETH],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.ETH],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.ETH],
+    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.ETH],
   ],
   [ChainKey.BSC]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.BSC],
@@ -627,10 +739,12 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.POL],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.POL],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.POL],
+    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.POL],
   ],
   [ChainKey.DAI]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.DAI],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.DAI],
+    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.DAI],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.DAI],
   ],
   [ChainKey.FTM]: [
@@ -641,7 +755,10 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ARB]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.ARB],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.ARB],
-    //findDefaultCoin(CoinKey.DAI).chains[ChainKey.ARB],
+  ],
+  [ChainKey.OPT]: [
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.OPT],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.OPT],
   ],
 
   // Testnet
@@ -667,7 +784,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ROP),
   ],
   [ChainKey.MUM]: [
-    // findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.MUM),
+    findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.MUM),
     findDefaultCoinOnChain(CoinKey.TEST, ChainKey.MUM),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MUM),
     // findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MUM),
@@ -698,7 +815,6 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     name: 'WBNB',
     logoURI: 'https://zapper.fi/images/networks/binance-smart-chain/0x0000000000000000000000000000000000000000.png',
   },
-
   [ChainKey.POL]: {
     // https://polygonscan.com/token/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
     id: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
@@ -720,6 +836,52 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     key: 'WXDAI' as CoinKey,
     name: 'WXDAI',
     logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
+  },
+
+  // Testnets
+  [ChainKey.ROP]: {
+    // https://ropsten.etherscan.io/token/0xc778417e063141139fce010982780140aa0cd5ab
+    id: '0xc778417e063141139fce010982780140aa0cd5ab',
+    symbol: 'WETH',
+    decimals: 18,
+    chainId: ChainId.ROP,
+    chainKey: ChainKey.ROP,
+    key: 'WETH' as CoinKey,
+    name: 'WETH',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
+  },
+  [ChainKey.RIN]: {
+    // https://rinkeby.etherscan.io/token/0xc778417e063141139fce010982780140aa0cd5ab
+    id: '0xc778417e063141139fce010982780140aa0cd5ab',
+    symbol: 'WETH',
+    decimals: 18,
+    chainId: ChainId.RIN,
+    chainKey: ChainKey.RIN,
+    key: 'WETH' as CoinKey,
+    name: 'WETH',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
+  },
+  [ChainKey.GOR]: {
+    // https://goerli.etherscan.io/token/0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6
+    id: '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6',
+    symbol: 'WETH',
+    decimals: 18,
+    chainId: ChainId.GOR,
+    chainKey: ChainKey.GOR,
+    key: 'WETH' as CoinKey,
+    name: 'WETH',
+    logoURI: 'https://zapper.fi/images/networks/ethereum/0x0000000000000000000000000000000000000000.png',
+  },
+  [ChainKey.MUM]: {
+    // https://mumbai.polygonscan.com/token/0x9c3c9283d3e44854697cd22d3faa240cfb032889
+    id: '0x9c3c9283d3e44854697cd22d3faa240cfb032889',
+    symbol: 'WMATIC',
+    decimals: 18,
+    chainId: ChainId.MUM,
+    chainKey: ChainKey.MUM,
+    key: 'WMATIC' as CoinKey,
+    name: 'WMATIC',
+    logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
   },
 }
 
@@ -838,10 +1000,18 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
   [ChainKey.OPT]: [],
 
   // Testnets
-  [ChainKey.ROP]: [],
-  [ChainKey.RIN]: [],
-  [ChainKey.GOR]: [],
-  [ChainKey.MUM]: [],
+  [ChainKey.ROP]: [
+    wrappedTokens[ChainKey.ROP],
+  ],
+  [ChainKey.RIN]: [
+    wrappedTokens[ChainKey.RIN],
+  ],
+  [ChainKey.GOR]: [
+    wrappedTokens[ChainKey.GOR],
+  ],
+  [ChainKey.MUM]: [
+    wrappedTokens[ChainKey.MUM],
+  ],
   [ChainKey.ARBT]: [],
   [ChainKey.OPTT]: [],
   [ChainKey.BSCT]: [],
