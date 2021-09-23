@@ -4,7 +4,7 @@ import { JsonRpcSigner } from '@ethersproject/providers'
 import { Execution } from '../types/'
 import hop from './hop'
 import { CoinKey } from '../types'
-import localNotifications, { NotificationType } from './localNotifications'
+import notifications, { NotificationType } from './notifications'
 
 export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey, amount: string, fromChainId: number, toChainId: number, updateStatus?: Function, initialStatus?: Execution) => {
   // setup
@@ -33,7 +33,7 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
   } catch (_e){
     const e = _e as Error
     if (e.message) waitForTxProcess.errorMessage = "Transaction failed on receiving chain: \n" + e.message
-    localNotifications.showNotification(NotificationType.CROSS_ERROR)
+    notifications.showNotification(NotificationType.CROSS_ERROR)
     setStatusFailed(update, status, waitForTxProcess)
     throw e
   }
@@ -49,7 +49,7 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
 
   // -> set status
   status.status = 'DONE'
-  localNotifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
+  notifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
   update(status)
 
   // DONE

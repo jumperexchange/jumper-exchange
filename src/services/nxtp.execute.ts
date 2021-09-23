@@ -4,7 +4,7 @@ import { JsonRpcSigner } from '@ethersproject/providers';
 import BigNumber from 'bignumber.js';
 import { getRpcProviders } from '../components/web3/connectors';
 import { CrossAction, CrossEstimate, Execution, Process, TransferStep } from '../types';
-import localNotifications, { NotificationType } from './localNotifications';
+import notifications, { NotificationType } from './notifications';
 import * as nxtp from './nxtp';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
@@ -70,7 +70,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
       try {
         await nxtp.finishTransfer(nxtpSDK, data, step, update)
       } catch (e) {
-        localNotifications.showNotification(NotificationType.CROSS_ERROR)
+        notifications.showNotification(NotificationType.CROSS_ERROR)
         nxtpSDK.removeAllListeners()
         throw e
       }
@@ -78,7 +78,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
       nxtpSDK.removeAllListeners()
       status.status = 'DONE'
       update(status)
-      localNotifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
+      notifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
       resolve(status)
     })
   })
