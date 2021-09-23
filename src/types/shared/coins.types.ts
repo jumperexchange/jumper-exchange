@@ -304,7 +304,7 @@ export const defaultCoins: Array<Coin> = [
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
       },
       [ChainKey.GOR]: {
-        id: '0xdc31ee1784292379fbb2964b3b9c4124d8f89c60', // Hop says this is dai on goerli 0xC61bA16e864eFbd06a9fe30Aab39D18B8F63710a
+        id: '0xC61bA16e864eFbd06a9fe30Aab39D18B8F63710a', // old address 0xdc31ee1784292379fbb2964b3b9c4124d8f89c60
         symbol: CoinKey.DAI,
         decimals: 18,
         chainId: ChainId.GOR,
