@@ -21,7 +21,7 @@ const emptyWallet = {
   portfolio: chainKeysToObject([]),
 }
 
-let coins = defaultCoins
+let coins = defaultCoins.filter(coin => coin.key !== CoinKey.TEST)
 
 // individual render functions
 function renderAmounts(amounts: Amounts = { amount_coin: -1, amount_usd: -1 }) {

@@ -9,21 +9,14 @@ import axios, { CancelTokenSource } from 'axios';
 import BigNumber from 'bignumber.js';
 import React, { useCallback, useEffect, useState } from 'react';
 import heroImage from '../assets/info_header.png';
-import { getBalancesForWallet } from '../services/balanceService';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
-import { ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
+import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
 import Route from './Route';
 import './Swap.css';
 import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
-
-const transferChains = [
-  getChainByKey(ChainKey.POL),
-  getChainByKey(ChainKey.BSC),
-  getChainByKey(ChainKey.DAI),
-]
 
 interface TokenWithAmounts extends Token {
   amount?: number
@@ -31,15 +24,23 @@ interface TokenWithAmounts extends Token {
 }
 let source: CancelTokenSource | undefined = undefined
 
-const Swap = () => {
+interface SwapProps {
+  transferChains: Chain[]
+  getBalancesForWallet: Function
+}
+
+const Swap = ({
+  transferChains,
+  getBalancesForWallet,
+}: SwapProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unused, setStateUpdate] = useState<number>(0)
 
   // From
-  const [depositChain, setDepositChain] = useState<ChainKey>(ChainKey.POL)
+  const [depositChain, setDepositChain] = useState<ChainKey>(transferChains[0].key)
   const [depositAmount, setDepositAmount] = useState<number>(1)
   const [depositToken, setDepositToken] = useState<string | undefined>() // tokenId
-  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(ChainKey.DAI)
+  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(transferChains[1].key)
   const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
   const [withdrawToken, setWithdrawToken] = useState<string | undefined>() // tokenId
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(defaultTokens)
@@ -82,16 +83,16 @@ const Swap = () => {
         setStateUpdate((stateUpdate) => stateUpdate + 1)
       })
     }
-  }, [refreshTokens])
+  }, [refreshTokens, transferChains])
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
       setRefreshBalances(false)
 
-      getBalancesForWallet(web3.account)
+      getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
         .then(setBalances)
     }
-  }, [refreshBalances, web3.account])
+  }, [refreshBalances, getBalancesForWallet, transferChains, web3.account])
 
   useEffect(() => {
     if (!web3.account) {
@@ -131,7 +132,7 @@ const Swap = () => {
 
     setTokens(tokens)
     setStateUpdate((stateUpdate) => stateUpdate + 1)
-  }, [tokens, balances])
+  }, [tokens, balances, transferChains])
 
   const hasSufficientBalance = () => {
     if (!depositToken) {
@@ -240,11 +241,11 @@ const Swap = () => {
   }
 
   return (
-    <Content className="site-layout" style={{minHeight: 'calc(100vh - 64px)'}}>
+    <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)' }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Hero Image */}
-        <Row style={{ width: '80%', margin: '24px auto 0',transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
+        <Row style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
           <Image
             className="hero-image"
             src={heroImage}
@@ -252,7 +253,7 @@ const Swap = () => {
         </Row>
 
         {/* Swap Form */}
-        <Row style={{margin: 20}} justify={"center"} className="swap-form">
+        <Row style={{ margin: 20 }} justify={"center"} className="swap-form">
           <Col>
             <div className="swap-input" style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: "0 auto" }}>
               <Row>

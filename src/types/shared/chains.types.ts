@@ -273,12 +273,11 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
-
   // 128 - Huobi ECO Chain Mainnet
   {
     key: ChainKey.HEC,
     name: 'Huobi ECO Chain Mainnet',
-    coin: 'HT' as CoinKey,
+    coin: CoinKey.HT,
     id: 128,
     visible: true,
     faucetUrls: [
@@ -301,7 +300,6 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
-
   // 10 - Optimistic Ethereum
   {
     key: ChainKey.OPT,
@@ -393,7 +391,15 @@ export const supportedChains: Array<Chain> = [
     visible: false,
     faucetUrls: [
       'https://faucet.ropsten.be/',
+      'https://app.compound.finance/', // https://teller.gitbook.io/teller-1/testing-guide/getting-testnet-tokens-ropsten-1
     ],
+
+    exchange: {
+      name: 'Uniswap',
+      webUrl: 'https://app.uniswap.org/',
+      graph: '',
+      tokenlistUrl: 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
+    },
 
     metamask: {
       chainId: prefixChainId(3),
@@ -422,6 +428,13 @@ export const supportedChains: Array<Chain> = [
       'https://faucet.rinkeby.io/',
     ],
 
+    exchange: {
+      name: 'Uniswap',
+      webUrl: 'https://app.uniswap.org/',
+      graph: '',
+      tokenlistUrl: 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
+    },
+
     metamask: {
       chainId: prefixChainId(4),
       blockExplorerUrls: [
@@ -448,6 +461,13 @@ export const supportedChains: Array<Chain> = [
     faucetUrls: [
       'https://goerli-faucet.slock.it/',
     ],
+
+    exchange: {
+      name: 'Uniswap',
+      webUrl: 'https://app.uniswap.org/',
+      graph: '',
+      tokenlistUrl: 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
+    },
 
     metamask: {
       chainId: prefixChainId(5),
@@ -476,6 +496,13 @@ export const supportedChains: Array<Chain> = [
     faucetUrls: [
       'https://faucet.matic.network/',
     ],
+
+    exchange: {
+      name: 'QuickSwap',
+      webUrl: 'https://quickswap.exchange/',
+      graph: '',
+      tokenlistUrl: 'https://raw.githubusercontent.com/elkfinance/tokens/main/mumbai.tokenlist.json',
+    },
 
     metamask: {
       chainId: prefixChainId(80001),
