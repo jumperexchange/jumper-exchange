@@ -313,6 +313,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.DAI,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
       },
+      [ChainKey.MUM]: {
+        id: '0xb224913CE3851b0a0d7C0FB461eEF40f2e31ddb8',
+        symbol: CoinKey.DAI,
+        decimals: 18,
+        chainId: ChainId.MUM,
+        chainKey: ChainKey.MUM,
+        key: CoinKey.DAI,
+        name: CoinKey.DAI,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
+      },
       // 42, 0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa, 18
     },
   },
