@@ -8,8 +8,10 @@ import { Link } from 'react-router-dom';
 import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
+import hopIcon from '../assets/icons/hop.png';
 import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
+import { executeHopCross } from '../services/hop.execute';
 import { lifinance } from '../services/lifinance';
 import { switchChain } from '../services/metamask';
 import { executeNXTPCross } from '../services/nxtp.execute';
@@ -115,6 +117,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     switch (crossAction.tool) {
       case 'nxtp':
         return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status));
+      case 'hop':
+        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toString(), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
       default:
         console.warn('should never reach here')
     }
@@ -176,6 +180,12 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     </Tooltip>
   )
 
+  const hopAvatar = (
+    <Tooltip title="Hop">
+      <Avatar size="small" src={hopIcon} alt="Hop"></Avatar>
+    </Tooltip>
+  )
+
   const paraswapAvatar = (
     <Tooltip title="Paraswap">
       <Avatar size="small" src={paraswapIcon} alt="Paraswap"></Avatar>
@@ -218,8 +228,11 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
           case 'nxtp':
             avatar = connextAvatar
             break;
+          case 'hop':
+            avatar = hopAvatar
+            break;
           default:
-            return
+            break;
         }
         return [
           <Timeline.Item key={index + '_left'} color={color}>
@@ -282,7 +295,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         updateRoute(route)
       }
     }
-
     // start again
     setIsSwapping(true)
   }

@@ -11,6 +11,7 @@ import dai from '../assets/icons/xdai.png';
 import uniswap from '../assets/icons/uniswap.png';
 import ftm from '../assets/icons/fantom.png';
 import arb from '../assets/icons/arbitrum.svg';
+import opt from '../assets/icons/optimism.png';
 import rop from '../assets/icons/ethereum_ropsten.png';
 import rin from '../assets/icons/ethereum_rinkeby.png';
 import gor from '../assets/icons/ethereum_goerli.png';
@@ -20,20 +21,27 @@ import arbt from '../assets/icons/arbitrum_test.png';
 
 export const icons: { [key: string]: string } = {
   // Mainnets
-  [ChainKey.BSC]: bsc,
   [ChainKey.ETH]: eth,
   [ChainKey.POL]: pol,
+  [ChainKey.BSC]: bsc,
   [ChainKey.DAI]: dai,
+  // [ChainKey.OKT]: okt,
   [ChainKey.FTM]: ftm,
+  // [ChainKey.AVA]: ava,
   [ChainKey.ARB]: arb,
+  // [ChainKey.HEC]: hec,
+  [ChainKey.OPT]: opt,
 
   // Testnets
   [ChainKey.ROP]: rop,
   [ChainKey.RIN]: rin,
   [ChainKey.GOR]: gor,
   [ChainKey.MUM]: mum,
-  [ChainKey.BSCT]: bsct,
   [ChainKey.ARBT]: arbt,
+  //[ChainKey.OPTT]: optt,
+  [ChainKey.BSCT]: bsct,
+  //[ChainKey.HECT]: hect,
+
 
   // Exchanges
   'Pancake': pancake,

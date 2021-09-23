@@ -381,6 +381,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.USDT,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
       },
+      [ChainKey.OPT]: {
+        id: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
+        symbol: CoinKey.USDT,
+        decimals: 6,
+        chainId: ChainId.OPT,
+        chainKey: ChainKey.OPT,
+        key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+      },
 
       // Testnets
       [ChainKey.ROP]: {
@@ -468,6 +478,16 @@ export const defaultCoins: Array<Coin> = [
         decimals: 6,
         chainId: ChainId.ARB,
         chainKey: ChainKey.ARB,
+        key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+      },
+      [ChainKey.OPT]: {
+        id: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+        symbol: CoinKey.USDC,
+        decimals: 6,
+        chainId: ChainId.OPT,
+        chainKey: ChainKey.OPT,
         key: CoinKey.USDC,
         name: CoinKey.USDC,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
@@ -617,7 +637,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ETH]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.ETH],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.ETH],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.ETH],
+    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.ETH],
   ],
   [ChainKey.BSC]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.BSC],
@@ -628,10 +648,12 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.POL],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.POL],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.POL],
+    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.POL],
   ],
   [ChainKey.DAI]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.DAI],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.DAI],
+    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.DAI],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.DAI],
   ],
   [ChainKey.FTM]: [
@@ -642,7 +664,10 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ARB]: [
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.ARB],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.ARB],
-    //findDefaultCoin(CoinKey.DAI).chains[ChainKey.ARB],
+  ],
+  [ChainKey.OPT]: [
+    findDefaultCoin(CoinKey.USDC).chains[ChainKey.OPT],
+    findDefaultCoin(CoinKey.USDT).chains[ChainKey.OPT],
   ],
 
   // Testnet
