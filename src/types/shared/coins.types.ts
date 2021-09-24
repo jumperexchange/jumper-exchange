@@ -709,7 +709,6 @@ export const defaultCoins: Array<Coin> = [
   },
 
 ]
-console.log(defaultCoins.find(c => c.key === CoinKey.DAI)?.chains[ChainKey.GOR])
 
 export const findDefaultCoin = (coinKey: CoinKey) => {
   const coin = defaultCoins.find(coin => coin.key === coinKey)
