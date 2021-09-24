@@ -273,12 +273,11 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
-
   // 128 - Huobi ECO Chain Mainnet
   {
     key: ChainKey.HEC,
     name: 'Huobi ECO Chain Mainnet',
-    coin: 'HT' as CoinKey,
+    coin: CoinKey.HT,
     id: 128,
     visible: true,
     faucetUrls: [
@@ -301,7 +300,6 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
-
   // 10 - Optimistic Ethereum
   {
     key: ChainKey.OPT,

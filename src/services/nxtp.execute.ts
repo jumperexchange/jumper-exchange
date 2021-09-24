@@ -65,19 +65,20 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
     throw e
   }
 
+
   return new Promise(async (resolve, reject) => {
     nxtpSDK.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
       try {
         await nxtp.finishTransfer(nxtpSDK, data, step, update)
       } catch (e) {
+        // nxtpSDK.removeAllListeners()
         notifications.showNotification(NotificationType.CROSS_ERROR)
-        nxtpSDK.removeAllListeners()
         throw e
       }
 
-      nxtpSDK.removeAllListeners()
-      status.status = 'DONE'
-      update(status)
+      // nxtpSDK.removeAllListeners()
+      // status.status = 'DONE'
+      // update(status)
       notifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
       resolve(status)
     })

@@ -97,6 +97,9 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   })
 
   // -> set status
+  status.fromAmount = parsedReceipt.fromAmount
+  status.toAmount = parsedReceipt.toAmount
+  status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
   status.status = 'DONE'
   update(status)
   notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
