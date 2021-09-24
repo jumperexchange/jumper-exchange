@@ -12,6 +12,7 @@ import heroImage from '../assets/info_header.png';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
 import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
+import LoadingIndicator from './LoadingIndicator';
 import Route from './Route';
 import './Swap.css';
 import SwapForm from './SwapForm';
@@ -314,7 +315,7 @@ const Swap = ({
           {routesLoading &&
             <Col>
               <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 48 }}>
-                <h3 style={{ textAlign: 'center' }}>Loading...</h3>
+                <LoadingIndicator></LoadingIndicator>
               </Row>
             </Col>
           }
