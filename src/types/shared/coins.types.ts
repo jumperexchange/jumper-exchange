@@ -725,26 +725,28 @@ export const findDefaultCoinOnChain = (coinKey: CoinKey, chainKey: ChainKey) => 
 
 export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ETH]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ETH),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ETH),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ETH),
     findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.ETH),
   ],
   [ChainKey.BSC]: [
+    findDefaultCoinOnChain(CoinKey.BNB, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.BSC),
   ],
   [ChainKey.POL]: [
+    findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.POL),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.POL),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.POL),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.POL),
-    findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.POL),
   ],
   [ChainKey.DAI]: [
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.DAI),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.DAI),
     findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.DAI),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.DAI),
   ],
   [ChainKey.FTM]: [
     findDefaultCoinOnChain(CoinKey.FTM, ChainKey.FTM),
@@ -753,10 +755,12 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
   ],
   [ChainKey.ARB]: [
+    // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
   ],
   [ChainKey.OPT]: [
+    // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OPT),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OPT),
   ],
