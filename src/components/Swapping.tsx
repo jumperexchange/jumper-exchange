@@ -70,6 +70,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     const fromAddress = web3.account
     const toAddress = fromAddress
 
+
     // get right amount
     let fromAmount: BigNumber
     if (previousStep && previousStep.execution && previousStep.execution.toAmount) {

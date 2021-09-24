@@ -284,7 +284,7 @@ export const defaultCoins: Array<Coin> = [
 
       // Testnets
       [ChainKey.ROP]: {
-        id: '0x31f42841c2db5173425b5223809cf3a38fede360', // on para 0xaD6D458402F60fD3Bd25163575031ACDce07538D, on faucet 0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108
+        id: '0x31f42841c2db5173425b5223809cf3a38fede360',
         symbol: CoinKey.DAI,
         decimals: 18,
         chainId: ChainId.ROP,
@@ -304,7 +304,7 @@ export const defaultCoins: Array<Coin> = [
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
       },
       [ChainKey.GOR]: {
-        id: '0xdc31ee1784292379fbb2964b3b9c4124d8f89c60',
+        id: '0xC61bA16e864eFbd06a9fe30Aab39D18B8F63710a', // old address 0xdc31ee1784292379fbb2964b3b9c4124d8f89c60
         symbol: CoinKey.DAI,
         decimals: 18,
         chainId: ChainId.GOR,
@@ -787,7 +787,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.TEST, ChainKey.MUM),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MUM),
     // findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MUM),
-    // findDefaultCoinOnChain(CoinKey.DAI, ChainKey.MUM),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.MUM),
   ],
 }
 
