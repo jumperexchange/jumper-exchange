@@ -284,7 +284,7 @@ export const defaultCoins: Array<Coin> = [
 
       // Testnets
       [ChainKey.ROP]: {
-        id: '0x31f42841c2db5173425b5223809cf3a38fede360',
+        id: '0x31f42841c2db5173425b5223809cf3a38fede360', // on para 0xaD6D458402F60fD3Bd25163575031ACDce07538D, on faucet 0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108
         symbol: CoinKey.DAI,
         decimals: 18,
         chainId: ChainId.ROP,
@@ -304,7 +304,7 @@ export const defaultCoins: Array<Coin> = [
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
       },
       [ChainKey.GOR]: {
-        id: '0xC61bA16e864eFbd06a9fe30Aab39D18B8F63710a', // old address 0xdc31ee1784292379fbb2964b3b9c4124d8f89c60
+        id: '0xc61ba16e864efbd06a9fe30aab39d18b8f63710a', // old: 0xdc31ee1784292379fbb2964b3b9c4124d8f89c60
         symbol: CoinKey.DAI,
         decimals: 18,
         chainId: ChainId.GOR,
@@ -330,7 +330,7 @@ export const defaultCoins: Array<Coin> = [
   {
     key: CoinKey.FTM,
     name: CoinKey.FTM,
-    logoURI: '',
+    logoURI: 'https://assets.spookyswap.finance/tokens/FTM.png',
     verified: true,
     chains: {
       [ChainKey.FTM]: {
@@ -341,7 +341,7 @@ export const defaultCoins: Array<Coin> = [
         chainKey: ChainKey.FTM,
         key: CoinKey.FTM,
         name: CoinKey.FTM,
-        logoURI: '',
+        logoURI: 'https://assets.spookyswap.finance/tokens/FTM.png',
       },
     },
   },
@@ -725,39 +725,44 @@ export const findDefaultCoinOnChain = (coinKey: CoinKey, chainKey: ChainKey) => 
 
 export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ETH]: [
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.ETH],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.ETH],
-    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.ETH],
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ETH),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ETH),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ETH),
+    findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.ETH),
   ],
   [ChainKey.BSC]: [
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.BSC],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.BSC],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.BSC],
+    findDefaultCoinOnChain(CoinKey.BNB, ChainKey.BSC),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.BSC),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.BSC),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.BSC),
   ],
   [ChainKey.POL]: [
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.POL],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.POL],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.POL],
-    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.POL],
+    findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.POL),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.POL),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.POL),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.POL),
   ],
   [ChainKey.DAI]: [
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.DAI],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.DAI],
-    findDefaultCoin(CoinKey.MATIC).chains[ChainKey.DAI],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.DAI],
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.DAI),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.DAI),
+    findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.DAI),
   ],
   [ChainKey.FTM]: [
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.FTM],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.FTM],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.FTM],
+    findDefaultCoinOnChain(CoinKey.FTM, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
   ],
   [ChainKey.ARB]: [
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.ARB],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.ARB],
+    // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ARB),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
   ],
   [ChainKey.OPT]: [
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.OPT],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.OPT],
+    // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OPT),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OPT),
   ],
 
   // Testnet
@@ -836,6 +841,17 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     name: 'WXDAI',
     logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
   },
+  [ChainKey.FTM]: {
+    //
+    id: '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
+    symbol: 'wFTM',
+    decimals: 18,
+    chainId: ChainId.FTM,
+    chainKey: ChainKey.FTM,
+    key: 'wFTM' as CoinKey,
+    name: 'wFTM',
+    logoURI: 'https://assets.spookyswap.finance/coins/0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83.png',
+  },
 
   // Testnets
   [ChainKey.ROP]: {
@@ -892,8 +908,8 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
 export const BASES_TO_CHECK_TRADES_AGAINST = {
   [ChainKey.ETH]: [
     wrappedTokens[ChainKey.ETH],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.ETH],
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.ETH],
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ETH),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ETH),
     {
       id: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
       symbol: 'WBTC',
@@ -901,12 +917,12 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
       chainId: ChainId.DAI,
       chainKey: ChainKey.DAI
     } as Token,
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.ETH]
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ETH)
   ],
   [ChainKey.DAI]: [
     wrappedTokens[ChainKey.DAI],
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.DAI],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.DAI],
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.DAI),
     {
       id: '0x8e5bBbb09Ed1ebdE8674Cda39A0c169401db4252',
       symbol: 'WBTC',
@@ -953,15 +969,15 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
       chainId: ChainId.POL,
       chainKey: ChainKey.POL
     } as Token,
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.POL],
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.POL],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.POL]
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.POL),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.POL),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.POL)
   ],
   [ChainKey.BSC]: [
     wrappedTokens[ChainKey.BSC],
-    findDefaultCoin(CoinKey.DAI).chains[ChainKey.BSC],
-    findDefaultCoin(CoinKey.USDC).chains[ChainKey.BSC],
-    findDefaultCoin(CoinKey.USDT).chains[ChainKey.BSC],
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.BSC),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.BSC),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.BSC),
     {
       id: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
       symbol: 'CAKE',
@@ -992,7 +1008,12 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     } as Token,
   ],
   [ChainKey.OKT]: [],
-  [ChainKey.FTM]: [],
+  [ChainKey.FTM]: [
+    findDefaultCoinOnChain(CoinKey.FTM, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
+  ],
   [ChainKey.AVA]: [],
   [ChainKey.ARB]: [],
   [ChainKey.HEC]: [],

@@ -6,7 +6,7 @@ import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
 import { getBalancesForWallet } from './services/balanceService';
-import { defaultTokens, getChainById } from './types';
+import { ChainKey, CoinKey, findDefaultCoinOnChain, getChainById } from './types';
 
 const getTransferChains = () => {
   try {
@@ -18,7 +18,32 @@ const getTransferChains = () => {
 }
 const transferChains = getTransferChains()
 
-const transferTokens = defaultTokens
+const transferTokens = {
+  [ChainKey.BSC]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.BSC),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.BSC),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.BSC),
+  ],
+  [ChainKey.POL]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.POL),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.POL),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.POL),
+  ],
+  [ChainKey.DAI]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.DAI),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.DAI),
+  ],
+  [ChainKey.FTM]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
+  ],
+  [ChainKey.ARB]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
+  ],
+}
 
 function usePageViews() {
   let location = (window as any).location
