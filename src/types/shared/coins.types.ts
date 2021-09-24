@@ -284,7 +284,7 @@ export const defaultCoins: Array<Coin> = [
 
       // Testnets
       [ChainKey.ROP]: {
-        id: '0x31f42841c2db5173425b5223809cf3a38fede360',
+        id: '0x31f42841c2db5173425b5223809cf3a38fede360', // on para 0xaD6D458402F60fD3Bd25163575031ACDce07538D, on faucet 0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108
         symbol: CoinKey.DAI,
         decimals: 18,
         chainId: ChainId.ROP,
@@ -747,6 +747,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.DAI],
   ],
   [ChainKey.FTM]: [
+    findDefaultCoin(CoinKey.FTM).chains[ChainKey.FTM],
     findDefaultCoin(CoinKey.USDC).chains[ChainKey.FTM],
     findDefaultCoin(CoinKey.USDT).chains[ChainKey.FTM],
     findDefaultCoin(CoinKey.DAI).chains[ChainKey.FTM],
@@ -835,6 +836,17 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     key: 'WXDAI' as CoinKey,
     name: 'WXDAI',
     logoURI: 'https://zapper.fi/images/networks/ethereum/0x6b175474e89094c44da98b954eedeac495271d0f.png',
+  },
+  [ChainKey.FTM]: {
+    //
+    id: '0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
+    symbol: 'wFTM',
+    decimals: 18,
+    chainId: ChainId.FTM,
+    chainKey: ChainKey.FTM,
+    key: 'wFTM' as CoinKey,
+    name: 'wFTM',
+    logoURI: 'https://assets.spookyswap.finance/coins/0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83.png',
   },
 
   // Testnets
@@ -992,7 +1004,12 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     } as Token,
   ],
   [ChainKey.OKT]: [],
-  [ChainKey.FTM]: [],
+  [ChainKey.FTM]: [
+    findDefaultCoinOnChain(CoinKey.FTM, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.FTM),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
+  ],
   [ChainKey.AVA]: [],
   [ChainKey.ARB]: [],
   [ChainKey.HEC]: [],
