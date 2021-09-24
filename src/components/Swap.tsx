@@ -7,7 +7,7 @@ import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
 import BigNumber from 'bignumber.js';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import heroImage from '../assets/info_header.png';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
@@ -18,6 +18,8 @@ import './Swap.css';
 import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
+import {animate, stagger} from "motion"
+
 
 interface TokenWithAmounts extends Token {
   amount?: number
@@ -28,6 +30,18 @@ let source: CancelTokenSource | undefined = undefined
 interface SwapProps {
   transferChains: Chain[]
   getBalancesForWallet: Function
+}
+
+
+const fadeInAnimation = ( element: React.MutableRefObject<HTMLDivElement | null>) =>{
+  animate(element.current?.childNodes as NodeListOf<Element>,{
+    y: ["50px", "0px"],
+    opacity:[0, 1],
+  },{
+    delay: stagger(0.2),
+    duration: 0.5,
+    easing: "ease-in-out"
+  })
 }
 
 const Swap = ({
@@ -61,6 +75,9 @@ const Swap = ({
   const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React()
   const login = () => activate(injected)
+
+  // Elements used for animations
+  const routeCards = useRef<HTMLDivElement | null>(null)
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -187,14 +204,14 @@ const Swap = ({
 
         try {
           const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
-
           // filter if needed
           const routes: Array<Array<TransferStep>> = result.data
-
           setRoutes(routes)
+          fadeInAnimation(routeCards)
           setHighlightedIndex(routes.length === 0 ? -1 : 0)
           setNoRoutesAvailable(routes.length === 0)
           setRoutesLoading(false)
+
         } catch (err) {
           // check if it we are still loading a new request
           if (!axios.isCancel(err)) {
@@ -298,7 +315,7 @@ const Swap = ({
           {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
-              <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }} ref={routeCards}>
                 {
                   routes.map((route, index) => (
                     <Route

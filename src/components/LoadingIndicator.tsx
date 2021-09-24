@@ -17,7 +17,7 @@ function LoadingIndicator (){
   useEffect(()=>{
     //normal animation
     animate(element.current?.childNodes as NodeListOf<Element>,{
-      y: [0, 10, 0],
+      y: [0, -5, 0],
       opacity:[1, 0.8, 1],
     },{
       delay: stagger(0.1),
