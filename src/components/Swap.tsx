@@ -2,7 +2,7 @@
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Form, Image, Modal, Row } from 'antd';
+import { Button, Col, Collapse, Form, Image, Modal, Row, Typography } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
@@ -20,6 +20,7 @@ import Swapping from './Swapping';
 import { injected } from './web3/connectors';
 import {animate, stagger} from "motion"
 
+const { Panel } = Collapse;
 
 interface TokenWithAmounts extends Token {
   amount?: number
@@ -337,8 +338,28 @@ const Swap = ({
             </Col>
           }
           {!routesLoading && noRoutesAvailable &&
-            <Col>
+            <Col style={{width: "50%"}}>
               <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
+              <Typography.Text type="secondary" style={{ textAlign: 'left' }}>
+                We couldn't find suitable routes for your desired transfer.
+                We do have some suggestions why that could be: <br />
+                </Typography.Text>
+                <Collapse ghost className="no-route-custom-collapse">
+
+                  <Panel header="A route for this transaction simply does not exist yet." key="1">
+                    <p style={{color:"grey"}}>
+                      We are working hard on integrating more exchanges to find possible transactions for you!
+                      Look out for updates and try again later.
+                    </p>
+                  </Panel>
+
+                  <Panel header="You are not sending enough tokens - Try a greater amount." key="2">
+                    <p style={{color:"grey"}}>
+                      Transactions cost money. These transaction costs are deducted from your swapping amount.
+                      If this amount is not enough to cover the expenses, we can not execute the transaction or compute routes.
+                    </p>
+                  </Panel>
+                </Collapse>
             </Col>
           }
         </Row>

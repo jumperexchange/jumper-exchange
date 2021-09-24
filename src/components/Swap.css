@@ -219,3 +219,10 @@ h4.swap-title {
 .maxButton:hover {
   opacity: 1;
 }
+
+.no-route-custom-collapse > .ant-collapse-item > .ant-collapse-header {
+  color: grey;
+  text-align: left;
+  padding: 12px 16px 0px 0px;
+  text-decoration: underline;
+}
