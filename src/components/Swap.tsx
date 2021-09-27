@@ -369,7 +369,10 @@ const Swap = ({
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
-          onOk={() => setselectedRoute([])}
+          onOk={() =>{
+            setselectedRoute([])
+            setRefreshBalances(true)
+          }}
           onCancel={() => {
             setselectedRoute([])
             setRefreshBalances(true)
@@ -377,7 +380,14 @@ const Swap = ({
           width={700}
           footer={null}
         >
-          <Swapping route={selectedRoute} updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}></Swapping>
+          <Swapping route={selectedRoute}
+          updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
+          onSwapDone = {() => {
+            // setRefreshBalances(true)
+            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
+            .then(setBalances)
+          }}
+          ></Swapping>
         </Modal>
       }
     </Content>

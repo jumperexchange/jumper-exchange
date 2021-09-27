@@ -27,9 +27,10 @@ import { getBalancesForWallet } from '../services/balanceService';
 interface SwappingProps {
   route: Array<TransferStep>,
   updateRoute: Function,
+  onSwapDone: Function
 }
 
-const Swapping = ({ route, updateRoute }: SwappingProps) => {
+const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
@@ -348,6 +349,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         await getFinalBalace(route)
         setIsSwapping(false)
         setSwapDoneAt(Date.now())
+        onSwapDone()
       }
       return
     }
@@ -368,6 +370,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     await getFinalBalace(route)
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
+    onSwapDone()
   }
   checkSwapping()
 
