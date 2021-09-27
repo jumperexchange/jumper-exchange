@@ -1,6 +1,6 @@
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers';
+import { FallbackProvider } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
 import { constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
@@ -108,7 +108,6 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   const toChain = getChainById(crossAction.toChainId)
 
   // Before approving/transferring, check router liquidity
-  console.log("getting liquidity")
   const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
     crossEstimate.data.bid.receivingChainId,
     crossEstimate.data.bid.router,
@@ -120,7 +119,6 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     return
   }
 
-  console.log("have liquidity now")
 
   // Check Token Approval
   if (crossEstimate.data.bid.sendingAssetId !== constants.AddressZero) {
@@ -146,8 +144,10 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   }
 
   const transactionId = crossEstimate.data.bid.transactionId
-  const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
+  // try{
 
+  // }
+  const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
   // approve sent => wait
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
@@ -295,6 +295,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       proceedProcess.errorMessage = e.message
       setStatusFailed(update, status, proceedProcess)
     }
+    throw e
   }
 
   return status
@@ -313,7 +314,7 @@ const renderConfirmations = (count: number, max: number) => {
 }
 
 const trackConfirmations = async (sdk: NxtpSdk, chainId: number, hash: string, confirmations: number, callback: Function) => {
-  const receivingProvider: FallbackProvider = (sdk as any).chainConfig[chainId].provider
+  const receivingProvider: FallbackProvider = (sdk as any).config.chainConfig[chainId].provider
   const response = await receivingProvider.getTransaction(hash)
   trackConfirmationsForResponse(sdk, chainId, response, confirmations, callback)
 }

@@ -10,32 +10,30 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .swap-route {
-  transform: scale(0.9);
-  transition: transform 200ms;
+  background-color: white;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  transition: box-shadow 200ms;
+  transition: -webkit-box-shadow 200ms;
   min-width: 300px;
   opacity: 0;
 
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  transition: border 200ms;
   border-radius: 6px;
   cursor: pointer;
 }
-.swap-route .ant-btn {
-  background: #ececec;
-}
 
 .swap-route.optimal {
-  transform: scale(1);
-  border: 1px solid #07d207;
+  -webkit-box-shadow: 0px 0px 22px -6px rgba(23, 144, 255, 0.5);
+  box-shadow: 0px 0px 22px -6px rgba(23, 144, 255, 0.5);
 }
 
-.swap-route:hover {
-  transform: scale(1);
+.swap-route .ant-btn span {
+  text-decoration: none;
+  transition: text-decoration 400ms;
 }
 
-.swap-route.optimal .ant-btn,
-.swap-route:hover .ant-btn {
-  background: white;
+.swap-route:hover .ant-btn span {
+  text-decoration: underline;
 }
 
 .progress-step-list {
@@ -66,7 +64,7 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 }
 .swapping-modal-timeline {
-  height: 60vh;
+  height: 50vh;
   overflow-y: scroll;
 }
 
@@ -171,10 +169,15 @@ h4.swap-title {
   right: 0;
   text-align: center;
 }
+
 .selected-label {
-  color: #07d207;
-  font-weight: bold;
+  line-height: 1.5715;
+  /* color: #07d207; */
+  color: #1790ff;
+  font-weight: 400;
   padding: 6.4px;
+  font-size: 16px;
+  text-decoration: underline;
 }
 
 .ant-btn-round.ant-btn-lg {

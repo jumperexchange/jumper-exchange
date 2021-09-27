@@ -1,7 +1,7 @@
-import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Collapse, Divider, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Divider, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -23,7 +23,6 @@ import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChain
 import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 
-const { Panel } = Collapse;
 interface SwappingProps {
   route: Array<TransferStep>,
   updateRoute: Function,
@@ -275,7 +274,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
           throw new Error('Invalid Step')
       }
     } catch{
-      console.log("complete trigger fail")
       setIsSwapping(false)
     }
 
@@ -413,33 +411,35 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       </Typography.Text>
     </div>
 
-
     <Divider />
+
     <div className="swapp-modal-footer">
-      {currentProcess && currentProcess.status === 'PENDING' &&
-        <>
-          <Row justify="center">
-            <Spin indicator={<LoadingIndicator />} />
-          </Row>
-          <Row justify="center">
-            <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.message}</Typography.Text>
-          </Row>
-        </>
-      }
-      {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
-        <>
-          {/* <Row justify="center">
-            <img src={walletIcon} alt="Wallet" width="92" height="100" />
-          </Row> */}
-          <Row justify="center">
-            <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
-          </Row>
-        </>
-      }
 
       <div style={{ textAlign: 'center', transform: "scale(1.5)",}}>
         {getMainButton()}
       </div>
+
+      {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
+        <>
+          <Row justify="center">
+            <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
+          </Row>
+          <Row justify="center">
+            <img src={walletIcon} alt="Wallet"  />
+          </Row>
+        </>
+      }
+
+      {currentProcess && currentProcess.status === 'PENDING' &&
+        <>
+          <Row justify="center">
+            <Typography.Text className="flashing">{currentProcess.message}</Typography.Text>
+          </Row>
+          <Row style={{ marginTop: 20 }} justify="center">
+            <Spin indicator={<LoadingIndicator />} />
+          </Row>
+        </>
+      }
 
     </div>
 
