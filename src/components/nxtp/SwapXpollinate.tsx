@@ -308,8 +308,9 @@ const SwapXpollinate = ({
         }
 
         // request
+        console.log('process.env.REACT_APP_NXTP_ROUTER_ADDRESS: ', process.env.REACT_APP_NXTP_ROUTER_ADDRESS);
         const res = await request(sub, query, {
-          routerId: '0x29a519e21d6a97cdb82270b69c98bac6426cdcf9',
+          routerId: process.env.REACT_APP_NXTP_ROUTER_ADDRESS?.toLowerCase(),
         })
 
         // parse
