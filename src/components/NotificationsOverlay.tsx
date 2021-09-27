@@ -11,7 +11,7 @@ const NOTIFICATION_OVERLAY_VERTICAL_DISPLAY_POSITION = "50px"
 
 // reset permissions on chrome://settings/content/siteDetails
 function NotificationOverlay() {
-  const [permissionStatus, setPermissionStatus] = useState<NotificationPermission>(Notification.permission)
+  const [permissionStatus, setPermissionStatus] = useState<NotificationPermission>("Notification" in window? Notification.permission: "denied")
 
   const activateNotifications = async () => {
     const status: NotificationPermission = await notifications.activateNotifications()
