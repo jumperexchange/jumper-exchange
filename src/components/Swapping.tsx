@@ -1,7 +1,7 @@
 import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
+import { Alert, Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -21,6 +21,7 @@ import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
 import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, TransferStep } from '../types';
 import Clock from './Clock';
+import { BaseType } from 'antd/lib/typography/Base';
 
 interface SwappingProps {
   route: Array<TransferStep>,
@@ -47,7 +48,8 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const checkChain = async (step: TransferStep) => {
     const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
     const chain = getChainById(step.action.chainId)
-    const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`)
+    const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`, { status: 'ACTION_REQUIRED'})
+
     try {
       const switched = await switchChain(step.action.chainId)
       if (!switched) {
@@ -57,8 +59,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       if (e.message) switchProcess.errorMessage = e.message
       if (e.code) switchProcess.errorCode = e.code
       setStatusFailed(update, status, switchProcess)
+      setIsSwapping(false)
       return false
     }
+
     setStatusDone(update, status, switchProcess)
     return true
   }
@@ -132,28 +136,48 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       return []
     }
 
-    return execution.process.map((process, index) => {
-      const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
-      const hasFailed = process.status === 'FAILED'
-      return (
-        <span key={index} style={{ display: 'flex' }}>
-          <Typography.Text
-            type={type}
-            className={process.status === 'PENDING' ? 'flashing' : undefined}
-          >
-            <p>{process.message}</p>
-            {hasFailed && <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }}>
-              {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
-              {process.errorMessage}
-            </Typography.Text>}
+    const steps = execution.process.map((process, index) => {
+      const typeMapping: { [Status: string]: BaseType } = {
+        'DONE': 'success',
+        'ACTION_REQUIRED': 'secondary',
+        'FAILED': 'danger',
+      }
+      const type = typeMapping[process.status]
 
-          </Typography.Text>
-          <Typography.Text style={{ marginLeft: 'auto' }}>
-            <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
-          </Typography.Text>
-        </span>
+      return (
+        <>
+          <span style={{ display: 'flex' }}>
+            <Typography.Text
+              type={type}
+              className={process.status === 'PENDING' ? 'flashing' : undefined}
+            >
+              {process.message}
+            </Typography.Text>
+            <Typography.Text style={{ marginLeft: 'auto' }}>
+              <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
+            </Typography.Text>
+          </span>
+
+          { process.status === 'FAILED' && process.errorMessage && (
+            <Alert message={('errorCode' in process ? `Error Code: ${process.errorCode} - ` : '') + process.errorMessage} type="error" />
+          )}
+        </>
       )
     })
+
+    const colorMapping: { [Status: string]: string } = {
+      'DONE': 'green',
+      'ACTION_REQUIRED': 'blue',
+      'PENDING': 'blue',
+      'FAILED': 'red',
+    }
+    const color = colorMapping[execution.status]
+
+    return (
+      <Timeline.Item key={'_right'} color={color}>
+        {steps}
+      </Timeline.Item>
+    )
   }
 
   const getChainAvatar = (chainKey: ChainKey) => {
@@ -203,28 +227,22 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const parseStepToTimeline = (step: TransferStep, index: number, route: Array<TransferStep>) => {
     const executionSteps = parseExecution(step.execution)
     const color = step.execution && step.execution.status === 'DONE' ? 'green' : (step.execution ? 'blue' : 'gray')
-    const hasFailed = step.execution && step.execution.status === 'FAILED'
 
     switch (step.action.type) {
 
       case 'swap': {
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
           <Timeline.Item key={index + '_left'} color={color}>
             <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.chainId))}</h4>
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
-            {executionSteps}
-            {hasFailed ? triggerButton : undefined}
-          </Timeline.Item>,
+          executionSteps,
         ]
       }
 
       case 'cross': {
         const crossAction = step.action as CrossAction
         const crossEstimate = step.estimate as CrossEstimate
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         let avatar;
         switch (crossAction.tool) {
           case 'nxtp':
@@ -241,10 +259,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
             <h4>Transfer from {getChainAvatar(getChainById(crossAction.chainId).key)} to {getChainAvatar(getChainById(crossAction.toChainId).key)} via {avatar}</h4>
             <span>{formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
-            {executionSteps}
-            {hasFailed ? triggerButton : undefined}
-          </Timeline.Item>,
+          executionSteps,
         ]
       }
 
@@ -272,7 +287,12 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       if (!(await checkChain(route[0]))) return
     }
 
-    lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) => updateStatus(route[0], status))
+    try {
+      await lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) => updateStatus(route[0], status))
+    } catch (e) {
+      console.error('LiFi failed', e)
+      setIsSwapping(false)
+    }
   }
 
   const isLifiSupported = (route: Array<TransferStep>) => {

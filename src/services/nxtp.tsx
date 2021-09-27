@@ -1,9 +1,9 @@
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
+import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent, Logger } from "@connext/nxtp-utils";
 import { FallbackProvider } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
 import { constants, providers } from 'ethers';
-import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
+import { ChainId, CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 import { getApproved } from './utils';
@@ -38,7 +38,28 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
     }
   })
 
-  const sdk = new NxtpSdk({chainConfig, signer});
+  // on which network?
+  const chainId = parseInt(Object.keys(chainProviders)[0])
+  const mainnets = [
+    ChainId.ETH,
+    ChainId.POL,
+    ChainId.BSC,
+    ChainId.DAI,
+    ChainId.OKT,
+    ChainId.FTM,
+    ChainId.AVA,
+    ChainId.ARB,
+    ChainId.HEC,
+    ChainId.OPT,
+  ]
+  const isMainnet = mainnets.indexOf(chainId) !== -1
+
+  const sdk = new NxtpSdk(
+    {chainConfig, signer},
+    new Logger({ name: "NxtpSdk", level: "info" }),
+    isMainnet ? 'mainnet' : 'testnet',
+    false,
+  )
 
   // reuse existing messaging token
   const account = await signer.getAddress()
