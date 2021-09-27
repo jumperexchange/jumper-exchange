@@ -8,6 +8,8 @@ import { getRpcProviders } from '../components/web3/connectors';
 import { Chain, ChainId, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, Process, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import { abi } from './ABI/NXTPFacet.json';
 import * as nxtp from './nxtp';
+import * as paraswap from './paraswap';
+import { oneInch } from './1Inch';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 import { getSwapCall } from './uniswaps';
 import { getApproved, setApproval } from './utils';
@@ -112,8 +114,22 @@ const buildTransaction = async (signer: JsonRpcSigner, encryptionPublicKey: stri
     // Swap and Withdraw
     const swapAction = endSwapStep.action
     const swapEstimate = endSwapStep.estimate as SwapEstimate
-    // TODO: configure slippage
-    const swapCall = await getSwapCall(signer, swapAction.chainId, lifiContractAddress, swapAction.token.id, swapAction.toToken.id, swapEstimate.fromAmount, swapEstimate.toAmount, swapEstimate.data.path)
+
+    let swapCall
+    switch (swapAction.tool) {
+      case 'paraswap':
+        swapCall = await paraswap.getSwapCall(swapAction.chainId, lifiContractAddress, swapAction.token, swapAction.toToken, swapEstimate.fromAmount, 0, swapEstimate.data)
+        break;
+
+      case '1inch':
+        swapCall = await oneInch.getSwapCall(swapAction.chainId, lifiContractAddress, swapAction.token, swapAction.toToken, swapEstimate.fromAmount, 0)
+        break;
+
+      default:
+        // TODO: configure slippage
+        swapCall = await getSwapCall(signer, swapAction.chainId, lifiContractAddress, swapAction.token.id, swapAction.toToken.id, swapEstimate.fromAmount, swapEstimate.toAmount, swapEstimate.data.path)
+        break;
+    }
 
     receivingTransaction = await lifi.populateTransaction.swapAndCompleteBridgeTokensViaNXTP(
       lifiData,

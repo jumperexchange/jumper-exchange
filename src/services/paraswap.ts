@@ -3,6 +3,7 @@ import BN from 'bignumber.js'
 import { BigNumber, ethers } from 'ethers'
 import { NetworkID, ParaSwap, SwapSide } from 'paraswap'
 import { Allowance, OptimalRatesWithPartnerFees, Transaction } from 'paraswap/build/types'
+import { Token } from '../types'
 
 const instances: { [key: number]: ParaSwap | null } = {
   1: null,
@@ -145,6 +146,31 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
     chainId: txParams.chainId,
   }
   return signer.sendTransaction(transaction)
+}
+
+export const getSwapCall = async (chainId: number, destAddress: string, srcToken: Token, destToken: Token, srcAmount: string, slippage: number, rate: OptimalRatesWithPartnerFees) => {
+  const para = getParaswap(chainId)
+  const minAmount = new BN(rate.destAmount).times(1 - (slippage / 100)).toFixed(0)
+  const txParams = await para.buildTx(
+    srcToken.id,
+    destToken.id,
+    srcAmount,
+    minAmount,
+    rate,
+    destAddress,
+    process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
+    destAddress,
+    {},
+    srcToken.decimals,
+    destToken.decimals,
+  ) as Transaction
+
+  return {
+    from: txParams.from,
+    to: txParams.to,
+    data: txParams.data,
+    chainId: txParams.chainId,
+  } as ethers.PopulatedTransaction
 }
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {

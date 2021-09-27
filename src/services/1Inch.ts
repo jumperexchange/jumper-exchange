@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { BigNumber, ethers } from 'ethers'
+import { Token } from '../types'
 
 const SUPPORTED_CHAINS = [1, 56, 137]
 const baseURL = 'https://api.1inch.exchange/v3.0/'
@@ -77,7 +78,7 @@ const checkTokenAddress = (address: string) => {
 }
 
 
-const getTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, fromAddress: string, destReceiver: string) => {
+const getTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, fromAddress: string, destReceiver: string, slippage: number = 1) => {
   // https://docs.1inch.io/api/quote-swap
   /* TODO: 1inch API supports custom gasPrices use transactionSpeed to get gasprice */
   /* TODO: slippage hardcoded to 1 */
@@ -86,7 +87,7 @@ const getTransaction = async (chainId: number, fromTokenAddress: string, toToken
     toTokenAddress: checkTokenAddress(toTokenAddress), // REQUIRED, string, contract address of a token to buy
     amount: amount, // REQUIRED, integer, amount of a token to sell
     fromAddress: fromAddress, // REQUIRED, string, address of a seller
-    slippage: 1, // REQUIRED, number, additional slippage in percentage
+    slippage: slippage, // REQUIRED, number, additional slippage in percentage
     // protocols: // OPTIONAL, string, protocols that can be used in a swap
     destReceiver: destReceiver, // OPTIONAL, string, address that will receive a purchased token
     referrerAddress: process.env.REACT_APP_ONEINCH_REFERRER_WALLET,// OPTIONAL, string, referrer's address
@@ -113,9 +114,22 @@ const getTransaction = async (chainId: number, fromTokenAddress: string, toToken
     tx
   }
 }
+
+const getSwapCall = async (chainId: number, destAddress: string, srcToken: Token, destToken: Token, srcAmount: string, slippage: number) => {
+  const result = await getTransaction(chainId, srcToken.id, destToken.id, srcAmount, destAddress, destAddress, slippage)
+  return {
+    from: result.tx.from,
+    to: result.tx.to,
+    data: result.tx.data,
+    value: BigNumber.from(result.tx.value),
+    gasPrice: BigNumber.from(result.tx.gasPrice),
+    gasLimit: BigNumber.from(result.tx.gas).mul(125).div(100), // add 25%
+  } as ethers.PopulatedTransaction
+}
+
 const transfer = async (signer: JsonRpcSigner, chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, destReceiver: string) => {
   const userAddress = await signer.getAddress()
-  const result = await getTransaction(chainId, fromTokenAddress, toTokenAddress, amount, userAddress, destReceiver);
+  const result = await getTransaction(chainId, fromTokenAddress, toTokenAddress, amount, userAddress, destReceiver)
 
   const tx = {
     from: result.tx.from,
@@ -160,6 +174,7 @@ const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
 
 export const oneInch = {
   isChainSupported,
+  getSwapCall,
   getTransaction,
   transfer,
   getContractAddress,
