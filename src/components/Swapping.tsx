@@ -1,7 +1,7 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Divider, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -19,9 +19,10 @@ import { executeParaswap } from '../services/paraswap.execute';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
 import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
-import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, TransferStep } from '../types';
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
+import { getBalancesForWallet } from '../services/balanceService';
 
 interface SwappingProps {
   route: Array<TransferStep>,
@@ -34,7 +35,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-
+  const [finalBalance, setFinalBalance] = useState<ChainPortfolio>()
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -314,8 +315,29 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     setIsSwapping(true)
   }
 
+  const getFinalBalace = async (route: TransferStep[]) => {
+    const lastStep = route[route.length-1]
+    let toChain: Chain, toToken: Token;
+    switch(lastStep.action.type) {
+      case 'cross':
+        toChain =  getChainById((lastStep as CrossStep).action.toChainId)
+        toToken = (lastStep as CrossStep).action.toToken
+        break;
+      case 'swap':
+        toChain = getChainById((lastStep as SwapStep).action.chainId)
+        toToken = (lastStep as SwapStep).action.toToken
+        break;
+      default:
+        toChain = getChainById(lastStep.action.chainId)
+        toToken = lastStep.action.token
+    }
+    const portfolio = await getBalancesForWallet(web3.account!, [toChain.id])
+    const chainPortfolio = portfolio[toChain.key].find(coin => coin.id === toToken.id)
+    setFinalBalance(chainPortfolio)
+  }
+
   // check where we are an trigger next
-  const checkSwapping = () => {
+  const checkSwapping = async() => {
     if (!isSwapping) return
 
     // lifi supported?
@@ -323,6 +345,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       if (!route[0].execution) {
         triggerLifi()
       } else if (route[0].execution.status === 'DONE') {
+        await getFinalBalace(route)
         setIsSwapping(false)
         setSwapDoneAt(Date.now())
       }
@@ -342,11 +365,13 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         return // step is already runing, wait
       }
     }
-
+    await getFinalBalace(route)
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
   }
   checkSwapping()
+
+
 
   const getMainButton = () => {
     // PENDING
@@ -357,15 +382,20 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     // DONE
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
-      // const result = route[route.length - 1].execution
-      // console.debug(result)
-      return <Link to="/dashboard"><Button type="link" >DONE - check your balances in our Dashboard</Button></Link>
+      return (<Space direction="vertical">
+      <Typography.Text>Swap Successful!</Typography.Text>
+      {finalBalance &&
+        <Typography.Text >You now have {finalBalance?.amount.toString().substring(0, 8)} {finalBalance?.symbol}</Typography.Text>
+      }
+      <Link to="/dashboard"><Button type="link">Dashboard</Button></Link>
+      </Space>)
+
     }
 
     // FAILED
     const isFailed = route.filter(step => step.execution?.status === 'FAILED').length > 0
     if (isFailed) {
-      return <Button type="primary" onClick={() => restartCrossChainSwap()}>
+      return <Button type="primary" onClick={() => restartCrossChainSwap()} style={{marginTop: 10}}>
         Restart from Failed Step
       </Button>
     }
@@ -373,7 +403,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     // NOT_STARTED
     const isCrossChainSwap = route.filter(step => step.action.type === 'cross').length > 0
     return (
-      <Button type="primary" onClick={() => startCrossChainSwap()}>
+      <Button type="primary" onClick={() => startCrossChainSwap()} style={{marginTop: 10}}>
         {isCrossChainSwap ? 'Start Cross Chain Swap' : 'Start Swap'}
       </Button>
     )
@@ -415,17 +445,17 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     <div className="swapp-modal-footer">
 
-      <div style={{ textAlign: 'center', transform: "scale(1.5)",}}>
+      <div style={{ textAlign: 'center', transform: "scale(1.3)",}}>
         {getMainButton()}
       </div>
 
       {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
         <>
           <Row justify="center">
-            <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
+            <Typography.Text >{currentProcess.message}</Typography.Text>
           </Row>
           <Row justify="center">
-            <img src={walletIcon} alt="Wallet"  />
+            <img src={walletIcon} alt="Please Check Your Wallet"  />
           </Row>
         </>
       }
