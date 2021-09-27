@@ -48,6 +48,6 @@ export const setStatusDone = (updateStatus: Function, status: Execution, current
       currentProcess[key] = value
     }
   }
-
+  console.log(status)
   updateStatus(status)
 }

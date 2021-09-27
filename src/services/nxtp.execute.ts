@@ -59,6 +59,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
 
   // trigger transfer
   try {
+    console.log("triggering transfer")
     await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
   } catch (e) {
     nxtpSDK.removeAllListeners()

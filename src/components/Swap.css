@@ -65,6 +65,14 @@ input[type="number"]::-webkit-outer-spin-button {
     padding-bottom: 12px;
   }
 }
+.swapping-modal-timeline {
+  height: 60vh;
+  overflow-y: scroll;
+}
+
+.swapp-modal-footer {
+  height: 12vh;
+}
 
 .swap-form {
   margin-top: 36px;

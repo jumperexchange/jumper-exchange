@@ -107,7 +107,6 @@ const Swap = ({
   useEffect(() => {
     if (refreshBalances && web3.account) {
       setRefreshBalances(false)
-
       getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
         .then(setBalances)
     }
@@ -332,7 +331,7 @@ const Swap = ({
           }
           {routesLoading &&
             <Col>
-              <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 48 }}>
+              <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 0 }}>
                 <LoadingIndicator></LoadingIndicator>
               </Row>
             </Col>
@@ -371,7 +370,10 @@ const Swap = ({
           className="swapModal"
           visible={selectedRoute.length > 0}
           onOk={() => setselectedRoute([])}
-          onCancel={() => setselectedRoute([])}
+          onCancel={() => {
+            setselectedRoute([])
+            setRefreshBalances(true)
+          }}
           width={700}
           footer={null}
         >

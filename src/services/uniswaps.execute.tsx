@@ -20,6 +20,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     // -> set status
     const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
 
+
     // -> check allowance
     try {
       const contractAddress = uniswap.getContractAddress(chainId)
@@ -56,7 +57,8 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
 
   // Swap via Uniswap
   // -> set status
-  const swapProcess = createAndPushProcess(update, status, 'Swap via Uniswap')
+  // const swapProcess = createAndPushProcess(update, status, `Swap via Uniswap`) //TODO: display actual uniswap clone
+  const swapProcess = createAndPushProcess(update, status, 'Swap via Uniswap', { status: 'ACTION_REQUIRED' })
 
   // -> swapping
   let tx

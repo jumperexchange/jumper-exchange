@@ -1,6 +1,6 @@
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { FallbackProvider } from '@ethersproject/providers';
+import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
 import { constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
@@ -59,7 +59,6 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
   } catch (e) {
     console.error(e)
   }
-
   return sdk
 }
 
@@ -109,6 +108,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   const toChain = getChainById(crossAction.toChainId)
 
   // Before approving/transferring, check router liquidity
+  console.log("getting liquidity")
   const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
     crossEstimate.data.bid.receivingChainId,
     crossEstimate.data.bid.router,
@@ -120,10 +120,20 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     return
   }
 
+  console.log("have liquidity now")
+
   // Check Token Approval
   if (crossEstimate.data.bid.sendingAssetId !== constants.AddressZero) {
     const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.data.bid.sendingChainId)
-    const approved = await getApproved((sdk as any).signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
+    let approved
+    try{
+      approved = await getApproved((sdk as any).signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
+    } catch(_e) {
+      const e = _e as Error
+      if (e.message) approveProcess.errorMessage = e.message
+      setStatusFailed(update, status, approveProcess)
+      throw e
+    }
     if (approved.gte(crossEstimate.data.bid.amount)) {
       // approval already done, jump to next step
       setStatusDone(update, status, approveProcess)

@@ -1,7 +1,7 @@
 import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Collapse, Divider, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -21,7 +21,9 @@ import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
 import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, TransferStep } from '../types';
 import Clock from './Clock';
+import LoadingIndicator from './LoadingIndicator';
 
+const { Panel } = Collapse;
 interface SwappingProps {
   route: Array<TransferStep>,
   updateRoute: Function,
@@ -57,6 +59,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       if (e.message) switchProcess.errorMessage = e.message
       if (e.code) switchProcess.errorCode = e.code
       setStatusFailed(update, status, switchProcess)
+      setIsSwapping(false)
       return false
     }
     setStatusDone(update, status, switchProcess)
@@ -135,19 +138,23 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
       const hasFailed = process.status === 'FAILED'
       return (
-        <span key={index} style={{ display: 'flex' }}>
+        <span key={index} style={{ display: 'flex'}}>
           <Typography.Text
             type={type}
+            style={{ maxWidth: 250}}
             className={process.status === 'PENDING' ? 'flashing' : undefined}
           >
             <p>{process.message}</p>
-            {hasFailed && <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }}>
-              {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
-              {process.errorMessage}
-            </Typography.Text>}
+            {hasFailed &&
+              <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }} >
+                {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
+                {`${process.errorMessage.substring(0, 150)}${process.errorMessage.length >150?'...':''}`}
+              </Typography.Text>
+
+            }
 
           </Typography.Text>
-          <Typography.Text style={{ marginLeft: 'auto' }}>
+          <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
             <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
           </Typography.Text>
         </span>
@@ -253,16 +260,24 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const triggerStep = async (index: number, route: Array<TransferStep>) => {
+    setIsSwapping(true)
     const step = route[index]
     const previousStep = index > 0 ? route[index - 1] : undefined
-    switch (step.action.type) {
-      case 'swap':
-        return triggerSwap(step, previousStep)
-      case 'cross':
-        return triggerCross(step, previousStep)
-      default:
-        throw new Error('Invalid Step')
+    try{
+      switch (step.action.type) {
+        case 'swap':
+          return await triggerSwap(step, previousStep)
+        case 'cross':
+          return await triggerCross(step, previousStep)
+        default:
+          setIsSwapping(false)
+          throw new Error('Invalid Step')
+      }
+    } catch{
+      console.log("complete trigger fail")
+      setIsSwapping(false)
     }
+
   }
 
   const triggerLifi = async () => {
@@ -384,43 +399,49 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     {alerts}
     <br />
 
-    <Timeline mode="alternate">
+    <Timeline mode="alternate" className="swapping-modal-timeline" >
       <Timeline.Item color="green"></Timeline.Item>
 
       {/* Steps */}
       {route.map(parseStepToTimeline)}
     </Timeline>
 
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', backgroundColor: "rgba(255,255,255, 0)" }}>
       <Typography.Text style={{ marginLeft: 'auto' }}>
         {swapStartedAt ? <span className="totalTime"><Clock startedAt={swapStartedAt} successAt={swapDoneAt} /></span> : <span>&nbsp;</span>}
       </Typography.Text>
     </div>
 
-    {currentProcess && currentProcess.status === 'PENDING' &&
-      <>
-        <Row justify="center">
-          <Spin style={{ margin: 10 }} indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
-        </Row>
-        <Row justify="center">
-          <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.message}</Typography.Text>
-        </Row>
-      </>
-    }
-    {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
-      <>
-        <Row justify="center">
-          <img src={walletIcon} alt="Wallet" width="92" height="100" />
-        </Row>
-        <Row justify="center">
-          <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
-        </Row>
-      </>
-    }
 
-    <div style={{ textAlign: 'center', transform: 'scale(1.5)', marginBottom: 20 }}>
-      {getMainButton()}
+    <Divider />
+    <div className="swapp-modal-footer">
+      {currentProcess && currentProcess.status === 'PENDING' &&
+        <>
+          <Row justify="center">
+            <Spin indicator={<LoadingIndicator />} />
+          </Row>
+          <Row justify="center">
+            <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.message}</Typography.Text>
+          </Row>
+        </>
+      }
+      {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
+        <>
+          {/* <Row justify="center">
+            <img src={walletIcon} alt="Wallet" width="92" height="100" />
+          </Row> */}
+          <Row justify="center">
+            <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
+          </Row>
+        </>
+      }
+
+      <div style={{ textAlign: 'center', transform: "scale(1.5)",}}>
+        {getMainButton()}
+      </div>
+
     </div>
+
   </>)
 }
 
