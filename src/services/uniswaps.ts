@@ -73,6 +73,9 @@ const uniswapRouters: { [chainId: number]: string } = {
   // Polygon QuickSwap https://github.com/QuickSwap/QuickSwap-subgraph/blob/master/subgraph.yaml => Factory 0x5757371414417b8C6CAad45bAeF941aBc7d3Ab32
   [ChainId.POL]: "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff", // router v2 https://explorer-mainnet.maticvigil.com/address/0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff/contracts
 
+  [ChainId.FTM]: "0xf491e7b69e4244ad4002bc14e878a34207e38c29", // https://ftmscan.com/address/0xf491e7b69e4244ad4002bc14e878a34207e38c29
+  // also FTMTESTNET = 4002?
+
   //TESTNET
   //UNiswap Testnet Router v2
   [ChainId.ROP]: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",

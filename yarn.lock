@@ -1282,12 +1282,12 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.46.tgz#83ad83a5c680f1a8e1f30a742960750a134b5639"
-  integrity sha512-+mQtzRnjuoYLnOMDgY5DFz/UjaxfRzT5aFDDmQjnrVhkjvt7kEqlr4uFwGtlsMNsp3ULN4729r72K6yORWFWXA==
+"@connext/nxtp-contracts@0.0.47":
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.47.tgz#b6772a7cfc313ecf501f54b868e6a8b5fbf9954d"
+  integrity sha512-pLBfKmKtlm6iCdNfZqswsH5kelxw+GSfZ+L5c8sF84Sqit5wUgNjzJjwMnqeGWZcl/leJ8rrvCHzBNxXUP0mzQ==
   dependencies:
-    "@connext/nxtp-utils" "0.0.46"
+    "@connext/nxtp-utils" "0.0.47"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
@@ -1297,14 +1297,14 @@
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@^0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.46.tgz#ccd746bd1f920c89b2cc32561fc468eadc3e6e73"
-  integrity sha512-Jrm9b/qjLZMu7MCLnHnCfzNUjrIy4Gdp5jD0WSaTXW8t+iVucrnx5YdAQ4b/y61t12cB+9NaRq294eBSUhyyig==
+"@connext/nxtp-sdk@^0.0.47":
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.47.tgz#836750e8ccaecbf91facc01d0b983d5978bd3a1a"
+  integrity sha512-mjEaflc0z7BhAvLFiUepzSqhk4kelg92GVPgH7qL3uJm53ygyceJ0IIhVawr2bvqlgQDVH+d1Js/cEDeyZMYxg==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.46"
-    "@connext/nxtp-txservice" "0.0.46"
-    "@connext/nxtp-utils" "0.0.46"
+    "@connext/nxtp-contracts" "0.0.47"
+    "@connext/nxtp-txservice" "0.0.47"
+    "@connext/nxtp-utils" "0.0.47"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
     ajv-formats "^2.1.1"
@@ -1315,12 +1315,12 @@
     graphql-tag "^2.12.5"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.46.tgz#337afeaf16f96d6ee0bdf777d7bc481de58fbb95"
-  integrity sha512-YJFJ85gTE7ogSQ0NJrB3pLnxSoDvT/Xs7AAkoGz/dRKyApwoxSWPR0rVsKG+LXrfcZEmlZWtS4xSrF4VqM4O5w==
+"@connext/nxtp-txservice@0.0.47":
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.47.tgz#dcfc3ffb3b85efdb6f395ccf64cb199b3e238f8a"
+  integrity sha512-+9VLpxFla+1DRNbhQxH02VUcJEGQ3hzL49GA1L3P5AxkBP19G51E32MiKnUN1S8aQi4dAI+QD+OFaluLjCcWcg==
   dependencies:
-    "@connext/nxtp-utils" "0.0.46"
+    "@connext/nxtp-utils" "0.0.47"
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
@@ -1333,10 +1333,10 @@
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.46.tgz#afda7881a8ac1c658bef2212139c0af1eb5cbef8"
-  integrity sha512-ZwuVi56I143yn94ZmhRnc66pgW2kUW1dPwO1ZvAKEkEfSss16tz7t8yUSB/eJeT+0sg6AV9olL1qFHJKNQmCsg==
+"@connext/nxtp-utils@0.0.47":
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.47.tgz#fa9915c0690eabcc14a8bed1784d22c6ab895c62"
+  integrity sha512-6jiBwuj8YEbjjdj4lt4tslhBbHG2IFtynbODdXV7HZFVE2d3Maz6ANMS6RI1yqwCAxUifh2fwJ2xOK3tX/HtkA==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
@@ -1811,9 +1811,9 @@
     deepmerge "^4.2.2"
 
 "@hop-protocol/sdk@^0.0.1-beta.181":
-  version "0.0.1-beta.188"
-  resolved "https://registry.yarnpkg.com/@hop-protocol/sdk/-/sdk-0.0.1-beta.188.tgz#1028cb159d4721c5186744b58d39b5e503bc62cf"
-  integrity sha512-dn6vljVWMovR7iYcxyJNo1BhuX2x43E7zD3kv700MsRUmB/shHnQGbkQHx9x4fGWebIOxEZiyLlQykHdsjykpQ==
+  version "0.0.1-beta.189"
+  resolved "https://registry.yarnpkg.com/@hop-protocol/sdk/-/sdk-0.0.1-beta.189.tgz#4fdb68932e53cb0561f35f426e505f18ba4f2441"
+  integrity sha512-rYD9JnnZFcQ+TtTCu9tjLNT0AgtnBNtxxDVgRpe/KjZ0+SUBhR/G64uMVGt0NMyHnvnE8V/No7eu0sekar9jow==
   dependencies:
     "@ethersproject/abi" "^5.4.0"
     "@hop-protocol/core" "0.0.1-beta.30"

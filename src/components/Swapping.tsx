@@ -91,6 +91,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       case 'pancakeswap':
       case 'honeyswap':
       case 'quickswap':
+      case 'spookyswap':
         return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
         return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))

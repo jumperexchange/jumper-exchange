@@ -127,7 +127,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.data.bid.sendingChainId)
     let approved
     try{
-      approved = await getApproved((sdk as any).signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
+      approved = await getApproved((sdk as any).config.signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
     } catch(_e) {
       const e = _e as Error
       if (e.message) approveProcess.errorMessage = e.message

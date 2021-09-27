@@ -9,6 +9,7 @@ import quick from '../assets/icons/quick.png';
 import honey from '../assets/icons/honey.png';
 import dai from '../assets/icons/xdai.png';
 import uniswap from '../assets/icons/uniswap.png';
+import spooky from '../assets/icons/spooky.png';
 import ftm from '../assets/icons/fantom.png';
 import arb from '../assets/icons/arbitrum.svg';
 import opt from '../assets/icons/optimism.png';
@@ -49,6 +50,7 @@ export const icons: { [key: string]: string } = {
   'Honeyswap': honey,
   'UniswapV2': uniswap,
   'Uniswap': uniswap,
+  'SpookySwap': spooky,
 }
 export const getIcon = (name: string | undefined) => {
   if (name && icons[name]) {

@@ -177,6 +177,16 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.FTM,
     id: 250,
     visible: true,
+    faucetUrls: [
+      'https://docs.spookyswap.finance/getting-started/how-to-get-fantom-gas',
+    ],
+
+    exchange: {
+      name: 'SpookySwap',
+      webUrl: 'https://spookyswap.finance/swap',
+      graph: '',
+      tokenlistUrl: 'https://raw.githubusercontent.com/SpookySwap/spooky-info/master/src/constants/token/spookyswap.json',
+    },
 
     // https://docs.fantom.foundation/tutorials/set-up-metamask
     metamask: {
@@ -632,6 +642,10 @@ export const supportedChains: Array<Chain> = [
   },
 
   // https://faucet.buni.finance/
+
+  // Kovan:
+  // https://ethdrop.dev/
+  // https://gitter.im/kovan-testnet/faucet
 ]
 
 export const getChainByKey = (chainKey: ChainKey) => {
