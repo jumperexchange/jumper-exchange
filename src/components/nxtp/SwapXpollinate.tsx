@@ -1296,7 +1296,7 @@ const SwapXpollinate = ({
 
   const handleActivateOption = () => {
     if (
-      optionContractAddress !== "" && optionReceivingAddress!=="" &&
+      optionContractAddress !== "" && optionReceivingAddress !== "" &&
       optionContractAddress === optionReceivingAddress
     ) {
       notification.open({ message: "Receiving Address and Contract Address are same !!" });
@@ -1306,20 +1306,13 @@ const SwapXpollinate = ({
         contractAddress: optionContractAddress,
         calldata: optionCallData,
       };
-	  
-	  
-      if(optionContractAddress !== "" && optionReceivingAddress!=="" && optionCallData !== "")
-	  {
-	  //if not blank then only push to local storage.
-	  localStorage.setItem("activeOption", JSON.stringify(activeOption));
-	  }
-      
-    
-	  
-      
-	  
-	  
-	  
+
+
+      if (optionContractAddress !== "" && optionReceivingAddress !== "" && optionCallData !== "") {
+        //if not blank then only push to local storage.
+        localStorage.setItem("activeOption", JSON.stringify(activeOption));
+      }
+
       setOptionContractAddress('')
       setOptionReceivingAddress('')
       setOptionCallData('')
@@ -1357,8 +1350,8 @@ const SwapXpollinate = ({
                     <Badge
                       color={
                         syncStatus &&
-                        currentChain &&
-                        syncStatus[currentChain.id]
+                          currentChain &&
+                          syncStatus[currentChain.id]
                           ? syncStatus[currentChain.id].synced
                             ? "green"
                             : "orange"
@@ -1442,11 +1435,12 @@ const SwapXpollinate = ({
             />
           )}
         </Row>
-        <Row className="top-dropdown" justify={"center"}>
-          <Collapse style={{ marginTop: 24 }} accordion ghost>
+        <Row className="top-dropdown"  justify={"center"}>
+        <Collapse activeKey={activeKeyTransactions} ghost >
+          <Collapse  style={{ marginTop: 24 }} accordion ghost>
             {/* Balances */}
             {testnet && (
-              <Collapse.Panel
+              <Collapse.Panel 
                 className={balances ? "" : "empty"}
                 header={
                   <h2
@@ -1611,6 +1605,7 @@ const SwapXpollinate = ({
                 <LiquidityTableNxtp liquidity={liquidity} />
               </div>
             </Collapse.Panel>
+          </Collapse>
           </Collapse>
         </Row>
         {/* Swap Form */}
