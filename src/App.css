@@ -1,4 +1,5 @@
 @import "~antd/dist/antd.css";
+@import "./css/animations.css";
 
 .wordmark {
   float: left;
@@ -68,12 +69,6 @@
 /* .ant-timeline-item-head-blue, */
 .flashing {
   animation: blinker 1s linear infinite;
-}
-
-@keyframes blinker {
-  50% {
-    opacity: 0.2;
-  }
 }
 
 .lifiSupport {

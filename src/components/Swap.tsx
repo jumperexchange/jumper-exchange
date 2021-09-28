@@ -259,7 +259,7 @@ const Swap = ({
   }
 
   return (
-    <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)' }}>
+    <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)', marginTop: 64 }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Hero Image */}
@@ -300,10 +300,20 @@ const Swap = ({
                   balances={balances}
                   allowSameChains={true}
                 />
+              <span className="swap-form-submit">
+                  <Row  style={{ marginTop: 24 }} justify={"center"}>
+                    {submitButton()}
+                  </Row>
 
-                <Row style={{ marginTop: 24 }} justify={"center"}>
-                  {submitButton()}
-                </Row>
+                  {/* Disclaimer */}
+                  <Row justify={"center"} className="beta-disclaimer">
+                    <Typography.Text type="danger" style={{textAlign: 'center'}}>
+                      Please note that this is a beta product. <br />
+                      We currently only support Metamask Wallets
+                    </Typography.Text>
+                  </Row>
+              </span>
+
               </Form>
 
             </div>
@@ -311,7 +321,7 @@ const Swap = ({
         </Row>
 
         {/* Routes */}
-        <Row justify={"center"} style={{ marginLeft: 12,marginRight: 12, marginTop: 48 }}>
+        <Row justify={"center"} style={{ marginLeft: 12,marginRight: 12, marginTop: 48, padding: 12 }}>
           {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>

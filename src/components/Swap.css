@@ -1,8 +1,16 @@
+@import "../css/animations.css";
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
   margin-right: -8px;
+}
+.beta-disclaimer {
+  margin-top: 24px;
+  z-index: -1;
+}
+.swap-form-submit:hover .beta-disclaimer {
+  animation: 400ms ease-out 1 textImpulse;
 }
 
 .swap-input {
@@ -102,6 +110,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .swap-form {
   margin-top: 36px;
+  overflow: hidden;
 }
 h4.swap-title {
   /* color: #1e1451; */

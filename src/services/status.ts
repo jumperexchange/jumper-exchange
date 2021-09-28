@@ -1,4 +1,4 @@
-import { emptyExecution, Execution, Process } from '../types'
+import { emptyExecution, Execution, Process, ProcessMessage } from '../types'
 import { deepClone } from './utils'
 
 
@@ -9,7 +9,7 @@ export const initStatus = (updateStatus?: Function, initialStatus?: Execution) =
   return { status, update }
 }
 
-export const createAndPushProcess = (updateStatus: Function, status: Execution, message: string, params?: object) => {
+export const createAndPushProcess = (updateStatus: Function, status: Execution, message: ProcessMessage, params?: object) => {
   const newProcess: Process = {
     startedAt: Date.now(),
     message: message,
