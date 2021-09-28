@@ -7,7 +7,7 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 import * as uniswap from './uniswaps'
 import { getApproved, setApproval } from './utils'
 
-export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, destAmount: BigNumber, srcAddress: string, destAddress: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) => {
 
   // setup
   const fromChain = getChainById(chainId)
@@ -59,7 +59,8 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   // -> swapping
   let tx
   try {
-    tx = await uniswap.swap(signer, chainId, srcToken.id, destToken.id, destAddress, srcAmount.toString(), path)
+    destAmount = destAmount.times(1-0.01) // Slippage
+    tx = await uniswap.swap(signer, chainId, srcToken.id, destToken.id, destAddress, srcAmount.toString(), destAmount.toFixed(0), path)
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message

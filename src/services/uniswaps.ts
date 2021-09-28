@@ -87,8 +87,8 @@ export const getContractAddress = (chainId: number) => {
   return uniswapRouters[chainId]
 }
 
-export const getSwapCall = async (signer: JsonRpcSigner, chainId: number, destAddress: string, srcToken: string, destToken: string, srcAmount: string, destAmount: string, path: Array<string>) => {
-  const contract = new ethers.Contract(getContractAddress(chainId), uniswapRouter02ABI, signer)
+export const getSwapCall = async (chainId: number, destAddress: string, srcToken: string, destToken: string, srcAmount: string, destAmount: string, path: Array<string>) => {
+  const contract = new ethers.Contract(getContractAddress(chainId), uniswapRouter02ABI)
   const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes from the current Unix time
 
   if (srcToken === ethers.constants.AddressZero) {
@@ -102,8 +102,8 @@ export const getSwapCall = async (signer: JsonRpcSigner, chainId: number, destAd
   }
 }
 
-export const swap = async (signer: JsonRpcSigner, chainId: number, srcToken: string, destToken: string, destAddress: string, srcAmount: string, path: Array<string>) => {
-  const data = await getSwapCall(signer, chainId, destAddress, srcToken, destToken, srcAmount, '1', path)
+export const swap = async (signer: JsonRpcSigner, chainId: number, srcToken: string, destToken: string, destAddress: string, srcAmount: string, destAmount: string, path: Array<string>) => {
+  const data = await getSwapCall(chainId, destAddress, srcToken, destToken, srcAmount, destAmount, path)
   return signer.sendTransaction(data)
 }
 

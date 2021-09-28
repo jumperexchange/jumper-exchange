@@ -74,7 +74,7 @@ export const getAllowance = async (chainId: number, userAddress: string, tokenAd
 
 export const setAllowance = async (signer: JsonRpcSigner, chainId: number, userAddress: string, tokenAddress: string, amount: number) => {
   const para = getParaswap(chainId)
-  const txHash = await para.approveToken(amount.toString(), userAddress, tokenAddress);
+  const txHash = await para.approveToken(amount.toString(), userAddress, tokenAddress)
 
   let res = null
   while (!res) {
@@ -124,6 +124,7 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
     destDecimals,
   ) as OptimalRatesWithPartnerFees
 
+
   const minAmount = new BN(rate.destAmount).times(1 - (SLIPPAGE / 100)).toFixed(0)
   const txParams = await para.buildTx(
     srcToken,
@@ -160,7 +161,14 @@ export const getSwapCall = async (chainId: number, destAddress: string, srcToken
     destAddress,
     process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
     destAddress,
-    {},
+    {
+      ignoreChecks: true,
+      // ignoreGasEstimate?: boolean;
+      // onlyParams?: boolean;
+      // simple?: boolean;
+      // gasPrice?: PriceString;
+      // useReduxToken?: boolean;
+    },
     srcToken.decimals,
     destToken.decimals,
   ) as Transaction
@@ -174,8 +182,6 @@ export const getSwapCall = async (chainId: number, destAddress: string, srcToken
 }
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
-  console.log("------")
-  console.log(receipt)
   const result = {
     fromAmount: '0',
     toAmount: '0',
@@ -190,7 +196,6 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
   result.gasFee = receipt.gasUsed.mul(result.gasPrice).toString()
 
   // log
-  console.log('LOGS', receipt.logs)
   const logs = receipt.logs.filter((log) => log.address === receipt.to)
   const decoder = new ethers.utils.AbiCoder()
   logs.forEach((log) => {

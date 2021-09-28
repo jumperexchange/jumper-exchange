@@ -1,27 +1,27 @@
-import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Alert, Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
-import { BigNumber } from 'bignumber.js';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import connextIcon from '../assets/icons/connext.png';
-import oneinchIcon from '../assets/icons/oneinch.png';
-import paraswapIcon from '../assets/icons/paraswap.png';
-import hopIcon from '../assets/icons/hop.png';
-import walletIcon from '../assets/wallet.png';
-import { executeOneInchSwap } from '../services/1inch.execute';
-import { executeHopCross } from '../services/hop.execute';
-import { lifinance } from '../services/lifinance';
-import { switchChain } from '../services/metamask';
-import { executeNXTPCross } from '../services/nxtp.execute';
-import { executeParaswap } from '../services/paraswap.execute';
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
-import { executeUniswap } from '../services/uniswaps.execute';
-import { formatTokenAmount } from '../services/utils';
-import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, TransferStep } from '../types';
-import Clock from './Clock';
-import { BaseType } from 'antd/lib/typography/Base';
+import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Alert, Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd'
+import { BigNumber } from 'bignumber.js'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import connextIcon from '../assets/icons/connext.png'
+import oneinchIcon from '../assets/icons/oneinch.png'
+import paraswapIcon from '../assets/icons/paraswap.png'
+import hopIcon from '../assets/icons/hop.png'
+import walletIcon from '../assets/wallet.png'
+import { executeOneInchSwap } from '../services/1inch.execute'
+import { executeHopCross } from '../services/hop.execute'
+import { lifinance } from '../services/lifinance'
+import { switchChain } from '../services/metamask'
+import { executeNXTPCross } from '../services/nxtp.execute'
+import { executeParaswap } from '../services/paraswap.execute'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status'
+import { executeUniswap } from '../services/uniswaps.execute'
+import { formatTokenAmount } from '../services/utils'
+import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, TransferStep } from '../types'
+import Clock from './Clock'
+import { BaseType } from 'antd/lib/typography/Base'
 
 interface SwappingProps {
   route: Array<TransferStep>,
@@ -48,7 +48,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   const checkChain = async (step: TransferStep) => {
     const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
     const chain = getChainById(step.action.chainId)
-    const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`, { status: 'ACTION_REQUIRED'})
+    const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`, { status: 'ACTION_REQUIRED' })
 
     try {
       const switched = await switchChain(step.action.chainId)
@@ -93,9 +93,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       case 'honeyswap':
       case 'quickswap':
       case 'spookyswap':
-        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
+        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, new BigNumber(swapEstimate.toAmount), fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
-        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data, (status: Execution) => updateStatus(step, status))
       case '1inch':
         return await executeOneInchSwap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       default:
@@ -122,9 +122,9 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     switch (crossAction.tool) {
       case 'nxtp':
-        return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status));
+        return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status))
       case 'hop':
-        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toString(), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
+        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toString(), crossAction.chainId, crossAction.toChainId, (status: Execution) => updateStatus(step, status))
       default:
         console.warn('should never reach here')
     }
@@ -145,7 +145,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       const type = typeMapping[process.status]
 
       return (
-        <>
+        <div key={index}>
           <span style={{ display: 'flex' }}>
             <Typography.Text
               type={type}
@@ -158,10 +158,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
             </Typography.Text>
           </span>
 
-          { process.status === 'FAILED' && process.errorMessage && (
+          {process.status === 'FAILED' && process.errorMessage && (
             <Alert message={('errorCode' in process ? `Error Code: ${process.errorCode} - ` : '') + process.errorMessage} type="error" />
           )}
-        </>
+        </div>
       )
     })
 
@@ -243,16 +243,16 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       case 'cross': {
         const crossAction = step.action as CrossAction
         const crossEstimate = step.estimate as CrossEstimate
-        let avatar;
+        let avatar
         switch (crossAction.tool) {
           case 'nxtp':
             avatar = connextAvatar
-            break;
+            break
           case 'hop':
             avatar = hopAvatar
-            break;
+            break
           default:
-            break;
+            break
         }
         return [
           <Timeline.Item key={index + '_left'} color={color}>
@@ -301,7 +301,14 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
     const crossAction = crossStep.action as CrossAction
 
-    return crossAction.tool === 'nxtp' && lifinance.supportedChains.includes(crossAction.chainId) && lifinance.supportedChains.includes(crossAction.toChainId)
+    const supportedCross = crossAction.tool === 'nxtp' && lifinance.supportedChains.includes(crossAction.chainId) && lifinance.supportedChains.includes(crossAction.toChainId)
+    const supportedExchange = route
+      .filter(step => step.action.type === 'swap') // find swaps
+      .map(step => step.action as SwapAction)
+      .map(action => action.tool !== 'paraswap' && action.tool !== '1inch')
+      .reduce((prev, cur) => prev && cur)
+
+    return supportedCross && supportedExchange
   }
 
   const startCrossChainSwap = async () => {

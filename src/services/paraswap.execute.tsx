@@ -5,8 +5,9 @@ import { Execution, getChainById, Token } from '../types'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved, setApproval } from './utils'
 import { constants } from 'ethers'
+import { OptimalRatesWithPartnerFees } from 'paraswap'
 
-export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, rate: OptimalRatesWithPartnerFees, updateStatus?: Function, initialStatus?: Execution) => {
 
   // setup
   const fromChain = getChainById(chainId)
@@ -41,7 +42,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
         allowanceProcess.message = 'Already Approved'
       }
       setStatusDone(update, status, allowanceProcess)
-    } catch (e:any) {
+    } catch (e: any) {
       // -> set status
       if (e.message) allowanceProcess.errorMessage = e.message
       if (e.code) allowanceProcess.errorCode = e.code
@@ -57,7 +58,14 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   // -> swapping
   let tx
   try {
-    tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken.id, destToken.id, srcAmount.toString(), destAddress, srcToken.decimals, destToken.decimals)
+    if (rate.srcAmount === srcAmount.toString()) {
+      // execute estimation
+      const swapCall = await paraswap.getSwapCall(chainId, destAddress, srcToken, destToken, srcAmount.toString(), 1, rate)
+      tx = await signer.sendTransaction(swapCall)
+    } else {
+      // get new quote
+      tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken.id, destToken.id, srcAmount.toString(), destAddress, srcToken.decimals, destToken.decimals)
+    }
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message

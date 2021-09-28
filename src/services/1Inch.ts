@@ -57,19 +57,6 @@ const getContractAddress = async () => {
   return result.data.address
 }
 
-// const setAllowance = async (chainId: number, amount: string, fromTokenAddress: string, signer: JsonRpcSigner) => {
-//   const result = await axios.get(`https://api.1inch.exchange/v3.0/${chainId}/approve/calldata?amount=${amount}&infinity=true&tokenAddress=${checkTokenAddress(fromTokenAddress)}`)
-//   const allowance = result.data;
-//   delete allowance.gasPrice
-//   allowance.value = BigNumber.from(allowance.value)
-
-//   const approvedAllowance = await signer.sendTransaction(allowance)
-
-//   // wait for confirmation
-//   await approvedAllowance.wait(1)
-//   return approvedAllowance
-// }
-
 const checkTokenAddress = (address: string) => {
   if (address === '0x0000000000000000000000000000000000000000') {
     return '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
@@ -81,7 +68,6 @@ const checkTokenAddress = (address: string) => {
 const getTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, fromAddress: string, destReceiver: string, slippage: number = 1) => {
   // https://docs.1inch.io/api/quote-swap
   /* TODO: 1inch API supports custom gasPrices use transactionSpeed to get gasprice */
-  /* TODO: slippage hardcoded to 1 */
   const params = {
     fromTokenAddress: checkTokenAddress(fromTokenAddress), //REQUIRED, string, contract address of a token to sell
     toTokenAddress: checkTokenAddress(toTokenAddress), // REQUIRED, string, contract address of a token to buy
@@ -97,7 +83,7 @@ const getTransaction = async (chainId: number, fromTokenAddress: string, toToken
     // complexityLevel: // OPTIONAL, string, how many connectorTokens can be used
     // connectorTokens: // OPTIONAL, string, contract addresses of connector tokens
     // allowPartialFill: // OPTIONAL, boolean, if true, accept the partial order execution
-    // disableEstimate: // OPTIONAL, boolean, if true, checks of the required quantities are disabled
+    disableEstimate: true, // OPTIONAL, boolean, if true, checks of the required quantities are disabled
     // gasLimit: // OPTIONAL, integer, maximum amount of gas for a swap
     // parts: // OPTIONAL, integer, maximum number of parts each main route part can be split into
     // mainRouteParts: // OPTIONAL, integer, maximum number of main route parts
@@ -178,6 +164,5 @@ export const oneInch = {
   getTransaction,
   transfer,
   getContractAddress,
-  // setAllowance,
   parseReceipt,
 }
