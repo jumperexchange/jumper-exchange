@@ -67,7 +67,7 @@ function App() {
                 </Menu.Item>}
               </Menu>
 
-              <a className="lifiSupport" href="https://discord.com/invite/G9uAbE439B" target="_blank" rel="nofollow noreferrer">Support</a>
+              <a className="lifiSupport support-header" href="https://discord.com/invite/G9uAbE439B" target="_blank" rel="nofollow noreferrer">Support</a>
             </Header>
 
             <Switch>
@@ -77,7 +77,11 @@ function App() {
                   title: 'Li.Finance - Dashboard',
                 })
                 initStomt('dashboard')
-                return <Dashboard />
+                return (<>
+                <a className="lifiSupport support-content" href="https://discord.com/invite/G9uAbE439B" target="_blank" rel="nofollow noreferrer">Support</a>
+
+                <Dashboard />
+                </>)
               }} />
               <Route path="/swap" render={() => {
                 setMetatags({
@@ -95,6 +99,8 @@ function App() {
                 ]
 
                 return <div className="lifiWrap">
+                  <a className="lifiSupport support-content" href="https://discord.com/invite/G9uAbE439B" target="_blank" rel="nofollow noreferrer">Support</a>
+
                   <Swap
                     transferChains={transferChains}
                     getBalancesForWallet={getBalancesForWalletMainnet}

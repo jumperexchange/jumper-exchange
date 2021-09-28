@@ -311,7 +311,7 @@ const Swap = ({
         </Row>
 
         {/* Routes */}
-        <Row justify={"center"} style={{ marginTop: 48 }}>
+        <Row justify={"center"} style={{ marginLeft: 12,marginRight: 12, marginTop: 48 }}>
           {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
@@ -337,7 +337,7 @@ const Swap = ({
             </Col>
           }
           {!routesLoading && noRoutesAvailable &&
-            <Col style={{width: "50%"}}>
+            <Col style={{width: "50%"}} className="no-routes-found">
               <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
               <Typography.Text type="secondary" style={{ textAlign: 'left' }}>
                 We couldn't find suitable routes for your desired transfer.

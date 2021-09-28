@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 .wordmark {
   float: left;
@@ -37,8 +37,13 @@
 }
 
 .ant-menu.ant-menu-horizontal {
-  background: rgb(24,21,35);
-  background: linear-gradient(140deg, rgba(24,21,35,1) 0%, rgba(9,9,121,1) 93%, rgba(9,9,121,1) 100%);
+  background: rgb(24, 21, 35);
+  background: linear-gradient(
+    140deg,
+    rgba(24, 21, 35, 1) 0%,
+    rgba(9, 9, 121, 1) 93%,
+    rgba(9, 9, 121, 1) 100%
+  );
   border: none;
 }
 
@@ -66,24 +71,48 @@
 }
 
 @keyframes blinker {
-  50% { opacity: 0.2; }
+  50% {
+    opacity: 0.2;
+  }
 }
 
 .lifiSupport {
   color: #c53030;
   border: 1px solid #c53030;
   background: white;
-  position: absolute;
-  top: 14px;
-  right: 14px;
+
   line-height: 1;
   padding: 10px;
   border-radius: 6px;
 }
 
+.lifiSupport.support-header {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.lifiSupport.support-content {
+  visibility: hidden;
+}
+
 .lifiSupport:hover {
   background: #c53030;
   color: white;
+}
+
+@media only screen and (max-width: 600px) {
+  .lifiSupport.support-header {
+    visibility: hidden;
+  }
+
+  .lifiSupport.support-content {
+    visibility: visible;
+    position: fixed;
+    top: 60px;
+    right: 14px;
+    z-index: 99;
+  }
 }
 
 .ant-btn .anticon-spin {

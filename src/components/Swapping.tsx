@@ -1,4 +1,4 @@
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd';
@@ -23,6 +23,8 @@ import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep,
 import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
+import { useMediaQuery } from 'react-responsive';
+
 
 interface SwappingProps {
   route: Array<TransferStep>,
@@ -31,6 +33,8 @@ interface SwappingProps {
 }
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
@@ -211,6 +215,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const parseStepToTimeline = (step: TransferStep, index: number, route: Array<TransferStep>) => {
     const executionSteps = parseExecution(step.execution)
     const color = step.execution && step.execution.status === 'DONE' ? 'green' : (step.execution ? 'blue' : 'gray')
+    const isLoading = step.execution && step.execution.status === 'PENDING'
     const hasFailed = step.execution && step.execution.status === 'FAILED'
 
     switch (step.action.type) {
@@ -218,11 +223,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'swap': {
         const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
-          <Timeline.Item key={index + '_left'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'right'} key={index + '_left'} color={color}>
             <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.chainId))}</h4>
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'left'} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : null}>
             {executionSteps}
             {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
@@ -245,11 +250,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             break;
         }
         return [
-          <Timeline.Item key={index + '_left'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'right'} key={index + '_left'} color={color}>
             <h4>Transfer from {getChainAvatar(getChainById(crossAction.chainId).key)} to {getChainAvatar(getChainById(crossAction.toChainId).key)} via {avatar}</h4>
             <span>{formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'left'} style={{paddingBottom: isMobile? 30: 0}} key={index + '_right'} color={color}>
             {executionSteps}
             {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
@@ -431,9 +436,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     {alerts}
     <br />
 
-    <Timeline mode="alternate" className="swapping-modal-timeline" >
-      <Timeline.Item color="green"></Timeline.Item>
-
+    <Timeline mode={isMobile? 'left' : 'alternate'} className="swapping-modal-timeline" >
       {/* Steps */}
       {route.map(parseStepToTimeline)}
     </Timeline>

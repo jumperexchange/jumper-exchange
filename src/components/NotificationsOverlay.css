@@ -24,3 +24,14 @@ button {
     margin-left: -200px;
   }
 }
+
+@media only screen and (max-width: 400px) {
+  #notification-overlay {
+    left: 0;
+    margin-left: 0;
+    bottom: 10px;
+    width: 100vw;
+    overflow-y: scroll;
+    max-height: 170px;
+  }
+}
