@@ -292,7 +292,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TranferStep, updateSta
 }
 
 const trackConfirmations = async (sdk: NxtpSdk, chainId: number, hash: string, confirmations: number, callback: Function) => {
-  const receivingProvider: FallbackProvider = (sdk as any).chainConfig[chainId].provider
+  const receivingProvider: FallbackProvider = (sdk as any).config.chainConfig[chainId].provider
   const response = await receivingProvider.getTransaction(hash)
   trackConfirmationsForResponse(response, confirmations, callback)
 }
