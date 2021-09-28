@@ -76,6 +76,15 @@
   color: white;
 }
 
+
+.top-dropdown .ant-collapse > .ant-collapse-item {
+  text-align: center;
+}
+.top-dropdown .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  display: inline-block;
+  text-align: center;
+}
+
 @media only screen and (max-width: 580px) {
   .support-link {
     position: absolute;
