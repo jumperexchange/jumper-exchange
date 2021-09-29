@@ -258,7 +258,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     submitProcess.message = <>Send Transaction - Wait for <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
     update(status)
 
-    let receipt = await tx.wait()
+    await tx.wait()
   } catch (e) {
     nxtpSDK.removeAllListeners()
     throw e
