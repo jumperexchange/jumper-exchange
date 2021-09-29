@@ -263,7 +263,7 @@ const Swap = ({
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Hero Image */}
-        <Row style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
+        <Row className='row-hero-image' style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
           <Image
             className="hero-image"
             src={heroImage}
@@ -271,14 +271,14 @@ const Swap = ({
         </Row>
 
         {/* Swap Form */}
-        <Row style={{ margin: 20 }} justify={"center"} className="swap-form">
-          <Col>
+        <Row style={{ margin: 20 }} justify={"center"}>
+          <Col className="swap-form">
             <div className="swap-input" style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: "0 auto" }}>
               <Row>
                 <Title className="swap-title" level={4}>Please Specify Your Transaction</Title>
               </Row>
 
-              <Form>
+              <Form >
                 <SwapForm
                   depositChain={depositChain}
                   setDepositChain={setDepositChain}
@@ -300,7 +300,7 @@ const Swap = ({
                   balances={balances}
                   allowSameChains={true}
                 />
-              <span className="swap-form-submit">
+              <span>
                   <Row  style={{ marginTop: 24 }} justify={"center"}>
                     {submitButton()}
                   </Row>
@@ -309,7 +309,7 @@ const Swap = ({
                   <Row justify={"center"} className="beta-disclaimer">
                     <Typography.Text type="danger" style={{textAlign: 'center'}}>
                       Please note that this is a beta product. <br />
-                      We currently only support Metamask Wallets
+                      We currently recommend using only Metamask Wallets.
                     </Typography.Text>
                   </Row>
               </span>

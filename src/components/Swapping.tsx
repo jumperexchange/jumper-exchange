@@ -47,10 +47,8 @@ export const buildTokenFromBalance = (portfolio: ChainPortfolio) => {
   return newToken
 }
 
-
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
@@ -411,11 +409,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       <Typography.Text>Swap Successful!</Typography.Text>
       {finalBalance &&
         <Typography.Text >
-          You now have
-          {finalBalance?.amount.toString().substring(0, 8)}
+          {'You now have '}
+          {finalBalance?.amount.toString().substring(0, 8)} {' '}
           <Tooltip title="Click to add this token to your wallet">
             <span onClick={async () => await addToken(buildTokenFromBalance(finalBalance))}>
-              {finalBalance?.symbol}
+              <u style={{cursor: 'copy'}}>{` ${finalBalance?.symbol}`}</u>
             </span>
           </Tooltip>
 

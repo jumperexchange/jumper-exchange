@@ -5,11 +5,13 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
   margin-right: -8px;
 }
+
 .beta-disclaimer {
   margin-top: 24px;
   z-index: -1;
 }
-.swap-form-submit:hover .beta-disclaimer {
+
+.swap-form:hover .beta-disclaimer {
   animation: 400ms ease-out 1 textImpulse;
 }
 
