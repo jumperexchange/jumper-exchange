@@ -13,13 +13,13 @@ import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
 import { executeHopCross } from '../services/hop.execute';
 import { lifinance } from '../services/lifinance';
-import { switchChain } from '../services/metamask';
+import { addToken, switchChain } from '../services/metamask';
 import { executeNXTPCross } from '../services/nxtp.execute';
 import { executeParaswap } from '../services/paraswap.execute';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
 import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
+import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
@@ -31,6 +31,22 @@ interface SwappingProps {
   updateRoute: Function,
   onSwapDone: Function
 }
+
+export const buildTokenFromBalance = (portfolio: ChainPortfolio) => {
+  const newToken: Token = {
+    id: portfolio.id,
+    symbol: portfolio.symbol,
+    decimals: 18,
+    chainId: 0,
+    name: portfolio.name,
+    logoURI: portfolio.img_url,
+
+    chainKey: ChainKey.ETH,
+    key: portfolio.symbol as CoinKey,
+  }
+  return newToken
+}
+
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
@@ -390,10 +406,20 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     // DONE
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
+
       return (<Space direction="vertical">
       <Typography.Text>Swap Successful!</Typography.Text>
       {finalBalance &&
-        <Typography.Text >You now have {finalBalance?.amount.toString().substring(0, 8)} {finalBalance?.symbol}</Typography.Text>
+        <Typography.Text >
+          You now have
+          {finalBalance?.amount.toString().substring(0, 8)}
+          <Tooltip title="Click to add this token to your wallet">
+            <span onClick={async () => await addToken(buildTokenFromBalance(finalBalance))}>
+              {finalBalance?.symbol}
+            </span>
+          </Tooltip>
+
+        </Typography.Text>
       }
       <Link to="/dashboard"><Button type="link">Dashboard</Button></Link>
       </Space>)
@@ -437,6 +463,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     <br />
 
     <Timeline mode={isMobile? 'left' : 'alternate'} className="swapping-modal-timeline" >
+
       {/* Steps */}
       {route.map(parseStepToTimeline)}
     </Timeline>
