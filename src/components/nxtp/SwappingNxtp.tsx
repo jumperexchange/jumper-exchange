@@ -227,7 +227,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
           <Spin style={{ margin: 10 }} indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
         </Row>
         <Row justify="center">
-          <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.message}</Typography.Text>
+          <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.footerMessage || currentProcess.message}</Typography.Text>
         </Row>
       </>
     }
@@ -237,7 +237,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
           <img src={walletIcon} alt="Wallet" width="92" height="100" />
         </Row>
         <Row justify="center">
-          <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
+          <Typography.Text style={{ marginTop: 10 }}>{currentProcess.footerMessage || currentProcess.message}</Typography.Text>
         </Row>
       </>
     }

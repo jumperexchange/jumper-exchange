@@ -309,7 +309,7 @@ const SwapXpollinate = ({
 
         // request
         const res = await request(sub, query, {
-          routerId: '0x29a519e21d6a97cdb82270b69c98bac6426cdcf9',
+          routerId: process.env.REACT_APP_NXTP_ROUTER_ADDRESS?.toLowerCase(),
         })
 
         // parse
@@ -977,8 +977,7 @@ const SwapXpollinate = ({
         <Row className="warning-trustWallet" justify="center" style={{ padding: 20, paddingBottom: 0 }}>
           <Alert
             style={{ maxWidth: 700 }}
-            // message="Do not use this app with Trust Wallet! Trust Wallet users, please use V1. Fix coming soon."
-            message="This is an Alpha release, please use with caution!"
+            message="This is an Alpha release, please use with caution! Usage with Metamask wallets is preferred."
             description=""
             type="error"
           />
