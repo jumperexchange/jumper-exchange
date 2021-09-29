@@ -8,11 +8,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .beta-disclaimer {
   margin-top: 24px;
-  z-index: -1;
-}
-
-.swap-form:hover .beta-disclaimer {
-  animation: 400ms ease-out 1 textImpulse;
 }
 
 .swap-input {
@@ -91,12 +86,16 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .swapping-modal-timeline {
   padding-top: 38px;
-  height: 300px;
+  min-height: 350px;
   overflow-y: scroll;
 }
 
 .swapp-modal-footer {
-  height: 100px;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 @media only screen and (max-height: 600px) {
   .swapping-modal-timeline {

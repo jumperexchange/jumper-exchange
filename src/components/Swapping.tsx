@@ -228,14 +228,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const parseStepToTimeline = (step: TransferStep, index: number, route: Array<TransferStep>) => {
     const executionSteps = parseExecution(step.execution)
-    const color = step.execution && step.execution.status === 'DONE' ? 'green' : (step.execution ? 'blue' : 'gray')
+    const isDone = step.execution && step.execution.status === 'DONE'
     const isLoading = step.execution && step.execution.status === 'PENDING'
-    const hasFailed = step.execution && step.execution.status === 'FAILED'
+    const color = isDone ? 'green' : (step.execution ? 'blue' : 'gray')
 
     switch (step.action.type) {
 
       case 'swap': {
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
           <Timeline.Item position={isMobile? 'right': 'right'} key={index + '_left'} color={color}>
             <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.chainId))}</h4>
@@ -243,7 +242,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           </Timeline.Item>,
           <Timeline.Item position={isMobile? 'right': 'left'} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : null}>
             {executionSteps}
-            {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
         ]
       }
@@ -251,7 +249,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'cross': {
         const crossAction = step.action as CrossAction
         const crossEstimate = step.estimate as CrossEstimate
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         let avatar;
         switch (crossAction.tool) {
           case 'nxtp':
@@ -268,9 +265,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             <h4>Transfer from {getChainAvatar(getChainById(crossAction.chainId).key)} to {getChainAvatar(getChainById(crossAction.toChainId).key)} via {avatar}</h4>
             <span>{formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item position={isMobile? 'right': 'left'} style={{paddingBottom: isMobile? 30: 0}} key={index + '_right'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'left'} style={{paddingBottom: isMobile? 30: 0}} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : null}>
             {executionSteps}
-            {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
         ]
       }
@@ -406,12 +402,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (isDone) {
 
       return (<Space direction="vertical">
-      <Typography.Text>Swap Successful!</Typography.Text>
+      <Typography.Text strong>Swap Successful!</Typography.Text>
       {finalBalance &&
         <Typography.Text >
           {'You now have '}
           {finalBalance?.amount.toString().substring(0, 8)} {' '}
-          <Tooltip title="Click to add this token to your wallet">
+          <Tooltip title="Click to add this token to your wallet.">
             <span onClick={async () => await addToken(buildTokenFromBalance(finalBalance))}>
               <u style={{cursor: 'copy'}}>{` ${finalBalance?.symbol}`}</u>
             </span>
@@ -467,7 +463,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     </Timeline>
 
     <div style={{ display: 'flex', backgroundColor: "rgba(255,255,255, 0)" }}>
-      <Typography.Text style={{ marginLeft: 'auto' }}>
+      <Typography.Text style={{ marginLeft: 'auto', marginRight: 5 }}>
         {swapStartedAt ? <span className="totalTime"><Clock startedAt={swapStartedAt} successAt={swapDoneAt} /></span> : <span>&nbsp;</span>}
       </Typography.Text>
     </div>
@@ -482,7 +478,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
         <>
-          <Row justify="center">
+          <Row justify="center" style={{marginBottom: 6}}>
             <Typography.Text >{currentProcess.message}</Typography.Text>
           </Row>
           <Row justify="center">
