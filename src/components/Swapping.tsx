@@ -331,22 +331,27 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     setIsSwapping(true)
   }
 
-  const getFinalBalace = async (route: TransferStep[]) => {
-    const lastStep = route[route.length-1]
+  const getRecevingInfo = (step: TransferStep) => {
     let toChain: Chain, toToken: Token;
-    switch(lastStep.action.type) {
+    switch(step.action.type) {
       case 'cross':
-        toChain =  getChainById((lastStep as CrossStep).action.toChainId)
-        toToken = (lastStep as CrossStep).action.toToken
+        toChain =  getChainById((step as CrossStep).action.toChainId)
+        toToken = (step as CrossStep).action.toToken
         break;
       case 'swap':
-        toChain = getChainById((lastStep as SwapStep).action.chainId)
-        toToken = (lastStep as SwapStep).action.toToken
+        toChain = getChainById((step as SwapStep).action.chainId)
+        toToken = (step as SwapStep).action.toToken
         break;
       default:
-        toChain = getChainById(lastStep.action.chainId)
-        toToken = lastStep.action.token
+        toChain = getChainById(step.action.chainId)
+        toToken = step.action.token
     }
+    return {toChain, toToken}
+  }
+
+  const getFinalBalace = async (route: TransferStep[]) => {
+    const lastStep = route[route.length-1]
+    const {toChain, toToken} = getRecevingInfo(lastStep)
     const portfolio = await getBalancesForWallet(web3.account!, [toChain.id])
     const chainPortfolio = portfolio[toChain.key].find(coin => coin.id === toToken.id)
     setFinalBalance(chainPortfolio)
@@ -400,7 +405,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     // DONE
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
-
+      const lastStep = route[route.length-1]
+      const {toChain} = getRecevingInfo(lastStep)
       return (<Space direction="vertical">
       <Typography.Text strong>Swap Successful!</Typography.Text>
       {finalBalance &&
@@ -408,8 +414,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           {'You now have '}
           {finalBalance?.amount.toString().substring(0, 8)} {' '}
           <Tooltip title="Click to add this token to your wallet.">
-            <span onClick={async () => await addToken(buildTokenFromBalance(finalBalance))}>
+            <span onClick={async () => {
+              if (web3.chainId !== toChain.id) {
+                await switchChain(toChain.id)
+              }
+              await addToken(buildTokenFromBalance(finalBalance))
+            }}>
               <u style={{cursor: 'copy'}}>{` ${finalBalance?.symbol}`}</u>
+              {` on ${toChain.name}`}
             </span>
           </Tooltip>
 

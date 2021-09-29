@@ -58,3 +58,4 @@ export const addToken = async (token: Token) => {
   }
   return false
 }
+
