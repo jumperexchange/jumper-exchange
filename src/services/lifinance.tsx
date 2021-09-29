@@ -259,7 +259,6 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     update(status)
 
     let receipt = await tx.wait()
-    console.log(receipt)
   } catch (e) {
     nxtpSDK.removeAllListeners()
     throw e
