@@ -64,7 +64,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
 
     <div
       className={'swap-route ' + (selected ? 'optimal' : '')}
-      style={{ padding: 24, paddingTop: 24, paddingBottom: 24, marginLeft: 10, marginRight: 10 }}
+      style={{ padding: 24, paddingTop: 24, paddingBottom: 24, marginLeft: 10, marginRight: 10, marginTop: 20, marginBottom: 20, }}
       onClick={() => onSelect()}
     >
       <Steps progressDot size="small" direction="vertical" current={5} className="progress-step-list">
@@ -80,7 +80,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         {selected ? (
           <div className="selected-label">Selected</div>
         ) : (
-          <Button shape="round" size={"large"} onClick={() => onSelect()}>Select Route</Button>
+          <Button shape="round" type="text" size={"large"} onClick={() => onSelect()}>Click To Select Route</Button>
         )}
       </div>
     </div>

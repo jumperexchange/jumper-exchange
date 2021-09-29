@@ -3,6 +3,8 @@ import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { Execution, getChainById, Token } from '../types'
+import notifications, { NotificationType } from './notifications'
+
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
 import { getApproved, setApproval } from './utils'
@@ -17,6 +19,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     // Ask user to set allowance
     // -> set status
     const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
+
 
     // -> check allowance
     try {
@@ -54,7 +57,8 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
 
   // Swap via Uniswap
   // -> set status
-  const swapProcess = createAndPushProcess(update, status, 'Swap via Uniswap')
+  // const swapProcess = createAndPushProcess(update, status, `Swap via Uniswap`) //TODO: display actual uniswap clone
+  const swapProcess = createAndPushProcess(update, status, 'Swap via Uniswap', { status: 'ACTION_REQUIRED' })
 
   // -> swapping
   let tx
@@ -85,6 +89,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     if (e.message) waitingProcess.errorMessage = e.message
     if (e.code) waitingProcess.errorCode = e.code
     setStatusFailed(update, status, waitingProcess)
+    notifications.showNotification(NotificationType.SWAP_ERROR)
     throw e
   }
 
@@ -102,6 +107,8 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
   status.status = 'DONE'
   update(status)
+  notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
+
 
   // DONE
   return status

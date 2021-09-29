@@ -5,6 +5,7 @@ import { Execution, getChainById, Token } from '../types'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved, setApproval } from './utils'
 import { constants } from 'ethers'
+import notifications, { NotificationType } from './notifications'
 
 export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
 
@@ -83,6 +84,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
     if (e.message) waitingProcess.errorMessage = e.message
     if (e.code) waitingProcess.errorCode = e.code
     setStatusFailed(update, status, waitingProcess)
+    notifications.showNotification(NotificationType.SWAP_ERROR)
     throw e
   }
 
@@ -100,6 +102,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
   status.status = 'DONE'
   update(status)
+  notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
 
   // DONE
   return status

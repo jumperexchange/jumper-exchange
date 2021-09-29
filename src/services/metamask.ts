@@ -10,7 +10,7 @@ export const switchChain = async (chainId: number) => {
       params: [{ chainId: getChainById(chainId).metamask?.chainId }],
     })
     return true
-  } catch (error) {
+  } catch (error: any) {
     // const ERROR_CODE_UNKNOWN_CHAIN = 4902
     const ERROR_CODE_USER_REJECTED = 4001
     if (error.code !== ERROR_CODE_USER_REJECTED) {
@@ -31,7 +31,7 @@ export const addChain = async (chainId: number) => {
       params: [params],
     })
     return true
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error adding chain ${chainId}: ${error.message}`)
   }
   return false
@@ -58,3 +58,4 @@ export const addToken = async (token: Token) => {
   }
   return false
 }
+

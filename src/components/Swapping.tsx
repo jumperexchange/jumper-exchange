@@ -1,7 +1,7 @@
 import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -13,27 +13,48 @@ import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
 import { executeHopCross } from '../services/hop.execute';
 import { lifinance } from '../services/lifinance';
-import { switchChain } from '../services/metamask';
+import { addToken, switchChain } from '../services/metamask';
 import { executeNXTPCross } from '../services/nxtp.execute';
 import { executeParaswap } from '../services/paraswap.execute';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
 import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
-import { ChainKey, CrossAction, CrossEstimate, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, TransferStep } from '../types';
+import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import Clock from './Clock';
+import LoadingIndicator from './LoadingIndicator';
+import { getBalancesForWallet } from '../services/balanceService';
+import { useMediaQuery } from 'react-responsive';
+
 
 interface SwappingProps {
   route: Array<TransferStep>,
   updateRoute: Function,
+  onSwapDone: Function
 }
 
-const Swapping = ({ route, updateRoute }: SwappingProps) => {
+export const buildTokenFromBalance = (portfolio: ChainPortfolio) => {
+  const newToken: Token = {
+    id: portfolio.id,
+    symbol: portfolio.symbol,
+    decimals: 18,
+    chainId: 0,
+    name: portfolio.name,
+    logoURI: portfolio.img_url,
+
+    chainKey: ChainKey.ETH,
+    key: portfolio.symbol as CoinKey,
+  }
+  return newToken
+}
+
+const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-
+  const [finalBalance, setFinalBalance] = useState<ChainPortfolio>()
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -57,6 +78,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       if (e.message) switchProcess.errorMessage = e.message
       if (e.code) switchProcess.errorCode = e.code
       setStatusFailed(update, status, switchProcess)
+      setIsSwapping(false)
       return false
     }
     setStatusDone(update, status, switchProcess)
@@ -136,19 +158,23 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
       const hasFailed = process.status === 'FAILED'
       return (
-        <span key={index} style={{ display: 'flex' }}>
+        <span key={index} style={{ display: 'flex'}}>
           <Typography.Text
             type={type}
+            style={{ maxWidth: 250}}
             className={process.status === 'PENDING' ? 'flashing' : undefined}
           >
             <p>{process.message}</p>
-            {hasFailed && <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }}>
-              {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
-              {process.errorMessage}
-            </Typography.Text>}
+            {hasFailed &&
+              <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }} >
+                {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
+                {`${process.errorMessage.substring(0, 150)}${process.errorMessage.length >150?'...':''}`}
+              </Typography.Text>
+
+            }
 
           </Typography.Text>
-          <Typography.Text style={{ marginLeft: 'auto' }}>
+          <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
             <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
           </Typography.Text>
         </span>
@@ -202,21 +228,20 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
 
   const parseStepToTimeline = (step: TransferStep, index: number, route: Array<TransferStep>) => {
     const executionSteps = parseExecution(step.execution)
-    const color = step.execution && step.execution.status === 'DONE' ? 'green' : (step.execution ? 'blue' : 'gray')
-    const hasFailed = step.execution && step.execution.status === 'FAILED'
+    const isDone = step.execution && step.execution.status === 'DONE'
+    const isLoading = step.execution && step.execution.status === 'PENDING'
+    const color = isDone ? 'green' : (step.execution ? 'blue' : 'gray')
 
     switch (step.action.type) {
 
       case 'swap': {
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         return [
-          <Timeline.Item key={index + '_left'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'right'} key={index + '_left'} color={color}>
             <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.chainId))}</h4>
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'left'} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : null}>
             {executionSteps}
-            {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
         ]
       }
@@ -224,7 +249,6 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       case 'cross': {
         const crossAction = step.action as CrossAction
         const crossEstimate = step.estimate as CrossEstimate
-        const triggerButton = <Button type="primary" disabled={!hasFailed} onClick={() => triggerStep(index, route)} >retrigger step</Button>
         let avatar;
         switch (crossAction.tool) {
           case 'nxtp':
@@ -237,13 +261,12 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
             break;
         }
         return [
-          <Timeline.Item key={index + '_left'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'right'} key={index + '_left'} color={color}>
             <h4>Transfer from {getChainAvatar(getChainById(crossAction.chainId).key)} to {getChainAvatar(getChainById(crossAction.toChainId).key)} via {avatar}</h4>
             <span>{formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item key={index + '_right'} color={color}>
+          <Timeline.Item position={isMobile? 'right': 'left'} style={{paddingBottom: isMobile? 30: 0}} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : null}>
             {executionSteps}
-            {hasFailed ? triggerButton : undefined}
           </Timeline.Item>,
         ]
       }
@@ -254,16 +277,23 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
   }
 
   const triggerStep = async (index: number, route: Array<TransferStep>) => {
+    setIsSwapping(true)
     const step = route[index]
     const previousStep = index > 0 ? route[index - 1] : undefined
-    switch (step.action.type) {
-      case 'swap':
-        return triggerSwap(step, previousStep)
-      case 'cross':
-        return triggerCross(step, previousStep)
-      default:
-        throw new Error('Invalid Step')
+    try{
+      switch (step.action.type) {
+        case 'swap':
+          return await triggerSwap(step, previousStep)
+        case 'cross':
+          return await triggerCross(step, previousStep)
+        default:
+          setIsSwapping(false)
+          throw new Error('Invalid Step')
+      }
+    } catch{
+      setIsSwapping(false)
     }
+
   }
 
   const triggerLifi = async () => {
@@ -301,8 +331,34 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     setIsSwapping(true)
   }
 
+  const getRecevingInfo = (step: TransferStep) => {
+    let toChain: Chain, toToken: Token;
+    switch(step.action.type) {
+      case 'cross':
+        toChain =  getChainById((step as CrossStep).action.toChainId)
+        toToken = (step as CrossStep).action.toToken
+        break;
+      case 'swap':
+        toChain = getChainById((step as SwapStep).action.chainId)
+        toToken = (step as SwapStep).action.toToken
+        break;
+      default:
+        toChain = getChainById(step.action.chainId)
+        toToken = step.action.token
+    }
+    return {toChain, toToken}
+  }
+
+  const getFinalBalace = async (route: TransferStep[]) => {
+    const lastStep = route[route.length-1]
+    const {toChain, toToken} = getRecevingInfo(lastStep)
+    const portfolio = await getBalancesForWallet(web3.account!, [toChain.id])
+    const chainPortfolio = portfolio[toChain.key].find(coin => coin.id === toToken.id)
+    setFinalBalance(chainPortfolio)
+  }
+
   // check where we are an trigger next
-  const checkSwapping = () => {
+  const checkSwapping = async() => {
     if (!isSwapping) return
 
     // lifi supported?
@@ -310,8 +366,10 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
       if (!route[0].execution) {
         triggerLifi()
       } else if (route[0].execution.status === 'DONE') {
+        await getFinalBalace(route)
         setIsSwapping(false)
         setSwapDoneAt(Date.now())
+        onSwapDone()
       }
       return
     }
@@ -329,11 +387,14 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
         return // step is already runing, wait
       }
     }
-
+    await getFinalBalace(route)
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
+    onSwapDone()
   }
   checkSwapping()
+
+
 
   const getMainButton = () => {
     // PENDING
@@ -344,15 +405,37 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     // DONE
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
-      // const result = route[route.length - 1].execution
-      // console.debug(result)
-      return <Link to="/dashboard"><Button type="link" >DONE - check your balances in our Dashboard</Button></Link>
+      const lastStep = route[route.length-1]
+      const {toChain} = getRecevingInfo(lastStep)
+      return (<Space direction="vertical">
+      <Typography.Text strong>Swap Successful!</Typography.Text>
+      {finalBalance &&
+        <Typography.Text >
+          {'You now have '}
+          {finalBalance?.amount.toString().substring(0, 8)} {' '}
+          <Tooltip title="Click to add this token to your wallet.">
+            <span onClick={async () => {
+              if (web3.chainId !== toChain.id) {
+                await switchChain(toChain.id)
+              }
+              await addToken(buildTokenFromBalance(finalBalance))
+            }}>
+              <u style={{cursor: 'copy'}}>{` ${finalBalance?.symbol}`}</u>
+              {` on ${toChain.name}`}
+            </span>
+          </Tooltip>
+
+        </Typography.Text>
+      }
+      <Link to="/dashboard"><Button type="link">Dashboard</Button></Link>
+      </Space>)
+
     }
 
     // FAILED
     const isFailed = route.filter(step => step.execution?.status === 'FAILED').length > 0
     if (isFailed) {
-      return <Button type="primary" onClick={() => restartCrossChainSwap()}>
+      return <Button type="primary" onClick={() => restartCrossChainSwap()} style={{marginTop: 10}}>
         Restart from Failed Step
       </Button>
     }
@@ -360,7 +443,7 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     // NOT_STARTED
     const isCrossChainSwap = route.filter(step => step.action.type === 'cross').length > 0
     return (
-      <Button type="primary" onClick={() => startCrossChainSwap()}>
+      <Button type="primary" onClick={() => startCrossChainSwap()} style={{marginTop: 10}}>
         {isCrossChainSwap ? 'Start Cross Chain Swap' : 'Start Swap'}
       </Button>
     )
@@ -385,43 +468,50 @@ const Swapping = ({ route, updateRoute }: SwappingProps) => {
     {alerts}
     <br />
 
-    <Timeline mode="alternate">
-      <Timeline.Item color="green"></Timeline.Item>
+    <Timeline mode={isMobile? 'left' : 'alternate'} className="swapping-modal-timeline" >
 
       {/* Steps */}
       {route.map(parseStepToTimeline)}
     </Timeline>
 
-    <div style={{ display: 'flex' }}>
-      <Typography.Text style={{ marginLeft: 'auto' }}>
+    <div style={{ display: 'flex', backgroundColor: "rgba(255,255,255, 0)" }}>
+      <Typography.Text style={{ marginLeft: 'auto', marginRight: 5 }}>
         {swapStartedAt ? <span className="totalTime"><Clock startedAt={swapStartedAt} successAt={swapDoneAt} /></span> : <span>&nbsp;</span>}
       </Typography.Text>
     </div>
 
-    {currentProcess && currentProcess.status === 'PENDING' &&
-      <>
-        <Row justify="center">
-          <Spin style={{ margin: 10 }} indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
-        </Row>
-        <Row justify="center">
-          <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.message}</Typography.Text>
-        </Row>
-      </>
-    }
-    {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
-      <>
-        <Row justify="center">
-          <img src={walletIcon} alt="Wallet" width="92" height="100" />
-        </Row>
-        <Row justify="center">
-          <Typography.Text style={{ marginTop: 10 }}>{currentProcess.message}</Typography.Text>
-        </Row>
-      </>
-    }
+    <Divider />
 
-    <div style={{ textAlign: 'center', transform: 'scale(1.5)', marginBottom: 20 }}>
-      {getMainButton()}
+    <div className="swapp-modal-footer">
+
+      <div style={{ textAlign: 'center', transform: "scale(1.3)",}}>
+        {getMainButton()}
+      </div>
+
+      {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
+        <>
+          <Row justify="center" style={{marginBottom: 6}}>
+            <Typography.Text >{currentProcess.message}</Typography.Text>
+          </Row>
+          <Row justify="center">
+            <img src={walletIcon} alt="Please Check Your Wallet"  />
+          </Row>
+        </>
+      }
+
+      {currentProcess && currentProcess.status === 'PENDING' &&
+        <>
+          <Row justify="center">
+            <Typography.Text className="flashing">{currentProcess.message}</Typography.Text>
+          </Row>
+          <Row style={{ marginTop: 20 }} justify="center">
+            <Spin indicator={<LoadingIndicator />} />
+          </Row>
+        </>
+      }
+
     </div>
+
   </>)
 }
 

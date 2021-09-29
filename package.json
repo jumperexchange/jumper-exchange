@@ -21,9 +21,11 @@
     "ethers": "^5.2.0",
     "graphql": "^15.5.3",
     "graphql-request": "^3.5.0",
+    "motion": "^10.0.2",
     "paraswap": "^4.19.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-responsive": "^9.0.0-beta.4",
     "react-router-dom": "^5.2.0",
     "web-vitals": "^2.1.0"
   },

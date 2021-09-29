@@ -2,21 +2,25 @@
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Form, Image, Modal, Row } from 'antd';
+import { Button, Col, Collapse, Form, Image, Modal, Row, Typography } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
 import BigNumber from 'bignumber.js';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import heroImage from '../assets/info_header.png';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
 import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
+import LoadingIndicator from './LoadingIndicator';
 import Route from './Route';
 import './Swap.css';
 import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
+import {animate, stagger} from "motion"
+
+const { Panel } = Collapse;
 
 interface TokenWithAmounts extends Token {
   amount?: number
@@ -27,6 +31,18 @@ let source: CancelTokenSource | undefined = undefined
 interface SwapProps {
   transferChains: Chain[]
   getBalancesForWallet: Function
+}
+
+
+const fadeInAnimation = ( element: React.MutableRefObject<HTMLDivElement | null>) =>{
+  animate(element.current?.childNodes as NodeListOf<Element>,{
+    y: ["50px", "0px"],
+    opacity:[0, 1],
+  },{
+    delay: stagger(0.2),
+    duration: 0.5,
+    easing: "ease-in-out"
+  })
 }
 
 const Swap = ({
@@ -61,6 +77,9 @@ const Swap = ({
   const { activate } = useWeb3React()
   const login = () => activate(injected)
 
+  // Elements used for animations
+  const routeCards = useRef<HTMLDivElement | null>(null)
+
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
       return '0.0'
@@ -88,7 +107,6 @@ const Swap = ({
   useEffect(() => {
     if (refreshBalances && web3.account) {
       setRefreshBalances(false)
-
       getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
         .then(setBalances)
     }
@@ -186,14 +204,14 @@ const Swap = ({
 
         try {
           const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
-
           // filter if needed
           const routes: Array<Array<TransferStep>> = result.data
-
           setRoutes(routes)
+          fadeInAnimation(routeCards)
           setHighlightedIndex(routes.length === 0 ? -1 : 0)
           setNoRoutesAvailable(routes.length === 0)
           setRoutesLoading(false)
+
         } catch (err) {
           // check if it we are still loading a new request
           if (!axios.isCancel(err)) {
@@ -241,11 +259,11 @@ const Swap = ({
   }
 
   return (
-    <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)' }}>
+    <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)', marginTop: 64 }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Hero Image */}
-        <Row style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
+        <Row className='row-hero-image' style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
           <Image
             className="hero-image"
             src={heroImage}
@@ -253,14 +271,14 @@ const Swap = ({
         </Row>
 
         {/* Swap Form */}
-        <Row style={{ margin: 20 }} justify={"center"} className="swap-form">
-          <Col>
+        <Row style={{ margin: 20 }} justify={"center"}>
+          <Col className="swap-form">
             <div className="swap-input" style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: "0 auto" }}>
               <Row>
                 <Title className="swap-title" level={4}>Please Specify Your Transaction</Title>
               </Row>
 
-              <Form>
+              <Form >
                 <SwapForm
                   depositChain={depositChain}
                   setDepositChain={setDepositChain}
@@ -282,10 +300,20 @@ const Swap = ({
                   balances={balances}
                   allowSameChains={true}
                 />
+              <span>
+                  <Row  style={{ marginTop: 24 }} justify={"center"}>
+                    {submitButton()}
+                  </Row>
 
-                <Row style={{ marginTop: 24 }} justify={"center"}>
-                  {submitButton()}
-                </Row>
+                  {/* Disclaimer */}
+                  <Row justify={"center"} className="beta-disclaimer">
+                    <Typography.Text type="danger" style={{textAlign: 'center'}}>
+                      Please note that this is a beta product. <br />
+                      We currently recommend using only Metamask Wallets.
+                    </Typography.Text>
+                  </Row>
+              </span>
+
               </Form>
 
             </div>
@@ -293,11 +321,11 @@ const Swap = ({
         </Row>
 
         {/* Routes */}
-        <Row justify={"center"} style={{ marginTop: 48 }}>
+        <Row justify={"center"} style={{ marginLeft: 12,marginRight: 12, marginTop: 48, padding: 12 }}>
           {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
-              <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }} ref={routeCards}>
                 {
                   routes.map((route, index) => (
                     <Route
@@ -313,14 +341,34 @@ const Swap = ({
           }
           {routesLoading &&
             <Col>
-              <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 48 }}>
-                <h3 style={{ textAlign: 'center' }}>Loading...</h3>
+              <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 0 }}>
+                <LoadingIndicator></LoadingIndicator>
               </Row>
             </Col>
           }
           {!routesLoading && noRoutesAvailable &&
-            <Col>
+            <Col style={{width: "50%"}} className="no-routes-found">
               <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
+              <Typography.Text type="secondary" style={{ textAlign: 'left' }}>
+                We couldn't find suitable routes for your desired transfer.
+                We do have some suggestions why that could be: <br />
+                </Typography.Text>
+                <Collapse ghost className="no-route-custom-collapse">
+
+                  <Panel header="A route for this transaction simply does not exist yet." key="1">
+                    <p style={{color:"grey"}}>
+                      We are working hard on integrating more exchanges to find possible transactions for you!
+                      Look out for updates and try again later.
+                    </p>
+                  </Panel>
+
+                  <Panel header="You are not sending enough tokens - Try a greater amount." key="2">
+                    <p style={{color:"grey"}}>
+                      Transactions cost money. These transaction costs are deducted from your swapping amount.
+                      If this amount is not enough to cover the expenses, we can not execute the transaction or compute routes.
+                    </p>
+                  </Panel>
+                </Collapse>
             </Col>
           }
         </Row>
@@ -331,12 +379,25 @@ const Swap = ({
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
-          onOk={() => setselectedRoute([])}
-          onCancel={() => setselectedRoute([])}
+          onOk={() =>{
+            setselectedRoute([])
+            setRefreshBalances(true)
+          }}
+          onCancel={() => {
+            setselectedRoute([])
+            setRefreshBalances(true)
+          }}
           width={700}
           footer={null}
         >
-          <Swapping route={selectedRoute} updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}></Swapping>
+          <Swapping route={selectedRoute}
+          updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
+          onSwapDone = {() => {
+            // setRefreshBalances(true)
+            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
+            .then(setBalances)
+          }}
+          ></Swapping>
         </Modal>
       }
     </Content>

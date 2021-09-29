@@ -59,7 +59,6 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
   } catch (e) {
     console.error(e)
   }
-
   return sdk
 }
 
@@ -120,10 +119,19 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     return
   }
 
+
   // Check Token Approval
   if (crossEstimate.data.bid.sendingAssetId !== constants.AddressZero) {
     const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.data.bid.sendingChainId)
-    const approved = await getApproved((sdk as any).config.signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
+    let approved
+    try{
+      approved = await getApproved((sdk as any).config.signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
+    } catch(_e) {
+      const e = _e as Error
+      if (e.message) approveProcess.errorMessage = e.message
+      setStatusFailed(update, status, approveProcess)
+      throw e
+    }
     if (approved.gte(crossEstimate.data.bid.amount)) {
       // approval already done, jump to next step
       setStatusDone(update, status, approveProcess)
@@ -136,8 +144,10 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   }
 
   const transactionId = crossEstimate.data.bid.transactionId
-  const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
+  // try{
 
+  // }
+  const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
   // approve sent => wait
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
@@ -288,6 +298,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       proceedProcess.errorMessage = e.message
       setStatusFailed(update, status, proceedProcess)
     }
+    throw e
   }
 
   return status

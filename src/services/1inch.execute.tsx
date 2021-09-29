@@ -5,6 +5,7 @@ import { oneInch } from './1Inch'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved, setApproval } from './utils'
 import { constants } from 'ethers';
+import notifications, { NotificationType } from './notifications'
 
 export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner, srcToken: string, destToken: string, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
 
@@ -82,6 +83,7 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
     if (e.message) swapProcess.errorMessage = e.message
     if (e.code) swapProcess.errorCode = e.code
     setStatusFailed(update, status, swapProcess)
+    notifications.showNotification(NotificationType.SWAP_ERROR)
     throw e
   }
 
@@ -93,6 +95,7 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
   status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
   status.status = 'DONE'
   setStatusDone(update, status, swapProcess)
+  notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
 
   // DONE
   return status

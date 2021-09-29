@@ -37,13 +37,18 @@ export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | Withdraw
 
 // EXECUTION
 export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE'
+
+type AcceptableMessages = string | JSX.Element
+export type ProcessMessage =
+AcceptableMessages| {message: AcceptableMessages , footer: AcceptableMessages }
+
 export interface Process {
   startedAt: number
   doneAt?: number
   failedAt?: number
   errorMessage?: any
   errorCode?: any
-  message: any
+  message: ProcessMessage
   status: Status
 
   // additional information

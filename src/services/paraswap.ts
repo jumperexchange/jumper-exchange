@@ -86,7 +86,6 @@ export const setAllowance = async (signer: JsonRpcSigner, chainId: number, userA
 export const updateAllowance = async (signer: JsonRpcSigner, chainId: number, userAddress: string, tokenAddress: string, amount: number) => {
 
   const allowance = await getAllowance(chainId, userAddress, tokenAddress)
-  console.log(allowance, amount)
   if (allowance === amount) {
     return allowance
   }
@@ -148,8 +147,6 @@ export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddre
 }
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
-  console.log("------")
-  console.log(receipt)
   const result = {
     fromAmount: '0',
     toAmount: '0',
