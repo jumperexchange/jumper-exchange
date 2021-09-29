@@ -410,22 +410,21 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       return (<Space direction="vertical">
       <Typography.Text strong>Swap Successful!</Typography.Text>
       {finalBalance &&
-        <Typography.Text >
-          {'You now have '}
-          {finalBalance?.amount.toString().substring(0, 8)} {' '}
-          <Tooltip title="Click to add this token to your wallet.">
-            <span onClick={async () => {
-              if (web3.chainId !== toChain.id) {
-                await switchChain(toChain.id)
-              }
-              await addToken(buildTokenFromBalance(finalBalance))
-            }}>
-              <u style={{cursor: 'copy'}}>{` ${finalBalance?.symbol}`}</u>
+      <Tooltip title="Click to add this token to your wallet.">
+        <span style={{cursor: 'copy'}} onClick={async () => {
+          if (web3.chainId !== toChain.id) {
+            await switchChain(toChain.id)
+          }
+          await addToken(buildTokenFromBalance(finalBalance))
+        }}>
+          <Typography.Text >
+              {'You now have '}
+              {finalBalance?.amount.toString().substring(0, 8)}
+              {` ${finalBalance?.symbol}`}
               {` on ${toChain.name}`}
-            </span>
-          </Tooltip>
-
-        </Typography.Text>
+            </Typography.Text>
+          </span>
+        </Tooltip>
       }
       <Link to="/dashboard"><Button type="link">Dashboard</Button></Link>
       </Space>)

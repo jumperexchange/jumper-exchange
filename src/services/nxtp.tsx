@@ -202,7 +202,8 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     if (receiverProcess && receiverProcess.status !== 'DONE') {
       receiverProcess.txHash = data.transactionHash
       receiverProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + receiverProcess.txHash
-      receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, 1 Confirmation</a>)</>
+      receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(1, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
+      // receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, 1 Confirmation</a>)</>
       delete receiverProcess.footerMessage
       setStatusDone(update, status, receiverProcess)
 
