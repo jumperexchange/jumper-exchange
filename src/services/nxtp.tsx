@@ -181,7 +181,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       submitProcess.message = <>Transaction Sent: <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
       setStatusDone(update, status, submitProcess)
     }
-    receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)', { type: 'wait' })
+    receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', { type: 'wait', footerMessage: 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)' })
   })
 
   // ReceiverTransactionPrepared => sign
@@ -192,7 +192,8 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     if (receiverProcess && receiverProcess.status !== 'DONE') {
       receiverProcess.txHash = data.transactionHash
       receiverProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + receiverProcess.txHash
-      receiverProcess.message = <>Receiver Prepared: <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+      receiverProcess.message = <>Receiver Prepared (<a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx, 1 Confirmation</a>)</>
+      delete receiverProcess.footerMessage
       setStatusDone(update, status, receiverProcess)
 
       // track confirmations
@@ -207,7 +208,8 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     // proceed to claim
     proceedProcess = createAndPushProcess(update, status, 'Ready to be Signed', { type: 'claim' })
     proceedProcess.status = 'ACTION_REQUIRED'
-    proceedProcess.message = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, updateStatus)}>Sign to claim Transfer</Button>
+    proceedProcess.message = 'Sign to claim Transfer'
+    proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, updateStatus)}>Sign to claim Transfer</Button>
     update(status)
   })
 
@@ -217,6 +219,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     if (proceedProcess) {
       proceedProcess.status = 'PENDING'
       proceedProcess.message = 'Signed - Wait for Claim'
+      delete proceedProcess.footerMessage
       update(status)
     }
   })
@@ -303,7 +306,7 @@ const renderConfirmations = (count: number, max: number) => {
 }
 
 const trackConfirmations = async (sdk: NxtpSdk, chainId: number, hash: string, confirmations: number, callback: Function) => {
-  const receivingProvider: FallbackProvider = (sdk as any).chainConfig[chainId].provider
+  const receivingProvider: FallbackProvider = (sdk as any).config.chainConfig[chainId].provider
   const response = await receivingProvider.getTransaction(hash)
   trackConfirmationsForResponse(sdk, chainId, response, confirmations, callback)
 }
@@ -346,7 +349,8 @@ export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEve
   } catch (e) {
     console.error(e)
     if (updateStatus && lastProcess && lastProcess.status !== 'DONE') {
-      lastProcess.message = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, event, step, updateStatus)}>Sign to claim Transfer</Button>
+      lastProcess.message = 'Sign to claim Transfer'
+      lastProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, event, step, updateStatus)}>Sign to claim Transfer</Button>
       updateStatus(status)
     }
   }
