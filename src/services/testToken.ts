@@ -24,10 +24,15 @@ const testChains = [
   ChainId.ROP,
   ChainId.RIN,
   ChainId.GOR,
+  ChainId.KOV,
   ChainId.MUM,
   ChainId.ARBT,
   ChainId.OPTT,
   ChainId.BSCT,
+  ChainId.ONET,
+
+  // quickfix
+  ChainId.ONE,
 ]
 
 const chainProviders: Record<number, providers.FallbackProvider> = getRpcProviders(testChains)

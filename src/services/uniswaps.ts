@@ -76,11 +76,14 @@ const uniswapRouters: { [chainId: number]: string } = {
   [ChainId.FTM]: "0xf491e7b69e4244ad4002bc14e878a34207e38c29", // https://ftmscan.com/address/0xf491e7b69e4244ad4002bc14e878a34207e38c29
   // also FTMTESTNET = 4002?
 
+  [ChainId.ONE]: "0xf012702a5f0e54015362cBCA26a26fc90AA832a3", // https://explorer.harmony.one/address/0xf012702a5f0e54015362cbca26a26fc90aa832a3?activeTab=7
+
   //TESTNET
   //UNiswap Testnet Router v2
   [ChainId.ROP]: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
   [ChainId.RIN]: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
   [ChainId.GOR]: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+  [ChainId.ONET]: "0xda3DD48726278a7F478eFaE3BEf9a5756ccdb4D0",
 }
 
 export const getContractAddress = (chainId: number) => {

@@ -7,6 +7,7 @@ export enum CoinKey {
   OKT = 'OKT',
   AVAX = 'AVAX',
   HT = 'HT',
+  ONE = 'ONE',
 
   // Stable coins
   USDT = 'USDT',
@@ -27,16 +28,19 @@ export enum ChainKey {
   ARB = 'arb',
   HEC = 'hec',
   OPT = 'opt',
+  ONE = 'one',
 
   // Testnets
   ROP = 'rop',
   RIN = 'rin',
   GOR = 'gor',
+  KOV = 'kov',
   MUM = 'mum',
   ARBT = 'arbt',
   OPTT = 'optt',
   BSCT = 'bsct',
   HECT = 'hect',
+  ONET = 'onet',
 }
 
 export enum ChainId {
@@ -50,16 +54,19 @@ export enum ChainId {
   ARB = 42161,
   HEC = 128,
   OPT = 10,
+  ONE = 1666600000,
 
   // Testnets
   ROP = 3,
   RIN = 4,
   GOR = 5,
+  KOV = 42,
   MUM = 80001,
   ARBT = 421611,
   OPTT = 69,
   BSCT = 97,
   HECT = 256,
+  ONET = 1666700000,
 }
 
 export interface Token {

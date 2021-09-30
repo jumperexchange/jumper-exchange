@@ -96,6 +96,7 @@ function App() {
                   getChainByKey(ChainKey.ETH),
                   getChainByKey(ChainKey.ARB),
                   getChainByKey(ChainKey.OPT),
+                  getChainByKey(ChainKey.ONE),
                 ]
 
                 return <div className="lifiWrap">
@@ -116,7 +117,10 @@ function App() {
                   getChainByKey(ChainKey.RIN),
                   getChainByKey(ChainKey.GOR),
                   getChainByKey(ChainKey.ROP),
+                  getChainByKey(ChainKey.KOV),
                   getChainByKey(ChainKey.MUM),
+                  getChainByKey(ChainKey.BSCT),
+                  getChainByKey(ChainKey.ONET),
                 ]
                 return <div className="lifiWrap">
                   <Swap
