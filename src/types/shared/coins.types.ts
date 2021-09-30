@@ -81,7 +81,7 @@ export const defaultCoins: Array<Coin> = [
       //   logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
       // },
       [ChainKey.ONE]: {
-        id: '0x6983d1e6def3690c4d616b13597a09e6193ea013', // 1ETH
+        id: '0x6983d1e6def3690c4d616b13597a09e6193ea013',
         symbol: CoinKey.ETH,
         decimals: 18,
         chainId: ChainId.ONE,
@@ -347,8 +347,18 @@ export const defaultCoins: Array<Coin> = [
         id: '0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e',
         symbol: CoinKey.DAI,
         decimals: 18, // TODO: check
-        chainId: ChainId.DAI,
+        chainId: ChainId.FTM,
         chainKey: ChainKey.FTM,
+        key: CoinKey.DAI,
+        name: CoinKey.DAI,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
+      },
+      [ChainKey.ONE]: {
+        id: '0xEf977d2f931C1978Db5F6747666fa1eACB0d0339',
+        symbol: CoinKey.DAI,
+        decimals: 18,
+        chainId: ChainId.ONE,
+        chainKey: ChainKey.ONE,
         key: CoinKey.DAI,
         name: CoinKey.DAI,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
@@ -491,6 +501,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.ONE,
         logoURI: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/WONE.png',
       },
+      [ChainKey.BSC]: {
+        id: '0x03ff0ff224f904be3118461335064bb48df47938',
+        symbol: CoinKey.ONE,
+        decimals: 18,
+        chainId: ChainId.BSC,
+        chainKey: ChainKey.BSC,
+        key: CoinKey.ONE,
+        name: CoinKey.ONE,
+        logoURI: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/WONE.png',
+      },
 
       // Testnet
       [ChainKey.ONET]: {
@@ -508,6 +528,7 @@ export const defaultCoins: Array<Coin> = [
 
 
   // OTHER STABLECOINS
+  // USDT
   {
     key: CoinKey.USDT,
     name: CoinKey.USDT,
@@ -584,6 +605,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.USDT,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
       },
+      [ChainKey.ONE]: {
+        id: '0x3c2b8be99c50593081eaa2a724f0b8285f5aba8f',
+        symbol: CoinKey.USDT,
+        decimals: 6,
+        chainId: ChainId.ONE,
+        chainKey: ChainKey.ONE,
+        key: CoinKey.USDT,
+        name: CoinKey.USDT,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
+      },
 
       // Testnets
       [ChainKey.ROP]: {
@@ -609,6 +640,7 @@ export const defaultCoins: Array<Coin> = [
       // 42, 0x07de306ff27a2b630b1141956844eb1552b956b5, 6
     },
   },
+  // USDC
   {
     key: CoinKey.USDC,
     name: CoinKey.USDC,
@@ -681,6 +713,16 @@ export const defaultCoins: Array<Coin> = [
         decimals: 6,
         chainId: ChainId.OPT,
         chainKey: ChainKey.OPT,
+        key: CoinKey.USDC,
+        name: CoinKey.USDC,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+      },
+      [ChainKey.ONE]: {
+        id: '0x985458e523db3d53125813ed68c274899e9dfab4',
+        symbol: CoinKey.USDC,
+        decimals: 6,
+        chainId: ChainId.ONE,
+        chainKey: ChainKey.ONE,
         key: CoinKey.USDC,
         name: CoinKey.USDC,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
@@ -1146,9 +1188,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
       chainKey: ChainKey.BSC
     } as Token,
   ],
-  [ChainKey.OKT]: [
-    wrappedTokens[ChainKey.ONE],
-  ],
+  [ChainKey.OKT]: [],
   [ChainKey.FTM]: [
     findDefaultCoinOnChain(CoinKey.FTM, ChainKey.FTM),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.FTM),
@@ -1159,7 +1199,13 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
   [ChainKey.ARB]: [],
   [ChainKey.HEC]: [],
   [ChainKey.OPT]: [],
-  [ChainKey.ONE]: [],
+  [ChainKey.ONE]: [
+    wrappedTokens[ChainKey.ONE],
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ONE),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ONE),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ONE),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ONE),
+  ],
 
   // Testnets
   [ChainKey.ROP]: [
