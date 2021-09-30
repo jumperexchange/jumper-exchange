@@ -19,15 +19,19 @@ const chainNames: {[k in ChainKey]: string} = {
   arb: "Arbitrum",
   hec: "Huobi ECO",
   opt: "Optimistic ETH",
+  one: "Harmony",
+
   // testnets
   rop: "Ropsten TEST",
   rin: "Rinkeby TEST",
   gor: "Goerli TEST",
+  kov: "Kovan TEST",
   mum: "Mumbai TEST",
   arbt: "Arbitrum TEST",
   optt: "Optimism TEST",
   bsct: "BSC TEST",
-  hect: "Huobi TEST"
+  hect: "Huobi TEST",
+  onet: "Harmony TEST",
 }
 
 const Route = ({ route, selected, onSelect }: RouteProps) => {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ethers } from 'ethers';
 import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById } from '../types';
+import { getDefaultTokenBalancesForWallet } from './testToken';
 import { deepClone } from './utils';
 
 type tokenListDebankT = {
@@ -222,11 +223,27 @@ const getBlancesFromDebank = async (walletAdress: string) => {
 const getBalancesForWallet = async (walletAdress: string, onChains?: Array<number>): Promise<Portfolio> => {
   walletAdress = walletAdress.toLowerCase()
 
+  // Manually added Harmony Support
+  let onePromise: Promise<{[ChainKey: string]: ChainPortfolio[]}> | undefined
+  if (onChains && onChains.indexOf(ChainId.ONE) !== -1) {
+    onePromise = getDefaultTokenBalancesForWallet(walletAdress, [ChainId.ONE])
+  }
+
   let protfolio: Portfolio
   try {
     protfolio = await getBlancesFromDebank(walletAdress)
   } catch {
     protfolio = await getBlancesFromCovalent(walletAdress, onChains)
+  }
+
+  // Manually added Harmony Support - wait for balances
+  if (onePromise) {
+    try {
+      const onePortfolio = await onePromise
+      protfolio[ChainKey.ONE] = onePortfolio[ChainKey.ONE]
+    } catch (e: any) {
+      console.error('Failed access harmony balance', e)
+    }
   }
 
   return filterPortfolioWithBlacklist(protfolio, tokenBlacklist)
