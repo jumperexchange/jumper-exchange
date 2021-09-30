@@ -19,7 +19,6 @@ import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
 import {animate, stagger} from "motion"
-import horizon from '../services/horizon';
 
 const { Panel } = Collapse;
 
@@ -259,10 +258,6 @@ const Swap = ({
     return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
   }
 
-  const func = async () => {
-    await horizon.trigger()
-  }
-
   return (
     <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)', marginTop: 64 }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
@@ -273,10 +268,6 @@ const Swap = ({
             className="hero-image"
             src={heroImage}
           />
-        </Row>
-
-        <Row>
-          <Button onClick={() => func()}>Harmony</Button>
         </Row>
 
         {/* Swap Form */}

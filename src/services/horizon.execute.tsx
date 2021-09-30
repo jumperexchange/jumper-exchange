@@ -34,10 +34,10 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
       [CoinKey.ONE]: {
         token: TOKEN.ONE,
       },
-      [CoinKey.USDC]: {
-        token: TOKEN.ERC20,
-        erc20Address: '',
-      },
+      // [CoinKey.USDC]: {
+      //   token: TOKEN.ERC20,
+      //   erc20Address: '',
+      // },
     }
 
     // params
@@ -59,7 +59,7 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
       hrc20Address: hrc20Address,
       // maxWaitingTime?: number;
     }
-    console.log(params)
+    console.debug('params', params)
 
     let operationId: string
     const bridgePromise = bridgeSDK.sendToken(
@@ -70,7 +70,7 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
     let intervalId = setInterval(async () => {
       if (operationId) {
         const operation = await bridgeSDK.api.getOperation(operationId)
-        console.log(operation)
+        console.debug('operation', operation)
 
         // Send > Wait
         if (operation.actions[0].status === 'in_progress' && allowanceAndCrossProcess.status === 'ACTION_REQUIRED') {
