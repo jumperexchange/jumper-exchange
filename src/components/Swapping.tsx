@@ -24,7 +24,7 @@ import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
 import { useMediaQuery } from 'react-responsive';
-
+import { storeActiveRoute } from '../services/localStorage'
 
 interface SwappingProps {
   route: Array<TransferStep>,
@@ -147,7 +147,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         console.warn('should never reach here')
     }
   }
-
 
   const parseExecution = (execution?: Execution) => {
     if (!execution) {
@@ -283,13 +282,16 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     try{
       switch (step.action.type) {
         case 'swap':
-          return await triggerSwap(step, previousStep)
+          await triggerSwap(step, previousStep)
+          break
         case 'cross':
-          return await triggerCross(step, previousStep)
+           await triggerCross(step, previousStep)
+          break
         default:
           setIsSwapping(false)
           throw new Error('Invalid Step')
       }
+      storeActiveRoute(route)
     } catch{
       setIsSwapping(false)
     }
@@ -302,7 +304,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       if (!(await checkChain(route[0]))) return
     }
 
-    lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) => updateStatus(route[0], status))
+    await lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) => updateStatus(route[0], status))
+    storeActiveRoute(route)
   }
 
   const isLifiSupported = (route: Array<TransferStep>) => {
@@ -315,6 +318,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   }
 
   const startCrossChainSwap = async () => {
+    // TODO: persist route in localStorage or equivalent
+    storeActiveRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
   }
@@ -364,6 +369,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     // lifi supported?
     if (isLifiSupported(route)) {
       if (!route[0].execution) {
+        //TODO: update route in localStorage
         triggerLifi()
       } else if (route[0].execution.status === 'DONE') {
         await getFinalBalace(route)
@@ -376,6 +382,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
     for (let index = 0; index < route.length; index++) {
       if (!route[index].execution) {
+        //TODO: update route in localStorage
         return triggerStep(index, route)
           .catch(() => {
             // stop if a step fails
@@ -393,8 +400,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     onSwapDone()
   }
   checkSwapping()
-
-
 
   const getMainButton = () => {
     // PENDING

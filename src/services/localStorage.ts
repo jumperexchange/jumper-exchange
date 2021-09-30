@@ -1,4 +1,4 @@
-import { chainKeysToObject, Wallet } from '../types';
+import { chainKeysToObject, TransferStep, Wallet } from '../types';
 
 const isSupported = () => {
   try {
@@ -86,6 +86,39 @@ const readHideAbout = () => {
   return value === 'true'
 }
 
+
+const storeActiveRoute = (route: TransferStep[]) => {
+  if (isSupported()) {
+    localStorage.setItem('activeRoute', JSON.stringify(route))
+  }
+}
+
+const deleteActiveRoute = () => {
+  if (!isSupported()) {
+    return
+  }
+  localStorage.removeItem('activeRoute')
+}
+
+const readActiveRoute =(): TransferStep[] => {
+  if (!isSupported()) {
+    return [] as TransferStep[]
+  }
+  const routeString = localStorage.getItem('activeRoute')
+
+  if (routeString) {
+    try {
+      const route = JSON.parse(routeString)
+      return route as TransferStep[]
+    }
+    catch (e) {
+      return [] as TransferStep[]
+    }
+  } else {
+    return [] as TransferStep[]
+  }
+}
+
 export {
   isSupported,
   clearLocalStorage,
@@ -95,4 +128,7 @@ export {
   readNxtpMessagingToken,
   storeHideAbout,
   readHideAbout,
+  storeActiveRoute,
+  deleteActiveRoute,
+  readActiveRoute
 }

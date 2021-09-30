@@ -19,6 +19,7 @@ import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
 import {animate, stagger} from "motion"
+import { deleteActiveRoute, readActiveRoute } from '../services/localStorage';
 
 const { Panel } = Collapse;
 
@@ -68,7 +69,7 @@ const Swap = ({
   const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
+  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([]) //TODO: read Selected route from localStorage or equivalent
   const [selectedRouteIndex, setselectedRouteIndex] = useState<number>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
 
@@ -89,6 +90,13 @@ const Swap = ({
       return formatTokenAmountOnly((lastStep.action as any).toToken, lastStep.estimate?.toAmount)
     }
   }
+
+  useEffect(() => {
+    const route = readActiveRoute()
+    if(route.length){
+      setselectedRoute(route)
+    }
+  }, [])
 
   useEffect(() => {
     if (refreshTokens) {
@@ -227,7 +235,8 @@ const Swap = ({
     getTransferRoutes()
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, findToken])
 
-  const openSwapModal = () => {
+  const setRouteAndIndex = () => {
+    // TODO: open swap modal on load when route in localStorage or equivalent
     setselectedRoute(routes[highlightedIndex])
     setselectedRouteIndex(highlightedIndex)
   }
@@ -255,7 +264,7 @@ const Swap = ({
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
     }
 
-    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
+    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => setRouteAndIndex()}>Swap</Button>
   }
 
   return (
@@ -393,7 +402,7 @@ const Swap = ({
           <Swapping route={selectedRoute}
           updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
           onSwapDone = {() => {
-            // setRefreshBalances(true)
+            deleteActiveRoute()
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
             .then(setBalances)
           }}
