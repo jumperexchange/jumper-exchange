@@ -24,6 +24,7 @@ import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
 import { useMediaQuery } from 'react-responsive';
+import { executeHorizonCross } from '../services/horizon.execute';
 
 
 interface SwappingProps {
@@ -117,7 +118,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case '1inch':
         return await executeOneInchSwap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       default:
-        console.warn('should never reach here')
+        throw new Error('Should never reach here, swap not defined')
     }
   }
 
@@ -143,8 +144,10 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status));
       case 'hop':
         return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toString(), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
+      case 'horizon':
+        return await executeHorizonCross(crossAction.token, fromAmount, crossAction.chainId, crossAction.toChainId, web3.account, (status: Execution) => updateStatus(step, status))
       default:
-        console.warn('should never reach here')
+        throw new Error('Should never reach here, bridge not defined')
     }
   }
 

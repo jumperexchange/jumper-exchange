@@ -126,15 +126,18 @@ export interface WalletSummary {
   [ChainKey.HEC]: SummaryAmounts;
   [ChainKey.OPT]: SummaryAmounts;
   [ChainKey.ARB]: SummaryAmounts;
+  [ChainKey.ONE]: SummaryAmounts;
 
   [ChainKey.ROP]: SummaryAmounts;
   [ChainKey.RIN]: SummaryAmounts;
   [ChainKey.GOR]: SummaryAmounts;
+  [ChainKey.KOV]: SummaryAmounts;
   [ChainKey.MUM]: SummaryAmounts;
   [ChainKey.ARBT]: SummaryAmounts;
   [ChainKey.OPTT]: SummaryAmounts;
   [ChainKey.BSCT]: SummaryAmounts;
   [ChainKey.HECT]: SummaryAmounts;
+  [ChainKey.ONET]: SummaryAmounts;
 }
 
 export interface ProgressStep {
