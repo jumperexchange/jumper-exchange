@@ -373,12 +373,12 @@ export const supportedChains: Array<Chain> = [
     id: 1666600000,
     visible: false,
 
-    // exchange: {
-    //   name: 'ViperSwap',
-    //   webUrl: 'https://viper.exchange/#/swap',
-    //   graph: '',
-    //   tokenlistUrl: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/lists/venomswap-default.tokenlist.json',
-    // },
+    exchange: {
+      name: 'ViperSwap',
+      webUrl: 'https://viper.exchange/#/swap',
+      graph: '',
+      tokenlistUrl: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/lists/venomswap-default.tokenlist.json',
+    },
 
     // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
     metamask: {

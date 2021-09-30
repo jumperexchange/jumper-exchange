@@ -478,7 +478,7 @@ export const defaultCoins: Array<Coin> = [
   {
     key: CoinKey.ONE,
     name: CoinKey.ONE,
-    logoURI: '',
+    logoURI: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/WONE.png',
     verified: true,
     chains: {
       [ChainKey.ONE]: {
@@ -489,7 +489,7 @@ export const defaultCoins: Array<Coin> = [
         chainKey: ChainKey.ONE,
         key: CoinKey.ONE,
         name: CoinKey.ONE,
-        logoURI: '',
+        logoURI: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/WONE.png',
       },
 
       // Testnet
@@ -501,7 +501,7 @@ export const defaultCoins: Array<Coin> = [
         chainKey: ChainKey.ONET,
         key: CoinKey.ONE,
         name: CoinKey.ONE,
-        logoURI: '',
+        logoURI: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/WONE.png',
       },
     },
   },
@@ -971,6 +971,16 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     name: 'wFTM',
     logoURI: 'https://assets.spookyswap.finance/coins/0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83.png',
   },
+  [ChainKey.ONE]: {
+    id: '0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a',
+    symbol: 'WONE',
+    decimals: 18,
+    chainId: ChainId.ONE,
+    chainKey: ChainKey.ONE,
+    key: 'WONE' as CoinKey,
+    name: 'WRAPPED ONE',
+    logoURI: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/WONE.png',
+  },
 
   // Testnets
   [ChainKey.ROP]: {
@@ -1016,6 +1026,16 @@ export const wrappedTokens: { [ChainKey: string]: Token } = {
     key: 'WMATIC' as CoinKey,
     name: 'WMATIC',
     logoURI: 'https://zapper.fi/images/networks/polygon/0x0000000000000000000000000000000000000000.png',
+  },
+  [ChainKey.ONET]: {
+    id: '0x7466d7d0C21Fa05F32F5a0Fa27e12bdC06348Ce2',
+    symbol: 'WONE',
+    decimals: 18,
+    chainId: ChainId.ONET,
+    chainKey: ChainKey.ONET,
+    key: 'WONE' as CoinKey,
+    name: 'WRAPPED ONE',
+    logoURI: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/tokens/WONE.png',
   },
 }
 
@@ -1126,7 +1146,9 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
       chainKey: ChainKey.BSC
     } as Token,
   ],
-  [ChainKey.OKT]: [],
+  [ChainKey.OKT]: [
+    wrappedTokens[ChainKey.ONE],
+  ],
   [ChainKey.FTM]: [
     findDefaultCoinOnChain(CoinKey.FTM, ChainKey.FTM),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.FTM),
@@ -1157,5 +1179,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
   [ChainKey.OPTT]: [],
   [ChainKey.BSCT]: [],
   [ChainKey.HECT]: [],
-  [ChainKey.ONET]: [],
+  [ChainKey.ONET]: [
+    wrappedTokens[ChainKey.ONET],
+  ],
 }
