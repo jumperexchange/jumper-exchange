@@ -8,7 +8,7 @@ import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
 import BigNumber from 'bignumber.js';
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import heroImage from '../assets/info_header.png';
+import heroImage from '../assets/info_header.jpg';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
 import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
