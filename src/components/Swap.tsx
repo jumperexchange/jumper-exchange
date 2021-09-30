@@ -69,7 +69,7 @@ const Swap = ({
   const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([]) //TODO: read Selected route from localStorage or equivalent
+  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>(readActiveRoute()) //TODO: read Selected route from localStorage or equivalent
   const [selectedRouteIndex, setselectedRouteIndex] = useState<number>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
 
@@ -90,13 +90,6 @@ const Swap = ({
       return formatTokenAmountOnly((lastStep.action as any).toToken, lastStep.estimate?.toAmount)
     }
   }
-
-  useEffect(() => {
-    const route = readActiveRoute()
-    if(route.length){
-      setselectedRoute(route)
-    }
-  }, [])
 
   useEffect(() => {
     if (refreshTokens) {
@@ -388,6 +381,7 @@ const Swap = ({
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
+          maskClosable={false}
           onOk={() =>{
             setselectedRoute([])
             setRefreshBalances(true)

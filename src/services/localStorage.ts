@@ -101,6 +101,8 @@ const deleteActiveRoute = () => {
 }
 
 const readActiveRoute =(): TransferStep[] => {
+  //TODO: make sure a valid trasferStep[] is returned
+  // what if routeString is malformed?
   if (!isSupported()) {
     return [] as TransferStep[]
   }

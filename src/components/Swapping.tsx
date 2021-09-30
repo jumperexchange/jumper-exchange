@@ -318,7 +318,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   }
 
   const startCrossChainSwap = async () => {
-    // TODO: persist route in localStorage or equivalent
     storeActiveRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
@@ -327,7 +326,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const restartCrossChainSwap = async () => {
     // remove failed
     for (let index = 0; index < route.length; index++) {
-      if (route[index].execution?.status === 'FAILED') {
+      if (route[index].execution?.status === 'FAILED' || route[index].execution?.status !=='DONE') {
         route[index].execution = undefined
         updateRoute(route)
       }
@@ -364,12 +363,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   // check where we are an trigger next
   const checkSwapping = async() => {
-    if (!isSwapping) return
+    if(!isSwapping){
+      return
+    }
 
     // lifi supported?
     if (isLifiSupported(route)) {
       if (!route[0].execution) {
-        //TODO: update route in localStorage
         triggerLifi()
       } else if (route[0].execution.status === 'DONE') {
         await getFinalBalace(route)
@@ -422,7 +422,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           }
           await addToken(buildTokenFromBalance(finalBalance))
         }}>
-          <Typography.Text >
+            <Typography.Text >
               {'You now have '}
               {finalBalance?.amount.toString().substring(0, 8)}
               {` ${finalBalance?.symbol}`}
@@ -436,6 +436,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
     }
 
+    // RESUME
+    const shouldResume = route.filter(step => step.execution?.status !== 'DONE').length > 0
+    if(shouldResume){
+      return <Button type="primary" onClick={() => restartCrossChainSwap()} style={{marginTop: 10}}>
+        Resume Swap
+      </Button>
+    }
     // FAILED
     const isFailed = route.filter(step => step.execution?.status === 'FAILED').length > 0
     if (isFailed) {
@@ -492,7 +499,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         {getMainButton()}
       </div>
 
-      {currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
+      {isSwapping && currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
         <>
           <Row justify="center" style={{marginBottom: 6}}>
             <Typography.Text >{currentProcess.message}</Typography.Text>
@@ -503,7 +510,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         </>
       }
 
-      {currentProcess && currentProcess.status === 'PENDING' &&
+      {isSwapping && currentProcess && currentProcess.status === 'PENDING' &&
         <>
           <Row justify="center">
             <Typography.Text className="flashing">{currentProcess.message}</Typography.Text>
