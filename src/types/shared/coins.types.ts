@@ -80,6 +80,16 @@ export const defaultCoins: Array<Coin> = [
       //   name: CoinKey.ETH,
       //   logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
       // },
+      [ChainKey.ONE]: {
+        id: '0x6983d1e6def3690c4d616b13597a09e6193ea013', // 1ETH
+        symbol: CoinKey.ETH,
+        decimals: 18,
+        chainId: ChainId.ONE,
+        chainKey: ChainKey.ONE,
+        key: CoinKey.ETH,
+        name: CoinKey.ETH,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+      },
 
       // Testnets
       [ChainKey.ROP]: {
@@ -248,6 +258,16 @@ export const defaultCoins: Array<Coin> = [
         decimals: 18,
         chainId: ChainId.DAI,
         chainKey: ChainKey.DAI,
+        key: CoinKey.BNB,
+        name: CoinKey.BNB,
+        logoURI: 'https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png?1547034615',
+      },
+      [ChainKey.ONE]: {
+        id: '0xb1f6e61e1e113625593a22fa6aa94f8052bc39e0',
+        symbol: CoinKey.BNB,
+        decimals: 18,
+        chainId: ChainId.ONE,
+        chainKey: ChainKey.ONE,
         key: CoinKey.BNB,
         name: CoinKey.BNB,
         logoURI: 'https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png?1547034615',
@@ -849,6 +869,8 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   ],
   [ChainKey.ONE]: [
     findDefaultCoinOnChain(CoinKey.ONE, ChainKey.ONE),
+    findDefaultCoinOnChain(CoinKey.BNB, ChainKey.ONE),
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ONE),
   ],
 
   // Testnet

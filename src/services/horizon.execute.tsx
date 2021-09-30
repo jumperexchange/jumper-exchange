@@ -18,7 +18,9 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
   let mintProcess: Process
 
   try {
-    const bridgeSDK = await horizon.setupTestnet()
+    // mainnet / testnet ?
+    const bridgeSDK = (fromChainId === ChainId.ONE || toChainId === ChainId.ONE) ? await horizon.setupMainnet() : await horizon.setupTestnet()
+
     const tokenMapping: { [k: string]: any } = {
       [CoinKey.ETH]: {
         token: TOKEN.ETH,
@@ -101,8 +103,14 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
           setStatusDone(update, status, mintProcess)
         }
 
+        // Ended
         if (operation.status !== STATUS.IN_PROGRESS) {
           clearInterval(intervalId);
+          if (operation.status === STATUS.ERROR) {
+            if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE') setStatusFailed(update, status, allowanceAndCrossProcess)
+            if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE') setStatusFailed(update, status, waitForBlocksProcess)
+            if (mintProcess! && mintProcess.status !== 'DONE') setStatusFailed(update, status, mintProcess)
+          }
         }
       }
     }, 4000)

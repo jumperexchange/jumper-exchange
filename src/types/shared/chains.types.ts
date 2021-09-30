@@ -368,15 +368,23 @@ export const supportedChains: Array<Chain> = [
   // 1666600000 - Harmony Mainnet Shard 0
   {
     key: ChainKey.ONE,
-    name: 'Harmony Mainnet Shard 0',
+    name: 'Harmony',
     coin: CoinKey.ONE,
     id: 1666600000,
     visible: false,
+
+    // exchange: {
+    //   name: 'ViperSwap',
+    //   webUrl: 'https://viper.exchange/#/swap',
+    //   graph: '',
+    //   tokenlistUrl: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/lists/venomswap-default.tokenlist.json',
+    // },
+
     // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
     metamask: {
       chainId: prefixChainId(1666600000),
       blockExplorerUrls: [
-        'https://www.harmony.one/',
+        'https://explorer.harmony.one/',
       ],
       chainName: 'Harmony Mainnet Shard 0',
 
@@ -677,7 +685,7 @@ export const supportedChains: Array<Chain> = [
   // 1666700000 - Harmony Testnet 0
   {
     key: ChainKey.ONET,
-    name: 'Harmony Testnet Shard 0',
+    name: 'Harmony Testnet',
     coin: CoinKey.ONE,
     id: 1666700000,
     visible: false,

@@ -19,7 +19,7 @@ const setupMainnet = async () => {
 const trigger = async () => {
   const bridgeSDK = await setupTestnet()
 
-  const operationId = "4fb574b1-551616db-dd38a66d-52c9bd9f"
+  const operationId = "a694bac1-be6ed76a-ccf2a0e3-f283c034"
   const operation = await bridgeSDK.api.getOperation(operationId)
   console.log(operation)
 }

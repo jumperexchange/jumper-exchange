@@ -96,6 +96,7 @@ function App() {
                   getChainByKey(ChainKey.ETH),
                   getChainByKey(ChainKey.ARB),
                   getChainByKey(ChainKey.OPT),
+                  getChainByKey(ChainKey.ONE),
                 ]
 
                 return <div className="lifiWrap">

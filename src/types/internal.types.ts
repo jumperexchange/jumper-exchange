@@ -13,6 +13,7 @@ import spooky from '../assets/icons/spooky.png';
 import ftm from '../assets/icons/fantom.png';
 import arb from '../assets/icons/arbitrum.svg';
 import opt from '../assets/icons/optimism.png';
+import one from '../assets/icons/harmony.png';
 import rop from '../assets/icons/ethereum_ropsten.png';
 import rin from '../assets/icons/ethereum_rinkeby.png';
 import gor from '../assets/icons/ethereum_goerli.png';
@@ -32,6 +33,7 @@ export const icons: { [key: string]: string } = {
   [ChainKey.ARB]: arb,
   // [ChainKey.HEC]: hec,
   [ChainKey.OPT]: opt,
+  [ChainKey.ONE]: one,
 
   // Testnets
   [ChainKey.ROP]: rop,
