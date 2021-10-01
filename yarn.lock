@@ -10161,9 +10161,9 @@ moment@^2.24.0, moment@^2.25.3, moment@^2.29.1:
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 motion@^10.0.2:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/motion/-/motion-10.1.1.tgz#38faad4ffb01f9256696914cf7692b6d1faf646d"
-  integrity sha512-h1f4gvKiblycyFqqtjjr3E0HGcsX8+nb1WFc7+uQcMUG877TmXrBJYLzHfSJszo9CrIKdwE3yb1ey5h2iPkiSA==
+  version "10.1.2"
+  resolved "https://registry.yarnpkg.com/motion/-/motion-10.1.2.tgz#42ac9ff5fbf20c68e9a2383e6fd3b91fc540eb0f"
+  integrity sha512-TgjerwlVBJY5o8mAHU3KWiXIaYL9WVU+xOSseYlG+wj1PnAk74715akuKulAVuhKoe5ivEQ8W14n3xlD2hloRg==
   dependencies:
     framer-motion "^4.1.17"
     tslib "^2.3.0"
