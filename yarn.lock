@@ -1329,6 +1329,7 @@
     eslint "^7.32.0"
     ethers "^5.4.6"
     evt "^1.10.1"
+    interval-promise "^1.4.0"
     neverthrow "^4.2.2"
     p-queue "6.6.2"
     pino "^6.13.0"
@@ -10003,6 +10004,11 @@ internal-slot@^1.0.3:
     get-intrinsic "^1.1.0"
     has "^1.0.3"
     side-channel "^1.0.4"
+
+interval-promise@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/interval-promise/-/interval-promise-1.4.0.tgz#eef1a3633c6c6560488d8ca4b2f52cf901e16f8d"
+  integrity sha512-PUwEmGqUglJhb6M01JNvMDvxr4DA8FCeYoYCLHPEcBBZiq/8yOpCchfs1VJui7fXj69l170gAxzF1FeSA0nSlg==
 
 invariant@^2.2.2:
   version "2.2.4"
