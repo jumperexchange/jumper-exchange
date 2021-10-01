@@ -78,6 +78,7 @@ const storeHideAbout = (hide: boolean) => {
     localStorage.setItem('nxtpHideDemo', hide ? 'true' : 'false')
   }
 }
+
 const readHideAbout = () => {
   if (!isSupported()) {
     return false
@@ -88,9 +89,11 @@ const readHideAbout = () => {
 
 
 const storeActiveRoute = (route: TransferStep[]) => {
-  if (isSupported()) {
-    localStorage.setItem('activeRoute', JSON.stringify(route))
-  }
+  if (!isSupported()) return
+  // serialize all JSX elements correctly
+  localStorage.setItem('activeRoute', JSON.stringify(route, (k, v) =>
+    typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
+  ))
 }
 
 const deleteActiveRoute = () => {
@@ -110,7 +113,12 @@ const readActiveRoute =(): TransferStep[] => {
 
   if (routeString) {
     try {
-      const route = JSON.parse(routeString)
+      // deserialize all JSX elements correctly
+      const route = JSON.parse(routeString, (k, v) => {
+        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/);
+
+        return matches ? Symbol.for(matches[1]) : v;
+      })
       return route as TransferStep[]
     }
     catch (e) {
