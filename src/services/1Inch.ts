@@ -52,12 +52,12 @@ interface Swapped {
 }
 
 const getContractAddress = async () => {
-  const result = await axios.get(`https://api.1inch.exchange/v3.0/1/approve/spender`)
+  const result = await axios.get<any>(`https://api.1inch.exchange/v3.0/1/approve/spender`)
   return result.data.address
 }
 
 // const setAllowance = async (chainId: number, amount: string, fromTokenAddress: string, signer: JsonRpcSigner) => {
-//   const result = await axios.get(`https://api.1inch.exchange/v3.0/${chainId}/approve/calldata?amount=${amount}&infinity=true&tokenAddress=${checkTokenAddress(fromTokenAddress)}`)
+//   const result = await axios.get<any>(`https://api.1inch.exchange/v3.0/${chainId}/approve/calldata?amount=${amount}&infinity=true&tokenAddress=${checkTokenAddress(fromTokenAddress)}`)
 //   const allowance = result.data;
 //   delete allowance.gasPrice
 //   allowance.value = BigNumber.from(allowance.value)
@@ -102,7 +102,7 @@ const getTransaction = async (chainId: number, fromTokenAddress: string, toToken
     // mainRouteParts: // OPTIONAL, integer, maximum number of main route parts
   }
 
-  const result = await axios.get(`${baseURL}${chainId}/swap`, { params })
+  const result = await axios.get<any>(`${baseURL}${chainId}/swap`, { params })
   const toAmount: number = result.data.toTokenAmount ? result.data.toTokenAmount : -1
   const path: Array<any> = result.data.protocols ? result.data.protocols[0].map((step: Array<any>) => step[0]) : []
   const tx = result.data.tx

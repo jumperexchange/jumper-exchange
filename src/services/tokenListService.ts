@@ -30,7 +30,7 @@ export const loadTokenList = async (chainId: number): Promise<TokenList> => {
     // throw new Error('No token list defined for chain')
     return {} as TokenList
   }
-  const result = await axios.get(chain.exchange?.tokenlistUrl)
+  const result = await axios.get<any>(chain.exchange?.tokenlistUrl)
   return result.data as TokenList
 }
 

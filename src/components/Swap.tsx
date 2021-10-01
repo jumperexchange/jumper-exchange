@@ -203,7 +203,7 @@ const Swap = ({
         }
 
         try {
-          const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
+          const result = await axios.post<any>(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
           // filter if needed
           const routes: Array<Array<TransferStep>> = result.data
           setRoutes(routes)

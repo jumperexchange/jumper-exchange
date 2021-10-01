@@ -13,7 +13,7 @@ Use [nvm](https://github.com/nvm-sh/nvm) to run the app with the latest node ver
 
 ```sh
 # install dependencies
-yarn install
+yarn install --ignore-engines
 
 # server local development version
 # > li.finance

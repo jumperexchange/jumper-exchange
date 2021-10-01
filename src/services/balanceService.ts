@@ -79,7 +79,7 @@ export async function covalentGetCoinsOnChain(walletAdress: string, chainId: num
   const url = `${COVALENT_API_URI}/${chainId}/address/${walletAdress}/balances_v2/?key=${COVALENT_API_KEY}`
   let result
   try {
-    result = await axios.get(url)
+    result = await axios.get<any>(url)
   } catch (e) {
     console.error(e)
     return []
@@ -139,7 +139,7 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
 
   var result
   try {
-    result = await axios.get(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl);
   } catch (e) {
     console.warn(`Debank api call for token list on chain ${chainKey} failed with status ` + e)
     console.warn(e)
@@ -194,7 +194,7 @@ const getBlancesFromDebank = async (walletAdress: string) => {
 
   var result
   try {
-    result = await axios.get(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl);
   } catch (e) {
     console.warn(`Debank api call for token list failed with status ` + e)
     throw e
