@@ -964,10 +964,6 @@ const SwapXpollinate = ({
               <span>Support <LinkOutlined /></span>
             </a>
 
-            <a href="https://v1.xpollinate.io/" target="_blank" rel="nofollow noreferrer" className="header-button">
-              <span>Looking for V1?</span>
-            </a>
-
           </span>
         </Row>
       </div>
