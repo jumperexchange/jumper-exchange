@@ -1888,7 +1888,7 @@
   dependencies:
     deepmerge "^4.2.2"
 
-"@hop-protocol/sdk@^0.0.1-beta.195":
+"@hop-protocol/sdk@^0.0.1-beta.199":
   version "0.0.1-beta.199"
   resolved "https://registry.yarnpkg.com/@hop-protocol/sdk/-/sdk-0.0.1-beta.199.tgz#aa8aedcfd90a9c8c05dc6608e82929cf2539c352"
   integrity sha512-AxUMcP/0gtBjQ1HIFXBoSZD1z+nqhoDa3Eu4n6Q+95poQglrZ6txbdXyC3EmiJ7VhHksUAfDFk9gpd7yv7hQEQ==
