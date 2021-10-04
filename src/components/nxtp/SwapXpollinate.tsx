@@ -970,10 +970,10 @@ const SwapXpollinate = ({
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
         {/* Warning Message */}
-        <Row className="warning-trustWallet" justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+        <Row justify="center" style={{ padding: 20, paddingBottom: 0, display: 'none' }}>
           <Alert
             style={{ maxWidth: 700 }}
-            message="This is an Alpha release, please use with caution! Usage with Metamask wallets is preferred."
+            message=""
             description=""
             type="error"
           />
