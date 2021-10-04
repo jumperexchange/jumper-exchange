@@ -56,6 +56,13 @@ interface Swapped {
   referrer: string
 }
 
+const checkTokenAddress = (address: string) => {
+  if (address === '0x0000000000000000000000000000000000000000') {
+    return '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  }
+  return address
+}
+
 const getParaswap = (chainId: number) => {
   return new ParaSwap(chainId as NetworkID)
 }
@@ -82,8 +89,8 @@ const getRateTs = async (
 ): Promise<OptimalRate> => {
   const paraSwap = getParaswap(chainId)
   const priceRoute = await paraSwap.getRate(
-    srcToken,
-    destToken,
+    checkTokenAddress(srcToken),
+    checkTokenAddress(destToken),
     amount,
     undefined, // userAddress?: Address,
     side,

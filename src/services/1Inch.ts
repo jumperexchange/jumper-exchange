@@ -56,26 +56,12 @@ const getContractAddress = async () => {
   return result.data.address
 }
 
-// const setAllowance = async (chainId: number, amount: string, fromTokenAddress: string, signer: JsonRpcSigner) => {
-//   const result = await axios.get<any>(`https://api.1inch.exchange/v3.0/${chainId}/approve/calldata?amount=${amount}&infinity=true&tokenAddress=${checkTokenAddress(fromTokenAddress)}`)
-//   const allowance = result.data;
-//   delete allowance.gasPrice
-//   allowance.value = BigNumber.from(allowance.value)
-
-//   const approvedAllowance = await signer.sendTransaction(allowance)
-
-//   // wait for confirmation
-//   await approvedAllowance.wait(1)
-//   return approvedAllowance
-// }
-
 const checkTokenAddress = (address: string) => {
   if (address === '0x0000000000000000000000000000000000000000') {
     return '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
   }
   return address
 }
-
 
 const getTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, fromAddress: string, destReceiver: string) => {
   // https://docs.1inch.io/api/quote-swap
