@@ -16,6 +16,7 @@ import onehiveWordmark from '../../assets/1hive_wordmark.svg';
 import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
 import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
+import { getBalancesForWalletFromChain } from '../../services/balanceService';
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
@@ -153,7 +154,6 @@ interface SwapXpollinateProps {
   aboutDescription?: React.ReactNode
   transferChains: Chain[]
   transferTokens: { [ChainKey: string]: Array<Token> }
-  getBalancesForWallet: Function
   testnet?: boolean
 }
 
@@ -162,7 +162,6 @@ const SwapXpollinate = ({
   aboutDescription,
   transferChains,
   transferTokens,
-  getBalancesForWallet,
   testnet,
 }: SwapXpollinateProps) => {
   // INIT
@@ -508,9 +507,9 @@ const SwapXpollinate = ({
 
   const updateBalances = useCallback(async (address: string) => {
     setUpdatingBalances(true)
-    await getBalancesForWallet(address, transferChains.map(chain => chain.id)).then(setBalances)
+    await getBalancesForWalletFromChain(address, transferTokens).then(setBalances)
     setUpdatingBalances(false)
-  }, [getBalancesForWallet, transferChains])
+  }, [transferTokens])
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
