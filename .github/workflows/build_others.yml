@@ -30,7 +30,7 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: yarn install --ignore-engines
+        run: yarn install
 
       - name: Build li.finance
         run: yarn build:lifinance
