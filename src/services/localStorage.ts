@@ -80,10 +80,10 @@ const storeHideAbout = (hide: boolean) => {
 }
 const readHideAbout = () => {
   if (!isSupported()) {
-    return false
+    return true
   }
   const value = localStorage.getItem('nxtpHideDemo')
-  return value === 'true'
+  return !(value === 'false')
 }
 
 export {
