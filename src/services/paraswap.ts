@@ -1,18 +1,28 @@
-import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import BN from 'bignumber.js'
 import { BigNumber, ethers } from 'ethers'
 import { NetworkID, ParaSwap, SwapSide } from 'paraswap'
-import { Allowance, OptimalRatesWithPartnerFees, Transaction } from 'paraswap/build/types'
+import { OptimalRate } from 'paraswap-core'
+import { APIError, Transaction } from 'paraswap/build/types'
+import { SwapAction, SwapEstimate } from '../types'
 
-const instances: { [key: number]: ParaSwap | null } = {
-  1: null,
-  56: null,
-  137: null,
-  // testnet
-  3: null, // ropsten
-}
-
+// event Swapped(
+//   bytes16 uuid,
+//   address initiator,
+//   address indexed beneficiary,
+//   address indexed srcToken,
+//   address indexed destToken,
+//   uint256 srcAmount,
+//   uint256 receivedAmount,
+//   uint256 expectedAmount
+// )
 const swappedTypes: Array<ethers.utils.ParamType> = [
+  ethers.utils.ParamType.from({
+    "indexed": false,
+    "internalType": "bytes16",
+    "name": "uuid",
+    "type": "bytes16"
+  }),
   ethers.utils.ParamType.from({
     "indexed": false,
     "internalType": "address",
@@ -37,12 +47,6 @@ const swappedTypes: Array<ethers.utils.ParamType> = [
     "name": "expectedAmount",
     "type": "uint256"
   }),
-  ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "string",
-    "name": "referrer",
-    "type": "string"
-  }),
 ]
 interface Swapped {
   initiator: string
@@ -53,97 +57,97 @@ interface Swapped {
 }
 
 const getParaswap = (chainId: number) => {
-  if (!instances[chainId]) {
-    instances[chainId] = new ParaSwap(chainId as NetworkID).setWeb3Provider((window as any).ethereum)
-  }
-  return instances[chainId] as ParaSwap
+  return new ParaSwap(chainId as NetworkID)
 }
 
 export const getContractAddress = async (chainId: number) => {
   const para = getParaswap(chainId)
-  return para.getSpender()
-}
-
-export const getAllowance = async (chainId: number, userAddress: string, tokenAddress: string) => {
-  const para = getParaswap(chainId)
-  const result = (await para.getAllowance(userAddress, tokenAddress)) as Allowance
-
-  return parseInt(result.allowance)
-}
-
-export const setAllowance = async (signer: JsonRpcSigner, chainId: number, userAddress: string, tokenAddress: string, amount: number) => {
-  const para = getParaswap(chainId)
-  const txHash = await para.approveToken(amount.toString(), userAddress, tokenAddress);
-
-  let res = null
-  while (!res) {
-    res = await signer.provider.getTransactionReceipt(txHash)
+  const result = await para.getTokenTransferProxy()
+  if (result.hasOwnProperty('message')) {
+    throw new Error((result as APIError).message)
+  } else {
+    return result as string
   }
-  let newAllowance = await getAllowance(chainId, userAddress, tokenAddress)
-  return newAllowance
 }
 
-export const updateAllowance = async (signer: JsonRpcSigner, chainId: number, userAddress: string, tokenAddress: string, amount: number) => {
-
-  const allowance = await getAllowance(chainId, userAddress, tokenAddress)
-  if (allowance === amount) {
-    return allowance
-  }
-
-  // -> set allowance
-  // if (allowance > 0) {
-  //   await setAllowance(signer, chainId, userAddress, tokenAddress, 0)
-  // }
-  await setAllowance(signer, chainId, userAddress, tokenAddress, amount)
-}
-
-export const transfer = async (signer: JsonRpcSigner, chainId: number, userAddress: string, srcToken: string, destToken: string, srcAmount: string, receiver?: string, srcDecimals?: number, destDecimals?: number) => {
-  const SLIPPAGE = 1 // =1%
-  const para = getParaswap(chainId)
-
-  const rate = await para.getRate(
+const getRateTs = async (
+  chainId: number,
+  srcToken: string,
+  destToken: string,
+  amount: string,
+  side: SwapSide = SwapSide.SELL,
+  options: any = {},
+  srcDecimals?: number,
+  destDecimals?: number,
+): Promise<OptimalRate> => {
+  const paraSwap = getParaswap(chainId)
+  const priceRoute = await paraSwap.getRate(
     srcToken,
     destToken,
-    srcAmount,
-    SwapSide.SELL,
-    {
-      // excludeDEXS?: string;
-      // includeDEXS?: string;
-      // excludePools?: string;
-      // excludePricingMethods?: PricingMethod[];
-      // excludeContractMethods?: ContractMethod[];
-      // includeContractMethods?: ContractMethod[];
-      // adapterVersion?: string;
-      referrer: process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
-      // maxImpact?: number;
-      // maxUSDImpact?: number;
-    },
+    amount,
+    undefined, // userAddress?: Address,
+    side,
+    options,
     srcDecimals,
     destDecimals,
-  ) as OptimalRatesWithPartnerFees
+  )
 
-  const minAmount = new BN(rate.destAmount).times(1 - (SLIPPAGE / 100)).toFixed(0)
+  if (priceRoute.hasOwnProperty('message')) {
+    throw new Error((priceRoute as APIError).message)
+  } else {
+    return priceRoute as OptimalRate
+  }
+}
+
+export const getSwapCall = async (chainId: number, srcAddress: string, destAddress: string, slippage: number, rate: OptimalRate) => {
+  const para = getParaswap(chainId)
+  const minAmount = new BN(rate.destAmount).times(1 - (slippage / 100)).toFixed(0)
+
   const txParams = await para.buildTx(
-    srcToken,
-    destToken,
-    srcAmount,
-    minAmount,
-    rate,
-    userAddress,
-    process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io',
-    receiver ?? userAddress,
-    {},
-    srcDecimals,
-    destDecimals,
+    rate.srcToken, // srcToken: Address,
+    rate.destToken,// destToken: Address,
+    rate.srcAmount, // srcAmount: PriceString,
+    minAmount, // destAmount: PriceString,
+    rate, // priceRoute: OptimalRate,
+    srcAddress, // userAddress: Address,
+    rate.partner, // partner?: string,
+    undefined, // partnerAddress?: string,
+    rate.partnerFee, // partnerFeeBps?: number,
+    destAddress, // receiver?: Address,
+    {
+      ignoreChecks: true, // ignoreChecks?: boolean;
+      // ignoreGasEstimate?: boolean;
+      // onlyParams?: boolean;
+      // simple?: boolean;
+      // gasPrice?: PriceString;
+    },
+    rate.srcDecimals,
+    rate.destDecimals,
+    // permit?: string,
   ) as Transaction
 
-  const transaction = {
+  return {
     from: txParams.from,
     to: txParams.to,
     data: txParams.data,
     chainId: txParams.chainId,
+    value: BigNumber.from(txParams.value),
+  } as ethers.PopulatedTransaction
+}
+
+export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BN, srcAddress: string, destAddress: string) => {
+  const SLIPPAGE = 1 // = 1%
+
+  // check rate
+  let rate = swapEstimate.data as OptimalRate
+
+  // get new quote if outdated (eg. after transfer)
+  if (!srcAmount.isEqualTo(rate.srcAmount)) {
+    const partner = process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io'
+    rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toFixed(0), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
   }
-  return signer.sendTransaction(transaction)
+
+  return getSwapCall(swapAction.chainId, srcAddress, destAddress, SLIPPAGE, rate)
 }
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
@@ -161,18 +165,18 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
   result.gasFee = receipt.gasUsed.mul(result.gasPrice).toString()
 
   // log
-  console.log('LOGS', receipt.logs)
-  const logs = receipt.logs.filter((log) => log.address === receipt.to)
   const decoder = new ethers.utils.AbiCoder()
-  logs.forEach((log) => {
-    try {
-      const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
-      result.fromAmount = parsed.srcAmount.toString()
-      result.toAmount = parsed.receivedAmount.toString()
-    } catch (e) {
-      // find right log by trying to parse them
-    }
-  })
+  receipt.logs
+    .filter((log) => log.address === receipt.to)
+    .forEach((log) => {
+      try {
+        const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
+        result.fromAmount = parsed.srcAmount.toString()
+        result.toAmount = parsed.receivedAmount.toString()
+      } catch (e) {
+        // find right log by trying to parse them
+      }
+    })
 
   return result
 }
