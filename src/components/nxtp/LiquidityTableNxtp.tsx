@@ -1,7 +1,7 @@
-import { Table } from 'antd';
-import { ColumnsType } from 'antd/lib/table';
-import BigNumber from 'bignumber.js';
-import { Chain, Token } from '../../types';
+import { Table } from 'antd'
+import { ColumnsType } from 'antd/lib/table'
+import BigNumber from 'bignumber.js'
+import { Chain } from '../../types'
 
 const LiquidityTableNxtp = ({ liquidity }: any) => {
   const liquidityColumns: ColumnsType<any> = [
@@ -18,26 +18,60 @@ const LiquidityTableNxtp = ({ liquidity }: any) => {
       },
     },
     {
-      title: 'Exit Liquidity',
-      dataIndex: 'liquidity',
-      key: 'liquidity',
+      title: 'USDC',
+      dataIndex: 'USDC',
+      key: 'USDC',
       align: 'right',
-      render: (amount: BigNumber) => {
-        return amount.toFixed(2)
+      render: (USDC: BigNumber) => {
+        if (USDC.isZero()) {
+          return ''
+        }
+        return USDC.shiftedBy(-3).toFixed(0) + ' 000'
       },
       sorter: (a: any, b: any) => {
-        return a.liquidity.minus(b.liquidity).toNumber()
+        return a.USDC.minus(b.USDC).toNumber()
       },
     },
     {
-      title: 'Asset',
-      dataIndex: 'asset',
-      key: 'asset',
-      render: (asset: Token) => {
-        return asset.name
+      title: 'USDT',
+      dataIndex: 'USDT',
+      key: 'USDT',
+      align: 'right',
+      render: (USDT: BigNumber) => {
+        if (USDT.isZero()) {
+          return ''
+        }
+        return USDT.shiftedBy(-3).toFixed(0) + ' 000'
       },
       sorter: (a: any, b: any) => {
-        return a.asset.name.localeCompare(b.asset.name)
+        return a.USDT.minus(b.USDT).toNumber()
+      },
+    },
+    {
+      title: 'DAI',
+      dataIndex: 'DAI',
+      key: 'DAI',
+      align: 'right',
+      render: (DAI: BigNumber) => {
+        if (DAI.isZero()) {
+          return ''
+        }
+        return DAI.shiftedBy(-3).toFixed(0) + ' 000'
+      },
+      sorter: (a: any, b: any) => {
+        return a.DAI.minus(b.DAI).toNumber()
+      },
+    },
+    {
+      title: 'Total',
+      dataIndex: 'total',
+      key: 'total',
+      align: 'right',
+      render: (total: BigNumber) => {
+        return total.shiftedBy(-3).toFixed(0) + ' 000'
+      },
+      sorter: (a: any, b: any) => {
+        return a.total.minus(b.total).toNumber()
       },
     },
   ]
@@ -47,7 +81,7 @@ const LiquidityTableNxtp = ({ liquidity }: any) => {
       columns={liquidityColumns}
       dataSource={liquidity}
       style={{ whiteSpace: 'nowrap' }}
-      pagination={{ position: ['bottomCenter'] }}
+      pagination={false}
       sortDirections={['ascend', 'descend', 'ascend']}
     ></Table>
   )

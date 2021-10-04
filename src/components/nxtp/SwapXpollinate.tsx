@@ -20,7 +20,7 @@ import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services
 import { switchChain } from '../../services/metamask';
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
+import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
@@ -313,23 +313,32 @@ const SwapXpollinate = ({
         })
 
         // parse
-        return res.router?.assetBalances?.map((bal: { amount: string, id: string }) => {
+        const row = {
+          key: chain.id,
+          chain: chain,
+          [CoinKey.USDC as string]: new BigNumber(0),
+          [CoinKey.USDT as string]: new BigNumber(0),
+          [CoinKey.DAI as string]: new BigNumber(0),
+          total: new BigNumber(0),
+        }
+
+        res.router?.assetBalances?.forEach((bal: { amount: string, id: string }) => {
           const assetId = bal.id.split('-')[0].toLowerCase()
           const coin = defaultCoins.find(coin => coin.chains[chain.key]?.id === assetId)
           const token = coin?.chains[chain.key]
           if (!coin || !token) {
             return null
           }
-          return {
-            key: `${bal.id}-${chain.id}`,
-            chain: chain,
-            asset: token,
-            liquidity: new BigNumber(utils.formatUnits(bal.amount, token.decimals)),
-          }
-        }).filter((x: any) => !!x)
+          const parsed = new BigNumber(utils.formatUnits(bal.amount, token.decimals))
+          row[coin.key as string] = parsed
+          row.total = row.total.plus(parsed)
+        })
+
+        return row
       })
     )
-    return liq.filter(x => !!x).flat()
+
+    return liq
   }
 
   // update table helpers
@@ -1061,7 +1070,7 @@ const SwapXpollinate = ({
               onClick={() => setActiveKeyTransactions((key) => key === 'liquidity' ? '' : 'liquidity')}
               style={{ display: 'inline' }}
             >
-              Available Liquidity ({!sdk ? '-' : (updatingLiquidity ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : liquidity.reduce((prev: BigNumber, cur) => prev.plus(cur.liquidity), new BigNumber(0)).shiftedBy(-3).toFixed(0) + 'k')})
+              Available Liquidity ({!sdk ? '-' : (updatingLiquidity ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : liquidity.reduce((prev: BigNumber, cur) => prev.plus(cur.total), new BigNumber(0)).shiftedBy(-6).toFixed(3) + 'm')})
             </h2>
           )} key="liquidity">
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
