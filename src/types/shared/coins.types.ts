@@ -579,7 +579,7 @@ export const defaultCoins: Array<Coin> = [
         id: '0x049d68029688eabf473097a2fc38ef61633a3c7a',
         symbol: CoinKey.USDT,
         decimals: 6, // TODO: check
-        chainId: ChainId.DAI,
+        chainId: ChainId.FTM,
         chainKey: ChainKey.FTM,
         key: CoinKey.USDT,
         name: CoinKey.USDT,
