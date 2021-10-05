@@ -19,7 +19,7 @@ import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
 import { getBalancesForWalletFromChain } from '../../services/balanceService';
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
-import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
+import { chainConfigOverwrites, finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
 import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
 import '../Swap.css';
@@ -299,8 +299,11 @@ const SwapXpollinate = ({
     `
     const liq = await Promise.all(
       chains.map(async (chain) => {
-        // get graph
-        let sub = getDeployedSubgraphUri(chain.id)
+        // get graph from override first
+        let sub = chainConfigOverwrites[chain.id]?.subgraph
+        if (!sub) {
+          sub = getDeployedSubgraphUri(chain.id)
+        }
         if (!sub) {
           console.error(`No subgraph URI available for ${chain.id}`)
           return null

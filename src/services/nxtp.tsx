@@ -17,7 +17,7 @@ const getChainConfigOverwrites = () => {
     return {}
   }
 }
-const chainConfigOverwrites: {
+export const chainConfigOverwrites: {
   [chainId: number]: {
     transactionManagerAddress?: string;
     subgraph?: string;
