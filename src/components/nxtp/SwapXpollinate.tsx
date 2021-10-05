@@ -794,6 +794,7 @@ const SwapXpollinate = ({
       invariant: {
         user: '',
         router: '',
+        initiator: '',
         sendingAssetId: crossAction.token.id,
         receivingAssetId: crossAction.toToken.id,
         sendingChainFallback: '',
