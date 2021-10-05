@@ -38,7 +38,7 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
     }
   })
 
-  const sdk = new NxtpSdk({chainConfig, signer});
+  const sdk = new NxtpSdk({ chainConfig, signer });
 
   // reuse existing messaging token
   const account = await signer.getAddress()
