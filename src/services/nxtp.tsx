@@ -38,7 +38,8 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
     }
   })
 
-  const sdk = new NxtpSdk({chainConfig, signer});
+  // TODO: remove overrides
+  const sdk = new NxtpSdk({chainConfig, signer, natsUrl: "wss://oldmessaging.connext.network:4221", authUrl: "https://auth.connext.network"});
 
   // reuse existing messaging token
   const account = await signer.getAddress()
