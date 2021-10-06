@@ -13,6 +13,7 @@ import spooky from '../assets/icons/spooky.png';
 import viper from '../assets/icons/viper.png';
 import sushi from '../assets/icons/sushi.png';
 import ftm from '../assets/icons/fantom.png';
+import ava from '../assets/icons/avalanche.png';
 import arb from '../assets/icons/arbitrum.svg';
 import opt from '../assets/icons/optimism.png';
 import one from '../assets/icons/harmony.png';
@@ -32,7 +33,7 @@ export const icons: { [key: string]: string } = {
   [ChainKey.DAI]: dai,
   // [ChainKey.OKT]: okt,
   [ChainKey.FTM]: ftm,
-  // [ChainKey.AVA]: ava,
+  [ChainKey.AVA]: ava,
   [ChainKey.ARB]: arb,
   // [ChainKey.HEC]: hec,
   [ChainKey.OPT]: opt,
