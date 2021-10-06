@@ -1,6 +1,6 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
-import BN from 'bignumber.js'
-import { BigNumber, ethers } from 'ethers'
+import BigNumber from 'bignumber.js'
+import { BigNumber as BN, ethers } from 'ethers'
 import { NetworkID, ParaSwap, SwapSide } from 'paraswap'
 import { OptimalRate } from 'paraswap-core'
 import { APIError, Transaction } from 'paraswap/build/types'
@@ -106,9 +106,9 @@ const getRateTs = async (
   }
 }
 
-export const getSwapCall = async (chainId: number, srcAddress: string, destAddress: string, slippage: number, rate: OptimalRate) => {
-  const para = getParaswap(chainId)
-  const minAmount = new BN(rate.destAmount).times(1 - (slippage / 100)).toFixed(0)
+export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, destAddress: string, slippage: number, rate: OptimalRate,) => {
+  const para = getParaswap(swapAction.chainId)
+  const minAmount = new BigNumber(rate.destAmount).times(1 - (slippage / 100)).toFixed(0)
 
   const txParams = await para.buildTx(
     rate.srcToken, // srcToken: Address,
@@ -138,11 +138,11 @@ export const getSwapCall = async (chainId: number, srcAddress: string, destAddre
     to: txParams.to,
     data: txParams.data,
     chainId: txParams.chainId,
-    value: BigNumber.from(txParams.value),
+    value: BN.from(txParams.value),
   } as ethers.PopulatedTransaction
 }
 
-export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BN, srcAddress: string, destAddress: string) => {
+export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string) => {
   const SLIPPAGE = 1 // = 1%
 
   // check rate
@@ -151,10 +151,10 @@ export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimat
   // get new quote if outdated (eg. after transfer)
   if (!srcAmount.isEqualTo(rate.srcAmount)) {
     const partner = process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io'
-    rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toFixed(0), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
+    rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
   }
 
-  return getSwapCall(swapAction.chainId, srcAddress, destAddress, SLIPPAGE, rate)
+  return getSwapCall(swapAction, srcAddress, destAddress, SLIPPAGE, rate)
 }
 
 export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {

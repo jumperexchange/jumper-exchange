@@ -19,7 +19,7 @@ import { executeParaswap } from '../services/paraswap.execute';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
 import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
@@ -33,20 +33,6 @@ interface SwappingProps {
   onSwapDone: Function
 }
 
-export const buildTokenFromBalance = (portfolio: ChainPortfolio) => {
-  const newToken: Token = {
-    id: portfolio.id,
-    symbol: portfolio.symbol,
-    decimals: 18,
-    chainId: 0,
-    name: portfolio.name,
-    logoURI: portfolio.img_url,
-
-    chainKey: ChainKey.ETH,
-    key: portfolio.symbol as CoinKey,
-  }
-  return newToken
-}
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
@@ -55,7 +41,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalBalance, setFinalBalance] = useState<ChainPortfolio>()
+  const [finalBalance, setFinalBalance] = useState<{token: Token, portfolio: ChainPortfolio}>()
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -359,7 +345,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const {toChain, toToken} = getRecevingInfo(lastStep)
     const portfolio = await getBalancesForWallet(web3.account!, [toChain.id])
     const chainPortfolio = portfolio[toChain.key].find(coin => coin.id === toToken.id)
-    setFinalBalance(chainPortfolio)
+    setFinalBalance({token: toToken, portfolio: chainPortfolio!})
   }
 
   // check where we are an trigger next
@@ -415,22 +401,26 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       return (<Space direction="vertical">
       <Typography.Text strong>Swap Successful!</Typography.Text>
       {finalBalance &&
-        <Typography.Text >
-          {'You now have '}
-          {finalBalance?.amount.toString().substring(0, 8)} {' '}
-          <Tooltip title="Click to add this token to your wallet.">
-            <span onClick={async () => {
-              if (web3.chainId !== toChain.id) {
-                await switchChain(toChain.id)
-              }
-              await addToken(buildTokenFromBalance(finalBalance))
-            }}>
-              <u style={{cursor: 'copy'}}>{` ${finalBalance?.symbol}`}</u>
-              {` on ${toChain.name}`}
-            </span>
-          </Tooltip>
+      <Tooltip title="Click to add this token to your wallet.">
+        <span style={{cursor: 'copy'}} onClick={async () => {
+          if (web3.chainId !== toChain.id) {
+            await switchChain(toChain.id)
+            await (window as any).ethereum.once('networkChanged', async (id:any)  => {
+              await addToken(finalBalance.token)
+            })
+          } else {
+            await addToken(finalBalance.token)
+          }
 
-        </Typography.Text>
+        }}>
+          <Typography.Text >
+              {'You now have '}
+              {finalBalance?.portfolio.amount.toString().substring(0, 8)}
+              {` ${finalBalance?.portfolio.symbol}`}
+              {` on ${toChain.name}`}
+            </Typography.Text>
+          </span>
+        </Tooltip>
       }
       <Link to="/dashboard"><Button type="link">Dashboard</Button></Link>
       </Space>)
