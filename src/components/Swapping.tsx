@@ -55,7 +55,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
   const [finalBalance, setFinalBalance] = useState<ChainPortfolio>()
-
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
@@ -63,12 +62,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const updateStatus = (step: TransferStep, status: Execution) => {
     step.execution = status
     updateRoute(route)
+    storeActiveRoute(route)
   }
 
   const checkChain = async (step: TransferStep) => {
     const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
     const chain = getChainById(step.action.chainId)
-    const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`)
+    const switchProcess = createAndPushProcess("switchProcess", update, status, `Change Chain to ${chain.name}`)
     try {
       const switched = await switchChain(step.action.chainId)
       if (!switched) {
@@ -89,6 +89,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as SwapAction
     const swapEstimate = step.estimate as SwapEstimate
+    const swapExecution = step.execution as Execution
     const fromAddress = web3.account
     const toAddress = fromAddress
 
@@ -113,9 +114,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'spookyswap':
         return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
-        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case '1inch':
-        return await executeOneInchSwap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+        return await executeOneInchSwap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       default:
         console.warn('should never reach here')
     }
@@ -152,33 +153,32 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (!execution) {
       return []
     }
-
     return execution.process.map((process, index) => {
-      const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
-      const hasFailed = process.status === 'FAILED'
-      return (
-        <span key={index} style={{ display: 'flex'}}>
-          <Typography.Text
-            type={type}
-            style={{ maxWidth: 250}}
-            className={process.status === 'PENDING' ? 'flashing' : undefined}
-          >
-            <p>{process.message}</p>
-            {hasFailed &&
-              <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }} >
-                {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
-                {`${process.errorMessage.substring(0, 150)}${process.errorMessage.length >150?'...':''}`}
-              </Typography.Text>
+        const type = process.status === 'DONE' ? 'success' : (process.status === 'FAILED' ? 'danger' : undefined)
+        const hasFailed = process.status === 'FAILED'
+        return (
+          <span key={index} style={{ display: 'flex'}}>
+            <Typography.Text
+              type={type}
+              style={{ maxWidth: 250}}
+              className={process.status === 'PENDING' ? 'flashing' : undefined}
+            >
+              <p>{process.message}</p>
+              {hasFailed &&
+                <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }} >
+                  {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
+                  {`${process.errorMessage.substring(0, 150)}${process.errorMessage.length >150?'...':''}`}
+                </Typography.Text>
 
-            }
+              }
 
-          </Typography.Text>
-          <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
-            <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
-          </Typography.Text>
-        </span>
-      )
-    })
+            </Typography.Text>
+            <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
+              <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
+            </Typography.Text>
+          </span>
+        )
+      })
   }
 
   const getChainAvatar = (chainKey: ChainKey) => {
@@ -228,7 +228,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const parseStepToTimeline = (step: TransferStep, index: number, route: Array<TransferStep>) => {
     const executionSteps = parseExecution(step.execution)
     const isDone = step.execution && step.execution.status === 'DONE'
-    const isLoading = step.execution && step.execution.status === 'PENDING'
+    const isLoading = isSwapping && step.execution && step.execution.status === 'PENDING'
     const color = isDone ? 'green' : (step.execution ? 'blue' : 'gray')
 
     switch (step.action.type) {
@@ -291,7 +291,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           setIsSwapping(false)
           throw new Error('Invalid Step')
       }
-      storeActiveRoute(route)
     } catch{
       setIsSwapping(false)
     }
@@ -305,7 +304,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
 
     await lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) => updateStatus(route[0], status))
-    storeActiveRoute(route)
   }
 
   const isLifiSupported = (route: Array<TransferStep>) => {
@@ -323,10 +321,20 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     setSwapStartedAt(Date.now())
   }
 
+  const resumeCrossChainSwap = async () => {
+    // remove failed
+    for (let index = 0; index < route.length; index++) {
+      if (route[index].execution?.status === 'PENDING') {
+        triggerStep(index, route) // triggerStep sets isSwapping = true
+      }
+    }
+
+  }
+
   const restartCrossChainSwap = async () => {
     // remove failed
     for (let index = 0; index < route.length; index++) {
-      if (route[index].execution?.status === 'FAILED' || route[index].execution?.status !=='DONE') {
+      if (route[index].execution?.status === 'FAILED') {
         route[index].execution = undefined
         updateRoute(route)
       }
@@ -406,6 +414,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (isSwapping) {
       return <></>
     }
+    const isCrossChainSwap = route.filter(step => step.action.type === 'cross').length > 0
+
 
     // DONE
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
@@ -433,16 +443,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       }
       <Link to="/dashboard"><Button type="link">Dashboard</Button></Link>
       </Space>)
-
     }
 
-    // RESUME
-    const shouldResume = route.filter(step => step.execution?.status !== 'DONE').length > 0
-    if(shouldResume){
-      return <Button type="primary" onClick={() => restartCrossChainSwap()} style={{marginTop: 10}}>
-        Resume Swap
-      </Button>
-    }
     // FAILED
     const isFailed = route.filter(step => step.execution?.status === 'FAILED').length > 0
     if (isFailed) {
@@ -451,8 +453,15 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       </Button>
     }
 
+    // RESUME
+    const shouldResume = route.filter(step => step.execution?.status === 'PENDING').length > 0
+    if(shouldResume){
+      return <Button type="primary" onClick={() => resumeCrossChainSwap()} style={{marginTop: 10}}>
+        {isCrossChainSwap ? 'Resume Cross Chain Swap' : 'Resume Swap'}
+      </Button>
+    }
+
     // NOT_STARTED
-    const isCrossChainSwap = route.filter(step => step.action.type === 'cross').length > 0
     return (
       <Button type="primary" onClick={() => startCrossChainSwap()} style={{marginTop: 10}}>
         {isCrossChainSwap ? 'Start Cross Chain Swap' : 'Start Swap'}

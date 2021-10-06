@@ -12,7 +12,7 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
   hop.init(signer, fromChainId, toChainId)
 
   //set allowance AND send
-  const allowanceAndCrossProcess = createAndPushProcess(update, status, 'Set Allowance and Cross')
+  const allowanceAndCrossProcess = createAndPushProcess('allowanceAndCrossProcess', update, status, 'Set Allowance and Cross')
   let tx
   try {
      tx = await hop.setAllowanceAndCrossChains(bridgeCoin, amount, fromChainId, toChainId )
@@ -26,7 +26,7 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
 
 
   //wait for transaction
-  const waitForTxProcess = createAndPushProcess(update, status, 'Wait for transaction on receiving chain')
+  const waitForTxProcess = createAndPushProcess('waitForTxProcess', update, status, 'Wait for transaction on receiving chain')
   let destinationTxReceipt;
   try{
     destinationTxReceipt = await hop.waitForDestinationChainReceipt(tx.hash, bridgeCoin, fromChainId, toChainId)

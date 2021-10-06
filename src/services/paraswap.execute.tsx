@@ -16,7 +16,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   if (srcToken.id !== constants.AddressZero) {
     // Ask user to set allowance
     // -> set status
-    const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance for Paraswap')
+    const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, 'Set Allowance for Paraswap')
 
     // -> check allowance
     try {
@@ -53,7 +53,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
 
   // Swap via Paraswap
   // -> set status
-  const swapProcess = createAndPushProcess(update, status, 'Swap via Paraswap')
+  const swapProcess = createAndPushProcess('swapProcess', update, status, 'Swap via Paraswap')
 
   // -> swapping
   let tx
@@ -73,7 +73,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
 
   // Wait for transaction
   // -> set status
-  const waitingProcess = createAndPushProcess(update, status, 'Wait for Transaction')
+  const waitingProcess = createAndPushProcess('waitingProcess', update, status, 'Wait for Transaction')
 
   // -> waiting
   let receipt

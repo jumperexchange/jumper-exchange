@@ -16,7 +16,7 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
   if (srcToken !== constants.AddressZero) {
     // Ask user to set allowance
     // -> set status
-    const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance for 1inch')
+    const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, 'Set Allowance for 1inch')
 
     // -> check allowance
     try {
@@ -53,7 +53,7 @@ export const executeOneInchSwap = async (chainId: number, signer: JsonRpcSigner,
 
   // Swap via 1inch
   // -> set status
-  const swapProcess = createAndPushProcess(update, status, 'Swap via 1inch', { status: 'ACTION_REQUIRED' })
+  const swapProcess = createAndPushProcess('swapProcess', update, status, 'Swap via 1inch', { status: 'ACTION_REQUIRED' })
 
   // -> swapping
   let tx

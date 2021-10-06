@@ -43,6 +43,7 @@ export type ProcessMessage =
 AcceptableMessages| {message: AcceptableMessages , footer: AcceptableMessages }
 
 export interface Process {
+  id: string
   startedAt: number
   doneAt?: number
   failedAt?: number

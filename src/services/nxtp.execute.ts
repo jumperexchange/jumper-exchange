@@ -19,7 +19,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
 
   // sdk
   // -> set status
-  const quoteProcess = createAndPushProcess(update, status, 'Setup NXTP')
+  const quoteProcess = createAndPushProcess('quoteProcess', update, status, 'Setup NXTP')
   // -> init sdk
   const crossableChains = [crossAction.chainId, crossAction.toChainId]
   const chainProviders = getRpcProviders(crossableChains)

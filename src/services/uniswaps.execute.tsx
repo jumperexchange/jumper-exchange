@@ -14,36 +14,42 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   // setup
   const fromChain = getChainById(chainId)
   const { status, update } = initStatus(updateStatus, initialStatus)
+  console.log(status)
 
   if (srcToken.id !== constants.AddressZero) {
     // Ask user to set allowance
     // -> set status
-    const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
+    const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, 'Set Allowance')
 
 
     // -> check allowance
     try {
-      const contractAddress = uniswap.getContractAddress(chainId)
-      const approved = await getApproved(signer, srcToken.id, contractAddress)
+      if(allowanceProcess.status === 'NOT_STARTED'){
+        const contractAddress = uniswap.getContractAddress(chainId)
+        const approved = await getApproved(signer, srcToken.id, contractAddress)
 
-      if (srcAmount.gt(approved)) {
-        const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toString())
+        if (srcAmount.gt(approved)) {
+          const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toString())
 
-        // update status
-        allowanceProcess.status = 'PENDING'
-        allowanceProcess.txHash = approveTx.hash
-        allowanceProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
-        allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-        update(status)
+          // update status
+          allowanceProcess.status = 'PENDING'
+          allowanceProcess.txHash = approveTx.hash
+          allowanceProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
+          allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+          update(status)
 
-        // wait for transcation
-        await approveTx.wait()
+          // wait for transcation
+          await approveTx.wait()
 
-        // -> set status
-        allowanceProcess.message = <>Approved (<a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
-      } else {
-        allowanceProcess.message = 'Already Approved'
+          // -> set status
+          allowanceProcess.message = <>Approved (<a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+        } else {
+          allowanceProcess.message = 'Already Approved'
+        }
+      } else if(allowanceProcess.status === 'PENDING') {
+
       }
+
       setStatusDone(update, status, allowanceProcess)
     } catch (e: any) {
       // -> set status
@@ -58,7 +64,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   // Swap via Uniswap
   // -> set status
   // const swapProcess = createAndPushProcess(update, status, `Swap via Uniswap`) //TODO: display actual uniswap clone
-  const swapProcess = createAndPushProcess(update, status, 'Swap via Uniswap', { status: 'ACTION_REQUIRED' })
+  const swapProcess = createAndPushProcess('swapProcess', update, status, 'Swap via Uniswap', { status: 'ACTION_REQUIRED' })
 
   // -> swapping
   let tx
@@ -78,7 +84,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
 
   // Wait for transaction
   // -> set status
-  const waitingProcess = createAndPushProcess(update, status, 'Wait for Transaction')
+  const waitingProcess = createAndPushProcess('waitingProcess', update, status, 'Wait for Transaction')
 
   // -> waiting
   let receipt

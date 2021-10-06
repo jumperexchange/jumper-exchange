@@ -44,7 +44,7 @@ const AuctionBidEncoding = tidy(`tuple(
 const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token: Token, amount: string, spenderAddress: string, update: Function, status: Execution) => {
   // Ask user to set allowance
   // -> set status
-  const allowanceProcess = createAndPushProcess(update, status, `Set Allowance for ${token.symbol}`)
+  const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, `Set Allowance for ${token.symbol}`)
 
   // -> check allowance
   try {
@@ -115,7 +115,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
 
   // sdk
   // -> set status
-  const quoteProcess = createAndPushProcess(update, status, 'Setup NXTP')
+  const quoteProcess = createAndPushProcess('quoteProcess', update, status, 'Setup NXTP')
   // -> init sdk
   const crossableChains = [crossAction.chainId, crossAction.toChainId]
   const chainProviders = getRpcProviders(crossableChains)
@@ -155,7 +155,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
 
 
   // Request public key
-  const keyProcess = createAndPushProcess(update, status, 'Provide Public Key', { status: 'ACTION_REQUIRED' })
+  const keyProcess = createAndPushProcess('keyProcess', update, status, 'Provide Public Key', { status: 'ACTION_REQUIRED' })
   let encryptionPublicKey
   try {
     encryptionPublicKey = await (window as any).ethereum.request({
@@ -168,7 +168,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     throw e
   }
   setStatusDone(update, status, keyProcess)
-  const submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+  const submitProcess = createAndPushProcess('keyProcess', update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
   const lifi = new ethers.Contract(lifiContractAddress, lifi_abi, signer)
 
   // Receiving side
@@ -266,7 +266,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   submitProcess.message = <>Transaction Sent: <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   setStatusDone(update, status, submitProcess)
 
-  const receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', { type: 'wait' })
+  const receiverProcess = createAndPushProcess('receiverProcess', update, status, 'Wait for Receiver', { type: 'wait' })
 
   const prepared = await nxtpSDK.waitFor(
     NxtpSdkEvents.ReceiverTransactionPrepared,
@@ -279,7 +279,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   receiverProcess.message = <>Receiver Prepared: <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   setStatusDone(update, status, receiverProcess)
 
-  const proceedProcess = createAndPushProcess(update, status, 'Ready to be Signed', { type: 'claim' })
+  const proceedProcess = createAndPushProcess('proceedProcess', update, status, 'Ready to be Signed', { type: 'claim' })
   proceedProcess.status = 'ACTION_REQUIRED'
   update(status)
 

@@ -97,7 +97,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   const { status, update } = initStatus(updateStatus, initialStatus)
 
   // transfer
-  const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
+  const approveProcess: Process = createAndPushProcess('approveProcess', update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
   let submitProcess: Process | undefined
   let receiverProcess: Process | undefined
   let proceedProcess: Process | undefined
@@ -135,12 +135,12 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     if (approved.gte(crossEstimate.data.bid.amount)) {
       // approval already done, jump to next step
       setStatusDone(update, status, approveProcess)
-      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+      submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
     }
   } else {
     // approval not needed
     setStatusDone(update, status, approveProcess)
-    submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+    submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
   }
 
   const transactionId = crossEstimate.data.bid.transactionId
@@ -164,7 +164,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     approveProcess.message = <>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
     setStatusDone(update, status, approveProcess)
     if (!submitProcess) {
-      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+      submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
     }
   })
 
@@ -175,7 +175,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       setStatusDone(update, status, approveProcess)
     }
     if (!submitProcess) {
-      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+      submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
     }
     submitProcess.status = 'PENDING'
     submitProcess.txHash = data.transactionResponse.hash
@@ -191,7 +191,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       submitProcess.message = <>Transaction Sent: <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
       setStatusDone(update, status, submitProcess)
     }
-    receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', { type: 'wait', footerMessage: 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)' })
+    receiverProcess = createAndPushProcess('submitProcess', update, status, 'Wait for Receiver', { type: 'wait', footerMessage: 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)' })
   })
 
   // ReceiverTransactionPrepared => sign
@@ -217,7 +217,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     }
 
     // proceed to claim
-    proceedProcess = createAndPushProcess(update, status, 'Ready to be Signed', { type: 'claim' })
+    proceedProcess = createAndPushProcess('submitProcess', update, status, 'Ready to be Signed', { type: 'claim' })
     proceedProcess.status = 'ACTION_REQUIRED'
     proceedProcess.message = 'Sign to claim Transfer'
     proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, updateStatus)}>Sign to claim Transfer</Button>
