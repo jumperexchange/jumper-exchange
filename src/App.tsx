@@ -16,8 +16,17 @@ import { getBalancesForWallet as getBalancesForWalletMainnet } from './services/
 import setMetatags from './services/metatags';
 import { initStomt } from './services/stomt';
 import { getDefaultTokenBalancesForWallet as getBalancesForWalletTestnet } from './services/testToken';
-import { ChainKey, getChainByKey } from './types';
+import { getChainById } from './types';
 import NotificationOverlay from './components/NotificationsOverlay';
+
+const getTransferChains = (jsonArraySting: string) => {
+  try {
+    const chainIds = JSON.parse(jsonArraySting)
+    return chainIds.map(getChainById)
+  } catch (e) {
+    return []
+  }
+}
 
 function usePageViews() {
   const [path, setPath] = useState<string>()
@@ -88,17 +97,7 @@ function App() {
                   title: 'Li.Finance - Swap',
                 })
                 initStomt('swap')
-                const transferChains = [
-                  getChainByKey(ChainKey.POL),
-                  getChainByKey(ChainKey.BSC),
-                  getChainByKey(ChainKey.DAI),
-                  getChainByKey(ChainKey.FTM),
-                  getChainByKey(ChainKey.ETH),
-                  getChainByKey(ChainKey.ARB),
-                  getChainByKey(ChainKey.OPT),
-                  getChainByKey(ChainKey.ONE),
-                ]
-
+                const transferChains = getTransferChains(process.env.REACT_APP_LIFI_ENABLED_CHAINS_JSON!)
                 return <div className="lifiWrap">
                   <a className="lifiSupport support-content" href="https://discord.com/invite/G9uAbE439B" target="_blank" rel="nofollow noreferrer">Support</a>
 
@@ -113,15 +112,7 @@ function App() {
                   title: 'Li.Finance - Testnet',
                 })
                 initStomt('swap')
-                const transferChains = [
-                  getChainByKey(ChainKey.RIN),
-                  getChainByKey(ChainKey.GOR),
-                  getChainByKey(ChainKey.ROP),
-                  getChainByKey(ChainKey.KOV),
-                  getChainByKey(ChainKey.MUM),
-                  getChainByKey(ChainKey.BSCT),
-                  getChainByKey(ChainKey.ONET),
-                ]
+                const transferChains = getTransferChains(process.env.REACT_APP_LIFI_ENABLED_CHAINS_TESTNET_JSON!)
                 return <div className="lifiWrap">
                   <Swap
                     transferChains={transferChains}

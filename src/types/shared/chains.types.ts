@@ -55,7 +55,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(1),
       blockExplorerUrls: [
-        'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+        'https://etherscan.io/',
       ],
       chainName: 'Ethereum Mainnet',
       nativeCurrency: {
@@ -64,7 +64,7 @@ export const supportedChains: Array<Chain> = [
         decimals: 18,
       },
       rpcUrls: [
-        'https://etherscan.io/',
+        'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
       ],
     },
   },
@@ -154,7 +154,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(100),
       blockExplorerUrls: [
-        'https://blockscout.com/xdai/mainnet',
+        'https://blockscout.com/xdai/mainnet/',
       ],
       chainName: 'xDAI Chain',
       nativeCurrency: {
@@ -270,7 +270,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(42161),
       blockExplorerUrls: [
-        'https://arbiscan.io',
+        'https://arbiscan.io/',
       ],
       chainName: 'Arbitrum One',
       nativeCurrency: {
@@ -297,7 +297,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(128),
       blockExplorerUrls: [
-        'https://hecoinfo.com',
+        'https://hecoinfo.com/',
       ],
       chainName: 'Huobi ECO Chain Mainnet',
       nativeCurrency: {
@@ -324,7 +324,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(10),
       blockExplorerUrls: [
-        'https://optimistic.etherscan.io',
+        'https://optimistic.etherscan.io/',
       ],
       chainName: 'Optimistic Ethereum',
       nativeCurrency: {
@@ -350,7 +350,7 @@ export const supportedChains: Array<Chain> = [
   //   metamask: {
   //     chainId: prefixChainId(32659),
   //     blockExplorerUrls: [
-  //       'https://fsnex.com',
+  //       'https://fsnex.com/',
   //     ],
   //     chainName: 'Fusion Mainnet',
 
@@ -525,7 +525,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(42),
       blockExplorerUrls: [
-        'https://kovan.etherscan.io',
+        'https://kovan.etherscan.io/',
       ],
       chainName: 'Ethereum Testnet Kovan',
       nativeCurrency: {
@@ -613,7 +613,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(69),
       blockExplorerUrls: [
-        'https://kovan-optimistic.etherscan.io',
+        'https://kovan-optimistic.etherscan.io/',
       ],
       chainName: 'Optimistic Ethereum Testnet Kovan',
       nativeCurrency: {
@@ -693,7 +693,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(1666700000),
       blockExplorerUrls: [
-        'https://explorer.pops.one',
+        'https://explorer.pops.one/',
         'https://explorer.testnet.harmony.one/',
       ],
       chainName: 'Harmony Testnet Shard 0',

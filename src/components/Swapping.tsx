@@ -86,7 +86,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     return true
   }
 
-  const triggerSwap = async (step: TransferStep, previousStep?: TransferStep) => {
+  const triggerSwap = async (step: SwapStep, previousStep?: TransferStep) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as SwapAction
     const swapEstimate = step.estimate as SwapEstimate
@@ -113,11 +113,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'quickswap':
       case 'spookyswap':
       case 'viperswap':
+      case 'sushiswap':
         return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
       case 'paraswap':
-        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+        return await executeParaswap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       case '1inch':
-        return await executeOneInchSwap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
+        return await executeOneInchSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       default:
         throw new Error('Should never reach here, swap not defined')
     }
@@ -287,7 +288,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     try{
       switch (step.action.type) {
         case 'swap':
-          return await triggerSwap(step, previousStep)
+          return await triggerSwap(step as SwapStep, previousStep)
         case 'cross':
           return await triggerCross(step, previousStep)
         default:

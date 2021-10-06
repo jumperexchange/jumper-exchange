@@ -71,16 +71,19 @@ export const getRpcUrls = (chainIds: Array<number>) => {
   return rpcs
 }
 
+export const getRpcProvider = (chainId: number) => {
+  if (!chainProviders[chainId]) {
+    chainProviders[chainId] = new providers.FallbackProvider([new providers.JsonRpcProvider(RPC_URLS[chainId], chainId)])
+  }
+  return chainProviders[chainId]
+}
+
 export const getRpcProviders = (chainIds: Array<number>) => {
   const selectedProviders: Record<number, providers.FallbackProvider> = {};
 
   chainIds.forEach((chainId) => {
-    if (!chainProviders[chainId]) {
-      chainProviders[chainId] = new providers.FallbackProvider([new providers.JsonRpcProvider(RPC_URLS[chainId], chainId)])
-    }
-    selectedProviders[chainId] = chainProviders[chainId]
+    selectedProviders[chainId] = getRpcProvider(chainId)
   })
-
   return selectedProviders
 }
 

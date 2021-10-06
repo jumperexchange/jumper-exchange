@@ -117,15 +117,3 @@
     font-size: 16px;
   }
 }
-
-.lifiWrap .xpollinate {
-  margin-top: 64px;
-}
-.lifiWrap .warning-trustWallet,
-.lifiWrap .xpollinate-header,
-.lifiWrap .xpollinate-footer {
-  display: none;
-}
-.lifiWarp .swap-view {
-  padding-bottom: 20px;
-}

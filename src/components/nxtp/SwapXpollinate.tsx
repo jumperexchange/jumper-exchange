@@ -16,11 +16,12 @@ import onehiveWordmark from '../../assets/1hive_wordmark.svg';
 import connextWordmark from '../../assets/connext_wordmark.png';
 import lifiWordmark from '../../assets/lifi_wordmark.svg';
 import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
+import { getBalancesForWalletFromChain } from '../../services/balanceService';
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage';
 import { switchChain } from '../../services/metamask';
-import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
+import { chainConfigOverwrites, finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
+import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
@@ -153,7 +154,6 @@ interface SwapXpollinateProps {
   aboutDescription?: React.ReactNode
   transferChains: Chain[]
   transferTokens: { [ChainKey: string]: Array<Token> }
-  getBalancesForWallet: Function
   testnet?: boolean
 }
 
@@ -162,7 +162,6 @@ const SwapXpollinate = ({
   aboutDescription,
   transferChains,
   transferTokens,
-  getBalancesForWallet,
   testnet,
 }: SwapXpollinateProps) => {
   // INIT
@@ -300,8 +299,11 @@ const SwapXpollinate = ({
     `
     const liq = await Promise.all(
       chains.map(async (chain) => {
-        // get graph
-        let sub = getDeployedSubgraphUri(chain.id)
+        // get graph from override first
+        let sub = chainConfigOverwrites[chain.id]?.subgraph
+        if (!sub) {
+          sub = getDeployedSubgraphUri(chain.id)
+        }
         if (!sub) {
           console.error(`No subgraph URI available for ${chain.id}`)
           return null
@@ -313,23 +315,32 @@ const SwapXpollinate = ({
         })
 
         // parse
-        return res.router?.assetBalances?.map((bal: { amount: string, id: string }) => {
+        const row = {
+          key: chain.id,
+          chain: chain,
+          [CoinKey.USDC as string]: new BigNumber(0),
+          [CoinKey.USDT as string]: new BigNumber(0),
+          [CoinKey.DAI as string]: new BigNumber(0),
+          total: new BigNumber(0),
+        }
+
+        res.router?.assetBalances?.forEach((bal: { amount: string, id: string }) => {
           const assetId = bal.id.split('-')[0].toLowerCase()
           const coin = defaultCoins.find(coin => coin.chains[chain.key]?.id === assetId)
           const token = coin?.chains[chain.key]
           if (!coin || !token) {
             return null
           }
-          return {
-            key: `${bal.id}-${chain.id}`,
-            chain: chain,
-            asset: token,
-            liquidity: new BigNumber(utils.formatUnits(bal.amount, token.decimals)),
-          }
-        }).filter((x: any) => !!x)
+          const parsed = new BigNumber(utils.formatUnits(bal.amount, token.decimals))
+          row[coin.key as string] = parsed
+          row.total = row.total.plus(parsed)
+        })
+
+        return row
       })
     )
-    return liq.filter(x => !!x).flat()
+
+    return liq
   }
 
   // update table helpers
@@ -508,9 +519,9 @@ const SwapXpollinate = ({
 
   const updateBalances = useCallback(async (address: string) => {
     setUpdatingBalances(true)
-    await getBalancesForWallet(address, transferChains.map(chain => chain.id)).then(setBalances)
+    await getBalancesForWalletFromChain(address, transferTokens).then(setBalances)
     setUpdatingBalances(false)
-  }, [getBalancesForWallet, transferChains])
+  }, [transferTokens])
 
   useEffect(() => {
     if (refreshBalances && web3.account) {
@@ -786,6 +797,7 @@ const SwapXpollinate = ({
       invariant: {
         user: '',
         router: '',
+        initiator: '',
         sendingAssetId: crossAction.token.id,
         receivingAssetId: crossAction.toToken.id,
         sendingChainFallback: '',
@@ -964,20 +976,16 @@ const SwapXpollinate = ({
               <span>Support <LinkOutlined /></span>
             </a>
 
-            <a href="https://v1.xpollinate.io/" target="_blank" rel="nofollow noreferrer" className="header-button">
-              <span>Looking for V1?</span>
-            </a>
-
           </span>
         </Row>
       </div>
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
         {/* Warning Message */}
-        <Row className="warning-trustWallet" justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+        <Row justify="center" style={{ padding: 20, paddingBottom: 0, display: 'none' }}>
           <Alert
             style={{ maxWidth: 700 }}
-            message="This is an Alpha release, please use with caution! Usage with Metamask wallets is preferred."
+            message=""
             description=""
             type="error"
           />
@@ -1065,7 +1073,7 @@ const SwapXpollinate = ({
               onClick={() => setActiveKeyTransactions((key) => key === 'liquidity' ? '' : 'liquidity')}
               style={{ display: 'inline' }}
             >
-              Available Liquidity ({!sdk ? '-' : (updatingLiquidity ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : liquidity.reduce((prev: BigNumber, cur) => prev.plus(cur.liquidity), new BigNumber(0)).shiftedBy(-3).toFixed(0) + 'k')})
+              Available Liquidity ({!sdk ? '-' : (updatingLiquidity ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : liquidity.reduce((prev: BigNumber, cur) => prev.plus(cur.total), new BigNumber(0)).shiftedBy(-6).toFixed(3) + 'm')})
             </h2>
           )} key="liquidity">
             <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>

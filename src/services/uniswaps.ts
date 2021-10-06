@@ -76,7 +76,8 @@ const uniswapRouters: { [chainId: number]: string } = {
   [ChainId.FTM]: "0xf491e7b69e4244ad4002bc14e878a34207e38c29", // https://ftmscan.com/address/0xf491e7b69e4244ad4002bc14e878a34207e38c29
   // also FTMTESTNET = 4002?
 
-  [ChainId.ONE]: "0xf012702a5f0e54015362cBCA26a26fc90AA832a3", // https://explorer.harmony.one/address/0xf012702a5f0e54015362cbca26a26fc90aa832a3?activeTab=7
+  [ChainId.ONE]: "0xf012702a5f0e54015362cBCA26a26fc90AA832a3", // ViperSwap https://explorer.harmony.one/address/0xf012702a5f0e54015362cbca26a26fc90aa832a3?activeTab=7
+  // [ChainId.ONE]: "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506", // SushiSwap https://explorer.harmony.one/address/0x1b02da8cb0d097eb8d57a175b88c7d8b47997506?activeTab=7
 
   //TESTNET
   //UNiswap Testnet Router v2
