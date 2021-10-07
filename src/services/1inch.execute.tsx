@@ -25,7 +25,9 @@ export const executeOneInchSwap = async (signer: JsonRpcSigner, swapAction: Swap
   // -> swapping
   let tx
   try {
-    tx = await oneInch.transfer(signer, swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), destAddress)
+    const userAddress = await signer.getAddress()
+    const call = await oneInch.buildTransaction(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), userAddress, destAddress, swapAction.slippage)
+    tx = await signer.sendTransaction(call)
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message

@@ -67,7 +67,7 @@ const getParaswap = (chainId: number) => {
   return new ParaSwap(chainId as NetworkID)
 }
 
-export const getContractAddress = async (chainId: number) => {
+const getContractAddress = async (chainId: number) => {
   const para = getParaswap(chainId)
   const result = await para.getTokenTransferProxy()
   if (result.hasOwnProperty('message')) {
@@ -106,11 +106,11 @@ const getRateTs = async (
   }
 }
 
-export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, destAddress: string, slippage: number, rate: OptimalRate,) => {
+const getSwapCall = async (swapAction: SwapAction, srcAddress: string, destAddress: string, slippage: number, rate: OptimalRate) => {
   const para = getParaswap(swapAction.chainId)
-  const minAmount = new BigNumber(rate.destAmount).times(1 - (slippage / 100)).toFixed(0)
+  const minAmount = new BigNumber(rate.destAmount).times(1 - slippage).toFixed(0)
 
-  const txParams = await para.buildTx(
+  let txParams = await para.buildTx(
     rate.srcToken, // srcToken: Address,
     rate.destToken,// destToken: Address,
     rate.srcAmount, // srcAmount: PriceString,
@@ -131,7 +131,13 @@ export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, de
     rate.srcDecimals,
     rate.destDecimals,
     // permit?: string,
-  ) as Transaction
+  )
+
+  if (txParams.hasOwnProperty('message')) {
+    throw new Error((txParams as APIError).message)
+  } else {
+    txParams = txParams as Transaction
+  }
 
   return {
     from: txParams.from,
@@ -142,9 +148,7 @@ export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, de
   } as ethers.PopulatedTransaction
 }
 
-export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string) => {
-  const SLIPPAGE = 1 // = 1%
-
+const buildTransaction = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string) => {
   // check rate
   let rate = swapEstimate.data as OptimalRate
 
@@ -154,10 +158,10 @@ export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimat
     rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
   }
 
-  return getSwapCall(swapAction, srcAddress, destAddress, SLIPPAGE, rate)
+  return getSwapCall(swapAction, srcAddress, destAddress, swapAction.slippage, rate)
 }
 
-export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
+const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
   const result = {
     fromAmount: '0',
     toAmount: '0',
@@ -186,4 +190,11 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
     })
 
   return result
+}
+
+export const paraswap = {
+  getContractAddress,
+  getSwapCall,
+  buildTransaction,
+  parseReceipt,
 }

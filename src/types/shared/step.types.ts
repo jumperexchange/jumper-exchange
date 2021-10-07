@@ -17,6 +17,7 @@ export interface DepositEstimate extends BaseEstimate { }
 
 export interface SwapEstimate extends BaseEstimate {
   type: 'swap'
+  toAmountMin: string,
   data: any
 }
 
@@ -89,6 +90,7 @@ export interface SwapAction extends ActionBase {
   type: 'swap'
   tool: string
   toToken: Token
+  slippage: number
 }
 
 export interface CrossAction extends ActionBase {
