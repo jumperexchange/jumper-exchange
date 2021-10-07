@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { BigNumber, ethers } from 'ethers'
+import { SwapAction, SwapEstimate } from '../types'
 
 // const SUPPORTED_CHAINS = [1, 56, 137]
 const baseURL = 'https://api.1inch.exchange/v3.0/'
@@ -113,6 +114,19 @@ const buildTransaction = async (chainId: number, fromTokenAddress: string, toTok
   } as ethers.PopulatedTransaction
 }
 
+const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string) => {
+  const result = await getTransaction(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, swapAction.amount, srcAddress, destAddress, swapAction.slippage)
+
+  return {
+    from: result.tx.from,
+    to: result.tx.to,
+    data: result.tx.data,
+    value: BigNumber.from(result.tx.value),
+    gasPrice: BigNumber.from(result.tx.gasPrice),
+    gasLimit: BigNumber.from(result.tx.gas).mul(125).div(100), // add 25%
+  } as ethers.PopulatedTransaction
+}
+
 const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
   const result = {
     fromAmount: '0',
@@ -142,5 +156,6 @@ const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
 export const oneInch = {
   getContractAddress,
   buildTransaction,
+  getSwapCall,
   parseReceipt,
 }

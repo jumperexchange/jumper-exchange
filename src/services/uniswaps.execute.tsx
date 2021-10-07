@@ -27,7 +27,8 @@ export const executeUniswap = async (signer: JsonRpcSigner, swapAction: SwapActi
   // -> swapping
   let tx
   try {
-    tx = await uniswap.swap(signer, swapAction.chainId, swapAction.token.id, swapAction.toToken.id, destAddress, srcAmount.toString(), swapEstimate.toAmountMin, swapEstimate.data.path)
+    const call = await uniswap.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
+    tx = await signer.sendTransaction(call)
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message

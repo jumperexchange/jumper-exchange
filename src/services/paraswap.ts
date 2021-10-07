@@ -106,9 +106,10 @@ const getRateTs = async (
   }
 }
 
-const getSwapCall = async (swapAction: SwapAction, srcAddress: string, destAddress: string, slippage: number, rate: OptimalRate) => {
+const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string) => {
   const para = getParaswap(swapAction.chainId)
-  const minAmount = new BigNumber(rate.destAmount).times(1 - slippage).toFixed(0)
+  const rate = swapEstimate.data as OptimalRate
+  const minAmount = new BigNumber(rate.destAmount).times(1 - swapAction.slippage).toFixed(0)
 
   let txParams = await para.buildTx(
     rate.srcToken, // srcToken: Address,
@@ -149,16 +150,13 @@ const getSwapCall = async (swapAction: SwapAction, srcAddress: string, destAddre
 }
 
 const buildTransaction = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string) => {
-  // check rate
-  let rate = swapEstimate.data as OptimalRate
-
   // get new quote if outdated (eg. after transfer)
-  if (!srcAmount.isEqualTo(rate.srcAmount)) {
+  if (!srcAmount.isEqualTo(swapEstimate.data.srcAmount)) {
     const partner = process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io'
-    rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
+    swapEstimate.data = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
   }
 
-  return getSwapCall(swapAction, srcAddress, destAddress, swapAction.slippage, rate)
+  return getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
 }
 
 const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
