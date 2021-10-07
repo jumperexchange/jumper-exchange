@@ -43,6 +43,7 @@
     "yarn": "^1.22.10"
   },
   "scripts": {
+    "windows": "react-scripts start",
     "start": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts start'",
     "start:xpollinate": "REACT_APP_ENV=xpollinate-mainnet.development npm run start",
     "start:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet.development npm run start",
