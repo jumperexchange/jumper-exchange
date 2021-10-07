@@ -106,8 +106,8 @@ export const getSwapCall = async (signer: JsonRpcSigner, chainId: number, destAd
   }
 }
 
-export const swap = async (signer: JsonRpcSigner, chainId: number, srcToken: string, destToken: string, destAddress: string, srcAmount: string, path: Array<string>) => {
-  const data = await getSwapCall(signer, chainId, destAddress, srcToken, destToken, srcAmount, '1', path)
+export const swap = async (signer: JsonRpcSigner, chainId: number, srcToken: string, destToken: string, destAddress: string, srcAmount: string, destAmount: string, path: Array<string>) => {
+  const data = await getSwapCall(signer, chainId, destAddress, srcToken, destToken, srcAmount, destAmount, path)
   return signer.sendTransaction(data)
 }
 

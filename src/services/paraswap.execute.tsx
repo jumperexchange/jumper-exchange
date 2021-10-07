@@ -56,6 +56,7 @@ export const executeParaswap = async (signer: JsonRpcSigner, swapAction: SwapAct
   }
 
   // -> set status
+  swapProcess.message = <>Swapped: <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   const parsedReceipt = paraswap.parseReceipt(tx, receipt)
   setStatusDone(update, status, swapProcess, {
     fromAmount: parsedReceipt.fromAmount,
