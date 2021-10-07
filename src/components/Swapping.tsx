@@ -99,7 +99,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         return await executeOneInchSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
       default:
         return await executeUniswap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status))
-        // return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapAction.slippage, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
     }
   }
 

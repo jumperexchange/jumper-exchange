@@ -72,6 +72,7 @@ export const getTransferQuote = async (
   receivingAddress: string,
   callTo?: string,
   callData?: string,
+  initiator?: string,
 ): Promise<AuctionResponse | undefined> => {
   // Create txid
   const transactionId = getRandomBytes32();
@@ -87,6 +88,7 @@ export const getTransferQuote = async (
     expiry: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 3), // 3 days
     callTo,
     callData,
+    initiator,
   });
   return response;
 }
@@ -161,7 +163,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   // approved = done => next
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
-    approveProcess.message = <>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+    approveProcess.message = <>Token Approved: <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
     setStatusDone(update, status, approveProcess)
     if (!submitProcess) {
       submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })

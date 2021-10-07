@@ -4,11 +4,13 @@ import { ChainId, SwapAction, SwapEstimate } from '../types'
 
 const uniswapRouter02ABI = [
   "function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
-  // "function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+  "function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
+
   "function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
-  // "function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
+  "function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+
   "function swapExactTokensForTokens (uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
-  // "function swapTokensForExactTokens( uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+  "function swapTokensForExactTokens( uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
 ]
 
 const swappedTypes: Array<ethers.utils.ParamType> = [
@@ -95,14 +97,28 @@ export const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEsti
   const contract = new ethers.Contract(getContractAddress(swapAction.chainId), uniswapRouter02ABI)
   const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes from the current Unix time
 
-  if (swapAction.token.id === ethers.constants.AddressZero) {
-    const data = await contract.populateTransaction.swapExactETHForTokens(swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
-    data.value = BigNumber.from(swapEstimate.fromAmount)
-    return data
-  } else if (swapAction.toToken.id === ethers.constants.AddressZero) {
-    return await contract.populateTransaction.swapExactTokensForETH(swapEstimate.fromAmount, swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+  if (false) {
+    // Exact In
+    if (swapAction.token.id === ethers.constants.AddressZero) {
+      const data = await contract.populateTransaction.swapExactETHForTokens(swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+      data.value = BigNumber.from(swapEstimate.fromAmount)
+      return data
+    } else if (swapAction.toToken.id === ethers.constants.AddressZero) {
+      return await contract.populateTransaction.swapExactTokensForETH(swapEstimate.fromAmount, swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+    } else {
+      return await contract.populateTransaction.swapExactTokensForTokens(swapEstimate.fromAmount, swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+    }
   } else {
-    return await contract.populateTransaction.swapExactTokensForTokens(swapEstimate.fromAmount, swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+    // Exact Out
+    if (swapAction.token.id === ethers.constants.AddressZero) {
+      const data = await contract.populateTransaction.swapETHForExactTokens(swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+      data.value = BigNumber.from(swapEstimate.fromAmount)
+      return data
+    } else if (swapAction.toToken.id === ethers.constants.AddressZero) {
+      return await contract.populateTransaction.swapTokensForExactETH(swapEstimate.toAmountMin, swapEstimate.fromAmount, swapEstimate.data.path, destAddress, deadline)
+    } else {
+      return await contract.populateTransaction.swapTokensForExactTokens(swapEstimate.toAmountMin, swapEstimate.fromAmount, swapEstimate.data.path, destAddress, deadline)
+    }
   }
 }
 

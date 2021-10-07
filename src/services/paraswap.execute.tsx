@@ -39,7 +39,7 @@ export const executeParaswap = async (signer: JsonRpcSigner, swapAction: SwapAct
   swapProcess.status = 'PENDING'
   swapProcess.txHash = tx.hash
   swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
-  swapProcess.message = <>Swap via paraswap - Wait for <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  swapProcess.message = <>Swap via Paraswap - Wait for <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   update(status)
 
   // -> waiting

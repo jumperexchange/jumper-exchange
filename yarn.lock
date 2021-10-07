@@ -1258,7 +1258,7 @@
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@0.0.56":
+"@connext/nxtp-sdk@^0.0.56":
   version "0.0.56"
   resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.56.tgz#d548dd0ef68410e5b5fbcb966c56cd509d58ca70"
   integrity sha512-HrnCJ9v5fbr9/ZWtPeqxFhVaQo4Lr6kqxGt5R4ZQ+Qj/AHMyF12xCIJ24wIBAxYOFhivc1ulji8wDbd9KM89Dg==
