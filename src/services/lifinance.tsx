@@ -139,7 +139,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     const swapAction = endSwapStep.action as SwapAction
     const swapEstimate = endSwapStep.estimate as SwapEstimate
     // TODO: configure slippage
-    const swapCall = await getSwapCall(signer, swapAction.chainId, lifiContractAddress, swapAction.token.id, swapAction.toToken.id, swapEstimate.fromAmount, swapEstimate.toAmount, swapEstimate.data.path)
+    const swapCall = await getSwapCall(signer, swapAction.chainId, lifiContractAddress, swapAction.token.id, swapAction.toToken.id, swapEstimate.fromAmount, swapEstimate.toAmount, swapEstimate.data.routerAddress, swapEstimate.data.path)
 
     receivingTransaction = await lifi.populateTransaction.swapAndCompleteBridgeTokensViaNXTP(
       [
@@ -183,7 +183,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     if (startSwapStep) {
       const swapAction = startSwapStep.action as SwapAction
       const swapEstimate = startSwapStep.estimate as SwapEstimate
-      const swapCall = await getSwapCall(signer, swapAction.chainId, lifiContractAddress, swapAction.token.id, swapAction.toToken.id, swapEstimate.fromAmount, swapEstimate.toAmount, swapEstimate.data.path)
+      const swapCall = await getSwapCall(signer, swapAction.chainId, lifiContractAddress, swapAction.token.id, swapAction.toToken.id, swapEstimate.fromAmount, swapEstimate.toAmount, swapEstimate.data.routerAddress, swapEstimate.data.path)
       const swapData: any = {
         fromToken: swapAction.token.id,
         toToken: swapAction.toToken.id,

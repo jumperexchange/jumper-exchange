@@ -9,7 +9,7 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 import * as uniswap from './uniswaps'
 import { getApproved, setApproval } from './utils'
 
-export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, routerAddress: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) => {
 
   // setup
   const fromChain = getChainById(chainId)
@@ -23,11 +23,10 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
 
     // -> check allowance
     try {
-      const contractAddress = uniswap.getContractAddress(chainId)
-      const approved = await getApproved(signer, srcToken.id, contractAddress)
+      const approved = await getApproved(signer, srcToken.id, routerAddress)
 
       if (srcAmount.gt(approved)) {
-        const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toString())
+        const approveTx = await setApproval(signer, srcToken.id, routerAddress, srcAmount.toString())
 
         // update status
         allowanceProcess.status = 'PENDING'
@@ -63,7 +62,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   // -> swapping
   let tx
   try {
-    tx = await uniswap.swap(signer, chainId, srcToken.id, destToken.id, destAddress, srcAmount.toString(), path)
+    tx = await uniswap.swap(signer, chainId, srcToken.id, destToken.id, destAddress, srcAmount.toString(), routerAddress, path)
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message
