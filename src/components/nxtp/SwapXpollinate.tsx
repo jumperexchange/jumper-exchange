@@ -643,7 +643,7 @@ const SwapXpollinate = ({
       const callData = optionCallData !== '' ? optionCallData : undefined
       const dToken = findToken(depositChain, depositToken)
       const dAmount = new BigNumber(depositAmount).shiftedBy(dToken.decimals)
-      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount.toFixed(), receiving, callTo, callData)
+      debouncedSave(depositChain, depositToken, withdrawChain, withdrawToken, dAmount.toFixed(0), receiving, callTo, callData)
     }
   }, [
     depositAmount,
@@ -748,7 +748,7 @@ const SwapXpollinate = ({
         included: true,
         percentage: '0.0005',
         token: crossAction.token,
-        amount: new BigNumber(crossAction.amount).times('0.0005').toString(),
+        amount: new BigNumber(crossAction.amount).times('0.0005').toFixed(0),
       },
       data: routeQuote,
     }

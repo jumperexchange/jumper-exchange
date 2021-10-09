@@ -27,7 +27,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
       const approved = await getApproved(signer, srcToken.id, contractAddress)
 
       if (srcAmount.gt(approved)) {
-        const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toString())
+        const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toFixed(0))
 
         // update status
         allowanceProcess.status = 'PENDING'

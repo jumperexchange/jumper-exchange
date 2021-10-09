@@ -151,7 +151,7 @@ export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimat
   // get new quote if outdated (eg. after transfer)
   if (!srcAmount.isEqualTo(rate.srcAmount)) {
     const partner = process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io'
-    rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
+    rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toFixed(0), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
   }
 
   return getSwapCall(swapAction, srcAddress, destAddress, SLIPPAGE, rate)

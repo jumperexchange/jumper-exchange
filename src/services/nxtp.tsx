@@ -2,7 +2,7 @@ import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { FallbackProvider } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
-import { constants, providers } from 'ethers';
+import { BigNumber, constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
@@ -112,7 +112,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     crossEstimate.data.bid.receivingChainId,
     crossEstimate.data.bid.router,
     crossEstimate.data.bid.receivingAssetId
-  )
+  ) as BigNumber
   if (liquidity.lt(crossEstimate.data.bid.amountReceived)) {
     approveProcess.errorMessage = `Router (${crossEstimate.data.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.data.bid.amountReceived}.`
     setStatusFailed(update, status, approveProcess)
