@@ -24,6 +24,10 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   const crossableChains = [crossAction.chainId, crossAction.toChainId]
   const chainProviders = getRpcProviders(crossableChains)
   const nxtpSDK = await nxtp.setup(signer, chainProviders)
+  // const submitProcess: Process |undefined = initialStatus?.process.find(p => p.id === "submitProcess")
+  // if(submitProcess){
+  //   return interceptRunningExecution(nxtpSDK, status, update)
+  // }
 
   // get Quote
   // -> set status
@@ -32,8 +36,14 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
 
   let quote: AuctionResponse | undefined;
   try {
-    quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
-    if (!quote) throw Error("Quote confirmation failed!")
+    if(quoteProcess.quote){
+      quote = quoteProcess.quote
+    } else {
+      quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
+      if (!quote) throw Error("Quote confirmation failed!")
+      quoteProcess.quote = quote
+      update(status)
+    }
   } catch (_e) {
     const e = _e as Error
     quoteProcess.errorMessage = e.message
@@ -41,7 +51,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
     throw e
   }
   setStatusDone(update, status, quoteProcess)
-
+  if(!quote) throw Error("No quote found! Please restart the swap.")
   // store quote
   const crossEstimate: CrossEstimate = {
     type: 'cross',
@@ -57,9 +67,17 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   }
   step.estimate = crossEstimate
 
+
+  //TODO: check if active Transaction with ReceiverTransactionPrepared status with nxtp.getActiveTransactions()
+
   // trigger transfer
   try {
-    await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
+    const submitProcess = initialStatus?.process.find( p => p.id === 'submitProcess')
+    if(submitProcess && submitProcess.txHash){
+      nxtp.attachListeners(nxtpSDK, step, submitProcess.txHash, status, update)
+    } else {
+      await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
+    }
   } catch (e) {
     nxtpSDK.removeAllListeners()
     throw e
@@ -89,6 +107,4 @@ const cleanUp = (sdk: NxtpSdk, update: Function, status: any, process: Process) 
   setStatusFailed(update, status, process)
   sdk.removeAllListeners()
 }
-
-
 

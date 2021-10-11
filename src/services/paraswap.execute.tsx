@@ -1,4 +1,4 @@
-import { JsonRpcSigner } from '@ethersproject/providers'
+import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import * as paraswap from './paraswap'
 import { Execution, getChainById, Token } from '../types'
@@ -17,31 +17,33 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
     // Ask user to set allowance
     // -> set status
     const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, 'Set Allowance for Paraswap')
-
     // -> check allowance
     try {
-      const contractAddress = await paraswap.getContractAddress(chainId) as string
-      const approved = await getApproved(signer, srcToken.id, contractAddress)
-
-      if (srcAmount.gt(approved)) {
-        const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toString())
-
-        // update status
-        allowanceProcess.status = 'PENDING'
-        allowanceProcess.txHash = approveTx.hash
-        allowanceProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
-        allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-        update(status)
-
-        // wait for transcation
-        await approveTx.wait()
-
-        // -> set status
-        allowanceProcess.message = <>Approved (<a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+      if(allowanceProcess.txHash){
+        await signer.provider.waitForTransaction(allowanceProcess.txHash)
       } else {
-        allowanceProcess.message = 'Already Approved'
+        const contractAddress = await paraswap.getContractAddress(chainId) as string
+        const approved = await getApproved(signer, srcToken.id, contractAddress)
+
+        if (srcAmount.gt(approved)) {
+          const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toString())
+
+          // update status
+          allowanceProcess.status = 'PENDING'
+          allowanceProcess.txHash = approveTx.hash
+          allowanceProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
+          allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+          update(status)
+
+          // wait for transcation
+          await approveTx.wait()
+
+          // -> set status
+          allowanceProcess.message = <>Approved (<a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+        } else {
+          allowanceProcess.message = 'Already Approved'
+        }
       }
-      setStatusDone(update, status, allowanceProcess)
     } catch (e:any) {
       // -> set status
       if (e.message) allowanceProcess.errorMessage = e.message
@@ -49,6 +51,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
       setStatusFailed(update, status, allowanceProcess)
       throw e
     }
+    setStatusDone(update, status, allowanceProcess)
   }
 
   // Swap via Paraswap
@@ -58,7 +61,13 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   // -> swapping
   let tx
   try {
-    tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken.id, destToken.id, srcAmount.toString(), destAddress, srcToken.decimals, destToken.decimals)
+    if(swapProcess.txHash) {
+      tx = await signer.provider.getTransaction(swapProcess.txHash)
+    } else {
+      tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken.id, destToken.id, srcAmount.toString(), destAddress, srcToken.decimals, destToken.decimals)
+      swapProcess.txHash = tx.hash
+      update(status)
+    }
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message
@@ -66,19 +75,20 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
     setStatusFailed(update, status, swapProcess)
     throw e
   }
-
-  // -> set status
   setStatusDone(update, status, swapProcess)
+
 
 
   // Wait for transaction
   // -> set status
   const waitingProcess = createAndPushProcess('waitingProcess', update, status, 'Wait for Transaction')
-
+  waitingProcess.txHash = tx.hash
+  update(status)
   // -> waiting
   let receipt
   try {
-    receipt = await tx.wait()
+    tx = await signer.provider.getTransaction(waitingProcess.txHash)
+    receipt = await signer.provider.waitForTransaction(waitingProcess.txHash)
   } catch (e: any) {
     // -> set status
     if (e.message) waitingProcess.errorMessage = e.message
@@ -89,7 +99,7 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   }
 
   // -> set status
-  const parsedReceipt = paraswap.parseReceipt(tx, receipt)
+  const parsedReceipt = paraswap.parseReceipt(tx as TransactionResponse, receipt as TransactionReceipt)
   setStatusDone(update, status, waitingProcess, {
     fromAmount: parsedReceipt.fromAmount,
     toAmount: parsedReceipt.toAmount,

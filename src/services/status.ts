@@ -18,7 +18,7 @@ export const createAndPushProcess = (id: string, updateStatus: Function, status:
     id:id,
     startedAt: Date.now(),
     message: message,
-    status: 'NOT_STARTED',
+    status: 'PENDING',
   }
   if (params) {
     for (const [key, value] of Object.entries(params)) {

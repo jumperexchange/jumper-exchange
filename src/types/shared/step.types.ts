@@ -60,7 +60,7 @@ export interface Execution {
   status: Status
   process: Array<Process>
   fromAmount?: number
-  toAmount?: number
+  toAmount?: number | string
 }
 
 export const emptyExecution : Execution = {

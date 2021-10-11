@@ -5,6 +5,7 @@ import { Execution } from '../types/'
 import hop from './hop'
 import { CoinKey } from '../types'
 import notifications, { NotificationType } from './notifications'
+import {getHopDestinationReceipt} from './serviceworker/sw.hop'
 
 export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey, amount: string, fromChainId: number, toChainId: number, updateStatus?: Function, initialStatus?: Execution) => {
   // setup
@@ -15,7 +16,15 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
   const allowanceAndCrossProcess = createAndPushProcess('allowanceAndCrossProcess', update, status, 'Set Allowance and Cross')
   let tx
   try {
-     tx = await hop.setAllowanceAndCrossChains(bridgeCoin, amount, fromChainId, toChainId )
+
+    if(allowanceAndCrossProcess.txHash){
+      tx = signer.provider.getTransaction(allowanceAndCrossProcess.txHash)
+    } else {
+      tx = await hop.setAllowanceAndCrossChains(bridgeCoin, amount, fromChainId, toChainId )
+      allowanceAndCrossProcess.txHash = tx.hash
+      update(status)
+    }
+
   } catch (e: any) {
     if (e.message) allowanceAndCrossProcess.errorMessage = e.message
     if (e.code) allowanceAndCrossProcess.errorCode = e.code
@@ -27,9 +36,17 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
 
   //wait for transaction
   const waitForTxProcess = createAndPushProcess('waitForTxProcess', update, status, 'Wait for transaction on receiving chain')
+  waitForTxProcess.txHash = tx.hash
+  update(status)
   let destinationTxReceipt;
   try{
-    destinationTxReceipt = await hop.waitForDestinationChainReceipt(tx.hash, bridgeCoin, fromChainId, toChainId)
+    destinationTxReceipt = getHopDestinationReceipt()
+    if(!destinationTxReceipt){
+      destinationTxReceipt = await hop.waitForDestinationChainReceipt(tx.hash, bridgeCoin, fromChainId, toChainId)
+
+    }
+    waitForTxProcess.destinationReceipt = destinationTxReceipt.transactionHash
+    update(status)
   } catch (_e){
     const e = _e as Error
     if (e.message) waitForTxProcess.errorMessage = "Transaction failed on receiving chain: \n" + e.message

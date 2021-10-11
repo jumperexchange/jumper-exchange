@@ -1,5 +1,5 @@
 
-import { JsonRpcSigner } from '@ethersproject/providers'
+import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { Execution, getChainById, Token } from '../types'
@@ -14,17 +14,16 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   // setup
   const fromChain = getChainById(chainId)
   const { status, update } = initStatus(updateStatus, initialStatus)
-  console.log(status)
 
   if (srcToken.id !== constants.AddressZero) {
     // Ask user to set allowance
     // -> set status
     const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, 'Set Allowance')
-
-
     // -> check allowance
     try {
-      if(allowanceProcess.status === 'NOT_STARTED'){
+      if (allowanceProcess.txHash) {
+        await signer.provider.waitForTransaction(allowanceProcess.txHash)
+      } else {
         const contractAddress = uniswap.getContractAddress(chainId)
         const approved = await getApproved(signer, srcToken.id, contractAddress)
 
@@ -46,11 +45,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
         } else {
           allowanceProcess.message = 'Already Approved'
         }
-      } else if(allowanceProcess.status === 'PENDING') {
-
       }
-
-      setStatusDone(update, status, allowanceProcess)
     } catch (e: any) {
       // -> set status
       if (e.message) allowanceProcess.errorMessage = e.message
@@ -58,18 +53,25 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
       setStatusFailed(update, status, allowanceProcess)
       throw e
     }
+    setStatusDone(update, status, allowanceProcess)
   }
+
 
 
   // Swap via Uniswap
   // -> set status
   // const swapProcess = createAndPushProcess(update, status, `Swap via Uniswap`) //TODO: display actual uniswap clone
   const swapProcess = createAndPushProcess('swapProcess', update, status, 'Swap via Uniswap', { status: 'ACTION_REQUIRED' })
-
   // -> swapping
   let tx
   try {
-    tx = await uniswap.swap(signer, chainId, srcToken.id, destToken.id, destAddress, srcAmount.toString(), path)
+    if(swapProcess.txHash) {
+      tx = await signer.provider.getTransaction(swapProcess.txHash)
+    } else {
+      tx = await uniswap.swap(signer, chainId, srcToken.id, destToken.id, destAddress, srcAmount.toString(), path)
+      swapProcess.txHash = tx.hash
+      update(status)
+    }
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message
@@ -77,19 +79,19 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     setStatusFailed(update, status, swapProcess)
     throw e
   }
-
-  // -> set status
   setStatusDone(update, status, swapProcess)
 
 
   // Wait for transaction
   // -> set status
   const waitingProcess = createAndPushProcess('waitingProcess', update, status, 'Wait for Transaction')
-
+  waitingProcess.txHash = tx.hash
+  update(status)
   // -> waiting
   let receipt
   try {
-    receipt = await tx.wait()
+    tx = await signer.provider.getTransaction(waitingProcess.txHash)
+    receipt = await signer.provider.waitForTransaction(waitingProcess.txHash)
   } catch (e: any) {
     // -> set status
     if (e.message) waitingProcess.errorMessage = e.message
@@ -100,7 +102,7 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   }
 
   // -> set status
-  const parsedReceipt = uniswap.parseReceipt(tx, receipt)
+  const parsedReceipt = uniswap.parseReceipt(tx as TransactionResponse, receipt as TransactionReceipt)
   setStatusDone(update, status, waitingProcess, {
     fromAmount: parsedReceipt.fromAmount,
     toAmount: parsedReceipt.toAmount,

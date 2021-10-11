@@ -112,7 +112,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'honeyswap':
       case 'quickswap':
       case 'spookyswap':
-        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status))
+        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status), swapExecution)
       case 'paraswap':
         return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case '1inch':
@@ -390,7 +390,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
     for (let index = 0; index < route.length; index++) {
       if (!route[index].execution) {
-        //TODO: update route in localStorage
         return triggerStep(index, route)
           .catch(() => {
             // stop if a step fails
