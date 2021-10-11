@@ -6,9 +6,9 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@connext/nxtp-sdk": "0.0.56",
+    "@connext/nxtp-sdk": "^0.0.56",
     "@ethersproject/providers": "^5.4.0",
-    "@hop-protocol/sdk": "^0.0.1-beta.199",
+    "@hop-protocol/sdk": "^0.0.1-beta.201",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/network-connector": "^6.1.9",

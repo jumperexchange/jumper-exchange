@@ -41,6 +41,12 @@ const transferTokens = {
   [ChainKey.ARB]: [
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ARB),
+  ],
+  [ChainKey.AVA]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.AVA),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.AVA),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.AVA),
   ],
 }
 
