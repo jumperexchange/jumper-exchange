@@ -116,6 +116,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const triggerCross = async (step: TransferStep, previousStep?: TransferStep) => {
     if (!web3.account || !web3.library) return
     const crossAction = step.action as CrossAction
+    const crossExecution = step.execution as Execution
 
     // get right amount
     let fromAmount: BigNumber
@@ -132,7 +133,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
     switch (crossAction.tool) {
       case 'nxtp':
-        return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status));
+        return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status), crossExecution);
       case 'hop':
         return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toFixed(0), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
       case 'horizon':
@@ -223,7 +224,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const isDone = step.execution && step.execution.status === 'DONE'
     const isLoading = isSwapping && step.execution && step.execution.status === 'PENDING'
     const color = isDone ? 'green' : (step.execution ? 'blue' : 'gray')
-
     switch (step.action.type) {
 
       case 'swap': {

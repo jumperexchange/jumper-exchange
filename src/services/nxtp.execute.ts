@@ -1,4 +1,4 @@
-import { ActiveTransaction, NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse } from '@connext/nxtp-utils';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import BigNumber from 'bignumber.js';
@@ -25,21 +25,20 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   const chainProviders = getRpcProviders(crossableChains)
   const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
-
   if(quoteProcess.quote){
-    console.log("quote found!")
-
-    const submitProcess = initialStatus?.process.find( p => p.id === 'submitProcess')
-    console.log(submitProcess)
-    const activeTransactions:ActiveTransaction[] = await nxtpSDK.getActiveTransactions()
-    console.log(activeTransactions)
+    const activeTransactions = await nxtpSDK.getActiveTransactions()
     const relevantTx = activeTransactions.find(tx => tx.crosschainTx.invariant.transactionId === quoteProcess.quote.bid.transactionId)
-
-    if(relevantTx && submitProcess && submitProcess.status === 'PENDING'){
-      setStatusDone(update, status, quoteProcess)
-      const waitProcess = createAndPushProcess('waitProcess', update, status, 'Waiting for Transaction')
-      console.log("waiting for final transaction")
-      return await finishTransfer(nxtpSDK, step, update, status)
+    if(relevantTx && relevantTx.status ===  NxtpSdkEvents.ReceiverTransactionPrepared){
+      (relevantTx as any).txData = {
+        ...relevantTx.crosschainTx.invariant,
+        ...(relevantTx.crosschainTx.receiving ??
+          relevantTx.crosschainTx.sending),
+      }
+      await nxtp.finishTransfer(nxtpSDK, (relevantTx as any), step, update)
+      setStatusDone(update, status, status.process[status.process.length - 1])
+      status.status = 'DONE'
+      update(status)
+      return status
     }
   }
 
@@ -89,12 +88,21 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
 
   // trigger transfer
   try {
-      await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
+      const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
+      console.log(submitProcess)
+      if(submitProcess){
+        console.log("resuming. attaching listeners")
+        nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
+      } else{
+        if(!submitProcess) await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
 
+      }
   } catch (e) {
     nxtpSDK.removeAllListeners()
     throw e
   }
+
+
 
 
   return await finishTransfer(nxtpSDK, step, update, status)
@@ -116,9 +124,9 @@ const finishTransfer = (sdk: NxtpSdk, step:TransferStep, update: Function, statu
         throw e
       }
 
-      // nxtpSDK.removeAllListeners()
-      // status.status = 'DONE'
-      // update(status)
+      sdk.removeAllListeners()
+      status.status = 'DONE'
+      update(status)
       notifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
       resolve(status)
     })

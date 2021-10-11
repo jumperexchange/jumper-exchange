@@ -99,13 +99,11 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   // transfer
   const approveProcess: Process = createAndPushProcess('approveProcess', update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
   let submitProcess: Process | undefined
-  let receiverProcess: Process | undefined
   let proceedProcess: Process | undefined
 
   const crossAction = step.action as CrossAction
   const crossEstimate = step.estimate as CrossEstimate
   const fromChain = getChainById(crossAction.chainId)
-  const toChain = getChainById(crossAction.toChainId)
 
   // Before approving/transferring, check router liquidity
   const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
@@ -149,6 +147,56 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   // }
   const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
   // approve sent => wait
+
+  attachListeners(sdk, step, transactionId, update, status)
+
+  // failed?
+  sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
+    if (data.txData.transactionId !== transactionId) return
+    console.warn('SenderTransactionCancelled', data)
+  })
+  sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
+    if (data.txData.transactionId !== transactionId) return
+    console.warn('ReceiverTransactionCancelled', data)
+  })
+
+  try {
+    const result = await transferPromise
+    trackConfirmationsForResponse(sdk, fromChain.id, result.prepareResponse, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
+      submitProcess!.message = <>Transaction Sent: <a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
+      update(status)
+    })
+  } catch (_e: unknown) {
+    const e = _e as Error
+    console.error(e)
+    if (approveProcess && approveProcess.status !== 'DONE') {
+      approveProcess.errorMessage = e.message
+      setStatusFailed(update, status, approveProcess)
+    }
+    if (submitProcess && submitProcess.status !== 'DONE') {
+      submitProcess.errorMessage = e.message
+      setStatusFailed(update, status, submitProcess)
+    }
+    if (proceedProcess && proceedProcess.status !== 'DONE') {
+      proceedProcess.errorMessage = e.message
+      setStatusFailed(update, status, proceedProcess)
+    }
+    throw e
+  }
+
+  return status
+}
+
+export const attachListeners = (sdk:NxtpSdk, step: TransferStep, transactionId: string, update:Function, status: Execution) => {
+  const approveProcess: Process = createAndPushProcess('approveProcess', update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
+  let submitProcess: Process | undefined = status.process.find(p => p.id ==='submitProcess')
+  let receiverProcess: Process | undefined = status.process.find(p => p.id ==='receiverProcess')
+  let proceedProcess: Process | undefined = status.process.find(p => p.id ==='proceedProcess')
+
+  const crossAction = step.action as CrossAction
+  const fromChain = getChainById(crossAction.chainId)
+  const toChain = getChainById(crossAction.toChainId)
+
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
     approveProcess.status = 'PENDING'
@@ -219,7 +267,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     proceedProcess = createAndPushProcess('proceedProcess', update, status, 'Ready to be Signed', { type: 'claim' })
     proceedProcess.status = 'ACTION_REQUIRED'
     proceedProcess.message = 'Sign to claim Transfer'
-    proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, updateStatus)}>Sign to claim Transfer</Button>
+    proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, update)}>Sign to claim Transfer</Button>
     update(status)
   })
 
@@ -266,42 +314,6 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       setStatusDone(update, status, proceedProcess)
     }
   })
-
-  // failed?
-  sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
-    if (data.txData.transactionId !== transactionId) return
-    console.warn('SenderTransactionCancelled', data)
-  })
-  sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, (data) => {
-    if (data.txData.transactionId !== transactionId) return
-    console.warn('ReceiverTransactionCancelled', data)
-  })
-
-  try {
-    const result = await transferPromise
-    trackConfirmationsForResponse(sdk, fromChain.id, result.prepareResponse, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
-      submitProcess!.message = <>Transaction Sent: <a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
-      update(status)
-    })
-  } catch (_e: unknown) {
-    const e = _e as Error
-    console.error(e)
-    if (approveProcess && approveProcess.status !== 'DONE') {
-      approveProcess.errorMessage = e.message
-      setStatusFailed(update, status, approveProcess)
-    }
-    if (submitProcess && submitProcess.status !== 'DONE') {
-      submitProcess.errorMessage = e.message
-      setStatusFailed(update, status, submitProcess)
-    }
-    if (proceedProcess && proceedProcess.status !== 'DONE') {
-      proceedProcess.errorMessage = e.message
-      setStatusFailed(update, status, proceedProcess)
-    }
-    throw e
-  }
-
-  return status
 }
 
 const renderConfirmations = (count: number, max: number) => {
