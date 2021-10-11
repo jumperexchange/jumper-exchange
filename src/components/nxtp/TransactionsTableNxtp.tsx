@@ -2,10 +2,12 @@ import { CheckOutlined, LoadingOutlined } from '@ant-design/icons';
 import { NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Spin, Table } from 'antd';
+import { Button, Spin, Table, Typography } from 'antd';
 import React from 'react';
 import { CrossEstimate, getChainById, TokenWithAmounts, TransferStep } from '../../types';
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
+
+const { Paragraph } = Typography;
 
 interface TransactionsTableNxtpProps {
   activeTransactions: Array<ActiveTransaction>
@@ -57,9 +59,14 @@ const TransactionsTableNxtp = ({
         } else if (action.status === NxtpSdkEvents.ReceiverTransactionPrepared && action.event) {
           return (
             <Button
+              className="xpollinate-button"
+              type="primary"
+              shape="round"
+              size="large"
+              style={{ borderRadius: 6}}
               onClick={() => openSwapModalFinish(action)}
             >
-              Finish
+              Sign to claim Transfer
             </Button>
           )
         } else if (
@@ -73,8 +80,10 @@ const TransactionsTableNxtp = ({
           })
           if (index !== -1 && executionRoutes[index][0].execution?.status === 'FAILED') {
             return 'Failed'
-          } else {
+          } else if (index !== -1) {
             return <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
+          } else {
+            return <></>
           }
         }
       },
@@ -143,7 +152,7 @@ const TransactionsTableNxtp = ({
       title: 'Transaction Id',
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
-        return <div style={{ width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{txData.invariant.transactionId}</div>
+        return <Paragraph style={{ width: 150, margin: 0 }} ellipsis={true} copyable>{txData.invariant.transactionId}</Paragraph>
       }
     },
   ]

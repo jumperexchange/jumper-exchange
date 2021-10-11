@@ -52,22 +52,9 @@ interface Swapped {
 }
 
 const getContractAddress = async () => {
-  const result = await axios.get(`https://api.1inch.exchange/v3.0/1/approve/spender`)
+  const result = await axios.get<any>(`https://api.1inch.exchange/v3.0/1/approve/spender`)
   return result.data.address
 }
-
-// const setAllowance = async (chainId: number, amount: string, fromTokenAddress: string, signer: JsonRpcSigner) => {
-//   const result = await axios.get(`https://api.1inch.exchange/v3.0/${chainId}/approve/calldata?amount=${amount}&infinity=true&tokenAddress=${checkTokenAddress(fromTokenAddress)}`)
-//   const allowance = result.data;
-//   delete allowance.gasPrice
-//   allowance.value = BigNumber.from(allowance.value)
-
-//   const approvedAllowance = await signer.sendTransaction(allowance)
-
-//   // wait for confirmation
-//   await approvedAllowance.wait(1)
-//   return approvedAllowance
-// }
 
 const checkTokenAddress = (address: string) => {
   if (address === '0x0000000000000000000000000000000000000000') {
@@ -75,7 +62,6 @@ const checkTokenAddress = (address: string) => {
   }
   return address
 }
-
 
 const getTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, fromAddress: string, destReceiver: string) => {
   // https://docs.1inch.io/api/quote-swap
@@ -102,7 +88,7 @@ const getTransaction = async (chainId: number, fromTokenAddress: string, toToken
     // mainRouteParts: // OPTIONAL, integer, maximum number of main route parts
   }
 
-  const result = await axios.get(`${baseURL}${chainId}/swap`, { params })
+  const result = await axios.get<any>(`${baseURL}${chainId}/swap`, { params })
   const toAmount: number = result.data.toTokenAmount ? result.data.toTokenAmount : -1
   const path: Array<any> = result.data.protocols ? result.data.protocols[0].map((step: Array<any>) => step[0]) : []
   const tx = result.data.tx

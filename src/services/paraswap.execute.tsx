@@ -1,57 +1,21 @@
 import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
-import * as paraswap from './paraswap'
-import { Execution, getChainById, Token } from '../types'
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
-import { getApproved, setApproval } from './utils'
-import { constants } from 'ethers'
+import { constants, providers } from 'ethers'
+import { Execution, getChainById, SwapAction, SwapEstimate } from '../types'
+import { checkAllowance } from './allowance.execute'
 import notifications, { NotificationType } from './notifications'
+import * as paraswap from './paraswap'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 
-export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeParaswap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
 
   // setup
-  const fromChain = getChainById(chainId)
+  const fromChain = getChainById(swapAction.chainId)
   const { status, update } = initStatus(updateStatus, initialStatus)
 
-  if (srcToken.id !== constants.AddressZero) {
-    // Ask user to set allowance
-    // -> set status
-    const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, 'Set Allowance for Paraswap')
-    // -> check allowance
-    try {
-      if(allowanceProcess.txHash){
-        await signer.provider.waitForTransaction(allowanceProcess.txHash)
-      } else {
-        const contractAddress = await paraswap.getContractAddress(chainId) as string
-        const approved = await getApproved(signer, srcToken.id, contractAddress)
-
-        if (srcAmount.gt(approved)) {
-          const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toString())
-
-          // update status
-          allowanceProcess.status = 'PENDING'
-          allowanceProcess.txHash = approveTx.hash
-          allowanceProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
-          allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-          update(status)
-
-          // wait for transcation
-          await approveTx.wait()
-
-          // -> set status
-          allowanceProcess.message = <>Approved (<a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
-        } else {
-          allowanceProcess.message = 'Already Approved'
-        }
-      }
-    } catch (e:any) {
-      // -> set status
-      if (e.message) allowanceProcess.errorMessage = e.message
-      if (e.code) allowanceProcess.errorCode = e.code
-      setStatusFailed(update, status, allowanceProcess)
-      throw e
-    }
-    setStatusDone(update, status, allowanceProcess)
+  if (swapAction.token.id !== constants.AddressZero) {
+    const contractAddress = await paraswap.getContractAddress(swapAction.chainId)
+    await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, contractAddress, update, status)
   }
 
   // Swap via Paraswap
@@ -59,14 +23,13 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
   const swapProcess = createAndPushProcess('swapProcess', update, status, 'Swap via Paraswap')
 
   // -> swapping
-  let tx
+  let tx: TransactionResponse
   try {
-    if(swapProcess.txHash) {
+    if(swapProcess.txHash){
       tx = await signer.provider.getTransaction(swapProcess.txHash)
     } else {
-      tx = await paraswap.transfer(signer, chainId, srcAddress, srcToken.id, destToken.id, srcAmount.toString(), destAddress, srcToken.decimals, destToken.decimals)
-      swapProcess.txHash = tx.hash
-      update(status)
+      const transaction = await paraswap.transfer(swapAction, swapEstimate, srcAmount, srcAddress, destAddress)
+      tx = await signer.sendTransaction(transaction)
     }
   } catch (e: any) {
     // -> set status
@@ -75,32 +38,30 @@ export const executeParaswap = async (chainId: number, signer: JsonRpcSigner, sr
     setStatusFailed(update, status, swapProcess)
     throw e
   }
-  setStatusDone(update, status, swapProcess)
 
-
-
-  // Wait for transaction
   // -> set status
-  const waitingProcess = createAndPushProcess('waitingProcess', update, status, 'Wait for Transaction')
-  waitingProcess.txHash = tx.hash
+  swapProcess.status = 'PENDING'
+  swapProcess.txHash = tx.hash
+  swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
+  swapProcess.message = <>Swap via paraswap - Wait for <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   update(status)
+
   // -> waiting
   let receipt
   try {
-    tx = await signer.provider.getTransaction(waitingProcess.txHash)
-    receipt = await signer.provider.waitForTransaction(waitingProcess.txHash)
+      receipt = await signer.provider.waitForTransaction(swapProcess.txHash)
   } catch (e: any) {
     // -> set status
-    if (e.message) waitingProcess.errorMessage = e.message
-    if (e.code) waitingProcess.errorCode = e.code
-    setStatusFailed(update, status, waitingProcess)
+    if (e.message) swapProcess.errorMessage = e.message
+    if (e.code) swapProcess.errorCode = e.code
+    setStatusFailed(update, status, swapProcess)
     notifications.showNotification(NotificationType.SWAP_ERROR)
     throw e
   }
 
   // -> set status
   const parsedReceipt = paraswap.parseReceipt(tx as TransactionResponse, receipt as TransactionReceipt)
-  setStatusDone(update, status, waitingProcess, {
+  setStatusDone(update, status, swapProcess, {
     fromAmount: parsedReceipt.fromAmount,
     toAmount: parsedReceipt.toAmount,
     gasUsed: (status.gasUsed || 0) + parsedReceipt.gasUsed,

@@ -1,6 +1,10 @@
+import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json";
 import axios from 'axios';
-import { ethers } from 'ethers';
-import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById } from '../types';
+import { BigNumber as BigNumberJs } from 'bignumber.js';
+import { BigNumber, constants, Contract, ethers } from 'ethers';
+import { getRpcProvider } from '../components/web3/connectors';
+import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById, Token } from '../types';
+import { getDefaultTokenBalancesForWallet } from './testToken';
 import { deepClone } from './utils';
 
 type tokenListDebankT = {
@@ -78,7 +82,7 @@ export async function covalentGetCoinsOnChain(walletAdress: string, chainId: num
   const url = `${COVALENT_API_URI}/${chainId}/address/${walletAdress}/balances_v2/?key=${COVALENT_API_KEY}`
   let result
   try {
-    result = await axios.get(url)
+    result = await axios.get<any>(url)
   } catch (e) {
     console.error(e)
     return []
@@ -138,7 +142,7 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
 
   var result
   try {
-    result = await axios.get(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl);
   } catch (e) {
     console.warn(`Debank api call for token list on chain ${chainKey} failed with status ` + e)
     console.warn(e)
@@ -193,7 +197,7 @@ const getBlancesFromDebank = async (walletAdress: string) => {
 
   var result
   try {
-    result = await axios.get(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl);
   } catch (e) {
     console.warn(`Debank api call for token list failed with status ` + e)
     throw e
@@ -222,6 +226,12 @@ const getBlancesFromDebank = async (walletAdress: string) => {
 const getBalancesForWallet = async (walletAdress: string, onChains?: Array<number>): Promise<Portfolio> => {
   walletAdress = walletAdress.toLowerCase()
 
+  // Manually added Harmony Support
+  let onePromise: Promise<{ [ChainKey: string]: ChainPortfolio[] }> | undefined
+  if (onChains && onChains.indexOf(ChainId.ONE) !== -1) {
+    onePromise = getDefaultTokenBalancesForWallet(walletAdress, [ChainId.ONE])
+  }
+
   let protfolio: Portfolio
   try {
     protfolio = await getBlancesFromDebank(walletAdress)
@@ -229,7 +239,61 @@ const getBalancesForWallet = async (walletAdress: string, onChains?: Array<numbe
     protfolio = await getBlancesFromCovalent(walletAdress, onChains)
   }
 
+  // Manually added Harmony Support - wait for balances
+  if (onePromise) {
+    try {
+      const onePortfolio = await onePromise
+      protfolio[ChainKey.ONE] = onePortfolio[ChainKey.ONE]
+    } catch (e: any) {
+      console.error('Failed access harmony balance', e)
+    }
+  }
+
   return filterPortfolioWithBlacklist(protfolio, tokenBlacklist)
+}
+
+export const getBalanceFromProvider = async (
+  address: string,
+  assetId: string,
+  chainId: number,
+): Promise<BigNumber> => {
+  const provider = getRpcProvider(chainId)
+  if (assetId === constants.AddressZero) {
+    return provider.getBalance(address)
+  } else {
+    const contract = new Contract(assetId, ERC20.abi, provider)
+    return contract.balanceOf(address)
+  }
+}
+
+export const getBalancesForWalletFromChain = async (address: string, tokens: { [ChainKey: string]: Array<Token> }) => {
+  const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
+  const promises: Array<Promise<any>> = []
+
+  Object.entries(tokens).forEach(async ([chainKey, tokens]) => {
+    tokens.forEach(async (token) => {
+      const promise = getBalanceFromProvider(address, token.id, token.chainId)
+        .catch((e) => {
+          console.warn(address, token.id, token.chainId, e)
+          return BigNumber.from(0)
+        })
+      promises.push(promise)
+      const amount = await promise
+
+      portfolio[chainKey].push({
+        id: token.id,
+        name: token.name,
+        symbol: token.key,
+        img_url: '',
+        amount: new BigNumberJs(amount.toString()).shiftedBy(-token.decimals).toNumber(),
+        pricePerCoin: 0,
+        verified: false,
+      })
+    })
+  })
+
+  await Promise.allSettled(promises)
+  return portfolio
 }
 
 export { getCoinsOnChain, getBalancesForWallet };

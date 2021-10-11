@@ -5,7 +5,7 @@ import SwapXpollinate from './components/nxtp/SwapXpollinate';
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
 import analytics from './services/analytics';
-import { getBalancesForWallet, testToken } from './services/testToken';
+import { testToken } from './services/testToken';
 import { getChainById } from './types';
 
 const getTransferChains = () => {
@@ -53,7 +53,6 @@ function AppXpollinateTestnet() {
             aboutDescription={aboutDescription}
             transferChains={transferChains}
             transferTokens={transferTokens}
-            getBalancesForWallet={getBalancesForWallet}
             testnet={true}
           />
         </Layout>

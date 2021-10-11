@@ -55,7 +55,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(1),
       blockExplorerUrls: [
-        'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+        'https://etherscan.io/',
       ],
       chainName: 'Ethereum Mainnet',
       nativeCurrency: {
@@ -64,7 +64,7 @@ export const supportedChains: Array<Chain> = [
         decimals: 18,
       },
       rpcUrls: [
-        'https://etherscan.io/',
+        'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
       ],
     },
   },
@@ -154,7 +154,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(100),
       blockExplorerUrls: [
-        'https://blockscout.com/xdai/mainnet',
+        'https://blockscout.com/xdai/mainnet/',
       ],
       chainName: 'xDAI Chain',
       nativeCurrency: {
@@ -270,7 +270,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(42161),
       blockExplorerUrls: [
-        'https://arbiscan.io',
+        'https://arbiscan.io/',
       ],
       chainName: 'Arbitrum One',
       nativeCurrency: {
@@ -297,7 +297,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(128),
       blockExplorerUrls: [
-        'https://hecoinfo.com',
+        'https://hecoinfo.com/',
       ],
       chainName: 'Huobi ECO Chain Mainnet',
       nativeCurrency: {
@@ -324,7 +324,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(10),
       blockExplorerUrls: [
-        'https://optimistic.etherscan.io',
+        'https://optimistic.etherscan.io/',
       ],
       chainName: 'Optimistic Ethereum',
       nativeCurrency: {
@@ -350,7 +350,7 @@ export const supportedChains: Array<Chain> = [
   //   metamask: {
   //     chainId: prefixChainId(32659),
   //     blockExplorerUrls: [
-  //       'https://fsnex.com',
+  //       'https://fsnex.com/',
   //     ],
   //     chainName: 'Fusion Mainnet',
 
@@ -366,30 +366,38 @@ export const supportedChains: Array<Chain> = [
   // },
 
   // 1666600000 - Harmony Mainnet Shard 0
-  // {
-  //   key: ChainKey.HAR,
-  //   name: 'Harmony Mainnet Shard 0',
-  //   coin: CoinKey.HAR,
-  //   id: 1666600000,
-  //   visible: false,
-  //   // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
-  //   metamask: {
-  //     chainId: prefixChainId(1666600000),
-  //     blockExplorerUrls: [
-  //       'https://www.harmony.one/',
-  //     ],
-  //     chainName: 'Harmony Mainnet Shard 0',
+  {
+    key: ChainKey.ONE,
+    name: 'Harmony',
+    coin: CoinKey.ONE,
+    id: 1666600000,
+    visible: false,
 
-  //     nativeCurrency: {
-  //       name: 'ONE',
-  //       symbol: 'ONE',
-  //       decimals: 18,
-  //     },
-  //     rpcUrls: [
-  //       'https://api.harmony.one',
-  //     ],
-  //   }
-  // },
+    exchange: {
+      name: 'ViperSwap',
+      webUrl: 'https://viper.exchange/#/swap',
+      graph: '',
+      tokenlistUrl: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/lists/venomswap-default.tokenlist.json',
+    },
+
+    // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
+    metamask: {
+      chainId: prefixChainId(1666600000),
+      blockExplorerUrls: [
+        'https://explorer.harmony.one/',
+      ],
+      chainName: 'Harmony Mainnet Shard 0',
+
+      nativeCurrency: {
+        name: 'ONE',
+        symbol: 'ONE',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://api.harmony.one',
+      ],
+    }
+  },
 
   // TESTNETS
   // 3 - Ropsten
@@ -495,7 +503,41 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+  // 42 - Kovan
+  {
+    key: ChainKey.KOV,
+    name: 'Kovan',
+    coin: CoinKey.ETH,
+    id: 42,
+    visible: false,
+    faucetUrls: [
+      'https://ethdrop.dev/',
+      'https://gitter.im/kovan-testnet/faucet',
+    ],
 
+    exchange: {
+      name: 'Uniswap',
+      webUrl: 'https://app.uniswap.org/',
+      graph: '',
+      tokenlistUrl: 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
+    },
+
+    metamask: {
+      chainId: prefixChainId(42),
+      blockExplorerUrls: [
+        'https://kovan.etherscan.io/',
+      ],
+      chainName: 'Ethereum Testnet Kovan',
+      nativeCurrency: {
+        name: 'ETH',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://kovan.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+      ],
+    }
+  },
   // 80001 - Mumbai Polygon Testnet
   {
     key: ChainKey.MUM,
@@ -571,7 +613,7 @@ export const supportedChains: Array<Chain> = [
     metamask: {
       chainId: prefixChainId(69),
       blockExplorerUrls: [
-        'https://kovan-optimistic.etherscan.io',
+        'https://kovan-optimistic.etherscan.io/',
       ],
       chainName: 'Optimistic Ethereum Testnet Kovan',
       nativeCurrency: {
@@ -640,12 +682,34 @@ export const supportedChains: Array<Chain> = [
       ],
     }
   },
+  // 1666700000 - Harmony Testnet 0
+  {
+    key: ChainKey.ONET,
+    name: 'Harmony Testnet',
+    coin: CoinKey.ONE,
+    id: 1666700000,
+    visible: false,
+    // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
+    metamask: {
+      chainId: prefixChainId(1666700000),
+      blockExplorerUrls: [
+        'https://explorer.pops.one/',
+        'https://explorer.testnet.harmony.one/',
+      ],
+      chainName: 'Harmony Testnet Shard 0',
+
+      nativeCurrency: {
+        name: 'ONE',
+        symbol: 'ONE',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://api.s0.b.hmny.io',
+      ],
+    }
+  },
 
   // https://faucet.buni.finance/
-
-  // Kovan:
-  // https://ethdrop.dev/
-  // https://gitter.im/kovan-testnet/faucet
 ]
 
 export const getChainByKey = (chainKey: ChainKey) => {

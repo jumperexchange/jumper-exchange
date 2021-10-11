@@ -2,15 +2,15 @@ import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse } from '@connext/nxtp-utils';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import BigNumber from 'bignumber.js';
+import * as sigUtil from 'eth-sig-util';
 import { constants, ethers, utils } from 'ethers';
 import { getRpcProviders } from '../components/web3/connectors';
 import { Chain, ChainId, CrossAction, CrossEstimate, Execution, getChainById, Process, SwapAction, SwapEstimate, Token, TransferStep } from '../types';
 import { lifi_abi } from '../types/nxtpFacet.types';
+import { checkAllowance } from './allowance.execute';
 import * as nxtp from './nxtp';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 import { getSwapCall } from './uniswaps';
-import { getApproved, setApproval } from './utils';
-import * as sigUtil from 'eth-sig-util'
 
 const lifiContractAddress = '0xFdeE0875499cddb70539f370E28dCf6037dC93E3'
 const supportedChains = [
@@ -41,43 +41,6 @@ const AuctionBidEncoding = tidy(`tuple(
   uint256 bidExpiry
 )`)
 
-const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token: Token, amount: string, spenderAddress: string, update: Function, status: Execution) => {
-  // Ask user to set allowance
-  // -> set status
-  const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, `Set Allowance for ${token.symbol}`)
-
-  // -> check allowance
-  try {
-    const approved = await getApproved(signer, token.id, spenderAddress)
-
-    if (new BigNumber(amount).gt(approved)) {
-      const approveTx = await setApproval(signer, token.id, spenderAddress, amount)
-
-      // update status
-      allowanceProcess.status = 'PENDING'
-      allowanceProcess.txHash = approveTx.hash
-      allowanceProcess.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
-      allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-      update(status)
-
-      // wait for transcation
-      await approveTx.wait()
-
-      // -> set status
-      allowanceProcess.message = <>Approved: <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-    } else {
-      allowanceProcess.message = 'Already Approved'
-    }
-    setStatusDone(update, status, allowanceProcess)
-  } catch (e: any) {
-    // -> set status
-    if (e.message) allowanceProcess.errorMessage = e.message
-    if (e.code) allowanceProcess.errorCode = e.code
-    setStatusFailed(update, status, allowanceProcess)
-    throw e
-  }
-}
-
 const myEncrypt = async (msg: string, publicKey: string) => {
   const buf = Buffer.from(
     JSON.stringify(
@@ -92,7 +55,6 @@ const myEncrypt = async (msg: string, publicKey: string) => {
 
   return '0x' + buf.toString('hex')
 }
-
 
 const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateStatus?: Function, initialStatus?: Execution) => {
 

@@ -19,12 +19,14 @@ import { executeParaswap } from '../services/paraswap.execute';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
 import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, Step, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
 import { useMediaQuery } from 'react-responsive';
 import { storeActiveRoute } from '../services/localStorage'
+import { executeHorizonCross } from '../services/horizon.execute';
+
 
 interface SwappingProps {
   route: Array<TransferStep>,
@@ -32,20 +34,6 @@ interface SwappingProps {
   onSwapDone: Function
 }
 
-export const buildTokenFromBalance = (portfolio: ChainPortfolio) => {
-  const newToken: Token = {
-    id: portfolio.id,
-    symbol: portfolio.symbol,
-    decimals: 18,
-    chainId: 0,
-    name: portfolio.name,
-    logoURI: portfolio.img_url,
-
-    chainKey: ChainKey.ETH,
-    key: portfolio.symbol as CoinKey,
-  }
-  return newToken
-}
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
@@ -54,7 +42,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalBalance, setFinalBalance] = useState<ChainPortfolio>()
+  const [finalBalance, setFinalBalance] = useState<{token: Token, portfolio: ChainPortfolio}>()
+
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
@@ -85,7 +74,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     return true
   }
 
-  const triggerSwap = async (step: TransferStep, previousStep?: TransferStep) => {
+  const triggerSwap = async (step: Step, previousStep?: TransferStep) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as SwapAction
     const swapEstimate = step.estimate as SwapEstimate
@@ -112,13 +101,15 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'honeyswap':
       case 'quickswap':
       case 'spookyswap':
+      case 'viperswap':
+      case 'sushiswap':
         return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status), swapExecution)
       case 'paraswap':
-        return await executeParaswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
+        return await executeParaswap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case '1inch':
-        return await executeOneInchSwap(swapAction.chainId, web3.library.getSigner(), swapAction.token.id, swapAction.toToken.id, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
+        return await executeOneInchSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       default:
-        console.warn('should never reach here')
+        throw new Error('Should never reach here, swap not defined')
     }
   }
 
@@ -144,8 +135,10 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status));
       case 'hop':
         return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toString(), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
+      case 'horizon':
+        return await executeHorizonCross(crossAction.token, fromAmount, crossAction.chainId, crossAction.toChainId, web3.account, (status: Execution) => updateStatus(step, status))
       default:
-        console.warn('should never reach here')
+        throw new Error('Should never reach here, bridge not defined')
     }
   }
 
@@ -282,8 +275,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     try{
       switch (step.action.type) {
         case 'swap':
-          await triggerSwap(step, previousStep)
-          break
+          return await triggerSwap(step as SwapStep, previousStep)
         case 'cross':
            await triggerCross(step, previousStep)
           break
@@ -366,7 +358,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const {toChain, toToken} = getRecevingInfo(lastStep)
     const portfolio = await getBalancesForWallet(web3.account!, [toChain.id])
     const chainPortfolio = portfolio[toChain.key].find(coin => coin.id === toToken.id)
-    setFinalBalance(chainPortfolio)
+    setFinalBalance({token: toToken, portfolio: chainPortfolio!})
   }
 
   // check where we are an trigger next
@@ -428,13 +420,18 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         <span style={{cursor: 'copy'}} onClick={async () => {
           if (web3.chainId !== toChain.id) {
             await switchChain(toChain.id)
+            await (window as any).ethereum.once('networkChanged', async (id:any)  => {
+              await addToken(finalBalance.token)
+            })
+          } else {
+            await addToken(finalBalance.token)
           }
-          await addToken(buildTokenFromBalance(finalBalance))
+
         }}>
             <Typography.Text >
               {'You now have '}
-              {finalBalance?.amount.toString().substring(0, 8)}
-              {` ${finalBalance?.symbol}`}
+              {finalBalance?.portfolio.amount.toString().substring(0, 8)}
+              {` ${finalBalance?.portfolio.symbol}`}
               {` on ${toChain.name}`}
             </Typography.Text>
           </span>

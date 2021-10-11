@@ -8,7 +8,7 @@ import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
 import BigNumber from 'bignumber.js';
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import heroImage from '../assets/info_header.png';
+import heroImage from '../assets/info_header.jpg';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
 import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
@@ -204,7 +204,7 @@ const Swap = ({
         }
 
         try {
-          const result = await axios.post(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
+          const result = await axios.post<any>(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
           // filter if needed
           const routes: Array<Array<TransferStep>> = result.data
           setRoutes(routes)

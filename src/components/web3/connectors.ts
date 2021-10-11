@@ -1,7 +1,7 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { NetworkConnector } from '@web3-react/network-connector';
 import { providers } from 'ethers';
-import { getChainById } from '../../types';
+import { ChainId, getChainById } from '../../types';
 
 const CHAINS = {
   // Mainnet
@@ -26,7 +26,9 @@ const CHAINS = {
   OKEX: 66,
   AVALANCHE: 43114,
   FSN: 32659,
-  HARMONY: 1666600000,
+  KOV: ChainId.KOV,
+  ONE: ChainId.ONE,
+  ONET: ChainId.ONET,
 };
 
 const RPC_URLS: { [chainId: number]: string } = {
@@ -52,9 +54,10 @@ const RPC_URLS: { [chainId: number]: string } = {
   [CHAINS.OKEX]: 'https://exchainrpc.okex.org',
   [CHAINS.AVALANCHE]: 'https://api.avax.network/ext/bc/C/rpc',
   [CHAINS.FSN]: 'https://fsnmainnet2.anyswap.exchange',
-  [CHAINS.HARMONY]: 'https://api.harmony.one',
+  [CHAINS.KOV]: 'https://kovan.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+  [CHAINS.ONE]: 'https://api.harmony.one',
+  [CHAINS.ONET]:  'https://api.s0.b.hmny.io',
 };
-
 
 
 // cached providers
@@ -68,16 +71,19 @@ export const getRpcUrls = (chainIds: Array<number>) => {
   return rpcs
 }
 
+export const getRpcProvider = (chainId: number) => {
+  if (!chainProviders[chainId]) {
+    chainProviders[chainId] = new providers.FallbackProvider([new providers.JsonRpcProvider(RPC_URLS[chainId], chainId)])
+  }
+  return chainProviders[chainId]
+}
+
 export const getRpcProviders = (chainIds: Array<number>) => {
   const selectedProviders: Record<number, providers.FallbackProvider> = {};
 
   chainIds.forEach((chainId) => {
-    if (!chainProviders[chainId]) {
-      chainProviders[chainId] = new providers.FallbackProvider([new providers.JsonRpcProvider(RPC_URLS[chainId], chainId)])
-    }
-    selectedProviders[chainId] = chainProviders[chainId]
+    selectedProviders[chainId] = getRpcProvider(chainId)
   })
-
   return selectedProviders
 }
 

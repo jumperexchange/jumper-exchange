@@ -10,15 +10,19 @@ import honey from '../assets/icons/honey.png';
 import dai from '../assets/icons/xdai.png';
 import uniswap from '../assets/icons/uniswap.png';
 import spooky from '../assets/icons/spooky.png';
+import viper from '../assets/icons/viper.png';
+import sushi from '../assets/icons/sushi.png';
 import ftm from '../assets/icons/fantom.png';
 import arb from '../assets/icons/arbitrum.svg';
 import opt from '../assets/icons/optimism.png';
+import one from '../assets/icons/harmony.png';
 import rop from '../assets/icons/ethereum_ropsten.png';
 import rin from '../assets/icons/ethereum_rinkeby.png';
 import gor from '../assets/icons/ethereum_goerli.png';
 import mum from '../assets/icons/polygon_test.png';
 import bsct from '../assets/icons/bsc_test.png';
 import arbt from '../assets/icons/arbitrum_test.png';
+import onet from '../assets/icons/harmony_test.png';
 
 export const icons: { [key: string]: string } = {
   // Mainnets
@@ -32,6 +36,7 @@ export const icons: { [key: string]: string } = {
   [ChainKey.ARB]: arb,
   // [ChainKey.HEC]: hec,
   [ChainKey.OPT]: opt,
+  [ChainKey.ONE]: one,
 
   // Testnets
   [ChainKey.ROP]: rop,
@@ -42,6 +47,7 @@ export const icons: { [key: string]: string } = {
   //[ChainKey.OPTT]: optt,
   [ChainKey.BSCT]: bsct,
   //[ChainKey.HECT]: hect,
+  [ChainKey.ONET]: onet,
 
 
   // Exchanges
@@ -51,6 +57,8 @@ export const icons: { [key: string]: string } = {
   'UniswapV2': uniswap,
   'Uniswap': uniswap,
   'SpookySwap': spooky,
+  'ViperSwap': viper,
+  'SushiSwap': sushi,
 }
 export const getIcon = (name: string | undefined) => {
   if (name && icons[name]) {
@@ -126,15 +134,18 @@ export interface WalletSummary {
   [ChainKey.HEC]: SummaryAmounts;
   [ChainKey.OPT]: SummaryAmounts;
   [ChainKey.ARB]: SummaryAmounts;
+  [ChainKey.ONE]: SummaryAmounts;
 
   [ChainKey.ROP]: SummaryAmounts;
   [ChainKey.RIN]: SummaryAmounts;
   [ChainKey.GOR]: SummaryAmounts;
+  [ChainKey.KOV]: SummaryAmounts;
   [ChainKey.MUM]: SummaryAmounts;
   [ChainKey.ARBT]: SummaryAmounts;
   [ChainKey.OPTT]: SummaryAmounts;
   [ChainKey.BSCT]: SummaryAmounts;
   [ChainKey.HECT]: SummaryAmounts;
+  [ChainKey.ONET]: SummaryAmounts;
 }
 
 export interface ProgressStep {
