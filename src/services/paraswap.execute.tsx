@@ -1,6 +1,6 @@
 import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
-import { constants, providers } from 'ethers'
+import { constants } from 'ethers'
 import { Execution, getChainById, SwapAction, SwapEstimate } from '../types'
 import { checkAllowance } from './allowance.execute'
 import notifications, { NotificationType } from './notifications'

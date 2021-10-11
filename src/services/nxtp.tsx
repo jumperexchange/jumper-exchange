@@ -2,7 +2,7 @@ import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { FallbackProvider } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
-import { constants, providers } from 'ethers';
+import { BigNumber, constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
@@ -38,7 +38,7 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
     }
   })
 
-  const sdk = new NxtpSdk({chainConfig, signer});
+  const sdk = new NxtpSdk({ chainConfig, signer });
 
   // reuse existing messaging token
   const account = await signer.getAddress()
@@ -112,7 +112,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     crossEstimate.data.bid.receivingChainId,
     crossEstimate.data.bid.router,
     crossEstimate.data.bid.receivingAssetId
-  )
+  ) as BigNumber
   if (liquidity.lt(crossEstimate.data.bid.amountReceived)) {
     approveProcess.errorMessage = `Router (${crossEstimate.data.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.data.bid.amountReceived}.`
     setStatusFailed(update, status, approveProcess)
@@ -149,60 +149,20 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   // }
   const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
   // approve sent => wait
-  attachListeners(sdk, step, transactionId, status, updateStatus)
-
-  try {
-    const result = await transferPromise
-    trackConfirmationsForResponse(sdk, fromChain.id, result.prepareResponse, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
-      submitProcess!.message = <>Transaction Sent: <a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
-      update(status)
-    })
-  } catch (_e: unknown) {
-    const e = _e as Error
-    console.error(e)
-    if (approveProcess && approveProcess.status !== 'DONE') {
-      approveProcess.errorMessage = e.message
-      setStatusFailed(update, status, approveProcess)
-    }
-    if (submitProcess && submitProcess.status !== 'DONE') {
-      submitProcess.errorMessage = e.message
-      setStatusFailed(update, status, submitProcess)
-    }
-    if (proceedProcess && proceedProcess.status !== 'DONE') {
-      proceedProcess.errorMessage = e.message
-      setStatusFailed(update, status, proceedProcess)
-    }
-    throw e
-  }
-
-  return status
-}
-
-export const attachListeners = (sdk: NxtpSdk, step: TransferStep, transactionId: string,  status:Execution, update: Function) => {
-  let approveProcess: Process | undefined = status.process.find( p => p.id === "approveProcess")
-  if (!approveProcess) throw Error("No token transfer approved. Please restart the swap")
-  let submitProcess: Process | undefined = status.process.find( p => p.id === "submitProcess")
-  let receiverProcess: Process | undefined = status.process.find( p => p.id === "receiverProcess")
-  let proceedProcess: Process | undefined = status.process.find( p => p.id === "proceedProcess")
-
-  const crossAction = step.action as CrossAction
-  const fromChain = getChainById(crossAction.chainId)
-  const toChain = getChainById(crossAction.toChainId)
-
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
-    approveProcess!.status = 'PENDING'
-    approveProcess!.txHash = data.transactionResponse.hash
-    approveProcess!.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess!.txHash
-    approveProcess!.message = <>Approve Token - Wait for <a href={approveProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+    approveProcess.status = 'PENDING'
+    approveProcess.txHash = data.transactionResponse.hash
+    approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
+    approveProcess.message = <>Approve Token - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
     update(status)
   })
 
   // approved = done => next
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
-    approveProcess!.message = <>Token Approved (<a href={approveProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
-    setStatusDone(update, status, approveProcess!)
+    approveProcess.message = <>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+    setStatusDone(update, status, approveProcess)
     if (!submitProcess) {
       submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
     }
@@ -231,7 +191,7 @@ export const attachListeners = (sdk: NxtpSdk, step: TransferStep, transactionId:
       submitProcess.message = <>Transaction Sent: <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
       setStatusDone(update, status, submitProcess)
     }
-    receiverProcess = createAndPushProcess('submitProcess', update, status, 'Wait for Receiver', { type: 'wait', footerMessage: 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)' })
+    receiverProcess = createAndPushProcess('receiverProcess', update, status, 'Wait for Receiver', { type: 'wait', footerMessage: 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)' })
   })
 
   // ReceiverTransactionPrepared => sign
@@ -256,10 +216,10 @@ export const attachListeners = (sdk: NxtpSdk, step: TransferStep, transactionId:
     }
 
     // proceed to claim
-    proceedProcess = createAndPushProcess('submitProcess', update, status, 'Ready to be Signed', { type: 'claim' })
+    proceedProcess = createAndPushProcess('proceedProcess', update, status, 'Ready to be Signed', { type: 'claim' })
     proceedProcess.status = 'ACTION_REQUIRED'
     proceedProcess.message = 'Sign to claim Transfer'
-    proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, update)}>Sign to claim Transfer</Button>
+    proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, updateStatus)}>Sign to claim Transfer</Button>
     update(status)
   })
 
@@ -316,7 +276,34 @@ export const attachListeners = (sdk: NxtpSdk, step: TransferStep, transactionId:
     if (data.txData.transactionId !== transactionId) return
     console.warn('ReceiverTransactionCancelled', data)
   })
+
+  try {
+    const result = await transferPromise
+    trackConfirmationsForResponse(sdk, fromChain.id, result.prepareResponse, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
+      submitProcess!.message = <>Transaction Sent: <a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
+      update(status)
+    })
+  } catch (_e: unknown) {
+    const e = _e as Error
+    console.error(e)
+    if (approveProcess && approveProcess.status !== 'DONE') {
+      approveProcess.errorMessage = e.message
+      setStatusFailed(update, status, approveProcess)
+    }
+    if (submitProcess && submitProcess.status !== 'DONE') {
+      submitProcess.errorMessage = e.message
+      setStatusFailed(update, status, submitProcess)
+    }
+    if (proceedProcess && proceedProcess.status !== 'DONE') {
+      proceedProcess.errorMessage = e.message
+      setStatusFailed(update, status, proceedProcess)
+    }
+    throw e
+  }
+
+  return status
 }
+
 const renderConfirmations = (count: number, max: number) => {
   const text = count < max ? `${count}/${max}` : `${max}+`
   return (

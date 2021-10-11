@@ -9,7 +9,7 @@
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 import { TransactionReceipt } from '@ethersproject/providers';
-import { Chain, Hop, HopBridge } from '@hop-protocol/sdk'
+import { Chain, Hop } from '@hop-protocol/sdk'
 
 //TODO: make this a map hash:destHash
 //TODO: store in localStorage uponreceiving
@@ -133,7 +133,6 @@ export function unregister() {
 export function watchHopDestinationTransaction (hop: Hop, tx: string, token:string, fromChain: Chain, toChain: Chain ) {
   hop.watch(tx, token, fromChain, toChain)
   .once('destinationTxReceipt', async (data: any) => {
-    const receipt: TransactionReceipt = data.receipt
     hopTransactionDestinationReceipt = data.receipt
   })
 }

@@ -43,7 +43,6 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
     destinationTxReceipt = getHopDestinationReceipt()
     if(!destinationTxReceipt){
       destinationTxReceipt = await hop.waitForDestinationChainReceipt(tx.hash, bridgeCoin, fromChainId, toChainId)
-
     }
     waitForTxProcess.destinationReceipt = destinationTxReceipt.transactionHash
     update(status)

@@ -1,4 +1,4 @@
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { ActiveTransaction, NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse } from '@connext/nxtp-utils';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import BigNumber from 'bignumber.js';
@@ -24,10 +24,25 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   const crossableChains = [crossAction.chainId, crossAction.toChainId]
   const chainProviders = getRpcProviders(crossableChains)
   const nxtpSDK = await nxtp.setup(signer, chainProviders)
-  // const submitProcess: Process |undefined = initialStatus?.process.find(p => p.id === "submitProcess")
-  // if(submitProcess){
-  //   return interceptRunningExecution(nxtpSDK, status, update)
-  // }
+
+
+  if(quoteProcess.quote){
+    console.log("quote found!")
+
+    const submitProcess = initialStatus?.process.find( p => p.id === 'submitProcess')
+    console.log(submitProcess)
+    const activeTransactions:ActiveTransaction[] = await nxtpSDK.getActiveTransactions()
+    console.log(activeTransactions)
+    const relevantTx = activeTransactions.find(tx => tx.crosschainTx.invariant.transactionId === quoteProcess.quote.bid.transactionId)
+
+    if(relevantTx && submitProcess && submitProcess.status === 'PENDING'){
+      setStatusDone(update, status, quoteProcess)
+      const waitProcess = createAndPushProcess('waitProcess', update, status, 'Waiting for Transaction')
+      console.log("waiting for final transaction")
+      return await finishTransfer(nxtpSDK, step, update, status)
+    }
+  }
+
 
   // get Quote
   // -> set status
@@ -37,7 +52,10 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   let quote: AuctionResponse | undefined;
   try {
     if(quoteProcess.quote){
+      // Qoute already exists -> if if active transaction with this qoute
       quote = quoteProcess.quote
+        //TODO: check if active Transaction with ReceiverTransactionPrepared status with nxtp.getActiveTransactions()
+
     } else {
       quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
       if (!quote) throw Error("Quote confirmation failed!")
@@ -50,9 +68,9 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
     cleanUp(nxtpSDK, update, status, quoteProcess)
     throw e
   }
-  setStatusDone(update, status, quoteProcess)
   if(!quote) throw Error("No quote found! Please restart the swap.")
-  // store quote
+  setStatusDone(update, status, quoteProcess)
+
   const crossEstimate: CrossEstimate = {
     type: 'cross',
     fromAmount: quote.bid.amount,
@@ -68,26 +86,30 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   step.estimate = crossEstimate
 
 
-  //TODO: check if active Transaction with ReceiverTransactionPrepared status with nxtp.getActiveTransactions()
 
   // trigger transfer
   try {
-    const submitProcess = initialStatus?.process.find( p => p.id === 'submitProcess')
-    if(submitProcess && submitProcess.txHash){
-      nxtp.attachListeners(nxtpSDK, step, submitProcess.txHash, status, update)
-    } else {
       await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
-    }
+
   } catch (e) {
     nxtpSDK.removeAllListeners()
     throw e
   }
 
 
+  return await finishTransfer(nxtpSDK, step, update, status)
+}
+
+const cleanUp = (sdk: NxtpSdk, update: Function, status: any, process: Process) => {
+  setStatusFailed(update, status, process)
+  sdk.removeAllListeners()
+}
+
+const finishTransfer = (sdk: NxtpSdk, step:TransferStep, update: Function, status: Execution) => {
   return new Promise(async (resolve, reject) => {
-    nxtpSDK.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
+    sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
       try {
-        await nxtp.finishTransfer(nxtpSDK, data, step, update)
+        await nxtp.finishTransfer(sdk, data, step, update)
       } catch (e) {
         // nxtpSDK.removeAllListeners()
         notifications.showNotification(NotificationType.CROSS_ERROR)
@@ -102,9 +124,3 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
     })
   })
 }
-
-const cleanUp = (sdk: NxtpSdk, update: Function, status: any, process: Process) => {
-  setStatusFailed(update, status, process)
-  sdk.removeAllListeners()
-}
-

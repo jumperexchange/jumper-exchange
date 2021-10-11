@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js';
 import * as sigUtil from 'eth-sig-util';
 import { constants, ethers, utils } from 'ethers';
 import { getRpcProviders } from '../components/web3/connectors';
-import { Chain, ChainId, CrossAction, CrossEstimate, Execution, getChainById, Process, SwapAction, SwapEstimate, Token, TransferStep } from '../types';
+import { ChainId, CrossAction, CrossEstimate, Execution, getChainById, Process, SwapAction, SwapEstimate, TransferStep } from '../types';
 import { lifi_abi } from '../types/nxtpFacet.types';
 import { checkAllowance } from './allowance.execute';
 import * as nxtp from './nxtp';

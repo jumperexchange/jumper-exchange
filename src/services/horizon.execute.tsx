@@ -13,7 +13,7 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
   const toChain = getChainById(toChainId)
 
 
-  const allowanceAndCrossProcess = createAndPushProcess(update, status, 'Set Allowance and Cross', { status: 'ACTION_REQUIRED' })
+  const allowanceAndCrossProcess = createAndPushProcess('allowanceAndCrossProcess', update, status, 'Set Allowance and Cross', { status: 'ACTION_REQUIRED' })
   let waitForBlocksProcess: Process
   let mintProcess: Process
 
@@ -85,14 +85,14 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
         if (operation.actions[0].status === 'success' && allowanceAndCrossProcess.status === 'PENDING') {
           allowanceAndCrossProcess.message = <>Transaction Sent: <a href={allowanceAndCrossProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
           setStatusDone(update, status, allowanceAndCrossProcess)
-          waitForBlocksProcess = createAndPushProcess(update, status, 'Wait for Block Confirmations', { status: 'PENDING' })
+          waitForBlocksProcess = createAndPushProcess('waitForBlocksProcess', update, status, 'Wait for Block Confirmations', { status: 'PENDING' })
         }
 
         // Confirmed > Done; Wait for mint
         if (operation.actions[1].status === 'success' && waitForBlocksProcess.status === 'PENDING') {
           waitForBlocksProcess.message = 'Enough Block Confirmations'
           setStatusDone(update, status, waitForBlocksProcess)
-          mintProcess = createAndPushProcess(update, status, 'Minting tokens', { status: 'PENDING' })
+          mintProcess = createAndPushProcess('mintProcess', update, status, 'Minting tokens', { status: 'PENDING' })
         }
 
         // Minted > Done; ??
