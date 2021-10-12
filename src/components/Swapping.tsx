@@ -161,7 +161,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
               {hasFailed &&
                 <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }} >
                   {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
-                  {`${process.errorMessage.substring(0, 150)}${process.errorMessage.length >150?'...':''}`}
+                  {'errorMessage' in process && `${process.errorMessage.substring(0, 150)}${process.errorMessage.length >150?'...':''}`}
                 </Typography.Text>
 
               }
