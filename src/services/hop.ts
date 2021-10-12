@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { ChainId, ChainKey, CoinKey } from '../types'
 import { getChainByKey } from '../types/shared/chains.types'
-import * as ServiceWorker from './serviceworker/sw.hop'
 
 
 const receivedContractTypes: Array<ethers.utils.ParamType> = [
@@ -65,7 +64,6 @@ const isInitialized = () =>{
   if(hop === undefined) throw TypeError('Hop instance is undefined! Please initialize Hop')
 }
 const init = (signer: JsonRpcSigner, chainId: number, toChainId: number) => {
-  ServiceWorker.default()
   const isChainTest = supportedTestnetChains.includes(chainId) ? true : false
   const isToChainTest = supportedTestnetChains.includes(toChainId) ? true : false
   // goerli <-> mumbai
@@ -105,7 +103,6 @@ const waitForDestinationChainReceipt = (tx: string, coin: CoinKey, fromChainId: 
     const hopFromChain = hopChains[fromChainId]
     const hopToChain = hopChains[toChainId]
     try {
-      ServiceWorker.watchHopDestinationTransaction(hop!, tx, hopTokens[coin], hopFromChain, hopToChain)
       hop?.watch(tx, hopTokens[coin], hopFromChain, hopToChain)
         .once('destinationTxReceipt', async (data: any) => {
           const receipt: TransactionReceipt = data.receipt

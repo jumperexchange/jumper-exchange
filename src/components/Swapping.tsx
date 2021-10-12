@@ -135,9 +135,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'nxtp':
         return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status), crossExecution);
       case 'hop':
-        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toFixed(0), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status))
+        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toFixed(0), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status), crossExecution)
       case 'horizon':
-        return await executeHorizonCross(crossAction.token, fromAmount, crossAction.chainId, crossAction.toChainId, web3.account, (status: Execution) => updateStatus(step, status))
+        return await executeHorizonCross(crossAction.token, fromAmount, crossAction.chainId, crossAction.toChainId, web3.account, (status: Execution) => updateStatus(step, status), crossExecution)
       default:
         throw new Error('Should never reach here, bridge not defined')
     }

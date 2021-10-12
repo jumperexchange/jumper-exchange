@@ -51,10 +51,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   let quote: AuctionResponse | undefined;
   try {
     if(quoteProcess.quote){
-      // Qoute already exists -> if if active transaction with this qoute
       quote = quoteProcess.quote
-        //TODO: check if active Transaction with ReceiverTransactionPrepared status with nxtp.getActiveTransactions()
-
     } else {
       quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
       if (!quote) throw Error("Quote confirmation failed!")

@@ -5,7 +5,6 @@ import { Execution } from '../types/'
 import hop from './hop'
 import { CoinKey } from '../types'
 import notifications, { NotificationType } from './notifications'
-import {getHopDestinationReceipt} from './serviceworker/sw.hop'
 
 export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey, amount: string, fromChainId: number, toChainId: number, updateStatus?: Function, initialStatus?: Execution) => {
   // setup
@@ -16,7 +15,6 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
   const allowanceAndCrossProcess = createAndPushProcess('allowanceAndCrossProcess', update, status, 'Set Allowance and Cross')
   let tx
   try {
-
     if(allowanceAndCrossProcess.txHash){
       tx = signer.provider.getTransaction(allowanceAndCrossProcess.txHash)
     } else {
@@ -33,17 +31,12 @@ export const executeHopCross = async (signer: JsonRpcSigner, bridgeCoin: CoinKey
   }
   setStatusDone(update, status, allowanceAndCrossProcess)
 
-
   //wait for transaction
   const waitForTxProcess = createAndPushProcess('waitForTxProcess', update, status, 'Wait for transaction on receiving chain')
-  waitForTxProcess.txHash = tx.hash
-  update(status)
+
   let destinationTxReceipt;
   try{
-    destinationTxReceipt = getHopDestinationReceipt()
-    if(!destinationTxReceipt){
-      destinationTxReceipt = await hop.waitForDestinationChainReceipt(tx.hash, bridgeCoin, fromChainId, toChainId)
-    }
+    destinationTxReceipt = await hop.waitForDestinationChainReceipt(allowanceAndCrossProcess.txHash, bridgeCoin, fromChainId, toChainId)
     waitForTxProcess.destinationReceipt = destinationTxReceipt.transactionHash
     update(status)
   } catch (_e){
