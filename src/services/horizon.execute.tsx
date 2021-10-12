@@ -62,13 +62,22 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
     console.debug('params', params)
 
     let operationId: string
-    const bridgePromise = bridgeSDK.sendToken(
-      params,
-      id => (operationId = id)
-    );
+    let bridgePromise
+
+    if(allowanceAndCrossProcess.txHash){
+      operationId = allowanceAndCrossProcess.txHash
+    } else {
+      bridgePromise = bridgeSDK.sendToken(
+        params,
+        id => (operationId = id)
+      );
+    }
+
 
     let intervalId = setInterval(async () => {
       if (operationId) {
+        allowanceAndCrossProcess.txHash = operationId
+        update(status)
         const operation = await bridgeSDK.api.getOperation(operationId)
         console.debug('operation', operation)
 
@@ -125,6 +134,10 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
   } catch (e: any) {
     console.error(e)
     if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE') setStatusFailed(update, status, allowanceAndCrossProcess)
+    const lastStep: Process = status.process[status.process.length -1].errorMessage
+    lastStep.errorMessage = (e as Error).message
+    update( status )
+    console.log('hahaha')
     if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE') setStatusFailed(update, status, waitForBlocksProcess)
     if (mintProcess! && mintProcess.status !== 'DONE') setStatusFailed(update, status, mintProcess)
     throw e
