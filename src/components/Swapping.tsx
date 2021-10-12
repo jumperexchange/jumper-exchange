@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
 import paraswapIcon from '../assets/icons/paraswap.png';
+import harmonyIcon from '../assets/icons/harmony.png'
 import hopIcon from '../assets/icons/hop.png';
 import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
@@ -219,6 +220,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     </Tooltip>
   )
 
+  const horizonAvatar = (
+    <Tooltip title="1inch">
+      <Avatar size="small" src={harmonyIcon} alt="1inch"></Avatar>
+    </Tooltip>
+  )
+
   const parseStepToTimeline = (step: TransferStep, index: number, route: Array<TransferStep>) => {
     const executionSteps = parseExecution(step.execution)
     const isDone = step.execution && step.execution.status === 'DONE'
@@ -248,6 +255,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             break;
           case 'hop':
             avatar = hopAvatar
+            break;
+          case 'horizon':
+            avatar = horizonAvatar
             break;
           default:
             break;
