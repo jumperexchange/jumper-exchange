@@ -16,6 +16,7 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
   const allowanceAndCrossProcess = createAndPushProcess('allowanceAndCrossProcess', update, status, 'Set Allowance and Cross', { status: 'ACTION_REQUIRED' })
   let waitForBlocksProcess: Process
   let mintProcess: Process
+  let intervalId: NodeJS.Timer
 
   try {
     // mainnet / testnet ?
@@ -63,9 +64,9 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
 
     let operationId: string
     let bridgePromise
-
-    if(allowanceAndCrossProcess.txHash){
-      operationId = allowanceAndCrossProcess.txHash
+    console.log(allowanceAndCrossProcess)
+    if(allowanceAndCrossProcess.operationId){
+      operationId = allowanceAndCrossProcess.operationId
     } else {
       bridgePromise = bridgeSDK.sendToken(
         params,
@@ -74,9 +75,9 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
     }
 
 
-    let intervalId = setInterval(async () => {
+    intervalId = setInterval(async () => {
       if (operationId) {
-        allowanceAndCrossProcess.txHash = operationId
+        allowanceAndCrossProcess.operationId = operationId
         update(status)
         const operation = await bridgeSDK.api.getOperation(operationId)
         console.debug('operation', operation)
@@ -116,6 +117,9 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
         if (operation.status !== STATUS.IN_PROGRESS) {
           clearInterval(intervalId);
           if (operation.status === STATUS.ERROR) {
+            // const lastStep: Process = status.process[status.process.length -1]
+            // lastStep.errorMessage = operation.status
+            // update( status )
             if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE') setStatusFailed(update, status, allowanceAndCrossProcess)
             if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE') setStatusFailed(update, status, waitForBlocksProcess)
             if (mintProcess! && mintProcess.status !== 'DONE') setStatusFailed(update, status, mintProcess)
@@ -132,12 +136,11 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
     if (mintProcess! && mintProcess.status !== 'DONE') setStatusDone(update, status, mintProcess)
 
   } catch (e: any) {
-    console.error(e)
-    if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE') setStatusFailed(update, status, allowanceAndCrossProcess)
-    const lastStep: Process = status.process[status.process.length -1].errorMessage
+    clearInterval(intervalId!);
+    const lastStep: Process = status.process[status.process.length -1]
     lastStep.errorMessage = (e as Error).message
     update( status )
-    console.log('hahaha')
+    if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE') setStatusFailed(update, status, allowanceAndCrossProcess)
     if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE') setStatusFailed(update, status, waitForBlocksProcess)
     if (mintProcess! && mintProcess.status !== 'DONE') setStatusFailed(update, status, mintProcess)
     throw e
