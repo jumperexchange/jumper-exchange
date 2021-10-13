@@ -2,6 +2,8 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import { BigNumber, ethers } from 'ethers'
 import { ChainId, SwapAction, SwapEstimate } from '../types'
 
+const USE_EXACT_IN = false
+
 const uniswapRouter02ABI = [
   "function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
   "function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
@@ -97,7 +99,7 @@ export const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEsti
   const contract = new ethers.Contract(getContractAddress(swapAction.chainId), uniswapRouter02ABI)
   const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes from the current Unix time
 
-  if (false) {
+  if (USE_EXACT_IN) {
     // Exact In
     if (swapAction.token.id === ethers.constants.AddressZero) {
       const data = await contract.populateTransaction.swapExactETHForTokens(swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)

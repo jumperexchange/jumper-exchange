@@ -407,8 +407,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         }}>
           <Typography.Text >
               {'You now have '}
-              {finalBalance?.portfolio.amount.toString().substring(0, 8)}
-              {` ${finalBalance?.portfolio.symbol}`}
+              {finalBalance?.portfolio?.amount.toString().substring(0, 8)}
+              {` ${finalBalance?.portfolio?.symbol}`}
               {` on ${toChain.name}`}
             </Typography.Text>
           </span>

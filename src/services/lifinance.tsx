@@ -1,31 +1,31 @@
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
-import { encodeAuctionBid, encrypt } from '@connext/nxtp-sdk/dist/utils'
+import { encodeAuctionBid } from '@connext/nxtp-sdk/dist/utils'
 import { AuctionResponse, getRandomBytes32 } from '@connext/nxtp-utils'
 import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { constants, ethers } from 'ethers'
 import { getRpcProviders } from '../components/web3/connectors'
 import { Chain, ChainId, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types'
+import { oneInch } from './1Inch'
 import { abi } from './ABI/NXTPFacet.json'
 import * as nxtp from './nxtp'
 import { paraswap } from './paraswap'
-import { oneInch } from './1Inch'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
 import { getApproved, setApproval } from './utils'
 
 const lifiContractAddress = '0xa74D44ed9C3BB96d7676E7A274c33A05210cf35a'
 const supportedChains = [
-  ChainId.BSC,
-  ChainId.POL,
-  ChainId.DAI,
-  ChainId.FTM,
+  // ChainId.BSC,
+  // ChainId.POL,
+  // ChainId.DAI,
+  // ChainId.FTM,
 
   // Testnets
-  ChainId.ROP,
+  // ChainId.ROP,
   ChainId.RIN,
   ChainId.GOR,
-  ChainId.MUM,
+  // ChainId.MUM,
 ]
 
 const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token: Token, amount: string, spenderAddress: string, update: Function, status: Execution) => {
@@ -81,7 +81,36 @@ const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => 
   }
 }
 
-const buildTransaction = async (signer: JsonRpcSigner, encryptionPublicKey: string, startSwapStep: SwapStep | undefined, crossStep: CrossStep, endSwapStep: SwapStep | undefined) => {
+const getQuote = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, crossStep: CrossStep, crossAction: CrossAction, receiverTransaction: ethers.PopulatedTransaction) => {
+  // -> request quote
+  let quote: AuctionResponse | undefined
+  try {
+    quote = await nxtp.getTransferQuote(nxtpSDK, crossAction.chainId, crossAction.token.id, crossAction.toChainId, crossAction.toToken.id, crossAction.amount.toString(), await signer.getAddress(), receiverTransaction.to, receiverTransaction.data, lifiContractAddress)
+    if (!quote) throw Error("Quote confirmation failed!")
+  } catch (e: any) {
+    cleanUp(nxtpSDK)
+    throw e
+  }
+
+  // -> store quote
+  const crossEstimate: CrossEstimate = {
+    type: 'cross',
+    fromAmount: quote.bid.amount,
+    toAmount: quote.bid.amountReceived,
+    fees: {
+      included: true,
+      percentage: '0.0005',
+      token: crossAction.token,
+      amount: new BigNumber(quote.bid.amount).times('0.0005').toString(),
+    },
+    data: quote,
+  }
+  crossStep.estimate = crossEstimate
+
+  return quote
+}
+
+const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSwapStep: SwapStep | undefined, crossStep: CrossStep, endSwapStep: SwapStep | undefined) => {
   const lifi = new ethers.Contract(lifiContractAddress, abi, signer)
 
   interface LifiData {
@@ -121,10 +150,9 @@ const buildTransaction = async (signer: JsonRpcSigner, encryptionPublicKey: stri
       lifiData,
       [
         {
-          fromToken: swapAction.token.id,
-          toToken: swapAction.toToken.id,
+          sendingAssetId: swapAction.token.id,
+          receivingAssetId: swapAction.toToken.id,
           fromAmount: swapEstimate.fromAmount,
-          toAmount: swapEstimate.toAmountMin,
           callTo: swapCall.to,
           callData: swapCall?.data,
         },
@@ -142,9 +170,10 @@ const buildTransaction = async (signer: JsonRpcSigner, encryptionPublicKey: stri
     )
   }
 
+  await getQuote(signer, nxtpSDK, crossStep, crossStep.action, receivingTransaction)
+
   // Sending side
   const expiry = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 3
-  const encrypted = encrypt(receivingTransaction.data!, encryptionPublicKey)
   const nxtpData = {
     invariantData: {
       ...crossStep.estimate.data.bid,
@@ -159,19 +188,15 @@ const buildTransaction = async (signer: JsonRpcSigner, encryptionPublicKey: stri
     callDataHash: crossStep.estimate.data.bid.callDataHash,
     callTo: crossStep.estimate.data.bid.callTo,
   }
-
-  // const nxtpData = {
-  //   // callTo: receivingTransaction.to,
-  //   // encryptedCallData: encrypted,
-  //   // callDataHash: utils.keccak256(receivingTransaction.data!),
-  // }
-
-
-  console.log(nxtpData)
-
   const swapOptions: any = {
     gasLimit: 500000,
   }
+
+  // Debug log
+  console.debug({
+    lifiData,
+    nxtpData,
+  })
 
   if (startSwapStep) {
     // Swap and Transfer
@@ -195,11 +220,6 @@ const buildTransaction = async (signer: JsonRpcSigner, encryptionPublicKey: stri
       swapOptions.value = swapEstimate.fromAmount
     }
 
-    console.log(lifiData,
-      [swapData],
-      nxtpData,
-      swapOptions
-    )
     // > swap and transfer
     return lifi.populateTransaction.swapAndStartBridgeTokensViaNXTP(
       lifiData,
@@ -223,53 +243,6 @@ const buildTransaction = async (signer: JsonRpcSigner, encryptionPublicKey: stri
   }
 }
 
-const getSdkAndQuote = async (signer: JsonRpcSigner, crossStep: CrossStep, crossAction: CrossAction, update: Function, status: Execution) => {
-  // sdk
-  // -> set status
-  const quoteProcess = createAndPushProcess(update, status, 'Setup NXTP')
-  // -> init sdk
-  const crossableChains = [crossAction.chainId, crossAction.toChainId]
-  const chainProviders = getRpcProviders(crossableChains)
-  const nxtpSDK = await nxtp.setup(signer, chainProviders)
-
-  // get Quote
-  // -> set status
-  quoteProcess.message = 'Confirm Quote'
-  update(status)
-
-  // -> request quote
-  let quote: AuctionResponse | undefined
-  try {
-    quote = await nxtp.getTransferQuote(nxtpSDK, crossAction.chainId, crossAction.token.id, crossAction.toChainId, crossAction.toToken.id, crossAction.amount.toString(), await signer.getAddress(), undefined, undefined, lifiContractAddress)
-    if (!quote) throw Error("Quote confirmation failed!")
-  } catch (e: any) {
-    quoteProcess.errorMessage = e.message
-    setStatusFailed(update, status, quoteProcess)
-    cleanUp(nxtpSDK)
-    throw e
-  }
-
-  // -> store quote
-  const crossEstimate: CrossEstimate = {
-    type: 'cross',
-    fromAmount: quote.bid.amount,
-    toAmount: quote.bid.amountReceived,
-    fees: {
-      included: true,
-      percentage: '0.0005',
-      token: crossAction.token,
-      amount: new BigNumber(quote.bid.amount).times('0.0005').toString(),
-    },
-    data: quote,
-  }
-  crossStep.estimate = crossEstimate
-
-  // -> set status
-  setStatusDone(update, status, quoteProcess)
-
-  return nxtpSDK
-}
-
 const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateStatus?: Function, initialStatus?: Execution) => {
 
   // unpack route
@@ -283,29 +256,24 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   // setup
   let { status, update } = initStatus(updateStatus, initialStatus)
 
-  // sdk + quote
-  const sdkPromise = getSdkAndQuote(signer, crossStep, crossAction, update, status)
-
-
-  // Request public key
-  // -> set status
-  const keyProcess = createAndPushProcess(update, status, 'Provide Public Key', { status: 'ACTION_REQUIRED' })
-
-  // -> request key
-  let encryptionPublicKey
-  try {
-    encryptionPublicKey = await (window as any).ethereum.request({
-      method: "eth_getEncryptionPublicKey",
-      params: [await signer.getAddress()], // you must have access to the specified account
-    })
-  } catch (e) {
-    console.error(e)
-    setStatusFailed(update, status, keyProcess)
-    throw e
-  }
-
-  // -> set status
-  setStatusDone(update, status, keyProcess)
+  // ## DEACTIVATED, because key is requested in sdk
+  // // Request public key
+  // // -> set status
+  // const keyProcess = createAndPushProcess(update, status, 'Provide Public Key', { status: 'ACTION_REQUIRED' })
+  // // -> request key
+  // let encryptionPublicKey
+  // try {
+  //   encryptionPublicKey = await (window as any).ethereum.request({
+  //     method: "eth_getEncryptionPublicKey",
+  //     params: [await signer.getAddress()], // you must have access to the specified account
+  //   })
+  // } catch (e) {
+  //   console.error(e)
+  //   setStatusFailed(update, status, keyProcess)
+  //   throw e
+  // }
+  // // -> set status
+  // setStatusDone(update, status, keyProcess)
 
 
   // Allowance
@@ -313,25 +281,23 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     await checkAllowance(signer, fromChain, route[0].action.token, route[0].action.amount, lifiContractAddress, update, status)
   }
 
-
-  // Wait for SDK and quote
-  const nxtpSDK = await sdkPromise
-
-
   // Transaction
   // -> set status
   const submitProcess = createAndPushProcess(update, status, 'Preparing Transaction', { status: 'PENDING' })
 
   // -> prepare
   let call
+  let nxtpSDK
   try {
-    call = await buildTransaction(signer, encryptionPublicKey, startSwapStep, crossStep, endSwapStep)
-    console.log('got call', call)
+    const crossableChains = [crossAction.chainId, crossAction.toChainId]
+    const chainProviders = getRpcProviders(crossableChains)
+    nxtpSDK = await nxtp.setup(signer, chainProviders)
+    call = await buildTransaction(signer, nxtpSDK, startSwapStep, crossStep, endSwapStep)
   } catch (e: any) {
     if (e.message) submitProcess.errorMessage = e.message
     if (e.code) submitProcess.errorCode = e.code
     setStatusFailed(update, status, submitProcess)
-    cleanUp(nxtpSDK)
+    if (nxtpSDK) cleanUp(nxtpSDK)
     throw e
   }
 
