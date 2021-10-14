@@ -70,14 +70,28 @@ const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token: Token,
 
 const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => {
   switch (swapAction.tool) {
-    case 'paraswap':
-      return paraswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+    case 'paraswap': {
+      const call = await paraswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      return {
+        approveTo: await paraswap.getContractAddress(swapAction.chainId),
+        call
+      }
+    }
+    case '1inch': {
+      const call = await oneInch.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      return {
+        approveTo: call.to,
+        call,
+      }
+    }
 
-    case '1inch':
-      return oneInch.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
-
-    default:
-      return uniswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+    default: {
+      const call = await  uniswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      return {
+        approveTo: call.to,
+        call,
+      }
+    }
   }
 }
 
@@ -156,8 +170,9 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
           sendingAssetId: swapAction.token.id,
           receivingAssetId: swapAction.toToken.id,
           fromAmount: swapEstimate.fromAmount,
-          callTo: swapCall.to,
-          callData: swapCall?.data,
+          callTo: swapCall.call.to,
+          callData: swapCall.call.data,
+          approveTo: swapCall.approveTo,
         },
       ],
       swapAction.toToken.id,
@@ -218,9 +233,14 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
       receivingAssetId: swapAction.toToken.id,
       fromAmount: swapEstimate.fromAmount,
       toAmount: swapEstimate.toAmountMin,
-      callTo: swapCall.to,
-      callData: swapCall?.data,
+      callTo: swapCall.call.to,
+      callData: swapCall?.call.data,
+      approveTo: swapCall.approveTo,
     }
+
+    console.log({
+      swapData
+    })
 
     // > pass native currency directly
     if (swapAction.token.id === constants.AddressZero) {
