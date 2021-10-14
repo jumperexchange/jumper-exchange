@@ -2,7 +2,7 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import { BigNumber, ethers } from 'ethers'
 import { ChainId, SwapAction, SwapEstimate } from '../types'
 
-const USE_EXACT_IN = false
+const USE_EXACT_IN = true
 
 const uniswapRouter02ABI = [
   "function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",

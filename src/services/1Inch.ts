@@ -67,7 +67,6 @@ const checkTokenAddress = (address: string) => {
 const getTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, fromAddress: string, destReceiver: string, slippage: number = 0.01) => {
   // https://docs.1inch.io/api/quote-swap
   /* TODO: 1inch API supports custom gasPrices use transactionSpeed to get gasprice */
-  /* TODO: slippage hardcoded to 1 */
   const params = {
     fromTokenAddress: checkTokenAddress(fromTokenAddress), //REQUIRED, string, contract address of a token to sell
     toTokenAddress: checkTokenAddress(toTokenAddress), // REQUIRED, string, contract address of a token to buy
@@ -76,14 +75,14 @@ const getTransaction = async (chainId: number, fromTokenAddress: string, toToken
     slippage: slippage * 100, // REQUIRED, number, additional slippage in percentage
     // protocols: // OPTIONAL, string, protocols that can be used in a swap
     destReceiver: destReceiver, // OPTIONAL, string, address that will receive a purchased token
-    referrerAddress: process.env.REACT_APP_ONEINCH_REFERRER_WALLET,// OPTIONAL, string, referrer's address
-    fee: process.env.REACT_APP_ONEINCH_FEE, // OPTIONAL, number, referrer's fee in percentage
+    // referrerAddress: process.env.REACT_APP_ONEINCH_REFERRER_WALLET,// OPTIONAL, string, referrer's address
+    // fee: process.env.REACT_APP_ONEINCH_FEE, // OPTIONAL, number, referrer's fee in percentage
     // gasPrice: // OPTIONAL, string, gas price
     // burnChi: // OPTIONAL, boolean, if true, CHI will be burned from fromAddress to compensate gas
     // complexityLevel: // OPTIONAL, string, how many connectorTokens can be used
     // connectorTokens: // OPTIONAL, string, contract addresses of connector tokens
     // allowPartialFill: // OPTIONAL, boolean, if true, accept the partial order execution
-    // disableEstimate: // OPTIONAL, boolean, if true, checks of the required quantities are disabled
+    disableEstimate: true, // OPTIONAL, boolean, if true, checks of the required quantities are disabled
     // gasLimit: // OPTIONAL, integer, maximum amount of gas for a swap
     // parts: // OPTIONAL, integer, maximum number of parts each main route part can be split into
     // mainRouteParts: // OPTIONAL, integer, maximum number of main route parts

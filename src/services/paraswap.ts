@@ -118,10 +118,10 @@ const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, s
     minAmount, // destAmount: PriceString,
     rate, // priceRoute: OptimalRate,
     srcAddress, // userAddress: Address,
-    rate.partner, // partner?: string,
+    undefined, //rate.partner, // partner?: string,
     undefined, // partnerAddress?: string,
-    rate.partnerFee, // partnerFeeBps?: number,
-    destAddress, // receiver?: Address,
+    undefined, //rate.partnerFee, // partnerFeeBps?: number,
+    undefined, //destAddress, // receiver?: Address,
     {
       ignoreChecks: true, // ignoreChecks?: boolean;
       // ignoreGasEstimate?: boolean;
@@ -132,6 +132,7 @@ const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, s
     rate.srcDecimals,
     rate.destDecimals,
     // permit?: string,
+    // deadline?: string
   )
 
   if (txParams.hasOwnProperty('message')) {

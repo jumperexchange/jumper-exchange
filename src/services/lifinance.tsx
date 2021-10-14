@@ -16,9 +16,9 @@ import { getApproved, setApproval } from './utils'
 
 const lifiContractAddress = '0xa74D44ed9C3BB96d7676E7A274c33A05210cf35a'
 const supportedChains = [
-  // ChainId.BSC,
-  // ChainId.POL,
-  // ChainId.DAI,
+  ChainId.BSC,
+  ChainId.POL,
+  ChainId.DAI,
   // ChainId.FTM,
 
   // Testnets
@@ -144,6 +144,9 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     const swapAction = endSwapStep.action
     const swapEstimate = endSwapStep.estimate as SwapEstimate
 
+    // adjust lifData
+    lifiData.receivingAssetId = swapAction.toToken.id
+
     const swapCall = await buildSwap(swapAction, swapEstimate)
 
     receivingTransaction = await lifi.populateTransaction.swapAndCompleteBridgeTokensViaNXTP(
@@ -202,6 +205,10 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     // Swap and Transfer
     const swapAction = startSwapStep.action as SwapAction
     const swapEstimate = startSwapStep.estimate as SwapEstimate
+
+    // adjust lifData
+    lifiData.sendingAssetId = swapAction.token.id
+    lifiData.amount = swapAction.amount
 
     // > build swap
     const swapCall = await buildSwap(swapAction, swapEstimate)
