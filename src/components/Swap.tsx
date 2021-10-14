@@ -257,6 +257,10 @@ const Swap = ({
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
     }
 
+    if(readActiveRoute().length){
+      return <Button disabled={false} shape="round" type="primary" size={"large"} onClick={() => setRouteAndIndex()}>Resume Swap</Button>
+    }
+
     return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => setRouteAndIndex()}>Swap</Button>
   }
 
