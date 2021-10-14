@@ -994,6 +994,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   ],
   [ChainKey.BSCT]: [
     findDefaultCoinOnChain(CoinKey.BNB, ChainKey.BSCT),
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.BSCT),
   ],
   [ChainKey.ONET]: [
     findDefaultCoinOnChain(CoinKey.ONE, ChainKey.ONET),

@@ -65,8 +65,10 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
     let operationId: string
     let bridgePromise
     console.log(allowanceAndCrossProcess)
-    if(allowanceAndCrossProcess.operationId){
+    if(allowanceAndCrossProcess.operationId && allowanceAndCrossProcess.txHash){
       operationId = allowanceAndCrossProcess.operationId
+      const operation = await bridgeSDK.restoreOperationById(operationId)
+      bridgePromise = operation.waitOperationComplete()
     } else {
       bridgePromise = bridgeSDK.sendToken(
         params,
@@ -117,6 +119,7 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
         if (operation.status !== STATUS.IN_PROGRESS) {
           clearInterval(intervalId);
           if (operation.status === STATUS.ERROR) {
+            //TODO: find appropriate message for error
             // const lastStep: Process = status.process[status.process.length -1]
             // lastStep.errorMessage = operation.status
             // update( status )

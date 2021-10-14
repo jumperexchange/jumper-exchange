@@ -101,8 +101,8 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
 
 
 
-
-  return await finishTransfer(nxtpSDK, step, update, status)
+  await finishTransfer(nxtpSDK, step, update, status)
+  return status
 }
 
 const cleanUp = (sdk: NxtpSdk, update: Function, status: any, process: Process) => {
