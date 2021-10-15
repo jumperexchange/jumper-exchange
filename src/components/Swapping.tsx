@@ -14,7 +14,7 @@ import walletIcon from '../assets/wallet.png';
 import { executeOneInchSwap } from '../services/1inch.execute';
 import { executeHopCross } from '../services/hop.execute';
 import { lifinance } from '../services/lifinance';
-import { addToken, switchChain } from '../services/metamask';
+import { switchChain, switchChainAndAddToken } from '../services/metamask';
 import { executeNXTPCross } from '../services/nxtp.execute';
 import { executeParaswap } from '../services/paraswap.execute';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
@@ -425,23 +425,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       const {toChain} = getRecevingInfo(lastStep)
       return (<Space direction="vertical">
       <Typography.Text strong>Swap Successful!</Typography.Text>
-      {finalBalance &&
-      <Tooltip title="Click to add this token to your wallet.">
-        <span style={{cursor: 'copy'}} onClick={async () => {
-          if (web3.chainId !== toChain.id) {
-            await switchChain(toChain.id)
-            await (window as any).ethereum.once('networkChanged', async (id:any)  => {
-              await addToken(finalBalance.token)
-            })
-          } else {
-            await addToken(finalBalance.token)
-          }
-
-        }}>
-            <Typography.Text >
+      {finalBalance && finalBalance.portfolio &&
+        <Tooltip title="Click to add this token to your wallet.">
+          <span style={{cursor: 'copy'}} onClick={() => switchChainAndAddToken(toChain.id, finalBalance.token)}>
+            <Typography.Text>
               {'You now have '}
-              {finalBalance?.portfolio.amount.toString().substring(0, 8)}
-              {` ${finalBalance?.portfolio.symbol}`}
+              {finalBalance.portfolio.amount.toString().substring(0, 8)}
+              {` ${finalBalance.portfolio.symbol}`}
               {` on ${toChain.name}`}
             </Typography.Text>
           </span>

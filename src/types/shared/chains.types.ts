@@ -31,7 +31,7 @@ export interface Exchange {
   tokenlistUrl: string
 }
 
-const prefixChainId = (chainId: number) => {
+export const prefixChainId = (chainId: number) => {
   return '0x' + BigNumber.from(chainId)._hex.split('0x')[1].replace(/\b0+/g, '')
 }
 
