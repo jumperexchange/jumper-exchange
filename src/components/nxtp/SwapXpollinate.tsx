@@ -945,6 +945,7 @@ const SwapXpollinate = ({
     let impact = new BigNumber(0)
     let routerFee = new BigNumber(0)
     let gasFee = new BigNumber(0)
+    let decimals = 2
 
     if (highlightedIndex !== -1) {
       const selectedRoute = routes[highlightedIndex]
@@ -961,6 +962,10 @@ const SwapXpollinate = ({
 
       gasFee = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(-toToken.decimals)
       routerFee = diff.minus(gasFee)
+
+      if (routerFee.lt('0.01')) {
+        decimals = 4
+      }
     }
 
     return (
@@ -973,17 +978,17 @@ const SwapXpollinate = ({
               <td style={{textAlign: 'right'}}></td>
             </tr>
             <tr>
-              <td>Router</td>
-              <td style={{textAlign: 'right'}}>{routerFee.toFixed(2)} {token?.symbol}</td>
+              <td>Base Fee</td>
+              <td style={{textAlign: 'right'}}>{routerFee.toFixed(decimals, 1)} {token?.symbol}</td>
             </tr>
             <tr>
-              <td style={{paddingRight: 10}}>Receiving Chain Gas</td>
-              <td style={{textAlign: 'right'}}>{gasFee.toFixed(2)} {token?.symbol}</td>
+              <td style={{paddingRight: 10}}>Router Gas Fee</td>
+              <td style={{textAlign: 'right'}}>{gasFee.toFixed(decimals, 1)} {token?.symbol}</td>
             </tr>
           </tbody>
         </table>
       )}>
-        Price Impact: {impact.toFixed(2)}%
+        Fee Impact: {impact.toFixed(2)}%
 
         <Badge count={<InfoCircleOutlined  style={{ color: 'gray' }} />} offset={[4,-1]} />
       </Tooltip>
