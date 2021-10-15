@@ -1,4 +1,4 @@
-import { getChainById, Token } from '../types'
+import { getChainById, prefixChainId, Token } from '../types'
 
 export const switchChain = async (chainId: number) => {
   const ethereum = (window as any).ethereum
@@ -59,3 +59,18 @@ export const addToken = async (token: Token) => {
   return false
 }
 
+export const switchChainAndAddToken = async (chainId: number, token: Token) => {
+  const ethereum = (window as any).ethereum
+  const chainIdPrefixed = prefixChainId(chainId)
+
+  if (chainIdPrefixed !== ethereum.chainId) {
+    await switchChain(chainId)
+    ethereum.once('networkChanged', async (id: string) => {
+      if (parseInt(id) === chainId) {
+        await addToken(token)
+      }
+    })
+  } else {
+    await addToken(token)
+  }
+}
