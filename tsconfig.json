@@ -6,6 +6,8 @@
       "dom.iterable",
       "esnext"
     ],
+    "typeRoots": [ "globals.d.ts", "./node_modules/@types"],
+
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -22,5 +24,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/globals.d.ts"  ]
 }

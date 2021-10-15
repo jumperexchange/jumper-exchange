@@ -18,6 +18,7 @@ import { initStomt } from './services/stomt';
 import { getDefaultTokenBalancesForWallet as getBalancesForWalletTestnet } from './services/testToken';
 import { getChainById } from './types';
 import NotificationOverlay from './components/NotificationsOverlay';
+import ChangelogModal from './components/ChangelogModal';
 
 const getTransferChains = (jsonArraySting: string) => {
   try {
@@ -137,6 +138,7 @@ function App() {
               }} />
             </Switch>
             <NotificationOverlay />
+            <ChangelogModal />
           </Layout>
         </Web3ConnectionManager>
       </WrappedWeb3ReactProvider>
