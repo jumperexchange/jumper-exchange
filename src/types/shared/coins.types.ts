@@ -373,6 +373,16 @@ export const defaultCoins: Array<Coin> = [
         name: CoinKey.DAI,
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
       },
+      [ChainKey.ARB]: {
+        id: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+        symbol: CoinKey.DAI,
+        decimals: 18,
+        chainId: ChainId.ARB,
+        chainKey: ChainKey.ARB,
+        key: CoinKey.DAI,
+        name: CoinKey.DAI,
+        logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
+      },
 
       // Testnets
       [ChainKey.ROP]: {
@@ -930,9 +940,9 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
   ],
   [ChainKey.ARB]: [
-    // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ARB),
   ],
   [ChainKey.OPT]: [
     // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
@@ -943,6 +953,11 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.ONE, ChainKey.ONE),
     findDefaultCoinOnChain(CoinKey.BNB, ChainKey.ONE),
     findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ONE),
+  ],
+  [ChainKey.AVA]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.AVA),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.AVA),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.AVA),
   ],
 
   // Testnet
