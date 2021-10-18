@@ -5,68 +5,26 @@ import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { constants, ethers } from 'ethers'
 import { getRpcProviders } from '../components/web3/connectors'
-import { Chain, ChainId, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types'
+import { ChainId, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, SwapAction, SwapEstimate, SwapStep, TransferStep } from '../types'
 import { oneInch } from './1Inch'
 import { abi } from './ABI/NXTPFacet.json'
+import { checkAllowance } from './allowance.execute'
 import * as nxtp from './nxtp'
 import { paraswap } from './paraswap'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
-import { getApproved, setApproval } from './utils'
 
 const lifiContractAddress = '0xa74D44ed9C3BB96d7676E7A274c33A05210cf35a'
-const supportedChains = [
-  ChainId.BSC,
-  ChainId.POL,
-  ChainId.DAI,
-  // ChainId.FTM,
-
-  // Testnets
-  // ChainId.ROP,
-  ChainId.RIN,
-  ChainId.GOR,
-  // ChainId.MUM,
-]
-
-const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token: Token, amount: string, spenderAddress: string, update: Function, status: Execution) => {
-  // Ask user to set allowance
-  // -> set status
-  const allowanceProcess = createAndPushProcess(update, status, `Set Allowance for ${token.symbol}`)
-
-  // -> check allowance
+const getSupportedChains = (jsonArraySting: string) : ChainId[] => {
   try {
-    const approved = await getApproved(signer, token.id, spenderAddress)
-
-    if (new BigNumber(amount).gt(approved)) {
-      allowanceProcess.status = 'ACTION_REQUIRED'
-      update(status)
-
-      const approveTx = await setApproval(signer, token.id, spenderAddress, amount)
-
-      // update status
-      allowanceProcess.status = 'PENDING'
-      allowanceProcess.txHash = approveTx.hash
-      allowanceProcess.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
-      allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-      update(status)
-
-      // wait for transcation
-      await approveTx.wait()
-
-      // -> set status
-      allowanceProcess.message = <>Approved: <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-    } else {
-      allowanceProcess.message = 'Already Approved'
-    }
-    setStatusDone(update, status, allowanceProcess)
-  } catch (e: any) {
-    // -> set status
-    if (e.message) allowanceProcess.errorMessage = e.message
-    if (e.code) allowanceProcess.errorCode = e.code
-    setStatusFailed(update, status, allowanceProcess)
-    throw e
+    const chainIds = JSON.parse(jsonArraySting)
+    return chainIds
+  } catch (e) {
+    return []
   }
 }
+
+const supportedChains = getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
 
 const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => {
   switch (swapAction.tool) {
@@ -86,7 +44,7 @@ const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => 
     }
 
     default: {
-      const call = await  uniswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      const call = await uniswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
       return {
         approveTo: call.to,
         call,
