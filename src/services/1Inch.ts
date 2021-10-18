@@ -108,8 +108,9 @@ const buildTransaction = async (chainId: number, fromTokenAddress: string, toTok
     to: result.tx.to,
     data: result.tx.data,
     value: BigNumber.from(result.tx.value),
-    gasPrice: BigNumber.from(result.tx.gasPrice),
-    gasLimit: BigNumber.from(result.tx.gas).mul(125).div(100), // add 25%
+    // disabled while disableEstimate is set to true
+    // gasPrice: BigNumber.from(result.tx.gasPrice),
+    // gasLimit: BigNumber.from(result.tx.gas).mul(125).div(100), // add 25%
   } as ethers.PopulatedTransaction
 }
 

@@ -2,12 +2,13 @@
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Collapse, Form, Image, Modal, Row, Typography } from 'antd';
+import { Button, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
 import BigNumber from 'bignumber.js';
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import { animate, stagger } from "motion";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import heroImage from '../assets/info_header.jpg';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { formatTokenAmountOnly } from '../services/utils';
@@ -18,7 +19,6 @@ import './Swap.css';
 import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
-import {animate, stagger} from "motion"
 
 const { Panel } = Collapse;
 
@@ -34,11 +34,11 @@ interface SwapProps {
 }
 
 
-const fadeInAnimation = ( element: React.MutableRefObject<HTMLDivElement | null>) =>{
-  animate(element.current?.childNodes as NodeListOf<Element>,{
+const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
+  animate(element.current?.childNodes as NodeListOf<Element>, {
     y: ["50px", "0px"],
-    opacity:[0, 1],
-  },{
+    opacity: [0, 1],
+  }, {
     delay: stagger(0.2),
     duration: 0.5,
     easing: "ease-in-out"
@@ -63,6 +63,9 @@ const Swap = ({
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
+
+  // Options
+  const [optionSlippage, setOptionSlippage] = useState<number>(3)
 
   // Routes
   const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
@@ -190,6 +193,7 @@ const Swap = ({
           token: wToken,
           amount: '',
           toAddress: '',
+          slippage: optionSlippage / 100,
         }
 
         // cancel previously running requests
@@ -225,7 +229,7 @@ const Swap = ({
     }
 
     getTransferRoutes()
-  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, findToken])
+  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
 
   const openSwapModal = () => {
     setselectedRoute(routes[highlightedIndex])
@@ -300,19 +304,49 @@ const Swap = ({
                   balances={balances}
                   allowSameChains={true}
                 />
-              <span>
-                  <Row  style={{ marginTop: 24 }} justify={"center"}>
+                <span>
+                  <Row style={{ marginTop: 24 }} justify={"center"}>
                     {submitButton()}
+                  </Row>
+
+                  {/* Advanced Options */}
+                  <Row justify={"center"} >
+                    <Collapse ghost style={{ width: '100%' }}>
+                      <Collapse.Panel header={`Advanced Options`} key="1">
+                        Slippage
+                        <div>
+                          <InputNumber
+                            defaultValue={optionSlippage}
+                            min={0}
+                            max={100}
+                            formatter={value => `${value}%`}
+                            parser={value => parseFloat(value ? value.replace('%', '') : '')}
+                            onChange={setOptionSlippage}
+                            style={{ border: '1px solid rgba(0,0,0,0.25)', borderRadius: 6, width: '100%' }}
+                          />
+                        </div>
+
+                        {/* Infinite Approval
+                        <div>
+                          <Checkbox
+                            checked={optionInfiniteApproval}
+                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}
+                          >
+                            Activate Infinite Approval
+                          </Checkbox>
+                        </div> */}
+                      </Collapse.Panel>
+                    </Collapse>
                   </Row>
 
                   {/* Disclaimer */}
                   <Row justify={"center"} className="beta-disclaimer">
-                    <Typography.Text type="danger" style={{textAlign: 'center'}}>
+                    <Typography.Text type="danger" style={{ textAlign: 'center' }}>
                       Please note that this is a beta product. <br />
                       We currently recommend using only Metamask Wallets.
                     </Typography.Text>
                   </Row>
-              </span>
+                </span>
 
               </Form>
 
@@ -321,7 +355,7 @@ const Swap = ({
         </Row>
 
         {/* Routes */}
-        <Row justify={"center"} style={{ marginLeft: 12,marginRight: 12, marginTop: 48, padding: 12 }}>
+        <Row justify={"center"} style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
           {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
@@ -347,28 +381,28 @@ const Swap = ({
             </Col>
           }
           {!routesLoading && noRoutesAvailable &&
-            <Col style={{width: "50%"}} className="no-routes-found">
+            <Col style={{ width: "50%" }} className="no-routes-found">
               <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
               <Typography.Text type="secondary" style={{ textAlign: 'left' }}>
                 We couldn't find suitable routes for your desired transfer.
                 We do have some suggestions why that could be: <br />
-                </Typography.Text>
-                <Collapse ghost className="no-route-custom-collapse">
+              </Typography.Text>
+              <Collapse ghost className="no-route-custom-collapse">
 
-                  <Panel header="A route for this transaction simply does not exist yet." key="1">
-                    <p style={{color:"grey"}}>
-                      We are working hard on integrating more exchanges to find possible transactions for you!
-                      Look out for updates and try again later.
-                    </p>
-                  </Panel>
+                <Panel header="A route for this transaction simply does not exist yet." key="1">
+                  <p style={{ color: "grey" }}>
+                    We are working hard on integrating more exchanges to find possible transactions for you!
+                    Look out for updates and try again later.
+                  </p>
+                </Panel>
 
-                  <Panel header="You are not sending enough tokens - Try a greater amount." key="2">
-                    <p style={{color:"grey"}}>
-                      Transactions cost money. These transaction costs are deducted from your swapping amount.
-                      If this amount is not enough to cover the expenses, we can not execute the transaction or compute routes.
-                    </p>
-                  </Panel>
-                </Collapse>
+                <Panel header="You are not sending enough tokens - Try a greater amount." key="2">
+                  <p style={{ color: "grey" }}>
+                    Transactions cost money. These transaction costs are deducted from your swapping amount.
+                    If this amount is not enough to cover the expenses, we can not execute the transaction or compute routes.
+                  </p>
+                </Panel>
+              </Collapse>
             </Col>
           }
         </Row>
@@ -379,7 +413,7 @@ const Swap = ({
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
-          onOk={() =>{
+          onOk={() => {
             setselectedRoute([])
             setRefreshBalances(true)
           }}
@@ -391,12 +425,12 @@ const Swap = ({
           footer={null}
         >
           <Swapping route={selectedRoute}
-          updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
-          onSwapDone = {() => {
-            // setRefreshBalances(true)
-            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-            .then(setBalances)
-          }}
+            updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
+            onSwapDone={() => {
+              // setRefreshBalances(true)
+              getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
+                .then(setBalances)
+            }}
           ></Swapping>
         </Modal>
       }

@@ -84,6 +84,7 @@ export interface DepositAction extends ActionBase {
 export interface WithdrawAction extends ActionBase {
   type: 'withdraw'
   toAddress: string
+  slippage: number
 }
 
 export interface SwapAction extends ActionBase {
