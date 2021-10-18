@@ -85,22 +85,6 @@ const readHideAbout = () => {
   const value = localStorage.getItem('nxtpHideDemo')
   return !(value === 'false')
 }
-
-const storeHideChangelog = (hide: boolean) => {
-  if (isSupported()) {
-    localStorage.setItem('hideChangelog', hide ? 'true' : 'false')
-  }
-}
-const readHideChangelog = () => {
-  if (!isSupported()) {
-    return false
-  }
-  const value = localStorage.getItem('hideChangelog')
-  return !value
-}
-
-
-
 export {
   isSupported,
   clearLocalStorage,
@@ -109,7 +93,5 @@ export {
   storeNxtpMessagingToken,
   readNxtpMessagingToken,
   storeHideAbout,
-  readHideAbout,
-  storeHideChangelog,
-  readHideChangelog
+  readHideAbout
 }

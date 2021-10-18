@@ -2,26 +2,23 @@ import { useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
 import ReactMarkdown from 'react-markdown'
 import { NotificationOutlined } from '@ant-design/icons';
-import {storeHideChangelog, readHideChangelog} from '../services/localStorage'
 import changelogMd from '../changelog.md';
 
 function ChangelogModal () {
 
-  const [isModalVisible, setIsModalVisible] = useState(readHideChangelog());
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [md, setMD] = useState('');
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleClose = () => {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    storeHideChangelog(true)
-  };
+
+
   useEffect(() => {
     fetch(changelogMd)
         .then(data => data.text())
@@ -32,29 +29,27 @@ function ChangelogModal () {
 
   return (
         <>
-        <div style={{
-          position: 'fixed',
-          bottom: 0,
-          left:0,
-          padding: '10px 20px 10px 20px',
-          background: 'white',
-        }}>
-          <Button
-           icon={<NotificationOutlined />}
-           type="primary"
-           onClick={showModal}
-           ghost
-           >What's New?</Button>
-        </div>
+        <Button
+          style={{
+            position: 'fixed',
+            bottom: 10,
+            left: 10,
+          }}
+          icon={<NotificationOutlined />}
+          type="primary"
+          shape="round"
+          onClick={showModal}
+          ghost
+          >What's New?</Button>
 
 
         <Modal
         title="Changelog"
         visible={isModalVisible}
-        onOk={handleOk}
+        onOk={handleClose}
+        onCancel={handleClose}
         okText="Close"
-        onCancel={handleCancel}
-        cancelText="Don't Show Again"
+        cancelButtonProps={{ style: { display: 'none' } }}
         >
           <ReactMarkdown children={md}></ReactMarkdown>
         </Modal>
