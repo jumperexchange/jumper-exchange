@@ -305,6 +305,14 @@ const Swap = ({
                   allowSameChains={true}
                 />
                 <span>
+                  {/* Disclaimer */}
+                  <Row justify={"center"} className="beta-disclaimer">
+                    <Typography.Text type="danger" style={{ textAlign: 'center' }}>
+                      Please note that this is a beta product, use it at your own risk. In rare cases funds can be locked for a longer period and exchanges can result in value loss. <br />
+                      We currently recommend using only Metamask Wallets.
+                    </Typography.Text>
+                  </Row>
+
                   <Row style={{ marginTop: 24 }} justify={"center"}>
                     {submitButton()}
                   </Row>
@@ -338,18 +346,8 @@ const Swap = ({
                       </Collapse.Panel>
                     </Collapse>
                   </Row>
-
-                  {/* Disclaimer */}
-                  <Row justify={"center"} className="beta-disclaimer">
-                    <Typography.Text type="danger" style={{ textAlign: 'center' }}>
-                      Please note that this is a beta product. <br />
-                      We currently recommend using only Metamask Wallets.
-                    </Typography.Text>
-                  </Row>
                 </span>
-
               </Form>
-
             </div>
           </Col>
         </Row>
