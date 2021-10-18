@@ -1,6 +1,7 @@
 import { HistoricalTransaction } from '@connext/nxtp-sdk';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
+import Link from 'antd/lib/typography/Link';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { getChainById, TokenWithAmounts } from '../../types';
@@ -114,13 +115,24 @@ const HistoricTransactionsTableNxtp = ({
       },
       //sorter: (a: HistoricalTransaction, b: HistoricalTransaction) => parseInt(a.crosschainTx.receiving?.amount || '0') - parseInt(b.crosschainTx.receiving?.amount || '0')
     },
-    // {
-    //   title: 'Transaction Id',
-    //   dataIndex: '',
-    //   render: (transaction: HistoricalTransaction) => {
-    //     return <div style={{ width: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{transaction.crosschainTx.invariant.transactionId}</div>
-    //   }
-    // },
+    {
+      title: 'Transaction Id',
+      dataIndex: '',
+      render: (transaction: HistoricalTransaction) => {
+        return (
+          <Link
+            href={ 'https://connext.coinhippo.io/tx/' + transaction.crosschainTx.invariant.transactionId }
+            target="_blank"
+            rel="nofollow noreferrer"
+            style={{ width: 150 }}
+            ellipsis={true}
+            copyable
+          >
+            {transaction.crosschainTx.invariant.transactionId}
+          </Link>
+        )
+      }
+    },
   ]
 
   return (
