@@ -25,7 +25,9 @@ export const executeOneInchSwap = async (signer: JsonRpcSigner, swapAction: Swap
   // -> swapping
   let tx
   try {
-    tx = await oneInch.transfer(signer, swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), destAddress)
+    const userAddress = await signer.getAddress()
+    const call = await oneInch.buildTransaction(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), userAddress, destAddress, swapAction.slippage)
+    tx = await signer.sendTransaction(call)
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message
@@ -56,7 +58,7 @@ export const executeOneInchSwap = async (signer: JsonRpcSigner, swapAction: Swap
 
   // -> set status
   const parsedReceipt = oneInch.parseReceipt(tx, receipt)
-  swapProcess.message = <>Swapped via 1inch (<a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+  swapProcess.message = <>Swapped: <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   status.fromAmount = parsedReceipt.fromAmount
   status.toAmount = parsedReceipt.toAmount
   status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
