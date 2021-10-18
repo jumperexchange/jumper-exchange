@@ -19,7 +19,7 @@ import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
 import {animate, stagger} from "motion"
-import { deleteActiveRoute, readActiveRoute } from '../services/localStorage';
+import { deleteActiveRoute, readActiveRoutes } from '../services/localStorage';
 
 const { Panel } = Collapse;
 
@@ -69,9 +69,10 @@ const Swap = ({
   const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>(readActiveRoute()) //TODO: read Selected route from localStorage or equivalent
+  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
   const [selectedRouteIndex, setselectedRouteIndex] = useState<number>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
+  const [activeRoutes, setActiveRoutes] = useState<Array<Array<TransferStep>>>(readActiveRoutes())
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -257,10 +258,6 @@ const Swap = ({
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
     }
 
-    if(readActiveRoute().length){
-      return <Button disabled={false} shape="round" type="primary" size={"large"} onClick={() => setRouteAndIndex()}>Resume Swap</Button>
-    }
-
     return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => setRouteAndIndex()}>Swap</Button>
   }
 
@@ -319,7 +316,6 @@ const Swap = ({
                     </Typography.Text>
                   </Row>
               </span>
-
               </Form>
 
             </div>
@@ -328,6 +324,35 @@ const Swap = ({
 
         {/* Routes */}
         <Row justify={"center"} style={{ marginLeft: 12,marginRight: 12, marginTop: 48, padding: 12 }}>
+        {
+          !!activeRoutes.length &&
+            <Collapse
+            bordered={false}
+            className="active-transfer-collapse"
+            style={{
+              background: '#F0F2F5',
+              border: 0
+            }}
+          >
+            <Panel header={`Active Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
+              {
+                activeRoutes.map((route: TransferStep[], index) =>{
+                  const first = route[0] as TransferStep
+                  const last = route [route.length -1] as TransferStep
+                    return (
+                      <div key={index} onClick={e => {setselectedRoute(route)}}>
+                        {`${first.action.amount} ${first.action.token.symbol} to ${last.estimate?.toAmount} ${last.action.token.symbol}`}
+                      </div>
+                      )
+                })
+              }
+            </Panel>
+
+          </Collapse>
+          }
+
+
+
           {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
@@ -381,7 +406,7 @@ const Swap = ({
 
       </div>
 
-      {selectedRoute.length &&
+      {!!selectedRoute.length &&
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
@@ -399,8 +424,8 @@ const Swap = ({
         >
           <Swapping route={selectedRoute}
           updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
-          onSwapDone = {() => {
-            deleteActiveRoute()
+          onSwapDone = {(route: TransferStep[]) => {
+            deleteActiveRoute(route)
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
             .then(setBalances)
           }}

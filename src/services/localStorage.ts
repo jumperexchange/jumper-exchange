@@ -90,22 +90,54 @@ const readHideAbout = () => {
 
 const storeActiveRoute = (route: TransferStep[]) => {
   if (!isSupported()) return
-  // serialize all JSX elements correctly
-  localStorage.setItem('activeRoute', JSON.stringify(route, (k, v) =>
+  const storedRoutes = readActiveRoutes()
+  const newFirstStep = route[0]
+  const newLastStep = route[ route.length-1 ]
+  let updatedRoutes
+  if(!storedRoutes.length){
+    updatedRoutes = [route]
+  } else {
+    updatedRoutes = storedRoutes.map(storedRoute => {
+      const storedFirstStep = route[0]
+      const storedLastStep = route[ route.length-1 ]
+      if(storedFirstStep.action === newFirstStep.action && storedLastStep.action === newLastStep.action){
+        storedRoute = route
+      }
+      return storedRoute
+    })
+  }
+
+
+  localStorage.setItem('activeRoute', JSON.stringify(updatedRoutes, (k, v) =>
     typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
   ))
 }
 
-const deleteActiveRoute = () => {
+const deleteActiveRoute = (route: TransferStep[]) => {
   if (!isSupported()) {
     return
   }
-  localStorage.removeItem('activeRoute')
+  const storedRoutes = readActiveRoutes()
+  if(storedRoutes && storedRoutes.length < 2) return localStorage.removeItem('activeRoute')
+  const newFirstStep = route[0]
+  const newLastStep = route[ route.length-1 ]
+  const updatedRoutes = storedRoutes.map(storedRoute => {
+    const storedFirstStep = route[0]
+    const storedLastStep = route[ route.length-1 ]
+    if(storedFirstStep.action !== newFirstStep.action && storedLastStep.action !== newLastStep.action){
+      return storedRoute
+    }
+    return null
+  })
+
+  localStorage.setItem('activeRoute', JSON.stringify(updatedRoutes, (k, v) =>
+    typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
+  ))
 }
 
-const readActiveRoute =(): TransferStep[] => {
+const readActiveRoutes =(): Array<TransferStep[]> => {
   if (!isSupported()) {
-    return [] as TransferStep[]
+    return [] as Array<TransferStep[]>
   }
   const routeString = localStorage.getItem('activeRoute')
 
@@ -117,13 +149,13 @@ const readActiveRoute =(): TransferStep[] => {
 
         return matches ? Symbol.for(matches[1]) : v;
       })
-      return route as TransferStep[]
+      return route as Array<TransferStep[]>
     }
     catch (e) {
-      return [] as TransferStep[]
+      return [] as Array<TransferStep[]>
     }
   } else {
-    return [] as TransferStep[]
+    return [] as Array<TransferStep[]>
   }
 }
 
@@ -138,5 +170,5 @@ export {
   readHideAbout,
   storeActiveRoute,
   deleteActiveRoute,
-  readActiveRoute
+  readActiveRoutes
 }
