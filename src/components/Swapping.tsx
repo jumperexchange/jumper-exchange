@@ -1,4 +1,4 @@
-import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd';
@@ -51,8 +51,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   // Swap
   const updateStatus = (step: TransferStep, status: Execution) => {
     step.execution = status
-    updateRoute(route)
     storeActiveRoute(route)
+    updateRoute(route)
   }
 
   const checkChain = async (step: TransferStep) => {
@@ -156,7 +156,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             <Typography.Text
               type={type}
               style={{ maxWidth: 250}}
-              className={process.status === 'PENDING' ? 'flashing' : undefined}
+              className={(isSwapping && process.status === 'PENDING') ? 'flashing' : undefined}
             >
               <p>{process.message}</p>
               {hasFailed &&
@@ -230,6 +230,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const executionSteps = parseExecution(step.execution)
     const isDone = step.execution && step.execution.status === 'DONE'
     const isLoading = isSwapping && step.execution && step.execution.status === 'PENDING'
+    const isPaused = !isSwapping && step.execution && step.execution.status === 'PENDING'
     const color = isDone ? 'green' : (step.execution ? 'blue' : 'gray')
     switch (step.action.type) {
 
@@ -239,7 +240,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.chainId))}</h4>
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item position={isMobile? 'right': 'left'} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : null}>
+          <Timeline.Item position={isMobile? 'right': 'left'} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : (isPaused? <PauseCircleOutlined /> :null)}>
             {executionSteps}
           </Timeline.Item>,
         ]
@@ -318,6 +319,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   }
 
   const startCrossChainSwap = async () => {
+    for (let i = 0; i < route.length; i++){
+      route[i].id = new Date().toUTCString()
+    }
     storeActiveRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
@@ -442,7 +446,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
 
     // FAILED
-    const isFailed = route.filter(step => step.execution?.status === 'FAILED').length > 0
+    const isFailed = route.some( step => step.execution?.status === 'FAILED' )
     if (isFailed) {
       return <Button type="primary" onClick={() => restartCrossChainSwap()} style={{marginTop: 10}}>
         Restart from Failed Step
@@ -450,8 +454,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
 
     // RESUME
-    const shouldResume = route.filter(step => step.execution?.status === 'PENDING').length > 0
-    if(shouldResume){
+    const pendingSteps = route.some( step => step.execution?.status === 'PENDING' )
+    const failedSteps = route.some( step => step.execution?.status === 'FAILED' )
+    if(pendingSteps && !failedSteps){
       return <Button type="primary" onClick={() => resumeCrossChainSwap()} style={{marginTop: 10}}>
         {isCrossChainSwap ? 'Resume Cross Chain Swap' : 'Resume Swap'}
       </Button>

@@ -285,3 +285,8 @@ h4.swap-title {
   border: 0px;
   border-radius: 2px;
 }
+
+.site-collapse-active-transfer-panel .ant-collapse-header {
+  font-weight: 500;
+  font-size: 1.17em;
+}

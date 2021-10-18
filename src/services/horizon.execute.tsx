@@ -64,7 +64,6 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
 
     let operationId: string
     let bridgePromise
-    console.log(allowanceAndCrossProcess)
     if(allowanceAndCrossProcess.operationId && allowanceAndCrossProcess.txHash){
       operationId = allowanceAndCrossProcess.operationId
       const operation = await bridgeSDK.restoreOperationById(operationId)

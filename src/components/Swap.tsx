@@ -20,6 +20,7 @@ import Swapping from './Swapping';
 import { injected } from './web3/connectors';
 import {animate, stagger} from "motion"
 import { deleteActiveRoute, readActiveRoutes } from '../services/localStorage';
+import ActiveTrasactionsTable from './ActiveTransactionsTable';
 
 const { Panel } = Collapse;
 
@@ -322,37 +323,32 @@ const Swap = ({
           </Col>
         </Row>
 
-        {/* Routes */}
-        <Row justify={"center"} style={{ marginLeft: 12,marginRight: 12, marginTop: 48, padding: 12 }}>
+        {/* Active Routes */}
         {
           !!activeRoutes.length &&
-            <Collapse
-            bordered={false}
-            className="active-transfer-collapse"
-            style={{
-              background: '#F0F2F5',
-              border: 0
-            }}
+          <Row justify={"center"} style={{ marginTop: 48}}>
+             <Collapse
+              ghost
+              bordered={false}
+              className="active-transfer-collapse"
+              style={{
+                // width: '75%'
+              }}
+
           >
             <Panel header={`Active Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
-              {
-                activeRoutes.map((route: TransferStep[], index) =>{
-                  const first = route[0] as TransferStep
-                  const last = route [route.length -1] as TransferStep
-                    return (
-                      <div key={index} onClick={e => {setselectedRoute(route)}}>
-                        {`${first.action.amount} ${first.action.token.symbol} to ${last.estimate?.toAmount} ${last.action.token.symbol}`}
-                      </div>
-                      )
-                })
-              }
+              <ActiveTrasactionsTable
+              routes={activeRoutes}
+              selectRoute = {(route:TransferStep[]) => setselectedRoute(route)}
+              ></ActiveTrasactionsTable>
             </Panel>
-
           </Collapse>
-          }
+          </Row>
 
+        }
 
-
+        {/* Routes */}
+        <Row justify={"center"} style={{ marginLeft: 12,marginRight: 12, marginTop: 48, padding: 12 }}>
           {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
@@ -423,7 +419,10 @@ const Swap = ({
           footer={null}
         >
           <Swapping route={selectedRoute}
-          updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
+          updateRoute={(route: any) => {
+            updateRoute(route, selectedRouteIndex ?? 0)
+            setActiveRoutes(readActiveRoutes())
+          }}
           onSwapDone = {(route: TransferStep[]) => {
             deleteActiveRoute(route)
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))

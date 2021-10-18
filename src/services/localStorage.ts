@@ -91,22 +91,22 @@ const readHideAbout = () => {
 const storeActiveRoute = (route: TransferStep[]) => {
   if (!isSupported()) return
   const storedRoutes = readActiveRoutes()
-  const newFirstStep = route[0]
-  const newLastStep = route[ route.length-1 ]
-  let updatedRoutes
+  let updatedRoutes: TransferStep[][]
   if(!storedRoutes.length){
     updatedRoutes = [route]
   } else {
-    updatedRoutes = storedRoutes.map(storedRoute => {
-      const storedFirstStep = route[0]
-      const storedLastStep = route[ route.length-1 ]
-      if(storedFirstStep.action === newFirstStep.action && storedLastStep.action === newLastStep.action){
+    let replaced = false
+    updatedRoutes = storedRoutes.map((storedRoute, index) => {
+      if(storedRoute[0].id === route[0].id){
         storedRoute = route
+        replaced = true
       }
       return storedRoute
     })
+    if(!replaced) {
+      updatedRoutes.push(route)
+    }
   }
-
 
   localStorage.setItem('activeRoute', JSON.stringify(updatedRoutes, (k, v) =>
     typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
@@ -119,16 +119,12 @@ const deleteActiveRoute = (route: TransferStep[]) => {
   }
   const storedRoutes = readActiveRoutes()
   if(storedRoutes && storedRoutes.length < 2) return localStorage.removeItem('activeRoute')
-  const newFirstStep = route[0]
-  const newLastStep = route[ route.length-1 ]
-  const updatedRoutes = storedRoutes.map(storedRoute => {
-    const storedFirstStep = route[0]
-    const storedLastStep = route[ route.length-1 ]
-    if(storedFirstStep.action !== newFirstStep.action && storedLastStep.action !== newLastStep.action){
-      return storedRoute
-    }
-    return null
-  })
+  const updatedRoutes = storedRoutes.map((storedRoute, index) => {
+      if(storedRoute[0].id !== route[0].id){
+        return storedRoute
+      }
+      return null
+    })
 
   localStorage.setItem('activeRoute', JSON.stringify(updatedRoutes, (k, v) =>
     typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,

@@ -86,9 +86,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   // trigger transfer
   try {
       const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
-      console.log(submitProcess)
       if(submitProcess){
-        console.log("resuming. attaching listeners")
         nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
       } else{
         if(!submitProcess) await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
