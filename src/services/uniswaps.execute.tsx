@@ -10,7 +10,6 @@ import * as uniswap from './uniswaps'
 import { getApproved, setApproval } from './utils'
 
 export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) => {
-
   // setup
   const fromChain = getChainById(chainId)
   const { status, update } = initStatus(updateStatus, initialStatus)
@@ -21,8 +20,10 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, 'Set Allowance')
     // -> check allowance
     try {
-      if (allowanceProcess.txHash) {
+      if (allowanceProcess.txHash ) {
         await signer.provider.waitForTransaction(allowanceProcess.txHash)
+      } else if (allowanceProcess.message === 'Already Approved') {
+        setStatusDone(update, status, allowanceProcess)
       } else {
         const contractAddress = uniswap.getContractAddress(chainId)
         const approved = await getApproved(signer, srcToken.id, contractAddress)

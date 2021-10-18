@@ -20,7 +20,7 @@ import { executeParaswap } from '../services/paraswap.execute';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
 import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, Step, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
@@ -75,7 +75,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     return true
   }
 
-  const triggerSwap = async (step: Step, previousStep?: TransferStep) => {
+  const triggerSwap = async (step: TransferStep, previousStep?: TransferStep) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as SwapAction
     const swapEstimate = step.estimate as SwapEstimate

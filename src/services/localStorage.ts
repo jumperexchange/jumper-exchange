@@ -139,13 +139,21 @@ const readActiveRoutes =(): Array<TransferStep[]> => {
 
   if (routeString) {
     try {
-      // deserialize all JSX elements correctly
-      const route = JSON.parse(routeString, (k, v) => {
+      const routes = JSON.parse(routeString, (k, v) => {
         const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/);
 
         return matches ? Symbol.for(matches[1]) : v;
+      }) as Array<TransferStep[]>
+      const filteredRoutes = routes.filter(route => {
+        const allDone = route.every(step => step.execution?.status === 'DONE')
+        if(allDone){
+          deleteActiveRoute(route)
+          return null
+        } else{
+          return route
+        }
       })
-      return route as Array<TransferStep[]>
+      return filteredRoutes as Array<TransferStep[]>
     }
     catch (e) {
       return [] as Array<TransferStep[]>

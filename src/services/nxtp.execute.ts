@@ -38,6 +38,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
       setStatusDone(update, status, status.process[status.process.length - 1])
       status.status = 'DONE'
       update(status)
+      nxtpSDK.removeAllListeners()
       return status
     }
   }
@@ -90,7 +91,6 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
         nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
       } else{
         if(!submitProcess) await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
-
       }
   } catch (e) {
     nxtpSDK.removeAllListeners()
@@ -100,6 +100,11 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
 
 
   await finishTransfer(nxtpSDK, step, update, status)
+  // Fallback
+  setStatusDone(update, status, status.process[status.process.length - 1])
+  status.status = 'DONE'
+  update(status)
+  nxtpSDK.removeAllListeners()
   return status
 }
 
@@ -120,6 +125,7 @@ const finishTransfer = (sdk: NxtpSdk, step:TransferStep, update: Function, statu
       }
 
       sdk.removeAllListeners()
+
       status.status = 'DONE'
       update(status)
       notifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
