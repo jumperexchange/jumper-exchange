@@ -1,9 +1,9 @@
-import { CheckOutlined, DownOutlined, ExportOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { CheckOutlined, DownOutlined, ExportOutlined, InfoCircleOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk';
 import { AuctionResponse, getDeployedSubgraphUri, TransactionPreparedEvent } from '@connext/nxtp-utils';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row } from 'antd';
+import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row, Tooltip } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import BigNumber from 'bignumber.js';
@@ -21,7 +21,7 @@ import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services
 import { switchChain } from '../../services/metamask';
 import { chainConfigOverwrites, finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
+import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
@@ -940,6 +940,62 @@ const SwapXpollinate = ({
     clearLocalStorage()
   }
 
+  const priceImpact = () => {
+    const token = transferTokens[withdrawChain].find(token => token.id === withdrawToken)
+    let impact = new BigNumber(0)
+    let routerFee = new BigNumber(0)
+    let gasFee = new BigNumber(0)
+    let decimals = 2
+
+    if (highlightedIndex !== -1) {
+      const selectedRoute = routes[highlightedIndex]
+      const cross = selectedRoute[0] as CrossStep
+
+      const fromToken = cross.action.token
+      const fromAmount = new BigNumber(cross.estimate.fromAmount).shiftedBy(-fromToken.decimals)
+
+      const toToken = cross.action.toToken
+      const toAmount = new BigNumber(cross.estimate.toAmount).shiftedBy(-toToken.decimals)
+
+      const diff = fromAmount.minus(toAmount)
+      impact = diff.div(fromAmount).times(-100)
+
+      gasFee = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(-toToken.decimals)
+      routerFee = diff.minus(gasFee)
+
+      if (routerFee.lt('0.01')) {
+        decimals = 4
+      }
+    }
+
+    return (
+    <div>
+      <Tooltip color={'gray'} placement="topRight" title={(
+        <table>
+          <tbody>
+          <tr>
+              <td>Included Fees:</td>
+              <td style={{textAlign: 'right'}}></td>
+            </tr>
+            <tr>
+              <td>Base Fee</td>
+              <td style={{textAlign: 'right'}}>{routerFee.toFixed(decimals, 1)} {token?.symbol}</td>
+            </tr>
+            <tr>
+              <td style={{paddingRight: 10}}>Router Gas Fee</td>
+              <td style={{textAlign: 'right'}}>{gasFee.toFixed(decimals, 1)} {token?.symbol}</td>
+            </tr>
+          </tbody>
+        </table>
+      )}>
+        Fee Impact: {impact.toFixed(2)}%
+
+        <Badge count={<InfoCircleOutlined  style={{ color: 'gray' }} />} offset={[4,-1]} />
+      </Tooltip>
+      </div>
+    )
+  }
+
   return (
     <Content className="site-layout xpollinate">
       <div className="xpollinate-header">
@@ -1113,6 +1169,10 @@ const SwapXpollinate = ({
                   forceSameToken={true}
                   syncStatus={syncStatus}
                 />
+
+                <Row justify={"end"} style={{ marginRight: 20, marginTop: 4}}>
+                  {priceImpact()}
+                </Row>
 
                 <Row style={{ marginTop: 24 }} justify={"center"}>
                   {submitButton()}
