@@ -11,7 +11,7 @@ import { animate, stagger } from "motion";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import heroImage from '../assets/info_header.jpg';
 import { loadTokenListAsTokens } from '../services/tokenListService';
-import { formatTokenAmountOnly } from '../services/utils';
+import { deepClone, formatTokenAmountOnly } from '../services/utils';
 import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
 import LoadingIndicator from './LoadingIndicator';
 import Route from './Route';
@@ -235,20 +235,19 @@ const Swap = ({
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
 
   const setRouteAndIndex = () => {
-    console.log(selectedRoute);
-
-    setselectedRoute(routes[highlightedIndex])
+    // deepClone to open new modal without execution info of previous transfer using same route card
+    setselectedRoute(deepClone(routes[highlightedIndex]))
     setselectedRouteIndex(highlightedIndex)
   }
 
-  const updateRoute = (route: any, index: number) => {
-    const newRoutes = [
-      ...routes.slice(0, index),
-      route,
-      ...routes.slice(index + 1)
-    ]
-    setRoutes(newRoutes)
-  }
+  // const updateRoute = (route: any, index: number) => {
+  //   const newRoutes = [
+  //     ...routes.slice(0, index),
+  //     route,
+  //     ...routes.slice(index + 1)
+  //   ]
+  //   setRoutes(newRoutes)
+  // }
 
   const submitButton = () => {
     if (!web3.account) {
@@ -371,7 +370,7 @@ const Swap = ({
             <Panel header={`Active Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
               <ActiveTrasactionsTable
               routes={activeRoutes}
-              selectRoute = {(route:TransferStep[]) => setselectedRoute(route)}
+              selectRoute = {(route:TransferStep[]) => setselectedRoute(route) }
               ></ActiveTrasactionsTable>
             </Panel>
           </Collapse>
@@ -441,11 +440,13 @@ const Swap = ({
           maskClosable={false}
           onOk={() =>{
             setselectedRoute([])
+            setHighlightedIndex(-1)
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
             .then(setBalances)
           }}
           onCancel={() => {
             setselectedRoute([])
+            setHighlightedIndex(-1)
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
             .then(setBalances)
           }}
@@ -453,13 +454,14 @@ const Swap = ({
           width={700}
           footer={null}
         >
-          <Swapping route={selectedRoute}
+          <Swapping
+          route={selectedRoute}
           updateRoute={(route: any) => {
-            // updateRoute(route, selectedRouteIndex ?? 0)
             setActiveRoutes(readActiveRoutes())
           }}
           onSwapDone = {(route: TransferStep[]) => {
             setselectedRoute([])
+            setHighlightedIndex(-1)
             deleteActiveRoute(route)
             setActiveRoutes(readActiveRoutes())
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))

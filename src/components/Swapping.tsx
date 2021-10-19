@@ -11,14 +11,9 @@ import paraswapIcon from '../assets/icons/paraswap.png';
 import harmonyIcon from '../assets/icons/harmony.png'
 import hopIcon from '../assets/icons/hop.png';
 import walletIcon from '../assets/wallet.png';
-import { executeOneInchSwap } from '../services/1inch.execute';
-import { executeHopCross } from '../services/hop.execute';
 import { lifinance } from '../services/lifinance';
 import { switchChain, switchChainAndAddToken } from '../services/metamask';
-import { executeNXTPCross } from '../services/nxtp.execute';
-import { executeParaswap } from '../services/paraswap.execute';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
-import { executeUniswap } from '../services/uniswaps.execute';
 import { formatTokenAmount } from '../services/utils';
 import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import Clock from './Clock';
@@ -26,8 +21,13 @@ import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
 import { useMediaQuery } from 'react-responsive';
 import { storeActiveRoute } from '../services/localStorage'
-import { executeHorizonCross } from '../services/horizon.execute';
 
+import { executeParaswap } from '../services/paraswap.execute';
+import { executeUniswap } from '../services/uniswaps.execute';
+import { executeNXTPCross } from '../services/nxtp.execute';
+import { executeOneInchSwap } from '../services/1inch.execute';
+import { executeHopCross } from '../services/hop.execute';
+import { executeHorizonCross } from '../services/horizon.execute';
 
 interface SwappingProps {
   route: Array<TransferStep>,
