@@ -1,10 +1,9 @@
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
+import { NxtpSdk, NxtpSdkEvents, getDeployedTransactionManagerContract } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { FallbackProvider } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
-import { BigNumber, constants, providers } from 'ethers';
+import {  constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
-import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 import { getApproved } from './utils';
 
@@ -39,26 +38,6 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
   })
 
   const sdk = new NxtpSdk({ chainConfig, signer });
-
-  // reuse existing messaging token
-  const account = await signer.getAddress()
-  try {
-    const oldToken = readNxtpMessagingToken()
-    if (oldToken?.token && oldToken.account === account) {
-      try {
-        await sdk.connectMessaging(oldToken.token)
-      } catch (e) {
-        console.error(e)
-        const token = await sdk.connectMessaging()
-        storeNxtpMessagingToken(token, account)
-      }
-    } else {
-      const token = await sdk.connectMessaging()
-      storeNxtpMessagingToken(token, account)
-    }
-  } catch (e) {
-    console.error(e)
-  }
   return sdk
 }
 
@@ -109,25 +88,13 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   const fromChain = getChainById(crossAction.chainId)
   const toChain = getChainById(crossAction.toChainId)
 
-  // Before approving/transferring, check router liquidity
-  const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
-    crossEstimate.data.bid.receivingChainId,
-    crossEstimate.data.bid.router,
-    crossEstimate.data.bid.receivingAssetId
-  ) as BigNumber
-  if (liquidity.lt(crossEstimate.data.bid.amountReceived)) {
-    approveProcess.errorMessage = `Router (${crossEstimate.data.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.data.bid.amountReceived}.`
-    setStatusFailed(update, status, approveProcess)
-    return
-  }
-
 
   // Check Token Approval
   if (crossEstimate.data.bid.sendingAssetId !== constants.AddressZero) {
-    const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.data.bid.sendingChainId)
+    const contractAddress = getDeployedTransactionManagerContract(crossEstimate.data.bid.sendingChainId)
     let approved
     try{
-      approved = await getApproved((sdk as any).config.signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
+      approved = await getApproved((sdk as any).config.signer, crossEstimate.data.bid.sendingAssetId, contractAddress!.address)
     } catch(_e) {
       const e = _e as Error
       if (e.message) approveProcess.errorMessage = e.message
