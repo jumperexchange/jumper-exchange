@@ -63,6 +63,25 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
+## Deployment
+
+Pushing code to the repository automatically triggers deployments to several environments:
+
+Branch `main`:
+- https://li.finance/ (with `.env.lifinance-mainnet` configuration)
+- https://xpollinate.io/ (with `.env.xpollinate-mainnet` configuration)
+- https://testnet.xpollinate.io/ (with `.env.xpollinate-testnet` configuration)
+
+Branch `develop`:
+- https://staging.li.finance/ (with `.env.lifinance-mainnet.staging` configuration)
+- https://staging.xpollinate.io/ (with `.env.xpollinate-mainnet.staging` configuration)
+- https://staging-testnet.xpollinate.io/ (with `.env.xpollinate-testnet.staging` configuration)
+
+Branchs `testing/*`:
+- https://testing.xpollinate.io/ (with `.env.xpollinate-mainnet.staging` configuration)
+- https://testing.li.finance/ (with `.env.lifinance-mainnet.staging` configuration)
+
+
 ## Main Contributors
 
 - Max Klenk ([GitHub](https://github.com/maxklenk), [LinkedIn](https://www.linkedin.com/in/maxklenk/), [Gitcoin](https://gitcoin.co/maxklenk))
