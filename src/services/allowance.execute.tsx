@@ -13,6 +13,9 @@ export const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token:
   try {
     const approved = await getApproved(signer, token.id, spenderAddress)
 
+    console.log('approced', approved.toNumber())
+    console.log('amount', amount)
+
     if (new BigNumber(amount).gt(approved)) {
       const approveTx = await setApproval(signer, token.id, spenderAddress, amount)
 

@@ -93,6 +93,8 @@ const getTransaction = async (chainId: number, fromTokenAddress: string, toToken
   const path: Array<any> = result.data.protocols ? result.data.protocols[0].map((step: Array<any>) => step[0]) : []
   const tx = result.data.tx
 
+  console.info('1inch data', result.data)
+
   return {
     toAmount,
     path,

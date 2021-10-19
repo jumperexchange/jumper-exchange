@@ -14,8 +14,10 @@ import { paraswap } from './paraswap'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
 
+const USE_CONTRACT_FOR_WITHDRAW = false
 const lifiContractAddress = '0xa74D44ed9C3BB96d7676E7A274c33A05210cf35a'
-const getSupportedChains = (jsonArraySting: string) : ChainId[] => {
+
+const getSupportedChains = (jsonArraySting: string): ChainId[] => {
   try {
     const chainIds = JSON.parse(jsonArraySting)
     return chainIds
@@ -24,7 +26,7 @@ const getSupportedChains = (jsonArraySting: string) : ChainId[] => {
   }
 }
 
-const supportedChains = getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
+const supportedChains = [ChainId.RIN, ChainId.GOR, ChainId.POL, ChainId.DAI] || getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
 
 const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => {
   switch (swapAction.tool) {
@@ -53,11 +55,11 @@ const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => 
   }
 }
 
-const getQuote = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, crossStep: CrossStep, crossAction: CrossAction, receiverTransaction: ethers.PopulatedTransaction) => {
+const getQuote = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, crossStep: CrossStep, crossAction: CrossAction, receiverTransaction?: ethers.PopulatedTransaction) => {
   // -> request quote
   let quote: AuctionResponse | undefined
   try {
-    quote = await nxtp.getTransferQuote(nxtpSDK, crossAction.chainId, crossAction.token.id, crossAction.toChainId, crossAction.toToken.id, crossAction.amount.toString(), await signer.getAddress(), receiverTransaction.to, receiverTransaction.data, lifiContractAddress)
+    quote = await nxtp.getTransferQuote(nxtpSDK, crossAction.chainId, crossAction.token.id, crossAction.toChainId, crossAction.toToken.id, crossAction.amount.toString(), await signer.getAddress(), receiverTransaction?.to, receiverTransaction?.data, lifiContractAddress)
     if (!quote) throw Error("Quote confirmation failed!")
   } catch (e: any) {
     cleanUp(nxtpSDK)
@@ -109,6 +111,8 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
   }
 
 
+
+
   // Receiving side
   let receivingTransaction
   if (endSwapStep) {
@@ -136,7 +140,7 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
       swapAction.toToken.id,
       await signer.getAddress()
     )
-  } else {
+  } else if (USE_CONTRACT_FOR_WITHDRAW) {
     // Withdraw only
     receivingTransaction = await lifi.populateTransaction.completeBridgeTokensViaNXTP(
       lifiData,
@@ -165,7 +169,7 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     callTo: crossStep.estimate.data.bid.callTo,
   }
   const swapOptions: any = {
-    gasLimit: 500000,
+    gasLimit: 900000,
   }
 
   // Debug log
@@ -190,7 +194,6 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
       sendingAssetId: swapAction.token.id,
       receivingAssetId: swapAction.toToken.id,
       fromAmount: swapEstimate.fromAmount,
-      toAmount: swapEstimate.toAmountMin,
       callTo: swapCall.call.to,
       callData: swapCall?.call.data,
       approveTo: swapCall.approveTo,
@@ -263,7 +266,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
 
   // Allowance
   if (route[0].action.token.id !== constants.AddressZero) {
-    await checkAllowance(signer, fromChain, route[0].action.token, route[0].action.amount, lifiContractAddress, update, status)
+    await checkAllowance(signer, fromChain, route[0].action.token, constants.MaxUint256.toString(), lifiContractAddress, update, status) // route[0].action.amount
   }
 
   // Transaction
