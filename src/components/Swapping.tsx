@@ -175,12 +175,10 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     )
   }
 
-  const getExchangeAvatar = (chainId: number) => {
-    const chain = getChainById(chainId)
-
+  const getExchangeAvatar = (tool: string) => {
     return (
-      <Tooltip title={chain.exchange?.name}>
-        <Avatar size="small" src={getIcon(chain.exchange?.name)} alt={chain.exchange?.name}></Avatar>
+      <Tooltip title={tool}>
+        <Avatar size="small" src={getIcon(tool)} alt={tool}></Avatar>
       </Tooltip>
     )
   }
@@ -220,7 +218,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'swap': {
         return [
           <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
-            <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.chainId))}</h4>
+            <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.tool))}</h4>
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item position={isMobile ? 'right' : 'left'} key={index + '_right'} color={color} dot={isLoading ? <LoadingOutlined /> : null}>

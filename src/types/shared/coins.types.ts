@@ -1,5 +1,5 @@
-import { ChainId } from '..';
-import { ChainKey, Coin, CoinKey, Token } from './base.types';
+import { ChainId, ChainKey, CoinKey } from '..'
+import { Coin, Token } from './base.types'
 
 export const defaultCoins: Array<Coin> = [
   // NATIVE COINS
@@ -934,8 +934,7 @@ export const findDefaultCoin = (coinKey: CoinKey) => {
 }
 export const findDefaultCoinOnChain = (coinKey: CoinKey, chainKey: ChainKey) => {
   const coin = findDefaultCoin(coinKey)
-  const token = coin.chains[chainKey]
-  return token
+  return coin.chains[chainKey]
 }
 
 export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
@@ -1187,6 +1186,13 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
       chainKey: ChainKey.DAI
     } as Token,
     {
+      id: '0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1',
+      symbol: 'WETH',
+      decimals: 18,
+      chainId: ChainId.DAI,
+      chainKey: ChainKey.DAI
+    } as Token,
+    {
       id: '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9',
       symbol: 'HNY',
       decimals: 18,
@@ -1194,22 +1200,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
       chainKey: ChainKey.DAI
     } as Token,
     {
-      id: '0xb7D311E2Eb55F2f68a9440da38e7989210b9A05e',
-      symbol: 'STAKE',
-      decimals: 18,
-      chainId: ChainId.DAI,
-      chainKey: ChainKey.DAI
-    } as Token,
-    {
-      id: '0x3a97704a1b25F08aa230ae53B352e2e72ef52843',
-      symbol: 'AGVE',
-      decimals: 18,
-      chainId: ChainId.DAI,
-      chainKey: ChainKey.DAI
-    } as Token,
-    {
-      id: '0x82dFe19164729949fD66Da1a37BC70dD6c4746ce',
-      symbol: 'BAO',
+      id: '0x2995D1317DcD4f0aB89f4AE60F3f020A4F17C7CE',
+      symbol: 'SUSHI',
       decimals: 18,
       chainId: ChainId.DAI,
       chainKey: ChainKey.DAI

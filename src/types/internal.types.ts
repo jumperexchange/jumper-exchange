@@ -1,29 +1,29 @@
 
-import { TableColumnType } from 'antd';
-import { Action, ChainKey, Coin, Estimate, Execution, Token } from '.';
-import bsc from '../assets/icons/bsc.png';
-import eth from '../assets/icons/ethereum.png';
-import pancake from '../assets/icons/pancake.png';
-import pol from '../assets/icons/polygon.png';
-import quick from '../assets/icons/quick.png';
-import honey from '../assets/icons/honey.png';
-import dai from '../assets/icons/xdai.png';
-import uniswap from '../assets/icons/uniswap.png';
-import spooky from '../assets/icons/spooky.png';
-import viper from '../assets/icons/viper.png';
-import sushi from '../assets/icons/sushi.png';
-import ftm from '../assets/icons/fantom.png';
-import ava from '../assets/icons/avalanche.png';
-import arb from '../assets/icons/arbitrum.svg';
-import opt from '../assets/icons/optimism.png';
-import one from '../assets/icons/harmony.png';
-import rop from '../assets/icons/ethereum_ropsten.png';
-import rin from '../assets/icons/ethereum_rinkeby.png';
-import gor from '../assets/icons/ethereum_goerli.png';
-import mum from '../assets/icons/polygon_test.png';
-import bsct from '../assets/icons/bsc_test.png';
-import arbt from '../assets/icons/arbitrum_test.png';
-import onet from '../assets/icons/harmony_test.png';
+import { TableColumnType } from 'antd'
+import { Action, ChainKey, Coin, Estimate, Execution, Token } from '.'
+import bsc from '../assets/icons/bsc.png'
+import eth from '../assets/icons/ethereum.png'
+import pancake from '../assets/icons/pancake.png'
+import pol from '../assets/icons/polygon.png'
+import quick from '../assets/icons/quick.png'
+import honey from '../assets/icons/honey.png'
+import dai from '../assets/icons/xdai.png'
+import uniswap from '../assets/icons/uniswap.png'
+import spooky from '../assets/icons/spooky.png'
+import viper from '../assets/icons/viper.png'
+import sushi from '../assets/icons/sushi.png'
+import ftm from '../assets/icons/fantom.png'
+import ava from '../assets/icons/avalanche.png'
+import arb from '../assets/icons/arbitrum.svg'
+import opt from '../assets/icons/optimism.png'
+import one from '../assets/icons/harmony.png'
+import rop from '../assets/icons/ethereum_ropsten.png'
+import rin from '../assets/icons/ethereum_rinkeby.png'
+import gor from '../assets/icons/ethereum_goerli.png'
+import mum from '../assets/icons/polygon_test.png'
+import bsct from '../assets/icons/bsc_test.png'
+import arbt from '../assets/icons/arbitrum_test.png'
+import onet from '../assets/icons/harmony_test.png'
 
 export const icons: { [key: string]: string } = {
   // Mainnets
@@ -52,14 +52,37 @@ export const icons: { [key: string]: string } = {
 
 
   // Exchanges
-  'Pancake': pancake,
-  'QuickSwap': quick,
-  'Honeyswap': honey,
-  'UniswapV2': uniswap,
-  'Uniswap': uniswap,
-  'SpookySwap': spooky,
-  'ViperSwap': viper,
-  'SushiSwap': sushi,
+  'pancakeswap-bsc': pancake,
+
+  'quickswap-pol': quick,
+
+  'honeyswap-pol': honey,
+  'honeyswap-dai': honey,
+
+  'uniswap-eth': uniswap,
+  'uniswap-arb': uniswap,
+  'uniswap-opt': uniswap,
+  'uniswap-rop': uniswap,
+  'uniswap-rin': uniswap,
+  'uniswap-gor': uniswap,
+  'uniswap-kov': uniswap,
+
+  'spookyswap-ftm': spooky,
+
+  'viperswap-one': viper,
+
+  'sushiswap-eth': sushi,
+  'sushiswap-pol': sushi,
+  'sushiswap-bsc': sushi,
+  'sushiswap-dai': sushi,
+  'sushiswap-ftm': sushi,
+  'sushiswap-one': sushi,
+  'sushiswap-ava': sushi,
+  'sushiswap-arb': sushi,
+  'sushiswap-rop': sushi,
+  'sushiswap-rin': sushi,
+  'sushiswap-gor': sushi,
+  'sushiswap-kov': sushi,
 }
 export const getIcon = (name: string | undefined) => {
   if (name && icons[name]) {
@@ -69,8 +92,8 @@ export const getIcon = (name: string | undefined) => {
 }
 
 export interface Amounts {
-  amount_coin: number;
-  amount_usd: number;
+  amount_coin: number
+  amount_usd: number
 }
 
 export interface TokenWithAmounts extends Token {
@@ -79,10 +102,10 @@ export interface TokenWithAmounts extends Token {
 }
 
 export interface DataType {
-  [key: string]: string | number | Amounts | Coin; // kind of deactivating typing for DataType; last resort?
-  key: React.Key;
-  coin: Coin;
-  portfolio: Amounts;
+  [key: string]: string | number | Amounts | Coin // kind of deactivating typing for DataType; last resort?
+  key: React.Key
+  coin: Coin
+  portfolio: Amounts
 }
 
 export function chainKeysToObject(val: any) {
@@ -94,7 +117,7 @@ export function chainKeysToObject(val: any) {
 }
 
 export interface ColomnType extends TableColumnType<DataType> {
-  children?: Array<ColomnType>;
+  children?: Array<ColomnType>
 }
 
 export interface ChainPortfolio {
@@ -108,8 +131,8 @@ export interface ChainPortfolio {
 }
 
 export interface Wallet {
-  address: string;
-  loading: boolean;
+  address: string
+  loading: boolean
   portfolio: { [ChainKey: string]: Array<ChainPortfolio> } // ChainKeys -> [ChainPortfolio]
 }
 
@@ -119,34 +142,34 @@ export enum Currencies {
 }
 
 export interface SummaryAmounts {
-  amount_usd: number;
-  percentage_of_portfolio: number;
+  amount_usd: number
+  percentage_of_portfolio: number
 }
 
 export interface WalletSummary {
   wallet: string
-  [ChainKey.ETH]: SummaryAmounts;
-  [ChainKey.POL]: SummaryAmounts;
-  [ChainKey.BSC]: SummaryAmounts;
-  [ChainKey.DAI]: SummaryAmounts;
-  [ChainKey.OKT]: SummaryAmounts;
-  [ChainKey.FTM]: SummaryAmounts;
-  [ChainKey.AVA]: SummaryAmounts;
-  [ChainKey.HEC]: SummaryAmounts;
-  [ChainKey.OPT]: SummaryAmounts;
-  [ChainKey.ARB]: SummaryAmounts;
-  [ChainKey.ONE]: SummaryAmounts;
+  [ChainKey.ETH]: SummaryAmounts
+  [ChainKey.POL]: SummaryAmounts
+  [ChainKey.BSC]: SummaryAmounts
+  [ChainKey.DAI]: SummaryAmounts
+  [ChainKey.OKT]: SummaryAmounts
+  [ChainKey.FTM]: SummaryAmounts
+  [ChainKey.AVA]: SummaryAmounts
+  [ChainKey.HEC]: SummaryAmounts
+  [ChainKey.OPT]: SummaryAmounts
+  [ChainKey.ARB]: SummaryAmounts
+  [ChainKey.ONE]: SummaryAmounts
 
-  [ChainKey.ROP]: SummaryAmounts;
-  [ChainKey.RIN]: SummaryAmounts;
-  [ChainKey.GOR]: SummaryAmounts;
-  [ChainKey.KOV]: SummaryAmounts;
-  [ChainKey.MUM]: SummaryAmounts;
-  [ChainKey.ARBT]: SummaryAmounts;
-  [ChainKey.OPTT]: SummaryAmounts;
-  [ChainKey.BSCT]: SummaryAmounts;
-  [ChainKey.HECT]: SummaryAmounts;
-  [ChainKey.ONET]: SummaryAmounts;
+  [ChainKey.ROP]: SummaryAmounts
+  [ChainKey.RIN]: SummaryAmounts
+  [ChainKey.GOR]: SummaryAmounts
+  [ChainKey.KOV]: SummaryAmounts
+  [ChainKey.MUM]: SummaryAmounts
+  [ChainKey.ARBT]: SummaryAmounts
+  [ChainKey.OPTT]: SummaryAmounts
+  [ChainKey.BSCT]: SummaryAmounts
+  [ChainKey.HECT]: SummaryAmounts
+  [ChainKey.ONET]: SummaryAmounts
 }
 
 export interface ProgressStep {

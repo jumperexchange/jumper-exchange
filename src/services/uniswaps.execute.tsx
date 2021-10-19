@@ -8,14 +8,14 @@ import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
 
-export const executeUniswap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string, routerAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+export const executeUniswap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
 
   // setup
   const fromChain = getChainById(swapAction.chainId)
   const { status, update } = initStatus(updateStatus, initialStatus)
 
   if (swapAction.token.id !== constants.AddressZero) {
-    await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, routerAddress, update, status)
+    await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, swapEstimate.data.routerAddress, update, status)
   }
 
   // Swap via Uniswap
@@ -25,7 +25,7 @@ export const executeUniswap = async (signer: JsonRpcSigner, swapAction: SwapActi
   // -> swapping
   let tx
   try {
-    const call = await uniswap.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress, routerAddress)
+    const call = await uniswap.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
     tx = await signer.sendTransaction(call)
   } catch (e: any) {
     // -> set status

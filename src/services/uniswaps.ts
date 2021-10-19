@@ -62,8 +62,8 @@ interface Swapped {
   to: string
 }
 
-export const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string, routerAddress: string) => {
-  const contract = new ethers.Contract(routerAddress, uniswapRouter02ABI)
+export const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string) => {
+  const contract = new ethers.Contract(swapEstimate.data.routerAddress, uniswapRouter02ABI)
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes from the current Unix time
 
