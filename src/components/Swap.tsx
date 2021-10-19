@@ -235,7 +235,8 @@ const Swap = ({
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
 
   const setRouteAndIndex = () => {
-    // TODO: open swap modal on load when route in localStorage or equivalent
+    console.log(selectedRoute);
+
     setselectedRoute(routes[highlightedIndex])
     setselectedRouteIndex(highlightedIndex)
   }
@@ -440,21 +441,25 @@ const Swap = ({
           maskClosable={false}
           onOk={() =>{
             setselectedRoute([])
-            setRefreshBalances(true)
+            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
+            .then(setBalances)
           }}
           onCancel={() => {
             setselectedRoute([])
-            setRefreshBalances(true)
+            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
+            .then(setBalances)
           }}
+          destroyOnClose = {true}
           width={700}
           footer={null}
         >
           <Swapping route={selectedRoute}
           updateRoute={(route: any) => {
-            updateRoute(route, selectedRouteIndex ?? 0)
+            // updateRoute(route, selectedRouteIndex ?? 0)
             setActiveRoutes(readActiveRoutes())
           }}
           onSwapDone = {(route: TransferStep[]) => {
+            setselectedRoute([])
             deleteActiveRoute(route)
             setActiveRoutes(readActiveRoutes())
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))

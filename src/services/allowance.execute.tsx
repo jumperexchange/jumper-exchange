@@ -13,6 +13,7 @@ export const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token:
   try {
     if (allowanceProcess.txHash ) {
       await signer.provider.waitForTransaction(allowanceProcess.txHash)
+      setStatusDone(update, status, allowanceProcess)
     } else if (allowanceProcess.message === 'Already Approved') {
       setStatusDone(update, status, allowanceProcess)
     } else {
