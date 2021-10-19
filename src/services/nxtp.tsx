@@ -4,6 +4,7 @@ import { FallbackProvider } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
 import { BigNumber, constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
+import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 import { getApproved } from './utils';
 
@@ -38,6 +39,26 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
   })
 
   const sdk = new NxtpSdk({ chainConfig, signer });
+
+  // reuse existing messaging token
+  const account = await signer.getAddress()
+  try {
+    const oldToken = readNxtpMessagingToken()
+    if (oldToken?.token && oldToken.account === account) {
+      try {
+        await sdk.connectMessaging(oldToken.token)
+      } catch (e) {
+        console.error(e)
+        const token = await sdk.connectMessaging()
+        storeNxtpMessagingToken(token, account)
+      }
+    } else {
+      const token = await sdk.connectMessaging()
+      storeNxtpMessagingToken(token, account)
+    }
+  } catch (e) {
+    console.error(e)
+  }
   return sdk
 }
 
