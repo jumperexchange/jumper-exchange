@@ -1,13 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy xPollinate Mainnet (production) via SSH
+name: Deploy Li.Finance Testing Web via SSH
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches:
-      - main
+      - testing/*
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,13 +32,10 @@ jobs:
         run: yarn install
 
       - name: Build WebApp
-        run: yarn build:xpollinate
-
-      - name: Copy xPollinate Icons
-        run: cp ./public/xpollinate/* ./build/
+        run: yarn build:lifinance:staging
 
       - name: Insert DataUnlocker
-        run: output=$(curl --fail -F html=@build/index.html 'https://api.dataunlocker.com/properties/6c496359464b326a7569474a/scripts/latest/inject?endpoint=wicanxvt2nvg') && echo "$output" > build/index.html || echo "Failed to inject DataUnlocker's script"
+        run: output=$(curl --fail -F html=@build/index.html 'https://api.dataunlocker.com/properties/46555a39346d356231644a4f/scripts/latest/inject?endpoint=vqo56sgzdvcj') && echo "$output" > build/index.html || echo "Failed to inject DataUnlocker's script"
 
       # Runs a set of commands using the runners shell
       - name: ssh deploy
@@ -55,7 +52,7 @@ jobs:
           # Source directory
           SOURCE: "build/" # optional, default is
           # Target directory
-          TARGET: ${{ secrets.REMOTE_TARGET }}/prod/connext # optional, default is /home/REMOTE_USER/
+          TARGET: ${{ secrets.REMOTE_TARGET }}/test/web-testing # optional, default is /home/REMOTE_USER/
           # Arguments to pass to rsync
           #ARGS: # optional, default is -rltgoDzvO
           # An array of folder to exclude
@@ -67,20 +64,14 @@ jobs:
         env:
           CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ONE }}
           CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
-          PURGE_URLS: '["https://connext.li.finance/"]'
-      - name: Purge cache
-        uses: jakejarvis/cloudflare-purge-action@master
-        env:
-          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE_THREE }}
-          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
-          PURGE_URLS: '["https://xpollinate.io/", "https://www.xpollinate.io", "https://v2.xpollinate.io"]'
+          PURGE_URLS: '["https://testing.li.finance/"]'
 
       # Notify Rollbar about release
       - name: Notify deploy to Rollbar
         uses: rollbar/github-deploy-action@2.1.1
         id: rollbar_deploy
         with:
-          environment: 'xpollinate-mainnet-production'
+          environment: 'testing'
           version: ${{ github.sha }}
         env:
           ROLLBAR_ACCESS_TOKEN: ${{ secrets.ROLLBAR_ACCESS_TOKEN }}

@@ -2,12 +2,11 @@ import { CheckOutlined, LoadingOutlined } from '@ant-design/icons';
 import { NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Spin, Table, Typography } from 'antd';
+import { Button, Spin, Table } from 'antd';
+import Link from 'antd/lib/typography/Link';
 import React from 'react';
 import { CrossEstimate, getChainById, TokenWithAmounts, TransferStep } from '../../types';
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
-
-const { Paragraph } = Typography;
 
 interface TransactionsTableNxtpProps {
   activeTransactions: Array<ActiveTransaction>
@@ -63,7 +62,7 @@ const TransactionsTableNxtp = ({
               type="primary"
               shape="round"
               size="large"
-              style={{ borderRadius: 6}}
+              style={{ borderRadius: 6 }}
               onClick={() => openSwapModalFinish(action)}
             >
               Sign to claim Transfer
@@ -152,7 +151,18 @@ const TransactionsTableNxtp = ({
       title: 'Transaction Id',
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
-        return <Paragraph style={{ width: 150, margin: 0 }} ellipsis={true} copyable>{txData.invariant.transactionId}</Paragraph>
+        return (
+          <Link
+            href={'https://connext.coinhippo.io/tx/' + txData.invariant.transactionId}
+            target="_blank"
+            rel="nofollow noreferrer"
+            style={{ width: 150 }}
+            ellipsis={true}
+            copyable
+          >
+            {txData.invariant.transactionId}
+          </Link>
+        )
       }
     },
   ]

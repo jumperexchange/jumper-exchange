@@ -67,7 +67,7 @@ const getParaswap = (chainId: number) => {
   return new ParaSwap(chainId as NetworkID)
 }
 
-export const getContractAddress = async (chainId: number) => {
+const getContractAddress = async (chainId: number) => {
   const para = getParaswap(chainId)
   const result = await para.getTokenTransferProxy()
   if (result.hasOwnProperty('message')) {
@@ -106,21 +106,22 @@ const getRateTs = async (
   }
 }
 
-export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, destAddress: string, slippage: number, rate: OptimalRate,) => {
+const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string) => {
   const para = getParaswap(swapAction.chainId)
-  const minAmount = new BigNumber(rate.destAmount).times(1 - (slippage / 100)).toFixed(0)
+  const rate = swapEstimate.data as OptimalRate
+  const minAmount = new BigNumber(rate.destAmount).times(1 - swapAction.slippage).toFixed(0)
 
-  const txParams = await para.buildTx(
+  let txParams = await para.buildTx(
     rate.srcToken, // srcToken: Address,
     rate.destToken,// destToken: Address,
     rate.srcAmount, // srcAmount: PriceString,
     minAmount, // destAmount: PriceString,
     rate, // priceRoute: OptimalRate,
     srcAddress, // userAddress: Address,
-    rate.partner, // partner?: string,
+    undefined, // rate.partner, // partner?: string,
     undefined, // partnerAddress?: string,
-    rate.partnerFee, // partnerFeeBps?: number,
-    destAddress, // receiver?: Address,
+    undefined, // rate.partnerFee, // partnerFeeBps?: number,
+    undefined, // destAddress, // receiver?: Address,
     {
       ignoreChecks: true, // ignoreChecks?: boolean;
       // ignoreGasEstimate?: boolean;
@@ -131,7 +132,14 @@ export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, de
     rate.srcDecimals,
     rate.destDecimals,
     // permit?: string,
-  ) as Transaction
+    // deadline?: string
+  )
+
+  if (txParams.hasOwnProperty('message')) {
+    throw new Error((txParams as APIError).message)
+  } else {
+    txParams = txParams as Transaction
+  }
 
   return {
     from: txParams.from,
@@ -142,22 +150,16 @@ export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, de
   } as ethers.PopulatedTransaction
 }
 
-export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string) => {
-  const SLIPPAGE = 1 // = 1%
-
-  // check rate
-  let rate = swapEstimate.data as OptimalRate
-
+const buildTransaction = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string) => {
   // get new quote if outdated (eg. after transfer)
-  if (!srcAmount.isEqualTo(rate.srcAmount)) {
-    const partner = process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io'
-    rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
+  if (!srcAmount.isEqualTo(swapEstimate.data.srcAmount)) {
+    swapEstimate.data = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toFixed(0), SwapSide.SELL, { }, swapAction.token.decimals, swapAction.toToken.decimals)
   }
 
-  return getSwapCall(swapAction, srcAddress, destAddress, SLIPPAGE, rate)
+  return getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
 }
 
-export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
+const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
   const result = {
     fromAmount: '0',
     toAmount: '0',
@@ -186,4 +188,11 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
     })
 
   return result
+}
+
+export const paraswap = {
+  getContractAddress,
+  getSwapCall,
+  buildTransaction,
+  parseReceipt,
 }

@@ -2,7 +2,7 @@ import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
 import { FallbackProvider } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
-import { constants, providers } from 'ethers';
+import { BigNumber, constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
 import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
@@ -72,6 +72,7 @@ export const getTransferQuote = async (
   receivingAddress: string,
   callTo?: string,
   callData?: string,
+  initiator?: string,
 ): Promise<AuctionResponse | undefined> => {
   // Create txid
   const transactionId = getRandomBytes32();
@@ -87,6 +88,7 @@ export const getTransferQuote = async (
     expiry: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 3), // 3 days
     callTo,
     callData,
+    initiator,
   });
   return response;
 }
@@ -112,7 +114,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     crossEstimate.data.bid.receivingChainId,
     crossEstimate.data.bid.router,
     crossEstimate.data.bid.receivingAssetId
-  )
+  ) as BigNumber
   if (liquidity.lt(crossEstimate.data.bid.amountReceived)) {
     approveProcess.errorMessage = `Router (${crossEstimate.data.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.data.bid.amountReceived}.`
     setStatusFailed(update, status, approveProcess)
@@ -161,7 +163,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   // approved = done => next
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
-    approveProcess.message = <>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+    approveProcess.message = <>Token Approved: <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
     setStatusDone(update, status, approveProcess)
     if (!submitProcess) {
       submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })

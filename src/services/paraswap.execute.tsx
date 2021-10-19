@@ -4,7 +4,7 @@ import { constants } from 'ethers'
 import { Execution, getChainById, SwapAction, SwapEstimate } from '../types'
 import { checkAllowance } from './allowance.execute'
 import notifications, { NotificationType } from './notifications'
-import * as paraswap from './paraswap'
+import { paraswap } from './paraswap'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 
 export const executeParaswap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
@@ -25,7 +25,7 @@ export const executeParaswap = async (signer: JsonRpcSigner, swapAction: SwapAct
   // -> swapping
   let tx: TransactionResponse
   try {
-    const transaction = await paraswap.transfer(swapAction, swapEstimate, srcAmount, srcAddress, destAddress)
+    const transaction = await paraswap.buildTransaction(swapAction, swapEstimate, srcAmount, srcAddress, destAddress)
     tx = await signer.sendTransaction(transaction)
   } catch (e: any) {
     // -> set status
@@ -39,7 +39,7 @@ export const executeParaswap = async (signer: JsonRpcSigner, swapAction: SwapAct
   swapProcess.status = 'PENDING'
   swapProcess.txHash = tx.hash
   swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
-  swapProcess.message = <>Swap via paraswap - Wait for <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  swapProcess.message = <>Swap via Paraswap - Wait for <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   update(status)
 
   // -> waiting
@@ -56,6 +56,7 @@ export const executeParaswap = async (signer: JsonRpcSigner, swapAction: SwapAct
   }
 
   // -> set status
+  swapProcess.message = <>Swapped: <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
   const parsedReceipt = paraswap.parseReceipt(tx, receipt)
   setStatusDone(update, status, swapProcess, {
     fromAmount: parsedReceipt.fromAmount,

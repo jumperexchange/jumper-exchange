@@ -32,7 +32,7 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
 
   let quote: AuctionResponse | undefined;
   try {
-    quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
+    quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toFixed(0), userAddress)
     if (!quote) throw Error("Quote confirmation failed!")
   } catch (_e) {
     const e = _e as Error
