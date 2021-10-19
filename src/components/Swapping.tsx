@@ -104,13 +104,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'spookyswap':
       case 'viperswap':
       case 'sushiswap':
-        return await executeUniswap(swapAction.chainId, web3.library.getSigner(), swapAction.token, swapAction.toToken, fromAmount, fromAddress, toAddress, swapEstimate.data.path, (status: Execution) => updateStatus(step, status), swapExecution)
+        return await executeUniswap(web3.library.getSigner(), swapAction, swapEstimate, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case 'paraswap':
         return await executeParaswap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case '1inch':
         return await executeOneInchSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       default:
-        throw new Error('Should never reach here, swap not defined')
+        return await executeUniswap(web3.library.getSigner(), swapAction, swapEstimate, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
     }
   }
 

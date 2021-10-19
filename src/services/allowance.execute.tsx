@@ -11,9 +11,11 @@ export const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token:
 
   // -> check allowance
   try {
-    if(allowanceProcess.txHash){
+    if (allowanceProcess.txHash ) {
       await signer.provider.waitForTransaction(allowanceProcess.txHash)
-    } else{
+    } else if (allowanceProcess.message === 'Already Approved') {
+      setStatusDone(update, status, allowanceProcess)
+    } else {
       const approved = await getApproved(signer, token.id, spenderAddress)
 
       if (new BigNumber(amount).gt(approved)) {

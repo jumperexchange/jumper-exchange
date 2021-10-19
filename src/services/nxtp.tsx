@@ -4,7 +4,6 @@ import { FallbackProvider } from '@ethersproject/providers';
 import { Badge, Button, Tooltip } from 'antd';
 import { BigNumber, constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
-import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 import { getApproved } from './utils';
 
@@ -39,26 +38,6 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
   })
 
   const sdk = new NxtpSdk({ chainConfig, signer });
-
-  // reuse existing messaging token
-  const account = await signer.getAddress()
-  try {
-    const oldToken = readNxtpMessagingToken()
-    if (oldToken?.token && oldToken.account === account) {
-      try {
-        await sdk.connectMessaging(oldToken.token)
-      } catch (e) {
-        console.error(e)
-        const token = await sdk.connectMessaging()
-        storeNxtpMessagingToken(token, account)
-      }
-    } else {
-      const token = await sdk.connectMessaging()
-      storeNxtpMessagingToken(token, account)
-    }
-  } catch (e) {
-    console.error(e)
-  }
   return sdk
 }
 
@@ -72,6 +51,7 @@ export const getTransferQuote = async (
   receivingAddress: string,
   callTo?: string,
   callData?: string,
+  initiator?: string,
 ): Promise<AuctionResponse | undefined> => {
   // Create txid
   const transactionId = getRandomBytes32();
@@ -87,6 +67,7 @@ export const getTransferQuote = async (
     expiry: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 3), // 3 days
     callTo,
     callData,
+    initiator,
   });
   return response;
 }
@@ -209,7 +190,7 @@ export const attachListeners = (sdk:NxtpSdk, step: TransferStep, transactionId: 
   // approved = done => next
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
-    approveProcess.message = <>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+    approveProcess.message = <>Token Approved: <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
     setStatusDone(update, status, approveProcess)
     if (!submitProcess) {
       submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
