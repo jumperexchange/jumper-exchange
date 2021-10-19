@@ -21,7 +21,7 @@ import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services
 import { switchChain } from '../../services/metamask';
 import { chainConfigOverwrites, finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
 import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, defaultCoins, Execution, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
+import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, defaultCoins, Execution, findDefaultCoinOnChain, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
 import '../Swap.css';
 import SwapForm from '../SwapForm';
 import { getRpcProviders, injected } from '../web3/connectors';
@@ -519,7 +519,16 @@ const SwapXpollinate = ({
 
   const updateBalances = useCallback(async (address: string) => {
     setUpdatingBalances(true)
-    await getBalancesForWalletFromChain(address, transferTokens).then(setBalances)
+
+    // add gas token
+    const token = deepClone(transferTokens)
+    Object.entries(token).forEach(async ([chainKey, tokens]) => {
+      const chain = getChainByKey(chainKey as ChainKey)
+      const gasToken = findDefaultCoinOnChain(chain.coin, chain.key)
+      token[chainKey].unshift(gasToken)
+    })
+
+    await getBalancesForWalletFromChain(address, token).then(setBalances)
     setUpdatingBalances(false)
   }, [transferTokens])
 

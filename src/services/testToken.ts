@@ -15,7 +15,7 @@ const testTokenAddresses: Record<number, string> = {
   // 421611 - Arbitrum Testnet
   [ChainId.ARBT]: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 69 - Optimistic Ethereum (Kovan)
-  [ChainId.OPTT]: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
+  // [ChainId.OPTT]: '0xe71678794fff8846bff855f716b0ce9d9a78e844',
   // 97 - Binance Smart Chain Testnet
   [ChainId.BSCT]: '0xd86bcb7d85163fbc81756bb9cc22225d6abccadb',
 }
