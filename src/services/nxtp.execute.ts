@@ -9,31 +9,8 @@ import * as nxtp from './nxtp';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
 
 
-const cleanUp = (sdk: NxtpSdk, update: Function, status: any, process: Process) => {
-  setStatusFailed(update, status, process)
-  sdk.removeAllListeners()
-}
 
-const finishTransfer = (sdk: NxtpSdk, step:TransferStep, update: Function, status: Execution) => {
-  return new Promise(async (resolve, reject) => {
-    sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
-      try {
-        await nxtp.finishTransfer(sdk, data, step, update)
-      } catch (e) {
-        // nxtpSDK.removeAllListeners()
-        notifications.showNotification(NotificationType.CROSS_ERROR)
-        throw e
-      }
 
-      sdk.removeAllListeners()
-
-      status.status = 'DONE'
-      update(status)
-      notifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
-      resolve(status)
-    })
-  })
-}
 
 
 export class NXTPExecutionManager {
@@ -42,6 +19,34 @@ export class NXTPExecutionManager {
   setShouldContinue  =  (val: boolean) => {
     this.shouldContinue = val
   }
+
+
+
+  private finishTransfer =(sdk: NxtpSdk, step:TransferStep, update: Function, status: Execution) => {
+    return new Promise(async (resolve, reject) => {
+      sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
+        try {
+          if(!this.shouldContinue) {
+            sdk.removeAllListeners()
+            resolve(status)
+          }
+          await nxtp.finishTransfer(sdk, data, step, update)
+        } catch (e) {
+          notifications.showNotification(NotificationType.CROSS_ERROR)
+          reject(status)
+        }
+
+        sdk.removeAllListeners()
+
+        status.status = 'DONE'
+        update(status)
+        notifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
+        resolve(status)
+      })
+    })
+  }
+
+
   executeCross = async (signer: JsonRpcSigner, step: TransferStep, fromAmount: BigNumber, userAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
     // setup
     let { status, update } = initStatus(updateStatus, initialStatus)
@@ -59,7 +64,10 @@ export class NXTPExecutionManager {
     const chainProviders = getRpcProviders(crossableChains)
     const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
-    if(!this.shouldContinue) return status
+    if(!this.shouldContinue) {
+      nxtpSDK.removeAllListeners()
+      return status
+    }
     if(quoteProcess.quote){
       const activeTransactions = await nxtpSDK.getActiveTransactions()
       const relevantTx = activeTransactions.find(tx => tx.crosschainTx.invariant.transactionId === quoteProcess.quote.bid.transactionId)
@@ -81,7 +89,10 @@ export class NXTPExecutionManager {
 
     // get Quote
     // -> set status
-    if(!this.shouldContinue) return status
+    if(!this.shouldContinue) {
+      nxtpSDK.removeAllListeners()
+      return status
+    }
     quoteProcess.message = 'Confirm Quote'
     update(status)
 
@@ -98,7 +109,8 @@ export class NXTPExecutionManager {
     } catch (_e) {
       const e = _e as Error
       quoteProcess.errorMessage = e.message
-      cleanUp(nxtpSDK, update, status, quoteProcess)
+      setStatusFailed(update, status, quoteProcess)
+      nxtpSDK.removeAllListeners()
       throw e
     }
     if(!quote) throw Error("No quote found! Please restart the swap.")
@@ -121,11 +133,16 @@ export class NXTPExecutionManager {
 
 
     // trigger transfer
-    if(!this.shouldContinue) return status
+    if(!this.shouldContinue) {
+      nxtpSDK.removeAllListeners()
+      return status
+    }
+
     try {
         const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
         if(submitProcess){
           nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
+          status = await this.finishTransfer(nxtpSDK, step, update, status)
         } else{
           if(!submitProcess) await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
         }
@@ -134,13 +151,10 @@ export class NXTPExecutionManager {
       throw e
     }
 
-
-    if(!this.shouldContinue) return status
-    await finishTransfer(nxtpSDK, step, update, status)
     // Fallback
-    setStatusDone(update, status, status.process[status.process.length - 1])
-    status.status = 'DONE'
-    update(status)
+    // setStatusDone(update, status, status.process[status.process.length - 1])
+    // status.status = 'DONE'
+    // update(status)
     nxtpSDK.removeAllListeners()
     return status
   }

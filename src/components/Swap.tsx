@@ -456,7 +456,6 @@ const Swap = ({
             setActiveRoutes(readActiveRoutes())
           }}
           onSwapDone = {(route: TransferStep[]) => {
-            setselectedRoute([])
             deleteRoute(route)
             setActiveRoutes(readActiveRoutes())
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
