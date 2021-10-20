@@ -50,11 +50,19 @@ function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTablePr
     const firstEstimate = lastStep.action.type === 'swap'? lastStep.estimate as SwapEstimate : lastStep.estimate as CrossEstimate
     const lastAction = lastStep.action.type === 'swap'? lastStep.action as SwapAction : lastStep.action as CrossAction
     const lastEstimate = lastStep.action.type === 'swap'? lastStep.estimate as SwapEstimate : lastStep.estimate as CrossEstimate
+
+    let toChainId
+    if(firstStep.action.type === 'swap'){
+      toChainId = firstAction.chainId
+    } else{
+      toChainId = (firstStep.action as CrossAction).toChainId
+    }
+
     return {
       key: index,
       date: startedDate,
       fromChain: getChainById (firstAction.chainId).name,
-      toChain: getChainById (lastAction.chainId).name,
+      toChain: getChainById(toChainId).name,
       fromToken: `${formatTokenAmount(firstAction.token, firstEstimate.fromAmount)}`,
       toToken: `${formatTokenAmount(lastAction.toToken, lastEstimate.toAmount)}`,
       resume: renderResumeButton(route)
