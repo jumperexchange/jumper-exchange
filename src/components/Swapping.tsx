@@ -68,7 +68,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       hopExecutionManager.setShouldContinue(false)
       horizonExecutionManager.setShouldContinue(false)
     }
-  }, [])
+  }, [ uniswapExecutionManager, paraswapExecutionManager, oneInchExecutionManager, nxtpExecutionManager, hopExecutionManager, horizonExecutionManager ])
 
   // Swap
   const updateStatus = (step: TransferStep, status: Execution) => {
