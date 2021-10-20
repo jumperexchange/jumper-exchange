@@ -16,6 +16,10 @@ function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTablePr
   }
   const columns = [
     {
+      title: 'Started',
+      dataIndex: 'date',
+    },
+    {
       title: 'From Chain',
       dataIndex: 'fromChain',
     },
@@ -29,7 +33,7 @@ function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTablePr
     },
     {
       title: 'To Token',
-      dataIndex: 'fromToken',
+      dataIndex: 'toToken',
     },
     {
       title: 'Action',
@@ -39,6 +43,7 @@ function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTablePr
 
 
   const data = routes.map((route, index) => {
+    const startedDate = new Date(parseInt(route[0].id!)).toLocaleString()
     const firstStep = route[0]
     const lastStep = route[route.length-1]
     const firstAction = firstStep.action.type === 'swap'? firstStep.action as SwapAction : firstStep.action as CrossAction
@@ -47,9 +52,10 @@ function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTablePr
     const lastEstimate = lastStep.action.type === 'swap'? lastStep.estimate as SwapEstimate : lastStep.estimate as CrossEstimate
     return {
       key: index,
+      date: startedDate,
       fromChain: getChainById (firstAction.chainId).name,
       toChain: getChainById (lastAction.chainId).name,
-      fromToken: `${formatTokenAmount(firstStep.action.token, firstEstimate.fromAmount)}`,
+      fromToken: `${formatTokenAmount(firstAction.token, firstEstimate.fromAmount)}`,
       toToken: `${formatTokenAmount(lastAction.toToken, lastEstimate.toAmount)}`,
       resume: renderResumeButton(route)
     }

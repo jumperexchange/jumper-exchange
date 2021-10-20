@@ -341,7 +341,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const startCrossChainSwap = async () => {
     for (let i = 0; i < route.length; i++){
-      route[i].id = new Date().toUTCString()
+      route[i].id = new Date().getTime().toString()
     }
     storeActiveRoute(route)
     setIsSwapping(true)
