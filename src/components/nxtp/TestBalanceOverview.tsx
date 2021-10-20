@@ -1,11 +1,11 @@
-import { ArrowUpOutlined, SettingOutlined, SyncOutlined } from '@ant-design/icons';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Row } from 'antd';
-import React, { useState } from 'react';
-import { switchChain } from '../../services/metamask';
-import { mintTokens, testToken } from '../../services/testToken';
-import { Chain, ChainKey, ChainPortfolio, getChainByKey } from '../../types';
+import { ArrowUpOutlined, SettingOutlined, SyncOutlined } from '@ant-design/icons'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Button, Col, Row } from 'antd'
+import React, { useState } from 'react'
+import { switchChain } from '../../services/metamask'
+import { mintTokens, testToken } from '../../services/testToken'
+import { Chain, ChainKey, ChainPortfolio, getChainByKey } from '../../types'
 
 interface TestBalanceOverviewProps {
   transferChains: Chain[]
@@ -30,7 +30,7 @@ const TestBalanceOverview = ({
     if (web3.chainId !== chainId) return
     setMinting(true)
     try {
-      const res = await mintTokens(web3.library?.getSigner(), testToken[chainKey][0].id)
+      const res = await mintTokens(web3.library.getSigner(), testToken[chainKey][0].id)
       await res.wait(1)
       await updateBalances(web3.account)
     } finally {
@@ -58,7 +58,7 @@ const TestBalanceOverview = ({
             <td key={chain.key} className="ant-table-cell">
               <Row gutter={16}>
                 <Col xs={24} sm={12} >
-                  {balances && balances[chain.key][0].amount.toFixed(4)}
+                  {balances && balances[chain.key].find(portfolio => portfolio.id === '0x0000000000000000000000000000000000000000')?.amount.toFixed(4)}
                 </Col>
                 <Col xs={24} sm={12}>
                   {chain.faucetUrls && (
@@ -76,7 +76,7 @@ const TestBalanceOverview = ({
             <td key={chain.key} className="ant-table-cell" >
               <Row gutter={16}>
                 <Col xs={24} sm={12} >
-                  {balances && balances[chain.key][1].amount.toFixed(4)}
+                  {balances && balances[chain.key].find(portfolio => portfolio.id !== '0x0000000000000000000000000000000000000000')?.amount.toFixed(4)}
                 </Col>
                 <Col xs={24} sm={12}>
                   {minting
@@ -96,7 +96,7 @@ const TestBalanceOverview = ({
   )
 }
 
-export default TestBalanceOverview;
+export default TestBalanceOverview
 
 
 
