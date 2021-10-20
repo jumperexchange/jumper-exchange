@@ -74,7 +74,6 @@ const Swap = ({
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
-  const [selectedRouteIndex, setselectedRouteIndex] = useState<number>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<Array<TransferStep>>>(readActiveRoutes())
 
@@ -234,10 +233,9 @@ const Swap = ({
     getTransferRoutes()
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
 
-  const setRouteAndIndex = () => {
+  const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
     setselectedRoute(deepClone(routes[highlightedIndex]))
-    setselectedRouteIndex(highlightedIndex)
   }
 
   // const updateRoute = (route: any, index: number) => {
@@ -263,7 +261,7 @@ const Swap = ({
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
     }
 
-    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => setRouteAndIndex()}>Swap</Button>
+    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openModal()}>Swap</Button>
   }
 
   return (
