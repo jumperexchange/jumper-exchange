@@ -113,25 +113,19 @@ const storeActiveRoute = (route: TransferStep[]) => {
   ))
 }
 
-const deleteActiveRoute = (route: TransferStep[]) => {
-  if (!isSupported()) {
+const deleteRoute = (route: TransferStep[]) => {
+  if (!isSupported() || !route) {
     return
   }
   const storedRoutes = readActiveRoutes()
-  if(storedRoutes && storedRoutes.length < 2) return localStorage.removeItem('activeRoute')
-  const updatedRoutes = storedRoutes.map((storedRoute, index) => {
-      if(storedRoute[0].id !== route[0].id){
-        return storedRoute
-      }
-      return null
-    })
+  const updatedRoutes = storedRoutes.filter((storedRoute) => storedRoute[0].id !== route[0].id)
 
   localStorage.setItem('activeRoute', JSON.stringify(updatedRoutes, (k, v) =>
     typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
   ))
 }
 
-const readActiveRoutes =(): Array<TransferStep[]> => {
+const readActiveRoutes = (): Array<TransferStep[]> => {
   if (!isSupported()) {
     return [] as Array<TransferStep[]>
   }
@@ -147,7 +141,6 @@ const readActiveRoutes =(): Array<TransferStep[]> => {
       const filteredRoutes = routes.filter(route => {
         const allDone = route.every(step => step.execution?.status === 'DONE')
         if(allDone){
-          deleteActiveRoute(route)
           return null
         } else{
           return route
@@ -173,6 +166,6 @@ export {
   storeHideAbout,
   readHideAbout,
   storeActiveRoute,
-  deleteActiveRoute,
+  deleteRoute,
   readActiveRoutes
 }

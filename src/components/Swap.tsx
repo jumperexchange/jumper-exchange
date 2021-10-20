@@ -19,7 +19,7 @@ import './Swap.css';
 import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
-import { deleteActiveRoute, readActiveRoutes } from '../services/localStorage';
+import { deleteRoute, readActiveRoutes } from '../services/localStorage';
 import ActiveTrasactionsTable from './ActiveTransactionsTable';
 
 const { Panel } = Collapse;
@@ -440,13 +440,11 @@ const Swap = ({
           maskClosable={false}
           onOk={() =>{
             setselectedRoute([])
-            setHighlightedIndex(-1)
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
             .then(setBalances)
           }}
           onCancel={() => {
             setselectedRoute([])
-            setHighlightedIndex(-1)
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
             .then(setBalances)
           }}
@@ -461,8 +459,7 @@ const Swap = ({
           }}
           onSwapDone = {(route: TransferStep[]) => {
             setselectedRoute([])
-            setHighlightedIndex(-1)
-            deleteActiveRoute(route)
+            deleteRoute(route)
             setActiveRoutes(readActiveRoutes())
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
             .then(setBalances)

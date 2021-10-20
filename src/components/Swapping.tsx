@@ -38,7 +38,6 @@ interface SwappingProps {
 
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
-  console.log('helo')
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
