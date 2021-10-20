@@ -3,7 +3,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd';
 import { BigNumber } from 'bignumber.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import connextIcon from '../assets/icons/connext.png';
 import oneinchIcon from '../assets/icons/oneinch.png';
@@ -22,12 +22,13 @@ import { getBalancesForWallet } from '../services/balanceService';
 import { useMediaQuery } from 'react-responsive';
 import { storeActiveRoute } from '../services/localStorage'
 
-import { executeParaswap } from '../services/paraswap.execute';
-import { executeUniswap } from '../services/uniswaps.execute';
-import { executeNXTPCross } from '../services/nxtp.execute';
-import { executeOneInchSwap } from '../services/1inch.execute';
-import { executeHopCross } from '../services/hop.execute';
-import { executeHorizonCross } from '../services/horizon.execute';
+import {UniswapExecutionManager} from '../services/uniswaps.execute';
+import {ParaswapExecutionManager} from '../services/paraswap.execute';
+import {NXTPExecutionManager} from '../services/nxtp.execute';
+import {OneInchExecutionManager} from '../services/1inch.execute';
+import {HopExecutionManager} from '../services/hop.execute';
+import {HorizonExecutionManager} from '../services/horizon.execute';
+
 
 interface SwappingProps {
   route: Array<TransferStep>,
@@ -37,6 +38,7 @@ interface SwappingProps {
 
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
+  console.log('helo')
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
@@ -45,8 +47,28 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [alerts] = useState<Array<JSX.Element>>([])
   const [finalBalance, setFinalBalance] = useState<{token: Token, portfolio: ChainPortfolio}>()
 
+  const [uniswapExecutionManager] = useState<UniswapExecutionManager>(new UniswapExecutionManager())
+  const [paraswapExecutionManager] = useState<ParaswapExecutionManager>(new ParaswapExecutionManager())
+  const [oneInchExecutionManager] = useState<OneInchExecutionManager>(new OneInchExecutionManager())
+  const [nxtpExecutionManager] = useState<NXTPExecutionManager>(new NXTPExecutionManager())
+  const [hopExecutionManager] = useState<HopExecutionManager>(new HopExecutionManager())
+  const [horizonExecutionManager] = useState<HorizonExecutionManager>(new HorizonExecutionManager())
+
+
+
+
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
+  useEffect(() => {
+    return () =>{
+      uniswapExecutionManager.setShouldContinue(false)
+      paraswapExecutionManager.setShouldContinue(false)
+      oneInchExecutionManager.setShouldContinue(false)
+      nxtpExecutionManager.setShouldContinue(false)
+      hopExecutionManager.setShouldContinue(false)
+      horizonExecutionManager.setShouldContinue(false)
+    }
+  }, [])
 
   // Swap
   const updateStatus = (step: TransferStep, status: Execution) => {
@@ -104,13 +126,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'spookyswap':
       case 'viperswap':
       case 'sushiswap':
-        return await executeUniswap(web3.library.getSigner(), swapAction, swapEstimate, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
+        return await uniswapExecutionManager.executeSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case 'paraswap':
-        return await executeParaswap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
+        return await paraswapExecutionManager.executeSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case '1inch':
-        return await executeOneInchSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
+        return await oneInchExecutionManager.executeSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       default:
-        return await executeUniswap(web3.library.getSigner(), swapAction, swapEstimate, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
+        return await uniswapExecutionManager.executeSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
     }
   }
 
@@ -134,11 +156,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
     switch (crossAction.tool) {
       case 'nxtp':
-        return await executeNXTPCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status), crossExecution);
+        return await nxtpExecutionManager.executeCross(web3.library.getSigner(), step, fromAmount, web3.account, (status: Execution) => updateStatus(step, status), crossExecution);
       case 'hop':
-        return await executeHopCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toFixed(0), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status), crossExecution)
+        return await hopExecutionManager.executeCross(web3.library.getSigner(), crossAction.token.key, fromAmount.toFixed(0), crossAction.chainId, crossAction.toChainId,(status: Execution) => updateStatus(step, status), crossExecution)
       case 'horizon':
-        return await executeHorizonCross(crossAction.token, fromAmount, crossAction.chainId, crossAction.toChainId, web3.account, (status: Execution) => updateStatus(step, status), crossExecution)
+        return await horizonExecutionManager.executeCross(crossAction.token, fromAmount, crossAction.chainId, crossAction.toChainId, web3.account, (status: Execution) => updateStatus(step, status), crossExecution)
       default:
         throw new Error('Should never reach here, bridge not defined')
     }
