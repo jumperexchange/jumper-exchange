@@ -84,7 +84,10 @@ export class HorizonExecutionManager {
 
 
       intervalId = setInterval(async () => {
-        if(!this.shouldContinue) return status
+        if(!this.shouldContinue){
+          clearInterval(intervalId)
+          return status
+        }
         if (operationId) {
           allowanceAndCrossProcess.operationId = operationId
           update(status)

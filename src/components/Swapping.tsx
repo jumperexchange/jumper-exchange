@@ -180,14 +180,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
               className={(isSwapping && process.status === 'PENDING') ? 'flashing' : undefined}
             >
               <p>{process.message}</p>
+
               {hasFailed &&
                 <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }} >
                   {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
                   {'errorMessage' in process && `${process.errorMessage.substring(0, 150)}${process.errorMessage.length >150?'...':''}`}
                 </Typography.Text>
-
               }
-
             </Typography.Text>
             <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
               <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
@@ -261,7 +260,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.chainId))}</h4>
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item position={isMobile? 'right': 'left'} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : (isPaused? <PauseCircleOutlined /> :null)}>
+          <Timeline.Item position={isMobile? 'right': 'left'} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : (isPaused ? <PauseCircleOutlined /> : null)}>
             {executionSteps}
           </Timeline.Item>,
         ]
@@ -289,7 +288,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             <h4>Transfer from {getChainAvatar(getChainById(crossAction.chainId).key)} to {getChainAvatar(getChainById(crossAction.toChainId).key)} via {avatar}</h4>
             <span>{formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)}</span>
           </Timeline.Item>,
-          <Timeline.Item position={isMobile? 'right': 'left'} style={{paddingBottom: isMobile? 30: 0}} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : null}>
+          <Timeline.Item position={isMobile? 'right': 'left'} style={{paddingBottom: isMobile? 30: 0}} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : (isPaused ? <PauseCircleOutlined /> : null)}>
             {executionSteps}
           </Timeline.Item>,
         ]

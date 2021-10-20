@@ -40,8 +40,8 @@ export class HopExecutionManager {
     setStatusDone(update, status, allowanceAndCrossProcess)
 
     //wait for transaction
-    const waitForTxProcess = createAndPushProcess('waitForTxProcess', update, status, 'Wait for transaction on receiving chain')
     if(!this.shouldContinue) return status
+    const waitForTxProcess = createAndPushProcess('waitForTxProcess', update, status, 'Wait for transaction on receiving chain')
     let destinationTxReceipt;
     try{
       destinationTxReceipt = await hop.waitForDestinationChainReceipt(allowanceAndCrossProcess.txHash, bridgeCoin, fromChainId, toChainId)
@@ -57,7 +57,9 @@ export class HopExecutionManager {
 
     const parsedReceipt = hop.parseReceipt(tx, destinationTxReceipt)
 
-
+    console.log('shouldContinue');
+    console.log(this.shouldContinue);
+    if(!this.shouldContinue) return status
     setStatusDone(update, status, waitForTxProcess, {
       fromAmount: parsedReceipt.fromAmount,
       toAmount: parsedReceipt.toAmount,
