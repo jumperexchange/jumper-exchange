@@ -99,13 +99,13 @@ export class HorizonExecutionManager {
             allowanceAndCrossProcess.status = 'PENDING'
             allowanceAndCrossProcess.txHash = operation.actions[0].transactionHash
             allowanceAndCrossProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceAndCrossProcess.txHash
-            allowanceAndCrossProcess.message = <>Send Transaction - Wait for <a href={allowanceAndCrossProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+            allowanceAndCrossProcess.message = 'Send Transaction - Wait for'
             update(status)
           }
 
           // Wait > Done; Wait for confirmations
           if (operation.actions[0].status === 'success' && allowanceAndCrossProcess.status === 'PENDING') {
-            allowanceAndCrossProcess.message = <>Transaction Sent: <a href={allowanceAndCrossProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+            allowanceAndCrossProcess.message = 'Transaction Sent:'
             setStatusDone(update, status, allowanceAndCrossProcess)
             waitForBlocksProcess = createAndPushProcess('waitForBlocksProcess', update, status, 'Wait for Block Confirmations', { status: 'PENDING' })
           }
@@ -121,7 +121,7 @@ export class HorizonExecutionManager {
           if (operation.actions[2].status === 'success' && mintProcess.status === 'PENDING') {
             mintProcess.txHash = operation.actions[2].transactionHash
             mintProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + mintProcess.txHash
-            mintProcess.message = <>Minted in <a href={mintProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+            mintProcess.message = 'Minted in'
             setStatusDone(update, status, mintProcess)
           }
 

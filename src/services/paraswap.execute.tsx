@@ -53,7 +53,7 @@ export class ParaswapExecutionManager {
     swapProcess.status = 'PENDING'
     swapProcess.txHash = tx.hash
     swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
-    swapProcess.message = <>Swap via Paraswap - Wait for <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+    swapProcess.message = 'Swap via Paraswap - Wait for'
     update(status)
 
     // -> waiting
@@ -70,7 +70,7 @@ export class ParaswapExecutionManager {
     }
 
     // -> set status
-    swapProcess.message = <>Swapped: <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+    swapProcess.message = 'Swapped:'
     const parsedReceipt = paraswap.parseReceipt(tx as TransactionResponse, receipt as TransactionReceipt)
     setStatusDone(update, status, swapProcess, {
       fromAmount: parsedReceipt.fromAmount,

@@ -26,14 +26,14 @@ export const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token:
         allowanceProcess.status = 'PENDING'
         allowanceProcess.txHash = approveTx.hash
         allowanceProcess.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
-        allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+        allowanceProcess.message = 'Approve - Wait for'
         update(status)
 
         // wait for transcation
         await approveTx.wait()
 
         // -> set status
-        allowanceProcess.message = <>Approved: <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+        allowanceProcess.message = 'Approved:'
       } else {
         allowanceProcess.message = 'Already Approved'
       }

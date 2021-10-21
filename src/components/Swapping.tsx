@@ -28,6 +28,7 @@ import {NXTPExecutionManager} from '../services/nxtp.execute';
 import {OneInchExecutionManager} from '../services/1inch.execute';
 import {HopExecutionManager} from '../services/hop.execute';
 import {HorizonExecutionManager} from '../services/horizon.execute';
+import { renderProcessMessage } from '../services/processRenderer';
 
 
 interface SwappingProps {
@@ -179,7 +180,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
               style={{ maxWidth: 250}}
               className={(isSwapping && process.status === 'PENDING') ? 'flashing' : undefined}
             >
-              <p>{process.message}</p>
+              <p>{renderProcessMessage(process)}</p>
 
               {hasFailed &&
                 <Typography.Text type="secondary" style={{ whiteSpace: "pre-wrap" }} >
@@ -532,7 +533,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       {isSwapping && currentProcess && currentProcess.status === 'ACTION_REQUIRED' &&
         <>
           <Row justify="center" style={{marginBottom: 6}}>
-            <Typography.Text >{currentProcess.message}</Typography.Text>
+            <Typography.Text >{renderProcessMessage(currentProcess)}</Typography.Text>
           </Row>
           <Row justify="center">
             <img src={walletIcon} alt="Please Check Your Wallet"  />
@@ -543,7 +544,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       {isSwapping && currentProcess && currentProcess.status === 'PENDING' &&
         <>
           <Row justify="center">
-            <Typography.Text className="flashing">{currentProcess.message}</Typography.Text>
+            <Typography.Text className="flashing">{renderProcessMessage(currentProcess)}</Typography.Text>
           </Row>
           <Row style={{ marginTop: 20 }} justify="center">
             <Spin indicator={<LoadingIndicator />} />

@@ -57,8 +57,6 @@ export class HopExecutionManager {
 
     const parsedReceipt = hop.parseReceipt(tx, destinationTxReceipt)
 
-    console.log('shouldContinue');
-    console.log(this.shouldContinue);
     if(!this.shouldContinue) return status
     setStatusDone(update, status, waitForTxProcess, {
       fromAmount: parsedReceipt.fromAmount,

@@ -28,12 +28,13 @@ export class NXTPExecutionManager {
         try {
           if(!this.shouldContinue) {
             sdk.removeAllListeners()
-            resolve(status)
+            return resolve(status)
           }
           await nxtp.finishTransfer(sdk, data, step, update)
         } catch (e) {
           notifications.showNotification(NotificationType.CROSS_ERROR)
-          reject(status)
+          sdk.removeAllListeners()
+          return reject(status)
         }
 
         sdk.removeAllListeners()
@@ -64,10 +65,6 @@ export class NXTPExecutionManager {
     const chainProviders = getRpcProviders(crossableChains)
     const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
-    if(!this.shouldContinue) {
-      nxtpSDK.removeAllListeners()
-      return status
-    }
     if(quoteProcess.quote){
       const activeTransactions = await nxtpSDK.getActiveTransactions()
       const relevantTx = activeTransactions.find(tx => tx.crosschainTx.invariant.transactionId === quoteProcess.quote.bid.transactionId)
@@ -76,6 +73,10 @@ export class NXTPExecutionManager {
           ...relevantTx.crosschainTx.invariant,
           ...(relevantTx.crosschainTx.receiving ??
             relevantTx.crosschainTx.sending),
+        }
+        if(!this.shouldContinue) {
+          nxtpSDK.removeAllListeners()
+          return status
         }
         await nxtp.finishTransfer(nxtpSDK, (relevantTx as any), step, update)
         setStatusDone(update, status, status.process[status.process.length - 1])

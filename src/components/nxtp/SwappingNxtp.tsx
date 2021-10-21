@@ -5,6 +5,7 @@ import { Alert, Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 
 import { BaseType } from 'antd/lib/typography/Base';
 import walletIcon from '../../assets/wallet.png';
 import { switchChain } from '../../services/metamask';
+import { renderProcessMessage } from '../../services/processRenderer';
 import { formatTokenAmount } from '../../services/utils';
 import { CrossAction, Execution, getChainById, getIcon, TransferStep } from '../../types';
 import Clock from '../Clock';
@@ -121,7 +122,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
               type={type}
               className={process.status === 'PENDING' ? 'flashing' : undefined}
             >
-              {process.message}
+              {renderProcessMessage(process)}
             </Typography.Text>
             <Typography.Text style={{ marginLeft: 'auto' }}>
               <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
@@ -227,7 +228,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
           <Spin style={{ margin: 10 }} indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />} />
         </Row>
         <Row justify="center">
-          <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.footerMessage || currentProcess.message}</Typography.Text>
+          <Typography.Text style={{ marginTop: 10 }} className="flashing">{currentProcess.footerMessage || renderProcessMessage(currentProcess)}</Typography.Text>
         </Row>
       </>
     }
@@ -237,7 +238,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
           <img src={walletIcon} alt="Wallet" width="92" height="100" />
         </Row>
         <Row justify="center">
-          <Typography.Text style={{ marginTop: 10 }}>{currentProcess.footerMessage || currentProcess.message}</Typography.Text>
+          <Typography.Text style={{ marginTop: 10 }}>{currentProcess.footerMessage || renderProcessMessage(currentProcess)}</Typography.Text>
         </Row>
       </>
     }
