@@ -290,3 +290,7 @@ h4.swap-title {
   font-weight: 500;
   font-size: 1.17em;
 }
+
+.active-transfer-collapse .ant-collapse-content-box {
+  overflow-x: scroll;
+}

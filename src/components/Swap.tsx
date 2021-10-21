@@ -269,12 +269,35 @@ const Swap = ({
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Hero Image */}
-        <Row className='row-hero-image' style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
+        {/* <Row className='row-hero-image' style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
           <Image
             className="hero-image"
             src={heroImage}
           />
-        </Row>
+        </Row> */}
+
+         {/* Active Routes */}
+          <Row justify={"center"} style={{ marginTop: 48}}>
+             <Collapse
+              defaultActiveKey={['1']}
+              ghost
+              bordered={false}
+              className={`active-transfer-collapse`}
+              collapsible={!activeRoutes.length? 'disabled' : 'header'}
+              style={{ overflowX: 'scroll'}}
+              >
+                <Panel   header={`Active Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
+                  <div >
+                      <ActiveTrasactionsTable
+                      routes={activeRoutes}
+                      selectRoute = {(route:TransferStep[]) => setselectedRoute(route) }
+                      ></ActiveTrasactionsTable>
+                  </div>
+                </Panel>
+              </Collapse>
+          </Row>
+
+
 
         {/* Swap Form */}
         <Row style={{ margin: 20 }} justify={"center"}>
@@ -351,30 +374,6 @@ const Swap = ({
             </div>
           </Col>
         </Row>
-
-        {/* Active Routes */}
-        {
-          !!activeRoutes.length &&
-          <Row justify={"center"} style={{ marginTop: 48}}>
-             <Collapse
-              ghost
-              bordered={false}
-              className="active-transfer-collapse"
-              style={{
-                // width: '75%'
-              }}
-
-          >
-            <Panel header={`Active Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
-              <ActiveTrasactionsTable
-              routes={activeRoutes}
-              selectRoute = {(route:TransferStep[]) => setselectedRoute(route) }
-              ></ActiveTrasactionsTable>
-            </Panel>
-          </Collapse>
-          </Row>
-
-        }
 
         {/* Routes */}
         <Row justify={"center"} style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
