@@ -435,7 +435,6 @@ const Swap = ({
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
-          maskClosable={false}
           onOk={() =>{
             setselectedRoute([])
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
