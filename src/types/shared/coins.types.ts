@@ -481,7 +481,7 @@ export const defaultCoins: Array<Coin> = [
   {
     key: CoinKey.OKT,
     name: CoinKey.OKT,
-    logoURI: '',
+    logoURI: 'https://static.debank.com/image/okt_token/logo_url/okt/1228cd92320b3d33769bd08eecfb5391.png',
     verified: true,
     chains: {
       [ChainKey.OKT]: {
@@ -492,7 +492,7 @@ export const defaultCoins: Array<Coin> = [
         chainKey: ChainKey.OKT,
         key: CoinKey.OKT,
         name: CoinKey.OKT,
-        logoURI: '',
+        logoURI: 'https://static.debank.com/image/okt_token/logo_url/okt/1228cd92320b3d33769bd08eecfb5391.png',
       },
     },
   },
@@ -500,7 +500,7 @@ export const defaultCoins: Array<Coin> = [
   {
     key: CoinKey.AVAX,
     name: CoinKey.AVAX,
-    logoURI: '',
+    logoURI: 'https://static.debank.com/image/avax_token/logo_url/avax/0b9c84359c84d6bdd5bfda9c2d4c4a82.png',
     verified: true,
     chains: {
       [ChainKey.AVA]: {
@@ -511,7 +511,7 @@ export const defaultCoins: Array<Coin> = [
         chainKey: ChainKey.AVA,
         key: CoinKey.AVAX,
         name: CoinKey.AVAX,
-        logoURI: '',
+        logoURI: 'https://static.debank.com/image/avax_token/logo_url/avax/0b9c84359c84d6bdd5bfda9c2d4c4a82.png',
       },
     },
   },
@@ -579,7 +579,7 @@ export const defaultCoins: Array<Coin> = [
   {
     key: CoinKey.FSN,
     name: CoinKey.FSN,
-    logoURI: '',
+    logoURI: 'https://www.bscscan.com/token/images/anyFSN_32.png',
     verified: true,
     chains: {
       [ChainKey.FSN]: {
@@ -590,7 +590,7 @@ export const defaultCoins: Array<Coin> = [
         chainKey: ChainKey.FSN,
         key: CoinKey.FSN,
         name: CoinKey.FSN,
-        logoURI: '',
+        logoURI: 'https://www.bscscan.com/token/images/anyFSN_32.png',
       },
     },
   },

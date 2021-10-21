@@ -1,11 +1,11 @@
-import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json";
-import axios from 'axios';
-import { BigNumber as BigNumberJs } from 'bignumber.js';
-import { BigNumber, constants, Contract, ethers } from 'ethers';
-import { getRpcProvider } from '../components/web3/connectors';
-import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById, Token } from '../types';
-import { getDefaultTokenBalancesForWallet } from './testToken';
-import { deepClone } from './utils';
+import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json"
+import axios from 'axios'
+import { BigNumber as BigNumberJs } from 'bignumber.js'
+import { BigNumber, constants, Contract, ethers } from 'ethers'
+import { getRpcProvider } from '../components/web3/connectors'
+import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById, Token } from '../types'
+import { getDefaultTokenBalancesForWallet } from './testToken'
+import { deepClone } from './utils'
 
 type tokenListDebankT = {
   id: string,
@@ -35,6 +35,9 @@ type Blacklist = {
 export const EMPTY_PORTFOLIO: Portfolio = chainKeysToObject([])
 
 const tokenBlacklist: Blacklist = {
+  [ChainKey.ETH]: [
+    '0x82dfdb2ec1aa6003ed4acba663403d7c2127ff67', // akSwap.io - scam
+  ],
   [ChainKey.BSC]: [
     '0x119e2ad8f0c85c6f61afdf0df69693028cdc10be', // Zepe.io - scam
     '0xb0557906c617f0048a700758606f64b33d0c41a6', // Zepe.io - scam
@@ -44,6 +47,10 @@ const tokenBlacklist: Blacklist = {
     '0x8ee3e98dcced9f5d3df5287272f0b2d301d97c57', // AirStack.net - scam
     '0x5558447b06867ffebd87dd63426d61c868c45904', // https://bnbw.me/ - scam
     '0x373233a38ae21cf0c4f9de11570e7d5aa6824a1e', // ALPACAFIN.COM - scam
+    '0x0198be93b7cae38da7e2fd966946412cc36447bf', // BSCmello.io - scam
+    '0xa43d8b1f070b8e2fd2de4e01369369d5fd7d4784', // melloBsc.com - scam
+    '0xd5e3bf9045cfb1e6ded4b35d1b9c34be16d6eec3', // LinkP.io - scam
+    '0x442b656f5a5c3dd09790951810c5a15ea5295b51', // Tu7.org - scam
   ],
   [ChainKey.POL]: [
     '0xe4fb1bb8423417a460286b0ed44b64e104c5fae5', // Zepe.io - scam
@@ -52,7 +59,20 @@ const tokenBlacklist: Blacklist = {
     '0x19a935cbaaa4099072479d521962588d7857d717', // Litcoin - fake
     '0x0364c8dbde082372e8d6a6137b45613dd0f8138a', // https://polybest.org/ - scam
     '0x81067076dcb7d3168ccf7036117b9d72051205e2', // DxDex.io - scam
-  ]
+    '0x2fd23d735860bc64090d9807ff6c0d1a3d721f08', // softbalanced.com
+    '0x80a3f315542f7ff2149fd75a74a964c13de6c7fe', // BUY THRUST - https://t.me/thrust_zone'
+    '0xa39b14f57087aa5f16b941e5ec182b84a5432aa7', // BeezEX.Net
+    '0xcbf4ab00b6aa19b4d5d29c7c3508b393a1c01fe3', // MegaDoge.Org
+    '0x02677c45fa858b9ffec24fc791bf72cdf4a8a8df', // RicheSwap.io - steal keys
+    '0x1cc384b6f900a947eb3bbfc47417afeee7599e24', // yui.finance - offline
+    '0x8a0b040f27407d7a603bca701b857f8f81a1c7af', // Buy Polydoge - fake
+    '0x9e2d266d6c90f6c0d80a88159b15958f7135b8af', // https://stakeshare.org/polygon - scam
+    '0xa9316e1909edf3ed33b0dd1c6631c50b82c6e142', // A NFTSprites.com - ??
+    '0xdad0d08d5b0544fc853682c6ca07eaab201bd550', // auto-stake.com - offline
+  ],
+  [ChainKey.DAI]: [
+    '0x0f1b956128ac17407c29c5600983c6cedf3b2820', // softbalanced.com
+  ],
 }
 
 const filterPortfolioWithBlacklist = (portfolio: Portfolio, blacklist: Blacklist) => {
@@ -142,17 +162,17 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
 
   var result
   try {
-    result = await axios.get<any>(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl)
   } catch (e) {
     console.warn(`Debank api call for token list on chain ${chainKey} failed with status ` + e)
     console.warn(e)
     return []
   }
 
-  var tokenList: Array<tokenListDebankT>;
+  var tokenList: Array<tokenListDebankT>
   // response body is empty?
   if (Object.keys(result.data).length === 0) {
-    return [];
+    return []
   } else {
     tokenList = result.data
   }
@@ -197,7 +217,7 @@ const getBlancesFromDebank = async (walletAdress: string) => {
 
   var result
   try {
-    result = await axios.get<any>(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl)
   } catch (e) {
     console.warn(`Debank api call for token list failed with status ` + e)
     throw e
@@ -296,5 +316,5 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
   return portfolio
 }
 
-export { getCoinsOnChain, getBalancesForWallet };
+export { getCoinsOnChain, getBalancesForWallet }
 
