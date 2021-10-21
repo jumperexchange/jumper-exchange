@@ -575,6 +575,25 @@ export const defaultCoins: Array<Coin> = [
       },
     },
   },
+  // > FSN
+  {
+    key: CoinKey.FSN,
+    name: CoinKey.FSN,
+    logoURI: '',
+    verified: true,
+    chains: {
+      [ChainKey.FSN]: {
+        id: '0x0000000000000000000000000000000000000000',
+        symbol: CoinKey.FSN,
+        decimals: 18,
+        chainId: ChainId.FSN,
+        chainKey: ChainKey.FSN,
+        key: CoinKey.FSN,
+        name: CoinKey.FSN,
+        logoURI: '',
+      },
+    },
+  },
 
 
   // OTHER STABLECOINS
@@ -646,7 +665,7 @@ export const defaultCoins: Array<Coin> = [
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
       },
       [ChainKey.OPT]: {
-        id: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
+        id: '0x94b008aa00579c1307b0ef2c499ad98a8ce58e58',
         symbol: CoinKey.USDT,
         decimals: 6,
         chainId: ChainId.OPT,
@@ -768,7 +787,7 @@ export const defaultCoins: Array<Coin> = [
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
       },
       [ChainKey.OPT]: {
-        id: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+        id: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
         symbol: CoinKey.USDC,
         decimals: 6,
         chainId: ChainId.OPT,
@@ -1273,6 +1292,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ONE),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ONE),
   ],
+  [ChainKey.FSN]: [],
 
   // Testnets
   [ChainKey.ROP]: [

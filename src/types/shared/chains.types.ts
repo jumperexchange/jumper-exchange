@@ -301,32 +301,32 @@ export const supportedChains: Array<Chain> = [
     }
   },
 
-  // 32659 - FSN-MAIN (anyswap)
-  // {
-  //   key: ChainKey.FSN,
-  //   name: 'FSN-MAIN (anyswap)',
-  //   coin: CoinKey.FSN,
-  //   id: 32659,
-  //   visible: false,
+  // 32659 - Fusion (anyswap)
+  {
+    key: ChainKey.FSN,
+    name: 'Fusion Mainnet',
+    coin: CoinKey.FSN,
+    id: 32659,
+    visible: false,
 
-  //   // https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche
-  //   metamask: {
-  //     chainId: prefixChainId(32659),
-  //     blockExplorerUrls: [
-  //       'https://fsnex.com/',
-  //     ],
-  //     chainName: 'Fusion Mainnet',
+    // https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche
+    metamask: {
+      chainId: prefixChainId(32659),
+      blockExplorerUrls: [
+        'https://fsnex.com/',
+      ],
+      chainName: 'Fusion Mainnet',
 
-  //     nativeCurrency: {
-  //       name: 'FSN',
-  //       symbol: 'FSN',
-  //       decimals: 18,
-  //     },
-  //     rpcUrls: [
-  //       'https://fsnmainnet2.anyswap.exchange',
-  //     ],
-  //   }
-  // },
+      nativeCurrency: {
+        name: 'FSN',
+        symbol: 'FSN',
+        decimals: 18,
+      },
+      rpcUrls: [
+        'https://fsnmainnet2.anyswap.exchange',
+      ],
+    }
+  },
 
   // 1666600000 - Harmony Mainnet Shard 0
   {

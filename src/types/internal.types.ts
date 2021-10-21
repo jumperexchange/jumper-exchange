@@ -159,6 +159,7 @@ export interface WalletSummary {
   [ChainKey.OPT]: SummaryAmounts
   [ChainKey.ARB]: SummaryAmounts
   [ChainKey.ONE]: SummaryAmounts
+  [ChainKey.FSN]: SummaryAmounts
 
   [ChainKey.ROP]: SummaryAmounts
   [ChainKey.RIN]: SummaryAmounts
