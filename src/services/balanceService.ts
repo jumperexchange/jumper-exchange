@@ -272,14 +272,14 @@ export const getBalanceFromProvider = async (
     if (token.id === constants.AddressZero) {
       calls.push({
         call: ['getEthBalance(address)(uint256)', address],
-        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** 18]]
+        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** token.decimals]]
       })
     }
     else {
       calls.push({
         target: token.id,
         call: ['balanceOf(address)(uint256)', address],
-        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** 18]]
+        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** token.decimals]]
       })
     }
   })
