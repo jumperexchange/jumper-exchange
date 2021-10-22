@@ -2,14 +2,13 @@
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd';
+import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Typography } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import axios, { CancelTokenSource } from 'axios';
 import BigNumber from 'bignumber.js';
 import { animate, stagger } from "motion";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import heroImage from '../assets/info_header.jpg';
 import { loadTokenListAsTokens } from '../services/tokenListService';
 import { deepClone, formatTokenAmountOnly } from '../services/utils';
 import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
@@ -279,11 +278,10 @@ const Swap = ({
          {/* Active Routes */}
           <Row justify={"center"} style={{ marginTop: 48}}>
              <Collapse
-              defaultActiveKey={['1']}
+              defaultActiveKey={activeRoutes.length? ['1']: ['']}
               ghost
               bordered={false}
               className={`active-transfer-collapse`}
-              collapsible={!activeRoutes.length? 'disabled' : 'header'}
               style={{ overflowX: 'scroll'}}
               >
                 <Panel   header={`Active Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">

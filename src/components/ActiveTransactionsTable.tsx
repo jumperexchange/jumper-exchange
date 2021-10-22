@@ -1,6 +1,11 @@
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+import { injected } from './web3/connectors';
+
 import { Button, Table } from 'antd';
 import { formatTokenAmount } from '../services/utils';
 import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types';
+import { LoginOutlined } from '@ant-design/icons';
 
 interface ActiveTrasactionsTableProps {
   routes: Array<TransferStep[]>,
@@ -10,10 +15,17 @@ interface ActiveTrasactionsTableProps {
 
 
 function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTableProps) {
+  const web3 = useWeb3React<Web3Provider>()
+  const { activate } = useWeb3React()
+  const login = () => activate(injected)
 
   const renderResumeButton = (route:TransferStep[]) =>{
-    return <Button type='ghost' shape='round' onClick={() => selectRoute(route)}>Show Swap</Button>
+    if (!web3.account) {
+      return <Button type='ghost' shape='round' icon={<LoginOutlined />} onClick={() => login()}>Connect Wallet</Button>
+    }
+    return <Button type='ghost' shape='round' onClick={() => selectRoute(route)}>Resume Swap</Button>
   }
+
   const columns = [
     {
       title: 'Started',
