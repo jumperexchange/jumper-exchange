@@ -1,11 +1,13 @@
 import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json";
 import axios from 'axios';
 import { BigNumber as BigNumberJs } from 'bignumber.js';
-import { BigNumber, constants, Contract, ethers } from 'ethers';
-import { getRpcProvider } from '../components/web3/connectors';
+import { constants, ethers } from 'ethers';
+import { getMulticallAddresses, getRpcUrls } from '../components/web3/connectors';
 import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById, Token } from '../types';
 import { getDefaultTokenBalancesForWallet } from './testToken';
 import { deepClone } from './utils';
+// @ts-ignore
+import { createWatcher } from '@makerdao/multicall';
 
 type tokenListDebankT = {
   id: string,
@@ -254,45 +256,73 @@ const getBalancesForWallet = async (walletAdress: string, onChains?: Array<numbe
 
 export const getBalanceFromProvider = async (
   address: string,
-  assetId: string,
-  chainId: number,
-): Promise<BigNumber> => {
-  const provider = getRpcProvider(chainId)
-  if (assetId === constants.AddressZero) {
-    return provider.getBalance(address)
-  } else {
-    const contract = new Contract(assetId, ERC20.abi, provider)
-    return contract.balanceOf(address)
-  }
-}
+  tokens: Array<Token>,
+): Promise<Array<any>> => new Promise((resolve) => {
+
+  const chainId = tokens[0].chainId
+  const config = {
+    rpcUrl: getRpcUrls([chainId])[chainId],
+    multicallAddress: getMulticallAddresses([chainId])[chainId],
+    interval: 10000
+  };
+  // Create watcher
+  const calls: Array<any> = []
+  tokens.forEach(async (token) => {
+    if (token.id === constants.AddressZero) {
+      calls.push({
+        call: [
+          'getEthBalance(address)(uint256)',
+          '0xe092c222417e4fB06D50517c26f8F36418f1c921'
+        ],
+        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** 18]]
+      })
+    }
+    else {
+      calls.push({
+        target: token.id,
+        call: ['balanceOf(address)(uint256)', address],
+        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** 18]]
+      })
+    }
+  })
+
+  const watcher = createWatcher(
+    calls,
+    config
+  );
+
+  watcher.batch().subscribe((updates: any) => {
+    resolve(updates as any);
+  });
+
+  watcher.start();
+})
 
 export const getBalancesForWalletFromChain = async (address: string, tokens: { [ChainKey: string]: Array<Token> }) => {
   const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
-
   Object.entries(tokens).forEach(async ([chainKey, tokens]) => {
-    tokens.forEach(async (token) => {
-      const promise = getBalanceFromProvider(address, token.id, token.chainId)
-        .catch((e) => {
-          console.warn(address, token.id, token.chainId, e)
-          return BigNumber.from(0)
-        })
-      promises.push(promise)
-      const amount = await promise
+    const promise = getBalanceFromProvider(address, tokens)
+    promises.push(promise)
+    const amounts = await promise
+
+    amounts.forEach((amount) => {
+      const token_id = amount["type"].split("-")[0]
+      const token_name = amount["type"].split("-")[1]
+      const token_key = amount["type"].split("-")[2]
 
       portfolio[chainKey].push({
-        id: token.id,
-        name: token.name,
-        symbol: token.key,
+        id: token_id,
+        name: token_name,
+        symbol: token_key,
         img_url: '',
-        amount: new BigNumberJs(amount.toString()).shiftedBy(-token.decimals).toNumber(),
+        amount: new BigNumberJs(amount.value.toString()).toNumber(),
         pricePerCoin: 0,
         verified: false,
       })
     })
   })
 
-  await Promise.allSettled(promises)
   return portfolio
 }
 

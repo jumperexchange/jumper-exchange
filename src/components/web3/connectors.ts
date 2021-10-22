@@ -60,6 +60,34 @@ const RPC_URLS: { [chainId: number]: string } = {
 };
 
 
+const MULTICALL_ADDRESSES: { [chainId: number]: string } = {
+  // Mainnet
+  [CHAINS.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+  [CHAINS.POLYGON]: '0x02817C1e3543c2d908a590F5dB6bc97f933dB4BD',
+  [CHAINS.BSC]: '0xa9193376D09C7f31283C54e56D013fCF370Cd9D9',
+  [CHAINS.XDAI]: '0x67dA5f2FfaDDfF067AB9d5F025F8810634d84287',
+  [CHAINS.FANTOM]: '0x22D4cF72C45F8198CfbF4B568dBdB5A85e8DC0B5',
+  [CHAINS.ARBITRUM]: '0x80C7DD17B01855a6D2347444a0FCC36136a314de',
+
+  // Testnet
+  [CHAINS.ROPSTEN]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+  [CHAINS.RINKEBY]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+  [CHAINS.GOERLI]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+  [CHAINS.KOVAN]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+  [CHAINS.ARBITRUM_RINKEBY]: '0xa501c031958F579dB7676fF1CE78AD305794d579',
+  [CHAINS.OPTIMISM_KOVAN]: '',
+  [CHAINS.POLYGON_TESTNET]: '0xc1400d49baa8e307B4462cD46E0a20109D25F50f',
+  [CHAINS.BSC_TESTNET]: '0xae11C5B5f29A6a25e955F0CB8ddCc416f522AF5C',
+
+  // Additional
+  [CHAINS.OKEX]: '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
+  [CHAINS.AVALANCHE]: '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
+  [CHAINS.FSN]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
+  [CHAINS.KOV]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+  [CHAINS.ONE]: '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
+  [CHAINS.ONET]:  '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
+};
+
 // cached providers
 const chainProviders: Record<number, providers.FallbackProvider> = {};
 
@@ -69,6 +97,14 @@ export const getRpcUrls = (chainIds: Array<number>) => {
     rpcs[chainId] = RPC_URLS[chainId]
   })
   return rpcs
+}
+
+export const getMulticallAddresses = (chainIds: Array<number>) => {
+  const addresses : Record<number, string> = {}
+  chainIds.forEach((chainId) => {
+    addresses[chainId] = MULTICALL_ADDRESSES[chainId]
+  })
+  return addresses
 }
 
 export const getRpcProvider = (chainId: number) => {
