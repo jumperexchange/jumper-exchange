@@ -1,13 +1,11 @@
-import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json";
-import axios from 'axios';
-import { BigNumber as BigNumberJs } from 'bignumber.js';
-import { constants, ethers } from 'ethers';
-import { getMulticallAddresses, getRpcUrls } from '../components/web3/connectors';
-import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById, Token } from '../types';
-import { getDefaultTokenBalancesForWallet } from './testToken';
-import { deepClone } from './utils';
+import axios from 'axios'
+import { BigNumber as BigNumberJs } from 'bignumber.js'
+import { constants, ethers } from 'ethers'
+import { getMulticallAddresses, getRpcUrls } from '../components/web3/connectors'
+import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, defaultTokens, getChainById, Token } from '../types'
+import { deepClone } from './utils'
 // @ts-ignore
-import { createWatcher } from '@makerdao/multicall';
+import { createWatcher } from '@makerdao/multicall'
 
 type tokenListDebankT = {
   id: string,
@@ -144,17 +142,17 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
 
   var result
   try {
-    result = await axios.get<any>(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl)
   } catch (e) {
     console.warn(`Debank api call for token list on chain ${chainKey} failed with status ` + e)
     console.warn(e)
     return []
   }
 
-  var tokenList: Array<tokenListDebankT>;
+  var tokenList: Array<tokenListDebankT>
   // response body is empty?
   if (Object.keys(result.data).length === 0) {
-    return [];
+    return []
   } else {
     tokenList = result.data
   }
@@ -199,7 +197,7 @@ const getBlancesFromDebank = async (walletAdress: string) => {
 
   var result
   try {
-    result = await axios.get<any>(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl)
   } catch (e) {
     console.warn(`Debank api call for token list failed with status ` + e)
     throw e
@@ -231,7 +229,10 @@ const getBalancesForWallet = async (walletAdress: string, onChains?: Array<numbe
   // Manually added Harmony Support
   let onePromise: Promise<{ [ChainKey: string]: ChainPortfolio[] }> | undefined
   if (onChains && onChains.indexOf(ChainId.ONE) !== -1) {
-    onePromise = getDefaultTokenBalancesForWallet(walletAdress, [ChainId.ONE])
+    const tokens = {
+      [ChainKey.ONE]: defaultTokens[ChainKey.ONE]
+    }
+    onePromise = getBalancesForWalletFromChain(walletAdress, tokens)
   }
 
   let protfolio: Portfolio
@@ -264,16 +265,13 @@ export const getBalanceFromProvider = async (
     rpcUrl: getRpcUrls([chainId])[chainId],
     multicallAddress: getMulticallAddresses([chainId])[chainId],
     interval: 10000
-  };
+  }
   // Create watcher
   const calls: Array<any> = []
   tokens.forEach(async (token) => {
     if (token.id === constants.AddressZero) {
       calls.push({
-        call: [
-          'getEthBalance(address)(uint256)',
-          '0xe092c222417e4fB06D50517c26f8F36418f1c921'
-        ],
+        call: ['getEthBalance(address)(uint256)', address],
         returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** 18]]
       })
     }
@@ -289,13 +287,13 @@ export const getBalanceFromProvider = async (
   const watcher = createWatcher(
     calls,
     config
-  );
+  )
 
   watcher.batch().subscribe((updates: any) => {
-    resolve(updates as any);
-  });
+    resolve(updates as any)
+  })
 
-  watcher.start();
+  watcher.start()
 })
 
 export const getBalancesForWalletFromChain = async (address: string, tokens: { [ChainKey: string]: Array<Token> }) => {
@@ -323,8 +321,9 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
     })
   })
 
+  await Promise.allSettled(promises)
   return portfolio
 }
 
-export { getCoinsOnChain, getBalancesForWallet };
+export { getCoinsOnChain, getBalancesForWallet }
 
