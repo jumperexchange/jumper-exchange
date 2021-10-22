@@ -1,5 +1,5 @@
-import { FallbackProvider } from '@ethersproject/providers'
-import { BigNumber, constants, Contract, providers, Signer, utils } from "ethers"
+import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
+import { BigNumber, constants, Contract, providers, utils } from "ethers"
 import { getRpcProviders } from '../components/web3/connectors'
 import { ChainId, chainKeysToObject, ChainPortfolio, CoinKey, defaultTokens, getChainById, TokenWithAmounts } from '../types'
 
@@ -64,7 +64,7 @@ const TestTokenABI = [
   "function mint(address account, uint256 amount)",
 ]
 
-export const mintTokens = async (signer: Signer, assetId: string): Promise<providers.TransactionResponse> => {
+export const mintTokens = async (signer: JsonRpcSigner, assetId: string): Promise<providers.TransactionResponse> => {
   const signerAddress = await signer.getAddress()
   const contract = new Contract(assetId, TestTokenABI, signer)
   const response = await contract.mint(signerAddress, utils.parseEther("1000"))
