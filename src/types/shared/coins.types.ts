@@ -993,9 +993,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ARB),
   ],
   [ChainKey.OPT]: [
-    // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OPT),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OPT),
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
   ],
   [ChainKey.ONE]: [
     findDefaultCoinOnChain(CoinKey.ONE, ChainKey.ONE),
