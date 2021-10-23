@@ -1,5 +1,5 @@
-import { ChainId } from '..';
-import { ChainKey, Coin, CoinKey, Token } from './base.types';
+import { ChainId } from '..'
+import { ChainKey, Coin, CoinKey, Token } from './base.types'
 
 export const defaultCoins: Array<Coin> = [
   // NATIVE COINS
@@ -955,6 +955,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ONE),
   ],
   [ChainKey.AVA]: [
+    findDefaultCoinOnChain(CoinKey.AVAX, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.AVA),

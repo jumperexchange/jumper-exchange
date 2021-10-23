@@ -343,8 +343,6 @@ export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEve
   let status: Execution | undefined = undefined
   let lastProcess: Process | undefined = undefined
 
-  console.log('event', event)
-
   if (step && step.execution && updateStatus) {
     status = step.execution
     lastProcess = status.process[status.process.length - 1]

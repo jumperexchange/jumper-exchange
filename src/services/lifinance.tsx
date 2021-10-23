@@ -28,17 +28,17 @@ const getSupportedChains = (jsonArraySting: string): ChainId[] => {
 
 const supportedChains = [ChainId.RIN, ChainId.GOR, ChainId.POL, ChainId.DAI, ChainId.BSC, ChainId.FTM] || getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
 
-const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => {
+const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string) => {
   switch (swapAction.tool) {
     case 'paraswap': {
-      const call = await paraswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      const call = await paraswap.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
       return {
         approveTo: await paraswap.getContractAddress(swapAction.chainId),
-        call
+        call,
       }
     }
     case '1inch': {
-      const call = await oneInch.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      const call = await oneInch.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
       return {
         approveTo: call.to,
         call,
@@ -46,7 +46,7 @@ const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => 
     }
 
     default: {
-      const call = await uniswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      const call = await uniswap.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
       return {
         approveTo: call.to,
         call,
@@ -112,30 +112,36 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
   // Receiving side
   let receivingTransaction
   if (endSwapStep) {
-    // Swap and Withdraw
     const swapAction = endSwapStep.action
     const swapEstimate = endSwapStep.estimate as SwapEstimate
 
     // adjust lifData
     lifiData.receivingAssetId = swapAction.toToken.id
 
-    const swapCall = await buildSwap(swapAction, swapEstimate)
+    if (supportedChains.includes(endSwapStep.action.chainId)) {
+      // Swap and Withdraw via LiFi Contract
+      const swapCall = await buildSwap(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
 
-    receivingTransaction = await lifi.populateTransaction.swapAndCompleteBridgeTokensViaNXTP(
-      lifiData,
-      [
-        {
-          sendingAssetId: swapAction.token.id,
-          receivingAssetId: swapAction.toToken.id,
-          fromAmount: swapEstimate.fromAmount,
-          callTo: swapCall.call.to,
-          callData: swapCall.call.data,
-          approveTo: swapCall.approveTo,
-        },
-      ],
-      swapAction.toToken.id,
-      await signer.getAddress()
-    )
+      receivingTransaction = await lifi.populateTransaction.swapAndCompleteBridgeTokensViaNXTP(
+        lifiData,
+        [
+          {
+            sendingAssetId: swapAction.token.id,
+            receivingAssetId: swapAction.toToken.id,
+            fromAmount: swapEstimate.fromAmount,
+            callTo: swapCall.call.to,
+            callData: swapCall.call.data,
+            approveTo: swapCall.approveTo,
+          },
+        ],
+        swapAction.toToken.id,
+        await signer.getAddress()
+      )
+    } else {
+      // Swap on DEX directly
+      const swapCall = await buildSwap(swapAction, swapEstimate, await signer.getAddress(), await signer.getAddress())
+      receivingTransaction = swapCall.call
+    }
   } else if (USE_CONTRACT_FOR_WITHDRAW) {
     // Withdraw only
     receivingTransaction = await lifi.populateTransaction.completeBridgeTokensViaNXTP(
@@ -168,12 +174,6 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     gasLimit: 900000,
   }
 
-  // Debug log
-  console.debug({
-    lifiData,
-    nxtpData,
-  })
-
   if (startSwapStep) {
     // Swap and Transfer
     const swapAction = startSwapStep.action as SwapAction
@@ -184,7 +184,7 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     lifiData.amount = swapAction.amount
 
     // > build swap
-    const swapCall = await buildSwap(swapAction, swapEstimate)
+    const swapCall = await buildSwap(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
 
     const swapData = {
       sendingAssetId: swapAction.token.id,
@@ -200,6 +200,15 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
       swapOptions.value = swapEstimate.fromAmount
     }
 
+    // Debug log
+    console.debug({
+      method: 'swapAndStartBridgeTokensViaNXTP',
+      lifiData,
+      nxtpData,
+      swapData,
+      swapOptions,
+    })
+
     // > swap and transfer
     return lifi.populateTransaction.swapAndStartBridgeTokensViaNXTP(
       lifiData,
@@ -213,6 +222,14 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     if (crossStep.action.token.id === constants.AddressZero) {
       swapOptions.value = crossStep.estimate.fromAmount
     }
+
+    // Debug log
+    console.debug({
+      method: 'startBridgeTokensViaNXTP',
+      lifiData,
+      nxtpData,
+      swapOptions,
+    })
 
     // > transfer only
     return lifi.populateTransaction.startBridgeTokensViaNXTP(
@@ -393,7 +410,7 @@ const executeLifi = async (signer: JsonRpcSigner, step: LiFiStep, updateStatus?:
   setStatusDone(update, status, proceedProcess)
 
   // DONE
-  status.toAmount = claimed.txData.amount
+  // TODO: get and parse claim transacation receipt
   status.status = 'DONE'
   update(status)
   return status
@@ -417,6 +434,35 @@ const parseRoutes = (routes: Step[][], allowLiFi: boolean = true) => {
     const crossAction = crossStep.action as CrossAction
     if (crossAction.tool !== 'nxtp') return route // only reroute nxtp transfers
     if (!supportedChains.includes(crossAction.chainId)) return route // only where contract is deployed
+
+    // paraswap can't be called on receiving chain without our contract depoyed there
+    if (lastStep.action.type === 'swap' && lastStep.action.tool === 'paraswap' && !supportedChains.includes(lastStep.action.chainId)) {
+      // parse route
+      const lifiStep: LiFiStep = {
+        action: {
+          type: 'lifi',
+          chainId: firstStep.action.chainId,
+          amount: firstStep.action.amount,
+          token: firstStep.action.token,
+          address: firstStep.action.address,
+          toChainId: crossAction.toChainId,
+          toToken: crossStep.action.toToken,
+          toAddress: crossStep.action.toAddress,
+          slippage: 3.0,
+        },
+        estimate: {
+          type: 'lifi',
+          fromAmount: firstStep.estimate.fromAmount,
+          toAmount: crossStep.estimate.toAmount,
+          toAmountMin: crossStep.estimate.toAmount,
+          feeCosts: [],
+          gasCosts: [],
+        },
+        includedSteps: route.slice(0, -1)
+      }
+
+      return [lifiStep, lastStep]
+    }
 
     // parse route
     const lifiStep: LiFiStep = {

@@ -174,17 +174,23 @@ const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, s
     // userAddress: string - Address of the caller of the transaction(msg.sender)
     userAddress: srcAddress,
     // txOrigin: string - Whenever msg.sender(userAddress) i.e.address calling the ParaSwap contract is different than the address sending the transaction, txOrigin must be passed along with userAddress.
-    txOrigin: srcAddress,
+    // txOrigin: srcAddress,
     // receiver: string - Address of the Receiver(that will receive the output of the swap).Used for Swap & Transfer.
-    receiver: destAddress
+    receiver: destAddress,
     // partnerAddres: string - Partner Address.If provided, takes precedence over partner parameter.
     // partnerFeeBps: string - If provided it is used together with partnerAddress.Should be in basis points percentage.Look at slippage parameter description for understanding better. Eg: 200(for 2 % fee percent)
     // partner: string - Partners who are registered with ParaSwap can pass the partne: string instead of passing the partnerAddress and partnerFeeBps. -     permit: string - Hex string for the signature used for Permit.This can be used to avoid giving approval.Helps in saving gas.
     // deadline: integer -   Timestamp(10 digit / seconds precision) till when the given transaction is valid.For a deadline of 5 minute, deadline: Math.floor(Date.now() / 1000) + 300 E.g.: 1629214486
+    deadline: Math.floor(Date.now() / 1000) + 30 * 60, // 30 min * 60 seconds
   }
   const config: AxiosRequestConfig = {
     params: {
+      // gasPrice: string - Gas-price to be used for the transaction in wei.
+      // ignoreChecks: boolean - Allows the API to skip performing on-chain checks such as balances, allowances, as well as possible transaction failures. *Note: The response does not contain gas parameter when ignoreChecks is set to true. Default: false
       ignoreChecks: true, // do not check if the wallet has to token already
+      // ignoreGasEstimate: boolean - Allows the API to skip gas checks  *Note: The response does not contain gas parameter when ignoreGasEstimate is set to true. Default: false
+      // eip1559: boolean - Allows the API to return EIP-1559 styled transaction with maxFeePerGas and maxPriorityFeePerGas paramters. *Note: We currently support EIP1559 transactions in the following chains: Mainnet, Ropsten, and Avalanche.
+      // onlyParams: boolean - Allows the API to return the contract parameters only. Default: false
     }
   }
   const result = await axios.post<any>(`https://apiv5.paraswap.io/transactions/${swapAction.chainId}/`, data, config)

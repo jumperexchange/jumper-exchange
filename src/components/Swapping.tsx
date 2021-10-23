@@ -19,7 +19,7 @@ import { executeParaswap } from '../services/paraswap.execute'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status'
 import { executeUniswap } from '../services/uniswaps.execute'
 import { formatTokenAmount } from '../services/utils'
-import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, LiFiStep, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types'
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, LiFiStep, Step, SwapAction, SwapEstimate, SwapStep, Token } from '../types'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
 import { getBalancesForWallet } from '../services/balanceService'
@@ -28,7 +28,7 @@ import { executeHorizonCross } from '../services/horizon.execute'
 
 
 interface SwappingProps {
-  route: Array<TransferStep>,
+  route: Array<Step>,
   updateRoute: Function,
   onSwapDone: Function
 }
@@ -47,12 +47,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const web3 = useWeb3React<Web3Provider>()
 
   // Swap
-  const updateStatus = (step: TransferStep, status: Execution) => {
+  const updateStatus = (step: Step, status: Execution) => {
     step.execution = status
     updateRoute(route)
   }
 
-  const checkChain = async (step: TransferStep) => {
+  const checkChain = async (step: Step) => {
     const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
     const chain = getChainById(step.action.chainId)
     const switchProcess = createAndPushProcess(update, status, `Change Chain to ${chain.name}`)
@@ -72,7 +72,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     return true
   }
 
-  const triggerSwap = async (step: SwapStep, previousStep?: TransferStep) => {
+  const triggerSwap = async (step: SwapStep, previousStep?: Step) => {
     if (!web3.account || !web3.library) return
     const swapAction = step.action as SwapAction
     const swapEstimate = step.estimate as SwapEstimate
@@ -102,7 +102,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
   }
 
-  const triggerCross = async (step: TransferStep, previousStep?: TransferStep) => {
+  const triggerCross = async (step: Step, previousStep?: Step) => {
     if (!web3.account || !web3.library) return
     const crossAction = step.action as CrossAction
 
@@ -153,9 +153,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
                 {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
                 {`${process.errorMessage.substring(0, 150)}${process.errorMessage.length > 150 ? '...' : ''}`}
               </Typography.Text>
-
             }
-
           </Typography.Text>
           <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
             <Clock startedAt={process.startedAt} successAt={process.doneAt} failedAt={process.failedAt} />
@@ -209,7 +207,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     </Tooltip>
   )
 
-  const parseStepToTimeline = (step: TransferStep, index: number, route: Array<TransferStep>) => {
+  const parseStepToTimeline = (step: Step, index: number, route: Array<Step>) => {
     const executionSteps = parseExecution(step.execution)
     const isDone = step.execution && step.execution.status === 'DONE'
     const isLoading = step.execution && step.execution.status === 'PENDING'
@@ -271,7 +269,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
   }
 
-  const triggerStep = async (index: number, route: Array<TransferStep>) => {
+  const triggerStep = async (index: number, route: Array<Step>) => {
     setIsSwapping(true)
     const step = route[index]
     const previousStep = index > 0 ? route[index - 1] : undefined
@@ -293,7 +291,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
   }
 
-  const triggerLifi = async (step: LiFiStep, previousStep?: TransferStep) => {
+  const triggerLifi = async (step: LiFiStep, previousStep?: Step) => {
     // ensure chain is set
     if (web3.chainId !== step.action.chainId) {
       if (!(await checkChain(step))) return
@@ -319,7 +317,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     setIsSwapping(true)
   }
 
-  const getRecevingInfo = (step: TransferStep) => {
+  const getRecevingInfo = (step: Step) => {
     let toChain: Chain, toToken: Token
     switch (step.action.type) {
       case 'cross':
@@ -330,14 +328,15 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         toChain = getChainById((step as SwapStep).action.chainId)
         toToken = (step as SwapStep).action.toToken
         break
-      default:
-        toChain = getChainById(step.action.chainId)
-        toToken = step.action.token
+      case 'lifi':
+        toChain = getChainById((step as LiFiStep).action.toChainId)
+        toToken = (step as LiFiStep).action.toToken
+        break
     }
     return { toChain, toToken }
   }
 
-  const getFinalBalace = async (route: TransferStep[]) => {
+  const getFinalBalace = async (route: Step[]) => {
     const lastStep = route[route.length - 1]
     const { toChain, toToken } = getRecevingInfo(lastStep)
     const portfolio = await getBalancesForWallet(web3.account!, [toChain.id])
@@ -438,7 +437,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     <br />
 
     <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline" >
-
       {/* Steps */}
       {route.map(parseStepToTimeline)}
     </Timeline>
