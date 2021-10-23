@@ -26,7 +26,7 @@ const getSupportedChains = (jsonArraySting: string): ChainId[] => {
   }
 }
 
-const supportedChains = [ChainId.RIN, ChainId.GOR, ChainId.POL, ChainId.DAI, ChainId.BSC, ChainId.FTM] || getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
+const supportedChains = getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
 
 const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string) => {
   switch (swapAction.tool) {

@@ -2,7 +2,7 @@
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd'
+import { Button, Checkbox, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
 import axios, { CancelTokenSource } from 'axios'
@@ -67,6 +67,8 @@ const Swap = ({
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
+  // const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
+  const [optionUseLifiContract, setOptionUseLifiContract] = useState<boolean>(true)
 
   // Routes
   const [routes, setRoutes] = useState<Array<Array<Step>>>([])
@@ -211,7 +213,7 @@ const Swap = ({
           const result = await axios.post<any>(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
           // filter if needed
           const routesRaw: Array<Array<Step>> = result.data
-          const routes = lifinance.parseRoutes(routesRaw)
+          const routes = lifinance.parseRoutes(routesRaw, optionUseLifiContract)
           setRoutes(routes)
           fadeInAnimation(routeCards)
           setHighlightedIndex(routes.length === 0 ? -1 : 0)
@@ -231,7 +233,7 @@ const Swap = ({
     }
 
     getTransferRoutes()
-  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
+  }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, optionUseLifiContract, findToken])
 
   const openSwapModal = () => {
     setselectedRoute(routes[highlightedIndex])
@@ -345,6 +347,20 @@ const Swap = ({
                             Activate Infinite Approval
                           </Checkbox>
                         </div> */}
+
+                        {lifinance.supportedChains.length ? (
+                          <>
+                            LiFi Contract
+                            <div>
+                              <Checkbox
+                                checked={optionUseLifiContract}
+                                onChange={(e) => setOptionUseLifiContract(e.target.checked)}
+                              >
+                                Use LiFi Contract if avaialble
+                              </Checkbox>
+                            </div>
+                          </>
+                        ) : <></>}
                       </Collapse.Panel>
                     </Collapse>
                   </Row>
@@ -424,7 +440,8 @@ const Swap = ({
           width={700}
           footer={null}
         >
-          <Swapping route={selectedRoute}
+          <Swapping
+            route={selectedRoute}
             updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
             onSwapDone={() => {
               // setRefreshBalances(true)

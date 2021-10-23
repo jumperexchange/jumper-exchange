@@ -28,8 +28,8 @@ import { executeHorizonCross } from '../services/horizon.execute'
 
 
 interface SwappingProps {
-  route: Array<Step>,
-  updateRoute: Function,
+  route: Array<Step>
+  updateRoute: Function
   onSwapDone: Function
 }
 
