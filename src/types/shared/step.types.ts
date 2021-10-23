@@ -1,11 +1,32 @@
 import { Token } from './base.types'
 
+export interface FeeCost {
+  name: string
+  description?: string
+  included: boolean
+  percentage: string | null
+  token: Token
+  amount: string
+  amountUSD?: number
+}
+
+export interface GasCost {
+  type: 'SUM' | 'APPROVE' | 'SEND'
+  amount: string
+  amountUSD?: number
+  token: Token
+}
+
 // ESTIMATE
 export interface BaseEstimate {
   type: string
   fromAmount: string
   toAmount: string
-  fees: {
+  feeCosts?: FeeCost[]
+  gasCosts?: GasCost[]
+
+  // TODO: remove old implementation
+  fees?: {
     included: boolean
     percentage: string | null
     token: Token
@@ -26,6 +47,11 @@ export interface CrossEstimate extends BaseEstimate {
   data: any
 }
 
+export interface LiFiEstimate extends BaseEstimate {
+  type: 'lifi'
+  toAmountMin: string,
+}
+
 export interface WithdrawEstimate extends BaseEstimate { }
 
 export interface FailedEstimate {
@@ -34,14 +60,14 @@ export interface FailedEstimate {
   message: string
 }
 
-export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate
+export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate | LiFiEstimate
 
 // EXECUTION
 export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE'
 
-type AcceptableMessages = string | JSX.Element
+type AcceptableMessages = string | any
 export type ProcessMessage =
-AcceptableMessages| {message: AcceptableMessages , footer: AcceptableMessages }
+  AcceptableMessages | { message: AcceptableMessages, footer: AcceptableMessages }
 
 export interface Process {
   startedAt: number
@@ -63,7 +89,7 @@ export interface Execution {
   toAmount?: number
 }
 
-export const emptyExecution : Execution = {
+export const emptyExecution: Execution = {
   status: 'NOT_STARTED',
   process: []
 }
@@ -75,6 +101,7 @@ interface ActionBase {
   chainId: number
   amount: string
   token: Token
+  address?: string
 }
 
 export interface DepositAction extends ActionBase {
@@ -92,6 +119,7 @@ export interface SwapAction extends ActionBase {
   tool: string
   toToken: Token
   slippage: number
+  toAddress?: string
 }
 
 export interface CrossAction extends ActionBase {
@@ -99,24 +127,41 @@ export interface CrossAction extends ActionBase {
   tool: string
   toChainId: number
   toToken: Token
-  toAddress: string
+  toAddress?: string
 }
 
-export type Action = DepositAction | WithdrawAction | SwapAction | CrossAction
+export interface LiFiAction extends ActionBase {
+  type: 'lifi'
+  toChainId: number
+  toToken: Token
+  toAddress?: string
+  slippage: number
+}
+
+export type Action = DepositAction | WithdrawAction | SwapAction | CrossAction | LiFiAction
 
 // STEP
-export interface Step {
+export interface StepBase {
   action: Action
   estimate?: Estimate
   execution?: Execution
+  id?: string
 }
 
-export interface SwapStep {
+export interface SwapStep extends StepBase {
   action: SwapAction
   estimate: SwapEstimate
 }
 
-export interface CrossStep {
+export interface CrossStep extends StepBase {
   action: CrossAction
   estimate: CrossEstimate
 }
+
+export interface LiFiStep extends StepBase {
+  action: LiFiAction
+  estimate: LiFiEstimate
+  includedSteps: Step[]
+}
+
+export type Step = SwapStep | CrossStep | LiFiStep

@@ -1,12 +1,12 @@
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { FallbackProvider } from '@ethersproject/providers';
-import { Badge, Button, Tooltip } from 'antd';
-import { BigNumber, constants, providers } from 'ethers';
-import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
-import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
-import { getApproved } from './utils';
+import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
+import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils"
+import { FallbackProvider } from '@ethersproject/providers'
+import { Badge, Button, Tooltip } from 'antd'
+import { BigNumber, constants, providers } from 'ethers'
+import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types'
+import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
+import { getApproved } from './utils'
 
 // Add overwrites to specific chains here. They will only be applied if the chain is used.
 const getChainConfigOverwrites = () => {
@@ -19,16 +19,16 @@ const getChainConfigOverwrites = () => {
 }
 export const chainConfigOverwrites: {
   [chainId: number]: {
-    transactionManagerAddress?: string;
-    subgraph?: string;
-    subgraphSyncBuffer?: number;
+    transactionManagerAddress?: string
+    subgraph?: string
+    subgraphSyncBuffer?: number
   }
 } = getChainConfigOverwrites()
 
 const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
 export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
-  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string, subgraphSyncBuffer?: number; }> = {};
+  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string, subgraphSyncBuffer?: number }> = {}
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
@@ -38,7 +38,7 @@ export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Rec
     }
   })
 
-  const sdk = new NxtpSdk({ chainConfig, signer });
+  const sdk = new NxtpSdk({ chainConfig, signer })
 
   // reuse existing messaging token
   const account = await signer.getAddress()
@@ -75,7 +75,7 @@ export const getTransferQuote = async (
   initiator?: string,
 ): Promise<AuctionResponse | undefined> => {
   // Create txid
-  const transactionId = getRandomBytes32();
+  const transactionId = getRandomBytes32()
 
   const response = await sdk.getTransferQuote({
     sendingAssetId,
@@ -89,8 +89,8 @@ export const getTransferQuote = async (
     callTo,
     callData,
     initiator,
-  });
-  return response;
+  })
+  return response
 }
 
 export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateStatus: Function, infinteApproval: boolean = false, initialStatus?: Execution) => {
@@ -126,9 +126,9 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   if (crossEstimate.data.bid.sendingAssetId !== constants.AddressZero) {
     const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.data.bid.sendingChainId)
     let approved
-    try{
+    try {
       approved = await getApproved((sdk as any).config.signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
-    } catch(_e) {
+    } catch (_e) {
       const e = _e as Error
       if (e.message) approveProcess.errorMessage = e.message
       setStatusFailed(update, status, approveProcess)
@@ -312,7 +312,7 @@ const renderConfirmations = (count: number, max: number) => {
     <Tooltip title={text + ' Confirmations'}>
       <Badge
         count={text}
-        style={{ backgroundColor: '#52c41a', marginBottom: '2px'}}
+        style={{ backgroundColor: '#52c41a', marginBottom: '2px' }}
       />
     </Tooltip>
   )
@@ -342,6 +342,8 @@ const trackConfirmationsForResponse = async (sdk: NxtpSdk, chainId: number, resp
 export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEvent, step?: TransferStep, updateStatus?: Function) => {
   let status: Execution | undefined = undefined
   let lastProcess: Process | undefined = undefined
+
+  console.log('event', event)
 
   if (step && step.execution && updateStatus) {
     status = step.execution

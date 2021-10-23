@@ -5,9 +5,9 @@ import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { constants, ethers } from 'ethers'
 import { getRpcProviders } from '../components/web3/connectors'
-import { ChainId, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, SwapAction, SwapEstimate, SwapStep, TransferStep } from '../types'
+import { ChainId, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, LiFiStep, Step, SwapAction, SwapEstimate, SwapStep } from '../types'
 import { oneInch } from './1Inch'
-import * as abi from './ABI/dimond.json'
+import abi from './ABI/dimond.json'
 import { checkAllowance } from './allowance.execute'
 import * as nxtp from './nxtp'
 import { paraswap } from './paraswap'
@@ -26,7 +26,7 @@ const getSupportedChains = (jsonArraySting: string): ChainId[] => {
   }
 }
 
-const supportedChains = [ChainId.RIN, ChainId.GOR, ChainId.POL, ChainId.DAI] || getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
+const supportedChains = [ChainId.RIN, ChainId.GOR, ChainId.POL, ChainId.DAI, ChainId.BSC, ChainId.FTM] || getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
 
 const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => {
   switch (swapAction.tool) {
@@ -98,7 +98,6 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     amount: string
   }
 
-  // TODO: Adjust with swaps
   const lifiData: LifiData = {
     transactionId: getRandomBytes32(),
     integrator: 'li.finance',
@@ -109,9 +108,6 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     destinationChainId: crossStep.action.toChainId.toString(),
     amount: crossStep.action.amount,
   }
-
-
-
 
   // Receiving side
   let receivingTransaction
@@ -199,10 +195,6 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
       approveTo: swapCall.approveTo,
     }
 
-    console.log({
-      swapData
-    })
-
     // > pass native currency directly
     if (swapAction.token.id === constants.AddressZero) {
       swapOptions.value = swapEstimate.fromAmount
@@ -231,7 +223,8 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
   }
 }
 
-const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateStatus?: Function, initialStatus?: Execution) => {
+const executeLifi = async (signer: JsonRpcSigner, step: LiFiStep, updateStatus?: Function, initialStatus?: Execution) => {
+  const route = step.includedSteps
 
   // unpack route
   const startSwapStep = route[0].action.type === 'swap' ? route[0] as SwapStep : undefined
@@ -266,7 +259,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
 
   // Allowance
   if (route[0].action.token.id !== constants.AddressZero) {
-    await checkAllowance(signer, fromChain, route[0].action.token, constants.MaxUint256.toString(), lifiContractAddress, update, status) // route[0].action.amount
+    await checkAllowance(signer, fromChain, route[0].action.token, route[0].action.amount, lifiContractAddress, update, status, true) // route[0].action.amount
   }
 
   // Transaction
@@ -358,20 +351,25 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   // -> set status
   const proceedProcess = createAndPushProcess(update, status, 'Ready to be Signed', { type: 'claim', status: 'ACTION_REQUIRED' })
 
+  // Signed Event
+  nxtpSDK.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
+    if (data.transactionId !== crossStep.estimate.data.bid.transactionId) return
+    if (proceedProcess) {
+      proceedProcess.status = 'PENDING'
+      proceedProcess.message = 'Signed - Wait for Claim'
+      update(status)
+    }
+  })
+
   // -> sign
   try {
-    await nxtp.finishTransfer(nxtpSDK, prepared, crossStep, update)
+    nxtp.finishTransfer(nxtpSDK, prepared, crossStep, update)
   } catch (e) {
     proceedProcess.errorMessage = 'Failed to get an answer in time. Please go to https://xpollinate.io/ and check the state of your transaction there.'
     setStatusFailed(update, status, proceedProcess)
     cleanUp(nxtpSDK)
     throw e
   }
-
-  // -> set status
-  proceedProcess.status = 'PENDING'
-  proceedProcess.message = 'Wait for claim'
-  update(status)
 
   // -> wait
   let claimed
@@ -405,7 +403,51 @@ const cleanUp = (sdk: NxtpSdk) => {
   sdk.removeAllListeners()
 }
 
+const parseRoutes = (routes: Step[][], allowLiFi: boolean = true) => {
+  if (!allowLiFi) {
+    return routes
+  }
+
+  return routes.map(route => {
+    const firstStep = route[0]
+    const lastStep = route[route.length - 1]
+    const crossStep = route.find(step => step.action.type === 'cross')
+    if (!crossStep) return route // perform simple swaps directly
+
+    const crossAction = crossStep.action as CrossAction
+    if (crossAction.tool !== 'nxtp') return route // only reroute nxtp transfers
+    if (!supportedChains.includes(crossAction.chainId)) return route // only where contract is deployed
+
+    // parse route
+    const lifiStep: LiFiStep = {
+      action: {
+        type: 'lifi',
+        chainId: firstStep.action.chainId,
+        amount: firstStep.action.amount,
+        token: firstStep.action.token,
+        address: firstStep.action.address,
+        toChainId: crossAction.toChainId,
+        toToken: lastStep.action.toToken,
+        toAddress: lastStep.action.toAddress,
+        slippage: 3.0,
+      },
+      estimate: {
+        type: 'lifi',
+        fromAmount: firstStep.estimate.fromAmount,
+        toAmount: lastStep.estimate.toAmount,
+        toAmountMin: lastStep.estimate.toAmount,
+        feeCosts: [],
+        gasCosts: [],
+      },
+      includedSteps: route
+    }
+
+    return [lifiStep]
+  })
+}
+
 export const lifinance = {
   supportedChains: supportedChains,
   executeLifi: executeLifi,
+  parseRoutes: parseRoutes,
 }

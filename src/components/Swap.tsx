@@ -1,26 +1,27 @@
 // LIBS
-import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
-import Title from 'antd/lib/typography/Title';
-import axios, { CancelTokenSource } from 'axios';
-import BigNumber from 'bignumber.js';
-import { animate, stagger } from "motion";
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import heroImage from '../assets/info_header.jpg';
-import { loadTokenListAsTokens } from '../services/tokenListService';
-import { formatTokenAmountOnly } from '../services/utils';
-import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
-import LoadingIndicator from './LoadingIndicator';
-import Route from './Route';
-import './Swap.css';
-import SwapForm from './SwapForm';
-import Swapping from './Swapping';
-import { injected } from './web3/connectors';
+import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Button, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd'
+import { Content } from 'antd/lib/layout/layout'
+import Title from 'antd/lib/typography/Title'
+import axios, { CancelTokenSource } from 'axios'
+import BigNumber from 'bignumber.js'
+import { animate, stagger } from "motion"
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import heroImage from '../assets/info_header.jpg'
+import { lifinance } from '../services/lifinance'
+import { loadTokenListAsTokens } from '../services/tokenListService'
+import { formatTokenAmountOnly } from '../services/utils'
+import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Step, Token, WithdrawAction } from '../types'
+import LoadingIndicator from './LoadingIndicator'
+import Route from './Route'
+import './Swap.css'
+import SwapForm from './SwapForm'
+import Swapping from './Swapping'
+import { injected } from './web3/connectors'
 
-const { Panel } = Collapse;
+const { Panel } = Collapse
 
 interface TokenWithAmounts extends Token {
   amount?: number
@@ -68,10 +69,10 @@ const Swap = ({
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
 
   // Routes
-  const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
+  const [routes, setRoutes] = useState<Array<Array<Step>>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
+  const [selectedRoute, setselectedRoute] = useState<Array<Step>>([])
   const [selectedRouteIndex, setselectedRouteIndex] = useState<number>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
 
@@ -209,7 +210,8 @@ const Swap = ({
         try {
           const result = await axios.post<any>(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
           // filter if needed
-          const routes: Array<Array<TransferStep>> = result.data
+          const routesRaw: Array<Array<Step>> = result.data
+          const routes = lifinance.parseRoutes(routesRaw)
           setRoutes(routes)
           fadeInAnimation(routeCards)
           setHighlightedIndex(routes.length === 0 ? -1 : 0)
