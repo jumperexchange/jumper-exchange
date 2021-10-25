@@ -71,7 +71,7 @@ export class NXTPExecutionManager {
           nxtpSDK.removeAllListeners()
           return status
         }
-        status = await nxtp.finishTransfer(nxtpSDK, (relevantTx as any), step, update)
+        await nxtp.finishTransfer(nxtpSDK, (relevantTx as any), step, update)
         setStatusDone(update, status, status.process[status.process.length - 1])
         status.status = 'DONE'
         update(status)
