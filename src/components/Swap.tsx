@@ -18,8 +18,8 @@ import './Swap.css';
 import SwapForm from './SwapForm';
 import Swapping from './Swapping';
 import { injected } from './web3/connectors';
-import { deleteRoute, readActiveRoutes } from '../services/localStorage';
-import ActiveTrasactionsTable from './ActiveTransactionsTable';
+import { readActiveRoutes, readHistoricalRoutes, deleteRoute } from '../services/localStorage';
+import TrasactionsTable from './TransactionsTable';
 
 const { Panel } = Collapse;
 
@@ -75,6 +75,7 @@ const Swap = ({
   const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<Array<TransferStep>>>(readActiveRoutes())
+  const [historicalRoutes, setHistoricalRoutes] = useState<Array<Array<TransferStep>>>(readHistoricalRoutes())
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -267,13 +268,30 @@ const Swap = ({
     <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)', marginTop: 64 }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
-        {/* Hero Image */}
-        {/* <Row className='row-hero-image' style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
-          <Image
-            className="hero-image"
-            src={heroImage}
-          />
-        </Row> */}
+        {/* Historical Routes */}
+        <Row justify={"center"} style={{ marginTop: 48}}>
+             <Collapse
+              defaultActiveKey={['']}
+              ghost
+              bordered={false}
+              className={`active-transfer-collapse`}
+              style={{ overflowX: 'scroll'}}
+              collapsible ={!historicalRoutes.length? 'disabled': 'header'}
+              >
+                <Panel   header={`Historical Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
+                  <div >
+                      <TrasactionsTable
+                      routes={historicalRoutes}
+                      routeAction = {(route:TransferStep[]) => {
+                        deleteRoute(route)
+                        setHistoricalRoutes(readHistoricalRoutes())
+                      } }
+                      historical={true}
+                      ></TrasactionsTable>
+                  </div>
+                </Panel>
+              </Collapse>
+          </Row>
 
          {/* Active Routes */}
           <Row justify={"center"} style={{ marginTop: 48}}>
@@ -286,10 +304,10 @@ const Swap = ({
               >
                 <Panel   header={`Active Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
                   <div >
-                      <ActiveTrasactionsTable
+                      <TrasactionsTable
                       routes={activeRoutes}
-                      selectRoute = {(route:TransferStep[]) => setselectedRoute(route) }
-                      ></ActiveTrasactionsTable>
+                      routeAction = {(route:TransferStep[]) => setselectedRoute(route) }
+                      ></TrasactionsTable>
                   </div>
                 </Panel>
               </Collapse>
@@ -450,10 +468,11 @@ const Swap = ({
           route={selectedRoute}
           updateRoute={(route: any) => {
             setActiveRoutes(readActiveRoutes())
+            setHistoricalRoutes(readHistoricalRoutes())
           }}
           onSwapDone = {(route: TransferStep[]) => {
-            deleteRoute(route)
             setActiveRoutes(readActiveRoutes())
+            setHistoricalRoutes(readHistoricalRoutes())
             getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
             .then(setBalances)
           }}

@@ -9,21 +9,25 @@ import { LoginOutlined } from '@ant-design/icons';
 
 interface ActiveTrasactionsTableProps {
   routes: Array<TransferStep[]>,
-  selectRoute: Function
+  routeAction: Function,
+  historical?: boolean
 }
 
 
 
-function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTableProps) {
+function TrasactionsTable ({routes, routeAction, historical}: ActiveTrasactionsTableProps) {
   const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React()
   const login = () => activate(injected)
 
-  const renderResumeButton = (route:TransferStep[]) =>{
+  const renderActionButton = (route:TransferStep[]) =>{
+    if(historical){
+      return <Button type='ghost' shape='round' onClick={() => routeAction(route)}>Delete</Button>
+    }
     if (!web3.account) {
       return <Button type='ghost' shape='round' icon={<LoginOutlined />} onClick={() => login()}>Connect Wallet</Button>
     }
-    return <Button type='ghost' shape='round' onClick={() => selectRoute(route)}>Resume Swap</Button>
+    return <Button type='ghost' shape='round' onClick={() => routeAction(route)}>Resume Swap</Button>
   }
 
   const columns = [
@@ -77,7 +81,7 @@ function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTablePr
       toChain: getChainById(toChainId).name,
       fromToken: `${formatTokenAmount(firstAction.token, firstEstimate.fromAmount)}`,
       toToken: `${formatTokenAmount(lastAction.toToken, lastEstimate.toAmount)}`,
-      resume: renderResumeButton(route)
+      resume: renderActionButton(route)
     }
   })
 
@@ -92,4 +96,4 @@ function ActiveTrasactionsTable ({routes, selectRoute}: ActiveTrasactionsTablePr
   )
 }
 
-export default ActiveTrasactionsTable
+export default TrasactionsTable
