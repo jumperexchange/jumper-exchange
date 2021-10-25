@@ -276,9 +276,8 @@ const Swap = ({
               bordered={false}
               className={`active-transfer-collapse`}
               style={{ overflowX: 'scroll'}}
-              collapsible ={!historicalRoutes.length? 'disabled': 'header'}
               >
-                <Panel   header={`Historical Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
+                <Panel   header={`Historical Transfers (${historicalRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
                   <div >
                       <TrasactionsTable
                       routes={historicalRoutes}

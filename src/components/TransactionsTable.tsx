@@ -22,7 +22,7 @@ function TrasactionsTable ({routes, routeAction, historical}: ActiveTrasactionsT
 
   const renderActionButton = (route:TransferStep[]) =>{
     if(historical){
-      return <Button type='ghost' shape='round' onClick={() => routeAction(route)}>Delete</Button>
+      return <Button danger type='ghost' shape='round' onClick={() => routeAction(route)}>Delete</Button>
     }
     if (!web3.account) {
       return <Button type='ghost' shape='round' icon={<LoginOutlined />} onClick={() => login()}>Connect Wallet</Button>

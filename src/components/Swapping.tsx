@@ -450,7 +450,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
     checkSwapping()
 
-  }, [isSwapping, route]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isSwapping, updateStatus]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
   const getMainButton = () => {
