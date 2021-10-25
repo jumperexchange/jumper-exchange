@@ -1,29 +1,29 @@
 // LIBS
-import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
-import Title from 'antd/lib/typography/Title';
-import axios, { CancelTokenSource } from 'axios';
-import BigNumber from 'bignumber.js';
-import { animate, stagger } from "motion";
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import heroImage from '../assets/info_header.jpg';
-import { loadTokenListAsTokens } from '../services/tokenListService';
-import { formatTokenAmountOnly } from '../services/utils';
-import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
-import LoadingIndicator from './LoadingIndicator';
-import Route from './Route';
-import './Swap.css';
-import SwapForm from './SwapForm';
-import Swapping from './Swapping';
-import { injected } from './web3/connectors';
+import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Button, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd'
+import { Content } from 'antd/lib/layout/layout'
+import Title from 'antd/lib/typography/Title'
+import axios, { CancelTokenSource } from 'axios'
+import BigNumber from 'bignumber.js'
+import { animate, stagger } from "motion"
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import heroImage from '../assets/info_header.jpg'
+import { loadTokenListAsTokens } from '../services/tokenListService'
+import { formatTokenAmountOnly } from '../services/utils'
+import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types'
+import LoadingIndicator from './LoadingIndicator'
+import Route from './Route'
+import './Swap.css'
+import SwapForm from './SwapForm'
+import Swapping from './Swapping'
+import { injected } from './web3/connectors'
 
-const { Panel } = Collapse;
+const { Panel } = Collapse
 
 interface TokenWithAmounts extends Token {
-  amount?: number
+  amount?: BigNumber
   amountRendered?: string
 }
 let source: CancelTokenSource | undefined = undefined
@@ -54,10 +54,10 @@ const Swap = ({
 
   // From
   const [depositChain, setDepositChain] = useState<ChainKey>(transferChains[0].key)
-  const [depositAmount, setDepositAmount] = useState<number>(1)
+  const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(1))
   const [depositToken, setDepositToken] = useState<string | undefined>() // tokenId
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(transferChains[1].key)
-  const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
+  const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [withdrawToken, setWithdrawToken] = useState<string | undefined>() // tokenId
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(defaultTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
@@ -126,11 +126,11 @@ const Swap = ({
 
   const getBalance = (currentBalances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined, chainKey: ChainKey, tokenId: string) => {
     if (!currentBalances) {
-      return 0
+      return new BigNumber(0)
     }
 
     const tokenBalance = currentBalances[chainKey].find(portfolio => portfolio.id === tokenId)
-    return tokenBalance?.amount || 0
+    return tokenBalance?.amount || new BigNumber(0)
   }
 
   useEffect(() => {
@@ -138,7 +138,7 @@ const Swap = ({
     if (!balances) {
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
-          token.amount = -1
+          token.amount = new BigNumber(-1)
           token.amountRendered = ''
         }
       }
@@ -176,7 +176,7 @@ const Swap = ({
       setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
-      if ((isFinite(depositAmount) && depositAmount > 0) && depositChain && depositToken && withdrawChain && withdrawToken) {
+      if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
         setRoutesLoading(true)
         const dToken = findToken(depositChain, depositToken)
         const deposit: DepositAction = {

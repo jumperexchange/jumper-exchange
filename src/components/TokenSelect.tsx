@@ -1,9 +1,9 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Avatar, Select } from 'antd';
-import { RefSelectProps } from 'antd/lib/select';
-import React from 'react';
-import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../types';
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Avatar, Select } from 'antd'
+import { RefSelectProps } from 'antd/lib/select'
+import React from 'react'
+import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../types'
 
 interface TokenSelectProps {
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
@@ -111,7 +111,7 @@ const TokenSelect = ({
               label={token.symbol + ' - ' + token.name}
               data-label={token.symbol + (balances ? (' (' + token.amountRendered + ')') : '')}
             >
-              <div className={'option-item ' + (grayed && token.amount === 0 ? 'disabled' : '')}>
+              <div className={'option-item ' + (grayed && token.amount?.eq(0) ? 'disabled' : '')}>
                 <span role="img" aria-label={token.symbol}>
                   <Avatar
                     size="small"

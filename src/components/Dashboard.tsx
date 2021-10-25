@@ -1,22 +1,23 @@
-import { CheckCircleTwoTone, CloseCircleTwoTone, DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons';
-import { useWeb3React } from "@web3-react/core";
-import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
-import { ethers } from "ethers";
-import React, { useEffect, useState } from 'react';
-import { getBalancesForWallet } from '../services/balanceService';
-import { readWallets, storeWallets } from '../services/localStorage';
-import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, defaultCoins, getChainByKey, SummaryAmounts, supportedChains, Token, Wallet, WalletSummary } from '../types';
-import './Dashboard.css';
-import ConnectButton from "./web3/ConnectButton";
+import { CheckCircleTwoTone, CloseCircleTwoTone, DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons'
+import { useWeb3React } from '@web3-react/core'
+import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd'
+import { Content } from 'antd/lib/layout/layout'
+import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
+import React, { useEffect, useState } from 'react'
+import { getBalancesForWallet } from '../services/balanceService'
+import { readWallets, storeWallets } from '../services/localStorage'
+import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, defaultCoins, getChainByKey, SummaryAmounts, supportedChains, Token, Wallet, WalletSummary } from '../types'
+import './Dashboard.css'
+import ConnectButton from './web3/ConnectButton'
 
-const emptySummaryAmounts = {
-  amount_usd: 0,
-  percentage_of_portfolio: 0,
+const emptySummaryAmounts: SummaryAmounts = {
+  amount_usd: new BigNumber(0),
+  percentage_of_portfolio: new BigNumber(0),
 }
 
 const emptyWallet = {
-  address: "0x..",
+  address: '0x..',
   loading: true,
   portfolio: chainKeysToObject([]),
 }
@@ -24,8 +25,8 @@ const emptyWallet = {
 let coins = defaultCoins.filter(coin => coin.key !== CoinKey.TEST)
 
 // individual render functions
-function renderAmounts(amounts: Amounts = { amount_coin: -1, amount_usd: -1 }) {
-  if (amounts.amount_coin === -1) {
+function renderAmounts(amounts: Amounts = { amount_coin: new BigNumber(-1), amount_usd: new BigNumber(-1) }) {
+  if (amounts.amount_coin.eq(-1)) {
     // loading
     return (
       <div className="amounts">
@@ -37,7 +38,7 @@ function renderAmounts(amounts: Amounts = { amount_coin: -1, amount_usd: -1 }) {
         </div>
       </div>
     )
-  } else if (amounts.amount_coin === 0) {
+  } else if (amounts.amount_coin.isZero()) {
     // empty
     return (
       <div className="amounts amounts-empty">
@@ -48,9 +49,9 @@ function renderAmounts(amounts: Amounts = { amount_coin: -1, amount_usd: -1 }) {
   } else {
     // default
     return (
-      <div className={'amounts' + (amounts.amount_coin === 0 ? ' amounts-empty' : '')}>
-        <div className="amount_coin">{amounts.amount_coin.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</div>
-        <div className="amount_usd">{amounts.amount_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</div>
+      <div className={'amounts' + (amounts.amount_coin.isZero() ? ' amounts-empty' : '')}>
+        <div className="amount_coin">{amounts.amount_coin.toFixed(4)}</div>
+        <div className="amount_usd">{amounts.amount_usd.toFixed(2)} USD</div>
       </div>
     )
   }
@@ -73,10 +74,11 @@ function renderCoin(coin: Coin) {
 }
 
 function renderSummary(summary: SummaryAmounts) {
+  summary.amount_usd = new BigNumber(summary.amount_usd) // Ugly fix
   return (
     <div className="amounts">
-      <div className="amount_coin">{summary.amount_usd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</div>
-      <div className="amount_usd">{(summary.percentage_of_portfolio * 100.0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} % of portfolio</div>
+      <div className="amount_coin">{summary.amount_usd.toFixed(2)} USD</div>
+      <div className="amount_usd">{summary.percentage_of_portfolio.shiftedBy(2).toFixed(2)} % of portfolio</div>
     </div>
   )
 }
@@ -95,7 +97,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
     case ChainKey.POL:
       Modal.info({
         title: 'Gas Info for Polygon/Matic chain',
@@ -109,7 +111,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
     case ChainKey.BSC:
       Modal.info({
         title: 'Gas Info for Binance Smart Chain',
@@ -120,7 +122,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
     case ChainKey.DAI:
       Modal.info({
         title: 'Gas Info for xDAI chain',
@@ -135,7 +137,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
     case ChainKey.FTM:
       Modal.info({
         title: 'Gas Info for FTM chain',
@@ -148,7 +150,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
     case ChainKey.OKT:
       Modal.info({
         title: 'Gas Info for OKExChain chain',
@@ -161,7 +163,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
     case ChainKey.AVA:
       Modal.info({
         title: 'Gas Info for Avalanche chain',
@@ -174,7 +176,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
     case ChainKey.RIN:
       Modal.info({
         title: 'Gas Info for Rinkeby Testnet',
@@ -187,7 +189,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
     case ChainKey.GOR:
       Modal.info({
         title: 'Gas Info for Goerli Testnet',
@@ -200,7 +202,7 @@ const showGasModal = (gas: ChainKey) => {
           </div>
         )
       })
-      break;
+      break
   }
 }
 
@@ -220,19 +222,19 @@ for (const k in ChainKey) {
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
   const coin = coins.find(coin => coin.key === coinName)
   const isChainUsed = wallet.portfolio[chain]?.length > 0
-  const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === '0x0000000000000000000000000000000000000000' || e.id ===  coin?.chains[chain]?.id)
-  const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : { amount_coin: 0, amount_usd: 0 }
+  const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === '0x0000000000000000000000000000000000000000' || e.id === coin?.chains[chain]?.id)
+  const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : { amount_coin: new BigNumber(0), amount_usd: new BigNumber(0) }
 
-  const tooltipEmpty = tooltipsEmpty[chain];
-  const tooltip = tooltips[chain];
+  const tooltipEmpty = tooltipsEmpty[chain]
+  const tooltip = tooltips[chain]
   return (
     <div className="gas">
       <div className="amount_coin">
-        {amounts.amount_coin === -1 ? (
+        {amounts.amount_coin.eq(-1) ? (
           <Tooltip title={tooltip}>
             {coinName}: <Skeleton.Button style={{ width: 60 }} active={true} size={'small'} shape={'round'} />
           </Tooltip>
-        ) : amounts.amount_coin === 0 ? (
+        ) : amounts.amount_coin.isZero() ? (
           <Tooltip color={isChainUsed ? 'red' : 'gray'} title={tooltipEmpty}>
             {coinName}: -
             <Badge
@@ -244,7 +246,7 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
           </Tooltip>
         ) : (
           <Tooltip title={tooltip}>
-            {coinName}: {amounts.amount_coin.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}
+            {coinName}: {amounts.amount_coin.toFixed(4)}
           </Tooltip>
         )}
       </div>
@@ -270,12 +272,12 @@ const renderWalletColumnTitle = (address: string, syncHandler: Function, deleteH
 const parsePortfolioToAmount = (inPortfolio: any) => {
   const subAmounts: Amounts = {
     amount_coin: inPortfolio.amount,
-    amount_usd: inPortfolio.amount * inPortfolio.pricePerCoin,
+    amount_usd: inPortfolio.amount.times(inPortfolio.pricePerCoin),
   }
 
   return subAmounts
 }
-const baseWidth = 150;
+const baseWidth = 150
 const buildColumnForWallet = (wallet: Wallet, syncHandler: Function, deleteHandler: Function) => {
   const walletColumn: ColomnType = {
     title: renderWalletColumnTitle(wallet.address, syncHandler, deleteHandler),
@@ -328,24 +330,25 @@ const initialRows: Array<DataType> = coins.map(coin => {
   return {
     key: coin.key,
     coin: coin as Coin,
-    portfolio: { amount_coin: -1, amount_usd: -1 },
-    ...chainKeysToObject({ amount_coin: -1, amount_usd: -1 }),
+    portfolio: { amount_coin: new BigNumber(-1), amount_usd: new BigNumber(-1) },
+    ...chainKeysToObject({ amount_coin: new BigNumber(-1), amount_usd: new BigNumber(-1) }),
   }
 })
 
-const calculateWalletSummary = (wallet: Wallet, totalSumUsd: number) => {
+const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
   var summary: WalletSummary = Object.assign(
     {
       wallet: wallet.address,
     },
-    chainKeysToObject({ amount_usd: 0.0, percentage_of_portfolio: 0.0 }),
+    chainKeysToObject({ amount_usd: new BigNumber(0), percentage_of_portfolio: new BigNumber(0) }),
   ) as WalletSummary
 
   Object.values(ChainKey).forEach(chain => {
     wallet.portfolio[chain]?.forEach(portfolio => {
-      summary[chain].amount_usd += portfolio.amount * portfolio.pricePerCoin;
+      summary[chain].amount_usd = new BigNumber(summary[chain].amount_usd) // chainKeysToObject retruns string
+      summary[chain].amount_usd = summary[chain].amount_usd.plus(portfolio.amount.times(portfolio.pricePerCoin))
     })
-    summary[chain].percentage_of_portfolio = wallet.portfolio[chain]?.reduce((sum, current) => sum + current.amount * current.pricePerCoin, 0) / totalSumUsd
+    summary[chain].percentage_of_portfolio = wallet.portfolio[chain]?.reduce((sum, current) => sum.plus(current.amount.times(current.pricePerCoin)), new BigNumber(0)).div(totalSumUsd)
   })
   return summary
 }
@@ -356,13 +359,13 @@ const Dashboard = () => {
   const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() => { return readWallets() })
   const web3 = useWeb3React()
   const [columns, setColumns] = useState<Array<ColomnType>>(initialColumns)
-  const [walletModalVisible, setWalletModalVisible] = useState(false);
-  const [walletModalAddress, setWalletModalAddress] = useState('');
+  const [walletModalVisible, setWalletModalVisible] = useState(false)
+  const [walletModalAddress, setWalletModalAddress] = useState('')
   const [walletModalLoading, setWalletModalLoading] = useState<boolean>(false)
-  const [data, setData] = useState<Array<DataType>>(initialRows);
+  const [data, setData] = useState<Array<DataType>>(initialRows)
   // fixes react warning
   // https://stackoverflow.com/a/63144665
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(true);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(true)
 
 
   const deleteWallet = (wallet: Wallet) => {
@@ -375,7 +378,7 @@ const Dashboard = () => {
       const col = buildColumnForWallet(wallet, () => updateWalletPortfolio(wallet), () => deleteWallet(wallet))
       walletColumns.push(col)
     })
-    return walletColumns;
+    return walletColumns
   }
 
   const buildColumns = (initialBuild: boolean = false) => {
@@ -397,7 +400,7 @@ const Dashboard = () => {
       dataIndex: '',
       width: 100,
     })
-    return columns;
+    return columns
   }
 
   //builders
@@ -409,32 +412,32 @@ const Dashboard = () => {
         key: coin.key,
         coin: coin as Coin,
         portfolio: {
-          amount_coin: 0.0,
-          amount_usd: 0.0,
+          amount_coin: new BigNumber(0),
+          amount_usd: new BigNumber(0),
         },
       }
       registeredWallets.forEach(wallet => {
         Object.values(ChainKey).forEach(chain => {
           const emptyAmounts: Amounts = {
-            amount_coin: wallet.loading ? -1 : 0.0,
-            amount_usd: wallet.loading ? -1 : 0.0,
+            amount_coin: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
+            amount_usd: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
           }
           const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.chains[chain]?.id)
           const cellContent: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : emptyAmounts
           coinRow[`${wallet.address}_${chain}`] = cellContent
 
-          if (cellContent.amount_coin > 0) {
-            coinRow.portfolio.amount_coin += cellContent.amount_coin
-            coinRow.portfolio.amount_usd += cellContent.amount_usd
+          if (cellContent.amount_coin.gt(0)) {
+            coinRow.portfolio.amount_coin = coinRow.portfolio.amount_coin.plus(cellContent.amount_coin)
+            coinRow.portfolio.amount_usd = coinRow.portfolio.amount_usd.plus(cellContent.amount_usd)
           }
-        }); // for each chain
-      }); // for each wallet
+        }) // for each chain
+      }) // for each wallet
       generatedRows.push(coinRow)
     }) // for each coin
 
     // sort
-    generatedRows.sort((a, b) => b.portfolio.amount_coin - a.portfolio.amount_coin) // DESC token
-    generatedRows.sort((a, b) => b.portfolio.amount_usd - a.portfolio.amount_usd) // DESC usd
+    generatedRows.sort((a, b) => b.portfolio.amount_coin.minus(a.portfolio.amount_coin).toNumber()) // DESC token
+    generatedRows.sort((a, b) => b.portfolio.amount_usd.minus(a.portfolio.amount_usd).toNumber()) // DESC usd
 
     return generatedRows
   }
@@ -502,7 +505,7 @@ const Dashboard = () => {
 
   const updateEntirePortfolio = () => {
     registeredWallets.forEach(async wallet => {
-      await updateWalletPortfolio(wallet);
+      await updateWalletPortfolio(wallet)
     })
   }
 
@@ -516,11 +519,11 @@ const Dashboard = () => {
   useEffect(() => {
     if (!registeredWallets.length) {
       setWalletModalVisible(true)
-      setColumns(initialColumns);
+      setColumns(initialColumns)
       setData(initialRows)
     } else {
       updateEntirePortfolio()
-      setColumns(buildColumns());
+      setColumns(buildColumns())
       setData(buildRows)
     }
     // eslint-disable-next-line
@@ -547,8 +550,8 @@ const Dashboard = () => {
   }
 
   const handleWalletModalAdd = async () => {
-    setWalletModalLoading(true);
-    let address = getModalAddressSuggestion();
+    setWalletModalLoading(true)
+    let address = getModalAddressSuggestion()
 
     if (address.endsWith('.eth')) {
       address = await resolveEnsName(address) || ''
@@ -559,8 +562,8 @@ const Dashboard = () => {
       setWalletModalAddress(' ')
       addWallet(address)
     }
-    setWalletModalLoading(false);
-  };
+    setWalletModalLoading(false)
+  }
 
   const handleWalletModalClose = () => {
     if (!registeredWallets.length) {
@@ -573,7 +576,7 @@ const Dashboard = () => {
   const getModalAddressSuggestion = () => {
     const addedWallets = registeredWallets.map(wallet => wallet.address)
     const web3Account = (web3.account && addedWallets.indexOf(web3.account) === -1) ? web3.account : ''
-    return walletModalAddress || web3Account;
+    return walletModalAddress || web3Account
   }
 
   let summaryIndex = 0
@@ -592,17 +595,24 @@ const Dashboard = () => {
             <Table.Summary fixed>
               <Table.Summary.Row>
                 <Table.Summary.Cell index={summaryIndex} className="sum">SUM</Table.Summary.Cell>
-                <Table.Summary.Cell index={summaryIndex++}>{renderSummary(!registeredWallets.length ? emptySummaryAmounts : { amount_usd: data.reduce((sum, curr) => sum + curr.portfolio.amount_usd, 0), percentage_of_portfolio: 1 } as SummaryAmounts)}</Table.Summary.Cell>
+                <Table.Summary.Cell index={summaryIndex++}>
+                  {
+                    renderSummary(!registeredWallets.length ? emptySummaryAmounts : {
+                      amount_usd: data.reduce((sum, curr) => sum.plus(curr.portfolio.amount_usd), new BigNumber(0)),
+                      percentage_of_portfolio: new BigNumber(1)
+                    } as SummaryAmounts)
+                  }
+                </Table.Summary.Cell>
                 {
                   registeredWallets.map((wallet: Wallet) => {
-                    const total = data.reduce((sum, curr) => sum + curr.portfolio.amount_usd, 0)
+                    const total = data.reduce((sum, curr) => sum.plus(curr.portfolio.amount_usd), new BigNumber(0))
                     const summary = calculateWalletSummary(wallet, total)
 
                     return supportedChains
                       .filter(chain => chain.visible)
                       .map(chain => {
                         return (
-                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({ amount_usd: 0, percentage_of_portfolio: 0 }) : renderSummary(summary[chain.key])}</Table.Summary.Cell>
+                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({ amount_usd: new BigNumber(0), percentage_of_portfolio: new BigNumber(0) }) : renderSummary(summary[chain.key])}</Table.Summary.Cell>
                         )
                       })
                   })
