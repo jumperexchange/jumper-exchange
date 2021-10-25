@@ -1,11 +1,11 @@
-import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json";
-import axios from 'axios';
-import { BigNumber as BigNumberJs } from 'bignumber.js';
-import { BigNumber, constants, Contract, ethers } from 'ethers';
-import { getRpcProvider } from '../components/web3/connectors';
-import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById, Token } from '../types';
-import { getDefaultTokenBalancesForWallet } from './testToken';
-import { deepClone } from './utils';
+import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json"
+import axios from 'axios'
+import { BigNumber } from 'bignumber.js'
+import { BigNumber as BN, constants, Contract, ethers } from 'ethers'
+import { getRpcProvider } from '../components/web3/connectors'
+import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById, Token } from '../types'
+import { getDefaultTokenBalancesForWallet } from './testToken'
+import { deepClone } from './utils'
 
 type tokenListDebankT = {
   id: string,
@@ -96,8 +96,8 @@ export async function covalentGetCoinsOnChain(walletAdress: string, chainId: num
         name: token.contract_name,
         symbol: token.contract_ticker_symbol,
         img_url: token.logo_url,
-        amount: parseInt(token.balance) / (10 ** token.contract_decimals),
-        pricePerCoin: token.quote_rate || 0,
+        amount: new BigNumber(token.balance).shiftedBy(-token.contract_decimals),
+        pricePerCoin: new BigNumber(token.quote_rate || 0),
         verified: false,
       })
     }
@@ -142,17 +142,17 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
 
   var result
   try {
-    result = await axios.get<any>(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl)
   } catch (e) {
     console.warn(`Debank api call for token list on chain ${chainKey} failed with status ` + e)
     console.warn(e)
     return []
   }
 
-  var tokenList: Array<tokenListDebankT>;
+  var tokenList: Array<tokenListDebankT>
   // response body is empty?
   if (Object.keys(result.data).length === 0) {
-    return [];
+    return []
   } else {
     tokenList = result.data
   }
@@ -165,8 +165,8 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
       name: token.name,
       symbol: token.optimized_symbol,
       img_url: token.logo_url,
-      amount: token.amount as number,
-      pricePerCoin: token.price as number,
+      amount: new BigNumber(token.amount),
+      pricePerCoin: new BigNumber(token.price),
       verified: token.is_verified,
     })
   }
@@ -197,7 +197,7 @@ const getBlancesFromDebank = async (walletAdress: string) => {
 
   var result
   try {
-    result = await axios.get<any>(tokenListUrl);
+    result = await axios.get<any>(tokenListUrl)
   } catch (e) {
     console.warn(`Debank api call for token list failed with status ` + e)
     throw e
@@ -214,8 +214,8 @@ const getBlancesFromDebank = async (walletAdress: string) => {
       name: token.name,
       symbol: token.optimized_symbol,
       img_url: token.logo_url,
-      amount: token.amount,
-      pricePerCoin: token.price,
+      amount: new BigNumber(token.amount),
+      pricePerCoin: new BigNumber(token.price),
       verified: token.is_verified,
     })
   }
@@ -256,7 +256,7 @@ export const getBalanceFromProvider = async (
   address: string,
   assetId: string,
   chainId: number,
-): Promise<BigNumber> => {
+): Promise<BN> => {
   const provider = getRpcProvider(chainId)
   if (assetId === constants.AddressZero) {
     return provider.getBalance(address)
@@ -275,7 +275,7 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
       const promise = getBalanceFromProvider(address, token.id, token.chainId)
         .catch((e) => {
           console.warn(address, token.id, token.chainId, e)
-          return BigNumber.from(0)
+          return BN.from(0)
         })
       promises.push(promise)
       const amount = await promise
@@ -285,8 +285,8 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
         name: token.name,
         symbol: token.key,
         img_url: '',
-        amount: new BigNumberJs(amount.toString()).shiftedBy(-token.decimals).toNumber(),
-        pricePerCoin: 0,
+        amount: new BigNumber(amount.toString()).shiftedBy(-token.decimals),
+        pricePerCoin: new BigNumber(0),
         verified: false,
       })
     })
@@ -296,5 +296,5 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
   return portfolio
 }
 
-export { getCoinsOnChain, getBalancesForWallet };
+export { getCoinsOnChain, getBalancesForWallet }
 

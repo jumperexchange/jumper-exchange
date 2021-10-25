@@ -1,5 +1,7 @@
-import { FallbackProvider } from '@ethersproject/providers'
-import { BigNumber, constants, Contract, providers, Signer, utils } from "ethers"
+import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
+import BigNumber from 'bignumber.js'
+import { BigNumber as BN, constants, Contract, providers, utils } from 'ethers'
+
 import { getRpcProviders } from '../components/web3/connectors'
 import { ChainId, chainKeysToObject, ChainPortfolio, CoinKey, defaultTokens, getChainById, TokenWithAmounts } from '../types'
 
@@ -64,7 +66,7 @@ const TestTokenABI = [
   "function mint(address account, uint256 amount)",
 ]
 
-export const mintTokens = async (signer: Signer, assetId: string): Promise<providers.TransactionResponse> => {
+export const mintTokens = async (signer: JsonRpcSigner, assetId: string): Promise<providers.TransactionResponse> => {
   const signerAddress = await signer.getAddress()
   const contract = new Contract(assetId, TestTokenABI, signer)
   const response = await contract.mint(signerAddress, utils.parseEther("1000"))
@@ -91,8 +93,8 @@ export const getBalancesForWallet = async (address: string) => {
   const promises: Array<Promise<any>> = []
 
   Object.entries(testToken).forEach(async ([chainKey, token]) => {
-    const ethAmount = getBalance(address, constants.AddressZero, chainProviders[token[0].chainId]).catch((e) => { console.warn(e); return BigNumber.from(0) })
-    const testAmount = getBalance(address, token[0].id, chainProviders[token[0].chainId]).catch((e) => { console.warn(e); return BigNumber.from(0) })
+    const ethAmount = getBalance(address, constants.AddressZero, chainProviders[token[0].chainId]).catch((e) => { console.warn(e); return BN.from(0) })
+    const testAmount = getBalance(address, token[0].id, chainProviders[token[0].chainId]).catch((e) => { console.warn(e); return BN.from(0) })
     promises.push(ethAmount)
     promises.push(testAmount)
 
@@ -103,8 +105,8 @@ export const getBalancesForWallet = async (address: string) => {
         name: 'ETH',
         symbol: 'ETH',
         img_url: '',
-        amount: (await ethAmount).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
-        pricePerCoin: 0,
+        amount: new BigNumber(ethAmount.toString()).shiftedBy(-18),
+        pricePerCoin: new BigNumber(0),
         verified: false,
       },
       // test token
@@ -113,8 +115,8 @@ export const getBalancesForWallet = async (address: string) => {
         name: token[0].name,
         symbol: token[0].symbol,
         img_url: '',
-        amount: (await testAmount).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
-        pricePerCoin: 0,
+        amount: new BigNumber(testAmount.toString()).shiftedBy(-18),
+        pricePerCoin: new BigNumber(0),
         verified: false,
       },
     ]
@@ -135,15 +137,15 @@ export const getDefaultTokenBalancesForWallet = async (address: string, onChains
     }
 
     tokens.forEach(async (token) => {
-      const amount = getBalance(address, token.id, chainProviders[token.chainId]).catch((e) => { console.warn(e); return BigNumber.from(0) })
+      const amount = getBalance(address, token.id, chainProviders[token.chainId]).catch((e) => { console.warn(e); return BN.from(0) })
       promises.push(amount)
       portfolio[chainKey].push({
         id: token.id,
         name: token.name,
         symbol: token.key,
         img_url: '',
-        amount: (await amount).div(BigNumber.from(10).pow(14)).toNumber() / 10000,
-        pricePerCoin: 0,
+        amount: new BigNumber((await amount).toString()).shiftedBy(-token.decimals),
+        pricePerCoin: new BigNumber(0),
         verified: false,
       })
     })
