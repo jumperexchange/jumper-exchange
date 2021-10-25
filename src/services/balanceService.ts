@@ -290,8 +290,15 @@ export const getBalanceFromProvider = async (
   )
 
   watcher.batch().subscribe((updates: any) => {
+    watcher.stop()
     resolve(updates as any)
   })
+
+  watcher.onError((error: any) => {
+    watcher.stop()
+    console.warn('Watcher Error:', error);
+    resolve([])
+  });
 
   watcher.start()
 })
