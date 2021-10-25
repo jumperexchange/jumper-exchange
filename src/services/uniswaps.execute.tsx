@@ -34,7 +34,6 @@ export class UniswapExecutionManager {
 
     // Swap via Uniswap
     // -> set status
-    // const swapProcess = createAndPushProcess(update, status, `Swap via Uniswap`) //TODO: display actual uniswap clone
     const swapProcess = createAndPushProcess('swapProcess', update, status, 'Submit Swap', { status: 'ACTION_REQUIRED' })
 
     // -> swapping

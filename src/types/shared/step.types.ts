@@ -37,7 +37,7 @@ export interface FailedEstimate {
 export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate
 
 // EXECUTION
-export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE'
+export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE' | 'RESUME'
 
 export type ProcessMessage =  string | {message: string  , footer: string }
 
