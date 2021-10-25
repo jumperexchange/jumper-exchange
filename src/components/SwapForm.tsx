@@ -1,27 +1,28 @@
-import { SwapOutlined } from '@ant-design/icons';
-import { SubgraphSyncRecord } from '@connext/nxtp-sdk';
-import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Input, Row } from 'antd';
-import { RefSelectProps } from 'antd/lib/select';
-import React, { useRef } from 'react';
-import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../types';
-import ChainSelect from './ChainSelect';
-import TokenSelect from './TokenSelect';
-import { injected } from './web3/connectors';
+import { SwapOutlined } from '@ant-design/icons'
+import { SubgraphSyncRecord } from '@connext/nxtp-sdk'
+import { useWeb3React } from '@web3-react/core'
+import { Button, Col, Input, Row } from 'antd'
+import { RefSelectProps } from 'antd/lib/select'
+import BigNumber from 'bignumber.js'
+import React, { useRef } from 'react'
+import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../types'
+import ChainSelect from './ChainSelect'
+import TokenSelect from './TokenSelect'
+import { injected } from './web3/connectors'
 
 interface SwapFormProps {
   depositChain: ChainKey,
   setDepositChain: Function,
   depositToken?: string,
   setDepositToken: Function,
-  depositAmount: number,
+  depositAmount: BigNumber,
   setDepositAmount: Function,
 
   withdrawChain: ChainKey,
   setWithdrawChain: Function,
   withdrawToken?: string,
   setWithdrawToken: Function,
-  withdrawAmount: number,
+  withdrawAmount: BigNumber,
   setWithdrawAmount: Function,
   estimatedWithdrawAmount: string,
 
@@ -95,12 +96,12 @@ const SwapForm = ({
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
     if (!balances) {
-      return 0
+      return new BigNumber(0)
     }
 
     const tokenBalance = balances[chainKey].find(portfolio => portfolio.id === tokenId)
 
-    return tokenBalance?.amount || 0
+    return tokenBalance?.amount || new BigNumber(0)
   }
 
   const onChangeDepositToken = (tokenId: string) => {
@@ -116,8 +117,8 @@ const SwapForm = ({
     // set token
     setDepositToken(tokenId)
     const balance = getBalance(depositChain, tokenId)
-    if (balance < depositAmount && balance > 0) {
-      setDepositAmount(Math.floor(balance * 10000) / 10000)
+    if (balance < depositAmount && balance.gt(0)) {
+      setDepositAmount(balance)
     }
 
     // set withdraw token?
@@ -149,16 +150,16 @@ const SwapForm = ({
     }
   }
 
-  const onChangeDepositAmount = (amount: number) => {
+  const onChangeDepositAmount = (amount: BigNumber) => {
     setDepositAmount(amount)
-    setWithdrawAmount(Infinity)
+    setWithdrawAmount(new BigNumber(Infinity))
   }
-  const onChangeWithdrawAmount = (amount: number) => {
-    setDepositAmount(Infinity)
+  const onChangeWithdrawAmount = (amount: BigNumber) => {
+    setDepositAmount(new BigNumber(Infinity))
     setWithdrawAmount(amount)
   }
   const formatAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    return parseFloat(e.currentTarget.value)
+    return new BigNumber(e.currentTarget.value)
   }
 
   const setMaxDeposit = () => {
@@ -206,7 +207,7 @@ const SwapForm = ({
               defaultValue={0.0}
               min={0}
               step={0.000000000000000001}
-              value={isFinite(depositAmount) && depositAmount >= 0 ? depositAmount : ''}
+              value={depositAmount.gte(0) ? depositAmount.toString() : ''}
               onChange={((event) => onChangeDepositAmount(formatAmountInput(event)))}
               placeholder="0.0"
               bordered={false}
