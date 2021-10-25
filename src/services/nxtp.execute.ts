@@ -57,9 +57,8 @@ export class NXTPExecutionManager {
     const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
     const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
-    const receiverProcess = status.process.find((p: Process) => p.id === 'receiverProcess')
 
-    if(quoteProcess.quote && submitProcess && receiverProcess){
+    if(quoteProcess.quote && submitProcess.txHash){
       const activeTransactions = await nxtpSDK.getActiveTransactions()
       const relevantTx = activeTransactions.find(tx => tx.crosschainTx.invariant.transactionId === quoteProcess.quote.bid.transactionId)
       if(relevantTx && relevantTx.status ===  NxtpSdkEvents.ReceiverTransactionPrepared){
@@ -136,7 +135,7 @@ export class NXTPExecutionManager {
     }
 
     try {
-        // const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
+        const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
         if(submitProcess){
           nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
         } else{

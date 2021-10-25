@@ -6,6 +6,9 @@ const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
 export function renderProcessMessage(process: Process){
   if (process.txLink){
+    if(process.message === 'Sign Message to Claim Funds'){
+      return <>{process.message.toString()}</>
+    }
     if (process.confirmations) {
       return <>{process.message} <a href={process.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(process.confirmations, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
     }
