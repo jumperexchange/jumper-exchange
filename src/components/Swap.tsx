@@ -159,7 +159,8 @@ const Swap = ({
     if (!depositToken) {
       return true
     }
-    return depositAmount <= getBalance(balances, depositChain, depositToken)
+
+    return depositAmount.lte(getBalance(balances, depositChain, depositToken))
   }
 
   const findToken = useCallback((chainKey: ChainKey, tokenId: string) => {

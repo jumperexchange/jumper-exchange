@@ -178,7 +178,7 @@ const SwapForm = ({
     if (!depositToken) {
       return true
     }
-    return depositAmount <= getBalance(depositChain, depositToken)
+    return depositAmount.lte(getBalance(depositChain, depositToken))
   }
 
   return (
