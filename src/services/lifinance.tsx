@@ -15,7 +15,7 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 import * as uniswap from './uniswaps'
 
 const lifiContractAddress = '0xa74D44ed9C3BB96d7676E7A274c33A05210cf35a'
-const getSupportedChains = (jsonArraySting: string) : ChainId[] => {
+const getSupportedChains = (jsonArraySting: string): ChainId[] => {
   try {
     const chainIds = JSON.parse(jsonArraySting)
     return chainIds

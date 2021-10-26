@@ -136,7 +136,7 @@ export class NXTPExecutionManager {
 
     try {
         const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
-        if(submitProcess){
+        if(submitProcess.txHash){
           nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
         } else{
           await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)

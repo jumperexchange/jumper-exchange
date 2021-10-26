@@ -20,12 +20,12 @@ export class HopExecutionManager {
 
     //set allowance AND send
     const allowanceAndCrossProcess = createAndPushProcess('allowanceAndCrossProcess', update, status, 'Set Allowance and Cross')
-    if(!this.shouldContinue) return status
     let tx
     try {
       if(allowanceAndCrossProcess.txHash){
         tx = signer.provider.getTransaction(allowanceAndCrossProcess.txHash)
       } else {
+        if(!this.shouldContinue) return status
         tx = await hop.setAllowanceAndCrossChains(bridgeCoin, amount, fromChainId, toChainId )
         allowanceAndCrossProcess.txHash = tx.hash
         update(status)
