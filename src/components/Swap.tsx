@@ -269,7 +269,7 @@ const Swap = ({
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Historical Routes */}
-        <Row justify={"center"} style={{ marginTop: 48}}>
+        {historicalRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
              <Collapse
               defaultActiveKey={['']}
               ghost
@@ -290,10 +290,10 @@ const Swap = ({
                   </div>
                 </Panel>
               </Collapse>
-          </Row>
+          </Row>}
 
          {/* Active Routes */}
-          <Row justify={"center"} style={{ marginTop: 48}}>
+          {activeRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
              <Collapse
               defaultActiveKey={activeRoutes.length? ['1']: ['']}
               ghost
@@ -310,7 +310,7 @@ const Swap = ({
                   </div>
                 </Panel>
               </Collapse>
-          </Row>
+          </Row>}
 
 
 
