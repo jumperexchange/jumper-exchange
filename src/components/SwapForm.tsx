@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Col, Input, Row } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../types'
 import ChainSelect from './ChainSelect'
 import TokenSelect from './TokenSelect'
@@ -60,6 +60,7 @@ const SwapForm = ({
 
   const depositSelectRef = useRef<RefSelectProps>()
   const withdrawSelectRef = useRef<RefSelectProps>()
+  const [depositAmountString, setDepositAmountString] = useState<string>('')
 
   // Wallet
   const { activate } = useWeb3React()
@@ -150,8 +151,16 @@ const SwapForm = ({
     }
   }
 
-  const onChangeDepositAmount = (amount: BigNumber) => {
-    setDepositAmount(amount)
+  // sync depositAmountString if depositAmount changes
+  useEffect(() => {
+    if (!new BigNumber(depositAmountString).eq(depositAmount)) {
+      setDepositAmountString(depositAmount.toString())
+    }
+  }, [depositAmount, depositAmountString])
+
+  const onChangeDepositAmount = (amount: string) => {
+    setDepositAmountString(amount)
+    setDepositAmount(new BigNumber(amount))
     setWithdrawAmount(new BigNumber(Infinity))
   }
   const onChangeWithdrawAmount = (amount: BigNumber) => {
@@ -207,8 +216,8 @@ const SwapForm = ({
               defaultValue={0.0}
               min={0}
               step={0.000000000000000001}
-              value={depositAmount.gte(0) ? depositAmount.toString() : ''}
-              onChange={((event) => onChangeDepositAmount(formatAmountInput(event)))}
+              value={depositAmountString}
+              onChange={((event) => onChangeDepositAmount(event.currentTarget.value))}
               placeholder="0.0"
               bordered={false}
               className={!hasSufficientBalance() ? 'insufficient' : ''}
