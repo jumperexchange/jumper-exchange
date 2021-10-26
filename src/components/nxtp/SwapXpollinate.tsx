@@ -85,9 +85,9 @@ const getDefaultParams = (search: string, transferChains: Chain[], transferToken
   // fromAmount
   if (params.fromAmount && typeof params.fromAmount === 'string') {
     try {
-      const newAmount = parseFloat(params.fromAmount)
-      if (newAmount > 0) {
-        defaultParams.depositAmount = new BigNumber(params.fromAmount)
+      const newAmount = new BigNumber(params.fromAmount)
+      if (newAmount.gt(0)) {
+        defaultParams.depositAmount = newAmount
       }
     } catch (e) { console.error(e) }
   }
@@ -595,7 +595,7 @@ const SwapXpollinate = ({
     if (!depositToken) {
       return true
     }
-    return depositAmount <= getBalance(depositChain, depositToken)
+    return depositAmount.lte(getBalance(depositChain, depositToken))
   }
 
   const findToken = useCallback((chainKey: ChainKey, tokenId: string) => {
