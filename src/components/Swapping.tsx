@@ -492,15 +492,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       </Button>
     }
 
-    // RESUME
-    // const pendingSteps = route.some( step => step.execution?.status === 'PENDING' )
-    // const failedSteps = route.some( step => step.execution?.status === 'FAILED' )
-    // if(pendingSteps && !failedSteps){
-    //   return <Button type="primary" onClick={() => resumeCrossChainSwap()} style={{marginTop: 10}}>
-    //     {isCrossChainSwap ? 'Resume Cross Chain Swap' : 'Resume Swap'}
-    //   </Button>
-    // }
-
     // NOT_STARTED
     return (
       <Button type="primary" onClick={() => startCrossChainSwap()} style={{marginTop: 10}}>

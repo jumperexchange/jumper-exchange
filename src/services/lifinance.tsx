@@ -306,7 +306,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   submitProcess.status = 'PENDING'
   submitProcess.txHash = tx.hash
   submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + submitProcess.txHash
-  submitProcess.message = 'Sedn Transaction - Wait for'
+  submitProcess.message = 'Send Transaction - Wait for'
   update(status)
 
   // -> wait

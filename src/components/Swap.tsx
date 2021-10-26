@@ -238,15 +238,6 @@ const Swap = ({
     setselectedRoute(deepClone(routes[highlightedIndex]))
   }
 
-  // const updateRoute = (route: any, index: number) => {
-  //   const newRoutes = [
-  //     ...routes.slice(0, index),
-  //     route,
-  //     ...routes.slice(index + 1)
-  //   ]
-  //   setRoutes(newRoutes)
-  // }
-
   const submitButton = () => {
     if (!web3.account) {
       return <Button shape="round" type="primary" icon={<LoginOutlined />} size={"large"} onClick={() => login()}>Connect Wallet</Button>
