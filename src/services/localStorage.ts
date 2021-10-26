@@ -1,17 +1,17 @@
-import { chainKeysToObject, Wallet } from '../types';
+import { chainKeysToObject, Wallet } from '../types'
 
 const isSupported = () => {
   try {
-    var itemBackup = localStorage.getItem("");
-    localStorage.removeItem("");
+    var itemBackup = localStorage.getItem("")
+    localStorage.removeItem("")
     if (itemBackup === null)
-      localStorage.removeItem("");
+      localStorage.removeItem("")
     else
-      localStorage.setItem("", itemBackup);
-    return true;
+      localStorage.setItem("", itemBackup)
+    return true
   }
   catch (e) {
-    return false;
+    return false
   }
 }
 
@@ -52,27 +52,6 @@ const readWallets = (): Array<Wallet> => {
   }
 }
 
-const storeNxtpMessagingToken = (token: string, account: string) => {
-  if (isSupported()) {
-    localStorage.setItem('nxtpMessagingToken', token + ':' + account)
-  }
-}
-
-const readNxtpMessagingToken = () => {
-  if (!isSupported()) {
-    return null
-  }
-  const value = localStorage.getItem('nxtpMessagingToken')
-  if (!value) {
-    return null
-  }
-  const parts = value.split(':')
-  return {
-    token: parts[0],
-    account: parts.length > 1 && parts[1] ? parts[1] : null
-  }
-}
-
 const storeHideAbout = (hide: boolean) => {
   if (isSupported()) {
     localStorage.setItem('nxtpHideDemo', hide ? 'true' : 'false')
@@ -91,8 +70,6 @@ export {
   clearLocalStorage,
   storeWallets,
   readWallets,
-  storeNxtpMessagingToken,
-  readNxtpMessagingToken,
   storeHideAbout,
   readHideAbout,
 }
