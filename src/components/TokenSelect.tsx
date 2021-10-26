@@ -76,7 +76,7 @@ const TokenSelect = ({
                 You don't own any token on this chain.
               </Select.Option>
             }
-            {balances && tokens[selectedChain].filter(token => token.amount).map(token => (
+            {balances && tokens[selectedChain].filter(token => token.amount?.gt(0)).map(token => (
               <Select.Option
                 key={'own_' + token.id}
                 value={token.id}
