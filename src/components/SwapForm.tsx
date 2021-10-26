@@ -118,7 +118,7 @@ const SwapForm = ({
     // set token
     setDepositToken(tokenId)
     const balance = getBalance(depositChain, tokenId)
-    if (balance < depositAmount && balance.gt(0)) {
+    if (balance.lt(depositAmount) && balance.gt(0)) {
       setDepositAmount(balance)
     }
 
@@ -153,7 +153,7 @@ const SwapForm = ({
 
   // sync depositAmountString if depositAmount changes
   useEffect(() => {
-    if (!new BigNumber(depositAmountString).eq(depositAmount)) {
+    if (!new BigNumber(depositAmountString).eq(depositAmount) && depositAmount.gte(0)) {
       setDepositAmountString(depositAmount.toString())
     }
   }, [depositAmount, depositAmountString])
