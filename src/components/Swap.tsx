@@ -24,7 +24,7 @@ import TrasactionsTable from './TransactionsTable';
 const { Panel } = Collapse;
 
 interface TokenWithAmounts extends Token {
-  amount?: number
+  amount?: BigNumber
   amountRendered?: string
 }
 let source: CancelTokenSource | undefined = undefined
@@ -55,10 +55,10 @@ const Swap = ({
 
   // From
   const [depositChain, setDepositChain] = useState<ChainKey>(transferChains[0].key)
-  const [depositAmount, setDepositAmount] = useState<number>(1)
+  const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(1))
   const [depositToken, setDepositToken] = useState<string | undefined>() // tokenId
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(transferChains[1].key)
-  const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
+  const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [withdrawToken, setWithdrawToken] = useState<string | undefined>() // tokenId
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(defaultTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
@@ -128,11 +128,11 @@ const Swap = ({
 
   const getBalance = (currentBalances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined, chainKey: ChainKey, tokenId: string) => {
     if (!currentBalances) {
-      return 0
+      return new BigNumber(0)
     }
 
     const tokenBalance = currentBalances[chainKey].find(portfolio => portfolio.id === tokenId)
-    return tokenBalance?.amount || 0
+    return tokenBalance?.amount || new BigNumber(0)
   }
 
   useEffect(() => {
@@ -140,7 +140,7 @@ const Swap = ({
     if (!balances) {
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
-          token.amount = -1
+          token.amount = new BigNumber(-1)
           token.amountRendered = ''
         }
       }
@@ -161,7 +161,8 @@ const Swap = ({
     if (!depositToken) {
       return true
     }
-    return depositAmount <= getBalance(balances, depositChain, depositToken)
+
+    return depositAmount.lte(getBalance(balances, depositChain, depositToken))
   }
 
   const findToken = useCallback((chainKey: ChainKey, tokenId: string) => {
@@ -178,7 +179,7 @@ const Swap = ({
       setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
-      if ((isFinite(depositAmount) && depositAmount > 0) && depositChain && depositToken && withdrawChain && withdrawToken) {
+      if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
         setRoutesLoading(true)
         const dToken = findToken(depositChain, depositToken)
         const deposit: DepositAction = {
