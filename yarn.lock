@@ -1243,12 +1243,12 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.64.tgz#b6d1106c0825d35663e9bb87a6845bf7ed517556"
-  integrity sha512-dfjj0B8sbYFgG/Z+TgNYME+hAU+xmO5CnJ00JHS3KooFZ0AiqchevSiw669yp/r/rKoeoVXvqytx86XsV+ML6g==
+"@connext/nxtp-contracts@0.0.66":
+  version "0.0.66"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.66.tgz#c4830cbaf989fa63714e3f9aa074dd3464515420"
+  integrity sha512-ZAYFPfdGpH1JsXJhf+5Ob9NXfPHZG/7Qo0Wk28Q1xKbyQ9Yq3bksIiff4Hl923wyXCsB2Qkg7I9DAkx2rb8/aQ==
   dependencies:
-    "@connext/nxtp-utils" "0.0.64"
+    "@connext/nxtp-utils" "0.0.66"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
@@ -1258,14 +1258,14 @@
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.64.tgz#3d6c68703b03def54fd6ce280f45b57151463008"
-  integrity sha512-U0Pxt12c4VwF6XV3bFm0OxG42MVOChUlRFQtVoF+xf03S6N05vQBTGHOyh2OfDqYpO1GzSHkwZV1KfkByG4JKQ==
+"@connext/nxtp-sdk@0.0.66":
+  version "0.0.66"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.66.tgz#1ef71d2a34e0b86efd64fc91e28799d8e9861c36"
+  integrity sha512-+ETe5GsTqg5ZkaZqtCB+pGmo3D2FDDHuOFKcRv7nNh/7n0b1HFg0QpWy0YsBI3ooNuTHAsWAON3ARPVVKx7KbQ==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.64"
-    "@connext/nxtp-txservice" "0.0.64"
-    "@connext/nxtp-utils" "0.0.64"
+    "@connext/nxtp-contracts" "0.0.66"
+    "@connext/nxtp-txservice" "0.0.66"
+    "@connext/nxtp-utils" "0.0.66"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
     ajv-formats "^2.1.1"
@@ -1276,12 +1276,12 @@
     graphql-tag "^2.12.5"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.64.tgz#fcf8e9f508a2d043e621ff45a4f14ce725063b9b"
-  integrity sha512-kCot9Trd5cwQbYJCEJA9I2/EiQF82yllAioiwmAwqz5ACRgz7d36hutcD8nwrGepkb6El2OOWv2mPzxwNjSX+A==
+"@connext/nxtp-txservice@0.0.66":
+  version "0.0.66"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.66.tgz#8848ebd650fb4f69d6caa62088ec8b9d37f447ad"
+  integrity sha512-7uZRJ1LEoaIHrs3/9n6ONJfGqQYPyKF/3pXDIWbscb/1bChXrQn6aN5yMdyCgFCDrmex+qemz/cekU6yYVey+Q==
   dependencies:
-    "@connext/nxtp-utils" "0.0.64"
+    "@connext/nxtp-utils" "0.0.66"
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
@@ -1295,10 +1295,10 @@
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.64.tgz#77b5b1c8457c0fe117c81258be75fe297c7e2d91"
-  integrity sha512-Nd86vMzNEXWhWKM5Rmte76ZmljokrWW+VDDQ8xi+7Q95Q0z6CUx0IKsCjKYkikKouOGTvMn2nML7PnPB6cm8Tg==
+"@connext/nxtp-utils@0.0.66":
+  version "0.0.66"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.66.tgz#6d9f0a7ad5b7e31817674c53ff6d340f6a8b6dee"
+  integrity sha512-QudAsi5Yoq3j0BgabmNzNO+jFgNkkPaxb5z4oJymtvONgP68Y0KzKWQ5zhAheU2YO/4uRnAi1d3hop1qm2KT4A==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
@@ -5791,9 +5791,9 @@ ejs@^2.6.1:
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
 electron-to-chromium@^1.3.564, electron-to-chromium@^1.3.878:
-  version "1.3.879"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.879.tgz#4aba9700cfb241fb95c6ed69e31785e3d1605a43"
-  integrity sha512-zJo+D9GwbJvM31IdFmwcGvychhk4KKbKYo2GWlsn+C/dxz2NwmbhGJjWwTfFSF2+eFH7VvfA8MCZ8SOqTrlnpw==
+  version "1.3.880"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.880.tgz#58d1a298c5267f2faf440683d038c50ab39a6401"
+  integrity sha512-iwIP/6WoeSimzUKJIQtjtpVDsK8Ir8qQCMXsUBwg+rxJR2Uh3wTNSbxoYRfs+3UWx/9MAnPIxVZCyWkm8MT0uw==
 
 elliptic@6.5.4, elliptic@^6.4.0, elliptic@^6.4.1, elliptic@^6.5.2, elliptic@^6.5.3:
   version "6.5.4"
@@ -7325,9 +7325,9 @@ globals@^11.1.0:
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
 globals@^13.6.0, globals@^13.9.0:
-  version "13.11.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-13.11.0.tgz#40ef678da117fe7bd2e28f1fab24951bd0255be7"
-  integrity sha512-08/xrJ7wQjK9kkkRoI3OFUBbLx4f+6x3SGwcPvQ0QH6goFDrOU2oyAWrmh3dJezu65buo+HBMzAMQy6rovVC3g==
+  version "13.12.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-13.12.0.tgz#4d733760304230a0082ed96e21e5c565f898089e"
+  integrity sha512-uS8X6lSKN2JumVoXrbUz+uG4BYG+eiawqm3qFcT7ammfbUHeCBoJMlHcec/S3krSk73/AE/f0szYFmgAA3kYZg==
   dependencies:
     type-fest "^0.20.2"
 
@@ -7430,9 +7430,9 @@ graphql-tag@^2.12.5:
     tslib "^2.1.0"
 
 graphql@^15.5.1, graphql@^15.5.3:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.6.1.tgz#9125bdf057553525da251e19e96dab3d3855ddfc"
-  integrity sha512-3i5lu0z6dRvJ48QP9kFxBkJ7h4Kso7PS8eahyTFz5Jm6CvQfLtNIE8LX9N6JLnXTuwR+sIYnXzaWp6anOg0QQw==
+  version "15.7.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.7.0.tgz#caace26caf9b875b80982c45db58765d8a060e3e"
+  integrity sha512-1jvUsS5mSzcgXLTQNQyrP7eKkBZW+HUnmx2LYSnfvkyseVpij8wwO/sFBGgxbkZ+zzFwYQxrHsOana5oMXmMxg==
 
 growl@1.10.5:
   version "1.10.5"
@@ -9323,9 +9323,9 @@ kleur@^3.0.3:
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
 klona@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
-  integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
+  integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
 language-subtag-registry@~0.3.2:
   version "0.3.21"
