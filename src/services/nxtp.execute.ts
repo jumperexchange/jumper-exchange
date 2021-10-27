@@ -58,7 +58,7 @@ export class NXTPExecutionManager {
 
     const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
 
-    if(quoteProcess.quote && submitProcess.txHash){
+    if(quoteProcess.quote && submitProcess?.txHash){
       const activeTransactions = await nxtpSDK.getActiveTransactions()
       const relevantTx = activeTransactions.find(tx => tx.crosschainTx.invariant.transactionId === quoteProcess.quote.bid.transactionId)
       if(relevantTx && relevantTx.status ===  NxtpSdkEvents.ReceiverTransactionPrepared){
@@ -82,7 +82,6 @@ export class NXTPExecutionManager {
 
 
 
-
     // get Quote
     // -> set status
     if(!this.shouldContinue) {
@@ -91,14 +90,16 @@ export class NXTPExecutionManager {
     }
     quoteProcess.message = 'Confirm Quote'
     update(status)
-
     let quote: AuctionResponse | undefined;
     try {
+
       if(quoteProcess.quote){
         quote = quoteProcess.quote
       } else {
         quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
-        if (!quote) throw Error("Quote confirmation failed!")
+        if (!quote) {
+            throw new Error("No quote found! Please restart the swap.")
+        }
         quoteProcess.quote = quote
         update(status)
       }
@@ -109,7 +110,13 @@ export class NXTPExecutionManager {
       nxtpSDK.removeAllListeners()
       throw e
     }
-    if(!quote) throw Error("No quote found! Please restart the swap.")
+    if(!quote) {
+      const e = new Error("No quote found! Please restart the swap.")
+      quoteProcess.errorMessage = e.message
+      setStatusFailed(update, status, quoteProcess)
+      nxtpSDK.removeAllListeners()
+      throw e
+    }
     setStatusDone(update, status, quoteProcess)
 
     const crossEstimate: CrossEstimate = {
@@ -136,7 +143,7 @@ export class NXTPExecutionManager {
 
     try {
         const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
-        if(submitProcess.txHash){
+        if(submitProcess?.txHash){
           nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
         } else{
           await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)

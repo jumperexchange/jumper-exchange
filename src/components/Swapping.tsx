@@ -15,7 +15,7 @@ import { lifinance } from '../services/lifinance';
 import { switchChain, switchChainAndAddToken } from '../services/metamask';
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../services/status';
 import { formatTokenAmount } from '../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
+import { Chain, ChainKey, ChainPortfolio, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, getChainByKey, getIcon, Process, SwapAction, SwapEstimate, SwapStep, Token, TransferStep } from '../types';
 import Clock from './Clock';
 import LoadingIndicator from './LoadingIndicator';
 import { getBalancesForWallet } from '../services/balanceService';
@@ -336,22 +336,33 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     // setIsSwapping(true)
     const step = route[index]
     const previousStep = index > 0 ? route[index - 1] : undefined
+    const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
     try{
       switch (step.action.type) {
         case 'swap':
           return await triggerSwap(step as SwapStep, previousStep)
         case 'cross':
-           await triggerCross(step, previousStep)
+           await await triggerCross(step, previousStep)
           break
         default:
           setIsSwapping(false)
           throw new Error('Invalid Step')
       }
-    } catch{
-      setIsSwapping(false)
+    } catch(e: any){
+        const lastProcess = status.process[status.process.length -1 ] as Process
+        if(lastProcess.status === 'FAILED') {
+          // already set to failed. don't reset
+          setIsSwapping(false)
+          return
+        }
+        if (e.message) lastProcess.errorMessage = e.message
+        if (e.code) lastProcess.errorCode = e.code
+        setStatusFailed(update, status, lastProcess)
+        setIsSwapping(false)
+        return
     }
 
-  }, [triggerCross, triggerSwap])
+  }, [triggerCross, triggerSwap, updateStatus])
 
   const triggerLifi = useCallback(async () => {
     // ensure chain is set
@@ -371,7 +382,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     setSwapStartedAt(Date.now())
   }
 
-  //TODO: check if in checkSwapping useEffect
   const resumeCrossChainSwap = useCallback(async () => {
     for (let index = 0; index < route.length; index++) {
       if (route[index].execution?.status === 'PENDING') {
