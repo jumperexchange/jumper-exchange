@@ -321,8 +321,8 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
         name: token_name,
         symbol: token_key,
         img_url: '',
-        amount: new BigNumber(amount.value.toString()).toNumber(),
-        pricePerCoin: 0,
+        amount: new BigNumber(amount.value),
+        pricePerCoin: new BigNumber(0),
         verified: false,
       })
     })
