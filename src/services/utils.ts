@@ -1,6 +1,6 @@
 import ERC20 from '@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json'
 import { IERC20Minimal } from '@connext/nxtp-contracts/typechain'
-import { JsonRpcSigner } from '@ethersproject/providers'
+import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
 import BigNumberJs from 'bignumber.js'
 import { Contract } from 'ethers'
 import { getChainById, Token, wrappedTokens } from '../types'
@@ -59,3 +59,11 @@ export const setApproval = async (signer: JsonRpcSigner, tokenAddress: string, c
   return tx
 }
 
+
+export const isTransactionMined = async (hash: string, provider: JsonRpcProvider): Promise<boolean> => {
+  const txReceipt = await provider.getTransactionReceipt(hash);
+    if (txReceipt && txReceipt.blockNumber) {
+        return true;
+    }
+    return false
+}

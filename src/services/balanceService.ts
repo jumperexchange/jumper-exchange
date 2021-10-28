@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { BigNumber as BigNumberJs } from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { constants, ethers } from 'ethers'
 import { getMulticallAddresses, getRpcUrls } from '../components/web3/connectors'
 import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, defaultTokens, getChainById, Token } from '../types'
@@ -96,8 +96,8 @@ export async function covalentGetCoinsOnChain(walletAdress: string, chainId: num
         name: token.contract_name,
         symbol: token.contract_ticker_symbol,
         img_url: token.logo_url,
-        amount: parseInt(token.balance) / (10 ** token.contract_decimals),
-        pricePerCoin: token.quote_rate || 0,
+        amount: new BigNumber(token.balance).shiftedBy(-token.contract_decimals),
+        pricePerCoin: new BigNumber(token.quote_rate || 0),
         verified: false,
       })
     }
@@ -165,8 +165,8 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
       name: token.name,
       symbol: token.optimized_symbol,
       img_url: token.logo_url,
-      amount: token.amount as number,
-      pricePerCoin: token.price as number,
+      amount: new BigNumber(token.amount),
+      pricePerCoin: new BigNumber(token.price),
       verified: token.is_verified,
     })
   }
@@ -214,8 +214,8 @@ const getBlancesFromDebank = async (walletAdress: string) => {
       name: token.name,
       symbol: token.optimized_symbol,
       img_url: token.logo_url,
-      amount: token.amount,
-      pricePerCoin: token.price,
+      amount: new BigNumber(token.amount),
+      pricePerCoin: new BigNumber(token.price),
       verified: token.is_verified,
     })
   }
@@ -321,7 +321,7 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
         name: token_name,
         symbol: token_key,
         img_url: '',
-        amount: new BigNumberJs(amount.value.toString()).toNumber(),
+        amount: new BigNumber(amount.value.toString()).toNumber(),
         pricePerCoin: 0,
         verified: false,
       })
