@@ -20,6 +20,7 @@ import Swapping from './Swapping';
 import { injected } from './web3/connectors';
 import { readActiveRoutes, readHistoricalRoutes, deleteRoute } from '../services/localStorage';
 import TrasactionsTable from './TransactionsTable';
+import { LIFI } from '../services/LIFI/lifi';
 
 const { Panel } = Collapse;
 
@@ -182,21 +183,24 @@ const Swap = ({
       if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
         setRoutesLoading(true)
         const dToken = findToken(depositChain, depositToken)
-        const deposit: DepositAction = {
-          type: 'deposit',
-          chainId: getChainByKey(depositChain).id,
-          token: dToken,
-          amount: new BigNumber(depositAmount).shiftedBy(dToken.decimals).toFixed(0)
-        }
-
         const wToken = findToken(withdrawChain, withdrawToken)
-        const withdraw: WithdrawAction = {
-          type: 'withdraw',
-          chainId: getChainByKey(withdrawChain).id,
-          token: wToken,
-          amount: '',
-          toAddress: '',
-          slippage: optionSlippage / 100,
+
+        const routeRequest = {
+          fromChainId: getChainByKey(depositChain).id,
+          fromAmount: new BigNumber(depositAmount).shiftedBy(dToken.decimals).toFixed(0),
+          fromTokenAddress: dToken.id,
+          fromTokenDecimals: dToken.decimals,
+          // fromAddress?: string,
+
+          toChainId: getChainByKey(withdrawChain).id,
+          toTokenAddress: wToken.id,
+          toTokenDecimals: wToken.decimals,
+          // toAddress?: string,
+
+          options: {
+            slippage: optionSlippage / 100,
+            allowSwitchChain: true
+          }
         }
 
         // cancel previously running requests
@@ -210,9 +214,9 @@ const Swap = ({
         }
 
         try {
-          const result = await axios.post<any>(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw }, config)
+          const result = new LIFI().findRoutes(routeRequest)
           // filter if needed
-          const routes: Array<Array<TransferStep>> = result.data
+          const routes: Array<Array<TransferStep>> = result
           setRoutes(routes)
           fadeInAnimation(routeCards)
           setHighlightedIndex(routes.length === 0 ? -1 : 0)
