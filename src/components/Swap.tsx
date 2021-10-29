@@ -1,26 +1,27 @@
 // LIBS
-import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
-import { Button, Col, Collapse, Form, Image, InputNumber, Modal, Row, Typography } from 'antd'
-import { Content } from 'antd/lib/layout/layout'
-import Title from 'antd/lib/typography/Title'
-import axios, { CancelTokenSource } from 'axios'
-import BigNumber from 'bignumber.js'
-import { animate, stagger } from "motion"
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import heroImage from '../assets/info_header.jpg'
-import { loadTokenListAsTokens } from '../services/tokenListService'
-import { formatTokenAmountOnly } from '../services/utils'
-import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types'
-import LoadingIndicator from './LoadingIndicator'
-import Route from './Route'
-import './Swap.css'
-import SwapForm from './SwapForm'
-import Swapping from './Swapping'
-import { injected } from './web3/connectors'
+import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Typography } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
+import Title from 'antd/lib/typography/Title';
+import axios, { CancelTokenSource } from 'axios';
+import BigNumber from 'bignumber.js';
+import { animate, stagger } from "motion";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { loadTokenListAsTokens } from '../services/tokenListService';
+import { deepClone, formatTokenAmountOnly } from '../services/utils';
+import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
+import LoadingIndicator from './LoadingIndicator';
+import Route from './Route';
+import './Swap.css';
+import SwapForm from './SwapForm';
+import Swapping from './Swapping';
+import { injected } from './web3/connectors';
+import { readActiveRoutes, readHistoricalRoutes, deleteRoute } from '../services/localStorage';
+import TrasactionsTable from './TransactionsTable';
 
-const { Panel } = Collapse
+const { Panel } = Collapse;
 
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
@@ -72,8 +73,9 @@ const Swap = ({
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
-  const [selectedRouteIndex, setselectedRouteIndex] = useState<number>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
+  const [activeRoutes, setActiveRoutes] = useState<Array<Array<TransferStep>>>(readActiveRoutes())
+  const [historicalRoutes, setHistoricalRoutes] = useState<Array<Array<TransferStep>>>(readHistoricalRoutes())
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -232,18 +234,9 @@ const Swap = ({
     getTransferRoutes()
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
 
-  const openSwapModal = () => {
-    setselectedRoute(routes[highlightedIndex])
-    setselectedRouteIndex(highlightedIndex)
-  }
-
-  const updateRoute = (route: any, index: number) => {
-    const newRoutes = [
-      ...routes.slice(0, index),
-      route,
-      ...routes.slice(index + 1)
-    ]
-    setRoutes(newRoutes)
+  const openModal = () => {
+    // deepClone to open new modal without execution info of previous transfer using same route card
+    setselectedRoute(deepClone(routes[highlightedIndex]))
   }
 
   const submitButton = () => {
@@ -260,20 +253,59 @@ const Swap = ({
       return <Button disabled={true} shape="round" type="primary" size={"large"}>Insufficient Funds</Button>
     }
 
-    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openSwapModal()}>Swap</Button>
+    return <Button disabled={highlightedIndex === -1} shape="round" type="primary" icon={<SwapOutlined />} size={"large"} onClick={() => openModal()}>Swap</Button>
   }
 
   return (
     <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)', marginTop: 64 }}>
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
-        {/* Hero Image */}
-        <Row className='row-hero-image' style={{ width: '80%', margin: '24px auto 0', transition: 'opacity 200ms', opacity: routes.length ? 0.3 : 1 }} justify={'center'}>
-          <Image
-            className="hero-image"
-            src={heroImage}
-          />
-        </Row>
+        {/* Historical Routes */}
+        {historicalRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
+             <Collapse
+              defaultActiveKey={['']}
+              ghost
+              bordered={false}
+              className={`active-transfer-collapse`}
+              style={{ overflowX: 'scroll'}}
+              >
+                <Panel   header={`Historical Transfers (${historicalRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
+                  <div >
+                      <TrasactionsTable
+                      routes={historicalRoutes}
+                      routeAction = {(route:TransferStep[]) => {
+                        deleteRoute(route)
+                        setHistoricalRoutes(readHistoricalRoutes())
+                      } }
+                      historical={true}
+                      ></TrasactionsTable>
+                  </div>
+                </Panel>
+              </Collapse>
+          </Row>}
+
+         {/* Active Routes */}
+          {activeRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
+             <Collapse
+              defaultActiveKey={activeRoutes.length? ['1']: ['']}
+              activeKey = {activeRoutes.length? ['1']: ['']}
+              ghost
+              bordered={false}
+              className={`active-transfer-collapse`}
+              style={{ overflowX: 'scroll'}}
+              >
+                <Panel   header={`Active Transfers (${activeRoutes.length})`} key="1" className="site-collapse-active-transfer-panel">
+                  <div >
+                      <TrasactionsTable
+                      routes={activeRoutes}
+                      routeAction = {(route:TransferStep[]) => setselectedRoute(route) }
+                      ></TrasactionsTable>
+                  </div>
+                </Panel>
+              </Collapse>
+          </Row>}
+
+
 
         {/* Swap Form */}
         <Row style={{ margin: 20 }} justify={"center"}>
@@ -313,11 +345,9 @@ const Swap = ({
                       We currently recommend using only Metamask Wallets.
                     </Typography.Text>
                   </Row>
-
                   <Row style={{ marginTop: 24 }} justify={"center"}>
                     {submitButton()}
                   </Row>
-
                   {/* Advanced Options */}
                   <Row justify={"center"} >
                     <Collapse ghost style={{ width: '100%' }}>
@@ -408,28 +438,36 @@ const Swap = ({
 
       </div>
 
-      {selectedRoute.length &&
+      {!!selectedRoute.length &&
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
-          onOk={() => {
+          onOk={() =>{
             setselectedRoute([])
-            setRefreshBalances(true)
+            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
+            .then(setBalances)
           }}
           onCancel={() => {
             setselectedRoute([])
-            setRefreshBalances(true)
+            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
+            .then(setBalances)
           }}
+          destroyOnClose = {true}
           width={700}
           footer={null}
         >
-          <Swapping route={selectedRoute}
-            updateRoute={(route: any) => updateRoute(route, selectedRouteIndex ?? 0)}
-            onSwapDone={() => {
-              // setRefreshBalances(true)
-              getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-                .then(setBalances)
-            }}
+          <Swapping
+          route={selectedRoute}
+          updateRoute={(route: any) => {
+            setActiveRoutes(readActiveRoutes())
+            setHistoricalRoutes(readHistoricalRoutes())
+          }}
+          onSwapDone = {(route: TransferStep[]) => {
+            setActiveRoutes(readActiveRoutes())
+            setHistoricalRoutes(readHistoricalRoutes())
+            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
+            .then(setBalances)
+          }}
           ></Swapping>
         </Modal>
       }

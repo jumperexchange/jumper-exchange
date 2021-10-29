@@ -1,6 +1,5 @@
 
 import { JsonRpcSigner } from '@ethersproject/providers'
-import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { Execution, getChainById, SwapAction, SwapEstimate } from '../types'
 import { checkAllowance } from './allowance.execute'
@@ -8,73 +7,89 @@ import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
 
-export const executeUniswap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+export class UniswapExecutionManager {
+  shouldContinue: boolean = true
 
-  // setup
-  const fromChain = getChainById(swapAction.chainId)
-  const { status, update } = initStatus(updateStatus, initialStatus)
 
-  if (swapAction.token.id !== constants.AddressZero) {
-    const contractAddress = uniswap.getContractAddress(swapAction.chainId)
-    await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, contractAddress, update, status)
+
+  setShouldContinue  =  (val: boolean) => {
+    this.shouldContinue = val
   }
+  executeSwap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
 
-  // Swap via Uniswap
-  // -> set status
-  // const swapProcess = createAndPushProcess(update, status, `Swap via Uniswap`) //TODO: display actual uniswap clone
-  const swapProcess = createAndPushProcess(update, status, 'Submit Swap', { status: 'ACTION_REQUIRED' })
+    // setup
+    const fromChain = getChainById(swapAction.chainId)
+    const { status, update } = initStatus(updateStatus, initialStatus)
 
-  // -> swapping
-  let tx
-  try {
-    const call = await uniswap.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
-    tx = await signer.sendTransaction(call)
-  } catch (e: any) {
+    if(!this.shouldContinue) return status
+    if (swapAction.token.id !== constants.AddressZero) {
+      const contractAddress = uniswap.getContractAddress(swapAction.chainId)
+      await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, contractAddress, update, status)
+    }
+
+    // Swap via Uniswap
     // -> set status
-    if (e.message) swapProcess.errorMessage = e.message
-    if (e.code) swapProcess.errorCode = e.code
-    setStatusFailed(update, status, swapProcess)
-    throw e
-  }
+    const swapProcess = createAndPushProcess('swapProcess', update, status, 'Submit Swap', { status: 'ACTION_REQUIRED' })
 
-  // -> set status
-  swapProcess.status = 'PENDING'
-  swapProcess.txHash = tx.hash
-  swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
-  swapProcess.message = <>Swap - Wait for <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-  update(status)
+    // -> swapping
+    if(!this.shouldContinue) return status
+    let tx
+    try {
+      if(swapProcess.txHash){
+        tx = await signer.provider.getTransaction(swapProcess.txHash)
+      } else{
+        const call = await uniswap.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
+        tx = await signer.sendTransaction(call)
+      }
+    } catch (e: any) {
+      // -> set status
+      if (e.message) swapProcess.errorMessage = e.message
+      if (e.code) swapProcess.errorCode = e.code
+      setStatusFailed(update, status, swapProcess)
+      throw e
+    }
 
-  // -> waiting
-  let receipt
-  try {
-    receipt = await tx.wait()
-  } catch (e: any) {
     // -> set status
-    if (e.message) swapProcess.errorMessage = e.message
-    if (e.code) swapProcess.errorCode = e.code
-    setStatusFailed(update, status, swapProcess)
-    notifications.showNotification(NotificationType.SWAP_ERROR)
-    throw e
+    swapProcess.status = 'PENDING'
+    swapProcess.txHash = tx.hash
+    swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
+    swapProcess.message = 'Swap - Wait for'
+    update(status)
+
+
+    // -> waiting
+    let receipt
+    try {
+      tx = await signer.provider.getTransaction(swapProcess.txHash)
+      receipt = await signer.provider.waitForTransaction(swapProcess.txHash)
+    } catch (e: any) {
+      // -> set status
+      if (e.message) swapProcess.errorMessage = e.message
+      if (e.code) swapProcess.errorCode = e.code
+      setStatusFailed(update, status, swapProcess)
+      notifications.showNotification(NotificationType.SWAP_ERROR)
+      throw e
+    }
+
+    // -> set status
+    swapProcess.message = 'Swapped:'
+    const parsedReceipt = uniswap.parseReceipt(tx, receipt)
+    setStatusDone(update, status, swapProcess, {
+      fromAmount: parsedReceipt.fromAmount,
+      toAmount: parsedReceipt.toAmount,
+      gasUsed: (status.gasUsed || 0) + parsedReceipt.gasUsed,
+    })
+
+    // -> set status
+    status.fromAmount = parsedReceipt.fromAmount
+    status.toAmount = parsedReceipt.toAmount
+    status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
+    status.status = 'DONE'
+    update(status)
+    notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
+
+
+    // DONE
+    return status
   }
-
-  // -> set status
-  swapProcess.message = <>Swapped: <a href={swapProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
-  const parsedReceipt = uniswap.parseReceipt(tx, receipt)
-  setStatusDone(update, status, swapProcess, {
-    fromAmount: parsedReceipt.fromAmount,
-    toAmount: parsedReceipt.toAmount,
-    gasUsed: (status.gasUsed || 0) + parsedReceipt.gasUsed,
-  })
-
-  // -> set status
-  status.fromAmount = parsedReceipt.fromAmount
-  status.toAmount = parsedReceipt.toAmount
-  status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
-  status.status = 'DONE'
-  update(status)
-  notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
-
-
-  // DONE
-  return status
 }

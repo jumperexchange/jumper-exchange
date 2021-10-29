@@ -1,11 +1,11 @@
-import ERC20 from "@connext/nxtp-contracts/artifacts/contracts/interfaces/IERC20Minimal.sol/IERC20Minimal.json"
 import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
-import { BigNumber as BN, constants, Contract, ethers } from 'ethers'
-import { getRpcProvider } from '../components/web3/connectors'
-import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, getChainById, Token } from '../types'
-import { getDefaultTokenBalancesForWallet } from './testToken'
+import { constants, ethers } from 'ethers'
+import { getMulticallAddresses, getRpcUrls } from '../components/web3/connectors'
+import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, defaultTokens, getChainById, Token } from '../types'
 import { deepClone } from './utils'
+// @ts-ignore
+import { createWatcher } from '@makerdao/multicall'
 
 type tokenListDebankT = {
   id: string,
@@ -229,7 +229,10 @@ const getBalancesForWallet = async (walletAdress: string, onChains?: Array<numbe
   // Manually added Harmony Support
   let onePromise: Promise<{ [ChainKey: string]: ChainPortfolio[] }> | undefined
   if (onChains && onChains.indexOf(ChainId.ONE) !== -1) {
-    onePromise = getDefaultTokenBalancesForWallet(walletAdress, [ChainId.ONE])
+    const tokens = {
+      [ChainKey.ONE]: defaultTokens[ChainKey.ONE]
+    }
+    onePromise = getBalancesForWalletFromChain(walletAdress, tokens)
   }
 
   let protfolio: Portfolio
@@ -254,38 +257,71 @@ const getBalancesForWallet = async (walletAdress: string, onChains?: Array<numbe
 
 export const getBalanceFromProvider = async (
   address: string,
-  assetId: string,
-  chainId: number,
-): Promise<BN> => {
-  const provider = getRpcProvider(chainId)
-  if (assetId === constants.AddressZero) {
-    return provider.getBalance(address)
-  } else {
-    const contract = new Contract(assetId, ERC20.abi, provider)
-    return contract.balanceOf(address)
+  tokens: Array<Token>,
+): Promise<Array<any>> => new Promise((resolve) => {
+
+  const chainId = tokens[0].chainId
+  const config = {
+    rpcUrl: getRpcUrls([chainId])[chainId],
+    multicallAddress: getMulticallAddresses([chainId])[chainId],
+    interval: 10000
   }
-}
+  // Create watcher
+  const calls: Array<any> = []
+  tokens.forEach(async (token) => {
+    if (token.id === constants.AddressZero) {
+      calls.push({
+        call: ['getEthBalance(address)(uint256)', address],
+        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** token.decimals]]
+      })
+    }
+    else {
+      calls.push({
+        target: token.id,
+        call: ['balanceOf(address)(uint256)', address],
+        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** token.decimals]]
+      })
+    }
+  })
+
+  const watcher = createWatcher(
+    calls,
+    config
+  )
+
+  watcher.batch().subscribe((updates: any) => {
+    watcher.stop()
+    resolve(updates as any)
+  })
+
+  watcher.onError((error: any) => {
+    watcher.stop()
+    console.warn('Watcher Error:', error);
+    resolve([])
+  });
+
+  watcher.start()
+})
 
 export const getBalancesForWalletFromChain = async (address: string, tokens: { [ChainKey: string]: Array<Token> }) => {
   const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
-
   Object.entries(tokens).forEach(async ([chainKey, tokens]) => {
-    tokens.forEach(async (token) => {
-      const promise = getBalanceFromProvider(address, token.id, token.chainId)
-        .catch((e) => {
-          console.warn(address, token.id, token.chainId, e)
-          return BN.from(0)
-        })
-      promises.push(promise)
-      const amount = await promise
+    const promise = getBalanceFromProvider(address, tokens)
+    promises.push(promise)
+    const amounts = await promise
+
+    amounts.forEach((amount) => {
+      const token_id = amount["type"].split("-")[0]
+      const token_name = amount["type"].split("-")[1]
+      const token_key = amount["type"].split("-")[2]
 
       portfolio[chainKey].push({
-        id: token.id,
-        name: token.name,
-        symbol: token.key,
+        id: token_id,
+        name: token_name,
+        symbol: token_key,
         img_url: '',
-        amount: new BigNumber(amount.toString()).shiftedBy(-token.decimals),
+        amount: new BigNumber(amount.value),
         pricePerCoin: new BigNumber(0),
         verified: false,
       })

@@ -9,8 +9,15 @@ export const initStatus = (updateStatus?: Function, initialStatus?: Execution) =
   return { status, update }
 }
 
-export const createAndPushProcess = (updateStatus: Function, status: Execution, message: ProcessMessage, params?: object) => {
+export const createAndPushProcess = (id: string, updateStatus: Function, status: Execution, message: ProcessMessage, params?: object) => {
+  const process = status.process.find(p => p.id === id)
+  if(process){
+    status.status = 'PENDING'
+    updateStatus(status)
+    return process
+  }
   const newProcess: Process = {
+    id:id,
     startedAt: Date.now(),
     message: message,
     status: 'PENDING',
