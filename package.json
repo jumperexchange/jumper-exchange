@@ -5,6 +5,7 @@
   "bugs": "https://github.com/lifinance/lifi-web/issues",
   "license": "UNLICENSED",
   "dependencies": {
+    "@storybook/addon-viewport": "^6.3.10",
     "@ant-design/icons": "^4.6.2",
     "@connext/nxtp-sdk": "^0.0.57",
     "@ethersproject/providers": "^5.4.0",
@@ -26,39 +27,74 @@
     "react-dom": "^17.0.2",
     "react-responsive": "^9.0.0-beta.4",
     "react-router-dom": "^5.2.0",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.0",
+    "ramda": "^0.27.1",
+    "styled-components": "^5.3.1"
   },
   "devDependencies": {
-    "@testing-library/dom": "^8.1.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.1.9",
     "@types/jest": "^27.0.0",
     "@types/node": "^16.3.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/react-highlight-words": "^0.16.3",
+    "@storybook/addon-actions": "^6.3.10",
+    "@storybook/addon-essentials": "^6.3.10",
+    "@storybook/addon-links": "^6.3.10",
+    "@storybook/node-logger": "^6.3.10",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.3.10",
+    "@types/ramda": "^0.27.45",
+    "@types/styled-components": "^5.1.15",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "24.9.0",
+    "@testing-library/dom": "^8.1.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.1.9",
     "@types/react-router-dom": "^5.1.7",
     "react-scripts": "4.0.3",
     "typescript": "4.3.5",
-    "yarn": "^1.22.10"
+    "yarn": "^1.22.10",
+    "eslint": "^7.32.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.10.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": ">=6",
+    "lint-staged": ">=10",
+    "plop": "^2.7.4",
+    "prettier": "2.4.1",
+    "react-app-rewire-alias": "^1.1.3",
+    "react-app-rewired": "^2.1.8"
   },
   "scripts": {
-    "start": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts start'",
+    "start": "bash -ac '. .env.${REACT_APP_ENV}; react-app-rewired start",
+    "build": "bash -ac '. .env.${REACT_APP_ENV}; react-app-rewired build",
+    "test": "react-app-rewired test --silent --noStackTrace --colors",
     "start:xpollinate": "REACT_APP_ENV=xpollinate-mainnet.development npm run start",
     "start:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet.development npm run start",
-    "build": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
     "build:lifinance:staging": "REACT_APP_ENV=lifinance-mainnet.staging npm run build",
     "build:lifinance": "REACT_APP_ENV=lifinance-mainnet npm run build",
     "build:xpollinate": "REACT_APP_ENV=xpollinate-mainnet npm run build",
     "build:xpollinate:staging": "REACT_APP_ENV=xpollinate-mainnet.staging npm run build",
     "build:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet npm run build",
     "build:xpollinate:testnet:staging": "REACT_APP_ENV=xpollinate-testnet.staging npm run build",
-    "test": "echo 'Not defined'"
+    "test:ci": "echo 'Not defined'",
+    "storybook": "start-storybook -p 6006 -s public",
+    "pre-commit": "lint-staged",
+    "lint:fix": "eslint --ext .tsx --ext .ts ./src --fix",
+    "prettier:fix": "prettier --write ./src/."
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "yarn run lint:fix",
+      "yarn run prettier:fix"
     ]
   },
   "browserslist": {
@@ -72,5 +108,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": "^14"
   }
 }
