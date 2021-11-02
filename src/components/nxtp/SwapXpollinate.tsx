@@ -300,7 +300,11 @@ const SwapXpollinate = ({
     const liq = await Promise.all(
       chains.map(async (chain) => {
         // get graph from override first
-        let sub = chainConfigOverwrites[chain.id]?.subgraph
+        let sub = chainConfigOverwrites[chain.id]?.subgraph ? 
+          Array.isArray(chainConfigOverwrites[chain.id]?.subgraph) ? 
+            chainConfigOverwrites[chain.id]?.subgraph![0] : 
+            chainConfigOverwrites[chain.id]?.subgraph : 
+          undefined
         if (!sub) {
           sub = getDeployedSubgraphUri(chain.id)
         }
@@ -310,7 +314,7 @@ const SwapXpollinate = ({
         }
 
         // request
-        const res = await request(sub, query, {
+        const res = await request(sub as string, query, {
           routerId: process.env.REACT_APP_NXTP_ROUTER_ADDRESS?.toLowerCase(),
         })
 
