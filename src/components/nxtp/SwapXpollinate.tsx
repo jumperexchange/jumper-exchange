@@ -950,10 +950,12 @@ const SwapXpollinate = ({
   }
 
   const priceImpact = () => {
+    const ROUTER_BASE_FEE_PCT = 0.05 // TODO: make this part of connext sdk
     const token = transferTokens[withdrawChain].find(token => token.id === withdrawToken)
     let impact = new BigNumber(0)
     let routerFee = new BigNumber(0)
     let gasFee = new BigNumber(0)
+    let relayerFee = new BigNumber(0)
     let decimals = 2
 
     if (highlightedIndex !== -1) {
@@ -965,12 +967,13 @@ const SwapXpollinate = ({
 
       const toToken = cross.action.toToken
       const toAmount = new BigNumber(cross.estimate.toAmount).shiftedBy(-toToken.decimals)
+      relayerFee = new BigNumber(cross.estimate.data.metaTxRelayerFee).shiftedBy(-toToken.decimals)
 
-      const diff = fromAmount.minus(toAmount)
+      const diff = fromAmount.minus(toAmount).minus(relayerFee)
       impact = diff.div(fromAmount).times(-100)
 
       gasFee = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(-toToken.decimals)
-      routerFee = diff.minus(gasFee)
+      routerFee = fromAmount.times(ROUTER_BASE_FEE_PCT / 100)
 
       if (routerFee.lt('0.01')) {
         decimals = 4
@@ -993,6 +996,10 @@ const SwapXpollinate = ({
               <tr>
                 <td style={{ paddingRight: 10 }}>Router Gas Fee</td>
                 <td style={{ textAlign: 'right' }}>{gasFee.toFixed(decimals, 1)} {token?.symbol}</td>
+              </tr>
+              <tr>
+                <td style={{ paddingRight: 10 }}>Relayer Fee</td>
+                <td style={{ textAlign: 'right' }}>{relayerFee.toFixed(decimals, 1)} {token?.symbol}</td>
               </tr>
             </tbody>
           </table>
