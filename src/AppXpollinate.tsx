@@ -1,11 +1,13 @@
-import { Layout } from 'antd';
-import React, { useEffect } from 'react';
-import './App.css';
-import SwapXpollinate from './components/nxtp/SwapXpollinate';
-import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
-import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
-import analytics from './services/analytics';
-import { ChainKey, CoinKey, findDefaultCoinOnChain, getChainById } from './types';
+import './App.css'
+
+import { Layout } from 'antd'
+import React, { useEffect } from 'react'
+
+import SwapXpollinate from './components/nxtp/SwapXpollinate'
+import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
+import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
+import analytics from './services/analytics'
+import { ChainKey, CoinKey, findDefaultCoinOnChain, getChainById } from './types'
 
 const getTransferChains = () => {
   try {
@@ -60,15 +62,18 @@ function usePageViews() {
 function AppXpollinate() {
   usePageViews()
 
-  const aboutMessage = (<h1>Welcome to xPollinate.io</h1>)
+  const aboutMessage = <h1>Welcome to xPollinate.io</h1>
   const aboutDescription = (
     <>
       <p>
-        This interface gives access to the NXTP protocol of Connext.
-        It allows you to transfer Stablecoins (USDC, USDT, DAI) between multiple EVM based chains (Polygon, BSC, xDAI, Fantom, Arbitrum).</p>
+        This interface gives access to the NXTP protocol of Connext. It allows you to transfer
+        Stablecoins (USDC, USDT, DAI) between multiple EVM based chains (Polygon, BSC, xDAI, Fantom,
+        Arbitrum).
+      </p>
       <p>Simply select the chains, an amount, the token to transfer and click Swap.</p>
       <p>
-        Made for you by<br />
+        Made for you by
+        <br />
         &nbsp;&nbsp;~ Connext (Protocol)
         <br />
         &nbsp;&nbsp;~ Li.Finance (UI & Swaps - soon)
@@ -91,7 +96,7 @@ function AppXpollinate() {
         </Layout>
       </Web3ConnectionManager>
     </WrappedWeb3ReactProvider>
-  );
+  )
 }
 
-export { AppXpollinate };
+export { AppXpollinate }

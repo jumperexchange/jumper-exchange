@@ -1,14 +1,12 @@
-import React from 'react';
-import { Content } from 'antd/lib/layout/layout';
+import { Content } from 'antd/lib/layout/layout'
+import React from 'react'
 
 function NotFoundPage() {
   return (
     <Content className="site-layout">
-      <div>
-        Not Found
-      </div>
+      <div>Not Found</div>
     </Content>
-  );
+  )
 }
 
-export default NotFoundPage;
+export default NotFoundPage

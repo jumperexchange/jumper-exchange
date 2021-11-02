@@ -1,25 +1,38 @@
+/* eslint-disable no-console */
+import { ChainId, CoinKey, Execution, getChainById, Token } from '@lifinance/types'
 import BigNumber from 'bignumber.js'
 import { EXCHANGE_MODE, NETWORK_TYPE, STATUS, TOKEN } from 'bridge-sdk'
-import { ChainId, CoinKey, Execution, getChainById, Process, Token } from '../types'
+
 import horizon from './horizon'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 
-
-export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumber, fromChainId: number, toChainId: number, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
-
+export const executeHorizonCross = async (
+  fromToken: Token,
+  fromAmount: BigNumber,
+  fromChainId: number,
+  toChainId: number,
+  destAddress: string,
+  updateStatus?: Function,
+  initialStatus?: Execution,
+  // eslint-disable-next-line max-params
+) => {
   // setup
   const { status, update } = initStatus(updateStatus, initialStatus)
   const fromChain = getChainById(fromChainId)
   const toChain = getChainById(toChainId)
 
-
-  const allowanceAndCrossProcess = createAndPushProcess(update, status, 'Set Allowance and Cross', { status: 'ACTION_REQUIRED' })
+  const allowanceAndCrossProcess = createAndPushProcess(update, status, 'Set Allowance and Cross', {
+    status: 'ACTION_REQUIRED',
+  })
   let waitForBlocksProcess: Process
   let mintProcess: Process
 
   try {
     // mainnet / testnet ?
-    const bridgeSDK = (fromChainId === ChainId.ONE || toChainId === ChainId.ONE) ? await horizon.setupMainnet() : await horizon.setupTestnet()
+    const bridgeSDK =
+      fromChainId === ChainId.ONE || toChainId === ChainId.ONE
+        ? await horizon.setupMainnet()
+        : await horizon.setupTestnet()
 
     const tokenMapping: { [k: string]: any } = {
       [CoinKey.ETH]: {
@@ -41,8 +54,17 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
     }
 
     // params
-    const type = (toChainId === ChainId.ONE || toChainId === ChainId.ONET) ? EXCHANGE_MODE.ETH_TO_ONE : EXCHANGE_MODE.ONE_TO_ETH
-    const network = (fromChainId === ChainId.BSC || fromChainId === ChainId.BSCT || toChainId === ChainId.BSC || toChainId === ChainId.BSCT) ? NETWORK_TYPE.BINANCE : NETWORK_TYPE.ETHEREUM
+    const type =
+      toChainId === ChainId.ONE || toChainId === ChainId.ONET
+        ? EXCHANGE_MODE.ETH_TO_ONE
+        : EXCHANGE_MODE.ONE_TO_ETH
+    const network =
+      fromChainId === ChainId.BSC ||
+      fromChainId === ChainId.BSCT ||
+      toChainId === ChainId.BSC ||
+      toChainId === ChainId.BSCT
+        ? NETWORK_TYPE.BINANCE
+        : NETWORK_TYPE.ETHEREUM
     const token = tokenMapping[fromToken.key].token
     const amount = fromAmount.shiftedBy(-fromToken.decimals).toNumber()
     const erc20Address = tokenMapping[fromToken.key].erc20Address
@@ -62,10 +84,7 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
     console.debug('params', params)
 
     let operationId: string
-    const bridgePromise = bridgeSDK.sendToken(
-      params,
-      id => (operationId = id)
-    );
+    const bridgePromise = bridgeSDK.sendToken(params, (id) => (operationId = id))
 
     let intervalId = setInterval(async () => {
       if (operationId) {
@@ -73,43 +92,84 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
         console.debug('operation', operation)
 
         // Send > Wait
-        if (operation.actions[0].status === 'in_progress' && allowanceAndCrossProcess.status === 'ACTION_REQUIRED') {
+        if (
+          operation.actions[0].status === 'in_progress' &&
+          allowanceAndCrossProcess.status === 'ACTION_REQUIRED'
+        ) {
           allowanceAndCrossProcess.status = 'PENDING'
           allowanceAndCrossProcess.txHash = operation.actions[0].transactionHash
-          allowanceAndCrossProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceAndCrossProcess.txHash
-          allowanceAndCrossProcess.message = <>Send Transaction - Wait for <a href={allowanceAndCrossProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+          allowanceAndCrossProcess.txLink =
+            fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceAndCrossProcess.txHash
+          allowanceAndCrossProcess.message = (
+            <>
+              Send Transaction - Wait for{' '}
+              <a href={allowanceAndCrossProcess.txLink} target="_blank" rel="nofollow noreferrer">
+                Tx
+              </a>
+            </>
+          )
           update(status)
         }
 
         // Wait > Done; Wait for confirmations
-        if (operation.actions[0].status === 'success' && allowanceAndCrossProcess.status === 'PENDING') {
-          allowanceAndCrossProcess.message = <>Transaction Sent: <a href={allowanceAndCrossProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+        if (
+          operation.actions[0].status === 'success' &&
+          allowanceAndCrossProcess.status === 'PENDING'
+        ) {
+          allowanceAndCrossProcess.message = (
+            <>
+              Transaction Sent:{' '}
+              <a href={allowanceAndCrossProcess.txLink} target="_blank" rel="nofollow noreferrer">
+                Tx
+              </a>
+            </>
+          )
           setStatusDone(update, status, allowanceAndCrossProcess)
-          waitForBlocksProcess = createAndPushProcess(update, status, 'Wait for Block Confirmations', { status: 'PENDING' })
+          waitForBlocksProcess = createAndPushProcess(
+            update,
+            status,
+            'Wait for Block Confirmations',
+            { status: 'PENDING' },
+          )
         }
 
         // Confirmed > Done; Wait for mint
-        if (operation.actions[1].status === 'success' && waitForBlocksProcess.status === 'PENDING') {
+        if (
+          operation.actions[1].status === 'success' &&
+          waitForBlocksProcess.status === 'PENDING'
+        ) {
           waitForBlocksProcess.message = 'Enough Block Confirmations'
           setStatusDone(update, status, waitForBlocksProcess)
-          mintProcess = createAndPushProcess(update, status, 'Minting tokens', { status: 'PENDING' })
+          mintProcess = createAndPushProcess(update, status, 'Minting tokens', {
+            status: 'PENDING',
+          })
         }
 
         // Minted > Done; ??
         if (operation.actions[2].status === 'success' && mintProcess.status === 'PENDING') {
           mintProcess.txHash = operation.actions[2].transactionHash
           mintProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + mintProcess.txHash
-          mintProcess.message = <>Minted in <a href={mintProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+          mintProcess.message = (
+            <>
+              Minted in{' '}
+              <a href={mintProcess.txLink} target="_blank" rel="nofollow noreferrer">
+                Tx
+              </a>
+            </>
+          )
           setStatusDone(update, status, mintProcess)
         }
 
         // Ended
         if (operation.status !== STATUS.IN_PROGRESS) {
-          clearInterval(intervalId);
+          clearInterval(intervalId)
           if (operation.status === STATUS.ERROR) {
-            if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE') setStatusFailed(update, status, allowanceAndCrossProcess)
-            if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE') setStatusFailed(update, status, waitForBlocksProcess)
-            if (mintProcess! && mintProcess.status !== 'DONE') setStatusFailed(update, status, mintProcess)
+            if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE')
+              setStatusFailed(update, status, allowanceAndCrossProcess)
+            if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE')
+              setStatusFailed(update, status, waitForBlocksProcess)
+            if (mintProcess! && mintProcess.status !== 'DONE')
+              setStatusFailed(update, status, mintProcess)
           }
         }
       }
@@ -118,14 +178,17 @@ export const executeHorizonCross = async (fromToken: Token, fromAmount: BigNumbe
     await bridgePromise
 
     // Fallback
-    if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE') setStatusDone(update, status, allowanceAndCrossProcess)
-    if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE') setStatusDone(update, status, waitForBlocksProcess)
+    if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE')
+      setStatusDone(update, status, allowanceAndCrossProcess)
+    if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE')
+      setStatusDone(update, status, waitForBlocksProcess)
     if (mintProcess! && mintProcess.status !== 'DONE') setStatusDone(update, status, mintProcess)
-
   } catch (e: any) {
     console.error(e)
-    if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE') setStatusFailed(update, status, allowanceAndCrossProcess)
-    if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE') setStatusFailed(update, status, waitForBlocksProcess)
+    if (allowanceAndCrossProcess && allowanceAndCrossProcess.status !== 'DONE')
+      setStatusFailed(update, status, allowanceAndCrossProcess)
+    if (waitForBlocksProcess! && waitForBlocksProcess.status !== 'DONE')
+      setStatusFailed(update, status, waitForBlocksProcess)
     if (mintProcess! && mintProcess.status !== 'DONE') setStatusFailed(update, status, mintProcess)
     throw e
   }

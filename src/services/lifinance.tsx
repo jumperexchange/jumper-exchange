@@ -1,25 +1,33 @@
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { AuctionResponse } from '@connext/nxtp-utils';
-import { JsonRpcSigner } from '@ethersproject/providers';
-import BigNumber from 'bignumber.js';
-import * as sigUtil from 'eth-sig-util';
-import { constants, ethers, utils } from 'ethers';
-import { getRpcProviders } from '../components/web3/connectors';
-import { ChainId, CrossAction, CrossEstimate, Execution, getChainById, Process, SwapAction, SwapEstimate, TransferStep } from '../types';
-import { lifi_abi } from '../types/nxtpFacet.types';
-import { checkAllowance } from './allowance.execute';
-import * as nxtp from './nxtp';
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
-import { getSwapCall } from './uniswaps';
+/* eslint-disable max-params */
+import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
+import { AuctionResponse } from '@connext/nxtp-utils'
+import { JsonRpcSigner } from '@ethersproject/providers'
+import {
+  ChainId,
+  CrossAction,
+  CrossEstimate,
+  Execution,
+  getChainById,
+  Process,
+  SwapAction,
+  SwapEstimate,
+} from '@lifinance/types'
+import BigNumber from 'bignumber.js'
+import * as sigUtil from 'eth-sig-util'
+import { constants, ethers, utils } from 'ethers'
+
+import { getRpcProviders } from '../components/web3/connectors'
+import { TransferStep } from '../types'
+import { lifi_abi } from '../types/nxtpFacet.types'
+import { checkAllowance } from './allowance.execute'
+import * as nxtp from './nxtp'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
+import { getSwapCall } from './uniswaps'
 
 const lifiContractAddress = '0xFdeE0875499cddb70539f370E28dCf6037dC93E3'
-const supportedChains = [
-  ChainId.RIN,
-  ChainId.GOR,
-]
+const supportedChains = [ChainId.RIN, ChainId.GOR]
 
-const tidy = (str: string): string =>
-  `${str.replace(/\n/g, '').replace(/ +/g, ' ')}`
+const tidy = (str: string): string => `${str.replace(/\n/g, '').replace(/ +/g, ' ')}`
 
 const AuctionBidEncoding = tidy(`tuple(
   address user,
@@ -43,36 +51,42 @@ const AuctionBidEncoding = tidy(`tuple(
 
 const myEncrypt = async (msg: string, publicKey: string) => {
   const buf = Buffer.from(
-    JSON.stringify(
-      sigUtil.encrypt(
-        publicKey,
-        { data: msg },
-        'x25519-xsalsa20-poly1305'
-      )
-    ),
-    'utf8'
+    JSON.stringify(sigUtil.encrypt(publicKey, { data: msg }, 'x25519-xsalsa20-poly1305')),
+    'utf8',
   )
 
   return '0x' + buf.toString('hex')
 }
 
-const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateStatus?: Function, initialStatus?: Execution) => {
-
+const executeLifi = async (
+  signer: JsonRpcSigner,
+  route: TransferStep[],
+  updateStatus?: Function,
+  initialStatus?: Execution,
+) => {
   const startSwapStep = route[0].action.type === 'swap' ? route[0] : undefined
-  const endSwapStep = route[route.length-1].action.type === 'swap' ? route[route.length-1] : undefined
+  const endSwapStep =
+    route[route.length - 1].action.type === 'swap' ? route[route.length - 1] : undefined
 
-  const crossStep = route.find(step => step.action.type === 'cross')!
+  const crossStep = route.find((step) => step.action.type === 'cross')!
   const crossAction = crossStep.action as CrossAction
   const fromChain = getChainById(crossAction.chainId)
   const toChain = getChainById(crossAction.toChainId)
-
 
   // setup
   let { status, update } = initStatus(updateStatus, initialStatus)
 
   // allowance
   if (route[0].action.token.id !== constants.AddressZero) {
-    await checkAllowance(signer, fromChain, route[0].action.token, route[0].action.amount, lifiContractAddress, update, status)
+    await checkAllowance(
+      signer,
+      fromChain,
+      route[0].action.token,
+      route[0].action.amount,
+      lifiContractAddress,
+      update,
+      status,
+    )
   }
 
   // sdk
@@ -88,10 +102,18 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   quoteProcess.message = 'Confirm Quote'
   update(status)
 
-  let quote: AuctionResponse | undefined;
+  let quote: AuctionResponse | undefined
   try {
-    quote = await nxtp.getTransferQuote(nxtpSDK, crossAction.chainId, crossAction.token.id, crossAction.toChainId, crossAction.toToken.id, crossAction.amount.toString(), await signer.getAddress())
-    if (!quote) throw Error("Quote confirmation failed!")
+    quote = await nxtp.getTransferQuote(
+      nxtpSDK,
+      crossAction.chainId,
+      crossAction.token.id,
+      crossAction.toChainId,
+      crossAction.toToken.id,
+      crossAction.amount.toString(),
+      await signer.getAddress(),
+    )
+    if (!quote) throw Error('Quote confirmation failed!')
   } catch (_e) {
     const e = _e as Error
     quoteProcess.errorMessage = e.message
@@ -115,22 +137,26 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   }
   crossStep.estimate = crossEstimate
 
-
   // Request public key
-  const keyProcess = createAndPushProcess(update, status, 'Provide Public Key', { status: 'ACTION_REQUIRED' })
+  const keyProcess = createAndPushProcess(update, status, 'Provide Public Key', {
+    status: 'ACTION_REQUIRED',
+  })
   let encryptionPublicKey
   try {
     encryptionPublicKey = await (window as any).ethereum.request({
-      method: "eth_getEncryptionPublicKey",
+      method: 'eth_getEncryptionPublicKey',
       params: [await signer.getAddress()], // you must have access to the specified account
     })
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e)
     setStatusFailed(update, status, keyProcess)
     throw e
   }
   setStatusDone(update, status, keyProcess)
-  const submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+  const submitProcess = createAndPushProcess(update, status, 'Send Transaction', {
+    status: 'ACTION_REQUIRED',
+  })
   const lifi = new ethers.Contract(lifiContractAddress, lifi_abi, signer)
 
   // Receiving side
@@ -139,7 +165,16 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     const swapAction = endSwapStep.action as SwapAction
     const swapEstimate = endSwapStep.estimate as SwapEstimate
     // TODO: configure slippage
-    const swapCall = await getSwapCall(signer, swapAction.chainId, lifiContractAddress, swapAction.token.id, swapAction.toToken.id, swapEstimate.fromAmount, swapEstimate.toAmount, swapEstimate.data.path)
+    const swapCall = await getSwapCall(
+      signer,
+      swapAction.chainId,
+      lifiContractAddress,
+      swapAction.token.id,
+      swapAction.toToken.id,
+      swapEstimate.fromAmount,
+      swapEstimate.toAmount,
+      swapEstimate.data.path,
+    )
 
     receivingTransaction = await lifi.populateTransaction.swapAndCompleteBridgeTokensViaNXTP(
       [
@@ -160,7 +195,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     receivingTransaction = await lifi.populateTransaction.completeBridgeTokensViaNXTP(
       crossAction.toToken.id,
       await signer.getAddress(),
-      quote.bid.amountReceived
+      quote.bid.amountReceived,
     )
   }
 
@@ -183,7 +218,16 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     if (startSwapStep) {
       const swapAction = startSwapStep.action as SwapAction
       const swapEstimate = startSwapStep.estimate as SwapEstimate
-      const swapCall = await getSwapCall(signer, swapAction.chainId, lifiContractAddress, swapAction.token.id, swapAction.toToken.id, swapEstimate.fromAmount, swapEstimate.toAmount, swapEstimate.data.path)
+      const swapCall = await getSwapCall(
+        signer,
+        swapAction.chainId,
+        lifiContractAddress,
+        swapAction.token.id,
+        swapAction.toToken.id,
+        swapEstimate.fromAmount,
+        swapEstimate.toAmount,
+        swapEstimate.data.path,
+      )
       const swapData: any = {
         fromToken: swapAction.token.id,
         toToken: swapAction.toToken.id,
@@ -200,24 +244,23 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
         swapOptions.value = swapEstimate.fromAmount
       }
 
-      tx = await lifi.swapAndStartBridgeTokensViaNXTP(
-        [swapData],
-        nxtpData,
-        swapOptions
-      )
-
+      tx = await lifi.swapAndStartBridgeTokensViaNXTP([swapData], nxtpData, swapOptions)
     } else {
       // only transfer
-      tx = await lifi.startBridgeTokensViaNXTP(
-        nxtpData,
-        { gasLimit: 500000 }
-      )
+      tx = await lifi.startBridgeTokensViaNXTP(nxtpData, { gasLimit: 500000 })
     }
 
     submitProcess.status = 'PENDING'
     submitProcess.txHash = tx.hash
     submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + submitProcess.txHash
-    submitProcess.message = <>Send Transaction - Wait for <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+    submitProcess.message = (
+      <>
+        Send Transaction - Wait for{' '}
+        <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">
+          Tx
+        </a>
+      </>
+    )
     update(status)
 
     await tx.wait()
@@ -225,23 +268,41 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     nxtpSDK.removeAllListeners()
     throw e
   }
-  submitProcess.message = <>Transaction Sent: <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  submitProcess.message = (
+    <>
+      Transaction Sent:{' '}
+      <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">
+        Tx
+      </a>
+    </>
+  )
   setStatusDone(update, status, submitProcess)
 
-  const receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', { type: 'wait' })
+  const receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', {
+    type: 'wait',
+  })
 
   const prepared = await nxtpSDK.waitFor(
     NxtpSdkEvents.ReceiverTransactionPrepared,
     100_000,
-    (data) => data.txData.transactionId === quote!.bid.transactionId // filter function
+    (data) => data.txData.transactionId === quote!.bid.transactionId, // filter function
   )
 
   receiverProcess.txHash = prepared.transactionHash
   receiverProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + receiverProcess.txHash
-  receiverProcess.message = <>Receiver Prepared: <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  receiverProcess.message = (
+    <>
+      Receiver Prepared:{' '}
+      <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">
+        Tx
+      </a>
+    </>
+  )
   setStatusDone(update, status, receiverProcess)
 
-  const proceedProcess = createAndPushProcess(update, status, 'Ready to be Signed', { type: 'claim' })
+  const proceedProcess = createAndPushProcess(update, status, 'Ready to be Signed', {
+    type: 'claim',
+  })
   proceedProcess.status = 'ACTION_REQUIRED'
   update(status)
 
@@ -250,13 +311,20 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   const claimed = await nxtpSDK.waitFor(
     NxtpSdkEvents.ReceiverTransactionFulfilled,
     100_000,
-    (data) => data.txData.transactionId === quote!.bid.transactionId // filter function
+    (data) => data.txData.transactionId === quote!.bid.transactionId, // filter function
   )
 
   status.status = 'DONE'
   proceedProcess.txHash = claimed.transactionHash
   proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
-  proceedProcess.message = <>Funds Claimed: <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  proceedProcess.message = (
+    <>
+      Funds Claimed:{' '}
+      <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">
+        Tx
+      </a>
+    </>
+  )
   status.toAmount = claimed.txData.amount
   setStatusDone(update, status, proceedProcess)
 }

@@ -1,12 +1,15 @@
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { FallbackProvider } from '@ethersproject/providers';
-import { Badge, Button, Tooltip } from 'antd';
-import { BigNumber, constants, providers } from 'ethers';
-import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
-import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage';
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
-import { getApproved } from './utils';
+/* eslint-disable no-console,max-params */
+import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
+import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from '@connext/nxtp-utils'
+import { FallbackProvider } from '@ethersproject/providers'
+import { CrossAction, CrossEstimate, Execution, getChainById, Process } from '@lifinance/types'
+import { Badge, Button, Tooltip } from 'antd'
+import { BigNumber, constants, providers } from 'ethers'
+
+import { TransferStep } from '../types'
+import { readNxtpMessagingToken, storeNxtpMessagingToken } from './localStorage'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
+import { getApproved } from './utils'
 
 // Add overwrites to specific chains here. They will only be applied if the chain is used.
 const getChainConfigOverwrites = () => {
@@ -19,26 +22,38 @@ const getChainConfigOverwrites = () => {
 }
 export const chainConfigOverwrites: {
   [chainId: number]: {
-    transactionManagerAddress?: string;
-    subgraph?: string;
-    subgraphSyncBuffer?: number;
+    transactionManagerAddress?: string
+    subgraph?: string
+    subgraphSyncBuffer?: number
   }
 } = getChainConfigOverwrites()
 
 const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
-export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
-  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string, subgraphSyncBuffer?: number; }> = {};
+export const setup = async (
+  signer: providers.JsonRpcSigner,
+  chainProviders: Record<number, providers.FallbackProvider>,
+) => {
+  const chainConfig: Record<
+    number,
+    {
+      provider: providers.FallbackProvider
+      subgraph?: string
+      transactionManagerAddress?: string
+      subgraphSyncBuffer?: number
+    }
+  > = {}
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
       subgraph: chainConfigOverwrites[parseInt(chainId)]?.subgraph,
-      transactionManagerAddress: chainConfigOverwrites[parseInt(chainId)]?.transactionManagerAddress,
-      subgraphSyncBuffer: chainConfigOverwrites[parseInt(chainId)]?.subgraphSyncBuffer
+      transactionManagerAddress:
+        chainConfigOverwrites[parseInt(chainId)]?.transactionManagerAddress,
+      subgraphSyncBuffer: chainConfigOverwrites[parseInt(chainId)]?.subgraphSyncBuffer,
     }
   })
 
-  const sdk = new NxtpSdk({ chainConfig, signer });
+  const sdk = new NxtpSdk({ chainConfig, signer })
 
   // reuse existing messaging token
   const account = await signer.getAddress()
@@ -74,7 +89,7 @@ export const getTransferQuote = async (
   callData?: string,
 ): Promise<AuctionResponse | undefined> => {
   // Create txid
-  const transactionId = getRandomBytes32();
+  const transactionId = getRandomBytes32()
 
   const response = await sdk.getTransferQuote({
     sendingAssetId,
@@ -84,20 +99,27 @@ export const getTransferQuote = async (
     receivingAddress,
     amount,
     transactionId,
-    expiry: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 3), // 3 days
+    expiry: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 3, // 3 days
     callTo,
     callData,
-  });
-  return response;
+  })
+  return response
 }
 
-export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateStatus: Function, infinteApproval: boolean = false, initialStatus?: Execution) => {
-
+export const triggerTransfer = async (
+  sdk: NxtpSdk,
+  step: TransferStep,
+  updateStatus: Function,
+  infinteApproval: boolean = false,
+  initialStatus?: Execution,
+) => {
   // status
   const { status, update } = initStatus(updateStatus, initialStatus)
 
   // transfer
-  const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
+  const approveProcess: Process = createAndPushProcess(update, status, 'Approve Token Transfer', {
+    status: 'ACTION_REQUIRED',
+  })
   let submitProcess: Process | undefined
   let receiverProcess: Process | undefined
   let proceedProcess: Process | undefined
@@ -108,25 +130,34 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   const toChain = getChainById(crossAction.toChainId)
 
   // Before approving/transferring, check router liquidity
-  const liquidity = await (sdk as any).transactionManager.getRouterLiquidity(
+  const liquidity = (await (sdk as any).transactionManager.getRouterLiquidity(
     crossEstimate.data.bid.receivingChainId,
     crossEstimate.data.bid.router,
-    crossEstimate.data.bid.receivingAssetId
-  ) as BigNumber
+    crossEstimate.data.bid.receivingAssetId,
+  )) as BigNumber
   if (liquidity.lt(crossEstimate.data.bid.amountReceived)) {
-    approveProcess.errorMessage = `Router (${crossEstimate.data.bid.router}) has insufficient liquidity. Has ${liquidity.toString()}, needs ${crossEstimate.data.bid.amountReceived}.`
+    approveProcess.errorMessage = `Router (${
+      crossEstimate.data.bid.router
+    }) has insufficient liquidity. Has ${liquidity.toString()}, needs ${
+      crossEstimate.data.bid.amountReceived
+    }.`
     setStatusFailed(update, status, approveProcess)
     return
   }
 
-
   // Check Token Approval
   if (crossEstimate.data.bid.sendingAssetId !== constants.AddressZero) {
-    const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(crossEstimate.data.bid.sendingChainId)
+    const contractAddress = (sdk as any).transactionManager.getTransactionManagerAddress(
+      crossEstimate.data.bid.sendingChainId,
+    )
     let approved
-    try{
-      approved = await getApproved((sdk as any).config.signer, crossEstimate.data.bid.sendingAssetId, contractAddress)
-    } catch(_e) {
+    try {
+      approved = await getApproved(
+        (sdk as any).config.signer,
+        crossEstimate.data.bid.sendingAssetId,
+        contractAddress,
+      )
+    } catch (_e) {
       const e = _e as Error
       if (e.message) approveProcess.errorMessage = e.message
       setStatusFailed(update, status, approveProcess)
@@ -135,12 +166,16 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     if (approved.gte(crossEstimate.data.bid.amount)) {
       // approval already done, jump to next step
       setStatusDone(update, status, approveProcess)
-      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+      submitProcess = createAndPushProcess(update, status, 'Send Transaction', {
+        status: 'ACTION_REQUIRED',
+      })
     }
   } else {
     // approval not needed
     setStatusDone(update, status, approveProcess)
-    submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+    submitProcess = createAndPushProcess(update, status, 'Send Transaction', {
+      status: 'ACTION_REQUIRED',
+    })
   }
 
   const transactionId = crossEstimate.data.bid.transactionId
@@ -154,17 +189,34 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     approveProcess.status = 'PENDING'
     approveProcess.txHash = data.transactionResponse.hash
     approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
-    approveProcess.message = <>Approve Token - Wait for <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+    approveProcess.message = (
+      <>
+        Approve Token - Wait for{' '}
+        <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">
+          Tx
+        </a>
+      </>
+    )
     update(status)
   })
 
   // approved = done => next
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
     if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
-    approveProcess.message = <>Token Approved (<a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+    approveProcess.message = (
+      <>
+        Token Approved (
+        <a href={approveProcess.txLink} target="_blank" rel="nofollow noreferrer">
+          Tx
+        </a>
+        )
+      </>
+    )
     setStatusDone(update, status, approveProcess)
     if (!submitProcess) {
-      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+      submitProcess = createAndPushProcess(update, status, 'Send Transaction', {
+        status: 'ACTION_REQUIRED',
+      })
     }
   })
 
@@ -175,12 +227,21 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       setStatusDone(update, status, approveProcess)
     }
     if (!submitProcess) {
-      submitProcess = createAndPushProcess(update, status, 'Send Transaction', { status: 'ACTION_REQUIRED' })
+      submitProcess = createAndPushProcess(update, status, 'Send Transaction', {
+        status: 'ACTION_REQUIRED',
+      })
     }
     submitProcess.status = 'PENDING'
     submitProcess.txHash = data.transactionResponse.hash
     submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + submitProcess.txHash
-    submitProcess.message = <>Send Transaction - Wait for <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+    submitProcess.message = (
+      <>
+        Send Transaction - Wait for{' '}
+        <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">
+          Tx
+        </a>
+      </>
+    )
     update(status)
   })
 
@@ -188,10 +249,21 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   sdk.attach(NxtpSdkEvents.SenderTransactionPrepared, (data) => {
     if (data.txData.transactionId !== transactionId) return
     if (submitProcess) {
-      submitProcess.message = <>Transaction Sent: <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+      submitProcess.message = (
+        <>
+          Transaction Sent:{' '}
+          <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">
+            Tx
+          </a>
+        </>
+      )
       setStatusDone(update, status, submitProcess)
     }
-    receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', { type: 'wait', footerMessage: 'Wait for Receiver (if this step takes longer than 5m, please refresh the page)' })
+    receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', {
+      type: 'wait',
+      footerMessage:
+        'Wait for Receiver (if this step takes longer than 5m, please refresh the page)',
+    })
   })
 
   // ReceiverTransactionPrepared => sign
@@ -201,25 +273,55 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
     // receiver done
     if (receiverProcess && receiverProcess.status !== 'DONE') {
       receiverProcess.txHash = data.transactionHash
-      receiverProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + receiverProcess.txHash
-      receiverProcess.message = <>Receiver Prepared: <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+      receiverProcess.txLink =
+        toChain.metamask.blockExplorerUrls[0] + 'tx/' + receiverProcess.txHash
+      receiverProcess.message = (
+        <>
+          Receiver Prepared:{' '}
+          <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">
+            Tx
+          </a>
+        </>
+      )
       delete receiverProcess.footerMessage
       setStatusDone(update, status, receiverProcess)
 
       // track confirmations
-      trackConfirmations(sdk, data.txData.receivingChainId, data.transactionHash, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
-        if (receiverProcess) {
-          receiverProcess.message = <>Receiver Prepared: <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
-          update(status)
-        }
-      })
+      trackConfirmations(
+        sdk,
+        data.txData.receivingChainId,
+        data.transactionHash,
+        DEFAULT_TRANSACTIONS_TO_LOG,
+        (count: number) => {
+          if (receiverProcess) {
+            receiverProcess.message = (
+              <>
+                Receiver Prepared:{' '}
+                <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">
+                  Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}
+                </a>
+              </>
+            )
+            update(status)
+          }
+        },
+      )
     }
 
     // proceed to claim
     proceedProcess = createAndPushProcess(update, status, 'Ready to be Signed', { type: 'claim' })
     proceedProcess.status = 'ACTION_REQUIRED'
     proceedProcess.message = 'Sign to claim Transfer'
-    proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, updateStatus)}>Sign to claim Transfer</Button>
+    proceedProcess.footerMessage = (
+      <Button
+        className="xpollinate-button"
+        shape="round"
+        type="primary"
+        size="large"
+        onClick={() => finishTransfer(sdk, data, step, updateStatus)}>
+        Sign to claim Transfer
+      </Button>
+    )
     update(status)
   })
 
@@ -241,17 +343,37 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       status.status = 'DONE'
       proceedProcess.txHash = data.transactionHash
       proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
-      proceedProcess.message = <>Funds Claimed: <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+      proceedProcess.message = (
+        <>
+          Funds Claimed:{' '}
+          <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">
+            Tx
+          </a>
+        </>
+      )
       status.toAmount = data.txData.amount
       setStatusDone(update, status, proceedProcess)
 
       // track confirmations
-      trackConfirmations(sdk, data.txData.receivingChainId, data.transactionHash, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
-        if (proceedProcess) {
-          proceedProcess.message = <>Funds Claimed: <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
-          update(status)
-        }
-      })
+      trackConfirmations(
+        sdk,
+        data.txData.receivingChainId,
+        data.transactionHash,
+        DEFAULT_TRANSACTIONS_TO_LOG,
+        (count: number) => {
+          if (proceedProcess) {
+            proceedProcess.message = (
+              <>
+                Funds Claimed:{' '}
+                <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">
+                  Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}
+                </a>
+              </>
+            )
+            update(status)
+          }
+        },
+      )
     }
   })
   // all done
@@ -261,7 +383,14 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
       status.status = 'DONE'
       proceedProcess.txHash = data.transactionHash
       proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
-      proceedProcess.message = <>Funds Claimed: <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+      proceedProcess.message = (
+        <>
+          Funds Claimed:{' '}
+          <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">
+            Tx
+          </a>
+        </>
+      )
       status.toAmount = data.txData.amount
       setStatusDone(update, status, proceedProcess)
     }
@@ -279,10 +408,23 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
 
   try {
     const result = await transferPromise
-    trackConfirmationsForResponse(sdk, fromChain.id, result.prepareResponse, DEFAULT_TRANSACTIONS_TO_LOG, (count: number) => {
-      submitProcess!.message = <>Transaction Sent: <a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}</a></>
-      update(status)
-    })
+    trackConfirmationsForResponse(
+      sdk,
+      fromChain.id,
+      result.prepareResponse,
+      DEFAULT_TRANSACTIONS_TO_LOG,
+      (count: number) => {
+        submitProcess!.message = (
+          <>
+            Transaction Sent:{' '}
+            <a href={submitProcess!.txLink} target="_blank" rel="nofollow noreferrer">
+              Tx {renderConfirmations(count, DEFAULT_TRANSACTIONS_TO_LOG)}
+            </a>
+          </>
+        )
+        update(status)
+      },
+    )
   } catch (_e: unknown) {
     const e = _e as Error
     console.error(e)
@@ -308,21 +450,30 @@ const renderConfirmations = (count: number, max: number) => {
   const text = count < max ? `${count}/${max}` : `${max}+`
   return (
     <Tooltip title={text + ' Confirmations'}>
-      <Badge
-        count={text}
-        style={{ backgroundColor: '#52c41a', marginBottom: '2px'}}
-      />
+      <Badge count={text} style={{ backgroundColor: '#52c41a', marginBottom: '2px' }} />
     </Tooltip>
   )
 }
 
-const trackConfirmations = async (sdk: NxtpSdk, chainId: number, hash: string, confirmations: number, callback: Function) => {
+const trackConfirmations = async (
+  sdk: NxtpSdk,
+  chainId: number,
+  hash: string,
+  confirmations: number,
+  callback: Function,
+) => {
   const receivingProvider: FallbackProvider = (sdk as any).config.chainConfig[chainId].provider
   const response = await receivingProvider.getTransaction(hash)
   trackConfirmationsForResponse(sdk, chainId, response, confirmations, callback)
 }
 
-const trackConfirmationsForResponse = async (sdk: NxtpSdk, chainId: number, response: providers.TransactionResponse, confirmations: number, callback: Function) => {
+const trackConfirmationsForResponse = async (
+  sdk: NxtpSdk,
+  chainId: number,
+  response: providers.TransactionResponse,
+  confirmations: number,
+  callback: Function,
+) => {
   try {
     for (let i = 2; i <= confirmations; i++) {
       await response.wait(i)
@@ -337,7 +488,12 @@ const trackConfirmationsForResponse = async (sdk: NxtpSdk, chainId: number, resp
   }
 }
 
-export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEvent, step?: TransferStep, updateStatus?: Function) => {
+export const finishTransfer = async (
+  sdk: NxtpSdk,
+  event: TransactionPreparedEvent,
+  step?: TransferStep,
+  updateStatus?: Function,
+) => {
   let status: Execution | undefined = undefined
   let lastProcess: Process | undefined = undefined
 
@@ -361,7 +517,16 @@ export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEve
     console.error(e)
     if (updateStatus && lastProcess && lastProcess.status !== 'DONE') {
       lastProcess.message = 'Sign to claim Transfer'
-      lastProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, event, step, updateStatus)}>Sign to claim Transfer</Button>
+      lastProcess.footerMessage = (
+        <Button
+          className="xpollinate-button"
+          shape="round"
+          type="primary"
+          size="large"
+          onClick={() => finishTransfer(sdk, event, step, updateStatus)}>
+          Sign to claim Transfer
+        </Button>
+      )
       updateStatus(status)
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getChainById, Token } from '../types'
 
 export const switchChain = async (chainId: number) => {
@@ -58,4 +59,3 @@ export const addToken = async (token: Token) => {
   }
   return false
 }
-

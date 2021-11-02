@@ -1,7 +1,9 @@
-import { SubgraphSyncRecord } from '@connext/nxtp-sdk';
-import { Avatar, Badge, Select } from 'antd';
-import React from 'react';
-import { Chain, ChainKey, getChainByKey, getIcon } from '../types';
+import { SubgraphSyncRecord } from '@connext/nxtp-sdk'
+import { Chain, ChainKey, getChainByKey } from '@lifinance/types'
+import { Avatar, Badge, Select } from 'antd'
+import React from 'react'
+
+import { getIcon } from '../types'
 
 interface ChainSelectProps {
   transferChains: Array<Chain>
@@ -16,53 +18,47 @@ const ChainSelect = ({
   onChangeSelectedChain,
   syncStatus,
 }: ChainSelectProps) => {
-
   const chain = getChainByKey(selectedChain)
 
   return (
     <>
-      <Avatar
-        size="small"
-        src={getIcon(chain.key)}
-        alt={chain.name}
-      >
+      <Avatar size="small" src={getIcon(chain.key)} alt={chain.name}>
         {chain.name[0]}
       </Avatar>
       <Select
         placeholder="Select Chain"
         value={selectedChain}
-        onChange={((v: ChainKey) => onChangeSelectedChain(v))}
+        onChange={(v: ChainKey) => onChangeSelectedChain(v)}
         dropdownStyle={{ minWidth: 300 }}
         bordered={false}
-        optionLabelProp="data-label"
-      >
+        optionLabelProp="data-label">
         <Select.OptGroup label="Supported Chains">
-          {transferChains.map(chain => (
+          {transferChains.map((chain) => (
             <Select.Option
               key={chain.key}
               value={chain.key}
-              data-label={chain.name + (syncStatus && !syncStatus[chain.id].synced ? ' (Unsynced)' : '')}
-              disabled={syncStatus && !syncStatus[chain.id].synced}
-            >
+              data-label={
+                chain.name + (syncStatus && !syncStatus[chain.id].synced ? ' (Unsynced)' : '')
+              }
+              disabled={syncStatus && !syncStatus[chain.id].synced}>
               <div className="option-item">
                 <span role="img" aria-label={chain.name}>
                   <Avatar
                     size="small"
                     src={getIcon(chain.key)}
                     alt={chain.key}
-                    style={{ marginRight: 10 }}
-                  >{chain.name[0]}</Avatar>
+                    style={{ marginRight: 10 }}>
+                    {chain.name[0]}
+                  </Avatar>
                 </span>
-                <span className="option-name">
-                  {chain.name}
-                </span>
+                <span className="option-name">{chain.name}</span>
                 <span className="option-balance">
-                  { syncStatus &&
+                  {syncStatus && (
                     <Badge
-                      color={(syncStatus[chain.id].synced ? 'green' : 'orange')}
-                      text={(syncStatus[chain.id].synced ? 'synced' : 'unsynced')}
+                      color={syncStatus[chain.id].synced ? 'green' : 'orange'}
+                      text={syncStatus[chain.id].synced ? 'synced' : 'unsynced'}
                     />
-                  }
+                  )}
                 </span>
               </div>
             </Select.Option>

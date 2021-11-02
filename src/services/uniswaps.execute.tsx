@@ -1,16 +1,26 @@
-
 import { JsonRpcSigner } from '@ethersproject/providers'
+import { Execution, getChainById, Token } from '@lifinance/types'
 import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
-import { Execution, getChainById, Token } from '../types'
-import notifications, { NotificationType } from './notifications'
 
+import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
 import { getApproved, setApproval } from './utils'
 
-export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, srcToken: Token, destToken: Token, srcAmount: BigNumber, srcAddress: string, destAddress: string, path: Array<string>, updateStatus?: Function, initialStatus?: Execution) => {
-
+export const executeUniswap = async (
+  chainId: number,
+  signer: JsonRpcSigner,
+  srcToken: Token,
+  destToken: Token,
+  srcAmount: BigNumber,
+  srcAddress: string,
+  destAddress: string,
+  path: Array<string>,
+  updateStatus?: Function,
+  initialStatus?: Execution,
+  // eslint-disable-next-line max-params
+) => {
   // setup
   const fromChain = getChainById(chainId)
   const { status, update } = initStatus(updateStatus, initialStatus)
@@ -20,27 +30,47 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     // -> set status
     const allowanceProcess = createAndPushProcess(update, status, 'Set Allowance')
 
-
     // -> check allowance
     try {
       const contractAddress = uniswap.getContractAddress(chainId)
       const approved = await getApproved(signer, srcToken.id, contractAddress)
 
       if (srcAmount.gt(approved)) {
-        const approveTx = await setApproval(signer, srcToken.id, contractAddress, srcAmount.toFixed(0))
+        const approveTx = await setApproval(
+          signer,
+          srcToken.id,
+          contractAddress,
+          srcAmount.toFixed(0),
+        )
 
         // update status
         allowanceProcess.status = 'PENDING'
         allowanceProcess.txHash = approveTx.hash
-        allowanceProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
-        allowanceProcess.message = <>Approve - Wait for <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+        allowanceProcess.txLink =
+          fromChain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
+        allowanceProcess.message = (
+          <>
+            Approve - Wait for{' '}
+            <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">
+              Tx
+            </a>
+          </>
+        )
         update(status)
 
         // wait for transcation
         await approveTx.wait()
 
         // -> set status
-        allowanceProcess.message = <>Approved (<a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a>)</>
+        allowanceProcess.message = (
+          <>
+            Approved (
+            <a href={allowanceProcess.txLink} target="_blank" rel="nofollow noreferrer">
+              Tx
+            </a>
+            )
+          </>
+        )
       } else {
         allowanceProcess.message = 'Already Approved'
       }
@@ -54,16 +84,25 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
     }
   }
 
-
   // Swap via Uniswap
   // -> set status
   // const swapProcess = createAndPushProcess(update, status, `Swap via Uniswap`) //TODO: display actual uniswap clone
-  const swapProcess = createAndPushProcess(update, status, 'Swap via Uniswap', { status: 'ACTION_REQUIRED' })
+  const swapProcess = createAndPushProcess(update, status, 'Swap via Uniswap', {
+    status: 'ACTION_REQUIRED',
+  })
 
   // -> swapping
   let tx
   try {
-    tx = await uniswap.swap(signer, chainId, srcToken.id, destToken.id, destAddress, srcAmount.toString(), path)
+    tx = await uniswap.swap(
+      signer,
+      chainId,
+      srcToken.id,
+      destToken.id,
+      destAddress,
+      srcAmount.toString(),
+      path,
+    )
   } catch (e: any) {
     // -> set status
     if (e.message) swapProcess.errorMessage = e.message
@@ -74,7 +113,6 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
 
   // -> set status
   setStatusDone(update, status, swapProcess)
-
 
   // Wait for transaction
   // -> set status
@@ -108,7 +146,6 @@ export const executeUniswap = async (chainId: number, signer: JsonRpcSigner, src
   status.status = 'DONE'
   update(status)
   notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
-
 
   // DONE
   return status

@@ -1,10 +1,11 @@
+/* eslint-disable max-params */
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
+import { SwapAction, SwapEstimate } from '@lifinance/types'
 import BigNumber from 'bignumber.js'
 import { BigNumber as BN, ethers } from 'ethers'
 import { NetworkID, ParaSwap, SwapSide } from 'paraswap'
-import { OptimalRate } from 'paraswap-core'
 import { APIError, Transaction } from 'paraswap/build/types'
-import { SwapAction, SwapEstimate } from '../types'
+import { OptimalRate } from 'paraswap-core'
 
 // event Swapped(
 //   bytes16 uuid,
@@ -18,34 +19,34 @@ import { SwapAction, SwapEstimate } from '../types'
 // )
 const swappedTypes: Array<ethers.utils.ParamType> = [
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "bytes16",
-    "name": "uuid",
-    "type": "bytes16"
+    indexed: false,
+    internalType: 'bytes16',
+    name: 'uuid',
+    type: 'bytes16',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "address",
-    "name": "initiator",
-    "type": "address"
+    indexed: false,
+    internalType: 'address',
+    name: 'initiator',
+    type: 'address',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "srcAmount",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'srcAmount',
+    type: 'uint256',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "receivedAmount",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'receivedAmount',
+    type: 'uint256',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "expectedAmount",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'expectedAmount',
+    type: 'uint256',
   }),
 ]
 interface Swapped {
@@ -106,13 +107,19 @@ const getRateTs = async (
   }
 }
 
-export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, destAddress: string, slippage: number, rate: OptimalRate,) => {
+export const getSwapCall = async (
+  swapAction: SwapAction,
+  srcAddress: string,
+  destAddress: string,
+  slippage: number,
+  rate: OptimalRate,
+) => {
   const para = getParaswap(swapAction.chainId)
-  const minAmount = new BigNumber(rate.destAmount).times(1 - (slippage / 100)).toFixed(0)
+  const minAmount = new BigNumber(rate.destAmount).times(1 - slippage / 100).toFixed(0)
 
-  const txParams = await para.buildTx(
+  const txParams = (await para.buildTx(
     rate.srcToken, // srcToken: Address,
-    rate.destToken,// destToken: Address,
+    rate.destToken, // destToken: Address,
     rate.srcAmount, // srcAmount: PriceString,
     minAmount, // destAmount: PriceString,
     rate, // priceRoute: OptimalRate,
@@ -131,7 +138,7 @@ export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, de
     rate.srcDecimals,
     rate.destDecimals,
     // permit?: string,
-  ) as Transaction
+  )) as Transaction
 
   return {
     from: txParams.from,
@@ -142,7 +149,13 @@ export const getSwapCall = async (swapAction: SwapAction, srcAddress: string, de
   } as ethers.PopulatedTransaction
 }
 
-export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string) => {
+export const transfer = async (
+  swapAction: SwapAction,
+  swapEstimate: SwapEstimate,
+  srcAmount: BigNumber,
+  srcAddress: string,
+  destAddress: string,
+) => {
   const SLIPPAGE = 1 // = 1%
 
   // check rate
@@ -151,7 +164,16 @@ export const transfer = async (swapAction: SwapAction, swapEstimate: SwapEstimat
   // get new quote if outdated (eg. after transfer)
   if (!srcAmount.isEqualTo(rate.srcAmount)) {
     const partner = process.env.REACT_APP_PARASWAP_REFERRER || 'paraswap.io'
-    rate = await getRateTs(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toFixed(0), SwapSide.SELL, { partner }, swapAction.token.decimals, swapAction.toToken.decimals)
+    rate = await getRateTs(
+      swapAction.chainId,
+      swapAction.token.id,
+      swapAction.toToken.id,
+      srcAmount.toFixed(0),
+      SwapSide.SELL,
+      { partner },
+      swapAction.token.decimals,
+      swapAction.toToken.decimals,
+    )
   }
 
   return getSwapCall(swapAction, srcAddress, destAddress, SLIPPAGE, rate)

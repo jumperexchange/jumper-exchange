@@ -1,7 +1,10 @@
+/* eslint-disable no-console */
 import { FallbackProvider } from '@ethersproject/providers'
-import { BigNumber, constants, Contract, providers, Signer, utils } from "ethers"
+import { ChainId, CoinKey, defaultTokens, getChainById } from '@lifinance/types'
+import { BigNumber, constants, Contract, providers, Signer, utils } from 'ethers'
+
 import { getRpcProviders } from '../components/web3/connectors'
-import { ChainId, chainKeysToObject, ChainPortfolio, CoinKey, defaultTokens, getChainById, TokenWithAmounts } from '../types'
+import { chainKeysToObject, ChainPortfolio, TokenWithAmounts } from '../types'
 
 const testTokenAddresses: Record<number, string> = {
   // 3 - Ropsten
@@ -41,33 +44,38 @@ export const testToken: { [ChainKey: string]: Array<TokenWithAmounts> } = {}
 Object.entries(testTokenAddresses).forEach(([key, tokenAddress]) => {
   const chainId = parseInt(key)
   const chain = getChainById(chainId)
-  testToken[chain.key] = [{
-    id: tokenAddress,
-    symbol: CoinKey.TEST,
-    decimals: 18,
-    chainId: chainId,
-    chainKey: chain.key,
-    key: CoinKey.TEST,
-    name: CoinKey.TEST,
-    logoURI: '',
-  }]
+  testToken[chain.key] = [
+    {
+      id: tokenAddress,
+      symbol: CoinKey.TEST,
+      decimals: 18,
+      chainId: chainId,
+      chainKey: chain.key,
+      key: CoinKey.TEST,
+      name: CoinKey.TEST,
+      logoURI: '',
+    },
+  ]
 })
 
 const TestTokenABI = [
   // Read-Only Functions
-  "function balanceOf(address owner) view returns (uint256)",
-  "function decimals() view returns (uint8)",
-  "function symbol() view returns (string)",
+  'function balanceOf(address owner) view returns (uint256)',
+  'function decimals() view returns (uint8)',
+  'function symbol() view returns (string)',
 
   // Authenticated Functions
-  "function transfer(address to, uint amount) returns (boolean)",
-  "function mint(address account, uint256 amount)",
+  'function transfer(address to, uint amount) returns (boolean)',
+  'function mint(address account, uint256 amount)',
 ]
 
-export const mintTokens = async (signer: Signer, assetId: string): Promise<providers.TransactionResponse> => {
+export const mintTokens = async (
+  signer: Signer,
+  assetId: string,
+): Promise<providers.TransactionResponse> => {
   const signerAddress = await signer.getAddress()
   const contract = new Contract(assetId, TestTokenABI, signer)
-  const response = await contract.mint(signerAddress, utils.parseEther("1000"))
+  const response = await contract.mint(signerAddress, utils.parseEther('1000'))
   return response
 }
 
@@ -91,8 +99,20 @@ export const getBalancesForWallet = async (address: string) => {
   const promises: Array<Promise<any>> = []
 
   Object.entries(testToken).forEach(async ([chainKey, token]) => {
-    const ethAmount = getBalance(address, constants.AddressZero, chainProviders[token[0].chainId]).catch((e) => { console.warn(e); return BigNumber.from(0) })
-    const testAmount = getBalance(address, token[0].id, chainProviders[token[0].chainId]).catch((e) => { console.warn(e); return BigNumber.from(0) })
+    const ethAmount = getBalance(
+      address,
+      constants.AddressZero,
+      chainProviders[token[0].chainId],
+    ).catch((e) => {
+      console.warn(e)
+      return BigNumber.from(0)
+    })
+    const testAmount = getBalance(address, token[0].id, chainProviders[token[0].chainId]).catch(
+      (e) => {
+        console.warn(e)
+        return BigNumber.from(0)
+      },
+    )
     promises.push(ethAmount)
     promises.push(testAmount)
 
@@ -125,7 +145,10 @@ export const getBalancesForWallet = async (address: string) => {
   return portfolio
 }
 
-export const getDefaultTokenBalancesForWallet = async (address: string, onChains?: Array<number>) => {
+export const getDefaultTokenBalancesForWallet = async (
+  address: string,
+  onChains?: Array<number>,
+) => {
   const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
 
@@ -135,7 +158,10 @@ export const getDefaultTokenBalancesForWallet = async (address: string, onChains
     }
 
     tokens.forEach(async (token) => {
-      const amount = getBalance(address, token.id, chainProviders[token.chainId]).catch((e) => { console.warn(e); return BigNumber.from(0) })
+      const amount = getBalance(address, token.id, chainProviders[token.chainId]).catch((e) => {
+        console.warn(e)
+        return BigNumber.from(0)
+      })
       promises.push(amount)
       portfolio[chainKey].push({
         id: token.id,

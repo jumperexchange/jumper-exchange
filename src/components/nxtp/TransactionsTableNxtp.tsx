@@ -1,13 +1,14 @@
-import { CheckOutlined, LoadingOutlined } from '@ant-design/icons';
-import { NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Button, Spin, Table, Typography } from 'antd';
-import React from 'react';
-import { CrossEstimate, getChainById, TokenWithAmounts, TransferStep } from '../../types';
-import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
+import { CheckOutlined, LoadingOutlined } from '@ant-design/icons'
+import { NxtpSdkEvents } from '@connext/nxtp-sdk'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Button, Spin, Table, Typography } from 'antd'
+import React from 'react'
 
-const { Paragraph } = Typography;
+import { CrossEstimate, getChainById, TokenWithAmounts, TransferStep } from '../../types'
+import { ActiveTransaction, CrosschainTransaction } from './typesNxtp'
+
+const { Paragraph } = Typography
 
 interface TransactionsTableNxtpProps {
   activeTransactions: Array<ActiveTransaction>
@@ -41,17 +42,13 @@ const TransactionsTableNxtp = ({
             return (
               <Button
                 type="link"
-                onClick={() => switchChain(action.txData.invariant.sendingChainId)}
-              >
+                onClick={() => switchChain(action.txData.invariant.sendingChainId)}>
                 Change Chain
               </Button>
             )
           } else {
             return (
-              <Button
-                type="link"
-                onClick={() => cancelTransfer(action.txData)}
-              >
+              <Button type="link" onClick={() => cancelTransfer(action.txData)}>
                 Cancel
               </Button>
             )
@@ -63,25 +60,36 @@ const TransactionsTableNxtp = ({
               type="primary"
               shape="round"
               size="large"
-              style={{ borderRadius: 6}}
-              onClick={() => openSwapModalFinish(action)}
-            >
+              style={{ borderRadius: 6 }}
+              onClick={() => openSwapModalFinish(action)}>
               Sign to claim Transfer
             </Button>
           )
         } else if (
-          action.status === NxtpSdkEvents.ReceiverTransactionFulfilled
-          || action.status === NxtpSdkEvents.SenderTransactionFulfilled
+          action.status === NxtpSdkEvents.ReceiverTransactionFulfilled ||
+          action.status === NxtpSdkEvents.SenderTransactionFulfilled
         ) {
-          return <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
+          return (
+            <CheckOutlined
+              style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }}
+            />
+          )
         } else {
-          const index = executionRoutes.findIndex(item => {
-            return (item[0].estimate as CrossEstimate).data.bid.transactionId === action.txData.invariant.transactionId
+          const index = executionRoutes.findIndex((item) => {
+            return (
+              (item[0].estimate as CrossEstimate).data.bid.transactionId ===
+              action.txData.invariant.transactionId
+            )
           })
           if (index !== -1 && executionRoutes[index][0].execution?.status === 'FAILED') {
             return 'Failed'
           } else if (index !== -1) {
-            return <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
+            return (
+              <Spin
+                style={{ margin: 'auto', display: 'block' }}
+                indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />}
+              />
+            )
           } else {
             return <></>
           }
@@ -92,8 +100,11 @@ const TransactionsTableNxtp = ({
       title: 'Status',
       dataIndex: '',
       render: (action: ActiveTransaction) => {
-        const index = executionRoutes.findIndex(item => {
-          return (item[0].estimate as CrossEstimate).data.bid.transactionId === action.txData.invariant.transactionId
+        const index = executionRoutes.findIndex((item) => {
+          return (
+            (item[0].estimate as CrossEstimate).data.bid.transactionId ===
+            action.txData.invariant.transactionId
+          )
         })
 
         if (index !== -1) {
@@ -101,7 +112,7 @@ const TransactionsTableNxtp = ({
         } else {
           return action.status
         }
-      }
+      },
     },
     {
       title: 'Sending Chain',
@@ -109,7 +120,7 @@ const TransactionsTableNxtp = ({
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.sendingChainId)
         return <>{chain.name}</>
-      }
+      },
     },
     {
       title: 'Receiving Chain',
@@ -117,26 +128,35 @@ const TransactionsTableNxtp = ({
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.receivingChainId)
         return <>{chain.name}</>
-      }
+      },
     },
     {
       title: 'Asset',
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.receivingChainId)
-        const token = tokens[chain.key].find(token => token.id === txData.invariant.receivingAssetId.toLowerCase())
-        const link = chain.metamask.blockExplorerUrls[0] + 'token/' + txData.invariant.receivingAssetId
-        return <a href={link} target="_blank" rel="nofollow noreferrer">{token?.name}</a>
-      }
+        const token = tokens[chain.key].find(
+          (token) => token.id === txData.invariant.receivingAssetId.toLowerCase(),
+        )
+        const link =
+          chain.metamask.blockExplorerUrls[0] + 'token/' + txData.invariant.receivingAssetId
+        return (
+          <a href={link} target="_blank" rel="nofollow noreferrer">
+            {token?.name}
+          </a>
+        )
+      },
     },
     {
       title: 'Amount',
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.sendingChainId)
-        const token = tokens[chain.key].find(token => token.id === txData.invariant.sendingAssetId.toLowerCase())
-        return (parseInt(txData.sending?.amount || '0') / (10 ** (token?.decimals || 18))).toFixed(4)
-      }
+        const token = tokens[chain.key].find(
+          (token) => token.id === txData.invariant.sendingAssetId.toLowerCase(),
+        )
+        return (parseInt(txData.sending?.amount || '0') / 10 ** (token?.decimals || 18)).toFixed(4)
+      },
     },
 
     {
@@ -146,14 +166,18 @@ const TransactionsTableNxtp = ({
         return (txData.sending?.expiry || 0) > Date.now() / 1000
           ? `${(((txData.sending?.expiry || 0) - Date.now() / 1000) / 3600).toFixed(2)} hours`
           : 'Expired'
-      }
+      },
     },
     {
       title: 'Transaction Id',
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
-        return <Paragraph style={{ width: 150, margin: 0 }} ellipsis={true} copyable>{txData.invariant.transactionId}</Paragraph>
-      }
+        return (
+          <Paragraph style={{ width: 150, margin: 0 }} ellipsis={true} copyable>
+            {txData.invariant.transactionId}
+          </Paragraph>
+        )
+      },
     },
   ]
 
@@ -163,9 +187,8 @@ const TransactionsTableNxtp = ({
       dataSource={activeTransactions}
       style={{ whiteSpace: 'nowrap' }}
       pagination={false}
-      rowKey={(row) => row.txData.invariant.transactionId}
-    ></Table>
+      rowKey={(row) => row.txData.invariant.transactionId}></Table>
   )
 }
 
-export default TransactionsTableNxtp;
+export default TransactionsTableNxtp

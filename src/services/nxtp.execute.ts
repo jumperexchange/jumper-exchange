@@ -1,14 +1,24 @@
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { AuctionResponse } from '@connext/nxtp-utils';
-import { JsonRpcSigner } from '@ethersproject/providers';
-import BigNumber from 'bignumber.js';
-import { getRpcProviders } from '../components/web3/connectors';
-import { CrossAction, CrossEstimate, Execution, Process, TransferStep } from '../types';
-import notifications, { NotificationType } from './notifications';
-import * as nxtp from './nxtp';
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
+/* eslint-disable max-params */
+import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
+import { AuctionResponse } from '@connext/nxtp-utils'
+import { JsonRpcSigner } from '@ethersproject/providers'
+import { TransferStep } from '@lifi/types'
+import { CrossAction, CrossEstimate, Execution, Process } from '@lifinance/types'
+import BigNumber from 'bignumber.js'
 
-export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep, fromAmount: BigNumber, userAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+import { getRpcProviders } from '../components/web3/connectors'
+import notifications, { NotificationType } from './notifications'
+import * as nxtp from './nxtp'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
+
+export const executeNXTPCross = async (
+  signer: JsonRpcSigner,
+  step: TransferStep,
+  fromAmount: BigNumber,
+  userAddress: string,
+  updateStatus?: Function,
+  initialStatus?: Execution,
+) => {
   // setup
   let { status, update } = initStatus(updateStatus, initialStatus)
   const crossAction = step.action as CrossAction
@@ -30,10 +40,18 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
   quoteProcess.message = 'Confirm Quote'
   update(status)
 
-  let quote: AuctionResponse | undefined;
+  let quote: AuctionResponse | undefined
   try {
-    quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toFixed(0), userAddress)
-    if (!quote) throw Error("Quote confirmation failed!")
+    quote = await nxtp.getTransferQuote(
+      nxtpSDK,
+      fromChainId,
+      srcTokenAddress,
+      toChainId,
+      destTokenAddress,
+      fromAmount.toFixed(0),
+      userAddress,
+    )
+    if (!quote) throw Error('Quote confirmation failed!')
   } catch (_e) {
     const e = _e as Error
     quoteProcess.errorMessage = e.message
@@ -65,7 +83,6 @@ export const executeNXTPCross = async (signer: JsonRpcSigner, step: TransferStep
     throw e
   }
 
-
   return new Promise(async (resolve, reject) => {
     nxtpSDK.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
       try {
@@ -89,6 +106,3 @@ const cleanUp = (sdk: NxtpSdk, update: Function, status: any, process: Process) 
   setStatusFailed(update, status, process)
   sdk.removeAllListeners()
 }
-
-
-

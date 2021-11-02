@@ -1,17 +1,14 @@
-import { chainKeysToObject, Wallet } from '../types';
+import { chainKeysToObject, Wallet } from '../types'
 
 const isSupported = () => {
   try {
-    var itemBackup = localStorage.getItem("");
-    localStorage.removeItem("");
-    if (itemBackup === null)
-      localStorage.removeItem("");
-    else
-      localStorage.setItem("", itemBackup);
-    return true;
-  }
-  catch (e) {
-    return false;
+    var itemBackup = localStorage.getItem('')
+    localStorage.removeItem('')
+    if (itemBackup === null) localStorage.removeItem('')
+    else localStorage.setItem('', itemBackup)
+    return true
+  } catch (e) {
+    return false
   }
 }
 
@@ -23,7 +20,7 @@ const clearLocalStorage = () => {
 
 const storeWallets = (wallets: Array<Wallet>) => {
   if (isSupported()) {
-    localStorage.setItem('wallets', JSON.stringify(wallets.map(item => item.address)))
+    localStorage.setItem('wallets', JSON.stringify(wallets.map((item) => item.address)))
   }
 }
 
@@ -43,8 +40,7 @@ const readWallets = (): Array<Wallet> => {
           portfolio: chainKeysToObject([]),
         }
       })
-    }
-    catch (e) {
+    } catch (e) {
       return []
     }
   } else {
@@ -69,7 +65,7 @@ const readNxtpMessagingToken = () => {
   const parts = value.split(':')
   return {
     token: parts[0],
-    account: parts.length > 1 && parts[1] ? parts[1] : null
+    account: parts.length > 1 && parts[1] ? parts[1] : null,
   }
 }
 
@@ -87,12 +83,12 @@ const readHideAbout = () => {
 }
 
 export {
-  isSupported,
   clearLocalStorage,
-  storeWallets,
-  readWallets,
-  storeNxtpMessagingToken,
-  readNxtpMessagingToken,
-  storeHideAbout,
+  isSupported,
   readHideAbout,
+  readNxtpMessagingToken,
+  readWallets,
+  storeHideAbout,
+  storeNxtpMessagingToken,
+  storeWallets,
 }

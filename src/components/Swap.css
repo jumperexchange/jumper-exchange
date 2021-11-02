@@ -1,6 +1,6 @@
-@import "../css/animations.css";
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+@import '../css/animations.css';
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
   margin-right: -8px;
@@ -238,15 +238,9 @@ h4.swap-title {
   margin-left: auto;
 }
 
-.ant-timeline.ant-timeline-alternate
-  .ant-timeline-item-left
-  .ant-timeline-item-content,
-.ant-timeline.ant-timeline-right
-  .ant-timeline-item-left
-  .ant-timeline-item-content,
-.ant-timeline.ant-timeline-label
-  .ant-timeline-item-left
-  .ant-timeline-item-content {
+.ant-timeline.ant-timeline-alternate .ant-timeline-item-left .ant-timeline-item-content,
+.ant-timeline.ant-timeline-right .ant-timeline-item-left .ant-timeline-item-content,
+.ant-timeline.ant-timeline-label .ant-timeline-item-left .ant-timeline-item-content {
   width: calc(50% - 22px);
 }
 

@@ -3,6 +3,7 @@ import { IERC20Minimal } from '@connext/nxtp-contracts/typechain'
 import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumberJs from 'bignumber.js'
 import { Contract } from 'ethers'
+
 import { getChainById, Token, wrappedTokens } from '../types'
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
@@ -31,7 +32,7 @@ export const checkWrappedTokenId = (chainId: number, tokenId: string) => {
 }
 
 export const deepClone = (src: any) => {
-  return JSON.parse(JSON.stringify(src));
+  return JSON.parse(JSON.stringify(src))
 }
 
 export const sleep = (mills: number) => {
@@ -40,7 +41,11 @@ export const sleep = (mills: number) => {
   })
 }
 
-export const getApproved = async (signer: JsonRpcSigner, tokenAddress: string, contractAddress: string) => {
+export const getApproved = async (
+  signer: JsonRpcSigner,
+  tokenAddress: string,
+  contractAddress: string,
+) => {
   const signerAddress = await signer.getAddress()
   const erc20 = new Contract(tokenAddress, ERC20.abi, signer) as IERC20Minimal
 
@@ -52,10 +57,15 @@ export const getApproved = async (signer: JsonRpcSigner, tokenAddress: string, c
   }
 }
 
-export const setApproval = async (signer: JsonRpcSigner, tokenAddress: string, contractAddress: string, amount: string) => {
+export const setApproval = async (
+  signer: JsonRpcSigner,
+  tokenAddress: string,
+  contractAddress: string,
+  amount: string,
+  // eslint-disable-next-line max-params
+) => {
   const erc20 = new Contract(tokenAddress, ERC20.abi, signer) as IERC20Minimal
 
-  const tx = await erc20.approve(contractAddress, amount);
+  const tx = await erc20.approve(contractAddress, amount)
   return tx
 }
-
