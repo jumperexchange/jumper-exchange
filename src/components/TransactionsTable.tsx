@@ -13,6 +13,17 @@ interface ActiveTrasactionsTableProps {
   historical?: boolean
 }
 
+function getStateText (route: TransferStep[]) {
+  if (route.some(step => step.execution?.status === 'FAILED')) {
+    return 'Failed'
+  } else if ( route.some(step => step.execution?.status === 'ACTION_REQUIRED') ){
+    return 'Action Required'
+  } else if ( route.every(step => step.execution?.status === 'DONE') ) {
+    return 'Done'
+  } else {
+    return "Pending"
+  }
+}
 
 
 function TrasactionsTable ({routes, routeAction, historical}: ActiveTrasactionsTableProps) {
@@ -74,7 +85,7 @@ function TrasactionsTable ({routes, routeAction, historical}: ActiveTrasactionsT
     const firstEstimate = lastStep.action.type === 'swap'? lastStep.estimate as SwapEstimate : lastStep.estimate as CrossEstimate
     const lastAction = lastStep.action.type === 'swap'? lastStep.action as SwapAction : lastStep.action as CrossAction
     const lastEstimate = lastStep.action.type === 'swap'? lastStep.estimate as SwapEstimate : lastStep.estimate as CrossEstimate
-    const state = route.some(step => step.execution?.status === 'ACTION_REQUIRED') ? 'Action Required' : 'Pending'
+
 
     let toChainId
     if(firstStep.action.type === 'swap'){
@@ -91,7 +102,7 @@ function TrasactionsTable ({routes, routeAction, historical}: ActiveTrasactionsT
       fromToken: `${formatTokenAmount(firstAction.token, firstEstimate.fromAmount)}`,
       toToken: `${formatTokenAmount(lastAction.toToken, lastEstimate.toAmount)}`,
       protocols: route.map(step => (step.action as CrossAction ).tool).join(' > '),
-      state: state,
+      state: getStateText(route),
       action: renderActionButton(route)
     }
   })
