@@ -19,7 +19,7 @@ const getChainConfigOverwrites = () => {
 export const chainConfigOverwrites: {
   [chainId: number]: {
     transactionManagerAddress?: string;
-    subgraph?: string;
+    subgraph?: string[];
     subgraphSyncBuffer?: number;
   }
 } = getChainConfigOverwrites()
@@ -27,7 +27,7 @@ export const chainConfigOverwrites: {
 const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
 export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
-  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string, subgraphSyncBuffer?: number; }> = {};
+  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string[]; transactionManagerAddress?: string, subgraphSyncBuffer?: number; }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
