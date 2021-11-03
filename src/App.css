@@ -1,5 +1,5 @@
-@import "~antd/dist/antd.css";
-@import "./css/animations.css";
+@import '~antd/dist/antd.css';
+@import './css/animations.css';
 
 .wordmark {
   float: left;
@@ -52,7 +52,7 @@
 
 .ant-menu {
   background: transparent !important;
-  border:none !important;
+  border: none !important;
 }
 
 .beta-badge {

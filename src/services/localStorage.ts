@@ -1,16 +1,13 @@
-import { chainKeysToObject, TransferStep, Wallet } from '../types';
+import { chainKeysToObject, TransferStep, Wallet } from '../types'
 
 const isSupported = () => {
   try {
-    var itemBackup = localStorage.getItem("")
-    localStorage.removeItem("")
-    if (itemBackup === null)
-      localStorage.removeItem("")
-    else
-      localStorage.setItem("", itemBackup)
+    var itemBackup = localStorage.getItem('')
+    localStorage.removeItem('')
+    if (itemBackup === null) localStorage.removeItem('')
+    else localStorage.setItem('', itemBackup)
     return true
-  }
-  catch (e) {
+  } catch (e) {
     return false
   }
 }
@@ -23,7 +20,7 @@ const clearLocalStorage = () => {
 
 const storeWallets = (wallets: Array<Wallet>) => {
   if (isSupported()) {
-    localStorage.setItem('wallets', JSON.stringify(wallets.map(item => item.address)))
+    localStorage.setItem('wallets', JSON.stringify(wallets.map((item) => item.address)))
   }
 }
 
@@ -43,8 +40,7 @@ const readWallets = (): Array<Wallet> => {
           portfolio: chainKeysToObject([]),
         }
       })
-    }
-    catch (e) {
+    } catch (e) {
       return []
     }
   } else {
@@ -66,30 +62,32 @@ const readHideAbout = () => {
   return !(value === 'false')
 }
 
-
 const storeActiveRoute = (route: TransferStep[]) => {
   if (!isSupported()) return
   const storedRoutes = readActiveRoutes()
   let updatedRoutes: TransferStep[][]
-  if(!storedRoutes.length){
+  if (!storedRoutes.length) {
     updatedRoutes = [route]
   } else {
     let replaced = false
     updatedRoutes = storedRoutes.map((storedRoute, index) => {
-      if(storedRoute[0].id === route[0].id){
+      if (storedRoute[0].id === route[0].id) {
         storedRoute = route
         replaced = true
       }
       return storedRoute
     })
-    if(!replaced) {
+    if (!replaced) {
       updatedRoutes.push(route)
     }
   }
 
-  localStorage.setItem('activeRoute', JSON.stringify(updatedRoutes, (k, v) =>
-    typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
-  ))
+  localStorage.setItem(
+    'activeRoute',
+    JSON.stringify(updatedRoutes, (k, v) =>
+      typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
+    ),
+  )
 }
 
 const deleteRoute = (route: TransferStep[]) => {
@@ -99,12 +97,15 @@ const deleteRoute = (route: TransferStep[]) => {
   const storedRoutes = readAllRoutes()
   const updatedRoutes = storedRoutes.filter((storedRoute) => storedRoute[0].id !== route[0].id)
 
-  localStorage.setItem('activeRoute', JSON.stringify(updatedRoutes, (k, v) =>
-    typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
-  ))
+  localStorage.setItem(
+    'activeRoute',
+    JSON.stringify(updatedRoutes, (k, v) =>
+      typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
+    ),
+  )
 }
 
-const readAllRoutes = (): Array<TransferStep[]> =>{
+const readAllRoutes = (): Array<TransferStep[]> => {
   if (!isSupported()) {
     return [] as Array<TransferStep[]>
   }
@@ -113,13 +114,12 @@ const readAllRoutes = (): Array<TransferStep[]> =>{
   if (routeString) {
     try {
       const routes = JSON.parse(routeString, (k, v) => {
-        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/);
+        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
 
-        return matches ? Symbol.for(matches[1]) : v;
+        return matches ? Symbol.for(matches[1]) : v
       }) as Array<TransferStep[]>
       return routes as Array<TransferStep[]>
-    }
-    catch (e) {
+    } catch (e) {
       return [] as Array<TransferStep[]>
     }
   } else {
@@ -136,21 +136,20 @@ const readHistoricalRoutes = (): Array<TransferStep[]> => {
   if (routeString) {
     try {
       const routes = JSON.parse(routeString, (k, v) => {
-        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/);
+        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
 
-        return matches ? Symbol.for(matches[1]) : v;
+        return matches ? Symbol.for(matches[1]) : v
       }) as Array<TransferStep[]>
-      const filteredRoutes = routes.filter(route => {
-        const allDone = route.every(step => step.execution?.status === 'DONE')
-        if(allDone){
+      const filteredRoutes = routes.filter((route) => {
+        const allDone = route.every((step) => step.execution?.status === 'DONE')
+        if (allDone) {
           return route
-        } else{
+        } else {
           return null
         }
       })
       return filteredRoutes as Array<TransferStep[]>
-    }
-    catch (e) {
+    } catch (e) {
       return [] as Array<TransferStep[]>
     }
   } else {
@@ -167,21 +166,20 @@ const readActiveRoutes = (): Array<TransferStep[]> => {
   if (routeString) {
     try {
       const routes = JSON.parse(routeString, (k, v) => {
-        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/);
+        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
 
-        return matches ? Symbol.for(matches[1]) : v;
+        return matches ? Symbol.for(matches[1]) : v
       }) as Array<TransferStep[]>
-      const filteredRoutes = routes.filter(route => {
-        const allDone = route.every(step => step.execution?.status === 'DONE')
-        if(allDone){
+      const filteredRoutes = routes.filter((route) => {
+        const allDone = route.every((step) => step.execution?.status === 'DONE')
+        if (allDone) {
           return null
-        } else{
+        } else {
           return route
         }
       })
       return filteredRoutes as Array<TransferStep[]>
-    }
-    catch (e) {
+    } catch (e) {
       return [] as Array<TransferStep[]>
     }
   } else {
@@ -190,14 +188,14 @@ const readActiveRoutes = (): Array<TransferStep[]> => {
 }
 
 export {
-  isSupported,
   clearLocalStorage,
-  storeWallets,
-  readWallets,
-  storeHideAbout,
-  readHideAbout,
-  storeActiveRoute,
   deleteRoute,
+  isSupported,
   readActiveRoutes,
-  readHistoricalRoutes
+  readHideAbout,
+  readHistoricalRoutes,
+  readWallets,
+  storeActiveRoute,
+  storeHideAbout,
+  storeWallets,
 }

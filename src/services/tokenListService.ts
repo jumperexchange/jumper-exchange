@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { CoinKey, defaultTokens, getChainById, Token } from '../types'
 
 export interface TokenListToken {
@@ -37,7 +38,9 @@ export const loadTokenList = async (chainId: number): Promise<TokenList> => {
 export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Token>> => {
   const chain = getChainById(chainId)
   const tokenList = await loadTokenList(chainId)
-  const filteredTokens = tokenList.tokens ? tokenList.tokens.filter(token => token.chainId === chainId) : []
+  const filteredTokens = tokenList.tokens
+    ? tokenList.tokens.filter((token) => token.chainId === chainId)
+    : []
   const mappedTokens = filteredTokens.map((token) => {
     return {
       id: token.address.toLowerCase(),
@@ -53,7 +56,7 @@ export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Toke
   })
 
   // default token
-  defaultTokens[chain.key].forEach(defaultToken => {
+  defaultTokens[chain.key].forEach((defaultToken) => {
     const found = !!mappedTokens.find((token) => token.id === defaultToken.id)
     if (!found) {
       mappedTokens.unshift(defaultToken)

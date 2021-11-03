@@ -5,33 +5,34 @@ import { Button, Col, Input, Row } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useRef, useState } from 'react'
+
 import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../types'
 import ChainSelect from './ChainSelect'
 import TokenSelect from './TokenSelect'
 import { injected } from './web3/connectors'
 
 interface SwapFormProps {
-  depositChain: ChainKey,
-  setDepositChain: Function,
-  depositToken?: string,
-  setDepositToken: Function,
-  depositAmount: BigNumber,
-  setDepositAmount: Function,
+  depositChain: ChainKey
+  setDepositChain: Function
+  depositToken?: string
+  setDepositToken: Function
+  depositAmount: BigNumber
+  setDepositAmount: Function
 
-  withdrawChain: ChainKey,
-  setWithdrawChain: Function,
-  withdrawToken?: string,
-  setWithdrawToken: Function,
-  withdrawAmount: BigNumber,
-  setWithdrawAmount: Function,
-  estimatedWithdrawAmount: string,
+  withdrawChain: ChainKey
+  setWithdrawChain: Function
+  withdrawToken?: string
+  setWithdrawToken: Function
+  withdrawAmount: BigNumber
+  setWithdrawAmount: Function
+  estimatedWithdrawAmount: string
 
-  transferChains: Array<Chain>,
-  tokens: { [ChainKey: string]: Array<TokenWithAmounts> },
-  balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined,
-  allowSameChains?: boolean,
-  forceSameToken?: boolean,
-  syncStatus?: Record<number, SubgraphSyncRecord>,
+  transferChains: Array<Chain>
+  tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
+  balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined
+  allowSameChains?: boolean
+  forceSameToken?: boolean
+  syncStatus?: Record<number, SubgraphSyncRecord>
 }
 
 const SwapForm = ({
@@ -57,7 +58,6 @@ const SwapForm = ({
   forceSameToken,
   syncStatus,
 }: SwapFormProps) => {
-
   const depositSelectRef = useRef<RefSelectProps>()
   const withdrawSelectRef = useRef<RefSelectProps>()
   const [depositAmountString, setDepositAmountString] = useState<string>('')
@@ -77,8 +77,8 @@ const SwapForm = ({
     setDepositChain(chainKey)
 
     // find same deposit token
-    const symbol = tokens[depositChain].find(token => token.id === depositToken)?.symbol
-    const tokenId = tokens[chainKey].find(token => token.symbol === symbol)?.id
+    const symbol = tokens[depositChain].find((token) => token.id === depositToken)?.symbol
+    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
     setDepositToken(tokenId)
   }
 
@@ -90,8 +90,8 @@ const SwapForm = ({
     setWithdrawChain(chainKey)
 
     // find same withdraw token
-    const symbol = tokens[withdrawChain].find(token => token.id === withdrawToken)?.symbol
-    const tokenId = tokens[chainKey].find(token => token.symbol === symbol)?.id
+    const symbol = tokens[withdrawChain].find((token) => token.id === withdrawToken)?.symbol
+    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
     setWithdrawToken(tokenId)
   }
 
@@ -100,7 +100,7 @@ const SwapForm = ({
       return new BigNumber(0)
     }
 
-    const tokenBalance = balances[chainKey].find(portfolio => portfolio.id === tokenId)
+    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.id === tokenId)
 
     return tokenBalance?.amount || new BigNumber(0)
   }
@@ -124,8 +124,8 @@ const SwapForm = ({
 
     // set withdraw token?
     if (forceSameToken) {
-      const symbol = tokens[depositChain].find(token => token.id === tokenId)?.symbol
-      const withdrawToken = tokens[withdrawChain].find(token => token.symbol === symbol)?.id
+      const symbol = tokens[depositChain].find((token) => token.id === tokenId)?.symbol
+      const withdrawToken = tokens[withdrawChain].find((token) => token.symbol === symbol)?.id
       setWithdrawToken(withdrawToken)
     }
   }
@@ -145,8 +145,8 @@ const SwapForm = ({
 
     // set withdraw token?
     if (forceSameToken) {
-      const symbol = tokens[withdrawChain].find(token => token.id === tokenId)?.symbol
-      const depositToken = tokens[depositChain].find(token => token.symbol === symbol)?.id
+      const symbol = tokens[withdrawChain].find((token) => token.id === tokenId)?.symbol
+      const depositToken = tokens[depositChain].find((token) => token.symbol === symbol)?.id
       setDepositToken(depositToken)
     }
   }
@@ -192,11 +192,13 @@ const SwapForm = ({
 
   return (
     <>
-      <Row gutter={[{ xs: 8, sm: 16 }, { xs: 8, sm: 16 }]}>
+      <Row
+        gutter={[
+          { xs: 8, sm: 16 },
+          { xs: 8, sm: 16 },
+        ]}>
         <Col span={10}>
-          <div className="form-text">
-            From:
-          </div>
+          <div className="form-text">From:</div>
         </Col>
         <Col span={14}>
           <div className="form-input-wrapper">
@@ -217,12 +219,14 @@ const SwapForm = ({
               min={0}
               step={0.000000000000000001}
               value={depositAmountString}
-              onChange={((event) => onChangeDepositAmount(event.currentTarget.value))}
+              onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
               placeholder="0.0"
               bordered={false}
               className={!hasSufficientBalance() ? 'insufficient' : ''}
             />
-            <Button className="maxButton" type="text" onClick={() => setMaxDeposit()} >MAX</Button>
+            <Button className="maxButton" type="text" onClick={() => setMaxDeposit()}>
+              MAX
+            </Button>
           </div>
         </Col>
         <Col span={14}>
@@ -240,15 +244,17 @@ const SwapForm = ({
         </Col>
       </Row>
 
-      <Row style={{ margin: 32 }} justify={"center"} >
+      <Row style={{ margin: 32 }} justify={'center'}>
         <SwapOutlined onClick={() => changeDirection()} />
       </Row>
 
-      <Row gutter={[{ xs: 8, sm: 16 }, { xs: 8, sm: 16 }]}>
+      <Row
+        gutter={[
+          { xs: 8, sm: 16 },
+          { xs: 8, sm: 16 },
+        ]}>
         <Col span={10}>
-          <div className="form-text">
-            To:
-          </div>
+          <div className="form-text">To:</div>
         </Col>
         <Col span={14}>
           <div className="form-input-wrapper">
@@ -269,7 +275,7 @@ const SwapForm = ({
               min={0}
               value={estimatedWithdrawAmount}
               // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
-              onChange={((event) => onChangeWithdrawAmount(formatAmountInput(event)))}
+              onChange={(event) => onChangeWithdrawAmount(formatAmountInput(event))}
               placeholder="..."
               bordered={false}
               disabled

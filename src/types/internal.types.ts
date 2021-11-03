@@ -1,30 +1,30 @@
-
 import { TableColumnType } from 'antd'
-import { Action, ChainKey, Coin, Estimate, Execution, Token } from '.'
+import BigNumber from 'bignumber.js'
+
+import arb from '../assets/icons/arbitrum.svg'
+import arbt from '../assets/icons/arbitrum_test.png'
+import ava from '../assets/icons/avalanche.png'
 import bsc from '../assets/icons/bsc.png'
+import bsct from '../assets/icons/bsc_test.png'
 import eth from '../assets/icons/ethereum.png'
+import gor from '../assets/icons/ethereum_goerli.png'
+import rin from '../assets/icons/ethereum_rinkeby.png'
+import rop from '../assets/icons/ethereum_ropsten.png'
+import ftm from '../assets/icons/fantom.png'
+import one from '../assets/icons/harmony.png'
+import onet from '../assets/icons/harmony_test.png'
+import honey from '../assets/icons/honey.png'
+import opt from '../assets/icons/optimism.png'
 import pancake from '../assets/icons/pancake.png'
 import pol from '../assets/icons/polygon.png'
-import quick from '../assets/icons/quick.png'
-import honey from '../assets/icons/honey.png'
-import dai from '../assets/icons/xdai.png'
-import uniswap from '../assets/icons/uniswap.png'
-import spooky from '../assets/icons/spooky.png'
-import viper from '../assets/icons/viper.png'
-import sushi from '../assets/icons/sushi.png'
-import ftm from '../assets/icons/fantom.png'
-import ava from '../assets/icons/avalanche.png'
-import arb from '../assets/icons/arbitrum.svg'
-import opt from '../assets/icons/optimism.png'
-import one from '../assets/icons/harmony.png'
-import rop from '../assets/icons/ethereum_ropsten.png'
-import rin from '../assets/icons/ethereum_rinkeby.png'
-import gor from '../assets/icons/ethereum_goerli.png'
 import mum from '../assets/icons/polygon_test.png'
-import bsct from '../assets/icons/bsc_test.png'
-import arbt from '../assets/icons/arbitrum_test.png'
-import onet from '../assets/icons/harmony_test.png'
-import BigNumber from 'bignumber.js'
+import quick from '../assets/icons/quick.png'
+import spooky from '../assets/icons/spooky.png'
+import sushi from '../assets/icons/sushi.png'
+import uniswap from '../assets/icons/uniswap.png'
+import viper from '../assets/icons/viper.png'
+import dai from '../assets/icons/xdai.png'
+import { Action, ChainKey, Coin, Estimate, Execution, Token } from '.'
 
 export const icons: { [key: string]: string } = {
   // Mainnets
@@ -51,16 +51,15 @@ export const icons: { [key: string]: string } = {
   //[ChainKey.HECT]: hect,
   [ChainKey.ONET]: onet,
 
-
   // Exchanges
-  'Pancake': pancake,
-  'QuickSwap': quick,
-  'Honeyswap': honey,
-  'UniswapV2': uniswap,
-  'Uniswap': uniswap,
-  'SpookySwap': spooky,
-  'ViperSwap': viper,
-  'SushiSwap': sushi,
+  Pancake: pancake,
+  QuickSwap: quick,
+  Honeyswap: honey,
+  UniswapV2: uniswap,
+  Uniswap: uniswap,
+  SpookySwap: spooky,
+  ViperSwap: viper,
+  SushiSwap: sushi,
 }
 export const getIcon = (name: string | undefined) => {
   if (name && icons[name]) {
@@ -99,13 +98,13 @@ export interface ColomnType extends TableColumnType<DataType> {
 }
 
 export interface ChainPortfolio {
-  id: string,
-  name: string,
-  symbol: string,
-  img_url: string,
-  pricePerCoin: BigNumber,
-  amount: BigNumber,
-  verified: boolean,
+  id: string
+  name: string
+  symbol: string
+  img_url: string
+  pricePerCoin: BigNumber
+  amount: BigNumber
+  verified: boolean
 }
 
 export interface Wallet {
@@ -115,8 +114,8 @@ export interface Wallet {
 }
 
 export enum Currencies {
-  USD = "usd",
-  EUR = "eur",
+  USD = 'usd',
+  EUR = 'eur',
 }
 
 export interface SummaryAmounts {

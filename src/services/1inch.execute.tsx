@@ -1,6 +1,7 @@
 import { JsonRpcSigner, TransactionResponse } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
+
 import { Execution, getChainById, SwapAction, SwapEstimate } from '../types'
 import { oneInch } from './1Inch'
 import { checkAllowance } from './allowance.execute'
@@ -10,34 +11,59 @@ import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from
 export class OneInchExecutionManager {
   shouldContinue: boolean = true
 
-  setShouldContinue  =  (val: boolean) => {
+  setShouldContinue = (val: boolean) => {
     this.shouldContinue = val
   }
 
-  executeSwap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
-
+  executeSwap = async (
+    signer: JsonRpcSigner,
+    swapAction: SwapAction,
+    swapEstimate: SwapEstimate,
+    srcAmount: BigNumber,
+    srcAddress: string,
+    destAddress: string,
+    updateStatus?: Function,
+    initialStatus?: Execution,
+    // eslint-disable-next-line max-params
+  ) => {
     // setup
     const fromChain = getChainById(swapAction.chainId)
     const { status, update } = initStatus(updateStatus, initialStatus)
 
-    if(!this.shouldContinue) return status
+    if (!this.shouldContinue) return status
     if (swapAction.token.id !== constants.AddressZero) {
       const contractAddress = await oneInch.getContractAddress()
-      await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, contractAddress, update, status)
+      await checkAllowance(
+        signer,
+        fromChain,
+        swapAction.token,
+        swapAction.amount,
+        contractAddress,
+        update,
+        status,
+      )
     }
 
     // Swap via 1inch
     // -> set status
     const swapProcess = createAndPushProcess('swapProcess', update, status, 'Swap via 1inch')
     // -> swapping
-    if(!this.shouldContinue) return status
+    if (!this.shouldContinue) return status
     let tx: TransactionResponse
     try {
-      if(swapProcess.txHash) {
+      if (swapProcess.txHash) {
         tx = await signer.provider.getTransaction(swapProcess.txHash)
       } else {
         const userAddress = await signer.getAddress()
-        const call = await oneInch.buildTransaction(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, srcAmount.toString(), userAddress, destAddress, swapAction.slippage)
+        const call = await oneInch.buildTransaction(
+          swapAction.chainId,
+          swapAction.token.id,
+          swapAction.toToken.id,
+          srcAmount.toString(),
+          userAddress,
+          destAddress,
+          swapAction.slippage,
+        )
         tx = await signer.sendTransaction(call)
       }
     } catch (e: any) {
@@ -81,5 +107,4 @@ export class OneInchExecutionManager {
     // DONE
     return status
   }
-
 }

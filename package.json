@@ -41,7 +41,30 @@
     "@types/react-router-dom": "^5.1.7",
     "react-scripts": "4.0.3",
     "typescript": "4.3.5",
-    "yarn": "^1.22.10"
+    "yarn": "^1.22.10",
+    "husky": ">=6",
+    "lint-staged": ">=10",
+    "plop": "^2.7.4",
+    "prettier": "2.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "24.9.0",
+    "eslint": "^7.32.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.10.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "@storybook/addon-actions": "^6.3.10",
+    "@storybook/addon-essentials": "^6.3.10",
+    "@storybook/addon-links": "^6.3.10",
+    "@storybook/node-logger": "^6.3.10",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.3.10"
   },
   "scripts": {
     "start": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts start'",
@@ -54,7 +77,14 @@
     "build:xpollinate:staging": "REACT_APP_ENV=xpollinate-mainnet.staging npm run build",
     "build:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet npm run build",
     "build:xpollinate:testnet:staging": "REACT_APP_ENV=xpollinate-testnet.staging npm run build",
-    "test": "echo 'Not defined'"
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public",
+    "generate:component": "plop --plopfile scripts/plop/generators/component.js component",
+    "test": "react-scripts test --silent --noStackTrace --colors",
+    "test:ci": "react-scripts test --watchAll=false --silent --noStackTrace --colors --runInBand",
+    "pre-commit": "lint-staged",
+    "lint:fix": "eslint --ext .tsx --ext .ts ./src --fix",
+    "prettier:fix": "prettier --write ./src/."
   },
   "eslintConfig": {
     "extends": [
@@ -72,6 +102,18 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test:ci"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "yarn run lint:fix",
+      "yarn run prettier:fix"
     ]
   }
 }

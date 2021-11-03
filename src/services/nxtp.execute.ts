@@ -1,25 +1,32 @@
-import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk';
-import { AuctionResponse } from '@connext/nxtp-utils';
-import { JsonRpcSigner } from '@ethersproject/providers';
-import BigNumber from 'bignumber.js';
-import { getRpcProviders } from '../components/web3/connectors';
-import { CrossAction, CrossEstimate, Execution, Process, TransferStep } from '../types';
-import notifications, { NotificationType } from './notifications';
-import * as nxtp from './nxtp';
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status';
+/* eslint-disable */
+import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
+import { AuctionResponse } from '@connext/nxtp-utils'
+import { JsonRpcSigner } from '@ethersproject/providers'
+import BigNumber from 'bignumber.js'
+
+import { getRpcProviders } from '../components/web3/connectors'
+import { CrossAction, CrossEstimate, Execution, Process, TransferStep } from '../types'
+import notifications, { NotificationType } from './notifications'
+import * as nxtp from './nxtp'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 
 export class NXTPExecutionManager {
   shouldContinue: boolean = true
 
-  setShouldContinue  =  (val: boolean) => {
+  setShouldContinue = (val: boolean) => {
     this.shouldContinue = val
   }
 
-  private finishTransfer =(sdk: NxtpSdk, step:TransferStep, update: Function, status: Execution) => {
+  private finishTransfer = (
+    sdk: NxtpSdk,
+    step: TransferStep,
+    update: Function,
+    status: Execution,
+  ) => {
     return new Promise(async (resolve, reject) => {
       sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
         try {
-          if(!this.shouldContinue) {
+          if (!this.shouldContinue) {
             sdk.removeAllListeners()
             return resolve(status)
           }
@@ -40,7 +47,14 @@ export class NXTPExecutionManager {
     })
   }
 
-  executeCross = async (signer: JsonRpcSigner, step: TransferStep, fromAmount: BigNumber, userAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
+  executeCross = async (
+    signer: JsonRpcSigner,
+    step: TransferStep,
+    fromAmount: BigNumber,
+    userAddress: string,
+    updateStatus?: Function,
+    initialStatus?: Execution,
+  ) => {
     // setup
     let { status, update } = initStatus(updateStatus, initialStatus)
     const crossAction = step.action as CrossAction
@@ -58,20 +72,21 @@ export class NXTPExecutionManager {
 
     const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
 
-    if(quoteProcess.quote && submitProcess?.txHash){
+    if (quoteProcess.quote && submitProcess?.txHash) {
       const activeTransactions = await nxtpSDK.getActiveTransactions()
-      const relevantTx = activeTransactions.find(tx => tx.crosschainTx.invariant.transactionId === quoteProcess.quote.bid.transactionId)
-      if(relevantTx && relevantTx.status ===  NxtpSdkEvents.ReceiverTransactionPrepared){
-        (relevantTx as any).txData = {
+      const relevantTx = activeTransactions.find(
+        (tx) => tx.crosschainTx.invariant.transactionId === quoteProcess.quote.bid.transactionId,
+      )
+      if (relevantTx && relevantTx.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
+        ;(relevantTx as any).txData = {
           ...relevantTx.crosschainTx.invariant,
-          ...(relevantTx.crosschainTx.receiving ??
-            relevantTx.crosschainTx.sending),
+          ...(relevantTx.crosschainTx.receiving ?? relevantTx.crosschainTx.sending),
         }
-        if(!this.shouldContinue) {
+        if (!this.shouldContinue) {
           nxtpSDK.removeAllListeners()
           return status
         }
-        await nxtp.finishTransfer(nxtpSDK, (relevantTx as any), step, update)
+        await nxtp.finishTransfer(nxtpSDK, relevantTx as any, step, update)
         setStatusDone(update, status, status.process[status.process.length - 1])
         status.status = 'DONE'
         update(status)
@@ -80,25 +95,30 @@ export class NXTPExecutionManager {
       }
     }
 
-
-
     // get Quote
     // -> set status
-    if(!this.shouldContinue) {
+    if (!this.shouldContinue) {
       nxtpSDK.removeAllListeners()
       return status
     }
     quoteProcess.message = 'Confirm Quote'
     update(status)
-    let quote: AuctionResponse | undefined;
+    let quote: AuctionResponse | undefined
     try {
-
-      if(quoteProcess.quote){
+      if (quoteProcess.quote) {
         quote = quoteProcess.quote
       } else {
-        quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
+        quote = await nxtp.getTransferQuote(
+          nxtpSDK,
+          fromChainId,
+          srcTokenAddress,
+          toChainId,
+          destTokenAddress,
+          fromAmount.toString(),
+          userAddress,
+        )
         if (!quote) {
-            throw new Error("No quote found! Please restart the swap.")
+          throw new Error('No quote found! Please restart the swap.')
         }
         quoteProcess.quote = quote
         update(status)
@@ -110,8 +130,8 @@ export class NXTPExecutionManager {
       nxtpSDK.removeAllListeners()
       throw e
     }
-    if(!quote) {
-      const e = new Error("No quote found! Please restart the swap.")
+    if (!quote) {
+      const e = new Error('No quote found! Please restart the swap.')
       quoteProcess.errorMessage = e.message
       setStatusFailed(update, status, quoteProcess)
       nxtpSDK.removeAllListeners()
@@ -133,29 +153,26 @@ export class NXTPExecutionManager {
     }
     step.estimate = crossEstimate
 
-
-
     // trigger transfer
-    if(!this.shouldContinue) {
+    if (!this.shouldContinue) {
       nxtpSDK.removeAllListeners()
       return status
     }
 
     try {
-        const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
-        if(submitProcess?.txHash){
-          nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
-        } else{
-          await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
-          nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
-        }
+      const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
+      if (submitProcess?.txHash) {
+        nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
+      } else {
+        await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
+        nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
+      }
     } catch (e) {
       nxtpSDK.removeAllListeners()
       throw e
     }
 
     status = await this.finishTransfer(nxtpSDK, step, update, status)
-
 
     // Fallback
     // setStatusDone(update, status, status.process[status.process.length - 1])
@@ -164,5 +181,4 @@ export class NXTPExecutionManager {
     nxtpSDK.removeAllListeners()
     return status
   }
-
 }

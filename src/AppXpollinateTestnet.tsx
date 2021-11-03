@@ -1,12 +1,14 @@
-import { Layout } from 'antd';
-import React, { useEffect } from 'react';
-import './App.css';
-import SwapXpollinate from './components/nxtp/SwapXpollinate';
-import Web3ConnectionManager from './components/web3/Web3ConnectionManager';
-import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider';
-import analytics from './services/analytics';
-import { testToken } from './services/testToken';
-import { getChainById } from './types';
+import './App.css'
+
+import { Layout } from 'antd'
+import React, { useEffect } from 'react'
+
+import SwapXpollinate from './components/nxtp/SwapXpollinate'
+import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
+import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
+import analytics from './services/analytics'
+import { testToken } from './services/testToken'
+import { getChainById } from './types'
 
 const getTransferChains = () => {
   try {
@@ -30,15 +32,29 @@ function usePageViews() {
 function AppXpollinateTestnet() {
   usePageViews()
 
-  const aboutMessage = (<h1>Welcome to the <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">NXTP</a> Testnet Demo</h1>)
+  const aboutMessage = (
+    <h1>
+      Welcome to the{' '}
+      <a href="https://github.com/connext/nxtp" target="_blank" rel="nofollow noreferrer">
+        NXTP
+      </a>{' '}
+      Testnet Demo
+    </h1>
+  )
   const aboutDescription = (
     <>
-      <p>The demo allows to transfer custom <b>TEST</b> token between different testnets.</p>
-      <p>To use the demo you need gas (ETH/MATIC/BNB) and test token (TEST) on one of the chains. You can get free gas for testing from public faucets and mint your own TEST here on the website.</p>
       <p>
-        Made for you by<br/>
+        The demo allows to transfer custom <b>TEST</b> token between different testnets.
+      </p>
+      <p>
+        To use the demo you need gas (ETH/MATIC/BNB) and test token (TEST) on one of the chains. You
+        can get free gas for testing from public faucets and mint your own TEST here on the website.
+      </p>
+      <p>
+        Made for you by
+        <br />
         &nbsp;&nbsp;~ Connext (Protocol)
-        <br/>
+        <br />
         &nbsp;&nbsp;~ Li.Finance (UI & Swaps - soon)
       </p>
     </>
@@ -58,7 +74,7 @@ function AppXpollinateTestnet() {
         </Layout>
       </Web3ConnectionManager>
     </WrappedWeb3ReactProvider>
-  );
+  )
 }
 
-export { AppXpollinateTestnet };
+export { AppXpollinateTestnet }

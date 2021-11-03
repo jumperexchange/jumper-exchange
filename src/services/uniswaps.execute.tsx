@@ -1,6 +1,6 @@
-
 import { JsonRpcSigner } from '@ethersproject/providers'
 import { constants } from 'ethers'
+
 import { Execution, getChainById, SwapAction, SwapEstimate } from '../types'
 import { checkAllowance } from './allowance.execute'
 import notifications, { NotificationType } from './notifications'
@@ -10,34 +10,50 @@ import * as uniswap from './uniswaps'
 export class UniswapExecutionManager {
   shouldContinue: boolean = true
 
-
-
-  setShouldContinue  =  (val: boolean) => {
+  setShouldContinue = (val: boolean) => {
     this.shouldContinue = val
   }
-  executeSwap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
-
+  executeSwap = async (
+    signer: JsonRpcSigner,
+    swapAction: SwapAction,
+    swapEstimate: SwapEstimate,
+    srcAddress: string,
+    destAddress: string,
+    updateStatus?: Function,
+    initialStatus?: Execution,
+    // eslint-disable-next-line max-params
+  ) => {
     // setup
     const fromChain = getChainById(swapAction.chainId)
     const { status, update } = initStatus(updateStatus, initialStatus)
 
-    if(!this.shouldContinue) return status
+    if (!this.shouldContinue) return status
     if (swapAction.token.id !== constants.AddressZero) {
       const contractAddress = uniswap.getContractAddress(swapAction.chainId)
-      await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, contractAddress, update, status)
+      await checkAllowance(
+        signer,
+        fromChain,
+        swapAction.token,
+        swapAction.amount,
+        contractAddress,
+        update,
+        status,
+      )
     }
 
     // Swap via Uniswap
     // -> set status
-    const swapProcess = createAndPushProcess('swapProcess', update, status, 'Submit Swap', { status: 'ACTION_REQUIRED' })
+    const swapProcess = createAndPushProcess('swapProcess', update, status, 'Submit Swap', {
+      status: 'ACTION_REQUIRED',
+    })
 
     // -> swapping
-    if(!this.shouldContinue) return status
+    if (!this.shouldContinue) return status
     let tx
     try {
-      if(swapProcess.txHash){
+      if (swapProcess.txHash) {
         tx = await signer.provider.getTransaction(swapProcess.txHash)
-      } else{
+      } else {
         const call = await uniswap.getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
         tx = await signer.sendTransaction(call)
       }
@@ -55,7 +71,6 @@ export class UniswapExecutionManager {
     swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
     swapProcess.message = 'Swap - Wait for'
     update(status)
-
 
     // -> waiting
     let receipt
@@ -87,7 +102,6 @@ export class UniswapExecutionManager {
     status.status = 'DONE'
     update(status)
     notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)
-
 
     // DONE
     return status

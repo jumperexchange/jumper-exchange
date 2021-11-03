@@ -13,11 +13,11 @@ export interface BaseEstimate {
   }
 }
 
-export interface DepositEstimate extends BaseEstimate { }
+export interface DepositEstimate extends BaseEstimate {}
 
 export interface SwapEstimate extends BaseEstimate {
   type: 'swap'
-  toAmountMin: string,
+  toAmountMin: string
   data: any
 }
 
@@ -26,7 +26,7 @@ export interface CrossEstimate extends BaseEstimate {
   data: any
 }
 
-export interface WithdrawEstimate extends BaseEstimate { }
+export interface WithdrawEstimate extends BaseEstimate {}
 
 export interface FailedEstimate {
   type: 'error'
@@ -39,7 +39,7 @@ export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | Withdraw
 // EXECUTION
 export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE' | 'RESUME'
 
-export type ProcessMessage =  string | {message: string  , footer: string }
+export type ProcessMessage = string | { message: string; footer: string }
 
 export interface Process {
   id: string
@@ -62,11 +62,10 @@ export interface Execution {
   toAmount?: string
 }
 
-export const emptyExecution : Execution = {
+export const emptyExecution: Execution = {
   status: 'NOT_STARTED',
-  process: []
+  process: [],
 }
-
 
 // ACTION
 interface ActionBase {

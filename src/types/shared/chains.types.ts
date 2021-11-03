@@ -1,4 +1,5 @@
 import { BigNumber } from 'ethers'
+
 import { ChainKey, CoinKey } from './base.types'
 
 export interface Chain {
@@ -13,15 +14,15 @@ export interface Chain {
 }
 
 export interface AddEthereumChainParameter {
-  chainId: string;
-  blockExplorerUrls: string[];
-  chainName: string;
+  chainId: string
+  blockExplorerUrls: string[]
+  chainName: string
   nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: string[];
+    name: string
+    symbol: string
+    decimals: number
+  }
+  rpcUrls: string[]
 }
 
 export interface Exchange {
@@ -54,18 +55,14 @@ export const supportedChains: Array<Chain> = [
 
     metamask: {
       chainId: prefixChainId(1),
-      blockExplorerUrls: [
-        'https://etherscan.io/',
-      ],
+      blockExplorerUrls: ['https://etherscan.io/'],
       chainName: 'Ethereum Mainnet',
       nativeCurrency: {
         name: 'ETH',
         symbol: 'ETH',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-      ],
+      rpcUrls: ['https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
     },
   },
   // 137 - Polygon
@@ -80,25 +77,21 @@ export const supportedChains: Array<Chain> = [
       name: 'QuickSwap',
       webUrl: 'https://quickswap.exchange/',
       graph: 'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap06', // https://thegraph.com/explorer/subgraph/sameepsi/quickswap06 (often new versions)
-      tokenlistUrl: 'https://unpkg.com/quickswap-default-token-list@1.0.71/build/quickswap-default.tokenlist.json',
+      tokenlistUrl:
+        'https://unpkg.com/quickswap-default-token-list@1.0.71/build/quickswap-default.tokenlist.json',
     },
 
     // https://docs.matic.network/docs/develop/metamask/config-matic/
     metamask: {
       chainId: prefixChainId(137),
-      blockExplorerUrls: [
-        'https://polygonscan.com/',
-        'https://explorer-mainnet.maticvigil.com/',
-      ],
+      blockExplorerUrls: ['https://polygonscan.com/', 'https://explorer-mainnet.maticvigil.com/'],
       chainName: 'Matic(Polygon) Mainnet',
       nativeCurrency: {
         name: 'MATIC',
         symbol: 'MATIC',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://rpc-mainnet.maticvigil.com/',
-      ],
+      rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
     },
   },
   // 56 - Binance Smart Chain
@@ -119,9 +112,7 @@ export const supportedChains: Array<Chain> = [
     // https://docs.binance.org/smart-chain/wallet/metamask.html
     metamask: {
       chainId: prefixChainId(56),
-      blockExplorerUrls: [
-        'https://bscscan.com/',
-      ],
+      blockExplorerUrls: ['https://bscscan.com/'],
       chainName: 'Binance Smart Chain Mainnet',
       nativeCurrency: {
         name: 'BNB',
@@ -153,9 +144,7 @@ export const supportedChains: Array<Chain> = [
     // https://www.xdaichain.com/for-users/wallets/metamask/metamask-setup
     metamask: {
       chainId: prefixChainId(100),
-      blockExplorerUrls: [
-        'https://blockscout.com/xdai/mainnet/',
-      ],
+      blockExplorerUrls: ['https://blockscout.com/xdai/mainnet/'],
       chainName: 'xDAI Chain',
       nativeCurrency: {
         name: 'xDai',
@@ -177,33 +166,27 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.FTM,
     id: 250,
     visible: true,
-    faucetUrls: [
-      'https://docs.spookyswap.finance/getting-started/how-to-get-fantom-gas',
-    ],
+    faucetUrls: ['https://docs.spookyswap.finance/getting-started/how-to-get-fantom-gas'],
 
     exchange: {
       name: 'SpookySwap',
       webUrl: 'https://spookyswap.finance/swap',
       graph: '',
-      tokenlistUrl: 'https://raw.githubusercontent.com/SpookySwap/spooky-info/master/src/constants/token/spookyswap.json',
+      tokenlistUrl:
+        'https://raw.githubusercontent.com/SpookySwap/spooky-info/master/src/constants/token/spookyswap.json',
     },
 
     // https://docs.fantom.foundation/tutorials/set-up-metamask
     metamask: {
       chainId: prefixChainId(250),
-      blockExplorerUrls: [
-        'https://ftmscan.com/',
-      ],
+      blockExplorerUrls: ['https://ftmscan.com/'],
       chainName: 'Fantom Opera',
       nativeCurrency: {
         name: 'FTM',
         symbol: 'FTM',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://rpc.ftm.tools/',
-        'https://rpcapi.fantom.network',
-      ],
+      rpcUrls: ['https://rpc.ftm.tools/', 'https://rpcapi.fantom.network'],
     },
   },
   // 66 - OKExCHain
@@ -217,18 +200,14 @@ export const supportedChains: Array<Chain> = [
     // https://okexchain-docs.readthedocs.io/en/latest/developers/quick-start-for-mainnet.html
     metamask: {
       chainId: prefixChainId(66),
-      blockExplorerUrls: [
-        'https://www.oklink.com/okexchain/',
-      ],
+      blockExplorerUrls: ['https://www.oklink.com/okexchain/'],
       chainName: 'OKExChain Mainnet',
       nativeCurrency: {
         name: 'OKT',
         symbol: 'OKT',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://exchainrpc.okex.org',
-      ],
+      rpcUrls: ['https://exchainrpc.okex.org'],
     },
   },
   // 43114 - Avalanche
@@ -242,19 +221,15 @@ export const supportedChains: Array<Chain> = [
     // https://support.avax.network/en/articles/4626956-how-do-i-set-up-metamask-on-avalanche
     metamask: {
       chainId: prefixChainId(43114),
-      blockExplorerUrls: [
-        'https://cchain.explorer.avax.network/',
-      ],
+      blockExplorerUrls: ['https://cchain.explorer.avax.network/'],
       chainName: 'Avalanche Mainnet',
       nativeCurrency: {
         name: 'AVAX',
         symbol: 'AVAX',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://api.avax.network/ext/bc/C/rpc',
-      ],
-    }
+      rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    },
   },
   // 42161 - Arbitrum One
   {
@@ -263,25 +238,19 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 42161,
     visible: true,
-    faucetUrls: [
-      'https://bridge.arbitrum.io/'
-    ],
+    faucetUrls: ['https://bridge.arbitrum.io/'],
 
     metamask: {
       chainId: prefixChainId(42161),
-      blockExplorerUrls: [
-        'https://arbiscan.io/',
-      ],
+      blockExplorerUrls: ['https://arbiscan.io/'],
       chainName: 'Arbitrum One',
       nativeCurrency: {
         name: 'AETH',
         symbol: 'AETH',
         decimals: 18, // check
       },
-      rpcUrls: [
-        'https://arb1.arbitrum.io/rpc',
-      ],
-    }
+      rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+    },
   },
   // 128 - Huobi ECO Chain Mainnet
   {
@@ -290,25 +259,19 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.HT,
     id: 128,
     visible: true,
-    faucetUrls: [
-
-    ],
+    faucetUrls: [],
 
     metamask: {
       chainId: prefixChainId(128),
-      blockExplorerUrls: [
-        'https://hecoinfo.com/',
-      ],
+      blockExplorerUrls: ['https://hecoinfo.com/'],
       chainName: 'Huobi ECO Chain Mainnet',
       nativeCurrency: {
         name: 'HT',
         symbol: 'HT',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://http-mainnet.hecochain.com',
-      ],
-    }
+      rpcUrls: ['https://http-mainnet.hecochain.com'],
+    },
   },
   // 10 - Optimistic Ethereum
   {
@@ -317,25 +280,19 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 10,
     visible: true,
-    faucetUrls: [
-      'https://gateway.optimism.io/'
-    ],
+    faucetUrls: ['https://gateway.optimism.io/'],
 
     metamask: {
       chainId: prefixChainId(10),
-      blockExplorerUrls: [
-        'https://optimistic.etherscan.io/',
-      ],
+      blockExplorerUrls: ['https://optimistic.etherscan.io/'],
       chainName: 'Optimistic Ethereum',
       nativeCurrency: {
         name: 'OETH',
         symbol: 'OETH',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://mainnet.optimism.io/',
-      ],
-    }
+      rpcUrls: ['https://mainnet.optimism.io/'],
+    },
   },
 
   // 32659 - FSN-MAIN (anyswap)
@@ -377,15 +334,14 @@ export const supportedChains: Array<Chain> = [
       name: 'ViperSwap',
       webUrl: 'https://viper.exchange/#/swap',
       graph: '',
-      tokenlistUrl: 'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/lists/venomswap-default.tokenlist.json',
+      tokenlistUrl:
+        'https://d1xrz6ki9z98vb.cloudfront.net/venomswap/lists/venomswap-default.tokenlist.json',
     },
 
     // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
     metamask: {
       chainId: prefixChainId(1666600000),
-      blockExplorerUrls: [
-        'https://explorer.harmony.one/',
-      ],
+      blockExplorerUrls: ['https://explorer.harmony.one/'],
       chainName: 'Harmony Mainnet Shard 0',
 
       nativeCurrency: {
@@ -393,10 +349,8 @@ export const supportedChains: Array<Chain> = [
         symbol: 'ONE',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://api.harmony.one',
-      ],
-    }
+      rpcUrls: ['https://api.harmony.one'],
+    },
   },
 
   // TESTNETS
@@ -416,24 +370,21 @@ export const supportedChains: Array<Chain> = [
       name: 'Uniswap',
       webUrl: 'https://app.uniswap.org/',
       graph: '',
-      tokenlistUrl: 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
+      tokenlistUrl:
+        'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
     },
 
     metamask: {
       chainId: prefixChainId(3),
-      blockExplorerUrls: [
-        'https://ropsten.etherscan.io/',
-      ],
+      blockExplorerUrls: ['https://ropsten.etherscan.io/'],
       chainName: 'Ethereum Testnet Ropsten',
       nativeCurrency: {
         name: 'ETH',
         symbol: 'ETH',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://ropsten.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
-      ],
-    }
+      rpcUrls: ['https://ropsten.infura.io/v3/d1caeba320f94122ba8f791f50122c4c'],
+    },
   },
   // 4 - Rinkeby
   {
@@ -442,32 +393,27 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 4,
     visible: false,
-    faucetUrls: [
-      'https://faucet.rinkeby.io/',
-    ],
+    faucetUrls: ['https://faucet.rinkeby.io/'],
 
     exchange: {
       name: 'Uniswap',
       webUrl: 'https://app.uniswap.org/',
       graph: '',
-      tokenlistUrl: 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
+      tokenlistUrl:
+        'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
     },
 
     metamask: {
       chainId: prefixChainId(4),
-      blockExplorerUrls: [
-        'https://rinkeby.etherscan.io/',
-      ],
+      blockExplorerUrls: ['https://rinkeby.etherscan.io/'],
       chainName: 'Ethereum Testnet Rinkeby',
       nativeCurrency: {
         name: 'ETH',
         symbol: 'ETH',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://rinkeby.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
-      ],
-    }
+      rpcUrls: ['https://rinkeby.infura.io/v3/d1caeba320f94122ba8f791f50122c4c'],
+    },
   },
   // 5 - Goerli
   {
@@ -476,32 +422,27 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 5,
     visible: false,
-    faucetUrls: [
-      'https://goerli-faucet.slock.it/',
-    ],
+    faucetUrls: ['https://goerli-faucet.slock.it/'],
 
     exchange: {
       name: 'Uniswap',
       webUrl: 'https://app.uniswap.org/',
       graph: '',
-      tokenlistUrl: 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
+      tokenlistUrl:
+        'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
     },
 
     metamask: {
       chainId: prefixChainId(5),
-      blockExplorerUrls: [
-        'https://goerli.etherscan.io/',
-      ],
+      blockExplorerUrls: ['https://goerli.etherscan.io/'],
       chainName: 'Ethereum Testnet Görli',
       nativeCurrency: {
         name: 'ETH',
         symbol: 'ETH',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c',
-      ],
-    }
+      rpcUrls: ['https://goerli.infura.io/v3/d1caeba320f94122ba8f791f50122c4c'],
+    },
   },
   // 42 - Kovan
   {
@@ -510,33 +451,27 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 42,
     visible: false,
-    faucetUrls: [
-      'https://ethdrop.dev/',
-      'https://gitter.im/kovan-testnet/faucet',
-    ],
+    faucetUrls: ['https://ethdrop.dev/', 'https://gitter.im/kovan-testnet/faucet'],
 
     exchange: {
       name: 'Uniswap',
       webUrl: 'https://app.uniswap.org/',
       graph: '',
-      tokenlistUrl: 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
+      tokenlistUrl:
+        'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json',
     },
 
     metamask: {
       chainId: prefixChainId(42),
-      blockExplorerUrls: [
-        'https://kovan.etherscan.io/',
-      ],
+      blockExplorerUrls: ['https://kovan.etherscan.io/'],
       chainName: 'Ethereum Testnet Kovan',
       nativeCurrency: {
         name: 'ETH',
         symbol: 'ETH',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://kovan.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-      ],
-    }
+      rpcUrls: ['https://kovan.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+    },
   },
   // 80001 - Mumbai Polygon Testnet
   {
@@ -545,32 +480,27 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.MATIC,
     id: 80001,
     visible: false,
-    faucetUrls: [
-      'https://faucet.matic.network/',
-    ],
+    faucetUrls: ['https://faucet.matic.network/'],
 
     exchange: {
       name: 'QuickSwap',
       webUrl: 'https://quickswap.exchange/',
       graph: '',
-      tokenlistUrl: 'https://raw.githubusercontent.com/elkfinance/tokens/main/mumbai.tokenlist.json',
+      tokenlistUrl:
+        'https://raw.githubusercontent.com/elkfinance/tokens/main/mumbai.tokenlist.json',
     },
 
     metamask: {
       chainId: prefixChainId(80001),
-      blockExplorerUrls: [
-        'https://explorer-mumbai.maticvigil.com/',
-      ],
+      blockExplorerUrls: ['https://explorer-mumbai.maticvigil.com/'],
       chainName: 'Matic(Polygon) Testnet Mumbai',
       nativeCurrency: {
         name: 'MATIC',
         symbol: 'tMATIC',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://rpc-mumbai.matic.today',
-      ],
-    }
+      rpcUrls: ['https://rpc-mumbai.matic.today'],
+    },
   },
   // 421611 - Arbitrum Testnet
   {
@@ -579,25 +509,19 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 421611,
     visible: false,
-    faucetUrls: [
-      'https://bridge.arbitrum.io/'
-    ],
+    faucetUrls: ['https://bridge.arbitrum.io/'],
 
     metamask: {
       chainId: prefixChainId(421611),
-      blockExplorerUrls: [
-        'https://rinkeby-explorer.arbitrum.io/#/',
-      ],
+      blockExplorerUrls: ['https://rinkeby-explorer.arbitrum.io/#/'],
       chainName: 'Arbitrum Testnet Rinkeby',
       nativeCurrency: {
         name: 'ARETH',
         symbol: 'ARETH',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://rinkeby.arbitrum.io/rpc',
-      ],
-    }
+      rpcUrls: ['https://rinkeby.arbitrum.io/rpc'],
+    },
   },
   // 69 - Optimistic Ethereum (Kovan)
   {
@@ -606,25 +530,19 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.ETH,
     id: 69,
     visible: false,
-    faucetUrls: [
-      'https://gateway.optimism.io/'
-    ],
+    faucetUrls: ['https://gateway.optimism.io/'],
 
     metamask: {
       chainId: prefixChainId(69),
-      blockExplorerUrls: [
-        'https://kovan-optimistic.etherscan.io/',
-      ],
+      blockExplorerUrls: ['https://kovan-optimistic.etherscan.io/'],
       chainName: 'Optimistic Ethereum Testnet Kovan',
       nativeCurrency: {
         name: 'tETH',
         symbol: 'tETH',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://kovan.optimism.io',
-      ],
-    }
+      rpcUrls: ['https://kovan.optimism.io'],
+    },
   },
   // 97 - Binance Smart Chain Testnet
   {
@@ -633,25 +551,19 @@ export const supportedChains: Array<Chain> = [
     coin: CoinKey.BNB,
     id: 97,
     visible: false,
-    faucetUrls: [
-      'https://testnet.binance.org/faucet-smart'
-    ],
+    faucetUrls: ['https://testnet.binance.org/faucet-smart'],
 
     metamask: {
       chainId: prefixChainId(97),
-      blockExplorerUrls: [
-        'https://testnet.bscscan.com/',
-      ],
+      blockExplorerUrls: ['https://testnet.bscscan.com/'],
       chainName: 'Binance Smart Chain Testnet',
       nativeCurrency: {
         name: 'tBNB',
         symbol: 'tBNB',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://data-seed-prebsc-1-s1.binance.org:8545/',
-      ],
-    }
+      rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+    },
   },
 
   // 256 - Huobi ECO Chain Testnet
@@ -661,26 +573,19 @@ export const supportedChains: Array<Chain> = [
     coin: 'HTT' as CoinKey,
     id: 256,
     visible: false,
-    faucetUrls: [
-      'https://scan-testnet.hecochain.com/faucet'
-    ],
+    faucetUrls: ['https://scan-testnet.hecochain.com/faucet'],
 
     metamask: {
       chainId: prefixChainId(256),
-      blockExplorerUrls: [
-        'https://scan-testnet.hecochain.com/',
-      ],
+      blockExplorerUrls: ['https://scan-testnet.hecochain.com/'],
       chainName: 'Huobi ECO Chain Testnet',
       nativeCurrency: {
         name: 'HT',
         symbol: 'HT',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://http-testnet.hecochain.com',
-        'wss://ws-testnet.hecochain.com',
-      ],
-    }
+      rpcUrls: ['https://http-testnet.hecochain.com', 'wss://ws-testnet.hecochain.com'],
+    },
   },
   // 1666700000 - Harmony Testnet 0
   {
@@ -692,10 +597,7 @@ export const supportedChains: Array<Chain> = [
     // https://docs.harmony.one/home/developers/wallets/metamask/connect-metamask-to-the-harmony-chain
     metamask: {
       chainId: prefixChainId(1666700000),
-      blockExplorerUrls: [
-        'https://explorer.pops.one/',
-        'https://explorer.testnet.harmony.one/',
-      ],
+      blockExplorerUrls: ['https://explorer.pops.one/', 'https://explorer.testnet.harmony.one/'],
       chainName: 'Harmony Testnet Shard 0',
 
       nativeCurrency: {
@@ -703,17 +605,15 @@ export const supportedChains: Array<Chain> = [
         symbol: 'ONE',
         decimals: 18,
       },
-      rpcUrls: [
-        'https://api.s0.b.hmny.io',
-      ],
-    }
+      rpcUrls: ['https://api.s0.b.hmny.io'],
+    },
   },
 
   // https://faucet.buni.finance/
 ]
 
 export const getChainByKey = (chainKey: ChainKey) => {
-  const chain = supportedChains.find(chain => chain.key === chainKey)
+  const chain = supportedChains.find((chain) => chain.key === chainKey)
   if (!chain) {
     throw new Error('Invalid chainKey')
   }
@@ -721,7 +621,7 @@ export const getChainByKey = (chainKey: ChainKey) => {
 }
 
 export const getChainById = (chainId: number) => {
-  const chain = supportedChains.find(chain => chain.id === chainId)
+  const chain = supportedChains.find((chain) => chain.id === chainId)
   if (!chain) {
     throw new Error('Invalid chainId')
   }

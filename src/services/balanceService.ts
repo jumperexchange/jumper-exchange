@@ -1,26 +1,36 @@
+/* eslint-disable no-console */
+// @ts-ignore
+import { createWatcher } from '@makerdao/multicall'
 import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
 import { constants, ethers } from 'ethers'
+
 import { getMulticallAddresses, getRpcUrls } from '../components/web3/connectors'
-import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, defaultTokens, getChainById, Token } from '../types'
+import {
+  ChainId,
+  ChainKey,
+  chainKeysToObject,
+  ChainPortfolio,
+  defaultTokens,
+  getChainById,
+  Token,
+} from '../types'
 import { deepClone } from './utils'
-// @ts-ignore
-import { createWatcher } from '@makerdao/multicall'
 
 type tokenListDebankT = {
-  id: string,
-  chain: string,
-  name: string,
-  symbol: string,
-  display_symbol: string,
-  optimized_symbol: string,
-  decimals: number,
-  logo_url: string,
-  price: number,
-  is_verified: boolean,
-  is_core: boolean,
-  is_wallet: boolean,
-  time_at: number,
+  id: string
+  chain: string
+  name: string
+  symbol: string
+  display_symbol: string
+  optimized_symbol: string
+  decimals: number
+  logo_url: string
+  price: number
+  is_verified: boolean
+  is_core: boolean
+  is_wallet: boolean
+  time_at: number
   amount: number
 }
 
@@ -52,13 +62,14 @@ const tokenBlacklist: Blacklist = {
     '0x19a935cbaaa4099072479d521962588d7857d717', // Litcoin - fake
     '0x0364c8dbde082372e8d6a6137b45613dd0f8138a', // https://polybest.org/ - scam
     '0x81067076dcb7d3168ccf7036117b9d72051205e2', // DxDex.io - scam
-  ]
+  ],
 }
 
 const filterPortfolioWithBlacklist = (portfolio: Portfolio, blacklist: Blacklist) => {
   Object.keys(portfolio).forEach((chainKey) => {
     portfolio[chainKey] = portfolio[chainKey].filter((chainPortfolioItem) => {
-      const blacklisted = blacklist[chainKey] && blacklist[chainKey].indexOf(chainPortfolioItem.id) !== -1
+      const blacklisted =
+        blacklist[chainKey] && blacklist[chainKey].indexOf(chainPortfolioItem.id) !== -1
       return !blacklisted
     })
   })
@@ -68,14 +79,14 @@ const filterPortfolioWithBlacklist = (portfolio: Portfolio, blacklist: Blacklist
 const COVALENT_API_KEY = 'ckey_538ec97ac4594396bda51a91df1'
 const COVALENT_API_URI = 'https://api.covalenthq.com/v1'
 const COVALENT_SUPPORTED_CHAINS = [
-  ChainId.ETH,  // Ethereum Mainnet
-  ChainId.POL,  // Polygon/Matic Mainnet
-  ChainId.BSC,  // Binance Smart Chain
-  ChainId.AVA,  // Avalanche C-Chain Mainnet
-  ChainId.FTM,  // Fantom Opera Mainnet
+  ChainId.ETH, // Ethereum Mainnet
+  ChainId.POL, // Polygon/Matic Mainnet
+  ChainId.BSC, // Binance Smart Chain
+  ChainId.AVA, // Avalanche C-Chain Mainnet
+  ChainId.FTM, // Fantom Opera Mainnet
 
   // Testnets
-  ChainId.MUM,  // Polygon/Matic Mumbai Testnet
+  ChainId.MUM, // Polygon/Matic Mumbai Testnet
   //43113,  // Fuji C-Chain Testnet
 ]
 export async function covalentGetCoinsOnChain(walletAdress: string, chainId: number) {
@@ -176,16 +187,16 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
 
 // Crazy Wallet for testing token parsing: 0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85
 const chainNameMapping: { [ChainName: string]: ChainKey } = {
-  'eth': ChainKey.ETH,
-  'bsc': ChainKey.BSC,
-  'xdai': ChainKey.DAI,
-  'matic': ChainKey.POL,
-  'ftm': ChainKey.FTM,
-  'okt': ChainKey.OKT,
-  'avax': ChainKey.AVA,
-  'heco': ChainKey.HEC,
-  'op': ChainKey.OPT,
-  'arb': ChainKey.ARB,
+  eth: ChainKey.ETH,
+  bsc: ChainKey.BSC,
+  xdai: ChainKey.DAI,
+  matic: ChainKey.POL,
+  ftm: ChainKey.FTM,
+  okt: ChainKey.OKT,
+  avax: ChainKey.AVA,
+  heco: ChainKey.HEC,
+  op: ChainKey.OPT,
+  arb: ChainKey.ARB,
   // 'celo': Celo
 }
 function mapDebankChainNameToChainKey(chainName: string) {
@@ -204,13 +215,15 @@ const getBlancesFromDebank = async (walletAdress: string) => {
   }
 
   // response body is empty?
-  var tokenList: Array<tokenListDebankT> = (Object.keys(result.data).length === 0) ? [] : result.data
+  var tokenList: Array<tokenListDebankT> = Object.keys(result.data).length === 0 ? [] : result.data
 
   // build return object
   const totalPortfolio: Portfolio = deepClone(EMPTY_PORTFOLIO)
   for (const token of tokenList) {
     totalPortfolio[mapDebankChainNameToChainKey(token.chain)]?.push({
-      id: ethers.utils.isAddress(token.id) ? token.id : '0x0000000000000000000000000000000000000000',
+      id: ethers.utils.isAddress(token.id)
+        ? token.id
+        : '0x0000000000000000000000000000000000000000',
       name: token.name,
       symbol: token.optimized_symbol,
       img_url: token.logo_url,
@@ -223,14 +236,17 @@ const getBlancesFromDebank = async (walletAdress: string) => {
   return totalPortfolio
 }
 
-const getBalancesForWallet = async (walletAdress: string, onChains?: Array<number>): Promise<Portfolio> => {
+const getBalancesForWallet = async (
+  walletAdress: string,
+  onChains?: Array<number>,
+): Promise<Portfolio> => {
   walletAdress = walletAdress.toLowerCase()
 
   // Manually added Harmony Support
   let onePromise: Promise<{ [ChainKey: string]: ChainPortfolio[] }> | undefined
   if (onChains && onChains.indexOf(ChainId.ONE) !== -1) {
     const tokens = {
-      [ChainKey.ONE]: defaultTokens[ChainKey.ONE]
+      [ChainKey.ONE]: defaultTokens[ChainKey.ONE],
     }
     onePromise = getBalancesForWalletFromChain(walletAdress, tokens)
   }
@@ -258,52 +274,61 @@ const getBalancesForWallet = async (walletAdress: string, onChains?: Array<numbe
 export const getBalanceFromProvider = async (
   address: string,
   tokens: Array<Token>,
-): Promise<Array<any>> => new Promise((resolve) => {
+): Promise<Array<any>> =>
+  new Promise((resolve) => {
+    const chainId = tokens[0].chainId
+    const config = {
+      rpcUrl: getRpcUrls([chainId])[chainId],
+      multicallAddress: getMulticallAddresses([chainId])[chainId],
+      interval: 10000,
+    }
+    // Create watcher
+    const calls: Array<any> = []
+    tokens.forEach(async (token) => {
+      if (token.id === constants.AddressZero) {
+        calls.push({
+          call: ['getEthBalance(address)(uint256)', address],
+          returns: [
+            [
+              [token.id, token.name, token.key].join('-'),
+              (val: number) => val / 10 ** token.decimals,
+            ],
+          ],
+        })
+      } else {
+        calls.push({
+          target: token.id,
+          call: ['balanceOf(address)(uint256)', address],
+          returns: [
+            [
+              [token.id, token.name, token.key].join('-'),
+              (val: number) => val / 10 ** token.decimals,
+            ],
+          ],
+        })
+      }
+    })
 
-  const chainId = tokens[0].chainId
-  const config = {
-    rpcUrl: getRpcUrls([chainId])[chainId],
-    multicallAddress: getMulticallAddresses([chainId])[chainId],
-    interval: 10000
-  }
-  // Create watcher
-  const calls: Array<any> = []
-  tokens.forEach(async (token) => {
-    if (token.id === constants.AddressZero) {
-      calls.push({
-        call: ['getEthBalance(address)(uint256)', address],
-        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** token.decimals]]
-      })
-    }
-    else {
-      calls.push({
-        target: token.id,
-        call: ['balanceOf(address)(uint256)', address],
-        returns: [[[token.id, token.name, token.key].join("-"), (val: number) => val / 10 ** token.decimals]]
-      })
-    }
+    const watcher = createWatcher(calls, config)
+
+    watcher.batch().subscribe((updates: any) => {
+      watcher.stop()
+      resolve(updates as any)
+    })
+
+    watcher.onError((error: any) => {
+      watcher.stop()
+      console.warn('Watcher Error:', error)
+      resolve([])
+    })
+
+    watcher.start()
   })
 
-  const watcher = createWatcher(
-    calls,
-    config
-  )
-
-  watcher.batch().subscribe((updates: any) => {
-    watcher.stop()
-    resolve(updates as any)
-  })
-
-  watcher.onError((error: any) => {
-    watcher.stop()
-    console.warn('Watcher Error:', error);
-    resolve([])
-  });
-
-  watcher.start()
-})
-
-export const getBalancesForWalletFromChain = async (address: string, tokens: { [ChainKey: string]: Array<Token> }) => {
+export const getBalancesForWalletFromChain = async (
+  address: string,
+  tokens: { [ChainKey: string]: Array<Token> },
+) => {
   const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
   Object.entries(tokens).forEach(async ([chainKey, tokens]) => {
@@ -312,9 +337,9 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
     const amounts = await promise
 
     amounts.forEach((amount) => {
-      const token_id = amount["type"].split("-")[0]
-      const token_name = amount["type"].split("-")[1]
-      const token_key = amount["type"].split("-")[2]
+      const token_id = amount['type'].split('-')[0]
+      const token_name = amount['type'].split('-')[1]
+      const token_key = amount['type'].split('-')[2]
 
       portfolio[chainKey].push({
         id: token_id,
@@ -332,5 +357,4 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
   return portfolio
 }
 
-export { getCoinsOnChain, getBalancesForWallet }
-
+export { getBalancesForWallet, getCoinsOnChain }
