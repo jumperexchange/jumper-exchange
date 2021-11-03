@@ -1,3 +1,4 @@
+import { Action, ChainKey, Coin, Estimate, Execution, Token } from '@lifinance/types'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
@@ -24,7 +25,6 @@ import sushi from '../assets/icons/sushi.png'
 import uniswap from '../assets/icons/uniswap.png'
 import viper from '../assets/icons/viper.png'
 import dai from '../assets/icons/xdai.png'
-import { Action, ChainKey, Coin, Estimate, Execution, Token } from '.'
 
 export const icons: { [key: string]: string } = {
   // Mainnets
