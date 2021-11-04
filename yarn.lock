@@ -1243,12 +1243,12 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.0.68":
-  version "0.0.68"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.68.tgz#7db34e0a78da3313c9b7e73f62bad14148594226"
-  integrity sha512-QQJJcdqE+8Yo1upod0WM5c+YQuOMqzR+KjTN5yvk4tWjkDG2kBLbpptOFeKxRlHNSkyR8caY8UMb4flm1mHubQ==
+"@connext/nxtp-contracts@0.0.71":
+  version "0.0.71"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.71.tgz#fed88e8bbde36ac2c50fa43339233cec0acf32a3"
+  integrity sha512-AZtwI4QrsSTwLVmLsJBpuy9d3TbQY6RBVIXHX7mQGzmpAx2SHcm7nzJcmhTAZ0XTWgqAxT57EX/F2V4NbpXgJA==
   dependencies:
-    "@connext/nxtp-utils" "0.0.68"
+    "@connext/nxtp-utils" "0.0.71"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
@@ -1258,14 +1258,14 @@
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@0.0.68":
-  version "0.0.68"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.68.tgz#04e537968b055525d237ee04ef2f346b86f09f64"
-  integrity sha512-miHYVPYrLnyE0R+mRUB5h/6FCtOwxqHRfhzJbsTS7qDlc/sNIpGGo+qKPbz6f/ZrGbnwawLKBXW30Unhe22WSQ==
+"@connext/nxtp-sdk@0.0.71":
+  version "0.0.71"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.71.tgz#f2ffb97ecf7a4e751e8c21449b52aab74c4d68be"
+  integrity sha512-QXWkdMY0aPsKbNR5yL1Efu1r443RLwACWtxjxMVVrJlyAqzpsNDo4hiA3SymB1/p3BIJsFVIkD3q0Dm40L6Nig==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.68"
-    "@connext/nxtp-txservice" "0.0.68"
-    "@connext/nxtp-utils" "0.0.68"
+    "@connext/nxtp-contracts" "0.0.71"
+    "@connext/nxtp-txservice" "0.0.71"
+    "@connext/nxtp-utils" "0.0.71"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
     ajv-formats "^2.1.1"
@@ -1276,12 +1276,12 @@
     graphql-tag "^2.12.5"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.0.68":
-  version "0.0.68"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.68.tgz#a618e8e0e20c0540a9cd2662646981729309fa94"
-  integrity sha512-n+Tz6XKpCd5FrXybXr7+2FVCO7G9/8IP8BOW+SVBpmAiZG2uIlPmgdI26k0Yb5ZrQiW3O1MC6Fk2JvPXJ8FtEw==
+"@connext/nxtp-txservice@0.0.71":
+  version "0.0.71"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.71.tgz#707b9cec2c2017ef8a294861661326b9a41781a1"
+  integrity sha512-+x1chsi5VdFFZIDI2AoCrBY152POorKoLJLnHYp93OyUQvbDaR6NsVXxBlAJTURNo8cFMqGhLg+N6NhKl3uPwQ==
   dependencies:
-    "@connext/nxtp-utils" "0.0.68"
+    "@connext/nxtp-utils" "0.0.71"
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
@@ -1295,10 +1295,10 @@
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.0.68":
-  version "0.0.68"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.68.tgz#6b5f5bbf9ba52f5f0a28aec10dd2a08b989f5589"
-  integrity sha512-lEGJs10eKlNsm9KYBRURFE7xna7/JSud9D0UuAWfrnGHMVDKDEpBabsKKtx2rjzhsyX4/jCm1V+DPUanYFRBKA==
+"@connext/nxtp-utils@0.0.71":
+  version "0.0.71"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.71.tgz#a61a5252f882abb0396ffbd343a56c152718eb3d"
+  integrity sha512-Oo1HpOq7MhWil9NXc28XMORi91ej/6HSfc9pH26/tk1O2iTPaVCYb3DKDUTuQxxRWwfyTFmW/joiFWhWvJVzXA==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
@@ -1883,22 +1883,22 @@
     "@types/bn.js" "^4.11.3"
     bn.js "^4.11.8"
 
-"@hop-protocol/core@0.0.1-beta.44":
-  version "0.0.1-beta.44"
-  resolved "https://registry.yarnpkg.com/@hop-protocol/core/-/core-0.0.1-beta.44.tgz#2b48088325269caf361b45a1ca51d9e181f9edc7"
-  integrity sha512-S9vFAvIdq+93mY1urxyTPvcAZMELueqmnN7r8jBbQtH8psJl6fo4cykdIRlMGslcyY9uhTdJn+1Ni0/rHTAyAw==
+"@hop-protocol/core@0.0.1-beta.47":
+  version "0.0.1-beta.47"
+  resolved "https://registry.yarnpkg.com/@hop-protocol/core/-/core-0.0.1-beta.47.tgz#18ac12028d31cde9d0812c04c16a7cf6f0515ff9"
+  integrity sha512-4h8n1gVZjwj4W8Pd+RX2YGlA/rFR8cPt/NF9Gq76C+qo89+zwlgirNEK2UlJrcclvV6LtzwKMiGL4rdviybNNA==
   dependencies:
     deepmerge "^4.2.2"
     eslint-plugin-json "^3.1.0"
-    ethers "^5.4.7"
+    ethers "^5.5.1"
 
-"@hop-protocol/sdk@^0.0.1-beta.213":
-  version "0.0.1-beta.221"
-  resolved "https://registry.yarnpkg.com/@hop-protocol/sdk/-/sdk-0.0.1-beta.221.tgz#f0a05cbab412e3376c7a9a926b7f7804b9231306"
-  integrity sha512-OINtZNH15YLoPU43Y6to2lsVp0JAjeM/1R9SEAQHUi5af3mI4Fh/gXgB8YT+IxRvqHNZ847g6SGVTPAqgVr6Rg==
+"@hop-protocol/sdk@^0.0.1-beta.226":
+  version "0.0.1-beta.226"
+  resolved "https://registry.yarnpkg.com/@hop-protocol/sdk/-/sdk-0.0.1-beta.226.tgz#87645716b5fcca9de1c5bde0ba7659cda4d1ea70"
+  integrity sha512-EZPkli0IsCSpuYaIyGu8WguH9P+wNVxWaQoS/pWfWhDtfaHTLNwQnzmD4PIh3Pb5iRyuhOBJYQYOhtCVIqSQtg==
   dependencies:
     "@ethersproject/abi" "^5.4.0"
-    "@hop-protocol/core" "0.0.1-beta.44"
+    "@hop-protocol/core" "0.0.1-beta.47"
     "@maticnetwork/maticjs" "^2.0.38"
     dotenv "^8.2.0"
     ethereum-block-by-date "^1.4.2"
@@ -6485,7 +6485,7 @@ ethers@^4.0.27, ethers@^4.0.40:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@^5.2.0, ethers@^5.4.6, ethers@^5.4.7, ethers@^5.5.1:
+ethers@^5.2.0, ethers@^5.4.6, ethers@^5.5.1:
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.5.1.tgz#d3259a95a42557844aa543906c537106c0406fbf"
   integrity sha512-RodEvUFZI+EmFcE6bwkuJqpCYHazdzeR1nMzg+YWQSmQEsNtfl1KHGfp/FWZYl48bI/g7cgBeP2IlPthjiVngw==
