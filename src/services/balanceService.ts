@@ -327,7 +327,7 @@ export const getBalancesFromProviderUsingMulticall = async (
           call: ['getEthBalance(address)(uint256)', address],
           returns: [[
             [token.id, token.name, token.key].join('-'),
-            (val: number) => new BigNumber(val).shiftedBy(-token.decimals).toFixed()
+            (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
           ]]
         })
       }
@@ -337,7 +337,7 @@ export const getBalancesFromProviderUsingMulticall = async (
           call: ['balanceOf(address)(uint256)', address],
           returns: [[
             [token.id, token.name, token.key].join('-'),
-            (val: number) => new BigNumber(val).shiftedBy(-token.decimals).toFixed(),
+            (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
           ]]
         })
       }
