@@ -66,6 +66,8 @@ const Swap = ({
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
+  const [lastId, setLastId] = useState<number>()
+  const [routeResult, setFindRouteResult] = useState<any>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -212,50 +214,40 @@ const Swap = ({
         // const config = {
         //   cancelToken
         // }
-
         try {
-          const routes: TransferStep[][] = await LIFI.findRoutes(deposit, withdraw)
-          setRoutes(routes)
-          fadeInAnimation(routeCards)
-          setHighlightedIndex(routes.length === 0 ? -1 : 0)
-          setNoRoutesAvailable(routes.length === 0)
-          setRoutesLoading(false)
-
-        } catch (err) {
-          // check if it we are still loading a new request
-          if (!axios.isCancel(err)) {
-            setNoRoutesAvailable(true)
-            setRoutesLoading(false)
+          const id = Math.floor(Math.random() * 1000000);
+          console.log('generated id: ', id);
+          setLastId(id);          
+          const result = await LIFI.findRoutes(deposit, withdraw);
+          setFindRouteResult({result, id});
+          // TODO error handling
+        } catch {
+            setNoRoutesAvailable(true);
+            setRoutesLoading(false);
           }
-        } finally {
-          source = undefined
-        }
       }
     }
 
     getTransferRoutes()
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
 
-  // useEffect (() => {
-  //   const awaitRouteRequest = async () => {
-  //     if(routeRequestPromise){
-  //       try{
-  //         console.log('routePromise: ', routeRequestPromise)
-  //         const routes: TransferStep[][] = await routeRequestPromise
-  //         setRoutes(routes)
-  //         fadeInAnimation(routeCards)
-  //         setHighlightedIndex(routes.length === 0 ? -1 : 0)
-  //         setNoRoutesAvailable(routes.length === 0)
-  //         setRoutesLoading(false)
-  //       } catch {
-  //         setNoRoutesAvailable(true)
-  //         setRoutesLoading(false)
-  //       }
-  //     }
-  //   }
-  //   awaitRouteRequest()
-
-  // }, [routeRequestPromise])
+  useEffect (() => {
+    if (routeResult) {
+      const {result, id} = routeResult;
+      console.log('resolved id: ', id, 'lastId: ', lastId)
+      console.log('results: ', result.length);
+        if (id === lastId) {
+          console.log('updating!')
+          setRoutes(result)
+          fadeInAnimation(routeCards)
+          setHighlightedIndex(result.length === 0 ? -1 : 0)
+          setNoRoutesAvailable(result.length === 0)
+          setRoutesLoading(false)
+        } else {
+          console.log('lets not update');
+        }
+    }
+  }, [routeResult, lastId])
 
 
   const openModal = () => {
@@ -409,7 +401,6 @@ const Swap = ({
 
         {/* Routes */}
         <Row justify={"center"} style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
-          {routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
               <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }} ref={routeCards}>
@@ -425,7 +416,6 @@ const Swap = ({
                 }
               </div>
             </Col>
-          }
           {routesLoading &&
             <Col>
               <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 0 }}>
