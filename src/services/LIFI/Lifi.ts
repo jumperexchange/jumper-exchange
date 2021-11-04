@@ -1,17 +1,11 @@
-import {RoutesRequest} from './types'
-import axios, { CancelTokenSource } from 'axios';
-import { TransferStep } from '../../types';
+import axios from 'axios';
+import { DepositAction, TransferStep, WithdrawAction } from '../../types';
 
-let source: CancelTokenSource | undefined = undefined
+class LIFI {
 
-
-
-export class LIFI {
-
-  findRoutes = async (routeRequest: RoutesRequest) /*: Promise<RoutesResponse> */ => {
-    const result = await axios.post<any>(process.env.REACT_APP_API_URL + 'transfer', { routeRequest })
-    return result.data as Array<Array<TransferStep>>
-
+  findRoutes = async (deposit: DepositAction, withdraw: WithdrawAction): Promise<TransferStep[][]>  => {
+    const result = await axios.post<any>(process.env.REACT_APP_API_URL + 'transfer', { deposit, withdraw })
+    return result.data as TransferStep[][]
   }
 
   // executeRoute = (signer: Signer, route: Route): Promise<Route> => {
@@ -35,5 +29,7 @@ export class LIFI {
   // }
 
 }
+
+export default new LIFI()
 
 

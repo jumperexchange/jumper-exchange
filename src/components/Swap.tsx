@@ -20,7 +20,7 @@ import Swapping from './Swapping';
 import { injected } from './web3/connectors';
 import { readActiveRoutes, readHistoricalRoutes, deleteRoute } from '../services/localStorage';
 import TrasactionsTable from './TransactionsTable';
-import { LIFI } from '../services/LIFI/lifi';
+import  LIFI  from '../services/LIFI/Lifi';
 
 const { Panel } = Collapse;
 
@@ -35,6 +35,7 @@ interface SwapProps {
   getBalancesForWallet: Function
 }
 
+let runningRouteRequestPromise: boolean = false
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   animate(element.current?.childNodes as NodeListOf<Element>, {
@@ -181,42 +182,39 @@ const Swap = ({
       setNoRoutesAvailable(false)
 
       if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
+        runningRouteRequestPromise = true
         setRoutesLoading(true)
         const dToken = findToken(depositChain, depositToken)
         const wToken = findToken(withdrawChain, withdrawToken)
 
-        const routeRequest = {
-          fromChainId: getChainByKey(depositChain).id,
-          fromAmount: new BigNumber(depositAmount).shiftedBy(dToken.decimals).toFixed(0),
-          fromTokenAddress: dToken.id,
-          fromTokenDecimals: dToken.decimals,
-          // fromAddress?: string,
+        const deposit: DepositAction = {
+          type: 'deposit',
+          chainId: getChainByKey(depositChain).id,
+          token: dToken,
+          amount: new BigNumber(depositAmount).shiftedBy(dToken.decimals).toFixed(0)
+        }
 
-          toChainId: getChainByKey(withdrawChain).id,
-          toTokenAddress: wToken.id,
-          toTokenDecimals: wToken.decimals,
-          // toAddress?: string,
-
-          options: {
-            slippage: optionSlippage / 100,
-            allowSwitchChain: true
-          }
+        const withdraw: WithdrawAction = {
+          type: 'withdraw',
+          chainId: getChainByKey(withdrawChain).id,
+          token: wToken,
+          amount: '',
+          toAddress: '',
+          slippage: optionSlippage / 100,
         }
 
         // cancel previously running requests
-        if (source) {
-          source.cancel('cancel for new request')
-        }
-        source = axios.CancelToken.source()
-        const cancelToken = source.token
-        const config = {
-          cancelToken
-        }
+        // if (source) {
+        //   source.cancel('cancel for new request')
+        // }
+        // source = axios.CancelToken.source()
+        // const cancelToken = source.token
+        // const config = {
+        //   cancelToken
+        // }
 
         try {
-          const result = new LIFI().findRoutes(routeRequest)
-          // filter if needed
-          const routes: Array<Array<TransferStep>> = result
+          const routes: TransferStep[][] = await LIFI.findRoutes(deposit, withdraw)
           setRoutes(routes)
           fadeInAnimation(routeCards)
           setHighlightedIndex(routes.length === 0 ? -1 : 0)
@@ -237,6 +235,28 @@ const Swap = ({
 
     getTransferRoutes()
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
+
+  // useEffect (() => {
+  //   const awaitRouteRequest = async () => {
+  //     if(routeRequestPromise){
+  //       try{
+  //         console.log('routePromise: ', routeRequestPromise)
+  //         const routes: TransferStep[][] = await routeRequestPromise
+  //         setRoutes(routes)
+  //         fadeInAnimation(routeCards)
+  //         setHighlightedIndex(routes.length === 0 ? -1 : 0)
+  //         setNoRoutesAvailable(routes.length === 0)
+  //         setRoutesLoading(false)
+  //       } catch {
+  //         setNoRoutesAvailable(true)
+  //         setRoutesLoading(false)
+  //       }
+  //     }
+  //   }
+  //   awaitRouteRequest()
+
+  // }, [routeRequestPromise])
+
 
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
