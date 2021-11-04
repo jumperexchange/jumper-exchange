@@ -1,11 +1,11 @@
 // LIBS
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
+import {v4 as uuid} from 'uuid'
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Typography } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
-import axios, { CancelTokenSource } from 'axios';
 import BigNumber from 'bignumber.js';
 import { animate, stagger } from "motion";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -28,24 +28,23 @@ interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
 }
-let source: CancelTokenSource | undefined = undefined
 
 interface SwapProps {
   transferChains: Chain[]
   getBalancesForWallet: Function
 }
 
-let runningRouteRequestPromise: boolean = false
-
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
-  animate(element.current?.childNodes as NodeListOf<Element>, {
-    y: ["50px", "0px"],
-    opacity: [0, 1],
-  }, {
-    delay: stagger(0.2),
-    duration: 0.5,
-    easing: "ease-in-out"
-  })
+  setTimeout(() => {
+    animate(element.current?.childNodes as NodeListOf<Element>, {
+      y: ["50px", "0px"],
+      opacity: [0, 1],
+    }, {
+      delay: stagger(0.2),
+      duration: 0.5,
+      easing: "ease-in-out"
+    })
+  }, 0);
 }
 
 const Swap = ({
@@ -66,8 +65,8 @@ const Swap = ({
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [lastId, setLastId] = useState<number>()
-  const [routeResult, setFindRouteResult] = useState<any>()
+  const [currentRouteCallId, setCurrentRouteCallId] = useState<string>()
+  const [routeCallResult, setRouteCallResult] = useState<any>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -184,7 +183,6 @@ const Swap = ({
       setNoRoutesAvailable(false)
 
       if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
-        runningRouteRequestPromise = true
         setRoutesLoading(true)
         const dToken = findToken(depositChain, depositToken)
         const wToken = findToken(withdrawChain, withdrawToken)
@@ -204,23 +202,11 @@ const Swap = ({
           toAddress: '',
           slippage: optionSlippage / 100,
         }
-
-        // cancel previously running requests
-        // if (source) {
-        //   source.cancel('cancel for new request')
-        // }
-        // source = axios.CancelToken.source()
-        // const cancelToken = source.token
-        // const config = {
-        //   cancelToken
-        // }
         try {
-          const id = Math.floor(Math.random() * 1000000);
-          console.log('generated id: ', id);
-          setLastId(id);          
+          const id = uuid()
+          setCurrentRouteCallId(id);
           const result = await LIFI.findRoutes(deposit, withdraw);
-          setFindRouteResult({result, id});
-          // TODO error handling
+          setRouteCallResult({result, id});
         } catch {
             setNoRoutesAvailable(true);
             setRoutesLoading(false);
@@ -232,22 +218,18 @@ const Swap = ({
   }, [depositAmount, depositChain, depositToken, withdrawChain, withdrawToken, optionSlippage, findToken])
 
   useEffect (() => {
-    if (routeResult) {
-      const {result, id} = routeResult;
-      console.log('resolved id: ', id, 'lastId: ', lastId)
-      console.log('results: ', result.length);
-        if (id === lastId) {
-          console.log('updating!')
+    if (routeCallResult) {
+      const {result, id} = routeCallResult;
+        if (id === currentRouteCallId) {
           setRoutes(result)
           fadeInAnimation(routeCards)
           setHighlightedIndex(result.length === 0 ? -1 : 0)
           setNoRoutesAvailable(result.length === 0)
           setRoutesLoading(false)
-        } else {
-          console.log('lets not update');
         }
     }
-  }, [routeResult, lastId])
+
+  }, [routeCallResult, currentRouteCallId])
 
 
   const openModal = () => {
@@ -400,7 +382,8 @@ const Swap = ({
         </Row>
 
         {/* Routes */}
-        <Row justify={"center"} style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
+          <Row justify={"center"} style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
+          { routes.length > 0 &&
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes<br className="only-mobile" /> (sorted by estimated withdraw)</h3>
               <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }} ref={routeCards}>
@@ -416,6 +399,8 @@ const Swap = ({
                 }
               </div>
             </Col>
+
+          }
           {routesLoading &&
             <Col>
               <Row gutter={[32, 62]} justify={"center"} style={{ marginTop: 0 }}>
