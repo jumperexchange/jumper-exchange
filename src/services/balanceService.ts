@@ -274,61 +274,62 @@ const getBalancesForWallet = async (
 export const getBalanceFromProvider = async (
   address: string,
   tokens: Array<Token>,
-): Promise<Array<any>> =>
-  new Promise((resolve) => {
-    const chainId = tokens[0].chainId
-    const config = {
-      rpcUrl: getRpcUrls([chainId])[chainId],
-      multicallAddress: getMulticallAddresses([chainId])[chainId],
-      interval: 10000,
+): Promise<Array<any>> => new Promise((resolve) => {
+  // Configuration
+  const chainId = tokens[0].chainId
+  const config = {
+    rpcUrl: getRpcUrls([chainId])[chainId],
+    multicallAddress: getMulticallAddresses([chainId])[chainId],
+    interval: 10000
+  }
+
+  // Collect calls we want to make
+  const calls: Array<any> = []
+  tokens.forEach(async (token) => {
+    if (token.id === constants.AddressZero) {
+      calls.push({
+        call: ['getEthBalance(address)(uint256)', address],
+        returns: [[
+          [token.id, token.name, token.key].join('-'),
+          (val: number) => new BigNumber(val).shiftedBy(-token.decimals).toFixed()
+        ]]
+      })
     }
-    // Create watcher
-    const calls: Array<any> = []
-    tokens.forEach(async (token) => {
-      if (token.id === constants.AddressZero) {
-        calls.push({
-          call: ['getEthBalance(address)(uint256)', address],
-          returns: [
-            [
-              [token.id, token.name, token.key].join('-'),
-              (val: number) => val / 10 ** token.decimals,
-            ],
-          ],
-        })
-      } else {
-        calls.push({
-          target: token.id,
-          call: ['balanceOf(address)(uint256)', address],
-          returns: [
-            [
-              [token.id, token.name, token.key].join('-'),
-              (val: number) => val / 10 ** token.decimals,
-            ],
-          ],
-        })
-      }
-    })
-
-    const watcher = createWatcher(calls, config)
-
-    watcher.batch().subscribe((updates: any) => {
-      watcher.stop()
-      resolve(updates as any)
-    })
-
-    watcher.onError((error: any) => {
-      watcher.stop()
-      console.warn('Watcher Error:', error)
-      resolve([])
-    })
-
-    watcher.start()
+    else {
+      calls.push({
+        target: token.id,
+        call: ['balanceOf(address)(uint256)', address],
+        returns: [[
+          [token.id, token.name, token.key].join('-'),
+          (val: number) => new BigNumber(val).shiftedBy(-token.decimals).toFixed(),
+        ]]
+      })
+    }
   })
 
-export const getBalancesForWalletFromChain = async (
-  address: string,
-  tokens: { [ChainKey: string]: Array<Token> },
-) => {
+  const watcher = createWatcher(
+    calls,
+    config
+  )
+
+  // Success case
+  watcher.batch().subscribe((updates: any) => {
+    watcher.stop()
+    resolve(updates as any)
+  })
+
+  // Error case
+  watcher.onError((error: any) => {
+    watcher.stop()
+    console.warn('Watcher Error:', error)
+    resolve([])
+  })
+
+  // Submit calls
+  watcher.start()
+})
+
+export const getBalancesForWalletFromChain = async (address: string, tokens: { [ChainKey: string]: Array<Token> }) => {
   const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
   Object.entries(tokens).forEach(async ([chainKey, tokens]) => {
@@ -337,9 +338,7 @@ export const getBalancesForWalletFromChain = async (
     const amounts = await promise
 
     amounts.forEach((amount) => {
-      const token_id = amount['type'].split('-')[0]
-      const token_name = amount['type'].split('-')[1]
-      const token_key = amount['type'].split('-')[2]
+      const [token_id, token_name, token_key] = amount['type'].split('-')
 
       portfolio[chainKey].push({
         id: token_id,

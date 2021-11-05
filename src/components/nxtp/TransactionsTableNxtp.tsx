@@ -173,7 +173,7 @@ const TransactionsTableNxtp = ({
       render: (txData: CrosschainTransaction) => {
         return (
           <Link
-            href={'https://connext.coinhippo.io/tx/' + txData.invariant.transactionId}
+            href={'https://connextscan.io/tx/' + txData.invariant.transactionId}
             target="_blank"
             rel="nofollow noreferrer"
             style={{ width: 150 }}

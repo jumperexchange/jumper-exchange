@@ -50,6 +50,11 @@ const transferTokens = {
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.AVA),
   ],
+  [ChainKey.ETH]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ETH),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ETH),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ETH),
+  ],
 }
 
 function usePageViews() {
