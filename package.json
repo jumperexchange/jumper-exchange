@@ -30,7 +30,7 @@
     "web-vitals": "^2.1.0"
   },
   "devDependencies": {
-    "@lifinance/types": "^0.1.1",
+    "@lifinance/types": "^0.3.0",
     "@storybook/addon-actions": "^6.3.10",
     "@storybook/addon-essentials": "^6.3.10",
     "@storybook/addon-links": "^6.3.10",
