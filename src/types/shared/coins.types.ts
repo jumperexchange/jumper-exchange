@@ -31,7 +31,7 @@ export const defaultCoins: Array<Coin> = [
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
       },
       [ChainKey.POL]: {
-        id: '0xfd8ee443ab7be5b1522a1c020c097cff1ddc1209',
+        id: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
         symbol: CoinKey.ETH,
         decimals: 18,
         chainId: ChainId.POL,
@@ -41,7 +41,7 @@ export const defaultCoins: Array<Coin> = [
         logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
       },
       [ChainKey.DAI]: {
-        id: '0xa5c7cb68cd81640d40c85b2e5ec9e4bb55be0214',
+        id: '0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1',
         symbol: CoinKey.ETH,
         decimals: 18,
         chainId: ChainId.DAI,
