@@ -1,11 +1,12 @@
-import axios from 'axios'
-import { BigNumber } from 'bignumber.js'
-import { constants, ethers } from 'ethers'
-import { getMulticallAddresses, getRpcUrls } from '../components/web3/connectors'
-import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, defaultTokens, getChainById, Token } from '../types'
-import { deepClone } from './utils'
+import { FallbackProvider } from '@ethersproject/providers'
 // @ts-ignore
 import { createWatcher } from '@makerdao/multicall'
+import axios from 'axios'
+import { BigNumber } from 'bignumber.js'
+import { BigNumber as BN, constants, Contract, ethers } from 'ethers'
+import { getMulticallAddresses, getRpcProvider, getRpcUrls } from '../components/web3/connectors'
+import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, defaultTokens, getChainById, Token } from '../types'
+import { deepClone } from './utils'
 
 type tokenListDebankT = {
   id: string,
@@ -255,85 +256,142 @@ const getBalancesForWallet = async (walletAdress: string, onChains?: Array<numbe
   return filterPortfolioWithBlacklist(protfolio, tokenBlacklist)
 }
 
-export const getBalanceFromProvider = async (
+export const getBalance = async (
+  address: string,
+  assetId: string,
+  provider: FallbackProvider,
+): Promise<BigNumber> => {
+  let balance
+  if (assetId === constants.AddressZero) {
+    balance = await provider.getBalance(address)
+  } else {
+    const contract = new Contract(assetId, ['function balanceOf(address owner) view returns (uint256)'], provider)
+    balance = await contract.balanceOf(address)
+  }
+  return balance
+}
+
+export const getBalancesFromProvider = async (
   address: string,
   tokens: Array<Token>,
-): Promise<Array<any>> => new Promise((resolve) => {
+): Promise<Array<ChainPortfolio>> => {
+  const chainId = tokens[0].chainId
+  const rpc = getRpcProvider(chainId)
+
+  const promises: Array<Promise<any>> = []
+  const chainPortfolio: Array<ChainPortfolio> = []
+
+  tokens.forEach(async (token) => {
+    const amount = getBalance(address, token.id, rpc).catch((e) => { console.warn(e); return BN.from(0) })
+    promises.push(amount)
+    chainPortfolio.push({
+      id: token.id,
+      name: token.name,
+      symbol: token.key,
+      img_url: '',
+      amount: new BigNumber((await amount).toString()).shiftedBy(-token.decimals),
+      pricePerCoin: new BigNumber(0),
+      verified: false,
+    })
+  })
+
+  await Promise.all(promises)
+
+  return chainPortfolio
+}
+
+export const getBalancesFromProviderUsingMulticall = async (
+  address: string,
+  tokens: Array<Token>,
+): Promise<Array<ChainPortfolio>> => {
+
   // Configuration
   const chainId = tokens[0].chainId
   const config = {
     rpcUrl: getRpcUrls([chainId])[chainId],
     multicallAddress: getMulticallAddresses([chainId])[chainId],
-    interval: 10000
+    interval: 1000000000, // calling stop on the watcher does not actually close the websocket
   }
 
-  // Collect calls we want to make
-  const calls: Array<any> = []
-  tokens.forEach(async (token) => {
-    if (token.id === constants.AddressZero) {
-      calls.push({
-        call: ['getEthBalance(address)(uint256)', address],
-        returns: [[
-          [token.id, token.name, token.key].join('-'),
-          (val: number) => new BigNumber(val).shiftedBy(-token.decimals).toFixed()
-        ]]
-      })
-    }
-    else {
-      calls.push({
-        target: token.id,
-        call: ['balanceOf(address)(uint256)', address],
-        returns: [[
-          [token.id, token.name, token.key].join('-'),
-          (val: number) => new BigNumber(val).shiftedBy(-token.decimals).toFixed(),
-        ]]
-      })
-    }
+  if (!config.multicallAddress) {
+    // Fallback if multicall is not available
+    return getBalancesFromProvider(address, tokens)
+  }
+
+  const promiseWrapper = new Promise((resolve) => {
+    // Collect calls we want to make
+    const calls: Array<any> = []
+    tokens.forEach(async (token) => {
+      if (token.id === constants.AddressZero) {
+        calls.push({
+          call: ['getEthBalance(address)(uint256)', address],
+          returns: [[
+            [token.id, token.name, token.key].join('-'),
+            (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
+          ]]
+        })
+      }
+      else {
+        calls.push({
+          target: token.id,
+          call: ['balanceOf(address)(uint256)', address],
+          returns: [[
+            [token.id, token.name, token.key].join('-'),
+            (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
+          ]]
+        })
+      }
+    })
+
+    const watcher = createWatcher(
+      calls,
+      config
+    )
+
+    // Success case
+    watcher.batch().subscribe((updates: any) => {
+      watcher.stop()
+      resolve(updates as any)
+    })
+
+    // Error case
+    watcher.onError((error: any) => {
+      watcher.stop()
+      console.log('failed for', chainId, config)
+      console.warn('Watcher Error:', error)
+      resolve([])
+    })
+
+    // Submit calls
+    watcher.start()
   })
 
-  const watcher = createWatcher(
-    calls,
-    config
-  )
-
-  // Success case
-  watcher.batch().subscribe((updates: any) => {
-    watcher.stop()
-    resolve(updates as any)
+  // parse results
+  const chainPortfolio: Array<ChainPortfolio> = []
+  const amounts = await promiseWrapper as Array<any>
+  amounts.forEach((amount) => {
+    const [token_id, token_name, token_key] = amount['type'].split('-')
+    chainPortfolio.push({
+      id: token_id,
+      name: token_name,
+      symbol: token_key,
+      img_url: '',
+      amount: new BigNumber(amount.value),
+      pricePerCoin: new BigNumber(0),
+      verified: false,
+    })
   })
 
-  // Error case
-  watcher.onError((error: any) => {
-    watcher.stop()
-    console.warn('Watcher Error:', error)
-    resolve([])
-  })
-
-  // Submit calls
-  watcher.start()
-})
+  return chainPortfolio
+}
 
 export const getBalancesForWalletFromChain = async (address: string, tokens: { [ChainKey: string]: Array<Token> }) => {
   const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
   Object.entries(tokens).forEach(async ([chainKey, tokens]) => {
-    const promise = getBalanceFromProvider(address, tokens)
+    const promise = getBalancesFromProviderUsingMulticall(address, tokens)
     promises.push(promise)
-    const amounts = await promise
-
-    amounts.forEach((amount) => {
-      const [token_id, token_name, token_key] = amount['type'].split('-')
-
-      portfolio[chainKey].push({
-        id: token_id,
-        name: token_name,
-        symbol: token_key,
-        img_url: '',
-        amount: new BigNumber(amount.value),
-        pricePerCoin: new BigNumber(0),
-        verified: false,
-      })
-    })
+    portfolio[chainKey] = await promise
   })
 
   await Promise.allSettled(promises)
