@@ -10,6 +10,11 @@ interface RouteProps {
 
 const Route = ({ route, selected, onSelect }: RouteProps) => {
 
+  const formatToolName = (name: string) => {
+    const nameOnly = name.split('-')[0]
+    return nameOnly[0].toUpperCase() + nameOnly.slice(1)
+  }
+
   const parseStep = (step: TransferStep) => {
     switch (step.action.type) {
       case "swap":
@@ -17,14 +22,14 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         const swapEstimate = step.estimate as SwapEstimate
         return {
           title: "Swap Tokens",
-          description: `${formatTokenAmount(swapAction.token, swapEstimate.fromAmount)} for ${formatTokenAmount(swapAction.toToken, swapEstimate.toAmount)} via ${swapAction.tool}`,
+          description: `${formatTokenAmount(swapAction.token, swapEstimate.fromAmount)} for ${formatTokenAmount(swapAction.toToken, swapEstimate.toAmount)} via ${formatToolName(swapAction.tool)}`,
         }
       case "cross":
         const crossAction = step.action as CrossAction
         const crossEstimate = step.estimate as CrossEstimate
         return {
           title: "Cross Chains",
-          description: `${getChainById(crossAction.chainId).name}: ${formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} to ${getChainById(crossAction.toChainId).name}: ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} via ${crossAction.tool}`,
+          description: `${getChainById(crossAction.chainId).name}: ${formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} to ${getChainById(crossAction.toChainId).name}: ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} via ${formatToolName(crossAction.tool)}`,
         }
       case "withdraw":
         return {

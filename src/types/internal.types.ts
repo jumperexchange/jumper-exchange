@@ -53,37 +53,13 @@ export const icons: { [key: string]: string } = {
 
 
   // Exchanges
-  'pancakeswap-bsc': pancake,
-
-  'quickswap-pol': quick,
-
-  'honeyswap-pol': honey,
-  'honeyswap-dai': honey,
-
-  'uniswap-eth': uniswap,
-  'uniswap-arb': uniswap,
-  'uniswap-opt': uniswap,
-  'uniswap-rop': uniswap,
-  'uniswap-rin': uniswap,
-  'uniswap-gor': uniswap,
-  'uniswap-kov': uniswap,
-
-  'spookyswap-ftm': spooky,
-
-  'viperswap-one': viper,
-
-  'sushiswap-eth': sushi,
-  'sushiswap-pol': sushi,
-  'sushiswap-bsc': sushi,
-  'sushiswap-dai': sushi,
-  'sushiswap-ftm': sushi,
-  'sushiswap-one': sushi,
-  'sushiswap-ava': sushi,
-  'sushiswap-arb': sushi,
-  'sushiswap-rop': sushi,
-  'sushiswap-rin': sushi,
-  'sushiswap-gor': sushi,
-  'sushiswap-kov': sushi,
+  'Pancakeswap': pancake,
+  'Quickswap': quick,
+  'Honeyswap': honey,
+  'Uniswap': uniswap,
+  'Spookyswap': spooky,
+  'Viperswap': viper,
+  'Sushiswap': sushi,
 }
 export const getIcon = (name: string | undefined) => {
   if (name && icons[name]) {

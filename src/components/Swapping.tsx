@@ -151,14 +151,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       if (!(await checkChain(step))) return
     }
     switch (swapAction.tool) {
-      case 'uniswap':
-      case 'pancakeswap':
-      case 'honeyswap':
-      case 'quickswap':
-      case 'spookyswap':
-      case 'viperswap':
-      case 'sushiswap':
-        return await uniswapExecutionManager.executeSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case 'paraswap':
         return await paraswapExecutionManager.executeSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case '1inch':
@@ -239,17 +231,23 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     )
   }
 
+  const formatToolName = (name: string) => {
+    const nameOnly = name.split('-')[0]
+    return nameOnly[0].toUpperCase() + nameOnly.slice(1)
+  }
+
   const getExchangeAvatar = (tool: string) => {
+    const name = formatToolName(tool)
     return (
-      <Tooltip title={tool}>
-        <Avatar size="small" src={getIcon(tool)} alt={tool}></Avatar>
+      <Tooltip title={name}>
+        <Avatar size="small" src={getIcon(name)} alt={name}></Avatar>
       </Tooltip>
     )
   }
 
   const connextAvatar = (
-    <Tooltip title="Connext">
-      <Avatar size="small" src={connextIcon} alt="Connext"></Avatar>
+    <Tooltip title="NXTP by Connext">
+      <Avatar size="small" src={connextIcon} alt="NXTP"></Avatar>
     </Tooltip>
   )
 
@@ -272,8 +270,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   )
 
   const horizonAvatar = (
-    <Tooltip title="1inch">
-      <Avatar size="small" src={harmonyIcon} alt="1inch"></Avatar>
+    <Tooltip title="horizon bridge">
+      <Avatar size="small" src={harmonyIcon} alt="horizon bridge"></Avatar>
     </Tooltip>
   )
 
