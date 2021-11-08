@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { injected } from './web3/connectors';
 
-import { Button, Table } from 'antd';
+import { Button, Popconfirm, Table } from 'antd';
 import { formatTokenAmount } from '../services/utils';
 import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types';
 import { DeleteOutlined, LoginOutlined } from '@ant-design/icons';
@@ -41,10 +41,24 @@ function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: Activ
     }
     return <>
         <Button style={{marginRight: 10}} type='ghost' shape='round' onClick={() => selectRoute(route)}>Resume Swap</Button>
-        <Button danger type='ghost' shape='round' onClick={() => deleteRoute(route)}><DeleteOutlined /></Button>
+        <Popconfirm
+          title={<>
+          Are you sure to delete this transfer? <br />
+          Already completed swaps in this transfer can't be refunded!
+          </>}
+          onConfirm={() => deleteRoute(route)}
+          // onCancel={cancel}
+          okText="Yes"
+          okType="danger"
+          cancelText="No"
+        >
+         <Button danger type='ghost' shape='round' onClick={() => {}}><DeleteOutlined /></Button>
+        </Popconfirm>,
       </>
 
   }
+
+
 
   const columns = [
     {
