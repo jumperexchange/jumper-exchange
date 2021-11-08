@@ -19,36 +19,43 @@ const transferChains = getTransferChains()
 
 const transferTokens = {
   [ChainKey.BSC]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.BSC),
   ],
   [ChainKey.POL]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.POL),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.POL),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.POL),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.POL),
   ],
   [ChainKey.DAI]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.DAI),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.DAI),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.DAI),
   ],
   [ChainKey.FTM]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.FTM),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.FTM),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.FTM),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
   ],
   [ChainKey.ARB]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ARB),
   ],
   [ChainKey.AVA]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.AVA),
   ],
   [ChainKey.ETH]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ETH),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ETH),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ETH),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ETH),
