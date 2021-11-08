@@ -288,7 +288,6 @@ const Swap = ({
         {!!activeRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
              <Collapse
               defaultActiveKey={activeRoutes.length? ['1']: ['']}
-              activeKey = {activeRoutes.length? ['1']: ['']}
               ghost
               bordered={false}
               className={`active-transfer-collapse`}
