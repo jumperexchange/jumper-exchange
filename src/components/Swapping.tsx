@@ -111,7 +111,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   }, [route, updateRoute])
 
   const checkChain = useCallback(async (step: TransferStep) => {
-    const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
+    const { status, update } = initStatus((status: Execution) => updateStatus(step, status), step.execution)
     const chain = getChainById(step.action.chainId)
     const switchProcess = createAndPushProcess("switchProcess", update, status, `Change Chain to ${chain.name}`)
     try {
@@ -337,7 +337,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     // setIsSwapping(true)
     const step = route[index]
     const previousStep = index > 0 ? route[index - 1] : undefined
-    const { status, update } = initStatus((status: Execution) => updateStatus(step, status))
+    const { status, update } = initStatus((status: Execution) => updateStatus(step, status), route[index].execution)
     try{
       switch (step.action.type) {
         case 'swap':

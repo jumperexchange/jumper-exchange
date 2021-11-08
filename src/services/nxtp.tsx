@@ -329,8 +329,6 @@ export const finishTransfer = async (signer: JsonRpcSigner, sdk: NxtpSdk, event:
   }
   let receipt
   try {
-    console.log('before fullfill transfer');
-
     const {fulfillResponse, metaTxResponse} = await sdk.fulfillTransfer(event, true, true)
     if(fulfillResponse){
       receipt = await signer.provider.waitForTransaction(fulfillResponse.hash)
