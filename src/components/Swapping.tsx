@@ -74,13 +74,13 @@ const isLifiSupported = (route: Array<TransferStep>) => {
 }
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalBalance, setFinalBalance] = useState<{token: Token, portfolio: ChainPortfolio}>()
+  const [finalBalance, setFinalBalance] = useState<{ token: Token, portfolio: ChainPortfolio }>()
 
   const [uniswapExecutionManager] = useState<UniswapExecutionManager>(new UniswapExecutionManager())
   const [paraswapExecutionManager] = useState<ParaswapExecutionManager>(new ParaswapExecutionManager())
@@ -152,14 +152,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       if (!(await checkChain(step))) return
     }
     switch (swapAction.tool) {
-      case 'uniswap':
-      case 'pancakeswap':
-      case 'honeyswap':
-      case 'quickswap':
-      case 'spookyswap':
-      case 'viperswap':
-      case 'sushiswap':
-        return await uniswapExecutionManager.executeSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case 'paraswap':
         return await paraswapExecutionManager.executeSwap(web3.library.getSigner(), swapAction, swapEstimate, fromAmount, fromAddress, toAddress, (status: Execution) => updateStatus(step, status), swapExecution)
       case '1inch':
@@ -240,19 +232,23 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     )
   }
 
-  const getExchangeAvatar = (chainId: number) => {
-    const chain = getChainById(chainId)
+  const formatToolName = (name: string) => {
+    const nameOnly = name.split('-')[0]
+    return nameOnly[0].toUpperCase() + nameOnly.slice(1)
+  }
 
+  const getExchangeAvatar = (tool: string) => {
+    const name = formatToolName(tool)
     return (
-      <Tooltip title={chain.exchange?.name}>
-        <Avatar size="small" src={getIcon(chain.exchange?.name)} alt={chain.exchange?.name}></Avatar>
+      <Tooltip title={name}>
+        <Avatar size="small" src={getIcon(name)} alt={name}></Avatar>
       </Tooltip>
     )
   }
 
   const connextAvatar = (
-    <Tooltip title="Connext">
-      <Avatar size="small" src={connextIcon} alt="Connext"></Avatar>
+    <Tooltip title="NXTP by Connext">
+      <Avatar size="small" src={connextIcon} alt="NXTP"></Avatar>
     </Tooltip>
   )
 
@@ -275,8 +271,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   )
 
   const horizonAvatar = (
-    <Tooltip title="1inch">
-      <Avatar size="small" src={harmonyIcon} alt="1inch"></Avatar>
+    <Tooltip title="horizon bridge">
+      <Avatar size="small" src={harmonyIcon} alt="horizon bridge"></Avatar>
     </Tooltip>
   )
 
@@ -290,8 +286,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       case 'swap': {
         return [
-          <Timeline.Item position={isMobile? 'right': 'right'} key={index + '_left'} color={color}>
-            <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.chainId))}</h4>
+          <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
+            <h4>Swap on {step.action.tool === '1inch' ? oneinchAvatar : (step.action.tool === 'paraswap' ? paraswapAvatar : getExchangeAvatar(step.action.tool))}</h4>
             <span>{formatTokenAmount(step.action.token, step.estimate?.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</span>
           </Timeline.Item>,
           <Timeline.Item position={isMobile? 'right': 'left'} key={index + '_right'} color={color} dot={isLoading? <LoadingOutlined /> : (isPaused ? <PauseCircleOutlined /> : null)}>
@@ -303,11 +299,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       case 'cross': {
         const crossAction = step.action as CrossAction
         const crossEstimate = step.estimate as CrossEstimate
-        let avatar;
+        let avatar
         switch (crossAction.tool) {
           case 'nxtp':
             avatar = connextAvatar
-            break;
+            break
           case 'hop':
             avatar = hopAvatar
             break;
@@ -315,10 +311,10 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             avatar = horizonAvatar
             break;
           default:
-            break;
+            break
         }
         return [
-          <Timeline.Item position={isMobile? 'right': 'right'} key={index + '_left'} color={color}>
+          <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
             <h4>Transfer from {getChainAvatar(getChainById(crossAction.chainId).key)} to {getChainAvatar(getChainById(crossAction.toChainId).key)} via {avatar}</h4>
             <span>{formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} <ArrowRightOutlined /> {formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)}</span>
           </Timeline.Item>,
@@ -475,8 +471,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     // DONE
     const isDone = route.filter(step => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
-      const lastStep = route[route.length-1]
-      const {toChain} = getRecevingInfo(lastStep)
+      const lastStep = route[route.length - 1]
+      const { toChain } = getRecevingInfo(lastStep)
       return (<Space direction="vertical">
       <Typography.Text strong>Swap Successful!</Typography.Text>
         {finalBalance && finalBalance.portfolio && (
@@ -507,14 +503,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     // FAILED
     const isFailed = route.some( step => step.execution?.status === 'FAILED' )
     if (isFailed) {
-      return <Button type="primary" onClick={() => restartCrossChainSwap()} style={{marginTop: 10}}>
+      return <Button type="primary" onClick={() => restartCrossChainSwap()} style={{ marginTop: 10 }}>
         Restart from Failed Step
       </Button>
     }
 
     // NOT_STARTED
     return (
-      <Button type="primary" onClick={() => startCrossChainSwap()} style={{marginTop: 10}}>
+      <Button type="primary" onClick={() => startCrossChainSwap()} style={{ marginTop: 10 }}>
         {isCrossChainSwap ? 'Start Cross Chain Swap' : 'Start Swap'}
       </Button>
     )
@@ -539,7 +535,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     {alerts}
     <br />
 
-    <Timeline mode={isMobile? 'left' : 'alternate'} className="swapping-modal-timeline" >
+    <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline" >
 
       {/* Steps */}
       {route.map(parseStepToTimeline)}
@@ -555,7 +551,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
     <div className="swapp-modal-footer">
 
-      <div style={{ textAlign: 'center', transform: "scale(1.3)",}}>
+      <div style={{ textAlign: 'center', transform: "scale(1.3)", }}>
         {getMainButton()}
       </div>
 
@@ -565,7 +561,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             <Typography.Text >{renderProcessMessage(currentProcess)}</Typography.Text>
           </Row>
           <Row justify="center">
-            <img src={walletIcon} alt="Please Check Your Wallet"  />
+            <img src={walletIcon} alt="Please Check Your Wallet" />
           </Row>
         </>
       }
