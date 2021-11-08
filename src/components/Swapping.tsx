@@ -29,6 +29,7 @@ import {OneInchExecutionManager} from '../services/1inch.execute';
 import {HopExecutionManager} from '../services/hop.execute';
 import {HorizonExecutionManager} from '../services/horizon.execute';
 import { renderProcessMessage } from '../services/processRenderer';
+import { constants } from 'ethers'
 
 
 interface SwappingProps {
@@ -478,18 +479,27 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       const {toChain} = getRecevingInfo(lastStep)
       return (<Space direction="vertical">
       <Typography.Text strong>Swap Successful!</Typography.Text>
-      {finalBalance && finalBalance.portfolio &&
-        <Tooltip title="Click to add this token to your wallet.">
-          <span style={{cursor: 'copy'}} onClick={() => switchChainAndAddToken(toChain.id, finalBalance.token)}>
+        {finalBalance && finalBalance.portfolio && (
+          finalBalance.token.id === constants.AddressZero ? (
             <Typography.Text>
               {'You now have '}
               {finalBalance.portfolio.amount.toString().substring(0, 8)}
               {` ${finalBalance.portfolio.symbol}`}
               {` on ${toChain.name}`}
             </Typography.Text>
-          </span>
-        </Tooltip>
-      }
+          ) : (
+            <Tooltip title="Click to add this token to your wallet.">
+              <span style={{ cursor: 'copy' }} onClick={() => switchChainAndAddToken(toChain.id, finalBalance.token)}>
+                <Typography.Text>
+                  {'You now have '}
+                  {finalBalance.portfolio.amount.toString().substring(0, 8)}
+                  {` ${finalBalance.portfolio.symbol}`}
+                  {` on ${toChain.name}`}
+                </Typography.Text>
+              </span>
+            </Tooltip >
+          )
+        )}
       <Link to="/dashboard"><Button type="link">Dashboard</Button></Link>
       </Space>)
     }

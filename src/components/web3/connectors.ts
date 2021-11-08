@@ -1,7 +1,7 @@
-import { InjectedConnector } from '@web3-react/injected-connector';
-import { NetworkConnector } from '@web3-react/network-connector';
-import { providers } from 'ethers';
-import { ChainId, getChainById } from '../../types';
+import { InjectedConnector } from '@web3-react/injected-connector'
+import { NetworkConnector } from '@web3-react/network-connector'
+import { providers } from 'ethers'
+import { ChainId, getChainById } from '../../types'
 
 const CHAINS = {
   // Mainnet
@@ -11,6 +11,7 @@ const CHAINS = {
   XDAI: 100,
   FANTOM: 250,
   ARBITRUM: 42161,
+  OPTIMISTIC: 10,
 
   // Testnet
   ROPSTEN: 3,
@@ -29,7 +30,7 @@ const CHAINS = {
   KOV: ChainId.KOV,
   ONE: ChainId.ONE,
   ONET: ChainId.ONET,
-};
+}
 
 const RPC_URLS: { [chainId: number]: string } = {
   // Mainnet
@@ -39,6 +40,7 @@ const RPC_URLS: { [chainId: number]: string } = {
   [CHAINS.XDAI]: process.env.REACT_APP_RPC_URL_XDAI || getChainById(CHAINS.XDAI).metamask.rpcUrls[0],
   [CHAINS.FANTOM]: process.env.REACT_APP_RPC_URL_FANTOM || getChainById(CHAINS.FANTOM).metamask.rpcUrls[0],
   [CHAINS.ARBITRUM]: process.env.REACT_APP_RPC_URL_ARBITRUM || getChainById(CHAINS.ARBITRUM).metamask.rpcUrls[0],
+  [CHAINS.OPTIMISTIC]: process.env.REACT_APP_RPC_URL_OPTIMISTIC || getChainById(CHAINS.OPTIMISTIC).metamask.rpcUrls[0],
 
   // Testnet
   [CHAINS.ROPSTEN]: process.env.REACT_APP_RPC_URL_ROPSTEN || getChainById(CHAINS.ROPSTEN).metamask.rpcUrls[0],
@@ -56,10 +58,12 @@ const RPC_URLS: { [chainId: number]: string } = {
   [CHAINS.FSN]: 'https://fsnmainnet2.anyswap.exchange',
   [CHAINS.KOV]: 'https://kovan.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   [CHAINS.ONE]: 'https://api.harmony.one',
-  [CHAINS.ONET]:  'https://api.s0.b.hmny.io',
-};
+  [CHAINS.ONET]: 'https://api.s0.b.hmny.io',
+}
 
-
+// based on:
+// - https://github.com/sushiswap/sushiswap-sdk/blob/canary/src/constants/addresses.ts#L323
+// - https://github.com/joshstevens19/ethereum-multicall#multicall-contracts
 const MULTICALL_ADDRESSES: { [chainId: number]: string } = {
   // Mainnet
   [CHAINS.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
@@ -73,6 +77,7 @@ const MULTICALL_ADDRESSES: { [chainId: number]: string } = {
   [CHAINS.FSN]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
   [CHAINS.KOV]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
   [CHAINS.ONE]: '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
+  // [CHAINS.OPTIMISTIC]: '',
 
   // Testnet
   [CHAINS.ROPSTEN]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
@@ -80,17 +85,17 @@ const MULTICALL_ADDRESSES: { [chainId: number]: string } = {
   [CHAINS.GOERLI]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
   [CHAINS.KOVAN]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
   [CHAINS.ARBITRUM_RINKEBY]: '0xa501c031958F579dB7676fF1CE78AD305794d579',
-  [CHAINS.OPTIMISM_KOVAN]: '',
+  // [CHAINS.OPTIMISM_KOVAN]: '',
   [CHAINS.POLYGON_TESTNET]: '0xc1400d49baa8e307B4462cD46E0a20109D25F50f',
   [CHAINS.BSC_TESTNET]: '0xae11C5B5f29A6a25e955F0CB8ddCc416f522AF5C',
-  [CHAINS.ONET]:  '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
-};
+  // [CHAINS.ONET]:  '',
+}
 
 // cached providers
-const chainProviders: Record<number, providers.FallbackProvider> = {};
+const chainProviders: Record<number, providers.FallbackProvider> = {}
 
 export const getRpcUrls = (chainIds: Array<number>) => {
-  const rpcs : Record<number, string> = {}
+  const rpcs: Record<number, string> = {}
   chainIds.forEach((chainId) => {
     rpcs[chainId] = RPC_URLS[chainId]
   })
@@ -98,7 +103,7 @@ export const getRpcUrls = (chainIds: Array<number>) => {
 }
 
 export const getMulticallAddresses = (chainIds: Array<number>) => {
-  const addresses : Record<number, string> = {}
+  const addresses: Record<number, string> = {}
   chainIds.forEach((chainId) => {
     addresses[chainId] = MULTICALL_ADDRESSES[chainId]
   })
@@ -113,7 +118,7 @@ export const getRpcProvider = (chainId: number) => {
 }
 
 export const getRpcProviders = (chainIds: Array<number>) => {
-  const selectedProviders: Record<number, providers.FallbackProvider> = {};
+  const selectedProviders: Record<number, providers.FallbackProvider> = {}
 
   chainIds.forEach((chainId) => {
     selectedProviders[chainId] = getRpcProvider(chainId)
@@ -123,11 +128,11 @@ export const getRpcProviders = (chainIds: Array<number>) => {
 
 export const injected = new InjectedConnector({
   supportedChainIds: Object.values<number>(CHAINS),
-});
+})
 
 export const network = new NetworkConnector({
   urls: Object.fromEntries(
     Object.values<number>(CHAINS).map(i => [i, RPC_URLS[i]])
   ),
   defaultChainId: CHAINS.MAINNET,
-});
+})

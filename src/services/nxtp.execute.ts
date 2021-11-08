@@ -96,6 +96,7 @@ export class NXTPExecutionManager {
       if(quoteProcess.quote){
         quote = quoteProcess.quote
       } else {
+        await nxtpSDK.getActiveTransactions()
         quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
         if (!quote) {
             throw new Error("No quote found! Please restart the swap.")

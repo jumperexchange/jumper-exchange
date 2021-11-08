@@ -1,38 +1,34 @@
 // LIBS
-import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Typography } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
-import Title from 'antd/lib/typography/Title';
-import axios, { CancelTokenSource } from 'axios';
-import BigNumber from 'bignumber.js';
-import { animate, stagger } from "motion";
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { loadTokenListAsTokens } from '../services/tokenListService';
-import { deepClone, formatTokenAmountOnly } from '../services/utils';
-import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types';
-import LoadingIndicator from './LoadingIndicator';
-import Route from './Route';
-import './Swap.css';
-import SwapForm from './SwapForm';
-import Swapping from './Swapping';
-import { injected } from './web3/connectors';
-import { readActiveRoutes, readHistoricalRoutes, deleteRoute } from '../services/localStorage';
-import TrasactionsTable from './TransactionsTable';
+import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Typography } from 'antd'
+import { Content } from 'antd/lib/layout/layout'
+import Title from 'antd/lib/typography/Title'
+import axios, { CancelTokenSource } from 'axios'
+import BigNumber from 'bignumber.js'
+import { animate, stagger } from "motion"
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { loadTokenListAsTokens } from '../services/tokenListService'
+import { deepClone, formatTokenAmountOnly } from '../services/utils'
+import { Chain, ChainKey, ChainPortfolio, defaultTokens, DepositAction, getChainByKey, Token, TransferStep, WithdrawAction } from '../types'
+import LoadingIndicator from './LoadingIndicator'
+import Route from './Route'
+import './Swap.css'
+import SwapForm from './SwapForm'
+import Swapping from './Swapping'
+import { injected } from './web3/connectors'
+import { readActiveRoutes, readHistoricalRoutes, deleteRoute } from '../services/localStorage'
+import TrasactionsTable from './TransactionsTable'
+import { getBalancesForWalletFromChain } from '../services/balanceService'
 
-const { Panel } = Collapse;
+const { Panel } = Collapse
 
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
 }
 let source: CancelTokenSource | undefined = undefined
-
-interface SwapProps {
-  transferChains: Chain[]
-  getBalancesForWallet: Function
-}
 
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
@@ -46,9 +42,23 @@ const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>)
   })
 }
 
+const filterDefaultTokenByChains = (tokens: { [ChainKey: string]: Array<TokenWithAmounts> }, transferChains: Chain[]) => {
+  const result: { [ChainKey: string]: Array<TokenWithAmounts> } = {}
+
+  transferChains.forEach((chain) => {
+    if (tokens[chain.key]) {
+      result[chain.key] = tokens[chain.key]
+    }
+  })
+  return result
+}
+
+interface SwapProps {
+  transferChains: Chain[]
+}
+
 const Swap = ({
   transferChains,
-  getBalancesForWallet,
 }: SwapProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unused, setStateUpdate] = useState<number>(0)
@@ -60,7 +70,7 @@ const Swap = ({
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(transferChains[1].key)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [withdrawToken, setWithdrawToken] = useState<string | undefined>() // tokenId
-  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(defaultTokens)
+  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(filterDefaultTokenByChains(defaultTokens, transferChains))
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
@@ -109,13 +119,19 @@ const Swap = ({
     }
   }, [refreshTokens, transferChains])
 
+  const updateBalances = useCallback(() => {
+    if (web3.account) {
+      getBalancesForWalletFromChain(web3.account, tokens)
+        .then(setBalances)
+    }
+  }, [web3.account, tokens])
+
   useEffect(() => {
     if (refreshBalances && web3.account) {
       setRefreshBalances(false)
-      getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-        .then(setBalances)
+      updateBalances()
     }
-  }, [refreshBalances, getBalancesForWallet, transferChains, web3.account])
+  }, [refreshBalances, web3.account, updateBalances])
 
   useEffect(() => {
     if (!web3.account) {
@@ -447,32 +463,29 @@ const Swap = ({
         <Modal
           className="swapModal"
           visible={selectedRoute.length > 0}
-          onOk={() =>{
+          onOk={() => {
             setselectedRoute([])
-            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-            .then(setBalances)
+            updateBalances()
           }}
           onCancel={() => {
             setselectedRoute([])
-            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-            .then(setBalances)
+            updateBalances()
           }}
-          destroyOnClose = {true}
+          destroyOnClose={true}
           width={700}
           footer={null}
         >
           <Swapping
-          route={selectedRoute}
-          updateRoute={(route: any) => {
-            setActiveRoutes(readActiveRoutes())
-            setHistoricalRoutes(readHistoricalRoutes())
-          }}
-          onSwapDone = {(route: TransferStep[]) => {
-            setActiveRoutes(readActiveRoutes())
-            setHistoricalRoutes(readHistoricalRoutes())
-            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-            .then(setBalances)
-          }}
+            route={selectedRoute}
+            updateRoute={(route: any) => {
+              setActiveRoutes(readActiveRoutes())
+              setHistoricalRoutes(readHistoricalRoutes())
+            }}
+            onSwapDone={(route: TransferStep[]) => {
+              setActiveRoutes(readActiveRoutes())
+              setHistoricalRoutes(readHistoricalRoutes())
+              updateBalances()
+            }}
           ></Swapping>
         </Modal>
       }
