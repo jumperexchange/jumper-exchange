@@ -43,8 +43,7 @@ function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: Activ
         <Button style={{marginRight: 10}} type='ghost' shape='round' onClick={() => selectRoute(route)}>Resume Swap</Button>
         <Popconfirm
           title={<>
-          Are you sure to delete this transfer? <br />
-          Already completed swaps in this transfer can't be refunded!
+            Are you sure to delete this transfer?
           </>}
           onConfirm={() => deleteRoute(route)}
           // onCancel={cancel}
@@ -53,7 +52,7 @@ function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: Activ
           cancelText="No"
         >
          <Button danger type='ghost' shape='round' onClick={() => {}}><DeleteOutlined /></Button>
-        </Popconfirm>,
+        </Popconfirm>
       </span>
 
   }
