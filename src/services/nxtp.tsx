@@ -436,7 +436,7 @@ export const finishTransfer = async (
   }
 
   try {
-    await sdk.fulfillTransfer(event)
+    await sdk.fulfillTransfer(event, true, true)
   } catch (e) {
     console.error(e)
     if (updateStatus && lastProcess && lastProcess.status !== 'DONE') {
