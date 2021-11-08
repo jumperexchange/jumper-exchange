@@ -53,14 +53,13 @@ export const icons: { [key: string]: string } = {
 
 
   // Exchanges
-  'Pancake': pancake,
-  'QuickSwap': quick,
+  'Pancakeswap': pancake,
+  'Quickswap': quick,
   'Honeyswap': honey,
-  'UniswapV2': uniswap,
   'Uniswap': uniswap,
-  'SpookySwap': spooky,
-  'ViperSwap': viper,
-  'SushiSwap': sushi,
+  'Spookyswap': spooky,
+  'Viperswap': viper,
+  'Sushiswap': sushi,
 }
 export const getIcon = (name: string | undefined) => {
   if (name && icons[name]) {
@@ -137,6 +136,7 @@ export interface WalletSummary {
   [ChainKey.OPT]: SummaryAmounts
   [ChainKey.ARB]: SummaryAmounts
   [ChainKey.ONE]: SummaryAmounts
+  [ChainKey.FSN]: SummaryAmounts
 
   [ChainKey.ROP]: SummaryAmounts
   [ChainKey.RIN]: SummaryAmounts

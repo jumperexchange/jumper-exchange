@@ -1,6 +1,6 @@
-import { Button, Steps } from 'antd';
-import { formatTokenAmount } from '../services/utils';
-import { ChainKey, CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types';
+import { Button, Steps } from 'antd'
+import { formatTokenAmount } from '../services/utils'
+import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types'
 
 interface RouteProps {
   route: Array<TransferStep>
@@ -8,33 +8,12 @@ interface RouteProps {
   onSelect: Function
 }
 
-const chainNames: {[k in ChainKey]: string} = {
-  eth: "Ethereum",
-  pol: "Polygon",
-  bsc: "BSC",
-  dai: "xDai",
-  okt: "OKEx",
-  ftm: "Fantom",
-  ava: "Avalance",
-  arb: "Arbitrum",
-  hec: "Huobi ECO",
-  opt: "Optimistic ETH",
-  one: "Harmony",
-
-  // testnets
-  rop: "Ropsten TEST",
-  rin: "Rinkeby TEST",
-  gor: "Goerli TEST",
-  kov: "Kovan TEST",
-  mum: "Mumbai TEST",
-  arbt: "Arbitrum TEST",
-  optt: "Optimism TEST",
-  bsct: "BSC TEST",
-  hect: "Huobi TEST",
-  onet: "Harmony TEST",
-}
-
 const Route = ({ route, selected, onSelect }: RouteProps) => {
+
+  const formatToolName = (name: string) => {
+    const nameOnly = name.split('-')[0]
+    return nameOnly[0].toUpperCase() + nameOnly.slice(1)
+  }
 
   const parseStep = (step: TransferStep) => {
     switch (step.action.type) {
@@ -43,14 +22,15 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         const swapEstimate = step.estimate as SwapEstimate
         return {
           title: "Swap Tokens",
-          description: `${formatTokenAmount(swapAction.token, swapEstimate.fromAmount)} for ${formatTokenAmount(swapAction.toToken, swapEstimate.toAmount)} via ${swapAction.tool}`,
+          description: `${formatTokenAmount(swapAction.token, swapEstimate.fromAmount)} for ${formatTokenAmount(swapAction.toToken, swapEstimate.toAmount)} via ${formatToolName(swapAction.tool)}`,
         }
       case "cross":
         const crossAction = step.action as CrossAction
         const crossEstimate = step.estimate as CrossEstimate
         return {
           title: "Cross Chains",
-          description: `${chainNames[getChainById(crossAction.chainId).key]}: ${formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} to ${chainNames[getChainById(crossAction.toChainId).key]}: ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} via ${crossAction.tool}`,        }
+          description: `${getChainById(crossAction.chainId).name}: ${formatTokenAmount(crossAction.token, crossEstimate.fromAmount)} to ${getChainById(crossAction.toChainId).name}: ${formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)} via ${formatToolName(crossAction.tool)}`,
+        }
       case "withdraw":
         return {
           title: "Withdraw",
