@@ -1,37 +1,37 @@
-import { CheckOutlined, DownOutlined, ExportOutlined, InfoCircleOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons';
-import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk';
-import { AuctionResponse, getDeployedSubgraphUri, TransactionPreparedEvent } from '@connext/nxtp-utils';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row, Tooltip } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
-import Title from 'antd/lib/typography/Title';
-import BigNumber from 'bignumber.js';
-import { providers, utils } from 'ethers';
-import { gql, request } from 'graphql-request';
-import { createBrowserHistory } from 'history';
-import QueryString from 'qs';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import onehiveWordmark from '../../assets/1hive_wordmark.svg';
-import connextWordmark from '../../assets/connext_wordmark.png';
-import lifiWordmark from '../../assets/lifi_wordmark.svg';
-import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg';
-import { getBalancesForWalletFromChain } from '../../services/balanceService';
-import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage';
-import { switchChain } from '../../services/metamask';
-import { chainConfigOverwrites, finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp';
-import { deepClone, formatTokenAmountOnly } from '../../services/utils';
-import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, defaultCoins, Execution, findDefaultCoinOnChain, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types';
-import '../Swap.css';
-import SwapForm from '../SwapForm';
-import { getRpcProviders, injected } from '../web3/connectors';
-import HistoricTransactionsTableNxtp from './HistoricTransactionsTableNxtp';
-import LiquidityTableNxtp from './LiquidityTableNxtp';
-import SwappingNxtp from './SwappingNxtp';
-import './SwapXpollinate.css';
-import TestBalanceOverview from './TestBalanceOverview';
-import TransactionsTableNxtp from './TransactionsTableNxtp';
-import { ActiveTransaction, CrosschainTransaction } from './typesNxtp';
+import { CheckOutlined, DownOutlined, ExportOutlined, InfoCircleOutlined, LinkOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { HistoricalTransaction, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk'
+import { AuctionResponse, getDeployedSubgraphUri, TransactionPreparedEvent } from '@connext/nxtp-utils'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Alert, Badge, Button, Checkbox, Col, Collapse, Dropdown, Form, Input, Menu, Modal, Row, Tooltip } from 'antd'
+import { Content } from 'antd/lib/layout/layout'
+import Title from 'antd/lib/typography/Title'
+import BigNumber from 'bignumber.js'
+import { providers, utils } from 'ethers'
+import { gql, request } from 'graphql-request'
+import { createBrowserHistory } from 'history'
+import QueryString from 'qs'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import onehiveWordmark from '../../assets/1hive_wordmark.svg'
+import connextWordmark from '../../assets/connext_wordmark.png'
+import lifiWordmark from '../../assets/lifi_wordmark.svg'
+import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg'
+import { getBalancesForWalletFromChain } from '../../services/balanceService'
+import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage'
+import { switchChain } from '../../services/metamask'
+import { chainConfigOverwrites, finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp'
+import { deepClone, formatTokenAmountOnly } from '../../services/utils'
+import { Chain, ChainKey, ChainPortfolio, CoinKey, CrossAction, CrossEstimate, CrossStep, defaultCoins, Execution, findDefaultCoinOnChain, getChainById, getChainByKey, Token, TokenWithAmounts, TransferStep } from '../../types'
+import '../Swap.css'
+import SwapForm from '../SwapForm'
+import { getRpcProviders, injected } from '../web3/connectors'
+import HistoricTransactionsTableNxtp from './HistoricTransactionsTableNxtp'
+import LiquidityTableNxtp from './LiquidityTableNxtp'
+import SwappingNxtp from './SwappingNxtp'
+import './SwapXpollinate.css'
+import TestBalanceOverview from './TestBalanceOverview'
+import TransactionsTableNxtp from './TransactionsTableNxtp'
+import { ActiveTransaction, CrosschainTransaction } from './typesNxtp'
 
 const history = createBrowserHistory()
 
@@ -45,7 +45,7 @@ const getDefaultParams = (search: string, transferChains: Chain[], transferToken
   const defaultParams = {
     depositChain: transferChains[0].key,
     depositToken: transferTokens[transferChains[0].key][0].id,
-    depositAmount: -1,
+    depositAmount: new BigNumber(-1),
     withdrawChain: transferChains[1].key,
     withdrawToken: transferTokens[transferChains[1].key][0].id,
   }
@@ -85,9 +85,9 @@ const getDefaultParams = (search: string, transferChains: Chain[], transferToken
   // fromAmount
   if (params.fromAmount && typeof params.fromAmount === 'string') {
     try {
-      const newAmount = parseFloat(params.fromAmount)
-      if (newAmount > 0) {
-        defaultParams.depositAmount = parseFloat(params.fromAmount)
+      const newAmount = new BigNumber(params.fromAmount)
+      if (newAmount.gt(0)) {
+        defaultParams.depositAmount = newAmount
       }
     } catch (e) { console.error(e) }
   }
@@ -142,11 +142,11 @@ function debounce(func: Function, timeout: number = 300) {
 let chainProviders: Record<number, providers.FallbackProvider>
 
 let startParams: {
-  depositChain: ChainKey;
-  depositToken: string;
-  depositAmount: number;
-  withdrawChain: ChainKey;
-  withdrawToken: string;
+  depositChain: ChainKey
+  depositToken: string
+  depositAmount: BigNumber
+  withdrawChain: ChainKey
+  withdrawToken: string
 }
 
 interface SwapXpollinateProps {
@@ -173,10 +173,10 @@ const SwapXpollinate = ({
 
   // Form
   const [depositChain, setDepositChain] = useState<ChainKey>(startParams.depositChain)
-  const [depositAmount, setDepositAmount] = useState<number>(startParams.depositAmount)
+  const [depositAmount, setDepositAmount] = useState<BigNumber>(startParams.depositAmount)
   const [depositToken, setDepositToken] = useState<string>(startParams.depositToken)
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(startParams.withdrawChain)
-  const [withdrawAmount, setWithdrawAmount] = useState<number>(Infinity)
+  const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [withdrawToken, setWithdrawToken] = useState<string>(startParams.withdrawToken)
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
   const [refreshBalances, setRefreshBalances] = useState<number>(1)
@@ -226,12 +226,12 @@ const SwapXpollinate = ({
       fromToken: depositToken,
       toChain: getChainByKey(withdrawChain).id,
       toToken: withdrawToken,
-      fromAmount: depositAmount > 0 ? depositAmount : undefined,
+      fromAmount: depositAmount.gt(0) ? depositAmount.toString() : undefined,
     }
     const search = QueryString.stringify(params)
     history.push({
       search,
-    });
+    })
   }, [depositChain, withdrawChain, depositToken, withdrawToken, depositAmount])
 
   // hide about
@@ -300,7 +300,11 @@ const SwapXpollinate = ({
     const liq = await Promise.all(
       chains.map(async (chain) => {
         // get graph from override first
-        let sub = chainConfigOverwrites[chain.id]?.subgraph
+        let sub = chainConfigOverwrites[chain.id]?.subgraph ? 
+          Array.isArray(chainConfigOverwrites[chain.id]?.subgraph) ? 
+            chainConfigOverwrites[chain.id]?.subgraph![0] : 
+            chainConfigOverwrites[chain.id]?.subgraph : 
+          undefined
         if (!sub) {
           sub = getDeployedSubgraphUri(chain.id)
         }
@@ -310,7 +314,7 @@ const SwapXpollinate = ({
         }
 
         // request
-        const res = await request(sub, query, {
+        const res = await request(sub as string, query, {
           routerId: process.env.REACT_APP_NXTP_ROUTER_ADDRESS?.toLowerCase(),
         })
 
@@ -550,12 +554,12 @@ const SwapXpollinate = ({
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
     if (!balances) {
-      return 0
+      return new BigNumber(0)
     }
 
     const tokenBalance = balances[chainKey].find(portfolio => portfolio.id === tokenId)
 
-    return tokenBalance?.amount || 0
+    return tokenBalance?.amount || new BigNumber(0)
   }
 
   useEffect(() => {
@@ -563,7 +567,7 @@ const SwapXpollinate = ({
     if (!balances) {
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
-          token.amount = -1
+          token.amount = new BigNumber(-1)
           token.amountRendered = ''
         }
       }
@@ -571,7 +575,7 @@ const SwapXpollinate = ({
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
           token.amount = getBalance(chain.key, token.id)
-          token.amountRendered = token.amount >= 0.0001 ? token.amount.toFixed(4) : token.amount.toFixed()
+          token.amountRendered = token.amount.gte(0.0001) ? token.amount.toFixed(4) : token.amount.toFixed()
         }
       }
     }
@@ -595,7 +599,7 @@ const SwapXpollinate = ({
     if (!depositToken) {
       return true
     }
-    return depositAmount <= getBalance(depositChain, depositToken)
+    return depositAmount.lte(getBalance(depositChain, depositToken))
   }
 
   const findToken = useCallback((chainKey: ChainKey, tokenId: string) => {
@@ -646,7 +650,7 @@ const SwapXpollinate = ({
       return
     }
 
-    if ((isFinite(depositAmount) && depositAmount > 0) && depositChain && depositToken && withdrawChain && withdrawToken) {
+    if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
       const receiving = optionReceivingAddress !== '' ? optionReceivingAddress : web3.account
       const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
       const callData = optionCallData !== '' ? optionCallData : undefined
@@ -739,14 +743,14 @@ const SwapXpollinate = ({
     const wToken = findToken(routeRequest.withdrawChain, routeRequest.withdrawToken)
 
     const crossAction: CrossAction = {
-        type: 'cross',
-        tool: 'nxtp',
-        chainId: getChainByKey(routeRequest.depositChain).id,
-        toChainId: getChainByKey(routeRequest.withdrawChain).id,
-        token: dToken,
-        toToken: wToken,
-        amount: dAmount,
-        toAddress: '',
+      type: 'cross',
+      tool: 'nxtp',
+      chainId: getChainByKey(routeRequest.depositChain).id,
+      toChainId: getChainByKey(routeRequest.withdrawChain).id,
+      token: dToken,
+      toToken: wToken,
+      amount: dAmount,
+      toAddress: '',
     }
     // TODO: calculate real fee
     const crossEstimate: CrossEstimate = {
@@ -795,7 +799,7 @@ const SwapXpollinate = ({
     setExecutionRoutes(routes => [...routes, route])
 
     // get new route to avoid triggering the same quote twice
-    setDepositAmount(-1)
+    setDepositAmount(new BigNumber(-1))
     setRouteRequest(undefined)
     setRouteQuote(undefined)
 
@@ -978,29 +982,29 @@ const SwapXpollinate = ({
     }
 
     return (
-    <div>
-      <Tooltip color={'gray'} placement="topRight" title={(
-        <table>
-          <tbody>
-          <tr>
-              <td>Included Fees:</td>
-              <td style={{textAlign: 'right'}}></td>
-            </tr>
-            <tr>
-              <td>Base Fee</td>
-              <td style={{textAlign: 'right'}}>{routerFee.toFixed(decimals, 1)} {token?.symbol}</td>
-            </tr>
-            <tr>
-              <td style={{paddingRight: 10}}>Router Gas Fee</td>
-              <td style={{textAlign: 'right'}}>{gasFee.toFixed(decimals, 1)} {token?.symbol}</td>
-            </tr>
-          </tbody>
-        </table>
-      )}>
-        Fee Impact: {impact.toFixed(2)}%
+      <div>
+        <Tooltip color={'gray'} placement="topRight" title={(
+          <table>
+            <tbody>
+              <tr>
+                <td>Included Fees:</td>
+                <td style={{ textAlign: 'right' }}></td>
+              </tr>
+              <tr>
+                <td>Base Fee</td>
+                <td style={{ textAlign: 'right' }}>{routerFee.toFixed(decimals, 1)} {token?.symbol}</td>
+              </tr>
+              <tr>
+                <td style={{ paddingRight: 10 }}>Router Gas Fee</td>
+                <td style={{ textAlign: 'right' }}>{gasFee.toFixed(decimals, 1)} {token?.symbol}</td>
+              </tr>
+            </tbody>
+          </table>
+        )}>
+          Fee Impact: {impact.toFixed(2)}%
 
-        <Badge count={<InfoCircleOutlined  style={{ color: 'gray' }} />} offset={[4,-1]} />
-      </Tooltip>
+          <Badge count={<InfoCircleOutlined style={{ color: 'gray' }} />} offset={[4, -1]} />
+        </Tooltip>
       </div>
     )
   }
@@ -1179,7 +1183,7 @@ const SwapXpollinate = ({
                   syncStatus={syncStatus}
                 />
 
-                <Row justify={"end"} style={{ marginRight: 20, marginTop: 4}}>
+                <Row justify={"end"} style={{ marginRight: 20, marginTop: 4 }}>
                   {priceImpact()}
                 </Row>
 

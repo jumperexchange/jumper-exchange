@@ -268,7 +268,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
 
   // Transaction
   // -> set status
-  const submitProcess = createAndPushProcess(update, status, 'Preparing Transaction', { status: 'PENDING' })
+  const submitProcess = createAndPushProcess('submitProcess', update, status, 'Preparing Transaction', { status: 'PENDING' })
 
   // -> prepare
   let call
@@ -306,7 +306,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   submitProcess.status = 'PENDING'
   submitProcess.txHash = tx.hash
   submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + submitProcess.txHash
-  submitProcess.message = <>Send Transaction - Wait for <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  submitProcess.message = 'Send Transaction - Wait for'
   update(status)
 
   // -> wait
@@ -321,13 +321,13 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   }
 
   // -> set status
-  submitProcess.message = <>Transaction Sent: <a href={submitProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  submitProcess.messafe = 'Transaction Sent:'
   setStatusDone(update, status, submitProcess)
 
 
   // Wait for receiver
   // -> set status
-  const receiverProcess = createAndPushProcess(update, status, 'Wait for Receiver', { type: 'wait' })
+  const receiverProcess = createAndPushProcess('receiverProcess', update, status, 'Wait for Receiver', { type: 'wait' })
 
   // -> wait
   let prepared
@@ -347,13 +347,13 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   // -> set status
   receiverProcess.txHash = prepared.transactionHash
   receiverProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + receiverProcess.txHash
-  receiverProcess.message = <>Receiver Prepared: <a href={receiverProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  receiverProcess.message = 'Receiver Prepared:'
   setStatusDone(update, status, receiverProcess)
 
 
   // Sign to claim
   // -> set status
-  const proceedProcess = createAndPushProcess(update, status, 'Ready to be Signed', { type: 'claim', status: 'ACTION_REQUIRED' })
+  const proceedProcess = createAndPushProcess('proceedProcess', update, status, 'Ready to be Signed', { type: 'claim', status: 'ACTION_REQUIRED' })
 
   // -> sign
   try {
@@ -388,7 +388,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   // -> set status
   proceedProcess.txHash = claimed.transactionHash
   proceedProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + proceedProcess.txHash
-  proceedProcess.message = <>Funds Claimed: <a href={proceedProcess.txLink} target="_blank" rel="nofollow noreferrer">Tx</a></>
+  proceedProcess.message = 'Funds Claimed:'
   setStatusDone(update, status, proceedProcess)
 
   // DONE

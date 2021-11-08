@@ -37,13 +37,12 @@ export interface FailedEstimate {
 export type Estimate = SwapEstimate | DepositEstimate | CrossEstimate | WithdrawEstimate
 
 // EXECUTION
-export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE'
+export type Status = 'NOT_STARTED' | 'ACTION_REQUIRED' | 'PENDING' | 'FAILED' | 'DONE' | 'RESUME'
 
-type AcceptableMessages = string | JSX.Element
-export type ProcessMessage =
-AcceptableMessages| {message: AcceptableMessages , footer: AcceptableMessages }
+export type ProcessMessage =  string | {message: string  , footer: string }
 
 export interface Process {
+  id: string
   startedAt: number
   doneAt?: number
   failedAt?: number
@@ -59,8 +58,8 @@ export interface Process {
 export interface Execution {
   status: Status
   process: Array<Process>
-  fromAmount?: number
-  toAmount?: number
+  fromAmount?: string
+  toAmount?: string
 }
 
 export const emptyExecution : Execution = {

@@ -35,9 +35,6 @@
 
 .ant-layout-header {
   overflow: hidden;
-}
-
-.ant-menu.ant-menu-horizontal {
   background: rgb(24, 21, 35);
   background: linear-gradient(
     140deg,
@@ -51,6 +48,11 @@
 .ant-menu-horizontal > .ant-menu-item a,
 .ant-menu-horizontal > .ant-menu-item-selected a {
   color: white;
+}
+
+.ant-menu {
+  background: transparent !important;
+  border:none !important;
 }
 
 .beta-badge {
@@ -72,8 +74,8 @@
 }
 
 .lifiSupport {
-  color: #c53030;
-  border: 1px solid #c53030;
+  color: #c930e4;
+  border: 1px solid #c930e4;
   background: white;
 
   line-height: 1;
@@ -88,21 +90,21 @@
 }
 
 .lifiSupport.support-content {
-  visibility: hidden;
+  display: none;
 }
 
 .lifiSupport:hover {
-  background: #c53030;
+  background: #c930e4;
   color: white;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
   .lifiSupport.support-header {
     visibility: hidden;
   }
 
   .lifiSupport.support-content {
-    visibility: visible;
+    display: block;
     position: fixed;
     top: 60px;
     right: 14px;
@@ -114,4 +116,13 @@
   height: 18px;
   padding-top: 1px;
   padding-bottom: 1px;
+}
+
+.headerIconLink {
+  color: white;
+  font-size: 20px;
+}
+
+.headerIconLink:hover {
+  color: #c930e4;
 }

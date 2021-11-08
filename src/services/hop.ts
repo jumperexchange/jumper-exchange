@@ -7,7 +7,6 @@ import { ChainId, ChainKey, CoinKey } from '../types'
 import { getChainByKey } from '../types/shared/chains.types'
 
 
-
 const receivedContractTypes: Array<ethers.utils.ParamType> = [
   ethers.utils.ParamType.from({
       "indexed": false,

@@ -24,6 +24,7 @@ import mum from '../assets/icons/polygon_test.png'
 import bsct from '../assets/icons/bsc_test.png'
 import arbt from '../assets/icons/arbitrum_test.png'
 import onet from '../assets/icons/harmony_test.png'
+import BigNumber from 'bignumber.js'
 
 export const icons: { [key: string]: string } = {
   // Mainnets
@@ -92,12 +93,12 @@ export const getIcon = (name: string | undefined) => {
 }
 
 export interface Amounts {
-  amount_coin: number
-  amount_usd: number
+  amount_coin: BigNumber
+  amount_usd: BigNumber
 }
 
 export interface TokenWithAmounts extends Token {
-  amount?: number
+  amount?: BigNumber
   amountRendered?: string
 }
 
@@ -125,8 +126,8 @@ export interface ChainPortfolio {
   name: string,
   symbol: string,
   img_url: string,
-  pricePerCoin: number,
-  amount: number,
+  pricePerCoin: BigNumber,
+  amount: BigNumber,
   verified: boolean,
 }
 
@@ -142,8 +143,8 @@ export enum Currencies {
 }
 
 export interface SummaryAmounts {
-  amount_usd: number
-  percentage_of_portfolio: number
+  amount_usd: BigNumber
+  percentage_of_portfolio: BigNumber
 }
 
 export interface WalletSummary {
