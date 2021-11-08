@@ -447,8 +447,6 @@ const SwapXpollinate = ({
 
       // get pending transactions
       setUpdatingActiveTransactions(true)
-      console.log('------ loadActiveTransactions')
-      console.log(_sdk)
       const transactions = await _sdk.getActiveTransactions()
       for (const transaction of transactions) {
         // merge to txData to be able to pass event to fulfillTransfer
