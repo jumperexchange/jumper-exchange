@@ -105,9 +105,9 @@ function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: Activ
 
     let toChainId
     if(firstStep.action.type === 'swap'){
-      toChainId = firstAction.chainId
+      toChainId = lastAction.chainId
     } else{
-      toChainId = (firstStep.action as CrossAction).toChainId
+      toChainId = (lastStep.action as CrossAction).toChainId
     }
 
     return {
