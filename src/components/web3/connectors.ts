@@ -22,6 +22,9 @@ const customRpc: Record<number, string | undefined> = {
   [ChainId.BSCT]: process.env.REACT_APP_RPC_URL_BSC_TESTNET,
 }
 
+// based on:
+// - https://github.com/sushiswap/sushiswap-sdk/blob/canary/src/constants/addresses.ts#L323
+// - https://github.com/joshstevens19/ethereum-multicall#multicall-contracts
 const MULTICALL_ADDRESSES: { [chainId: number]: string } = {
   // Mainnet
   [ChainId.ETH]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
@@ -35,6 +38,7 @@ const MULTICALL_ADDRESSES: { [chainId: number]: string } = {
   [ChainId.FSN]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
   [ChainId.KOV]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
   [ChainId.ONE]: '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
+  [ChainId.OPT]: '',
 
   // Testnet
   [ChainId.ROP]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
@@ -45,7 +49,7 @@ const MULTICALL_ADDRESSES: { [chainId: number]: string } = {
   // [ChainId.OPTT]: '',
   [ChainId.MUM]: '0xc1400d49baa8e307B4462cD46E0a20109D25F50f',
   [ChainId.BSCT]: '0xae11C5B5f29A6a25e955F0CB8ddCc416f522AF5C',
-  [ChainId.ONET]:  '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
+  // [ChainId.ONET]:  '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
 }
 
 // cached providers
@@ -60,7 +64,7 @@ export const getMulticallAddresse = (chainId: number) => {
 }
 
 export const getMulticallAddresses = (chainIds: Array<number>) => {
-  const addresses : Record<number, string> = {}
+  const addresses: Record<number, string> = {}
   chainIds.forEach((chainId) => {
     addresses[chainId] = getMulticallAddresse(chainId)
   })

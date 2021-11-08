@@ -12,10 +12,8 @@ import Swap from './components/Swap'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
 import analytics from './services/analytics'
-import { getBalancesForWallet as getBalancesForWalletMainnet } from './services/balanceService'
 import setMetatags from './services/metatags'
 import { initStomt } from './services/stomt'
-import { getDefaultTokenBalancesForWallet as getBalancesForWalletTestnet } from './services/testToken'
 import { getChainById } from './types'
 import NotificationOverlay from './components/NotificationsOverlay'
 
@@ -131,7 +129,6 @@ function App() {
                   return <div className="lifiWrap">
                     <Swap
                       transferChains={transferChains}
-                      getBalancesForWallet={getBalancesForWalletMainnet}
                     />
                   </div>
                 }} />
@@ -144,7 +141,6 @@ function App() {
                   return <div className="lifiWrap">
                     <Swap
                       transferChains={transferChains}
-                      getBalancesForWallet={getBalancesForWalletTestnet}
                     />
                   </div>
                 }} />
