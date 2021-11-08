@@ -273,7 +273,8 @@ const Swap = ({
                   <div >
                       <TrasactionsTable
                       routes={historicalRoutes}
-                      routeAction = {(route:TransferStep[]) => {
+                      selectRoute = {() => {} }
+                      deleteRoute = {(route:TransferStep[]) => {
                         deleteRoute(route)
                         setHistoricalRoutes(readHistoricalRoutes())
                       } }
@@ -297,7 +298,12 @@ const Swap = ({
                   <div >
                       <TrasactionsTable
                       routes={activeRoutes}
-                      routeAction = {(route:TransferStep[]) => setselectedRoute(route) }
+                      selectRoute = {(route:TransferStep[]) => setselectedRoute(route) }
+                      deleteRoute = {(route: TransferStep[]) =>{
+                        deleteRoute(route)
+                        setActiveRoutes(readActiveRoutes())
+                      }
+                      }
                       ></TrasactionsTable>
                   </div>
                 </Panel>

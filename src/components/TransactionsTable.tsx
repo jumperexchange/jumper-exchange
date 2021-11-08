@@ -5,11 +5,12 @@ import { injected } from './web3/connectors';
 import { Button, Table } from 'antd';
 import { formatTokenAmount } from '../services/utils';
 import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types';
-import { LoginOutlined } from '@ant-design/icons';
+import { DeleteOutlined, LoginOutlined } from '@ant-design/icons';
 
 interface ActiveTrasactionsTableProps {
   routes: Array<TransferStep[]>,
-  routeAction: Function,
+  selectRoute: Function,
+  deleteRoute: Function,
   historical?: boolean
 }
 
@@ -26,19 +27,23 @@ function getStateText (route: TransferStep[]) {
 }
 
 
-function TrasactionsTable ({routes, routeAction, historical}: ActiveTrasactionsTableProps) {
+function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: ActiveTrasactionsTableProps) {
   const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React()
   const login = () => activate(injected)
 
   const renderActionButton = (route:TransferStep[]) =>{
     if(historical){
-      return <Button danger type='ghost' shape='round' onClick={() => routeAction(route)}>Delete</Button>
+      return <Button danger type='ghost' shape='round' onClick={() => deleteRoute(route)}><DeleteOutlined /></Button>
     }
     if (!web3.account) {
       return <Button type='ghost' shape='round' icon={<LoginOutlined />} onClick={() => login()}>Connect Wallet</Button>
     }
-    return <Button type='ghost' shape='round' onClick={() => routeAction(route)}>Resume Swap</Button>
+    return <>
+        <Button style={{marginRight: 10}} type='ghost' shape='round' onClick={() => selectRoute(route)}>Resume Swap</Button>
+        <Button danger type='ghost' shape='round' onClick={() => deleteRoute(route)}><DeleteOutlined /></Button>
+      </>
+
   }
 
   const columns = [
