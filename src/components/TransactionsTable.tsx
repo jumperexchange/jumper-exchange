@@ -39,7 +39,7 @@ function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: Activ
     if (!web3.account) {
       return <Button type='ghost' shape='round' icon={<LoginOutlined />} onClick={() => login()}>Connect Wallet</Button>
     }
-    return <>
+    return <span style={{whiteSpace: 'nowrap'}}>
         <Button style={{marginRight: 10}} type='ghost' shape='round' onClick={() => selectRoute(route)}>Resume Swap</Button>
         <Popconfirm
           title={<>
@@ -54,11 +54,9 @@ function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: Activ
         >
          <Button danger type='ghost' shape='round' onClick={() => {}}><DeleteOutlined /></Button>
         </Popconfirm>,
-      </>
+      </span>
 
   }
-
-
 
   const columns = [
     {
