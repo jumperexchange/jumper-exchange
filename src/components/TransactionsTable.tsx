@@ -112,8 +112,8 @@ function TrasactionsTable ({routes, routeAction, historical}: ActiveTrasactionsT
     <Table
     columns={columns}
     dataSource={data}
-    pagination={{ position: [] }}
-    className="active-tx-table"
+    pagination={{ hideOnSinglePage:true, size:"small",  position: ['bottomCenter'] }}
+    className="tx-table"
     />
   )
 }

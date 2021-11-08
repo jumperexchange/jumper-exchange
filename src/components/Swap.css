@@ -294,3 +294,9 @@ h4.swap-title {
 .active-transfer-collapse .ant-collapse-content-box {
   overflow-x: scroll;
 }
+
+.tx-table .ant-pagination-item-active {
+  border: none !important;
+  background: #f0f2f5 !important;
+  padding-top: 1px !important;
+}
