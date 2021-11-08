@@ -1,7 +1,6 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 
-import { CoinKey } from '../types'
-import { Execution } from '../types/'
+import { CoinKey, Execution } from '../types'
 import hop from './hop'
 import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
