@@ -71,6 +71,7 @@ export class NXTPExecutionManager {
           nxtpSDK.removeAllListeners()
           return status
         }
+        nxtp.attachListeners(signer, nxtpSDK, step, quoteProcess.quote.bid.transactionId, update, status)
         await nxtp.finishTransfer(signer, nxtpSDK, (relevantTx as any), step, update)
         setStatusDone(update, status, status.process[status.process.length - 1])
         status.status = 'DONE'
@@ -147,6 +148,7 @@ export class NXTPExecutionManager {
         if(submitProcess?.txHash){
           nxtp.attachListeners(signer, nxtpSDK, step, quote.bid.transactionId, update, status)
         } else{
+          await nxtpSDK.getActiveTransactions()
           await nxtp.triggerTransfer(signer, nxtpSDK, step, update, true, status)
           nxtp.attachListeners(signer, nxtpSDK, step, quote.bid.transactionId, update, status)
         }

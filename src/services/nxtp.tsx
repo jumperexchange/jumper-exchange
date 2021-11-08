@@ -245,7 +245,10 @@ export const attachListeners = (signer: JsonRpcSigner, sdk:NxtpSdk, step: Transf
   // signed => wait
   sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
     if (data.transactionId !== transactionId) return
-    if (proceedProcess) {
+    if(!proceedProcess){
+      setStatusDone(update, status, status.process[status.process.length -1])
+      proceedProcess = createAndPushProcess('proceedProcess', update, status, 'Signed - Wait for Claim', { status: 'PENDING' })
+    }else if (proceedProcess) {
       proceedProcess.status = 'PENDING'
       proceedProcess.message = 'Signed - Wait for Claim'
       delete proceedProcess.footerMessage
