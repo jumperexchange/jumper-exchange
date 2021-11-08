@@ -10,34 +10,28 @@ export interface TokenListToken {
   logoURI: string
 }
 
-export interface TokenList {
-  name: string
-  timestamp: string
-  version: {
-    major: number
-    minor: number
-    patch: number
-  }
-  tags: any
-  logoURI: string
-  keywords: Array<string>
-  tokens: Array<TokenListToken>
-}
-
-export const loadTokenList = async (chainId: number): Promise<TokenList> => {
+export const loadTokenList = async (chainId: number): Promise<Array<TokenListToken>> => {
   const chain = getChainById(chainId)
-  if (!chain.exchange) {
+  if (!chain.tokenlistUrl) {
     // throw new Error('No token list defined for chain')
-    return {} as TokenList
+    return [] as Array<TokenListToken>
   }
-  const result = await axios.get<any>(chain.exchange?.tokenlistUrl)
-  return result.data as TokenList
+  const result = await axios.get<any>(chain.tokenlistUrl)
+  if (result.data) {
+    if ((Object.keys(result.data).findIndex(key => key === 'tokens') === -1)) {
+      return result.data as Array<TokenListToken>
+    } else {
+      return result.data.tokens as Array<TokenListToken>
+    }
+  } else {
+    return [] as Array<TokenListToken>
+  }
 }
 
 export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Token>> => {
   const chain = getChainById(chainId)
   const tokenList = await loadTokenList(chainId)
-  const filteredTokens = tokenList.tokens ? tokenList.tokens.filter(token => token.chainId === chainId) : []
+  const filteredTokens = tokenList ? tokenList.filter(token => token.chainId === chainId) : []
   const mappedTokens = filteredTokens.map((token) => {
     return {
       id: token.address.toLowerCase(),

@@ -10,8 +10,6 @@ import * as uniswap from './uniswaps'
 export class UniswapExecutionManager {
   shouldContinue: boolean = true
 
-
-
   setShouldContinue  =  (val: boolean) => {
     this.shouldContinue = val
   }
@@ -23,8 +21,7 @@ export class UniswapExecutionManager {
 
     if(!this.shouldContinue) return status
     if (swapAction.token.id !== constants.AddressZero) {
-      const contractAddress = uniswap.getContractAddress(swapAction.chainId)
-      await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, contractAddress, update, status)
+      await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, swapEstimate.data.routerAddress, update, status)
     }
 
     // Swap via Uniswap
