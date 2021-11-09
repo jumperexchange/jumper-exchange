@@ -300,7 +300,11 @@ const SwapXpollinate = ({
     const liq = await Promise.all(
       chains.map(async (chain) => {
         // get graph from override first
-        let sub = chainConfigOverwrites[chain.id]?.subgraph
+        let sub = chainConfigOverwrites[chain.id]?.subgraph ?
+          Array.isArray(chainConfigOverwrites[chain.id]?.subgraph) ?
+            chainConfigOverwrites[chain.id]?.subgraph![0] :
+            chainConfigOverwrites[chain.id]?.subgraph :
+          undefined
         if (!sub) {
           sub = getDeployedSubgraphUri(chain.id)
         }
@@ -310,7 +314,7 @@ const SwapXpollinate = ({
         }
 
         // request
-        const res = await request(sub, query, {
+        const res = await request(sub as string, query, {
           routerId: process.env.REACT_APP_NXTP_ROUTER_ADDRESS?.toLowerCase(),
         })
 
@@ -790,6 +794,9 @@ const SwapXpollinate = ({
   }
 
   const openSwapModal = () => {
+    if (!web3.library || !web3.account) return
+    const signer = web3.library.getSigner()
+
     // add execution route
     const route = deepClone(routes[highlightedIndex]) as Array<TransferStep>
     setExecutionRoutes(routes => [...routes, route])
@@ -832,13 +839,16 @@ const SwapXpollinate = ({
       step.execution = status
       updateExecutionRoute(route)
     }
-    triggerTransfer(sdk!, route[0], (status: Execution) => update(route[0], status), optionInfiniteApproval)
+    triggerTransfer(signer, sdk!, route[0], (status: Execution) => update(route[0], status), optionInfiniteApproval)
 
     // open modal
     setModalRouteIndex(executionRoutes.length)
   }
 
   const openSwapModalFinish = (action: ActiveTransaction) => {
+    if (!web3.library || !web3.account) return
+    const signer = web3.library.getSigner()
+
     // open modal
     const index = executionRoutes.findIndex(item => {
       return item[0].id === action.txData.invariant.transactionId
@@ -853,9 +863,9 @@ const SwapXpollinate = ({
         step.execution = status
         updateExecutionRoute(route)
       }
-      finishTransfer(sdk!, action.event, route[0], update)
+      finishTransfer(signer, sdk!, action.event, route[0], update)
     } else {
-      finishTransfer(sdk!, action.event)
+      finishTransfer(signer, sdk!, action.event)
     }
   }
 

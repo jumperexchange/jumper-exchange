@@ -1,6 +1,6 @@
 import { NxtpSdk, NxtpSdkEvents, getDeployedTransactionManagerContract } from '@connext/nxtp-sdk';
 import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from "@connext/nxtp-utils";
-import { FallbackProvider } from '@ethersproject/providers';
+import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers';
 import { Button } from 'antd';
 import {  constants, providers } from 'ethers';
 import { CrossAction, CrossEstimate, Execution, getChainById, Process, TransferStep } from '../types';
@@ -19,7 +19,7 @@ const getChainConfigOverwrites = () => {
 export const chainConfigOverwrites: {
   [chainId: number]: {
     transactionManagerAddress?: string;
-    subgraph?: string;
+    subgraph?: string[];
     subgraphSyncBuffer?: number;
   }
 } = getChainConfigOverwrites()
@@ -27,7 +27,7 @@ export const chainConfigOverwrites: {
 const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
 export const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, providers.FallbackProvider>) => {
-  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string; transactionManagerAddress?: string, subgraphSyncBuffer?: number; }> = {};
+  const chainConfig: Record<number, { provider: providers.FallbackProvider; subgraph?: string[]; transactionManagerAddress?: string, subgraphSyncBuffer?: number; }> = {};
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
       provider: provider,
@@ -72,7 +72,7 @@ export const getTransferQuote = async (
   return response;
 }
 
-export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateStatus: Function, infinteApproval: boolean = false, initialStatus?: Execution) => {
+export const triggerTransfer = async (signer: JsonRpcSigner, sdk: NxtpSdk, step: TransferStep, updateStatus: Function, infinteApproval: boolean = false, initialStatus?: Execution) => {
 
   // status
   const { status, update } = initStatus(updateStatus, initialStatus)
@@ -117,7 +117,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
   // approve sent => wait
 
-  attachListeners(sdk, step, transactionId, update, status)
+  attachListeners(signer, sdk, step, transactionId, update, status)
 
   // failed?
   sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, (data) => {
@@ -157,7 +157,7 @@ export const triggerTransfer = async (sdk: NxtpSdk, step: TransferStep, updateSt
   return status
 }
 
-export const attachListeners = (sdk:NxtpSdk, step: TransferStep, transactionId: string, update:Function, status: Execution) => {
+export const attachListeners = (signer: JsonRpcSigner, sdk:NxtpSdk, step: TransferStep, transactionId: string, update:Function, status: Execution) => {
   const approveProcess: Process = createAndPushProcess('approveProcess', update, status, 'Approve Token Transfer', { status: 'ACTION_REQUIRED' })
   let submitProcess: Process | undefined = status.process.find(p => p.id ==='submitProcess')
   let receiverProcess: Process | undefined = status.process.find(p => p.id ==='receiverProcess')
@@ -238,14 +238,17 @@ export const attachListeners = (sdk:NxtpSdk, step: TransferStep, transactionId: 
     proceedProcess = createAndPushProcess('proceedProcess', update, status, 'Ready to be Signed', { type: 'claim' })
     proceedProcess.status = 'ACTION_REQUIRED'
     proceedProcess.message = 'Sign to claim Transfer'
-    proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, data, step, update)}>Sign to claim Transfer</Button>
+    proceedProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(signer, sdk, data, step, update)}>Sign to claim Transfer</Button>
     update(status)
   })
 
   // signed => wait
   sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
     if (data.transactionId !== transactionId) return
-    if (proceedProcess) {
+    if(!proceedProcess){
+      setStatusDone(update, status, status.process[status.process.length -1])
+      proceedProcess = createAndPushProcess('proceedProcess', update, status, 'Signed - Wait for Claim', { status: 'PENDING' })
+    }else if (proceedProcess) {
       proceedProcess.status = 'PENDING'
       proceedProcess.message = 'Signed - Wait for Claim'
       delete proceedProcess.footerMessage
@@ -310,7 +313,7 @@ const trackConfirmationsForResponse = async (sdk: NxtpSdk, chainId: number, resp
   }
 }
 
-export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEvent, step?: TransferStep, updateStatus?: Function) => {
+export const finishTransfer = async (signer: JsonRpcSigner, sdk: NxtpSdk, event: TransactionPreparedEvent, step?: TransferStep, updateStatus?: Function) => {
   let status: Execution | undefined = undefined
   let lastProcess: Process | undefined = undefined
 
@@ -327,15 +330,23 @@ export const finishTransfer = async (sdk: NxtpSdk, event: TransactionPreparedEve
     lastProcess.message = 'Sign Message to Claim Funds'
     updateStatus(status)
   }
-
+  let receipt
   try {
-    await sdk.fulfillTransfer(event)
+    const {fulfillResponse, metaTxResponse} = await sdk.fulfillTransfer(event, true, true)
+    if(fulfillResponse){
+      receipt = await signer.provider.waitForTransaction(fulfillResponse.hash)
+    }
+
+    if(metaTxResponse){
+      receipt = await signer.provider.waitForTransaction(metaTxResponse.transactionHash)
+    }
   } catch (e) {
     console.error(e)
     if (updateStatus && lastProcess && lastProcess.status !== 'DONE') {
       lastProcess.message = 'Sign to claim Transfer'
-      lastProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(sdk, event, step, updateStatus)}>Sign to claim Transfer</Button>
+      lastProcess.footerMessage = <Button className="xpollinate-button" shape="round" type="primary" size="large" onClick={() => finishTransfer(signer, sdk, event, step, updateStatus)}>Sign to claim Transfer</Button>
       updateStatus(status)
     }
   }
+  return receipt
 }

@@ -21,18 +21,15 @@ import { injected } from './web3/connectors';
 import { readActiveRoutes, readHistoricalRoutes, deleteRoute } from '../services/localStorage';
 import TrasactionsTable from './TransactionsTable';
 import  LIFI  from '../services/LIFI/Lifi';
+import { getBalancesForWalletFromChain } from '../services/balanceService'
 
-const { Panel } = Collapse;
+const { Panel } = Collapse
 
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
 }
 
-interface SwapProps {
-  transferChains: Chain[]
-  getBalancesForWallet: Function
-}
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
@@ -47,9 +44,23 @@ const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>)
   }, 0);
 }
 
+const filterDefaultTokenByChains = (tokens: { [ChainKey: string]: Array<TokenWithAmounts> }, transferChains: Chain[]) => {
+  const result: { [ChainKey: string]: Array<TokenWithAmounts> } = {}
+
+  transferChains.forEach((chain) => {
+    if (tokens[chain.key]) {
+      result[chain.key] = tokens[chain.key]
+    }
+  })
+  return result
+}
+
+interface SwapProps {
+  transferChains: Chain[]
+}
+
 const Swap = ({
   transferChains,
-  getBalancesForWallet,
 }: SwapProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unused, setStateUpdate] = useState<number>(0)
@@ -61,7 +72,7 @@ const Swap = ({
   const [withdrawChain, setWithdrawChain] = useState<ChainKey>(transferChains[1].key)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [withdrawToken, setWithdrawToken] = useState<string | undefined>() // tokenId
-  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(defaultTokens)
+  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(filterDefaultTokenByChains(defaultTokens, transferChains))
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
@@ -112,13 +123,19 @@ const Swap = ({
     }
   }, [refreshTokens, transferChains])
 
+  const updateBalances = useCallback(() => {
+    if (web3.account) {
+      getBalancesForWalletFromChain(web3.account, tokens)
+        .then(setBalances)
+    }
+  }, [web3.account, tokens])
+
   useEffect(() => {
     if (refreshBalances && web3.account) {
       setRefreshBalances(false)
-      getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-        .then(setBalances)
+      updateBalances()
     }
-  }, [refreshBalances, getBalancesForWallet, transferChains, web3.account])
+  }, [refreshBalances, web3.account, updateBalances])
 
   useEffect(() => {
     if (!web3.account) {
@@ -259,7 +276,7 @@ const Swap = ({
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
 
         {/* Historical Routes */}
-        {historicalRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
+        {!!historicalRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
              <Collapse
               defaultActiveKey={['']}
               ghost
@@ -271,7 +288,8 @@ const Swap = ({
                   <div >
                       <TrasactionsTable
                       routes={historicalRoutes}
-                      routeAction = {(route:TransferStep[]) => {
+                      selectRoute = {() => {} }
+                      deleteRoute = {(route:TransferStep[]) => {
                         deleteRoute(route)
                         setHistoricalRoutes(readHistoricalRoutes())
                       } }
@@ -283,10 +301,9 @@ const Swap = ({
           </Row>}
 
          {/* Active Routes */}
-          {activeRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
+        {!!activeRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
              <Collapse
               defaultActiveKey={activeRoutes.length? ['1']: ['']}
-              activeKey = {activeRoutes.length? ['1']: ['']}
               ghost
               bordered={false}
               className={`active-transfer-collapse`}
@@ -296,7 +313,12 @@ const Swap = ({
                   <div >
                       <TrasactionsTable
                       routes={activeRoutes}
-                      routeAction = {(route:TransferStep[]) => setselectedRoute(route) }
+                      selectRoute = {(route:TransferStep[]) => setselectedRoute(route) }
+                      deleteRoute = {(route: TransferStep[]) =>{
+                        deleteRoute(route)
+                        setActiveRoutes(readActiveRoutes())
+                      }
+                      }
                       ></TrasactionsTable>
                   </div>
                 </Panel>
@@ -443,30 +465,27 @@ const Swap = ({
           visible={selectedRoute.length > 0}
           onOk={() =>{
             setselectedRoute([])
-            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-            .then(setBalances)
+            updateBalances()
           }}
           onCancel={() => {
             setselectedRoute([])
-            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-            .then(setBalances)
+            updateBalances()
           }}
-          destroyOnClose = {true}
+          destroyOnClose={true}
           width={700}
           footer={null}
         >
           <Swapping
-          route={selectedRoute}
-          updateRoute={(route: any) => {
-            setActiveRoutes(readActiveRoutes())
-            setHistoricalRoutes(readHistoricalRoutes())
-          }}
-          onSwapDone = {(route: TransferStep[]) => {
-            setActiveRoutes(readActiveRoutes())
-            setHistoricalRoutes(readHistoricalRoutes())
-            getBalancesForWallet(web3.account, transferChains.map(chain => chain.id))
-            .then(setBalances)
-          }}
+            route={selectedRoute}
+            updateRoute={(route: any) => {
+              setActiveRoutes(readActiveRoutes())
+              setHistoricalRoutes(readHistoricalRoutes())
+            }}
+            onSwapDone={(route: TransferStep[]) => {
+              setActiveRoutes(readActiveRoutes())
+              setHistoricalRoutes(readHistoricalRoutes())
+              updateBalances()
+            }}
           ></Swapping>
         </Modal>
       }

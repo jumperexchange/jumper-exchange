@@ -15,7 +15,7 @@ export class NXTPExecutionManager {
     this.shouldContinue = val
   }
 
-  private finishTransfer =(sdk: NxtpSdk, step:TransferStep, update: Function, status: Execution) => {
+  private finishTransfer =(signer: JsonRpcSigner, sdk: NxtpSdk, step:TransferStep, update: Function, status: Execution) => {
     return new Promise(async (resolve, reject) => {
       sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
         try {
@@ -23,7 +23,7 @@ export class NXTPExecutionManager {
             sdk.removeAllListeners()
             return resolve(status)
           }
-          await nxtp.finishTransfer(sdk, data, step, update)
+          await nxtp.finishTransfer(signer, sdk, data, step, update)
         } catch (e) {
           notifications.showNotification(NotificationType.CROSS_ERROR)
           sdk.removeAllListeners()
@@ -71,7 +71,8 @@ export class NXTPExecutionManager {
           nxtpSDK.removeAllListeners()
           return status
         }
-        await nxtp.finishTransfer(nxtpSDK, (relevantTx as any), step, update)
+        nxtp.attachListeners(signer, nxtpSDK, step, quoteProcess.quote.bid.transactionId, update, status)
+        await nxtp.finishTransfer(signer, nxtpSDK, (relevantTx as any), step, update)
         setStatusDone(update, status, status.process[status.process.length - 1])
         status.status = 'DONE'
         update(status)
@@ -96,6 +97,7 @@ export class NXTPExecutionManager {
       if(quoteProcess.quote){
         quote = quoteProcess.quote
       } else {
+        await nxtpSDK.getActiveTransactions()
         quote = await nxtp.getTransferQuote(nxtpSDK, fromChainId, srcTokenAddress, toChainId, destTokenAddress, fromAmount.toString(), userAddress)
         if (!quote) {
             throw new Error("No quote found! Please restart the swap.")
@@ -144,17 +146,18 @@ export class NXTPExecutionManager {
     try {
         const submitProcess = status.process.find((p: Process) => p.id === 'submitProcess')
         if(submitProcess?.txHash){
-          nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
+          nxtp.attachListeners(signer, nxtpSDK, step, quote.bid.transactionId, update, status)
         } else{
-          await nxtp.triggerTransfer(nxtpSDK, step, update, true, status)
-          nxtp.attachListeners(nxtpSDK, step, quote.bid.transactionId, update, status)
+          await nxtpSDK.getActiveTransactions()
+          await nxtp.triggerTransfer(signer, nxtpSDK, step, update, true, status)
+          nxtp.attachListeners(signer, nxtpSDK, step, quote.bid.transactionId, update, status)
         }
     } catch (e) {
       nxtpSDK.removeAllListeners()
       throw e
     }
 
-    status = await this.finishTransfer(nxtpSDK, step, update, status)
+    status = await this.finishTransfer(signer, nxtpSDK, step, update, status)
 
 
     // Fallback

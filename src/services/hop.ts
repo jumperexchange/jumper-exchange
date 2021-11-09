@@ -4,8 +4,7 @@ import { Token } from '@hop-protocol/sdk/dist/src/models'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { ChainId, ChainKey, CoinKey } from '../types'
-import { getChainByKey } from '../types/shared/chains.types'
-
+import { getChainByKey } from '../types'
 
 const receivedContractTypes: Array<ethers.utils.ParamType> = [
   ethers.utils.ParamType.from({

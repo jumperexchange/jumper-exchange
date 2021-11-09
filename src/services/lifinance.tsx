@@ -357,7 +357,7 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
 
   // -> sign
   try {
-    await nxtp.finishTransfer(nxtpSDK, prepared, crossStep, update)
+    await nxtp.finishTransfer(signer, nxtpSDK, prepared, crossStep, update)
   } catch (e) {
     proceedProcess.errorMessage = 'Failed to get an answer in time. Please go to https://xpollinate.io/ and check the state of your transaction there.'
     setStatusFailed(update, status, proceedProcess)

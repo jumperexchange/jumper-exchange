@@ -24,6 +24,8 @@ yarn start:xpollinate
 yarn start:xpollinate:testnet
 ```
 
+> If you are on windows or if you have problems running the `start` commands, please try to run `yarn windows` and create a local `.env.local` file to define your environment (e.g. if you want to use xpollinate, copy one of the xpollinate files)
+
 The setup includes [antd](https://ant.design/components/overview/) for styled components.
 
 The setup is based on [create-react-app](https://create-react-app.dev/).
@@ -87,3 +89,4 @@ Branchs `testing/*`:
 - Max Klenk ([GitHub](https://github.com/maxklenk), [LinkedIn](https://www.linkedin.com/in/maxklenk/), [Gitcoin](https://gitcoin.co/maxklenk))
 - Adrian Weniger ([GitHub](https://github.com/Addminus), [LinkedIn](https://www.linkedin.com/in/adrian-weniger-8a35b6132/), [Gitcoin](https://gitcoin.co/addminus))
 - Philipp Zentner ([GitHub](https://github.com/philippzentner), [LinkedIn](https://www.linkedin.com/in/philippzentner/), [Gitcoin](https://gitcoin.co/philippzentner))
+# contracts
