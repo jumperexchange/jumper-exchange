@@ -289,7 +289,8 @@ const Swap = ({
                   <div >
                       <TrasactionsTable
                       routes={historicalRoutes}
-                      routeAction = {(route:TransferStep[]) => {
+                      selectRoute = {() => {} }
+                      deleteRoute = {(route:TransferStep[]) => {
                         deleteRoute(route)
                         setHistoricalRoutes(readHistoricalRoutes())
                       } }
@@ -304,7 +305,6 @@ const Swap = ({
         {!!activeRoutes.length && <Row justify={"center"} style={{ marginTop: 48}}>
              <Collapse
               defaultActiveKey={activeRoutes.length? ['1']: ['']}
-              activeKey = {activeRoutes.length? ['1']: ['']}
               ghost
               bordered={false}
               className={`active-transfer-collapse`}
@@ -314,7 +314,12 @@ const Swap = ({
                   <div >
                       <TrasactionsTable
                       routes={activeRoutes}
-                      routeAction = {(route:TransferStep[]) => setselectedRoute(route) }
+                      selectRoute = {(route:TransferStep[]) => setselectedRoute(route) }
+                      deleteRoute = {(route: TransferStep[]) =>{
+                        deleteRoute(route)
+                        setActiveRoutes(readActiveRoutes())
+                      }
+                      }
                       ></TrasactionsTable>
                   </div>
                 </Panel>
