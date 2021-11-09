@@ -849,7 +849,7 @@ const SwapXpollinate = ({
 
   const priceImpact = () => {
     const token = transferTokens[withdrawChain].find(token => token.id === withdrawToken)
-    let impact = new BigNumber(0)
+    // let impact = new BigNumber(0)
     let routerFee = new BigNumber(0)
     let gasFee = new BigNumber(0)
     let decimals = 2
@@ -865,7 +865,7 @@ const SwapXpollinate = ({
       const toAmount = new BigNumber(cross.estimate.toAmount).shiftedBy(-toToken.decimals)
 
       const diff = fromAmount.minus(toAmount)
-      impact = diff.div(fromAmount).times(-100)
+      // impact = diff.div(fromAmount).times(-100)
 
       gasFee = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(-toToken.decimals)
       routerFee = diff.minus(gasFee)
@@ -895,7 +895,7 @@ const SwapXpollinate = ({
             </tbody>
           </table>
         )}>
-          Fee Impact: {impact.toFixed(2)}%
+          Fee Impact
 
           <Badge count={<InfoCircleOutlined style={{ color: 'gray' }} />} offset={[4, -1]} />
         </Tooltip>
