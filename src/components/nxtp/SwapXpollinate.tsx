@@ -1000,7 +1000,7 @@ const SwapXpollinate = ({
               Active Transactions ({!sdk ? '-' : (updatingActiveTransactions ? <SyncOutlined spin style={{ verticalAlign: -4 }} /> : activeTransactions.length)})
             </h2>
           )} key="active">
-            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+            <div style={{ overflowX: 'scroll', background: 'white' }}>
               <TransactionsTableNxtp
                 activeTransactions={activeTransactions}
                 executionRoutes={executionRoutes}
@@ -1011,38 +1011,6 @@ const SwapXpollinate = ({
                 tokens={tokens}
               />
             </div>
-          </Collapse.Panel>
-
-          {/* Historical Transactions */}
-          <Collapse.Panel className={web3.account ? '' : 'empty'} header={(
-            <a
-              href={web3.account ? 'https://connextscan.io/address/' + web3.account : 'https://connextscan.io/transactions'}
-              target="_blank"
-              rel="nofollow noreferrer"
-            >
-              <h2
-                style={{ display: 'inline' }}
-              >
-                Historical Transactions (<LinkOutlined />)
-              </h2>
-            </a>
-          )} key="historic">
-          </Collapse.Panel>
-
-          {/* Liquidity */}
-          <Collapse.Panel header={(
-            <a
-              href={'https://connextscan.io/routers'}
-              target="_blank"
-              rel="nofollow noreferrer"
-            >
-              <h2
-                style={{ display: 'inline' }}
-              >
-                Available Liquidity (<LinkOutlined />)
-              </h2>
-            </a>
-          )} key="liquidity">
           </Collapse.Panel>
         </Collapse>
 
@@ -1133,6 +1101,36 @@ const SwapXpollinate = ({
 
             </div>
           </Col>
+        </Row>
+
+        {/* Historical Transactions */}
+        <Row style={{ marginTop: 40 }} justify={"center"}>
+          <a
+            href={web3.account ? 'https://connextscan.io/address/' + web3.account : 'https://connextscan.io/transactions'}
+            target="_blank"
+            rel="nofollow noreferrer"
+          >
+            <h2
+              style={{ display: 'inline' }}
+            >
+              Historical Transactions (<LinkOutlined />)
+            </h2>
+          </a>
+        </Row>
+
+        {/* Liquidity */}
+        <Row style={{ marginTop: 20 }} justify={"center"}>
+          <a
+            href={'https://connextscan.io/routers'}
+            target="_blank"
+            rel="nofollow noreferrer"
+          >
+            <h2
+              style={{ display: 'inline' }}
+            >
+              Available Liquidity (<LinkOutlined />)
+            </h2>
+          </a>
         </Row>
 
         {/* Footer */}
