@@ -332,14 +332,8 @@ export const finishTransfer = async (signer: JsonRpcSigner, sdk: NxtpSdk, event:
   }
   let receipt
   try {
-    const {fulfillResponse, metaTxResponse} = await sdk.fulfillTransfer(event, true, true)
-    if(fulfillResponse){
-      receipt = await signer.provider.waitForTransaction(fulfillResponse.hash)
-    }
-
-    if(metaTxResponse){
-      receipt = await signer.provider.waitForTransaction(metaTxResponse.transactionHash)
-    }
+    const {transactionHash} = await sdk.fulfillTransfer(event, true)
+    receipt = await signer.provider.waitForTransaction(transactionHash)
   } catch (e) {
     console.error(e)
     if (updateStatus && lastProcess && lastProcess.status !== 'DONE') {
