@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Check formatting
+        run: yarn prettier --check .
+
       - name: Build li.finance
         run: yarn build:lifinance
 
