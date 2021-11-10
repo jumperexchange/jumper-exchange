@@ -1185,7 +1185,7 @@ const SwapXpollinate = ({
     const token = transferTokens[withdrawChain].find(
       (token) => token.id === withdrawToken
     );
-    let impact = new BigNumber(0);
+    let fees = new BigNumber(0);
     let routerFee = new BigNumber(0);
     let gasFee = new BigNumber(0);
     let decimals = 2;
@@ -1204,13 +1204,12 @@ const SwapXpollinate = ({
         -toToken.decimals
       );
 
-      const diff = fromAmount.minus(toAmount);
-      impact = diff.div(fromAmount).times(-100);
+      fees = fromAmount.minus(toAmount);
 
       gasFee = new BigNumber(
         cross.estimate.data.gasFeeInReceivingToken
       ).shiftedBy(-toToken.decimals);
-      routerFee = diff.minus(gasFee);
+      routerFee = fees.minus(gasFee);
 
       if (routerFee.lt("0.01")) {
         decimals = 4;
@@ -1230,13 +1229,13 @@ const SwapXpollinate = ({
                   <td style={{ textAlign: "right" }}></td>
                 </tr>
                 <tr>
-                  <td>Base Fee</td>
+                  <td>Router Fee</td>
                   <td style={{ textAlign: "right" }}>
                     {routerFee.toFixed(decimals, 1)} {token?.symbol}
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ paddingRight: 10 }}>Router Gas Fee</td>
+                  <td style={{ paddingRight: 10 }}>Gas Fee</td>
                   <td style={{ textAlign: "right" }}>
                     {gasFee.toFixed(decimals, 1)} {token?.symbol}
                   </td>
@@ -1245,7 +1244,7 @@ const SwapXpollinate = ({
             </table>
           }
         >
-          Fee Impact: {impact.toFixed(2)}%
+          Fees: {fees.toFixed(4)}{" "}{token?.symbol}
           <Badge
             count={<InfoCircleOutlined style={{ color: "gray" }} />}
             offset={[4, -1]}
