@@ -1,11 +1,24 @@
+/* eslint-disable max-params,no-console */
 import { NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
 import { encodeAuctionBid } from '@connext/nxtp-sdk/dist/utils'
 import { AuctionResponse, getRandomBytes32 } from '@connext/nxtp-utils'
 import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { constants, ethers } from 'ethers'
+
 import { getRpcProviders } from '../components/web3/connectors'
-import { ChainId, CrossAction, CrossEstimate, CrossStep, Execution, getChainById, SwapAction, SwapEstimate, SwapStep, TransferStep } from '../types'
+import {
+  ChainId,
+  CrossAction,
+  CrossEstimate,
+  CrossStep,
+  Execution,
+  getChainById,
+  SwapAction,
+  SwapEstimate,
+  SwapStep,
+  TransferStep,
+} from '../types'
 import { oneInch } from './1Inch'
 import { abi } from './ABI/NXTPFacet.json'
 import { checkAllowance } from './allowance.execute'
@@ -29,14 +42,24 @@ const supportedChains = getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_E
 const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => {
   switch (swapAction.tool) {
     case 'paraswap': {
-      const call = await paraswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      const call = await paraswap.getSwapCall(
+        swapAction,
+        swapEstimate,
+        lifiContractAddress,
+        lifiContractAddress,
+      )
       return {
         approveTo: await paraswap.getContractAddress(swapAction.chainId),
-        call
+        call,
       }
     }
     case '1inch': {
-      const call = await oneInch.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      const call = await oneInch.getSwapCall(
+        swapAction,
+        swapEstimate,
+        lifiContractAddress,
+        lifiContractAddress,
+      )
       return {
         approveTo: call.to,
         call,
@@ -44,7 +67,12 @@ const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => 
     }
 
     default: {
-      const call = await uniswap.getSwapCall(swapAction, swapEstimate, lifiContractAddress, lifiContractAddress)
+      const call = await uniswap.getSwapCall(
+        swapAction,
+        swapEstimate,
+        lifiContractAddress,
+        lifiContractAddress,
+      )
       return {
         approveTo: call.to,
         call,
@@ -53,12 +81,29 @@ const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => 
   }
 }
 
-const getQuote = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, crossStep: CrossStep, crossAction: CrossAction, receiverTransaction: ethers.PopulatedTransaction) => {
+const getQuote = async (
+  signer: JsonRpcSigner,
+  nxtpSDK: NxtpSdk,
+  crossStep: CrossStep,
+  crossAction: CrossAction,
+  receiverTransaction: ethers.PopulatedTransaction,
+) => {
   // -> request quote
   let quote: AuctionResponse | undefined
   try {
-    quote = await nxtp.getTransferQuote(nxtpSDK, crossAction.chainId, crossAction.token.id, crossAction.toChainId, crossAction.toToken.id, crossAction.amount.toString(), await signer.getAddress(), receiverTransaction.to, receiverTransaction.data, lifiContractAddress)
-    if (!quote) throw Error("Quote confirmation failed!")
+    quote = await nxtp.getTransferQuote(
+      nxtpSDK,
+      crossAction.chainId,
+      crossAction.token.id,
+      crossAction.toChainId,
+      crossAction.toToken.id,
+      crossAction.amount.toString(),
+      await signer.getAddress(),
+      receiverTransaction.to,
+      receiverTransaction.data,
+      lifiContractAddress,
+    )
+    if (!quote) throw Error('Quote confirmation failed!')
   } catch (e: any) {
     cleanUp(nxtpSDK)
     throw e
@@ -82,7 +127,13 @@ const getQuote = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, crossStep: Cros
   return quote
 }
 
-const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSwapStep: SwapStep | undefined, crossStep: CrossStep, endSwapStep: SwapStep | undefined) => {
+const buildTransaction = async (
+  signer: JsonRpcSigner,
+  nxtpSDK: NxtpSdk,
+  startSwapStep: SwapStep | undefined,
+  crossStep: CrossStep,
+  endSwapStep: SwapStep | undefined,
+) => {
   const lifi = new ethers.Contract(lifiContractAddress, abi, signer)
 
   interface LifiData {
@@ -107,7 +158,6 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     destinationChainId: crossStep.action.toChainId.toString(),
     amount: crossStep.action.amount,
   }
-
 
   // Receiving side
   let receivingTransaction
@@ -134,7 +184,7 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
         },
       ],
       swapAction.toToken.id,
-      await signer.getAddress()
+      await signer.getAddress(),
     )
   } else {
     // Withdraw only
@@ -142,7 +192,7 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
       lifiData,
       crossStep.action.toToken.id,
       await signer.getAddress(),
-      crossStep.estimate.data.bid.amountReceived
+      crossStep.estimate.data.bid.amountReceived,
     )
   }
 
@@ -197,7 +247,7 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     }
 
     console.log({
-      swapData
+      swapData,
     })
 
     // > pass native currency directly
@@ -210,7 +260,7 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
       lifiData,
       [swapData],
       nxtpData,
-      swapOptions
+      swapOptions,
     )
   } else {
     // Transfer only
@@ -220,20 +270,23 @@ const buildTransaction = async (signer: JsonRpcSigner, nxtpSDK: NxtpSdk, startSw
     }
 
     // > transfer only
-    return lifi.populateTransaction.startBridgeTokensViaNXTP(
-      lifiData,
-      nxtpData,
-      swapOptions,
-    )
+    return lifi.populateTransaction.startBridgeTokensViaNXTP(lifiData, nxtpData, swapOptions)
   }
 }
 
-const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateStatus?: Function, initialStatus?: Execution) => {
-
+const executeLifi = async (
+  signer: JsonRpcSigner,
+  route: TransferStep[],
+  updateStatus?: Function,
+  initialStatus?: Execution,
+) => {
   // unpack route
-  const startSwapStep = route[0].action.type === 'swap' ? route[0] as SwapStep : undefined
-  const endSwapStep = route[route.length - 1].action.type === 'swap' ? route[route.length - 1] as SwapStep : undefined
-  const crossStep = route.find(step => step.action.type === 'cross')! as CrossStep
+  const startSwapStep = route[0].action.type === 'swap' ? (route[0] as SwapStep) : undefined
+  const endSwapStep =
+    route[route.length - 1].action.type === 'swap'
+      ? (route[route.length - 1] as SwapStep)
+      : undefined
+  const crossStep = route.find((step) => step.action.type === 'cross')! as CrossStep
   const crossAction = crossStep.action as CrossAction
   const fromChain = getChainById(crossAction.chainId)
   const toChain = getChainById(crossAction.toChainId)
@@ -260,15 +313,28 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   // // -> set status
   // setStatusDone(update, status, keyProcess)
 
-
   // Allowance
   if (route[0].action.token.id !== constants.AddressZero) {
-    await checkAllowance(signer, fromChain, route[0].action.token, route[0].action.amount, lifiContractAddress, update, status)
+    await checkAllowance(
+      signer,
+      fromChain,
+      route[0].action.token,
+      route[0].action.amount,
+      lifiContractAddress,
+      update,
+      status,
+    )
   }
 
   // Transaction
   // -> set status
-  const submitProcess = createAndPushProcess('submitProcess', update, status, 'Preparing Transaction', { status: 'PENDING' })
+  const submitProcess = createAndPushProcess(
+    'submitProcess',
+    update,
+    status,
+    'Preparing Transaction',
+    { status: 'PENDING' },
+  )
 
   // -> prepare
   let call
@@ -324,10 +390,15 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   submitProcess.messafe = 'Transaction Sent:'
   setStatusDone(update, status, submitProcess)
 
-
   // Wait for receiver
   // -> set status
-  const receiverProcess = createAndPushProcess('receiverProcess', update, status, 'Wait for Receiver', { type: 'wait' })
+  const receiverProcess = createAndPushProcess(
+    'receiverProcess',
+    update,
+    status,
+    'Wait for Receiver',
+    { type: 'wait' },
+  )
 
   // -> wait
   let prepared
@@ -335,10 +406,11 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     prepared = await nxtpSDK.waitFor(
       NxtpSdkEvents.ReceiverTransactionPrepared,
       600_000, // 10 min
-      (data) => data.txData.transactionId === crossStep.estimate.data.bid.transactionId // filter function
+      (data) => data.txData.transactionId === crossStep.estimate.data.bid.transactionId, // filter function
     )
   } catch (e) {
-    receiverProcess.errorMessage = 'Failed to get an answer in time. Please go to https://xpollinate.io/ and check the state of your transaction there.'
+    receiverProcess.errorMessage =
+      'Failed to get an answer in time. Please go to https://xpollinate.io/ and check the state of your transaction there.'
     setStatusFailed(update, status, receiverProcess)
     cleanUp(nxtpSDK)
     throw e
@@ -350,16 +422,22 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
   receiverProcess.message = 'Receiver Prepared:'
   setStatusDone(update, status, receiverProcess)
 
-
   // Sign to claim
   // -> set status
-  const proceedProcess = createAndPushProcess('proceedProcess', update, status, 'Ready to be Signed', { type: 'claim', status: 'ACTION_REQUIRED' })
+  const proceedProcess = createAndPushProcess(
+    'proceedProcess',
+    update,
+    status,
+    'Ready to be Signed',
+    { type: 'claim', status: 'ACTION_REQUIRED' },
+  )
 
   // -> sign
   try {
     await nxtp.finishTransfer(signer, nxtpSDK, prepared, crossStep, update)
   } catch (e) {
-    proceedProcess.errorMessage = 'Failed to get an answer in time. Please go to https://xpollinate.io/ and check the state of your transaction there.'
+    proceedProcess.errorMessage =
+      'Failed to get an answer in time. Please go to https://xpollinate.io/ and check the state of your transaction there.'
     setStatusFailed(update, status, proceedProcess)
     cleanUp(nxtpSDK)
     throw e
@@ -376,10 +454,11 @@ const executeLifi = async (signer: JsonRpcSigner, route: TransferStep[], updateS
     claimed = await nxtpSDK.waitFor(
       NxtpSdkEvents.ReceiverTransactionFulfilled,
       200_000,
-      (data) => data.txData.transactionId === crossStep.estimate.data.bid.transactionId // filter function
+      (data) => data.txData.transactionId === crossStep.estimate.data.bid.transactionId, // filter function
     )
   } catch (e) {
-    proceedProcess.errorMessage = 'Failed to get an answer in time. Please go to https://xpollinate.io/ and check the state of your transaction there.'
+    proceedProcess.errorMessage =
+      'Failed to get an answer in time. Please go to https://xpollinate.io/ and check the state of your transaction there.'
     setStatusFailed(update, status, proceedProcess)
     cleanUp(nxtpSDK)
     throw e

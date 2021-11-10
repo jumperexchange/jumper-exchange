@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 
 interface ClockProps {
-  startedAt: number,
-  successAt?: number | undefined,
-  failedAt?: number | undefined,
+  startedAt: number
+  successAt?: number | undefined
+  failedAt?: number | undefined
 }
 
 const Clock = ({ startedAt, successAt, failedAt }: ClockProps) => {
@@ -22,7 +22,7 @@ const Clock = ({ startedAt, successAt, failedAt }: ClockProps) => {
 
   const renderTime = () => {
     const total = getCount()
-    const minutes = Math.floor(total/60)
+    const minutes = Math.floor(total / 60)
     const seconds = total % 60
     const prefix = seconds < 10 ? '0' : ''
 
@@ -30,7 +30,7 @@ const Clock = ({ startedAt, successAt, failedAt }: ClockProps) => {
   }
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => setCount(count => count + 1), 1000)
+    intervalRef.current = setInterval(() => setCount((count) => count + 1), 1000)
 
     return () => {
       if (intervalRef.current) {
@@ -39,11 +39,7 @@ const Clock = ({ startedAt, successAt, failedAt }: ClockProps) => {
     }
   }, [])
 
-  return (
-    <>
-      {renderTime()}
-    </>
-  )
+  return <>{renderTime()}</>
 }
 
 export default Clock

@@ -1,6 +1,8 @@
-import axios from 'axios'
+/* eslint-disable max-params */
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
+import axios from 'axios'
 import { BigNumber, ethers } from 'ethers'
+
 import { SwapAction, SwapEstimate } from '../types'
 
 // const SUPPORTED_CHAINS = [1, 56, 137]
@@ -8,39 +10,39 @@ const baseURL = 'https://api.1inch.exchange/v3.0/'
 
 const swappedTypes: Array<ethers.utils.ParamType> = [
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "name": "sender",
-    "type": "address"
+    indexed: false,
+    name: 'sender',
+    type: 'address',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "contract IERC20",
-    "name": "srcToken",
-    "type": "address"
+    indexed: false,
+    internalType: 'contract IERC20',
+    name: 'srcToken',
+    type: 'address',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "contract IERC20",
-    "name": "dstToken",
-    "type": "address"
+    indexed: false,
+    internalType: 'contract IERC20',
+    name: 'dstToken',
+    type: 'address',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "address",
-    "name": "dstReceiver",
-    "type": "address"
+    indexed: false,
+    internalType: 'address',
+    name: 'dstReceiver',
+    type: 'address',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "spentAmount",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'spentAmount',
+    type: 'uint256',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "returnAmount",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'returnAmount',
+    type: 'uint256',
   }),
 ]
 interface Swapped {
@@ -64,7 +66,15 @@ const checkTokenAddress = (address: string) => {
   return address
 }
 
-const getTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, fromAddress: string, destReceiver: string, slippage: number = 0.01) => {
+const getTransaction = async (
+  chainId: number,
+  fromTokenAddress: string,
+  toTokenAddress: string,
+  amount: string,
+  fromAddress: string,
+  destReceiver: string,
+  slippage: number = 0.01,
+) => {
   // https://docs.1inch.io/api/quote-swap
   /* TODO: 1inch API supports custom gasPrices use transactionSpeed to get gasprice */
   const params = {
@@ -90,18 +100,36 @@ const getTransaction = async (chainId: number, fromTokenAddress: string, toToken
 
   const result = await axios.get<any>(`${baseURL}${chainId}/swap`, { params })
   const toAmount: number = result.data.toTokenAmount ? result.data.toTokenAmount : -1
-  const path: Array<any> = result.data.protocols ? result.data.protocols[0].map((step: Array<any>) => step[0]) : []
+  const path: Array<any> = result.data.protocols
+    ? result.data.protocols[0].map((step: Array<any>) => step[0])
+    : []
   const tx = result.data.tx
 
   return {
     toAmount,
     path,
-    tx
+    tx,
   }
 }
 
-const buildTransaction = async (chainId: number, fromTokenAddress: string, toTokenAddress: string, amount: string, fromAddress: string, toAddress: string, slippage: number) => {
-  const result = await getTransaction(chainId, fromTokenAddress, toTokenAddress, amount, fromAddress, toAddress, slippage)
+const buildTransaction = async (
+  chainId: number,
+  fromTokenAddress: string,
+  toTokenAddress: string,
+  amount: string,
+  fromAddress: string,
+  toAddress: string,
+  slippage: number,
+) => {
+  const result = await getTransaction(
+    chainId,
+    fromTokenAddress,
+    toTokenAddress,
+    amount,
+    fromAddress,
+    toAddress,
+    slippage,
+  )
 
   return {
     from: result.tx.from,
@@ -114,8 +142,21 @@ const buildTransaction = async (chainId: number, fromTokenAddress: string, toTok
   } as ethers.PopulatedTransaction
 }
 
-const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string) => {
-  const result = await getTransaction(swapAction.chainId, swapAction.token.id, swapAction.toToken.id, swapAction.amount, srcAddress, destAddress, swapAction.slippage)
+const getSwapCall = async (
+  swapAction: SwapAction,
+  swapEstimate: SwapEstimate,
+  srcAddress: string,
+  destAddress: string,
+) => {
+  const result = await getTransaction(
+    swapAction.chainId,
+    swapAction.token.id,
+    swapAction.toToken.id,
+    swapAction.amount,
+    srcAddress,
+    destAddress,
+    swapAction.slippage,
+  )
 
   return {
     from: result.tx.from,

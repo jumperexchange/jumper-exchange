@@ -1,60 +1,85 @@
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-import { injected } from './web3/connectors';
+import { DeleteOutlined, LoginOutlined } from '@ant-design/icons'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import { Button, Popconfirm, Table } from 'antd'
 
-import { Button, Popconfirm, Table } from 'antd';
-import { formatTokenAmount } from '../services/utils';
-import { CrossAction, CrossEstimate, getChainById, SwapAction, SwapEstimate, TransferStep } from '../types';
-import { DeleteOutlined, LoginOutlined } from '@ant-design/icons';
+import { formatTokenAmount } from '../services/utils'
+import {
+  CrossAction,
+  CrossEstimate,
+  getChainById,
+  SwapAction,
+  SwapEstimate,
+  TransferStep,
+} from '../types'
+import { injected } from './web3/connectors'
 
 interface ActiveTrasactionsTableProps {
-  routes: Array<TransferStep[]>,
-  selectRoute: Function,
-  deleteRoute: Function,
+  routes: Array<TransferStep[]>
+  selectRoute: Function
+  deleteRoute: Function
   historical?: boolean
 }
 
-function getStateText (route: TransferStep[]) {
-  if (route.some(step => step.execution?.status === 'FAILED')) {
+function getStateText(route: TransferStep[]) {
+  if (route.some((step) => step.execution?.status === 'FAILED')) {
     return 'Failed'
-  } else if ( route.some(step => step.execution?.status === 'ACTION_REQUIRED') ){
+  } else if (route.some((step) => step.execution?.status === 'ACTION_REQUIRED')) {
     return 'Action Required'
-  } else if ( route.every(step => step.execution?.status === 'DONE') ) {
+  } else if (route.every((step) => step.execution?.status === 'DONE')) {
     return 'Done'
   } else {
-    return "Pending"
+    return 'Pending'
   }
 }
 
-
-function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: ActiveTrasactionsTableProps) {
+function TrasactionsTable({
+  routes,
+  selectRoute,
+  deleteRoute,
+  historical,
+}: ActiveTrasactionsTableProps) {
   const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React()
   const login = () => activate(injected)
 
-  const renderActionButton = (route:TransferStep[]) =>{
-    if(historical){
-      return <Button danger type='ghost' shape='round' onClick={() => deleteRoute(route)}><DeleteOutlined /></Button>
+  const renderActionButton = (route: TransferStep[]) => {
+    if (historical) {
+      return (
+        <Button danger type="ghost" shape="round" onClick={() => deleteRoute(route)}>
+          <DeleteOutlined />
+        </Button>
+      )
     }
     if (!web3.account) {
-      return <Button type='ghost' shape='round' icon={<LoginOutlined />} onClick={() => login()}>Connect Wallet</Button>
+      return (
+        <Button type="ghost" shape="round" icon={<LoginOutlined />} onClick={() => login()}>
+          Connect Wallet
+        </Button>
+      )
     }
-    return <span style={{whiteSpace: 'nowrap'}}>
-        <Button style={{marginRight: 10}} type='ghost' shape='round' onClick={() => selectRoute(route)}>Resume Swap</Button>
+    return (
+      <span style={{ whiteSpace: 'nowrap' }}>
+        <Button
+          style={{ marginRight: 10 }}
+          type="ghost"
+          shape="round"
+          onClick={() => selectRoute(route)}>
+          Resume Swap
+        </Button>
         <Popconfirm
-          title={<>
-            Are you sure to delete this transfer?
-          </>}
+          title={<>Are you sure to delete this transfer?</>}
           onConfirm={() => deleteRoute(route)}
           // onCancel={cancel}
           okText="Yes"
           okType="danger"
-          cancelText="No"
-        >
-         <Button danger type='ghost' shape='round' onClick={() => {}}><DeleteOutlined /></Button>
+          cancelText="No">
+          <Button danger type="ghost" shape="round" onClick={() => {}}>
+            <DeleteOutlined />
+          </Button>
         </Popconfirm>
       </span>
-
+    )
   }
 
   const columns = [
@@ -90,46 +115,55 @@ function TrasactionsTable ({routes, selectRoute, deleteRoute, historical}: Activ
       title: 'Action',
       dataIndex: 'action',
     },
-  ];
-
+  ]
 
   const data = routes.map((route, index) => {
     const startedDate = new Date(parseInt(route[0].id!)).toLocaleString()
     const firstStep = route[0]
-    const lastStep = route[route.length-1]
-    const firstAction = firstStep.action.type === 'swap'? firstStep.action as SwapAction : firstStep.action as CrossAction
-    const firstEstimate = lastStep.action.type === 'swap'? lastStep.estimate as SwapEstimate : lastStep.estimate as CrossEstimate
-    const lastAction = lastStep.action.type === 'swap'? lastStep.action as SwapAction : lastStep.action as CrossAction
-    const lastEstimate = lastStep.action.type === 'swap'? lastStep.estimate as SwapEstimate : lastStep.estimate as CrossEstimate
-
+    const lastStep = route[route.length - 1]
+    const firstAction =
+      firstStep.action.type === 'swap'
+        ? (firstStep.action as SwapAction)
+        : (firstStep.action as CrossAction)
+    const firstEstimate =
+      lastStep.action.type === 'swap'
+        ? (lastStep.estimate as SwapEstimate)
+        : (lastStep.estimate as CrossEstimate)
+    const lastAction =
+      lastStep.action.type === 'swap'
+        ? (lastStep.action as SwapAction)
+        : (lastStep.action as CrossAction)
+    const lastEstimate =
+      lastStep.action.type === 'swap'
+        ? (lastStep.estimate as SwapEstimate)
+        : (lastStep.estimate as CrossEstimate)
 
     let toChainId
-    if(lastStep.action.type === 'swap'){
+    if (lastStep.action.type === 'swap') {
       toChainId = lastAction.chainId
-    } else{
+    } else {
       toChainId = (lastStep.action as CrossAction).toChainId
     }
 
     return {
       key: index,
       date: startedDate,
-      fromChain: getChainById (firstAction.chainId).name,
+      fromChain: getChainById(firstAction.chainId).name,
       toChain: getChainById(toChainId).name,
       fromToken: `${formatTokenAmount(firstAction.token, firstEstimate.fromAmount)}`,
       toToken: `${formatTokenAmount(lastAction.toToken, lastEstimate.toAmount)}`,
-      protocols: route.map(step => (step.action as CrossAction ).tool).join(' > '),
+      protocols: route.map((step) => (step.action as CrossAction).tool).join(' > '),
       state: getStateText(route),
-      action: renderActionButton(route)
+      action: renderActionButton(route),
     }
   })
 
-
   return (
     <Table
-    columns={columns}
-    dataSource={data}
-    pagination={{ hideOnSinglePage:true, size:"small",  position: ['bottomCenter'] }}
-    className="tx-table"
+      columns={columns}
+      dataSource={data}
+      pagination={{ hideOnSinglePage: true, size: 'small', position: ['bottomCenter'] }}
+      className="tx-table"
     />
   )
 }

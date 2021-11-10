@@ -1,14 +1,38 @@
-import { CheckCircleTwoTone, CloseCircleTwoTone, DeleteOutlined, SyncOutlined, WalletOutlined } from '@ant-design/icons'
+import './Dashboard.css'
+
+import {
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
+  DeleteOutlined,
+  SyncOutlined,
+  WalletOutlined,
+} from '@ant-design/icons'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
+
 import { getBalancesForWallet } from '../services/balanceService'
 import { readWallets, storeWallets } from '../services/localStorage'
-import { Amounts, ChainKey, chainKeysToObject, ChainPortfolio, Coin, CoinKey, ColomnType, DataType, defaultCoins, getChainByKey, SummaryAmounts, supportedChains, Token, Wallet, WalletSummary } from '../types'
-import './Dashboard.css'
+import {
+  Amounts,
+  ChainKey,
+  chainKeysToObject,
+  ChainPortfolio,
+  Coin,
+  CoinKey,
+  ColomnType,
+  DataType,
+  defaultCoins,
+  getChainByKey,
+  SummaryAmounts,
+  supportedChains,
+  Token,
+  Wallet,
+  WalletSummary,
+} from '../types'
 import ConnectButton from './web3/ConnectButton'
 
 const emptySummaryAmounts: SummaryAmounts = {
@@ -22,10 +46,12 @@ const emptyWallet = {
   portfolio: chainKeysToObject([]),
 }
 
-let coins = defaultCoins.filter(coin => coin.key !== CoinKey.TEST)
+let coins = defaultCoins.filter((coin) => coin.key !== CoinKey.TEST)
 
 // individual render functions
-function renderAmounts(amounts: Amounts = { amount_coin: new BigNumber(-1), amount_usd: new BigNumber(-1) }) {
+function renderAmounts(
+  amounts: Amounts = { amount_coin: new BigNumber(-1), amount_usd: new BigNumber(-1) },
+) {
   if (amounts.amount_coin.eq(-1)) {
     // loading
     return (
@@ -34,7 +60,12 @@ function renderAmounts(amounts: Amounts = { amount_coin: new BigNumber(-1), amou
           <Skeleton.Button style={{ width: 70 }} active={true} size={'small'} shape={'round'} />
         </div>
         <div className="amount_usd">
-          <Skeleton.Button style={{ width: 60, height: 18 }} active={true} size={'small'} shape={'round'} />
+          <Skeleton.Button
+            style={{ width: 60, height: 18 }}
+            active={true}
+            size={'small'}
+            shape={'round'}
+          />
         </div>
       </div>
     )
@@ -61,13 +92,18 @@ function renderCoin(coin: Coin) {
   return (
     <div className="coin">
       <Tooltip title={coin.name + (coin.verified ? ' (verified)' : '')}>
-        <Avatar
-          src={coin.logoURI}
-          alt={coin.name}
-        >
+        <Avatar src={coin.logoURI} alt={coin.name}>
           {coin.key}
         </Avatar>
-        <Badge className="coin_verify" count={coin.verified ? <CheckCircleTwoTone twoToneColor="#52c41a" /> : <CloseCircleTwoTone twoToneColor="#eb2f96" />}></Badge>
+        <Badge
+          className="coin_verify"
+          count={
+            coin.verified ? (
+              <CheckCircleTwoTone twoToneColor="#52c41a" />
+            ) : (
+              <CloseCircleTwoTone twoToneColor="#eb2f96" />
+            )
+          }></Badge>
       </Tooltip>
     </div>
   )
@@ -78,7 +114,9 @@ function renderSummary(summary: SummaryAmounts) {
   return (
     <div className="amounts">
       <div className="amount_coin">{summary.amount_usd.toFixed(2)} USD</div>
-      <div className="amount_usd">{summary.percentage_of_portfolio.shiftedBy(2).toFixed(2)} % of portfolio</div>
+      <div className="amount_usd">
+        {summary.percentage_of_portfolio.shiftedBy(2).toFixed(2)} % of portfolio
+      </div>
     </div>
   )
 }
@@ -95,7 +133,7 @@ const showGasModal = (gas: ChainKey) => {
               Where to buy ETH (by ethereum.org)
             </a>
           </div>
-        )
+        ),
       })
       break
     case ChainKey.POL:
@@ -103,13 +141,27 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for Polygon/Matic chain',
         content: (
           <div>
-            <p>You can get some free MATIC using those faucets. It should be enough to exchange or move your funds.</p>
+            <p>
+              You can get some free MATIC using those faucets. It should be enough to exchange or
+              move your funds.
+            </p>
             <ul>
-              <li><a href="https://matic.supply/" target="_blank" rel="nofollow noreferrer">https://matic.supply/</a></li>
-              <li><a href="https://macncheese.finance/matic-polygon-mainnet-faucet.php" target="_blank" rel="nofollow noreferrer">https://macncheese.finance/</a></li>
+              <li>
+                <a href="https://matic.supply/" target="_blank" rel="nofollow noreferrer">
+                  https://matic.supply/
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://macncheese.finance/matic-polygon-mainnet-faucet.php"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  https://macncheese.finance/
+                </a>
+              </li>
             </ul>
           </div>
-        )
+        ),
       })
       break
     case ChainKey.BSC:
@@ -118,9 +170,12 @@ const showGasModal = (gas: ChainKey) => {
         content: (
           <div>
             <p>You need to buy BNB.</p>
-            e.g. on <a href="https://www.binance.com/" target="_blank" rel="nofollow noreferrer">binance.com</a>
+            e.g. on{' '}
+            <a href="https://www.binance.com/" target="_blank" rel="nofollow noreferrer">
+              binance.com
+            </a>
           </div>
-        )
+        ),
       })
       break
     case ChainKey.DAI:
@@ -128,14 +183,35 @@ const showGasModal = (gas: ChainKey) => {
         title: 'Gas Info for xDAI chain',
         content: (
           <div>
-            <p>You can get some free DAI using those faucets. It should be enough to exchange or move your funds.</p>
+            <p>
+              You can get some free DAI using those faucets. It should be enough to exchange or move
+              your funds.
+            </p>
             <ul>
-              <li><a href="https://xdai-faucet.top/" target="_blank" rel="nofollow noreferrer">https://xdai-faucet.top/</a></li>
-              <li><a href="https://xdai-app.herokuapp.com/faucet" target="_blank" rel="nofollow noreferrer">https://xdai-app.herokuapp.com/faucet</a></li>
-              <li><a href="https://blockscout.com/xdai/mainnet/faucet" target="_blank" rel="nofollow noreferrer">https://blockscout.com/.../faucet</a></li>
+              <li>
+                <a href="https://xdai-faucet.top/" target="_blank" rel="nofollow noreferrer">
+                  https://xdai-faucet.top/
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://xdai-app.herokuapp.com/faucet"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  https://xdai-app.herokuapp.com/faucet
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://blockscout.com/xdai/mainnet/faucet"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  https://blockscout.com/.../faucet
+                </a>
+              </li>
             </ul>
           </div>
-        )
+        ),
       })
       break
     case ChainKey.FTM:
@@ -144,11 +220,14 @@ const showGasModal = (gas: ChainKey) => {
         content: (
           <div>
             <p>Find out how to get ETH:</p>
-            <a href="https://fantom.foundation/where-to-buy-ftm/" target="_blank" rel="nofollow noreferrer">
+            <a
+              href="https://fantom.foundation/where-to-buy-ftm/"
+              target="_blank"
+              rel="nofollow noreferrer">
               Where to buy ETH (by fantom.foundation)
             </a>
           </div>
-        )
+        ),
       })
       break
     case ChainKey.OKT:
@@ -161,7 +240,7 @@ const showGasModal = (gas: ChainKey) => {
               Where to buy OKT (by okex.com)
             </a>
           </div>
-        )
+        ),
       })
       break
     case ChainKey.AVA:
@@ -174,7 +253,7 @@ const showGasModal = (gas: ChainKey) => {
               Where to buy AVAX (by avax.network)
             </a>
           </div>
-        )
+        ),
       })
       break
     case ChainKey.RIN:
@@ -187,7 +266,7 @@ const showGasModal = (gas: ChainKey) => {
               Official Faucet
             </a>
           </div>
-        )
+        ),
       })
       break
     case ChainKey.GOR:
@@ -200,7 +279,7 @@ const showGasModal = (gas: ChainKey) => {
               Faucet
             </a>
           </div>
-        )
+        ),
       })
       break
   }
@@ -211,19 +290,35 @@ const tooltips: { [ChainKey: string]: any } = {}
 for (const k in ChainKey) {
   const key = k.toLowerCase() as ChainKey
   const chain = getChainByKey(key)
-  tooltips[key] = (<>The ${chain.name} chain requires ${chain.coin} to pay for gas.</>)
-  tooltipsEmpty[key] = (<>
-    <span>The ${chain.name} requires ${chain.coin} to pay for gas. Without it you won't be able to do anything on this chain.</span>
-    <Button type="default" block onClick={() => showGasModal(key)}>Get ${chain.coin}</Button>
-  </>)
+  tooltips[key] = (
+    <>
+      The ${chain.name} chain requires ${chain.coin} to pay for gas.
+    </>
+  )
+  tooltipsEmpty[key] = (
+    <>
+      <span>
+        The ${chain.name} requires ${chain.coin} to pay for gas. Without it you won't be able to do
+        anything on this chain.
+      </span>
+      <Button type="default" block onClick={() => showGasModal(key)}>
+        Get ${chain.coin}
+      </Button>
+    </>
+  )
 }
 
 // render formatters
 function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
-  const coin = coins.find(coin => coin.key === coinName)
+  const coin = coins.find((coin) => coin.key === coinName)
   const isChainUsed = wallet.portfolio[chain]?.length > 0
-  const inPortfolio = wallet.portfolio[chain]?.find(e => e.id === '0x0000000000000000000000000000000000000000' || e.id === coin?.chains[chain]?.id)
-  const amounts: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : { amount_coin: new BigNumber(0), amount_usd: new BigNumber(0) }
+  const inPortfolio = wallet.portfolio[chain]?.find(
+    (e) =>
+      e.id === '0x0000000000000000000000000000000000000000' || e.id === coin?.chains[chain]?.id,
+  )
+  const amounts: Amounts = inPortfolio
+    ? parsePortfolioToAmount(inPortfolio)
+    : { amount_coin: new BigNumber(0), amount_usd: new BigNumber(0) }
 
   const tooltipEmpty = tooltipsEmpty[chain]
   const tooltip = tooltips[chain]
@@ -232,7 +327,8 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
       <div className="amount_coin">
         {amounts.amount_coin.eq(-1) ? (
           <Tooltip title={tooltip}>
-            {coinName}: <Skeleton.Button style={{ width: 60 }} active={true} size={'small'} shape={'round'} />
+            {coinName}:{' '}
+            <Skeleton.Button style={{ width: 60 }} active={true} size={'small'} shape={'round'} />
           </Tooltip>
         ) : amounts.amount_coin.isZero() ? (
           <Tooltip color={isChainUsed ? 'red' : 'gray'} title={tooltipEmpty}>
@@ -241,7 +337,7 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
               size="small"
               count={'!'}
               offset={[5, -15]}
-              style={{ backgroundColor: (isChainUsed ? 'red' : 'gray') }}
+              style={{ backgroundColor: isChainUsed ? 'red' : 'gray' }}
             />
           </Tooltip>
         ) : (
@@ -254,18 +350,23 @@ function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
   )
 }
 
-const renderWalletColumnTitle = (address: string, syncHandler: Function, deleteHandler: Function) => {
-  return (<Row>
-    <Col span={12} offset={6}>
-      {`${address.substr(0, 4)}...${address.substr(-4, 4)}`}
-    </Col>
-    <Col span={1} offset={4}>
-      <SyncOutlined onClick={() => syncHandler()} />
-    </Col>
-    <Col span={1} offset={0}>
-      <DeleteOutlined onClick={() => deleteHandler()} />
-    </Col>
-  </Row>
+const renderWalletColumnTitle = (
+  address: string,
+  syncHandler: Function,
+  deleteHandler: Function,
+) => {
+  return (
+    <Row>
+      <Col span={12} offset={6}>
+        {`${address.substr(0, 4)}...${address.substr(-4, 4)}`}
+      </Col>
+      <Col span={1} offset={4}>
+        <SyncOutlined onClick={() => syncHandler()} />
+      </Col>
+      <Col span={1} offset={0}>
+        <DeleteOutlined onClick={() => deleteHandler()} />
+      </Col>
+    </Row>
   )
 }
 //Helpers
@@ -282,17 +383,21 @@ const buildColumnForWallet = (wallet: Wallet, syncHandler: Function, deleteHandl
   const walletColumn: ColomnType = {
     title: renderWalletColumnTitle(wallet.address, syncHandler, deleteHandler),
     dataIndex: wallet.address,
-    children: supportedChains.filter(chain => chain.visible).map((chain) => {
-      return {
-        title: chain.name,
-        children: [{
-          title: renderGas(wallet, chain.key, chain.coin),
-          dataIndex: `${wallet.address}_${chain.key}`,
-          width: baseWidth,
-          render: renderAmounts
-        }]
-      }
-    }),
+    children: supportedChains
+      .filter((chain) => chain.visible)
+      .map((chain) => {
+        return {
+          title: chain.name,
+          children: [
+            {
+              title: renderGas(wallet, chain.key, chain.coin),
+              dataIndex: `${wallet.address}_${chain.key}`,
+              width: baseWidth,
+              render: renderAmounts,
+            },
+          ],
+        }
+      }),
   }
   return walletColumn
 }
@@ -308,25 +413,25 @@ const portfolioColumn: ColomnType = {
   title: 'Portfolio',
   width: baseWidth + 10,
   dataIndex: 'portfolio',
-  render: renderAmounts
+  render: renderAmounts,
 }
 
 const initialColumns = [
   coinColumn,
   portfolioColumn,
-  buildColumnForWallet(emptyWallet, () => { }, () => { }),
+  buildColumnForWallet(
+    emptyWallet,
+    () => {},
+    () => {},
+  ),
   {
-    title: (
-      <Button>
-        Add Wallet
-      </Button>
-    ),
+    title: <Button>Add Wallet</Button>,
     dataIndex: '',
     width: 100,
-  }
+  },
 ]
 
-const initialRows: Array<DataType> = coins.map(coin => {
+const initialRows: Array<DataType> = coins.map((coin) => {
   return {
     key: coin.key,
     coin: coin as Coin,
@@ -343,20 +448,28 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
     chainKeysToObject({ amount_usd: new BigNumber(0), percentage_of_portfolio: new BigNumber(0) }),
   ) as WalletSummary
 
-  Object.values(ChainKey).forEach(chain => {
-    wallet.portfolio[chain]?.forEach(portfolio => {
+  Object.values(ChainKey).forEach((chain) => {
+    wallet.portfolio[chain]?.forEach((portfolio) => {
       summary[chain].amount_usd = new BigNumber(summary[chain].amount_usd) // chainKeysToObject retruns string
-      summary[chain].amount_usd = summary[chain].amount_usd.plus(portfolio.amount.times(portfolio.pricePerCoin))
+      summary[chain].amount_usd = summary[chain].amount_usd.plus(
+        portfolio.amount.times(portfolio.pricePerCoin),
+      )
     })
-    summary[chain].percentage_of_portfolio = wallet.portfolio[chain]?.reduce((sum, current) => sum.plus(current.amount.times(current.pricePerCoin)), new BigNumber(0)).div(totalSumUsd)
+    summary[chain].percentage_of_portfolio = wallet.portfolio[chain]
+      ?.reduce(
+        (sum, current) => sum.plus(current.amount.times(current.pricePerCoin)),
+        new BigNumber(0),
+      )
+      .div(totalSumUsd)
   })
   return summary
 }
 
 // actual component
 const Dashboard = () => {
-
-  const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() => { return readWallets() })
+  const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() => {
+    return readWallets()
+  })
   const web3 = useWeb3React()
   const [columns, setColumns] = useState<Array<ColomnType>>(initialColumns)
   const [walletModalVisible, setWalletModalVisible] = useState(false)
@@ -367,34 +480,42 @@ const Dashboard = () => {
   // https://stackoverflow.com/a/63144665
   const [isSubscribed, setIsSubscribed] = useState<boolean>(true)
 
-
   const deleteWallet = (wallet: Wallet) => {
-    setRegisteredWallets(registeredWallets => registeredWallets.filter(item => item.address !== wallet.address))
+    setRegisteredWallets((registeredWallets) =>
+      registeredWallets.filter((item) => item.address !== wallet.address),
+    )
   }
 
   const buildWalletColumns = () => {
     var walletColumns: Array<ColomnType> = []
-    registeredWallets.forEach(wallet => {
-      const col = buildColumnForWallet(wallet, () => updateWalletPortfolio(wallet), () => deleteWallet(wallet))
+    registeredWallets.forEach((wallet) => {
+      const col = buildColumnForWallet(
+        wallet,
+        () => updateWalletPortfolio(wallet),
+        () => deleteWallet(wallet),
+      )
       walletColumns.push(col)
     })
     return walletColumns
   }
 
   const buildColumns = (initialBuild: boolean = false) => {
-    const columns = [
-      coinColumn,
-      portfolioColumn,
-    ]
+    const columns = [coinColumn, portfolioColumn]
     if (initialBuild) {
-      buildColumnForWallet(emptyWallet, () => { }, () => { })
+      buildColumnForWallet(
+        emptyWallet,
+        () => {},
+        () => {},
+      )
     } else {
-      buildWalletColumns().map(column => columns.push(column))
+      buildWalletColumns().map((column) => columns.push(column))
     }
     columns.push({
       title: (
         <Button onClick={() => setWalletModalVisible(true)} style={{ height: 80 }}>
-          Add<br />Wallet
+          Add
+          <br />
+          Wallet
         </Button>
       ),
       dataIndex: '',
@@ -406,7 +527,7 @@ const Dashboard = () => {
   //builders
   const buildRows = () => {
     const generatedRows: Array<DataType> = []
-    coins.forEach(coin => {
+    coins.forEach((coin) => {
       // row object
       const coinRow: DataType = {
         key: coin.key,
@@ -416,18 +537,22 @@ const Dashboard = () => {
           amount_usd: new BigNumber(0),
         },
       }
-      registeredWallets.forEach(wallet => {
-        Object.values(ChainKey).forEach(chain => {
+      registeredWallets.forEach((wallet) => {
+        Object.values(ChainKey).forEach((chain) => {
           const emptyAmounts: Amounts = {
             amount_coin: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
             amount_usd: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
           }
-          const inPortfolio = wallet.portfolio[chain].find(e => e.id === coin.chains[chain]?.id)
-          const cellContent: Amounts = inPortfolio ? parsePortfolioToAmount(inPortfolio) : emptyAmounts
+          const inPortfolio = wallet.portfolio[chain].find((e) => e.id === coin.chains[chain]?.id)
+          const cellContent: Amounts = inPortfolio
+            ? parsePortfolioToAmount(inPortfolio)
+            : emptyAmounts
           coinRow[`${wallet.address}_${chain}`] = cellContent
 
           if (cellContent.amount_coin.gt(0)) {
-            coinRow.portfolio.amount_coin = coinRow.portfolio.amount_coin.plus(cellContent.amount_coin)
+            coinRow.portfolio.amount_coin = coinRow.portfolio.amount_coin.plus(
+              cellContent.amount_coin,
+            )
             coinRow.portfolio.amount_usd = coinRow.portfolio.amount_usd.plus(cellContent.amount_usd)
           }
         }) // for each chain
@@ -446,23 +571,28 @@ const Dashboard = () => {
     wallet.loading = true
     setData(buildRows) // set loading state
 
-    const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = await getBalancesForWallet(wallet.address)
+    const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = await getBalancesForWallet(
+      wallet.address,
+    )
     for (const chain of Object.values(ChainKey)) {
       const chainPortfolio = portfolio[chain]
       wallet.portfolio[chain] = chainPortfolio
 
       // add new coins
-      chainPortfolio.forEach(coin => {
-        const exists = coins.find(existingCoin => existingCoin.chains[chain]?.id === coin.id)
+      chainPortfolio.forEach((coin) => {
+        const exists = coins.find((existingCoin) => existingCoin.chains[chain]?.id === coin.id)
         if (!exists) {
-          let symbolExists = coins.find(existingCoin => existingCoin.key === coin.symbol)
+          let symbolExists = coins.find((existingCoin) => existingCoin.key === coin.symbol)
           let symbol = coin.symbol
           if (symbolExists) {
             let symbol_id = 0
             while (symbolExists) {
               symbol_id += 1
               // eslint-disable-next-line no-loop-func
-              symbolExists = coins.find(existingCoin => existingCoin.key === (coin.symbol + '_' + symbol_id))
+              symbolExists = coins.find(
+                // eslint-disable-next-line no-loop-func
+                (existingCoin) => existingCoin.key === coin.symbol + '_' + symbol_id,
+              )
             }
             symbol += '_' + symbol_id
           }
@@ -493,18 +623,15 @@ const Dashboard = () => {
     wallet.loading = false
     if (isSubscribed) {
       setRegisteredWallets(
-        registeredWallets.map(old =>
-          old.address === wallet.address
-            ? wallet
-            : old
-        ))
+        registeredWallets.map((old) => (old.address === wallet.address ? wallet : old)),
+      )
       setColumns(buildColumns(false))
       setData(buildRows)
     }
   }
 
   const updateEntirePortfolio = () => {
-    registeredWallets.forEach(async wallet => {
+    registeredWallets.forEach(async (wallet) => {
       await updateWalletPortfolio(wallet)
     })
   }
@@ -535,13 +662,12 @@ const Dashboard = () => {
       loading: true,
       portfolio: chainKeysToObject([]),
     }
-    setRegisteredWallets(registeredWallets => [...registeredWallets, newWallet])
+    setRegisteredWallets((registeredWallets) => [...registeredWallets, newWallet])
   }
 
   useEffect(() => {
     storeWallets(registeredWallets)
   }, [registeredWallets])
-
 
   // Add Wallet Modal Handlers
   const resolveEnsName = async (name: string) => {
@@ -554,7 +680,7 @@ const Dashboard = () => {
     let address = getModalAddressSuggestion()
 
     if (address.endsWith('.eth')) {
-      address = await resolveEnsName(address) || ''
+      address = (await resolveEnsName(address)) || ''
     }
 
     if (ethers.utils.isAddress(address)) {
@@ -574,8 +700,9 @@ const Dashboard = () => {
   }
 
   const getModalAddressSuggestion = () => {
-    const addedWallets = registeredWallets.map(wallet => wallet.address)
-    const web3Account = (web3.account && addedWallets.indexOf(web3.account) === -1) ? web3.account : ''
+    const addedWallets = registeredWallets.map((wallet) => wallet.address)
+    const web3Account =
+      web3.account && addedWallets.indexOf(web3.account) === -1 ? web3.account : ''
     return walletModalAddress || web3Account
   }
 
@@ -590,40 +717,55 @@ const Dashboard = () => {
           size="middle"
           scroll={{ x: '1000px', y: 'calc(100vh - 277px)' }}
           pagination={false}
-
           summary={() => (
             <Table.Summary fixed>
               <Table.Summary.Row>
-                <Table.Summary.Cell index={summaryIndex} className="sum">SUM</Table.Summary.Cell>
-                <Table.Summary.Cell index={summaryIndex++}>
-                  {
-                    renderSummary(!registeredWallets.length ? emptySummaryAmounts : {
-                      amount_usd: data.reduce((sum, curr) => sum.plus(curr.portfolio.amount_usd), new BigNumber(0)),
-                      percentage_of_portfolio: new BigNumber(1)
-                    } as SummaryAmounts)
-                  }
+                <Table.Summary.Cell index={summaryIndex} className="sum">
+                  SUM
                 </Table.Summary.Cell>
-                {
-                  registeredWallets.map((wallet: Wallet) => {
-                    const total = data.reduce((sum, curr) => sum.plus(curr.portfolio.amount_usd), new BigNumber(0))
-                    const summary = calculateWalletSummary(wallet, total)
+                <Table.Summary.Cell index={summaryIndex++}>
+                  {renderSummary(
+                    !registeredWallets.length
+                      ? emptySummaryAmounts
+                      : ({
+                          amount_usd: data.reduce(
+                            (sum, curr) => sum.plus(curr.portfolio.amount_usd),
+                            new BigNumber(0),
+                          ),
+                          percentage_of_portfolio: new BigNumber(1),
+                        } as SummaryAmounts),
+                  )}
+                </Table.Summary.Cell>
+                {registeredWallets.map((wallet: Wallet) => {
+                  const total = data.reduce(
+                    (sum, curr) => sum.plus(curr.portfolio.amount_usd),
+                    new BigNumber(0),
+                  )
+                  const summary = calculateWalletSummary(wallet, total)
 
-                    return supportedChains
-                      .filter(chain => chain.visible)
-                      .map(chain => {
-                        return (
-                          <Table.Summary.Cell index={summaryIndex++} key={`${wallet.address}_${chain.key}`}>{wallet.loading ? renderSummary({ amount_usd: new BigNumber(0), percentage_of_portfolio: new BigNumber(0) }) : renderSummary(summary[chain.key])}</Table.Summary.Cell>
-                        )
-                      })
-                  })
-                }
+                  return supportedChains
+                    .filter((chain) => chain.visible)
+                    .map((chain) => {
+                      return (
+                        <Table.Summary.Cell
+                          index={summaryIndex++}
+                          key={`${wallet.address}_${chain.key}`}>
+                          {wallet.loading
+                            ? renderSummary({
+                                amount_usd: new BigNumber(0),
+                                percentage_of_portfolio: new BigNumber(0),
+                              })
+                            : renderSummary(summary[chain.key])}
+                        </Table.Summary.Cell>
+                      )
+                    })
+                })}
                 <Table.Summary.Cell index={summaryIndex++} key={'add'}></Table.Summary.Cell>
               </Table.Summary.Row>
             </Table.Summary>
           )}
         />
       </div>
-
 
       <Modal
         title="Add Wallet"
@@ -637,14 +779,24 @@ const Dashboard = () => {
             <Button key="back" onClick={handleWalletModalClose}>
               Close
             </Button>
-          ) : '',
-          <Button key="submit" type="primary" onClick={handleWalletModalAdd} disabled={walletModalLoading}>
+          ) : (
+            ''
+          ),
+          <Button
+            key="submit"
+            type="primary"
+            onClick={handleWalletModalAdd}
+            disabled={walletModalLoading}>
             {walletModalLoading ? 'Loading' : 'Add'}
           </Button>,
-        ]}
-      >
-        {!web3.account ? (<ConnectButton />) : (<Button style={{ display: 'block' }}>Connected with {web3.account.substr(0, 4)}...</Button>)}
-
+        ]}>
+        {!web3.account ? (
+          <ConnectButton />
+        ) : (
+          <Button style={{ display: 'block' }}>
+            Connected with {web3.account.substr(0, 4)}...
+          </Button>
+        )}
         Enter a wallet address / ens domain:
         <Input
           size="large"
@@ -655,10 +807,8 @@ const Dashboard = () => {
           disabled={walletModalLoading}
         />
       </Modal>
-    </ Content>
+    </Content>
   )
 }
-
-
 
 export default Dashboard

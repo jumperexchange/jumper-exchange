@@ -4,68 +4,69 @@ export enum NotificationType {
   SWAP_SUCCESSFUL,
   CROSS_SUCCESSFUL,
   SWAP_ERROR,
-  CROSS_ERROR
+  CROSS_ERROR,
 }
 
-
-const notificationsSupported = ():boolean =>{
-  if (!("Notification" in window)) {
-    console.log("This browser does not support desktop notification");
+const notificationsSupported = (): boolean => {
+  if (!('Notification' in window)) {
+    // eslint-disable-next-line no-console
+    console.log('This browser does not support desktop notification')
     return false
   }
   return true
 }
 
-const activateNotifications = async (): Promise<NotificationPermission>  => {
+const activateNotifications = async (): Promise<NotificationPermission> => {
   // if(Notification.permission === "granted") return
-  if (notificationsSupported()){
-    await Notification.requestPermission();
+  if (notificationsSupported()) {
+    await Notification.requestPermission()
     return Notification.permission
   }
-  return "denied"
+  return 'denied'
 }
 
-const getNotificationContents = (type: NotificationType):{title: string, options: NotificationOptions, alwaysShow: boolean} => {
-  let title: string = "";
+const getNotificationContents = (
+  type: NotificationType,
+): { title: string; options: NotificationOptions; alwaysShow: boolean } => {
+  let title: string = ''
   let options: NotificationOptions = {
-    dir: "auto",
+    dir: 'auto',
     // icon: lifiIcon,
-    badge: lifiIcon
+    badge: lifiIcon,
   }
   let alwaysShow = false
-  switch(type){
+  switch (type) {
     case NotificationType.SWAP_SUCCESSFUL:
-      title = "Swap Successful!"
-      break;
+      title = 'Swap Successful!'
+      break
     case NotificationType.SWAP_ERROR:
-      title = "Swap Failed!"
+      title = 'Swap Failed!'
       alwaysShow = true
-      break;
-      case NotificationType.CROSS_SUCCESSFUL:
-        title = "Cross Chain Transfer Successful!"
-        break;
-      case NotificationType.CROSS_ERROR:
-        title = "Cross Chain Transfer Failed!"
-        alwaysShow = true
-        break;
+      break
+    case NotificationType.CROSS_SUCCESSFUL:
+      title = 'Cross Chain Transfer Successful!'
+      break
+    case NotificationType.CROSS_ERROR:
+      title = 'Cross Chain Transfer Failed!'
+      alwaysShow = true
+      break
     default:
-      break;
+      break
   }
 
-  return {title, options, alwaysShow}
+  return { title, options, alwaysShow }
 }
 
 const showNotification = (type: NotificationType) => {
-  if(Notification.permission === "denied") return
-  const {title, options, alwaysShow} = getNotificationContents(type)
-  if(document.hidden || alwaysShow){
+  if (Notification.permission === 'denied') return
+  const { title, options, alwaysShow } = getNotificationContents(type)
+  if (document.hidden || alwaysShow) {
     new Notification(title, options)
   }
-
 }
 
 const serviceExport = {
   activateNotifications,
-  showNotification
+  showNotification,
 }
-export default  serviceExport
+export default serviceExport

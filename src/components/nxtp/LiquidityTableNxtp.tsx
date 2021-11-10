@@ -1,6 +1,7 @@
 import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import BigNumber from 'bignumber.js'
+
 import { Chain } from '../../types'
 
 const LiquidityTableNxtp = ({ liquidity }: any) => {
@@ -82,8 +83,7 @@ const LiquidityTableNxtp = ({ liquidity }: any) => {
       dataSource={liquidity}
       style={{ whiteSpace: 'nowrap' }}
       pagination={false}
-      sortDirections={['ascend', 'descend', 'ascend']}
-    ></Table>
+      sortDirections={['ascend', 'descend', 'ascend']}></Table>
   )
 }
 

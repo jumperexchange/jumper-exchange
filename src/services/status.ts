@@ -1,25 +1,32 @@
+/* eslint-disable max-params */
 import { emptyExecution, Execution, Process, ProcessMessage } from '../types'
 import { deepClone } from './utils'
 
-
 export const initStatus = (updateStatus?: Function, initialStatus?: Execution) => {
   const status = initialStatus || deepClone(emptyExecution)
+  // eslint-disable-next-line no-console
   const update = updateStatus || console.log
-  if(!initialStatus){
+  if (!initialStatus) {
     update(status)
   }
   return { status, update }
 }
 
-export const createAndPushProcess = (id: string, updateStatus: Function, status: Execution, message: ProcessMessage, params?: object) => {
-  const process = status.process.find(p => p.id === id)
-  if(process){
+export const createAndPushProcess = (
+  id: string,
+  updateStatus: Function,
+  status: Execution,
+  message: ProcessMessage,
+  params?: object,
+) => {
+  const process = status.process.find((p) => p.id === id)
+  if (process) {
     status.status = 'PENDING'
     updateStatus(status)
     return process
   }
   const newProcess: Process = {
-    id:id,
+    id: id,
     startedAt: Date.now(),
     message: message,
     status: 'PENDING',
@@ -36,7 +43,12 @@ export const createAndPushProcess = (id: string, updateStatus: Function, status:
   return newProcess
 }
 
-export const setStatusFailed = (updateStatus: Function, status: Execution, currentProcess: Process, params?: object) => {
+export const setStatusFailed = (
+  updateStatus: Function,
+  status: Execution,
+  currentProcess: Process,
+  params?: object,
+) => {
   status.status = 'FAILED'
   currentProcess.status = 'FAILED'
   currentProcess.failedAt = Date.now()
@@ -49,7 +61,12 @@ export const setStatusFailed = (updateStatus: Function, status: Execution, curre
   updateStatus(status)
 }
 
-export const setStatusDone = (updateStatus: Function, status: Execution, currentProcess: Process, params?: object) => {
+export const setStatusDone = (
+  updateStatus: Function,
+  status: Execution,
+  currentProcess: Process,
+  params?: object,
+) => {
   currentProcess.status = 'DONE'
   currentProcess.doneAt = Date.now()
   if (params) {
