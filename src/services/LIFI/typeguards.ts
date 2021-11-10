@@ -1,42 +1,54 @@
-import { DepositAction, WithdrawAction, Token } from "../../types"
+import {
+  DepositAction,
+  WithdrawAction,
+  Token,
+  ChainKey,
+  CoinKey,
+} from "../../types";
 
 /*
   Alternative: https://github.com/rhys-vdw/ts-auto-guard
 */
 
-
-export const isDeposit = (deposit: DepositAction): deposit is DepositAction =>{
+export const isDeposit = (deposit: DepositAction): deposit is DepositAction => {
   return (
-    deposit.type === 'deposit' &&
-    typeof deposit.chainId === 'number' &&
-    typeof deposit.amount === 'string' // &&
-    // isToken (deposit.token)
-    )
-}
+    deposit.type === "deposit" &&
+    typeof deposit.chainId === "number" &&
+    typeof deposit.amount === "string" &&
+    isToken(deposit.token)
+  );
+};
 
-export const isWithdraw = (withdraw: WithdrawAction): withdraw is WithdrawAction =>{
+export const isWithdraw = (
+  withdraw: WithdrawAction
+): withdraw is WithdrawAction => {
   return (
-    withdraw.type === 'withdraw' &&
-    typeof withdraw.chainId === 'number' &&
-    typeof withdraw.toAddress === 'string' &&
-    typeof withdraw.slippage === 'number' // &&
-    // isToken (deposit.token)
-  )
-}
+    withdraw.type === "withdraw" &&
+    typeof withdraw.chainId === "number" &&
+    typeof withdraw.toAddress === "string" &&
+    typeof withdraw.amount === "string" &&
+    typeof withdraw.slippage === "number" &&
+    isToken(withdraw.token)
+  );
+};
 
 export const isToken = (token: Token): token is Token => {
-  return true
-}
+  return (
+    typeof token.id === "string" &&
+    typeof token.symbol === "string" &&
+    typeof token.decimals === "number" &&
+    typeof token.chainId === "number" &&
+    typeof token.name === "string" &&
+    isChainKey(token.chainKey) &&
+    isCoinKey(token.key) &&
+    typeof token.logoURI === "string"
+  );
+};
 
+export const isChainKey = (chainKey: ChainKey): chainKey is ChainKey => {
+  return true;
+};
 
-  //   // token: Token;
-  //   export interface Token {
-  //     id: string;
-  //     symbol: string;
-  //     decimals: number;
-  //     chainId: number;
-  //     name: string;
-  //     chainKey: ChainKey;
-  //     key: CoinKey;
-  //     logoURI: string;
-  // }
+export const isCoinKey = (coinKey: CoinKey): coinKey is CoinKey => {
+  return true;
+};
