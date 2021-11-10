@@ -1,5 +1,4 @@
 import {
-  ArrowRightOutlined,
   CheckOutlined,
   CompassOutlined,
   DownOutlined,
@@ -7,7 +6,6 @@ import {
   HistoryOutlined,
   InfoCircleOutlined,
   LinkOutlined,
-  LoadingOutlined,
   LoginOutlined,
   SwapOutlined,
   SyncOutlined,
@@ -35,11 +33,6 @@ import {
   Modal,
   Row,
   Tooltip,
-  List,
-  Card,
-  Typography,
-  Descriptions,
-  Spin,
 } from "antd";
 import { Content } from "antd/lib/layout/layout";
 import Title from "antd/lib/typography/Title";
@@ -89,8 +82,6 @@ import "./SwapXpollinate.css";
 import TransactionsTableNxtp from "./TransactionsTableNxtp";
 import TestBalanceOverview from "./TestBalanceOverview";
 import { ActiveTransaction, CrosschainTransaction } from "./typesNxtp";
-
-const { Paragraph } = Typography;
 
 const history = createBrowserHistory();
 
@@ -1264,185 +1255,6 @@ const SwapXpollinate = ({
     );
   };
 
-  const renderActiveTransaction = (tx: ActiveTransaction) => {
-    const { transactionId } = tx.txData.invariant;
-    const sendingChain = getChainById(tx.txData.invariant.sendingChainId);
-    const receivingChain = getChainById(tx.txData.invariant.receivingChainId);
-
-    const getToken = (sendingChain: Chain, assetId: string) =>
-      tokens[sendingChain.key].find(
-        (token) => token.id === assetId.toLowerCase()
-      );
-    const sendingToken = getToken(
-      sendingChain,
-      tx.txData.invariant.sendingAssetId
-    );
-    const receivingToken = getToken(
-      receivingChain,
-      tx.txData.invariant.receivingAssetId
-    );
-
-    const parseAmount = (amount: string = "0", decimals: number) => {
-      const fixedDecimals = 4;
-      const parsed = (parseInt(amount) / 10 ** decimals).toFixed(fixedDecimals);
-      return parsed === `0.${"0".repeat(fixedDecimals)}`
-        ? `<0.${"0".repeat(fixedDecimals - 1)}1`
-        : parsed;
-    };
-    const sendingAmount = parseAmount(
-      tx.txData.sending?.amount,
-      sendingToken?.decimals || 18
-    );
-    const receivingAmount = parseAmount(
-      tx.txData.receiving?.amount,
-      receivingToken?.decimals || 18
-    );
-
-    const index = executionRoutes.findIndex((item) => {
-      return (
-        (item[0].estimate as CrossEstimate).data.bid.transactionId ===
-        transactionId
-      );
-    });
-
-    const status =
-      index !== -1 ? (
-        <Button onClick={() => setModalRouteIndex(index)}>{tx.status}</Button>
-      ) : (
-        tx.status
-      );
-    const cancelled = tx.status.includes("Cancelled");
-    const success =
-      tx.status.includes("Receiver") && tx.status.includes("Fulfilled");
-    const badge = cancelled ? "error" : success ? "success" : "processing";
-    const expiry =
-      (tx.txData.sending?.expiry || 0) > Date.now() / 1000
-        ? `in ${(
-            ((tx.txData.sending?.expiry || 0) - Date.now() / 1000) /
-            3600
-          ).toFixed(2)} hours`
-        : "Expired";
-
-    let claimAction = undefined;
-    if (tx.txData.sending && Date.now() / 1000 > tx.txData.sending.expiry) {
-      // check chain
-      if (web3.chainId !== tx.txData.invariant.sendingChainId) {
-        claimAction = (
-          <Button
-            type="link"
-            onClick={() => switchChain(tx.txData.invariant.sendingChainId)}
-          >
-            Change Chain
-          </Button>
-        );
-      } else {
-        claimAction = (
-          <Button type="link" onClick={() => cancelTransfer(tx.txData)}>
-            Cancel
-          </Button>
-        );
-      }
-    } else if (
-      tx.status === NxtpSdkEvents.ReceiverTransactionPrepared &&
-      tx.event
-    ) {
-      claimAction = (
-        <Button
-          className="xpollinate-button"
-          type="primary"
-          shape="round"
-          size="large"
-          style={{ borderRadius: 6 }}
-          onClick={() => openSwapModalFinish(tx)}
-        >
-          Sign to claim Transfer
-        </Button>
-      );
-    } else if (
-      tx.status === NxtpSdkEvents.ReceiverTransactionFulfilled ||
-      tx.status === NxtpSdkEvents.SenderTransactionFulfilled
-    ) {
-      claimAction = (
-        <CheckOutlined
-          style={{
-            margin: "auto",
-            display: "block",
-            color: "green",
-            fontSize: 24,
-          }}
-        />
-      );
-    } else {
-      const index = executionRoutes.findIndex((item) => {
-        return (
-          (item[0].estimate as CrossEstimate).data.bid.transactionId ===
-          tx.txData.invariant.transactionId
-        );
-      });
-      if (
-        index !== -1 &&
-        executionRoutes[index][0].execution?.status === "FAILED"
-      ) {
-        claimAction = "Failed";
-      } else if (index !== -1) {
-        claimAction = (
-          <Spin
-            style={{ margin: "auto", display: "block" }}
-            indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />}
-          />
-        );
-      }
-    }
-    return (
-      <List.Item key={transactionId}>
-        <Card
-          bodyStyle={{ padding: 0 }}
-          actions={claimAction !== undefined ? [claimAction] : []}
-          bordered={false}
-          title={
-            <Row>
-              <Col span={11}>
-                {sendingChain.name} {sendingAmount} {sendingToken?.name}
-              </Col>
-              <Col span={2}>
-                <ArrowRightOutlined />
-              </Col>
-              <Col span={11}>
-                {receivingChain.name} {receivingAmount} {receivingToken?.name}
-              </Col>
-            </Row>
-          }
-        >
-          <Descriptions
-            column={1}
-            size="small"
-            labelStyle={{ fontWeight: 500 }}
-            bordered
-          >
-            <Descriptions.Item label="ID">
-              <Paragraph copyable={true} style={{ margin: 0 }}>
-                <a
-                  href={"https://connextscan.io/tx/" + transactionId}
-                  target="_blank"
-                  rel="nofollow noreferrer"
-                >
-                  {transactionId.slice(0, 20) + "..."}
-                </a>
-              </Paragraph>
-            </Descriptions.Item>
-            <Descriptions.Item label="Status">
-              <Badge status={badge} />
-              {status}
-            </Descriptions.Item>
-            {!cancelled && !success && (
-              <Descriptions.Item label="Expires">{expiry}</Descriptions.Item>
-            )}
-          </Descriptions>
-        </Card>
-      </List.Item>
-    );
-  };
-
   return (
     <Content className="site-layout xpollinate">
       <div className="xpollinate-header">
@@ -1612,49 +1424,50 @@ const SwapXpollinate = ({
 
         <Col style={{ padding: 20, paddingBottom: 0 }}>
           {/* Active Transactions */}
-          <Collapse.Panel
-            className={activeTransactions.length ? "" : "empty"}
-            header={
-              <h2
-                onClick={() =>
-                  setActiveKeyTransactions((key) =>
-                    key === "active" ? "" : "active"
+          <Collapse activeKey={activeKeyTransactions} accordion ghost>
+            <Collapse.Panel
+              className={activeTransactions.length ? "" : "empty"}
+              header={
+                <h2
+                  onClick={() =>
+                    setActiveKeyTransactions((key) =>
+                      key === "active" ? "" : "active"
+                    )
+                  }
+                  style={{ display: "inline" }}
+                >
+                  Active Transactions (
+                  {!sdk ? (
+                    "-"
+                  ) : updatingActiveTransactions ? (
+                    <SyncOutlined spin style={{ verticalAlign: -4 }} />
+                  ) : (
+                    activeTransactions.length
+                  )}
                   )
-                }
-                style={{ display: "inline" }}
-              >
-                Active Transactions (
-                {!sdk ? (
-                  "-"
-                ) : updatingActiveTransactions ? (
-                  <SyncOutlined spin style={{ verticalAlign: -4 }} />
-                ) : (
-                  activeTransactions.length
-                )}
-                )
-              </h2>
-            }
-            key="active"
-          >
-            <div
-              style={{
-                overflowX: "scroll",
-                background: "white",
-                margin: "10px 20px",
-              }}
+                </h2>
+              }
+              key="active"
             >
-              <TransactionsTableNxtp
-                activeTransactions={activeTransactions}
-                executionRoutes={executionRoutes}
-                setModalRouteIndex={setModalRouteIndex}
-                openSwapModalFinish={openSwapModalFinish}
-                switchChain={switchChain}
-                cancelTransfer={cancelTransfer}
-                tokens={tokens}
-              />
-            </div>
-          </Collapse.Panel>
-
+              <div
+                style={{
+                  overflowX: "scroll",
+                  background: "white",
+                  margin: "10px 20px",
+                }}
+              >
+                <TransactionsTableNxtp
+                  activeTransactions={activeTransactions}
+                  executionRoutes={executionRoutes}
+                  setModalRouteIndex={setModalRouteIndex}
+                  openSwapModalFinish={openSwapModalFinish}
+                  switchChain={switchChain}
+                  cancelTransfer={cancelTransfer}
+                  tokens={tokens}
+                />
+              </div>
+            </Collapse.Panel>
+          </Collapse>
           {/* Swap Form */}
           <Row style={{ margin: 20, marginTop: 0 }} justify={"center"}>
             <Col className="swap-form">
@@ -1669,7 +1482,7 @@ const SwapXpollinate = ({
               >
                 <Row>
                   <Title className="swap-title" level={4}>
-                    Please Specify Your Transaction
+                  Send CrossChain Transaction
                   </Title>
                 </Row>
 
