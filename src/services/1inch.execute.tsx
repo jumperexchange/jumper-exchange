@@ -15,16 +15,16 @@ export class OneInchExecutionManager {
   }
 
   executeSwap = async (signer: JsonRpcSigner, swapAction: SwapAction, swapEstimate: SwapEstimate, srcAmount: BigNumber, srcAddress: string, destAddress: string, updateStatus?: Function, initialStatus?: Execution) => {
-
     // setup
     const fromChain = getChainById(swapAction.chainId)
     const { status, update } = initStatus(updateStatus, initialStatus)
-
     if(!this.shouldContinue) return status
     if (swapAction.token.id !== constants.AddressZero) {
       const contractAddress = await oneInch.getContractAddress()
       await checkAllowance(signer, fromChain, swapAction.token, swapAction.amount, contractAddress, update, status)
     }
+
+    // https://github.com/ethers-io/ethers.js/issues/1435#issuecomment-814963932
 
     // Swap via 1inch
     // -> set status
