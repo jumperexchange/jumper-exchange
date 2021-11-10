@@ -4,26 +4,18 @@ import './SwapXpollinate.css'
 
 import {
   CheckOutlined,
+  CompassOutlined,
   DownOutlined,
   ExportOutlined,
+  HistoryOutlined,
   InfoCircleOutlined,
   LinkOutlined,
   LoginOutlined,
   SwapOutlined,
   SyncOutlined,
 } from '@ant-design/icons'
-import {
-  HistoricalTransaction,
-  NxtpSdk,
-  NxtpSdkEvent,
-  NxtpSdkEvents,
-  SubgraphSyncRecord,
-} from '@connext/nxtp-sdk'
-import {
-  AuctionResponse,
-  getDeployedSubgraphUri,
-  TransactionPreparedEvent,
-} from '@connext/nxtp-utils'
+import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk'
+import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
@@ -44,8 +36,7 @@ import {
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
-import { providers, utils } from 'ethers'
-import { gql, request } from 'graphql-request'
+import { providers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
@@ -57,23 +48,15 @@ import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg'
 import { getBalancesForWalletFromChain } from '../../services/balanceService'
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
-import {
-  chainConfigOverwrites,
-  finishTransfer,
-  getTransferQuote,
-  setup,
-  triggerTransfer,
-} from '../../services/nxtp'
+import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp'
 import { deepClone, formatTokenAmountOnly } from '../../services/utils'
 import {
   Chain,
   ChainKey,
   ChainPortfolio,
-  CoinKey,
   CrossAction,
   CrossEstimate,
   CrossStep,
-  defaultCoins,
   Execution,
   findDefaultCoinOnChain,
   getChainById,
@@ -84,8 +67,6 @@ import {
 } from '../../types'
 import SwapForm from '../SwapForm'
 import { getRpcProviders, injected } from '../web3/connectors'
-import HistoricTransactionsTableNxtp from './HistoricTransactionsTableNxtp'
-import LiquidityTableNxtp from './LiquidityTableNxtp'
 import SwappingNxtp from './SwappingNxtp'
 import TestBalanceOverview from './TestBalanceOverview'
 import TransactionsTableNxtp from './TransactionsTableNxtp'
@@ -307,11 +288,6 @@ const SwapXpollinate = ({
   const [syncStatus, setSyncStatus] = useState<Record<number, SubgraphSyncRecord>>()
   const [activeTransactions, setActiveTransactions] = useState<Array<ActiveTransaction>>([])
   const [updatingActiveTransactions, setUpdatingActiveTransactions] = useState<boolean>(false)
-  const [historicTransaction, setHistoricTransactions] = useState<Array<HistoricalTransaction>>([])
-  const [liquidity, setLiquidity] = useState<Array<any>>([])
-  const [updatingLiquidity, setUpdatingLiquidity] = useState<boolean>(false)
-  const [updateHistoricTransactions, setUpdateHistoricTransactions] = useState<boolean>(true)
-  const [updatingHistoricTransactions, setUpdatingHistoricTransactions] = useState<boolean>(false)
   const [activeKeyTransactions, setActiveKeyTransactions] = useState<string>('')
 
   // Wallet
@@ -366,89 +342,6 @@ const SwapXpollinate = ({
     },
     [transferChains],
   )
-
-  const updateLiquidity = useCallback(async () => {
-    setUpdatingLiquidity(true)
-    setLiquidity(await getLiquidity(transferChains))
-    setUpdatingLiquidity(false)
-  }, [transferChains])
-
-  useEffect(() => {
-    if (sdk) {
-      updateLiquidity()
-    }
-  }, [sdk, updateLiquidity])
-
-  useEffect(() => {
-    intervalRef.current = setInterval(() => updateLiquidity(), BALANCES_REFRESH_INTERVAL)
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
-    }
-  }, [updateLiquidity])
-
-  const getLiquidity = async (chains: Chain[]) => {
-    const query = gql`
-      query GetLiquidity($routerId: ID!) {
-        router(id: $routerId) {
-          assetBalances {
-            id
-            amount
-          }
-        }
-      }
-    `
-    const liq = await Promise.all(
-      chains.map(async (chain) => {
-        // get graph from override first
-        let sub = chainConfigOverwrites[chain.id]?.subgraph
-          ? Array.isArray(chainConfigOverwrites[chain.id]?.subgraph)
-            ? chainConfigOverwrites[chain.id]?.subgraph![0]
-            : chainConfigOverwrites[chain.id]?.subgraph
-          : undefined
-        if (!sub) {
-          sub = getDeployedSubgraphUri(chain.id)
-        }
-        if (!sub) {
-          console.error(`No subgraph URI available for ${chain.id}`)
-          return null
-        }
-
-        // request
-        const res = await request(sub as string, query, {
-          routerId: process.env.REACT_APP_NXTP_ROUTER_ADDRESS?.toLowerCase(),
-        })
-
-        // parse
-        const row = {
-          key: chain.id,
-          chain: chain,
-          [CoinKey.USDC as string]: new BigNumber(0),
-          [CoinKey.USDT as string]: new BigNumber(0),
-          [CoinKey.DAI as string]: new BigNumber(0),
-          total: new BigNumber(0),
-        }
-
-        res.router?.assetBalances?.forEach((bal: { amount: string; id: string }) => {
-          const assetId = bal.id.split('-')[0].toLowerCase()
-          const coin = defaultCoins.find((coin) => coin.chains[chain.key]?.id === assetId)
-          const token = coin?.chains[chain.key]
-          if (!coin || !token) {
-            return null
-          }
-          const parsed = new BigNumber(utils.formatUnits(bal.amount, token.decimals))
-          row[coin.key as string] = parsed
-          row.total = row.total.plus(parsed)
-        })
-
-        return row
-      }),
-    )
-
-    return liq
-  }
 
   // update table helpers
   const updateActiveTransactionsWith = (
@@ -526,7 +419,6 @@ const SwapXpollinate = ({
         )
         removeActiveTransaction(data.txData.transactionId)
         setRefreshBalances((state) => state + 1)
-        setUpdateHistoricTransactions(true)
       })
 
       _sdk.attach(NxtpSdkEvents.SenderTransactionCancelled, async (data) => {
@@ -537,7 +429,6 @@ const SwapXpollinate = ({
           { invariant: data.txData, sending: data.txData },
         )
         removeActiveTransaction(data.txData.transactionId)
-        setUpdateHistoricTransactions(true)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverPrepareSigned, (data) => {
@@ -563,7 +454,6 @@ const SwapXpollinate = ({
         )
         removeActiveTransaction(data.txData.transactionId)
         setRefreshBalances((state) => state + 1)
-        setUpdateHistoricTransactions(true)
       })
 
       _sdk.attach(NxtpSdkEvents.ReceiverTransactionCancelled, async (data) => {
@@ -574,11 +464,7 @@ const SwapXpollinate = ({
           { invariant: data.txData, receiving: data.txData },
         )
         removeActiveTransaction(data.txData.transactionId)
-        setUpdateHistoricTransactions(true)
       })
-
-      // fetch historic transactions
-      setUpdateHistoricTransactions(true)
 
       // get pending transactions
       setUpdatingActiveTransactions(true)
@@ -591,7 +477,7 @@ const SwapXpollinate = ({
         }
         updateActiveTransactionsWith(
           transaction.crosschainTx.invariant.transactionId,
-          transaction.status,
+          transaction.status as NxtpSdkEvent,
           transaction,
           transaction.crosschainTx,
         )
@@ -615,7 +501,6 @@ const SwapXpollinate = ({
     if (!web3.account) {
       setHighlightedIndex(-1)
       setActiveTransactions([])
-      setHistoricTransactions([])
       setExecutionRoutes([])
       setSdkChainId(undefined)
       if (sdk) {
@@ -641,19 +526,6 @@ const SwapXpollinate = ({
       }
     }
   }
-
-  const loadHistoricTransactions = useCallback(async () => {
-    setUpdatingHistoricTransactions(true)
-    setHistoricTransactions(await sdk!.getHistoricalTransactions())
-    setUpdateHistoricTransactions(false)
-    setUpdatingHistoricTransactions(false)
-  }, [sdk])
-
-  useEffect(() => {
-    if (sdk && updateHistoricTransactions && !updatingHistoricTransactions) {
-      loadHistoricTransactions()
-    }
-  }, [sdk, updateHistoricTransactions, updatingHistoricTransactions, loadHistoricTransactions])
 
   const updateBalances = useCallback(
     async (address: string) => {
@@ -1134,7 +1006,10 @@ const SwapXpollinate = ({
   const cancelTransfer = async (txData: CrosschainTransaction) => {
     try {
       await sdk?.cancel(
-        { signature: '0x', txData: { ...txData.invariant, ...txData.sending! } },
+        {
+          signature: '0x',
+          txData: { ...txData.invariant, ...txData.sending! },
+        },
         txData.invariant.sendingChainId,
       )
       removeActiveTransaction(txData.invariant.transactionId)
@@ -1208,7 +1083,7 @@ const SwapXpollinate = ({
 
   const priceImpact = () => {
     const token = transferTokens[withdrawChain].find((token) => token.id === withdrawToken)
-    let impact = new BigNumber(0)
+    let fees = new BigNumber(0)
     let routerFee = new BigNumber(0)
     let gasFee = new BigNumber(0)
     let decimals = 2
@@ -1223,13 +1098,12 @@ const SwapXpollinate = ({
       const toToken = cross.action.toToken
       const toAmount = new BigNumber(cross.estimate.toAmount).shiftedBy(-toToken.decimals)
 
-      const diff = fromAmount.minus(toAmount)
-      impact = diff.div(fromAmount).times(-100)
+      fees = fromAmount.minus(toAmount)
 
       gasFee = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(
         -toToken.decimals,
       )
-      routerFee = diff.minus(gasFee)
+      routerFee = fees.minus(gasFee)
 
       if (routerFee.lt('0.01')) {
         decimals = 4
@@ -1249,13 +1123,13 @@ const SwapXpollinate = ({
                   <td style={{ textAlign: 'right' }}></td>
                 </tr>
                 <tr>
-                  <td>Base Fee</td>
+                  <td>Router Fee</td>
                   <td style={{ textAlign: 'right' }}>
                     {routerFee.toFixed(decimals, 1)} {token?.symbol}
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ paddingRight: 10 }}>Router Gas Fee</td>
+                  <td style={{ paddingRight: 10 }}>Gas Fee</td>
                   <td style={{ textAlign: 'right' }}>
                     {gasFee.toFixed(decimals, 1)} {token?.symbol}
                   </td>
@@ -1263,7 +1137,7 @@ const SwapXpollinate = ({
               </tbody>
             </table>
           }>
-          Fee Impact: {impact.toFixed(2)}%
+          Fees: {fees.toFixed(4)} {token?.symbol}
           <Badge count={<InfoCircleOutlined style={{ color: 'gray' }} />} offset={[4, -1]} />
         </Tooltip>
       </div>
@@ -1280,12 +1154,25 @@ const SwapXpollinate = ({
           </a>
 
           <span className="header-options">
-            <Button className="header-button" onClick={() => setShowAbout((about) => !about)}>
-              About
-            </Button>
+            <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
+              <Button className="header-button">
+                <CompassOutlined />
+                Explorer
+              </Button>
+            </a>
 
             {web3.account ? (
               <>
+                <a
+                  href={`https://connextscan.io/address/${web3.account}`}
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  <Button className="header-button">
+                    <HistoryOutlined />
+                    Transaction History
+                  </Button>
+                </a>
+
                 <Dropdown overlay={menuChain}>
                   <Button className="header-button">
                     <Badge
@@ -1324,7 +1211,7 @@ const SwapXpollinate = ({
               rel="nofollow noreferrer"
               className="header-button support-link">
               <span>
-                Support <LinkOutlined />
+                <LinkOutlined /> Support
               </span>
             </a>
           </span>
@@ -1338,8 +1225,8 @@ const SwapXpollinate = ({
         </Row>
 
         {/* Infos */}
-        <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
-          {showAbout && (
+        {showAbout && (
+          <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
             <Alert
               style={{ maxWidth: 700 }}
               afterClose={() => setShowAbout(false)}
@@ -1348,12 +1235,12 @@ const SwapXpollinate = ({
               type="info"
               closable={true}
             />
-          )}
-        </Row>
+          </Row>
+        )}
 
-        <Collapse activeKey={activeKeyTransactions} accordion ghost>
-          {/* Balances */}
-          {testnet && (
+        {/* Balances */}
+        {testnet && (
+          <Collapse activeKey={activeKeyTransactions} accordion ghost>
             <Collapse.Panel
               className={balances ? '' : 'empty'}
               header={
@@ -1374,7 +1261,12 @@ const SwapXpollinate = ({
                 </h2>
               }
               key="balances">
-              <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
+              <div
+                style={{
+                  overflowX: 'scroll',
+                  background: 'white',
+                  margin: '10px 20px',
+                }}>
                 <TestBalanceOverview
                   transferChains={transferChains}
                   updateBalances={() => updateBalances(web3.account!)}
@@ -1383,186 +1275,150 @@ const SwapXpollinate = ({
                 />
               </div>
             </Collapse.Panel>
-          )}
+          </Collapse>
+        )}
 
+        <Col style={{ padding: 20, paddingBottom: 0 }}>
           {/* Active Transactions */}
-          <Collapse.Panel
-            className={activeTransactions.length ? '' : 'empty'}
-            header={
-              <h2
-                onClick={() =>
-                  setActiveKeyTransactions((key) => (key === 'active' ? '' : 'active'))
-                }
-                style={{ display: 'inline' }}>
-                Active Transactions (
-                {!sdk ? (
-                  '-'
-                ) : updatingActiveTransactions ? (
-                  <SyncOutlined spin style={{ verticalAlign: -4 }} />
-                ) : (
-                  activeTransactions.length
-                )}
-                )
-              </h2>
-            }
-            key="active">
-            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
-              <TransactionsTableNxtp
-                activeTransactions={activeTransactions}
-                executionRoutes={executionRoutes}
-                setModalRouteIndex={setModalRouteIndex}
-                openSwapModalFinish={openSwapModalFinish}
-                switchChain={switchChain}
-                cancelTransfer={cancelTransfer}
-                tokens={tokens}
-              />
-            </div>
-          </Collapse.Panel>
-
-          {/* Historical Transactions */}
-          <Collapse.Panel
-            className={historicTransaction.length ? '' : 'empty'}
-            header={
-              <h2
-                onClick={() =>
-                  setActiveKeyTransactions((key) => (key === 'historic' ? '' : 'historic'))
-                }
-                style={{ display: 'inline' }}>
-                Historical Transactions (
-                {!sdk ? (
-                  '-'
-                ) : updatingHistoricTransactions ? (
-                  <SyncOutlined spin style={{ verticalAlign: -4 }} />
-                ) : (
-                  historicTransaction.length
-                )}
-                )
-              </h2>
-            }
-            key="historic">
-            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
-              <HistoricTransactionsTableNxtp
-                historicTransactions={historicTransaction}
-                tokens={tokens}
-              />
-            </div>
-          </Collapse.Panel>
-
-          {/* Liquidity */}
-          <Collapse.Panel
-            className={liquidity.length ? '' : 'empty'}
-            header={
-              <h2
-                onClick={() =>
-                  setActiveKeyTransactions((key) => (key === 'liquidity' ? '' : 'liquidity'))
-                }
-                style={{ display: 'inline' }}>
-                Available Liquidity (
-                {!sdk ? (
-                  '-'
-                ) : updatingLiquidity ? (
-                  <SyncOutlined spin style={{ verticalAlign: -4 }} />
-                ) : (
-                  liquidity
-                    .reduce((prev: BigNumber, cur) => prev.plus(cur.total), new BigNumber(0))
-                    .shiftedBy(-6)
-                    .toFixed(3) + 'm'
-                )}
-                )
-              </h2>
-            }
-            key="liquidity">
-            <div style={{ overflowX: 'scroll', background: 'white', margin: '10px 20px' }}>
-              <LiquidityTableNxtp liquidity={liquidity} />
-            </div>
-          </Collapse.Panel>
-        </Collapse>
-
-        {/* Swap Form */}
-        <Row style={{ margin: 20, marginTop: 0 }} justify={'center'}>
-          <Col className="swap-form">
-            <div
-              className="swap-input"
-              style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: '0 auto' }}>
-              <Row>
-                <Title className="swap-title" level={4}>
-                  Please Specify Your Transaction
-                </Title>
-              </Row>
-
-              <Form>
-                <SwapForm
-                  depositChain={depositChain}
-                  setDepositChain={setDepositChain}
-                  depositToken={depositToken}
-                  setDepositToken={setDepositToken}
-                  depositAmount={depositAmount}
-                  setDepositAmount={setDepositAmount}
-                  withdrawChain={withdrawChain}
-                  setWithdrawChain={setWithdrawChain}
-                  withdrawToken={withdrawToken}
-                  setWithdrawToken={setWithdrawToken}
-                  withdrawAmount={withdrawAmount}
-                  setWithdrawAmount={setWithdrawAmount}
-                  estimatedWithdrawAmount={getSelectedWithdraw()}
-                  transferChains={transferChains}
+          <Collapse activeKey={activeKeyTransactions} accordion ghost>
+            <Collapse.Panel
+              className={activeTransactions.length ? '' : 'empty'}
+              header={
+                <h2
+                  onClick={() =>
+                    setActiveKeyTransactions((key) => (key === 'active' ? '' : 'active'))
+                  }
+                  style={{ display: 'inline' }}>
+                  Active Transactions (
+                  {!sdk ? (
+                    '-'
+                  ) : updatingActiveTransactions ? (
+                    <SyncOutlined spin style={{ verticalAlign: -4 }} />
+                  ) : (
+                    activeTransactions.length
+                  )}
+                  )
+                </h2>
+              }
+              key="active">
+              <div
+                style={{
+                  overflowX: 'scroll',
+                  background: 'white',
+                  margin: '10px 20px',
+                }}>
+                <TransactionsTableNxtp
+                  activeTransactions={activeTransactions}
+                  executionRoutes={executionRoutes}
+                  setModalRouteIndex={setModalRouteIndex}
+                  openSwapModalFinish={openSwapModalFinish}
+                  switchChain={switchChain}
+                  cancelTransfer={cancelTransfer}
                   tokens={tokens}
-                  balances={balances}
-                  forceSameToken={true}
-                  syncStatus={syncStatus}
                 />
-
-                <Row justify={'end'} style={{ marginRight: 20, marginTop: 4 }}>
-                  {priceImpact()}
+              </div>
+            </Collapse.Panel>
+          </Collapse>
+          {/* Swap Form */}
+          <Row style={{ margin: 20, marginTop: 0 }} justify={'center'}>
+            <Col className="swap-form">
+              <div
+                className="swap-input"
+                style={{
+                  maxWidth: 480,
+                  borderRadius: 6,
+                  padding: 24,
+                  margin: '0 auto',
+                }}>
+                <Row>
+                  <Title className="swap-title" level={4}>
+                    Send CrossChain Transaction
+                  </Title>
                 </Row>
 
-                <Row style={{ marginTop: 24 }} justify={'center'}>
-                  {submitButton()}
-                </Row>
-              </Form>
+                <Form>
+                  <SwapForm
+                    depositChain={depositChain}
+                    setDepositChain={setDepositChain}
+                    depositToken={depositToken}
+                    setDepositToken={setDepositToken}
+                    depositAmount={depositAmount}
+                    setDepositAmount={setDepositAmount}
+                    withdrawChain={withdrawChain}
+                    setWithdrawChain={setWithdrawChain}
+                    withdrawToken={withdrawToken}
+                    setWithdrawToken={setWithdrawToken}
+                    withdrawAmount={withdrawAmount}
+                    setWithdrawAmount={setWithdrawAmount}
+                    estimatedWithdrawAmount={getSelectedWithdraw()}
+                    transferChains={transferChains}
+                    tokens={tokens}
+                    balances={balances}
+                    forceSameToken={true}
+                    syncStatus={syncStatus}
+                  />
 
-              {/* Advanced Options */}
-              <Row justify={'center'}>
-                <Collapse ghost>
-                  <Collapse.Panel header={`Advanced Options`} key="1">
-                    Infinite Approval
-                    <div>
-                      <Checkbox
-                        checked={optionInfiniteApproval}
-                        onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
-                        Activate Infinite Approval
-                      </Checkbox>
-                    </div>
-                    Receiving Address
-                    <Input
-                      value={optionReceivingAddress}
-                      onChange={(e) => setOptionReceivingAddress(e.target.value)}
-                      pattern="^0x[a-fA-F0-9]{40}$"
-                      placeholder="Only when other than your sending wallet"
-                      style={{ border: '1px solid rgba(0,0,0,0.25)', borderRadius: 6 }}
-                    />
-                    Contract Address
-                    <Input
-                      value={optionContractAddress}
-                      onChange={(e) => setOptionContractAddress(e.target.value)}
-                      pattern="^0x[a-fA-F0-9]{40}$"
-                      placeholder="To call a contract"
-                      style={{ border: '1px solid rgba(0,0,0,0.25)', borderRadius: 6 }}
-                    />
-                    CallData
-                    <Input
-                      value={optionCallData}
-                      onChange={(e) => setOptionCallData(e.target.value)}
-                      pattern="^0x[a-fA-F0-9]{64}$"
-                      placeholder="Only when calling a contract directly"
-                      style={{ border: '1px solid rgba(0,0,0,0.25)', borderRadius: 6 }}
-                    />
-                  </Collapse.Panel>
-                </Collapse>
-              </Row>
-            </div>
-          </Col>
-        </Row>
+                  <Row justify={'end'} style={{ marginRight: 20, marginTop: 4 }}>
+                    {priceImpact()}
+                  </Row>
+
+                  <Row style={{ marginTop: 24 }} justify={'center'}>
+                    {submitButton()}
+                  </Row>
+                </Form>
+
+                {/* Advanced Options */}
+                <Row justify={'center'}>
+                  <Collapse ghost>
+                    <Collapse.Panel header={`Advanced Options`} key="1">
+                      Infinite Approval
+                      <div>
+                        <Checkbox
+                          checked={optionInfiniteApproval}
+                          onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
+                          Activate Infinite Approval
+                        </Checkbox>
+                      </div>
+                      Receiving Address
+                      <Input
+                        value={optionReceivingAddress}
+                        onChange={(e) => setOptionReceivingAddress(e.target.value)}
+                        pattern="^0x[a-fA-F0-9]{40}$"
+                        placeholder="Only when other than your sending wallet"
+                        style={{
+                          border: '1px solid rgba(0,0,0,0.25)',
+                          borderRadius: 6,
+                        }}
+                      />
+                      Contract Address
+                      <Input
+                        value={optionContractAddress}
+                        onChange={(e) => setOptionContractAddress(e.target.value)}
+                        pattern="^0x[a-fA-F0-9]{40}$"
+                        placeholder="To call a contract"
+                        style={{
+                          border: '1px solid rgba(0,0,0,0.25)',
+                          borderRadius: 6,
+                        }}
+                      />
+                      CallData
+                      <Input
+                        value={optionCallData}
+                        onChange={(e) => setOptionCallData(e.target.value)}
+                        pattern="^0x[a-fA-F0-9]{64}$"
+                        placeholder="Only when calling a contract directly"
+                        style={{
+                          border: '1px solid rgba(0,0,0,0.25)',
+                          borderRadius: 6,
+                        }}
+                      />
+                    </Collapse.Panel>
+                  </Collapse>
+                </Row>
+              </div>
+            </Col>
+          </Row>
+        </Col>
 
         {/* Footer */}
         <div className="xpollinate-footer">
