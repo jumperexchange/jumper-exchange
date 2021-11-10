@@ -1321,11 +1321,16 @@ const SwapXpollinate = ({
           </Collapse>
           {/* Swap Form */}
           <Row style={{ margin: 20, marginTop: 0 }} justify={'center'}>
-            <Col className="swap-form">
+            <Col className="swap-form" style={{
+              borderRadius: 12,
+              margin: '6px 12px 0',
+              maxWidth: 940,
+              minWidth: 392,
+            }}>
               <div
                 className="swap-input"
                 style={{
-                  borderRadius: 6,
+                  borderRadius: 12,
                   padding: 24,
                   margin: '0 auto',
                 }}>
@@ -1357,7 +1362,7 @@ const SwapXpollinate = ({
                     syncStatus={syncStatus}
                   />
 
-                  <Row justify={'end'} style={{ marginRight: 20, marginTop: 4 }}>
+                  <Row justify={'end'} style={{ margin: "20px 20px 0 0" }}>
                     {priceImpact()}
                   </Row>
 
