@@ -6,3 +6,5 @@ build
 #specific files
 public/index.html
 tsconfig.json
+.vscode/settings.json
+package.json
