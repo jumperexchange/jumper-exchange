@@ -35,6 +35,9 @@ jobs:
       - name: Check formatting
         run: yarn prettier --check .
 
+      - name: Check linting
+        run: yarn eslint . --ext .js,.jsx,.ts,.tsx
+
       - name: Build li.finance
         run: yarn build:lifinance
 
