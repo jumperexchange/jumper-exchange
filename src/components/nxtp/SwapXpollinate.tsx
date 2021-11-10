@@ -256,6 +256,7 @@ const SwapXpollinate = ({
     setSyncStatus(newSyncStatus)
   }, [transferChains])
 
+  // update table helpers
   const updateActiveTransactionsWith = (transactionId: string, status: NxtpSdkEvent, event: any, txData?: CrosschainTransaction) => {
     setActiveTransactions((activeTransactions) => {
       // update existing?
@@ -681,6 +682,9 @@ const SwapXpollinate = ({
   }
 
   const openSwapModal = () => {
+    if (!web3.library || !web3.account) return
+    const signer = web3.library.getSigner()
+
     // add execution route
     const route = deepClone(routes[highlightedIndex]) as Array<TransferStep>
     setExecutionRoutes(routes => [...routes, route])
@@ -723,13 +727,16 @@ const SwapXpollinate = ({
       step.execution = status
       updateExecutionRoute(route)
     }
-    triggerTransfer(sdk!, route[0], (status: Execution) => update(route[0], status), optionInfiniteApproval)
+    triggerTransfer(signer, sdk!, route[0], (status: Execution) => update(route[0], status), optionInfiniteApproval)
 
     // open modal
     setModalRouteIndex(executionRoutes.length)
   }
 
   const openSwapModalFinish = (action: ActiveTransaction) => {
+    if (!web3.library || !web3.account) return
+    const signer = web3.library.getSigner()
+
     // open modal
     const index = executionRoutes.findIndex(item => {
       return item[0].id === action.txData.invariant.transactionId
@@ -744,9 +751,9 @@ const SwapXpollinate = ({
         step.execution = status
         updateExecutionRoute(route)
       }
-      finishTransfer(sdk!, action.event, route[0], update)
+      finishTransfer(signer, sdk!, action.event, route[0], update)
     } else {
-      finishTransfer(sdk!, action.event)
+      finishTransfer(signer, sdk!, action.event)
     }
   }
 

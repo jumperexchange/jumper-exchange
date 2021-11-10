@@ -5,7 +5,9 @@ import { deepClone } from './utils'
 export const initStatus = (updateStatus?: Function, initialStatus?: Execution) => {
   const status = initialStatus || deepClone(emptyExecution)
   const update = updateStatus || console.log
-  update(status)
+  if(!initialStatus){
+    update(status)
+  }
   return { status, update }
 }
 
