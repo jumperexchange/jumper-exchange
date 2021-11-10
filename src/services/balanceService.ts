@@ -1,27 +1,37 @@
+/* eslint-disable no-console */
 import { FallbackProvider } from '@ethersproject/providers'
 // @ts-ignore
 import { createWatcher } from '@makerdao/multicall'
 import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
 import { BigNumber as BN, constants, Contract, ethers } from 'ethers'
+
 import { getMulticallAddresse, getRpcProvider, getRpcUrl } from '../components/web3/connectors'
-import { ChainId, ChainKey, chainKeysToObject, ChainPortfolio, defaultTokens, getChainById, Token } from '../types'
+import {
+  ChainId,
+  ChainKey,
+  chainKeysToObject,
+  ChainPortfolio,
+  defaultTokens,
+  getChainById,
+  Token,
+} from '../types'
 import { deepClone } from './utils'
 
 type tokenListDebankT = {
-  id: string,
-  chain: string,
-  name: string,
-  symbol: string,
-  display_symbol: string,
-  optimized_symbol: string,
-  decimals: number,
-  logo_url: string,
-  price: number,
-  is_verified: boolean,
-  is_core: boolean,
-  is_wallet: boolean,
-  time_at: number,
+  id: string
+  chain: string
+  name: string
+  symbol: string
+  display_symbol: string
+  optimized_symbol: string
+  decimals: number
+  logo_url: string
+  price: number
+  is_verified: boolean
+  is_core: boolean
+  is_wallet: boolean
+  time_at: number
   amount: number
 }
 
@@ -79,7 +89,8 @@ const tokenBlacklist: Blacklist = {
 const filterPortfolioWithBlacklist = (portfolio: Portfolio, blacklist: Blacklist) => {
   Object.keys(portfolio).forEach((chainKey) => {
     portfolio[chainKey] = portfolio[chainKey].filter((chainPortfolioItem) => {
-      const blacklisted = blacklist[chainKey] && blacklist[chainKey].indexOf(chainPortfolioItem.id) !== -1
+      const blacklisted =
+        blacklist[chainKey] && blacklist[chainKey].indexOf(chainPortfolioItem.id) !== -1
       return !blacklisted
     })
   })
@@ -89,14 +100,14 @@ const filterPortfolioWithBlacklist = (portfolio: Portfolio, blacklist: Blacklist
 const COVALENT_API_KEY = 'ckey_538ec97ac4594396bda51a91df1'
 const COVALENT_API_URI = 'https://api.covalenthq.com/v1'
 const COVALENT_SUPPORTED_CHAINS = [
-  ChainId.ETH,  // Ethereum Mainnet
-  ChainId.POL,  // Polygon/Matic Mainnet
-  ChainId.BSC,  // Binance Smart Chain
-  ChainId.AVA,  // Avalanche C-Chain Mainnet
-  ChainId.FTM,  // Fantom Opera Mainnet
+  ChainId.ETH, // Ethereum Mainnet
+  ChainId.POL, // Polygon/Matic Mainnet
+  ChainId.BSC, // Binance Smart Chain
+  ChainId.AVA, // Avalanche C-Chain Mainnet
+  ChainId.FTM, // Fantom Opera Mainnet
 
   // Testnets
-  ChainId.MUM,  // Polygon/Matic Mumbai Testnet
+  ChainId.MUM, // Polygon/Matic Mumbai Testnet
   //43113,  // Fuji C-Chain Testnet
 ]
 export async function covalentGetCoinsOnChain(walletAdress: string, chainId: number) {
@@ -197,16 +208,16 @@ async function getCoinsOnChain(walletAdress: string, chainKey: ChainKey) {
 
 // Crazy Wallet for testing token parsing: 0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85
 const chainNameMapping: { [ChainName: string]: ChainKey } = {
-  'eth': ChainKey.ETH,
-  'bsc': ChainKey.BSC,
-  'xdai': ChainKey.DAI,
-  'matic': ChainKey.POL,
-  'ftm': ChainKey.FTM,
-  'okt': ChainKey.OKT,
-  'avax': ChainKey.AVA,
-  'heco': ChainKey.HEC,
-  'op': ChainKey.OPT,
-  'arb': ChainKey.ARB,
+  eth: ChainKey.ETH,
+  bsc: ChainKey.BSC,
+  xdai: ChainKey.DAI,
+  matic: ChainKey.POL,
+  ftm: ChainKey.FTM,
+  okt: ChainKey.OKT,
+  avax: ChainKey.AVA,
+  heco: ChainKey.HEC,
+  op: ChainKey.OPT,
+  arb: ChainKey.ARB,
   // 'celo': Celo
 }
 function mapDebankChainNameToChainKey(chainName: string) {
@@ -225,13 +236,15 @@ const getBlancesFromDebank = async (walletAdress: string) => {
   }
 
   // response body is empty?
-  var tokenList: Array<tokenListDebankT> = (Object.keys(result.data).length === 0) ? [] : result.data
+  var tokenList: Array<tokenListDebankT> = Object.keys(result.data).length === 0 ? [] : result.data
 
   // build return object
   const totalPortfolio: Portfolio = deepClone(EMPTY_PORTFOLIO)
   for (const token of tokenList) {
     totalPortfolio[mapDebankChainNameToChainKey(token.chain)]?.push({
-      id: ethers.utils.isAddress(token.id) ? token.id : '0x0000000000000000000000000000000000000000',
+      id: ethers.utils.isAddress(token.id)
+        ? token.id
+        : '0x0000000000000000000000000000000000000000',
       name: token.name,
       symbol: token.optimized_symbol,
       img_url: token.logo_url,
@@ -244,14 +257,17 @@ const getBlancesFromDebank = async (walletAdress: string) => {
   return totalPortfolio
 }
 
-const getBalancesForWallet = async (walletAdress: string, onChains?: Array<number>): Promise<Portfolio> => {
+const getBalancesForWallet = async (
+  walletAdress: string,
+  onChains?: Array<number>,
+): Promise<Portfolio> => {
   walletAdress = walletAdress.toLowerCase()
 
   // Manually added Harmony Support
   let onePromise: Promise<{ [ChainKey: string]: ChainPortfolio[] }> | undefined
   if (onChains && onChains.indexOf(ChainId.ONE) !== -1) {
     const tokens = {
-      [ChainKey.ONE]: defaultTokens[ChainKey.ONE]
+      [ChainKey.ONE]: defaultTokens[ChainKey.ONE],
     }
     onePromise = getBalancesForWalletFromChain(walletAdress, tokens)
   }
@@ -285,7 +301,11 @@ export const getBalance = async (
   if (assetId === constants.AddressZero) {
     balance = await provider.getBalance(address)
   } else {
-    const contract = new Contract(assetId, ['function balanceOf(address owner) view returns (uint256)'], provider)
+    const contract = new Contract(
+      assetId,
+      ['function balanceOf(address owner) view returns (uint256)'],
+      provider,
+    )
     balance = await contract.balanceOf(address)
   }
   return balance
@@ -302,7 +322,10 @@ export const getBalancesFromProvider = async (
   const chainPortfolio: Array<ChainPortfolio> = []
 
   tokens.forEach(async (token) => {
-    const amount = getBalance(address, token.id, rpc).catch((e) => { console.warn(e); return BN.from(0) })
+    const amount = getBalance(address, token.id, rpc).catch((e) => {
+      console.warn(e)
+      return BN.from(0)
+    })
     promises.push(amount)
     chainPortfolio.push({
       id: token.id,
@@ -324,7 +347,6 @@ export const getBalancesFromProviderUsingMulticall = async (
   address: string,
   tokens: Array<Token>,
 ): Promise<Array<ChainPortfolio>> => {
-
   // Configuration
   const chainId = tokens[0].chainId
   const config = {
@@ -345,28 +367,28 @@ export const getBalancesFromProviderUsingMulticall = async (
       if (token.id === constants.AddressZero) {
         calls.push({
           call: ['getEthBalance(address)(uint256)', address],
-          returns: [[
-            [token.id, token.name, token.key].join('-'),
-            (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
-          ]]
+          returns: [
+            [
+              [token.id, token.name, token.key].join('-'),
+              (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
+            ],
+          ],
         })
-      }
-      else {
+      } else {
         calls.push({
           target: token.id,
           call: ['balanceOf(address)(uint256)', address],
-          returns: [[
-            [token.id, token.name, token.key].join('-'),
-            (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
-          ]]
+          returns: [
+            [
+              [token.id, token.name, token.key].join('-'),
+              (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
+            ],
+          ],
         })
       }
     })
 
-    const watcher = createWatcher(
-      calls,
-      config
-    )
+    const watcher = createWatcher(calls, config)
 
     // Success case
     watcher.batch().subscribe((updates: any) => {
@@ -388,7 +410,7 @@ export const getBalancesFromProviderUsingMulticall = async (
 
   // parse results
   const chainPortfolio: Array<ChainPortfolio> = []
-  const amounts = await promiseWrapper as Array<any>
+  const amounts = (await promiseWrapper) as Array<any>
   amounts.forEach((amount) => {
     const [token_id, token_name, token_key] = amount['type'].split('-')
     chainPortfolio.push({
@@ -405,7 +427,10 @@ export const getBalancesFromProviderUsingMulticall = async (
   return chainPortfolio
 }
 
-export const getBalancesForWalletFromChain = async (address: string, tokens: { [ChainKey: string]: Array<Token> }) => {
+export const getBalancesForWalletFromChain = async (
+  address: string,
+  tokens: { [ChainKey: string]: Array<Token> },
+) => {
   const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
   Object.entries(tokens).forEach(async ([chainKey, tokens]) => {
@@ -418,5 +443,4 @@ export const getBalancesForWalletFromChain = async (address: string, tokens: { [
   return portfolio
 }
 
-export { getCoinsOnChain, getBalancesForWallet }
-
+export { getBalancesForWallet, getCoinsOnChain }

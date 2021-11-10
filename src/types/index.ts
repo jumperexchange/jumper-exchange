@@ -1,2 +1,2 @@
-export * from "@lifinance/types";
-export * from "./internal.types";
+export * from './internal.types'
+export * from '@lifinance/types'

@@ -1,4 +1,4 @@
-import { Metric } from 'web-vitals';
+import { Metric } from 'web-vitals'
 
 const SCRIPT_ASYNC_ID = 'gaScriptAsyncId'
 const SCRIPT_SYNC_ID = 'gaScriptSyncId'
@@ -15,69 +15,59 @@ const initialize = (gaCode: string | undefined) => {
   }
 
   promise = new Promise((resolve, reject) => {
-    const head: HTMLHeadElement = document.getElementsByTagName('head')[0];
-    const scriptAsync: HTMLScriptElement = document.createElement('script');
-    scriptAsync.setAttribute('id', SCRIPT_ASYNC_ID);
-    scriptAsync.setAttribute('async', '');
+    const head: HTMLHeadElement = document.getElementsByTagName('head')[0]
+    const scriptAsync: HTMLScriptElement = document.createElement('script')
+    scriptAsync.setAttribute('id', SCRIPT_ASYNC_ID)
+    scriptAsync.setAttribute('async', '')
 
-    scriptAsync.setAttribute(
-      'src',
-      `https://www.googletagmanager.com/gtag/js?id=${gaCode}`
-    );
+    scriptAsync.setAttribute('src', `https://www.googletagmanager.com/gtag/js?id=${gaCode}`)
     scriptAsync.onload = () => {
-      resolve(true);
-    };
+      resolve(true)
+    }
 
     scriptAsync.onerror = (event: Event | string): void => {
       if (typeof event === 'string') {
-        reject(`GA4React intialization failed ${event}`);
+        reject(`GA4React intialization failed ${event}`)
       } else {
-        const error = new Error();
-        error.name = 'GA4React intialization failed';
-        error.message = JSON.stringify(event, [
-          'message',
-          'arguments',
-          'type',
-          'name',
-        ]);
-        reject(error);
+        const error = new Error()
+        error.name = 'GA4React intialization failed'
+        error.message = JSON.stringify(event, ['message', 'arguments', 'type', 'name'])
+        reject(error)
       }
-    };
+    }
 
-    const scriptSync: HTMLScriptElement = document.createElement('script');
+    const scriptSync: HTMLScriptElement = document.createElement('script')
 
-    scriptSync.setAttribute('id', SCRIPT_SYNC_ID);
+    scriptSync.setAttribute('id', SCRIPT_SYNC_ID)
 
     let scriptHTML: string = `window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);};
     gtag('js', new Date());
-    gtag('config', '${gaCode}');`;
+    gtag('config', '${gaCode}');`
 
-
-    scriptSync.innerHTML = scriptHTML;
-
+    scriptSync.innerHTML = scriptHTML
 
     const onChangeReadyState = () => {
       switch (document.readyState) {
         case 'interactive':
         case 'complete':
-          head.appendChild(scriptAsync);
-          head.appendChild(scriptSync);
-          document.removeEventListener('readystatechange', onChangeReadyState);
-          break;
+          head.appendChild(scriptAsync)
+          head.appendChild(scriptSync)
+          document.removeEventListener('readystatechange', onChangeReadyState)
+          break
       }
-    };
+    }
 
     if (document.readyState !== 'complete') {
-      document.addEventListener('readystatechange', onChangeReadyState);
+      document.addEventListener('readystatechange', onChangeReadyState)
     } else {
-      onChangeReadyState();
+      onChangeReadyState()
     }
 
     setTimeout(() => {
-      reject(new Error('Analytics Timeout'));
-    }, TIMEOUT);
-  });
+      reject(new Error('Analytics Timeout'))
+    }, TIMEOUT)
+  })
 
   promise.catch(() => {
     // failed
@@ -105,30 +95,35 @@ const sendWebVitals = ({ id, name, value, delta }: Metric) => {
     metric_delta: delta,
   }
 
-  gtag('event', name, data);
+  gtag('event', name, data)
 }
 
-const sendEvent = (action: any, label: any, category: any, nonInteraction: boolean = false): any => {
+const sendEvent = (
+  action: any,
+  label: any,
+  category: any,
+  nonInteraction: boolean = false,
+  // eslint-disable-next-line max-params
+): any => {
   return gtag('event', action, {
     event_label: label,
     event_category: category,
     non_interaction: nonInteraction,
-  });
+  })
 }
-
 
 const sendPageView = (path: string | Location, location?: string | Location, title?: string) => {
   return gtag('event', 'page_view', {
     page_path: path,
     page_location: location || window.location,
     page_title: title || document.title,
-  });
+  })
 }
 
 const gtag = (...args: any) => {
-  const w = (window as any)
+  const w = window as any
   if (w.gtag) {
-    w.gtag(...args);
+    w.gtag(...args)
   }
 }
 
