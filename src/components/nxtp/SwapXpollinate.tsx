@@ -41,10 +41,10 @@ import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import onehiveWordmark from '../../assets/1hive_wordmark.svg'
-import connextWordmark from '../../assets/connext_wordmark.png'
+import onehiveWordmark from '../../assets/1hive_wordmark_dark.svg'
+import connextWordmark from '../../assets/connext_wordmark_dark.png'
 import lifiWordmark from '../../assets/lifi_wordmark.svg'
-import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg'
+import xpollinateWordmark from '../../assets/xpollinate_wordmark_dark.svg'
 import { getBalancesForWalletFromChain } from '../../services/balanceService'
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
@@ -1325,14 +1325,13 @@ const SwapXpollinate = ({
               <div
                 className="swap-input"
                 style={{
-                  maxWidth: 480,
                   borderRadius: 6,
                   padding: 24,
                   margin: '0 auto',
                 }}>
                 <Row>
                   <Title className="swap-title" level={4}>
-                    Send CrossChain Transaction
+                    Cross-Chain Swap
                   </Title>
                 </Row>
 
@@ -1362,7 +1361,7 @@ const SwapXpollinate = ({
                     {priceImpact()}
                   </Row>
 
-                  <Row style={{ marginTop: 24 }} justify={'center'}>
+                  <Row style={{ marginTop: 12 }} justify={'center'}>
                     {submitButton()}
                   </Row>
                 </Form>

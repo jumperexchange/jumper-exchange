@@ -1,5 +1,5 @@
 .xpollinate {
-  background: url('../../assets/xpollinate-bg-pattern.svg') center center / cover no-repeat fixed;
+  background: url('../../assets/xpollinate-bg-pattern_dark.svg') center center / cover no-repeat fixed;
   min-height: calc(100vh);
   margin-top: 0;
 }
@@ -9,16 +9,121 @@
   margin-bottom: 0;
 }
 
+.xpollinate {
+  color: #FFFFFF !important;
+}
+
+.xpollinate .version {
+  color: #FFFFFF;
+}
+
+.xpollinate .ant-btn {
+  background-color: #0D1216;
+  color: #FFFFFF;
+}
+
+.xpollinate .form-input-wrapper:focus-within {
+  border: 1px solid #9C62F9 !important;
+}
+
+.xpollinate .ant-btn[disabled] {
+  background-color: #0D1216 !important;
+  color: #C4C4C4 !important;
+  border: 2px solid #C4C4C4;
+}
+
+.xpollinate .ant-typography {
+  color: #FFFFFF !important;
+}
+
+.xpollinate .anticon {
+  color: #FFFFFF;
+}
+.xpollinate .ant-form {
+  color: #FFFFFF !important;
+}
+.xpollinate .ant-select {
+  color: #FFFFFF;
+}
+.xpollinate .ant-badge-status-text {
+  color: #FFFFFF;
+}
+
+.xpollinate .ant-checkbox-wrapper {
+  color: #FFFFFF;
+}
+
+.xpollinate .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  color: #FFFFFF;
+}
+.xpollinate .ant-collapse-content {
+  color: #FFFFFF;
+}
+
+.xpollinate .swap-input {
+  background: #0D1216;
+  border: 2px solid #C4C4C4;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 100px 20px rgba(80, 50, 128, 0.25);
+  border-radius: 20px;
+  border-radius: 6px;
+}
+
 .xpollinate .swap-form {
-  box-shadow: rgb(204 218 238 / 80%) 0px 1rem 2rem;
+  box-shadow: 0px 4px 100px 20px rgba(80, 50, 128, 0.25);
+}
+
+.xpollinate .form-input-wrapper {
+  /* font-family: Montserrat; */
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  /* identical to box height, or 450% */
+  line-height: 72px;
+  letter-spacing: -0.015em;
+
+  background: #0D1216;
+  border: 1px solid #C4C4C4;
+  border-radius: 6px;
+  padding: 4px 4px;
+  display: flex;
+  align-items: center;
+}
+.xpollinate .form-input-wrapper.disabled {
+  border: 1px solid #C4C4C4;
+}
+
+.xpollinate .form-input-wrapper.disabled input {
+  color: #C4C4C4 !important;
+}
+
+.xpollinate .form-input-wrapper .ant-avatar {
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+.xpollinate .form-input-wrapper .ant-select {
+  flex-grow: 1;
+  overflow: hidden;
+}
+.xpollinate .form-input-wrapper input {
+  color: #FFFFFF;
+}
+.xpollinate .insufficient {
+  color: #e4305f;
+}
+.form-text {
+  color: #FFFFFF;
+  align-items: center;
+  display: flex;
+  padding-left: 15px;
+  height: 100%;
 }
 
 .xpollinate-button.ant-btn-primary,
 .xpollinate .ant-btn-primary {
-  background: linear-gradient(257.5deg, rgb(235, 0, 85) -9.73%, rgb(255, 250, 128) 77.97%);
+  background: linear-gradient(257.5deg, #F7A745 -9.73%, #9C62F9 77.97%);
   transition: background 300ms linear;
   border: none;
-  color: black;
   min-width: 150px;
   background-size: 340px 40px;
   background-position: -100px;
