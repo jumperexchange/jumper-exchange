@@ -4,7 +4,7 @@ This document describes coding standards for `lifi-web`
 
 ## Overview
 
-Guideilnes are based on few principles:
+Guidelines are based on few principles:
 
 1. Explicit is better than Implicit
 2. Clear is better than Clever
