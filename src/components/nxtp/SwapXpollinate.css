@@ -25,6 +25,10 @@
   color: #949494 !important;
 }
 
+.ant-menu-item-active .ant-menu-item-icon {
+  color: #1890ff !important;
+}
+
 .ant-menu-submenu .ant-badge {
   color: inherit !important;
 }
