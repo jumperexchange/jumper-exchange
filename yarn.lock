@@ -1251,12 +1251,12 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.0.78":
-  version "0.0.78"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.78.tgz#2b112a06ac6db1a8590aeb2b792698063b889bce"
-  integrity sha512-SXQY3NMQ4xFHUtZmEE6K1oz+4or2IW/Gu/UHqUoD/iBPGFdtzPetNya2q8EK4t5svMPxd+xsKDqAE4eoJF6Dcw==
+"@connext/nxtp-contracts@0.0.77":
+  version "0.0.77"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.77.tgz#317dc8b8f9b80559b7b4b2439dc952676ebcc8c9"
+  integrity sha512-nOlnD+h+X2Xv1GtJ4NOLfLsNxOljceb+oLad0DrklFFe2et7qk0QhtI2HeLaSO45EAaWUfHfGONdXvOxzhP6zg==
   dependencies:
-    "@connext/nxtp-utils" "0.0.78"
+    "@connext/nxtp-utils" "0.0.77"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
@@ -1266,14 +1266,14 @@
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@0.0.78":
-  version "0.0.78"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.78.tgz#76c0fa5d6a32007567374a3fdb14107af9efec40"
-  integrity sha512-aXjnc1LNLNYX90QZC0wRjcjMtP5G2+u6pa2+hPX1hATlI0muMXAlECfbH4YgV0rdtRsDySYbjDzJq3wLDZXr1w==
+"@connext/nxtp-sdk@0.0.77":
+  version "0.0.77"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.77.tgz#3fdba294e53a96cec85b8e21b5e5331b6e0086f7"
+  integrity sha512-oyAFfOJnDMJ4r9/o3FhVpLTgZRWerKuX7vq5pXFMr3rC5nw3Ha42w6fgyCNtUNL2BCt1ypCVD6eRzHz0lOwX+A==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.78"
-    "@connext/nxtp-txservice" "0.0.78"
-    "@connext/nxtp-utils" "0.0.78"
+    "@connext/nxtp-contracts" "0.0.77"
+    "@connext/nxtp-txservice" "0.0.77"
+    "@connext/nxtp-utils" "0.0.77"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
     ajv-formats "^2.1.1"
@@ -1284,12 +1284,12 @@
     graphql-tag "^2.12.5"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.0.78":
-  version "0.0.78"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.78.tgz#00198a0b88e113a8f23711dfec87dd9facdbeb71"
-  integrity sha512-JDK9rtEbfSvx4jkZE3dm0Nv6a+cCaZjzrKrKnEC4QHcaMvl6+8pL/kvU2lveaiIpys2flqUyhNfcQzUn7hXcRA==
+"@connext/nxtp-txservice@0.0.77":
+  version "0.0.77"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.77.tgz#a7c49bf3285f9e85230c900ea20800d84bbb8280"
+  integrity sha512-F9QEknwT+XVk/EIIq3dgUi3zP3bKSu0dnEfyn/TW+aAW7OS5VAM4YnZAoyhuLFm+vKaN7mOFwmHhQ33c5Q+XfQ==
   dependencies:
-    "@connext/nxtp-utils" "0.0.78"
+    "@connext/nxtp-utils" "0.0.77"
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
@@ -1303,10 +1303,10 @@
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.0.78":
-  version "0.0.78"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.78.tgz#a690e35130fb29b79fb3f087af5e0a7fdc5fc33a"
-  integrity sha512-tiLfEGn1D+30JEEP/7u0nfyhZAr82BKK8ayCMuVOgjiL+Q5G6/RzsFZ3Br9Pqv5/0HdZII8KBuTK5ohAAYbZ3A==
+"@connext/nxtp-utils@0.0.77":
+  version "0.0.77"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.77.tgz#00113f97625555aa5033b50b57ea4b32c4c0ed89"
+  integrity sha512-fxjariR5qcWyJPMMfAdWuI6vWoQoZp3szOawA8LUt4dKbBVtQth6N9CvK3l63jW+X2+m/ONx4fdjzbQXCCMvUg==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
