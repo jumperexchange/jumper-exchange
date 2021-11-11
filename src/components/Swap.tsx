@@ -7,12 +7,13 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Typography } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
-import axios, { CancelTokenSource } from 'axios'
 import BigNumber from 'bignumber.js'
 import { animate, stagger } from 'motion'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { v4 as uuid } from 'uuid'
 
 import { getBalancesForWalletFromChain } from '../services/balanceService'
+import LIFI from '../services/LIFI/Lifi'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import { deepClone, formatTokenAmountOnly } from '../services/utils'
@@ -23,6 +24,7 @@ import {
   defaultTokens,
   DepositAction,
   getChainByKey,
+  Step,
   Token,
   TransferStep,
   WithdrawAction,
@@ -40,21 +42,22 @@ interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
 }
-let source: CancelTokenSource | undefined = undefined
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
-  animate(
-    element.current?.childNodes as NodeListOf<Element>,
-    {
-      y: ['50px', '0px'],
-      opacity: [0, 1],
-    },
-    {
-      delay: stagger(0.2),
-      duration: 0.5,
-      easing: 'ease-in-out',
-    },
-  )
+  setTimeout(() => {
+    animate(
+      element.current?.childNodes as NodeListOf<Element>,
+      {
+        y: ['50px', '0px'],
+        opacity: [0, 1],
+      },
+      {
+        delay: stagger(0.2),
+        duration: 0.5,
+        easing: 'ease-in-out',
+      },
+    )
+  }, 0)
 }
 
 const filterDefaultTokenByChains = (
@@ -92,6 +95,8 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
+  const [currentRouteCallId, setCurrentRouteCallId] = useState<string>()
+  const [routeCallResult, setRouteCallResult] = useState<{ result: Step[][]; id: string }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -223,6 +228,8 @@ const Swap = ({ transferChains }: SwapProps) => {
       if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
         setRoutesLoading(true)
         const dToken = findToken(depositChain, depositToken)
+        const wToken = findToken(withdrawChain, withdrawToken)
+
         const deposit: DepositAction = {
           type: 'deposit',
           chainId: getChainByKey(depositChain).id,
@@ -230,7 +237,6 @@ const Swap = ({ transferChains }: SwapProps) => {
           amount: new BigNumber(depositAmount).shiftedBy(dToken.decimals).toFixed(0),
         }
 
-        const wToken = findToken(withdrawChain, withdrawToken)
         const withdraw: WithdrawAction = {
           type: 'withdraw',
           chainId: getChainByKey(withdrawChain).id,
@@ -239,38 +245,16 @@ const Swap = ({ transferChains }: SwapProps) => {
           toAddress: '',
           slippage: optionSlippage / 100,
         }
-
-        // cancel previously running requests
-        if (source) {
-          source.cancel('cancel for new request')
-        }
-        source = axios.CancelToken.source()
-        const cancelToken = source.token
-        const config = {
-          cancelToken,
-        }
-
+        const id = uuid()
         try {
-          const result = await axios.post<any>(
-            process.env.REACT_APP_API_URL + 'transfer',
-            { deposit, withdraw },
-            config,
-          )
-          // filter if needed
-          const routes: Array<Array<TransferStep>> = result.data
-          setRoutes(routes)
-          fadeInAnimation(routeCards)
-          setHighlightedIndex(routes.length === 0 ? -1 : 0)
-          setNoRoutesAvailable(routes.length === 0)
-          setRoutesLoading(false)
-        } catch (err) {
-          // check if it we are still loading a new request
-          if (!axios.isCancel(err)) {
+          setCurrentRouteCallId(id)
+          const result = await LIFI.findRoutes(deposit, withdraw)
+          setRouteCallResult({ result, id })
+        } catch {
+          if (id === currentRouteCallId) {
             setNoRoutesAvailable(true)
             setRoutesLoading(false)
           }
-        } finally {
-          source = undefined
         }
       }
     }
@@ -285,6 +269,20 @@ const Swap = ({ transferChains }: SwapProps) => {
     optionSlippage,
     findToken,
   ])
+
+  // set route call results
+  useEffect(() => {
+    if (routeCallResult) {
+      const { result, id } = routeCallResult
+      if (id === currentRouteCallId) {
+        setRoutes(result)
+        fadeInAnimation(routeCards)
+        setHighlightedIndex(result.length === 0 ? -1 : 0)
+        setNoRoutesAvailable(result.length === 0)
+        setRoutesLoading(false)
+      }
+    }
+  }, [routeCallResult, currentRouteCallId])
 
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
