@@ -1,18 +1,19 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { BigNumber, ethers } from 'ethers'
+
 import { SwapAction, SwapEstimate } from '../types'
 
 const USE_EXACT_IN = true
 
 const uniswapRouter02ABI = [
-  "function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
-  "function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)",
+  'function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)',
+  'function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline) external payable returns (uint[] memory amounts)',
 
-  "function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
-  "function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+  'function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)',
+  'function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)',
 
-  "function swapExactTokensForTokens (uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
-  "function swapTokensForExactTokens( uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)",
+  'function swapExactTokensForTokens (uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)',
+  'function swapTokensForExactTokens( uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline) external returns (uint[] memory amounts)',
 ]
 
 const swappedTypes: Array<ethers.utils.ParamType> = [
@@ -23,28 +24,28 @@ const swappedTypes: Array<ethers.utils.ParamType> = [
   //   "type": "address"
   // }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "amount0In",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'amount0In',
+    type: 'uint256',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "amount1In",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'amount1In',
+    type: 'uint256',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "amount0Out",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'amount0Out',
+    type: 'uint256',
   }),
   ethers.utils.ParamType.from({
-    "indexed": false,
-    "internalType": "uint256",
-    "name": "amount1Out",
-    "type": "uint256"
+    indexed: false,
+    internalType: 'uint256',
+    name: 'amount1Out',
+    type: 'uint256',
   }),
   // ethers.utils.ParamType.from({
   //   "indexed": true,
@@ -62,7 +63,13 @@ interface Swapped {
   to: string
 }
 
-export const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEstimate, srcAddress: string, destAddress: string) => {
+export const getSwapCall = async (
+  swapAction: SwapAction,
+  swapEstimate: SwapEstimate,
+  srcAddress: string,
+  destAddress: string,
+  // eslint-disable-next-line max-params
+) => {
   const contract = new ethers.Contract(swapEstimate.data.routerAddress, uniswapRouter02ABI)
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes from the current Unix time
@@ -70,24 +77,58 @@ export const getSwapCall = async (swapAction: SwapAction, swapEstimate: SwapEsti
   if (USE_EXACT_IN) {
     // Exact In
     if (swapAction.token.id === ethers.constants.AddressZero) {
-      const data = await contract.populateTransaction.swapExactETHForTokens(swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+      const data = await contract.populateTransaction.swapExactETHForTokens(
+        swapEstimate.toAmountMin,
+        swapEstimate.data.path,
+        destAddress,
+        deadline,
+      )
       data.value = BigNumber.from(swapEstimate.fromAmount)
       return data
     } else if (swapAction.toToken.id === ethers.constants.AddressZero) {
-      return await contract.populateTransaction.swapExactTokensForETH(swapEstimate.fromAmount, swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+      return await contract.populateTransaction.swapExactTokensForETH(
+        swapEstimate.fromAmount,
+        swapEstimate.toAmountMin,
+        swapEstimate.data.path,
+        destAddress,
+        deadline,
+      )
     } else {
-      return await contract.populateTransaction.swapExactTokensForTokens(swapEstimate.fromAmount, swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+      return await contract.populateTransaction.swapExactTokensForTokens(
+        swapEstimate.fromAmount,
+        swapEstimate.toAmountMin,
+        swapEstimate.data.path,
+        destAddress,
+        deadline,
+      )
     }
   } else {
     // Exact Out
     if (swapAction.token.id === ethers.constants.AddressZero) {
-      const data = await contract.populateTransaction.swapETHForExactTokens(swapEstimate.toAmountMin, swapEstimate.data.path, destAddress, deadline)
+      const data = await contract.populateTransaction.swapETHForExactTokens(
+        swapEstimate.toAmountMin,
+        swapEstimate.data.path,
+        destAddress,
+        deadline,
+      )
       data.value = BigNumber.from(swapEstimate.fromAmount)
       return data
     } else if (swapAction.toToken.id === ethers.constants.AddressZero) {
-      return await contract.populateTransaction.swapTokensForExactETH(swapEstimate.toAmountMin, swapEstimate.fromAmount, swapEstimate.data.path, destAddress, deadline)
+      return await contract.populateTransaction.swapTokensForExactETH(
+        swapEstimate.toAmountMin,
+        swapEstimate.fromAmount,
+        swapEstimate.data.path,
+        destAddress,
+        deadline,
+      )
     } else {
-      return await contract.populateTransaction.swapTokensForExactTokens(swapEstimate.toAmountMin, swapEstimate.fromAmount, swapEstimate.data.path, destAddress, deadline)
+      return await contract.populateTransaction.swapTokensForExactTokens(
+        swapEstimate.toAmountMin,
+        swapEstimate.fromAmount,
+        swapEstimate.data.path,
+        destAddress,
+        deadline,
+      )
     }
   }
 }
@@ -112,9 +153,13 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
     try {
       const parsed = decoder.decode(swappedTypes, log.data) as unknown as Swapped
       if (result.fromAmount === '0') {
-        result.fromAmount = parsed.amount0In.isZero() ? parsed.amount1In.toString() : parsed.amount0In.toString()
+        result.fromAmount = parsed.amount0In.isZero()
+          ? parsed.amount1In.toString()
+          : parsed.amount0In.toString()
       }
-      result.toAmount = parsed.amount0Out.isZero() ? parsed.amount1Out.toString() : parsed.amount0Out.toString()
+      result.toAmount = parsed.amount0Out.isZero()
+        ? parsed.amount1Out.toString()
+        : parsed.amount0Out.toString()
     } catch {
       // ignore, only matching will be parsed
     }

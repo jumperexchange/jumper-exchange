@@ -1,6 +1,7 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { NetworkConnector } from '@web3-react/network-connector'
 import { providers } from 'ethers'
+
 import { ChainId, getChainById, supportedChains } from '../../types'
 
 const customRpc: Record<number, string | undefined> = {
@@ -73,11 +74,9 @@ export const getMulticallAddresses = (chainIds: Array<number>) => {
 
 export const getRpcProvider = (chainId: number) => {
   if (!chainProviders[chainId]) {
-    chainProviders[chainId] = new providers.FallbackProvider(
-      [
-        new providers.JsonRpcProvider(getRpcUrl(chainId), chainId)
-      ]
-    )
+    chainProviders[chainId] = new providers.FallbackProvider([
+      new providers.JsonRpcProvider(getRpcUrl(chainId), chainId),
+    ])
   }
   return chainProviders[chainId]
 }
@@ -91,12 +90,12 @@ export const getRpcProviders = (chainIds: Array<number>) => {
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: supportedChains.map(chain => chain.id),
+  supportedChainIds: supportedChains.map((chain) => chain.id),
 })
 
 export const network = new NetworkConnector({
   urls: Object.fromEntries(
-    supportedChains.map(chain => chain.id).map(chainId => [chainId, getRpcUrl(chainId)])
+    supportedChains.map((chain) => chain.id).map((chainId) => [chainId, getRpcUrl(chainId)]),
   ),
   defaultChainId: ChainId.ETH,
 })

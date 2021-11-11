@@ -1,17 +1,32 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
+
 import { Chain, Execution, Token } from '../types'
 import { createAndPushProcess, setStatusDone, setStatusFailed } from './status'
 import { getApproved, setApproval } from './utils'
 
-export const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token: Token, amount: string, spenderAddress: string, update: Function, status: Execution) => {
+export const checkAllowance = async (
+  signer: JsonRpcSigner,
+  chain: Chain,
+  token: Token,
+  amount: string,
+  spenderAddress: string,
+  update: Function,
+  status: Execution,
+  // eslint-disable-next-line max-params
+) => {
   // Ask user to set allowance
   // -> set status
-  const allowanceProcess = createAndPushProcess('allowanceProcess', update, status, `Set Allowance for ${token.symbol}`)
+  const allowanceProcess = createAndPushProcess(
+    'allowanceProcess',
+    update,
+    status,
+    `Set Allowance for ${token.symbol}`,
+  )
 
   // -> check allowance
   try {
-    if (allowanceProcess.txHash ) {
+    if (allowanceProcess.txHash) {
       await signer.provider.waitForTransaction(allowanceProcess.txHash)
       setStatusDone(update, status, allowanceProcess)
     } else if (allowanceProcess.message === 'Already Approved') {
@@ -25,7 +40,8 @@ export const checkAllowance = async (signer: JsonRpcSigner, chain: Chain, token:
         // update status
         allowanceProcess.status = 'PENDING'
         allowanceProcess.txHash = approveTx.hash
-        allowanceProcess.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
+        allowanceProcess.txLink =
+          chain.metamask.blockExplorerUrls[0] + 'tx/' + allowanceProcess.txHash
         allowanceProcess.message = 'Approve - Wait for'
         update(status)
 

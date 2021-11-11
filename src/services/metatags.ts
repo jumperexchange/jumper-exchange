@@ -16,16 +16,16 @@ function getDefaultValues() {
     lang: 'en',
     og: {
       'og:type': 'website',
-      'og:site_name': 'Li.Finance'
+      'og:site_name': 'Li.Finance',
       // og:locale - The locale these tags are marked up in. Of the format language_TERRITORY. Default is en_US.
       // og:locale:alternate - An array of other locales this page is available in.
     },
     tags: {
       'twitter:card': 'summary_large_image',
-      'twitter:site': '@lifiprotocol'
+      'twitter:site': '@lifiprotocol',
     },
     noIndex: false,
-    statusCode: 200
+    statusCode: 200,
   }
 
   return data
@@ -33,48 +33,48 @@ function getDefaultValues() {
 
 function updateMetaTags(data: any) {
   // set url, title and description to all formats
-  data.tags['twitter:title'] = data.title;
-  data.tags['twitter:description'] = data.description;
-  data.og['og:url'] = data.url;
-  data.og['og:title'] = data.title;
-  data.og['og:description'] = data.description;
+  data.tags['twitter:title'] = data.title
+  data.tags['twitter:description'] = data.description
+  data.og['og:url'] = data.url
+  data.og['og:title'] = data.title
+  data.og['og:description'] = data.description
 
   // set image to all formats
-  data.tags['twitter:image'] = data.image.url;
-  data.og['og:image'] = data.image.url;
-  data.og['og:image:url'] = data.image.url;
-  data.og['og:image:secure_url'] = data.image.url;
-  data.og['og:image:width'] = data.image.w;
-  data.og['og:image:height'] = data.image.h;
+  data.tags['twitter:image'] = data.image.url
+  data.og['og:image'] = data.image.url
+  data.og['og:image:url'] = data.image.url
+  data.og['og:image:secure_url'] = data.image.url
+  data.og['og:image:width'] = data.image.w
+  data.og['og:image:height'] = data.image.h
 
   // title and language can be changed directly. they don't need to be deleted beforehand
-  document.title = data.title;
-  document.documentElement.lang = data.lang;
+  document.title = data.title
+  document.documentElement.lang = data.lang
 
   // create new tags
-  var nodes: Array<any> = [];
-  addMetaTag(nodes, 'description', data.description);
-  addCanonicalUrlTag(data.url, data.forcedLanguage, nodes);
-  addMetaTag(nodes, 'prerender-status-code', data.statusCode);
+  var nodes: Array<any> = []
+  addMetaTag(nodes, 'description', data.description)
+  addCanonicalUrlTag(data.url, data.forcedLanguage, nodes)
+  addMetaTag(nodes, 'prerender-status-code', data.statusCode)
   if (data.noIndex) {
-    addMetaTag(nodes, 'robots', 'noindex');
+    addMetaTag(nodes, 'robots', 'noindex')
   }
 
   Object.keys(data.og).forEach((key: string) => {
-    addMetaTag(nodes, key, data.og[key], true);
+    addMetaTag(nodes, key, data.og[key], true)
   })
 
   Object.keys(data.tags).forEach((key: string) => {
-    addMetaTag(nodes, key, data.tags[key]);
+    addMetaTag(nodes, key, data.tags[key])
   })
 
   if (data.prerenderHeader) {
-    addMetaTag(nodes, 'prerender-header', data.prerenderHeader);
+    addMetaTag(nodes, 'prerender-header', data.prerenderHeader)
   }
 
   // update tags in DOM
-  removeAllTagsFromDOM();
-  addTagsToDOM(nodes);
+  removeAllTagsFromDOM()
+  addTagsToDOM(nodes)
 }
 
 function addTagsToDOM(nodes: Array<any>) {
@@ -83,12 +83,12 @@ function addTagsToDOM(nodes: Array<any>) {
 
 function removeAllTagsFromDOM() {
   var toDelete = document.querySelectorAll(`.${CLASS_NAME}`)
-  toDelete.forEach(elm => elm.remove())
+  toDelete.forEach((elm) => elm.remove())
 }
 
 function addCanonicalUrlTag(url: string, forcedLanguage: any, nodes: Array<any>) {
-  nodes.push(createLinkTag('alternate', url, 'x-default'));
-  nodes.push(createLinkTag('alternate', url, 'en'));
+  nodes.push(createLinkTag('alternate', url, 'x-default'))
+  nodes.push(createLinkTag('alternate', url, 'en'))
 
   // When adding multiple languages use:
   // var char = url.indexOf('?') === -1 ? '?' : '&';
@@ -104,7 +104,13 @@ function addCanonicalUrlTag(url: string, forcedLanguage: any, nodes: Array<any>)
   // })
 }
 
-function addMetaTag(nodes: Array<any>, name: string, content: string, propertyTag: boolean = false) {
+// eslint-disable-next-line max-params
+function addMetaTag(
+  nodes: Array<any>,
+  name: string,
+  content: string,
+  propertyTag: boolean = false,
+) {
   if (content) {
     nodes.push(createMetaTag(name, content, propertyTag))
   }

@@ -1,0 +1,10 @@
+# Ignore artifacts:
+build
+*.yml
+*.md
+
+#specific files
+public/index.html
+tsconfig.json
+.vscode/settings.json
+package.json
