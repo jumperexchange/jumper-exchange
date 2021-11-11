@@ -124,9 +124,8 @@ export const triggerTransfer = async (
     const contractAddress = getDeployedTransactionManagerContract(
       crossEstimate.data.bid.sendingChainId,
     )
-    let approved
     try {
-      approved = await getApproved(
+      await getApproved(
         (sdk as any).config.signer,
         crossEstimate.data.bid.sendingAssetId,
         contractAddress!.address,
@@ -137,25 +136,14 @@ export const triggerTransfer = async (
       setStatusFailed(update, status, approveProcess)
       throw e
     }
-    if (approved.gte(crossEstimate.data.bid.amount)) {
-      // approval already done, jump to next step
-      setStatusDone(update, status, approveProcess)
-      submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
-        status: 'ACTION_REQUIRED',
-      })
-    }
-  } else {
-    // approval not needed
-    setStatusDone(update, status, approveProcess)
-    submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
-      status: 'ACTION_REQUIRED',
-    })
   }
+  setStatusDone(update, status, approveProcess)
+  submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction: Check your Wallet!', {
+    status: 'ACTION_REQUIRED',
+  })
 
   const transactionId = crossEstimate.data.bid.transactionId
-  // try{
 
-  // }
   const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
   // approve sent => wait
 
@@ -453,7 +441,7 @@ export const finishTransfer = async (
   } catch (e) {
     console.error(e)
     if (updateStatus && lastProcess && lastProcess.status !== 'DONE') {
-      lastProcess.message = 'Sign to claim Transfer'
+      lastProcess.message = 'Sign to Claim Transfer'
       lastProcess.footerMessage = (
         <Button
           className="xpollinate-button"
@@ -461,7 +449,7 @@ export const finishTransfer = async (
           type="primary"
           size="large"
           onClick={() => finishTransfer(signer, sdk, event, step, updateStatus)}>
-          Sign to claim Transfer
+          Sign to Claim Transfer
         </Button>
       )
       updateStatus(status)
