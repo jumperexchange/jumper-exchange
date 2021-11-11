@@ -24,6 +24,7 @@ import {
   defaultTokens,
   DepositAction,
   getChainByKey,
+  Step,
   Token,
   TransferStep,
   WithdrawAction,
@@ -95,7 +96,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [currentRouteCallId, setCurrentRouteCallId] = useState<string>()
-  const [routeCallResult, setRouteCallResult] = useState<any>()
+  const [routeCallResult, setRouteCallResult] = useState<{ result: Step[][]; id: string }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -244,14 +245,16 @@ const Swap = ({ transferChains }: SwapProps) => {
           toAddress: '',
           slippage: optionSlippage / 100,
         }
+        const id = uuid()
         try {
-          const id = uuid()
           setCurrentRouteCallId(id)
           const result = await LIFI.findRoutes(deposit, withdraw)
           setRouteCallResult({ result, id })
         } catch {
-          setNoRoutesAvailable(true)
-          setRoutesLoading(false)
+          if (id === currentRouteCallId) {
+            setNoRoutesAvailable(true)
+            setRoutesLoading(false)
+          }
         }
       }
     }
