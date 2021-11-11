@@ -11,11 +11,11 @@ class LIFI {
     if (!isWithdraw(withdraw)) {
       throw Error('Invalid Withdraw Type')
     }
-    const result = await axios.post<any>(process.env.REACT_APP_API_URL + 'transfer', {
+    const result = await axios.post<Step[][]>(process.env.REACT_APP_API_URL + 'transfer', {
       deposit,
       withdraw,
     })
-    return result.data as Step[][]
+    return result.data
   }
 
   // executeRoute = (signer: Signer, route: Route): Promise<Route> => {
