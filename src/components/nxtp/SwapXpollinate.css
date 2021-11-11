@@ -2,6 +2,7 @@
   background: url('../../assets/xpollinate-bg-pattern_dark.svg') center center / cover no-repeat fixed;
   min-height: calc(100vh);
   margin-top: 0;
+  color: #FFFFFF !important;
 }
 
 .xpollinate-header {
@@ -9,14 +10,53 @@
   margin-bottom: 0;
 }
 
-.xpollinate {
-  color: #FFFFFF !important;
-}
-
-.xpollinate h1, h2, h3, h4, h5, h6 {
+.ant-menu-submenu .ant-menu-item-group,
+.ant-menu-submenu .ant-menu-item-group-title,
+.ant-menu-submenu .ant-menu-title-content > a,
+.ant-menu-sub,
+.ant-menu-sub .ant-menu-item,
+.ant-menu-item-group-list .ant-menu-item,
+.ant-menu-submenu-open.ant-menu-submenu-active {
+  background: #0D1216 !important;
   color: #FFFFFF;
 }
 
+.ant-menu-item.ant-menu-item-disabled {
+  color: #949494 !important;
+}
+
+.ant-menu-submenu .ant-badge {
+  color: inherit !important;
+}
+
+.ant-menu-submenu .ant-badge-status-text {
+  color: inherit !important;
+}
+
+.ant-menu-item-disabled, .ant-menu-submenu-disable {
+  color: #949494 !important;
+}
+
+.xpollinate .ant-menu-title-content:hover {
+  color: inherit;
+}
+
+.xpollinate .ant-alert-error, .xpol-swap-modal .ant-alert-error {
+  background-color: #af3522;
+  color: #FFFFFF;
+  border-color: #c38b85;
+}
+
+.xpol-swap-modal .ant-alert {
+  margin: 12px 0;
+}
+
+.xpollinate h1,
+.xpollinate h2,
+.xpollinate h3,
+.xpollinate h4,
+.xpollinate h5,
+.xpollinate h6,
 .xpollinate .version {
   color: #FFFFFF;
 }
@@ -51,11 +91,20 @@
   color: #FFFFFF;
 }
 
+.xpol-swap-modal .totalTime {
+  border-color: #FFFFFF;
+}
+
 .xpollinate .ant-typography, .ant-form {
   color: #FFFFFF !important;
 }
 
-.xpollinate .ant-select, .anticon, .ant-badge-status-text, .ant-checkbox-wrapper, .ant-collapse-content  {
+.xpollinate .ant-select,
+.xpollinate .anticon,
+.xpollinate .ant-badge-status-text,
+.xpollinate .ant-checkbox-wrapper,
+.xpollinate .ant-collapse-content,
+.xpollinate .ant-menu-title-content  {
   color: #FFFFFF;
 }
 
@@ -69,7 +118,7 @@
   border: 1px solid #FDFDFF;
   box-sizing: border-box;
   box-shadow: 0px 4px 100px 5px rgba(247, 167, 69, 0.25);
-  border-radius: 20px;
+  border-radius: 12px;
 }
 
 .xpollinate .ant-collapse-content * {

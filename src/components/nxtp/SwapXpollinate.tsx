@@ -14,6 +14,7 @@ import {
   LinkOutlined,
   LoadingOutlined,
   LoginOutlined,
+  MenuOutlined,
   SwapOutlined,
   SyncOutlined,
 } from '@ant-design/icons'
@@ -1028,11 +1029,16 @@ const SwapXpollinate = ({
     }
   }
 
-  const handleMenuClick = (e: any) => {
-    if (e.key === 'mainnet' || e.key === 'testnet') {
-      // open link
-    } else {
-      switchChain(parseInt(e.key))
+  const handleMenuSelect = (e: any) => {
+    if (e.key.startsWith('chain-')) {
+      const key = e.key.split('-')[1]
+      if (key === 'mainnet' || key === 'testnet') {
+        // open link
+      } else {
+        switchChain(parseInt(key))
+      }
+    } else if (e.key === 'connect-wallet') {
+      activate(injected)
     }
   }
 
@@ -1047,11 +1053,29 @@ const SwapXpollinate = ({
   }
   const currentChain = getCurrentChain()
   const menuChain = (
-    <Menu onClick={handleMenuClick}>
+    <Menu.SubMenu
+      className="xpol-menu"
+      key="chain"
+      style={{}}
+      title={(
+        <>
+          <Badge
+            color={
+              syncStatus && currentChain && syncStatus[currentChain.id]
+                ? syncStatus[currentChain.id].synced
+                  ? 'green'
+                  : 'orange'
+                : 'gray'
+            }
+            text={currentChain?.name || 'Unsupported Chain'}
+          />{' '}
+        </>
+      )}
+    >
       <Menu.ItemGroup title="Supported Chains">
         {transferChains.map((chain) => {
           return (
-            <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
+            <Menu.Item key={`chain-${chain.id}`} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
               <Badge
                 color={syncStatus ? (syncStatus[chain.id].synced ? 'green' : 'orange') : 'gray'}
                 text={chain.name}
@@ -1075,15 +1099,17 @@ const SwapXpollinate = ({
           </Menu.Item>
         )}
       </Menu.ItemGroup>
-    </Menu>
+    </Menu.SubMenu>
   )
 
   const menuAccount = (
-    <Menu>
-      <Menu.Item key="disconnect" onClick={() => disconnect()}>
-        Disconnect
-      </Menu.Item>
-    </Menu>
+    web3.account && (
+      <Menu.SubMenu className="xpol-menu" key="account" title={`${web3.account.substr(0, 6)}...${web3.account.substr(-4, 4)}`}>
+        <Menu.Item key="account-disconnect" onClick={() => disconnect()}>
+          Disconnect
+        </Menu.Item>
+      </Menu.SubMenu>
+    )
   )
 
   const disconnect = () => {
@@ -1170,26 +1196,16 @@ const SwapXpollinate = ({
     }
     const sendingAmount = parseAmount(tx.txData.sending?.amount, sendingToken?.decimals || 18)
     const receivingAmount = parseAmount(tx.txData.receiving?.amount, receivingToken?.decimals || 18)
-    
-    const index = executionRoutes.findIndex(item => {
+
+    const executionRouteIndex = executionRoutes.findIndex(item => {
       return (item[0].estimate as CrossEstimate).data.bid.transactionId === transactionId
     })
 
-    const status = (index !== -1) ? <Button onClick={() => setModalRouteIndex(index)}>{tx.status}</Button> : tx.status
-    const cancelled = tx.status.includes("Cancelled")
-    const success = (tx.status.includes("Receiver") && tx.status.includes("Fulfilled"))
-    const badge = cancelled ? "error"
-      : success ? "success"
-      : "processing"
-    const expiry = (tx.txData.sending?.expiry || 0) > Date.now() / 1000
-      ? `in ${(((tx.txData.sending?.expiry || 0) - Date.now() / 1000) / 3600).toFixed(2)} hours`
-      : 'Expired'
-
-    let claimAction = undefined
+    let action = undefined
     if (tx.txData.sending && Date.now() / 1000 > tx.txData.sending.expiry) {
       // check chain
       if (web3.chainId !== tx.txData.invariant.sendingChainId) {
-        claimAction = (
+        action = (
           <Button
             type="link"
             onClick={() => switchChain(tx.txData.invariant.sendingChainId)}
@@ -1198,7 +1214,7 @@ const SwapXpollinate = ({
           </Button>
         )
       } else {
-        claimAction = (
+        action = (
           <Button
             type="link"
             onClick={() => cancelTransfer(tx.txData)}
@@ -1208,7 +1224,7 @@ const SwapXpollinate = ({
         )
       }
     } else if (tx.status === NxtpSdkEvents.ReceiverTransactionPrepared && tx.event) {
-      claimAction = (
+      action = (
         <Button
           className="xpollinate-button"
           type="primary"
@@ -1217,38 +1233,52 @@ const SwapXpollinate = ({
           style={{ borderRadius: 6 }}
           onClick={() => openSwapModalFinish(tx)}
         >
-          Sign to claim Transfer
+          Sign to Claim Transfer
         </Button>
       )
     } else if (
       tx.status === NxtpSdkEvents.ReceiverTransactionFulfilled
       || tx.status === NxtpSdkEvents.SenderTransactionFulfilled
     ) {
-      claimAction = <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
+      action = <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
     } else {
-      const index = executionRoutes.findIndex(item => {
-        return (item[0].estimate as CrossEstimate).data.bid.transactionId === tx.txData.invariant.transactionId
-      })
-      if (index !== -1 && executionRoutes[index][0].execution?.status === 'FAILED') {
-        claimAction = 'Failed'
-      } else if (index !== -1) {
-        claimAction = <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
+      if (executionRouteIndex !== -1 && executionRoutes[executionRouteIndex][0].execution?.status === 'FAILED') {
+        action = 'Failed'
+      } else if (executionRouteIndex !== -1) {
+        action = <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
       }
     }
+
+    const cancelled = tx.status.includes("Cancelled")
+    const failed = tx.status.includes("Cancelled") || action === 'Failed'
+    const success = (tx.status.includes("Receiver") && tx.status.includes("Fulfilled"))
+    const badge = failed ? "error"
+      : success ? "success"
+      : "processing"
+    const expiry = (tx.txData.sending?.expiry || 0) > Date.now() / 1000
+      ? `in ${(((tx.txData.sending?.expiry || 0) - Date.now() / 1000) / 3600).toFixed(2)} hours`
+      : 'Expired'
+
+    let status: string | JSX.Element = cancelled ? "Cancelled"
+      : failed ? "Failed"
+      : success ? "Success"
+      : tx.status
+    status = (executionRouteIndex !== -1) ? <Button onClick={() => setModalRouteIndex(executionRouteIndex)}>{status}</Button> : status
     return (
       <List.Item key={transactionId}>
         <Card
           bodyStyle={{ padding: 0 }}
-          actions={claimAction !== undefined ? [claimAction] : []}
+          actions={(action !== undefined && !success && !failed) ? [
+            (<span style={{ color: '#FFFFFF' }}>{action}</span>)
+          ] : []}
           bordered={false}
           title={(
             <Row>
-              <Col span={11}>
-                {sendingChain.name}{' '}{sendingAmount}{' '}{sendingToken?.name}
-              </Col>
-              <Col span={2}><ArrowRightOutlined /></Col>
-              <Col span={11}>
-                {receivingChain.name}{' '}{receivingAmount}{' '}{receivingToken?.name}
+              <Col span={12}>
+                {sendingAmount}{' '}{sendingToken?.name}{' '}
+                {sendingChain.name}{' '}<ArrowRightOutlined />{' '}{receivingChain.name}
+                {/* TODO: Parse amount received from bid to put here */}
+                {!receivingAmount.includes("<0") && `${receivingAmount} ${receivingToken?.name}`}
               </Col>
             </Row>
           )}
@@ -1268,7 +1298,7 @@ const SwapXpollinate = ({
             <Descriptions.Item label="Status">
               <Badge status={badge} />{status}
             </Descriptions.Item>
-            {(!cancelled && !success) && (
+            {(!failed && !success) && (
               <Descriptions.Item label="Expires">
                 {expiry}
               </Descriptions.Item>
@@ -1282,74 +1312,56 @@ const SwapXpollinate = ({
   return (
     <Content className="site-layout xpollinate">
       <div className="xpollinate-header">
-        <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
-          <a href="/">
-            <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
-            <span className="version">v2 {testnet && 'Testnet'}</span>
-          </a>
-
-          <span className="header-options">
-            <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
-              <Button className="header-button">
-                <CompassOutlined />
-                Explorer
-              </Button>
+        <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }} wrap={false}>
+          <Col style={{ marginRight: 24 }}>
+            <a href="/">
+              <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
+              <span className="version">v2 {testnet && 'Testnet'}</span>
             </a>
+          </Col>
 
-            {web3.account ? (
-              <>
-                <a
-                  href={`https://connextscan.io/address/${web3.account}`}
-                  target="_blank"
-                  rel="nofollow noreferrer">
-                  <Button className="header-button">
-                    <HistoryOutlined />
-                    Transaction History
-                  </Button>
+          <Col flex="auto" style={{ alignContent: 'flex-end' }} >
+            <Menu
+              className="xpol-menu"
+              overflowedIndicator={<MenuOutlined />}
+              mode="horizontal"
+              selectable={false}
+              onClick={handleMenuSelect}
+            >
+              {web3.account ? (
+                <>
+                  {menuChain}
+                  {menuAccount}
+                  <Menu.Item key="history" icon={<HistoryOutlined />}>
+                    <a
+                      href={`https://connextscan.io/address/${web3.account}`}
+                      target="_blank"
+                      rel="nofollow noreferrer">
+                      Transaction History
+                    </a>
+                  </Menu.Item>
+                </>
+              ) : (
+                <Menu.Item key="connect-wallet" icon={<LoginOutlined />}>
+                  Connect Wallet
+                </Menu.Item>
+              )}
+              <Menu.Item key="explorer" icon={<CompassOutlined />}>
+                <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
+                  Explorer
                 </a>
-
-                <Dropdown overlay={menuChain}>
-                  <Button className="header-button">
-                    <Badge
-                      color={
-                        syncStatus && currentChain && syncStatus[currentChain.id]
-                          ? syncStatus[currentChain.id].synced
-                            ? 'green'
-                            : 'orange'
-                          : 'gray'
-                      }
-                      text={currentChain?.name || 'Unsupported Chain'}
-                    />{' '}
-                    <DownOutlined />
-                  </Button>
-                </Dropdown>
-
-                <Dropdown overlay={menuAccount}>
-                  <Button className="header-button">
-                    {web3.account.substr(0, 6)}...{web3.account.substr(-4, 4)}
-                  </Button>
-                </Dropdown>
-              </>
-            ) : (
-              <Button
-                shape="round"
-                type="link"
-                icon={<LoginOutlined />}
-                onClick={() => activate(injected)}>
-                Connect Wallet
-              </Button>
-            )}
-
-            <a
-              href="https://chat.connext.network/"
-              target="_blank"
-              rel="nofollow noreferrer"
-              className="header-button support-link">
-              <span>
-                <LinkOutlined /> Support
-              </span>
-            </a>
-          </span>
+              </Menu.Item>
+              <Menu.Item key="support" icon={<LinkOutlined />}>
+                <a
+                  href="https://chat.connext.network/"
+                  target="_blank"
+                  rel="nofollow noreferrer"
+                >
+                  Support
+                </a>
+              </Menu.Item>
+            </Menu>
+          </Col>
         </Row>
       </div>
 
@@ -1437,7 +1449,7 @@ const SwapXpollinate = ({
               }
               key="active">
               <Row justify={"center"} align={"middle"} style={{ overflowY: 'scroll' }}>
-                <Col style={{ marginBottom: 20, maxHeight: 560, width: '100%', maxWidth: 940, minWidth: 392 }}>
+                <Col style={{ marginBottom: 20, maxHeight: 560, width: '100%', maxWidth: 940, minWidth: 392, textAlign: (activeTransactions.length === 0) ? 'center' : 'inherit' }}>
                   {activeTransactions.length > 0 ? (
                     <List
                       style={{ overflowX: 'hidden' }}
