@@ -3,13 +3,16 @@ import '../Swap.css'
 import './SwapXpollinate.css'
 
 import {
+  ArrowRightOutlined,
   CheckOutlined,
   CompassOutlined,
   DownOutlined,
+  EllipsisOutlined,
   ExportOutlined,
   HistoryOutlined,
   InfoCircleOutlined,
   LinkOutlined,
+  LoadingOutlined,
   LoginOutlined,
   SwapOutlined,
   SyncOutlined,
@@ -22,16 +25,21 @@ import {
   Alert,
   Badge,
   Button,
+  Card,
   Checkbox,
   Col,
   Collapse,
+  Descriptions,
   Dropdown,
   Form,
   Input,
+  List,
   Menu,
   Modal,
   Row,
+  Spin,
   Tooltip,
+  Typography,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
@@ -69,8 +77,9 @@ import SwapForm from '../SwapForm'
 import { getRpcProviders, injected } from '../web3/connectors'
 import SwappingNxtp from './SwappingNxtp'
 import TestBalanceOverview from './TestBalanceOverview'
-import TransactionsTableNxtp from './TransactionsTableNxtp'
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp'
+
+const { Paragraph } = Typography
 
 const history = createBrowserHistory()
 
@@ -79,6 +88,7 @@ const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
 const DISABLED = false
+
 
 const getDefaultParams = (
   search: string,
@@ -471,7 +481,7 @@ const SwapXpollinate = ({
       const transactions = await _sdk.getActiveTransactions()
       for (const transaction of transactions) {
         // merge to txData to be able to pass event to fulfillTransfer
-        ;(transaction as any).txData = {
+        (transaction as any).txData = {
           ...transaction.crosschainTx.invariant,
           ...(transaction.crosschainTx.receiving ?? transaction.crosschainTx.sending),
         }
@@ -1144,6 +1154,131 @@ const SwapXpollinate = ({
     )
   }
 
+  const renderActiveTransaction = (tx: ActiveTransaction) => {
+    const { transactionId } = tx.txData.invariant
+    const sendingChain = getChainById(tx.txData.invariant.sendingChainId)
+    const receivingChain = getChainById(tx.txData.invariant.receivingChainId)
+
+    const getToken = (sendingChain: Chain, assetId: string) => tokens[sendingChain.key].find(token => token.id === assetId.toLowerCase())
+    const sendingToken = getToken(sendingChain, tx.txData.invariant.sendingAssetId)
+    const receivingToken = getToken(receivingChain, tx.txData.invariant.receivingAssetId)
+
+    const parseAmount = (amount: string = '0', decimals: number) => {
+      const fixedDecimals = 4
+      const parsed = (parseInt(amount) / (10 ** decimals)).toFixed(fixedDecimals)
+      return (parsed === `0.${'0'.repeat(fixedDecimals)}`) ? `<0.${'0'.repeat(fixedDecimals - 1)}1` : parsed
+    }
+    const sendingAmount = parseAmount(tx.txData.sending?.amount, sendingToken?.decimals || 18)
+    const receivingAmount = parseAmount(tx.txData.receiving?.amount, receivingToken?.decimals || 18)
+    
+    const index = executionRoutes.findIndex(item => {
+      return (item[0].estimate as CrossEstimate).data.bid.transactionId === transactionId
+    })
+
+    const status = (index !== -1) ? <Button onClick={() => setModalRouteIndex(index)}>{tx.status}</Button> : tx.status
+    const cancelled = tx.status.includes("Cancelled")
+    const success = (tx.status.includes("Receiver") && tx.status.includes("Fulfilled"))
+    const badge = cancelled ? "error"
+      : success ? "success"
+      : "processing"
+    const expiry = (tx.txData.sending?.expiry || 0) > Date.now() / 1000
+      ? `in ${(((tx.txData.sending?.expiry || 0) - Date.now() / 1000) / 3600).toFixed(2)} hours`
+      : 'Expired'
+
+    let claimAction = undefined
+    if (tx.txData.sending && Date.now() / 1000 > tx.txData.sending.expiry) {
+      // check chain
+      if (web3.chainId !== tx.txData.invariant.sendingChainId) {
+        claimAction = (
+          <Button
+            type="link"
+            onClick={() => switchChain(tx.txData.invariant.sendingChainId)}
+          >
+            Change Chain
+          </Button>
+        )
+      } else {
+        claimAction = (
+          <Button
+            type="link"
+            onClick={() => cancelTransfer(tx.txData)}
+          >
+            Cancel
+          </Button>
+        )
+      }
+    } else if (tx.status === NxtpSdkEvents.ReceiverTransactionPrepared && tx.event) {
+      claimAction = (
+        <Button
+          className="xpollinate-button"
+          type="primary"
+          shape="round"
+          size="large"
+          style={{ borderRadius: 6 }}
+          onClick={() => openSwapModalFinish(tx)}
+        >
+          Sign to claim Transfer
+        </Button>
+      )
+    } else if (
+      tx.status === NxtpSdkEvents.ReceiverTransactionFulfilled
+      || tx.status === NxtpSdkEvents.SenderTransactionFulfilled
+    ) {
+      claimAction = <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
+    } else {
+      const index = executionRoutes.findIndex(item => {
+        return (item[0].estimate as CrossEstimate).data.bid.transactionId === tx.txData.invariant.transactionId
+      })
+      if (index !== -1 && executionRoutes[index][0].execution?.status === 'FAILED') {
+        claimAction = 'Failed'
+      } else if (index !== -1) {
+        claimAction = <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
+      }
+    }
+    return (
+      <List.Item key={transactionId}>
+        <Card
+          bodyStyle={{ padding: 0 }}
+          actions={claimAction !== undefined ? [claimAction] : []}
+          bordered={false}
+          title={(
+            <Row>
+              <Col span={11}>
+                {sendingChain.name}{' '}{sendingAmount}{' '}{sendingToken?.name}
+              </Col>
+              <Col span={2}><ArrowRightOutlined /></Col>
+              <Col span={11}>
+                {receivingChain.name}{' '}{receivingAmount}{' '}{receivingToken?.name}
+              </Col>
+            </Row>
+          )}
+        >
+          <Descriptions column={1} size="small" labelStyle={{fontWeight:500}} bordered>
+            <Descriptions.Item label="ID">
+              <Paragraph copyable={true} style={{ margin: 0 }}>
+                <a
+                  href={'https://connextscan.io/tx/' + transactionId}
+                  target="_blank"
+                  rel="nofollow noreferrer"
+                >
+                  {transactionId.slice(0, 20) + '...'}
+                </a>
+              </Paragraph>
+            </Descriptions.Item>
+            <Descriptions.Item label="Status">
+              <Badge status={badge} />{status}
+            </Descriptions.Item>
+            {(!cancelled && !success) && (
+              <Descriptions.Item label="Expires">
+                {expiry}
+              </Descriptions.Item>
+            )}
+          </Descriptions>
+        </Card>
+      </List.Item>
+    )
+  }
+
   return (
     <Content className="site-layout xpollinate">
       <div className="xpollinate-header">
@@ -1301,22 +1436,24 @@ const SwapXpollinate = ({
                 </h2>
               }
               key="active">
-              <div
-                style={{
-                  overflowX: 'scroll',
-                  background: 'white',
-                  margin: '10px 20px',
-                }}>
-                <TransactionsTableNxtp
-                  activeTransactions={activeTransactions}
-                  executionRoutes={executionRoutes}
-                  setModalRouteIndex={setModalRouteIndex}
-                  openSwapModalFinish={openSwapModalFinish}
-                  switchChain={switchChain}
-                  cancelTransfer={cancelTransfer}
-                  tokens={tokens}
-                />
-              </div>
+              <Row justify={"center"} align={"middle"} style={{ overflowY: 'scroll' }}>
+                <Col style={{ marginBottom: 20, maxHeight: 560, width: '100%', maxWidth: 940, minWidth: 392 }}>
+                  {activeTransactions.length > 0 ? (
+                    <List
+                      style={{ overflowX: 'hidden' }}
+                      grid={{ gutter: 16, column: 1 }}
+                      dataSource={activeTransactions}
+                      renderItem={renderActiveTransaction}
+                    />
+                  ) : (
+                    updatingActiveTransactions ? (
+                      <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
+                    ) : (
+                      <EllipsisOutlined style={{ fontSize: 24 }} />
+                    )
+                  )}
+                </Col>
+              </Row>
             </Collapse.Panel>
           </Collapse>
           {/* Swap Form */}
@@ -1475,12 +1612,13 @@ const SwapXpollinate = ({
 
       {modalRouteIndex !== undefined ? (
         <Modal
-          className="swapModal"
+          className="swapModal xpol-swap-modal"
           visible={true}
           onOk={() => setModalRouteIndex(undefined)}
           onCancel={() => setModalRouteIndex(undefined)}
           width={700}
-          footer={null}>
+          footer={null}
+        >
           <SwappingNxtp route={executionRoutes[modalRouteIndex]}></SwappingNxtp>
         </Modal>
       ) : (
