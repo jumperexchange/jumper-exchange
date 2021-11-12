@@ -71,7 +71,7 @@ const storeActiveRoute = (route: Route) => {
   } else {
     let replaced = false
     updatedRoutes = storedRoutes.map((storedRoute) => {
-      if (storedRoute.routeId === route.routeId) {
+      if (storedRoute.id === route.id) {
         storedRoute = route
         replaced = true
       }
@@ -95,7 +95,7 @@ const deleteRoute = (route: Route) => {
     return
   }
   const storedRoutes = readAllRoutes()
-  const updatedRoutes = storedRoutes.filter((storedRoute) => storedRoute.routeId !== route.routeId)
+  const updatedRoutes = storedRoutes.filter((storedRoute) => storedRoute.id !== route.id)
 
   localStorage.setItem(
     'activeRoute',
