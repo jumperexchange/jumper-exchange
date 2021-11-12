@@ -138,9 +138,15 @@ export const triggerTransfer = async (
     }
   }
   setStatusDone(update, status, approveProcess)
-  submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction: Check your Wallet!', {
-    status: 'ACTION_REQUIRED',
-  })
+  submitProcess = createAndPushProcess(
+    'submitProcess',
+    update,
+    status,
+    'Send Transaction: Check your Wallet!',
+    {
+      status: 'ACTION_REQUIRED',
+    },
+  )
 
   const transactionId = crossEstimate.data.bid.transactionId
 
