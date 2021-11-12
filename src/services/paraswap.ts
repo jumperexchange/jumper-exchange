@@ -6,7 +6,7 @@ import { NetworkID, ParaSwap, SwapSide } from 'paraswap'
 import { APIError, Transaction } from 'paraswap/build/types'
 import { OptimalRate } from 'paraswap-core'
 
-import { SwapAction, SwapEstimate } from '../types'
+import { Action, Estimate } from '../types'
 
 // event Swapped(
 //   bytes16 uuid,
@@ -109,14 +109,14 @@ const getRateTs = async (
 }
 
 const getSwapCall = async (
-  swapAction: SwapAction,
-  swapEstimate: SwapEstimate,
+  action: Action,
+  estimate: Estimate,
   srcAddress: string,
   destAddress: string,
 ) => {
-  const para = getParaswap(swapAction.chainId)
-  const rate = swapEstimate.data as OptimalRate
-  const minAmount = new BigNumber(rate.destAmount).times(1 - swapAction.slippage).toFixed(0)
+  const para = getParaswap(action.toChainId)
+  const rate = estimate.data as OptimalRate
+  const minAmount = new BigNumber(rate.destAmount).times(1 - action.slippage).toFixed(0)
 
   let txParams = await para.buildTx(
     rate.srcToken, // srcToken: Address,
@@ -158,27 +158,27 @@ const getSwapCall = async (
 }
 
 const buildTransaction = async (
-  swapAction: SwapAction,
-  swapEstimate: SwapEstimate,
+  action: Action,
+  estimate: Estimate,
   srcAmount: BigNumber,
   srcAddress: string,
   destAddress: string,
 ) => {
   // get new quote if outdated (eg. after transfer)
-  if (!srcAmount.isEqualTo(swapEstimate.data.srcAmount)) {
-    swapEstimate.data = await getRateTs(
-      swapAction.chainId,
-      swapAction.token.id,
-      swapAction.toToken.id,
+  if (!srcAmount.isEqualTo(estimate.data.srcAmount)) {
+    estimate.data = await getRateTs(
+      action.toChainId,
+      action.fromToken.id,
+      action.toToken.id,
       srcAmount.toFixed(0),
       SwapSide.SELL,
       {},
-      swapAction.token.decimals,
-      swapAction.toToken.decimals,
+      action.fromToken.decimals,
+      action.toToken.decimals,
     )
   }
 
-  return getSwapCall(swapAction, swapEstimate, srcAddress, destAddress)
+  return getSwapCall(action, estimate, srcAddress, destAddress)
 }
 
 const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {

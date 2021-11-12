@@ -40,6 +40,7 @@ import { providers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { v4 as uuid } from 'uuid'
 
 import onehiveWordmark from '../../assets/1hive_wordmark.svg'
 import connextWordmark from '../../assets/connext_wordmark.png'
@@ -813,6 +814,7 @@ const SwapXpollinate = ({
     const sortedRoutes: Array<Array<TransferStep>> = [
       [
         {
+          // id: uuid(),
           action: crossAction,
           estimate: crossEstimate,
         },
@@ -899,11 +901,15 @@ const SwapXpollinate = ({
   }
 
   const openSwapModalFinish = (action: ActiveTransaction) => {
+    console.log(index2)
     if (!web3.library || !web3.account) return
     const signer = web3.library.getSigner()
 
     // open modal
     const index = executionRoutes.findIndex((item) => {
+      console.log('heeeeeere')
+      console.log('txId', action.txData.invariant.transactionId)
+      console.log('itemId', item[0].id)
       return item[0].id === action.txData.invariant.transactionId
     })
 

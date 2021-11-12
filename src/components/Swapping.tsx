@@ -33,12 +33,8 @@ import {
 import { UniswapExecutionManager } from '../services/uniswaps.execute'
 import { formatTokenAmount } from '../services/utils'
 import {
-  Chain,
   ChainKey,
   ChainPortfolio,
-  CrossAction,
-  CrossEstimate,
-  CrossStep,
   Execution,
   getChainById,
   getChainByKey,
@@ -46,9 +42,6 @@ import {
   Process,
   Route,
   Step,
-  SwapAction,
-  SwapEstimate,
-  SwapStep,
   Token,
 } from '../types'
 import Clock from './Clock'
@@ -69,32 +62,20 @@ const getFinalBalace = async (account: string, route: Route) => {
 }
 
 const getRecevingInfo = (step: Step) => {
-  let toChain: Chain, toToken: Token
-  switch (step.action.type) {
-    case 'cross':
-      toChain = getChainById((step as CrossStep).action.toChainId)
-      toToken = (step as CrossStep).action.toToken
-      break
-    case 'swap':
-      toChain = getChainById((step as SwapStep).action.chainId)
-      toToken = (step as SwapStep).action.toToken
-      break
-    default:
-      toChain = getChainById(step.action.chainId)
-      toToken = step.action.token
-  }
+  const toChain = getChainById(step.action.toChainId)
+  const toToken = step.action.toToken
   return { toChain, toToken }
 }
 
 const isLifiSupported = (route: Route) => {
-  const crossStep = route.steps.find((step) => step.action.type === 'cross')
+  const crossStep = route.steps.find((step) => step.type === 'cross')
   if (!crossStep) return false // perform simple swaps directly
 
-  const crossAction = crossStep.action as CrossAction
+  const crossAction = crossStep.action
 
   return (
-    crossAction.tool === 'nxtp' &&
-    lifinance.supportedChains.includes(crossAction.chainId) &&
+    crossStep.tool === 'nxtp' &&
+    lifinance.supportedChains.includes(crossAction.fromChainId) &&
     lifinance.supportedChains.includes(crossAction.toChainId)
   )
 }
@@ -156,7 +137,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         (status: Execution) => updateStatus(step, status),
         step.execution,
       )
-      const chain = getChainById(step.action.chainId)
+      const chain = getChainById(step.action.fromChainId)
       const switchProcess = createAndPushProcess(
         'switchProcess',
         update,
@@ -164,7 +145,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         `Change Chain to ${chain.name}`,
       )
       try {
-        const switched = await switchChain(step.action.chainId)
+        const switched = await switchChain(step.action.fromChainId)
         if (!switched) {
           throw new Error('Chain was not switched')
         }
@@ -184,9 +165,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const triggerSwap = useCallback(
     async (step: Step, previousStep?: Step) => {
       if (!web3.account || !web3.library) return
-      const swapAction = step.action as SwapAction
-      const swapEstimate = step.estimate as SwapEstimate
-      const swapExecution = step.execution as Execution
+      const swapAction = step.action
+      const swapEstimate = step.estimate
+      const swapExecution = step.execution
       const fromAddress = web3.account
       const toAddress = fromAddress
 
@@ -195,14 +176,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
         fromAmount = new BigNumber(previousStep.execution.toAmount)
       } else {
-        fromAmount = new BigNumber(swapAction.amount)
+        fromAmount = new BigNumber(swapAction.fromAmount)
       }
 
       // ensure chain is set
-      if (web3.chainId !== step.action.chainId) {
+      if (web3.chainId !== step.action.fromChainId) {
         if (!(await checkChain(step))) return
       }
-      switch (swapAction.tool) {
+      switch (step.tool) {
         case 'paraswap':
           return await paraswapExecutionManager.executeSwap(
             web3.library.getSigner(),
@@ -250,23 +231,23 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const triggerCross = useCallback(
     async (step: Step, previousStep?: Step) => {
       if (!web3.account || !web3.library) return
-      const crossAction = step.action as CrossAction
-      const crossExecution = step.execution as Execution
+      const crossAction = step.action
+      const crossExecution = step.execution
 
       // get right amount
       let fromAmount: BigNumber
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
         fromAmount = new BigNumber(previousStep.execution.toAmount)
       } else {
-        fromAmount = new BigNumber(crossAction.amount)
+        fromAmount = new BigNumber(crossAction.fromAmount)
       }
 
       // ensure chain is set
-      if (web3.chainId !== step.action.chainId) {
+      if (web3.chainId !== step.action.fromChainId) {
         if (!(await checkChain(step))) return
       }
 
-      switch (crossAction.tool) {
+      switch (step.tool) {
         case 'nxtp':
           return await nxtpExecutionManager.executeCross(
             web3.library.getSigner(),
@@ -279,18 +260,18 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         case 'hop':
           return await hopExecutionManager.executeCross(
             web3.library.getSigner(),
-            crossAction.token.key,
+            crossAction.fromToken.key,
             fromAmount.toFixed(0),
-            crossAction.chainId,
+            crossAction.fromChainId,
             crossAction.toChainId,
             (status: Execution) => updateStatus(step, status),
             crossExecution,
           )
         case 'horizon':
           return await horizonExecutionManager.executeCross(
-            crossAction.token,
+            crossAction.fromToken,
             fromAmount,
-            crossAction.chainId,
+            crossAction.fromChainId,
             crossAction.toChainId,
             web3.account,
             (status: Execution) => updateStatus(step, status),
@@ -408,7 +389,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const isLoading = isSwapping && step.execution && step.execution.status === 'PENDING'
     const isPaused = !isSwapping && step.execution && step.execution.status === 'PENDING'
     const color = isDone ? 'green' : step.execution ? 'blue' : 'gray'
-    switch (step.action.type) {
+    switch (step.type) {
       case 'swap': {
         return [
           <Timeline.Item
@@ -417,14 +398,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             color={color}>
             <h4>
               Swap on{' '}
-              {step.action.tool === '1inch'
+              {step.tool === '1inch'
                 ? oneinchAvatar
-                : step.action.tool === 'paraswap'
+                : step.tool === 'paraswap'
                 ? paraswapAvatar
-                : getExchangeAvatar(step.action.tool)}
+                : getExchangeAvatar(step.tool)}
             </h4>
             <span>
-              {formatTokenAmount(step.action.token, step.estimate?.fromAmount)}{' '}
+              {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
               <ArrowRightOutlined />{' '}
               {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
             </span>
@@ -440,10 +421,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       }
 
       case 'cross': {
-        const crossAction = step.action as CrossAction
-        const crossEstimate = step.estimate as CrossEstimate
+        const { action, estimate } = step
         let avatar
-        switch (crossAction.tool) {
+        switch (step.tool) {
           case 'nxtp':
             avatar = connextAvatar
             break
@@ -462,13 +442,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             key={index + '_left'}
             color={color}>
             <h4>
-              Transfer from {getChainAvatar(getChainById(crossAction.chainId).key)} to{' '}
-              {getChainAvatar(getChainById(crossAction.toChainId).key)} via {avatar}
+              Transfer from {getChainAvatar(getChainById(action.fromChainId).key)} to{' '}
+              {getChainAvatar(getChainById(action.toChainId).key)} via {avatar}
             </h4>
             <span>
-              {formatTokenAmount(crossAction.token, crossEstimate.fromAmount)}{' '}
-              <ArrowRightOutlined />{' '}
-              {formatTokenAmount(crossAction.toToken, crossEstimate.toAmount)}
+              {formatTokenAmount(action.fromToken, estimate.fromAmount)} <ArrowRightOutlined />{' '}
+              {formatTokenAmount(action.toToken, estimate.toAmount)}
             </span>
           </Timeline.Item>,
           <Timeline.Item
@@ -498,9 +477,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         steps[index].execution,
       )
       try {
-        switch (step.action.type) {
+        switch (step.type) {
           case 'swap':
-            return await triggerSwap(step as SwapStep, previousStep)
+            return await triggerSwap(step, previousStep)
           case 'cross':
             await await triggerCross(step, previousStep)
             break
@@ -527,7 +506,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const triggerLifi = useCallback(async () => {
     // ensure chain is set
-    if (web3.chainId !== steps[0].action.chainId) {
+    if (web3.chainId !== steps[0].action.fromChainId) {
       if (!(await checkChain(steps[0]))) return
     }
 
@@ -545,7 +524,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const resumeCrossChainSwap = useCallback(async () => {
     for (let index = 0; index < steps.length; index++) {
       if (steps[index].execution?.status === 'PENDING') {
-        steps[index].execution!.status = 'RESUME'
+        steps[index].execution!.status = 'RESUME' // TODO what do we have to do here?
         updateRoute(route)
         break
       }
@@ -572,7 +551,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         const allDone = steps.every((step) => step.execution?.status === 'DONE')
         const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
         const alreadyStarted = steps.some((step) => step.execution)
-        const resuming = steps.some((step) => step.execution?.status === 'RESUME')
+        const resuming = steps.some((step) => step.execution?.status === 'RESUME') // TODO what do we have to do here?
         if (!allDone && !isFailed && alreadyStarted && !resuming) {
           await resumeCrossChainSwap()
           return
@@ -600,6 +579,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             setIsSwapping(false)
           })
         } else if (steps[index].execution?.status === 'RESUME') {
+          // TODO what do we have to do here?
           return triggerStep(index).catch(() => {
             // stop if a step fails
             setIsSwapping(false)
@@ -623,7 +603,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (isSwapping) {
       return <></>
     }
-    const isCrossChainSwap = steps.filter((step) => step.action.type === 'cross').length > 0
+    const isCrossChainSwap = steps.filter((step) => step.type === 'cross').length > 0
 
     // DONE
     const isDone = steps.filter((step) => step.execution?.status !== 'DONE').length === 0

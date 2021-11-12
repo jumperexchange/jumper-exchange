@@ -254,6 +254,7 @@ export interface ProgressStep {
 }
 
 export interface TransferStep {
+  // TODO get rid of dat
   action: Action
   estimate?: Estimate
   execution?: Execution

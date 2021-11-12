@@ -1,7 +1,7 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { BigNumber, ethers } from 'ethers'
 
-import { SwapAction, SwapEstimate } from '../types'
+import { Action, Estimate } from '../types'
 
 const USE_EXACT_IN = true
 
@@ -64,68 +64,68 @@ interface Swapped {
 }
 
 export const getSwapCall = async (
-  swapAction: SwapAction,
-  swapEstimate: SwapEstimate,
+  action: Action,
+  estimate: Estimate,
   srcAddress: string,
   destAddress: string,
   // eslint-disable-next-line max-params
 ) => {
-  const contract = new ethers.Contract(swapEstimate.data.routerAddress, uniswapRouter02ABI)
+  const contract = new ethers.Contract(estimate.data.routerAddress, uniswapRouter02ABI)
 
   const deadline = Math.floor(Date.now() / 1000) + 60 * 20 // 20 minutes from the current Unix time
 
   if (USE_EXACT_IN) {
     // Exact In
-    if (swapAction.token.id === ethers.constants.AddressZero) {
+    if (action.fromToken.id === ethers.constants.AddressZero) {
       const data = await contract.populateTransaction.swapExactETHForTokens(
-        swapEstimate.toAmountMin,
-        swapEstimate.data.path,
+        estimate.toAmountMin,
+        estimate.data.path,
         destAddress,
         deadline,
       )
-      data.value = BigNumber.from(swapEstimate.fromAmount)
+      data.value = BigNumber.from(estimate.fromAmount)
       return data
-    } else if (swapAction.toToken.id === ethers.constants.AddressZero) {
+    } else if (action.toToken.id === ethers.constants.AddressZero) {
       return await contract.populateTransaction.swapExactTokensForETH(
-        swapEstimate.fromAmount,
-        swapEstimate.toAmountMin,
-        swapEstimate.data.path,
+        estimate.fromAmount,
+        estimate.toAmountMin,
+        estimate.data.path,
         destAddress,
         deadline,
       )
     } else {
       return await contract.populateTransaction.swapExactTokensForTokens(
-        swapEstimate.fromAmount,
-        swapEstimate.toAmountMin,
-        swapEstimate.data.path,
+        estimate.fromAmount,
+        estimate.toAmountMin,
+        estimate.data.path,
         destAddress,
         deadline,
       )
     }
   } else {
     // Exact Out
-    if (swapAction.token.id === ethers.constants.AddressZero) {
+    if (action.fromToken.id === ethers.constants.AddressZero) {
       const data = await contract.populateTransaction.swapETHForExactTokens(
-        swapEstimate.toAmountMin,
-        swapEstimate.data.path,
+        estimate.toAmountMin,
+        estimate.data.path,
         destAddress,
         deadline,
       )
-      data.value = BigNumber.from(swapEstimate.fromAmount)
+      data.value = BigNumber.from(estimate.fromAmount)
       return data
-    } else if (swapAction.toToken.id === ethers.constants.AddressZero) {
+    } else if (action.toToken.id === ethers.constants.AddressZero) {
       return await contract.populateTransaction.swapTokensForExactETH(
-        swapEstimate.toAmountMin,
-        swapEstimate.fromAmount,
-        swapEstimate.data.path,
+        estimate.toAmountMin,
+        estimate.fromAmount,
+        estimate.data.path,
         destAddress,
         deadline,
       )
     } else {
       return await contract.populateTransaction.swapTokensForExactTokens(
-        swapEstimate.toAmountMin,
-        swapEstimate.fromAmount,
-        swapEstimate.data.path,
+        estimate.toAmountMin,
+        estimate.fromAmount,
+        estimate.data.path,
         destAddress,
         deadline,
       )
