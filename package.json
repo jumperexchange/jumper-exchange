@@ -31,7 +31,7 @@
     "web-vitals": "^2.1.0"
   },
   "devDependencies": {
-    "@lifinance/types": "0.4.0",
+    "@lifinance/types": "0.4.3",
     "@testing-library/dom": "^8.1.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^12.0.0",
