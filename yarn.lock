@@ -2133,10 +2133,9 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@lifinance/types@0.4.3":
+"@lifinance/types@github:lifinance/types#LF-91-new-step-types":
   version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.4.3.tgz#c72a857a5fb0c6c773fda31b35040080594a231b"
-  integrity sha512-lSjFlhKeumh4ulNNxgtL3FkDgGSW4oOaUoDchtxXMY8HBpqGD8KyBGQ/yGaKRHk74l4rL9fGd3r3qVJwb0n0Fg==
+  resolved "https://codeload.github.com/lifinance/types/tar.gz/da27703dec9627dc9550ced6ddec4d21afcd2844"
   dependencies:
     ethers "^5.4.7"
 
