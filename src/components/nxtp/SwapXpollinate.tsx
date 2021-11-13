@@ -1177,23 +1177,17 @@ const SwapXpollinate = ({
   return (
     <Content className="site-layout xpollinate">
       <div className="xpollinate-header">
-        <Row
-          justify="space-between"
-          style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}
-          wrap={false}>
-          <Col style={{ marginRight: 24 }}>
-            <a href="/">
-              <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
-              <span className="version">v2 {testnet && 'Testnet'}</span>
-            </a>
-          </Col>
-
-          <Col flex="auto" style={{ alignContent: 'flex-end' }}>
+        <Row justify="space-between" style={{ padding: 20, height: 84 }} wrap={false}>
+          <Col flex="auto">
             <Menu
+              id="testmenu"
               className="xpol-menu"
               overflowedIndicator={<MenuOutlined />}
               mode="horizontal"
               selectable={false}
+              // style={{ marginLeft: 'auto' }}
+              // style={{ float: 'right' }}
+              style={{ margin: '0 0 0 auto' }}
               onClick={handleMenuSelect}>
               {web3.account ? (
                 <>
@@ -1224,6 +1218,12 @@ const SwapXpollinate = ({
                 </a>
               </Menu.Item>
             </Menu>
+          </Col>
+          <Col style={{ marginRight: 24 }}>
+            <a href="/">
+              <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
+              <span className="version">v2 {testnet && 'Testnet'}</span>
+            </a>
           </Col>
         </Row>
       </div>
