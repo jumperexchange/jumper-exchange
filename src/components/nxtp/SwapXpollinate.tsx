@@ -3,10 +3,8 @@ import '../Swap.css'
 import './SwapXpollinate.css'
 
 import {
-  ArrowRightOutlined,
   CheckOutlined,
   CompassOutlined,
-  DownOutlined,
   EllipsisOutlined,
   ExportOutlined,
   HistoryOutlined,
@@ -26,21 +24,16 @@ import {
   Alert,
   Badge,
   Button,
-  Card,
   Checkbox,
   Col,
   Collapse,
-  Descriptions,
-  Dropdown,
   Form,
   Input,
-  List,
   Menu,
   Modal,
   Row,
   Spin,
   Tooltip,
-  Typography,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
@@ -78,9 +71,8 @@ import SwapForm from '../SwapForm'
 import { getRpcProviders, injected } from '../web3/connectors'
 import SwappingNxtp from './SwappingNxtp'
 import TestBalanceOverview from './TestBalanceOverview'
+import TransactionsTableNxtp from './TransactionsTableNxtp'
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp'
-
-const { Paragraph } = Typography
 
 const history = createBrowserHistory()
 
@@ -89,7 +81,6 @@ const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
 const DISABLED = false
-
 
 const getDefaultParams = (
   search: string,
@@ -482,7 +473,7 @@ const SwapXpollinate = ({
       const transactions = await _sdk.getActiveTransactions()
       for (const transaction of transactions) {
         // merge to txData to be able to pass event to fulfillTransfer
-        (transaction as any).txData = {
+        ;(transaction as any).txData = {
           ...transaction.crosschainTx.invariant,
           ...(transaction.crosschainTx.receiving ?? transaction.crosschainTx.sending),
         }
@@ -1057,7 +1048,7 @@ const SwapXpollinate = ({
       className="xpol-menu"
       key="chain"
       style={{}}
-      title={(
+      title={
         <>
           <Badge
             color={
@@ -1070,12 +1061,14 @@ const SwapXpollinate = ({
             text={currentChain?.name || 'Unsupported Chain'}
           />{' '}
         </>
-      )}
-    >
+      }>
       <Menu.ItemGroup title="Supported Chains">
         {transferChains.map((chain) => {
           return (
-            <Menu.Item key={`chain-${chain.id}`} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
+            <Menu.Item
+              key={`chain-${chain.id}`}
+              icon={<LoginOutlined />}
+              disabled={web3.chainId === chain.id}>
               <Badge
                 color={syncStatus ? (syncStatus[chain.id].synced ? 'green' : 'orange') : 'gray'}
                 text={chain.name}
@@ -1102,14 +1095,15 @@ const SwapXpollinate = ({
     </Menu.SubMenu>
   )
 
-  const menuAccount = (
-    web3.account && (
-      <Menu.SubMenu className="xpol-menu" key="account" title={`${web3.account.substr(0, 6)}...${web3.account.substr(-4, 4)}`}>
-        <Menu.Item key="account-disconnect" onClick={() => disconnect()}>
-          Disconnect
-        </Menu.Item>
-      </Menu.SubMenu>
-    )
+  const menuAccount = web3.account && (
+    <Menu.SubMenu
+      className="xpol-menu"
+      key="account"
+      title={`${web3.account.substr(0, 6)}...${web3.account.substr(-4, 4)}`}>
+      <Menu.Item key="account-disconnect" onClick={() => disconnect()}>
+        Disconnect
+      </Menu.Item>
+    </Menu.SubMenu>
   )
 
   const disconnect = () => {
@@ -1180,139 +1174,13 @@ const SwapXpollinate = ({
     )
   }
 
-  const renderActiveTransaction = (tx: ActiveTransaction) => {
-    const { transactionId } = tx.txData.invariant
-    const sendingChain = getChainById(tx.txData.invariant.sendingChainId)
-    const receivingChain = getChainById(tx.txData.invariant.receivingChainId)
-
-    const getToken = (sendingChain: Chain, assetId: string) => tokens[sendingChain.key].find(token => token.id === assetId.toLowerCase())
-    const sendingToken = getToken(sendingChain, tx.txData.invariant.sendingAssetId)
-    const receivingToken = getToken(receivingChain, tx.txData.invariant.receivingAssetId)
-
-    const parseAmount = (amount: string = '0', decimals: number) => {
-      const fixedDecimals = 4
-      const parsed = (parseInt(amount) / (10 ** decimals)).toFixed(fixedDecimals)
-      return (parsed === `0.${'0'.repeat(fixedDecimals)}`) ? `<0.${'0'.repeat(fixedDecimals - 1)}1` : parsed
-    }
-    const sendingAmount = parseAmount(tx.txData.sending?.amount, sendingToken?.decimals || 18)
-    const receivingAmount = parseAmount(tx.txData.receiving?.amount, receivingToken?.decimals || 18)
-
-    const executionRouteIndex = executionRoutes.findIndex(item => {
-      return (item[0].estimate as CrossEstimate).data.bid.transactionId === transactionId
-    })
-
-    let action = undefined
-    if (tx.txData.sending && Date.now() / 1000 > tx.txData.sending.expiry) {
-      // check chain
-      if (web3.chainId !== tx.txData.invariant.sendingChainId) {
-        action = (
-          <Button
-            type="link"
-            onClick={() => switchChain(tx.txData.invariant.sendingChainId)}
-          >
-            Change Chain
-          </Button>
-        )
-      } else {
-        action = (
-          <Button
-            type="link"
-            onClick={() => cancelTransfer(tx.txData)}
-          >
-            Cancel
-          </Button>
-        )
-      }
-    } else if (tx.status === NxtpSdkEvents.ReceiverTransactionPrepared && tx.event) {
-      action = (
-        <Button
-          className="xpollinate-button"
-          type="primary"
-          shape="round"
-          size="large"
-          style={{ borderRadius: 6 }}
-          onClick={() => openSwapModalFinish(tx)}
-        >
-          Sign to Claim Transfer
-        </Button>
-      )
-    } else if (
-      tx.status === NxtpSdkEvents.ReceiverTransactionFulfilled
-      || tx.status === NxtpSdkEvents.SenderTransactionFulfilled
-    ) {
-      action = <CheckOutlined style={{ margin: 'auto', display: 'block', color: 'green', fontSize: 24 }} />
-    } else {
-      if (executionRouteIndex !== -1 && executionRoutes[executionRouteIndex][0].execution?.status === 'FAILED') {
-        action = 'Failed'
-      } else if (executionRouteIndex !== -1) {
-        action = <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
-      }
-    }
-
-    const cancelled = tx.status.includes("Cancelled")
-    const failed = tx.status.includes("Cancelled") || action === 'Failed'
-    const success = (tx.status.includes("Receiver") && tx.status.includes("Fulfilled"))
-    const badge = failed ? "error"
-      : success ? "success"
-      : "processing"
-    const expiry = (tx.txData.sending?.expiry || 0) > Date.now() / 1000
-      ? `in ${(((tx.txData.sending?.expiry || 0) - Date.now() / 1000) / 3600).toFixed(2)} hours`
-      : 'Expired'
-
-    let status: string | JSX.Element = cancelled ? "Cancelled"
-      : failed ? "Failed"
-      : success ? "Success"
-      : tx.status
-    status = (executionRouteIndex !== -1) ? <Button onClick={() => setModalRouteIndex(executionRouteIndex)}>{status}</Button> : status
-    return (
-      <List.Item key={transactionId}>
-        <Card
-          bodyStyle={{ padding: 0 }}
-          actions={(action !== undefined && !success && !failed) ? [
-            (<span style={{ color: '#FFFFFF' }}>{action}</span>)
-          ] : []}
-          bordered={false}
-          title={(
-            <Row>
-              <Col span={12}>
-                {sendingAmount}{' '}{sendingToken?.name}{' '}
-                {sendingChain.name}{' '}<ArrowRightOutlined />{' '}{receivingChain.name}
-                {/* TODO: Parse amount received from bid to put here */}
-                {!receivingAmount.includes("<0") && `${receivingAmount} ${receivingToken?.name}`}
-              </Col>
-            </Row>
-          )}
-        >
-          <Descriptions column={1} size="small" labelStyle={{fontWeight:500}} bordered>
-            <Descriptions.Item label="ID">
-              <Paragraph copyable={true} style={{ margin: 0 }}>
-                <a
-                  href={'https://connextscan.io/tx/' + transactionId}
-                  target="_blank"
-                  rel="nofollow noreferrer"
-                >
-                  {transactionId.slice(0, 20) + '...'}
-                </a>
-              </Paragraph>
-            </Descriptions.Item>
-            <Descriptions.Item label="Status">
-              <Badge status={badge} />{status}
-            </Descriptions.Item>
-            {(!failed && !success) && (
-              <Descriptions.Item label="Expires">
-                {expiry}
-              </Descriptions.Item>
-            )}
-          </Descriptions>
-        </Card>
-      </List.Item>
-    )
-  }
-
   return (
     <Content className="site-layout xpollinate">
       <div className="xpollinate-header">
-        <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }} wrap={false}>
+        <Row
+          justify="space-between"
+          style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}
+          wrap={false}>
           <Col style={{ marginRight: 24 }}>
             <a href="/">
               <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
@@ -1320,14 +1188,13 @@ const SwapXpollinate = ({
             </a>
           </Col>
 
-          <Col flex="auto" style={{ alignContent: 'flex-end' }} >
+          <Col flex="auto" style={{ alignContent: 'flex-end' }}>
             <Menu
               className="xpol-menu"
               overflowedIndicator={<MenuOutlined />}
               mode="horizontal"
               selectable={false}
-              onClick={handleMenuSelect}
-            >
+              onClick={handleMenuSelect}>
               {web3.account ? (
                 <>
                   {menuChain}
@@ -1352,11 +1219,7 @@ const SwapXpollinate = ({
                 </a>
               </Menu.Item>
               <Menu.Item key="support" icon={<LinkOutlined />}>
-                <a
-                  href="https://chat.connext.network/"
-                  target="_blank"
-                  rel="nofollow noreferrer"
-                >
+                <a href="https://chat.connext.network/" target="_blank" rel="nofollow noreferrer">
                   Support
                 </a>
               </Menu.Item>
@@ -1448,21 +1311,37 @@ const SwapXpollinate = ({
                 </h2>
               }
               key="active">
-              <Row justify={"center"} align={"middle"} style={{ overflowY: 'scroll' }}>
-                <Col style={{ marginBottom: 20, maxHeight: 560, width: '100%', maxWidth: 940, minWidth: 392, textAlign: (activeTransactions.length === 0) ? 'center' : 'inherit' }}>
+              <Row justify={'center'} align={'middle'}>
+                <Col
+                  style={{
+                    marginBottom: 20,
+                    width: '100%',
+                    maxWidth: 940,
+                    minWidth: 392,
+                    textAlign: activeTransactions.length === 0 ? 'center' : 'inherit',
+                  }}>
                   {activeTransactions.length > 0 ? (
-                    <List
-                      style={{ overflowX: 'hidden' }}
-                      grid={{ gutter: 16, column: 1 }}
-                      dataSource={activeTransactions}
-                      renderItem={renderActiveTransaction}
+                    <div
+                      style={{
+                        overflowX: 'scroll',
+                      }}>
+                      <TransactionsTableNxtp
+                        activeTransactions={activeTransactions}
+                        executionRoutes={executionRoutes}
+                        setModalRouteIndex={setModalRouteIndex}
+                        openSwapModalFinish={openSwapModalFinish}
+                        switchChain={switchChain}
+                        cancelTransfer={cancelTransfer}
+                        tokens={tokens}
+                      />
+                    </div>
+                  ) : updatingActiveTransactions ? (
+                    <Spin
+                      style={{ margin: 'auto', display: 'block' }}
+                      indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />}
                     />
                   ) : (
-                    updatingActiveTransactions ? (
-                      <Spin style={{ margin: 'auto', display: 'block' }} indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />} />
-                    ) : (
-                      <EllipsisOutlined style={{ fontSize: 24 }} />
-                    )
+                    <EllipsisOutlined style={{ fontSize: 24 }} />
                   )}
                 </Col>
               </Row>
@@ -1470,12 +1349,14 @@ const SwapXpollinate = ({
           </Collapse>
           {/* Swap Form */}
           <Row style={{ margin: 20, marginTop: 0 }} justify={'center'}>
-            <Col className="swap-form" style={{
-              borderRadius: 12,
-              margin: '6px 12px 0',
-              maxWidth: 940,
-              minWidth: 392,
-            }}>
+            <Col
+              className="swap-form"
+              style={{
+                borderRadius: 12,
+                margin: '6px 12px 0',
+                maxWidth: 940,
+                minWidth: 392,
+              }}>
               <div
                 className="swap-input"
                 style={{
@@ -1511,7 +1392,7 @@ const SwapXpollinate = ({
                     syncStatus={syncStatus}
                   />
 
-                  <Row justify={'end'} style={{ margin: "20px 20px 0 0" }}>
+                  <Row justify={'end'} style={{ margin: '20px 20px 0 0' }}>
                     {priceImpact()}
                   </Row>
 
@@ -1629,8 +1510,7 @@ const SwapXpollinate = ({
           onOk={() => setModalRouteIndex(undefined)}
           onCancel={() => setModalRouteIndex(undefined)}
           width={700}
-          footer={null}
-        >
+          footer={null}>
           <SwappingNxtp route={executionRoutes[modalRouteIndex]}></SwappingNxtp>
         </Modal>
       ) : (

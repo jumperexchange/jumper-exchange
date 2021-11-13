@@ -190,7 +190,12 @@ const SwapForm = ({
     return depositAmount.lte(getBalance(depositChain, depositToken))
   }
 
-  const chainBoxStyle = { border: "1px solid rgba(255,255,255,0.2)", padding: 12, borderRadius: 12 }
+  const chainBoxStyle = {
+    background: '#2e2e2e',
+    border: '1px solid #2e2e2e',
+    padding: 12,
+    borderRadius: 12,
+  }
   return (
     <>
       <Row>
@@ -250,7 +255,7 @@ const SwapForm = ({
 
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 2 }}>
           <Row style={{ margin: 32 }} justify={'center'}>
-            <SwapOutlined style={{ fontSize: 28 }} onClick={() => changeDirection()} />
+            <SwapOutlined className="change-swap-direction" style={{ fontSize: 28 }} onClick={() => changeDirection()} />
           </Row>
         </Col>
 
