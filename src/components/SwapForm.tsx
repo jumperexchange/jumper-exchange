@@ -255,7 +255,11 @@ const SwapForm = ({
 
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 2 }}>
           <Row style={{ margin: 32 }} justify={'center'}>
-            <SwapOutlined className="change-swap-direction" style={{ fontSize: 28 }} onClick={() => changeDirection()} />
+            <SwapOutlined
+              className="change-swap-direction"
+              style={{ fontSize: 28 }}
+              onClick={() => changeDirection()}
+            />
           </Row>
         </Col>
 

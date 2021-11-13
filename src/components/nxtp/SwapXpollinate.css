@@ -1,8 +1,9 @@
 .xpollinate {
-  background: url('../../assets/xpollinate-bg-pattern_dark.svg') center center / cover no-repeat fixed;
+  background: url('../../assets/xpollinate-bg-pattern_dark.svg') center center / cover no-repeat
+    fixed;
   min-height: calc(100vh);
   margin-top: 0;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
 }
 
 .xpollinate-header {
@@ -17,8 +18,8 @@
 .ant-menu-sub .ant-menu-item,
 .ant-menu-item-group-list .ant-menu-item,
 .ant-menu-submenu-open.ant-menu-submenu-active {
-  background: #0D1216 !important;
-  color: #FFFFFF;
+  background: #0d1216 !important;
+  color: #ffffff;
 }
 
 .ant-menu-item.ant-menu-item-disabled {
@@ -37,7 +38,8 @@
   color: inherit !important;
 }
 
-.ant-menu-item-disabled, .ant-menu-submenu-disable {
+.ant-menu-item-disabled,
+.ant-menu-submenu-disable {
   color: #949494 !important;
 }
 
@@ -45,9 +47,10 @@
   color: inherit;
 }
 
-.xpollinate .ant-alert-error, .xpol-swap-modal .ant-alert-error {
+.xpollinate .ant-alert-error,
+.xpol-swap-modal .ant-alert-error {
   background-color: #af3522;
-  color: #FFFFFF;
+  color: #ffffff;
   border-color: #c38b85;
 }
 
@@ -55,7 +58,11 @@
   margin: 12px 0;
 }
 
-.xpollinate *, .xpol-swap-modal *, .xpollinate-header *, .ant-menu-sub *, .ant-menu-submenu * {
+.xpollinate *,
+.xpol-swap-modal *,
+.xpollinate-header *,
+.ant-menu-sub *,
+.ant-menu-submenu * {
   font-family: 'Montserrat', sans-serif !important;
 }
 
@@ -66,34 +73,34 @@
 .xpollinate h5,
 .xpollinate h6,
 .xpollinate .version {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .xpollinate .ant-btn {
-  background-color: #0D1216;
-  color: #FFFFFF;
+  background-color: #0d1216;
+  color: #ffffff;
 }
 
 .xpollinate .form-input-wrapper:focus-within {
-  border: 1px solid #9C62F9 !important;
+  border: 1px solid #9c62f9 !important;
 }
 
 .xpollinate .ant-btn[disabled] {
-  background-color: #0D1216 !important;
-  color: #C4C4C4 !important;
-  border: 2px solid #C4C4C4;
+  background-color: #0d1216 !important;
+  color: #c4c4c4 !important;
+  border: 2px solid #c4c4c4;
 }
 
 .xpollinate .ant-table * {
-  background-color: #0D1216 !important;
-  color: #FFFFFF !important;
+  background-color: #0d1216 !important;
+  color: #ffffff !important;
 }
 
 .xpol-swap-modal .ant-modal-content {
-  background-color: #0D1216;
-  color: #FFFFFF;
+  background-color: #0d1216;
+  color: #ffffff;
   border-radius: 6px;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
 }
 
 .xpol-swap-modal .ant-modal-body p span {
@@ -101,15 +108,16 @@
 }
 
 .xpol-swap-modal .ant-modal-content * {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .xpol-swap-modal .totalTime {
-  border-color: #FFFFFF;
+  border-color: #ffffff;
 }
 
-.xpollinate .ant-typography, .ant-form {
-  color: #FFFFFF !important;
+.xpollinate .ant-typography,
+.ant-form {
+  color: #ffffff !important;
 }
 
 .xpollinate .ant-select,
@@ -117,18 +125,18 @@
 .xpollinate .ant-badge-status-text,
 .xpollinate .ant-checkbox-wrapper,
 .xpollinate .ant-collapse-content,
-.xpollinate .ant-menu-title-content  {
-  color: #FFFFFF;
+.xpollinate .ant-menu-title-content {
+  color: #ffffff;
 }
 
 .xpollinate .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .xpollinate .ant-card {
-  color: #FFFFFF;
-  background: #0D1216;
-  border: 1px solid #FDFDFF;
+  color: #ffffff;
+  background: #0d1216;
+  border: 1px solid #fdfdff;
   box-sizing: border-box;
   box-shadow: 0px 4px 100px 5px rgba(247, 167, 69, 0.25);
   border-radius: 12px;
@@ -139,12 +147,13 @@
 }
 
 .xpollinate .ant-card-head-title {
-  color: #FFFFFF;
-  background: #0D1216;
+  color: #ffffff;
+  background: #0d1216;
 }
 
-.xpollinate .ant-descriptions-item-label, .ant-descriptions-item-content {
-  color: #FFFFFF;
+.xpollinate .ant-descriptions-item-label,
+.ant-descriptions-item-content {
+  color: #ffffff;
   background: transparent;
   border-color: #383838;
 }
@@ -153,19 +162,21 @@
   border: none;
 }
 
-.xpollinate .ant-descriptions-row, .ant-card-head, .ant-card-actions {
+.xpollinate .ant-descriptions-row,
+.ant-card-head,
+.ant-card-actions {
   border-color: #1c1c1c;
 }
 
 .xpollinate .ant-card-actions {
-  color: #FFFFFF;
-  background: #0D1216;
+  color: #ffffff;
+  background: #0d1216;
   border-radius: 0 0 20px 20px;
 }
 
 .xpollinate .swap-input {
-  background: #0D1216;
-  border: 2px solid #C4C4C4;
+  background: #0d1216;
+  border: 2px solid #c4c4c4;
   box-sizing: border-box;
   box-shadow: 0px 4px 100px 20px rgba(80, 50, 128, 0.6);
   border-radius: 20px;
@@ -177,7 +188,7 @@
 }
 
 .xpollinate .change-swap-direction {
-  transition: transform .5s ease-in-out; 
+  transition: transform 0.5s ease-in-out;
 }
 
 .xpollinate .change-swap-direction:hover {
@@ -214,8 +225,8 @@
   padding: 24px !important;
 }
 .xpollinate .ant-collapse-content-box .ant-input {
-  color: #FFFFFF;
-  background: #0D1216;
+  color: #ffffff;
+  background: #0d1216;
 }
 
 .xpollinate .form-input-wrapper {
@@ -226,19 +237,19 @@
   line-height: 72px;
   letter-spacing: -0.015em;
 
-  background: #0D1216;
-  border: 1px solid #C4C4C4;
+  background: #0d1216;
+  border: 1px solid #c4c4c4;
   border-radius: 6px;
   padding: 4px 4px;
   display: flex;
   align-items: center;
 }
 .xpollinate .form-input-wrapper.disabled {
-  border: 1px solid #C4C4C4;
+  border: 1px solid #c4c4c4;
 }
 
 .xpollinate .form-input-wrapper.disabled input {
-  color: #C4C4C4 !important;
+  color: #c4c4c4 !important;
 }
 
 .xpollinate .form-input-wrapper .ant-avatar {
@@ -250,13 +261,13 @@
   overflow: hidden;
 }
 .xpollinate .form-input-wrapper input {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .xpollinate .insufficient {
   color: #e4305f;
 }
 .form-text {
-  color: #FFFFFF;
+  color: #ffffff;
   align-items: center;
   display: flex;
   padding-left: 15px;
@@ -265,7 +276,7 @@
 
 .xpollinate-button.ant-btn-primary,
 .xpollinate .ant-btn-primary {
-  background: linear-gradient(257.5deg, #F7A745 -9.73%, #9C62F9 77.97%);
+  background: linear-gradient(257.5deg, #f7a745 -9.73%, #9c62f9 77.97%);
   transition: background 300ms linear;
   border: none;
   min-width: 150px;
