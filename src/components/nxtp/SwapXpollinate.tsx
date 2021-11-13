@@ -1231,20 +1231,23 @@ const SwapXpollinate = ({
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
         {/* Warning Message */}
         <Row justify="center" style={{ padding: 20, paddingBottom: 0, display: 'none' }}>
-          <Alert style={{ maxWidth: 700 }} message="" description="" type="error" />
+          <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
+            <Alert message="hi whats up" description="" type="error" />
+          </Col>
         </Row>
 
         {/* Infos */}
         {showAbout && (
           <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
-            <Alert
-              style={{ maxWidth: 700 }}
-              afterClose={() => setShowAbout(false)}
-              message={aboutMessage}
-              description={aboutDescription}
-              type="info"
-              closable={true}
-            />
+            <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
+              <Alert
+                afterClose={() => setShowAbout(false)}
+                message={aboutMessage}
+                description={aboutDescription}
+                type="info"
+                closable={true}
+              />
+            </Col>
           </Row>
         )}
 
