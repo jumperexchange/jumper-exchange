@@ -4,7 +4,6 @@ import { useWeb3React } from '@web3-react/core'
 import { Alert, Avatar, Button, Col, Row, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { BaseType } from 'antd/lib/typography/Base'
 
-import walletIcon from '../../assets/wallet.png'
 import { switchChain } from '../../services/metamask'
 import { renderProcessMessage } from '../../services/processRenderer'
 import { formatTokenAmount } from '../../services/utils'
