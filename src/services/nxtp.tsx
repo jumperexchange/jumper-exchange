@@ -124,9 +124,8 @@ export const triggerTransfer = async (
     const contractAddress = getDeployedTransactionManagerContract(
       crossEstimate.data.bid.sendingChainId,
     )
-    let approved
     try {
-      approved = await getApproved(
+      await getApproved(
         (sdk as any).config.signer,
         crossEstimate.data.bid.sendingAssetId,
         contractAddress!.address,
@@ -137,25 +136,15 @@ export const triggerTransfer = async (
       setStatusFailed(update, status, approveProcess)
       throw e
     }
-    if (approved.gte(crossEstimate.data.bid.amount)) {
-      // approval already done, jump to next step
-      setStatusDone(update, status, approveProcess)
-      submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
-        status: 'ACTION_REQUIRED',
-      })
-    }
-  } else {
-    // approval not needed
-    setStatusDone(update, status, approveProcess)
-    submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
-      status: 'ACTION_REQUIRED',
-    })
   }
+  setStatusDone(update, status, approveProcess)
+  submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
+    status: 'ACTION_REQUIRED',
+    footerMessage: 'Open Wallet to Confirm Transaction',
+  })
 
   const transactionId = crossEstimate.data.bid.transactionId
-  // try{
 
-  // }
   const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
   // approve sent => wait
 
@@ -245,6 +234,7 @@ export const attachListeners = (
     if (!submitProcess) {
       submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
         status: 'ACTION_REQUIRED',
+        footerMessage: 'Open Wallet to Confirm Transaction',
       })
     }
   })
@@ -263,7 +253,8 @@ export const attachListeners = (
     submitProcess.status = 'PENDING'
     submitProcess.txHash = data.transactionResponse.hash
     submitProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + submitProcess.txHash
-    submitProcess.message = 'Send Transaction -  Wait for'
+    submitProcess.message = 'Send Transaction'
+    submitProcess.footerMessage = 'Waiting for Confirmations...'
     update(status)
   })
 
@@ -276,8 +267,7 @@ export const attachListeners = (
     }
     receiverProcess = createAndPushProcess('receiverProcess', update, status, 'Wait for Receiver', {
       type: 'wait',
-      footerMessage:
-        'Wait for Receiver (if this step takes longer than 5m, please refresh the page)',
+      footerMessage: 'Waiting for Receiver...',
     })
   })
 
@@ -315,7 +305,7 @@ export const attachListeners = (
       type: 'claim',
     })
     proceedProcess.status = 'ACTION_REQUIRED'
-    proceedProcess.message = 'Sign to claim Transfer'
+    proceedProcess.message = 'Sign to Claim Transfer'
     proceedProcess.footerMessage = (
       <Button
         className="xpollinate-button"
@@ -323,7 +313,7 @@ export const attachListeners = (
         type="primary"
         size="large"
         onClick={() => finishTransfer(signer, sdk, data, step, update)}>
-        Sign to claim Transfer
+        Sign to Claim Transfer
       </Button>
     )
     update(status)
@@ -343,8 +333,8 @@ export const attachListeners = (
       )
     } else if (proceedProcess) {
       proceedProcess.status = 'PENDING'
-      proceedProcess.message = 'Signed - Wait for Claim'
-      delete proceedProcess.footerMessage
+      proceedProcess.message = 'Signed - Waiting for Claim...'
+      proceedProcess.footerMessage = 'Waiting for Confirmations...'
       update(status)
     }
   })
@@ -453,7 +443,7 @@ export const finishTransfer = async (
   } catch (e) {
     console.error(e)
     if (updateStatus && lastProcess && lastProcess.status !== 'DONE') {
-      lastProcess.message = 'Sign to claim Transfer'
+      lastProcess.message = 'Sign to Claim Transfer'
       lastProcess.footerMessage = (
         <Button
           className="xpollinate-button"
@@ -461,7 +451,7 @@ export const finishTransfer = async (
           type="primary"
           size="large"
           onClick={() => finishTransfer(signer, sdk, event, step, updateStatus)}>
-          Sign to claim Transfer
+          Sign to Claim Transfer
         </Button>
       )
       updateStatus(status)
