@@ -114,6 +114,23 @@ const TransactionsTableNxtp = ({
       },
     },
     {
+      title: 'Transaction Id',
+      dataIndex: ['txData'],
+      render: (txData: CrosschainTransaction) => {
+        return (
+          <Link
+            href={'https://connextscan.io/tx/' + txData.invariant.transactionId}
+            target="_blank"
+            rel="nofollow noreferrer"
+            style={{ width: 150 }}
+            ellipsis={true}
+            copyable>
+            {txData.invariant.transactionId}
+          </Link>
+        )
+      },
+    },
+    {
       title: 'Sending Chain',
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
@@ -165,23 +182,6 @@ const TransactionsTableNxtp = ({
         return (txData.sending?.expiry || 0) > Date.now() / 1000
           ? `${(((txData.sending?.expiry || 0) - Date.now() / 1000) / 3600).toFixed(2)} hours`
           : 'Expired'
-      },
-    },
-    {
-      title: 'Transaction Id',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        return (
-          <Link
-            href={'https://connextscan.io/tx/' + txData.invariant.transactionId}
-            target="_blank"
-            rel="nofollow noreferrer"
-            style={{ width: 150 }}
-            ellipsis={true}
-            copyable>
-            {txData.invariant.transactionId}
-          </Link>
-        )
       },
     },
   ]

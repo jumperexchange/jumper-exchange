@@ -91,9 +91,10 @@
   border: 2px solid #c4c4c4;
 }
 
-.xpollinate .ant-table * {
+.xpollinate .ant-table,
+.xpollinate .ant-table-cell {
   background-color: #0d1216 !important;
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 .xpol-swap-modal .ant-modal-content {
@@ -112,12 +113,17 @@
 }
 
 .xpol-swap-modal .totalTime {
+  padding-top: 4px;
   border-color: #ffffff;
+}
+
+.xpollinate a.ant-typography {
+  color: #1890ff;
 }
 
 .xpollinate .ant-typography,
 .ant-form {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 .xpollinate .ant-select,
@@ -219,12 +225,12 @@
   font-size: 10px;
 }
 
-.xpollinate .ant-collapse-content-box {
+.xpollinate .advanced-options .ant-collapse-content-box {
   background: rgb(46, 46, 46);
   border-radius: 20px;
   padding: 24px !important;
 }
-.xpollinate .ant-collapse-content-box .ant-input {
+.xpollinate .advanced-options .ant-collapse-content-box .ant-input {
   color: #ffffff;
   background: #0d1216;
 }
