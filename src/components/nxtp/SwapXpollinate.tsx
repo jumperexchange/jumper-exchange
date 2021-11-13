@@ -1402,52 +1402,69 @@ const SwapXpollinate = ({
                 </Form>
 
                 {/* Advanced Options */}
-                <Row justify={'center'}>
-                  <Collapse ghost>
-                    <Collapse.Panel header={`Advanced Options`} key="1">
-                      Infinite Approval
-                      <div>
-                        <Checkbox
-                          checked={optionInfiniteApproval}
-                          onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
-                          Activate Infinite Approval
-                        </Checkbox>
-                      </div>
-                      Receiving Address
-                      <Input
-                        value={optionReceivingAddress}
-                        onChange={(e) => setOptionReceivingAddress(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{40}$"
-                        placeholder="Only when other than your sending wallet"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                      Contract Address
-                      <Input
-                        value={optionContractAddress}
-                        onChange={(e) => setOptionContractAddress(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{40}$"
-                        placeholder="To call a contract"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                      CallData
-                      <Input
-                        value={optionCallData}
-                        onChange={(e) => setOptionCallData(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{64}$"
-                        placeholder="Only when calling a contract directly"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                    </Collapse.Panel>
-                  </Collapse>
+                <Row className="advanced-options">
+                  <Col span={24}>
+                    <Collapse ghost>
+                      <Collapse.Panel header={`Advanced Options`} key="1">
+                        <Row gutter={[16, 16]}>
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Infinite Approval
+                            <Checkbox
+                              style={{ margin: '4px 0 0 0' }}
+                              checked={optionInfiniteApproval}
+                              onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
+                              Activate Infinite Approval
+                            </Checkbox>
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Receiving Address
+                            <Input
+                              value={optionReceivingAddress}
+                              onChange={(e) => setOptionReceivingAddress(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{40}$"
+                              placeholder="Send funds to an address other than your current wallet"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Contract Address
+                            <Input
+                              value={optionContractAddress}
+                              onChange={(e) => setOptionContractAddress(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{40}$"
+                              placeholder="To call a contract"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Call Data
+                            <Input
+                              value={optionCallData}
+                              onChange={(e) => setOptionCallData(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{64}$"
+                              placeholder="Only when calling a contract directly"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </Collapse.Panel>
+                    </Collapse>
+                  </Col>
                 </Row>
               </div>
             </Col>
