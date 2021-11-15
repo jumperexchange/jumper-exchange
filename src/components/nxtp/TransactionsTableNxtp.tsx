@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Spin, Table } from 'antd'
 import Link from 'antd/lib/typography/Link'
 
-import { Estimate, getChainById, Route, TokenWithAmounts } from '../../types'
+import { getChainById, Route, TokenWithAmounts } from '../../types'
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp'
 
 interface TransactionsTableNxtpProps {

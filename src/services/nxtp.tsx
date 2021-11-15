@@ -5,7 +5,7 @@ import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { Button } from 'antd'
 import { constants, providers } from 'ethers'
 
-import { Action, Estimate, Execution, getChainById, Process, Step } from '../types'
+import { Execution, getChainById, Process, Step } from '../types'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved } from './utils'
 
