@@ -1,4 +1,3 @@
-// LIBS
 import './Swap.css'
 
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
