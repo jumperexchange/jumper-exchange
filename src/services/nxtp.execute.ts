@@ -5,7 +5,7 @@ import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 
 import { getRpcProviders } from '../components/web3/connectors'
-import { Estimate, Execution, Process, TransferStep } from '../types'
+import { Estimate, Execution, Process, Step } from '../types'
 import notifications, { NotificationType } from './notifications'
 import * as nxtp from './nxtp'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
@@ -20,7 +20,7 @@ export class NXTPExecutionManager {
   private finishTransfer = (
     signer: JsonRpcSigner,
     sdk: NxtpSdk,
-    step: TransferStep,
+    step: Step,
     update: Function,
     status: Execution,
   ) => {
@@ -50,7 +50,7 @@ export class NXTPExecutionManager {
 
   executeCross = async (
     signer: JsonRpcSigner,
-    step: TransferStep,
+    step: Step,
     fromAmount: BigNumber,
     userAddress: string,
     updateStatus?: Function,

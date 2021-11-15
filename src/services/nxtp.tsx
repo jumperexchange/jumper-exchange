@@ -5,7 +5,7 @@ import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { Button } from 'antd'
 import { constants, providers } from 'ethers'
 
-import { Action, Estimate, Execution, getChainById, Process, TransferStep } from '../types'
+import { Action, Estimate, Execution, getChainById, Process, Step } from '../types'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved } from './utils'
 
@@ -89,7 +89,7 @@ export const getTransferQuote = async (
 export const triggerTransfer = async (
   signer: JsonRpcSigner,
   sdk: NxtpSdk,
-  step: TransferStep,
+  step: Step,
   updateStatus: Function,
   infinteApproval: boolean = false,
   initialStatus?: Execution,
@@ -199,7 +199,7 @@ export const triggerTransfer = async (
 export const attachListeners = (
   signer: JsonRpcSigner,
   sdk: NxtpSdk,
-  step: TransferStep,
+  step: Step,
   transactionId: string,
   update: Function,
   status: Execution,
@@ -418,7 +418,7 @@ export const finishTransfer = async (
   signer: JsonRpcSigner,
   sdk: NxtpSdk,
   event: TransactionPreparedEvent,
-  step?: TransferStep,
+  step?: Step,
   updateStatus?: Function,
 ) => {
   let status: Execution | undefined = undefined
