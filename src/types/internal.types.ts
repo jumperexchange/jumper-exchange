@@ -253,10 +253,10 @@ export interface ProgressStep {
   description: string
 }
 
-export interface TransferStep {
-  // TODO get rid of dat
-  action: Action
-  estimate?: Estimate
-  execution?: Execution
-  id?: string
-}
+// export interface TransferStep {
+//   // TODO get rid of dat
+//   action: Action
+//   estimate?: Estimate
+//   execution?: Execution
+//   id?: string
+// }
