@@ -5,13 +5,14 @@ import {
   CrossAction,
   CrossEstimate,
   getChainById,
+  Route as RouteType,
+  Step,
   SwapAction,
   SwapEstimate,
-  TransferStep,
 } from '../types'
 
 interface RouteProps {
-  route: Array<TransferStep>
+  route: RouteType
   selected: boolean
   onSelect: Function
 }
@@ -22,7 +23,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
     return nameOnly[0].toUpperCase() + nameOnly.slice(1)
   }
 
-  const parseStep = (step: TransferStep) => {
+  const parseStep = (step: Step) => {
     switch (step.action.type) {
       case 'swap':
         const swapAction = step.action as SwapAction
@@ -85,7 +86,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         direction="vertical"
         current={5}
         className="progress-step-list">
-        {route.map((step) => {
+        {route.steps.map((step) => {
           let { title, description } = parseStep(step)
           return <Steps.Step key={title} title={title} description={description}></Steps.Step>
         })}

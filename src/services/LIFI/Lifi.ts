@@ -1,20 +1,19 @@
-import { DepositAction, Step, WithdrawAction } from '@lifinance/types'
+import { RoutesRequest, RoutesResponse } from '@lifinance/types'
 import axios from 'axios'
 
-import { isDeposit, isWithdraw } from './typeguards'
+import { isRoutesRequest } from './typeguards'
 
 class LIFI {
-  findRoutes = async (deposit: DepositAction, withdraw: WithdrawAction): Promise<Step[][]> => {
-    if (!isDeposit(deposit)) {
-      throw Error('Invalid Deposit Type')
+  getRoutes = async (routesRequest: RoutesRequest): Promise<RoutesResponse> => {
+    if (!isRoutesRequest(routesRequest)) {
+      throw Error('Invalid routes request')
     }
-    if (!isWithdraw(withdraw)) {
-      throw Error('Invalid Withdraw Type')
-    }
-    const result = await axios.post<Step[][]>(process.env.REACT_APP_API_URL + 'transfer', {
-      deposit,
-      withdraw,
-    })
+
+    const result = await axios.post<RoutesResponse>(
+      process.env.REACT_APP_API_URL + 'routes',
+      routesRequest,
+    )
+
     return result.data
   }
 

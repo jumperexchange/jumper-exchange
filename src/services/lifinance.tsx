@@ -14,10 +14,10 @@ import {
   CrossStep,
   Execution,
   getChainById,
+  Route,
   SwapAction,
   SwapEstimate,
   SwapStep,
-  TransferStep,
 } from '../types'
 import { oneInch } from './1Inch'
 import { abi } from './ABI/NXTPFacet.json'
@@ -276,17 +276,18 @@ const buildTransaction = async (
 
 const executeLifi = async (
   signer: JsonRpcSigner,
-  route: TransferStep[],
+  route: Route,
   updateStatus?: Function,
   initialStatus?: Execution,
 ) => {
   // unpack route
-  const startSwapStep = route[0].action.type === 'swap' ? (route[0] as SwapStep) : undefined
+  const { steps } = route
+  const startSwapStep = steps[0].action.type === 'swap' ? (steps[0] as SwapStep) : undefined
   const endSwapStep =
-    route[route.length - 1].action.type === 'swap'
-      ? (route[route.length - 1] as SwapStep)
+    steps[steps.length - 1].action.type === 'swap'
+      ? (steps[steps.length - 1] as SwapStep)
       : undefined
-  const crossStep = route.find((step) => step.action.type === 'cross')! as CrossStep
+  const crossStep = steps.find((step) => step.action.type === 'cross')! as CrossStep
   const crossAction = crossStep.action as CrossAction
   const fromChain = getChainById(crossAction.chainId)
   const toChain = getChainById(crossAction.toChainId)
@@ -314,12 +315,12 @@ const executeLifi = async (
   // setStatusDone(update, status, keyProcess)
 
   // Allowance
-  if (route[0].action.token.id !== constants.AddressZero) {
+  if (steps[0].action.token.id !== constants.AddressZero) {
     await checkAllowance(
       signer,
       fromChain,
-      route[0].action.token,
-      route[0].action.amount,
+      steps[0].action.token,
+      steps[0].action.amount,
       lifiContractAddress,
       update,
       status,

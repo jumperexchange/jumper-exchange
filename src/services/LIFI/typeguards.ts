@@ -1,42 +1,22 @@
-import { ChainKey, CoinKey, DepositAction, Token, WithdrawAction } from '../../types'
+import { RouteOptions, RoutesRequest } from '../../types'
 
-export const isDeposit = (deposit: DepositAction): deposit is DepositAction => {
+export const isRoutesRequest = (routesRequest: RoutesRequest): routesRequest is RoutesRequest => {
+  const { fromChainId, fromAmount, fromTokenAddress, toChainId, toTokenAddress, options } =
+    routesRequest
+
   return (
-    deposit.type === 'deposit' &&
-    typeof deposit.chainId === 'number' &&
-    typeof deposit.amount === 'string' &&
-    isToken(deposit.token)
+    typeof fromChainId === 'number' &&
+    typeof fromAmount === 'string' &&
+    fromAmount !== '' &&
+    typeof fromTokenAddress === 'string' &&
+    fromTokenAddress !== '' &&
+    typeof toChainId === 'number' &&
+    typeof toTokenAddress === 'string' &&
+    toTokenAddress !== '' &&
+    (!options || isRoutesOptions(options))
   )
 }
 
-export const isWithdraw = (withdraw: WithdrawAction): withdraw is WithdrawAction => {
-  return (
-    withdraw.type === 'withdraw' &&
-    typeof withdraw.chainId === 'number' &&
-    typeof withdraw.toAddress === 'string' &&
-    typeof withdraw.amount === 'string' &&
-    typeof withdraw.slippage === 'number' &&
-    isToken(withdraw.token)
-  )
-}
-
-export const isToken = (token: Token): token is Token => {
-  return (
-    typeof token.id === 'string' &&
-    typeof token.symbol === 'string' &&
-    typeof token.decimals === 'number' &&
-    typeof token.chainId === 'number' &&
-    typeof token.name === 'string' &&
-    isChainKey(token.chainKey) &&
-    isCoinKey(token.key) &&
-    typeof token.logoURI === 'string'
-  )
-}
-
-export const isChainKey = (chainKey: ChainKey): chainKey is ChainKey => {
-  return true
-}
-
-export const isCoinKey = (coinKey: CoinKey): coinKey is CoinKey => {
-  return true
+const isRoutesOptions = (routeOptions: RouteOptions): routeOptions is RouteOptions => {
+  return !routeOptions?.slippage || typeof routeOptions.slippage === 'number'
 }
