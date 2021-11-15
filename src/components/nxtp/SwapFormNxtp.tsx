@@ -205,10 +205,10 @@ const SwapFormNxtp = ({
               { xs: 8, sm: 16 },
               { xs: 8, sm: 16 },
             ]}>
-            <Col span={10}>
+            <Col span={12}>
               <div className="form-text">From:</div>
             </Col>
-            <Col span={14}>
+            <Col span={12}>
               <div className="form-input-wrapper">
                 <ChainSelect
                   transferChains={transferChains}
@@ -219,7 +219,7 @@ const SwapFormNxtp = ({
               </div>
             </Col>
 
-            <Col span={10}>
+            <Col span={12}>
               <div className="form-input-wrapper">
                 <Input
                   type="number"
@@ -237,7 +237,7 @@ const SwapFormNxtp = ({
                 </Button>
               </div>
             </Col>
-            <Col span={14}>
+            <Col span={12}>
               <div className="form-input-wrapper">
                 <TokenSelect
                   tokens={tokens}
@@ -269,10 +269,10 @@ const SwapFormNxtp = ({
               { xs: 8, sm: 16 },
               { xs: 8, sm: 16 },
             ]}>
-            <Col span={10}>
+            <Col span={12}>
               <div className="form-text">To:</div>
             </Col>
-            <Col span={14}>
+            <Col span={12}>
               <div className="form-input-wrapper">
                 <ChainSelect
                   transferChains={transferChains}
@@ -283,7 +283,7 @@ const SwapFormNxtp = ({
               </div>
             </Col>
 
-            <Col span={10}>
+            <Col span={12}>
               <div className="form-input-wrapper disabled">
                 <Input
                   type="text"
@@ -298,7 +298,7 @@ const SwapFormNxtp = ({
                 />
               </div>
             </Col>
-            <Col span={14}>
+            <Col span={12}>
               <div className="form-input-wrapper">
                 <TokenSelect
                   tokens={tokens}
