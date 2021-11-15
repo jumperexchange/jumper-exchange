@@ -1,10 +1,9 @@
 import { ArrowRightOutlined, LoadingOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { Alert, Avatar, Button, Row, Spin, Timeline, Tooltip, Typography } from 'antd'
+import { Alert, Avatar, Button, Col, Row, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { BaseType } from 'antd/lib/typography/Base'
 
-import walletIcon from '../../assets/wallet.png'
 import { switchChain } from '../../services/metamask'
 import { renderProcessMessage } from '../../services/processRenderer'
 import { formatTokenAmount } from '../../services/utils'
@@ -256,23 +255,31 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
           <Row justify="center">
             <Spin
               style={{ margin: 10 }}
-              indicator={<LoadingOutlined style={{ fontSize: 80 }} spin />}
+              indicator={<LoadingOutlined style={{ fontSize: 28 }} spin />}
             />
           </Row>
           <Row justify="center">
-            <Typography.Text style={{ marginTop: 10 }} className="flashing">
-              {currentProcess.footerMessage || renderProcessMessage(currentProcess)}
-            </Typography.Text>
+            <Col style={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography.Text
+                style={{ marginTop: 24, fontSize: 18, fontWeight: 700 }}
+                className="flashing">
+                {currentProcess.footerMessage || renderProcessMessage(currentProcess)}
+              </Typography.Text>
+              {currentProcess.footerMessage &&
+                typeof currentProcess.footerMessage === 'string' &&
+                currentProcess.footerMessage.includes('Waiting') && (
+                  <Typography.Text style={{ fontSize: 14 }}>
+                    If this step takes longer than 5m, please refresh the page.
+                  </Typography.Text>
+                )}
+            </Col>
           </Row>
         </>
       )}
       {currentProcess && currentProcess.status === 'ACTION_REQUIRED' && (
         <>
           <Row justify="center">
-            <img src={walletIcon} alt="Wallet" width="92" height="100" />
-          </Row>
-          <Row justify="center">
-            <Typography.Text style={{ marginTop: 10 }}>
+            <Typography.Text style={{ marginTop: 24, fontSize: 18, fontWeight: 700 }}>
               {currentProcess.footerMessage || renderProcessMessage(currentProcess)}
             </Typography.Text>
           </Row>

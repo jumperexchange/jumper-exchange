@@ -525,7 +525,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const resumeCrossChainSwap = useCallback(async () => {
     for (let index = 0; index < steps.length; index++) {
       if (steps[index].execution?.status === 'PENDING') {
-        steps[index].execution!.status = 'RESUME' // TODO what do we have to do here?
+        steps[index].execution!.status = 'RESUME'
         updateRoute(route)
         break
       }
@@ -552,7 +552,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         const allDone = steps.every((step) => step.execution?.status === 'DONE')
         const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
         const alreadyStarted = steps.some((step) => step.execution)
-        const resuming = steps.some((step) => step.execution?.status === 'RESUME') // TODO what do we have to do here?
+        const resuming = steps.some((step) => step.execution?.status === 'RESUME')
         if (!allDone && !isFailed && alreadyStarted && !resuming) {
           await resumeCrossChainSwap()
           return
@@ -580,7 +580,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             setIsSwapping(false)
           })
         } else if (steps[index].execution?.status === 'RESUME') {
-          // TODO what do we have to do here?
           return triggerStep(index).catch(() => {
             // stop if a step fails
             setIsSwapping(false)

@@ -43,18 +43,21 @@ interface TokenWithAmounts extends Token {
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
-    animate(
-      element.current?.childNodes as NodeListOf<Element>,
-      {
-        y: ['50px', '0px'],
-        opacity: [0, 1],
-      },
-      {
-        delay: stagger(0.2),
-        duration: 0.5,
-        easing: 'ease-in-out',
-      },
-    )
+    const nodes = element.current?.childNodes
+    if (nodes) {
+      animate(
+        nodes as NodeListOf<Element>,
+        {
+          y: ['50px', '0px'],
+          opacity: [0, 1],
+        },
+        {
+          delay: stagger(0.2),
+          duration: 0.5,
+          easing: 'ease-in-out',
+        },
+      )
+    }
   }, 0)
 }
 

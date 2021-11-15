@@ -58,9 +58,9 @@ const TransactionsTableNxtp = ({
               type="primary"
               shape="round"
               size="large"
-              style={{ borderRadius: 6 }}
+              style={{ borderRadius: 6, width: '100%' }}
               onClick={() => openSwapModalFinish(action)}>
-              Sign to claim Transfer
+              Claim Funds
             </Button>
           )
         } else if (
