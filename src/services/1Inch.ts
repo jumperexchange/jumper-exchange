@@ -3,7 +3,7 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import axios from 'axios'
 import { BigNumber, ethers } from 'ethers'
 
-import { SwapAction, SwapEstimate } from '../types'
+import { Action, Estimate } from '../types'
 
 // const SUPPORTED_CHAINS = [1, 56, 137]
 const baseURL = 'https://api.1inch.exchange/v3.0/'
@@ -143,19 +143,19 @@ const buildTransaction = async (
 }
 
 const getSwapCall = async (
-  swapAction: SwapAction,
-  swapEstimate: SwapEstimate,
+  action: Action,
+  estimate: Estimate,
   srcAddress: string,
   destAddress: string,
 ) => {
   const result = await getTransaction(
-    swapAction.chainId,
-    swapAction.token.id,
-    swapAction.toToken.id,
-    swapAction.amount,
+    action.toChainId,
+    action.fromToken.id,
+    action.toToken.id,
+    action.fromAmount,
     srcAddress,
     destAddress,
-    swapAction.slippage,
+    action.slippage,
   )
 
   return {

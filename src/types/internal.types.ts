@@ -1,13 +1,4 @@
-import {
-  Action,
-  ChainKey,
-  Coin,
-  CoinKey,
-  Estimate,
-  Execution,
-  findDefaultCoinOnChain,
-  Token,
-} from '@lifinance/types'
+import { ChainKey, Coin, CoinKey, findDefaultCoinOnChain, Token } from '@lifinance/types'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
@@ -254,11 +245,4 @@ export interface WalletSummary {
 export interface ProgressStep {
   title: string
   description: string
-}
-
-export interface TransferStep {
-  action: Action
-  estimate?: Estimate
-  execution?: Execution
-  id?: string
 }

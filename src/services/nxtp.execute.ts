@@ -5,7 +5,7 @@ import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 
 import { getRpcProviders } from '../components/web3/connectors'
-import { CrossAction, CrossEstimate, Execution, Process, TransferStep } from '../types'
+import { Estimate, Execution, Process, Step } from '../types'
 import notifications, { NotificationType } from './notifications'
 import * as nxtp from './nxtp'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
@@ -20,7 +20,7 @@ export class NXTPExecutionManager {
   private finishTransfer = (
     signer: JsonRpcSigner,
     sdk: NxtpSdk,
-    step: TransferStep,
+    step: Step,
     update: Function,
     status: Execution,
   ) => {
@@ -50,7 +50,7 @@ export class NXTPExecutionManager {
 
   executeCross = async (
     signer: JsonRpcSigner,
-    step: TransferStep,
+    step: Step,
     fromAmount: BigNumber,
     userAddress: string,
     updateStatus?: Function,
@@ -58,16 +58,16 @@ export class NXTPExecutionManager {
   ) => {
     // setup
     let { status, update } = initStatus(updateStatus, initialStatus)
-    const crossAction = step.action as CrossAction
-    const fromChainId = crossAction.chainId
-    const toChainId = crossAction.toChainId
-    const srcTokenAddress = crossAction.token.id
-    const destTokenAddress = crossAction.toToken.id
+    const action = step.action
+    const fromChainId = action.fromChainId
+    const toChainId = action.toChainId
+    const srcTokenAddress = action.fromToken.id
+    const destTokenAddress = action.toToken.id
     // sdk
     // -> set status
     const quoteProcess = createAndPushProcess('quoteProcess', update, status, 'Setup NXTP')
     // -> init sdk
-    const crossableChains = [crossAction.chainId, crossAction.toChainId]
+    const crossableChains = [action.fromChainId, action.toChainId]
     const chainProviders = getRpcProviders(crossableChains)
     const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
@@ -149,19 +149,22 @@ export class NXTPExecutionManager {
     }
     setStatusDone(update, status, quoteProcess)
 
-    const crossEstimate: CrossEstimate = {
-      type: 'cross',
+    const estimate: Estimate = {
       fromAmount: quote.bid.amount,
       toAmount: quote.bid.amountReceived,
-      fees: {
-        included: true,
-        percentage: '0.0005',
-        token: crossAction.token,
-        amount: new BigNumber(crossAction.amount).times('0.0005').toString(),
-      },
+      toAmountMin: '', // TODO needs to be calculated?
+      approvalAddress: '', // TODO needs to be fetched (see related backend PR)
+      feeCosts: [
+        {
+          name: 'NXTP Transfer Fees', // TODO what do we want here?
+          percentage: '0.0005',
+          token: action.fromToken,
+          amount: new BigNumber(action.fromAmount).times('0.0005').toString(),
+        },
+      ],
       data: quote,
     }
-    step.estimate = crossEstimate
+    step.estimate = estimate
 
     // trigger transfer
     if (!this.shouldContinue) {

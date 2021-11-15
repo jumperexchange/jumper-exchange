@@ -36,6 +36,8 @@ import { injected } from './web3/connectors'
 
 const { Panel } = Collapse
 
+let currentRouteCallId: string
+
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
@@ -96,7 +98,6 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [currentRouteCallId, setCurrentRouteCallId] = useState<string>()
   const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
 
   // Options
@@ -125,7 +126,7 @@ const Swap = ({ transferChains }: SwapProps) => {
     } else {
       const selectedRoute = routes[highlightedIndex]
       const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1]
-      return formatTokenAmountOnly((lastStep.action as any).toToken, lastStep.estimate?.toAmount)
+      return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
     }
   }
 
@@ -228,7 +229,6 @@ const Swap = ({ transferChains }: SwapProps) => {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
         const toToken = findToken(toChainKey, toTokenAddress)
-
         const request: RoutesRequest = {
           fromChainId: fromToken.chainId,
           fromAmount: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
@@ -242,11 +242,11 @@ const Swap = ({ transferChains }: SwapProps) => {
 
         const id = uuid()
         try {
-          setCurrentRouteCallId(id)
+          currentRouteCallId = id
           const result = await LIFI.getRoutes(request)
           setRouteCallResult({ result, id })
         } catch {
-          if (id === currentRouteCallId) {
+          if (id === currentRouteCallId || !currentRouteCallId) {
             setNoRoutesAvailable(true)
             setRoutesLoading(false)
           }
