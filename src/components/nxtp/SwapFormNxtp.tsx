@@ -6,12 +6,12 @@ import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../types'
-import ChainSelect from './ChainSelect'
-import TokenSelect from './TokenSelect'
-import { injected } from './web3/connectors'
+import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types'
+import ChainSelect from '../ChainSelect'
+import TokenSelect from '../TokenSelect'
+import { injected } from '../web3/connectors'
 
-interface SwapFormProps {
+interface SwapFormNxtpProps {
   depositChain: ChainKey
   setDepositChain: Function
   depositToken?: string
@@ -35,7 +35,7 @@ interface SwapFormProps {
   syncStatus?: Record<number, SubgraphSyncRecord>
 }
 
-const SwapForm = ({
+const SwapFormNxtp = ({
   depositChain,
   setDepositChain,
   depositToken,
@@ -57,7 +57,7 @@ const SwapForm = ({
   allowSameChains,
   forceSameToken,
   syncStatus,
-}: SwapFormProps) => {
+}: SwapFormNxtpProps) => {
   const depositSelectRef = useRef<RefSelectProps>()
   const withdrawSelectRef = useRef<RefSelectProps>()
   const [depositAmountString, setDepositAmountString] = useState<string>('')
@@ -190,114 +190,132 @@ const SwapForm = ({
     return depositAmount.lte(getBalance(depositChain, depositToken))
   }
 
+  const chainBoxStyle = {
+    background: '#2e2e2e',
+    border: '1px solid #2e2e2e',
+    padding: 12,
+    borderRadius: 12,
+  }
   return (
     <>
-      <Row
-        gutter={[
-          { xs: 8, sm: 16 },
-          { xs: 8, sm: 16 },
-        ]}>
-        <Col span={10}>
-          <div className="form-text">From:</div>
-        </Col>
-        <Col span={14}>
-          <div className="form-input-wrapper">
-            <ChainSelect
-              transferChains={transferChains}
-              selectedChain={depositChain}
-              onChangeSelectedChain={onChangeDepositChain}
-              syncStatus={syncStatus}
-            />
-          </div>
+      <Row>
+        <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 11 }} style={chainBoxStyle}>
+          <Row
+            gutter={[
+              { xs: 8, sm: 16 },
+              { xs: 8, sm: 16 },
+            ]}>
+            <Col span={10}>
+              <div className="form-text">From:</div>
+            </Col>
+            <Col span={14}>
+              <div className="form-input-wrapper">
+                <ChainSelect
+                  transferChains={transferChains}
+                  selectedChain={depositChain}
+                  onChangeSelectedChain={onChangeDepositChain}
+                  syncStatus={syncStatus}
+                />
+              </div>
+            </Col>
+
+            <Col span={10}>
+              <div className="form-input-wrapper">
+                <Input
+                  type="number"
+                  defaultValue={0.0}
+                  min={0}
+                  step={0.000000000000000001}
+                  value={depositAmountString}
+                  onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
+                  placeholder="0.0"
+                  bordered={false}
+                  className={!hasSufficientBalance() ? 'insufficient' : ''}
+                />
+                <Button className="maxButton" type="text" onClick={() => setMaxDeposit()}>
+                  MAX
+                </Button>
+              </div>
+            </Col>
+            <Col span={14}>
+              <div className="form-input-wrapper">
+                <TokenSelect
+                  tokens={tokens}
+                  balances={balances}
+                  selectedChain={depositChain}
+                  selectedToken={depositToken}
+                  onChangeSelectedToken={onChangeDepositToken}
+                  selectReference={depositSelectRef}
+                  grayed={true}
+                />
+              </div>
+            </Col>
+          </Row>
         </Col>
 
-        <Col span={10}>
-          <div className="form-input-wrapper">
-            <Input
-              type="number"
-              defaultValue={0.0}
-              min={0}
-              step={0.000000000000000001}
-              value={depositAmountString}
-              onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
-              placeholder="0.0"
-              bordered={false}
-              className={!hasSufficientBalance() ? 'insufficient' : ''}
+        <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 2 }}>
+          <Row style={{ margin: 32 }} justify={'center'}>
+            <SwapOutlined
+              className="change-swap-direction"
+              style={{ fontSize: 28 }}
+              onClick={() => changeDirection()}
             />
-            <Button className="maxButton" type="text" onClick={() => setMaxDeposit()}>
-              MAX
-            </Button>
-          </div>
-        </Col>
-        <Col span={14}>
-          <div className="form-input-wrapper">
-            <TokenSelect
-              tokens={tokens}
-              balances={balances}
-              selectedChain={depositChain}
-              selectedToken={depositToken}
-              onChangeSelectedToken={onChangeDepositToken}
-              selectReference={depositSelectRef}
-              grayed={true}
-            />
-          </div>
-        </Col>
-      </Row>
-
-      <Row style={{ margin: 32 }} justify={'center'}>
-        <SwapOutlined onClick={() => changeDirection()} />
-      </Row>
-
-      <Row
-        gutter={[
-          { xs: 8, sm: 16 },
-          { xs: 8, sm: 16 },
-        ]}>
-        <Col span={10}>
-          <div className="form-text">To:</div>
-        </Col>
-        <Col span={14}>
-          <div className="form-input-wrapper">
-            <ChainSelect
-              transferChains={transferChains}
-              selectedChain={withdrawChain}
-              onChangeSelectedChain={onChangeWithdrawChain}
-              syncStatus={syncStatus}
-            />
-          </div>
+          </Row>
         </Col>
 
-        <Col span={10}>
-          <div className="form-input-wrapper disabled">
-            <Input
-              type="text"
-              defaultValue={0.0}
-              min={0}
-              value={estimatedWithdrawAmount}
-              // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
-              onChange={(event) => onChangeWithdrawAmount(formatAmountInput(event))}
-              placeholder="..."
-              bordered={false}
-              disabled
-            />
-          </div>
-        </Col>
-        <Col span={14}>
-          <div className="form-input-wrapper">
-            <TokenSelect
-              tokens={tokens}
-              balances={balances}
-              selectedChain={withdrawChain}
-              selectedToken={withdrawToken}
-              onChangeSelectedToken={onChangeWithdrawToken}
-              selectReference={withdrawSelectRef}
-              grayed={false}
-            />
-          </div>
+        <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 11 }} style={chainBoxStyle}>
+          <Row
+            gutter={[
+              { xs: 8, sm: 16 },
+              { xs: 8, sm: 16 },
+            ]}>
+            <Col span={10}>
+              <div className="form-text">To:</div>
+            </Col>
+            <Col span={14}>
+              <div className="form-input-wrapper">
+                <ChainSelect
+                  transferChains={transferChains}
+                  selectedChain={withdrawChain}
+                  onChangeSelectedChain={onChangeWithdrawChain}
+                  syncStatus={syncStatus}
+                />
+              </div>
+            </Col>
+
+            <Col span={10}>
+              <div className="form-input-wrapper disabled">
+                <Input
+                  type="text"
+                  defaultValue={0.0}
+                  min={0}
+                  value={estimatedWithdrawAmount}
+                  // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
+                  onChange={(event) => onChangeWithdrawAmount(formatAmountInput(event))}
+                  placeholder="..."
+                  bordered={false}
+                  disabled
+                />
+              </div>
+            </Col>
+            <Col span={14}>
+              <div className="form-input-wrapper">
+                <TokenSelect
+                  tokens={tokens}
+                  balances={balances}
+                  selectedChain={withdrawChain}
+                  selectedToken={withdrawToken}
+                  onChangeSelectedToken={onChangeWithdrawToken}
+                  selectReference={withdrawSelectRef}
+                  grayed={false}
+                />
+              </div>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </>
   )
 }
 
-export default SwapForm
+export default SwapFormNxtp

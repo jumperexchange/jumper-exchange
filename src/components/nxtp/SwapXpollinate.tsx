@@ -67,8 +67,8 @@ import {
   TokenWithAmounts,
   TransferStep,
 } from '../../types'
-import SwapForm from '../SwapForm'
 import { getRpcProviders, injected } from '../web3/connectors'
+import SwapFormNxtp from './SwapFormNxtp'
 import SwappingNxtp from './SwappingNxtp'
 import TestBalanceOverview from './TestBalanceOverview'
 import TransactionsTableNxtp from './TransactionsTableNxtp'
@@ -1232,7 +1232,7 @@ const SwapXpollinate = ({
         {/* Warning Message */}
         <Row justify="center" style={{ padding: 20, paddingBottom: 0, display: 'none' }}>
           <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
-            <Alert message="hi whats up" description="" type="error" />
+            <Alert message="" description="" type="error" />
           </Col>
         </Row>
 
@@ -1374,7 +1374,7 @@ const SwapXpollinate = ({
                 </Row>
 
                 <Form>
-                  <SwapForm
+                  <SwapFormNxtp
                     depositChain={depositChain}
                     setDepositChain={setDepositChain}
                     depositToken={depositToken}
