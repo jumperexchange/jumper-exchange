@@ -67,14 +67,16 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
   ],
   [ChainKey.ARB]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ARB),
   ],
   [ChainKey.OPT]: [
-    // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OPT),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OPT),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.OPT),
   ],
   [ChainKey.ONE]: [
     findDefaultCoinOnChain(CoinKey.ONE, ChainKey.ONE),
@@ -82,6 +84,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ONE),
   ],
   [ChainKey.AVA]: [
+    findDefaultCoinOnChain(CoinKey.AVAX, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.AVA),
