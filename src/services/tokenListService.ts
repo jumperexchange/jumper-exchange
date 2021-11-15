@@ -49,7 +49,9 @@ export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Toke
 
   // default token
   defaultTokens[chain.key].forEach((defaultToken) => {
-    const found = !!mappedTokens.find((token) => token.id === defaultToken.id)
+    const found = !!mappedTokens.find(
+      (token) => token.id.toLowerCase() === defaultToken.id.toLowerCase(),
+    )
     if (!found) {
       mappedTokens.unshift(defaultToken)
     }

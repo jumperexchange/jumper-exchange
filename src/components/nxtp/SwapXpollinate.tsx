@@ -40,6 +40,7 @@ import { providers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { v4 as uuid } from 'uuid'
 
 import onehiveWordmark from '../../assets/1hive_wordmark.svg'
 import connextWordmark from '../../assets/connext_wordmark.png'
@@ -51,19 +52,20 @@ import { switchChain } from '../../services/metamask'
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp'
 import { deepClone, formatTokenAmountOnly } from '../../services/utils'
 import {
+  Action,
   Chain,
   ChainKey,
   ChainPortfolio,
-  CrossAction,
-  CrossEstimate,
   CrossStep,
+  Estimate,
   Execution,
   findDefaultCoinOnChain,
   getChainById,
   getChainByKey,
+  Route,
+  Step,
   Token,
   TokenWithAmounts,
-  TransferStep,
 } from '../../types'
 import SwapForm from '../SwapForm'
 import { getRpcProviders, injected } from '../web3/connectors'
@@ -276,9 +278,9 @@ const SwapXpollinate = ({
   const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
+  const [routes, setRoutes] = useState<Route[]>([])
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-  const [executionRoutes, setExecutionRoutes] = useState<Array<Array<TransferStep>>>([])
+  const [executionRoutes, setExecutionRoutes] = useState<Route[]>([])
   const [modalRouteIndex, setModalRouteIndex] = useState<number>()
 
   // nxtp
@@ -319,8 +321,8 @@ const SwapXpollinate = ({
   // useEffect(() => {
   //   // is modal open?
   //   if (modalRouteIndex !== undefined) {
-  //     const crossEstimate = executionRoutes[modalRouteIndex][0].estimate! as CrossEstimate
-  //     const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === crossEstimate.quote.bid.transactionId)
+  //     const Estimate = executionRoutes[modalRouteIndex][0].estimate! as Estimate
+  //     const transaction = activeTransactions.find((item) => item.txData.invariant.transactionId === Estimate.quote.bid.transactionId)
   //     if (transaction && transaction.status === NxtpSdkEvents.ReceiverTransactionPrepared) {
   //       const route = executionRoutes[modalRouteIndex]
   //       const update = (step: TranferStep, status: Execution) => {
@@ -516,10 +518,8 @@ const SwapXpollinate = ({
       return '...'
     } else {
       const selectedRoute = routes[highlightedIndex]
-      const lastStep = selectedRoute[selectedRoute.length - 1]
-      if (lastStep.action.type === 'withdraw') {
-        return formatTokenAmountOnly(lastStep.action.token, lastStep.estimate?.toAmount)
-      } else if (lastStep.action.type === 'cross') {
+      const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1]
+      if (lastStep.type === 'cross') {
         return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
       } else {
         return '...'
@@ -781,54 +781,69 @@ const SwapXpollinate = ({
     if (!doRequestAndBidMatch(routeRequest, routeQuote)) {
       return
     }
-
+    const id = uuid()
     const dAmount = routeRequest.depositAmount
-    const dToken = findToken(routeRequest.depositChain, routeRequest.depositToken)
-    const wToken = findToken(routeRequest.withdrawChain, routeRequest.withdrawToken)
+    const fToken = findToken(routeRequest.depositChain, routeRequest.depositToken)
+    const tToken = findToken(routeRequest.withdrawChain, routeRequest.withdrawToken)
 
-    const crossAction: CrossAction = {
-      type: 'cross',
-      tool: 'nxtp',
-      chainId: getChainByKey(routeRequest.depositChain).id,
+    const action: Action = {
+      fromChainId: getChainByKey(routeRequest.depositChain).id,
       toChainId: getChainByKey(routeRequest.withdrawChain).id,
-      token: dToken,
-      toToken: wToken,
-      amount: dAmount,
+      fromToken: fToken,
+      toToken: tToken,
+      fromAmount: dAmount,
       toAddress: '',
+      slippage: 0,
     }
     // TODO: calculate real fee
-    const crossEstimate: CrossEstimate = {
-      type: 'cross',
+    const estimate: Estimate = {
       fromAmount: routeQuote.bid.amount,
       toAmount: routeQuote.bid.amountReceived,
-      fees: {
-        included: true,
-        percentage: '0.0005',
-        token: crossAction.token,
-        amount: new BigNumber(crossAction.amount).times('0.0005').toFixed(0),
-      },
+      toAmountMin: routeQuote.bid.amountReceived,
+      approvalAddress: '',
       data: routeQuote,
     }
 
-    const sortedRoutes: Array<Array<TransferStep>> = [
-      [
-        {
-          action: crossAction,
-          estimate: crossEstimate,
-        },
-      ],
-    ]
+    const crossStep: CrossStep = {
+      id,
+      type: 'cross',
+      tool: 'nxtp',
+      action: action,
+      estimate: estimate,
+    }
 
+    const route: Route = {
+      id,
+      fromChainId: getChainByKey(routeRequest.depositChain).id,
+      fromAmountUSD: '',
+      fromAmount: routeQuote.bid.amount,
+      fromToken: fToken,
+      // fromAddress?: string,
+      toChainId: getChainByKey(routeRequest.withdrawChain).id,
+      toAmountUSD: '',
+      toAmount: routeQuote.bid.amountReceived,
+      toAmountMin: routeQuote.bid.amountReceived,
+      toToken: tToken,
+      // toAddress?: string,
+      // gasCostUSD?: string;
+      // containsSwitchChain?: boolean,
+      // containsEncryption?: boolean,
+      // infiniteApproval?: boolean,
+      steps: [crossStep],
+    }
+
+    // const sortedRoutes: Step[][] = [[crossStep]]
+    const sortedRoutes: Route[] = [route]
     setRoutes(sortedRoutes)
     setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
     setNoRoutesAvailable(sortedRoutes.length === 0)
     setRoutesLoading(false)
   }, [routeRequest, routeQuote, findToken])
 
-  const updateExecutionRoute = (route: Array<TransferStep>) => {
-    setExecutionRoutes((routes) => {
-      let index = routes.findIndex((item) => {
-        return item[0].id === route[0].id
+  const updateExecutionRoute = (route: Route) => {
+    setExecutionRoutes((routes: Route[]) => {
+      let index = routes.findIndex((oldRoute) => {
+        return oldRoute.steps[0].id === route.steps[0].id
       })
       const newRoutes = [...routes.slice(0, index), route, ...routes.slice(index + 1)]
       return newRoutes
@@ -840,8 +855,8 @@ const SwapXpollinate = ({
     const signer = web3.library.getSigner()
 
     // add execution route
-    const route = deepClone(routes[highlightedIndex]) as Array<TransferStep>
-    setExecutionRoutes((routes) => [...routes, route])
+    const route = deepClone(routes[highlightedIndex]) as Route
+    setExecutionRoutes((routes: Route[]) => [...routes, route])
 
     // get new route to avoid triggering the same quote twice
     setDepositAmount(new BigNumber(-1))
@@ -849,32 +864,32 @@ const SwapXpollinate = ({
     setRouteQuote(undefined)
 
     // add as active
-    const crossAction = route[0].action as CrossAction
-    const crossEstimate = route[0].estimate as CrossEstimate
+    const action = route.steps[0].action
+    const estimate = route.steps[0].estimate
     const txData = {
       invariant: {
         user: '',
         router: '',
         initiator: '',
-        sendingAssetId: crossAction.token.id,
-        receivingAssetId: crossAction.toToken.id,
+        sendingAssetId: action.toToken.id,
+        receivingAssetId: action.toToken.id,
         sendingChainFallback: '',
         callTo: '',
         receivingAddress: '',
-        sendingChainId: crossAction.chainId,
-        receivingChainId: crossAction.toChainId,
+        sendingChainId: action.fromChainId,
+        receivingChainId: action.toChainId,
         callDataHash: '',
-        transactionId: crossEstimate.data.bid.transactionId,
+        transactionId: estimate.data.bid.transactionId,
         receivingChainTxManagerAddress: '',
       },
       sending: {
-        amount: crossAction.amount,
+        amount: action.fromAmount,
         preparedBlockNumber: 0,
         expiry: Math.floor(Date.now() / 1000) + 3600 * 24 * 3, // 3 days
       },
     }
     updateActiveTransactionsWith(
-      crossEstimate.data.bid.transactionId,
+      estimate.data.bid.transactionId,
       'Started' as NxtpSdkEvent,
       {} as TransactionPreparedEvent,
       txData,
@@ -882,15 +897,15 @@ const SwapXpollinate = ({
     setActiveKeyTransactions('active')
 
     // start execution
-    const update = (step: TransferStep, status: Execution) => {
+    const update = (step: Step, status: Execution) => {
       step.execution = status
       updateExecutionRoute(route)
     }
     triggerTransfer(
       signer,
       sdk!,
-      route[0],
-      (status: Execution) => update(route[0], status),
+      route.steps[0],
+      (status: Execution) => update(route.steps[0], status),
       optionInfiniteApproval,
     )
 
@@ -903,8 +918,8 @@ const SwapXpollinate = ({
     const signer = web3.library.getSigner()
 
     // open modal
-    const index = executionRoutes.findIndex((item) => {
-      return item[0].id === action.txData.invariant.transactionId
+    const index = executionRoutes.findIndex((route) => {
+      return route.id === action.txData.invariant.transactionId
     })
 
     if (index !== -1) {
@@ -912,11 +927,11 @@ const SwapXpollinate = ({
 
       // trigger sdk
       const route = executionRoutes[index]
-      const update = (step: TransferStep, status: Execution) => {
+      const update = (step: Step, status: Execution) => {
         step.execution = status
         updateExecutionRoute(route)
       }
-      finishTransfer(signer, sdk!, action.event, route[0], update)
+      finishTransfer(signer, sdk!, action.event, route.steps[0], update)
     } else {
       finishTransfer(signer, sdk!, action.event)
     }
@@ -1090,9 +1105,9 @@ const SwapXpollinate = ({
 
     if (highlightedIndex !== -1) {
       const selectedRoute = routes[highlightedIndex]
-      const cross = selectedRoute[0] as CrossStep
+      const cross = selectedRoute.steps[0] as CrossStep
 
-      const fromToken = cross.action.token
+      const fromToken = cross.action.toToken
       const fromAmount = new BigNumber(cross.estimate.fromAmount).shiftedBy(-fromToken.decimals)
 
       const toToken = cross.action.toToken

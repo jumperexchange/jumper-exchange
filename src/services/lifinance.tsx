@@ -8,16 +8,15 @@ import { constants, ethers } from 'ethers'
 
 import { getRpcProviders } from '../components/web3/connectors'
 import {
+  Action,
   ChainId,
-  CrossAction,
-  CrossEstimate,
   CrossStep,
+  Estimate,
   Execution,
   getChainById,
-  SwapAction,
-  SwapEstimate,
+  Route,
+  StepTool,
   SwapStep,
-  TransferStep,
 } from '../types'
 import { oneInch } from './1Inch'
 import { abi } from './ABI/NXTPFacet.json'
@@ -39,8 +38,8 @@ const getSupportedChains = (jsonArraySting: string): ChainId[] => {
 
 const supportedChains = getSupportedChains(process.env.REACT_APP_LIFI_CONTRACT_ENABLED_CHAINS_JSON!)
 
-const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => {
-  switch (swapAction.tool) {
+const buildSwap = async (tool: StepTool, swapAction: Action, swapEstimate: Estimate) => {
+  switch (tool) {
     case 'paraswap': {
       const call = await paraswap.getSwapCall(
         swapAction,
@@ -49,7 +48,7 @@ const buildSwap = async (swapAction: SwapAction, swapEstimate: SwapEstimate) => 
         lifiContractAddress,
       )
       return {
-        approveTo: await paraswap.getContractAddress(swapAction.chainId),
+        approveTo: await paraswap.getContractAddress(swapAction.fromChainId),
         call,
       }
     }
@@ -85,7 +84,7 @@ const getQuote = async (
   signer: JsonRpcSigner,
   nxtpSDK: NxtpSdk,
   crossStep: CrossStep,
-  crossAction: CrossAction,
+  action: Action,
   receiverTransaction: ethers.PopulatedTransaction,
 ) => {
   // -> request quote
@@ -93,11 +92,11 @@ const getQuote = async (
   try {
     quote = await nxtp.getTransferQuote(
       nxtpSDK,
-      crossAction.chainId,
-      crossAction.token.id,
-      crossAction.toChainId,
-      crossAction.toToken.id,
-      crossAction.amount.toString(),
+      action.fromChainId,
+      action.fromToken.id,
+      action.toChainId,
+      action.toToken.id,
+      action.fromAmount.toString(),
       await signer.getAddress(),
       receiverTransaction.to,
       receiverTransaction.data,
@@ -110,19 +109,22 @@ const getQuote = async (
   }
 
   // -> store quote
-  const crossEstimate: CrossEstimate = {
-    type: 'cross',
+  const estimate: Estimate = {
     fromAmount: quote.bid.amount,
     toAmount: quote.bid.amountReceived,
-    fees: {
-      included: true,
-      percentage: '0.0005',
-      token: crossAction.token,
-      amount: new BigNumber(quote.bid.amount).times('0.0005').toString(),
-    },
+    feeCosts: [
+      {
+        name: 'LiFI Fees',
+        percentage: '0.0005',
+        token: action.fromToken,
+        amount: new BigNumber(quote.bid.amount).times('0.0005').toString(),
+      },
+    ],
     data: quote,
+    toAmountMin: '',
+    approvalAddress: '', //TODO neeeds to be set (see related backend PR)
   }
-  crossStep.estimate = crossEstimate
+  crossStep.estimate = estimate
 
   return quote
 }
@@ -152,38 +154,37 @@ const buildTransaction = async (
     transactionId: getRandomBytes32(),
     integrator: 'li.finance',
     referrer: '0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0',
-    sendingAssetId: crossStep.action.token.id,
+    sendingAssetId: crossStep.action.fromToken.id,
     receivingAssetId: crossStep.action.toToken.id,
     receiver: await signer.getAddress(),
     destinationChainId: crossStep.action.toChainId.toString(),
-    amount: crossStep.action.amount,
+    amount: crossStep.action.fromAmount,
   }
 
   // Receiving side
   let receivingTransaction
   if (endSwapStep) {
     // Swap and Withdraw
-    const swapAction = endSwapStep.action
-    const swapEstimate = endSwapStep.estimate as SwapEstimate
+    const { action, estimate, tool } = endSwapStep
 
     // adjust lifData
-    lifiData.receivingAssetId = swapAction.toToken.id
+    lifiData.receivingAssetId = action.toToken.id
 
-    const swapCall = await buildSwap(swapAction, swapEstimate)
+    const swapCall = await buildSwap(tool, action, estimate)
 
     receivingTransaction = await lifi.populateTransaction.swapAndCompleteBridgeTokensViaNXTP(
       lifiData,
       [
         {
-          sendingAssetId: swapAction.token.id,
-          receivingAssetId: swapAction.toToken.id,
-          fromAmount: swapEstimate.fromAmount,
+          sendingAssetId: action.fromToken.id,
+          receivingAssetId: action.toToken.id,
+          fromAmount: estimate.fromAmount,
           callTo: swapCall.call.to,
           callData: swapCall.call.data,
           approveTo: swapCall.approveTo,
         },
       ],
-      swapAction.toToken.id,
+      action.toToken.id,
       await signer.getAddress(),
     )
   } else {
@@ -226,21 +227,20 @@ const buildTransaction = async (
 
   if (startSwapStep) {
     // Swap and Transfer
-    const swapAction = startSwapStep.action as SwapAction
-    const swapEstimate = startSwapStep.estimate as SwapEstimate
+    const { action, estimate, tool } = startSwapStep
 
     // adjust lifData
-    lifiData.sendingAssetId = swapAction.token.id
-    lifiData.amount = swapAction.amount
+    lifiData.sendingAssetId = action.fromToken.id
+    lifiData.amount = action.fromAmount
 
     // > build swap
-    const swapCall = await buildSwap(swapAction, swapEstimate)
+    const swapCall = await buildSwap(tool, action, estimate)
 
     const swapData = {
-      sendingAssetId: swapAction.token.id,
-      receivingAssetId: swapAction.toToken.id,
-      fromAmount: swapEstimate.fromAmount,
-      toAmount: swapEstimate.toAmountMin,
+      sendingAssetId: action.fromToken.id,
+      receivingAssetId: action.toToken.id,
+      fromAmount: estimate.fromAmount,
+      toAmount: estimate.toAmountMin,
       callTo: swapCall.call.to,
       callData: swapCall?.call.data,
       approveTo: swapCall.approveTo,
@@ -251,8 +251,8 @@ const buildTransaction = async (
     })
 
     // > pass native currency directly
-    if (swapAction.token.id === constants.AddressZero) {
-      swapOptions.value = swapEstimate.fromAmount
+    if (action.fromToken.id === constants.AddressZero) {
+      swapOptions.value = estimate.fromAmount
     }
 
     // > swap and transfer
@@ -265,7 +265,7 @@ const buildTransaction = async (
   } else {
     // Transfer only
     // > pass native currency directly
-    if (crossStep.action.token.id === constants.AddressZero) {
+    if (crossStep.action.fromToken.id === constants.AddressZero) {
       swapOptions.value = crossStep.estimate.fromAmount
     }
 
@@ -276,19 +276,18 @@ const buildTransaction = async (
 
 const executeLifi = async (
   signer: JsonRpcSigner,
-  route: TransferStep[],
+  route: Route,
   updateStatus?: Function,
   initialStatus?: Execution,
 ) => {
   // unpack route
-  const startSwapStep = route[0].action.type === 'swap' ? (route[0] as SwapStep) : undefined
+  const { steps } = route
+  const startSwapStep = steps[0].type === 'swap' ? (steps[0] as SwapStep) : undefined
   const endSwapStep =
-    route[route.length - 1].action.type === 'swap'
-      ? (route[route.length - 1] as SwapStep)
-      : undefined
-  const crossStep = route.find((step) => step.action.type === 'cross')! as CrossStep
-  const crossAction = crossStep.action as CrossAction
-  const fromChain = getChainById(crossAction.chainId)
+    steps[steps.length - 1].type === 'swap' ? (steps[steps.length - 1] as SwapStep) : undefined
+  const crossStep = steps.find((step) => step.type === 'cross')! as CrossStep
+  const crossAction = crossStep.action
+  const fromChain = getChainById(crossAction.fromChainId)
   const toChain = getChainById(crossAction.toChainId)
 
   // setup
@@ -314,12 +313,12 @@ const executeLifi = async (
   // setStatusDone(update, status, keyProcess)
 
   // Allowance
-  if (route[0].action.token.id !== constants.AddressZero) {
+  if (steps[0].action.fromToken.id !== constants.AddressZero) {
     await checkAllowance(
       signer,
       fromChain,
-      route[0].action.token,
-      route[0].action.amount,
+      steps[0].action.fromToken,
+      steps[0].action.fromAmount,
       lifiContractAddress,
       update,
       status,
@@ -340,7 +339,7 @@ const executeLifi = async (
   let call
   let nxtpSDK
   try {
-    const crossableChains = [crossAction.chainId, crossAction.toChainId]
+    const crossableChains = [crossAction.fromChainId, crossAction.toChainId]
     const chainProviders = getRpcProviders(crossableChains)
     nxtpSDK = await nxtp.setup(signer, chainProviders)
     call = await buildTransaction(signer, nxtpSDK, startSwapStep, crossStep, endSwapStep)

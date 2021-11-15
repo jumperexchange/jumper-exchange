@@ -38,6 +38,9 @@ jobs:
       - name: Check linting
         run: yarn eslint . --ext .js,.jsx,.ts,.tsx
 
+      - name: Run tests
+        run: yarn test
+
       - name: Build li.finance
         run: yarn build:lifinance
 

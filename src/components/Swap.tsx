@@ -1,4 +1,3 @@
-// LIBS
 import './Swap.css'
 
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
@@ -22,12 +21,10 @@ import {
   ChainKey,
   ChainPortfolio,
   defaultTokens,
-  DepositAction,
-  getChainByKey,
-  Step,
+  Route as RouteType,
+  RoutesRequest,
+  RoutesResponse,
   Token,
-  TransferStep,
-  WithdrawAction,
 } from '../types'
 import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
@@ -38,6 +35,8 @@ import { injected } from './web3/connectors'
 
 const { Panel } = Collapse
 
+let currentRouteCallId: string
+
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
@@ -45,18 +44,21 @@ interface TokenWithAmounts extends Token {
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
-    animate(
-      element.current?.childNodes as NodeListOf<Element>,
-      {
-        y: ['50px', '0px'],
-        opacity: [0, 1],
-      },
-      {
-        delay: stagger(0.2),
-        duration: 0.5,
-        easing: 'ease-in-out',
-      },
-    )
+    const nodes = element.current?.childNodes
+    if (nodes) {
+      animate(
+        nodes as NodeListOf<Element>,
+        {
+          y: ['50px', '0px'],
+          opacity: [0, 1],
+        },
+        {
+          delay: stagger(0.2),
+          duration: 0.5,
+          easing: 'ease-in-out',
+        },
+      )
+    }
   }, 0)
 }
 
@@ -83,34 +85,31 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [unused, setStateUpdate] = useState<number>(0)
 
   // From
-  const [depositChain, setDepositChain] = useState<ChainKey>(transferChains[0].key)
+  const [fromChainKey, setFromChainKey] = useState<ChainKey>(transferChains[0].key)
   const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(1))
-  const [depositToken, setDepositToken] = useState<string | undefined>() // tokenId
-  const [withdrawChain, setWithdrawChain] = useState<ChainKey>(transferChains[1].key)
+  const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>() // tokenId
+  const [toChainKey, setToChainKey] = useState<ChainKey>(transferChains[1].key)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [withdrawToken, setWithdrawToken] = useState<string | undefined>() // tokenId
+  const [toTokenAddress, setToTokenAddress] = useState<string | undefined>() // tokenId
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(
     filterDefaultTokenByChains(defaultTokens, transferChains),
   )
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [currentRouteCallId, setCurrentRouteCallId] = useState<string>()
-  const [routeCallResult, setRouteCallResult] = useState<{ result: Step[][]; id: string }>()
+  const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
 
   // Routes
-  const [routes, setRoutes] = useState<Array<Array<TransferStep>>>([])
+  const [routes, setRoutes] = useState<Array<RouteType>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setselectedRoute] = useState<Array<TransferStep>>([])
+  const [selectedRoute, setSelectedRoute] = useState<RouteType | null>(null)
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-  const [activeRoutes, setActiveRoutes] = useState<Array<Array<TransferStep>>>(readActiveRoutes())
-  const [historicalRoutes, setHistoricalRoutes] = useState<Array<Array<TransferStep>>>(
-    readHistoricalRoutes(),
-  )
+  const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
+  const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -125,8 +124,8 @@ const Swap = ({ transferChains }: SwapProps) => {
       return '0.0'
     } else {
       const selectedRoute = routes[highlightedIndex]
-      const lastStep = selectedRoute[selectedRoute.length - 1]
-      return formatTokenAmountOnly((lastStep.action as any).toToken, lastStep.estimate?.toAmount)
+      const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1]
+      return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
     }
   }
 
@@ -201,11 +200,11 @@ const Swap = ({ transferChains }: SwapProps) => {
   }, [tokens, balances, transferChains])
 
   const hasSufficientBalance = () => {
-    if (!depositToken) {
+    if (!fromTokenAddress) {
       return true
     }
 
-    return depositAmount.lte(getBalance(balances, depositChain, depositToken))
+    return depositAmount.lte(getBalance(balances, fromChainKey, fromTokenAddress))
   }
 
   const findToken = useCallback(
@@ -225,33 +224,28 @@ const Swap = ({ transferChains }: SwapProps) => {
       setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
-      if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
+      if (depositAmount.gt(0) && fromChainKey && fromTokenAddress && toChainKey && toTokenAddress) {
         setRoutesLoading(true)
-        const dToken = findToken(depositChain, depositToken)
-        const wToken = findToken(withdrawChain, withdrawToken)
-
-        const deposit: DepositAction = {
-          type: 'deposit',
-          chainId: getChainByKey(depositChain).id,
-          token: dToken,
-          amount: new BigNumber(depositAmount).shiftedBy(dToken.decimals).toFixed(0),
+        const fromToken = findToken(fromChainKey, fromTokenAddress)
+        const toToken = findToken(toChainKey, toTokenAddress)
+        const request: RoutesRequest = {
+          fromChainId: fromToken.chainId,
+          fromAmount: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
+          fromTokenAddress,
+          toChainId: toToken.chainId,
+          toTokenAddress,
+          options: {
+            slippage: optionSlippage / 100,
+          },
         }
 
-        const withdraw: WithdrawAction = {
-          type: 'withdraw',
-          chainId: getChainByKey(withdrawChain).id,
-          token: wToken,
-          amount: '',
-          toAddress: '',
-          slippage: optionSlippage / 100,
-        }
         const id = uuid()
         try {
-          setCurrentRouteCallId(id)
-          const result = await LIFI.findRoutes(deposit, withdraw)
+          currentRouteCallId = id
+          const result = await LIFI.getRoutes(request)
           setRouteCallResult({ result, id })
         } catch {
-          if (id === currentRouteCallId) {
+          if (id === currentRouteCallId || !currentRouteCallId) {
             setNoRoutesAvailable(true)
             setRoutesLoading(false)
           }
@@ -262,10 +256,10 @@ const Swap = ({ transferChains }: SwapProps) => {
     getTransferRoutes()
   }, [
     depositAmount,
-    depositChain,
-    depositToken,
-    withdrawChain,
-    withdrawToken,
+    fromChainKey,
+    fromTokenAddress,
+    toChainKey,
+    toTokenAddress,
     optionSlippage,
     findToken,
   ])
@@ -275,10 +269,10 @@ const Swap = ({ transferChains }: SwapProps) => {
     if (routeCallResult) {
       const { result, id } = routeCallResult
       if (id === currentRouteCallId) {
-        setRoutes(result)
+        setRoutes(result.routes)
         fadeInAnimation(routeCards)
-        setHighlightedIndex(result.length === 0 ? -1 : 0)
-        setNoRoutesAvailable(result.length === 0)
+        setHighlightedIndex(result.routes.length === 0 ? -1 : 0)
+        setNoRoutesAvailable(result.routes.length === 0)
         setRoutesLoading(false)
       }
     }
@@ -286,7 +280,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
-    setselectedRoute(deepClone(routes[highlightedIndex]))
+    setSelectedRoute(deepClone(routes[highlightedIndex]))
   }
 
   const submitButton = () => {
@@ -362,7 +356,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                   <TrasactionsTable
                     routes={historicalRoutes}
                     selectRoute={() => {}}
-                    deleteRoute={(route: TransferStep[]) => {
+                    deleteRoute={(route: RouteType) => {
                       deleteRoute(route)
                       setHistoricalRoutes(readHistoricalRoutes())
                     }}
@@ -389,8 +383,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                 <div>
                   <TrasactionsTable
                     routes={activeRoutes}
-                    selectRoute={(route: TransferStep[]) => setselectedRoute(route)}
-                    deleteRoute={(route: TransferStep[]) => {
+                    selectRoute={(route: RouteType) => setSelectedRoute(route)}
+                    deleteRoute={(route: RouteType) => {
                       deleteRoute(route)
                       setActiveRoutes(readActiveRoutes())
                     }}></TrasactionsTable>
@@ -414,16 +408,16 @@ const Swap = ({ transferChains }: SwapProps) => {
 
               <Form>
                 <SwapForm
-                  depositChain={depositChain}
-                  setDepositChain={setDepositChain}
-                  depositToken={depositToken}
-                  setDepositToken={setDepositToken}
+                  depositChain={fromChainKey}
+                  setDepositChain={setFromChainKey}
+                  depositToken={fromTokenAddress}
+                  setDepositToken={setFromTokenAddress}
                   depositAmount={depositAmount}
                   setDepositAmount={setDepositAmount}
-                  withdrawChain={withdrawChain}
-                  setWithdrawChain={setWithdrawChain}
-                  withdrawToken={withdrawToken}
-                  setWithdrawToken={setWithdrawToken}
+                  withdrawChain={toChainKey}
+                  setWithdrawChain={setToChainKey}
+                  withdrawToken={toTokenAddress}
+                  setWithdrawToken={setToTokenAddress}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
                   estimatedWithdrawAmount={getSelectedWithdraw()}
@@ -542,16 +536,16 @@ const Swap = ({ transferChains }: SwapProps) => {
         </Row>
       </div>
 
-      {!!selectedRoute.length && (
+      {selectedRoute && !!selectedRoute.steps.length && (
         <Modal
           className="swapModal"
-          visible={selectedRoute.length > 0}
+          visible={selectedRoute.steps.length > 0}
           onOk={() => {
-            setselectedRoute([])
+            setSelectedRoute(null)
             updateBalances()
           }}
           onCancel={() => {
-            setselectedRoute([])
+            setSelectedRoute(null)
             updateBalances()
           }}
           destroyOnClose={true}
@@ -563,7 +557,7 @@ const Swap = ({ transferChains }: SwapProps) => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
             }}
-            onSwapDone={(route: TransferStep[]) => {
+            onSwapDone={() => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()

@@ -1,4 +1,4 @@
-import { chainKeysToObject, TransferStep, Wallet } from '../types'
+import { chainKeysToObject, Route, Wallet } from '../types'
 
 const isSupported = () => {
   try {
@@ -62,16 +62,16 @@ const readHideAbout = () => {
   return !(value === 'false')
 }
 
-const storeActiveRoute = (route: TransferStep[]) => {
+const storeActiveRoute = (route: Route) => {
   if (!isSupported()) return
   const storedRoutes = readActiveRoutes()
-  let updatedRoutes: TransferStep[][]
+  let updatedRoutes: Route[]
   if (!storedRoutes.length) {
     updatedRoutes = [route]
   } else {
     let replaced = false
-    updatedRoutes = storedRoutes.map((storedRoute, index) => {
-      if (storedRoute[0].id === route[0].id) {
+    updatedRoutes = storedRoutes.map((storedRoute) => {
+      if (storedRoute.id === route.id) {
         storedRoute = route
         replaced = true
       }
@@ -90,12 +90,12 @@ const storeActiveRoute = (route: TransferStep[]) => {
   )
 }
 
-const deleteRoute = (route: TransferStep[]) => {
+const deleteRoute = (route: Route) => {
   if (!isSupported() || !route) {
     return
   }
   const storedRoutes = readAllRoutes()
-  const updatedRoutes = storedRoutes.filter((storedRoute) => storedRoute[0].id !== route[0].id)
+  const updatedRoutes = storedRoutes.filter((storedRoute) => storedRoute.id !== route.id)
 
   localStorage.setItem(
     'activeRoute',
@@ -105,9 +105,9 @@ const deleteRoute = (route: TransferStep[]) => {
   )
 }
 
-const readAllRoutes = (): Array<TransferStep[]> => {
+const readAllRoutes = (): Array<Route> => {
   if (!isSupported()) {
-    return [] as Array<TransferStep[]>
+    return [] as Array<Route>
   }
   const routeString = localStorage.getItem('activeRoute')
 
@@ -117,19 +117,19 @@ const readAllRoutes = (): Array<TransferStep[]> => {
         const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
 
         return matches ? Symbol.for(matches[1]) : v
-      }) as Array<TransferStep[]>
-      return routes as Array<TransferStep[]>
+      }) as Array<Route>
+      return routes as Array<Route>
     } catch (e) {
-      return [] as Array<TransferStep[]>
+      return [] as Array<Route>
     }
   } else {
-    return [] as Array<TransferStep[]>
+    return [] as Array<Route>
   }
 }
 
-const readHistoricalRoutes = (): Array<TransferStep[]> => {
+const readHistoricalRoutes = (): Array<Route> => {
   if (!isSupported()) {
-    return [] as Array<TransferStep[]>
+    return [] as Array<Route>
   }
   const routeString = localStorage.getItem('activeRoute')
 
@@ -139,27 +139,27 @@ const readHistoricalRoutes = (): Array<TransferStep[]> => {
         const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
 
         return matches ? Symbol.for(matches[1]) : v
-      }) as Array<TransferStep[]>
+      }) as Array<Route>
       const filteredRoutes = routes.filter((route) => {
-        const allDone = route.every((step) => step.execution?.status === 'DONE')
+        const allDone = route.steps.every((step) => step.execution?.status === 'DONE')
         if (allDone) {
           return route
         } else {
           return null
         }
       })
-      return filteredRoutes as Array<TransferStep[]>
+      return filteredRoutes as Array<Route>
     } catch (e) {
-      return [] as Array<TransferStep[]>
+      return [] as Array<Route>
     }
   } else {
-    return [] as Array<TransferStep[]>
+    return [] as Array<Route>
   }
 }
 
-const readActiveRoutes = (): Array<TransferStep[]> => {
+const readActiveRoutes = (): Array<Route> => {
   if (!isSupported()) {
-    return [] as Array<TransferStep[]>
+    return [] as Array<Route>
   }
   const routeString = localStorage.getItem('activeRoute')
 
@@ -169,21 +169,21 @@ const readActiveRoutes = (): Array<TransferStep[]> => {
         const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
 
         return matches ? Symbol.for(matches[1]) : v
-      }) as Array<TransferStep[]>
+      }) as Array<Route>
       const filteredRoutes = routes.filter((route) => {
-        const allDone = route.every((step) => step.execution?.status === 'DONE')
+        const allDone = route.steps.every((step) => step.execution?.status === 'DONE')
         if (allDone) {
           return null
         } else {
           return route
         }
       })
-      return filteredRoutes as Array<TransferStep[]>
+      return filteredRoutes as Array<Route>
     } catch (e) {
-      return [] as Array<TransferStep[]>
+      return [] as Array<Route>
     }
   } else {
-    return [] as Array<TransferStep[]>
+    return [] as Array<Route>
   }
 }
 
