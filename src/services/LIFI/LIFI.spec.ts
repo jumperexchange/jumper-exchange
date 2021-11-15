@@ -71,6 +71,8 @@ describe('LIFI SDK', () => {
     describe('user input is valid', () => {
       it('should call server once', async () => {
         const request = getRoutesRequest({})
+        // axios.post always returns an object and we expect that in our code
+        mockedAxios.post.mockReturnValue(Promise.resolve({}))
 
         Lifi.getRoutes(request)
         expect(mockedAxios.post).toHaveBeenCalledTimes(1)
