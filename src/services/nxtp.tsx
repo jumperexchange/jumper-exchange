@@ -108,8 +108,8 @@ export const triggerTransfer = async (
   let submitProcess: Process | undefined
   let proceedProcess: Process | undefined
 
-  const action = step.action as Action
-  const estimate = step.estimate as Estimate
+  const action = step.action
+  const estimate = step.estimate
   const fromChain = getChainById(action.fromChainId)
 
   // Check Token Approval
@@ -218,7 +218,7 @@ export const attachListeners = (
   let receiverProcess: Process | undefined = status.process.find((p) => p.id === 'receiverProcess')
   let proceedProcess: Process | undefined = status.process.find((p) => p.id === 'proceedProcess')
 
-  const action = step.action as Action
+  const action = step.action
   const fromChain = getChainById(action.fromChainId)
   const toChain = getChainById(action.toChainId)
 

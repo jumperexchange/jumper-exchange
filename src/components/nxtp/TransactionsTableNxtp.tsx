@@ -75,7 +75,7 @@ const TransactionsTableNxtp = ({
         } else {
           const index = executionRoutes.findIndex((route) => {
             return (
-              (route.steps[0].estimate as Estimate).data.bid.transactionId ===
+              route.steps[0].estimate.data.bid.transactionId ===
               action.txData.invariant.transactionId
             )
           })
@@ -100,8 +100,7 @@ const TransactionsTableNxtp = ({
       render: (action: ActiveTransaction) => {
         const index = executionRoutes.findIndex((route) => {
           return (
-            (route.steps[0].estimate as Estimate).data.bid.transactionId ===
-            action.txData.invariant.transactionId
+            route.steps[0].estimate.data.bid.transactionId === action.txData.invariant.transactionId
           )
         })
 

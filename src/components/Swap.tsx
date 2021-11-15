@@ -125,7 +125,7 @@ const Swap = ({ transferChains }: SwapProps) => {
     } else {
       const selectedRoute = routes[highlightedIndex]
       const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1]
-      return formatTokenAmountOnly((lastStep.action as any).toToken, lastStep.estimate?.toAmount)
+      return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
     }
   }
 

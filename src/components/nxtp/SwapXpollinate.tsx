@@ -864,8 +864,8 @@ const SwapXpollinate = ({
     setRouteQuote(undefined)
 
     // add as active
-    const action = route.steps[0].action as Action
-    const estimate = route.steps[0].estimate as Estimate
+    const action = route.steps[0].action
+    const estimate = route.steps[0].estimate
     const txData = {
       invariant: {
         user: '',
