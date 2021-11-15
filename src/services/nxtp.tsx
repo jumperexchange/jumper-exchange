@@ -5,14 +5,7 @@ import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { Button } from 'antd'
 import { constants, providers } from 'ethers'
 
-import {
-  CrossAction,
-  CrossEstimate,
-  Execution,
-  getChainById,
-  Process,
-  TransferStep,
-} from '../types'
+import { Action, Estimate, Execution, getChainById, Process, TransferStep } from '../types'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved } from './utils'
 
@@ -115,20 +108,18 @@ export const triggerTransfer = async (
   let submitProcess: Process | undefined
   let proceedProcess: Process | undefined
 
-  const crossAction = step.action as CrossAction
-  const crossEstimate = step.estimate as CrossEstimate
-  const fromChain = getChainById(crossAction.chainId)
+  const action = step.action as Action
+  const Estimate = step.estimate as Estimate
+  const fromChain = getChainById(action.fromChainId)
 
   // Check Token Approval
-  if (crossEstimate.data.bid.sendingAssetId !== constants.AddressZero) {
-    const contractAddress = getDeployedTransactionManagerContract(
-      crossEstimate.data.bid.sendingChainId,
-    )
+  if (Estimate.data.bid.sendingAssetId !== constants.AddressZero) {
+    const contractAddress = getDeployedTransactionManagerContract(Estimate.data.bid.sendingChainId)
     let approved
     try {
       approved = await getApproved(
         (sdk as any).config.signer,
-        crossEstimate.data.bid.sendingAssetId,
+        Estimate.data.bid.sendingAssetId,
         contractAddress!.address,
       )
     } catch (_e) {
@@ -137,7 +128,7 @@ export const triggerTransfer = async (
       setStatusFailed(update, status, approveProcess)
       throw e
     }
-    if (approved.gte(crossEstimate.data.bid.amount)) {
+    if (approved.gte(Estimate.data.bid.amount)) {
       // approval already done, jump to next step
       setStatusDone(update, status, approveProcess)
       submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
@@ -152,11 +143,11 @@ export const triggerTransfer = async (
     })
   }
 
-  const transactionId = crossEstimate.data.bid.transactionId
+  const transactionId = Estimate.data.bid.transactionId
   // try{
 
   // }
-  const transferPromise = sdk.prepareTransfer(crossEstimate.data, infinteApproval)
+  const transferPromise = sdk.prepareTransfer(Estimate.data, infinteApproval)
   // approve sent => wait
 
   attachListeners(signer, sdk, step, transactionId, update, status)
@@ -224,12 +215,12 @@ export const attachListeners = (
   let receiverProcess: Process | undefined = status.process.find((p) => p.id === 'receiverProcess')
   let proceedProcess: Process | undefined = status.process.find((p) => p.id === 'proceedProcess')
 
-  const crossAction = step.action as CrossAction
-  const fromChain = getChainById(crossAction.chainId)
-  const toChain = getChainById(crossAction.toChainId)
+  const action = step.action as Action
+  const fromChain = getChainById(action.fromChainId)
+  const toChain = getChainById(action.toChainId)
 
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
-    if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
+    if (data.chainId !== fromChain.id || data.assetId !== action.fromToken.id) return
     approveProcess.status = 'PENDING'
     approveProcess.txHash = data.transactionResponse.hash
     approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
@@ -239,7 +230,7 @@ export const attachListeners = (
 
   // approved = done => next
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
-    if (data.chainId !== fromChain.id || data.assetId !== crossAction.token.id) return
+    if (data.chainId !== fromChain.id || data.assetId !== action.fromToken.id) return
     approveProcess.message = 'Token Approved:'
     setStatusDone(update, status, approveProcess)
     if (!submitProcess) {

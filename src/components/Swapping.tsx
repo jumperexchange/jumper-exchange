@@ -211,6 +211,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             web3.library.getSigner(),
             swapAction,
             swapEstimate,
+            fromAmount,
             fromAddress,
             toAddress,
             (status: Execution) => updateStatus(step, status),

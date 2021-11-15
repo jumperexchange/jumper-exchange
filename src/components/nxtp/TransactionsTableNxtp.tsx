@@ -4,9 +4,8 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Spin, Table } from 'antd'
 import Link from 'antd/lib/typography/Link'
-import React from 'react'
 
-import { CrossEstimate, getChainById, TokenWithAmounts, TransferStep } from '../../types'
+import { Estimate, getChainById, TokenWithAmounts, TransferStep } from '../../types'
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp'
 
 interface TransactionsTableNxtpProps {
@@ -76,7 +75,7 @@ const TransactionsTableNxtp = ({
         } else {
           const index = executionRoutes.findIndex((item) => {
             return (
-              (item[0].estimate as CrossEstimate).data.bid.transactionId ===
+              (item[0].estimate as Estimate).data.bid.transactionId ===
               action.txData.invariant.transactionId
             )
           })
@@ -101,7 +100,7 @@ const TransactionsTableNxtp = ({
       render: (action: ActiveTransaction) => {
         const index = executionRoutes.findIndex((item) => {
           return (
-            (item[0].estimate as CrossEstimate).data.bid.transactionId ===
+            (item[0].estimate as Estimate).data.bid.transactionId ===
             action.txData.invariant.transactionId
           )
         })
