@@ -2135,7 +2135,7 @@
 
 "@lifinance/types@github:lifinance/types#LF-91-new-step-types":
   version "0.4.3"
-  resolved "https://codeload.github.com/lifinance/types/tar.gz/da27703dec9627dc9550ced6ddec4d21afcd2844"
+  resolved "https://codeload.github.com/lifinance/types/tar.gz/216f30ebcfeffd4e9e11b34c272fd5733fce5e8d"
   dependencies:
     ethers "^5.4.7"
 
