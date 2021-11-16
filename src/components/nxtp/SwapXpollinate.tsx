@@ -84,6 +84,17 @@ const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
 const DISABLED = false
 
+type FeeInfo = {
+  amount: BigNumber
+  description: string
+}
+
+type Fees = {
+  gas: FeeInfo
+  relayer: FeeInfo
+  router: FeeInfo
+}
+
 const getDefaultParams = (
   search: string,
   transferChains: Chain[],
@@ -278,6 +289,20 @@ const SwapXpollinate = ({
   const [routeUpdate, setRouteUpdate] = useState<number>(1)
   const [routeRequest, setRouteRequest] = useState<any>()
   const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
+  const [routeQuoteFees, setRouteQuoteFees] = useState<Fees>({
+    gas: {
+      amount: new BigNumber(0),
+      description: 'Covers gas expense for sending funds to user on receiving chain.',
+    },
+    relayer: {
+      amount: new BigNumber(0),
+      description: 'Covers gas expense for claiming user funds on receiving chain.',
+    },
+    router: {
+      amount: new BigNumber(0),
+      description: 'Router service fee.',
+    },
+  })
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [routes, setRoutes] = useState<Route[]>([])
@@ -304,6 +329,11 @@ const SwapXpollinate = ({
 
   // update query string
   useEffect(() => {
+    // TODO: Could use local estimate to determine what the minimum we could possibly send would
+    // likely be here.
+    if (depositAmount.lte(0)) {
+      return
+    }
     const params = {
       fromChain: getChainByKey(depositChain).id,
       fromToken: depositToken,
@@ -765,6 +795,34 @@ const SwapXpollinate = ({
         }
 
         setRouteQuote(quote)
+
+        // Calculate fees.
+        const fees: Fees = {
+          gas: {
+            amount: new BigNumber(0),
+            description: routeQuoteFees.gas.description,
+          },
+          relayer: {
+            amount: new BigNumber(0),
+            description: routeQuoteFees.relayer.description,
+          },
+          router: {
+            amount: new BigNumber(0),
+            description: routeQuoteFees.router.description,
+          },
+        }
+        const fromToken = findToken(depositChain, depositToken)
+        const toToken = findToken(withdrawChain, withdrawToken)
+
+        const fromAmount = new BigNumber(depositAmount).shiftedBy(fromToken.decimals)
+        const toAmount = new BigNumber(quote.bid.amountReceived).shiftedBy(-toToken.decimals)
+
+        fees.gas.amount = new BigNumber(quote.gasFeeInReceivingToken).shiftedBy(-toToken.decimals)
+        fees.relayer.amount = new BigNumber(quote.metaTxRelayerFee ?? '0').shiftedBy(
+          -toToken.decimals,
+        )
+        fees.router.amount = fromAmount.minus(toAmount).minus(fees.gas.amount)
+        setRouteQuoteFees(fees)
       } catch (e) {
         console.error(e)
         setNoRoutesAvailable(true)
@@ -991,6 +1049,13 @@ const SwapXpollinate = ({
         </Button>
       )
     }
+    if (depositAmount.lte(new BigNumber(0))) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={'large'}>
+          Enter Amount
+        </Button>
+      )
+    }
     if (routesLoading) {
       return (
         <Button
@@ -1147,46 +1212,12 @@ const SwapXpollinate = ({
 
   const priceImpact = () => {
     const token = transferTokens[withdrawChain].find((token) => token.id === withdrawToken)
-    let fees = {
-      gas: {
-        amount: new BigNumber(0),
-        description: 'Covers gas expense for sending funds receiving chain.',
-      },
-      relayer: {
-        amount: new BigNumber(0),
-        description: 'Covers gas expense for claiming user funds on receiving chain.',
-      },
-      router: {
-        amount: new BigNumber(0),
-        description: 'Router service fee.',
-      },
-    }
-    let total = new BigNumber(0)
+    const total = routeQuoteFees.gas.amount
+      .plus(routeQuoteFees.relayer.amount)
+      .plus(routeQuoteFees.router.amount)
     let decimals = 2
-
     if (highlightedIndex !== -1) {
-      const selectedRoute = routes[highlightedIndex]
-      const cross = selectedRoute.steps[0] as CrossStep
-
-      const fromToken = cross.action.toToken
-      const fromAmount = new BigNumber(cross.estimate.fromAmount).shiftedBy(-fromToken.decimals)
-
-      const toToken = cross.action.toToken
-      const toAmount = new BigNumber(cross.estimate.toAmount).shiftedBy(-toToken.decimals)
-
-      fees.gas.amount = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(
-        -toToken.decimals,
-      )
-
-      fees.relayer.amount = new BigNumber(cross.estimate.data.metaTxRelayerFee).shiftedBy(
-        -toToken.decimals,
-      )
-
-      fees.router.amount = fromAmount.minus(toAmount).minus(fees.gas.amount)
-
-      total = fees.gas.amount.plus(fees.relayer.amount).plus(fees.router.amount)
-
-      if (fees.router.amount.lt('0.01')) {
+      if (routeQuoteFees.router.amount.lt('0.01')) {
         decimals = 4
       }
     }
@@ -1198,20 +1229,22 @@ const SwapXpollinate = ({
           key={'fees'}>
           <Row>
             <Col span={24}>
-              {Object.entries(fees).map(([label, info]) => (
-                <Row style={{ padding: '6px 0 0 0' }}>
-                  <Col span={12}>{label.slice(0, 1).toUpperCase() + label.slice(1)} Fee</Col>
-                  <Col span={12} style={{ textAlign: 'right' }}>
-                    {info.amount.toFixed(decimals, 1)} {token?.symbol}
-                    <Tooltip color={'gray'} placement="topRight" title={info.description}>
-                      <Badge
-                        count={<InfoCircleOutlined style={{ color: 'gray' }} />}
-                        offset={[4, -3]}
-                      />
-                    </Tooltip>
-                  </Col>
-                </Row>
-              ))}
+              {Object.entries(routeQuoteFees).map(([label, info]) => {
+                return (
+                  <Row style={{ padding: '6px 0 0 0' }}>
+                    <Col span={12}>{label.slice(0, 1).toUpperCase() + label.slice(1)} Fee</Col>
+                    <Col span={12} style={{ textAlign: 'right' }}>
+                      {info.amount.toFixed(decimals, 1)} {token?.symbol}
+                      <Tooltip color={'gray'} placement="topRight" title={info.description}>
+                        <Badge
+                          count={<InfoCircleOutlined style={{ color: 'gray' }} />}
+                          offset={[4, -3]}
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                )
+              })}
             </Col>
           </Row>
         </Collapse.Panel>
