@@ -292,11 +292,13 @@
 .xpollinate .insufficient {
   color: #e4305f;
 }
-.form-text {
-  color: #ffffff;
+.xpollinate .form-text {
+  font-size: 14px;
+  text-align: center;
+  color: #a2a2a2;
   align-items: center;
   display: flex;
-  padding-left: 15px;
+  padding-left: 0px;
   height: 100%;
 }
 

@@ -23,7 +23,7 @@ import {
   NxtpSdkEvents,
   SubgraphSyncRecord,
 } from '@connext/nxtp-sdk'
-import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils'
+import { TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
@@ -290,6 +290,7 @@ const SwapXpollinate = ({
   const [optionReceivingAddress, setOptionReceivingAddress] = useState<string>('')
   const [optionContractAddress, setOptionContractAddress] = useState<string>('')
   const [optionCallData, setOptionCallData] = useState<string>('')
+  const [optionPreferredRouter, setOptionPreferredRouter] = useState<string>('')
 
   // Routes
   const [routeUpdate, setRouteUpdate] = useState<number>(1)
@@ -674,14 +675,18 @@ const SwapXpollinate = ({
     [tokens],
   )
 
-  const doRequestAndBidMatch = (request: any, quote: AuctionResponse) => {
+  const doRequestAndBidMatch = (request: any, quote: GetTransferQuote) => {
     if (
       getChainByKey(request.depositChain).id !== quote.bid.sendingChainId ||
       request.depositToken !== quote.bid.sendingAssetId ||
       getChainByKey(request.withdrawChain).id !== quote.bid.receivingChainId ||
       request.withdrawToken !== quote.bid.receivingAssetId ||
       request.depositAmount !== quote.bid.amount ||
-      request.receivingAddress !== quote.bid.receivingAddress
+      request.receivingAddress !== quote.bid.receivingAddress ||
+      // NOTE: If user executes with a preferred router and gets a quote, but then removes the preferred router,
+      // the request and quote here will still be considered a match (i.e. we won't get another quote).
+      // TODO: Is this desirable behavior?
+      (request.preferredRouters && !request.preferredRouters.includes(quote.bid.router))
       // || request.callTo !== quote.bid.callTo
       // || request.callData !== quote.bid.callDataHash
     ) {
@@ -701,6 +706,7 @@ const SwapXpollinate = ({
     receivingAddress: string,
     callTo: string | undefined,
     callData: string | undefined,
+    preferredRouters: string[] | undefined,
   ) => {
     setRouteRequest({
       depositChain,
@@ -711,6 +717,7 @@ const SwapXpollinate = ({
       receivingAddress,
       callTo,
       callData,
+      preferredRouters,
     })
   }
   const debouncedSave = useRef(debounce(defineRoute, DEBOUNCE_TIMEOUT)).current
@@ -723,6 +730,11 @@ const SwapXpollinate = ({
       return
     }
 
+    const preferredRouterPattern = /^0x[a-fA-F0-9]{40}$/
+    const preferredRouters =
+      optionPreferredRouter && preferredRouterPattern.exec(optionPreferredRouter)
+        ? [optionPreferredRouter]
+        : undefined
     if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
       const receiving = optionReceivingAddress !== '' ? optionReceivingAddress : web3.account
       const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
@@ -738,6 +750,7 @@ const SwapXpollinate = ({
         receiving,
         callTo,
         callData,
+        preferredRouters,
       )
     }
   }, [
@@ -748,6 +761,7 @@ const SwapXpollinate = ({
     withdrawToken,
     web3,
     sdk,
+    optionPreferredRouter,
     optionReceivingAddress,
     optionContractAddress,
     optionCallData,
@@ -771,6 +785,7 @@ const SwapXpollinate = ({
       receivingAddress: string,
       callTo: string | undefined,
       callData: string | undefined,
+      preferredRouters: string[] = [],
     ) => {
       setRoutesLoading(true)
 
@@ -785,6 +800,8 @@ const SwapXpollinate = ({
           receivingAddress,
           callTo,
           callData,
+          undefined,
+          preferredRouters,
         )
 
         if (!quote) {
@@ -817,16 +834,14 @@ const SwapXpollinate = ({
         routeRequest.receivingAddress,
         routeRequest.callTo,
         routeRequest.callData,
+        routeRequest.preferredRouters,
       )
     }
   }, [sdk, routeRequest, routeQuote, generateRoutes])
 
   // parse routeQuote if still it matches current request
   useEffect(() => {
-    if (!routeRequest || !routeQuote) {
-      return
-    }
-    if (!doRequestAndBidMatch(routeRequest, routeQuote)) {
+    if (!routeRequest || !routeQuote || !doRequestAndBidMatch(routeRequest, routeQuote)) {
       return
     }
     const id = uuid()
@@ -1535,6 +1550,21 @@ const SwapXpollinate = ({
                               onChange={(e) => setOptionCallData(e.target.value)}
                               pattern="^0x[a-fA-F0-9]{64}$"
                               placeholder="Only when calling a contract directly"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Preferred Router
+                            <Input
+                              value={optionPreferredRouter}
+                              onChange={(e) => setOptionPreferredRouter(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{64}$"
+                              placeholder="Specify a target router to handle transaction"
                               style={{
                                 margin: '4px 0 0 0',
                                 border: '1px solid rgba(0,0,0,0.25)',

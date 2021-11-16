@@ -205,8 +205,8 @@ const SwapFormNxtp = ({
               { xs: 8, sm: 16 },
               { xs: 8, sm: 16 },
             ]}>
-            <Col span={12}>
-              <div className="form-text">From:</div>
+            <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
+              <div className="form-text">FROM</div>
             </Col>
             <Col span={12}>
               <div className="form-input-wrapper">
@@ -269,8 +269,8 @@ const SwapFormNxtp = ({
               { xs: 8, sm: 16 },
               { xs: 8, sm: 16 },
             ]}>
-            <Col span={12}>
-              <div className="form-text">To:</div>
+            <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
+              <div className="form-text">TO</div>
             </Col>
             <Col span={12}>
               <div className="form-input-wrapper">
