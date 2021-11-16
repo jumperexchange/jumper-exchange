@@ -153,8 +153,7 @@ const TransactionsTableNxtp = ({
           (token) => token.id.toLowerCase() === txData.invariant.receivingAssetId.toLowerCase(),
         )
         const path = chain.id === ChainId.MOR ? 'tokens/' : 'token/'
-        const link =
-          chain.metamask.blockExplorerUrls[0] + path + txData.invariant.receivingAssetId
+        const link = chain.metamask.blockExplorerUrls[0] + path + txData.invariant.receivingAssetId
         return (
           <a href={link} target="_blank" rel="nofollow noreferrer">
             {token?.name}
