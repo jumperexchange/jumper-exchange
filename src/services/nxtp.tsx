@@ -71,6 +71,7 @@ export const getTransferQuote = async (
   callTo?: string,
   callData?: string,
   initiator?: string,
+  preferredRouters?: string[],
 ): Promise<GetTransferQuote | undefined> => {
   // Create txid
   const transactionId = getRandomBytes32()
@@ -87,6 +88,7 @@ export const getTransferQuote = async (
     callTo,
     callData,
     initiator,
+    preferredRouters,
   })
   return response
 }
