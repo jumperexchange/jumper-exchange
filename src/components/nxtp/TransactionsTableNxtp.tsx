@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Spin, Table } from 'antd'
 import Link from 'antd/lib/typography/Link'
 
-import { getChainById, Route, TokenWithAmounts } from '../../types'
+import { ChainId, getChainById, Route, TokenWithAmounts } from '../../types'
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp'
 
 interface TransactionsTableNxtpProps {
@@ -150,10 +150,11 @@ const TransactionsTableNxtp = ({
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.receivingChainId)
         const token = tokens[chain.key].find(
-          (token) => token.id === txData.invariant.receivingAssetId.toLowerCase(),
+          (token) => token.id.toLowerCase() === txData.invariant.receivingAssetId.toLowerCase(),
         )
+        const path = chain.id === ChainId.MOR ? 'tokens/' : 'token/'
         const link =
-          chain.metamask.blockExplorerUrls[0] + 'token/' + txData.invariant.receivingAssetId
+          chain.metamask.blockExplorerUrls[0] + path + txData.invariant.receivingAssetId
         return (
           <a href={link} target="_blank" rel="nofollow noreferrer">
             {token?.name}
@@ -167,7 +168,7 @@ const TransactionsTableNxtp = ({
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.sendingChainId)
         const token = tokens[chain.key].find(
-          (token) => token.id === txData.invariant.sendingAssetId.toLowerCase(),
+          (token) => token.id.toLowerCase() === txData.invariant.sendingAssetId.toLowerCase(),
         )
         return (parseInt(txData.sending?.amount || '0') / 10 ** (token?.decimals || 18)).toFixed(4)
       },
