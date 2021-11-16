@@ -934,12 +934,12 @@ const SwapXpollinate = ({
     // add as active
     const action = route.steps[0].action
     const estimate = route.steps[0].estimate
-    const txData = {
+    const txData: CrosschainTransaction = {
       invariant: {
         user: '',
         router: '',
         initiator: '',
-        sendingAssetId: action.toToken.id,
+        sendingAssetId: action.fromToken.id,
         receivingAssetId: action.toToken.id,
         sendingChainFallback: '',
         callTo: '',
@@ -1216,10 +1216,10 @@ const SwapXpollinate = ({
           key={'fees'}>
           <Row>
             <Col span={24}>
-              {Object.entries(routeQuoteFees).map(([label, amount]) => {
+              {Object.entries(routeQuoteFees).map(([label, amount], index) => {
                 const info = FEE_INFO[label as keyof typeof FEE_INFO]
                 return (
-                  <Row style={{ padding: '6px 0 0 0' }}>
+                  <Row key={index} style={{ padding: '6px 0 0 0' }}>
                     <Col span={12}>{label.slice(0, 1).toUpperCase() + label.slice(1)} Fee</Col>
                     <Col span={12} style={{ textAlign: 'right' }}>
                       {amount.toFixed(decimals, 1)} {token?.symbol}
