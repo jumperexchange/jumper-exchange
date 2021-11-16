@@ -16,7 +16,13 @@ import {
   SwapOutlined,
   SyncOutlined,
 } from '@ant-design/icons'
-import { GetTransferQuote, NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk'
+import {
+  GetTransferQuote,
+  NxtpSdk,
+  NxtpSdkEvent,
+  NxtpSdkEvents,
+  SubgraphSyncRecord,
+} from '@connext/nxtp-sdk'
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
@@ -86,7 +92,7 @@ const DISABLED = false
 const FEE_INFO: { [K in keyof Fees]: string } = {
   gas: 'Covers gas expense for sending funds to user on receiving chain.',
   relayer: 'Covers gas expense for claiming user funds on receiving chain.',
-  router: 'Router service fee.'
+  router: 'Router service fee.',
 }
 
 type Fees = {
@@ -833,12 +839,15 @@ const SwapXpollinate = ({
     const toAmount = new BigNumber(routeQuote.bid.amountReceived).shiftedBy(-tToken.decimals)
 
     const gasFee = new BigNumber(routeQuote.gasFeeInReceivingToken).shiftedBy(-tToken.decimals)
-    const relayerFee = new BigNumber(routeQuote.metaTxRelayerFee ?? '0').shiftedBy(
-      -tToken.decimals,
-    )
+    const relayerFee = new BigNumber(routeQuote.metaTxRelayerFee ?? '0').shiftedBy(-tToken.decimals)
     const routerFee = fromAmount.minus(toAmount).minus(gasFee)
 
-    const actualAmountReceived = fromAmount.minus(gasFee).minus(relayerFee).minus(routerFee).shiftedBy(tToken.decimals).toString()
+    const actualAmountReceived = fromAmount
+      .minus(gasFee)
+      .minus(relayerFee)
+      .minus(routerFee)
+      .shiftedBy(tToken.decimals)
+      .toString()
 
     const action: Action = {
       fromChainId: getChainByKey(routeRequest.depositChain).id,
@@ -1192,9 +1201,7 @@ const SwapXpollinate = ({
 
   const priceImpact = () => {
     const token = transferTokens[withdrawChain].find((token) => token.id === withdrawToken)
-    const total = routeQuoteFees.gas
-      .plus(routeQuoteFees.relayer)
-      .plus(routeQuoteFees.router)
+    const total = routeQuoteFees.gas.plus(routeQuoteFees.relayer).plus(routeQuoteFees.router)
     let decimals = 2
     if (highlightedIndex !== -1) {
       if (routeQuoteFees.router.lt('0.01')) {
@@ -1210,7 +1217,7 @@ const SwapXpollinate = ({
           <Row>
             <Col span={24}>
               {Object.entries(routeQuoteFees).map(([label, amount]) => {
-                const info = FEE_INFO[label as (keyof typeof FEE_INFO)];
+                const info = FEE_INFO[label as keyof typeof FEE_INFO]
                 return (
                   <Row style={{ padding: '6px 0 0 0' }}>
                     <Col span={12}>{label.slice(0, 1).toUpperCase() + label.slice(1)} Fee</Col>
