@@ -2,7 +2,7 @@ import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersp
 import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 
-import { Execution, getChainById, SwapAction, SwapEstimate } from '../types'
+import { Action, Estimate, Execution, getChainById } from '../types'
 import { checkAllowance } from './allowance.execute'
 import notifications, { NotificationType } from './notifications'
 import { paraswap } from './paraswap'
@@ -17,8 +17,8 @@ export class ParaswapExecutionManager {
 
   executeSwap = async (
     signer: JsonRpcSigner,
-    swapAction: SwapAction,
-    swapEstimate: SwapEstimate,
+    action: Action,
+    estimate: Estimate,
     srcAmount: BigNumber,
     srcAddress: string,
     destAddress: string,
@@ -27,17 +27,17 @@ export class ParaswapExecutionManager {
     // eslint-disable-next-line max-params
   ) => {
     // setup
-    const fromChain = getChainById(swapAction.chainId)
+    const fromChain = getChainById(action.fromChainId)
     const { status, update } = initStatus(updateStatus, initialStatus)
 
     if (!this.shouldContinue) return status
-    if (swapAction.token.id !== constants.AddressZero) {
-      const contractAddress = await paraswap.getContractAddress(swapAction.chainId)
+    if (action.fromToken.id !== constants.AddressZero) {
+      const contractAddress = await paraswap.getContractAddress(action.fromChainId)
       await checkAllowance(
         signer,
         fromChain,
-        swapAction.token,
-        swapAction.amount,
+        action.fromToken,
+        srcAmount.toString(),
         contractAddress,
         update,
         status,
@@ -56,8 +56,8 @@ export class ParaswapExecutionManager {
         tx = await signer.provider.getTransaction(swapProcess.txHash)
       } else {
         const transaction = await paraswap.buildTransaction(
-          swapAction,
-          swapEstimate,
+          action,
+          estimate,
           srcAmount,
           srcAddress,
           destAddress,

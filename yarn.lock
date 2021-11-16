@@ -2133,10 +2133,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@lifinance/types@0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.4.0.tgz#85ee1f17e21b20aef8f015ac04c6925e4ab2696b"
-  integrity sha512-HH8h6qaBImc/sKRLX9am/DKvIax477SxkABJ9HZ+vHLlClaiI9QaqL3Y5hZKsGkhLw+xfAh6iXsT5zjPoRTFig==
+"@lifinance/types@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.5.1.tgz#4abd87cb0c41a560e67fa0f5d4a95a7fe3b95269"
+  integrity sha512-dU44I7lx/XOkMvgwDjAbi5364XmH8bZrXoXus2B8FU/qHFJGJOdFviwE+xGRnwMFc2Ux4qGJ10XfPKOd+oHV4g==
   dependencies:
     ethers "^5.4.7"
 

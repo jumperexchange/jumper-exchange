@@ -1,17 +1,10 @@
 import { Button, Steps } from 'antd'
 
 import { formatTokenAmount } from '../services/utils'
-import {
-  CrossAction,
-  CrossEstimate,
-  getChainById,
-  SwapAction,
-  SwapEstimate,
-  TransferStep,
-} from '../types'
+import { getChainById, Route as RouteType, Step } from '../types'
 
 interface RouteProps {
-  route: Array<TransferStep>
+  route: RouteType
   selected: boolean
   onSelect: Function
 }
@@ -22,47 +15,33 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
     return nameOnly[0].toUpperCase() + nameOnly.slice(1)
   }
 
-  const parseStep = (step: TransferStep) => {
-    switch (step.action.type) {
+  const parseStep = (step: Step) => {
+    const { action, estimate } = step
+    switch (step.type) {
       case 'swap':
-        const swapAction = step.action as SwapAction
-        const swapEstimate = step.estimate as SwapEstimate
         return {
           title: 'Swap Tokens',
           description: `${formatTokenAmount(
-            swapAction.token,
-            swapEstimate.fromAmount,
-          )} for ${formatTokenAmount(
-            swapAction.toToken,
-            swapEstimate.toAmount,
-          )} via ${formatToolName(swapAction.tool)}`,
+            action.fromToken,
+            estimate.fromAmount,
+          )} for ${formatTokenAmount(action.toToken, estimate.toAmount)} via ${formatToolName(
+            step.tool,
+          )}`,
         }
       case 'cross':
-        const crossAction = step.action as CrossAction
-        const crossEstimate = step.estimate as CrossEstimate
         return {
           title: 'Cross Chains',
-          description: `${getChainById(crossAction.chainId).name}: ${formatTokenAmount(
-            crossAction.token,
-            crossEstimate.fromAmount,
-          )} to ${getChainById(crossAction.toChainId).name}: ${formatTokenAmount(
-            crossAction.toToken,
-            crossEstimate.toAmount,
-          )} via ${formatToolName(crossAction.tool)}`,
+          description: `${getChainById(action.fromChainId).name}: ${formatTokenAmount(
+            action.fromToken,
+            estimate.fromAmount,
+          )} to ${getChainById(action.toChainId).name}: ${formatTokenAmount(
+            action.toToken,
+            estimate.toAmount,
+          )} via ${formatToolName(step.tool)}`,
         }
-      case 'withdraw':
-        return {
-          title: 'Withdraw',
-          description: `${formatTokenAmount(step.action.token, step.estimate?.toAmount)} to 0x...`,
-        }
-      case 'deposit':
-        return {
-          title: 'Deposit',
-          description: `${formatTokenAmount(
-            step.action.token,
-            step.estimate?.fromAmount,
-          )} from 0x...`,
-        }
+      // case 'lifi':
+      default:
+        throw new Error(`Unknown step type ${step.type}`)
     }
   }
 
@@ -85,7 +64,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         direction="vertical"
         current={5}
         className="progress-step-list">
-        {route.map((step) => {
+        {route.steps.map((step) => {
           let { title, description } = parseStep(step)
           return <Steps.Step key={title} title={title} description={description}></Steps.Step>
         })}
