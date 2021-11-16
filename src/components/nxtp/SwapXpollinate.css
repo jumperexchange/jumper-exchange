@@ -55,6 +55,17 @@
   border-color: #c38b85;
 }
 
+.xpollinate .ant-alert-warning,
+.xpol-swap-modal .ant-alert-warning {
+  background-color: rgba(190, 165, 29, 0.6);
+  color: #ffffff;
+  border-color: rgba(190, 165, 29, 0.6);
+  border-radius: 12px;
+}
+.xpollinate .ant-alert-message {
+  color: #ffffff;
+}
+
 .xpol-swap-modal .ant-alert {
   margin: 12px 0;
 }
@@ -89,7 +100,7 @@
 .xpollinate .ant-btn[disabled] {
   background-color: #0d1216 !important;
   color: #c4c4c4 !important;
-  border: 2px solid #c4c4c4;
+  border: 1px solid #c4c4c4;
 }
 
 .xpollinate .ant-table,
@@ -242,14 +253,10 @@
   letter-spacing: -0.015em;
 
   background: #0d1216;
-  border: 1px solid #c4c4c4;
   border-radius: 6px;
   padding: 4px 4px;
   display: flex;
   align-items: center;
-}
-.xpollinate .form-input-wrapper.disabled {
-  border: 1px solid #c4c4c4;
 }
 
 .xpollinate .form-input-wrapper.disabled input {

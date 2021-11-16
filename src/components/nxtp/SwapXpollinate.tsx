@@ -299,6 +299,9 @@ const SwapXpollinate = ({
   const { activate, deactivate } = useWeb3React()
   const intervalRef = useRef<NodeJS.Timeout>()
 
+  // Alerts
+  const [alert, setAlert] = useState<string>()
+
   // update query string
   useEffect(() => {
     const params = {
@@ -318,6 +321,22 @@ const SwapXpollinate = ({
   useEffect(() => {
     storeHideAbout(!showAbout)
   }, [showAbout])
+
+  // alert error if subgraph(s) out of sync.
+  useEffect(() => {
+    if (!syncStatus) return
+    const sendingChain = getChainByKey(depositChain)
+    const sendingSyncStatus = syncStatus[sendingChain.id]
+    const receivingChain = getChainByKey(withdrawChain)
+    const receivingSyncStatus = syncStatus[receivingChain.id]
+    if (!sendingSyncStatus.synced) {
+      setAlert(`${sendingChain.name} subgraph is out of sync. Please try again later.`)
+    } else if (!receivingSyncStatus.synced) {
+      setAlert(`${receivingChain.name} subgraph is out of sync. Please try again later.`)
+    } else {
+      setAlert(undefined)
+    }
+  }, [syncStatus])
 
   // auto-trigger finish if corresponding modal is opend
   // useEffect(() => {
@@ -1244,13 +1263,6 @@ const SwapXpollinate = ({
       </div>
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
-        {/* Warning Message */}
-        <Row justify="center" style={{ padding: 20, paddingBottom: 0, display: 'none' }}>
-          <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
-            <Alert message="" description="" type="error" />
-          </Col>
-        </Row>
-
         {/* Infos */}
         {showAbout && (
           <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
@@ -1386,6 +1398,15 @@ const SwapXpollinate = ({
                   <Title className="swap-title" level={4}>
                     Cross-Chain Swap
                   </Title>
+                </Row>
+
+                {/* Warning Message */}
+                <Row
+                  justify="center"
+                  style={{ marginBottom: 20, display: alert ? 'flex' : 'none' }}>
+                  <Col span={24} flex="auto">
+                    <Alert banner message={alert} type="warning" />
+                  </Col>
                 </Row>
 
                 <Form>

@@ -254,10 +254,10 @@ const SwapFormNxtp = ({
         </Col>
 
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 2 }}>
-          <Row style={{ margin: 32 }} justify={'center'}>
+          <Row style={{ margin: 24 }} justify={'center'}>
             <SwapOutlined
               className="change-swap-direction"
-              style={{ fontSize: 28 }}
+              style={{ fontSize: 28, padding: 10, background: 'rgb(46, 46, 46)', borderRadius: 28 }}
               onClick={() => changeDirection()}
             />
           </Row>
