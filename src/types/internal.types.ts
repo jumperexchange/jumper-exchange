@@ -1,13 +1,4 @@
-import {
-  Action,
-  ChainKey,
-  Coin,
-  CoinKey,
-  Estimate,
-  Execution,
-  findDefaultCoinOnChain,
-  Token,
-} from '@lifinance/types'
+import { ChainKey, Coin, CoinKey, findDefaultCoinOnChain, Token } from '@lifinance/types'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
@@ -24,6 +15,7 @@ import ftm from '../assets/icons/fantom.png'
 import one from '../assets/icons/harmony.png'
 import onet from '../assets/icons/harmony_test.png'
 import honey from '../assets/icons/honey.png'
+import mor from '../assets/icons/moonriver.png'
 import opt from '../assets/icons/optimism.png'
 import pancake from '../assets/icons/pancake.png'
 import pol from '../assets/icons/polygon.png'
@@ -67,14 +59,16 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
   ],
   [ChainKey.ARB]: [
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ARB),
   ],
   [ChainKey.OPT]: [
-    // findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
+    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OPT),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OPT),
+    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.OPT),
   ],
   [ChainKey.ONE]: [
     findDefaultCoinOnChain(CoinKey.ONE, ChainKey.ONE),
@@ -82,9 +76,15 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ONE),
   ],
   [ChainKey.AVA]: [
+    findDefaultCoinOnChain(CoinKey.AVAX, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.AVA),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.AVA),
+  ],
+  [ChainKey.MOR]: [
+    findDefaultCoinOnChain(CoinKey.MOVR, ChainKey.MOR),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MOR),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MOR),
   ],
 
   // Testnet
@@ -138,6 +138,7 @@ export const icons: { [key: string]: string } = {
   // [ChainKey.HEC]: hec,
   [ChainKey.OPT]: opt,
   [ChainKey.ONE]: one,
+  [ChainKey.MOR]: mor,
 
   // Testnets
   [ChainKey.ROP]: rop,
@@ -235,6 +236,7 @@ export interface WalletSummary {
   [ChainKey.ARB]: SummaryAmounts
   [ChainKey.ONE]: SummaryAmounts
   [ChainKey.FSN]: SummaryAmounts
+  [ChainKey.MOR]: SummaryAmounts
 
   [ChainKey.ROP]: SummaryAmounts
   [ChainKey.RIN]: SummaryAmounts
@@ -251,11 +253,4 @@ export interface WalletSummary {
 export interface ProgressStep {
   title: string
   description: string
-}
-
-export interface TransferStep {
-  action: Action
-  estimate?: Estimate
-  execution?: Execution
-  id?: string
 }

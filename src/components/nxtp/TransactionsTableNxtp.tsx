@@ -4,14 +4,13 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Spin, Table } from 'antd'
 import Link from 'antd/lib/typography/Link'
-import React from 'react'
 
-import { CrossEstimate, getChainById, TokenWithAmounts, TransferStep } from '../../types'
+import { getChainById, Route, TokenWithAmounts } from '../../types'
 import { ActiveTransaction, CrosschainTransaction } from './typesNxtp'
 
 interface TransactionsTableNxtpProps {
-  activeTransactions: Array<ActiveTransaction>
-  executionRoutes: Array<Array<TransferStep>>
+  activeTransactions: ActiveTransaction[]
+  executionRoutes: Route[]
   setModalRouteIndex: Function
   openSwapModalFinish: Function
   switchChain: Function
@@ -74,13 +73,13 @@ const TransactionsTableNxtp = ({
             />
           )
         } else {
-          const index = executionRoutes.findIndex((item) => {
+          const index = executionRoutes.findIndex((route) => {
             return (
-              (item[0].estimate as CrossEstimate).data.bid.transactionId ===
+              route.steps[0].estimate.data.bid.transactionId ===
               action.txData.invariant.transactionId
             )
           })
-          if (index !== -1 && executionRoutes[index][0].execution?.status === 'FAILED') {
+          if (index !== -1 && executionRoutes[index].steps[0].execution?.status === 'FAILED') {
             return 'Failed'
           } else if (index !== -1) {
             return (
@@ -99,10 +98,9 @@ const TransactionsTableNxtp = ({
       title: 'Status',
       dataIndex: '',
       render: (action: ActiveTransaction) => {
-        const index = executionRoutes.findIndex((item) => {
+        const index = executionRoutes.findIndex((route) => {
           return (
-            (item[0].estimate as CrossEstimate).data.bid.transactionId ===
-            action.txData.invariant.transactionId
+            route.steps[0].estimate.data.bid.transactionId === action.txData.invariant.transactionId
           )
         })
 

@@ -7,12 +7,12 @@ import { BaseType } from 'antd/lib/typography/Base'
 import { switchChain } from '../../services/metamask'
 import { renderProcessMessage } from '../../services/processRenderer'
 import { formatTokenAmount } from '../../services/utils'
-import { CrossAction, Execution, getChainById, getIcon, TransferStep } from '../../types'
+import { Execution, getChainById, getIcon, Route, Step } from '../../types'
 import Clock from '../Clock'
 import { injected } from '../web3/connectors'
 
 interface SwappingProps {
-  route: Array<TransferStep>
+  route: Route
 }
 
 const SwappingNxtp = ({ route }: SwappingProps) => {
@@ -60,20 +60,20 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
   }
 
   const parseChainSteps = () => {
-    const isDone = web3.chainId === route[0].action.chainId
+    const isDone = web3.chainId === route.steps[0].action.fromChainId
     const isActive = !isDone && web3.account
 
-    const chain = getChainById(route[0].action.chainId)
+    const chain = getChainById(route.steps[0].action.fromChainId)
     const button = (
       <Button
         type="primary"
         disabled={!web3.account}
-        onClick={() => switchChain(route[0].action.chainId)}>
+        onClick={() => switchChain(route.steps[0].action.fromChainId)}>
         Switch Chain to {chain.name}
       </Button>
     )
     const buttonText = (
-      <Typography.Text onClick={() => switchChain(route[0].action.chainId)}>
+      <Typography.Text onClick={() => switchChain(route.steps[0].action.fromChainId)}>
         Switch Chain to {chain.name}
       </Typography.Text>
     )
@@ -87,7 +87,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
         <h4 style={{ marginBottom: 0 }}>Switch to {chain.name}</h4>
       </Timeline.Item>,
       <Timeline.Item key="chain_right" color={color}>
-        {web3.chainId !== route[0].action.chainId ? (
+        {web3.chainId !== route.steps[0].action.fromChainId ? (
           buttonText
         ) : (
           <p style={{ display: 'flex' }}>
@@ -167,10 +167,10 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
     )
   }
 
-  const parseStepToTimeline = (step: TransferStep, index: number) => {
+  const parseStepToTimeline = (step: Step, index: number) => {
     const executionSteps = parseExecution(step.execution)
 
-    switch (step.action.type) {
+    switch (step.type) {
       case 'cross': {
         return executionSteps
       }
@@ -182,7 +182,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
   }
 
   const getCurrentProcess = () => {
-    for (const step of route) {
+    for (const step of route.steps) {
       if (step.execution?.process) {
         for (const process of step.execution?.process) {
           if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
@@ -196,7 +196,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
 
   const getLastProcess = () => {
     let lastProcess
-    for (const step of route) {
+    for (const step of route.steps) {
       if (step.execution?.process) {
         for (const process of step.execution?.process) {
           lastProcess = process
@@ -207,21 +207,20 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
   }
 
   const currentProcess = getCurrentProcess()
-  const swapStartedAt = route[0].execution?.process[0]?.startedAt
+  const swapStartedAt = route.steps[0].execution?.process[0]?.startedAt
   const lastProcess = getLastProcess()
   const swapDoneAt = lastProcess?.doneAt || lastProcess?.failedAt
 
   const mode = 'left'
-  const step = route[0]
-  step.action = step.action as CrossAction
+  const step = route.steps[0]
   return (
     <>
       <h2 style={{ textAlign: 'center' }}>
-        Transfer from {getChainAvatar(step.action.chainId)} to{' '}
+        Transfer from {getChainAvatar(step.action.fromChainId)} to{' '}
         {getChainAvatar(step.action.toChainId)}
       </h2>
       <p style={{ textAlign: 'center' }}>
-        {formatTokenAmount(step.action.token, step.estimate?.fromAmount)}
+        {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}
         <ArrowRightOutlined />
         {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
       </p>
@@ -233,10 +232,10 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
         {!web3.account && parseWalletSteps()}
 
         {/* Chain */}
-        {web3.chainId !== route[0].action.chainId && parseChainSteps()}
+        {web3.chainId !== route.steps[0].action.fromChainId && parseChainSteps()}
 
         {/* Steps */}
-        {route.map(parseStepToTimeline)}
+        {route.steps.map(parseStepToTimeline)}
       </Timeline>
 
       <div style={{ display: 'flex', maxWidth: 400, margin: 'auto' }}>

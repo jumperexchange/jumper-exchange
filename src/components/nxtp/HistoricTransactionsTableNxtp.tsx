@@ -3,7 +3,6 @@ import { Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import Link from 'antd/lib/typography/Link'
 import BigNumber from 'bignumber.js'
-import React from 'react'
 
 import { getChainById, TokenWithAmounts } from '../../types'
 
