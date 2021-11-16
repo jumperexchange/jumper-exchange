@@ -66,6 +66,10 @@ const transferTokens = {
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MOR),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MOR),
   ],
+  [ChainKey.OPT]: [
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OPT),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OPT),
+  ],
 }
 
 function usePageViews() {
