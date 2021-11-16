@@ -194,12 +194,12 @@
 .xpollinate .swap-input {
   background: #1a191b;
   box-sizing: border-box;
-  border-radius: 20px;
+
   border-radius: 6px;
 }
 
 .xpollinate .swap-form {
-  box-shadow: 0px 4px 100px 40px rgba(81, 28, 156, 0.425);
+  box-shadow: 0px 4px 100px 40px rgba(81, 28, 156, 0.425), 0 10px 20px 5px rgba(88, 153, 253, 0.5);
 }
 
 .xpollinate .change-swap-direction {
@@ -217,10 +217,26 @@
 
 .xpollinate .ant-collapse-header .anticon-right.ant-collapse-arrow {
   margin-right: 6px;
+}
+
+.xpollinate .ant-collapse-header .anticon-right.ant-collapse-arrow svg {
+  font-size: 10px;
+  margin-bottom: 1px;
+}
+
+.xpollinate .active-transactions .ant-collapse-header .anticon-right.ant-collapse-arrow svg {
+  margin-bottom: 1px;
   font-size: 14px;
 }
-.xpollinate .ant-collapse-header .anticon-right.ant-collapse-arrow svg {
-  margin-bottom: 1px;
+.xpollinate .active-transactions .ant-collapse-content-box {
+  padding: 0 !important;
+}
+
+.xpollinate .fees-collapse .ant-collapse-header {
+  padding: 0;
+}
+.xpollinate .fees-collapse .ant-collapse-content-box {
+  padding-top: 0 !important;
 }
 
 .xpollinate .advanced-options * {
@@ -231,9 +247,8 @@
 }
 .xpollinate .advanced-options .anticon-right.ant-collapse-arrow svg {
   margin-bottom: 1px;
-  font-size: 10px;
+  font-size: 9px;
 }
-
 .xpollinate .advanced-options .ant-collapse-content-box {
   background: rgb(46, 46, 46);
   border-radius: 20px;

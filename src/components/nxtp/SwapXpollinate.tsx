@@ -16,7 +16,13 @@ import {
   SwapOutlined,
   SyncOutlined,
 } from '@ant-design/icons'
-import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk'
+import {
+  GetTransferQuote,
+  NxtpSdk,
+  NxtpSdkEvent,
+  NxtpSdkEvents,
+  SubgraphSyncRecord,
+} from '@connext/nxtp-sdk'
 import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
@@ -83,6 +89,17 @@ const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
 const DISABLED = false
+const FEE_INFO: { [K in keyof Fees]: string } = {
+  gas: 'Covers gas expense for sending funds to user on receiving chain.',
+  relayer: 'Covers gas expense for claiming user funds on receiving chain.',
+  router: 'Router service fee.',
+}
+
+type Fees = {
+  gas: BigNumber
+  relayer: BigNumber
+  router: BigNumber
+}
 
 const getDefaultParams = (
   search: string,
@@ -277,7 +294,12 @@ const SwapXpollinate = ({
   // Routes
   const [routeUpdate, setRouteUpdate] = useState<number>(1)
   const [routeRequest, setRouteRequest] = useState<any>()
-  const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
+  const [routeQuote, setRouteQuote] = useState<GetTransferQuote>()
+  const [routeQuoteFees, setRouteQuoteFees] = useState<Fees>({
+    gas: new BigNumber(0),
+    relayer: new BigNumber(0),
+    router: new BigNumber(0),
+  })
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [routes, setRoutes] = useState<Route[]>([])
@@ -304,6 +326,11 @@ const SwapXpollinate = ({
 
   // update query string
   useEffect(() => {
+    // TODO: Could use local estimate to determine what the minimum we could possibly send would
+    // likely be here.
+    if (depositAmount.lte(0)) {
+      return
+    }
     const params = {
       fromChain: getChainByKey(depositChain).id,
       fromToken: depositToken,
@@ -807,6 +834,21 @@ const SwapXpollinate = ({
     const fToken = findToken(routeRequest.depositChain, routeRequest.depositToken)
     const tToken = findToken(routeRequest.withdrawChain, routeRequest.withdrawToken)
 
+    // Calculate fees.
+    const fromAmount = new BigNumber(dAmount).shiftedBy(-fToken.decimals)
+    const toAmount = new BigNumber(routeQuote.bid.amountReceived).shiftedBy(-tToken.decimals)
+
+    const gasFee = new BigNumber(routeQuote.gasFeeInReceivingToken).shiftedBy(-tToken.decimals)
+    const relayerFee = new BigNumber(routeQuote.metaTxRelayerFee ?? '0').shiftedBy(-tToken.decimals)
+    const routerFee = fromAmount.minus(toAmount).minus(gasFee)
+
+    const actualAmountReceived = fromAmount
+      .minus(gasFee)
+      .minus(relayerFee)
+      .minus(routerFee)
+      .shiftedBy(tToken.decimals)
+      .toString()
+
     const action: Action = {
       fromChainId: getChainByKey(routeRequest.depositChain).id,
       toChainId: getChainByKey(routeRequest.withdrawChain).id,
@@ -816,11 +858,11 @@ const SwapXpollinate = ({
       toAddress: '',
       slippage: 0,
     }
-    // TODO: calculate real fee
+
     const estimate: Estimate = {
       fromAmount: routeQuote.bid.amount,
-      toAmount: routeQuote.bid.amountReceived,
-      toAmountMin: routeQuote.bid.amountReceived,
+      toAmount: actualAmountReceived,
+      toAmountMin: actualAmountReceived,
       approvalAddress: '',
       data: routeQuote,
     }
@@ -842,8 +884,8 @@ const SwapXpollinate = ({
       // fromAddress?: string,
       toChainId: getChainByKey(routeRequest.withdrawChain).id,
       toAmountUSD: '',
-      toAmount: routeQuote.bid.amountReceived,
-      toAmountMin: routeQuote.bid.amountReceived,
+      toAmount: actualAmountReceived,
+      toAmountMin: actualAmountReceived,
       toToken: tToken,
       // toAddress?: string,
       // gasCostUSD?: string;
@@ -856,6 +898,11 @@ const SwapXpollinate = ({
     // const sortedRoutes: Step[][] = [[crossStep]]
     const sortedRoutes: Route[] = [route]
     setRoutes(sortedRoutes)
+    setRouteQuoteFees({
+      gas: gasFee,
+      relayer: relayerFee,
+      router: routerFee,
+    })
     setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
     setNoRoutesAvailable(sortedRoutes.length === 0)
     setRoutesLoading(false)
@@ -988,6 +1035,13 @@ const SwapXpollinate = ({
           htmlType="submit"
           onClick={() => switchChain(getChainByKey(depositChain).id)}>
           Change Chain
+        </Button>
+      )
+    }
+    if (depositAmount.lte(new BigNumber(0))) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={'large'}>
+          Enter Amount
         </Button>
       )
     }
@@ -1147,64 +1201,42 @@ const SwapXpollinate = ({
 
   const priceImpact = () => {
     const token = transferTokens[withdrawChain].find((token) => token.id === withdrawToken)
-    let fees = new BigNumber(0)
-    let routerFee = new BigNumber(0)
-    let gasFee = new BigNumber(0)
+    const total = routeQuoteFees.gas.plus(routeQuoteFees.relayer).plus(routeQuoteFees.router)
     let decimals = 2
-
     if (highlightedIndex !== -1) {
-      const selectedRoute = routes[highlightedIndex]
-      const cross = selectedRoute.steps[0] as CrossStep
-
-      const fromToken = cross.action.toToken
-      const fromAmount = new BigNumber(cross.estimate.fromAmount).shiftedBy(-fromToken.decimals)
-
-      const toToken = cross.action.toToken
-      const toAmount = new BigNumber(cross.estimate.toAmount).shiftedBy(-toToken.decimals)
-
-      fees = fromAmount.minus(toAmount)
-
-      gasFee = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(
-        -toToken.decimals,
-      )
-      routerFee = fees.minus(gasFee)
-
-      if (routerFee.lt('0.01')) {
+      if (routeQuoteFees.router.lt('0.01')) {
         decimals = 4
       }
     }
 
     return (
-      <div>
-        <Tooltip
-          color={'gray'}
-          placement="topRight"
-          title={
-            <table>
-              <tbody>
-                <tr>
-                  <td>Included Fees:</td>
-                  <td style={{ textAlign: 'right' }}></td>
-                </tr>
-                <tr>
-                  <td>Router Fee</td>
-                  <td style={{ textAlign: 'right' }}>
-                    {routerFee.toFixed(decimals, 1)} {token?.symbol}
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ paddingRight: 10 }}>Gas Fee</td>
-                  <td style={{ textAlign: 'right' }}>
-                    {gasFee.toFixed(decimals, 1)} {token?.symbol}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          }>
-          Fees: {fees.toFixed(4)} {token?.symbol}
-          <Badge count={<InfoCircleOutlined style={{ color: 'gray' }} />} offset={[4, -1]} />
-        </Tooltip>
-      </div>
+      <Collapse className="fees-collapse" ghost>
+        <Collapse.Panel
+          header={`Total Fees: ${total.toFixed(decimals)} ${token?.symbol}`}
+          key={'fees'}>
+          <Row>
+            <Col span={24}>
+              {Object.entries(routeQuoteFees).map(([label, amount]) => {
+                const info = FEE_INFO[label as keyof typeof FEE_INFO]
+                return (
+                  <Row style={{ padding: '6px 0 0 0' }}>
+                    <Col span={12}>{label.slice(0, 1).toUpperCase() + label.slice(1)} Fee</Col>
+                    <Col span={12} style={{ textAlign: 'right' }}>
+                      {amount.toFixed(decimals, 1)} {token?.symbol}
+                      <Tooltip color={'gray'} placement="topRight" title={info}>
+                        <Badge
+                          count={<InfoCircleOutlined style={{ color: 'gray' }} />}
+                          offset={[4, -3]}
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                )
+              })}
+            </Col>
+          </Row>
+        </Collapse.Panel>
+      </Collapse>
     )
   }
 
@@ -1319,37 +1351,41 @@ const SwapXpollinate = ({
         )}
 
         <Col style={{ padding: 20, paddingBottom: 0 }}>
-          {/* Active Transactions */}
-          <Collapse activeKey={activeKeyTransactions} accordion ghost>
-            <Collapse.Panel
-              className={activeTransactions.length ? '' : 'empty'}
-              header={
-                <h2
-                  onClick={() =>
-                    setActiveKeyTransactions((key) => (key === 'active' ? '' : 'active'))
+          <Row justify={'center'} align={'middle'}>
+            <Col
+              style={{
+                marginBottom: 20,
+                width: '100%',
+                maxWidth: 940,
+                minWidth: 392,
+                textAlign: activeTransactions.length === 0 ? 'center' : 'inherit',
+              }}>
+              {/* Active Transactions */}
+              <Collapse
+                className="active-transactions"
+                activeKey={activeKeyTransactions}
+                accordion
+                ghost>
+                <Collapse.Panel
+                  className={activeTransactions.length ? '' : 'empty'}
+                  header={
+                    <h2
+                      onClick={() =>
+                        setActiveKeyTransactions((key) => (key === 'active' ? '' : 'active'))
+                      }
+                      style={{ display: 'inline' }}>
+                      Active Transactions (
+                      {!sdk ? (
+                        '-'
+                      ) : updatingActiveTransactions ? (
+                        <SyncOutlined spin style={{ verticalAlign: -4 }} />
+                      ) : (
+                        activeTransactions.length
+                      )}
+                      )
+                    </h2>
                   }
-                  style={{ display: 'inline' }}>
-                  Active Transactions (
-                  {!sdk ? (
-                    '-'
-                  ) : updatingActiveTransactions ? (
-                    <SyncOutlined spin style={{ verticalAlign: -4 }} />
-                  ) : (
-                    activeTransactions.length
-                  )}
-                  )
-                </h2>
-              }
-              key="active">
-              <Row justify={'center'} align={'middle'}>
-                <Col
-                  style={{
-                    marginBottom: 20,
-                    width: '100%',
-                    maxWidth: 940,
-                    minWidth: 392,
-                    textAlign: activeTransactions.length === 0 ? 'center' : 'inherit',
-                  }}>
+                  key="active">
                   {activeTransactions.length > 0 ? (
                     <div
                       style={{
@@ -1373,10 +1409,10 @@ const SwapXpollinate = ({
                   ) : (
                     <EllipsisOutlined style={{ fontSize: 24 }} />
                   )}
-                </Col>
-              </Row>
-            </Collapse.Panel>
-          </Collapse>
+                </Collapse.Panel>
+              </Collapse>
+            </Col>
+          </Row>
           {/* Swap Form */}
           <Row style={{ margin: 20, marginTop: 0 }} justify={'center'}>
             <Col
@@ -1431,9 +1467,15 @@ const SwapXpollinate = ({
                     syncStatus={syncStatus}
                   />
 
-                  <Row justify={'end'} style={{ margin: '20px 20px 0 0' }}>
-                    {priceImpact()}
-                  </Row>
+                  <div
+                    style={{
+                      marginTop: 12,
+                      padding: '12px 0',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}>
+                    <div style={{ maxWidth: 400, width: '100%' }}>{priceImpact()}</div>
+                  </div>
 
                   <Row style={{ marginTop: 12 }} justify={'center'}>
                     {submitButton()}
@@ -1561,7 +1603,7 @@ const SwapXpollinate = ({
 
       {modalRouteIndex !== undefined ? (
         <Modal
-          className="swapModal xpol-swap-modal"
+          className="xpol-swap-modal"
           visible={true}
           onOk={() => setModalRouteIndex(undefined)}
           onCancel={() => setModalRouteIndex(undefined)}
