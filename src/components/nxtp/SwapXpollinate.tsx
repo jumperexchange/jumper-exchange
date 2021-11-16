@@ -5,12 +5,14 @@ import './SwapXpollinate.css'
 import {
   CheckOutlined,
   CompassOutlined,
-  DownOutlined,
+  EllipsisOutlined,
   ExportOutlined,
   HistoryOutlined,
   InfoCircleOutlined,
   LinkOutlined,
+  LoadingOutlined,
   LoginOutlined,
+  MenuOutlined,
   SwapOutlined,
   SyncOutlined,
 } from '@ant-design/icons'
@@ -25,12 +27,12 @@ import {
   Checkbox,
   Col,
   Collapse,
-  Dropdown,
   Form,
   Input,
   Menu,
   Modal,
   Row,
+  Spin,
   Tooltip,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
@@ -42,10 +44,10 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import onehiveWordmark from '../../assets/1hive_wordmark.svg'
-import connextWordmark from '../../assets/connext_wordmark.png'
+import onehiveWordmark from '../../assets/1hive_wordmark_dark.svg'
+import connextWordmark from '../../assets/connext_wordmark_dark.png'
 import lifiWordmark from '../../assets/lifi_wordmark.svg'
-import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg'
+import xpollinateWordmark from '../../assets/xpollinate_wordmark_dark.svg'
 import { getBalancesForWalletFromChain } from '../../services/balanceService'
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
@@ -67,8 +69,8 @@ import {
   Token,
   TokenWithAmounts,
 } from '../../types'
-import SwapForm from '../SwapForm'
 import { getRpcProviders, injected } from '../web3/connectors'
+import SwapFormNxtp from './SwapFormNxtp'
 import SwappingNxtp from './SwappingNxtp'
 import TestBalanceOverview from './TestBalanceOverview'
 import TransactionsTableNxtp from './TransactionsTableNxtp'
@@ -1033,11 +1035,16 @@ const SwapXpollinate = ({
     }
   }
 
-  const handleMenuClick = (e: any) => {
-    if (e.key === 'mainnet' || e.key === 'testnet') {
-      // open link
-    } else {
-      switchChain(parseInt(e.key))
+  const handleMenuSelect = (e: any) => {
+    if (e.key.startsWith('chain-')) {
+      const key = e.key.split('-')[1]
+      if (key === 'mainnet' || key === 'testnet') {
+        // open link
+      } else {
+        switchChain(parseInt(key))
+      }
+    } else if (e.key === 'connect-wallet') {
+      activate(injected)
     }
   }
 
@@ -1052,11 +1059,31 @@ const SwapXpollinate = ({
   }
   const currentChain = getCurrentChain()
   const menuChain = (
-    <Menu onClick={handleMenuClick}>
+    <Menu.SubMenu
+      className="xpol-menu"
+      key="chain"
+      style={{}}
+      title={
+        <>
+          <Badge
+            color={
+              syncStatus && currentChain && syncStatus[currentChain.id]
+                ? syncStatus[currentChain.id].synced
+                  ? 'green'
+                  : 'orange'
+                : 'gray'
+            }
+            text={currentChain?.name || 'Unsupported Chain'}
+          />{' '}
+        </>
+      }>
       <Menu.ItemGroup title="Supported Chains">
         {transferChains.map((chain) => {
           return (
-            <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
+            <Menu.Item
+              key={`chain-${chain.id}`}
+              icon={<LoginOutlined />}
+              disabled={web3.chainId === chain.id}>
               <Badge
                 color={syncStatus ? (syncStatus[chain.id].synced ? 'green' : 'orange') : 'gray'}
                 text={chain.name}
@@ -1080,15 +1107,18 @@ const SwapXpollinate = ({
           </Menu.Item>
         )}
       </Menu.ItemGroup>
-    </Menu>
+    </Menu.SubMenu>
   )
 
-  const menuAccount = (
-    <Menu>
-      <Menu.Item key="disconnect" onClick={() => disconnect()}>
+  const menuAccount = web3.account && (
+    <Menu.SubMenu
+      className="xpol-menu"
+      key="account"
+      title={`${web3.account.substr(0, 6)}...${web3.account.substr(-4, 4)}`}>
+      <Menu.Item key="account-disconnect" onClick={() => disconnect()}>
         Disconnect
       </Menu.Item>
-    </Menu>
+    </Menu.SubMenu>
   )
 
   const disconnect = () => {
@@ -1162,94 +1192,77 @@ const SwapXpollinate = ({
   return (
     <Content className="site-layout xpollinate">
       <div className="xpollinate-header">
-        <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
-          <a href="/">
-            <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
-            <span className="version">v2 {testnet && 'Testnet'}</span>
-          </a>
-
-          <span className="header-options">
-            <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
-              <Button className="header-button">
-                <CompassOutlined />
-                Explorer
-              </Button>
-            </a>
-
-            {web3.account ? (
-              <>
-                <a
-                  href={`https://connextscan.io/address/${web3.account}`}
-                  target="_blank"
-                  rel="nofollow noreferrer">
-                  <Button className="header-button">
-                    <HistoryOutlined />
-                    Transaction History
-                  </Button>
+        <Row justify="space-between" style={{ padding: 20, height: 84 }} wrap={false}>
+          <Col flex="auto">
+            <Menu
+              id="testmenu"
+              className="xpol-menu"
+              overflowedIndicator={<MenuOutlined />}
+              mode="horizontal"
+              selectable={false}
+              // style={{ marginLeft: 'auto' }}
+              // style={{ float: 'right' }}
+              style={{ margin: '0 0 0 auto' }}
+              onClick={handleMenuSelect}>
+              {web3.account ? (
+                <>
+                  {menuChain}
+                  {menuAccount}
+                  <Menu.Item key="history" icon={<HistoryOutlined />}>
+                    <a
+                      href={`https://connextscan.io/address/${web3.account}`}
+                      target="_blank"
+                      rel="nofollow noreferrer">
+                      Transaction History
+                    </a>
+                  </Menu.Item>
+                </>
+              ) : (
+                <Menu.Item key="connect-wallet" icon={<LoginOutlined />}>
+                  Connect Wallet
+                </Menu.Item>
+              )}
+              <Menu.Item key="explorer" icon={<CompassOutlined />}>
+                <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
+                  Explorer
                 </a>
-
-                <Dropdown overlay={menuChain}>
-                  <Button className="header-button">
-                    <Badge
-                      color={
-                        syncStatus && currentChain && syncStatus[currentChain.id]
-                          ? syncStatus[currentChain.id].synced
-                            ? 'green'
-                            : 'orange'
-                          : 'gray'
-                      }
-                      text={currentChain?.name || 'Unsupported Chain'}
-                    />{' '}
-                    <DownOutlined />
-                  </Button>
-                </Dropdown>
-
-                <Dropdown overlay={menuAccount}>
-                  <Button className="header-button">
-                    {web3.account.substr(0, 6)}...{web3.account.substr(-4, 4)}
-                  </Button>
-                </Dropdown>
-              </>
-            ) : (
-              <Button
-                shape="round"
-                type="link"
-                icon={<LoginOutlined />}
-                onClick={() => activate(injected)}>
-                Connect Wallet
-              </Button>
-            )}
-
-            <a
-              href="https://chat.connext.network/"
-              target="_blank"
-              rel="nofollow noreferrer"
-              className="header-button support-link">
-              <span>
-                <LinkOutlined /> Support
-              </span>
+              </Menu.Item>
+              <Menu.Item key="support" icon={<LinkOutlined />}>
+                <a href="https://chat.connext.network/" target="_blank" rel="nofollow noreferrer">
+                  Support
+                </a>
+              </Menu.Item>
+            </Menu>
+          </Col>
+          <Col style={{ marginRight: 24 }}>
+            <a href="/">
+              <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
+              <span className="version">v2 {testnet && 'Testnet'}</span>
             </a>
-          </span>
+          </Col>
         </Row>
       </div>
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
         {/* Warning Message */}
         <Row justify="center" style={{ padding: 20, paddingBottom: 0, display: 'none' }}>
-          <Alert style={{ maxWidth: 700 }} message="" description="" type="error" />
+          <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
+            <Alert message="" description="" type="error" />
+          </Col>
         </Row>
 
         {/* Infos */}
         {showAbout && (
           <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
-            <Alert
-              style={{ maxWidth: 700 }}
-              afterClose={() => setShowAbout(false)}
-              message={aboutMessage}
-              description={aboutDescription}
-              type="info"
-              closable={true}
-            />
+            <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
+              <Alert
+                afterClose={() => setShowAbout(false)}
+                message={aboutMessage}
+                description={aboutDescription}
+                type="info"
+                closable={true}
+              />
+            </Col>
           </Row>
         )}
 
@@ -1316,43 +1329,67 @@ const SwapXpollinate = ({
                 </h2>
               }
               key="active">
-              <div
-                style={{
-                  overflowX: 'scroll',
-                  background: 'white',
-                  margin: '10px 20px',
-                }}>
-                <TransactionsTableNxtp
-                  activeTransactions={activeTransactions}
-                  executionRoutes={executionRoutes}
-                  setModalRouteIndex={setModalRouteIndex}
-                  openSwapModalFinish={openSwapModalFinish}
-                  switchChain={switchChain}
-                  cancelTransfer={cancelTransfer}
-                  tokens={tokens}
-                />
-              </div>
+              <Row justify={'center'} align={'middle'}>
+                <Col
+                  style={{
+                    marginBottom: 20,
+                    width: '100%',
+                    maxWidth: 940,
+                    minWidth: 392,
+                    textAlign: activeTransactions.length === 0 ? 'center' : 'inherit',
+                  }}>
+                  {activeTransactions.length > 0 ? (
+                    <div
+                      style={{
+                        overflowX: 'scroll',
+                      }}>
+                      <TransactionsTableNxtp
+                        activeTransactions={activeTransactions}
+                        executionRoutes={executionRoutes}
+                        setModalRouteIndex={setModalRouteIndex}
+                        openSwapModalFinish={openSwapModalFinish}
+                        switchChain={switchChain}
+                        cancelTransfer={cancelTransfer}
+                        tokens={tokens}
+                      />
+                    </div>
+                  ) : updatingActiveTransactions ? (
+                    <Spin
+                      style={{ margin: 'auto', display: 'block' }}
+                      indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />}
+                    />
+                  ) : (
+                    <EllipsisOutlined style={{ fontSize: 24 }} />
+                  )}
+                </Col>
+              </Row>
             </Collapse.Panel>
           </Collapse>
           {/* Swap Form */}
           <Row style={{ margin: 20, marginTop: 0 }} justify={'center'}>
-            <Col className="swap-form">
+            <Col
+              className="swap-form"
+              style={{
+                borderRadius: 12,
+                margin: '6px 12px 0',
+                maxWidth: 940,
+                minWidth: 392,
+              }}>
               <div
                 className="swap-input"
                 style={{
-                  maxWidth: 480,
-                  borderRadius: 6,
+                  borderRadius: 12,
                   padding: 24,
                   margin: '0 auto',
                 }}>
                 <Row>
                   <Title className="swap-title" level={4}>
-                    Send CrossChain Transaction
+                    Cross-Chain Swap
                   </Title>
                 </Row>
 
                 <Form>
-                  <SwapForm
+                  <SwapFormNxtp
                     depositChain={depositChain}
                     setDepositChain={setDepositChain}
                     depositToken={depositToken}
@@ -1373,62 +1410,79 @@ const SwapXpollinate = ({
                     syncStatus={syncStatus}
                   />
 
-                  <Row justify={'end'} style={{ marginRight: 20, marginTop: 4 }}>
+                  <Row justify={'end'} style={{ margin: '20px 20px 0 0' }}>
                     {priceImpact()}
                   </Row>
 
-                  <Row style={{ marginTop: 24 }} justify={'center'}>
+                  <Row style={{ marginTop: 12 }} justify={'center'}>
                     {submitButton()}
                   </Row>
                 </Form>
 
                 {/* Advanced Options */}
-                <Row justify={'center'}>
-                  <Collapse ghost>
-                    <Collapse.Panel header={`Advanced Options`} key="1">
-                      Infinite Approval
-                      <div>
-                        <Checkbox
-                          checked={optionInfiniteApproval}
-                          onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
-                          Activate Infinite Approval
-                        </Checkbox>
-                      </div>
-                      Receiving Address
-                      <Input
-                        value={optionReceivingAddress}
-                        onChange={(e) => setOptionReceivingAddress(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{40}$"
-                        placeholder="Only when other than your sending wallet"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                      Contract Address
-                      <Input
-                        value={optionContractAddress}
-                        onChange={(e) => setOptionContractAddress(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{40}$"
-                        placeholder="To call a contract"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                      CallData
-                      <Input
-                        value={optionCallData}
-                        onChange={(e) => setOptionCallData(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{64}$"
-                        placeholder="Only when calling a contract directly"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                    </Collapse.Panel>
-                  </Collapse>
+                <Row className="advanced-options">
+                  <Col span={24}>
+                    <Collapse ghost>
+                      <Collapse.Panel header={`Advanced Options`} key="1">
+                        <Row gutter={[16, 16]}>
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Infinite Approval
+                            <Checkbox
+                              style={{ margin: '4px 0 0 0' }}
+                              checked={optionInfiniteApproval}
+                              onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
+                              Activate Infinite Approval
+                            </Checkbox>
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Receiving Address
+                            <Input
+                              value={optionReceivingAddress}
+                              onChange={(e) => setOptionReceivingAddress(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{40}$"
+                              placeholder="Send funds to an address other than your current wallet"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Contract Address
+                            <Input
+                              value={optionContractAddress}
+                              onChange={(e) => setOptionContractAddress(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{40}$"
+                              placeholder="To call a contract"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Call Data
+                            <Input
+                              value={optionCallData}
+                              onChange={(e) => setOptionCallData(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{64}$"
+                              placeholder="Only when calling a contract directly"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </Collapse.Panel>
+                    </Collapse>
+                  </Col>
                 </Row>
               </div>
             </Col>
@@ -1486,7 +1540,7 @@ const SwapXpollinate = ({
 
       {modalRouteIndex !== undefined ? (
         <Modal
-          className="swapModal"
+          className="swapModal xpol-swap-modal"
           visible={true}
           onOk={() => setModalRouteIndex(undefined)}
           onCancel={() => setModalRouteIndex(undefined)}
