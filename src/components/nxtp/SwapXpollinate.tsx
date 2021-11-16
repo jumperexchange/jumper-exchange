@@ -5,17 +5,25 @@ import './SwapXpollinate.css'
 import {
   CheckOutlined,
   CompassOutlined,
-  DownOutlined,
+  EllipsisOutlined,
   ExportOutlined,
   HistoryOutlined,
   InfoCircleOutlined,
   LinkOutlined,
+  LoadingOutlined,
   LoginOutlined,
+  MenuOutlined,
   SwapOutlined,
   SyncOutlined,
 } from '@ant-design/icons'
-import { NxtpSdk, NxtpSdkEvent, NxtpSdkEvents, SubgraphSyncRecord } from '@connext/nxtp-sdk'
-import { AuctionResponse, TransactionPreparedEvent } from '@connext/nxtp-utils'
+import {
+  GetTransferQuote,
+  NxtpSdk,
+  NxtpSdkEvent,
+  NxtpSdkEvents,
+  SubgraphSyncRecord,
+} from '@connext/nxtp-sdk'
+import { TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
@@ -25,12 +33,12 @@ import {
   Checkbox,
   Col,
   Collapse,
-  Dropdown,
   Form,
   Input,
   Menu,
   Modal,
   Row,
+  Spin,
   Tooltip,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
@@ -42,10 +50,10 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import onehiveWordmark from '../../assets/1hive_wordmark.svg'
-import connextWordmark from '../../assets/connext_wordmark.png'
+import onehiveWordmark from '../../assets/1hive_wordmark_dark.svg'
+import connextWordmark from '../../assets/connext_wordmark_dark.png'
 import lifiWordmark from '../../assets/lifi_wordmark.svg'
-import xpollinateWordmark from '../../assets/xpollinate_wordmark.svg'
+import xpollinateWordmark from '../../assets/xpollinate_wordmark_dark.svg'
 import { getBalancesForWalletFromChain } from '../../services/balanceService'
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
@@ -67,8 +75,8 @@ import {
   Token,
   TokenWithAmounts,
 } from '../../types'
-import SwapForm from '../SwapForm'
 import { getRpcProviders, injected } from '../web3/connectors'
+import SwapFormNxtp from './SwapFormNxtp'
 import SwappingNxtp from './SwappingNxtp'
 import TestBalanceOverview from './TestBalanceOverview'
 import TransactionsTableNxtp from './TransactionsTableNxtp'
@@ -81,6 +89,17 @@ const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
 const DISABLED = false
+const FEE_INFO: { [K in keyof Fees]: string } = {
+  gas: 'Covers gas expense for sending funds to user on receiving chain.',
+  relayer: 'Covers gas expense for claiming user funds on receiving chain.',
+  router: 'Router service fee.',
+}
+
+type Fees = {
+  gas: BigNumber
+  relayer: BigNumber
+  router: BigNumber
+}
 
 const getDefaultParams = (
   search: string,
@@ -271,11 +290,17 @@ const SwapXpollinate = ({
   const [optionReceivingAddress, setOptionReceivingAddress] = useState<string>('')
   const [optionContractAddress, setOptionContractAddress] = useState<string>('')
   const [optionCallData, setOptionCallData] = useState<string>('')
+  const [optionPreferredRouter, setOptionPreferredRouter] = useState<string>('')
 
   // Routes
   const [routeUpdate, setRouteUpdate] = useState<number>(1)
   const [routeRequest, setRouteRequest] = useState<any>()
-  const [routeQuote, setRouteQuote] = useState<AuctionResponse>()
+  const [routeQuote, setRouteQuote] = useState<GetTransferQuote>()
+  const [routeQuoteFees, setRouteQuoteFees] = useState<Fees>({
+    gas: new BigNumber(0),
+    relayer: new BigNumber(0),
+    router: new BigNumber(0),
+  })
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [routes, setRoutes] = useState<Route[]>([])
@@ -297,8 +322,16 @@ const SwapXpollinate = ({
   const { activate, deactivate } = useWeb3React()
   const intervalRef = useRef<NodeJS.Timeout>()
 
+  // Alerts
+  const [alert, setAlert] = useState<string>()
+
   // update query string
   useEffect(() => {
+    // TODO: Could use local estimate to determine what the minimum we could possibly send would
+    // likely be here.
+    if (depositAmount.lte(0)) {
+      return
+    }
     const params = {
       fromChain: getChainByKey(depositChain).id,
       fromToken: depositToken,
@@ -316,6 +349,22 @@ const SwapXpollinate = ({
   useEffect(() => {
     storeHideAbout(!showAbout)
   }, [showAbout])
+
+  // alert error if subgraph(s) out of sync.
+  useEffect(() => {
+    if (!syncStatus) return
+    const sendingChain = getChainByKey(depositChain)
+    const sendingSyncStatus = syncStatus[sendingChain.id]
+    const receivingChain = getChainByKey(withdrawChain)
+    const receivingSyncStatus = syncStatus[receivingChain.id]
+    if (!sendingSyncStatus.synced) {
+      setAlert(`${sendingChain.name} subgraph is out of sync. Please try again later.`)
+    } else if (!receivingSyncStatus.synced) {
+      setAlert(`${receivingChain.name} subgraph is out of sync. Please try again later.`)
+    } else {
+      setAlert(undefined)
+    }
+  }, [syncStatus])
 
   // auto-trigger finish if corresponding modal is opend
   // useEffect(() => {
@@ -626,14 +675,18 @@ const SwapXpollinate = ({
     [tokens],
   )
 
-  const doRequestAndBidMatch = (request: any, quote: AuctionResponse) => {
+  const doRequestAndBidMatch = (request: any, quote: GetTransferQuote) => {
     if (
       getChainByKey(request.depositChain).id !== quote.bid.sendingChainId ||
       request.depositToken !== quote.bid.sendingAssetId ||
       getChainByKey(request.withdrawChain).id !== quote.bid.receivingChainId ||
       request.withdrawToken !== quote.bid.receivingAssetId ||
       request.depositAmount !== quote.bid.amount ||
-      request.receivingAddress !== quote.bid.receivingAddress
+      request.receivingAddress !== quote.bid.receivingAddress ||
+      // NOTE: If user executes with a preferred router and gets a quote, but then removes the preferred router,
+      // the request and quote here will still be considered a match (i.e. we won't get another quote).
+      // TODO: Is this desirable behavior?
+      (request.preferredRouters && !request.preferredRouters.includes(quote.bid.router))
       // || request.callTo !== quote.bid.callTo
       // || request.callData !== quote.bid.callDataHash
     ) {
@@ -653,6 +706,7 @@ const SwapXpollinate = ({
     receivingAddress: string,
     callTo: string | undefined,
     callData: string | undefined,
+    preferredRouters: string[] | undefined,
   ) => {
     setRouteRequest({
       depositChain,
@@ -663,6 +717,7 @@ const SwapXpollinate = ({
       receivingAddress,
       callTo,
       callData,
+      preferredRouters,
     })
   }
   const debouncedSave = useRef(debounce(defineRoute, DEBOUNCE_TIMEOUT)).current
@@ -675,6 +730,11 @@ const SwapXpollinate = ({
       return
     }
 
+    const preferredRouterPattern = /^0x[a-fA-F0-9]{40}$/
+    const preferredRouters =
+      optionPreferredRouter && preferredRouterPattern.exec(optionPreferredRouter)
+        ? [optionPreferredRouter]
+        : undefined
     if (depositAmount.gt(0) && depositChain && depositToken && withdrawChain && withdrawToken) {
       const receiving = optionReceivingAddress !== '' ? optionReceivingAddress : web3.account
       const callTo = optionContractAddress !== '' ? optionContractAddress : undefined
@@ -690,6 +750,7 @@ const SwapXpollinate = ({
         receiving,
         callTo,
         callData,
+        preferredRouters,
       )
     }
   }, [
@@ -700,6 +761,7 @@ const SwapXpollinate = ({
     withdrawToken,
     web3,
     sdk,
+    optionPreferredRouter,
     optionReceivingAddress,
     optionContractAddress,
     optionCallData,
@@ -723,6 +785,7 @@ const SwapXpollinate = ({
       receivingAddress: string,
       callTo: string | undefined,
       callData: string | undefined,
+      preferredRouters: string[] = [],
     ) => {
       setRoutesLoading(true)
 
@@ -737,6 +800,8 @@ const SwapXpollinate = ({
           receivingAddress,
           callTo,
           callData,
+          undefined,
+          preferredRouters,
         )
 
         if (!quote) {
@@ -769,22 +834,35 @@ const SwapXpollinate = ({
         routeRequest.receivingAddress,
         routeRequest.callTo,
         routeRequest.callData,
+        routeRequest.preferredRouters,
       )
     }
   }, [sdk, routeRequest, routeQuote, generateRoutes])
 
   // parse routeQuote if still it matches current request
   useEffect(() => {
-    if (!routeRequest || !routeQuote) {
-      return
-    }
-    if (!doRequestAndBidMatch(routeRequest, routeQuote)) {
+    if (!routeRequest || !routeQuote || !doRequestAndBidMatch(routeRequest, routeQuote)) {
       return
     }
     const id = uuid()
     const dAmount = routeRequest.depositAmount
     const fToken = findToken(routeRequest.depositChain, routeRequest.depositToken)
     const tToken = findToken(routeRequest.withdrawChain, routeRequest.withdrawToken)
+
+    // Calculate fees.
+    const fromAmount = new BigNumber(dAmount).shiftedBy(-fToken.decimals)
+    const toAmount = new BigNumber(routeQuote.bid.amountReceived).shiftedBy(-tToken.decimals)
+
+    const gasFee = new BigNumber(routeQuote.gasFeeInReceivingToken).shiftedBy(-tToken.decimals)
+    const relayerFee = new BigNumber(routeQuote.metaTxRelayerFee ?? '0').shiftedBy(-tToken.decimals)
+    const routerFee = fromAmount.minus(toAmount).minus(gasFee)
+
+    const actualAmountReceived = fromAmount
+      .minus(gasFee)
+      .minus(relayerFee)
+      .minus(routerFee)
+      .shiftedBy(tToken.decimals)
+      .toString()
 
     const action: Action = {
       fromChainId: getChainByKey(routeRequest.depositChain).id,
@@ -795,11 +873,11 @@ const SwapXpollinate = ({
       toAddress: '',
       slippage: 0,
     }
-    // TODO: calculate real fee
+
     const estimate: Estimate = {
       fromAmount: routeQuote.bid.amount,
-      toAmount: routeQuote.bid.amountReceived,
-      toAmountMin: routeQuote.bid.amountReceived,
+      toAmount: actualAmountReceived,
+      toAmountMin: actualAmountReceived,
       approvalAddress: '',
       data: routeQuote,
     }
@@ -821,8 +899,8 @@ const SwapXpollinate = ({
       // fromAddress?: string,
       toChainId: getChainByKey(routeRequest.withdrawChain).id,
       toAmountUSD: '',
-      toAmount: routeQuote.bid.amountReceived,
-      toAmountMin: routeQuote.bid.amountReceived,
+      toAmount: actualAmountReceived,
+      toAmountMin: actualAmountReceived,
       toToken: tToken,
       // toAddress?: string,
       // gasCostUSD?: string;
@@ -835,6 +913,11 @@ const SwapXpollinate = ({
     // const sortedRoutes: Step[][] = [[crossStep]]
     const sortedRoutes: Route[] = [route]
     setRoutes(sortedRoutes)
+    setRouteQuoteFees({
+      gas: gasFee,
+      relayer: relayerFee,
+      router: routerFee,
+    })
     setHighlightedIndex(sortedRoutes.length === 0 ? -1 : 0)
     setNoRoutesAvailable(sortedRoutes.length === 0)
     setRoutesLoading(false)
@@ -866,12 +949,12 @@ const SwapXpollinate = ({
     // add as active
     const action = route.steps[0].action
     const estimate = route.steps[0].estimate
-    const txData = {
+    const txData: CrosschainTransaction = {
       invariant: {
         user: '',
         router: '',
         initiator: '',
-        sendingAssetId: action.toToken.id,
+        sendingAssetId: action.fromToken.id,
         receivingAssetId: action.toToken.id,
         sendingChainFallback: '',
         callTo: '',
@@ -970,6 +1053,13 @@ const SwapXpollinate = ({
         </Button>
       )
     }
+    if (depositAmount.lte(new BigNumber(0))) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={'large'}>
+          Enter Amount
+        </Button>
+      )
+    }
     if (routesLoading) {
       return (
         <Button
@@ -1033,11 +1123,16 @@ const SwapXpollinate = ({
     }
   }
 
-  const handleMenuClick = (e: any) => {
-    if (e.key === 'mainnet' || e.key === 'testnet') {
-      // open link
-    } else {
-      switchChain(parseInt(e.key))
+  const handleMenuSelect = (e: any) => {
+    if (e.key.startsWith('chain-')) {
+      const key = e.key.split('-')[1]
+      if (key === 'mainnet' || key === 'testnet') {
+        // open link
+      } else {
+        switchChain(parseInt(key))
+      }
+    } else if (e.key === 'connect-wallet') {
+      activate(injected)
     }
   }
 
@@ -1052,11 +1147,31 @@ const SwapXpollinate = ({
   }
   const currentChain = getCurrentChain()
   const menuChain = (
-    <Menu onClick={handleMenuClick}>
+    <Menu.SubMenu
+      className="xpol-menu"
+      key="chain"
+      style={{}}
+      title={
+        <>
+          <Badge
+            color={
+              syncStatus && currentChain && syncStatus[currentChain.id]
+                ? syncStatus[currentChain.id].synced
+                  ? 'green'
+                  : 'orange'
+                : 'gray'
+            }
+            text={currentChain?.name || 'Unsupported Chain'}
+          />{' '}
+        </>
+      }>
       <Menu.ItemGroup title="Supported Chains">
         {transferChains.map((chain) => {
           return (
-            <Menu.Item key={chain.id} icon={<LoginOutlined />} disabled={web3.chainId === chain.id}>
+            <Menu.Item
+              key={`chain-${chain.id}`}
+              icon={<LoginOutlined />}
+              disabled={web3.chainId === chain.id}>
               <Badge
                 color={syncStatus ? (syncStatus[chain.id].synced ? 'green' : 'orange') : 'gray'}
                 text={chain.name}
@@ -1080,15 +1195,18 @@ const SwapXpollinate = ({
           </Menu.Item>
         )}
       </Menu.ItemGroup>
-    </Menu>
+    </Menu.SubMenu>
   )
 
-  const menuAccount = (
-    <Menu>
-      <Menu.Item key="disconnect" onClick={() => disconnect()}>
+  const menuAccount = web3.account && (
+    <Menu.SubMenu
+      className="xpol-menu"
+      key="account"
+      title={`${web3.account.substr(0, 6)}...${web3.account.substr(-4, 4)}`}>
+      <Menu.Item key="account-disconnect" onClick={() => disconnect()}>
         Disconnect
       </Menu.Item>
-    </Menu>
+    </Menu.SubMenu>
   )
 
   const disconnect = () => {
@@ -1098,158 +1216,112 @@ const SwapXpollinate = ({
 
   const priceImpact = () => {
     const token = transferTokens[withdrawChain].find((token) => token.id === withdrawToken)
-    let fees = new BigNumber(0)
-    let routerFee = new BigNumber(0)
-    let gasFee = new BigNumber(0)
+    const total = routeQuoteFees.gas.plus(routeQuoteFees.relayer).plus(routeQuoteFees.router)
     let decimals = 2
-
     if (highlightedIndex !== -1) {
-      const selectedRoute = routes[highlightedIndex]
-      const cross = selectedRoute.steps[0] as CrossStep
-
-      const fromToken = cross.action.toToken
-      const fromAmount = new BigNumber(cross.estimate.fromAmount).shiftedBy(-fromToken.decimals)
-
-      const toToken = cross.action.toToken
-      const toAmount = new BigNumber(cross.estimate.toAmount).shiftedBy(-toToken.decimals)
-
-      fees = fromAmount.minus(toAmount)
-
-      gasFee = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(
-        -toToken.decimals,
-      )
-      routerFee = fees.minus(gasFee)
-
-      if (routerFee.lt('0.01')) {
+      if (routeQuoteFees.router.lt('0.01')) {
         decimals = 4
       }
     }
 
     return (
-      <div>
-        <Tooltip
-          color={'gray'}
-          placement="topRight"
-          title={
-            <table>
-              <tbody>
-                <tr>
-                  <td>Included Fees:</td>
-                  <td style={{ textAlign: 'right' }}></td>
-                </tr>
-                <tr>
-                  <td>Router Fee</td>
-                  <td style={{ textAlign: 'right' }}>
-                    {routerFee.toFixed(decimals, 1)} {token?.symbol}
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ paddingRight: 10 }}>Gas Fee</td>
-                  <td style={{ textAlign: 'right' }}>
-                    {gasFee.toFixed(decimals, 1)} {token?.symbol}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          }>
-          Fees: {fees.toFixed(4)} {token?.symbol}
-          <Badge count={<InfoCircleOutlined style={{ color: 'gray' }} />} offset={[4, -1]} />
-        </Tooltip>
-      </div>
+      <Collapse className="fees-collapse" ghost>
+        <Collapse.Panel
+          header={`Total Fees: ${total.toFixed(decimals)} ${token?.symbol}`}
+          key={'fees'}>
+          <Row>
+            <Col span={24}>
+              {Object.entries(routeQuoteFees).map(([label, amount], index) => {
+                const info = FEE_INFO[label as keyof typeof FEE_INFO]
+                return (
+                  <Row key={index} style={{ padding: '6px 0 0 0' }}>
+                    <Col span={12}>{label.slice(0, 1).toUpperCase() + label.slice(1)} Fee</Col>
+                    <Col span={12} style={{ textAlign: 'right' }}>
+                      {amount.toFixed(decimals, 1)} {token?.symbol}
+                      <Tooltip color={'gray'} placement="topRight" title={info}>
+                        <Badge
+                          count={<InfoCircleOutlined style={{ color: 'gray' }} />}
+                          offset={[4, -3]}
+                        />
+                      </Tooltip>
+                    </Col>
+                  </Row>
+                )
+              })}
+            </Col>
+          </Row>
+        </Collapse.Panel>
+      </Collapse>
     )
   }
 
   return (
     <Content className="site-layout xpollinate">
       <div className="xpollinate-header">
-        <Row justify="space-between" style={{ padding: 20, maxWidth: 1600, margin: 'auto' }}>
-          <a href="/">
-            <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
-            <span className="version">v2 {testnet && 'Testnet'}</span>
-          </a>
-
-          <span className="header-options">
-            <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
-              <Button className="header-button">
-                <CompassOutlined />
-                Explorer
-              </Button>
-            </a>
-
-            {web3.account ? (
-              <>
-                <a
-                  href={`https://connextscan.io/address/${web3.account}`}
-                  target="_blank"
-                  rel="nofollow noreferrer">
-                  <Button className="header-button">
-                    <HistoryOutlined />
-                    Transaction History
-                  </Button>
+        <Row justify="space-between" style={{ padding: 20, height: 84 }} wrap={false}>
+          <Col flex="auto">
+            <Menu
+              id="testmenu"
+              className="xpol-menu"
+              overflowedIndicator={<MenuOutlined />}
+              mode="horizontal"
+              selectable={false}
+              // style={{ marginLeft: 'auto' }}
+              // style={{ float: 'right' }}
+              style={{ margin: '0 0 0 auto' }}
+              onClick={handleMenuSelect}>
+              {web3.account ? (
+                <>
+                  {menuChain}
+                  {menuAccount}
+                  <Menu.Item key="history" icon={<HistoryOutlined />}>
+                    <a
+                      href={`https://connextscan.io/address/${web3.account}`}
+                      target="_blank"
+                      rel="nofollow noreferrer">
+                      Transaction History
+                    </a>
+                  </Menu.Item>
+                </>
+              ) : (
+                <Menu.Item key="connect-wallet" icon={<LoginOutlined />}>
+                  Connect Wallet
+                </Menu.Item>
+              )}
+              <Menu.Item key="explorer" icon={<CompassOutlined />}>
+                <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
+                  Explorer
                 </a>
-
-                <Dropdown overlay={menuChain}>
-                  <Button className="header-button">
-                    <Badge
-                      color={
-                        syncStatus && currentChain && syncStatus[currentChain.id]
-                          ? syncStatus[currentChain.id].synced
-                            ? 'green'
-                            : 'orange'
-                          : 'gray'
-                      }
-                      text={currentChain?.name || 'Unsupported Chain'}
-                    />{' '}
-                    <DownOutlined />
-                  </Button>
-                </Dropdown>
-
-                <Dropdown overlay={menuAccount}>
-                  <Button className="header-button">
-                    {web3.account.substr(0, 6)}...{web3.account.substr(-4, 4)}
-                  </Button>
-                </Dropdown>
-              </>
-            ) : (
-              <Button
-                shape="round"
-                type="link"
-                icon={<LoginOutlined />}
-                onClick={() => activate(injected)}>
-                Connect Wallet
-              </Button>
-            )}
-
-            <a
-              href="https://chat.connext.network/"
-              target="_blank"
-              rel="nofollow noreferrer"
-              className="header-button support-link">
-              <span>
-                <LinkOutlined /> Support
-              </span>
+              </Menu.Item>
+              <Menu.Item key="support" icon={<LinkOutlined />}>
+                <a href="https://chat.connext.network/" target="_blank" rel="nofollow noreferrer">
+                  Support
+                </a>
+              </Menu.Item>
+            </Menu>
+          </Col>
+          <Col style={{ marginRight: 24 }}>
+            <a href="/">
+              <img src={xpollinateWordmark} alt="xPollinate" width="160" height="38" />
+              <span className="version">v2 {testnet && 'Testnet'}</span>
             </a>
-          </span>
+          </Col>
         </Row>
       </div>
 
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
-        {/* Warning Message */}
-        <Row justify="center" style={{ padding: 20, paddingBottom: 0, display: 'none' }}>
-          <Alert style={{ maxWidth: 700 }} message="" description="" type="error" />
-        </Row>
-
         {/* Infos */}
         {showAbout && (
           <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
-            <Alert
-              style={{ maxWidth: 700 }}
-              afterClose={() => setShowAbout(false)}
-              message={aboutMessage}
-              description={aboutDescription}
-              type="info"
-              closable={true}
-            />
+            <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
+              <Alert
+                afterClose={() => setShowAbout(false)}
+                message={aboutMessage}
+                description={aboutDescription}
+                type="info"
+                closable={true}
+              />
+            </Col>
           </Row>
         )}
 
@@ -1294,65 +1366,102 @@ const SwapXpollinate = ({
         )}
 
         <Col style={{ padding: 20, paddingBottom: 0 }}>
-          {/* Active Transactions */}
-          <Collapse activeKey={activeKeyTransactions} accordion ghost>
-            <Collapse.Panel
-              className={activeTransactions.length ? '' : 'empty'}
-              header={
-                <h2
-                  onClick={() =>
-                    setActiveKeyTransactions((key) => (key === 'active' ? '' : 'active'))
+          <Row justify={'center'} align={'middle'}>
+            <Col
+              style={{
+                marginBottom: 20,
+                width: '100%',
+                maxWidth: 940,
+                minWidth: 392,
+                textAlign: activeTransactions.length === 0 ? 'center' : 'inherit',
+              }}>
+              {/* Active Transactions */}
+              <Collapse
+                className="active-transactions"
+                activeKey={activeKeyTransactions}
+                accordion
+                ghost>
+                <Collapse.Panel
+                  className={activeTransactions.length ? '' : 'empty'}
+                  header={
+                    <h2
+                      onClick={() =>
+                        setActiveKeyTransactions((key) => (key === 'active' ? '' : 'active'))
+                      }
+                      style={{ display: 'inline' }}>
+                      Active Transactions (
+                      {!sdk ? (
+                        '-'
+                      ) : updatingActiveTransactions ? (
+                        <SyncOutlined spin style={{ verticalAlign: -4 }} />
+                      ) : (
+                        activeTransactions.length
+                      )}
+                      )
+                    </h2>
                   }
-                  style={{ display: 'inline' }}>
-                  Active Transactions (
-                  {!sdk ? (
-                    '-'
+                  key="active">
+                  {activeTransactions.length > 0 ? (
+                    <div
+                      style={{
+                        overflowX: 'scroll',
+                      }}>
+                      <TransactionsTableNxtp
+                        activeTransactions={activeTransactions}
+                        executionRoutes={executionRoutes}
+                        setModalRouteIndex={setModalRouteIndex}
+                        openSwapModalFinish={openSwapModalFinish}
+                        switchChain={switchChain}
+                        cancelTransfer={cancelTransfer}
+                        tokens={tokens}
+                      />
+                    </div>
                   ) : updatingActiveTransactions ? (
-                    <SyncOutlined spin style={{ verticalAlign: -4 }} />
+                    <Spin
+                      style={{ margin: 'auto', display: 'block' }}
+                      indicator={<LoadingOutlined spin style={{ fontSize: 24 }} />}
+                    />
                   ) : (
-                    activeTransactions.length
+                    <EllipsisOutlined style={{ fontSize: 24 }} />
                   )}
-                  )
-                </h2>
-              }
-              key="active">
-              <div
-                style={{
-                  overflowX: 'scroll',
-                  background: 'white',
-                  margin: '10px 20px',
-                }}>
-                <TransactionsTableNxtp
-                  activeTransactions={activeTransactions}
-                  executionRoutes={executionRoutes}
-                  setModalRouteIndex={setModalRouteIndex}
-                  openSwapModalFinish={openSwapModalFinish}
-                  switchChain={switchChain}
-                  cancelTransfer={cancelTransfer}
-                  tokens={tokens}
-                />
-              </div>
-            </Collapse.Panel>
-          </Collapse>
+                </Collapse.Panel>
+              </Collapse>
+            </Col>
+          </Row>
           {/* Swap Form */}
           <Row style={{ margin: 20, marginTop: 0 }} justify={'center'}>
-            <Col className="swap-form">
+            <Col
+              className="swap-form"
+              style={{
+                borderRadius: 12,
+                margin: '6px 12px 0',
+                maxWidth: 940,
+                minWidth: 392,
+              }}>
               <div
                 className="swap-input"
                 style={{
-                  maxWidth: 480,
-                  borderRadius: 6,
+                  borderRadius: 12,
                   padding: 24,
                   margin: '0 auto',
                 }}>
                 <Row>
                   <Title className="swap-title" level={4}>
-                    Send CrossChain Transaction
+                    Cross-Chain Swap
                   </Title>
                 </Row>
 
+                {/* Warning Message */}
+                <Row
+                  justify="center"
+                  style={{ marginBottom: 20, display: alert ? 'flex' : 'none' }}>
+                  <Col span={24} flex="auto">
+                    <Alert banner message={alert} type="warning" />
+                  </Col>
+                </Row>
+
                 <Form>
-                  <SwapForm
+                  <SwapFormNxtp
                     depositChain={depositChain}
                     setDepositChain={setDepositChain}
                     depositToken={depositToken}
@@ -1373,62 +1482,100 @@ const SwapXpollinate = ({
                     syncStatus={syncStatus}
                   />
 
-                  <Row justify={'end'} style={{ marginRight: 20, marginTop: 4 }}>
-                    {priceImpact()}
-                  </Row>
+                  <div
+                    style={{
+                      marginTop: 12,
+                      padding: '12px 0',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}>
+                    <div style={{ maxWidth: 400, width: '100%' }}>{priceImpact()}</div>
+                  </div>
 
-                  <Row style={{ marginTop: 24 }} justify={'center'}>
+                  <Row style={{ marginTop: 12 }} justify={'center'}>
                     {submitButton()}
                   </Row>
                 </Form>
 
                 {/* Advanced Options */}
-                <Row justify={'center'}>
-                  <Collapse ghost>
-                    <Collapse.Panel header={`Advanced Options`} key="1">
-                      Infinite Approval
-                      <div>
-                        <Checkbox
-                          checked={optionInfiniteApproval}
-                          onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
-                          Activate Infinite Approval
-                        </Checkbox>
-                      </div>
-                      Receiving Address
-                      <Input
-                        value={optionReceivingAddress}
-                        onChange={(e) => setOptionReceivingAddress(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{40}$"
-                        placeholder="Only when other than your sending wallet"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                      Contract Address
-                      <Input
-                        value={optionContractAddress}
-                        onChange={(e) => setOptionContractAddress(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{40}$"
-                        placeholder="To call a contract"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                      CallData
-                      <Input
-                        value={optionCallData}
-                        onChange={(e) => setOptionCallData(e.target.value)}
-                        pattern="^0x[a-fA-F0-9]{64}$"
-                        placeholder="Only when calling a contract directly"
-                        style={{
-                          border: '1px solid rgba(0,0,0,0.25)',
-                          borderRadius: 6,
-                        }}
-                      />
-                    </Collapse.Panel>
-                  </Collapse>
+                <Row className="advanced-options">
+                  <Col span={24}>
+                    <Collapse ghost>
+                      <Collapse.Panel header={`Advanced Options`} key="1">
+                        <Row gutter={[16, 16]}>
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Infinite Approval
+                            <Checkbox
+                              style={{ margin: '4px 0 0 0' }}
+                              checked={optionInfiniteApproval}
+                              onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
+                              Activate Infinite Approval
+                            </Checkbox>
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Receiving Address
+                            <Input
+                              value={optionReceivingAddress}
+                              onChange={(e) => setOptionReceivingAddress(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{40}$"
+                              placeholder="Send funds to an address other than your current wallet"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Contract Address
+                            <Input
+                              value={optionContractAddress}
+                              onChange={(e) => setOptionContractAddress(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{40}$"
+                              placeholder="To call a contract"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Call Data
+                            <Input
+                              value={optionCallData}
+                              onChange={(e) => setOptionCallData(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{64}$"
+                              placeholder="Only when calling a contract directly"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+
+                          <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
+                            Preferred Router
+                            <Input
+                              value={optionPreferredRouter}
+                              onChange={(e) => setOptionPreferredRouter(e.target.value)}
+                              pattern="^0x[a-fA-F0-9]{64}$"
+                              placeholder="Specify a target router to handle transaction"
+                              style={{
+                                margin: '4px 0 0 0',
+                                border: '1px solid rgba(0,0,0,0.25)',
+                                borderRadius: 6,
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </Collapse.Panel>
+                    </Collapse>
+                  </Col>
                 </Row>
               </div>
             </Col>
@@ -1486,7 +1633,7 @@ const SwapXpollinate = ({
 
       {modalRouteIndex !== undefined ? (
         <Modal
-          className="swapModal"
+          className="xpol-swap-modal"
           visible={true}
           onOk={() => setModalRouteIndex(undefined)}
           onCancel={() => setModalRouteIndex(undefined)}

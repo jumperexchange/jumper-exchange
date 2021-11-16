@@ -1,7 +1,10 @@
 .xpollinate {
-  background: url('../../assets/xpollinate-bg-pattern.svg') center center / cover no-repeat fixed;
+  background: url('../../assets/xpollinate-bg-pattern_dark.svg') center center / cover no-repeat
+    fixed;
   min-height: calc(100vh);
+  min-width: 400px;
   margin-top: 0;
+  color: #ffffff !important;
 }
 
 .xpollinate-header {
@@ -9,16 +12,301 @@
   margin-bottom: 0;
 }
 
+.ant-menu-submenu .ant-menu-item-group,
+.ant-menu-submenu .ant-menu-item-group-title,
+.ant-menu-submenu .ant-menu-title-content > a,
+.ant-menu-sub,
+.ant-menu-sub .ant-menu-item,
+.ant-menu-item-group-list .ant-menu-item,
+.ant-menu-submenu-open.ant-menu-submenu-active {
+  background: #0d1216 !important;
+  color: #ffffff;
+}
+
+.ant-menu-item.ant-menu-item-disabled {
+  color: #949494 !important;
+}
+
+.ant-menu-item-active .ant-menu-item-icon {
+  color: #1890ff !important;
+}
+
+.ant-menu-submenu .ant-badge {
+  color: inherit !important;
+}
+
+.ant-menu-submenu .ant-badge-status-text {
+  color: inherit !important;
+}
+
+.ant-menu-item-disabled,
+.ant-menu-submenu-disable {
+  color: #949494 !important;
+}
+
+.xpollinate .ant-menu-title-content:hover {
+  color: inherit;
+}
+
+.xpollinate .ant-alert-error,
+.xpol-swap-modal .ant-alert-error {
+  background-color: #af3522;
+  color: #ffffff;
+  border-color: #c38b85;
+}
+
+.xpollinate .ant-alert-warning,
+.xpol-swap-modal .ant-alert-warning {
+  background-color: rgba(190, 165, 29, 0.6);
+  color: #ffffff;
+  border-color: rgba(190, 165, 29, 0.6);
+  border-radius: 12px;
+}
+.xpollinate .ant-alert-message {
+  color: #ffffff;
+}
+
+.xpol-swap-modal .ant-alert {
+  margin: 12px 0;
+}
+
+.xpollinate *,
+.xpol-swap-modal *,
+.xpollinate-header *,
+.ant-menu-sub *,
+.ant-menu-submenu * {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.xpollinate h1,
+.xpollinate h2,
+.xpollinate h3,
+.xpollinate h4,
+.xpollinate h5,
+.xpollinate h6,
+.xpollinate .version {
+  color: #ffffff;
+}
+
+.xpollinate .ant-btn {
+  background-color: #0d1216;
+  color: #ffffff;
+}
+
+.xpollinate .form-input-wrapper:focus-within {
+  border: 1px solid #9c62f9 !important;
+}
+
+.xpollinate .ant-btn[disabled] {
+  background-color: #0d1216 !important;
+  color: #c4c4c4 !important;
+  border: 1px solid #c4c4c4;
+}
+
+.xpollinate .ant-table,
+.xpollinate .ant-table-cell {
+  background-color: #0d1216 !important;
+  color: #ffffff;
+}
+
+.xpol-swap-modal .ant-modal-content {
+  background-color: #0d1216;
+  color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #ffffff;
+}
+
+.xpol-swap-modal .ant-modal-body p span {
+  margin: 0 12px;
+}
+
+.xpol-swap-modal .ant-modal-content * {
+  color: #ffffff;
+}
+
+.xpol-swap-modal .totalTime {
+  padding-top: 4px;
+  border-color: #ffffff;
+}
+
+.xpollinate a.ant-typography {
+  color: #1890ff;
+}
+
+.xpollinate .ant-typography,
+.ant-form {
+  color: #ffffff;
+}
+
+.xpollinate .ant-select,
+.xpollinate .anticon,
+.xpollinate .ant-badge-status-text,
+.xpollinate .ant-checkbox-wrapper,
+.xpollinate .ant-collapse-content,
+.xpollinate .ant-menu-title-content {
+  color: #ffffff;
+}
+
+.xpollinate .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  color: #ffffff;
+}
+
+.xpollinate .ant-card {
+  color: #ffffff;
+  background: #0d1216;
+  border: 1px solid #fdfdff;
+  box-sizing: border-box;
+  border-radius: 12px;
+}
+
+.xpollinate .ant-collapse-content * {
+  box-shadow: none;
+}
+
+.xpollinate .ant-card-head-title {
+  color: #ffffff;
+  background: #0d1216;
+}
+
+.xpollinate .ant-descriptions-item-label,
+.ant-descriptions-item-content {
+  color: #ffffff;
+  background: transparent;
+  border-color: #383838;
+}
+
+.xpollinate .ant-descriptions-view {
+  border: none;
+}
+
+.xpollinate .ant-descriptions-row,
+.ant-card-head,
+.ant-card-actions {
+  border-color: #1c1c1c;
+}
+
+.xpollinate .ant-card-actions {
+  color: #ffffff;
+  background: #0d1216;
+  border-radius: 0 0 20px 20px;
+}
+
+.xpollinate .swap-input {
+  background: #1a191b;
+  box-sizing: border-box;
+
+  border-radius: 6px;
+}
+
 .xpollinate .swap-form {
-  box-shadow: rgb(204 218 238 / 80%) 0px 1rem 2rem;
+  box-shadow: 0px 4px 100px 40px rgba(81, 28, 156, 0.425), 0 10px 20px 5px rgba(88, 153, 253, 0.5);
+}
+
+.xpollinate .change-swap-direction {
+  transition: transform 0.5s ease-in-out;
+}
+
+.xpollinate .change-swap-direction:hover {
+  cursor: pointer;
+  transform: rotate(180deg) scale(1.3);
+}
+
+.xpollinate .ant-select-selection-item {
+  font-size: 14px;
+}
+
+.xpollinate .ant-collapse-header .anticon-right.ant-collapse-arrow {
+  margin-right: 6px;
+}
+
+.xpollinate .ant-collapse-header .anticon-right.ant-collapse-arrow svg {
+  font-size: 10px;
+  margin-bottom: 1px;
+}
+
+.xpollinate .active-transactions .ant-collapse-header .anticon-right.ant-collapse-arrow svg {
+  margin-bottom: 1px;
+  font-size: 14px;
+}
+.xpollinate .active-transactions .ant-collapse-content-box {
+  padding: 0 !important;
+}
+
+.xpollinate .fees-collapse .ant-collapse-header {
+  padding: 0;
+}
+.xpollinate .fees-collapse .ant-collapse-content-box {
+  padding-top: 0 !important;
+}
+
+.xpollinate .advanced-options * {
+  font-size: 12px;
+}
+.xpollinate .advanced-options .anticon-right.ant-collapse-arrow {
+  margin-right: 6px;
+}
+.xpollinate .advanced-options .anticon-right.ant-collapse-arrow svg {
+  margin-bottom: 1px;
+  font-size: 9px;
+}
+.xpollinate .advanced-options .ant-collapse-content-box {
+  background: rgb(46, 46, 46);
+  border-radius: 20px;
+  padding: 24px !important;
+}
+.xpollinate .advanced-options .ant-collapse-content-box .ant-input {
+  color: #ffffff;
+  background: #0d1216;
+}
+
+.xpollinate .form-input-wrapper {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  /* identical to box height, or 450% */
+  line-height: 72px;
+  letter-spacing: -0.015em;
+
+  background: #0d1216;
+  border-radius: 6px;
+  padding: 4px 4px;
+  display: flex;
+  align-items: center;
+}
+
+.xpollinate .form-input-wrapper.disabled input {
+  color: #c4c4c4 !important;
+}
+
+.xpollinate .form-input-wrapper .ant-avatar {
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+.xpollinate .form-input-wrapper .ant-select {
+  flex-grow: 1;
+  overflow: hidden;
+}
+.xpollinate .form-input-wrapper input {
+  color: #ffffff;
+}
+.xpollinate .insufficient {
+  color: #e4305f;
+}
+.xpollinate .form-text {
+  font-size: 14px;
+  text-align: center;
+  color: #a2a2a2;
+  align-items: center;
+  display: flex;
+  padding-left: 0px;
+  height: 100%;
 }
 
 .xpollinate-button.ant-btn-primary,
 .xpollinate .ant-btn-primary {
-  background: linear-gradient(257.5deg, rgb(235, 0, 85) -9.73%, rgb(255, 250, 128) 77.97%);
+  background: linear-gradient(257.5deg, #f7a745 -9.73%, #9c62f9 77.97%);
   transition: background 300ms linear;
   border: none;
-  color: black;
   min-width: 150px;
   background-size: 340px 40px;
   background-position: -100px;

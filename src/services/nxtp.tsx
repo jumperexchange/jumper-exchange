@@ -1,6 +1,11 @@
 /* eslint-disable no-console,max-params */
-import { getDeployedTransactionManagerContract, NxtpSdk, NxtpSdkEvents } from '@connext/nxtp-sdk'
-import { AuctionResponse, getRandomBytes32, TransactionPreparedEvent } from '@connext/nxtp-utils'
+import {
+  getDeployedTransactionManagerContract,
+  GetTransferQuote,
+  NxtpSdk,
+  NxtpSdkEvents,
+} from '@connext/nxtp-sdk'
+import { getRandomBytes32, TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { Button } from 'antd'
 import { constants, providers } from 'ethers'
@@ -66,7 +71,8 @@ export const getTransferQuote = async (
   callTo?: string,
   callData?: string,
   initiator?: string,
-): Promise<AuctionResponse | undefined> => {
+  preferredRouters?: string[],
+): Promise<GetTransferQuote | undefined> => {
   // Create txid
   const transactionId = getRandomBytes32()
 
@@ -82,6 +88,7 @@ export const getTransferQuote = async (
     callTo,
     callData,
     initiator,
+    preferredRouters,
   })
   return response
 }
