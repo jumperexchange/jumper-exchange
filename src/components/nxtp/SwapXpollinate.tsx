@@ -1147,9 +1147,21 @@ const SwapXpollinate = ({
 
   const priceImpact = () => {
     const token = transferTokens[withdrawChain].find((token) => token.id === withdrawToken)
-    let fees = new BigNumber(0)
-    let routerFee = new BigNumber(0)
-    let gasFee = new BigNumber(0)
+    let fees = {
+      gas: {
+        amount: new BigNumber(0),
+        description: 'Covers gas expense for sending funds receiving chain.',
+      },
+      relayer: {
+        amount: new BigNumber(0),
+        description: 'Covers gas expense for claiming user funds on receiving chain.',
+      },
+      router: {
+        amount: new BigNumber(0),
+        description: 'Router service fee.',
+      },
+    }
+    let total = new BigNumber(0)
     let decimals = 2
 
     if (highlightedIndex !== -1) {
@@ -1162,49 +1174,48 @@ const SwapXpollinate = ({
       const toToken = cross.action.toToken
       const toAmount = new BigNumber(cross.estimate.toAmount).shiftedBy(-toToken.decimals)
 
-      fees = fromAmount.minus(toAmount)
-
-      gasFee = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(
+      fees.gas.amount = new BigNumber(cross.estimate.data.gasFeeInReceivingToken).shiftedBy(
         -toToken.decimals,
       )
-      routerFee = fees.minus(gasFee)
 
-      if (routerFee.lt('0.01')) {
+      fees.relayer.amount = new BigNumber(cross.estimate.data.metaTxRelayerFee).shiftedBy(
+        -toToken.decimals,
+      )
+
+      fees.router.amount = fromAmount.minus(toAmount).minus(fees.gas.amount)
+
+      total = fees.gas.amount.plus(fees.relayer.amount).plus(fees.router.amount)
+
+      if (fees.router.amount.lt('0.01')) {
         decimals = 4
       }
     }
 
     return (
-      <div>
-        <Tooltip
-          color={'gray'}
-          placement="topRight"
-          title={
-            <table>
-              <tbody>
-                <tr>
-                  <td>Included Fees:</td>
-                  <td style={{ textAlign: 'right' }}></td>
-                </tr>
-                <tr>
-                  <td>Router Fee</td>
-                  <td style={{ textAlign: 'right' }}>
-                    {routerFee.toFixed(decimals, 1)} {token?.symbol}
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ paddingRight: 10 }}>Gas Fee</td>
-                  <td style={{ textAlign: 'right' }}>
-                    {gasFee.toFixed(decimals, 1)} {token?.symbol}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          }>
-          Fees: {fees.toFixed(4)} {token?.symbol}
-          <Badge count={<InfoCircleOutlined style={{ color: 'gray' }} />} offset={[4, -1]} />
-        </Tooltip>
-      </div>
+      <Collapse className="fees-collapse" ghost>
+        <Collapse.Panel
+          header={`Total Fees: ${total.toFixed(decimals)} ${token?.symbol}`}
+          key={'fees'}>
+          <Row>
+            <Col span={24}>
+              {Object.entries(fees).map(([label, info]) => (
+                <Row style={{ padding: '6px 0 0 0' }}>
+                  <Col span={12}>{label.slice(0, 1).toUpperCase() + label.slice(1)} Fee</Col>
+                  <Col span={12} style={{ textAlign: 'right' }}>
+                    {info.amount.toFixed(decimals, 1)} {token?.symbol}
+                    <Tooltip color={'gray'} placement="topRight" title={info.description}>
+                      <Badge
+                        count={<InfoCircleOutlined style={{ color: 'gray' }} />}
+                        offset={[4, -3]}
+                      />
+                    </Tooltip>
+                  </Col>
+                </Row>
+              ))}
+            </Col>
+          </Row>
+        </Collapse.Panel>
+      </Collapse>
     )
   }
 
@@ -1319,37 +1330,41 @@ const SwapXpollinate = ({
         )}
 
         <Col style={{ padding: 20, paddingBottom: 0 }}>
-          {/* Active Transactions */}
-          <Collapse activeKey={activeKeyTransactions} accordion ghost>
-            <Collapse.Panel
-              className={activeTransactions.length ? '' : 'empty'}
-              header={
-                <h2
-                  onClick={() =>
-                    setActiveKeyTransactions((key) => (key === 'active' ? '' : 'active'))
+          <Row justify={'center'} align={'middle'}>
+            <Col
+              style={{
+                marginBottom: 20,
+                width: '100%',
+                maxWidth: 940,
+                minWidth: 392,
+                textAlign: activeTransactions.length === 0 ? 'center' : 'inherit',
+              }}>
+              {/* Active Transactions */}
+              <Collapse
+                className="active-transactions"
+                activeKey={activeKeyTransactions}
+                accordion
+                ghost>
+                <Collapse.Panel
+                  className={activeTransactions.length ? '' : 'empty'}
+                  header={
+                    <h2
+                      onClick={() =>
+                        setActiveKeyTransactions((key) => (key === 'active' ? '' : 'active'))
+                      }
+                      style={{ display: 'inline' }}>
+                      Active Transactions (
+                      {!sdk ? (
+                        '-'
+                      ) : updatingActiveTransactions ? (
+                        <SyncOutlined spin style={{ verticalAlign: -4 }} />
+                      ) : (
+                        activeTransactions.length
+                      )}
+                      )
+                    </h2>
                   }
-                  style={{ display: 'inline' }}>
-                  Active Transactions (
-                  {!sdk ? (
-                    '-'
-                  ) : updatingActiveTransactions ? (
-                    <SyncOutlined spin style={{ verticalAlign: -4 }} />
-                  ) : (
-                    activeTransactions.length
-                  )}
-                  )
-                </h2>
-              }
-              key="active">
-              <Row justify={'center'} align={'middle'}>
-                <Col
-                  style={{
-                    marginBottom: 20,
-                    width: '100%',
-                    maxWidth: 940,
-                    minWidth: 392,
-                    textAlign: activeTransactions.length === 0 ? 'center' : 'inherit',
-                  }}>
+                  key="active">
                   {activeTransactions.length > 0 ? (
                     <div
                       style={{
@@ -1373,10 +1388,10 @@ const SwapXpollinate = ({
                   ) : (
                     <EllipsisOutlined style={{ fontSize: 24 }} />
                   )}
-                </Col>
-              </Row>
-            </Collapse.Panel>
-          </Collapse>
+                </Collapse.Panel>
+              </Collapse>
+            </Col>
+          </Row>
           {/* Swap Form */}
           <Row style={{ margin: 20, marginTop: 0 }} justify={'center'}>
             <Col
@@ -1431,9 +1446,15 @@ const SwapXpollinate = ({
                     syncStatus={syncStatus}
                   />
 
-                  <Row justify={'end'} style={{ margin: '20px 20px 0 0' }}>
-                    {priceImpact()}
-                  </Row>
+                  <div
+                    style={{
+                      marginTop: 12,
+                      padding: '12px 0',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}>
+                    <div style={{ maxWidth: 400, width: '100%' }}>{priceImpact()}</div>
+                  </div>
 
                   <Row style={{ marginTop: 12 }} justify={'center'}>
                     {submitButton()}
@@ -1561,7 +1582,7 @@ const SwapXpollinate = ({
 
       {modalRouteIndex !== undefined ? (
         <Modal
-          className="swapModal xpol-swap-modal"
+          className="xpol-swap-modal"
           visible={true}
           onOk={() => setModalRouteIndex(undefined)}
           onCancel={() => setModalRouteIndex(undefined)}
