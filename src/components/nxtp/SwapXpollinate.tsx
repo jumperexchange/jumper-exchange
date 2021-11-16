@@ -89,6 +89,7 @@ const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
 const DISABLED = false
+const DISABLED_RECEIVING_ADDRESS = true
 const FEE_INFO: { [K in keyof Fees]: string } = {
   gas: 'Covers gas expense for sending funds to user on receiving chain.',
   relayer: 'Covers gas expense for claiming user funds on receiving chain.',
@@ -1516,14 +1517,22 @@ const SwapXpollinate = ({
                           <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
                             Receiving Address
                             <Input
+                              disabled={DISABLED_RECEIVING_ADDRESS}
                               value={optionReceivingAddress}
                               onChange={(e) => setOptionReceivingAddress(e.target.value)}
                               pattern="^0x[a-fA-F0-9]{40}$"
-                              placeholder="Send funds to an address other than your current wallet"
+                              placeholder={
+                                DISABLED_RECEIVING_ADDRESS
+                                  ? 'Temporarily disabled for maintenence'
+                                  : 'Send funds to an address other than your current wallet'
+                              }
                               style={{
                                 margin: '4px 0 0 0',
                                 border: '1px solid rgba(0,0,0,0.25)',
                                 borderRadius: 6,
+                                background: DISABLED_RECEIVING_ADDRESS
+                                  ? 'rgba(60, 60, 60, 0.5)'
+                                  : 'inherit',
                               }}
                             />
                           </Col>
