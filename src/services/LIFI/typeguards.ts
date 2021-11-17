@@ -42,9 +42,6 @@ export const isStep = (step: Step): step is Step => {
   )
 }
 
-export const isSwapStep = (swapStep: SwapStep): swapStep is SwapStep =>
-  isStep(swapStep) && swapStep.type === 'swap'
-
 const isAction = (action: Action): action is Action => {
   const { fromChainId, fromAmount, fromToken, toChainId, toToken, slippage } = action
 
