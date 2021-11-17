@@ -18,18 +18,17 @@ export class OneInchExecutionManager {
 
   executeSwap = async ({ signer, step, updateStatus }: ExecuteSwapParams) => {
     // setup
-    const { action, execution } = step
+    const { action, execution, estimate } = step
     const fromChain = getChainById(action.fromChainId)
     const { status, update } = initStatus(updateStatus, execution)
     if (!this.shouldContinue) return status
     if (action.fromToken.id !== constants.AddressZero) {
-      const contractAddress = await oneInch.getContractAddress()
       await checkAllowance(
         signer,
         fromChain,
         action.fromToken,
         action.fromAmount,
-        contractAddress,
+        estimate.approvalAddress,
         update,
         status,
       )
