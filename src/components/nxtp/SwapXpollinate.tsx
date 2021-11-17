@@ -89,7 +89,7 @@ const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
 const DISABLED = false
-const DISABLED_RECEIVING_ADDRESS = true
+const DISABLED_RECEIVING_ADDRESS = false
 const FEE_INFO: { [K in keyof Fees]: string } = {
   gas: 'Covers gas expense for sending funds to user on receiving chain.',
   relayer: 'Covers gas expense for claiming user funds on receiving chain.',
