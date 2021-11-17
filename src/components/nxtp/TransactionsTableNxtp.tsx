@@ -184,9 +184,7 @@ const TransactionsTableNxtp = ({
         const link = chain.metamask.blockExplorerUrls[0] + path + txData.invariant.receivingAssetId
         return (
           <div>
-            {(parseInt(txData.sending?.amount || '0') / 10 ** (token?.decimals || 18)).toFixed(
-              4,
-            )}{' '}
+            {(parseInt(txData.sending?.amount || '0') / 10 ** (token?.decimals || 18)).toFixed(4)}{' '}
             <a href={link} target="_blank" rel="nofollow noreferrer">
               {token?.name}
             </a>
