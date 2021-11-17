@@ -55,6 +55,7 @@ const hopTokens: { [k: string]: string } = {
   USDT: Token.USDT,
   MATIC: Token.MATIC,
   DAI: Token.DAI,
+  ETH: Token.ETH,
 }
 const isInitialized = () => {
   if (hop === undefined) throw TypeError('Hop instance is undefined! Please initialize Hop')
@@ -73,6 +74,7 @@ const init = (signer: JsonRpcSigner, chainId: number, toChainId: number) => {
     USDC: hop.connect(signer).bridge('USDC'),
     MATIC: hop.connect(signer).bridge('MATIC'),
     DAI: hop.connect(signer).bridge('DAI'),
+    ETH: hop.connect(signer).bridge('ETH'),
   }
 }
 
