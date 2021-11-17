@@ -1,4 +1,10 @@
-import { isSwapStep, RoutesRequest, RoutesResponse, Step, StepTransactionResponse } from '@lifinance/types'
+import {
+  isSwapStep,
+  RoutesRequest,
+  RoutesResponse,
+  Step,
+  StepTransactionResponse,
+} from '@lifinance/types'
 import axios from 'axios'
 
 import { isRoutesRequest, isStep } from './typeguards'

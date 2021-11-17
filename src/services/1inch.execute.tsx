@@ -16,12 +16,7 @@ export class OneInchExecutionManager {
     this.shouldContinue = val
   }
 
-  executeSwap = async ({
-    signer,
-    step,
-    srcAmount,
-    updateStatus,
-  }: ExecuteSwapParams) => {
+  executeSwap = async ({ signer, step, srcAmount, updateStatus }: ExecuteSwapParams) => {
     // setup
     const { action, execution } = step
     const fromChain = getChainById(action.fromChainId)
