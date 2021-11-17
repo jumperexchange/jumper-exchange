@@ -296,7 +296,9 @@ const SwapFormNxtp = ({
                   type="text"
                   defaultValue={0.0}
                   min={0}
-                  value={estimatedWithdrawAmount}
+                  value={
+                    new BigNumber(estimatedWithdrawAmount).gt(0) ? estimatedWithdrawAmount : '...'
+                  }
                   // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
                   onChange={(event) => onChangeWithdrawAmount(formatAmountInput(event))}
                   placeholder="..."
