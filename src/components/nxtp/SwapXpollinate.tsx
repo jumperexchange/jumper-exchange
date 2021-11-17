@@ -1439,8 +1439,8 @@ const SwapXpollinate = ({
               <div
                 style={{
                   overflowX: 'scroll',
-                  background: 'white',
                   margin: '10px 20px',
+                  backgroundColor: 'transparent',
                 }}>
                 <TestBalanceOverview
                   transferChains={transferChains}
@@ -1493,6 +1493,11 @@ const SwapXpollinate = ({
                     <div
                       style={{
                         overflowX: 'scroll',
+                        margin: '0 0 20px',
+                        backgroundColor: 'transparent',
+                        borderRadius: '6px 6px 0 0',
+                        // minWidth: 392,
+                        // padding: 24,
                       }}>
                       <TransactionsTableNxtp
                         activeTransactions={activeTransactions}

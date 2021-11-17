@@ -103,9 +103,14 @@
   border: 1px solid #c4c4c4;
 }
 
+.xpollinate .ant-collapse-content-box > div {
+  border-radius: 6px 6px 0 0;
+}
 .xpollinate .ant-table,
+.xpollinate .ant-table-thead,
+.xpollinate .ant-table-thead > tr,
 .xpollinate .ant-table-cell {
-  background-color: #0d1216 !important;
+  background-color: #1a191b !important;
   color: #ffffff;
 }
 
@@ -194,7 +199,6 @@
 .xpollinate .swap-input {
   background: #1a191b;
   box-sizing: border-box;
-
   border-radius: 6px;
 }
 
@@ -257,6 +261,19 @@
 .xpollinate .advanced-options .ant-collapse-content-box .ant-input {
   color: #ffffff;
   background: #0d1216;
+}
+
+.xpol-swap-modal .ant-timeline-item-head {
+  background-color: #0d1216;
+}
+.xpol-swap-modal .ant-timeline-item-head-green {
+  background-color: #52c41a !important;
+}
+.xpol-swap-modal .ant-typography.ant-typography-success {
+  color: #52c41a !important;
+}
+.xpol-swap-modal .ant-timeline-item-head-red {
+  color: #c53030;
 }
 
 .xpollinate .form-input-wrapper {

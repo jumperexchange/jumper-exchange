@@ -225,9 +225,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
         {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
       </p>
 
-      <Timeline mode={mode} style={{ maxWidth: 400, margin: 'auto' }}>
-        <Timeline.Item color="green"></Timeline.Item>
-
+      <Timeline mode={mode} style={{ maxWidth: 400, margin: 'auto', paddingTop: 24 }}>
         {/* Wallet */}
         {!web3.account && parseWalletSteps()}
 
