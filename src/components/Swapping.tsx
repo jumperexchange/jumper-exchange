@@ -1,5 +1,5 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
+import { TransactionRequest, Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { BigNumber } from 'bignumber.js'
@@ -18,6 +18,7 @@ import { OneInchExecutionManager } from '../services/1inch.execute'
 import { getBalancesForWallet } from '../services/balanceService'
 import { HopExecutionManager } from '../services/hop.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
+import Lifi from '../services/LIFI/Lifi'
 import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
@@ -42,6 +43,7 @@ import {
   Process,
   Route,
   Step,
+  SwapStep,
   Token,
 } from '../types'
 import Clock from './Clock'
@@ -163,60 +165,36 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   )
 
   const triggerSwap = useCallback(
-    async (step: Step, previousStep?: Step) => {
+    async (step: SwapStep, previousStep?: Step) => {
       if (!web3.account || !web3.library) return
-      const swapAction = step.action
-      const swapEstimate = step.estimate
-      const swapExecution = step.execution
-      const fromAddress = web3.account
-      const toAddress = fromAddress
 
       // get right amount
       let fromAmount: BigNumber
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
         fromAmount = new BigNumber(previousStep.execution.toAmount)
       } else {
-        fromAmount = new BigNumber(swapAction.fromAmount)
+        fromAmount = new BigNumber(step.action.fromAmount)
       }
 
       // ensure chain is set
       if (web3.chainId !== step.action.fromChainId) {
         if (!(await checkChain(step))) return
       }
+
+      const swapParams = {
+        signer: web3.library.getSigner(),
+        step,
+        srcAmount: fromAmount,
+        updateStatus: (status: Execution) => updateStatus(step, status),
+      }
+
       switch (step.tool) {
         case 'paraswap':
-          return await paraswapExecutionManager.executeSwap(
-            web3.library.getSigner(),
-            swapAction,
-            swapEstimate,
-            fromAmount,
-            fromAddress,
-            toAddress,
-            (status: Execution) => updateStatus(step, status),
-            swapExecution,
-          )
+          return await paraswapExecutionManager.executeSwap(swapParams)
         case '1inch':
-          return await oneInchExecutionManager.executeSwap(
-            web3.library.getSigner(),
-            swapAction,
-            swapEstimate,
-            fromAmount,
-            fromAddress,
-            toAddress,
-            (status: Execution) => updateStatus(step, status),
-            swapExecution,
-          )
+          return await oneInchExecutionManager.executeSwap(swapParams)
         default:
-          return await uniswapExecutionManager.executeSwap(
-            web3.library.getSigner(),
-            swapAction,
-            swapEstimate,
-            fromAmount,
-            fromAddress,
-            toAddress,
-            (status: Execution) => updateStatus(step, status),
-            swapExecution,
-          )
+          return await uniswapExecutionManager.executeSwap(swapParams)
       }
     },
     [

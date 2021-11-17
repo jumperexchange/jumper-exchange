@@ -4,7 +4,7 @@ import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { Contract } from 'ethers'
 
-import { getChainById, Token, wrappedTokens } from '../types'
+import { getChainById, Step, Token, wrappedTokens } from '../types'
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
   if (!amount) {
@@ -39,6 +39,23 @@ export const sleep = (mills: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, mills)
   })
+}
+
+export const personalizeStep = async (signer: JsonRpcSigner, step: Step): Promise<Step> => {
+  if (step.action.toAddress && step.action.fromAddress) return step
+
+  const address = await signer.getAddress()
+  const fromAddress = step.action.fromAddress || address
+  const toAddress = step.action.toAddress || address
+
+  return {
+    ...step,
+    action: {
+      fromAddress,
+      toAddress,
+      ...step.action,
+    },
+  }
 }
 
 export const getApproved = async (

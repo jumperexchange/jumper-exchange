@@ -1,12 +1,13 @@
-import { JsonRpcSigner, TransactionResponse } from '@ethersproject/providers'
-import BigNumber from 'bignumber.js'
+import { TransactionResponse } from '@ethersproject/providers'
 import { constants } from 'ethers'
 
-import { Action, Estimate, Execution, getChainById } from '../types'
+import { ExecuteSwapParams, getChainById } from '../types'
 import { oneInch } from './1Inch'
 import { checkAllowance } from './allowance.execute'
+import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
+import { personalizeStep } from './utils'
 
 export class OneInchExecutionManager {
   shouldContinue: boolean = true
@@ -15,20 +16,16 @@ export class OneInchExecutionManager {
     this.shouldContinue = val
   }
 
-  executeSwap = async (
-    signer: JsonRpcSigner,
-    action: Action,
-    estimate: Estimate,
-    srcAmount: BigNumber,
-    srcAddress: string,
-    destAddress: string,
-    updateStatus?: Function,
-    initialStatus?: Execution,
-    // eslint-disable-next-line max-params
-  ) => {
+  executeSwap = async ({
+    signer,
+    step,
+    srcAmount,
+    updateStatus,
+  }: ExecuteSwapParams) => {
     // setup
+    const { action, execution } = step
     const fromChain = getChainById(action.fromChainId)
-    const { status, update } = initStatus(updateStatus, initialStatus)
+    const { status, update } = initStatus(updateStatus, execution)
     if (!this.shouldContinue) return status
     if (action.fromToken.id !== constants.AddressZero) {
       const contractAddress = await oneInch.getContractAddress()
@@ -55,17 +52,9 @@ export class OneInchExecutionManager {
       if (swapProcess.txHash) {
         tx = await signer.provider.getTransaction(swapProcess.txHash)
       } else {
-        const userAddress = await signer.getAddress()
-        const call = await oneInch.buildTransaction(
-          action.fromChainId,
-          action.fromToken.id,
-          action.toToken.id,
-          srcAmount.toFixed(0),
-          userAddress,
-          destAddress,
-          action.slippage,
-        )
-        tx = await signer.sendTransaction(call)
+        const personalizedStep = await personalizeStep(signer, step)
+        const { tx: transaction } = await Lifi.getStepTransaction(personalizedStep)
+        tx = await signer.sendTransaction(transaction)
       }
     } catch (e: any) {
       // -> set status

@@ -1,4 +1,13 @@
-import { ChainKey, Coin, CoinKey, findDefaultCoinOnChain, Token } from '@lifinance/types'
+import { JsonRpcSigner } from '@ethersproject/providers'
+import {
+  ChainKey,
+  Coin,
+  CoinKey,
+  Execution,
+  findDefaultCoinOnChain,
+  SwapStep,
+  Token,
+} from '@lifinance/types'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
@@ -253,4 +262,11 @@ export interface WalletSummary {
 export interface ProgressStep {
   title: string
   description: string
+}
+
+export type ExecuteSwapParams = {
+  signer: JsonRpcSigner
+  step: SwapStep
+  srcAmount: BigNumber
+  updateStatus?: Function
 }

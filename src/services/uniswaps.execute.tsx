@@ -1,12 +1,12 @@
-import { JsonRpcSigner } from '@ethersproject/providers'
-import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 
-import { Action, Estimate, Execution, getChainById } from '../types'
+import { ExecuteSwapParams, getChainById } from '../types'
 import { checkAllowance } from './allowance.execute'
+import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import * as uniswap from './uniswaps'
+import { personalizeStep } from './utils'
 
 export class UniswapExecutionManager {
   shouldContinue: boolean = true
@@ -14,20 +14,16 @@ export class UniswapExecutionManager {
   setShouldContinue = (val: boolean) => {
     this.shouldContinue = val
   }
-  executeSwap = async (
-    signer: JsonRpcSigner,
-    action: Action,
-    estimate: Estimate,
-    srcAmount: BigNumber,
-    srcAddress: string,
-    destAddress: string,
-    updateStatus?: Function,
-    initialStatus?: Execution,
-    // eslint-disable-next-line max-params
-  ) => {
+  executeSwap = async ({
+    signer,
+    step,
+    srcAmount,
+    updateStatus,
+  }: ExecuteSwapParams) => {
     // setup
+    const { action, estimate, execution } = step
     const fromChain = getChainById(action.fromChainId)
-    const { status, update } = initStatus(updateStatus, initialStatus)
+    const { status, update } = initStatus(updateStatus, execution)
 
     if (!this.shouldContinue) return status
     if (action.fromToken.id !== constants.AddressZero) {
@@ -55,8 +51,9 @@ export class UniswapExecutionManager {
       if (swapProcess.txHash) {
         tx = await signer.provider.getTransaction(swapProcess.txHash)
       } else {
-        const call = await uniswap.getSwapCall(action, estimate, srcAddress, destAddress)
-        tx = await signer.sendTransaction(call)
+        const personalizedStep = await personalizeStep(signer, step)
+        const { tx: transaction } = await Lifi.getStepTransaction(personalizedStep)
+        tx = await signer.sendTransaction(transaction)
       }
     } catch (e: any) {
       // -> set status
