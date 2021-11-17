@@ -1251,29 +1251,29 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.0.80":
-  version "0.0.80"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.80.tgz#be0bb973f0f2d14ea1c30a8573c2de7ebf0050a1"
-  integrity sha512-MLTjbcNQYZjzTZqp0Hgmz/ALEcGQabrvnrd2QozFCAui6+6E0AqDpGhCPxOjUccNx2rQyYnO6BxxRP1ZTeDakw==
+"@connext/nxtp-contracts@0.0.81":
+  version "0.0.81"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.81.tgz#fbd19ff7342c23d787deacfd6dd3e5b3c8c8070f"
+  integrity sha512-JaFqrfc7YVRZsATJeYHuvQngjGgKTrZWTxNAiSAYAp86GcXcVT+Zc3z0aIqko6HNw3nwyH8NFxESsHhCoWl95Q==
   dependencies:
-    "@connext/nxtp-utils" "0.0.80"
+    "@connext/nxtp-utils" "0.0.81"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
     dotenv "^10.0.0"
     eslint "^7.32.0"
-    hardhat-deploy "^0.9.1"
+    hardhat-deploy "^0.9.6"
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@0.0.80":
-  version "0.0.80"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.80.tgz#b5d5c1932d9c7c720f7dcfa83a18b52e55f2eb82"
-  integrity sha512-ufslVhlx36Sw+4hDA+Lw61hD+QdZsXrFZHqpJkQi3uQjypMrGG1MAr/do6aJLVAhwg/dTzG7HoANabo8Ih258A==
+"@connext/nxtp-sdk@0.0.81":
+  version "0.0.81"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.81.tgz#4337e2c86e13c24dbd168fce1d90b9d9f93acbc3"
+  integrity sha512-Av04EMqOFmeEVsH8jXN/wq3MaTBjpMlfODYqhjDIYY7Cd+wHVVWjljpP8oYdH5x5fq8OML1mYmGu7a8oW2YEZA==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.80"
-    "@connext/nxtp-txservice" "0.0.80"
-    "@connext/nxtp-utils" "0.0.80"
+    "@connext/nxtp-contracts" "0.0.81"
+    "@connext/nxtp-txservice" "0.0.81"
+    "@connext/nxtp-utils" "0.0.81"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
     ajv-formats "^2.1.1"
@@ -1284,12 +1284,12 @@
     graphql-tag "^2.12.5"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.0.80":
-  version "0.0.80"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.80.tgz#deebb87affa7f5ee44ded36049f751e685d32cbb"
-  integrity sha512-N5sx0L4eiKa/DYdQJ1aHmF0mcvTCW++YOXsnpuevvyc3tIuUu555xAhFvcW+mUo9qoxpHybHLGV68RHi0GAklg==
+"@connext/nxtp-txservice@0.0.81":
+  version "0.0.81"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.81.tgz#7aa267e53d47fcf0617fc24bf32c8f2aed97b70f"
+  integrity sha512-kcElzKy+58o45LjLnTGmbBdDv9dmSXMcUwvhDzl5gJ166IQFVHcBLbY+0Yhq3gQcvWvG/yyJMcHAjBx/WosEGA==
   dependencies:
-    "@connext/nxtp-utils" "0.0.80"
+    "@connext/nxtp-utils" "0.0.81"
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
@@ -1303,10 +1303,10 @@
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.0.80":
-  version "0.0.80"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.80.tgz#c6c99a2679fdfa3f7ca451094971b6852d0868fe"
-  integrity sha512-kqYyvZSTOvclhgf3W/txUeqMtVq1ldyslJxvsuCvdLzY2ytwr8ffGo57eDH4LEVQzbFalJftlhuuO+xCQqE6kw==
+"@connext/nxtp-utils@0.0.81":
+  version "0.0.81"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.81.tgz#ae6b55ff038fe98606d70420f0e07c52405261c6"
+  integrity sha512-Xc6jnT366t0g4jX66qE0Renq70EewR4CMccUMjoVOPgHxWVeuye4tNN63Ym6fK0OZUmLJX6crDCY+GIogW/0xg==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
@@ -2133,10 +2133,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@lifinance/types@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.6.0.tgz#a168fcb8506a7b8480c7d9cf60d66f3e22f0e66f"
-  integrity sha512-JkKnP0nFjRWi41tJZry1amdeCJQlbuI9/5ahjf4RVbJt063EaE8btrq0iJ7ct50TXaNPRHnGxGnTMMc7uayqrg==
+"@lifinance/types@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.6.1.tgz#2c3571ce07434fcd49e8467c65b49fd7b1ad8820"
+  integrity sha512-2cM3pqnHZFxPYSsqVtk1S+Rp1zO8hvn195nKCeeg5mT4OBVy4OaoqFwAsDF//mbmZHO2Ecv0vl8RvI6dXf5OYg==
   dependencies:
     ethers "^5.4.7"
 
@@ -7618,7 +7618,7 @@ har-validator@~5.1.3:
     ajv "^6.12.3"
     har-schema "^2.0.0"
 
-hardhat-deploy@^0.9.1:
+hardhat-deploy@^0.9.6:
   version "0.9.8"
   resolved "https://registry.yarnpkg.com/hardhat-deploy/-/hardhat-deploy-0.9.8.tgz#197375e043ff2b06e7879c4119f801bdd11a493b"
   integrity sha512-f7s3mG4wHnZuQWR+W4QVnPIE0OshgBrf19gvqRBqMbH9cDw4IxBXKWYSVTPXHXNITjwE3CA9Rqx+52Ee1ovtAA==
