@@ -26,6 +26,7 @@ interface SwapFormNxtpProps {
   withdrawAmount: BigNumber
   setWithdrawAmount: Function
   estimatedWithdrawAmount: string
+  totalFees?: BigNumber
 
   transferChains: Array<Chain>
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
@@ -57,6 +58,7 @@ const SwapFormNxtp = ({
   allowSameChains,
   forceSameToken,
   syncStatus,
+  totalFees,
 }: SwapFormNxtpProps) => {
   const depositSelectRef = useRef<RefSelectProps>()
   const withdrawSelectRef = useRef<RefSelectProps>()
@@ -196,6 +198,11 @@ const SwapFormNxtp = ({
     padding: 12,
     borderRadius: 12,
   }
+  const depositAmountNum = new BigNumber(depositAmountString)
+  const invalidDepositAmount =
+    depositAmountNum.lt(0) ||
+    !hasSufficientBalance() ||
+    (totalFees && depositAmountNum.minus(totalFees).lt(0))
   return (
     <>
       <Row>
@@ -220,7 +227,7 @@ const SwapFormNxtp = ({
             </Col>
 
             <Col span={12}>
-              <div className="form-input-wrapper">
+              <div className={'form-input-wrapper ' + (invalidDepositAmount ? 'invalid' : '')}>
                 <Input
                   type="number"
                   defaultValue={0.0}
@@ -230,7 +237,7 @@ const SwapFormNxtp = ({
                   onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
                   placeholder="0.0"
                   bordered={false}
-                  className={!hasSufficientBalance() ? 'insufficient' : ''}
+                  className={invalidDepositAmount ? 'insufficient' : ''}
                 />
                 <Button className="maxButton" type="text" onClick={() => setMaxDeposit()}>
                   MAX

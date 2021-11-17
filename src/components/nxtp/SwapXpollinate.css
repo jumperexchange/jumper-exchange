@@ -289,6 +289,9 @@
 .xpollinate .form-input-wrapper input {
   color: #ffffff;
 }
+.xpollinate .form-input-wrapper.invalid {
+  border: 1px solid #c53030 !important;
+}
 .xpollinate .insufficient {
   color: #e4305f;
 }
