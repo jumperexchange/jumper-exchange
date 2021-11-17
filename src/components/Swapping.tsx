@@ -167,12 +167,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     async (step: SwapStep, previousStep?: Step) => {
       if (!web3.account || !web3.library) return
 
-      // get right amount
-      let fromAmount: BigNumber
+      // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
-        fromAmount = new BigNumber(previousStep.execution.toAmount)
-      } else {
-        fromAmount = new BigNumber(step.action.fromAmount)
+        step.action.fromAmount = previousStep.execution.toAmount
       }
 
       // ensure chain is set
@@ -183,7 +180,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       const swapParams = {
         signer: web3.library.getSigner(),
         step,
-        srcAmount: fromAmount,
         updateStatus: (status: Execution) => updateStatus(step, status),
       }
 

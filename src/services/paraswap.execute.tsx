@@ -16,7 +16,7 @@ export class ParaswapExecutionManager {
     this.shouldContinue = val
   }
 
-  executeSwap = async ({ signer, step, srcAmount, updateStatus }: ExecuteSwapParams) => {
+  executeSwap = async ({ signer, step, updateStatus }: ExecuteSwapParams) => {
     // setup
     const { action, execution } = step
     const fromChain = getChainById(action.fromChainId)
@@ -29,7 +29,7 @@ export class ParaswapExecutionManager {
         signer,
         fromChain,
         action.fromToken,
-        srcAmount.toFixed(),
+        action.fromAmount,
         contractAddress,
         update,
         status,

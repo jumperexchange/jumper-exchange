@@ -259,6 +259,5 @@ export interface ProgressStep {
 export type ExecuteSwapParams = {
   signer: JsonRpcSigner
   step: SwapStep
-  srcAmount: BigNumber
   updateStatus?: Function
 }
