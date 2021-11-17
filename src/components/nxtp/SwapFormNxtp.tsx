@@ -254,7 +254,26 @@ const SwapFormNxtp = ({
                   onChangeSelectedToken={onChangeDepositToken}
                   selectReference={depositSelectRef}
                   grayed={true}
+                  showBalance={false}
                 />
+              </div>
+            </Col>
+          </Row>
+          <Row style={{ fontSize: 12, paddingTop: 6 }}>
+            <Col span={12}>Min. {totalFees && totalFees.gt(0) ? totalFees.toFixed(4) : '0.0'}</Col>
+            <Col
+              span={12}
+              style={{
+                padding: '0 8px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                overflowX: 'hidden',
+              }}>
+              <div>Balance:</div>
+              <div>
+                {depositToken &&
+                  balances &&
+                  balances[depositChain].find((p) => p.id === depositToken)?.amount.toFixed(4)}
               </div>
             </Col>
           </Row>
@@ -317,7 +336,25 @@ const SwapFormNxtp = ({
                   onChangeSelectedToken={onChangeWithdrawToken}
                   selectReference={withdrawSelectRef}
                   grayed={false}
+                  showBalance={false}
                 />
+              </div>
+            </Col>
+          </Row>
+          <Row style={{ fontSize: 12, paddingTop: 6 }} justify="end">
+            <Col
+              span={12}
+              style={{
+                padding: '0 8px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                overflowX: 'hidden',
+              }}>
+              <div>Balance:</div>
+              <div>
+                {withdrawToken &&
+                  balances &&
+                  balances[withdrawChain].find((p) => p.id === withdrawToken)?.amount.toFixed(4)}
               </div>
             </Col>
           </Row>
