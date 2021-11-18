@@ -55,7 +55,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "husky": ">=6",
+    "husky": "^7.0.0",
     "lint-staged": ">=10",
     "prettier": "2.4.1",
     "react-scripts": "4.0.3",
@@ -78,7 +78,8 @@
     "test": "react-scripts test",
     "pre-commit": "lint-staged",
     "lint:fix": "eslint --ext .tsx --ext .ts ./src --fix",
-    "prettier:fix": "prettier --write ./src/."
+    "prettier:fix": "prettier --write ./src/.",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
