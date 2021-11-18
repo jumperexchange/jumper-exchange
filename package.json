@@ -76,7 +76,7 @@
     "build:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet npm run build-env",
     "build:xpollinate:testnet:staging": "REACT_APP_ENV=xpollinate-testnet.staging npm run build-env",
     "test": "react-scripts test",
-    "test:ci": "react-scripts test --silent",
+    "test:husky": "react-scripts test --watchAll=false",
     "pre-commit": "lint-staged",
     "lint:fix": "eslint --ext .tsx --ext .ts ./src --fix",
     "prettier:fix": "prettier --write ./src/.",
