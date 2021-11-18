@@ -1,4 +1,4 @@
-import { TransactionResponse } from '@ethersproject/providers'
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { constants } from 'ethers'
 
 import { ExecuteSwapParams, getChainById } from '../types'
@@ -46,8 +46,16 @@ export class OneInchExecutionManager {
       if (swapProcess.txHash) {
         tx = await signer.provider.getTransaction(swapProcess.txHash)
       } else {
+        swapProcess.status = 'PENDING'
+        update(status)
+
         const personalizedStep = await personalizeStep(signer, step)
         const { tx: transaction } = await Lifi.getStepTransaction(personalizedStep)
+
+        swapProcess.status = 'ACTION_REQUIRED'
+        swapProcess.message = 'Swap via 1inch - Sign Transaction'
+        update(status)
+
         tx = await signer.sendTransaction(transaction)
       }
     } catch (e: any) {
@@ -62,11 +70,11 @@ export class OneInchExecutionManager {
     swapProcess.status = 'PENDING'
     swapProcess.txHash = tx.hash
     swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
-    swapProcess.message = 'Swap via paraswap - Wait for'
+    swapProcess.message = 'Swap via 1inch - Wait for'
     update(status)
 
     // -> waiting
-    let receipt
+    let receipt: TransactionReceipt
     try {
       receipt = await signer.provider.waitForTransaction(swapProcess.txHash)
     } catch (e: any) {
