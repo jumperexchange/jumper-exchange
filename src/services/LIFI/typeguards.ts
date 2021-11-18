@@ -6,7 +6,6 @@ import {
   RouteOptions,
   RoutesRequest,
   Step,
-  SwapStep,
   Token,
 } from '../../types'
 

@@ -16,5 +16,6 @@ module.exports = {
     'import/no-duplicates': 'error',
     'no-console': isDev ? 'off' : 'error',
     'no-debugger': isDev ? 'off' : 'error',
+    'no-unused-vars': 'error',
   },
 }
