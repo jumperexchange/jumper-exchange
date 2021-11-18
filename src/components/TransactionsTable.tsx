@@ -113,8 +113,8 @@ function TrasactionsTable({
   const data = routes.map((route, index) => {
     const firstStep = route.steps[0]
     const startedDate =
-      firstStep.execution?.process[0].startedAt &&
-      new Date(firstStep.execution?.process[0].startedAt).toLocaleString()
+      firstStep.execution?.process[0]?.startedAt &&
+      new Date(firstStep.execution?.process[0]?.startedAt).toLocaleString()
     const lastStep = route.steps[route.steps.length - 1]
     // const firstAction = firstStep.action
     // const firstEstimate = firstStep.estimate

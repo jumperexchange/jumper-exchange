@@ -67,12 +67,13 @@ const TokenSelect = ({
                 Connect your wallet
               </Select.Option>
             )}
-            {balances && balances[selectedChain].length === 0 && (
+            {balances && balances[selectedChain] && balances[selectedChain].length === 0 && (
               <Select.Option key="No Owned" value="no" disabled={true}>
                 You don't own any token on this chain.
               </Select.Option>
             )}
             {balances &&
+              balances[selectedChain] &&
               tokens[selectedChain]
                 .filter((token) => token.amount?.gt(0))
                 .map((token) => (

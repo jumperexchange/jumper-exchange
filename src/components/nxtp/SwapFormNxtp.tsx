@@ -98,7 +98,7 @@ const SwapFormNxtp = ({
   }
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
-    if (!balances) {
+    if (!balances || !balances[chainKey]) {
       return new BigNumber(0)
     }
 
