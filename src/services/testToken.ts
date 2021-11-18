@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
-import { BigNumber as BN, constants, Contract, providers, utils } from 'ethers'
+import { constants, Contract, providers, utils } from 'ethers'
 
 import { getRpcProviders } from '../components/web3/connectors'
 import {
@@ -99,7 +99,7 @@ export const getBalance = async (
     const contract = new Contract(assetId, TestTokenABI, provider)
     balance = await contract.balanceOf(address)
   }
-  return balance
+  return new BigNumber(balance.toString())
 }
 
 export const getBalancesForWallet = async (address: string) => {
@@ -113,12 +113,12 @@ export const getBalancesForWallet = async (address: string) => {
       chainProviders[token[0].chainId],
     ).catch((e) => {
       console.warn(e)
-      return BN.from(0)
+      return new BigNumber(0)
     })
     const testAmount = getBalance(address, token[0].id, chainProviders[token[0].chainId]).catch(
       (e) => {
         console.warn(e)
-        return BN.from(0)
+        return new BigNumber(0)
       },
     )
     promises.push(ethAmount)
@@ -131,7 +131,7 @@ export const getBalancesForWallet = async (address: string) => {
         name: 'ETH',
         symbol: 'ETH',
         img_url: '',
-        amount: new BigNumber(ethAmount.toString()).shiftedBy(-18),
+        amount: (await ethAmount).shiftedBy(-18),
         pricePerCoin: new BigNumber(0),
         verified: false,
       },
@@ -141,7 +141,7 @@ export const getBalancesForWallet = async (address: string) => {
         name: token[0].name,
         symbol: token[0].symbol,
         img_url: '',
-        amount: new BigNumber(testAmount.toString()).shiftedBy(-18),
+        amount: (await testAmount).shiftedBy(-18),
         pricePerCoin: new BigNumber(0),
         verified: false,
       },
@@ -168,7 +168,7 @@ export const getDefaultTokenBalancesForWallet = async (
     tokens.forEach(async (token) => {
       const amount = getBalance(address, token.id, chainProviders[token.chainId]).catch((e) => {
         console.warn(e)
-        return BN.from(0)
+        return new BigNumber(0)
       })
       promises.push(amount)
       portfolio[chainKey].push({
@@ -176,7 +176,7 @@ export const getDefaultTokenBalancesForWallet = async (
         name: token.name,
         symbol: token.key,
         img_url: '',
-        amount: new BigNumber((await amount).toString()).shiftedBy(-token.decimals),
+        amount: (await amount).shiftedBy(-token.decimals),
         pricePerCoin: new BigNumber(0),
         verified: false,
       })

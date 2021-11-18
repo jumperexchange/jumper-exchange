@@ -146,16 +146,15 @@ const Swap = ({ transferChains }: SwapProps) => {
   const updateBalances = useCallback(() => {
     if (web3.account) {
       Object.entries(tokens).forEach(async ([chainKey, tokenList]) => {
-        getBalancesFromProviderUsingMulticall(web3.account!, tokenList)
-          .then((portfolio) => {
-            setBalances((balances) => {
-              if (!balances) balances = {}
-              return {
-                ...balances,
-                [chainKey]: portfolio
-              }
-            })
+        getBalancesFromProviderUsingMulticall(web3.account!, tokenList).then((portfolio) => {
+          setBalances((balances) => {
+            if (!balances) balances = {}
+            return {
+              ...balances,
+              [chainKey]: portfolio,
+            }
           })
+        })
       })
     }
   }, [web3.account, tokens])
@@ -199,9 +198,10 @@ const Swap = ({ transferChains }: SwapProps) => {
         } else {
           // balances loaded
           token.amount = getBalance(balances, chain.key, token.id)
-          token.amountRendered = token.amount.gte(0.0001) || token.amount.isZero()
-            ? token.amount.toFixed(4)
-            : token.amount.toFixed()
+          token.amountRendered =
+            token.amount.gte(0.0001) || token.amount.isZero()
+              ? token.amount.toFixed(4)
+              : token.amount.toFixed()
         }
       }
     }

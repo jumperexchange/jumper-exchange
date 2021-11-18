@@ -618,7 +618,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             (finalBalance.token.id === constants.AddressZero ? (
               <Typography.Text>
                 {'You now have '}
-                {finalBalance.portfolio.amount.toString().substring(0, 8)}
+                {finalBalance.portfolio.amount.toFixed(4)}
                 {` ${finalBalance.portfolio.symbol}`}
                 {` on ${toChain.name}`}
               </Typography.Text>
@@ -629,7 +629,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
                   onClick={() => switchChainAndAddToken(toChain.id, finalBalance.token)}>
                   <Typography.Text>
                     {'You now have '}
-                    {finalBalance.portfolio.amount.toString().substring(0, 8)}
+                    {finalBalance.portfolio.amount.toFixed(4)}
                     {` ${finalBalance.portfolio.symbol}`}
                     {` on ${toChain.name}`}
                   </Typography.Text>

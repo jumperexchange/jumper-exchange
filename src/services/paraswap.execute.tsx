@@ -37,7 +37,7 @@ export class ParaswapExecutionManager {
         signer,
         fromChain,
         action.fromToken,
-        srcAmount.toString(),
+        srcAmount.toFixed(),
         contractAddress,
         update,
         status,

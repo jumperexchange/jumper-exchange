@@ -337,7 +337,7 @@ const SwapXpollinate = ({
       fromToken: depositToken,
       toChain: getChainByKey(withdrawChain).id,
       toToken: withdrawToken,
-      fromAmount: depositAmount.gt(0) ? depositAmount.toString() : undefined,
+      fromAmount: depositAmount.gt(0) ? depositAmount.toFixed() : undefined,
     }
     const search = QueryString.stringify(params)
     history.push({
@@ -862,7 +862,7 @@ const SwapXpollinate = ({
       .minus(relayerFee)
       .minus(routerFee)
       .shiftedBy(tToken.decimals)
-      .toString()
+      .toFixed()
 
     const action: Action = {
       fromChainId: getChainByKey(routeRequest.depositChain).id,
