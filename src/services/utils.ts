@@ -51,9 +51,9 @@ export const personalizeStep = async (signer: JsonRpcSigner, step: Step): Promis
   return {
     ...step,
     action: {
+      ...step.action,
       fromAddress,
       toAddress,
-      ...step.action,
     },
   }
 }
