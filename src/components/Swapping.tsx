@@ -14,7 +14,7 @@ import hopIcon from '../assets/icons/hop.png'
 import oneinchIcon from '../assets/icons/oneinch.png'
 import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
-import { OneInchExecutionManager } from '../services/1inch.execute'
+import { oneInch } from '../services/1Inch'
 import { getBalancesForWallet } from '../services/balanceService'
 import { HopExecutionManager } from '../services/hop.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
@@ -22,7 +22,7 @@ import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import { NXTPExecutionManager } from '../services/nxtp.execute'
-import { ParaswapExecutionManager } from '../services/paraswap.execute'
+import { paraswap } from '../services/paraswap'
 import { renderProcessMessage } from '../services/processRenderer'
 import {
   createAndPushProcess,
@@ -30,7 +30,8 @@ import {
   setStatusDone,
   setStatusFailed,
 } from '../services/status'
-import { UniswapExecutionManager } from '../services/uniswaps.execute'
+import SwapExecutionManager from '../services/swap.execute'
+import { uniswap } from '../services/uniswaps'
 import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
@@ -92,11 +93,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [alerts] = useState<Array<JSX.Element>>([])
   const [finalBalance, setFinalBalance] = useState<{ token: Token; portfolio: ChainPortfolio }>()
 
-  const [uniswapExecutionManager] = useState<UniswapExecutionManager>(new UniswapExecutionManager())
-  const [paraswapExecutionManager] = useState<ParaswapExecutionManager>(
-    new ParaswapExecutionManager(),
-  )
-  const [oneInchExecutionManager] = useState<OneInchExecutionManager>(new OneInchExecutionManager())
+  const [swapExecutionManager] = useState<SwapExecutionManager>(new SwapExecutionManager())
   const [nxtpExecutionManager] = useState<NXTPExecutionManager>(new NXTPExecutionManager())
   const [hopExecutionManager] = useState<HopExecutionManager>(new HopExecutionManager())
   const [horizonExecutionManager] = useState<HorizonExecutionManager>(new HorizonExecutionManager())
@@ -106,21 +103,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   useEffect(() => {
     return () => {
-      uniswapExecutionManager.setShouldContinue(false)
-      paraswapExecutionManager.setShouldContinue(false)
-      oneInchExecutionManager.setShouldContinue(false)
+      swapExecutionManager.setShouldContinue(false)
       nxtpExecutionManager.setShouldContinue(false)
       hopExecutionManager.setShouldContinue(false)
       horizonExecutionManager.setShouldContinue(false)
     }
-  }, [
-    uniswapExecutionManager,
-    paraswapExecutionManager,
-    oneInchExecutionManager,
-    nxtpExecutionManager,
-    hopExecutionManager,
-    horizonExecutionManager,
-  ])
+  }, [swapExecutionManager, nxtpExecutionManager, hopExecutionManager, horizonExecutionManager])
 
   // Swap
   const updateStatus = useCallback(
@@ -185,21 +173,23 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       switch (step.tool) {
         case 'paraswap':
-          return await paraswapExecutionManager.executeSwap(swapParams)
+          return await swapExecutionManager.executeSwap({
+            ...swapParams,
+            parseReceipt: paraswap.parseReceipt,
+          })
         case '1inch':
-          return await oneInchExecutionManager.executeSwap(swapParams)
+          return await swapExecutionManager.executeSwap({
+            ...swapParams,
+            parseReceipt: oneInch.parseReceipt,
+          })
         default:
-          return await uniswapExecutionManager.executeSwap(swapParams)
+          return await swapExecutionManager.executeSwap({
+            ...swapParams,
+            parseReceipt: uniswap.parseReceipt,
+          })
       }
     },
-    [
-      web3,
-      checkChain,
-      updateStatus,
-      uniswapExecutionManager,
-      paraswapExecutionManager,
-      oneInchExecutionManager,
-    ],
+    [web3, checkChain, updateStatus, swapExecutionManager],
   )
 
   const triggerCross = useCallback(
@@ -211,6 +201,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       // get right amount
       let fromAmount: BigNumber
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+        fromAmount = new BigNumber(previousStep.execution.toAmount)
         fromAmount = new BigNumber(previousStep.execution.toAmount)
       } else {
         fromAmount = new BigNumber(crossAction.fromAmount)

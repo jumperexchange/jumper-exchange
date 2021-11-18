@@ -256,8 +256,17 @@ export interface ProgressStep {
   description: string
 }
 
+export type ParsedReceipt = {
+  fromAmount: string
+  toAmount: string
+  gasUsed: string
+  gasPrice: string
+  gasFee: string
+}
+
 export type ExecuteSwapParams = {
   signer: JsonRpcSigner
   step: SwapStep
+  parseReceipt: (...args: any[]) => ParsedReceipt
   updateStatus?: Function
 }

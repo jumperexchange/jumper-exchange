@@ -2,21 +2,20 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import { constants } from 'ethers'
 
 import { ExecuteSwapParams, getChainById } from '../types'
-import { oneInch } from './1Inch'
 import { checkAllowance } from './allowance.execute'
 import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { personalizeStep } from './utils'
 
-export class OneInchExecutionManager {
+export default class SwapExecutionManager {
   shouldContinue: boolean = true
 
   setShouldContinue = (val: boolean) => {
     this.shouldContinue = val
   }
 
-  executeSwap = async ({ signer, step, updateStatus }: ExecuteSwapParams) => {
+  executeSwap = async ({ signer, step, parseReceipt, updateStatus }: ExecuteSwapParams) => {
     // setup
     const { action, execution, estimate } = step
     const fromChain = getChainById(action.fromChainId)
@@ -36,9 +35,10 @@ export class OneInchExecutionManager {
 
     // https://github.com/ethers-io/ethers.js/issues/1435#issuecomment-814963932
 
-    // Swap via 1inch
+    const swapMessage = `Swap via ${step.tool}`
+
     // -> set status
-    const swapProcess = createAndPushProcess('swapProcess', update, status, 'Swap via 1inch')
+    const swapProcess = createAndPushProcess('swapProcess', update, status, swapMessage)
     // -> swapping
     if (!this.shouldContinue) return status
     let tx: TransactionResponse
@@ -53,7 +53,7 @@ export class OneInchExecutionManager {
         const { tx: transaction } = await Lifi.getStepTransaction(personalizedStep)
 
         swapProcess.status = 'ACTION_REQUIRED'
-        swapProcess.message = 'Swap via 1inch - Sign Transaction'
+        swapProcess.message = `${swapMessage} - Sign Transaction`
         update(status)
 
         tx = await signer.sendTransaction(transaction)
@@ -70,7 +70,7 @@ export class OneInchExecutionManager {
     swapProcess.status = 'PENDING'
     swapProcess.txHash = tx.hash
     swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
-    swapProcess.message = 'Swap via 1inch - Wait for'
+    swapProcess.message = `${swapMessage} - Wait for`
     update(status)
 
     // -> waiting
@@ -87,7 +87,7 @@ export class OneInchExecutionManager {
     }
 
     // -> set status
-    const parsedReceipt = oneInch.parseReceipt(tx, receipt)
+    const parsedReceipt = parseReceipt(tx, receipt)
     swapProcess.message = 'Swapped:'
     status.fromAmount = parsedReceipt.fromAmount
     status.toAmount = parsedReceipt.toAmount
