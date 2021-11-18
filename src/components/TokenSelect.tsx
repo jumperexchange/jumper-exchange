@@ -65,12 +65,13 @@ const TokenSelect = ({
                 Connect your wallet
               </Select.Option>
             )}
-            {balances && balances[selectedChain].length === 0 && (
+            {balances && balances[selectedChain] && balances[selectedChain].length === 0 && (
               <Select.Option key="No Owned" value="no" disabled={true}>
                 You don't own any token on this chain.
               </Select.Option>
             )}
             {balances &&
+              balances[selectedChain] &&
               tokens[selectedChain]
                 .filter((token) => token.amount?.gt(0))
                 .map((token) => (
@@ -78,7 +79,9 @@ const TokenSelect = ({
                     key={'own_' + token.id}
                     value={token.id}
                     label={token.symbol + ' ' + token.name}
-                    data-label={token.symbol + (balances ? ' (' + token.amountRendered + ')' : '')}>
+                    data-label={
+                      token.symbol + (token.amountRendered ? ' (' + token.amountRendered + ')' : '')
+                    }>
                     <div className="option-item">
                       <span role="img" aria-label={token.symbol}>
                         <Avatar
@@ -106,7 +109,9 @@ const TokenSelect = ({
               key={token.id}
               value={token.id}
               label={token.symbol + ' - ' + token.name}
-              data-label={token.symbol + (balances ? ' (' + token.amountRendered + ')' : '')}>
+              data-label={
+                token.symbol + (token.amountRendered ? ' (' + token.amountRendered + ')' : '')
+              }>
               <div className={'option-item ' + (grayed && token.amount?.eq(0) ? 'disabled' : '')}>
                 <span role="img" aria-label={token.symbol}>
                   <Avatar

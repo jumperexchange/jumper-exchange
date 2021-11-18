@@ -96,7 +96,7 @@ const SwapForm = ({
   }
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
-    if (!balances) {
+    if (!balances || !balances[chainKey]) {
       return new BigNumber(0)
     }
 
@@ -172,8 +172,10 @@ const SwapForm = ({
   }
 
   const setMaxDeposit = () => {
-    const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
-    setDepositAmount(selectedToken?.amount)
+    if (depositToken) {
+      const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
+      setDepositAmount(selectedToken?.amount)
+    }
   }
 
   const changeDirection = () => {
@@ -224,7 +226,11 @@ const SwapForm = ({
               bordered={false}
               className={!hasSufficientBalance() ? 'insufficient' : ''}
             />
-            <Button className="maxButton" type="text" onClick={() => setMaxDeposit()}>
+            <Button
+              className="maxButton"
+              type="text"
+              disabled={!depositToken}
+              onClick={() => setMaxDeposit()}>
               MAX
             </Button>
           </div>

@@ -124,7 +124,7 @@ export class NXTPExecutionManager {
           srcTokenAddress,
           toChainId,
           destTokenAddress,
-          fromAmount.toString(),
+          fromAmount.toFixed(0),
           userAddress,
         )
         if (!quote) {
@@ -159,7 +159,7 @@ export class NXTPExecutionManager {
           name: 'NXTP Transfer Fees', // TODO what do we want here?
           percentage: '0.0005',
           token: action.fromToken,
-          amount: new BigNumber(action.fromAmount).times('0.0005').toString(),
+          amount: new BigNumber(action.fromAmount).times('0.0005').toFixed(),
         },
       ],
       data: quote,

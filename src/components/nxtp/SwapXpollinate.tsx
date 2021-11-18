@@ -54,7 +54,7 @@ import onehiveWordmark from '../../assets/1hive_wordmark_dark.svg'
 import connextWordmark from '../../assets/connext_wordmark_dark.png'
 import lifiWordmark from '../../assets/lifi_wordmark.svg'
 import xpollinateWordmark from '../../assets/xpollinate_wordmark_dark.svg'
-import { getBalancesForWalletFromChain } from '../../services/balanceService'
+import { getBalancesFromProviderUsingMulticall } from '../../services/balanceService'
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp'
@@ -338,7 +338,7 @@ const SwapXpollinate = ({
       fromToken: depositToken,
       toChain: getChainByKey(withdrawChain).id,
       toToken: withdrawToken,
-      fromAmount: depositAmount.gt(0) ? depositAmount.toString() : undefined,
+      fromAmount: depositAmount.gt(0) ? depositAmount.toFixed() : undefined,
     }
     const search = QueryString.stringify(params)
     history.push({
@@ -589,7 +589,19 @@ const SwapXpollinate = ({
         token[chainKey].unshift(gasToken)
       })
 
-      await getBalancesForWalletFromChain(address, token).then(setBalances)
+      await Promise.allSettled(
+        Object.entries(tokens).map(async ([chainKey, tokenList]) => {
+          return getBalancesFromProviderUsingMulticall(address, tokenList).then((portfolio) => {
+            setBalances((balances) => {
+              if (!balances) balances = {}
+              return {
+                ...balances,
+                [chainKey]: portfolio,
+              }
+            })
+          })
+        }),
+      )
       setUpdatingBalances(false)
     },
     [transferTokens],
@@ -611,7 +623,7 @@ const SwapXpollinate = ({
   }, [web3.account])
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
-    if (!balances) {
+    if (!balances || !balances[chainKey]) {
       return new BigNumber(0)
     }
 
@@ -626,7 +638,7 @@ const SwapXpollinate = ({
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
           token.amount = new BigNumber(-1)
-          token.amountRendered = ''
+          token.amountRendered = undefined
         }
       }
     } else {
@@ -863,7 +875,7 @@ const SwapXpollinate = ({
       .minus(relayerFee)
       .minus(routerFee)
       .shiftedBy(tToken.decimals)
-      .toString()
+      .toFixed()
 
     const action: Action = {
       fromChainId: getChainByKey(routeRequest.depositChain).id,
