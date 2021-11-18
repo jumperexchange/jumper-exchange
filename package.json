@@ -76,6 +76,7 @@
     "build:xpollinate:testnet": "REACT_APP_ENV=xpollinate-testnet npm run build-env",
     "build:xpollinate:testnet:staging": "REACT_APP_ENV=xpollinate-testnet.staging npm run build-env",
     "test": "react-scripts test",
+    "test:ci": "react-scripts test --silent",
     "pre-commit": "lint-staged",
     "lint:fix": "eslint --ext .tsx --ext .ts ./src --fix",
     "prettier:fix": "prettier --write ./src/.",
@@ -86,12 +87,6 @@
       "yarn run lint:fix",
       "yarn run prettier:fix"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn test:ci"
-    }
   },
   "browserslist": {
     "production": [
