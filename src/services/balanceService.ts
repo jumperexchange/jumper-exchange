@@ -308,7 +308,7 @@ export const getBalance = async (
     )
     balance = await contract.balanceOf(address)
   }
-  return balance
+  return new BigNumber(balance.toString())
 }
 
 export const getBalancesFromProvider = async (
@@ -324,7 +324,7 @@ export const getBalancesFromProvider = async (
   tokens.forEach(async (token) => {
     const amount = getBalance(address, token.id, rpc).catch((e) => {
       console.warn(e)
-      return BN.from(0)
+      return new BigNumber(0)
     })
     promises.push(amount)
     chainPortfolio.push({
@@ -332,7 +332,7 @@ export const getBalancesFromProvider = async (
       name: token.name,
       symbol: token.key,
       img_url: '',
-      amount: new BigNumber((await amount).toString()).shiftedBy(-token.decimals),
+      amount: (await amount).shiftedBy(-token.decimals),
       pricePerCoin: new BigNumber(0),
       verified: false,
     })

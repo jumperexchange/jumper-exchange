@@ -35,7 +35,7 @@ export class UniswapExecutionManager {
         signer,
         fromChain,
         action.fromToken,
-        srcAmount.toString(),
+        srcAmount.toFixed(),
         estimate.data.routerAddress,
         update,
         status,
