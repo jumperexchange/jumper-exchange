@@ -11,7 +11,7 @@ import { animate, stagger } from 'motion'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { getBalancesForWalletFromChain } from '../services/balanceService'
+import { getBalancesFromProviderUsingMulticall } from '../services/balanceService'
 import LIFI from '../services/LIFI/Lifi'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -145,7 +145,18 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   const updateBalances = useCallback(() => {
     if (web3.account) {
-      getBalancesForWalletFromChain(web3.account, tokens).then(setBalances)
+      Object.entries(tokens).forEach(async ([chainKey, tokenList]) => {
+        getBalancesFromProviderUsingMulticall(web3.account!, tokenList)
+          .then((portfolio) => {
+            setBalances((balances) => {
+              if (!balances) balances = {}
+              return {
+                ...balances,
+                [chainKey]: portfolio
+              }
+            })
+          })
+      })
     }
   }, [web3.account, tokens])
 
@@ -169,7 +180,7 @@ const Swap = ({ transferChains }: SwapProps) => {
     chainKey: ChainKey,
     tokenId: string,
   ) => {
-    if (!currentBalances) {
+    if (!currentBalances || !currentBalances[chainKey]) {
       return new BigNumber(0)
     }
 
@@ -179,18 +190,18 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   useEffect(() => {
     // merge tokens and balances
-    if (!balances) {
-      for (const chain of transferChains) {
-        for (const token of tokens[chain.key]) {
+    for (const chain of transferChains) {
+      for (const token of tokens[chain.key]) {
+        if (!balances || !balances[chain.key]) {
+          // balances for chain not loaded yet
           token.amount = new BigNumber(-1)
-          token.amountRendered = ''
-        }
-      }
-    } else {
-      for (const chain of transferChains) {
-        for (const token of tokens[chain.key]) {
+          token.amountRendered = undefined
+        } else {
+          // balances loaded
           token.amount = getBalance(balances, chain.key, token.id)
-          token.amountRendered = token.amount.toFixed(4)
+          token.amountRendered = token.amount.gte(0.0001) || token.amount.isZero()
+            ? token.amount.toFixed(4)
+            : token.amount.toFixed()
         }
       }
     }

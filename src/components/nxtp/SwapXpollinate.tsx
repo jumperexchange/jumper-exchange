@@ -625,7 +625,7 @@ const SwapXpollinate = ({
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
           token.amount = new BigNumber(-1)
-          token.amountRendered = ''
+          token.amountRendered = undefined
         }
       }
     } else {
