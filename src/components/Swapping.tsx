@@ -21,7 +21,7 @@ import { HorizonExecutionManager } from '../services/horizon.execute'
 import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
-import { NXTPExecutionManager } from '../services/nxtp.execute'
+import { NXTPExecutionManager } from '../services/nxtp_new.execute'
 import { paraswap } from '../services/paraswap'
 import { renderProcessMessage } from '../services/processRenderer'
 import {
@@ -36,6 +36,7 @@ import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
   ChainPortfolio,
+  CrossStep,
   Execution,
   getChainById,
   getChainByKey,
@@ -193,17 +194,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   )
 
   const triggerCross = useCallback(
-    async (step: Step, previousStep?: Step) => {
+    async (step: CrossStep, previousStep?: Step) => {
       if (!web3.account || !web3.library) return
-      const crossAction = step.action
-      const crossExecution = step.execution
+      const { action, execution } = step
 
-      // get right amount
-      let fromAmount: BigNumber
+      // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
-        fromAmount = new BigNumber(previousStep.execution.toAmount)
-      } else {
-        fromAmount = new BigNumber(crossAction.fromAmount)
+        step.action.fromAmount = previousStep.execution.toAmount
       }
 
       // ensure chain is set
@@ -213,33 +210,30 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       switch (step.tool) {
         case 'nxtp':
-          return await nxtpExecutionManager.executeCross(
-            web3.library.getSigner(),
+          return await nxtpExecutionManager.executeCross({
+            signer: web3.library.getSigner(),
             step,
-            fromAmount,
-            web3.account,
-            (status: Execution) => updateStatus(step, status),
-            crossExecution,
-          )
+            updateStatus: (status: Execution) => updateStatus(step, status),
+          })
         case 'hop':
           return await hopExecutionManager.executeCross(
             web3.library.getSigner(),
-            crossAction.fromToken.key,
-            fromAmount.toFixed(0),
-            crossAction.fromChainId,
-            crossAction.toChainId,
+            action.fromToken.key,
+            step.action.fromAmount,
+            action.fromChainId,
+            action.toChainId,
             (status: Execution) => updateStatus(step, status),
-            crossExecution,
+            execution,
           )
         case 'horizon':
           return await horizonExecutionManager.executeCross(
-            crossAction.fromToken,
-            fromAmount,
-            crossAction.fromChainId,
-            crossAction.toChainId,
+            action.fromToken,
+            new BigNumber(step.action.fromAmount),
+            action.fromChainId,
+            action.toChainId,
             web3.account,
             (status: Execution) => updateStatus(step, status),
-            crossExecution,
+            execution,
           )
         default:
           throw new Error('Should never reach here, bridge not defined')
@@ -445,8 +439,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           case 'swap':
             return await triggerSwap(step, previousStep)
           case 'cross':
-            await await triggerCross(step, previousStep)
-            break
+            return await triggerCross(step, previousStep)
           default:
             setIsSwapping(false)
             throw new Error('Invalid Step')
