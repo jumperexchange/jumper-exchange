@@ -203,7 +203,7 @@ describe('LIFI SDK', () => {
           const step = getStep({ type: 'lifi' })
 
           await expect(Lifi.getStepTransaction(step)).rejects.toThrow(
-            'Only swap steps are supported at the moment',
+            'Only swap and cross steps are supported at the moment',
           )
           expect(mockedAxios.post).toHaveBeenCalledTimes(0)
         })

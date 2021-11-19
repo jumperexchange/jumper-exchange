@@ -1,4 +1,5 @@
 import {
+  isCrossStep,
   isSwapStep,
   RoutesRequest,
   RoutesResponse,
@@ -28,9 +29,8 @@ class LIFI {
       throw new Error('SDK Validation: Invalid Step')
     }
 
-    // currently only swap steps are supported
-    if (!isSwapStep(step)) {
-      throw Error('Only swap steps are supported at the moment')
+    if (!(isSwapStep(step) || isCrossStep(step))) {
+      throw Error('Only swap and cross steps are supported at the moment')
     }
 
     const result = await axios.post<StepTransactionResponse>(

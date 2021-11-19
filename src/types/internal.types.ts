@@ -1,5 +1,13 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { ChainKey, Coin, CoinKey, findDefaultCoinOnChain, SwapStep, Token } from '@lifinance/types'
+import {
+  ChainKey,
+  Coin,
+  CoinKey,
+  CrossStep,
+  findDefaultCoinOnChain,
+  SwapStep,
+  Token,
+} from '@lifinance/types'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
@@ -268,5 +276,11 @@ export type ExecuteSwapParams = {
   signer: JsonRpcSigner
   step: SwapStep
   parseReceipt: (...args: any[]) => ParsedReceipt
+  updateStatus?: Function
+}
+
+export type ExecuteCrossParams = {
+  signer: JsonRpcSigner
+  step: CrossStep
   updateStatus?: Function
 }
