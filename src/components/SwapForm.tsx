@@ -172,9 +172,9 @@ const SwapForm = ({
   }
 
   const setMaxDeposit = () => {
-    if (depositToken) {
-      const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
-      setDepositAmount(selectedToken?.amount)
+    const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
+    if (selectedToken && selectedToken.amount) {
+      setDepositAmount(selectedToken.amount)
     }
   }
 
