@@ -202,7 +202,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       let fromAmount: BigNumber
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
         fromAmount = new BigNumber(previousStep.execution.toAmount)
-        fromAmount = new BigNumber(previousStep.execution.toAmount)
       } else {
         fromAmount = new BigNumber(crossAction.fromAmount)
       }
