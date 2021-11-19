@@ -20,6 +20,8 @@ export default class SwapExecutionManager {
     const { action, execution, estimate } = step
     const fromChain = getChainById(action.fromChainId)
     const { status, update } = initStatus(updateStatus, execution)
+
+    // Approval
     if (!this.shouldContinue) return status
     if (action.fromToken.id !== constants.AddressZero) {
       await checkAllowance(
@@ -33,29 +35,29 @@ export default class SwapExecutionManager {
       )
     }
 
-    // https://github.com/ethers-io/ethers.js/issues/1435#issuecomment-814963932
-
-    const swapMessage = `Swap via ${step.tool}`
-
+    // Start Swap
     // -> set status
-    const swapProcess = createAndPushProcess('swapProcess', update, status, swapMessage)
+    const swapProcess = createAndPushProcess('swapProcess', update, status, 'Preparing Swap')
+
     // -> swapping
-    if (!this.shouldContinue) return status
     let tx: TransactionResponse
     try {
       if (swapProcess.txHash) {
+        // -> restore existing tx
         tx = await signer.provider.getTransaction(swapProcess.txHash)
       } else {
-        swapProcess.status = 'PENDING'
-        update(status)
+        if (!this.shouldContinue) return status // stop before user interaction is needed
 
+        // -> get tx from backend
         const personalizedStep = await personalizeStep(signer, step)
         const { tx: transaction } = await Lifi.getStepTransaction(personalizedStep)
 
+        // -> set status
         swapProcess.status = 'ACTION_REQUIRED'
-        swapProcess.message = `${swapMessage} - Sign Transaction`
+        swapProcess.message = `Sign Transaction`
         update(status)
 
+        // -> submit tx
         tx = await signer.sendTransaction(transaction)
       }
     } catch (e: any) {
@@ -66,17 +68,18 @@ export default class SwapExecutionManager {
       throw e
     }
 
+    // Wait for Transaction
     // -> set status
     swapProcess.status = 'PENDING'
     swapProcess.txHash = tx.hash
     swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
-    swapProcess.message = `${swapMessage} - Wait for`
+    swapProcess.message = `Swapping - Wait for`
     update(status)
 
     // -> waiting
     let receipt: TransactionReceipt
     try {
-      receipt = await signer.provider.waitForTransaction(swapProcess.txHash)
+      receipt = await tx.wait()
     } catch (e: any) {
       // -> set status
       if (e.message) swapProcess.errorMessage = e.message
