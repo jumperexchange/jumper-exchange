@@ -14,7 +14,7 @@ import hopIcon from '../assets/icons/hop.png'
 import oneinchIcon from '../assets/icons/oneinch.png'
 import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
-import { OneInchExecutionManager } from '../services/1inch.execute'
+import { oneInch } from '../services/1Inch'
 import { getBalancesForWallet } from '../services/balanceService'
 import { HopExecutionManager } from '../services/hop.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
@@ -22,7 +22,7 @@ import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import { NXTPExecutionManager } from '../services/nxtp.execute'
-import { ParaswapExecutionManager } from '../services/paraswap.execute'
+import { paraswap } from '../services/paraswap'
 import { renderProcessMessage } from '../services/processRenderer'
 import {
   createAndPushProcess,
@@ -30,7 +30,8 @@ import {
   setStatusDone,
   setStatusFailed,
 } from '../services/status'
-import { UniswapExecutionManager } from '../services/uniswaps.execute'
+import SwapExecutionManager from '../services/swap.execute'
+import { uniswap } from '../services/uniswaps'
 import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
@@ -42,6 +43,7 @@ import {
   Process,
   Route,
   Step,
+  SwapStep,
   Token,
 } from '../types'
 import Clock from './Clock'
@@ -91,11 +93,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [alerts] = useState<Array<JSX.Element>>([])
   const [finalBalance, setFinalBalance] = useState<{ token: Token; portfolio: ChainPortfolio }>()
 
-  const [uniswapExecutionManager] = useState<UniswapExecutionManager>(new UniswapExecutionManager())
-  const [paraswapExecutionManager] = useState<ParaswapExecutionManager>(
-    new ParaswapExecutionManager(),
-  )
-  const [oneInchExecutionManager] = useState<OneInchExecutionManager>(new OneInchExecutionManager())
+  const [swapExecutionManager] = useState<SwapExecutionManager>(new SwapExecutionManager())
   const [nxtpExecutionManager] = useState<NXTPExecutionManager>(new NXTPExecutionManager())
   const [hopExecutionManager] = useState<HopExecutionManager>(new HopExecutionManager())
   const [horizonExecutionManager] = useState<HorizonExecutionManager>(new HorizonExecutionManager())
@@ -105,21 +103,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   useEffect(() => {
     return () => {
-      uniswapExecutionManager.setShouldContinue(false)
-      paraswapExecutionManager.setShouldContinue(false)
-      oneInchExecutionManager.setShouldContinue(false)
+      swapExecutionManager.setShouldContinue(false)
       nxtpExecutionManager.setShouldContinue(false)
       hopExecutionManager.setShouldContinue(false)
       horizonExecutionManager.setShouldContinue(false)
     }
-  }, [
-    uniswapExecutionManager,
-    paraswapExecutionManager,
-    oneInchExecutionManager,
-    nxtpExecutionManager,
-    hopExecutionManager,
-    horizonExecutionManager,
-  ])
+  }, [swapExecutionManager, nxtpExecutionManager, hopExecutionManager, horizonExecutionManager])
 
   // Swap
   const updateStatus = useCallback(
@@ -163,70 +152,44 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   )
 
   const triggerSwap = useCallback(
-    async (step: Step, previousStep?: Step) => {
+    async (step: SwapStep, previousStep?: Step) => {
       if (!web3.account || !web3.library) return
-      const swapAction = step.action
-      const swapEstimate = step.estimate
-      const swapExecution = step.execution
-      const fromAddress = web3.account
-      const toAddress = fromAddress
 
-      // get right amount
-      let fromAmount: BigNumber
+      // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
-        fromAmount = new BigNumber(previousStep.execution.toAmount)
-      } else {
-        fromAmount = new BigNumber(swapAction.fromAmount)
+        step.action.fromAmount = previousStep.execution.toAmount
       }
 
       // ensure chain is set
       if (web3.chainId !== step.action.fromChainId) {
         if (!(await checkChain(step))) return
       }
+
+      const swapParams = {
+        signer: web3.library.getSigner(),
+        step,
+        updateStatus: (status: Execution) => updateStatus(step, status),
+      }
+
       switch (step.tool) {
         case 'paraswap':
-          return await paraswapExecutionManager.executeSwap(
-            web3.library.getSigner(),
-            swapAction,
-            swapEstimate,
-            fromAmount,
-            fromAddress,
-            toAddress,
-            (status: Execution) => updateStatus(step, status),
-            swapExecution,
-          )
+          return await swapExecutionManager.executeSwap({
+            ...swapParams,
+            parseReceipt: paraswap.parseReceipt,
+          })
         case '1inch':
-          return await oneInchExecutionManager.executeSwap(
-            web3.library.getSigner(),
-            swapAction,
-            swapEstimate,
-            fromAmount,
-            fromAddress,
-            toAddress,
-            (status: Execution) => updateStatus(step, status),
-            swapExecution,
-          )
+          return await swapExecutionManager.executeSwap({
+            ...swapParams,
+            parseReceipt: oneInch.parseReceipt,
+          })
         default:
-          return await uniswapExecutionManager.executeSwap(
-            web3.library.getSigner(),
-            swapAction,
-            swapEstimate,
-            fromAmount,
-            fromAddress,
-            toAddress,
-            (status: Execution) => updateStatus(step, status),
-            swapExecution,
-          )
+          return await swapExecutionManager.executeSwap({
+            ...swapParams,
+            parseReceipt: uniswap.parseReceipt,
+          })
       }
     },
-    [
-      web3,
-      checkChain,
-      updateStatus,
-      uniswapExecutionManager,
-      paraswapExecutionManager,
-      oneInchExecutionManager,
-    ],
+    [web3, checkChain, updateStatus, swapExecutionManager],
   )
 
   const triggerCross = useCallback(

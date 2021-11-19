@@ -1,71 +1,64 @@
-import { JsonRpcSigner, TransactionResponse } from '@ethersproject/providers'
-import BigNumber from 'bignumber.js'
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { constants } from 'ethers'
 
-import { Action, Estimate, Execution, getChainById } from '../types'
-import { oneInch } from './1Inch'
+import { ExecuteSwapParams, getChainById } from '../types'
 import { checkAllowance } from './allowance.execute'
+import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
+import { personalizeStep } from './utils'
 
-export class OneInchExecutionManager {
+export default class SwapExecutionManager {
   shouldContinue: boolean = true
 
   setShouldContinue = (val: boolean) => {
     this.shouldContinue = val
   }
 
-  executeSwap = async (
-    signer: JsonRpcSigner,
-    action: Action,
-    estimate: Estimate,
-    srcAmount: BigNumber,
-    srcAddress: string,
-    destAddress: string,
-    updateStatus?: Function,
-    initialStatus?: Execution,
-    // eslint-disable-next-line max-params
-  ) => {
+  executeSwap = async ({ signer, step, parseReceipt, updateStatus }: ExecuteSwapParams) => {
     // setup
+    const { action, execution, estimate } = step
     const fromChain = getChainById(action.fromChainId)
-    const { status, update } = initStatus(updateStatus, initialStatus)
+    const { status, update } = initStatus(updateStatus, execution)
+
+    // Approval
     if (!this.shouldContinue) return status
     if (action.fromToken.id !== constants.AddressZero) {
-      const contractAddress = await oneInch.getContractAddress()
       await checkAllowance(
         signer,
         fromChain,
         action.fromToken,
-        srcAmount.toFixed(0),
-        contractAddress,
+        action.fromAmount,
+        estimate.approvalAddress,
         update,
         status,
       )
     }
 
-    // https://github.com/ethers-io/ethers.js/issues/1435#issuecomment-814963932
-
-    // Swap via 1inch
+    // Start Swap
     // -> set status
-    const swapProcess = createAndPushProcess('swapProcess', update, status, 'Swap via 1inch')
+    const swapProcess = createAndPushProcess('swapProcess', update, status, 'Preparing Swap')
+
     // -> swapping
-    if (!this.shouldContinue) return status
     let tx: TransactionResponse
     try {
       if (swapProcess.txHash) {
+        // -> restore existing tx
         tx = await signer.provider.getTransaction(swapProcess.txHash)
       } else {
-        const userAddress = await signer.getAddress()
-        const call = await oneInch.buildTransaction(
-          action.fromChainId,
-          action.fromToken.id,
-          action.toToken.id,
-          srcAmount.toFixed(0),
-          userAddress,
-          destAddress,
-          action.slippage,
-        )
-        tx = await signer.sendTransaction(call)
+        if (!this.shouldContinue) return status // stop before user interaction is needed
+
+        // -> get tx from backend
+        const personalizedStep = await personalizeStep(signer, step)
+        const { tx: transaction } = await Lifi.getStepTransaction(personalizedStep)
+
+        // -> set status
+        swapProcess.status = 'ACTION_REQUIRED'
+        swapProcess.message = `Sign Transaction`
+        update(status)
+
+        // -> submit tx
+        tx = await signer.sendTransaction(transaction)
       }
     } catch (e: any) {
       // -> set status
@@ -75,17 +68,18 @@ export class OneInchExecutionManager {
       throw e
     }
 
+    // Wait for Transaction
     // -> set status
     swapProcess.status = 'PENDING'
     swapProcess.txHash = tx.hash
     swapProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + swapProcess.txHash
-    swapProcess.message = 'Swap via paraswap - Wait for'
+    swapProcess.message = `Swapping - Wait for`
     update(status)
 
     // -> waiting
-    let receipt
+    let receipt: TransactionReceipt
     try {
-      receipt = await signer.provider.waitForTransaction(swapProcess.txHash)
+      receipt = await tx.wait()
     } catch (e: any) {
       // -> set status
       if (e.message) swapProcess.errorMessage = e.message
@@ -96,7 +90,7 @@ export class OneInchExecutionManager {
     }
 
     // -> set status
-    const parsedReceipt = oneInch.parseReceipt(tx, receipt)
+    const parsedReceipt = parseReceipt(tx, receipt)
     swapProcess.message = 'Swapped:'
     status.fromAmount = parsedReceipt.fromAmount
     status.toAmount = parsedReceipt.toAmount

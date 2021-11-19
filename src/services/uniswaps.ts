@@ -1,7 +1,7 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { BigNumber, ethers } from 'ethers'
 
-import { Action, Estimate } from '../types'
+import { Action, Estimate, ParsedReceipt } from '../types'
 
 const USE_EXACT_IN = true
 
@@ -63,7 +63,7 @@ interface Swapped {
   to: string
 }
 
-export const getSwapCall = async (
+const getSwapCall = async (
   action: Action,
   estimate: Estimate,
   srcAddress: string,
@@ -133,7 +133,7 @@ export const getSwapCall = async (
   }
 }
 
-export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
+const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt): ParsedReceipt => {
   const result = {
     fromAmount: '0',
     toAmount: '0',
@@ -166,4 +166,9 @@ export const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceip
   })
 
   return result
+}
+
+export const uniswap = {
+  getSwapCall,
+  parseReceipt,
 }

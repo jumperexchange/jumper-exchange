@@ -6,7 +6,7 @@ import { NetworkID, ParaSwap, SwapSide } from 'paraswap'
 import { APIError, Transaction } from 'paraswap/build/types'
 import { OptimalRate } from 'paraswap-core'
 
-import { Action, Estimate } from '../types'
+import { Action, Estimate, ParsedReceipt } from '../types'
 
 // event Swapped(
 //   bytes16 uuid,
@@ -181,7 +181,7 @@ const buildTransaction = async (
   return getSwapCall(action, estimate, srcAddress, destAddress)
 }
 
-const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
+const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt): ParsedReceipt => {
   const result = {
     fromAmount: '0',
     toAmount: '0',
