@@ -207,10 +207,13 @@ const getDefaultParams = (
       (token) => token.id === params.toToken,
     )
     if (foundToken) {
-      defaultParams.withdrawToken = foundToken.id
-      defaultParams.depositToken = transferTokens[defaultParams.depositChain].find(
+      const depositToken = transferTokens[defaultParams.depositChain].find(
         (token) => token.symbol === foundToken.symbol,
-      )!.id
+      )
+      if (depositToken) {
+        defaultParams.withdrawToken = foundToken.id
+        defaultParams.depositToken = depositToken.id
+      }
     }
   }
 
@@ -332,8 +335,12 @@ const SwapXpollinate = ({
 
     const sendingChain = getChainByKey(depositChain)
     const receivingChain = getChainByKey(withdrawChain)
-    const sendingToken = tokens[depositChain].find((token) => token.id === depositToken)!
-    const receivingToken = tokens[withdrawChain].find((token) => token.id === withdrawToken)!
+    const sendingToken = tokens[depositChain].find((token) => token.id === depositToken)
+    const receivingToken = tokens[withdrawChain].find((token) => token.id === withdrawToken)
+
+    if (!sendingToken || !receivingToken) return
+
+    if (!sendingToken.id || !sendingChain.id || !receivingChain.id || !receivingToken.id) return
 
     Promise.all([
       sdk.estimateFeeForRouterTransferInReceivingToken(
