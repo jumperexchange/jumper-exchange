@@ -1318,9 +1318,9 @@ const SwapXpollinate = ({
     return (
       <Collapse className="fees-collapse" ghost>
         <Collapse.Panel
-          header={`${isEstimate ? 'Estimated' : 'Total'} Fees: ${
-            isEstimate ? '~' : ''
-          }${total.toFixed(2)} ${token?.symbol}`}
+          header={`${isEstimate ? 'Estimated' : 'Total'} Fees: ${isEstimate ? '~' : ''}${
+            depositAmount.gt(0) ? total.toFixed(2) : '0.0'
+          } ${token?.symbol}`}
           key={'fees'}>
           <Row>
             <Col span={24}>
