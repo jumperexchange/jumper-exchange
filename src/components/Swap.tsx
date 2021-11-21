@@ -564,7 +564,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           footer={null}>
           <Swapping
             route={selectedRoute}
-            updateRoute={(route: any) => {
+            updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
             }}

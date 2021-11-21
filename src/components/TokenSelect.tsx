@@ -14,6 +14,7 @@ interface TokenSelectProps {
   onChangeSelectedToken: Function
   selectReference: React.MutableRefObject<RefSelectProps | undefined>
   grayed: boolean
+  showBalance?: boolean
 }
 
 const TokenSelect = ({
@@ -24,6 +25,7 @@ const TokenSelect = ({
   onChangeSelectedToken,
   selectReference,
   grayed,
+  showBalance = true,
 }: TokenSelectProps) => {
   const findToken = (chainKey: ChainKey, tokenId: string) => {
     const token = tokens[chainKey].find((token) => token.id === tokenId)
@@ -80,7 +82,8 @@ const TokenSelect = ({
                     value={token.id}
                     label={token.symbol + ' ' + token.name}
                     data-label={
-                      token.symbol + (token.amountRendered ? ' (' + token.amountRendered + ')' : '')
+                      token.symbol +
+                      (balances && showBalance ? ' (' + token.amountRendered + ')' : '')
                     }>
                     <div className="option-item">
                       <span role="img" aria-label={token.symbol}>
@@ -110,7 +113,7 @@ const TokenSelect = ({
               value={token.id}
               label={token.symbol + ' - ' + token.name}
               data-label={
-                token.symbol + (token.amountRendered ? ' (' + token.amountRendered + ')' : '')
+                token.symbol + (balances && showBalance ? ' (' + token.amountRendered + ')' : '')
               }>
               <div className={'option-item ' + (grayed && token.amount?.eq(0) ? 'disabled' : '')}>
                 <span role="img" aria-label={token.symbol}>

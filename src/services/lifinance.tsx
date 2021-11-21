@@ -24,7 +24,7 @@ import { checkAllowance } from './allowance.execute'
 import * as nxtp from './nxtp'
 import { paraswap } from './paraswap'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
-import * as uniswap from './uniswaps'
+import { uniswap } from './uniswaps'
 
 const lifiContractAddress = '0xa74D44ed9C3BB96d7676E7A274c33A05210cf35a'
 const getSupportedChains = (jsonArraySting: string): ChainId[] => {

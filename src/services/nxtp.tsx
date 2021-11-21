@@ -152,7 +152,6 @@ export const triggerTransfer = async (
   setStatusDone(update, status, approveProcess)
   submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
     status: 'ACTION_REQUIRED',
-    footerMessage: 'Open Wallet to Confirm Transaction',
   })
 
   const transactionId = estimate.data.bid.transactionId
@@ -246,7 +245,6 @@ export const attachListeners = (
     if (!submitProcess) {
       submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
         status: 'ACTION_REQUIRED',
-        footerMessage: 'Open Wallet to Confirm Transaction',
       })
     }
   })

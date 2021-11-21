@@ -3,7 +3,7 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import axios from 'axios'
 import { BigNumber, ethers } from 'ethers'
 
-import { Action, Estimate } from '../types'
+import { Action, Estimate, ParsedReceipt } from '../types'
 
 // const SUPPORTED_CHAINS = [1, 56, 137]
 const baseURL = 'https://api.1inch.exchange/v3.0/'
@@ -168,7 +168,7 @@ const getSwapCall = async (
   } as ethers.PopulatedTransaction
 }
 
-const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt) => {
+const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt): ParsedReceipt => {
   const result = {
     fromAmount: '0',
     toAmount: '0',

@@ -1,4 +1,4 @@
-import { CheckOutlined, LoadingOutlined } from '@ant-design/icons'
+import { ArrowRightOutlined, CheckOutlined, LoadingOutlined } from '@ant-design/icons'
 import { NxtpSdkEvents } from '@connext/nxtp-sdk'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
@@ -107,7 +107,38 @@ const TransactionsTableNxtp = ({
         if (index !== -1) {
           return <Button onClick={() => setModalRouteIndex(index)}>{action.status}</Button>
         } else {
-          return action.status
+          // SenderTokenApprovalSubmitted: "SenderTokenApprovalSubmitted",
+          // SenderTokenApprovalMined: "SenderTokenApprovalMined",
+          // SenderTransactionPrepareSubmitted: "SenderTransactionPrepareSubmitted",
+          // SenderTransactionPrepared: "SenderTransactionPrepared",
+          // SenderTransactionFulfilled: "SenderTransactionFulfilled",
+          // SenderTransactionCancelled: "SenderTransactionCancelled",
+          // ReceiverPrepareSigned: "ReceiverPrepareSigned",
+          // ReceiverTransactionPrepared: "ReceiverTransactionPrepared",
+          // ReceiverTransactionFulfilled: "ReceiverTransactionFulfilled",
+          // ReceiverTransactionCancelled: "ReceiverTransactionCancelled",
+          switch (action.status) {
+            case NxtpSdkEvents.SenderTokenApprovalSubmitted:
+              return 'Approving Token Spend...'
+            case NxtpSdkEvents.SenderTokenApprovalMined:
+              return 'Token Approved.'
+            case NxtpSdkEvents.SenderTransactionPrepareSubmitted:
+              return 'Waiting for Confirmations...'
+            case NxtpSdkEvents.SenderTransactionPrepared:
+              return 'Waiting for Router...'
+            case NxtpSdkEvents.ReceiverTransactionPrepared:
+              return 'Ready for Claim!'
+            case NxtpSdkEvents.ReceiverPrepareSigned:
+              return 'Waiting for Relayer...'
+            case NxtpSdkEvents.ReceiverTransactionFulfilled:
+              return 'Completed.'
+            case NxtpSdkEvents.SenderTransactionFulfilled:
+              return 'Completed.'
+            case NxtpSdkEvents.SenderTransactionCancelled:
+              return 'Cancelled.'
+            default:
+              return action.status
+          }
         }
       },
     },
@@ -129,35 +160,15 @@ const TransactionsTableNxtp = ({
       },
     },
     {
-      title: 'Sending Chain',
+      title: 'Chain',
       dataIndex: ['txData'],
       render: (txData: CrosschainTransaction) => {
-        const chain = getChainById(txData.invariant.sendingChainId)
-        return <>{chain.name}</>
-      },
-    },
-    {
-      title: 'Receiving Chain',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        const chain = getChainById(txData.invariant.receivingChainId)
-        return <>{chain.name}</>
-      },
-    },
-    {
-      title: 'Asset',
-      dataIndex: ['txData'],
-      render: (txData: CrosschainTransaction) => {
-        const chain = getChainById(txData.invariant.receivingChainId)
-        const token = tokens[chain.key].find(
-          (token) => token.id.toLowerCase() === txData.invariant.receivingAssetId.toLowerCase(),
-        )
-        const path = chain.id === ChainId.MOR ? 'tokens/' : 'token/'
-        const link = chain.metamask.blockExplorerUrls[0] + path + txData.invariant.receivingAssetId
+        const sendingChain = getChainById(txData.invariant.sendingChainId)
+        const receivingChain = getChainById(txData.invariant.receivingChainId)
         return (
-          <a href={link} target="_blank" rel="nofollow noreferrer">
-            {token?.name}
-          </a>
+          <>
+            {sendingChain.name} <ArrowRightOutlined /> {receivingChain.name}{' '}
+          </>
         )
       },
     },
@@ -169,7 +180,16 @@ const TransactionsTableNxtp = ({
         const token = tokens[chain.key].find(
           (token) => token.id.toLowerCase() === txData.invariant.sendingAssetId.toLowerCase(),
         )
-        return (parseInt(txData.sending?.amount || '0') / 10 ** (token?.decimals || 18)).toFixed(4)
+        const path = chain.id === ChainId.MOR ? 'tokens/' : 'token/'
+        const link = chain.metamask.blockExplorerUrls[0] + path + txData.invariant.receivingAssetId
+        return (
+          <div>
+            {(parseInt(txData.sending?.amount || '0') / 10 ** (token?.decimals || 18)).toFixed(4)}{' '}
+            <a href={link} target="_blank" rel="nofollow noreferrer">
+              {token?.name}
+            </a>
+          </div>
+        )
       },
     },
 
