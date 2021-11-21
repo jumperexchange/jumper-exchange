@@ -273,7 +273,9 @@ const SwapFormNxtp = ({
               <div>
                 {depositToken &&
                   balances &&
-                  balances[depositChain].find((p) => p.id === depositToken)?.amount.toFixed(4)}
+                  (balances[depositChain] ?? [])
+                    .find((p) => p.id === depositToken)
+                    ?.amount.toFixed(4)}
               </div>
             </Col>
           </Row>
@@ -354,7 +356,9 @@ const SwapFormNxtp = ({
               <div>
                 {withdrawToken &&
                   balances &&
-                  balances[withdrawChain].find((p) => p.id === withdrawToken)?.amount.toFixed(4)}
+                  (balances[withdrawChain] ?? [])
+                    .find((p) => p.id === withdrawToken)
+                    ?.amount.toFixed(4)}
               </div>
             </Col>
           </Row>
