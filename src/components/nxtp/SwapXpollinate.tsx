@@ -1446,6 +1446,19 @@ const SwapXpollinate = ({
           </Row>
         )}
 
+        {process.env.REACT_APP_WARNING_MESSAGE && (
+          <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+            <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
+              <Alert
+                message={process.env.REACT_APP_WARNING_MESSAGE}
+                description={process.env.REACT_APP_WARNING_DESCRIPTION}
+                type="info"
+                closable={true}
+              />
+            </Col>
+          </Row>
+        )}
+
         {/* Balances */}
         {testnet && (
           <Collapse activeKey={activeKeyTransactions} accordion ghost>
