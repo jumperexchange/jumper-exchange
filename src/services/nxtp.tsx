@@ -72,6 +72,7 @@ export const getTransferQuote = async (
   callData?: string,
   initiator?: string,
   preferredRouters?: string[],
+  dryRun: boolean = false,
 ): Promise<GetTransferQuote | undefined> => {
   // Create txid
   const transactionId = getRandomBytes32()
@@ -89,6 +90,7 @@ export const getTransferQuote = async (
     callData,
     initiator,
     preferredRouters,
+    dryRun,
   })
   return response
 }
