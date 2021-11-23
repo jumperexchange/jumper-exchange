@@ -840,11 +840,6 @@ const SwapXpollinate = ({
     ) => {
       setRoutesLoading(true)
 
-      const dryRun = new BigNumber(depositAmount).gt(
-        getBalance(depositChain, depositToken).shiftedBy(
-          findToken(depositChain, depositToken).decimals,
-        ),
-      )
       try {
         const quote = await getTransferQuote(
           sdk!,
@@ -858,7 +853,6 @@ const SwapXpollinate = ({
           callData,
           undefined,
           preferredRouters,
-          dryRun,
         )
 
         if (!quote) {
