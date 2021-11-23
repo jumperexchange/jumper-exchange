@@ -840,6 +840,11 @@ const SwapXpollinate = ({
     ) => {
       setRoutesLoading(true)
 
+      const dryRun = new BigNumber(depositAmount).gt(
+        getBalance(depositChain, depositToken).shiftedBy(
+          findToken(depositChain, depositToken).decimals,
+        ),
+      )
       try {
         const quote = await getTransferQuote(
           sdk!,
@@ -853,6 +858,7 @@ const SwapXpollinate = ({
           callData,
           undefined,
           preferredRouters,
+          dryRun,
         )
 
         if (!quote) {
@@ -872,9 +878,6 @@ const SwapXpollinate = ({
   useEffect(() => {
     if (routeRequest && routeQuote && doRequestAndBidMatch(routeRequest, routeQuote)) {
       return // already calculated
-    }
-    if (!hasSufficientBalance()) {
-      return
     }
     // We must have estimated fees first in order to determine the minimum required to spend.
     if (estimatedFees === undefined) {
@@ -1119,7 +1122,7 @@ const SwapXpollinate = ({
         </Button>
       )
     }
-    if (depositAmount.lte(new BigNumber(0))) {
+    if (depositAmount.lte(0)) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Enter Amount
