@@ -1,9 +1,8 @@
-/* eslint-disable max-params */
 import { NxtpSdkEvents } from '@connext/nxtp-sdk'
 import { constants } from 'ethers'
 
 import { getRpcProviders } from '../components/web3/connectors'
-import { ExecuteCrossParams, getChainById } from '../types'
+import { ExecuteCrossParams, getChainById, isLifiStep, isSwapStep } from '../types'
 import { checkAllowance } from './allowance.execute'
 import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
@@ -24,19 +23,15 @@ export class NXTPExecutionManager {
     const { action, execution, estimate } = step
     const { status, update } = initStatus(updateStatus, execution)
     const fromChain = getChainById(action.fromChainId)
-    const transactionId = estimate.data.bid.transactionId
+    const toChain = getChainById(action.toChainId)
+    const transactionId = step.id
 
     // init sdk
     const crossableChains = [action.fromChainId, action.toChainId]
     const chainProviders = getRpcProviders(crossableChains)
     const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
-    if (!this.shouldContinue) {
-      nxtpSDK.removeAllListeners()
-      return status
-    }
-
-    // STEP 1: Check Allowance ////////////////////////////////////////////////
+    // STEP 0: Check Allowance ////////////////////////////////////////////////
     if (action.fromToken.id !== constants.AddressZero) {
       // Check Token Approval only if fromToken is not the native token => no approval needed in that case
       await checkAllowance(
@@ -49,6 +44,29 @@ export class NXTPExecutionManager {
         status,
         true,
       )
+    }
+
+    // STEP 1: Get Public Key ////////////////////////////////////////////////
+    if (isLifiStep(step) && isSwapStep(step.includedSteps[step.includedSteps.length - 1])) {
+      // -> set status
+      const keyProcess = createAndPushProcess('publicKey', update, status, 'Provide Public Key', {
+        status: 'ACTION_REQUIRED',
+      })
+      // -> request key
+      try {
+        const encryptionPublicKey = await (window as any).ethereum.request({
+          method: 'eth_getEncryptionPublicKey',
+          params: [await signer.getAddress()], // you must have access to the specified account
+        })
+        // store key
+        if (!step.estimate.data) step.estimate.data = {}
+        step.estimate.data.encryptionPublicKey = encryptionPublicKey
+      } catch (e) {
+        setStatusFailed(update, status, keyProcess)
+        throw e
+      }
+      // -> set status
+      setStatusDone(update, status, keyProcess)
     }
 
     // STEP 2: Get Transaction ////////////////////////////////////////////////
@@ -73,6 +91,7 @@ export class NXTPExecutionManager {
 
     await tx.wait()
 
+    crossProcess.message = 'Transfer started: '
     setStatusDone(update, status, crossProcess)
 
     // STEP 5: Wait for ReceiverTransactionPrepared //////////////////////////////////////
@@ -103,14 +122,17 @@ export class NXTPExecutionManager {
     update(status)
 
     try {
-      await fulfillPromise
+      const data = await fulfillPromise
+      claimProcess.txHash = data.transactionHash
+      claimProcess.txLink = toChain.metamask.blockExplorerUrls[0] + 'tx/' + claimProcess.txHash
+      claimProcess.message = 'Swapped:'
     } catch (e) {
       // handle errors
       // TODO: setStatusFailed
     }
 
     // TODO: listen on ReceiverTransactionFulfilled to be able to extract the receipt
-    claimProcess.message = 'Swapped:'
+
     status.fromAmount = estimate.fromAmount
     status.toAmount = estimate.toAmount
     status.status = 'DONE'

@@ -15,6 +15,28 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
     return nameOnly[0].toUpperCase() + nameOnly.slice(1)
   }
 
+  const parseStepShort = (step: Step) => {
+    switch (step.type) {
+      case 'swap':
+        return (
+          <>
+            Swap to {formatTokenAmount(step.action.toToken, step.estimate.toAmount)} via {step.tool}
+          </>
+        )
+      case 'cross':
+        return (
+          <>
+            Transfer to {formatTokenAmount(step.action.toToken, step.estimate.toAmount)} via{' '}
+            {step.tool}
+          </>
+        )
+      default:
+        // eslint-disable-next-line no-console
+        console.error('invalid short step')
+        return <></>
+    }
+  }
+
   const parseStep = (step: Step) => {
     const { action, estimate } = step
     switch (step.type) {
@@ -39,9 +61,28 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
             estimate.toAmount,
           )} via ${formatToolName(step.tool)}`,
         }
-      // case 'lifi':
+      case 'lifi':
+        return {
+          title: 'LiFi Contract',
+          description: (
+            <>
+              One Transaction which:
+              <br />
+              <ol>
+                {step.includedSteps.map(parseStepShort).map((line, index) => (
+                  <li key={index}>{line}</li>
+                ))}
+              </ol>
+              Estimated result:{' '}
+              <b>{formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</b>
+            </>
+          ),
+        }
       default:
-        throw new Error(`Unknown step type ${step.type}`)
+        return {
+          title: 'Invalid Step',
+          description: '',
+        }
     }
   }
 

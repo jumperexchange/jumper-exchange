@@ -20,7 +20,9 @@ import {
   Chain,
   ChainKey,
   ChainPortfolio,
+  CoinKey,
   defaultTokens,
+  findDefaultCoinOnChain,
   Route as RouteType,
   RoutesRequest,
   RoutesResponse,
@@ -85,12 +87,16 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [unused, setStateUpdate] = useState<number>(0)
 
   // From
-  const [fromChainKey, setFromChainKey] = useState<ChainKey>(transferChains[0].key)
+  const [fromChainKey, setFromChainKey] = useState<ChainKey>(ChainKey.DAI)
   const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(1))
-  const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>() // tokenId
-  const [toChainKey, setToChainKey] = useState<ChainKey>(transferChains[1].key)
+  const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.DAI).id,
+  ) // tokenId
+  const [toChainKey, setToChainKey] = useState<ChainKey>(ChainKey.POL)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress, setToTokenAddress] = useState<string | undefined>() // tokenId
+  const [toTokenAddress, setToTokenAddress] = useState<string | undefined>(
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.POL).id,
+  ) // tokenId
   const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(
     filterDefaultTokenByChains(defaultTokens, transferChains),
   )

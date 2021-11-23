@@ -5,6 +5,7 @@ import {
   CoinKey,
   CrossStep,
   findDefaultCoinOnChain,
+  LifiStep,
   SwapStep,
   Token,
 } from '@lifinance/types'
@@ -281,6 +282,6 @@ export type ExecuteSwapParams = {
 
 export type ExecuteCrossParams = {
   signer: JsonRpcSigner
-  step: CrossStep
+  step: CrossStep | LifiStep
   updateStatus?: Function
 }
