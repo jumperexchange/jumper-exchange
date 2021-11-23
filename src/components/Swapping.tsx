@@ -41,6 +41,7 @@ import {
   getChainById,
   getChainByKey,
   getIcon,
+  LifiStep,
   Process,
   Route,
   Step,
@@ -419,6 +420,32 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         ]
       }
 
+      case 'lifi': {
+        return [
+          <Timeline.Item
+            position={isMobile ? 'right' : 'right'}
+            key={index + '_left'}
+            color={color}>
+            <h4>
+              LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
+              {getChainAvatar(getChainById(step.action.toChainId).key)}
+            </h4>
+            <span>
+              {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
+              <ArrowRightOutlined />{' '}
+              {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
+            </span>
+          </Timeline.Item>,
+          <Timeline.Item
+            position={isMobile ? 'right' : 'left'}
+            key={index + '_right'}
+            color={color}
+            dot={isLoading ? <LoadingOutlined /> : null}>
+            {executionSteps}
+          </Timeline.Item>,
+        ]
+      }
+
       default:
         // eslint-disable-next-line no-console
         console.warn('should never reach here')
@@ -440,6 +467,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             return await triggerSwap(step, previousStep)
           case 'cross':
             return await triggerCross(step, previousStep)
+          case 'lifi':
+            return await triggerLifi(step, previousStep)
           default:
             setIsSwapping(false)
             throw new Error('Invalid Step')
@@ -461,16 +490,21 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     [triggerCross, triggerSwap, updateStatus],
   )
 
-  const triggerLifi = useCallback(async () => {
-    // ensure chain is set
-    if (web3.chainId !== steps[0].action.fromChainId) {
-      if (!(await checkChain(steps[0]))) return
-    }
+  const triggerLifi = useCallback(
+    async (step: LifiStep, previousStep?: Step) => {
+      // ensure chain is set
+      if (web3.chainId !== steps[0].action.fromChainId) {
+        if (!(await checkChain(steps[0]))) return
+      }
 
-    await lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) =>
-      updateStatus(steps[0], status),
-    )
-  }, [route, updateStatus, checkChain, web3.chainId, web3.library])
+      return await nxtpExecutionManager.executeCross({
+        signer: web3.library!.getSigner(),
+        step,
+        updateStatus: (status: Execution) => updateStatus(step, status),
+      })
+    },
+    [route, updateStatus, checkChain, web3.chainId, web3.library],
+  )
 
   const startCrossChainSwap = async () => {
     storeActiveRoute(route)
@@ -519,7 +553,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       // lifi supported?
       if (isLifiSupported(route)) {
         if (!steps[0].execution) {
-          triggerLifi()
+          // triggerLifi()
         } else if (steps[0].execution.status === 'DONE') {
           setFinalBalance(await getFinalBalace(web3.account!, route))
           setIsSwapping(false)

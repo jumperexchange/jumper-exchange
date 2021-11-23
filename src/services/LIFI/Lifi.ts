@@ -1,11 +1,4 @@
-import {
-  isCrossStep,
-  isSwapStep,
-  RoutesRequest,
-  RoutesResponse,
-  Step,
-  StepTransactionResponse,
-} from '@lifinance/types'
+import { RoutesRequest, RoutesResponse, Step, StepTransactionResponse } from '@lifinance/types'
 import axios from 'axios'
 
 import { isRoutesRequest, isStep } from './typeguards'
@@ -27,10 +20,6 @@ class LIFI {
   getStepTransaction = async (step: Step): Promise<StepTransactionResponse> => {
     if (!isStep(step)) {
       throw new Error('SDK Validation: Invalid Step')
-    }
-
-    if (!(isSwapStep(step) || isCrossStep(step))) {
-      throw Error('Only swap and cross steps are supported at the moment')
     }
 
     const result = await axios.post<StepTransactionResponse>(
