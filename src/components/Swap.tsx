@@ -482,6 +482,8 @@ const Swap = ({ transferChains }: SwapProps) => {
           fromTokenAddress,
           toChainId: toToken.chainId,
           toTokenAddress,
+          fromAddress: web3.account || undefined,
+          toAddress: web3.account || undefined,
           options: {
             slippage: optionSlippage / 100,
           },

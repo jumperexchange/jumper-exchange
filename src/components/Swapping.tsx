@@ -16,6 +16,7 @@ import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
 import { oneInch } from '../services/1Inch'
 import { getBalancesForWallet } from '../services/balanceService'
+import { Cbridge1ExecutionManager } from '../services/cbridge1.execute'
 import { HopExecutionManager } from '../services/hop.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
 import { lifinance } from '../services/lifinance'
@@ -99,18 +100,29 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [nxtpExecutionManager] = useState<NXTPExecutionManager>(new NXTPExecutionManager())
   const [hopExecutionManager] = useState<HopExecutionManager>(new HopExecutionManager())
   const [horizonExecutionManager] = useState<HorizonExecutionManager>(new HorizonExecutionManager())
+  const [cbridge1ExecutionManager] = useState<Cbridge1ExecutionManager>(
+    new Cbridge1ExecutionManager(),
+  )
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
+  // stop execution managers when component get destroyed
   useEffect(() => {
     return () => {
       swapExecutionManager.setShouldContinue(false)
       nxtpExecutionManager.setShouldContinue(false)
       hopExecutionManager.setShouldContinue(false)
       horizonExecutionManager.setShouldContinue(false)
+      cbridge1ExecutionManager.setShouldContinue(false)
     }
-  }, [swapExecutionManager, nxtpExecutionManager, hopExecutionManager, horizonExecutionManager])
+  }, [
+    swapExecutionManager,
+    nxtpExecutionManager,
+    hopExecutionManager,
+    horizonExecutionManager,
+    cbridge1ExecutionManager,
+  ])
 
   // Swap
   const updateStatus = useCallback(
@@ -236,6 +248,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             (status: Execution) => updateStatus(step, status),
             execution,
           )
+        case 'cbridge1':
+          return await cbridge1ExecutionManager.executeCross({
+            signer: web3.library.getSigner(),
+            step,
+            updateStatus: (status: Execution) => updateStatus(step, status),
+          })
         default:
           throw new Error('Should never reach here, bridge not defined')
       }
@@ -247,6 +265,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       nxtpExecutionManager,
       hopExecutionManager,
       horizonExecutionManager,
+      cbridge1ExecutionManager,
     ],
   )
 
@@ -391,6 +410,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             break
           case 'horizon':
             avatar = horizonAvatar
+            break
+          case 'cbridge1':
+            avatar = 'cBridge1'
             break
           default:
             break
