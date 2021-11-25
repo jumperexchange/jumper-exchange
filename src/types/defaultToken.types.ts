@@ -59,6 +59,16 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MOR),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MOR),
   ],
+  [ChainKey.OKT]: [
+    findDefaultCoinOnChain(CoinKey.OKT, ChainKey.OKT),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OKT),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OKT),
+  ],
+  [ChainKey.HEC]: [
+    findDefaultCoinOnChain(CoinKey.HT, ChainKey.HEC),
+    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.HEC),
+    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.HEC),
+  ],
 
   // Testnet
   [ChainKey.GOR]: [
