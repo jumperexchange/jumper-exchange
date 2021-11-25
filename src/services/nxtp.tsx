@@ -5,6 +5,7 @@ import {
   NxtpSdk,
   NxtpSdkEvents,
 } from '@connext/nxtp-sdk'
+import { getChainData } from '@connext/nxtp-sdk/dist/utils'
 import { getRandomBytes32, TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { Button } from 'antd'
@@ -55,8 +56,9 @@ export const setup = async (
       subgraphSyncBuffer: chainConfigOverwrites[parseInt(chainId)]?.subgraphSyncBuffer,
     }
   })
+  const chainData = await getChainData()
 
-  const sdk = new NxtpSdk({ chainConfig, signer })
+  const sdk = new NxtpSdk({ chainConfig, signer, chainData })
   return sdk
 }
 
