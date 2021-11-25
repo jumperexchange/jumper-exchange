@@ -94,7 +94,7 @@ export default class SwapExecutionManager {
     swapProcess.message = 'Swapped:'
     status.fromAmount = parsedReceipt.fromAmount
     status.toAmount = parsedReceipt.toAmount
-    status.gasUsed = (status.gasUsed || 0) + parsedReceipt.gasUsed
+    // status.gasUsed = parsedReceipt.gasUsed
     status.status = 'DONE'
     setStatusDone(update, status, swapProcess)
     notifications.showNotification(NotificationType.SWAP_SUCCESSFUL)

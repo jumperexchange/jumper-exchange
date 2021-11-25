@@ -85,7 +85,7 @@ export class HopExecutionManager {
     setStatusDone(update, status, waitForTxProcess, {
       fromAmount: parsedReceipt.fromAmount,
       toAmount: parsedReceipt.toAmount,
-      gasUsed: (status.gasUsed || 0) + parsedReceipt.gasUsed,
+      gasUsed: parsedReceipt.gasUsed,
     })
 
     // -> set status

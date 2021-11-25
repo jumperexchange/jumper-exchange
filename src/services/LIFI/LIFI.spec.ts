@@ -159,30 +159,11 @@ describe('LIFI SDK', () => {
           expect(mockedAxios.post).toHaveBeenCalledTimes(0)
         })
 
-        // more indepth checks for the action type should be done once we have real schema validation
-        it('should throw Error because of invalid action', async () => {
-          const step = getStep({ action: 'xxx' })
-
-          await expect(Lifi.getStepTransaction(step)).rejects.toThrow('Invalid step')
-          expect(mockedAxios.post).toHaveBeenCalledTimes(0)
-        })
-
         // more indepth checks for the estimate type should be done once we have real schema validation
         it('should throw Error because of invalid estimate', async () => {
           const step = getStep({ estimate: 'Is this really an estimate?' })
 
           await expect(Lifi.getStepTransaction(step)).rejects.toThrow('Invalid step')
-          expect(mockedAxios.post).toHaveBeenCalledTimes(0)
-        })
-      })
-
-      describe('with a non-swap step', () => {
-        it('should throw Error because of unsupported type', async () => {
-          const step = getStep({ type: 'lifi' })
-
-          await expect(Lifi.getStepTransaction(step)).rejects.toThrow(
-            'Only swap and cross steps are supported at the moment',
-          )
           expect(mockedAxios.post).toHaveBeenCalledTimes(0)
         })
       })
