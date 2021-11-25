@@ -12,8 +12,10 @@ import rop from '../assets/icons/ethereum_ropsten.png'
 import ftm from '../assets/icons/fantom.png'
 import one from '../assets/icons/harmony.png'
 import onet from '../assets/icons/harmony_test.png'
+import hec from '../assets/icons/heco.png'
 import honey from '../assets/icons/honey.png'
 import mor from '../assets/icons/moonriver.png'
+import okt from '../assets/icons/okex.png'
 import opt from '../assets/icons/optimism.png'
 import pancake from '../assets/icons/pancake.png'
 import pol from '../assets/icons/polygon.png'
@@ -31,11 +33,11 @@ export const icons: { [key: string]: string } = {
   [ChainKey.POL]: pol,
   [ChainKey.BSC]: bsc,
   [ChainKey.DAI]: dai,
-  // [ChainKey.OKT]: okt,
+  [ChainKey.OKT]: okt,
   [ChainKey.FTM]: ftm,
   [ChainKey.AVA]: ava,
   [ChainKey.ARB]: arb,
-  // [ChainKey.HEC]: hec,
+  [ChainKey.HEC]: hec,
   [ChainKey.OPT]: opt,
   [ChainKey.ONE]: one,
   [ChainKey.MOR]: mor,
