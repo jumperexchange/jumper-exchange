@@ -17,7 +17,7 @@ import walletIcon from '../assets/wallet.png'
 import { oneInch } from '../services/1Inch'
 import { getBalancesForWallet } from '../services/balanceService'
 import { Cbridge1ExecutionManager } from '../services/cbridge1.execute'
-import { HopExecutionManager } from '../services/hop.execute'
+import { HopExecutionManager } from '../services/hop_new.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
 import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
@@ -207,7 +207,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   )
 
   const triggerCross = useCallback(
-    async (step: CrossStep, previousStep?: Step) => {
+    async (step: CrossStep | LifiStep, previousStep?: Step) => {
       if (!web3.account || !web3.library) return
       const { action, execution } = step
 
@@ -229,15 +229,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             updateStatus: (status: Execution) => updateStatus(step, status),
           })
         case 'hop':
-          return await hopExecutionManager.executeCross(
-            web3.library.getSigner(),
-            action.fromToken.key,
-            step.action.fromAmount,
-            action.fromChainId,
-            action.toChainId,
-            (status: Execution) => updateStatus(step, status),
-            execution,
-          )
+          return await hopExecutionManager.executeCross({
+            signer: web3.library.getSigner(),
+            step,
+            updateStatus: (status: Execution) => updateStatus(step, status),
+          })
         case 'horizon':
           return await horizonExecutionManager.executeCross(
             action.fromToken,
@@ -488,9 +484,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           case 'swap':
             return await triggerSwap(step, previousStep)
           case 'cross':
-            return await triggerCross(step, previousStep)
           case 'lifi':
-            return await triggerLifi(step, previousStep)
+            return await triggerCross(step, previousStep)
           default:
             setIsSwapping(false)
             throw new Error('Invalid Step')
@@ -510,22 +505,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       }
     },
     [triggerCross, triggerSwap, updateStatus],
-  )
-
-  const triggerLifi = useCallback(
-    async (step: LifiStep, previousStep?: Step) => {
-      // ensure chain is set
-      if (web3.chainId !== steps[0].action.fromChainId) {
-        if (!(await checkChain(steps[0]))) return
-      }
-
-      return await nxtpExecutionManager.executeCross({
-        signer: web3.library!.getSigner(),
-        step,
-        updateStatus: (status: Execution) => updateStatus(step, status),
-      })
-    },
-    [route, updateStatus, checkChain, web3.chainId, web3.library],
   )
 
   const startCrossChainSwap = async () => {

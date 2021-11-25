@@ -2260,7 +2260,11 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
+<<<<<<< HEAD
 "@lifinance/types@^0.6.1":
+=======
+"@lifinance/types@^0.6.4":
+>>>>>>> add lifi + hop
   version "0.6.4"
   resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.6.4.tgz#32de82c45ce74129ad8687597546141e087811f1"
   integrity sha512-VCq3gI03iOXVUijnOR+j/2UCs/v24tw8LXRBbSdA9TaEEIuPGGsCzQkmNwDGOl1Y6ZGq9FkUYJGKhcgoUhaitA==
@@ -12329,6 +12333,46 @@ postcss@^8.1.0:
     nanoid "^3.1.30"
     picocolors "^1.0.0"
     source-map-js "^1.0.1"
+
+prebuild-install@^5.3.4:
+  version "5.3.6"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.3.6.tgz#7c225568d864c71d89d07f8796042733a3f54291"
+  integrity sha512-s8Aai8++QQGi4sSbs/M1Qku62PFK49Jm1CbgXklGz4nmHveDq0wzJkg7Na5QbnO1uNH8K7iqx2EQ/mV0MZEmOg==
+  dependencies:
+    detect-libc "^1.0.3"
+    expand-template "^2.0.3"
+    github-from-package "0.0.0"
+    minimist "^1.2.3"
+    mkdirp-classic "^0.5.3"
+    napi-build-utils "^1.0.1"
+    node-abi "^2.7.0"
+    noop-logger "^0.1.1"
+    npmlog "^4.0.1"
+    pump "^3.0.0"
+    rc "^1.2.7"
+    simple-get "^3.0.3"
+    tar-fs "^2.0.0"
+    tunnel-agent "^0.6.0"
+    which-pm-runs "^1.0.0"
+
+prebuild-install@^6.0.0:
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-6.1.4.tgz#ae3c0142ad611d58570b89af4986088a4937e00f"
+  integrity sha512-Z4vpywnK1lBg+zdPCVCsKq0xO66eEV9rWo2zrROGGiRS4JtueBOdlB1FnY8lcy7JsUud/Q3ijUxyWN26Ika0vQ==
+  dependencies:
+    detect-libc "^1.0.3"
+    expand-template "^2.0.3"
+    github-from-package "0.0.0"
+    minimist "^1.2.3"
+    mkdirp-classic "^0.5.3"
+    napi-build-utils "^1.0.1"
+    node-abi "^2.21.0"
+    npmlog "^4.0.1"
+    pump "^3.0.0"
+    rc "^1.2.7"
+    simple-get "^3.0.3"
+    tar-fs "^2.0.0"
+    tunnel-agent "^0.6.0"
 
 prebuild-install@^5.3.4:
   version "5.3.6"

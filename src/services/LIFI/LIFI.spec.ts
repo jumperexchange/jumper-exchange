@@ -198,17 +198,6 @@ describe('LIFI SDK', () => {
         })
       })
 
-      describe('with a non-swap step', () => {
-        it('should throw Error because of unsupported type', async () => {
-          const step = getStep({ type: 'lifi' })
-
-          await expect(Lifi.getStepTransaction(step)).rejects.toThrow(
-            'Only swap and cross steps are supported at the moment',
-          )
-          expect(mockedAxios.post).toHaveBeenCalledTimes(0)
-        })
-      })
-
       describe('user input is valid', () => {
         it('should call server once', async () => {
           const step = getStep({})

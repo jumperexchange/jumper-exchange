@@ -23,7 +23,7 @@ export class NXTPExecutionManager {
     step: Step,
     update: Function,
     status: Execution,
-  ) => {
+  ): Promise<Execution> => {
     return new Promise(async (resolve, reject) => {
       sdk.attach(NxtpSdkEvents.ReceiverTransactionPrepared, async (data) => {
         try {
