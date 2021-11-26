@@ -83,7 +83,9 @@ const TokenSelect = ({
                     label={token.symbol + ' ' + token.name}
                     data-label={
                       token.symbol +
-                      (balances && showBalance ? ' (' + token.amountRendered + ')' : '')
+                      (balances && showBalance && token.amountRendered
+                        ? ' (' + token.amountRendered + ')'
+                        : '')
                     }>
                     <div className="option-item">
                       <span role="img" aria-label={token.symbol}>
@@ -114,7 +116,10 @@ const TokenSelect = ({
                 value={token.id}
                 label={token.symbol + ' - ' + token.name}
                 data-label={
-                  token.symbol + (balances && showBalance ? ' (' + token.amountRendered + ')' : '')
+                  token.symbol +
+                  (balances && showBalance && token.amountRendered
+                    ? ' (' + token.amountRendered + ')'
+                    : '')
                 }>
                 <div className={'option-item ' + (grayed && token.amount?.eq(0) ? 'disabled' : '')}>
                   <span role="img" aria-label={token.symbol}>
