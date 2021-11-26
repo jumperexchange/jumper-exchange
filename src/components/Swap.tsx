@@ -88,10 +88,10 @@ const getDefaultParams = (
   transferTokens: { [ChainKey: string]: Array<Token> },
 ) => {
   const defaultParams: StartParams = {
-    depositChain: ChainKey.POL,
+    depositChain: undefined,
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
-    withdrawChain: ChainKey.DAI,
+    withdrawChain: undefined,
     withdrawToken: undefined,
   }
 
@@ -114,7 +114,7 @@ const getDefaultParams = (
   }
 
   // fromToken
-  if (params.fromToken && typeof params.fromToken === 'string') {
+  if (params.fromToken && typeof params.fromToken === 'string' && defaultParams.depositChain) {
     try {
       // is token address valid?
       const fromTokenId = ethers.utils.getAddress(params.fromToken.trim()).toLowerCase()
@@ -175,7 +175,7 @@ const getDefaultParams = (
   }
 
   // toToken
-  if (params.toToken && typeof params.toToken === 'string') {
+  if (params.toToken && typeof params.toToken === 'string' && defaultParams.withdrawChain) {
     try {
       // is token address valid?
       const toTokenId = ethers.utils.getAddress(params.toToken.trim()).toLowerCase()
@@ -210,11 +210,11 @@ const getDefaultParams = (
 }
 
 interface StartParams {
-  depositChain: ChainKey
-  depositToken: string | undefined
+  depositChain?: ChainKey
+  depositToken?: string
   depositAmount: BigNumber
-  withdrawChain: ChainKey
-  withdrawToken: string | undefined
+  withdrawChain?: ChainKey
+  withdrawToken?: string
 }
 let startParams: StartParams
 
@@ -231,12 +231,12 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [unused, setStateUpdate] = useState<number>(0)
 
   // From
-  const [fromChainKey, setFromChainKey] = useState<ChainKey>(startParams.depositChain)
+  const [fromChainKey, setFromChainKey] = useState<ChainKey | undefined>(startParams.depositChain)
   const [depositAmount, setDepositAmount] = useState<BigNumber>(startParams.depositAmount)
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
     startParams.depositToken,
   )
-  const [toChainKey, setToChainKey] = useState<ChainKey>(startParams.withdrawChain)
+  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>(startParams.withdrawChain)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress, setToTokenAddress] = useState<string | undefined>(
     startParams.withdrawToken,
@@ -281,9 +281,9 @@ const Swap = ({ transferChains }: SwapProps) => {
   // update query string
   useEffect(() => {
     const params = {
-      fromChain: getChainByKey(fromChainKey).id,
+      fromChain: fromChainKey ? getChainByKey(fromChainKey).id : undefined,
       fromToken: fromTokenAddress,
-      toChain: getChainByKey(toChainKey).id,
+      toChain: toChainKey ? getChainByKey(toChainKey).id : undefined,
       toToken: toTokenAddress,
       fromAmount: depositAmount.gt(0) ? depositAmount.toFixed() : undefined,
     }
@@ -375,7 +375,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   }, [tokens, balances, transferChains])
 
   const hasSufficientBalance = () => {
-    if (!fromTokenAddress) {
+    if (!fromTokenAddress || !fromChainKey) {
       return true
     }
 
