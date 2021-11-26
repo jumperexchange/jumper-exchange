@@ -6,7 +6,7 @@ import { Chain, ChainKey, getChainByKey, getIcon } from '../types'
 
 interface ChainSelectProps {
   transferChains: Array<Chain>
-  selectedChain: ChainKey
+  selectedChain?: ChainKey
   onChangeSelectedChain: Function
   syncStatus?: Record<number, SubgraphSyncRecord>
 }
@@ -17,13 +17,18 @@ const ChainSelect = ({
   onChangeSelectedChain,
   syncStatus,
 }: ChainSelectProps) => {
-  const chain = getChainByKey(selectedChain)
+  const chain = selectedChain ? getChainByKey(selectedChain) : undefined
 
   return (
     <>
-      <Avatar size="small" src={getIcon(chain.key)} alt={chain.name}>
-        {chain.name[0]}
-      </Avatar>
+      {chain ? (
+        <Avatar size="small" src={getIcon(chain.key)} alt={chain.name}>
+          {chain.name[0]}
+        </Avatar>
+      ) : (
+        ''
+      )}
+
       <Select
         placeholder="Select Chain"
         value={selectedChain}
