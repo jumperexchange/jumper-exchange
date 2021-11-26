@@ -1937,7 +1937,7 @@
     eslint-plugin-json "^3.1.0"
     ethers "^5.5.1"
 
-"@hop-protocol/sdk@^0.0.1-beta.226":
+"@hop-protocol/sdk@^0.0.1-beta.256":
   version "0.0.1-beta.256"
   resolved "https://registry.yarnpkg.com/@hop-protocol/sdk/-/sdk-0.0.1-beta.256.tgz#84028d800637518fe1ddfbaa424c0608b43e8447"
   integrity sha512-dFg86g8O2GOIr1+MiiLtJo0VW5cRrmJxtUylYEY3ZtwfS7xQO0tEY4O1RYr5DItzSdKmm8CbOHJkFoXqQnqenw==
