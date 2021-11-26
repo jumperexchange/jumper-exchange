@@ -17,6 +17,7 @@ import { v4 as uuid } from 'uuid'
 import { getBalancesFromProviderUsingMulticall } from '../services/balanceService'
 import LIFI from '../services/LIFI/Lifi'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
+import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import { deepClone, formatTokenAmountOnly } from '../services/utils'
 import {
@@ -478,6 +479,20 @@ const Swap = ({ transferChains }: SwapProps) => {
           size={'large'}
           onClick={() => login()}>
           Connect Wallet
+        </Button>
+      )
+    }
+    if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
+      const fromChain = getChainByKey(fromChainKey)
+      return (
+        <Button
+          shape="round"
+          type="primary"
+          icon={<SwapOutlined />}
+          size={'large'}
+          htmlType="submit"
+          onClick={() => switchChain(fromChain.id)}>
+          Switch Network to {fromChain.name}
         </Button>
       )
     }
