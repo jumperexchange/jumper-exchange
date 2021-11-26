@@ -3,7 +3,7 @@ import './Swap.css'
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Typography } from 'antd'
+import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Tooltip, Typography } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
@@ -26,7 +26,9 @@ import {
   ChainPortfolio,
   CoinKey,
   defaultTokens,
+  getChainById,
   getChainByKey,
+  isSwapStep,
   Route as RouteType,
   RoutesRequest,
   RoutesResponse,
@@ -256,7 +258,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [routes, setRoutes] = useState<Array<RouteType>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setSelectedRoute] = useState<RouteType | null>(null)
+  const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
@@ -393,6 +395,30 @@ const Swap = ({ transferChains }: SwapProps) => {
     return depositAmount.lte(getBalance(balances, fromChainKey, fromTokenAddress))
   }
 
+  const hasSufficientGasBalanceOnStartChain = (route?: RouteType) => {
+    if (!route) {
+      return true
+    }
+
+    const fromChain = getChainById(route.fromChainId)
+    const balance = getBalance(balances, fromChain.key, ethers.constants.AddressZero)
+    return !balance.isZero() // TODO: compare with estimated gas costs
+  }
+
+  const hasSufficientGasBalanceOnCrossChain = (route?: RouteType) => {
+    if (!route) {
+      return true
+    }
+    const lastStep = route.steps[route.steps.length - 1]
+    if (!isSwapStep(lastStep)) {
+      return true
+    }
+
+    const crossChain = getChainById(lastStep.action.fromChainId)
+    const balance = getBalance(balances, crossChain.key, ethers.constants.AddressZero)
+    return !balance.isZero() // TODO: compare with estimated gas costs
+  }
+
   const findToken = useCallback(
     (chainKey: ChainKey, tokenId: string) => {
       const token = tokens[chainKey].find((token) => token.id === tokenId)
@@ -513,6 +539,22 @@ const Swap = ({ transferChains }: SwapProps) => {
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           No Route Found
         </Button>
+      )
+    }
+    if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={'large'}>
+          Insufficient Gas on Start Chain
+        </Button>
+      )
+    }
+    if (!hasSufficientGasBalanceOnCrossChain(routes[highlightedIndex])) {
+      return (
+        <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
+          <Button disabled={true} shape="round" type="primary" size={'large'}>
+            Insufficient Gas on Destination Chain
+          </Button>
+        </Tooltip>
       )
     }
     if (!hasSufficientBalance()) {
@@ -741,11 +783,11 @@ const Swap = ({ transferChains }: SwapProps) => {
           className="swapModal"
           visible={selectedRoute.steps.length > 0}
           onOk={() => {
-            setSelectedRoute(null)
+            setSelectedRoute(undefined)
             updateBalances()
           }}
           onCancel={() => {
-            setSelectedRoute(null)
+            setSelectedRoute(undefined)
             updateBalances()
           }}
           destroyOnClose={true}
