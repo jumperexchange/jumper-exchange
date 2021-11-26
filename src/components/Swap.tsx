@@ -278,6 +278,16 @@ const Swap = ({ transferChains }: SwapProps) => {
     }
   }
 
+  // autoselect from chain based on wallet
+  useEffect(() => {
+    if (web3.chainId && !fromChainKey) {
+      const chain = transferChains.find((chain) => chain.id === web3.chainId)
+      if (chain) {
+        setFromChainKey(chain.key)
+      }
+    }
+  }, [web3.chainId, fromChainKey])
+
   // update query string
   useEffect(() => {
     const params = {
