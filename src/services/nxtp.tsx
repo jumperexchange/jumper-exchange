@@ -5,6 +5,7 @@ import {
   NxtpSdk,
   NxtpSdkEvents,
 } from '@connext/nxtp-sdk'
+import { getChainData } from '@connext/nxtp-sdk/dist/utils'
 import { getRandomBytes32, TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { Button } from 'antd'
@@ -55,8 +56,9 @@ export const setup = async (
       subgraphSyncBuffer: chainConfigOverwrites[parseInt(chainId)]?.subgraphSyncBuffer,
     }
   })
+  const chainData = await getChainData()
 
-  const sdk = new NxtpSdk({ chainConfig, signer })
+  const sdk = new NxtpSdk({ chainConfig, signer, chainData })
   return sdk
 }
 
@@ -72,6 +74,7 @@ export const getTransferQuote = async (
   callData?: string,
   initiator?: string,
   preferredRouters?: string[],
+  dryRun: boolean = false,
 ): Promise<GetTransferQuote | undefined> => {
   // Create txid
   const transactionId = getRandomBytes32()
@@ -89,6 +92,7 @@ export const getTransferQuote = async (
     callData,
     initiator,
     preferredRouters,
+    dryRun,
   })
   return response
 }
@@ -152,7 +156,6 @@ export const triggerTransfer = async (
   setStatusDone(update, status, approveProcess)
   submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
     status: 'ACTION_REQUIRED',
-    footerMessage: 'Open Wallet to Confirm Transaction',
   })
 
   const transactionId = estimate.data.bid.transactionId
@@ -246,7 +249,6 @@ export const attachListeners = (
     if (!submitProcess) {
       submitProcess = createAndPushProcess('submitProcess', update, status, 'Send Transaction', {
         status: 'ACTION_REQUIRED',
-        footerMessage: 'Open Wallet to Confirm Transaction',
       })
     }
   })

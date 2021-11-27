@@ -89,6 +89,7 @@ const DEBOUNCE_TIMEOUT = 800
 const MAINNET_LINK = 'https://xpollinate.io'
 const TESTNET_LINK = 'https://testnet.xpollinate.io'
 const DISABLED = false
+const DISABLED_RECEIVING_ADDRESS = false
 const FEE_INFO: { [K in keyof Fees]: string } = {
   gas: 'Covers gas expense for sending funds to user on receiving chain.',
   relayer: 'Covers gas expense for claiming user funds on receiving chain.',
@@ -206,10 +207,13 @@ const getDefaultParams = (
       (token) => token.id === params.toToken,
     )
     if (foundToken) {
-      defaultParams.withdrawToken = foundToken.id
-      defaultParams.depositToken = transferTokens[defaultParams.depositChain].find(
+      const depositToken = transferTokens[defaultParams.depositChain].find(
         (token) => token.symbol === foundToken.symbol,
-      )!.id
+      )
+      if (depositToken) {
+        defaultParams.withdrawToken = foundToken.id
+        defaultParams.depositToken = depositToken.id
+      }
     }
   }
 
@@ -296,11 +300,8 @@ const SwapXpollinate = ({
   const [routeUpdate, setRouteUpdate] = useState<number>(1)
   const [routeRequest, setRouteRequest] = useState<any>()
   const [routeQuote, setRouteQuote] = useState<GetTransferQuote>()
-  const [routeQuoteFees, setRouteQuoteFees] = useState<Fees>({
-    gas: new BigNumber(0),
-    relayer: new BigNumber(0),
-    router: new BigNumber(0),
-  })
+  const [routeQuoteFees, setRouteQuoteFees] = useState<Fees | undefined>()
+  const [estimatedFees, setEstimatedFees] = useState<Fees | undefined>()
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [routes, setRoutes] = useState<Route[]>([])
@@ -325,13 +326,51 @@ const SwapXpollinate = ({
   // Alerts
   const [alert, setAlert] = useState<string>()
 
+  // get fee estimates
+  useEffect(() => {
+    if (!sdk) return
+
+    setEstimatedFees(undefined)
+    setRouteQuoteFees(undefined)
+
+    const sendingChain = getChainByKey(depositChain)
+    const receivingChain = getChainByKey(withdrawChain)
+    const sendingToken = tokens[depositChain].find((token) => token.id === depositToken)
+    const receivingToken = tokens[withdrawChain].find((token) => token.id === withdrawToken)
+
+    if (!sendingToken || !receivingToken) return
+
+    if (!sendingToken.id || !sendingChain.id || !receivingChain.id || !receivingToken.id) return
+
+    Promise.all([
+      sdk.estimateFeeForRouterTransferInReceivingToken(
+        sendingChain.id,
+        sendingToken.id,
+        receivingChain.id,
+        receivingToken.id,
+      ),
+      sdk.estimateMetaTxFeeInReceivingToken(
+        sendingChain.id,
+        sendingToken.id,
+        receivingChain.id,
+        receivingToken.id,
+      ),
+    ])
+      .then(([gasFee, relayerFee]) => {
+        setEstimatedFees({
+          ...(estimatedFees ?? { router: new BigNumber(0) }),
+          gas: new BigNumber(gasFee.toString()).shiftedBy(-receivingToken.decimals),
+          relayer: new BigNumber(relayerFee.toString()).shiftedBy(-receivingToken.decimals),
+        })
+      })
+      .catch((error) => {
+        console.error(error)
+        setAlert(error.message)
+      })
+  }, [depositChain, withdrawChain, depositToken, withdrawToken, sdk])
+
   // update query string
   useEffect(() => {
-    // TODO: Could use local estimate to determine what the minimum we could possibly send would
-    // likely be here.
-    if (depositAmount.lte(0)) {
-      return
-    }
     const params = {
       fromChain: getChainByKey(depositChain).id,
       fromToken: depositToken,
@@ -834,6 +873,17 @@ const SwapXpollinate = ({
     if (routeRequest && routeQuote && doRequestAndBidMatch(routeRequest, routeQuote)) {
       return // already calculated
     }
+    // We must have estimated fees first in order to determine the minimum required to spend.
+    if (estimatedFees === undefined) {
+      return
+    }
+    const minimumSpendRequired = estimatedFees.gas
+      .plus(estimatedFees.relayer)
+      .plus(estimatedFees.router)
+    if (new BigNumber(depositAmount).lte(minimumSpendRequired)) {
+      // TODO: Show error message?
+      return
+    }
 
     if (sdk && routeRequest) {
       generateRoutes(
@@ -849,7 +899,7 @@ const SwapXpollinate = ({
         routeRequest.preferredRouters,
       )
     }
-  }, [sdk, routeRequest, routeQuote, generateRoutes])
+  }, [sdk, routeRequest, routeQuote, estimatedFees, generateRoutes])
 
   // parse routeQuote if still it matches current request
   useEffect(() => {
@@ -957,6 +1007,7 @@ const SwapXpollinate = ({
     setDepositAmount(new BigNumber(-1))
     setRouteRequest(undefined)
     setRouteQuote(undefined)
+    setRouteQuoteFees(undefined)
 
     // add as active
     const action = route.steps[0].action
@@ -1065,7 +1116,7 @@ const SwapXpollinate = ({
         </Button>
       )
     }
-    if (depositAmount.lte(new BigNumber(0))) {
+    if (depositAmount.lte(0)) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Enter Amount
@@ -1102,6 +1153,14 @@ const SwapXpollinate = ({
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Insufficient Funds
+        </Button>
+      )
+    }
+    const totalFees = getFees()?.total
+    if (totalFees && depositAmount.lt(totalFees)) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={'large'}>
+          Invalid Amount
         </Button>
       )
     }
@@ -1226,40 +1285,74 @@ const SwapXpollinate = ({
     clearLocalStorage()
   }
 
+  const getFees = (): { total: BigNumber; fees: Fees } | undefined => {
+    // First, check to see if we have quoted fees. If not, use estimates as a backup.
+    const fees = routeQuoteFees ? routeQuoteFees : estimatedFees ? estimatedFees : undefined
+    if (!fees) return undefined
+    // Calculate total.
+    const total = fees.gas.plus(fees.relayer).plus(fees.router)
+    return { total, fees }
+  }
+
   const priceImpact = () => {
     const token = transferTokens[withdrawChain].find((token) => token.id === withdrawToken)
-    const total = routeQuoteFees.gas.plus(routeQuoteFees.relayer).plus(routeQuoteFees.router)
-    let decimals = 2
-    if (highlightedIndex !== -1) {
-      if (routeQuoteFees.router.lt('0.01')) {
-        decimals = 4
-      }
+    // First, check to see if we have quoted fees. If not, use estimates as a backup.
+    const res = getFees()
+    if (!res) {
+      return (
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <div className="fees-collapse">
+            Estimating Fees...{' '}
+            <span style={{ margin: '0 0 6px 6px' }}>
+              <Spin
+                style={{ margin: 'auto' }}
+                indicator={<LoadingOutlined spin style={{ fontSize: 14 }} />}
+              />
+            </span>
+          </div>
+        </div>
+      )
     }
+    const { total, fees } = res
 
+    const desiredOrder = ['gas', 'relayer', 'router']
+    const isEstimate = !routeQuoteFees
+    const decimals = Object.values(fees).some((amount) => !amount.eq(0) && amount.lt('0.01'))
+      ? 4
+      : 2
     return (
       <Collapse className="fees-collapse" ghost>
         <Collapse.Panel
-          header={`Total Fees: ${total.toFixed(decimals)} ${token?.symbol}`}
+          header={`${isEstimate ? 'Estimated' : 'Total'} Fees: ${isEstimate ? '~' : ''}${
+            depositAmount.gt(0) ? total.toFixed(2) : '0.0'
+          } ${token?.symbol}`}
           key={'fees'}>
           <Row>
             <Col span={24}>
-              {Object.entries(routeQuoteFees).map(([label, amount], index) => {
-                const info = FEE_INFO[label as keyof typeof FEE_INFO]
-                return (
-                  <Row key={index} style={{ padding: '6px 0 0 0' }}>
-                    <Col span={12}>{label.slice(0, 1).toUpperCase() + label.slice(1)} Fee</Col>
-                    <Col span={12} style={{ textAlign: 'right' }}>
-                      {amount.toFixed(decimals, 1)} {token?.symbol}
-                      <Tooltip color={'gray'} placement="topRight" title={info}>
-                        <Badge
-                          count={<InfoCircleOutlined style={{ color: 'gray' }} />}
-                          offset={[4, -3]}
-                        />
-                      </Tooltip>
-                    </Col>
-                  </Row>
-                )
-              })}
+              {Object.entries(fees)
+                .sort(([al, a_], [bl, b_]) => desiredOrder.indexOf(al) - desiredOrder.indexOf(bl))
+                .map(([label, amount], index) => {
+                  const info = FEE_INFO[label as keyof typeof FEE_INFO]
+                  return (
+                    <Row key={index} style={{ padding: '6px 0 0 0' }}>
+                      <Col span={12}>
+                        {label.slice(0, 1).toUpperCase() + label.slice(1)} Fee
+                        <Tooltip color={'gray'} placement="topRight" title={info}>
+                          <Badge
+                            count={<InfoCircleOutlined style={{ color: 'gray' }} />}
+                            offset={[4, -3]}
+                          />
+                        </Tooltip>
+                      </Col>
+                      <Col span={12} style={{ textAlign: 'right' }}>
+                        {amount.lt('0.0001') && !amount.eq(0)
+                          ? '<0.0001'
+                          : amount.toFixed(decimals, 1)}{' '}
+                        {token?.symbol}
+                      </Col>
+                    </Row>
+                  )
+                })}
             </Col>
           </Row>
         </Collapse.Panel>
@@ -1337,6 +1430,19 @@ const SwapXpollinate = ({
           </Row>
         )}
 
+        {process.env.REACT_APP_WARNING_MESSAGE && (
+          <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
+            <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
+              <Alert
+                message={process.env.REACT_APP_WARNING_MESSAGE}
+                description={process.env.REACT_APP_WARNING_DESCRIPTION}
+                type="info"
+                closable={true}
+              />
+            </Col>
+          </Row>
+        )}
+
         {/* Balances */}
         {testnet && (
           <Collapse activeKey={activeKeyTransactions} accordion ghost>
@@ -1363,8 +1469,8 @@ const SwapXpollinate = ({
               <div
                 style={{
                   overflowX: 'scroll',
-                  background: 'white',
                   margin: '10px 20px',
+                  backgroundColor: 'transparent',
                 }}>
                 <TestBalanceOverview
                   transferChains={transferChains}
@@ -1417,6 +1523,11 @@ const SwapXpollinate = ({
                     <div
                       style={{
                         overflowX: 'scroll',
+                        margin: '0 0 20px',
+                        backgroundColor: 'transparent',
+                        borderRadius: '6px 6px 0 0',
+                        // minWidth: 392,
+                        // padding: 24,
                       }}>
                       <TransactionsTableNxtp
                         activeTransactions={activeTransactions}
@@ -1487,6 +1598,7 @@ const SwapXpollinate = ({
                     withdrawAmount={withdrawAmount}
                     setWithdrawAmount={setWithdrawAmount}
                     estimatedWithdrawAmount={getSelectedWithdraw()}
+                    totalFees={getFees()?.total}
                     transferChains={transferChains}
                     tokens={tokens}
                     balances={balances}
@@ -1528,14 +1640,22 @@ const SwapXpollinate = ({
                           <Col style={{ display: 'flex', flexDirection: 'column' }} span={24}>
                             Receiving Address
                             <Input
+                              disabled={DISABLED_RECEIVING_ADDRESS}
                               value={optionReceivingAddress}
                               onChange={(e) => setOptionReceivingAddress(e.target.value)}
                               pattern="^0x[a-fA-F0-9]{40}$"
-                              placeholder="Send funds to an address other than your current wallet"
+                              placeholder={
+                                DISABLED_RECEIVING_ADDRESS
+                                  ? 'Temporarily disabled for maintenence'
+                                  : 'Send funds to an address other than your current wallet'
+                              }
                               style={{
                                 margin: '4px 0 0 0',
                                 border: '1px solid rgba(0,0,0,0.25)',
                                 borderRadius: 6,
+                                background: DISABLED_RECEIVING_ADDRESS
+                                  ? 'rgba(60, 60, 60, 0.5)'
+                                  : 'inherit',
                               }}
                             />
                           </Col>

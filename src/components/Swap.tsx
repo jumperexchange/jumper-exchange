@@ -3,17 +3,21 @@ import './Swap.css'
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Typography } from 'antd'
+import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Tooltip, Typography } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
+import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
+import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { getBalancesFromProviderUsingMulticall } from '../services/balanceService'
 import LIFI from '../services/LIFI/Lifi'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
+import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import { deepClone, formatTokenAmountOnly } from '../services/utils'
 import {
@@ -22,7 +26,9 @@ import {
   ChainPortfolio,
   CoinKey,
   defaultTokens,
-  findDefaultCoinOnChain,
+  getChainById,
+  getChainByKey,
+  isSwapStep,
   Route as RouteType,
   RoutesRequest,
   RoutesResponse,
@@ -35,6 +41,7 @@ import Swapping from './Swapping'
 import TrasactionsTable from './TransactionsTable'
 import { injected } from './web3/connectors'
 
+const history = createBrowserHistory()
 const { Panel } = Collapse
 
 let currentRouteCallId: string
@@ -78,28 +85,167 @@ const filterDefaultTokenByChains = (
   return result
 }
 
+const getDefaultParams = (
+  search: string,
+  transferChains: Chain[],
+  transferTokens: { [ChainKey: string]: Array<Token> },
+) => {
+  const defaultParams: StartParams = {
+    depositChain: undefined,
+    depositToken: undefined,
+    depositAmount: new BigNumber(-1),
+    withdrawChain: undefined,
+    withdrawToken: undefined,
+  }
+
+  const params = QueryString.parse(search, { ignoreQueryPrefix: true })
+
+  // fromChain
+  let newFromChain
+  if (params.fromChain && typeof params.fromChain === 'string') {
+    try {
+      const newFromChainId = parseInt(params.fromChain)
+      newFromChain = transferChains.find((chain) => chain.id === newFromChainId)
+
+      if (newFromChain) {
+        defaultParams.depositChain = newFromChain.key
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(e)
+    }
+  }
+
+  // fromToken
+  if (params.fromToken && typeof params.fromToken === 'string' && defaultParams.depositChain) {
+    try {
+      // is token address valid?
+      const fromTokenId = ethers.utils.getAddress(params.fromToken.trim()).toLowerCase()
+      // does token address exist in our default tokens? (tokenlists not loaded yet)
+      const foundToken = transferTokens[defaultParams.depositChain].find(
+        (token) => token.id === fromTokenId,
+      )
+
+      if (foundToken) {
+        defaultParams.depositToken = foundToken.id
+      } else if (newFromChain) {
+        // only add unknow token if chain was specified with it
+        transferTokens[defaultParams.depositChain].push({
+          id: fromTokenId,
+          symbol: 'Unknown',
+          decimals: 18,
+          chainId: newFromChain.id,
+          chainKey: newFromChain.key,
+          key: '' as CoinKey,
+          name: 'Unknown',
+          logoURI: '',
+        })
+        defaultParams.depositToken = fromTokenId
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(e)
+    }
+  }
+
+  // fromAmount
+  if (params.fromAmount && typeof params.fromAmount === 'string') {
+    try {
+      const newAmount = new BigNumber(params.fromAmount)
+      if (newAmount.gt(0)) {
+        defaultParams.depositAmount = newAmount
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(e)
+    }
+  }
+
+  // toChain
+  let newToChain
+  if (params.toChain && typeof params.toChain === 'string') {
+    try {
+      const newToChainId = parseInt(params.toChain)
+      newToChain = transferChains.find((chain) => chain.id === newToChainId)
+
+      if (newToChain) {
+        defaultParams.withdrawChain = newToChain.key
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(e)
+    }
+  }
+
+  // toToken
+  if (params.toToken && typeof params.toToken === 'string' && defaultParams.withdrawChain) {
+    try {
+      // is token address valid?
+      const toTokenId = ethers.utils.getAddress(params.toToken.trim()).toLowerCase()
+      // does token address exist in our default tokens? (tokenlists not loaded yet)
+      const foundToken = transferTokens[defaultParams.withdrawChain].find(
+        (token) => token.id === toTokenId,
+      )
+
+      if (foundToken) {
+        defaultParams.withdrawToken = foundToken.id
+      } else if (newToChain) {
+        // only add unknow token if chain was specified with it
+        transferTokens[defaultParams.withdrawChain].push({
+          id: toTokenId,
+          symbol: 'Unknown',
+          decimals: 18,
+          chainId: newToChain.id,
+          chainKey: newToChain.key,
+          key: '' as CoinKey,
+          name: 'Unknown',
+          logoURI: '',
+        })
+        defaultParams.withdrawToken = toTokenId
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(e)
+    }
+  }
+
+  return defaultParams
+}
+
+interface StartParams {
+  depositChain?: ChainKey
+  depositToken?: string
+  depositAmount: BigNumber
+  withdrawChain?: ChainKey
+  withdrawToken?: string
+}
+let startParams: StartParams
+
 interface SwapProps {
   transferChains: Chain[]
 }
 
 const Swap = ({ transferChains }: SwapProps) => {
+  const transferTokens = filterDefaultTokenByChains(defaultTokens, transferChains)
+  startParams =
+    startParams ?? getDefaultParams(history.location.search, transferChains, transferTokens)
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unused, setStateUpdate] = useState<number>(0)
 
   // From
-  const [fromChainKey, setFromChainKey] = useState<ChainKey>(ChainKey.DAI)
-  const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(1))
+  const [fromChainKey, setFromChainKey] = useState<ChainKey | undefined>(startParams.depositChain)
+  const [depositAmount, setDepositAmount] = useState<BigNumber>(startParams.depositAmount)
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.DAI).id,
-  ) // tokenId
-  const [toChainKey, setToChainKey] = useState<ChainKey>(ChainKey.POL)
+    startParams.depositToken,
+  )
+  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>(startParams.withdrawChain)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress, setToTokenAddress] = useState<string | undefined>(
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.POL).id,
-  ) // tokenId
-  const [tokens, setTokens] = useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(
-    filterDefaultTokenByChains(defaultTokens, transferChains),
+    startParams.withdrawToken,
   )
+  const [tokens, setTokens] =
+    useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
@@ -112,7 +258,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [routes, setRoutes] = useState<Array<RouteType>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setSelectedRoute] = useState<RouteType | null>(null)
+  const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
@@ -134,6 +280,31 @@ const Swap = ({ transferChains }: SwapProps) => {
       return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
     }
   }
+
+  // autoselect from chain based on wallet
+  useEffect(() => {
+    if (web3.chainId && !fromChainKey) {
+      const chain = transferChains.find((chain) => chain.id === web3.chainId)
+      if (chain) {
+        setFromChainKey(chain.key)
+      }
+    }
+  }, [web3.chainId, fromChainKey])
+
+  // update query string
+  useEffect(() => {
+    const params = {
+      fromChain: fromChainKey ? getChainByKey(fromChainKey).id : undefined,
+      fromToken: fromTokenAddress,
+      toChain: toChainKey ? getChainByKey(toChainKey).id : undefined,
+      toToken: toTokenAddress,
+      fromAmount: depositAmount.gt(0) ? depositAmount.toFixed() : undefined,
+    }
+    const search = QueryString.stringify(params)
+    history.push({
+      search,
+    })
+  }, [fromChainKey, fromTokenAddress, toChainKey, toTokenAddress, depositAmount])
 
   useEffect(() => {
     if (refreshTokens) {
@@ -217,11 +388,35 @@ const Swap = ({ transferChains }: SwapProps) => {
   }, [tokens, balances, transferChains])
 
   const hasSufficientBalance = () => {
-    if (!fromTokenAddress) {
+    if (!fromTokenAddress || !fromChainKey) {
       return true
     }
 
     return depositAmount.lte(getBalance(balances, fromChainKey, fromTokenAddress))
+  }
+
+  const hasSufficientGasBalanceOnStartChain = (route?: RouteType) => {
+    if (!route) {
+      return true
+    }
+
+    const fromChain = getChainById(route.fromChainId)
+    const balance = getBalance(balances, fromChain.key, ethers.constants.AddressZero)
+    return !balance.isZero() // TODO: compare with estimated gas costs
+  }
+
+  const hasSufficientGasBalanceOnCrossChain = (route?: RouteType) => {
+    if (!route) {
+      return true
+    }
+    const lastStep = route.steps[route.steps.length - 1]
+    if (!isSwapStep(lastStep)) {
+      return true
+    }
+
+    const crossChain = getChainById(lastStep.action.fromChainId)
+    const balance = getBalance(balances, crossChain.key, ethers.constants.AddressZero)
+    return !balance.isZero() // TODO: compare with estimated gas costs
   }
 
   const findToken = useCallback(
@@ -315,6 +510,20 @@ const Swap = ({ transferChains }: SwapProps) => {
         </Button>
       )
     }
+    if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
+      const fromChain = getChainByKey(fromChainKey)
+      return (
+        <Button
+          shape="round"
+          type="primary"
+          icon={<SwapOutlined />}
+          size={'large'}
+          htmlType="submit"
+          onClick={() => switchChain(fromChain.id)}>
+          Switch Network to {fromChain.name}
+        </Button>
+      )
+    }
     if (routesLoading) {
       return (
         <Button
@@ -332,6 +541,22 @@ const Swap = ({ transferChains }: SwapProps) => {
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           No Route Found
         </Button>
+      )
+    }
+    if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={'large'}>
+          Insufficient Gas on Start Chain
+        </Button>
+      )
+    }
+    if (!hasSufficientGasBalanceOnCrossChain(routes[highlightedIndex])) {
+      return (
+        <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
+          <Button disabled={true} shape="round" type="primary" size={'large'}>
+            Insufficient Gas on Destination Chain
+          </Button>
+        </Tooltip>
       )
     }
     if (!hasSufficientBalance()) {
@@ -560,11 +785,11 @@ const Swap = ({ transferChains }: SwapProps) => {
           className="swapModal"
           visible={selectedRoute.steps.length > 0}
           onOk={() => {
-            setSelectedRoute(null)
+            setSelectedRoute(undefined)
             updateBalances()
           }}
           onCancel={() => {
-            setSelectedRoute(null)
+            setSelectedRoute(undefined)
             updateBalances()
           }}
           destroyOnClose={true}

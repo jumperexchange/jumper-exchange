@@ -225,9 +225,7 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
         {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
       </p>
 
-      <Timeline mode={mode} style={{ maxWidth: 400, margin: 'auto' }}>
-        <Timeline.Item color="green"></Timeline.Item>
-
+      <Timeline mode={mode} style={{ maxWidth: 400, margin: 'auto', paddingTop: 24 }}>
         {/* Wallet */}
         {!web3.account && parseWalletSteps()}
 
@@ -267,11 +265,11 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
               </Typography.Text>
               {currentProcess.footerMessage &&
                 typeof currentProcess.footerMessage === 'string' &&
-                currentProcess.footerMessage.includes('Waiting') && (
+                (currentProcess.footerMessage.includes('Waiting') ? (
                   <Typography.Text style={{ fontSize: 14 }}>
                     If this step takes longer than 5m, please refresh the page.
                   </Typography.Text>
-                )}
+                ) : null)}
             </Col>
           </Row>
         </>
@@ -279,9 +277,18 @@ const SwappingNxtp = ({ route }: SwappingProps) => {
       {currentProcess && currentProcess.status === 'ACTION_REQUIRED' && (
         <>
           <Row justify="center">
-            <Typography.Text style={{ marginTop: 24, fontSize: 18, fontWeight: 700 }}>
-              {currentProcess.footerMessage || renderProcessMessage(currentProcess)}
-            </Typography.Text>
+            <Col style={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography.Text style={{ marginTop: 24, fontSize: 18, fontWeight: 700 }}>
+                {currentProcess.footerMessage || renderProcessMessage(currentProcess)}
+              </Typography.Text>
+              {currentProcess.message &&
+                typeof currentProcess.message === 'string' &&
+                (currentProcess.message.includes('Send Transaction') ? (
+                  <Typography.Text style={{ fontSize: 14 }}>
+                    Open your Wallet to confirm the transaction.
+                  </Typography.Text>
+                ) : null)}
+            </Col>
           </Row>
         </>
       )}

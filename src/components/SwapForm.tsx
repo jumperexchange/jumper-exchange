@@ -12,14 +12,14 @@ import TokenSelect from './TokenSelect'
 import { injected } from './web3/connectors'
 
 interface SwapFormProps {
-  depositChain: ChainKey
+  depositChain?: ChainKey
   setDepositChain: Function
   depositToken?: string
   setDepositToken: Function
   depositAmount: BigNumber
   setDepositAmount: Function
 
-  withdrawChain: ChainKey
+  withdrawChain?: ChainKey
   setWithdrawChain: Function
   withdrawToken?: string
   setWithdrawToken: Function
@@ -77,9 +77,11 @@ const SwapForm = ({
     setDepositChain(chainKey)
 
     // find same deposit token
-    const symbol = tokens[depositChain].find((token) => token.id === depositToken)?.symbol
-    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
-    setDepositToken(tokenId)
+    if (depositChain) {
+      const symbol = tokens[depositChain].find((token) => token.id === depositToken)?.symbol
+      const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
+      setDepositToken(tokenId)
+    }
   }
 
   const onChangeWithdrawChain = (chainKey: ChainKey) => {
@@ -90,9 +92,11 @@ const SwapForm = ({
     setWithdrawChain(chainKey)
 
     // find same withdraw token
-    const symbol = tokens[withdrawChain].find((token) => token.id === withdrawToken)?.symbol
-    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
-    setWithdrawToken(tokenId)
+    if (withdrawChain) {
+      const symbol = tokens[withdrawChain].find((token) => token.id === withdrawToken)?.symbol
+      const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
+      setWithdrawToken(tokenId)
+    }
   }
 
   const getBalance = (chainKey: ChainKey, tokenId: string) => {
@@ -109,6 +113,8 @@ const SwapForm = ({
     // unselect
     depositSelectRef?.current?.blur()
 
+    if (!depositChain) return
+
     // connect
     if (tokenId === 'connect') {
       connectWallet()
@@ -123,7 +129,7 @@ const SwapForm = ({
     }
 
     // set withdraw token?
-    if (forceSameToken) {
+    if (forceSameToken && withdrawChain) {
       const symbol = tokens[depositChain].find((token) => token.id === tokenId)?.symbol
       const withdrawToken = tokens[withdrawChain].find((token) => token.symbol === symbol)?.id
       setWithdrawToken(withdrawToken)
@@ -144,7 +150,7 @@ const SwapForm = ({
     setWithdrawToken(tokenId)
 
     // set withdraw token?
-    if (forceSameToken) {
+    if (forceSameToken && depositChain && withdrawChain) {
       const symbol = tokens[withdrawChain].find((token) => token.id === tokenId)?.symbol
       const depositToken = tokens[depositChain].find((token) => token.symbol === symbol)?.id
       setDepositToken(depositToken)
@@ -172,9 +178,11 @@ const SwapForm = ({
   }
 
   const setMaxDeposit = () => {
-    if (depositToken) {
+    if (depositToken && depositChain) {
       const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
-      setDepositAmount(selectedToken?.amount)
+      if (selectedToken && selectedToken.amount) {
+        setDepositAmount(selectedToken.amount)
+      }
     }
   }
 
@@ -186,7 +194,7 @@ const SwapForm = ({
   }
 
   const hasSufficientBalance = () => {
-    if (!depositToken) {
+    if (!depositToken || !depositChain) {
       return true
     }
     return depositAmount.lte(getBalance(depositChain, depositToken))

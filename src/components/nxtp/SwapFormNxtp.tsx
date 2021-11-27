@@ -26,6 +26,7 @@ interface SwapFormNxtpProps {
   withdrawAmount: BigNumber
   setWithdrawAmount: Function
   estimatedWithdrawAmount: string
+  totalFees?: BigNumber
 
   transferChains: Array<Chain>
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
@@ -57,6 +58,7 @@ const SwapFormNxtp = ({
   allowSameChains,
   forceSameToken,
   syncStatus,
+  totalFees,
 }: SwapFormNxtpProps) => {
   const depositSelectRef = useRef<RefSelectProps>()
   const withdrawSelectRef = useRef<RefSelectProps>()
@@ -196,6 +198,11 @@ const SwapFormNxtp = ({
     padding: 12,
     borderRadius: 12,
   }
+  const depositAmountNum = new BigNumber(depositAmountString)
+  const invalidDepositAmount =
+    depositAmountNum.lt(0) ||
+    !hasSufficientBalance() ||
+    (totalFees && depositAmountNum.minus(totalFees).lt(0))
   return (
     <>
       <Row>
@@ -220,7 +227,7 @@ const SwapFormNxtp = ({
             </Col>
 
             <Col span={12}>
-              <div className="form-input-wrapper">
+              <div className={'form-input-wrapper ' + (invalidDepositAmount ? 'invalid' : '')}>
                 <Input
                   type="number"
                   defaultValue={0.0}
@@ -230,7 +237,7 @@ const SwapFormNxtp = ({
                   onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
                   placeholder="0.0"
                   bordered={false}
-                  className={!hasSufficientBalance() ? 'insufficient' : ''}
+                  className={invalidDepositAmount ? 'insufficient' : ''}
                 />
                 <Button className="maxButton" type="text" onClick={() => setMaxDeposit()}>
                   MAX
@@ -247,7 +254,28 @@ const SwapFormNxtp = ({
                   onChangeSelectedToken={onChangeDepositToken}
                   selectReference={depositSelectRef}
                   grayed={true}
+                  showBalance={false}
                 />
+              </div>
+            </Col>
+          </Row>
+          <Row style={{ fontSize: 12, paddingTop: 6 }}>
+            <Col span={12}>Min. {totalFees && totalFees.gt(0) ? totalFees.toFixed(4) : '0.0'}</Col>
+            <Col
+              span={12}
+              style={{
+                padding: '0 8px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                overflowX: 'hidden',
+              }}>
+              <div>Balance:</div>
+              <div>
+                {depositToken &&
+                  balances &&
+                  (balances[depositChain] ?? [])
+                    .find((p) => p.id === depositToken)
+                    ?.amount.toFixed(4)}
               </div>
             </Col>
           </Row>
@@ -289,7 +317,9 @@ const SwapFormNxtp = ({
                   type="text"
                   defaultValue={0.0}
                   min={0}
-                  value={estimatedWithdrawAmount}
+                  value={
+                    new BigNumber(estimatedWithdrawAmount).gt(0) ? estimatedWithdrawAmount : '...'
+                  }
                   // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
                   onChange={(event) => onChangeWithdrawAmount(formatAmountInput(event))}
                   placeholder="..."
@@ -308,7 +338,27 @@ const SwapFormNxtp = ({
                   onChangeSelectedToken={onChangeWithdrawToken}
                   selectReference={withdrawSelectRef}
                   grayed={false}
+                  showBalance={false}
                 />
+              </div>
+            </Col>
+          </Row>
+          <Row style={{ fontSize: 12, paddingTop: 6 }} justify="end">
+            <Col
+              span={12}
+              style={{
+                padding: '0 8px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                overflowX: 'hidden',
+              }}>
+              <div>Balance:</div>
+              <div>
+                {withdrawToken &&
+                  balances &&
+                  (balances[withdrawChain] ?? [])
+                    .find((p) => p.id === withdrawToken)
+                    ?.amount.toFixed(4)}
               </div>
             </Col>
           </Row>
