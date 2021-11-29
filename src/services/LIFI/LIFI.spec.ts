@@ -37,42 +37,54 @@ describe('LIFI SDK', () => {
       it('should throw Error because of invalid fromChainId type', async () => {
         const request = getRoutesRequest({ fromChainId: 'xxx' })
 
-        await expect(Lifi.getRoutes(request)).rejects.toThrow('Invalid routes request')
+        await expect(Lifi.getRoutes(request)).rejects.toThrow(
+          'SDK Validation: Invalid Routs Request',
+        )
         expect(mockedAxios.post).toHaveBeenCalledTimes(0)
       })
 
       it('should throw Error because of invalid fromAmount type', async () => {
         const request = getRoutesRequest({ fromAmount: 10000000000000 })
 
-        await expect(Lifi.getRoutes(request)).rejects.toThrow('Invalid routes request')
+        await expect(Lifi.getRoutes(request)).rejects.toThrow(
+          'SDK Validation: Invalid Routs Request',
+        )
         expect(mockedAxios.post).toHaveBeenCalledTimes(0)
       })
 
       it('should throw Error because of invalid fromTokenAddress type', async () => {
         const request = getRoutesRequest({ fromTokenAddress: 1234 })
 
-        await expect(Lifi.getRoutes(request)).rejects.toThrow('Invalid routes request')
+        await expect(Lifi.getRoutes(request)).rejects.toThrow(
+          'SDK Validation: Invalid Routs Request',
+        )
         expect(mockedAxios.post).toHaveBeenCalledTimes(0)
       })
 
       it('should throw Error because of invalid toChainId type', async () => {
         const request = getRoutesRequest({ toChainId: 'xxx' })
 
-        await expect(Lifi.getRoutes(request)).rejects.toThrow('Invalid routes request')
+        await expect(Lifi.getRoutes(request)).rejects.toThrow(
+          'SDK Validation: Invalid Routs Request',
+        )
         expect(mockedAxios.post).toHaveBeenCalledTimes(0)
       })
 
       it('should throw Error because of invalid toTokenAddress type', async () => {
         const request = getRoutesRequest({ toTokenAddress: '' })
 
-        await expect(Lifi.getRoutes(request)).rejects.toThrow('Invalid routes request')
+        await expect(Lifi.getRoutes(request)).rejects.toThrow(
+          'SDK Validation: Invalid Routs Request',
+        )
         expect(mockedAxios.post).toHaveBeenCalledTimes(0)
       })
 
       it('should throw Error because of invalid options type', async () => {
         const request = getRoutesRequest({ options: { slippage: 'not a number' } })
 
-        await expect(Lifi.getRoutes(request)).rejects.toThrow('Invalid routes request')
+        await expect(Lifi.getRoutes(request)).rejects.toThrow(
+          'SDK Validation: Invalid Routs Request',
+        )
         expect(mockedAxios.post).toHaveBeenCalledTimes(0)
       })
     })
@@ -141,21 +153,27 @@ describe('LIFI SDK', () => {
         it('should throw Error because of invalid id', async () => {
           const step = getStep({ id: null })
 
-          await expect(Lifi.getStepTransaction(step)).rejects.toThrow('Invalid step')
+          await expect(Lifi.getStepTransaction(step)).rejects.toThrow(
+            'SDK Validation: Invalid Step',
+          )
           expect(mockedAxios.post).toHaveBeenCalledTimes(0)
         })
 
         it('should throw Error because of invalid type', async () => {
           const step = getStep({ type: 42 })
 
-          await expect(Lifi.getStepTransaction(step)).rejects.toThrow('Invalid step')
+          await expect(Lifi.getStepTransaction(step)).rejects.toThrow(
+            'SDK Validation: Invalid Step',
+          )
           expect(mockedAxios.post).toHaveBeenCalledTimes(0)
         })
 
         it('should throw Error because of invalid tool', async () => {
           const step = getStep({ tool: null })
 
-          await expect(Lifi.getStepTransaction(step)).rejects.toThrow('Invalid step')
+          await expect(Lifi.getStepTransaction(step)).rejects.toThrow(
+            'SDK Validation: Invalid Step',
+          )
           expect(mockedAxios.post).toHaveBeenCalledTimes(0)
         })
 
@@ -171,7 +189,9 @@ describe('LIFI SDK', () => {
         it('should throw Error because of invalid estimate', async () => {
           const step = getStep({ estimate: 'Is this really an estimate?' })
 
-          await expect(Lifi.getStepTransaction(step)).rejects.toThrow('Invalid step')
+          await expect(Lifi.getStepTransaction(step)).rejects.toThrow(
+            'SDK Validation: Invalid Step',
+          )
           expect(mockedAxios.post).toHaveBeenCalledTimes(0)
         })
       })
