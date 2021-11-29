@@ -32,6 +32,7 @@ export default class SwapExecutionManager {
         estimate.approvalAddress,
         update,
         status,
+        true,
       )
     }
 

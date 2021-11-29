@@ -15,6 +15,7 @@ import oneinchIcon from '../assets/icons/oneinch.png'
 import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
 import { oneInch } from '../services/1Inch'
+import { AnySwapExecutionManager } from '../services/anyswap.execute'
 import { getBalancesForWallet } from '../services/balanceService'
 import { Cbridge1ExecutionManager } from '../services/cbridge1.execute'
 import { HopExecutionManager } from '../services/hop_new.execute'
@@ -103,6 +104,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [cbridge1ExecutionManager] = useState<Cbridge1ExecutionManager>(
     new Cbridge1ExecutionManager(),
   )
+  const [anySwapExecutionManager] = useState<AnySwapExecutionManager>(new AnySwapExecutionManager())
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -115,6 +117,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       hopExecutionManager.setShouldContinue(false)
       horizonExecutionManager.setShouldContinue(false)
       cbridge1ExecutionManager.setShouldContinue(false)
+      anySwapExecutionManager.setShouldContinue(false)
     }
   }, [
     swapExecutionManager,
@@ -122,6 +125,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     hopExecutionManager,
     horizonExecutionManager,
     cbridge1ExecutionManager,
+    anySwapExecutionManager,
   ])
 
   // Swap
@@ -250,6 +254,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             step,
             updateStatus: (status: Execution) => updateStatus(step, status),
           })
+        case 'anyswapV3':
+        case 'anyswapV4':
+          return await anySwapExecutionManager.executeCross({
+            signer: web3.library.getSigner(),
+            step,
+            updateStatus: (status: Execution) => updateStatus(step, status),
+          })
         default:
           throw new Error('Should never reach here, bridge not defined')
       }
@@ -262,6 +273,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       hopExecutionManager,
       horizonExecutionManager,
       cbridge1ExecutionManager,
+      anySwapExecutionManager,
     ],
   )
 
