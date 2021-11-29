@@ -181,7 +181,9 @@ describe('LIFI SDK', () => {
         it('should throw Error because of invalid action', async () => {
           const step = getStep({ action: 'xxx' })
 
-          await expect(Lifi.getStepTransaction(step)).rejects.toThrow('Invalid step')
+          await expect(Lifi.getStepTransaction(step)).rejects.toThrow(
+            'SDK Validation: Invalid Step',
+          )
           expect(mockedAxios.post).toHaveBeenCalledTimes(0)
         })
 
