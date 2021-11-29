@@ -22,6 +22,7 @@ import { loadTokenListAsTokens } from '../services/tokenListService'
 import { deepClone, formatTokenAmountOnly } from '../services/utils'
 import {
   Chain,
+  ChainId,
   ChainKey,
   ChainPortfolio,
   CoinKey,
@@ -85,6 +86,20 @@ const filterDefaultTokenByChains = (
   return result
 }
 
+const parseChain = (passed: string) => {
+  // is ChainKey?
+  const chainKeys = Object.values(ChainKey) as string[]
+  if (chainKeys.includes(passed.toLowerCase())) {
+    return ChainId[passed.toUpperCase() as keyof typeof ChainId]
+  }
+
+  // is ChainId?
+  const id = parseInt(passed)
+  if (!isNaN(id)) {
+    return id
+  }
+}
+
 const getDefaultParams = (
   search: string,
   transferChains: Chain[],
@@ -104,7 +119,7 @@ const getDefaultParams = (
   let newFromChain
   if (params.fromChain && typeof params.fromChain === 'string') {
     try {
-      const newFromChainId = parseInt(params.fromChain)
+      const newFromChainId = parseChain(params.fromChain)
       newFromChain = transferChains.find((chain) => chain.id === newFromChainId)
 
       if (newFromChain) {
@@ -165,7 +180,7 @@ const getDefaultParams = (
   let newToChain
   if (params.toChain && typeof params.toChain === 'string') {
     try {
-      const newToChainId = parseInt(params.toChain)
+      const newToChainId = parseChain(params.toChain)
       newToChain = transferChains.find((chain) => chain.id === newToChainId)
 
       if (newToChain) {
@@ -294,9 +309,9 @@ const Swap = ({ transferChains }: SwapProps) => {
   // update query string
   useEffect(() => {
     const params = {
-      fromChain: fromChainKey ? getChainByKey(fromChainKey).id : undefined,
+      fromChain: fromChainKey,
       fromToken: fromTokenAddress,
-      toChain: toChainKey ? getChainByKey(toChainKey).id : undefined,
+      toChain: toChainKey,
       toToken: toTokenAddress,
       fromAmount: depositAmount.gt(0) ? depositAmount.toFixed() : undefined,
     }
