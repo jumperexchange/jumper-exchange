@@ -27,6 +27,7 @@ import {
   ChainPortfolio,
   CoinKey,
   defaultTokens,
+  findDefaultCoinOnChain,
   getChainById,
   getChainByKey,
   isSwapStep,
@@ -100,6 +101,24 @@ const parseChain = (passed: string) => {
   }
 }
 
+const parseToken = (
+  passed: string,
+  chainKey: ChainKey,
+  transferTokens: { [ChainKey: string]: Array<Token> },
+) => {
+  // is CoinKey?
+  const coinKeys = Object.values(CoinKey)
+  const coinKey = passed.toUpperCase() as CoinKey
+  if (coinKeys.includes(coinKey)) {
+    return findDefaultCoinOnChain(coinKey, chainKey)
+  }
+
+  // is token address valid?
+  const fromTokenId = ethers.utils.getAddress(passed.trim()).toLowerCase()
+  // does token address exist in our default tokens? (tokenlists not loaded yet)
+  return transferTokens[chainKey].find((token) => token.id === fromTokenId)
+}
+
 const getDefaultParams = (
   search: string,
   transferChains: Chain[],
@@ -134,17 +153,18 @@ const getDefaultParams = (
   // fromToken
   if (params.fromToken && typeof params.fromToken === 'string' && defaultParams.depositChain) {
     try {
-      // is token address valid?
-      const fromTokenId = ethers.utils.getAddress(params.fromToken.trim()).toLowerCase()
-      // does token address exist in our default tokens? (tokenlists not loaded yet)
-      const foundToken = transferTokens[defaultParams.depositChain].find(
-        (token) => token.id === fromTokenId,
+      const foundToken = parseToken(params.fromToken, defaultParams.depositChain, transferTokens)
+      const inDefault = transferTokens[defaultParams.depositChain].find(
+        (token) => token.id === foundToken?.id,
       )
-
-      if (foundToken) {
+      if (foundToken && inDefault) {
+        defaultParams.depositToken = foundToken.id
+      } else if (foundToken) {
+        transferTokens[defaultParams.depositChain].push(foundToken)
         defaultParams.depositToken = foundToken.id
       } else if (newFromChain) {
         // only add unknow token if chain was specified with it
+        const fromTokenId = ethers.utils.getAddress(params.fromToken.trim()).toLowerCase()
         transferTokens[defaultParams.depositChain].push({
           id: fromTokenId,
           symbol: 'Unknown',
@@ -195,17 +215,18 @@ const getDefaultParams = (
   // toToken
   if (params.toToken && typeof params.toToken === 'string' && defaultParams.withdrawChain) {
     try {
-      // is token address valid?
-      const toTokenId = ethers.utils.getAddress(params.toToken.trim()).toLowerCase()
-      // does token address exist in our default tokens? (tokenlists not loaded yet)
-      const foundToken = transferTokens[defaultParams.withdrawChain].find(
-        (token) => token.id === toTokenId,
+      const foundToken = parseToken(params.toToken, defaultParams.withdrawChain, transferTokens)
+      const inDefault = transferTokens[defaultParams.withdrawChain].find(
+        (token) => token.id === foundToken?.id,
       )
-
-      if (foundToken) {
+      if (foundToken && inDefault) {
+        defaultParams.withdrawToken = foundToken.id
+      } else if (foundToken) {
+        transferTokens[defaultParams.withdrawChain].push(foundToken)
         defaultParams.withdrawToken = foundToken.id
       } else if (newToChain) {
         // only add unknow token if chain was specified with it
+        const toTokenId = ethers.utils.getAddress(params.toToken.trim()).toLowerCase()
         transferTokens[defaultParams.withdrawChain].push({
           id: toTokenId,
           symbol: 'Unknown',
