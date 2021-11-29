@@ -1,13 +1,4 @@
-import {
-  Action,
-  ChainKey,
-  CoinKey,
-  Estimate,
-  RouteOptions,
-  RoutesRequest,
-  Step,
-  Token,
-} from '../../types'
+import { Action, ChainKey, Estimate, RouteOptions, RoutesRequest, Step, Token } from '../../types'
 
 export const isRoutesRequest = (routesRequest: RoutesRequest): routesRequest is RoutesRequest => {
   const { fromChainId, fromAmount, fromTokenAddress, toChainId, toTokenAddress, options } =
@@ -70,7 +61,7 @@ const isEstimate = (estimate: Estimate): estimate is Estimate => {
 }
 
 const isToken = (token: Token): token is Token => {
-  const { id, symbol, decimals, chainId, name, chainKey, key, logoURI } = token
+  const { id, symbol, decimals, chainId, name, chainKey, logoURI } = token
 
   return (
     typeof id === 'string' &&
@@ -79,7 +70,7 @@ const isToken = (token: Token): token is Token => {
     typeof chainId === 'number' &&
     typeof name === 'string' &&
     isEnum(ChainKey)(chainKey) &&
-    isEnum(CoinKey)(key) &&
+    // isEnum(CoinKey)(key) // our enum does not contain all possible keys
     typeof logoURI === 'string'
   )
 }

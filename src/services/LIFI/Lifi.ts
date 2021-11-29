@@ -6,7 +6,7 @@ import { isRoutesRequest, isStep } from './typeguards'
 class LIFI {
   getRoutes = async (routesRequest: RoutesRequest): Promise<RoutesResponse> => {
     if (!isRoutesRequest(routesRequest)) {
-      throw Error('Invalid routes request')
+      throw new Error('SDK Validation: Invalid Routs Request')
     }
 
     const result = await axios.post<RoutesResponse>(
@@ -19,7 +19,7 @@ class LIFI {
 
   getStepTransaction = async (step: Step): Promise<StepTransactionResponse> => {
     if (!isStep(step)) {
-      throw Error('Invalid step')
+      throw new Error('SDK Validation: Invalid Step')
     }
 
     const result = await axios.post<StepTransactionResponse>(
