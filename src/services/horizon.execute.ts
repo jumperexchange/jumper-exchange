@@ -37,8 +37,8 @@ export class HorizonExecutionManager {
     let waitForBlocksProcess: Process
     let mintProcess: Process
     let intervalId: NodeJS.Timer
-
     if (!this.shouldContinue) return status
+
     try {
       // mainnet / testnet ?
       const bridgeSDK =

@@ -24,6 +24,7 @@ export class Cbridge1ExecutionManager {
     // STEP 1: Check Allowance ////////////////////////////////////////////////
     if (action.fromToken.id !== constants.AddressZero) {
       // Check Token Approval only if fromToken is not the native token => no approval needed in that case
+      if (!this.shouldContinue) return status
       await checkAllowance(
         signer,
         fromChain,
@@ -46,6 +47,7 @@ export class Cbridge1ExecutionManager {
     crossProcess.status = 'ACTION_REQUIRED'
     crossProcess.message = 'Sign Transaction'
     update(status)
+    if (!this.shouldContinue) return status
 
     const tx = await signer.sendTransaction(transactionRequest)
 
@@ -71,6 +73,7 @@ export class Cbridge1ExecutionManager {
     claimProcess.status = 'ACTION_REQUIRED'
     claimProcess.message = 'Claim transfer'
     update(status)
+    if (!this.shouldContinue) return status
 
     const claimTransactionRequest = await cbridge1.getClaimTransaction(step)
     const claimTx = await signer.sendTransaction(claimTransactionRequest)
@@ -83,6 +86,13 @@ export class Cbridge1ExecutionManager {
     update(status)
 
     await tx.wait()
+
+    //STEP 7.5: Sign Claim Message //////////////////////////////////////////////////////////
+    claimProcess.status = 'ACTION_REQUIRED'
+    claimProcess.message = 'Sign Claim'
+    update(status)
+    if (!this.shouldContinue) return status
+
     await cbridge1.userSendConfirm(step, tx.hash)
 
     claimProcess.message = 'Claim Signed'
