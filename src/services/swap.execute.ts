@@ -22,8 +22,8 @@ export default class SwapExecutionManager {
     const { status, update } = initStatus(updateStatus, execution)
 
     // Approval
-    if (!this.shouldContinue) return status
     if (action.fromToken.id !== constants.AddressZero) {
+      if (!this.shouldContinue) return status
       await checkAllowance(
         signer,
         fromChain,
@@ -47,8 +47,6 @@ export default class SwapExecutionManager {
         // -> restore existing tx
         tx = await signer.provider.getTransaction(swapProcess.txHash)
       } else {
-        if (!this.shouldContinue) return status // stop before user interaction is needed
-
         // -> get tx from backend
         const personalizedStep = await personalizeStep(signer, step)
         const { tx: transaction } = await Lifi.getStepTransaction(personalizedStep)
@@ -57,6 +55,7 @@ export default class SwapExecutionManager {
         swapProcess.status = 'ACTION_REQUIRED'
         swapProcess.message = `Sign Transaction`
         update(status)
+        if (!this.shouldContinue) return status // stop before user interaction is needed
 
         // -> submit tx
         tx = await signer.sendTransaction(transaction)

@@ -28,6 +28,7 @@ export class HopExecutionManager {
     if (!oldCrossProcess || !oldCrossProcess.txHash) {
       if (action.fromToken.id !== constants.AddressZero) {
         // Check Token Approval only if fromToken is not the native token => no approval needed in that case
+        if (!this.shouldContinue) return status
         await checkAllowance(
           signer,
           fromChain,
@@ -55,10 +56,10 @@ export class HopExecutionManager {
         const { tx: transactionRequest } = await Lifi.getStepTransaction(personalizedStep)
 
         // STEP 3: Send Transaction ///////////////////////////////////////////////
-        if (!this.shouldContinue) return status // stop before user action is required
         crossProcess.status = 'ACTION_REQUIRED'
         crossProcess.message = 'Sign Transaction'
         update(status)
+        if (!this.shouldContinue) return status
 
         tx = await signer.sendTransaction(transactionRequest)
 

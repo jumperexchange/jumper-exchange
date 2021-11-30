@@ -34,6 +34,7 @@ export class NXTPExecutionManager {
     // STEP 0: Check Allowance ////////////////////////////////////////////////
     if (action.fromToken.id !== constants.AddressZero) {
       // Check Token Approval only if fromToken is not the native token => no approval needed in that case
+      if (!this.shouldContinue) return status
       await checkAllowance(
         signer,
         fromChain,
@@ -52,6 +53,7 @@ export class NXTPExecutionManager {
       const keyProcess = createAndPushProcess('publicKey', update, status, 'Provide Public Key', {
         status: 'ACTION_REQUIRED',
       })
+      if (!this.shouldContinue) return status
       // -> request key
       try {
         const encryptionPublicKey = await (window as any).ethereum.request({
@@ -79,6 +81,7 @@ export class NXTPExecutionManager {
     crossProcess.status = 'ACTION_REQUIRED'
     crossProcess.message = 'Sign Transaction'
     update(status)
+    if (!this.shouldContinue) return status
 
     const tx = await signer.sendTransaction(transactionRequest)
 
@@ -99,7 +102,8 @@ export class NXTPExecutionManager {
 
     const preparedTransaction = await nxtpSDK.waitFor(
       NxtpSdkEvents.ReceiverTransactionPrepared,
-      10 * 60 * 1000,
+      // 10 * 60 * 1000,
+      100_000,
       (data) => data.txData.transactionId === transactionId,
     )
 
@@ -107,6 +111,7 @@ export class NXTPExecutionManager {
     claimProcess.status = 'ACTION_REQUIRED'
     claimProcess.message = 'Claim transfer'
     update(status)
+    if (!this.shouldContinue) return status
 
     const fulfillPromise = nxtpSDK.fulfillTransfer(preparedTransaction)
 
