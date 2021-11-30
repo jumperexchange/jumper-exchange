@@ -124,7 +124,7 @@ function App() {
                     <Col>
                       <a
                         className="lifiSupport"
-                        href="https://discord.com/invite/G9uAbE439B"
+                        href="https://discord.gg/lifi"
                         target="_blank"
                         rel="nofollow noreferrer">
                         Support (Discord)
@@ -137,7 +137,7 @@ function App() {
             <Content>
               <a
                 className="lifiSupport support-content"
-                href="https://discord.com/invite/G9uAbE439B"
+                href="https://discord.gg/lifi"
                 target="_blank"
                 rel="nofollow noreferrer">
                 Support
