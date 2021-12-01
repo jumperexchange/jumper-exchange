@@ -1,4 +1,5 @@
 import { NxtpSdkEvents } from '@connext/nxtp-sdk'
+import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
 import { getRpcProviders } from '../components/web3/connectors'
@@ -18,8 +19,6 @@ export class NXTPExecutionManager {
   }
 
   executeCross = async ({ signer, step, updateStatus }: ExecuteCrossParams) => {
-    // TODO: add continue logic
-
     const { action, execution, estimate } = step
     const { status, update } = initStatus(updateStatus, execution)
     const fromChain = getChainById(action.fromChainId)
@@ -74,23 +73,36 @@ export class NXTPExecutionManager {
     // STEP 2: Get Transaction ////////////////////////////////////////////////
     const crossProcess = createAndPushProcess('crossProcess', update, status, 'Prepare Transaction')
 
-    const personalizedStep = await personalizeStep(signer, step)
-    const { tx: transactionRequest } = await Lifi.getStepTransaction(personalizedStep)
+    let tx: TransactionResponse
+    try {
+      if (crossProcess.txHash) {
+        // -> restore existing tx
+        tx = await signer.provider.getTransaction(crossProcess.txHash)
+      } else {
+        const personalizedStep = await personalizeStep(signer, step)
+        const { tx: transactionRequest } = await Lifi.getStepTransaction(personalizedStep)
 
-    // STEP 3: Send Transaction ///////////////////////////////////////////////
-    crossProcess.status = 'ACTION_REQUIRED'
-    crossProcess.message = 'Sign Transaction'
-    update(status)
-    if (!this.shouldContinue) return status
+        // STEP 3: Send Transaction ///////////////////////////////////////////////
+        crossProcess.status = 'ACTION_REQUIRED'
+        crossProcess.message = 'Sign Transaction'
+        update(status)
+        if (!this.shouldContinue) return status
 
-    const tx = await signer.sendTransaction(transactionRequest)
+        tx = await signer.sendTransaction(transactionRequest)
 
-    // STEP 4: Wait for Transaction ///////////////////////////////////////////
-    crossProcess.status = 'PENDING'
-    crossProcess.txHash = tx.hash
-    crossProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + crossProcess.txHash
-    crossProcess.message = 'Wait for'
-    update(status)
+        // STEP 4: Wait for Transaction ///////////////////////////////////////////
+        crossProcess.status = 'PENDING'
+        crossProcess.txHash = tx.hash
+        crossProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + crossProcess.txHash
+        crossProcess.message = 'Wait for'
+        update(status)
+      }
+    } catch (e: any) {
+      if (e.message) crossProcess.errorMessage = e.message
+      if (e.code) crossProcess.errorCode = e.code
+      setStatusFailed(update, status, crossProcess)
+      throw e
+    }
 
     await tx.wait()
 
