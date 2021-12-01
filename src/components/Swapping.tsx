@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
+import cbridgeIcon from '../assets/icons/cbridge.png'
 import connextIcon from '../assets/icons/connext.png'
 import harmonyIcon from '../assets/icons/harmony.png'
 import hopIcon from '../assets/icons/hop.png'
@@ -368,6 +369,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     </Tooltip>
   )
 
+  const cbridgeAvatar = (
+    <Tooltip title="cBridge">
+      <Avatar size="small" src={cbridgeIcon} alt="cBridge"></Avatar>
+    </Tooltip>
+  )
+
   const parseStepToTimeline = (step: Step, index: number) => {
     const executionSteps = parseExecution(step.execution)
     const isDone = step.execution && step.execution.status === 'DONE'
@@ -418,8 +425,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           case 'horizon':
             avatar = horizonAvatar
             break
-          case 'cbridge1':
-            avatar = 'cBridge1'
+          case 'cbridge':
+            avatar = cbridgeAvatar
             break
           default:
             break
