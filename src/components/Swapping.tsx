@@ -23,7 +23,7 @@ import { HorizonExecutionManager } from '../services/horizon.execute'
 import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
-import { NXTPExecutionManager } from '../services/nxtp_new.execute'
+import { NXTPExecutionManager } from '../services/nxtp.lifi.execute'
 import { paraswap } from '../services/paraswap'
 import { renderProcessMessage } from '../services/processRenderer'
 import {
