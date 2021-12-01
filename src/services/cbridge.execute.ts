@@ -1,15 +1,15 @@
-import { TransactionResponse } from '@ethersproject/abstract-provider'
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
 import { ExecuteCrossParams, getChainById } from '../types'
 import { checkAllowance } from './allowance.execute'
-import hop from './hop'
+import cbridge from './cbridge'
 import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { personalizeStep } from './utils'
 
-export class HopExecutionManager {
+export class CbridgeExecutionManager {
   shouldContinue: boolean = true
 
   setShouldContinue = (val: boolean) => {
@@ -89,15 +89,9 @@ export class HopExecutionManager {
       status,
       'Wait for Receiving Chain',
     )
-    let destinationTxReceipt
+    let destinationTxReceipt: TransactionReceipt
     try {
-      hop.init(signer, action.fromChainId, action.toChainId)
-      destinationTxReceipt = await hop.waitForDestinationChainReceipt(
-        crossProcess.txHash,
-        action.toToken.key,
-        action.fromChainId,
-        action.toChainId,
-      )
+      destinationTxReceipt = await cbridge.waitForDestinationChainReceipt(step)
     } catch (e: any) {
       waitForTxProcess.errorMessage = 'Failed waiting'
       if (e.message) waitForTxProcess.errorMessage += ':\n' + e.message
@@ -108,13 +102,13 @@ export class HopExecutionManager {
     }
 
     // -> parse receipt & set status
-    const parsedReceipt = hop.parseReceipt(crossProcess.txHash, destinationTxReceipt)
+    // const parsedReceipt = cbridge.parseReceipt(crossProcess.txHash, destinationTxReceipt)
     waitForTxProcess.txHash = destinationTxReceipt.transactionHash
     waitForTxProcess.txLink =
       toChain.metamask.blockExplorerUrls[0] + 'tx/' + waitForTxProcess.txHash
     waitForTxProcess.message = 'Funds Received:'
-    status.fromAmount = parsedReceipt.fromAmount
-    status.toAmount = parsedReceipt.toAmount
+    // status.fromAmount = parsedReceipt.fromAmount
+    // status.toAmount = parsedReceipt.toAmount
     // status.gasUsed = parsedReceipt.gasUsed
     status.status = 'DONE'
     setStatusDone(update, status, waitForTxProcess)

@@ -3,7 +3,7 @@ import { emptyExecution, Execution, Process, ProcessMessage } from '../types'
 import { deepClone } from './utils'
 
 export const initStatus = (updateStatus?: Function, initialStatus?: Execution) => {
-  const status = initialStatus || deepClone(emptyExecution)
+  const status = initialStatus || (deepClone(emptyExecution) as Execution)
   // eslint-disable-next-line no-console
   const update = updateStatus || console.log
   if (!initialStatus) {

@@ -3,13 +3,13 @@ import { constants } from 'ethers'
 
 import { ExecuteCrossParams, getChainById } from '../types'
 import { checkAllowance } from './allowance.execute'
-import hop from './hop'
+import anyswap from './anyswap'
 import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { personalizeStep } from './utils'
 
-export class HopExecutionManager {
+export class AnySwapExecutionManager {
   shouldContinue: boolean = true
 
   setShouldContinue = (val: boolean) => {
@@ -59,7 +59,7 @@ export class HopExecutionManager {
         crossProcess.status = 'ACTION_REQUIRED'
         crossProcess.message = 'Sign Transaction'
         update(status)
-        if (!this.shouldContinue) return status
+        if (!this.shouldContinue) return status // stop before user action is required
 
         tx = await signer.sendTransaction(transactionRequest)
 
@@ -91,12 +91,9 @@ export class HopExecutionManager {
     )
     let destinationTxReceipt
     try {
-      hop.init(signer, action.fromChainId, action.toChainId)
-      destinationTxReceipt = await hop.waitForDestinationChainReceipt(
+      destinationTxReceipt = await anyswap.waitForDestinationChainReceipt(
         crossProcess.txHash,
-        action.toToken.key,
-        action.fromChainId,
-        action.toChainId,
+        toChain.id,
       )
     } catch (e: any) {
       waitForTxProcess.errorMessage = 'Failed waiting'
@@ -108,7 +105,7 @@ export class HopExecutionManager {
     }
 
     // -> parse receipt & set status
-    const parsedReceipt = hop.parseReceipt(crossProcess.txHash, destinationTxReceipt)
+    const parsedReceipt = anyswap.parseReceipt(crossProcess.txHash, destinationTxReceipt)
     waitForTxProcess.txHash = destinationTxReceipt.transactionHash
     waitForTxProcess.txLink =
       toChain.metamask.blockExplorerUrls[0] + 'tx/' + waitForTxProcess.txHash
