@@ -49,7 +49,7 @@ export default class SwapExecutionManager {
       } else {
         // -> get tx from backend
         const personalizedStep = await personalizeStep(signer, step)
-        const { tx: transaction } = await Lifi.getStepTransaction(personalizedStep)
+        const { tx: transactionRequest } = await Lifi.getStepTransaction(personalizedStep)
 
         // -> set status
         swapProcess.status = 'ACTION_REQUIRED'
@@ -58,7 +58,7 @@ export default class SwapExecutionManager {
         if (!this.shouldContinue) return status // stop before user interaction is needed
 
         // -> submit tx
-        tx = await signer.sendTransaction(transaction)
+        tx = await signer.sendTransaction(transactionRequest)
       }
     } catch (e: any) {
       // -> set status
