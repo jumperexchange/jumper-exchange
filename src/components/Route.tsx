@@ -66,7 +66,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
           title: 'LiFi Contract',
           description: (
             <>
-              One Transaction which:
+              Single transaction including:
               <br />
               <ol>
                 {step.includedSteps.map(parseStepShort).map((line, index) => (
