@@ -17,7 +17,7 @@ import walletIcon from '../assets/wallet.png'
 import { oneInch } from '../services/1Inch'
 import { AnySwapExecutionManager } from '../services/anyswap.execute'
 import { getBalancesForWallet } from '../services/balanceService'
-import { Cbridge1ExecutionManager } from '../services/cbridge1.execute'
+import { CbridgeExecutionManager } from '../services/cbridge.execute'
 import { HopExecutionManager } from '../services/hop_new.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
 import { lifinance } from '../services/lifinance'
@@ -101,9 +101,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [nxtpExecutionManager] = useState<NXTPExecutionManager>(new NXTPExecutionManager())
   const [hopExecutionManager] = useState<HopExecutionManager>(new HopExecutionManager())
   const [horizonExecutionManager] = useState<HorizonExecutionManager>(new HorizonExecutionManager())
-  const [cbridge1ExecutionManager] = useState<Cbridge1ExecutionManager>(
-    new Cbridge1ExecutionManager(),
-  )
+  const [cbridgeExecutionManager] = useState<CbridgeExecutionManager>(new CbridgeExecutionManager())
   const [anySwapExecutionManager] = useState<AnySwapExecutionManager>(new AnySwapExecutionManager())
 
   // Wallet
@@ -116,7 +114,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       nxtpExecutionManager.setShouldContinue(false)
       hopExecutionManager.setShouldContinue(false)
       horizonExecutionManager.setShouldContinue(false)
-      cbridge1ExecutionManager.setShouldContinue(false)
+      cbridgeExecutionManager.setShouldContinue(false)
       anySwapExecutionManager.setShouldContinue(false)
     }
   }, [
@@ -124,7 +122,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     nxtpExecutionManager,
     hopExecutionManager,
     horizonExecutionManager,
-    cbridge1ExecutionManager,
+    cbridgeExecutionManager,
     anySwapExecutionManager,
   ])
 
@@ -248,14 +246,15 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             (status: Execution) => updateStatus(step, status),
             execution,
           )
-        case 'cbridge1':
-          return await cbridge1ExecutionManager.executeCross({
+        case 'cbridge':
+          return await cbridgeExecutionManager.executeCross({
             signer: web3.library.getSigner(),
             step,
             updateStatus: (status: Execution) => updateStatus(step, status),
           })
         case 'anyswapV3':
         case 'anyswapV4':
+        case 'anyswap':
           return await anySwapExecutionManager.executeCross({
             signer: web3.library.getSigner(),
             step,
@@ -272,7 +271,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       nxtpExecutionManager,
       hopExecutionManager,
       horizonExecutionManager,
-      cbridge1ExecutionManager,
+      cbridgeExecutionManager,
       anySwapExecutionManager,
     ],
   )
