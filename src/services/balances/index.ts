@@ -27,8 +27,8 @@ export const getTokenBalancesFromDebank = async (
   }
 
   try {
-    const test = await debank.getBalances(walletAddress)
-    tokenAmounts.push(...test)
+    const result = await debank.getBalances(walletAddress)
+    tokenAmounts.push(...result)
   } catch (e) {
     // eslint-disable-next-line no-console
     console.warn('Failed accessing Debank, switching to covalent', e)
