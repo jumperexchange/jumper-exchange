@@ -14,13 +14,13 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 
-import { getBalancesForWallet } from '../services/balanceService'
+import { getTokenBalancesForChainsFromDebank } from '../services/balances'
 import { readWallets, storeWallets } from '../services/localStorage'
 import {
   Amounts,
+  ChainId,
   ChainKey,
   chainKeysToObject,
-  ChainPortfolio,
   Coin,
   CoinKey,
   ColomnType,
@@ -29,7 +29,7 @@ import {
   getChainByKey,
   SummaryAmounts,
   supportedChains,
-  Token,
+  TokenAmount,
   Wallet,
   WalletSummary,
 } from '../types'
@@ -309,19 +309,20 @@ for (const k in ChainKey) {
 }
 
 // render formatters
-function renderGas(wallet: Wallet, chain: ChainKey, coinName: CoinKey) {
+function renderGas(wallet: Wallet, chainKey: ChainKey, coinName: CoinKey) {
   const coin = coins.find((coin) => coin.key === coinName)
-  const isChainUsed = wallet.portfolio[chain]?.length > 0
-  const inPortfolio = wallet.portfolio[chain]?.find(
-    (e) =>
-      e.id === '0x0000000000000000000000000000000000000000' || e.id === coin?.chains[chain]?.id,
+  const isChainUsed = wallet.portfolio[chainKey]?.length > 0
+  const inPortfolio = wallet.portfolio[chainKey]?.find(
+    (tokenAmount) =>
+      tokenAmount.id === '0x0000000000000000000000000000000000000000' ||
+      tokenAmount.id === coin?.chains[chainKey]?.id,
   )
   const amounts: Amounts = inPortfolio
     ? parsePortfolioToAmount(inPortfolio)
     : { amount_coin: new BigNumber(0), amount_usd: new BigNumber(0) }
 
-  const tooltipEmpty = tooltipsEmpty[chain]
-  const tooltip = tooltips[chain]
+  const tooltipEmpty = tooltipsEmpty[chainKey]
+  const tooltip = tooltips[chainKey]
   return (
     <div className="gas">
       <div className="amount_coin">
@@ -449,15 +450,20 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
   ) as WalletSummary
 
   Object.values(ChainKey).forEach((chain) => {
-    wallet.portfolio[chain]?.forEach((portfolio) => {
+    wallet.portfolio[chain]?.forEach((tokenAmount) => {
       summary[chain].amount_usd = new BigNumber(summary[chain].amount_usd) // chainKeysToObject retruns string
-      summary[chain].amount_usd = summary[chain].amount_usd.plus(
-        portfolio.amount.times(portfolio.pricePerCoin),
-      )
+      summary[chain].amount_usd = tokenAmount.priceUSD
+        ? summary[chain].amount_usd.plus(
+            new BigNumber(tokenAmount.amount).times(new BigNumber(tokenAmount.priceUSD)),
+          )
+        : summary[chain].amount_usd
     })
     summary[chain].percentage_of_portfolio = wallet.portfolio[chain]
       ?.reduce(
-        (sum, current) => sum.plus(current.amount.times(current.pricePerCoin)),
+        (sum, current) =>
+          current.priceUSD
+            ? sum.plus(new BigNumber(current.amount).times(new BigNumber(current.priceUSD)))
+            : sum,
         new BigNumber(0),
       )
       .div(totalSumUsd)
@@ -571,19 +577,23 @@ const Dashboard = () => {
     wallet.loading = true
     setData(buildRows) // set loading state
 
-    const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = await getBalancesForWallet(
-      wallet.address,
-    )
-    for (const chain of Object.values(ChainKey)) {
-      const chainPortfolio = portfolio[chain]
-      wallet.portfolio[chain] = chainPortfolio
+    const portfolio: { [ChainKey: string]: TokenAmount[] } =
+      await getTokenBalancesForChainsFromDebank(wallet.address)
+
+    for (const chainKey of Object.values(ChainKey)) {
+      // TODO we have a strange missmatch here. in some places we use chainIds and in some chainKeys. need to figure out which places need to be refactored
+
+      const chain = getChainByKey(chainKey)
+
+      const chainPortfolio = portfolio[chain.id]
+      wallet.portfolio[chainKey] = chainPortfolio
 
       // add new coins
-      chainPortfolio.forEach((coin) => {
-        const exists = coins.find((existingCoin) => existingCoin.chains[chain]?.id === coin.id)
+      chainPortfolio.forEach((token) => {
+        const exists = coins.find((existingCoin) => existingCoin.chains[chainKey]?.id === token.id)
         if (!exists) {
-          let symbolExists = coins.find((existingCoin) => existingCoin.key === coin.symbol)
-          let symbol = coin.symbol
+          let symbolExists = coins.find((existingCoin) => existingCoin.key === token.symbol)
+          let symbol = token.symbol
           if (symbolExists) {
             let symbol_id = 0
             while (symbolExists) {
@@ -591,29 +601,18 @@ const Dashboard = () => {
               // eslint-disable-next-line no-loop-func
               symbolExists = coins.find(
                 // eslint-disable-next-line no-loop-func
-                (existingCoin) => existingCoin.key === coin.symbol + '_' + symbol_id,
+                (existingCoin) => existingCoin.key === token.symbol + '_' + symbol_id,
               )
             }
             symbol += '_' + symbol_id
           }
 
-          const newToken: Token = {
-            id: coin.id,
-            symbol: coin.symbol,
-            decimals: 18,
-            chainId: 0,
-            name: coin.name,
-            logoURI: coin.img_url,
-
-            chainKey: ChainKey.ETH,
-            key: coin.symbol as CoinKey,
-          }
           let newCoin: Coin = {
             key: symbol as CoinKey,
-            name: coin.name,
-            logoURI: coin.img_url,
-            chains: chainKeysToObject(newToken),
-            verified: coin.verified,
+            name: token.name,
+            logoURI: token.logoURI,
+            chains: chainKeysToObject(token),
+            verified: false,
           }
           coins.push(newCoin)
         }
