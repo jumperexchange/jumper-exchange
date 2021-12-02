@@ -763,10 +763,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
           {routes.length > 0 && (
             <Col>
-              <h3 style={{ textAlign: 'center' }}>
-                Available routes
-                <br className="only-mobile" /> (sorted by estimated withdraw)
-              </h3>
+              <h3 style={{ textAlign: 'center' }}>Available routes</h3>
               <div
                 style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}
                 ref={routeCards}>
