@@ -7,13 +7,18 @@ import {
   findDefaultCoinOnChain,
   RoutesRequest,
   Step,
+  Token,
 } from '@lifinance/types'
 import axios from 'axios'
 
+import balances from './balances'
 import Lifi from './Lifi'
 
 jest.mock('axios')
 const mockedAxios = axios as jest.Mocked<typeof axios>
+
+jest.mock('./balances')
+const mockedBalances = balances as jest.Mocked<typeof balances>
 
 describe('LIFI SDK', () => {
   describe('getRoutes', () => {
@@ -206,6 +211,154 @@ describe('LIFI SDK', () => {
           Lifi.getStepTransaction(step)
           expect(mockedAxios.post).toHaveBeenCalledTimes(1)
         })
+      })
+    })
+  })
+
+  describe('getTokenBalance', () => {
+    const SOME_TOKEN = findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI)
+    const SOME_WALLET_ADDRESS = 'some wallet address'
+
+    describe('user input is invalid', () => {
+      it('should throw Error because of missing walletAddress', async () => {
+        await expect(Lifi.getTokenBalance('', SOME_TOKEN)).rejects.toThrow(
+          'SDK Validation: Missing walletAddress',
+        )
+
+        expect(mockedBalances.getTokenBalance).toHaveBeenCalledTimes(0)
+      })
+
+      it('should throw Error because of invalid token', async () => {
+        await expect(
+          Lifi.getTokenBalance(SOME_WALLET_ADDRESS, { not: 'a token' } as unknown as Token),
+        ).rejects.toThrow('SDK Validation: Invalid token passed')
+
+        expect(mockedBalances.getTokenBalance).toHaveBeenCalledTimes(0)
+      })
+    })
+
+    describe('user input is valid', () => {
+      it('should call the balance service', async () => {
+        const balanceResponse = {
+          ...SOME_TOKEN,
+          amount: '123',
+        }
+
+        mockedBalances.getTokenBalance.mockReturnValue(Promise.resolve(balanceResponse))
+
+        const result = await Lifi.getTokenBalance(SOME_WALLET_ADDRESS, SOME_TOKEN)
+
+        expect(mockedBalances.getTokenBalance).toHaveBeenCalledTimes(1)
+        expect(result).toEqual(balanceResponse)
+      })
+    })
+  })
+
+  describe.only('getTokenBalances', () => {
+    const SOME_TOKEN = findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI)
+    const SOME_WALLET_ADDRESS = 'some wallet address'
+
+    describe('user input is invalid', () => {
+      it('should throw Error because of missing walletAddress', async () => {
+        await expect(Lifi.getTokenBalances('', [SOME_TOKEN])).rejects.toThrow(
+          'SDK Validation: Missing walletAddress',
+        )
+
+        expect(mockedBalances.getTokenBalances).toHaveBeenCalledTimes(0)
+      })
+
+      it('should throw Error because of an invalid token', async () => {
+        await expect(
+          Lifi.getTokenBalances(SOME_WALLET_ADDRESS, [
+            SOME_TOKEN,
+            { not: 'a token' } as unknown as Token,
+          ]),
+        ).rejects.toThrow('SDK Validation: Invalid token passed')
+
+        expect(mockedBalances.getTokenBalances).toHaveBeenCalledTimes(0)
+      })
+
+      it('should throw Error because of an empty token list', async () => {
+        await expect(Lifi.getTokenBalances(SOME_WALLET_ADDRESS, [])).rejects.toThrow(
+          'SDK Validation: Empty token list passed',
+        )
+
+        expect(mockedBalances.getTokenBalances).toHaveBeenCalledTimes(0)
+      })
+    })
+
+    describe('user input is valid', () => {
+      it('should call the balance service', async () => {
+        const balanceResponse = [
+          {
+            ...SOME_TOKEN,
+            amount: '123',
+          },
+        ]
+
+        mockedBalances.getTokenBalances.mockReturnValue(Promise.resolve(balanceResponse))
+
+        const result = await Lifi.getTokenBalances(SOME_WALLET_ADDRESS, [SOME_TOKEN])
+
+        expect(mockedBalances.getTokenBalances).toHaveBeenCalledTimes(1)
+        expect(result).toEqual(balanceResponse)
+      })
+    })
+  })
+
+  describe.only('getTokenBalancesForChains', () => {
+    const SOME_TOKEN = findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI)
+    const SOME_WALLET_ADDRESS = 'some wallet address'
+
+    describe('user input is invalid', () => {
+      it('should throw Error because of missing walletAddress', async () => {
+        await expect(
+          Lifi.getTokenBalancesForChains('', { [ChainId.DAI]: [SOME_TOKEN] }),
+        ).rejects.toThrow('SDK Validation: Missing walletAddress')
+
+        expect(mockedBalances.getTokenBalancesForChains).toHaveBeenCalledTimes(0)
+      })
+
+      it('should throw Error because of an invalid token', async () => {
+        await expect(
+          Lifi.getTokenBalancesForChains(SOME_WALLET_ADDRESS, {
+            [ChainId.DAI]: [{ not: 'a token' } as unknown as Token],
+          }),
+        ).rejects.toThrow('SDK Validation: Invalid token passed')
+
+        expect(mockedBalances.getTokenBalancesForChains).toHaveBeenCalledTimes(0)
+      })
+
+      it('should throw Error because of an empty token list', async () => {
+        await expect(
+          Lifi.getTokenBalancesForChains(SOME_WALLET_ADDRESS, {
+            [ChainId.DAI]: [],
+          }),
+        ).rejects.toThrow('SDK Validation: Empty token list passed')
+
+        expect(mockedBalances.getTokenBalancesForChains).toHaveBeenCalledTimes(0)
+      })
+    })
+
+    describe('user input is valid', () => {
+      it('should call the balance service', async () => {
+        const balanceResponse = {
+          [ChainId.DAI]: [
+            {
+              ...SOME_TOKEN,
+              amount: '123',
+            },
+          ],
+        }
+
+        mockedBalances.getTokenBalancesForChains.mockReturnValue(Promise.resolve(balanceResponse))
+
+        const result = await Lifi.getTokenBalancesForChains(SOME_WALLET_ADDRESS, {
+          [ChainId.DAI]: [SOME_TOKEN],
+        })
+
+        expect(mockedBalances.getTokenBalancesForChains).toHaveBeenCalledTimes(1)
+        expect(result).toEqual(balanceResponse)
       })
     })
   })

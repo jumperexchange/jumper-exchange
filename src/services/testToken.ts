@@ -7,10 +7,10 @@ import { getRpcProviders } from '../components/web3/connectors'
 import {
   ChainId,
   chainKeysToObject,
-  ChainPortfolio,
   CoinKey,
   defaultTokens,
   getChainById,
+  TokenAmount,
   TokenWithAmounts,
 } from '../types'
 
@@ -103,7 +103,7 @@ export const getBalance = async (
 }
 
 export const getBalancesForWallet = async (address: string) => {
-  const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = {}
+  const portfolio: { [ChainKey: string]: Array<TokenAmount> } = {}
   const promises: Array<Promise<any>> = []
 
   Object.entries(testToken).forEach(async ([chainKey, token]) => {
@@ -130,20 +130,26 @@ export const getBalancesForWallet = async (address: string) => {
         id: constants.AddressZero,
         name: 'ETH',
         symbol: 'ETH',
-        img_url: '',
-        amount: (await ethAmount).shiftedBy(-18),
-        pricePerCoin: new BigNumber(0),
-        verified: false,
+        key: 'ETH' as CoinKey,
+        chainKey: token[0].chainKey,
+        chainId: token[0].chainId,
+        decimals: token[0].decimals,
+        logoURI: '',
+        amount: (await ethAmount).shiftedBy(-18).toString(),
+        priceUSD: new BigNumber(0).toString(),
       },
       // test token
       {
         id: token[0].id,
         name: token[0].name,
         symbol: token[0].symbol,
-        img_url: '',
-        amount: (await testAmount).shiftedBy(-18),
-        pricePerCoin: new BigNumber(0),
-        verified: false,
+        key: 'ETH' as CoinKey,
+        chainKey: token[0].chainKey,
+        chainId: token[0].chainId,
+        decimals: token[0].decimals,
+        logoURI: '',
+        amount: (await testAmount).shiftedBy(-18).toString(),
+        priceUSD: new BigNumber(0).toString(),
       },
     ]
   })
@@ -157,7 +163,7 @@ export const getDefaultTokenBalancesForWallet = async (
   address: string,
   onChains?: Array<number>,
 ) => {
-  const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
+  const portfolio: { [ChainKey: string]: Array<TokenAmount> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
 
   Object.entries(defaultTokens).forEach(async ([chainKey, tokens]) => {
@@ -172,13 +178,8 @@ export const getDefaultTokenBalancesForWallet = async (
       })
       promises.push(amount)
       portfolio[chainKey].push({
-        id: token.id,
-        name: token.name,
-        symbol: token.key,
-        img_url: '',
-        amount: (await amount).shiftedBy(-token.decimals),
-        pricePerCoin: new BigNumber(0),
-        verified: false,
+        ...token,
+        amount: (await amount).shiftedBy(-token.decimals).toString(),
       })
     })
   })

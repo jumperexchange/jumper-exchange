@@ -60,7 +60,7 @@ const isEstimate = (estimate: Estimate): estimate is Estimate => {
   )
 }
 
-const isToken = (token: Token): token is Token => {
+export const isToken = (token: Token): token is Token => {
   const { id, symbol, decimals, chainId, name, chainKey, logoURI } = token
 
   return (
