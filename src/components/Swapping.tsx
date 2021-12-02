@@ -545,8 +545,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const restartCrossChainSwap = async () => {
     // remove failed
     for (let index = 0; index < steps.length; index++) {
-      if (steps[index].execution?.status === 'FAILED') {
-        steps[index].execution = undefined
+      if (steps[index].execution && steps[index].execution!.status === 'FAILED') {
+        steps[index].execution!.status = 'RESUME'
+        steps[index].execution!.process.pop() // remove last (failed) process
         updateRoute(route)
       }
     }
