@@ -13,7 +13,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.BSC),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.BSC),
+    // findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.BSC),
   ],
   [ChainKey.POL]: [
     findDefaultCoinOnChain(CoinKey.MATIC, ChainKey.POL),
@@ -67,19 +67,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultCoinOnChain(CoinKey.MOVR, ChainKey.MOR),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MOR),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MOR),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.MOR),
+    // findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.MOR),
   ],
   [ChainKey.OKT]: [
     findDefaultCoinOnChain(CoinKey.OKT, ChainKey.OKT),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OKT),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OKT),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.OKT),
   ],
   [ChainKey.HEC]: [
     findDefaultCoinOnChain(CoinKey.HT, ChainKey.HEC),
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.HEC),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.HEC),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.HEC),
   ],
 
   // Testnet

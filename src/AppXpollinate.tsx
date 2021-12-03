@@ -25,7 +25,7 @@ const transferTokens = {
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.BSC),
     findDefaultCoinOnChain(CoinKey.DAI, ChainKey.BSC),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.BSC),
+    // findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.BSC),
   ],
   [ChainKey.POL]: [
     findDefaultCoinOnChain(CoinKey.ETH, ChainKey.POL),
@@ -72,7 +72,7 @@ const transferTokens = {
   [ChainKey.MOR]: [
     findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MOR),
     findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MOR),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.MOR),
+    // findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.MOR),
   ],
   [ChainKey.OPT]: [
     findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
