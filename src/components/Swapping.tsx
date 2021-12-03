@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
+import cbridgeIcon from '../assets/icons/cbridge.png'
 import connextIcon from '../assets/icons/connext.png'
 import harmonyIcon from '../assets/icons/harmony.png'
 import hopIcon from '../assets/icons/hop.png'
@@ -15,10 +16,11 @@ import oneinchIcon from '../assets/icons/oneinch.png'
 import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
 import { oneInch } from '../services/1Inch'
+import { AnySwapExecutionManager } from '../services/anyswap.execute'
 import { getBalancesForWallet } from '../services/balanceService'
+import { CbridgeExecutionManager } from '../services/cbridge.execute'
 import { HopExecutionManager } from '../services/hop.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
-import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import { NXTPExecutionManager } from '../services/nxtp.execute'
@@ -36,10 +38,12 @@ import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
   ChainPortfolio,
+  CrossStep,
   Execution,
   getChainById,
   getChainByKey,
   getIcon,
+  LifiStep,
   Process,
   Route,
   Step,
@@ -69,19 +73,6 @@ const getRecevingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const isLifiSupported = (route: Route) => {
-  const crossStep = route.steps.find((step) => step.type === 'cross')
-  if (!crossStep) return false // perform simple swaps directly
-
-  const crossAction = crossStep.action
-
-  return (
-    crossStep.tool === 'nxtp' &&
-    lifinance.supportedChains.includes(crossAction.fromChainId) &&
-    lifinance.supportedChains.includes(crossAction.toChainId)
-  )
-}
-
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const { steps } = route
 
@@ -97,18 +88,30 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [nxtpExecutionManager] = useState<NXTPExecutionManager>(new NXTPExecutionManager())
   const [hopExecutionManager] = useState<HopExecutionManager>(new HopExecutionManager())
   const [horizonExecutionManager] = useState<HorizonExecutionManager>(new HorizonExecutionManager())
+  const [cbridgeExecutionManager] = useState<CbridgeExecutionManager>(new CbridgeExecutionManager())
+  const [anySwapExecutionManager] = useState<AnySwapExecutionManager>(new AnySwapExecutionManager())
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
+  // stop execution managers when component get destroyed
   useEffect(() => {
     return () => {
       swapExecutionManager.setShouldContinue(false)
       nxtpExecutionManager.setShouldContinue(false)
       hopExecutionManager.setShouldContinue(false)
       horizonExecutionManager.setShouldContinue(false)
+      cbridgeExecutionManager.setShouldContinue(false)
+      anySwapExecutionManager.setShouldContinue(false)
     }
-  }, [swapExecutionManager, nxtpExecutionManager, hopExecutionManager, horizonExecutionManager])
+  }, [
+    swapExecutionManager,
+    nxtpExecutionManager,
+    hopExecutionManager,
+    horizonExecutionManager,
+    cbridgeExecutionManager,
+    anySwapExecutionManager,
+  ])
 
   // Swap
   const updateStatus = useCallback(
@@ -193,17 +196,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   )
 
   const triggerCross = useCallback(
-    async (step: Step, previousStep?: Step) => {
+    async (step: CrossStep | LifiStep, previousStep?: Step) => {
       if (!web3.account || !web3.library) return
-      const crossAction = step.action
-      const crossExecution = step.execution
+      const { action, execution } = step
 
-      // get right amount
-      let fromAmount: BigNumber
+      // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
-        fromAmount = new BigNumber(previousStep.execution.toAmount)
-      } else {
-        fromAmount = new BigNumber(crossAction.fromAmount)
+        step.action.fromAmount = previousStep.execution.toAmount
       }
 
       // ensure chain is set
@@ -213,34 +212,41 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       switch (step.tool) {
         case 'nxtp':
-          return await nxtpExecutionManager.executeCross(
-            web3.library.getSigner(),
+          return await nxtpExecutionManager.executeCross({
+            signer: web3.library.getSigner(),
             step,
-            fromAmount,
-            web3.account,
-            (status: Execution) => updateStatus(step, status),
-            crossExecution,
-          )
+            updateStatus: (status: Execution) => updateStatus(step, status),
+          })
         case 'hop':
-          return await hopExecutionManager.executeCross(
-            web3.library.getSigner(),
-            crossAction.fromToken.key,
-            fromAmount.toFixed(0),
-            crossAction.fromChainId,
-            crossAction.toChainId,
-            (status: Execution) => updateStatus(step, status),
-            crossExecution,
-          )
+          return await hopExecutionManager.executeCross({
+            signer: web3.library.getSigner(),
+            step,
+            updateStatus: (status: Execution) => updateStatus(step, status),
+          })
         case 'horizon':
           return await horizonExecutionManager.executeCross(
-            crossAction.fromToken,
-            fromAmount,
-            crossAction.fromChainId,
-            crossAction.toChainId,
+            action.fromToken,
+            new BigNumber(step.action.fromAmount),
+            action.fromChainId,
+            action.toChainId,
             web3.account,
             (status: Execution) => updateStatus(step, status),
-            crossExecution,
+            execution,
           )
+        case 'cbridge':
+          return await cbridgeExecutionManager.executeCross({
+            signer: web3.library.getSigner(),
+            step,
+            updateStatus: (status: Execution) => updateStatus(step, status),
+          })
+        case 'anyswapV3':
+        case 'anyswapV4':
+        case 'anyswap':
+          return await anySwapExecutionManager.executeCross({
+            signer: web3.library.getSigner(),
+            step,
+            updateStatus: (status: Execution) => updateStatus(step, status),
+          })
         default:
           throw new Error('Should never reach here, bridge not defined')
       }
@@ -252,6 +258,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       nxtpExecutionManager,
       hopExecutionManager,
       horizonExecutionManager,
+      cbridgeExecutionManager,
+      anySwapExecutionManager,
     ],
   )
 
@@ -347,6 +355,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     </Tooltip>
   )
 
+  const cbridgeAvatar = (
+    <Tooltip title="cBridge">
+      <Avatar size="small" src={cbridgeIcon} alt="cBridge"></Avatar>
+    </Tooltip>
+  )
+
   const parseStepToTimeline = (step: Step, index: number) => {
     const executionSteps = parseExecution(step.execution)
     const isDone = step.execution && step.execution.status === 'DONE'
@@ -397,6 +411,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           case 'horizon':
             avatar = horizonAvatar
             break
+          case 'cbridge':
+            avatar = cbridgeAvatar
+            break
           default:
             break
         }
@@ -425,6 +442,32 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         ]
       }
 
+      case 'lifi': {
+        return [
+          <Timeline.Item
+            position={isMobile ? 'right' : 'right'}
+            key={index + '_left'}
+            color={color}>
+            <h4>
+              LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
+              {getChainAvatar(getChainById(step.action.toChainId).key)}
+            </h4>
+            <span>
+              {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
+              <ArrowRightOutlined />{' '}
+              {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
+            </span>
+          </Timeline.Item>,
+          <Timeline.Item
+            position={isMobile ? 'right' : 'left'}
+            key={index + '_right'}
+            color={color}
+            dot={isLoading ? <LoadingOutlined /> : null}>
+            {executionSteps}
+          </Timeline.Item>,
+        ]
+      }
+
       default:
         // eslint-disable-next-line no-console
         console.warn('should never reach here')
@@ -445,8 +488,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           case 'swap':
             return await triggerSwap(step, previousStep)
           case 'cross':
-            await await triggerCross(step, previousStep)
-            break
+          case 'lifi':
+            return await triggerCross(step, previousStep)
           default:
             setIsSwapping(false)
             throw new Error('Invalid Step')
@@ -468,17 +511,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     [triggerCross, triggerSwap, updateStatus],
   )
 
-  const triggerLifi = useCallback(async () => {
-    // ensure chain is set
-    if (web3.chainId !== steps[0].action.fromChainId) {
-      if (!(await checkChain(steps[0]))) return
-    }
-
-    await lifinance.executeLifi(web3.library!.getSigner(), route, (status: Execution) =>
-      updateStatus(steps[0], status),
-    )
-  }, [route, updateStatus, checkChain, web3.chainId, web3.library])
-
   const startCrossChainSwap = async () => {
     storeActiveRoute(route)
     setIsSwapping(true)
@@ -499,8 +531,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const restartCrossChainSwap = async () => {
     // remove failed
     for (let index = 0; index < steps.length; index++) {
-      if (steps[index].execution?.status === 'FAILED') {
-        steps[index].execution = undefined
+      if (steps[index].execution && steps[index].execution!.status === 'FAILED') {
+        steps[index].execution!.status = 'RESUME'
+        steps[index].execution!.process.pop() // remove last (failed) process
         updateRoute(route)
       }
     }
@@ -522,18 +555,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         } else {
           return
         }
-      }
-      // lifi supported?
-      if (isLifiSupported(route)) {
-        if (!steps[0].execution) {
-          triggerLifi()
-        } else if (steps[0].execution.status === 'DONE') {
-          setFinalBalance(await getFinalBalace(web3.account!, route))
-          setIsSwapping(false)
-          setSwapDoneAt(Date.now())
-          onSwapDone()
-        }
-        return
       }
 
       for (let index = 0; index < steps.length; index++) {

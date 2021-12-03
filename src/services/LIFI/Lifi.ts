@@ -1,10 +1,4 @@
-import {
-  isSwapStep,
-  RoutesRequest,
-  RoutesResponse,
-  Step,
-  StepTransactionResponse,
-} from '@lifinance/types'
+import { RoutesRequest, RoutesResponse, Step, StepTransactionResponse } from '@lifinance/types'
 import axios from 'axios'
 
 import { isRoutesRequest, isStep } from './typeguards'
@@ -26,11 +20,6 @@ class LIFI {
   getStepTransaction = async (step: Step): Promise<StepTransactionResponse> => {
     if (!isStep(step)) {
       throw new Error('SDK Validation: Invalid Step')
-    }
-
-    // currently only swap steps are supported
-    if (!isSwapStep(step)) {
-      throw Error('Only swap steps are supported at the moment')
     }
 
     const result = await axios.post<StepTransactionResponse>(

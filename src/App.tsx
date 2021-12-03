@@ -79,6 +79,11 @@ function App() {
                     <Menu.Item key="/about">
                       <Link to="/about">About</Link>
                     </Menu.Item>
+                    <Menu.Item key="blog">
+                      <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
+                        Blog
+                      </a>
+                    </Menu.Item>
                     {/* <Menu.Item>
                       <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
                     </Menu.Item> */}
@@ -124,7 +129,7 @@ function App() {
                     <Col>
                       <a
                         className="lifiSupport"
-                        href="https://discord.com/invite/G9uAbE439B"
+                        href="https://discord.gg/lifi"
                         target="_blank"
                         rel="nofollow noreferrer">
                         Support (Discord)
@@ -137,7 +142,7 @@ function App() {
             <Content>
               <a
                 className="lifiSupport support-content"
-                href="https://discord.com/invite/G9uAbE439B"
+                href="https://discord.gg/lifi"
                 target="_blank"
                 rel="nofollow noreferrer">
                 Support

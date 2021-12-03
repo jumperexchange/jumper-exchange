@@ -1395,11 +1395,14 @@ const SwapXpollinate = ({
               )}
               <Menu.Item key="explorer" icon={<CompassOutlined />}>
                 <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
-                  Explorer
+                  Connextscan Explorer
                 </a>
               </Menu.Item>
               <Menu.Item key="support" icon={<LinkOutlined />}>
-                <a href="https://chat.connext.network/" target="_blank" rel="nofollow noreferrer">
+                <a
+                  href="https://connext.notion.site/Connext-NXTP-Support-19a357ebabdd4e888cfcd138fe3e4644"
+                  target="_blank"
+                  rel="nofollow noreferrer">
                   Support
                 </a>
               </Menu.Item>
