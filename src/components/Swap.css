@@ -249,7 +249,7 @@ h4.swap-title {
 }
 
 .ant-collapse-header {
-  text-align: center;
+  justify-content: center;
 }
 
 .maxButton {

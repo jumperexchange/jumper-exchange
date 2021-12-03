@@ -21,7 +21,6 @@ import { getBalancesForWallet } from '../services/balanceService'
 import { CbridgeExecutionManager } from '../services/cbridge.execute'
 import { HopExecutionManager } from '../services/hop.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
-import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import { NXTPExecutionManager } from '../services/nxtp.execute'
@@ -72,19 +71,6 @@ const getRecevingInfo = (step: Step) => {
   const toChain = getChainById(step.action.toChainId)
   const toToken = step.action.toToken
   return { toChain, toToken }
-}
-
-const isLifiSupported = (route: Route) => {
-  const crossStep = route.steps.find((step) => step.type === 'cross')
-  if (!crossStep) return false // perform simple swaps directly
-
-  const crossAction = crossStep.action
-
-  return (
-    crossStep.tool === 'nxtp' &&
-    lifinance.supportedChains.includes(crossAction.fromChainId) &&
-    lifinance.supportedChains.includes(crossAction.toChainId)
-  )
 }
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
@@ -569,18 +555,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         } else {
           return
         }
-      }
-      // lifi supported?
-      if (isLifiSupported(route)) {
-        if (!steps[0].execution) {
-          // triggerLifi()
-        } else if (steps[0].execution.status === 'DONE') {
-          setFinalBalance(await getFinalBalace(web3.account!, route))
-          setIsSwapping(false)
-          setSwapDoneAt(Date.now())
-          onSwapDone()
-        }
-        return
       }
 
       for (let index = 0; index < steps.length; index++) {

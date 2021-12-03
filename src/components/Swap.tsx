@@ -728,10 +728,9 @@ const Swap = ({ transferChains }: SwapProps) => {
                   {/* Disclaimer */}
                   <Row justify={'center'} className="beta-disclaimer">
                     <Typography.Text type="danger" style={{ textAlign: 'center' }}>
-                      Please note that this is a beta product, use it at your own risk. In rare
-                      cases funds can be locked for a longer period and exchanges can result in
-                      value loss. <br />
-                      We currently recommend using only Metamask Wallets.
+                      Beta product - use at own risk.
+                      <br />
+                      MetaMask recommended.
                     </Typography.Text>
                   </Row>
                   <Row style={{ marginTop: 24 }} justify={'center'}>
