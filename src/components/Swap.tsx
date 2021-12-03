@@ -438,7 +438,18 @@ const Swap = ({ transferChains }: SwapProps) => {
 
     const fromChain = getChainById(route.fromChainId)
     const balance = getBalance(balances, fromChain.key, ethers.constants.AddressZero)
-    return !balance.isZero() // TODO: compare with estimated gas costs
+
+    const requiredAmount = route.steps
+      .filter((step) => step.action.fromChainId === route.fromChainId)
+      .map(
+        (step) =>
+          step.estimate.gasCosts &&
+          step.estimate.gasCosts.length &&
+          step.estimate.gasCosts[0].amount,
+      )
+      .map((amount) => new BigNumber(amount || '0'))
+      .reduce((a, b) => a.plus(b), new BigNumber(0))
+    return !balance.isZero() && balance.gte(requiredAmount)
   }
 
   const hasSufficientGasBalanceOnCrossChain = (route?: RouteType) => {
@@ -452,7 +463,12 @@ const Swap = ({ transferChains }: SwapProps) => {
 
     const crossChain = getChainById(lastStep.action.fromChainId)
     const balance = getBalance(balances, crossChain.key, ethers.constants.AddressZero)
-    return !balance.isZero() // TODO: compare with estimated gas costs
+
+    const requiredAmount =
+      lastStep.estimate.gasCosts &&
+      lastStep.estimate.gasCosts.length &&
+      lastStep.estimate.gasCosts[0].amount
+    return !balance.isZero() && balance.gte(requiredAmount || 0)
   }
 
   const findToken = useCallback(
