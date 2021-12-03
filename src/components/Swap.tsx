@@ -357,8 +357,18 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   const updateBalances = useCallback(async () => {
     if (web3.account) {
-      const tokenAmounts = await LIFI.getTokenBalancesForChains(web3.account!, tokens)
-      setBalances(tokenAmounts)
+      // one call per chain to show balances as soon as the request comes back
+      Object.entries(tokens).forEach(async ([chainKey, tokenList]) => {
+        LIFI.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
+          setBalances((balances) => {
+            if (!balances) balances = {}
+            return {
+              ...balances,
+              [chainKey]: portfolio,
+            }
+          })
+        })
+      })
     }
   }, [web3.account, tokens])
 
