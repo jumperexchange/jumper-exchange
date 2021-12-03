@@ -449,6 +449,7 @@ const Swap = ({ transferChains }: SwapProps) => {
       )
       .map((amount) => new BigNumber(amount || '0'))
       .reduce((a, b) => a.plus(b), new BigNumber(0))
+      .shiftedBy(-18)
     return !balance.isZero() && balance.gte(requiredAmount)
   }
 
@@ -464,11 +465,12 @@ const Swap = ({ transferChains }: SwapProps) => {
     const crossChain = getChainById(lastStep.action.fromChainId)
     const balance = getBalance(balances, crossChain.key, ethers.constants.AddressZero)
 
-    const requiredAmount =
+    const gasEstimate =
       lastStep.estimate.gasCosts &&
       lastStep.estimate.gasCosts.length &&
       lastStep.estimate.gasCosts[0].amount
-    return !balance.isZero() && balance.gte(requiredAmount || 0)
+    const requiredAmount = new BigNumber(gasEstimate || 0).shiftedBy(-18)
+    return !balance.isZero() && balance.gte(requiredAmount)
   }
 
   const findToken = useCallback(
