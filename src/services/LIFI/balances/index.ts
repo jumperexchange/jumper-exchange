@@ -1,23 +1,6 @@
 import { Token, TokenAmount } from '@lifinance/types'
 
-import { getBalancesFromProviderUsingMulticall } from './utils'
-
-const getTokenBalances = async (walletAddress: string, tokens: Token[]): Promise<TokenAmount[]> => {
-  let tokenAmounts: TokenAmount[] = []
-
-  try {
-    tokenAmounts = await getBalancesFromProviderUsingMulticall(walletAddress, tokens)
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error('Failed to load token balance via multicall', e)
-  }
-
-  if (tokens) {
-    return tokenAmounts.filter((tokenAmount) => tokens.find((token) => token.id === tokenAmount.id))
-  }
-
-  return tokenAmounts
-}
+import utils from './utils'
 
 const getTokenBalance = async (
   walletAddress: string,
@@ -27,26 +10,37 @@ const getTokenBalance = async (
   return tokenAmounts.length ? tokenAmounts[0] : null
 }
 
+const getTokenBalances = async (walletAddress: string, tokens: Token[]): Promise<TokenAmount[]> => {
+  // split by chain
+  const tokensByChain: { [chainId: number]: Token[] } = {}
+  tokens.forEach((token) => {
+    if (!tokensByChain[token.chainId]) {
+      tokensByChain[token.chainId] = []
+    }
+    tokensByChain[token.chainId].push(token)
+  })
+
+  const tokenAmountsByChain = await getTokenBalancesForChains(walletAddress, tokensByChain)
+  return Object.values(tokenAmountsByChain).flat()
+}
+
 const getTokenBalancesForChains = async (
   walletAddress: string,
   tokensByChain: { [chainId: number]: Token[] },
 ): Promise<{ [chainId: number]: TokenAmount[] }> => {
-  const tokenAmounts = await getTokenBalances(walletAddress, Object.values(tokensByChain).flat())
-
-  const result: { [chainId: number]: TokenAmount[] } = {}
-  tokenAmounts.forEach((tokenAmount) => {
-    if (!result[tokenAmount.chainId]) {
-      result[tokenAmount.chainId] = []
-    }
-
-    result[tokenAmount.chainId].push(tokenAmount)
+  const tokenAmountsByChain: { [chainId: number]: TokenAmount[] } = {}
+  const promises = Object.keys(tokensByChain).map(async (chainIdStr) => {
+    const chainId = parseInt(chainIdStr)
+    const tokenAmounts = await utils.getBalances(walletAddress, tokensByChain[chainId])
+    tokenAmountsByChain[chainId] = tokenAmounts
   })
 
-  return result
+  await Promise.allSettled(promises)
+  return tokenAmountsByChain
 }
 
 export default {
-  getTokenBalancesForChains,
-  getTokenBalances,
   getTokenBalance,
+  getTokenBalances,
+  getTokenBalancesForChains,
 }

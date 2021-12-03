@@ -254,7 +254,7 @@ describe('LIFI SDK', () => {
     })
   })
 
-  describe.only('getTokenBalances', () => {
+  describe('getTokenBalances', () => {
     const SOME_TOKEN = findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI)
     const SOME_WALLET_ADDRESS = 'some wallet address'
 
@@ -306,7 +306,7 @@ describe('LIFI SDK', () => {
     })
   })
 
-  describe.only('getTokenBalancesForChains', () => {
+  describe('getTokenBalancesForChains', () => {
     const SOME_TOKEN = findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI)
     const SOME_WALLET_ADDRESS = 'some wallet address'
 

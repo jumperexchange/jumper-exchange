@@ -16,7 +16,24 @@ type UpdateType = {
   value: string
 }
 
-export const getBalancesFromProviderUsingMulticall = async (
+const getBalances = async (walletAddress: string, tokens: Token[]): Promise<TokenAmount[]> => {
+  const { chainId } = tokens[0]
+  tokens.forEach((token) => {
+    if (token.chainId !== chainId) {
+      // eslint-disable-next-line no-console
+      console.warn(`Requested tokens have to be on same chain.`)
+      return []
+    }
+  })
+
+  if (getMulticallAddresse(chainId) && tokens.length > 1) {
+    return getBalancesFromProviderUsingMulticall(walletAddress, tokens)
+  } else {
+    return getBalancesFromProvider(walletAddress, tokens)
+  }
+}
+
+const getBalancesFromProviderUsingMulticall = async (
   walletAddress: string,
   tokens: Token[],
 ): Promise<TokenAmount[]> => {
@@ -28,12 +45,7 @@ export const getBalancesFromProviderUsingMulticall = async (
     interval: 1000000000, // calling stop on the watcher does not actually close the websocket
   }
 
-  if (!config.multicallAddress) {
-    // Fallback if multicall is not available
-    return getBalancesFromProvider(walletAddress, tokens)
-  }
-
-  const tokenAmounts = await new Promise<TokenAmount[]>((resolve) => {
+  return new Promise<TokenAmount[]>((resolve) => {
     // Collect calls we want to make
     const calls: any = []
     tokens.forEach(async (token) => {
@@ -42,7 +54,7 @@ export const getBalancesFromProviderUsingMulticall = async (
           call: ['getEthBalance(address)(uint256)', walletAddress],
           returns: [
             [
-              [token.id, token.chainId].join('-'),
+              token.id,
               (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
             ],
           ],
@@ -53,7 +65,7 @@ export const getBalancesFromProviderUsingMulticall = async (
           call: ['balanceOf(address)(uint256)', walletAddress],
           returns: [
             [
-              [token.id, token.name, token.key].join('-'),
+              token.id,
               (val: BN) => new BigNumber(val.toString()).shiftedBy(-token.decimals).toFixed(),
             ],
           ],
@@ -67,17 +79,20 @@ export const getBalancesFromProviderUsingMulticall = async (
     watcher.batch().subscribe((updates: UpdateType[]) => {
       watcher.stop()
 
-      const tokenAmounts: TokenAmount[] = updates.map(({ type, value }): TokenAmount => {
-        const [tokenId, chainId] = type.split('-')
-        const token = tokens.find(
-          (token) => token.id === tokenId && token.chainId === parseInt(chainId),
-        )
+      // map with returned amounts
+      const balances: { [tokenId: string]: string } = {}
+      updates.forEach(({ type, value }) => {
+        balances[type] = value
+      })
 
+      // parse to TokenAmounts
+      const tokenAmounts = tokens.map((token) => {
         return {
-          ...token!,
-          amount: value,
+          ...token,
+          amount: balances[token.id] || '0',
         }
       })
+
       resolve(tokenAmounts)
     })
 
@@ -85,15 +100,13 @@ export const getBalancesFromProviderUsingMulticall = async (
     watcher.onError((error: Error) => {
       watcher.stop()
       // eslint-disable-next-line no-console
-      console.warn('Watcher Error:', error, chainId, config)
+      console.warn(`Multicall Error on chain ${chainId}, config:`, config, error)
       resolve([])
     })
 
     // Submit calls
     watcher.start()
   })
-
-  return tokenAmounts
 }
 
 const getBalancesFromProvider = async (
@@ -105,19 +118,19 @@ const getBalancesFromProvider = async (
 
   const tokenAmountPromises: Promise<TokenAmount>[] = tokens.map(
     async (token): Promise<TokenAmount> => {
+      let amount = '0'
+
       try {
-        const amount = await getBalanceFromProvider(walletAddress, token.id, rpc)
-        return {
-          ...token,
-          amount: (await amount).shiftedBy(-token.decimals).toString(),
-        }
+        const amountRaw = await getBalanceFromProvider(walletAddress, token.id, rpc)
+        amount = amountRaw.shiftedBy(-token.decimals).toString()
       } catch (e) {
         // eslint-disable-next-line no-console
         console.warn(e)
-        return {
-          ...token,
-          amount: new BigNumber(0).toString(),
-        }
+      }
+
+      return {
+        ...token,
+        amount,
       }
     },
   )
@@ -141,4 +154,8 @@ const getBalanceFromProvider = async (
     balance = await contract.balanceOf(walletAddress)
   }
   return new BigNumber(balance.toString())
+}
+
+export default {
+  getBalances,
 }

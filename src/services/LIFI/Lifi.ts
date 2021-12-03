@@ -38,6 +38,18 @@ class LIFI {
     return result.data
   }
 
+  getTokenBalance = async (walletAddress: string, token: Token): Promise<TokenAmount | null> => {
+    if (!walletAddress) {
+      throw new Error('SDK Validation: Missing walletAddress')
+    }
+
+    if (!isToken(token)) {
+      throw new Error('SDK Validation: Invalid token passed')
+    }
+
+    return balances.getTokenBalance(walletAddress, token)
+  }
+
   getTokenBalances = async (walletAddress: string, tokens: Token[]): Promise<TokenAmount[]> => {
     if (!walletAddress) {
       throw new Error('SDK Validation: Missing walletAddress')
@@ -52,18 +64,6 @@ class LIFI {
     }
 
     return balances.getTokenBalances(walletAddress, tokens)
-  }
-
-  getTokenBalance = async (walletAddress: string, token: Token): Promise<TokenAmount | null> => {
-    if (!walletAddress) {
-      throw new Error('SDK Validation: Missing walletAddress')
-    }
-
-    if (!isToken(token)) {
-      throw new Error('SDK Validation: Invalid token passed')
-    }
-
-    return balances.getTokenBalance(walletAddress, token)
   }
 
   getTokenBalancesForChains = async (

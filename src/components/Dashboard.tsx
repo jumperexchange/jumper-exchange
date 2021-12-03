@@ -18,7 +18,6 @@ import { getTokenBalancesForChainsFromDebank } from '../services/balances'
 import { readWallets, storeWallets } from '../services/localStorage'
 import {
   Amounts,
-  ChainId,
   ChainKey,
   chainKeysToObject,
   Coin,
