@@ -5,7 +5,6 @@ import {
   NxtpSdk,
   NxtpSdkEvents,
 } from '@connext/nxtp-sdk'
-import { getChainData } from '@connext/nxtp-sdk/dist/utils'
 import { getRandomBytes32, TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { Button } from 'antd'
