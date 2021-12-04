@@ -18,6 +18,7 @@ import { getTokenBalancesForChainsFromDebank } from '../services/balances'
 import { readWallets, storeWallets } from '../services/localStorage'
 import {
   Amounts,
+  ChainId,
   ChainKey,
   chainKeysToObject,
   Coin,
@@ -33,6 +34,19 @@ import {
   WalletSummary,
 } from '../types'
 import ConnectButton from './web3/ConnectButton'
+
+const visibleChains: ChainId[] = [
+  ChainId.ETH,
+  ChainId.POL,
+  ChainId.BSC,
+  ChainId.DAI,
+  ChainId.FTM,
+  ChainId.OKT,
+  ChainId.AVA,
+  ChainId.ARB,
+  ChainId.HEC,
+  ChainId.MOR,
+]
 
 const emptySummaryAmounts: SummaryAmounts = {
   amount_usd: new BigNumber(0),
@@ -370,12 +384,12 @@ const renderWalletColumnTitle = (
   )
 }
 //Helpers
-const parsePortfolioToAmount = (inPortfolio: any) => {
+const parsePortfolioToAmount = (inPortfolio: TokenAmount) => {
+  const amount = new BigNumber(inPortfolio.amount)
   const subAmounts: Amounts = {
-    amount_coin: inPortfolio.amount,
-    amount_usd: inPortfolio.amount.times(inPortfolio.pricePerCoin),
+    amount_coin: amount,
+    amount_usd: amount.times(inPortfolio.priceUSD || '0'),
   }
-
   return subAmounts
 }
 const baseWidth = 150
@@ -384,7 +398,7 @@ const buildColumnForWallet = (wallet: Wallet, syncHandler: Function, deleteHandl
     title: renderWalletColumnTitle(wallet.address, syncHandler, deleteHandler),
     dataIndex: wallet.address,
     children: supportedChains
-      .filter((chain) => chain.visible)
+      .filter((chain) => visibleChains.includes(chain.id))
       .map((chain) => {
         return {
           title: chain.name,
@@ -580,10 +594,7 @@ const Dashboard = () => {
       await getTokenBalancesForChainsFromDebank(wallet.address)
 
     for (const chainKey of Object.values(ChainKey)) {
-      // TODO we have a strange missmatch here. in some places we use chainIds and in some chainKeys. need to figure out which places need to be refactored
-
       const chain = getChainByKey(chainKey)
-
       const chainPortfolio = portfolio[chain.id]
       wallet.portfolio[chainKey] = chainPortfolio
 

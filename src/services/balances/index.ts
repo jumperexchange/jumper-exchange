@@ -75,5 +75,12 @@ export const getTokenBalancesForChainsFromDebank = async (
     result[tokenAmount.chainId].push(tokenAmount)
   })
 
+  for (const key in ChainId) {
+    const chainId = parseInt(ChainId[key])
+    if (!result[chainId]) {
+      result[chainId] = []
+    }
+  }
+
   return result
 }

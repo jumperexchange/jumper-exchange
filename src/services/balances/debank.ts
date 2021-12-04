@@ -1,8 +1,8 @@
 import {
-  ChainKey,
+  ChainId,
   CoinKey,
   findTokenByChainIdAndAddress,
-  getChainByKey,
+  getChainById,
   TokenAmount,
 } from '@lifinance/types'
 import axios from 'axios'
@@ -27,21 +27,26 @@ type DebankResultItem = {
 }
 
 // Crazy Wallet for testing token parsing: 0x5853ed4f26a3fcea565b3fbc698bb19cdf6deb85
-const chainNameMapping: { [ChainName: string]: ChainKey } = {
-  eth: ChainKey.ETH,
-  bsc: ChainKey.BSC,
-  xdai: ChainKey.DAI,
-  matic: ChainKey.POL,
-  ftm: ChainKey.FTM,
-  okt: ChainKey.OKT,
-  avax: ChainKey.AVA,
-  heco: ChainKey.HEC,
-  op: ChainKey.OPT,
-  arb: ChainKey.ARB,
-  // 'celo': Celo
+// Available Chains: https://openapi.debank.com/docs
+const chainNameMapping: { [ChainName: string]: ChainId } = {
+  eth: ChainId.ETH,
+  bsc: ChainId.BSC,
+  xdai: ChainId.DAI,
+  matic: ChainId.POL,
+  ftm: ChainId.FTM,
+  okt: ChainId.OKT,
+  heco: ChainId.HEC,
+  avax: ChainId.AVA,
+  arb: ChainId.ARB,
+  // celo: Celo
+  movr: ChainId.MOR,
+  // cro
+  // boba
 }
 
-const mapDebankChainNameToChainKey = (chainName: string): ChainKey => {
+const supportedChains = Object.values(chainNameMapping)
+
+const mapDebankChainNameToChainKey = (chainName: string): ChainId => {
   return chainNameMapping[chainName]
 }
 
@@ -64,10 +69,10 @@ const getBalances = async (walletAdress: string): Promise<TokenAmount[]> => {
   const tokenAmounts: TokenAmount[] = []
 
   for (const debankResultItem of debankResult) {
-    const chainKey = mapDebankChainNameToChainKey(debankResultItem.chain)
+    const chainId = mapDebankChainNameToChainKey(debankResultItem.chain)
     let chain
     try {
-      chain = getChainByKey(chainKey)
+      chain = getChainById(chainId)
     } catch {
       // unknown chain
       continue
@@ -77,7 +82,9 @@ const getBalances = async (walletAdress: string): Promise<TokenAmount[]> => {
       : '0x0000000000000000000000000000000000000000'
     const localToken = findTokenByChainIdAndAddress(chain.id, tokenAddress)
     const amount = new BigNumber(debankResultItem.amount).toString()
-    const priceUSD = new BigNumber(debankResultItem.price).toString()
+    const priceUSD = debankResultItem.price
+      ? new BigNumber(debankResultItem.price).toString()
+      : undefined
 
     if (localToken) {
       tokenAmounts.push({
@@ -105,5 +112,6 @@ const getBalances = async (walletAdress: string): Promise<TokenAmount[]> => {
 }
 
 export default {
+  supportedChains,
   getBalances,
 }
