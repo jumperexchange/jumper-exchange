@@ -21,6 +21,11 @@ export const blockedTokens: BlockedTokens = {
     '0xa43d8b1f070b8e2fd2de4e01369369d5fd7d4784', // melloBsc.com - scam
     '0xd5e3bf9045cfb1e6ded4b35d1b9c34be16d6eec3', // LinkP.io - scam
     '0x442b656f5a5c3dd09790951810c5a15ea5295b51', // Tu7.org - scam
+    '0x27b880865395da6cda9c407e5edfcc32184cf429', // Dex88.org
+    '0x893c25c46bfaa9b66cd557837d32af3fe264a07b', // PowNFT.net
+    '0x556798dd55db12562a6950ea8339a273539b0495', // Def8.io
+    '0x0d05a204e27e4815f1f5afdb9d82aa221aa0bdfa', // GemSwap.net
+    '0xd22202d23fe7de9e3dbe11a2a88f42f4cb9507cf', // Minereum BSC
   ],
   [ChainKey.POL]: [
     '0xe4fb1bb8423417a460286b0ed44b64e104c5fae5', // Zepe.io - scam
@@ -39,6 +44,11 @@ export const blockedTokens: BlockedTokens = {
     '0x9e2d266d6c90f6c0d80a88159b15958f7135b8af', // https://stakeshare.org/polygon - scam
     '0xa9316e1909edf3ed33b0dd1c6631c50b82c6e142', // A NFTSprites.com - ??
     '0xdad0d08d5b0544fc853682c6ca07eaab201bd550', // auto-stake.com - offline
+    '0x22e51bae3f545255e115090202a23c7ede0b00b9', // LELX.io
+    '0xe06bd4f5aac8d0aa337d13ec88db6defc6eaeefe', // PlanetIX
+    '0x2744861accb5bd435017c1cfee789b6ebab42082', // AeFX.io
+    '0xa85f8a198d59f0fda82333be9aeeb50f24dd59ff', // FlowDAO.io
+    '0xd7f1d4f5a1b44d827a7c3cc5dd46a80fade55558', // Zers.io
   ],
   [ChainKey.DAI]: [
     '0x0f1b956128ac17407c29c5600983c6cedf3b2820', // softbalanced.com
