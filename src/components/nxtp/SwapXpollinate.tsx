@@ -74,7 +74,7 @@ import {
   Token,
   TokenWithAmounts,
 } from '../../types'
-import { getRpcProviders, injected } from '../web3/connectors'
+import { getRpcUrls, injected } from '../web3/connectors'
 import SwapFormNxtp from './SwapFormNxtp'
 import SwappingNxtp from './SwappingNxtp'
 import TestBalanceOverview from './TestBalanceOverview'
@@ -270,7 +270,7 @@ const SwapXpollinate = ({
   // INIT
   startParams =
     startParams ?? getDefaultParams(history.location.search, transferChains, transferTokens)
-  chainProviders = chainProviders ?? getRpcProviders(transferChains.map((chain) => chain.id))
+  chainProviders = chainProviders ?? getRpcUrls(transferChains.map((chain) => chain.id))
 
   const [stateUpdate, setStateUpdate] = useState<number>(0)
   const [showAbout, setShowAbout] = useState<boolean>(!readHideAbout())
