@@ -1251,12 +1251,12 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.0.96":
-  version "0.0.96"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.96.tgz#0c2f386f2b0e5025a33ee88fef466cc0c9cf0117"
-  integrity sha512-n+l8Kcjn5twjb8N9rQDgpaxfLQClVhXuKG2q1Ou72KPjN1O+1zayIkJPYOeq+l7YHvmGqAZfCC8xYRNbQ7wF6g==
+"@connext/nxtp-contracts@0.0.97":
+  version "0.0.97"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.0.97.tgz#4a16547de0755b1a01e83a70def2b195bb60df11"
+  integrity sha512-NYQ6Hzm3iD0EtFcAUeASb9eRJzwARl/tnOfk1fnGyApHjjRf1gcIcFrIGcbtgTKPySqimHkv7rMZRGz+yipcxg==
   dependencies:
-    "@connext/nxtp-utils" "0.0.96"
+    "@connext/nxtp-utils" "0.0.97"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
@@ -1266,14 +1266,14 @@
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@0.0.96":
-  version "0.0.96"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.96.tgz#30ee22fba40744c25d16b6bb859b8572a778bf1e"
-  integrity sha512-F+FvpaQg/SVJ4NHp1/tSZEEYshcz1ct/DRi0KfVimOp+q29eofZG1xuWO1EGO/mM2hNnYBKRVx2GszdYFhAkVA==
+"@connext/nxtp-sdk@0.0.97":
+  version "0.0.97"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.0.97.tgz#67754cb755f22e21a4461c8175834b1bcde3b6fd"
+  integrity sha512-YDZ1zYfhQMRvQ2j9MnzT7nRRUSq/g49qCEtdTNNb7ExG89qlIIik47J4dMcipO/fRdVsQwx19HfsXlJYltqQlw==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.96"
-    "@connext/nxtp-txservice" "0.0.96"
-    "@connext/nxtp-utils" "0.0.96"
+    "@connext/nxtp-contracts" "0.0.97"
+    "@connext/nxtp-txservice" "0.0.97"
+    "@connext/nxtp-utils" "0.0.97"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
     ajv-formats "^2.1.1"
@@ -1284,13 +1284,13 @@
     graphql-tag "^2.12.5"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.0.96":
-  version "0.0.96"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.96.tgz#0a873189795b7be43f7ef35bc91d28a7299b60e7"
-  integrity sha512-eEIXKFZBFaquUlp8Pysnp22R5wyyiRHLkdIuUj7JWGnwxoUpmTV1UY3kCh91wWzgfXfSFX9wopBJr6VU1hPgQw==
+"@connext/nxtp-txservice@0.0.97":
+  version "0.0.97"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.0.97.tgz#b203074de43380ce9ac448fe91b400d2ff70607a"
+  integrity sha512-5QCJfzCk1IxH5eJObKu5i3ltf+M9U0BXQBaWbhAOLIjfVa4+TANpV+Ffo4S+TCAplB18uWuIi981f0t+m42tSA==
   dependencies:
-    "@connext/nxtp-contracts" "0.0.96"
-    "@connext/nxtp-utils" "0.0.96"
+    "@connext/nxtp-contracts" "0.0.97"
+    "@connext/nxtp-utils" "0.0.97"
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
@@ -1303,10 +1303,10 @@
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.0.96":
-  version "0.0.96"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.96.tgz#68435c1efb619dc6382322923a250924bc5e6cb3"
-  integrity sha512-KLaZcXMKucwotbuAymlVeut7FOM40yVFlIFXx8bpgoWX+1K1D/Ls2VDJU0a7NxgFe9Uukk5VZwza9ZNCUsCABw==
+"@connext/nxtp-utils@0.0.97":
+  version "0.0.97"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.0.97.tgz#02fb63eea0a513d2d15e94d3ff87edfb6cdd117f"
+  integrity sha512-Q9iXYuYjehYjhoVJlzX6UgifIBgGrguL9LGJwovkxWROoK2YYWUnagXzmAAKseja8+od9ZFj19/TsJ48HWzUCQ==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
@@ -12405,9 +12405,9 @@ prettier@2.4.1:
   integrity sha512-9fbDAXSBcc6Bs1mZrDYb3XKzDLm4EXXL9sC1LqKP5rZkT6KRr/rf9amVUcODVXgguK/isJz0d0hP72WeaKWsvA==
 
 prettier@^2.1.2:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.5.0.tgz#a6370e2d4594e093270419d9cc47f7670488f893"
-  integrity sha512-FM/zAKgWTxj40rH03VxzIPdXmj39SwSjwG0heUcNFwI+EMZJnY93yAiKXM3dObIKAM5TA88werc8T/EwhB45eg==
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.5.1.tgz#fff75fa9d519c54cf0fce328c1017d94546bc56a"
+  integrity sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==
 
 pretty-bytes@^5.3.0:
   version "5.6.0"
