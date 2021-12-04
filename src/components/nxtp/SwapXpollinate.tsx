@@ -44,7 +44,6 @@ import {
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
-import { providers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
@@ -243,7 +242,7 @@ function debounce(func: Function, timeout: number = 300) {
   }
 }
 
-let chainProviders: Record<number, providers.FallbackProvider>
+let chainProviders: Record<number, string[]>
 
 let startParams: {
   depositChain: ChainKey

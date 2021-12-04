@@ -36,12 +36,12 @@ const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
 export const setup = async (
   signer: providers.JsonRpcSigner,
-  chainProviders: Record<number, providers.FallbackProvider>,
+  chainProviders: Record<number, string[]>,
 ) => {
   const chainConfig: Record<
     number,
     {
-      provider: providers.FallbackProvider
+      providers: string[]
       subgraph?: string[]
       transactionManagerAddress?: string
       subgraphSyncBuffer?: number
@@ -49,16 +49,15 @@ export const setup = async (
   > = {}
   Object.entries(chainProviders).forEach(([chainId, provider]) => {
     chainConfig[parseInt(chainId)] = {
-      provider: provider,
+      providers: provider,
       subgraph: chainConfigOverwrites[parseInt(chainId)]?.subgraph,
       transactionManagerAddress:
         chainConfigOverwrites[parseInt(chainId)]?.transactionManagerAddress,
       subgraphSyncBuffer: chainConfigOverwrites[parseInt(chainId)]?.subgraphSyncBuffer,
     }
   })
-  const chainData = await getChainData()
 
-  const sdk = new NxtpSdk({ chainConfig, signer, chainData })
+  const sdk = NxtpSdk.create({ chainConfig, signer })
   return sdk
 }
 

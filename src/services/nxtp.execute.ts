@@ -2,7 +2,7 @@ import { NxtpSdkEvents } from '@connext/nxtp-sdk'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
-import { getRpcProviders } from '../components/web3/connectors'
+import { getRpcUrls } from '../components/web3/connectors'
 import { ExecuteCrossParams, getChainById, isLifiStep, isSwapStep } from '../types'
 import { checkAllowance } from './allowance.execute'
 import Lifi from './LIFI/Lifi'
@@ -118,7 +118,7 @@ export class NXTPExecutionManager {
 
     // init sdk
     const crossableChains = [action.fromChainId, action.toChainId]
-    const chainProviders = getRpcProviders(crossableChains)
+    const chainProviders = getRpcUrls(crossableChains)
     const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
     const preparedTransactionPromise = nxtpSDK.waitFor(
