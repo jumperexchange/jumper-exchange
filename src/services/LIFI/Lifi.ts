@@ -19,7 +19,9 @@ class LIFI {
 
   getStepTransaction = async (step: Step): Promise<StepTransactionResponse> => {
     if (!isStep(step)) {
-      throw new Error('SDK Validation: Invalid Step')
+      // While the validation fails for some users we should not enforce it
+      // eslint-disable-next-line no-console
+      console.warn('SDK Validation: Invalid Step', step)
     }
 
     const result = await axios.post<StepTransactionResponse>(
