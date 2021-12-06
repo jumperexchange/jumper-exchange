@@ -160,6 +160,18 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+        const multiplier = new BigNumber(previousStep.execution.toAmount).div(
+          step.action.fromAmount,
+        )
+        if (multiplier.lt(1)) {
+          // adjust estimate, if we pass in less we will get out less as well
+          step.estimate.toAmount = new BigNumber(step.estimate.toAmount)
+            .times(multiplier)
+            .toFixed(0)
+          step.estimate.toAmountMin = new BigNumber(step.estimate.toAmountMin)
+            .times(multiplier)
+            .toFixed(0)
+        }
         step.action.fromAmount = previousStep.execution.toAmount
       }
 
@@ -202,6 +214,18 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+        const multiplier = new BigNumber(previousStep.execution.toAmount).div(
+          step.action.fromAmount,
+        )
+        if (multiplier.lt(1)) {
+          // adjust estimate, if we pass in less we will get out less as well
+          step.estimate.toAmount = new BigNumber(step.estimate.toAmount)
+            .times(multiplier)
+            .toFixed(0)
+          step.estimate.toAmountMin = new BigNumber(step.estimate.toAmountMin)
+            .times(multiplier)
+            .toFixed(0)
+        }
         step.action.fromAmount = previousStep.execution.toAmount
       }
 
