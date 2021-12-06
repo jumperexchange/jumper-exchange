@@ -41,6 +41,10 @@ class LIFI {
     return result.data
   }
 
+  stopExecution = (route: Route): Route => {
+    return route
+  }
+
   executeRoute = async (
     signer: JsonRpcSigner,
     route: Route,
@@ -71,10 +75,6 @@ class LIFI {
     }
 
     this.activeRoutes = this.activeRoutes.filter((activeRoute) => activeRoute.id !== route.id)
-    return route
-  }
-
-  stopExecution = (route: Route): Route => {
     return route
   }
 
@@ -124,34 +124,6 @@ class LIFI {
   getCurrentStatus = (route: Route): Route => {
     return this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)!
   }
-
-  // checkChain = async (step: Step) => {
-  //       const { status, update } = initStatus(
-  //         (status: Execution) => updateStatus(step, status),
-  //         step.execution,
-  //       )
-  //       const chain = getChainById(step.action.fromChainId)
-  //       const switchProcess = createAndPushProcess(
-  //         'switchProcess',
-  //         update,
-  //         status,
-  //         `Change Chain to ${chain.name}`,
-  //       )
-  //       try {
-  //         const switched = await switchChain(step.action.fromChainId)
-  //         if (!switched) {
-  //           throw new Error('Chain was not switched')
-  //         }
-  //       } catch (e: any) {
-  //         if (e.message) switchProcess.errorMessage = e.message
-  //         if (e.code) switchProcess.errorCode = e.code
-  //         setStatusFailed(update, status, switchProcess)
-  //         setIsSwapping(false)
-  //         return false
-  //       }
-  //       setStatusDone(update, status, switchProcess)
-  //       return true
-  //     }
 }
 
 export default new LIFI()
