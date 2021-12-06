@@ -14,7 +14,7 @@ import { StepExecutor } from './executionFiles/StepExecutor'
 import { isRoutesRequest, isStep } from './typeguards'
 
 class LIFI {
-  private activeRoutes: Route[] = []
+  private activeRoutes: Map<Route, StepExecutor[]> = new Map()
 
   getPossibilities = async (request?: PossibilitiesRequest): Promise<PossibilitiesResponse> => {
     const result = await axios.post<PossibilitiesResponse>(
@@ -54,6 +54,12 @@ class LIFI {
   }
 
   stopExecution = (route: Route): Route => {
+    const executors = this.activeRoutes.get(route)
+    if (!executors) return route
+    for (const executor of executors) {
+      executor.stopStepExecution()
+    }
+    this.activeRoutes.delete(route)
     return route
   }
 
@@ -63,14 +69,15 @@ class LIFI {
     updateFunction: Function,
   ): Promise<Route> => {
     // check if route is already running
-    const activeRoute = this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)
-    if (activeRoute) return activeRoute
-    this.activeRoutes.push(route)
+    const activeRoute = this.activeRoutes.get(route)
+    if (activeRoute) return route
+    this.activeRoutes.set(route, [])
 
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
       const step = route.steps[index]
       const previousStep = index !== 0 ? route.steps[index - 1] : undefined
+
       // check if signer is for correct chain
       if ((await signer.getChainId()) !== step.action.fromChainId) {
         // break for loop which stops execution
@@ -83,10 +90,11 @@ class LIFI {
       }
 
       const stepExecutor = new StepExecutor()
+      this.activeRoutes.get(route)?.push(stepExecutor)
       await stepExecutor.executeStep(signer, step, updateFunction)
     }
 
-    this.activeRoutes = this.activeRoutes.filter((activeRoute) => activeRoute.id !== route.id)
+    this.activeRoutes.delete(route)
     return route
   }
 
@@ -95,9 +103,9 @@ class LIFI {
     route: Route,
     updateFunction: Function,
   ): Promise<Route> => {
-    const activeRoute = this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)
-    if (activeRoute) return activeRoute
-    this.activeRoutes.push(route)
+    const activeRoute = this.activeRoutes.get(route)
+    if (activeRoute) return route
+    this.activeRoutes.set(route, [])
 
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
@@ -120,21 +128,25 @@ class LIFI {
       }
 
       const stepExecutor = new StepExecutor()
+      this.activeRoutes.get(route)?.push(stepExecutor)
       route.steps[index] = await stepExecutor.executeStep(signer, step, updateFunction)
       // this.registeredCallbackFunctions[route.id](route)
     }
 
     //clean up after execution
-    this.activeRoutes = this.activeRoutes.filter((activeRoute) => activeRoute.id !== route.id)
+    this.activeRoutes.delete(route)
     return route
   }
 
   getActiveRoutes = (): Route[] => {
-    return this.activeRoutes
+    return Array.from(this.activeRoutes.keys())
   }
-
-  getCurrentStatus = (route: Route): Route => {
-    return this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)!
+  // TODO: check if this return type makes sense?
+  getCurrentStatus = (route: Route): Route | undefined => {
+    for (const [key, value] of Array.from(this.activeRoutes.entries())) {
+      if (key.id === route.id) return key
+      else return undefined
+    }
   }
 }
 

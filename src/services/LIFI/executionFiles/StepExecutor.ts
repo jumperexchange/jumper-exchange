@@ -13,6 +13,7 @@ import { uniswap } from './exchanges/uniswaps'
 
 export class StepExecutor {
   swapExecutionManager = new SwapExecutionManager()
+
   nxtpExecutionManager = new NXTPExecutionManager()
   hopExecutionManager = new HopExecutionManager()
   horizonExecutionManager = new HorizonExecutionManager()
@@ -21,9 +22,12 @@ export class StepExecutor {
 
   stopStepExecution = () => {
     this.swapExecutionManager.setShouldContinue(false)
+
     this.nxtpExecutionManager.setShouldContinue(false)
     this.hopExecutionManager.setShouldContinue(false)
     this.horizonExecutionManager.setShouldContinue(false)
+    this.cbridgeExecutionManager.setShouldContinue(false)
+    this.anySwapExecutionManager.setShouldContinue(false)
   }
 
   executeStep = async (
