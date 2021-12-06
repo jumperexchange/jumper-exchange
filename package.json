@@ -80,6 +80,9 @@
     "pre-commit": "lint-staged",
     "lint:fix": "eslint --ext .tsx --ext .ts ./src --fix",
     "prettier:fix": "prettier --write ./src/.",
+    "types:link": "yarn link '@lifinance/types'",
+    "types:unlink": "yarn unlink '@lifinance/types' && yarn types:update",
+    "types:update": "yarn install --force",
     "prepare": "husky install"
   },
   "lint-staged": {
