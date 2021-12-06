@@ -3,7 +3,7 @@ import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
 import { getRpcUrls } from '../components/web3/connectors'
-import { ExecuteCrossParams, getChainById, isLifiStep, isSwapStep } from '../types'
+import { ChainId, ExecuteCrossParams, getChainById, isLifiStep, isSwapStep } from '../types'
 import { checkAllowance } from './allowance.execute'
 import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
@@ -117,7 +117,7 @@ export class NXTPExecutionManager {
     update(status)
 
     // init sdk
-    const crossableChains = [action.fromChainId, action.toChainId]
+    const crossableChains = [ChainId.ETH, action.fromChainId, action.toChainId]
     const chainProviders = getRpcUrls(crossableChains)
     const nxtpSDK = await nxtp.setup(signer, chainProviders)
 
