@@ -14,7 +14,6 @@ import { isRoutesRequest, isStep } from './typeguards'
 
 class LIFI {
   private activeRoutes: Route[] = []
-  private registeredCallbackFunctions: Record<string, (updatedRoute: Route) => void> = {}
 
   getRoutes = async (routesRequest: RoutesRequest): Promise<RoutesResponse> => {
     if (!isRoutesRequest(routesRequest)) {
@@ -42,7 +41,11 @@ class LIFI {
     return result.data
   }
 
-  executeRoute = async (signer: JsonRpcSigner, route: Route): Promise<Route> => {
+  executeRoute = async (
+    signer: JsonRpcSigner,
+    route: Route,
+    updateFunction: Function,
+  ): Promise<Route> => {
     // check if route is already running
     const activeRoute = this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)
     if (activeRoute) return activeRoute
@@ -64,15 +67,9 @@ class LIFI {
       }
 
       const stepExecutor = new StepExecutor()
-      const updateFunction = (step: Step, status: Execution) => {
-        step.execution = status
-      }
-      route.steps[index] = await stepExecutor.executeStep(signer, step, updateFunction)
-      this.registeredCallbackFunctions[route.id](route)
+      await stepExecutor.executeStep(signer, step, updateFunction)
     }
 
-    //clean up after execution
-    this.deregisterCallback(route)
     this.activeRoutes = this.activeRoutes.filter((activeRoute) => activeRoute.id !== route.id)
     return route
   }
@@ -81,7 +78,11 @@ class LIFI {
     return route
   }
 
-  resumeRoute = async (signer: JsonRpcSigner, route: Route): Promise<Route> => {
+  resumeRoute = async (
+    signer: JsonRpcSigner,
+    route: Route,
+    updateFunction: Function,
+  ): Promise<Route> => {
     const activeRoute = this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)
     if (activeRoute) return activeRoute
     this.activeRoutes.push(route)
@@ -107,25 +108,13 @@ class LIFI {
       }
 
       const stepExecutor = new StepExecutor()
-      const updateFunction = (step: Step, status: Execution) => {
-        step.execution = status
-      }
       route.steps[index] = await stepExecutor.executeStep(signer, step, updateFunction)
-      this.registeredCallbackFunctions[route.id](route)
+      // this.registeredCallbackFunctions[route.id](route)
     }
 
     //clean up after execution
-    this.deregisterCallback(route)
     this.activeRoutes = this.activeRoutes.filter((activeRoute) => activeRoute.id !== route.id)
     return route
-  }
-
-  registerCallback = (callback: (updatedRoute: Route) => void, route: Route): void => {
-    this.registeredCallbackFunctions[route.id] = callback
-  }
-
-  deregisterCallback = (route: Route): void => {
-    delete this.registeredCallbackFunctions[route.id]
   }
 
   getActiveRoutes = (): Route[] => {
