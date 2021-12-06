@@ -194,7 +194,7 @@ const parseReceipt = (tx: TransactionResponse, receipt: TransactionReceipt): Par
   return result
 }
 
-export const oneInch = {
+export const oneinch = {
   getContractAddress,
   buildTransaction,
   getSwapCall,

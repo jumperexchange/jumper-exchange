@@ -1,12 +1,12 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { CrossStep, Execution, LifiStep, Step, SwapStep } from '@lifinance/types'
 
+import { CrossStep, Execution, LifiStep, Step, SwapStep } from '../types'
 import { AnySwapExecutionManager } from './bridges/anyswap.execute'
 import { CbridgeExecutionManager } from './bridges/cbridge.execute'
 import { HopExecutionManager } from './bridges/hop.execute'
 import { HorizonExecutionManager } from './bridges/horizon.execute'
 import { NXTPExecutionManager } from './bridges/nxtp.execute'
-import { oneInch } from './exchanges/1Inch'
+import { oneinch } from './exchanges/oneinch'
 import { paraswap } from './exchanges/paraswap'
 import { SwapExecutionManager } from './exchanges/swap.execute'
 import { uniswap } from './exchanges/uniswaps'
@@ -62,7 +62,7 @@ export class StepExecutor {
       case '1inch':
         return await this.swapExecutionManager.execute({
           ...swapParams,
-          parseReceipt: oneInch.parseReceipt,
+          parseReceipt: oneinch.parseReceipt,
         })
       default:
         return await this.swapExecutionManager.execute({

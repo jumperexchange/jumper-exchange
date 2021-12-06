@@ -2,13 +2,13 @@ import { NxtpSdkEvents } from '@connext/nxtp-sdk'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
-import { personalizeStep } from '../../../utils'
 import Lifi from '../../Lifi'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../status'
 import { ChainId, ExecuteCrossParams, getChainById, isLifiStep, isSwapStep } from '../../types'
+import { personalizeStep } from '../../utils'
 import { getRpcUrls } from '../../web3/connectors'
 import { checkAllowance } from '../allowance.execute'
-import * as nxtp from './nxtp'
+import nxtp from './nxtp'
 
 export class NXTPExecutionManager {
   shouldContinue: boolean = true
