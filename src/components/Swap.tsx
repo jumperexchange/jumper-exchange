@@ -3,7 +3,19 @@ import './Swap.css'
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Col, Collapse, Form, InputNumber, Modal, Row, Tooltip, Typography } from 'antd'
+import {
+  Button,
+  Checkbox,
+  Col,
+  Collapse,
+  Form,
+  InputNumber,
+  Modal,
+  Row,
+  Select,
+  Tooltip,
+  Typography,
+} from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
@@ -289,6 +301,11 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
+  const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
+  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[]>([])
+  const [availableBridges, setAvailableBridges] = useState<string[]>([])
+  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[]>([])
+  const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
   const [routes, setRoutes] = useState<Array<RouteType>>([])
@@ -306,6 +323,30 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const load = async () => {
+      const possibilities = await LIFI.getPossibilities()
+
+      // bridges
+      const bridges: string[] = possibilities.bridges
+        .map((bridge: any) => bridge.tool)
+        .map((bridegTool: string) => bridegTool.split('-')[0])
+      const allBridges = Array.from(new Set(bridges))
+      setAvailableBridges(allBridges)
+      setOptionEnabledBridges(allBridges)
+
+      // exchanges
+      const exchanges: string[] = possibilities.exchanges
+        .map((exchange: any) => exchange.tool)
+        .map((exchangeTool: string) => exchangeTool.split('-')[0])
+      const allExchanges = Array.from(new Set(exchanges))
+      setAvailableExchanges(allExchanges)
+      setOptionEnabledExchanges(allExchanges)
+    }
+
+    load()
+  }, [])
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
@@ -504,6 +545,12 @@ const Swap = ({ transferChains }: SwapProps) => {
           toAddress: web3.account || undefined,
           options: {
             slippage: optionSlippage / 100,
+            bridges: {
+              allow: optionEnabledBridges,
+            },
+            exchanges: {
+              allow: optionEnabledExchanges,
+            },
           },
         }
 
@@ -756,15 +803,51 @@ const Swap = ({ transferChains }: SwapProps) => {
                             }}
                           />
                         </div>
-                        {/* Infinite Approval
+                        Infinite Approval
                         <div>
                           <Checkbox
                             checked={optionInfiniteApproval}
                             onChange={(e) => setOptionInfiniteApproval(e.target.checked)}
-                          >
+                            disabled={true}>
                             Activate Infinite Approval
                           </Checkbox>
-                        </div> */}
+                        </div>
+                        Bridges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Default: all bridges enabled"
+                            defaultValue={optionEnabledBridges}
+                            onChange={setOptionEnabledBridges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableBridges.map((bridge) => (
+                              <Select.Option key={bridge} value={bridge}>
+                                {bridge}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                        Exchanges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Default: all exchanges enabled"
+                            defaultValue={optionEnabledExchanges}
+                            onChange={setOptionEnabledExchanges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableExchanges.map((exchange) => (
+                              <Select.Option key={exchange} value={exchange}>
+                                {exchange}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
                       </Collapse.Panel>
                     </Collapse>
                   </Row>

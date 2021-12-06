@@ -1,9 +1,25 @@
-import { RoutesRequest, RoutesResponse, Step, StepTransactionResponse } from '@lifinance/types'
+import {
+  PossibilitiesRequest,
+  PossibilitiesResponse,
+  RoutesRequest,
+  RoutesResponse,
+  Step,
+  StepTransactionResponse,
+} from '@lifinance/types'
 import axios from 'axios'
 
 import { isRoutesRequest, isStep } from './typeguards'
 
 class LIFI {
+  getPossibilities = async (request?: PossibilitiesRequest): Promise<PossibilitiesResponse> => {
+    const result = await axios.post<PossibilitiesResponse>(
+      process.env.REACT_APP_API_URL + 'possibilities',
+      request,
+    )
+
+    return result.data
+  }
+
   getRoutes = async (routesRequest: RoutesRequest): Promise<RoutesResponse> => {
     if (!isRoutesRequest(routesRequest)) {
       throw new Error('SDK Validation: Invalid Routs Request')

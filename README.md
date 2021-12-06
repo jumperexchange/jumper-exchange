@@ -65,6 +65,11 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
+## Guide for @lifinance/types
+
+Follow the linked [Readme](https://github.com/lifinance/lifi-web/blob/develop/docs/types-guide.md) if you need changes in [@lifinance/types](https://github.com/lifinance/types) package.
+
+
 ## Deployment
 
 Pushing code to the repository automatically triggers deployments to several environments:

@@ -18,6 +18,7 @@ import { getBalancesForWallet } from '../services/balanceService'
 import { readWallets, storeWallets } from '../services/localStorage'
 import {
   Amounts,
+  ChainId,
   ChainKey,
   chainKeysToObject,
   ChainPortfolio,
@@ -34,6 +35,19 @@ import {
   WalletSummary,
 } from '../types'
 import ConnectButton from './web3/ConnectButton'
+
+const visibleChains: ChainId[] = [
+  ChainId.ETH,
+  ChainId.POL,
+  ChainId.BSC,
+  ChainId.DAI,
+  ChainId.FTM,
+  ChainId.OKT,
+  ChainId.AVA,
+  ChainId.ARB,
+  ChainId.HEC,
+  ChainId.MOR,
+]
 
 const emptySummaryAmounts: SummaryAmounts = {
   amount_usd: new BigNumber(0),
@@ -384,7 +398,7 @@ const buildColumnForWallet = (wallet: Wallet, syncHandler: Function, deleteHandl
     title: renderWalletColumnTitle(wallet.address, syncHandler, deleteHandler),
     dataIndex: wallet.address,
     children: supportedChains
-      .filter((chain) => chain.visible)
+      .filter((chain) => visibleChains.includes(chain.id))
       .map((chain) => {
         return {
           title: chain.name,
@@ -441,21 +455,22 @@ const initialRows: Array<DataType> = coins.map((coin) => {
 })
 
 const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
-  var summary: WalletSummary = Object.assign(
-    {
-      wallet: wallet.address,
-    },
-    chainKeysToObject({ amount_usd: new BigNumber(0), percentage_of_portfolio: new BigNumber(0) }),
-  ) as WalletSummary
+  var summary: WalletSummary = {
+    wallet: wallet.address,
+    chains: chainKeysToObject({
+      amount_usd: new BigNumber(0),
+      percentage_of_portfolio: new BigNumber(0),
+    }),
+  }
 
   Object.values(ChainKey).forEach((chain) => {
     wallet.portfolio[chain]?.forEach((portfolio) => {
-      summary[chain].amount_usd = new BigNumber(summary[chain].amount_usd) // chainKeysToObject retruns string
-      summary[chain].amount_usd = summary[chain].amount_usd.plus(
+      summary.chains[chain].amount_usd = new BigNumber(summary.chains[chain].amount_usd) // chainKeysToObject retruns string
+      summary.chains[chain].amount_usd = summary.chains[chain].amount_usd.plus(
         portfolio.amount.times(portfolio.pricePerCoin),
       )
     })
-    summary[chain].percentage_of_portfolio = wallet.portfolio[chain]
+    summary.chains[chain].percentage_of_portfolio = wallet.portfolio[chain]
       ?.reduce(
         (sum, current) => sum.plus(current.amount.times(current.pricePerCoin)),
         new BigNumber(0),
@@ -744,7 +759,7 @@ const Dashboard = () => {
                   const summary = calculateWalletSummary(wallet, total)
 
                   return supportedChains
-                    .filter((chain) => chain.visible)
+                    .filter((chain) => visibleChains.includes(chain.id))
                     .map((chain) => {
                       return (
                         <Table.Summary.Cell
@@ -755,7 +770,7 @@ const Dashboard = () => {
                                 amount_usd: new BigNumber(0),
                                 percentage_of_portfolio: new BigNumber(0),
                               })
-                            : renderSummary(summary[chain.key])}
+                            : renderSummary(summary.chains[chain.key])}
                         </Table.Summary.Cell>
                       )
                     })
