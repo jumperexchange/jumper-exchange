@@ -1,6 +1,5 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import { CrossStep, Execution, LifiStep, Step, SwapStep } from '@lifinance/types'
-import BigNumber from 'bignumber.js'
 
 import { AnySwapExecutionManager } from './bridges/anyswap.execute'
 import { CbridgeExecutionManager } from './bridges/cbridge.execute'

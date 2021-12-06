@@ -1,5 +1,6 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import {
+  Execution,
   Route,
   RoutesRequest,
   RoutesResponse,
@@ -47,25 +48,26 @@ class LIFI {
     if (activeRoute) return activeRoute
     this.activeRoutes.push(route)
 
-    //get update function
-    const updateFunction = this.registeredCallbackFunctions[route.id]
-
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
       const step = route.steps[index]
-      const previousStep = index != 0 ? route.steps[index - 1] : undefined
+      const previousStep = index !== 0 ? route.steps[index - 1] : undefined
 
       // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
         step.action.fromAmount = previousStep.execution.toAmount
       }
+
       const stepExecutor = new StepExecutor()
-      await stepExecutor.executeStep(signer, step, updateFunction)
+      const updateFunction = (step: Step, status: Execution) => {
+        step.execution = status
+      }
+      route.steps[index] = await stepExecutor.executeStep(signer, step, updateFunction)
       this.registeredCallbackFunctions[route.id](route)
     }
 
     //clean up after execution
-    this.deregisterCallback(this.registeredCallbackFunctions[route.id], route)
+    this.deregisterCallback(route)
     this.activeRoutes = this.activeRoutes.filter((activeRoute) => activeRoute.id !== route.id)
     return route
   }
@@ -78,7 +80,7 @@ class LIFI {
     this.registeredCallbackFunctions[route.id] = callback
   }
 
-  deregisterCallback = (callback: (updateRoute: Route) => void, route: Route): void => {
+  deregisterCallback = (route: Route): void => {
     delete this.registeredCallbackFunctions[route.id]
   }
 

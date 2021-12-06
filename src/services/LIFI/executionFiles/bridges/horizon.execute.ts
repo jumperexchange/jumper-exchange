@@ -3,15 +3,7 @@ import BigNumber from 'bignumber.js'
 import { EXCHANGE_MODE, NETWORK_TYPE, STATUS, TOKEN } from 'bridge-sdk'
 
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../../status'
-import {
-  ChainId,
-  CoinKey,
-  ExecuteCrossParams,
-  Execution,
-  getChainById,
-  Process,
-  Token,
-} from '../../types'
+import { ChainId, CoinKey, ExecuteCrossParams, getChainById, Process } from '../../types'
 import horizon from './horizon'
 
 export class HorizonExecutionManager {
@@ -22,7 +14,7 @@ export class HorizonExecutionManager {
   }
 
   execute = async ({ signer, step, updateStatus }: ExecuteCrossParams) => {
-    const { action, execution, estimate } = step
+    const { action, execution } = step
     // setup
     const { status, update } = initStatus(updateStatus, execution)
     const fromChain = getChainById(action.fromChainId)
