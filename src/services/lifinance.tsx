@@ -18,13 +18,13 @@ import {
   StepTool,
   SwapStep,
 } from '../types'
-import { oneInch } from './1Inch'
 import { abi } from './ABI/NXTPFacet.json'
-import { checkAllowance } from './allowance.execute'
+import { checkAllowance } from './LIFI/executionFiles/allowance.execute'
+import { oneInch } from './LIFI/executionFiles/exchanges/1Inch'
+import { paraswap } from './LIFI/executionFiles/exchanges/paraswap'
+import { uniswap } from './LIFI/executionFiles/exchanges/uniswaps'
 import * as nxtp from './nxtp'
-import { paraswap } from './paraswap'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
-import { uniswap } from './uniswaps'
 
 const lifiContractAddress = '0xa74D44ed9C3BB96d7676E7A274c33A05210cf35a'
 const getSupportedChains = (jsonArraySting: string): ChainId[] => {

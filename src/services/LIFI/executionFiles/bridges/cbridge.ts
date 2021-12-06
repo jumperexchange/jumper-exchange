@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { ethers } from 'ethers'
 
-import { getRpcProvider } from '../components/web3/connectors'
-import { CrossStep, LifiStep } from '../types'
-import { sleep } from './utils'
+import { CrossStep, LifiStep } from '../../types'
+import { sleep } from '../../utils'
+import { getRpcProvider } from '../../web3/connectors'
 
 const apiUrl = 'https://cbridge-v2-prod.celer.network/v1/'
 

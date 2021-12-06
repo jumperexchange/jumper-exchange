@@ -8,7 +8,7 @@ import { constants, ethers } from 'ethers'
 
 import { getRpcProviders } from '../../../../components/web3/connectors'
 import { abi } from '../../../ABI/NXTPFacet.json'
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../../status'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../status'
 import {
   Action,
   ChainId,

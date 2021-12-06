@@ -2,7 +2,7 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/provider
 import axios from 'axios'
 
 import { getRpcProvider } from '../../../../components/web3/connectors'
-import { sleep } from '../../../utils'
+import { sleep } from '../../utils'
 
 const apiUri = 'https://bridgeapi.anyswap.exchange'
 

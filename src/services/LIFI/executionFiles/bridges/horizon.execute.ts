@@ -2,7 +2,7 @@
 import BigNumber from 'bignumber.js'
 import { EXCHANGE_MODE, NETWORK_TYPE, STATUS, TOKEN } from 'bridge-sdk'
 
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../../status'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../status'
 import { ChainId, CoinKey, ExecuteCrossParams, getChainById, Process } from '../../types'
 import horizon from './horizon'
 

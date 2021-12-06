@@ -3,8 +3,8 @@ import { Chain, Execution, Token } from '@lifinance/types'
 import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 
-import { createAndPushProcess, setStatusDone, setStatusFailed } from '../../status'
-import { getApproved, setApproval } from '../../utils'
+import { createAndPushProcess, setStatusDone, setStatusFailed } from '../status'
+import { getApproved, setApproval } from '../utils'
 
 export const checkAllowance = async (
   signer: JsonRpcSigner,

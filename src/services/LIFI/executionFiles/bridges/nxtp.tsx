@@ -11,9 +11,9 @@ import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { Button } from 'antd'
 import { constants, providers } from 'ethers'
 
-import { Execution, getChainById, Process, Step } from '../types'
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
-import { getApproved } from './utils'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../status'
+import { Execution, getChainById, Process, Step } from '../../types'
+import { getApproved } from '../../utils'
 
 // Add overwrites to specific chains here. They will only be applied if the chain is used.
 const getChainConfigOverwrites = () => {

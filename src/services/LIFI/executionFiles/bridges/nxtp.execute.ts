@@ -2,11 +2,11 @@ import { NxtpSdkEvents } from '@connext/nxtp-sdk'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
-import { getRpcProviders } from '../../../../components/web3/connectors'
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../../status'
 import { personalizeStep } from '../../../utils'
 import Lifi from '../../Lifi'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../status'
 import { ExecuteCrossParams, getChainById, isLifiStep, isSwapStep } from '../../types'
+import { getRpcProviders } from '../../web3/connectors'
 import { checkAllowance } from '../allowance.execute'
 import * as nxtp from './nxtp'
 

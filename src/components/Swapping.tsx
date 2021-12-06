@@ -2,9 +2,8 @@ import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-d
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
-import { BigNumber } from 'bignumber.js'
 import { constants } from 'ethers'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
@@ -15,40 +14,22 @@ import hopIcon from '../assets/icons/hop.png'
 import oneinchIcon from '../assets/icons/oneinch.png'
 import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
-import { oneInch } from '../services/1Inch'
-import { AnySwapExecutionManager } from '../services/anyswap.execute'
 import { getBalancesForWallet } from '../services/balanceService'
-import { CbridgeExecutionManager } from '../services/cbridge.execute'
-import { HopExecutionManager } from '../services/hop.execute'
-import { HorizonExecutionManager } from '../services/horizon.execute'
-import { lifinance } from '../services/lifinance'
+import LIFI from '../services/LIFI/Lifi'
+// import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
-import { switchChain, switchChainAndAddToken } from '../services/metamask'
-import { NXTPExecutionManager } from '../services/nxtp.execute'
-import { paraswap } from '../services/paraswap'
+import { /*switchChain,*/ switchChainAndAddToken } from '../services/metamask'
 import { renderProcessMessage } from '../services/processRenderer'
-import {
-  createAndPushProcess,
-  initStatus,
-  setStatusDone,
-  setStatusFailed,
-} from '../services/status'
-import SwapExecutionManager from '../services/swap.execute'
-import { uniswap } from '../services/uniswaps'
 import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
   ChainPortfolio,
-  CrossStep,
   Execution,
   getChainById,
   getChainByKey,
   getIcon,
-  LifiStep,
-  Process,
   Route,
   Step,
-  SwapStep,
   Token,
 } from '../types'
 import Clock from './Clock'
@@ -74,19 +55,6 @@ const getRecevingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const isLifiSupported = (route: Route) => {
-  const crossStep = route.steps.find((step) => step.type === 'cross')
-  if (!crossStep) return false // perform simple swaps directly
-
-  const crossAction = crossStep.action
-
-  return (
-    crossStep.tool === 'nxtp' &&
-    lifinance.supportedChains.includes(crossAction.fromChainId) &&
-    lifinance.supportedChains.includes(crossAction.toChainId)
-  )
-}
-
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const { steps } = route
 
@@ -98,184 +66,24 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [alerts] = useState<Array<JSX.Element>>([])
   const [finalBalance, setFinalBalance] = useState<{ token: Token; portfolio: ChainPortfolio }>()
 
-  const [swapExecutionManager] = useState<SwapExecutionManager>(new SwapExecutionManager())
-  const [nxtpExecutionManager] = useState<NXTPExecutionManager>(new NXTPExecutionManager())
-  const [hopExecutionManager] = useState<HopExecutionManager>(new HopExecutionManager())
-  const [horizonExecutionManager] = useState<HorizonExecutionManager>(new HorizonExecutionManager())
-  const [cbridgeExecutionManager] = useState<CbridgeExecutionManager>(new CbridgeExecutionManager())
-  const [anySwapExecutionManager] = useState<AnySwapExecutionManager>(new AnySwapExecutionManager())
-
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
-  // stop execution managers when component get destroyed
+  // stop execution when component get destroyed
   useEffect(() => {
     return () => {
-      swapExecutionManager.setShouldContinue(false)
-      nxtpExecutionManager.setShouldContinue(false)
-      hopExecutionManager.setShouldContinue(false)
-      horizonExecutionManager.setShouldContinue(false)
-      cbridgeExecutionManager.setShouldContinue(false)
-      anySwapExecutionManager.setShouldContinue(false)
+      LIFI.stopExecution(route)
     }
-  }, [
-    swapExecutionManager,
-    nxtpExecutionManager,
-    hopExecutionManager,
-    horizonExecutionManager,
-    cbridgeExecutionManager,
-    anySwapExecutionManager,
-  ])
+  })
 
-  // Swap
-  const updateStatus = useCallback(
-    (step: Step, status: Execution) => {
-      step.execution = status
-      storeActiveRoute(route)
-      updateRoute(route)
-    },
-    [route, updateRoute],
-  )
-
-  const checkChain = useCallback(
-    async (step: Step) => {
-      const { status, update } = initStatus(
-        (status: Execution) => updateStatus(step, status),
-        step.execution,
-      )
-      const chain = getChainById(step.action.fromChainId)
-      const switchProcess = createAndPushProcess(
-        'switchProcess',
-        update,
-        status,
-        `Change Chain to ${chain.name}`,
-      )
-      try {
-        const switched = await switchChain(step.action.fromChainId)
-        if (!switched) {
-          throw new Error('Chain was not switched')
-        }
-      } catch (e: any) {
-        if (e.message) switchProcess.errorMessage = e.message
-        if (e.code) switchProcess.errorCode = e.code
-        setStatusFailed(update, status, switchProcess)
-        setIsSwapping(false)
-        return false
-      }
-      setStatusDone(update, status, switchProcess)
-      return true
-    },
-    [updateStatus],
-  )
-
-  const triggerSwap = useCallback(
-    async (step: SwapStep, previousStep?: Step) => {
-      if (!web3.account || !web3.library) return
-
-      // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
-      if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
-        step.action.fromAmount = previousStep.execution.toAmount
-      }
-
-      // ensure chain is set
-      if (web3.chainId !== step.action.fromChainId) {
-        if (!(await checkChain(step))) return
-      }
-
-      const swapParams = {
-        signer: web3.library.getSigner(),
-        step,
-        updateStatus: (status: Execution) => updateStatus(step, status),
-      }
-
-      switch (step.tool) {
-        case 'paraswap':
-          return await swapExecutionManager.executeSwap({
-            ...swapParams,
-            parseReceipt: paraswap.parseReceipt,
-          })
-        case '1inch':
-          return await swapExecutionManager.executeSwap({
-            ...swapParams,
-            parseReceipt: oneInch.parseReceipt,
-          })
-        default:
-          return await swapExecutionManager.executeSwap({
-            ...swapParams,
-            parseReceipt: uniswap.parseReceipt,
-          })
-      }
-    },
-    [web3, checkChain, updateStatus, swapExecutionManager],
-  )
-
-  const triggerCross = useCallback(
-    async (step: CrossStep | LifiStep, previousStep?: Step) => {
-      if (!web3.account || !web3.library) return
-      const { action, execution } = step
-
-      // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
-      if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
-        step.action.fromAmount = previousStep.execution.toAmount
-      }
-
-      // ensure chain is set
-      if (web3.chainId !== step.action.fromChainId) {
-        if (!(await checkChain(step))) return
-      }
-
-      switch (step.tool) {
-        case 'nxtp':
-          return await nxtpExecutionManager.executeCross({
-            signer: web3.library.getSigner(),
-            step,
-            updateStatus: (status: Execution) => updateStatus(step, status),
-          })
-        case 'hop':
-          return await hopExecutionManager.executeCross({
-            signer: web3.library.getSigner(),
-            step,
-            updateStatus: (status: Execution) => updateStatus(step, status),
-          })
-        case 'horizon':
-          return await horizonExecutionManager.executeCross(
-            action.fromToken,
-            new BigNumber(step.action.fromAmount),
-            action.fromChainId,
-            action.toChainId,
-            web3.account,
-            (status: Execution) => updateStatus(step, status),
-            execution,
-          )
-        case 'cbridge':
-          return await cbridgeExecutionManager.executeCross({
-            signer: web3.library.getSigner(),
-            step,
-            updateStatus: (status: Execution) => updateStatus(step, status),
-          })
-        case 'anyswapV3':
-        case 'anyswapV4':
-        case 'anyswap':
-          return await anySwapExecutionManager.executeCross({
-            signer: web3.library.getSigner(),
-            step,
-            updateStatus: (status: Execution) => updateStatus(step, status),
-          })
-        default:
-          throw new Error('Should never reach here, bridge not defined')
-      }
-    },
-    [
-      web3,
-      updateStatus,
-      checkChain,
-      nxtpExecutionManager,
-      hopExecutionManager,
-      horizonExecutionManager,
-      cbridgeExecutionManager,
-      anySwapExecutionManager,
-    ],
-  )
+  // const updateStatus = useCallback(
+  //   (step: Step, status: Execution) => {
+  //     step.execution = status
+  //     storeActiveRoute(route)
+  //     updateRoute(route)
+  //   },
+  //   [route, updateRoute],
+  // )
 
   const parseExecution = (execution?: Execution) => {
     if (!execution) {
@@ -488,59 +296,36 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
   }
 
-  const triggerStep = useCallback(
-    async (index: number) => {
-      // setIsSwapping(true)
-      const step = steps[index]
-      const previousStep = index > 0 ? steps[index - 1] : undefined
-      const { status, update } = initStatus(
-        (status: Execution) => updateStatus(step, status),
-        steps[index].execution,
-      )
-      try {
-        switch (step.type) {
-          case 'swap':
-            return await triggerSwap(step, previousStep)
-          case 'cross':
-          case 'lifi':
-            return await triggerCross(step, previousStep)
-          default:
-            setIsSwapping(false)
-            throw new Error('Invalid Step')
-        }
-      } catch (e: any) {
-        const lastProcess = status.process[status.process.length - 1] as Process
-        if (lastProcess.status === 'FAILED') {
-          // already set to failed. don't reset
-          setIsSwapping(false)
-          return
-        }
-        if (e.message) lastProcess.errorMessage = e.message
-        if (e.code) lastProcess.errorCode = e.code
-        setStatusFailed(update, status, lastProcess)
-        setIsSwapping(false)
-        return
-      }
-    },
-    [triggerCross, triggerSwap, updateStatus],
-  )
-
   const startCrossChainSwap = async () => {
+    if (!web3.account || !web3.library) return
     storeActiveRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
+    try {
+      await LIFI.executeRoute(web3.library.getSigner(), route)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Execution failed!', route)
+      // eslint-disable-next-line no-console
+      console.error(e)
+      return
+    }
+    setFinalBalance(await getFinalBalace(web3.account!, route))
+    setIsSwapping(false)
+    setSwapDoneAt(Date.now())
+    onSwapDone()
   }
 
-  const resumeCrossChainSwap = useCallback(async () => {
-    for (let index = 0; index < steps.length; index++) {
-      if (steps[index].execution?.status === 'PENDING') {
-        steps[index].execution!.status = 'RESUME'
-        updateRoute(route)
-        break
-      }
-    }
-    setIsSwapping(true)
-  }, [route, updateRoute])
+  // const resumeCrossChainSwap = useCallback(async () => {
+  //   for (let index = 0; index < steps.length; index++) {
+  //     if (steps[index].execution?.status === 'PENDING') {
+  //       steps[index].execution!.status = 'RESUME'
+  //       updateRoute(route)
+  //       break
+  //     }
+  //   }
+  //   setIsSwapping(true)
+  // }, [route, updateRoute])
 
   const restartCrossChainSwap = async () => {
     // remove failed
@@ -553,59 +338,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     // start again
     setIsSwapping(true)
   }
-
-  // check where we are an trigger next
-  useEffect(() => {
-    const checkSwapping = async () => {
-      if (!isSwapping) {
-        const allDone = steps.every((step) => step.execution?.status === 'DONE')
-        const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
-        const alreadyStarted = steps.some((step) => step.execution)
-        const resuming = steps.some((step) => step.execution?.status === 'RESUME')
-        if (!allDone && !isFailed && alreadyStarted && !resuming) {
-          await resumeCrossChainSwap()
-          return
-        } else {
-          return
-        }
-      }
-      // lifi supported?
-      if (isLifiSupported(route)) {
-        if (!steps[0].execution) {
-          // triggerLifi()
-        } else if (steps[0].execution.status === 'DONE') {
-          setFinalBalance(await getFinalBalace(web3.account!, route))
-          setIsSwapping(false)
-          setSwapDoneAt(Date.now())
-          onSwapDone()
-        }
-        return
-      }
-
-      for (let index = 0; index < steps.length; index++) {
-        if (!steps[index].execution) {
-          return triggerStep(index).catch(() => {
-            // stop if a step fails
-            setIsSwapping(false)
-          })
-        } else if (steps[index].execution?.status === 'RESUME') {
-          return triggerStep(index).catch(() => {
-            // stop if a step fails
-            setIsSwapping(false)
-          })
-        } else if (steps[index].execution?.status === 'DONE') {
-          continue // step is already done, continue
-        } else {
-          return // step is already runing, wait
-        }
-      }
-      setFinalBalance(await getFinalBalace(web3.account!, route))
-      setIsSwapping(false)
-      setSwapDoneAt(Date.now())
-      onSwapDone()
-    }
-    checkSwapping()
-  }, [isSwapping, updateStatus]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const getMainButton = () => {
     // PENDING

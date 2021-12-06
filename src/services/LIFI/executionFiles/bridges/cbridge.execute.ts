@@ -1,10 +1,10 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../../status'
-import { personalizeStep } from '../../../utils'
 import Lifi from '../../Lifi'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../status'
 import { ExecuteCrossParams, getChainById } from '../../types'
+import { personalizeStep } from '../../utils'
 import { checkAllowance } from '../allowance.execute'
 import cbridge from './cbridge'
 

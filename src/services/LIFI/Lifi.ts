@@ -52,6 +52,11 @@ class LIFI {
     for (let index = 0; index < route.steps.length; index++) {
       const step = route.steps[index]
       const previousStep = index !== 0 ? route.steps[index - 1] : undefined
+      // check if signer is for correct chain
+      if ((await signer.getChainId()) !== step.action.fromChainId) {
+        // break for loop which stops execution
+        break
+      }
 
       // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
@@ -76,6 +81,45 @@ class LIFI {
     return route
   }
 
+  resumeRoute = async (signer: JsonRpcSigner, route: Route): Promise<Route> => {
+    const activeRoute = this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)
+    if (activeRoute) return activeRoute
+    this.activeRoutes.push(route)
+
+    // loop over steps and execute them
+    for (let index = 0; index < route.steps.length; index++) {
+      const step = route.steps[index]
+      const previousStep = index !== 0 ? route.steps[index - 1] : undefined
+      // check if step already done
+      if (step.execution && step.execution.status === 'DONE') {
+        continue
+      }
+
+      // check if signer is for correct chain
+      if ((await signer.getChainId()) !== step.action.fromChainId) {
+        // break for loop which stops execution
+        break
+      }
+
+      // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
+      if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+        step.action.fromAmount = previousStep.execution.toAmount
+      }
+
+      const stepExecutor = new StepExecutor()
+      const updateFunction = (step: Step, status: Execution) => {
+        step.execution = status
+      }
+      route.steps[index] = await stepExecutor.executeStep(signer, step, updateFunction)
+      this.registeredCallbackFunctions[route.id](route)
+    }
+
+    //clean up after execution
+    this.deregisterCallback(route)
+    this.activeRoutes = this.activeRoutes.filter((activeRoute) => activeRoute.id !== route.id)
+    return route
+  }
+
   registerCallback = (callback: (updatedRoute: Route) => void, route: Route): void => {
     this.registeredCallbackFunctions[route.id] = callback
   }
@@ -88,9 +132,37 @@ class LIFI {
     return this.activeRoutes
   }
 
-  // TODO: implement this function
-  // getCurrentStatus = (route: Route): Route => {
-  // }
+  getCurrentStatus = (route: Route): Route => {
+    return this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)!
+  }
+
+  // checkChain = async (step: Step) => {
+  //       const { status, update } = initStatus(
+  //         (status: Execution) => updateStatus(step, status),
+  //         step.execution,
+  //       )
+  //       const chain = getChainById(step.action.fromChainId)
+  //       const switchProcess = createAndPushProcess(
+  //         'switchProcess',
+  //         update,
+  //         status,
+  //         `Change Chain to ${chain.name}`,
+  //       )
+  //       try {
+  //         const switched = await switchChain(step.action.fromChainId)
+  //         if (!switched) {
+  //           throw new Error('Chain was not switched')
+  //         }
+  //       } catch (e: any) {
+  //         if (e.message) switchProcess.errorMessage = e.message
+  //         if (e.code) switchProcess.errorCode = e.code
+  //         setStatusFailed(update, status, switchProcess)
+  //         setIsSwapping(false)
+  //         return false
+  //       }
+  //       setStatusDone(update, status, switchProcess)
+  //       return true
+  //     }
 }
 
 export default new LIFI()
