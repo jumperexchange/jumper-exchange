@@ -44,7 +44,6 @@ import {
 import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
-import { providers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
@@ -75,7 +74,7 @@ import {
   Token,
   TokenWithAmounts,
 } from '../../types'
-import { getRpcProviders, injected } from '../web3/connectors'
+import { getRpcUrls, injected } from '../web3/connectors'
 import SwapFormNxtp from './SwapFormNxtp'
 import SwappingNxtp from './SwappingNxtp'
 import TestBalanceOverview from './TestBalanceOverview'
@@ -243,7 +242,7 @@ function debounce(func: Function, timeout: number = 300) {
   }
 }
 
-let chainProviders: Record<number, providers.FallbackProvider>
+let chainProviders: Record<number, string[]>
 
 let startParams: {
   depositChain: ChainKey
@@ -271,7 +270,7 @@ const SwapXpollinate = ({
   // INIT
   startParams =
     startParams ?? getDefaultParams(history.location.search, transferChains, transferTokens)
-  chainProviders = chainProviders ?? getRpcProviders(transferChains.map((chain) => chain.id))
+  chainProviders = chainProviders ?? getRpcUrls(transferChains.map((chain) => chain.id))
 
   const [stateUpdate, setStateUpdate] = useState<number>(0)
   const [showAbout, setShowAbout] = useState<boolean>(!readHideAbout())
@@ -1395,11 +1394,14 @@ const SwapXpollinate = ({
               )}
               <Menu.Item key="explorer" icon={<CompassOutlined />}>
                 <a href="https://connextscan.io" target="_blank" rel="nofollow noreferrer">
-                  Explorer
+                  Connextscan Explorer
                 </a>
               </Menu.Item>
               <Menu.Item key="support" icon={<LinkOutlined />}>
-                <a href="https://chat.connext.network/" target="_blank" rel="nofollow noreferrer">
+                <a
+                  href="https://connext.notion.site/Connext-NXTP-Support-19a357ebabdd4e888cfcd138fe3e4644"
+                  target="_blank"
+                  rel="nofollow noreferrer">
                   Support
                 </a>
               </Menu.Item>

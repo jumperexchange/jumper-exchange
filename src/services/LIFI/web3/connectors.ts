@@ -1,8 +1,6 @@
-import { InjectedConnector } from '@web3-react/injected-connector'
-import { NetworkConnector } from '@web3-react/network-connector'
 import { providers } from 'ethers'
 
-import { ChainId, getChainById, multicallAddresses, supportedChains } from '../types'
+import { ChainId, getChainById, multicallAddresses } from '../types'
 
 const customRpc: Record<number, string | undefined> = {
   [ChainId.ETH]: process.env.REACT_APP_RPC_URL_MAINNET,
@@ -59,13 +57,10 @@ export const getRpcProviders = (chainIds: Array<number>) => {
   return selectedProviders
 }
 
-export const injected = new InjectedConnector({
-  supportedChainIds: supportedChains.map((chain) => chain.id),
-})
-
-export const network = new NetworkConnector({
-  urls: Object.fromEntries(
-    supportedChains.map((chain) => chain.id).map((chainId) => [chainId, getRpcUrl(chainId)]),
-  ),
-  defaultChainId: ChainId.ETH,
-})
+export const getRpcUrls = (chainIds: Array<number>) => {
+  const selectedProviders: Record<number, string[]> = {}
+  chainIds.forEach((chainId) => {
+    selectedProviders[chainId] = [getRpcUrl(chainId)]
+  })
+  return selectedProviders
+}

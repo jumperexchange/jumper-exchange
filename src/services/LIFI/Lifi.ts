@@ -1,6 +1,7 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import {
-  Execution,
+  PossibilitiesRequest,
+  PossibilitiesResponse,
   Route,
   RoutesRequest,
   RoutesResponse,
@@ -14,6 +15,15 @@ import { isRoutesRequest, isStep } from './typeguards'
 
 class LIFI {
   private activeRoutes: Route[] = []
+
+  getPossibilities = async (request?: PossibilitiesRequest): Promise<PossibilitiesResponse> => {
+    const result = await axios.post<PossibilitiesResponse>(
+      process.env.REACT_APP_API_URL + 'possibilities',
+      request,
+    )
+
+    return result.data
+  }
 
   getRoutes = async (routesRequest: RoutesRequest): Promise<RoutesResponse> => {
     if (!isRoutesRequest(routesRequest)) {
@@ -30,7 +40,9 @@ class LIFI {
 
   getStepTransaction = async (step: Step): Promise<StepTransactionResponse> => {
     if (!isStep(step)) {
-      throw new Error('SDK Validation: Invalid Step')
+      // While the validation fails for some users we should not enforce it
+      // eslint-disable-next-line no-console
+      console.warn('SDK Validation: Invalid Step', step)
     }
 
     const result = await axios.post<StepTransactionResponse>(

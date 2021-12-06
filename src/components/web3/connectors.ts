@@ -59,6 +59,14 @@ export const getRpcProviders = (chainIds: Array<number>) => {
   return selectedProviders
 }
 
+export const getRpcUrls = (chainIds: Array<number>) => {
+  const selectedProviders: Record<number, string[]> = {}
+  chainIds.forEach((chainId) => {
+    selectedProviders[chainId] = [getRpcUrl(chainId)]
+  })
+  return selectedProviders
+}
+
 export const injected = new InjectedConnector({
   supportedChainIds: supportedChains.map((chain) => chain.id),
 })

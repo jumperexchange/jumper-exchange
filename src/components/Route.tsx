@@ -73,8 +73,6 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
                   <li key={index}>{line}</li>
                 ))}
               </ol>
-              Estimated result:{' '}
-              <b>{formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}</b>
             </>
           ),
         }
@@ -112,6 +110,15 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
       </Steps>
 
       <div className="selected">
+        <div style={{ textAlign: 'left', paddingLeft: 20 }}>
+          Estimated token: <b>{formatTokenAmount(route.toToken, route.toAmount)}</b>
+          <br />
+          Estimated result: {route.toAmountUSD} USD
+          <br />
+          Estimated gas costs: {route.gasCostUSD} USD
+          <br />
+        </div>
+
         {selected ? (
           <div className="selected-label">Selected</div>
         ) : (

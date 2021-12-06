@@ -79,6 +79,11 @@ function App() {
                     <Menu.Item key="/about">
                       <Link to="/about">About</Link>
                     </Menu.Item>
+                    <Menu.Item key="blog">
+                      <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
+                        Blog
+                      </a>
+                    </Menu.Item>
                     {/* <Menu.Item>
                       <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
                     </Menu.Item> */}

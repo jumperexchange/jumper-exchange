@@ -6,7 +6,6 @@ import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { constants, ethers } from 'ethers'
 
-import { getRpcProviders } from '../../../../components/web3/connectors'
 import { abi } from '../../../ABI/NXTPFacet.json'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../status'
 import {
@@ -20,6 +19,7 @@ import {
   StepTool,
   SwapStep,
 } from '../../types'
+import { getRpcUrls } from '../../web3/connectors'
 import { checkAllowance } from '../allowance.execute'
 import * as nxtp from '../bridges/nxtp'
 import { oneInch } from '../exchanges/1Inch'
@@ -339,8 +339,8 @@ const executeLifi = async (
   let call
   let nxtpSDK
   try {
-    const crossableChains = [crossAction.fromChainId, crossAction.toChainId]
-    const chainProviders = getRpcProviders(crossableChains)
+    const crossableChains = [ChainId.ETH, crossAction.fromChainId, crossAction.toChainId]
+    const chainProviders = getRpcUrls(crossableChains)
     nxtpSDK = await nxtp.setup(signer, chainProviders)
     call = await buildTransaction(signer, nxtpSDK, startSwapStep, crossStep, endSwapStep)
   } catch (e: any) {

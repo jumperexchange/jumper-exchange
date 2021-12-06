@@ -36,20 +36,20 @@ const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
 export const setup = async (
   signer: providers.JsonRpcSigner,
-  chainProviders: Record<number, providers.FallbackProvider>,
+  chainProviders: Record<number, string[]>,
 ) => {
   const chainConfig: Record<
     number,
     {
-      provider: providers.FallbackProvider
+      providers: string[]
       subgraph?: string[]
       transactionManagerAddress?: string
       subgraphSyncBuffer?: number
     }
   > = {}
-  Object.entries(chainProviders).forEach(([chainId, provider]) => {
+  Object.entries(chainProviders).forEach(([chainId, providers]) => {
     chainConfig[parseInt(chainId)] = {
-      provider: provider,
+      providers: providers,
       subgraph: chainConfigOverwrites[parseInt(chainId)]?.subgraph,
       transactionManagerAddress:
         chainConfigOverwrites[parseInt(chainId)]?.transactionManagerAddress,
