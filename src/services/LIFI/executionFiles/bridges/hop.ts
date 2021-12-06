@@ -1,9 +1,9 @@
 /* eslint-disable max-params */
-import { JsonRpcSigner, TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { Chain, Hop, HopBridge } from '@hop-protocol/sdk'
 import { Token } from '@hop-protocol/sdk/dist/src/models'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
+import { ethers, Signer } from 'ethers'
 
 import { ChainId, ChainKey, CoinKey, getChainByKey } from '../../types'
 
@@ -60,7 +60,7 @@ const hopTokens: { [k: string]: string } = {
 const isInitialized = () => {
   if (hop === undefined) throw TypeError('Hop instance is undefined! Please initialize Hop')
 }
-const init = (signer: JsonRpcSigner, chainId: number, toChainId: number) => {
+const init = (signer: Signer, chainId: number, toChainId: number) => {
   const isChainTest = supportedTestnetChains.includes(chainId) ? true : false
   const isToChainTest = supportedTestnetChains.includes(toChainId) ? true : false
   // goerli <-> mumbai

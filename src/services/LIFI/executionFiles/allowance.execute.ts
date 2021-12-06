@@ -1,18 +1,17 @@
-import { JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
-import { constants } from 'ethers'
+import { constants, Signer } from 'ethers'
 
 import { createAndPushProcess, setStatusDone, setStatusFailed } from '../status'
 import { Chain, Execution, Token } from '../types'
 import { getApproved, setApproval } from '../utils'
 
 export const checkAllowance = async (
-  signer: JsonRpcSigner,
+  signer: Signer,
   chain: Chain,
   token: Token,
   amount: string,
   spenderAddress: string,
-  update: Function,
+  update: (execution: Execution) => void,
   status: Execution,
   infiniteApproval: boolean = false,
   // eslint-disable-next-line max-params
@@ -29,7 +28,7 @@ export const checkAllowance = async (
   // -> check allowance
   try {
     if (allowanceProcess.txHash) {
-      await signer.provider.waitForTransaction(allowanceProcess.txHash)
+      await signer.provider!.waitForTransaction(allowanceProcess.txHash)
       setStatusDone(update, status, allowanceProcess)
     } else if (allowanceProcess.message === 'Already Approved') {
       setStatusDone(update, status, allowanceProcess)

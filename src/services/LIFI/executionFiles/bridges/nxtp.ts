@@ -1,6 +1,7 @@
 import { NxtpSdk } from '@connext/nxtp-sdk'
 import { getChainData } from '@connext/nxtp-sdk/dist/utils'
-import { providers } from 'ethers'
+import { Logger } from '@connext/nxtp-utils'
+import { Signer } from 'ethers'
 
 // TODO: move in sdk setup, avoid accessing env variabels
 // Add overwrites to specific chains here. They will only be applied if the chain is used.
@@ -19,7 +20,7 @@ const chainConfigOverwrites: {
   }
 } = getChainConfigOverwrites()
 
-const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<number, string[]>) => {
+const setup = async (signer: Signer, chainProviders: Record<number, string[]>) => {
   const chainConfig: Record<
     number,
     {
@@ -40,7 +41,19 @@ const setup = async (signer: providers.JsonRpcSigner, chainProviders: Record<num
   })
   const chainData = await getChainData()
 
-  const sdk = new NxtpSdk({ chainConfig, signer, chainData })
+  const sdk = new NxtpSdk({
+    chainConfig,
+    signer,
+    // messagingSigner?: Signer
+    logger: new Logger({ name: 'NxtpSdk', level: 'error' }),
+    // network?: "testnet" | "mainnet" | "local"
+    // natsUrl?: string
+    // authUrl?: string
+    // messaging?: UserNxtpNatsMessagingService
+    // skipPolling?: boolean
+    // sdkBase?: NxtpSdkBase
+    chainData,
+  })
   return sdk
 }
 

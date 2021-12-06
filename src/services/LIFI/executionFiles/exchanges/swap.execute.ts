@@ -44,7 +44,7 @@ export class SwapExecutionManager {
     try {
       if (swapProcess.txHash) {
         // -> restore existing tx
-        tx = await signer.provider.getTransaction(swapProcess.txHash)
+        tx = await signer.provider!.getTransaction(swapProcess.txHash)
       } else {
         // -> get tx from backend
         const personalizedStep = await personalizeStep(signer, step)

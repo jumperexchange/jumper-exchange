@@ -9,16 +9,21 @@ import {
   StepTransactionResponse,
 } from '@lifinance/types'
 import axios from 'axios'
+import { Signer } from 'ethers'
 
 import { StepExecutor } from './executionFiles/StepExecutor'
 import { isRoutesRequest, isStep } from './typeguards'
+import { UpdateStep } from './types'
 
 class LIFI {
   private activeRoutes: Route[] = []
+  private config = {
+    apiUrl: process.env.REACT_APP_API_URL || 'https://test.li.finance/api/',
+  }
 
   getPossibilities = async (request?: PossibilitiesRequest): Promise<PossibilitiesResponse> => {
     const result = await axios.post<PossibilitiesResponse>(
-      process.env.REACT_APP_API_URL + 'possibilities',
+      this.config.apiUrl + 'possibilities',
       request,
     )
 
@@ -30,10 +35,7 @@ class LIFI {
       throw new Error('SDK Validation: Invalid Routs Request')
     }
 
-    const result = await axios.post<RoutesResponse>(
-      process.env.REACT_APP_API_URL + 'routes',
-      routesRequest,
-    )
+    const result = await axios.post<RoutesResponse>(this.config.apiUrl + 'routes', routesRequest)
 
     return result.data
   }
@@ -46,7 +48,7 @@ class LIFI {
     }
 
     const result = await axios.post<StepTransactionResponse>(
-      process.env.REACT_APP_API_URL + 'steps/transaction',
+      this.config.apiUrl + 'steps/transaction',
       step,
     )
 
@@ -58,9 +60,9 @@ class LIFI {
   }
 
   executeRoute = async (
-    signer: JsonRpcSigner,
+    signer: Signer,
     route: Route,
-    updateFunction: Function,
+    updateFunction: UpdateStep,
   ): Promise<Route> => {
     // check if route is already running
     const activeRoute = this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)
@@ -93,7 +95,7 @@ class LIFI {
   resumeRoute = async (
     signer: JsonRpcSigner,
     route: Route,
-    updateFunction: Function,
+    updateFunction: UpdateStep,
   ): Promise<Route> => {
     const activeRoute = this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)
     if (activeRoute) return activeRoute
