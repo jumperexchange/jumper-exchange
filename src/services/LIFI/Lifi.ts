@@ -1,3 +1,4 @@
+import { JsonRpcSigner } from '@ethersproject/providers'
 import {
   Route,
   RoutesRequest,
@@ -6,7 +7,6 @@ import {
   StepTransactionResponse,
 } from '@lifinance/types'
 import axios from 'axios'
-import { Signer } from 'ethers'
 
 import { StepExecutor } from './executionFiles/StepExecutor'
 import { isRoutesRequest, isStep } from './typeguards'
@@ -41,25 +41,28 @@ class LIFI {
     return result.data
   }
 
-  executeRoute = async (signer: Signer, route: Route): Promise<Route> => {
-    /*
-      loop though steps
-        for each step start execution
-        if step execution done or fails
-      // TODO: add generalized execution Manger class
-
-    */
+  executeRoute = async (signer: JsonRpcSigner, route: Route): Promise<Route> => {
     // check if route is already running
     const activeRoute = this.activeRoutes.find((activeRoute) => activeRoute.id === route.id)
     if (activeRoute) return activeRoute
     this.activeRoutes.push(route)
 
-    // execute all steps
-    // for (const step of route.steps) {
-    //   const stepExecutor = new StepExecutor()
-    //   stepExecutor.executeStep(signer, step, updateFunction)
-    //   this.registeredCallbackFunctions[route.id](route)
-    // }
+    //get update function
+    const updateFunction = this.registeredCallbackFunctions[route.id]
+
+    // loop over steps and execute them
+    for (let index = 0; index < route.steps.length; index++) {
+      const step = route.steps[index]
+      const previousStep = index != 0 ? route.steps[index - 1] : undefined
+
+      // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
+      if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+        step.action.fromAmount = previousStep.execution.toAmount
+      }
+      const stepExecutor = new StepExecutor()
+      await stepExecutor.executeStep(signer, step, updateFunction)
+      this.registeredCallbackFunctions[route.id](route)
+    }
 
     //clean up after execution
     this.deregisterCallback(this.registeredCallbackFunctions[route.id], route)

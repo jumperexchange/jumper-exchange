@@ -7,14 +7,14 @@ import Lifi from '../../Lifi'
 import { ExecuteSwapParams, getChainById } from '../../types'
 import { checkAllowance } from '../allowance.execute'
 
-export default class SwapExecutionManager {
+export class SwapExecutionManager {
   shouldContinue: boolean = true
 
   setShouldContinue = (val: boolean) => {
     this.shouldContinue = val
   }
 
-  executeSwap = async ({ signer, step, parseReceipt, updateStatus }: ExecuteSwapParams) => {
+  execute = async ({ signer, step, parseReceipt, updateStatus }: ExecuteSwapParams) => {
     // setup
     const { action, execution, estimate } = step
     const fromChain = getChainById(action.fromChainId)

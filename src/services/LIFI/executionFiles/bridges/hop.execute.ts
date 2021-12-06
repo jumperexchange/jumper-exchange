@@ -1,13 +1,12 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
-import { ExecuteCrossParams, getChainById } from '../types'
-import { checkAllowance } from './allowance.execute'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../../status'
+import { personalizeStep } from '../../../utils'
+import Lifi from '../../Lifi'
+import { ExecuteCrossParams, getChainById } from '../../types'
+import { checkAllowance } from '../allowance.execute'
 import hop from './hop'
-import Lifi from './LIFI/Lifi'
-import notifications, { NotificationType } from './notifications'
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
-import { personalizeStep } from './utils'
 
 export class HopExecutionManager {
   shouldContinue: boolean = true
@@ -16,7 +15,7 @@ export class HopExecutionManager {
     this.shouldContinue = val
   }
 
-  executeCross = async ({ signer, step, updateStatus }: ExecuteCrossParams) => {
+  execute = async ({ signer, step, updateStatus }: ExecuteCrossParams) => {
     const { action, execution, estimate } = step
     const { status, update } = initStatus(updateStatus, execution)
     const fromChain = getChainById(action.fromChainId)
@@ -102,7 +101,6 @@ export class HopExecutionManager {
       waitForTxProcess.errorMessage = 'Failed waiting'
       if (e.message) waitForTxProcess.errorMessage += ':\n' + e.message
       if (e.code) waitForTxProcess.errorCode = e.code
-      notifications.showNotification(NotificationType.CROSS_ERROR)
       setStatusFailed(update, status, waitForTxProcess)
       throw e
     }
@@ -120,7 +118,6 @@ export class HopExecutionManager {
     setStatusDone(update, status, waitForTxProcess)
 
     // DONE
-    notifications.showNotification(NotificationType.CROSS_SUCCESSFUL)
     return status
   }
 }

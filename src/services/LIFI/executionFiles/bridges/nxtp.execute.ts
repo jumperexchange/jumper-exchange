@@ -17,7 +17,7 @@ export class NXTPExecutionManager {
     this.shouldContinue = val
   }
 
-  executeCross = async ({ signer, step, updateStatus }: ExecuteCrossParams) => {
+  execute = async ({ signer, step, updateStatus }: ExecuteCrossParams) => {
     const { action, execution, estimate } = step
     const { status, update } = initStatus(updateStatus, execution)
     const fromChain = getChainById(action.fromChainId)

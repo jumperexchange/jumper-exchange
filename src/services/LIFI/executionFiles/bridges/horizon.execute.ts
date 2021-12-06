@@ -2,9 +2,17 @@
 import BigNumber from 'bignumber.js'
 import { EXCHANGE_MODE, NETWORK_TYPE, STATUS, TOKEN } from 'bridge-sdk'
 
-import { ChainId, CoinKey, Execution, getChainById, Process, Token } from '../types'
+import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from '../../../status'
+import {
+  ChainId,
+  CoinKey,
+  ExecuteCrossParams,
+  Execution,
+  getChainById,
+  Process,
+  Token,
+} from '../../types'
 import horizon from './horizon'
-import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 
 export class HorizonExecutionManager {
   shouldContinue: boolean = true
@@ -12,20 +20,13 @@ export class HorizonExecutionManager {
   setShouldContinue = (val: boolean) => {
     this.shouldContinue = val
   }
-  executeCross = async (
-    fromToken: Token,
-    fromAmount: BigNumber,
-    fromChainId: number,
-    toChainId: number,
-    destAddress: string,
-    updateStatus?: Function,
-    initialStatus?: Execution,
-    // eslint-disable-next-line max-params
-  ) => {
+
+  execute = async ({ signer, step, updateStatus }: ExecuteCrossParams) => {
+    const { action, execution, estimate } = step
     // setup
-    const { status, update } = initStatus(updateStatus, initialStatus)
-    const fromChain = getChainById(fromChainId)
-    const toChain = getChainById(toChainId)
+    const { status, update } = initStatus(updateStatus, execution)
+    const fromChain = getChainById(action.fromChainId)
+    const toChain = getChainById(action.toChainId)
 
     const allowanceAndCrossProcess = createAndPushProcess(
       'allowanceAndCrossProcess',
@@ -42,7 +43,7 @@ export class HorizonExecutionManager {
     try {
       // mainnet / testnet ?
       const bridgeSDK =
-        fromChainId === ChainId.ONE || toChainId === ChainId.ONE
+        action.fromChainId === ChainId.ONE || action.toChainId === ChainId.ONE
           ? await horizon.setupMainnet()
           : await horizon.setupTestnet()
 
@@ -67,20 +68,23 @@ export class HorizonExecutionManager {
 
       // params
       const type =
-        toChainId === ChainId.ONE || toChainId === ChainId.ONET
+        action.toChainId === ChainId.ONE || action.toChainId === ChainId.ONET
           ? EXCHANGE_MODE.ETH_TO_ONE
           : EXCHANGE_MODE.ONE_TO_ETH
       const network =
-        fromChainId === ChainId.BSC ||
-        fromChainId === ChainId.BSCT ||
-        toChainId === ChainId.BSC ||
-        toChainId === ChainId.BSCT
+        action.fromChainId === ChainId.BSC ||
+        action.fromChainId === ChainId.BSCT ||
+        action.toChainId === ChainId.BSC ||
+        action.toChainId === ChainId.BSCT
           ? NETWORK_TYPE.BINANCE
           : NETWORK_TYPE.ETHEREUM
-      const token = tokenMapping[fromToken.key].token
-      const amount = fromAmount.shiftedBy(-fromToken.decimals).toNumber()
-      const erc20Address = tokenMapping[fromToken.key].erc20Address
-      const hrc20Address = tokenMapping[fromToken.key].hrc20Address
+      const token = tokenMapping[action.fromToken.key].token
+
+      const amount = new BigNumber(action.fromAmount)
+        .shiftedBy(-action.fromToken.decimals)
+        .toNumber()
+      const erc20Address = tokenMapping[action.fromToken.key].erc20Address
+      const hrc20Address = tokenMapping[action.fromToken.key].hrc20Address
 
       const params = {
         type,
@@ -88,8 +92,8 @@ export class HorizonExecutionManager {
         amount,
         token,
         erc20Address,
-        oneAddress: destAddress,
-        ethAddress: destAddress,
+        oneAddress: action.toAddress!,
+        ethAddress: action.toAddress!,
         hrc20Address: hrc20Address,
         // maxWaitingTime?: number;
       }
