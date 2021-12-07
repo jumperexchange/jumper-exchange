@@ -119,9 +119,13 @@ class LIFI {
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
         step.action.fromAmount = previousStep.execution.toAmount
       }
-      const stepExecutor = new StepExecutor()
-      this.activeRoutes[route.id].executors.push(stepExecutor)
-      await stepExecutor.executeStep(signer, step, updateFunction)
+      try {
+        const stepExecutor = new StepExecutor()
+        this.activeRoutes[route.id].executors.push(stepExecutor)
+        await stepExecutor.executeStep(signer, step, updateFunction)
+      } catch (e) {
+        throw e
+      }
     }
 
     delete this.activeRoutes[route.id]
@@ -174,9 +178,13 @@ class LIFI {
         step.action.fromAmount = previousStep.execution.toAmount
       }
 
-      const stepExecutor = new StepExecutor()
-      this.activeRoutes[route.id].executors.push(stepExecutor)
-      await stepExecutor.executeStep(signer, step, updateFunction)
+      try {
+        const stepExecutor = new StepExecutor()
+        this.activeRoutes[route.id].executors.push(stepExecutor)
+        await stepExecutor.executeStep(signer, step, updateFunction)
+      } catch (e) {
+        throw e
+      }
     }
 
     //clean up after execution
