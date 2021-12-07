@@ -64,6 +64,14 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `yarn test unit`
+
+Executes the unit tests. Unit tests should only test one component and mock others.
+
+### `yarn test int`
+
+Executes the integration tests. These tests do access more of the stack, e.g. they query external API. Since we can't ensure that the external resources are available all the time, these tests may sometimes fail.
+
 
 ## Guide for @lifinance/types
 
