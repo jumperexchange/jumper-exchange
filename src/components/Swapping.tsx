@@ -16,9 +16,15 @@ import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
 import { getBalancesForWallet } from '../services/balanceService'
 import LIFI from '../services/LIFI/Lifi'
+import {
+  createAndPushProcess,
+  initStatus,
+  setStatusDone,
+  setStatusFailed,
+} from '../services/LIFI/status'
 // import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
-import { /*switchChain,*/ switchChainAndAddToken } from '../services/metamask'
+import { /*switchChain,*/ switchChain, switchChainAndAddToken } from '../services/metamask'
 import { renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount } from '../services/utils'
 import {
@@ -119,6 +125,40 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       LIFI.moveExecutionToBackground(route)
     }
   }, [])
+
+  const checkChain = async (step: Step) => {
+    const updateFunction = (step: Step, status: Execution) => {
+      step.execution = status
+      storeActiveRoute(route)
+      updateRoute(route)
+    }
+
+    const { status, update } = initStatus(
+      (status: Execution) => updateFunction(step, status),
+      step.execution,
+    )
+    const chain = getChainById(step.action.fromChainId)
+    const switchProcess = createAndPushProcess(
+      'switchProcess',
+      update,
+      status,
+      `Change Chain to ${chain.name}`,
+    )
+    try {
+      const switched = await switchChain(step.action.fromChainId)
+      if (!switched) {
+        throw new Error('Chain was not switched')
+      }
+    } catch (e: any) {
+      if (e.message) switchProcess.errorMessage = e.message
+      if (e.code) switchProcess.errorCode = e.code
+      setStatusFailed(update, status, switchProcess)
+      setIsSwapping(false)
+      return false
+    }
+    setStatusDone(update, status, switchProcess)
+    return true
+  }
 
   const parseExecution = (execution?: Execution) => {
     if (!execution) {
@@ -296,9 +336,21 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   }
 
   // called on every execution status change
-  const updateCallback = (updatedRoute: Route) => {
+  const updateCallback = async (updatedRoute: Route) => {
     storeActiveRoute(updatedRoute)
     updateRoute(updatedRoute)
+
+    if (!web3.account || !web3.library) return
+    // check if wallet on correct chain for current action
+    const currentStep = steps.find((step) => !step.execution)
+
+    if (currentStep && currentStep.action.fromChainId !== web3.chainId) {
+      if (!(await checkChain(currentStep))) {
+        LIFI.stopExecution(updatedRoute)
+        setIsSwapping(false)
+      }
+      resumeExecution()
+    }
   }
 
   const startCrossChainSwap = async () => {
