@@ -154,7 +154,8 @@ describe('LIFI SDK', () => {
     })
 
     describe('with a swap step', () => {
-      describe('user input is invalid', () => {
+      // While the validation fails for some users we should not enforce it
+      describe.skip('user input is invalid', () => {
         it('should throw Error because of invalid id', async () => {
           const step = getStep({ id: null })
 

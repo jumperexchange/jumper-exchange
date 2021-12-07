@@ -21,7 +21,6 @@ import { CbridgeExecutionManager } from '../services/cbridge.execute'
 import { HopExecutionManager } from '../services/hop.execute'
 import { HorizonExecutionManager } from '../services/horizon.execute'
 import Lifi from '../services/LIFI/Lifi'
-import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import { NXTPExecutionManager } from '../services/nxtp.execute'
@@ -69,19 +68,6 @@ const getRecevingInfo = (step: Step) => {
   const toChain = getChainById(step.action.toChainId)
   const toToken = step.action.toToken
   return { toChain, toToken }
-}
-
-const isLifiSupported = (route: Route) => {
-  const crossStep = route.steps.find((step) => step.type === 'cross')
-  if (!crossStep) return false // perform simple swaps directly
-
-  const crossAction = crossStep.action
-
-  return (
-    crossStep.tool === 'nxtp' &&
-    lifinance.supportedChains.includes(crossAction.fromChainId) &&
-    lifinance.supportedChains.includes(crossAction.toChainId)
-  )
 }
 
 const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
@@ -171,6 +157,18 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+        const multiplier = new BigNumber(previousStep.execution.toAmount).div(
+          step.action.fromAmount,
+        )
+        if (multiplier.lt(1)) {
+          // adjust estimate, if we pass in less we will get out less as well
+          step.estimate.toAmount = new BigNumber(step.estimate.toAmount)
+            .times(multiplier)
+            .toFixed(0)
+          step.estimate.toAmountMin = new BigNumber(step.estimate.toAmountMin)
+            .times(multiplier)
+            .toFixed(0)
+        }
         step.action.fromAmount = previousStep.execution.toAmount
       }
 
@@ -213,6 +211,18 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       // update amount using output of previous execution. In the future this should be handled by calling `updateRoute`
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
+        const multiplier = new BigNumber(previousStep.execution.toAmount).div(
+          step.action.fromAmount,
+        )
+        if (multiplier.lt(1)) {
+          // adjust estimate, if we pass in less we will get out less as well
+          step.estimate.toAmount = new BigNumber(step.estimate.toAmount)
+            .times(multiplier)
+            .toFixed(0)
+          step.estimate.toAmountMin = new BigNumber(step.estimate.toAmountMin)
+            .times(multiplier)
+            .toFixed(0)
+        }
         step.action.fromAmount = previousStep.execution.toAmount
       }
 
@@ -542,8 +552,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const restartCrossChainSwap = async () => {
     // remove failed
     for (let index = 0; index < steps.length; index++) {
-      if (steps[index].execution?.status === 'FAILED') {
-        steps[index].execution = undefined
+      if (steps[index].execution && steps[index].execution!.status === 'FAILED') {
+        steps[index].execution!.status = 'RESUME'
+        steps[index].execution!.process.pop() // remove last (failed) process
         updateRoute(route)
       }
     }
@@ -565,18 +576,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         } else {
           return
         }
-      }
-      // lifi supported?
-      if (isLifiSupported(route)) {
-        if (!steps[0].execution) {
-          // triggerLifi()
-        } else if (steps[0].execution.status === 'DONE') {
-          setFinalTokenAmount(await getFinalBalace(web3.account!, route))
-          setIsSwapping(false)
-          setSwapDoneAt(Date.now())
-          onSwapDone()
-        }
-        return
       }
 
       for (let index = 0; index < steps.length; index++) {

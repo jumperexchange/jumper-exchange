@@ -1,4 +1,6 @@
 import {
+  PossibilitiesRequest,
+  PossibilitiesResponse,
   RoutesRequest,
   RoutesResponse,
   Step,
@@ -12,6 +14,15 @@ import balances from './balances'
 import { isRoutesRequest, isStep, isToken } from './typeguards'
 
 class LIFI {
+  getPossibilities = async (request?: PossibilitiesRequest): Promise<PossibilitiesResponse> => {
+    const result = await axios.post<PossibilitiesResponse>(
+      process.env.REACT_APP_API_URL + 'possibilities',
+      request,
+    )
+
+    return result.data
+  }
+
   getRoutes = async (routesRequest: RoutesRequest): Promise<RoutesResponse> => {
     if (!isRoutesRequest(routesRequest)) {
       throw new Error('SDK Validation: Invalid Routs Request')
@@ -27,7 +38,9 @@ class LIFI {
 
   getStepTransaction = async (step: Step): Promise<StepTransactionResponse> => {
     if (!isStep(step)) {
-      throw new Error('SDK Validation: Invalid Step')
+      // While the validation fails for some users we should not enforce it
+      // eslint-disable-next-line no-console
+      console.warn('SDK Validation: Invalid Step', step)
     }
 
     const result = await axios.post<StepTransactionResponse>(

@@ -455,23 +455,24 @@ const initialRows: Array<DataType> = coins.map((coin) => {
 })
 
 const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
-  var summary: WalletSummary = Object.assign(
-    {
-      wallet: wallet.address,
-    },
-    chainKeysToObject({ amount_usd: new BigNumber(0), percentage_of_portfolio: new BigNumber(0) }),
-  ) as WalletSummary
+  var summary: WalletSummary = {
+    wallet: wallet.address,
+    chains: chainKeysToObject({
+      amount_usd: new BigNumber(0),
+      percentage_of_portfolio: new BigNumber(0),
+    }),
+  }
 
   Object.values(ChainKey).forEach((chain) => {
     wallet.portfolio[chain]?.forEach((tokenAmount) => {
-      summary[chain].amount_usd = new BigNumber(summary[chain].amount_usd) // chainKeysToObject retruns string
-      summary[chain].amount_usd = tokenAmount.priceUSD
-        ? summary[chain].amount_usd.plus(
+      summary.chains[chain].amount_usd = new BigNumber(summary.chains[chain].amount_usd) // chainKeysToObject retruns string
+      summary.chains[chain].amount_usd = tokenAmount.priceUSD
+        ? summary.chains[chain].amount_usd.plus(
             new BigNumber(tokenAmount.amount).times(new BigNumber(tokenAmount.priceUSD)),
           )
-        : summary[chain].amount_usd
+        : summary.chains[chain].amount_usd
     })
-    summary[chain].percentage_of_portfolio = wallet.portfolio[chain]
+    summary.chains[chain].percentage_of_portfolio = wallet.portfolio[chain]
       ?.reduce(
         (sum, current) =>
           current.priceUSD
@@ -753,7 +754,7 @@ const Dashboard = () => {
                   const summary = calculateWalletSummary(wallet, total)
 
                   return supportedChains
-                    .filter((chain) => chain.visible)
+                    .filter((chain) => visibleChains.includes(chain.id))
                     .map((chain) => {
                       return (
                         <Table.Summary.Cell
@@ -764,7 +765,7 @@ const Dashboard = () => {
                                 amount_usd: new BigNumber(0),
                                 percentage_of_portfolio: new BigNumber(0),
                               })
-                            : renderSummary(summary[chain.key])}
+                            : renderSummary(summary.chains[chain.key])}
                         </Table.Summary.Cell>
                       )
                     })
