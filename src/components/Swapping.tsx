@@ -72,7 +72,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   // stop execution when component get destroyed
   useEffect(() => {
     return function cleanup() {
-      LIFI.stopExecution(route)
+      LIFI.moveExecutionToBackground(route)
     }
   }, [LIFI])
 

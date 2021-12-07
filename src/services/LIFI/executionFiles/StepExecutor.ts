@@ -12,22 +12,24 @@ import { SwapExecutionManager } from './exchanges/swap.execute'
 import { uniswap } from './exchanges/uniswaps'
 
 export class StepExecutor {
-  swapExecutionManager = new SwapExecutionManager()
+  private swapExecutionManager = new SwapExecutionManager()
+  private nxtpExecutionManager = new NXTPExecutionManager()
+  private hopExecutionManager = new HopExecutionManager()
+  private horizonExecutionManager = new HorizonExecutionManager()
+  private cbridgeExecutionManager = new CbridgeExecutionManager()
+  private anySwapExecutionManager = new AnySwapExecutionManager()
 
-  nxtpExecutionManager = new NXTPExecutionManager()
-  hopExecutionManager = new HopExecutionManager()
-  horizonExecutionManager = new HorizonExecutionManager()
-  cbridgeExecutionManager = new CbridgeExecutionManager()
-  anySwapExecutionManager = new AnySwapExecutionManager()
+  executionStopped = false
 
   stopStepExecution = () => {
     this.swapExecutionManager.setShouldContinue(false)
-
     this.nxtpExecutionManager.setShouldContinue(false)
     this.hopExecutionManager.setShouldContinue(false)
     this.horizonExecutionManager.setShouldContinue(false)
     this.cbridgeExecutionManager.setShouldContinue(false)
     this.anySwapExecutionManager.setShouldContinue(false)
+
+    this.executionStopped = true
   }
 
   executeStep = async (signer: Signer, step: Step, updateStatus: UpdateStep): Promise<Step> => {

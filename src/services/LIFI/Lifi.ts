@@ -75,6 +75,13 @@ class LIFI {
   }
   //TODO: move route to background function
 
+  moveExecutionToBackground = (route: Route): void => {
+    if (!this.activeRoutes[route.id]) return
+    for (const executor of this.activeRoutes[route.id].executors) {
+      executor.stopStepExecution()
+    }
+  }
+
   executeRoute = async (
     signer: Signer,
     route: Route,
@@ -126,7 +133,12 @@ class LIFI {
     route: Route,
     callback?: CallbackFunction,
   ): Promise<Route> => {
-    if (this.activeRoutes[route.id]) return route
+    const activeRoute = this.activeRoutes[route.id]
+    if (activeRoute) {
+      const executionHalted = activeRoute.executors.some((executor) => executor.executionStopped)
+      if (!executionHalted) return route
+    }
+
     const execData: ExecutionData = {
       route,
       executors: [],
