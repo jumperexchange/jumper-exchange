@@ -11,6 +11,7 @@ import { Button } from 'antd'
 import { constants, providers } from 'ethers'
 
 import { Execution, getChainById, Process, Step } from '../types'
+import { UpdateExecution } from './LIFI/types'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved } from './utils'
 
@@ -99,7 +100,7 @@ export const triggerTransfer = async (
   signer: JsonRpcSigner,
   sdk: NxtpSdk,
   step: Step,
-  updateStatus: Function,
+  updateStatus: UpdateExecution,
   infinteApproval: boolean = false,
   initialStatus?: Execution,
 ) => {
@@ -212,7 +213,7 @@ export const attachListeners = (
   sdk: NxtpSdk,
   step: Step,
   transactionId: string,
-  update: Function,
+  update: UpdateExecution,
   status: Execution,
 ) => {
   const approveProcess: Process = createAndPushProcess(

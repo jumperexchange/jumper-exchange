@@ -1,6 +1,6 @@
-import { JsonRpcSigner } from '@ethersproject/providers'
+import { Signer } from 'ethers'
 
-import { CrossStep, Execution, LifiStep, Step, SwapStep } from '../types'
+import { CrossStep, Execution, LifiStep, Step, SwapStep, UpdateStep } from '../types'
 import { AnySwapExecutionManager } from './bridges/anyswap.execute'
 import { CbridgeExecutionManager } from './bridges/cbridge.execute'
 import { HopExecutionManager } from './bridges/hop.execute'
@@ -30,11 +30,7 @@ export class StepExecutor {
     this.anySwapExecutionManager.setShouldContinue(false)
   }
 
-  executeStep = async (
-    signer: JsonRpcSigner,
-    step: Step,
-    updateStatus: Function,
-  ): Promise<Step> => {
+  executeStep = async (signer: Signer, step: Step, updateStatus: UpdateStep): Promise<Step> => {
     switch (step.type) {
       case 'lifi':
       case 'cross':
@@ -50,7 +46,7 @@ export class StepExecutor {
     return step
   }
 
-  private executeSwap = async (signer: JsonRpcSigner, step: SwapStep, updateStatus: Function) => {
+  private executeSwap = async (signer: Signer, step: SwapStep, updateStatus: UpdateStep) => {
     const swapParams = {
       signer: signer,
       step,
@@ -77,7 +73,7 @@ export class StepExecutor {
   }
 
   private executeCross = async (
-    signer: JsonRpcSigner,
+    signer: Signer,
     step: CrossStep | LifiStep,
     updateStatus: Function,
   ) => {

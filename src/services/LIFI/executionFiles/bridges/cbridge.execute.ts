@@ -48,7 +48,7 @@ export class CbridgeExecutionManager {
       let tx: TransactionResponse
       if (crossProcess.txHash) {
         // load exiting transaction
-        tx = await signer.provider.getTransaction(crossProcess.txHash)
+        tx = await signer.provider!.getTransaction(crossProcess.txHash)
       } else {
         // create new transaction
         const personalizedStep = await personalizeStep(signer, step)

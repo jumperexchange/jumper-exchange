@@ -1,8 +1,11 @@
 /* eslint-disable max-params */
-import { emptyExecution, Execution, Process, ProcessMessage } from './types'
+import { emptyExecution, Execution, Process, ProcessMessage, UpdateExecution } from './types'
 import { deepClone } from './utils'
 
-export const initStatus = (updateStatus?: Function, initialStatus?: Execution) => {
+export const initStatus = (
+  updateStatus?: (execution: Execution) => void,
+  initialStatus?: Execution,
+) => {
   const status = initialStatus || (deepClone(emptyExecution) as Execution)
   // eslint-disable-next-line no-console
   const update = updateStatus || console.log
@@ -14,7 +17,7 @@ export const initStatus = (updateStatus?: Function, initialStatus?: Execution) =
 
 export const createAndPushProcess = (
   id: string,
-  updateStatus: Function,
+  updateStatus: (execution: Execution) => void,
   status: Execution,
   message: ProcessMessage,
   params?: object,
@@ -44,7 +47,7 @@ export const createAndPushProcess = (
 }
 
 export const setStatusFailed = (
-  updateStatus: Function,
+  updateStatus: UpdateExecution,
   status: Execution,
   currentProcess: Process,
   params?: object,
@@ -62,7 +65,7 @@ export const setStatusFailed = (
 }
 
 export const setStatusDone = (
-  updateStatus: Function,
+  updateStatus: UpdateExecution,
   status: Execution,
   currentProcess: Process,
   params?: object,

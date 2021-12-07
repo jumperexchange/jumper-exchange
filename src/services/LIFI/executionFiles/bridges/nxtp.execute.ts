@@ -74,7 +74,7 @@ export class NXTPExecutionManager {
           crossProcess.status = 'PENDING'
           crossProcess.message = 'Wait for '
           update(status)
-          tx = await signer.provider.getTransaction(crossProcess.txHash)
+          tx = await signer.provider!.getTransaction(crossProcess.txHash)
         } else {
           const personalizedStep = await personalizeStep(signer, step)
           const { tx: transactionRequest } = await Lifi.getStepTransaction(personalizedStep)

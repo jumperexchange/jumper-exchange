@@ -1,6 +1,6 @@
-import { JsonRpcSigner } from '@ethersproject/providers'
-import { CrossStep, LifiStep, SwapStep, Token } from '@lifinance/types'
+import { CrossStep, Execution, LifiStep, Step, SwapStep, Token } from '@lifinance/types'
 import BigNumber from 'bignumber.js'
+import { Signer } from 'ethers'
 
 export interface TokenWithAmounts extends Token {
   amount?: BigNumber
@@ -21,14 +21,17 @@ export type ParsedReceipt = {
 }
 
 export type ExecuteSwapParams = {
-  signer: JsonRpcSigner
+  signer: Signer
   step: SwapStep
   parseReceipt: (...args: any[]) => ParsedReceipt
-  updateStatus?: Function
+  updateStatus?: UpdateExecution
 }
 
 export type ExecuteCrossParams = {
-  signer: JsonRpcSigner
+  signer: Signer
   step: CrossStep | LifiStep
-  updateStatus?: Function
+  updateStatus?: UpdateExecution
 }
+
+export type UpdateStep = (step: Step, execution: Execution) => void
+export type UpdateExecution = (execution: Execution) => void

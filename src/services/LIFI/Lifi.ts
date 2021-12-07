@@ -10,6 +10,7 @@ import {
   StepTransactionResponse,
 } from '@lifinance/types'
 import axios from 'axios'
+import { Signer } from 'ethers'
 
 import { StepExecutor } from './executionFiles/StepExecutor'
 import { isRoutesRequest, isStep } from './typeguards'
@@ -25,10 +26,13 @@ interface ActiveRouteDictionary {
 
 class LIFI {
   private activeRoutes: ActiveRouteDictionary = {}
+  private config = {
+    apiUrl: process.env.REACT_APP_API_URL || 'https://test.li.finance/api/',
+  }
 
   getPossibilities = async (request?: PossibilitiesRequest): Promise<PossibilitiesResponse> => {
     const result = await axios.post<PossibilitiesResponse>(
-      process.env.REACT_APP_API_URL + 'possibilities',
+      this.config.apiUrl + 'possibilities',
       request,
     )
 
@@ -40,10 +44,7 @@ class LIFI {
       throw new Error('SDK Validation: Invalid Routs Request')
     }
 
-    const result = await axios.post<RoutesResponse>(
-      process.env.REACT_APP_API_URL + 'routes',
-      routesRequest,
-    )
+    const result = await axios.post<RoutesResponse>(this.config.apiUrl + 'routes', routesRequest)
 
     return result.data
   }
@@ -56,7 +57,7 @@ class LIFI {
     }
 
     const result = await axios.post<StepTransactionResponse>(
-      process.env.REACT_APP_API_URL + 'steps/transaction',
+      this.config.apiUrl + 'steps/transaction',
       step,
     )
 
@@ -71,9 +72,10 @@ class LIFI {
     delete this.activeRoutes[route.id]
     return route
   }
+  //TODO: move route to background function
 
   executeRoute = async (
-    signer: JsonRpcSigner,
+    signer: Signer,
     route: Route,
     // updateFunction: Function,
   ): Promise<Route> => {
@@ -118,20 +120,25 @@ class LIFI {
     return route
   }
 
-  resumeRoute = async (
-    signer: JsonRpcSigner,
-    route: Route,
-    updateFunction: Function,
-  ): Promise<Route> => {
-    if (!this.activeRoutes[route.id]) return route
-    this.activeRoutes[route.id] = {
+  resumeRoute = async (signer: JsonRpcSigner, route: Route): Promise<Route> => {
+    if (this.activeRoutes[route.id]) return route
+    const execData: ExecutionData = {
       route,
       executors: [],
       callbackFunction: () => {},
     }
+    this.activeRoutes[route.id] = execData
+
+    const updateFunction = (step: Step, status: Execution) => {
+      step.execution = status
+      this.activeRoutes[route.id].callbackFunction(route)
+    }
 
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
+      //check if execution has stopped in meantime
+      if (!this.activeRoutes[route.id]) return route
+
       const step = route.steps[index]
       const previousStep = index !== 0 ? route.steps[index - 1] : undefined
       // check if step already done
@@ -172,7 +179,7 @@ class LIFI {
     return Object.values(this.activeRoutes).map((dict) => dict.route)
   }
 
-  getCurrentStatus = (route: Route): Route | undefined => {
+  getActiveRoute = (route: Route): Route | undefined => {
     return this.activeRoutes[route.id].route
   }
 }
