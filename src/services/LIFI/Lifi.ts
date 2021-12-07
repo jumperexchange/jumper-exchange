@@ -104,14 +104,13 @@ class LIFI {
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
       //check if execution has stopped in meantime
-      if (!this.activeRoutes[route.id]) return route
+      if (!this.activeRoutes[route.id]) break
 
       const step = route.steps[index]
       const previousStep = index !== 0 ? route.steps[index - 1] : undefined
 
       // check if signer is for correct chain
       if ((await signer.getChainId()) !== step.action.fromChainId) {
-        // break for loop which stops execution
         break
       }
 
@@ -124,6 +123,7 @@ class LIFI {
         this.activeRoutes[route.id].executors.push(stepExecutor)
         await stepExecutor.executeStep(signer, step, updateFunction)
       } catch (e) {
+        this.stopExecution(route)
         throw e
       }
     }
@@ -158,7 +158,7 @@ class LIFI {
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
       //check if execution has stopped in meantime
-      if (!this.activeRoutes[route.id]) return route
+      if (!this.activeRoutes[route.id]) break
 
       const step = route.steps[index]
       const previousStep = index !== 0 ? route.steps[index - 1] : undefined
@@ -169,7 +169,6 @@ class LIFI {
 
       // check if signer is for correct chain
       if ((await signer.getChainId()) !== step.action.fromChainId) {
-        // break for loop which stops execution
         break
       }
 
@@ -183,6 +182,7 @@ class LIFI {
         this.activeRoutes[route.id].executors.push(stepExecutor)
         await stepExecutor.executeStep(signer, step, updateFunction)
       } catch (e) {
+        this.stopExecution(route)
         throw e
       }
     }

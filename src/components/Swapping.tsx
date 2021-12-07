@@ -313,6 +313,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
+      setIsSwapping(false)
       return
     }
     setFinalBalance(await getFinalBalace(web3.account!, route))
@@ -331,6 +332,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
+      setIsSwapping(false)
       return
     }
     setFinalBalance(await getFinalBalace(web3.account!, route))
@@ -349,7 +351,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       }
     }
     // start again
-    setIsSwapping(true)
+    resumeExecution()
   }
 
   const getMainButton = () => {
