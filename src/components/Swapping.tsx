@@ -2,6 +2,7 @@ import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-d
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
+import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
@@ -14,7 +15,6 @@ import hopIcon from '../assets/icons/hop.png'
 import oneinchIcon from '../assets/icons/oneinch.png'
 import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
-import { getBalancesForWallet } from '../services/balanceService'
 import LIFI from '../services/LIFI/Lifi'
 import {
   createAndPushProcess,
@@ -22,21 +22,19 @@ import {
   setStatusDone,
   setStatusFailed,
 } from '../services/LIFI/status'
-// import { lifinance } from '../services/lifinance'
 import { storeActiveRoute } from '../services/localStorage'
-import { /*switchChain,*/ switchChain, switchChainAndAddToken } from '../services/metamask'
+import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import { renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
-  ChainPortfolio,
   Execution,
   getChainById,
   getChainByKey,
   getIcon,
   Route,
   Step,
-  Token,
+  TokenAmount,
 } from '../types'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
@@ -47,12 +45,10 @@ interface SwappingProps {
   onSwapDone: Function
 }
 
-const getFinalBalace = async (account: string, route: Route) => {
+const getFinalBalace = (account: string, route: Route): Promise<TokenAmount | null> => {
   const lastStep = route.steps[route.steps.length - 1]
-  const { toChain, toToken } = getRecevingInfo(lastStep)
-  const portfolio = await getBalancesForWallet(account, [toChain.id])
-  const chainPortfolio = portfolio[toChain.key].find((coin) => coin.id === toToken.id)
-  return { token: toToken, portfolio: chainPortfolio! }
+  const { toToken } = getRecevingInfo(lastStep)
+  return LIFI.getTokenBalance(account, toToken)
 }
 
 const getRecevingInfo = (step: Step) => {
@@ -70,7 +66,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalBalance, setFinalBalance] = useState<{ token: Token; portfolio: ChainPortfolio }>()
+  const [finalTokenAmount, setFinalTokenAmount] = useState<TokenAmount | null>()
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -370,7 +366,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       setIsSwapping(false)
       return
     }
-    setFinalBalance(await getFinalBalace(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalace(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     onSwapDone()
@@ -389,7 +385,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       setIsSwapping(false)
       return
     }
-    setFinalBalance(await getFinalBalace(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalace(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     onSwapDone()
@@ -423,24 +419,23 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       return (
         <Space direction="vertical">
           <Typography.Text strong>Swap Successful!</Typography.Text>
-          {finalBalance &&
-            finalBalance.portfolio &&
-            (finalBalance.token.id === constants.AddressZero ? (
+          {finalTokenAmount &&
+            (finalTokenAmount.id === constants.AddressZero ? (
               <Typography.Text>
                 {'You now have '}
-                {finalBalance.portfolio.amount.toFixed(4)}
-                {` ${finalBalance.portfolio.symbol}`}
+                {new BigNumber(finalTokenAmount.amount).toFixed(4)}
+                {` ${finalTokenAmount.symbol}`}
                 {` on ${toChain.name}`}
               </Typography.Text>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
-                  onClick={() => switchChainAndAddToken(toChain.id, finalBalance.token)}>
+                  onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
                   <Typography.Text>
                     {'You now have '}
-                    {finalBalance.portfolio.amount.toFixed(4)}
-                    {` ${finalBalance.portfolio.symbol}`}
+                    {new BigNumber(finalTokenAmount.amount).toFixed(4)}
+                    {` ${finalTokenAmount.symbol}`}
                     {` on ${toChain.name}`}
                   </Typography.Text>
                 </span>

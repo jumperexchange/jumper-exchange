@@ -26,7 +26,6 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { getBalancesFromProviderUsingMulticall } from '../services/balanceService'
 import LIFI from '../services/LIFI/Lifi'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -36,7 +35,6 @@ import {
   Chain,
   ChainId,
   ChainKey,
-  ChainPortfolio,
   CoinKey,
   defaultTokens,
   findDefaultCoinOnChain,
@@ -47,6 +45,7 @@ import {
   RoutesRequest,
   RoutesResponse,
   Token,
+  TokenAmount,
 } from '../types'
 import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
@@ -295,16 +294,16 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [tokens, setTokens] =
     useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
-  const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
+  const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
-  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[]>([])
+  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
   const [availableBridges, setAvailableBridges] = useState<string[]>([])
-  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[]>([])
+  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
@@ -397,10 +396,11 @@ const Swap = ({ transferChains }: SwapProps) => {
     }
   }, [refreshTokens, transferChains])
 
-  const updateBalances = useCallback(() => {
+  const updateBalances = useCallback(async () => {
     if (web3.account) {
+      // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(async ([chainKey, tokenList]) => {
-        getBalancesFromProviderUsingMulticall(web3.account!, tokenList).then((portfolio) => {
+        LIFI.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -429,7 +429,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   }, [web3.account])
 
   const getBalance = (
-    currentBalances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined,
+    currentBalances: { [ChainKey: string]: Array<TokenAmount> } | undefined,
     chainKey: ChainKey,
     tokenId: string,
   ) => {
@@ -437,8 +437,8 @@ const Swap = ({ transferChains }: SwapProps) => {
       return new BigNumber(0)
     }
 
-    const tokenBalance = currentBalances[chainKey].find((portfolio) => portfolio.id === tokenId)
-    return tokenBalance?.amount || new BigNumber(0)
+    const tokenBalance = currentBalances[chainKey].find((tokenAmount) => tokenAmount.id === tokenId)
+    return tokenBalance?.amount ? new BigNumber(tokenBalance?.amount) : new BigNumber(0)
   }
 
   useEffect(() => {
@@ -576,6 +576,8 @@ const Swap = ({ transferChains }: SwapProps) => {
     toChainKey,
     toTokenAddress,
     optionSlippage,
+    optionEnabledBridges,
+    optionEnabledExchanges,
     findToken,
   ])
 
@@ -816,8 +818,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                         <div>
                           <Select
                             mode="multiple"
-                            placeholder="Default: all bridges enabled"
-                            defaultValue={optionEnabledBridges}
+                            placeholder="Select enabled bridges"
+                            value={optionEnabledBridges}
                             onChange={setOptionEnabledBridges}
                             style={{
                               borderRadius: 6,
@@ -834,8 +836,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                         <div>
                           <Select
                             mode="multiple"
-                            placeholder="Default: all exchanges enabled"
-                            defaultValue={optionEnabledExchanges}
+                            placeholder="Select enabled exchanges"
+                            value={optionEnabledExchanges}
                             onChange={setOptionEnabledExchanges}
                             style={{
                               borderRadius: 6,

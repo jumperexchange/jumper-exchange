@@ -53,7 +53,7 @@ import onehiveWordmark from '../../assets/1hive_wordmark_dark.svg'
 import connextWordmark from '../../assets/connext_wordmark_dark.png'
 import lifiWordmark from '../../assets/lifi_wordmark.svg'
 import xpollinateWordmark from '../../assets/xpollinate_wordmark_dark.svg'
-import { getBalancesFromProviderUsingMulticall } from '../../services/balanceService'
+import Lifi from '../../services/LIFI/Lifi'
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp'
@@ -62,7 +62,6 @@ import {
   Action,
   Chain,
   ChainKey,
-  ChainPortfolio,
   CrossStep,
   Estimate,
   Execution,
@@ -72,6 +71,7 @@ import {
   Route,
   Step,
   Token,
+  TokenAmount,
   TokenWithAmounts,
 } from '../../types'
 import { getRpcUrls, injected } from '../web3/connectors'
@@ -285,7 +285,7 @@ const SwapXpollinate = ({
   const [tokens, setTokens] =
     useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
   const [refreshBalances, setRefreshBalances] = useState<number>(1)
-  const [balances, setBalances] = useState<{ [ChainKey: string]: Array<ChainPortfolio> }>()
+  const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [updatingBalances, setUpdatingBalances] = useState<boolean>(false)
 
   // Advanced Options
@@ -628,7 +628,7 @@ const SwapXpollinate = ({
 
       await Promise.allSettled(
         Object.entries(tokens).map(async ([chainKey, tokenList]) => {
-          return getBalancesFromProviderUsingMulticall(address, tokenList).then((portfolio) => {
+          return Lifi.getTokenBalances(address, tokenList).then((portfolio) => {
             setBalances((balances) => {
               if (!balances) balances = {}
               return {
@@ -666,7 +666,7 @@ const SwapXpollinate = ({
 
     const tokenBalance = balances[chainKey].find((portfolio) => portfolio.id === tokenId)
 
-    return tokenBalance?.amount || new BigNumber(0)
+    return new BigNumber(tokenBalance?.amount || 0)
   }
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types'
+import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../../types'
 import ChainSelect from '../ChainSelect'
 import TokenSelect from '../TokenSelect'
 import { injected } from '../web3/connectors'
@@ -30,7 +30,7 @@ interface SwapFormNxtpProps {
 
   transferChains: Array<Chain>
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
-  balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined
+  balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   allowSameChains?: boolean
   forceSameToken?: boolean
   syncStatus?: Record<number, SubgraphSyncRecord>
@@ -104,7 +104,7 @@ const SwapFormNxtp = ({
 
     const tokenBalance = balances[chainKey].find((portfolio) => portfolio.id === tokenId)
 
-    return tokenBalance?.amount || new BigNumber(0)
+    return new BigNumber(tokenBalance?.amount || 0)
   }
 
   const onChangeDepositToken = (tokenId: string) => {
@@ -273,9 +273,9 @@ const SwapFormNxtp = ({
               <div>
                 {depositToken &&
                   balances &&
-                  (balances[depositChain] ?? [])
-                    .find((p) => p.id === depositToken)
-                    ?.amount.toFixed(4)}
+                  new BigNumber(
+                    (balances[depositChain] ?? []).find((p) => p.id === depositToken)?.amount || 0,
+                  ).toFixed(4)}
               </div>
             </Col>
           </Row>
@@ -356,9 +356,10 @@ const SwapFormNxtp = ({
               <div>
                 {withdrawToken &&
                   balances &&
-                  (balances[withdrawChain] ?? [])
-                    .find((p) => p.id === withdrawToken)
-                    ?.amount.toFixed(4)}
+                  new BigNumber(
+                    (balances[withdrawChain] ?? []).find((p) => p.id === withdrawToken)?.amount ||
+                      0,
+                  ).toFixed(4)}
               </div>
             </Col>
           </Row>
