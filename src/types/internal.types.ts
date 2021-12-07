@@ -60,30 +60,9 @@ export interface SummaryAmounts {
 
 export interface WalletSummary {
   wallet: string
-  [ChainKey.ETH]: SummaryAmounts
-  [ChainKey.POL]: SummaryAmounts
-  [ChainKey.BSC]: SummaryAmounts
-  [ChainKey.DAI]: SummaryAmounts
-  [ChainKey.OKT]: SummaryAmounts
-  [ChainKey.FTM]: SummaryAmounts
-  [ChainKey.AVA]: SummaryAmounts
-  [ChainKey.HEC]: SummaryAmounts
-  [ChainKey.OPT]: SummaryAmounts
-  [ChainKey.ARB]: SummaryAmounts
-  [ChainKey.ONE]: SummaryAmounts
-  [ChainKey.FSN]: SummaryAmounts
-  [ChainKey.MOR]: SummaryAmounts
-
-  [ChainKey.ROP]: SummaryAmounts
-  [ChainKey.RIN]: SummaryAmounts
-  [ChainKey.GOR]: SummaryAmounts
-  [ChainKey.KOV]: SummaryAmounts
-  [ChainKey.MUM]: SummaryAmounts
-  [ChainKey.ARBT]: SummaryAmounts
-  [ChainKey.OPTT]: SummaryAmounts
-  [ChainKey.BSCT]: SummaryAmounts
-  [ChainKey.HECT]: SummaryAmounts
-  [ChainKey.ONET]: SummaryAmounts
+  chains: {
+    [ChainKey: string]: SummaryAmounts
+  }
 }
 
 export interface ProgressStep {

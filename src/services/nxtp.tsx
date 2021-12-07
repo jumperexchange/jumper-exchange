@@ -91,6 +91,7 @@ export const getTransferQuote = async (
     initiator,
     preferredRouters,
     dryRun,
+    auctionWaitTimeMs: 3000,
   })
   return response
 }
