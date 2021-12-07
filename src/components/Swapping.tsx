@@ -3,7 +3,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
@@ -76,14 +76,10 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
   }, [LIFI])
 
-  const updateStatus = useCallback(
-    (step: Step, status: Execution) => {
-      step.execution = status
-      storeActiveRoute(route)
-      updateRoute(route)
-    },
-    [route, updateRoute],
-  )
+  const updateCallback = (route: Route) => {
+    storeActiveRoute(route)
+    updateRoute(route)
+  }
 
   const parseExecution = (execution?: Execution) => {
     if (!execution) {
@@ -302,7 +298,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      await LIFI.executeRoute(web3.library.getSigner(), route, updateStatus)
+      const executionPromise = LIFI.executeRoute(web3.library.getSigner(), route)
+      LIFI.registerCallback(updateCallback, route)
+      await executionPromise
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)

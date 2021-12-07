@@ -1,5 +1,6 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
 import {
+  Execution,
   PossibilitiesRequest,
   PossibilitiesResponse,
   Route,
@@ -16,7 +17,7 @@ import { isRoutesRequest, isStep } from './typeguards'
 interface ExecutionData {
   route: Route
   executors: StepExecutor[]
-  callbackFunction?: Function
+  callbackFunction: Function
 }
 interface ActiveRouteDictionary {
   [k: string]: ExecutionData
@@ -74,7 +75,7 @@ class LIFI {
   executeRoute = async (
     signer: JsonRpcSigner,
     route: Route,
-    updateFunction: Function,
+    // updateFunction: Function,
   ): Promise<Route> => {
     // check if route is already running
     if (this.activeRoutes[route.id]) return route
@@ -85,10 +86,15 @@ class LIFI {
     }
     this.activeRoutes[route.id] = execData
 
+    const updateFunction = (step: Step, status: Execution) => {
+      step.execution = status
+      this.activeRoutes[route.id].callbackFunction(route)
+    }
+
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
       //check if execution has stopped in meantime
-      // if (!this.activeRoutes[route.id]) return route
+      if (!this.activeRoutes[route.id]) return route
 
       const step = route.steps[index]
       const previousStep = index !== 0 ? route.steps[index - 1] : undefined
@@ -103,7 +109,6 @@ class LIFI {
       if (previousStep && previousStep.execution && previousStep.execution.toAmount) {
         step.action.fromAmount = previousStep.execution.toAmount
       }
-
       const stepExecutor = new StepExecutor()
       this.activeRoutes[route.id].executors.push(stepExecutor)
       await stepExecutor.executeStep(signer, step, updateFunction)
@@ -153,6 +158,14 @@ class LIFI {
     //clean up after execution
     delete this.activeRoutes[route.id]
     return route
+  }
+
+  registerCallback = (callback: (updatedRoute: Route) => void, route: Route): void => {
+    this.activeRoutes[route.id].callbackFunction = callback
+  }
+
+  deregisterCallback = (callback: (updateRoute: Route) => void, route: Route): void => {
+    this.activeRoutes[route.id].callbackFunction = () => {}
   }
 
   getActiveRoutes = (): Route[] => {
