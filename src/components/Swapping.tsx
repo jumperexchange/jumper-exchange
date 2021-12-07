@@ -69,12 +69,19 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
-  // stop execution when component get destroyed
   useEffect(() => {
+    const allDone = steps.every((step) => step.execution?.status === 'DONE')
+    const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
+    const alreadyStarted = steps.some((step) => step.execution)
+    if (!allDone && !isFailed && alreadyStarted) {
+      resumeExecution()
+    }
+
+    // move execution to background when modal is closed
     return function cleanup() {
       LIFI.moveExecutionToBackground(route)
     }
-  }, [LIFI])
+  }, [])
 
   const updateCallback = (route: Route) => {
     storeActiveRoute(route)
@@ -314,16 +321,23 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     onSwapDone()
   }
 
-  // const resumeCrossChainSwap = useCallback(async () => {
-  //   for (let index = 0; index < steps.length; index++) {
-  //     if (steps[index].execution?.status === 'PENDING') {
-  //       steps[index].execution!.status = 'RESUME'
-  //       updateRoute(route)
-  //       break
-  //     }
-  //   }
-  //   setIsSwapping(true)
-  // }, [route, updateRoute])
+  const resumeExecution = async () => {
+    if (!web3.account || !web3.library) return
+    setIsSwapping(true)
+    try {
+      await LIFI.resumeRoute(web3.library.getSigner(), route, updateCallback)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Execution failed!', route)
+      // eslint-disable-next-line no-console
+      console.error(e)
+      return
+    }
+    setFinalBalance(await getFinalBalace(web3.account!, route))
+    setIsSwapping(false)
+    setSwapDoneAt(Date.now())
+    onSwapDone()
+  }
 
   const restartCrossChainSwap = async () => {
     // remove failed
