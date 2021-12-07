@@ -302,9 +302,9 @@ const Swap = ({ transferChains }: SwapProps) => {
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
-  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[]>([])
+  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
   const [availableBridges, setAvailableBridges] = useState<string[]>([])
-  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[]>([])
+  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
@@ -576,6 +576,8 @@ const Swap = ({ transferChains }: SwapProps) => {
     toChainKey,
     toTokenAddress,
     optionSlippage,
+    optionEnabledBridges,
+    optionEnabledExchanges,
     findToken,
   ])
 
@@ -816,8 +818,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                         <div>
                           <Select
                             mode="multiple"
-                            placeholder="Default: all bridges enabled"
-                            defaultValue={optionEnabledBridges}
+                            placeholder="Select enabled bridges"
+                            value={optionEnabledBridges}
                             onChange={setOptionEnabledBridges}
                             style={{
                               borderRadius: 6,
@@ -834,8 +836,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                         <div>
                           <Select
                             mode="multiple"
-                            placeholder="Default: all exchanges enabled"
-                            defaultValue={optionEnabledExchanges}
+                            placeholder="Select enabled exchanges"
+                            value={optionEnabledExchanges}
                             onChange={setOptionEnabledExchanges}
                             style={{
                               borderRadius: 6,
