@@ -14,6 +14,7 @@ import { Signer } from 'ethers'
 
 import { StepExecutor } from './executionFiles/StepExecutor'
 import { isRoutesRequest, isStep } from './typeguards'
+import { CallbackFunction } from './types'
 
 interface ExecutionData {
   route: Route
@@ -77,14 +78,14 @@ class LIFI {
   executeRoute = async (
     signer: Signer,
     route: Route,
-    // updateFunction: Function,
+    callback?: CallbackFunction,
   ): Promise<Route> => {
     // check if route is already running
     if (this.activeRoutes[route.id]) return route
     const execData: ExecutionData = {
       route,
       executors: [],
-      callbackFunction: () => {},
+      callbackFunction: callback ? callback : () => {},
     }
     this.activeRoutes[route.id] = execData
 
@@ -120,12 +121,16 @@ class LIFI {
     return route
   }
 
-  resumeRoute = async (signer: JsonRpcSigner, route: Route): Promise<Route> => {
+  resumeRoute = async (
+    signer: JsonRpcSigner,
+    route: Route,
+    callback?: CallbackFunction,
+  ): Promise<Route> => {
     if (this.activeRoutes[route.id]) return route
     const execData: ExecutionData = {
       route,
       executors: [],
-      callbackFunction: () => {},
+      callbackFunction: callback ? callback : () => {},
     }
     this.activeRoutes[route.id] = execData
 

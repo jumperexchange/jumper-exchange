@@ -1,4 +1,4 @@
-import { CrossStep, Execution, LifiStep, Step, SwapStep, Token } from '@lifinance/types'
+import { CrossStep, Execution, LifiStep, Route, Step, SwapStep, Token } from '@lifinance/types'
 import BigNumber from 'bignumber.js'
 import { Signer } from 'ethers'
 
@@ -35,3 +35,4 @@ export type ExecuteCrossParams = {
 
 export type UpdateStep = (step: Step, execution: Execution) => void
 export type UpdateExecution = (execution: Execution) => void
+export type CallbackFunction = (updatedRoute: Route) => void
