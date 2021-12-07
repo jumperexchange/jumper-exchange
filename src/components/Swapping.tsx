@@ -71,10 +71,10 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   // stop execution when component get destroyed
   useEffect(() => {
-    return () => {
+    return function cleanup() {
       LIFI.stopExecution(route)
     }
-  })
+  }, [LIFI])
 
   const updateStatus = useCallback(
     (step: Step, status: Execution) => {

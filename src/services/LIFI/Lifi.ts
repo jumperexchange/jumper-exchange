@@ -13,8 +13,17 @@ import axios from 'axios'
 import { StepExecutor } from './executionFiles/StepExecutor'
 import { isRoutesRequest, isStep } from './typeguards'
 
+interface ExecutionData {
+  route: Route
+  executors: StepExecutor[]
+  callbackFunction?: Function
+}
+interface ActiveRouteDictionary {
+  [k: string]: ExecutionData
+}
+
 class LIFI {
-  private activeRoutes: Map<Route, StepExecutor[]> = new Map()
+  private activeRoutes: ActiveRouteDictionary = {}
 
   getPossibilities = async (request?: PossibilitiesRequest): Promise<PossibilitiesResponse> => {
     const result = await axios.post<PossibilitiesResponse>(
@@ -54,12 +63,11 @@ class LIFI {
   }
 
   stopExecution = (route: Route): Route => {
-    const executors = this.activeRoutes.get(route)
-    if (!executors) return route
-    for (const executor of executors) {
+    if (!this.activeRoutes[route.id]) return route
+    for (const executor of this.activeRoutes[route.id].executors) {
       executor.stopStepExecution()
     }
-    this.activeRoutes.delete(route)
+    delete this.activeRoutes[route.id]
     return route
   }
 
@@ -69,12 +77,19 @@ class LIFI {
     updateFunction: Function,
   ): Promise<Route> => {
     // check if route is already running
-    const activeRoute = this.activeRoutes.get(route)
-    if (activeRoute) return route
-    this.activeRoutes.set(route, [])
+    if (this.activeRoutes[route.id]) return route
+    const execData: ExecutionData = {
+      route,
+      executors: [],
+      callbackFunction: () => {},
+    }
+    this.activeRoutes[route.id] = execData
 
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
+      //check if execution has stopped in meantime
+      // if (!this.activeRoutes[route.id]) return route
+
       const step = route.steps[index]
       const previousStep = index !== 0 ? route.steps[index - 1] : undefined
 
@@ -90,11 +105,11 @@ class LIFI {
       }
 
       const stepExecutor = new StepExecutor()
-      this.activeRoutes.get(route)?.push(stepExecutor)
+      this.activeRoutes[route.id].executors.push(stepExecutor)
       await stepExecutor.executeStep(signer, step, updateFunction)
     }
 
-    this.activeRoutes.delete(route)
+    delete this.activeRoutes[route.id]
     return route
   }
 
@@ -103,9 +118,12 @@ class LIFI {
     route: Route,
     updateFunction: Function,
   ): Promise<Route> => {
-    const activeRoute = this.activeRoutes.get(route)
-    if (activeRoute) return route
-    this.activeRoutes.set(route, [])
+    if (!this.activeRoutes[route.id]) return route
+    this.activeRoutes[route.id] = {
+      route,
+      executors: [],
+      callbackFunction: () => {},
+    }
 
     // loop over steps and execute them
     for (let index = 0; index < route.steps.length; index++) {
@@ -128,25 +146,21 @@ class LIFI {
       }
 
       const stepExecutor = new StepExecutor()
-      this.activeRoutes.get(route)?.push(stepExecutor)
-      route.steps[index] = await stepExecutor.executeStep(signer, step, updateFunction)
-      // this.registeredCallbackFunctions[route.id](route)
+      this.activeRoutes[route.id].executors.push(stepExecutor)
+      await stepExecutor.executeStep(signer, step, updateFunction)
     }
 
     //clean up after execution
-    this.activeRoutes.delete(route)
+    delete this.activeRoutes[route.id]
     return route
   }
 
   getActiveRoutes = (): Route[] => {
-    return Array.from(this.activeRoutes.keys())
+    return Object.values(this.activeRoutes).map((dict) => dict.route)
   }
-  // TODO: check if this return type makes sense?
+
   getCurrentStatus = (route: Route): Route | undefined => {
-    for (const [key, value] of Array.from(this.activeRoutes.entries())) {
-      if (key.id === route.id) return key
-      else return undefined
-    }
+    return this.activeRoutes[route.id].route
   }
 }
 
