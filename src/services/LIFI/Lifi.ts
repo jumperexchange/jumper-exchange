@@ -5,10 +5,13 @@ import {
   RoutesResponse,
   Step,
   StepTransactionResponse,
+  Token,
+  TokenAmount,
 } from '@lifinance/types'
 import axios from 'axios'
 
-import { isRoutesRequest, isStep } from './typeguards'
+import balances from './balances'
+import { isRoutesRequest, isStep, isToken } from './typeguards'
 
 class LIFI {
   getPossibilities = async (request?: PossibilitiesRequest): Promise<PossibilitiesResponse> => {
@@ -46,6 +49,54 @@ class LIFI {
     )
 
     return result.data
+  }
+
+  getTokenBalance = async (walletAddress: string, token: Token): Promise<TokenAmount | null> => {
+    if (!walletAddress) {
+      throw new Error('SDK Validation: Missing walletAddress')
+    }
+
+    if (!isToken(token)) {
+      throw new Error('SDK Validation: Invalid token passed')
+    }
+
+    return balances.getTokenBalance(walletAddress, token)
+  }
+
+  getTokenBalances = async (walletAddress: string, tokens: Token[]): Promise<TokenAmount[]> => {
+    if (!walletAddress) {
+      throw new Error('SDK Validation: Missing walletAddress')
+    }
+
+    if (!tokens.length) {
+      throw new Error('SDK Validation: Empty token list passed')
+    }
+
+    if (tokens.filter((token) => !isToken(token)).length) {
+      throw new Error('SDK Validation: Invalid token passed')
+    }
+
+    return balances.getTokenBalances(walletAddress, tokens)
+  }
+
+  getTokenBalancesForChains = async (
+    walletAddress: string,
+    tokensByChain: { [chainId: number]: Token[] },
+  ): Promise<{ [chainId: number]: TokenAmount[] }> => {
+    if (!walletAddress) {
+      throw new Error('SDK Validation: Missing walletAddress')
+    }
+
+    const tokenList = Object.values(tokensByChain).flat()
+    if (!tokenList.length) {
+      throw new Error('SDK Validation: Empty token list passed')
+    }
+
+    if (tokenList.filter((token) => !isToken(token)).length) {
+      throw new Error('SDK Validation: Invalid token passed')
+    }
+
+    return balances.getTokenBalancesForChains(walletAddress, tokensByChain)
   }
 
   // executeRoute = (signer: Signer, route: Route): Promise<Route> => {

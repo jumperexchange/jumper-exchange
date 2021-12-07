@@ -4,11 +4,11 @@ import { Avatar, Select } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import React from 'react'
 
-import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../types'
+import { ChainKey, TokenAmount, TokenWithAmounts } from '../types'
 
 interface TokenSelectProps {
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
-  balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined
+  balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   selectedChain?: ChainKey
   selectedToken: string | undefined
   onChangeSelectedToken: Function

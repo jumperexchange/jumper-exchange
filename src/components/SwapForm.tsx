@@ -6,7 +6,7 @@ import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../types'
+import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../types'
 import ChainSelect from './ChainSelect'
 import TokenSelect from './TokenSelect'
 import { injected } from './web3/connectors'
@@ -29,7 +29,7 @@ interface SwapFormProps {
 
   transferChains: Array<Chain>
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
-  balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined
+  balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   allowSameChains?: boolean
   forceSameToken?: boolean
   syncStatus?: Record<number, SubgraphSyncRecord>
@@ -123,7 +123,7 @@ const SwapForm = ({
 
     // set token
     setDepositToken(tokenId)
-    const balance = getBalance(depositChain, tokenId)
+    const balance = new BigNumber(getBalance(depositChain, tokenId))
     if (balance.lt(depositAmount) && balance.gt(0)) {
       setDepositAmount(balance)
     }
