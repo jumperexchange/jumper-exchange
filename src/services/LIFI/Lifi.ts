@@ -73,7 +73,6 @@ class LIFI {
     delete this.activeRoutes[route.id]
     return route
   }
-  //TODO: move route to background function
 
   moveExecutionToBackground = (route: Route): void => {
     if (!this.activeRoutes[route.id]) return

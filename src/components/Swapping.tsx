@@ -69,7 +69,44 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
+  const connextAvatar = (
+    <Tooltip title="NXTP by Connext">
+      <Avatar size="small" src={connextIcon} alt="NXTP"></Avatar>
+    </Tooltip>
+  )
+
+  const hopAvatar = (
+    <Tooltip title="Hop">
+      <Avatar size="small" src={hopIcon} alt="Hop"></Avatar>
+    </Tooltip>
+  )
+
+  const paraswapAvatar = (
+    <Tooltip title="Paraswap">
+      <Avatar size="small" src={paraswapIcon} alt="Paraswap"></Avatar>
+    </Tooltip>
+  )
+
+  const oneinchAvatar = (
+    <Tooltip title="1inch">
+      <Avatar size="small" src={oneinchIcon} alt="1inch"></Avatar>
+    </Tooltip>
+  )
+
+  const horizonAvatar = (
+    <Tooltip title="horizon bridge">
+      <Avatar size="small" src={harmonyIcon} alt="horizon bridge"></Avatar>
+    </Tooltip>
+  )
+
+  const cbridgeAvatar = (
+    <Tooltip title="cBridge">
+      <Avatar size="small" src={cbridgeIcon} alt="cBridge"></Avatar>
+    </Tooltip>
+  )
+
   useEffect(() => {
+    // check if route is eligible for automatic resuming
     const allDone = steps.every((step) => step.execution?.status === 'DONE')
     const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
     const alreadyStarted = steps.some((step) => step.execution)
@@ -82,11 +119,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       LIFI.moveExecutionToBackground(route)
     }
   }, [])
-
-  const updateCallback = (route: Route) => {
-    storeActiveRoute(route)
-    updateRoute(route)
-  }
 
   const parseExecution = (execution?: Execution) => {
     if (!execution) {
@@ -149,42 +181,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       </Tooltip>
     )
   }
-
-  const connextAvatar = (
-    <Tooltip title="NXTP by Connext">
-      <Avatar size="small" src={connextIcon} alt="NXTP"></Avatar>
-    </Tooltip>
-  )
-
-  const hopAvatar = (
-    <Tooltip title="Hop">
-      <Avatar size="small" src={hopIcon} alt="Hop"></Avatar>
-    </Tooltip>
-  )
-
-  const paraswapAvatar = (
-    <Tooltip title="Paraswap">
-      <Avatar size="small" src={paraswapIcon} alt="Paraswap"></Avatar>
-    </Tooltip>
-  )
-
-  const oneinchAvatar = (
-    <Tooltip title="1inch">
-      <Avatar size="small" src={oneinchIcon} alt="1inch"></Avatar>
-    </Tooltip>
-  )
-
-  const horizonAvatar = (
-    <Tooltip title="horizon bridge">
-      <Avatar size="small" src={harmonyIcon} alt="horizon bridge"></Avatar>
-    </Tooltip>
-  )
-
-  const cbridgeAvatar = (
-    <Tooltip title="cBridge">
-      <Avatar size="small" src={cbridgeIcon} alt="cBridge"></Avatar>
-    </Tooltip>
-  )
 
   const parseStepToTimeline = (step: Step, index: number) => {
     const executionSteps = parseExecution(step.execution)
@@ -297,6 +293,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         // eslint-disable-next-line no-console
         console.warn('should never reach here')
     }
+  }
+
+  // called on every execution status change
+  const updateCallback = (updatedRoute: Route) => {
+    storeActiveRoute(updatedRoute)
+    updateRoute(updatedRoute)
   }
 
   const startCrossChainSwap = async () => {
