@@ -46,7 +46,7 @@ const chainNameMapping: { [ChainName: string]: ChainId } = {
 
 const supportedChains = Object.values(chainNameMapping)
 
-const mapDebankChainNameToChainKey = (chainName: string): ChainId => {
+const mapDebankChainNameToChainId = (chainName: string): ChainId => {
   return chainNameMapping[chainName]
 }
 
@@ -69,7 +69,7 @@ const getBalances = async (walletAdress: string): Promise<TokenAmount[]> => {
   const tokenAmounts: TokenAmount[] = []
 
   for (const debankResultItem of debankResult) {
-    const chainId = mapDebankChainNameToChainKey(debankResultItem.chain)
+    const chainId = mapDebankChainNameToChainId(debankResultItem.chain)
     let chain
     try {
       chain = getChainById(chainId)
