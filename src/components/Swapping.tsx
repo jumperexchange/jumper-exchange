@@ -1,5 +1,11 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
+import LiFi, {
+  createAndPushProcess,
+  initStatus,
+  setStatusDone,
+  setStatusFailed,
+} from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
@@ -15,13 +21,6 @@ import hopIcon from '../assets/icons/hop.png'
 import oneinchIcon from '../assets/icons/oneinch.png'
 import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
-import LIFI from '../services/LIFI/Lifi'
-import {
-  createAndPushProcess,
-  initStatus,
-  setStatusDone,
-  setStatusFailed,
-} from '../services/LIFI/status'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import { renderProcessMessage } from '../services/processRenderer'
@@ -48,7 +47,7 @@ interface SwappingProps {
 const getFinalBalace = (account: string, route: Route): Promise<TokenAmount | null> => {
   const lastStep = route.steps[route.steps.length - 1]
   const { toToken } = getRecevingInfo(lastStep)
-  return LIFI.getTokenBalance(account, toToken)
+  return LiFi.getTokenBalance(account, toToken)
 }
 
 const getRecevingInfo = (step: Step) => {
@@ -118,7 +117,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
     // move execution to background when modal is closed
     return function cleanup() {
-      LIFI.moveExecutionToBackground(route)
+      LiFi.moveExecutionToBackground(route)
     }
   }, [])
 
@@ -342,7 +341,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
     if (currentStep && currentStep.action.fromChainId !== web3.chainId) {
       if (!(await checkChain(currentStep))) {
-        LIFI.stopExecution(updatedRoute)
+        LiFi.stopExecution(updatedRoute)
         setIsSwapping(false)
       }
       resumeExecution()
@@ -355,8 +354,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      const executionPromise = LIFI.executeRoute(web3.library.getSigner(), route)
-      LIFI.registerCallback(updateCallback, route)
+      const executionPromise = LiFi.executeRoute(web3.library.getSigner(), route)
+      LiFi.registerCallback(updateCallback, route)
       await executionPromise
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -376,7 +375,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (!web3.account || !web3.library) return
     setIsSwapping(true)
     try {
-      await LIFI.resumeRoute(web3.library.getSigner(), route, updateCallback)
+      await LiFi.resumeRoute(web3.library.getSigner(), route, updateCallback)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)

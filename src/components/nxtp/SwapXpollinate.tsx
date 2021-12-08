@@ -25,6 +25,7 @@ import {
 } from '@connext/nxtp-sdk'
 import { TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { Web3Provider } from '@ethersproject/providers'
+import LiFi from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Alert,
@@ -53,7 +54,6 @@ import onehiveWordmark from '../../assets/1hive_wordmark_dark.svg'
 import connextWordmark from '../../assets/connext_wordmark_dark.png'
 import lifiWordmark from '../../assets/lifi_wordmark.svg'
 import xpollinateWordmark from '../../assets/xpollinate_wordmark_dark.svg'
-import Lifi from '../../services/LIFI/Lifi'
 import { clearLocalStorage, readHideAbout, storeHideAbout } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
 import { finishTransfer, getTransferQuote, setup, triggerTransfer } from '../../services/nxtp'
@@ -628,7 +628,7 @@ const SwapXpollinate = ({
 
       await Promise.allSettled(
         Object.entries(tokens).map(async ([chainKey, tokenList]) => {
-          return Lifi.getTokenBalances(address, tokenList).then((portfolio) => {
+          return LiFi.getTokenBalances(address, tokenList).then((portfolio) => {
             setBalances((balances) => {
               if (!balances) balances = {}
               return {

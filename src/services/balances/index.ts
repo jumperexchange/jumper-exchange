@@ -1,7 +1,7 @@
+import LiFi from '@lifinance/sdk'
 import { ChainId, ChainKey, Token, TokenAmount } from '@lifinance/types'
 
 import { defaultTokens } from '../../types'
-import Lifi from '../LIFI/Lifi'
 import covalent from './covalent'
 import debank from './debank'
 import { filterBlockedTokenAmounts } from './utils'
@@ -18,7 +18,7 @@ export const getTokenBalancesFromDebank = async (
   if (harmonyToken) {
     try {
       tokenAmounts.push(
-        ...(await Lifi.getTokenBalances(walletAddress, defaultTokens[ChainKey.ONE])),
+        ...(await LiFi.getTokenBalances(walletAddress, defaultTokens[ChainKey.ONE])),
       )
     } catch (e) {
       // eslint-disable-next-line no-console

@@ -1,6 +1,7 @@
 /* eslint-disable max-params */
+import { UpdateExecution } from '@lifinance/sdk'
+
 import { emptyExecution, Execution, Process, ProcessMessage } from '../types'
-import { UpdateExecution } from './LIFI/types'
 import { deepClone } from './utils'
 
 export const initStatus = (updateStatus?: UpdateExecution, initialStatus?: Execution) => {

@@ -7,11 +7,11 @@ import {
 } from '@connext/nxtp-sdk'
 import { getRandomBytes32, TransactionPreparedEvent } from '@connext/nxtp-utils'
 import { FallbackProvider, JsonRpcSigner } from '@ethersproject/providers'
+import { UpdateExecution } from '@lifinance/sdk'
 import { Button } from 'antd'
 import { constants, providers } from 'ethers'
 
 import { Execution, getChainById, Process, Step } from '../types'
-import { UpdateExecution } from './LIFI/types'
 import { createAndPushProcess, initStatus, setStatusDone, setStatusFailed } from './status'
 import { getApproved } from './utils'
 

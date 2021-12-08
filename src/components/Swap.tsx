@@ -2,6 +2,7 @@ import './Swap.css'
 
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
+import LiFi from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Button,
@@ -26,7 +27,6 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import LIFI from '../services/LIFI/Lifi'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -325,7 +325,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   useEffect(() => {
     const load = async () => {
-      const possibilities = await LIFI.getPossibilities()
+      const possibilities = await LiFi.getPossibilities()
 
       // bridges
       const bridges: string[] = possibilities.bridges
@@ -400,7 +400,7 @@ const Swap = ({ transferChains }: SwapProps) => {
     if (web3.account) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(async ([chainKey, tokenList]) => {
-        LIFI.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
+        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -557,7 +557,7 @@ const Swap = ({ transferChains }: SwapProps) => {
         const id = uuid()
         try {
           currentRouteCallId = id
-          const result = await LIFI.getRoutes(request)
+          const result = await LiFi.getRoutes(request)
           setRouteCallResult({ result, id })
         } catch {
           if (id === currentRouteCallId || !currentRouteCallId) {
