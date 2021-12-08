@@ -73,9 +73,9 @@ Executes the unit tests. Unit tests should only test one component and mock othe
 Executes the integration tests. These tests do access more of the stack, e.g. they query external API. Since we can't ensure that the external resources are available all the time, these tests may sometimes fail.
 
 
-## Guide for @lifinance/types
+## Guide for @lifinance/sdk
 
-Follow the linked [Readme](https://github.com/lifinance/lifi-web/blob/develop/docs/types-guide.md) if you need changes in [@lifinance/types](https://github.com/lifinance/types) package.
+Follow the linked [Readme](https://github.com/lifinance/lifi-web/blob/develop/docs/sdk-guide.md) if you need changes in [@lifinance/sdk](https://github.com/lifinance/sdk) package.
 
 
 ## Deployment
