@@ -32,7 +32,7 @@ const TestBalanceOverview = ({
     if (web3.chainId !== chainId) return
     setMinting(true)
     try {
-      const res = await mintTokens(web3.library.getSigner(), testToken[chainKey][0].id)
+      const res = await mintTokens(web3.library.getSigner(), testToken[chainKey][0].address)
       await res.wait(1)
       await updateBalances(web3.account)
     } finally {
@@ -66,7 +66,7 @@ const TestBalanceOverview = ({
                     new BigNumber(
                       balances[chain.key].find(
                         (portfolio) =>
-                          portfolio.id === '0x0000000000000000000000000000000000000000',
+                          portfolio.address === '0x0000000000000000000000000000000000000000',
                       )?.amount || 0,
                     ).toFixed(4)}
                 </Col>
@@ -92,7 +92,7 @@ const TestBalanceOverview = ({
                     new BigNumber(
                       balances[chain.key].find(
                         (portfolio) =>
-                          portfolio.id !== '0x0000000000000000000000000000000000000000',
+                          portfolio.address !== '0x0000000000000000000000000000000000000000',
                       )?.amount || 0,
                     ).toFixed(4)}
                 </Col>

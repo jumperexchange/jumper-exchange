@@ -65,7 +65,7 @@ import {
   CrossStep,
   Estimate,
   Execution,
-  findDefaultCoinOnChain,
+  findDefaultToken,
   getChainById,
   getChainByKey,
   Route,
@@ -108,10 +108,10 @@ const getDefaultParams = (
 ) => {
   const defaultParams = {
     depositChain: transferChains[0].key,
-    depositToken: transferTokens[transferChains[0].key][0].id,
+    depositToken: transferTokens[transferChains[0].key][0].address,
     depositAmount: new BigNumber(-1),
     withdrawChain: transferChains[1].key,
-    withdrawToken: transferTokens[transferChains[1].key][0].id,
+    withdrawToken: transferTokens[transferChains[1].key][0].address,
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -135,12 +135,12 @@ const getDefaultParams = (
         }
 
         const foundTokenSymbol = transferTokens[defaultParams.depositChain].find(
-          (token) => token.id === defaultParams.depositToken,
+          (token) => token.address === defaultParams.depositToken,
         )!.symbol
         defaultParams.depositChain = newFromChain.key
         defaultParams.depositToken = transferTokens[newFromChain.key].find(
           (token) => token.symbol === foundTokenSymbol,
-        )!.id
+        )!.address
       }
     } catch (e) {
       console.error(e)
@@ -151,13 +151,13 @@ const getDefaultParams = (
   if (params.fromToken && typeof params.fromToken === 'string') {
     // does token exist?
     const foundToken = transferTokens[defaultParams.depositChain].find(
-      (token) => token.id === params.fromToken,
+      (token) => token.address === params.fromToken,
     )
     if (foundToken) {
-      defaultParams.depositToken = foundToken.id
+      defaultParams.depositToken = foundToken.address
       defaultParams.withdrawToken = transferTokens[defaultParams.withdrawChain].find(
         (token) => token.symbol === foundToken.symbol,
-      )!.id
+      )!.address
     }
   }
 
@@ -187,12 +187,12 @@ const getDefaultParams = (
       if (newToChain && newToChain.key !== defaultParams.depositChain) {
         // only set if different chain
         const foundTokenSymbol = transferTokens[defaultParams.depositChain].find(
-          (token) => token.id === defaultParams.depositToken,
+          (token) => token.address === defaultParams.depositToken,
         )!.symbol
         defaultParams.withdrawChain = newToChain.key
         defaultParams.withdrawToken = transferTokens[newToChain.key].find(
           (token) => token.symbol === foundTokenSymbol,
-        )!.id
+        )!.address
       }
     } catch (e) {
       console.error(e)
@@ -203,15 +203,15 @@ const getDefaultParams = (
   if (params.toToken && typeof params.toToken === 'string') {
     // does token exist?
     const foundToken = transferTokens[defaultParams.withdrawChain].find(
-      (token) => token.id === params.toToken,
+      (token) => token.address === params.toToken,
     )
     if (foundToken) {
       const depositToken = transferTokens[defaultParams.depositChain].find(
         (token) => token.symbol === foundToken.symbol,
       )
       if (depositToken) {
-        defaultParams.withdrawToken = foundToken.id
-        defaultParams.depositToken = depositToken.id
+        defaultParams.withdrawToken = foundToken.address
+        defaultParams.depositToken = depositToken.address
       }
     }
   }
@@ -222,10 +222,10 @@ const getDefaultParams = (
       (token) => token.symbol === params.asset,
     )
     if (foundToken) {
-      defaultParams.depositToken = foundToken.id
+      defaultParams.depositToken = foundToken.address
       defaultParams.withdrawToken = transferTokens[defaultParams.withdrawChain].find(
         (token) => token.symbol === foundToken.symbol,
-      )!.id
+      )!.address
     }
   }
 
@@ -334,25 +334,26 @@ const SwapXpollinate = ({
 
     const sendingChain = getChainByKey(depositChain)
     const receivingChain = getChainByKey(withdrawChain)
-    const sendingToken = tokens[depositChain].find((token) => token.id === depositToken)
-    const receivingToken = tokens[withdrawChain].find((token) => token.id === withdrawToken)
+    const sendingToken = tokens[depositChain].find((token) => token.address === depositToken)
+    const receivingToken = tokens[withdrawChain].find((token) => token.address === withdrawToken)
 
     if (!sendingToken || !receivingToken) return
 
-    if (!sendingToken.id || !sendingChain.id || !receivingChain.id || !receivingToken.id) return
+    if (!sendingToken.address || !sendingChain.id || !receivingChain.id || !receivingToken.address)
+      return
 
     Promise.all([
       sdk.estimateFeeForRouterTransferInReceivingToken(
         sendingChain.id,
-        sendingToken.id,
+        sendingToken.address,
         receivingChain.id,
-        receivingToken.id,
+        receivingToken.address,
       ),
       sdk.estimateMetaTxFeeInReceivingToken(
         sendingChain.id,
-        sendingToken.id,
+        sendingToken.address,
         receivingChain.id,
-        receivingToken.id,
+        receivingToken.address,
       ),
     ])
       .then(([gasFee, relayerFee]) => {
@@ -622,7 +623,7 @@ const SwapXpollinate = ({
       const token = deepClone(transferTokens)
       Object.entries(token).forEach(async ([chainKey, tokens]) => {
         const chain = getChainByKey(chainKey as ChainKey)
-        const gasToken = findDefaultCoinOnChain(chain.coin, chain.key)
+        const gasToken = findDefaultToken(chain.coin, chain.id)
         token[chainKey].unshift(gasToken)
       })
 
@@ -664,7 +665,7 @@ const SwapXpollinate = ({
       return new BigNumber(0)
     }
 
-    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.id === tokenId)
+    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.address === tokenId)
 
     return new BigNumber(tokenBalance?.amount || 0)
   }
@@ -681,7 +682,7 @@ const SwapXpollinate = ({
     } else {
       for (const chain of transferChains) {
         for (const token of tokens[chain.key]) {
-          token.amount = getBalance(chain.key, token.id)
+          token.amount = getBalance(chain.key, token.address)
           token.amountRendered = token.amount.gte(0.0001)
             ? token.amount.toFixed(4)
             : token.amount.toFixed()
@@ -716,7 +717,7 @@ const SwapXpollinate = ({
 
   const findToken = useCallback(
     (chainKey: ChainKey, tokenId: string) => {
-      const token = tokens[chainKey].find((token) => token.id === tokenId)
+      const token = tokens[chainKey].find((token) => token.address === tokenId)
       if (!token) {
         throw new Error('Token not found')
       }
@@ -1016,8 +1017,8 @@ const SwapXpollinate = ({
         user: '',
         router: '',
         initiator: '',
-        sendingAssetId: action.fromToken.id,
-        receivingAssetId: action.toToken.id,
+        sendingAssetId: action.fromToken.address,
+        receivingAssetId: action.toToken.address,
         sendingChainFallback: '',
         callTo: '',
         receivingAddress: '',
@@ -1294,7 +1295,7 @@ const SwapXpollinate = ({
   }
 
   const priceImpact = () => {
-    const token = transferTokens[withdrawChain].find((token) => token.id === withdrawToken)
+    const token = transferTokens[withdrawChain].find((token) => token.address === withdrawToken)
     // First, check to see if we have quoted fees. If not, use estimates as a backup.
     const res = getFees()
     if (!res) {

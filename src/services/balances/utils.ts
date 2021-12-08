@@ -4,6 +4,6 @@ import { blockedTokens } from './config'
 
 export const filterBlockedTokenAmounts = (tokenAmounts: TokenAmount[]) => {
   return tokenAmounts.filter(
-    ({ chainKey, id }) => !(blockedTokens[chainKey] && blockedTokens[chainKey].includes(id)),
+    ({ chainId, address }) => !(blockedTokens[chainId] && blockedTokens[chainId].includes(address)),
   )
 }

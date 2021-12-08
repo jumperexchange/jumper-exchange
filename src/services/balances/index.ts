@@ -40,7 +40,7 @@ export const getTokenBalancesFromDebank = async (
   let requestedTokens: TokenAmount[]
   if (tokens) {
     requestedTokens = tokenAmounts.filter((tokenAmount) =>
-      tokens.find((token) => token.id === tokenAmount.id),
+      tokens.find((token) => token.address === tokenAmount.address),
     )
   } else {
     requestedTokens = tokenAmounts

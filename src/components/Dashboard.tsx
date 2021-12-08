@@ -327,8 +327,8 @@ function renderGas(wallet: Wallet, chainKey: ChainKey, coinName: CoinKey) {
   const isChainUsed = wallet.portfolio[chainKey]?.length > 0
   const inPortfolio = wallet.portfolio[chainKey]?.find(
     (tokenAmount) =>
-      tokenAmount.id === '0x0000000000000000000000000000000000000000' ||
-      tokenAmount.id === coin?.chains[chainKey]?.id,
+      tokenAmount.address === '0x0000000000000000000000000000000000000000' ||
+      tokenAmount.address === coin?.chains[chainKey]?.address,
   )
   const amounts: Amounts = inPortfolio
     ? parsePortfolioToAmount(inPortfolio)
@@ -563,7 +563,9 @@ const Dashboard = () => {
             amount_coin: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
             amount_usd: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
           }
-          const inPortfolio = wallet.portfolio[chain].find((e) => e.id === coin.chains[chain]?.id)
+          const inPortfolio = wallet.portfolio[chain].find(
+            (e) => e.address === coin.chains[chain]?.address,
+          )
           const cellContent: Amounts = inPortfolio
             ? parsePortfolioToAmount(inPortfolio)
             : emptyAmounts
@@ -601,7 +603,9 @@ const Dashboard = () => {
 
       // add new coins
       chainPortfolio.forEach((token) => {
-        const exists = coins.find((existingCoin) => existingCoin.chains[chainKey]?.id === token.id)
+        const exists = coins.find(
+          (existingCoin) => existingCoin.chains[chainKey]?.address === token.address,
+        )
         if (!exists) {
           let symbolExists = coins.find((existingCoin) => existingCoin.key === token.symbol)
           let symbol = token.symbol
@@ -621,7 +625,7 @@ const Dashboard = () => {
           let newCoin: Coin = {
             key: symbol as CoinKey,
             name: token.name,
-            logoURI: token.logoURI,
+            logoURI: token.logoURI || '',
             chains: chainKeysToObject(token),
             verified: false,
           }

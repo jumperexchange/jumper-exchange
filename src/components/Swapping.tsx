@@ -424,7 +424,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
         <Space direction="vertical">
           <Typography.Text strong>Swap Successful!</Typography.Text>
           {finalTokenAmount &&
-            (finalTokenAmount.id === constants.AddressZero ? (
+            (finalTokenAmount.address === constants.AddressZero ? (
               <Typography.Text>
                 {'You now have '}
                 {new BigNumber(finalTokenAmount.amount).toFixed(4)}

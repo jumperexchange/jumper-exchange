@@ -78,9 +78,9 @@ const SwapForm = ({
 
     // find same deposit token
     if (depositChain) {
-      const symbol = tokens[depositChain].find((token) => token.id === depositToken)?.symbol
-      const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
-      setDepositToken(tokenId)
+      const symbol = tokens[depositChain].find((token) => token.address === depositToken)?.symbol
+      const tokenAddress = tokens[chainKey].find((token) => token.symbol === symbol)?.address
+      setDepositToken(tokenAddress)
     }
   }
 
@@ -93,45 +93,45 @@ const SwapForm = ({
 
     // find same withdraw token
     if (withdrawChain) {
-      const symbol = tokens[withdrawChain].find((token) => token.id === withdrawToken)?.symbol
-      const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
-      setWithdrawToken(tokenId)
+      const symbol = tokens[withdrawChain].find((token) => token.address === withdrawToken)?.symbol
+      const tokenAddress = tokens[chainKey].find((token) => token.symbol === symbol)?.address
+      setWithdrawToken(tokenAddress)
     }
   }
 
-  const getBalance = (chainKey: ChainKey, tokenId: string) => {
+  const getBalance = (chainKey: ChainKey, tokenAddress: string) => {
     if (!balances || !balances[chainKey]) {
       return new BigNumber(0)
     }
 
-    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.id === tokenId)
+    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.address === tokenAddress)
 
     return tokenBalance?.amount || new BigNumber(0)
   }
 
-  const onChangeDepositToken = (tokenId: string) => {
+  const onChangeDepositToken = (tokenAddress: string) => {
     // unselect
     depositSelectRef?.current?.blur()
 
     if (!depositChain) return
 
     // connect
-    if (tokenId === 'connect') {
+    if (tokenAddress === 'connect') {
       connectWallet()
       return
     }
 
     // set token
-    setDepositToken(tokenId)
-    const balance = new BigNumber(getBalance(depositChain, tokenId))
+    setDepositToken(tokenAddress)
+    const balance = new BigNumber(getBalance(depositChain, tokenAddress))
     if (balance.lt(depositAmount) && balance.gt(0)) {
       setDepositAmount(balance)
     }
 
     // set withdraw token?
     if (forceSameToken && withdrawChain) {
-      const symbol = tokens[depositChain].find((token) => token.id === tokenId)?.symbol
-      const withdrawToken = tokens[withdrawChain].find((token) => token.symbol === symbol)?.id
+      const symbol = tokens[depositChain].find((token) => token.address === tokenAddress)?.symbol
+      const withdrawToken = tokens[withdrawChain].find((token) => token.symbol === symbol)?.address
       setWithdrawToken(withdrawToken)
     }
   }
@@ -151,8 +151,8 @@ const SwapForm = ({
 
     // set withdraw token?
     if (forceSameToken && depositChain && withdrawChain) {
-      const symbol = tokens[withdrawChain].find((token) => token.id === tokenId)?.symbol
-      const depositToken = tokens[depositChain].find((token) => token.symbol === symbol)?.id
+      const symbol = tokens[withdrawChain].find((token) => token.address === tokenId)?.symbol
+      const depositToken = tokens[depositChain].find((token) => token.symbol === symbol)?.address
       setDepositToken(depositToken)
     }
   }
@@ -179,7 +179,7 @@ const SwapForm = ({
 
   const setMaxDeposit = () => {
     if (depositToken && depositChain) {
-      const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
+      const selectedToken = tokens[depositChain].find((token) => token.address === depositToken)
       if (selectedToken && selectedToken.amount) {
         setDepositAmount(selectedToken.amount)
       }

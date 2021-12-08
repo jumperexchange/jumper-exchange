@@ -35,22 +35,21 @@ export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Toke
   const filteredTokens = tokenList ? tokenList.filter((token) => token.chainId === chainId) : []
   const mappedTokens = filteredTokens.map((token) => {
     return {
-      id: token.address.toLowerCase(),
+      address: token.address.toLowerCase(),
       symbol: token.symbol,
       decimals: token.decimals,
       chainId: token.chainId,
       name: token.name.replace(' on xDai', ''),
       logoURI: token.logoURI,
 
-      chainKey: chain.key,
-      key: token.symbol as CoinKey,
+      coinKey: token.symbol as CoinKey,
     } as Token
   })
 
   // default token
   defaultTokens[chain.key].forEach((defaultToken) => {
     const found = !!mappedTokens.find(
-      (token) => token.id.toLowerCase() === defaultToken.id.toLowerCase(),
+      (token) => token.address.toLowerCase() === defaultToken.address.toLowerCase(),
     )
     if (!found) {
       mappedTokens.unshift(defaultToken)

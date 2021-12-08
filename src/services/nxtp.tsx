@@ -233,7 +233,7 @@ export const attachListeners = (
   const toChain = getChainById(action.toChainId)
 
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalSubmitted, (data) => {
-    if (data.chainId !== fromChain.id || data.assetId !== action.fromToken.id) return
+    if (data.chainId !== fromChain.id || data.assetId !== action.fromToken.address) return
     approveProcess.status = 'PENDING'
     approveProcess.txHash = data.transactionResponse.hash
     approveProcess.txLink = fromChain.metamask.blockExplorerUrls[0] + 'tx/' + approveProcess.txHash
@@ -243,7 +243,7 @@ export const attachListeners = (
 
   // approved = done => next
   sdk.attach(NxtpSdkEvents.SenderTokenApprovalMined, (data) => {
-    if (data.chainId !== fromChain.id || data.assetId !== action.fromToken.id) return
+    if (data.chainId !== fromChain.id || data.assetId !== action.fromToken.address) return
     approveProcess.message = 'Token Approved:'
     setStatusDone(update, status, approveProcess)
     if (!submitProcess) {
