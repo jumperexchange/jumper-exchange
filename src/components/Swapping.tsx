@@ -330,33 +330,17 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
   }
 
-  // called on every execution status change
-  const updateCallback = async (updatedRoute: Route) => {
-    storeActiveRoute(updatedRoute)
-    updateRoute(updatedRoute)
-
-    if (!web3.account || !web3.library) return
-    // check if wallet on correct chain for current action
-    const currentStep = steps.find((step) => !step.execution)
-
-    if (currentStep && currentStep.action.fromChainId !== web3.chainId) {
-      if (!(await checkChain(currentStep))) {
-        LiFi.stopExecution(updatedRoute)
-        setIsSwapping(false)
-      }
-      resumeExecution()
-    }
-  }
-
   const startCrossChainSwap = async () => {
     if (!web3.account || !web3.library) return
+    const settings = {
+      updateCallback: updateCallback,
+      switchChainHook: switchChainHook,
+    }
     storeActiveRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      const executionPromise = LiFi.executeRoute(web3.library.getSigner(), route)
-      LiFi.registerCallback(updateCallback, route)
-      await executionPromise
+      await LiFi.executeRoute(web3.library.getSigner(), route, settings)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
@@ -373,9 +357,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const resumeExecution = async () => {
     if (!web3.account || !web3.library) return
+    const settings = {
+      updateCallback,
+      switchChainHook,
+    }
     setIsSwapping(true)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), route, updateCallback)
+      await LiFi.resumeRoute(web3.library.getSigner(), route, settings)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
@@ -401,6 +389,23 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
     // start again
     resumeExecution()
+  }
+
+  const switchChainHook = async (requiredChainId: number) => {
+    if (!web3.account || !web3.library) return
+    // check if execution stopped because of a required chain switch
+    const chainSwitchStep = steps.find((step) => step.action.fromChainId === requiredChainId)
+    if (chainSwitchStep && requiredChainId !== web3.chainId) {
+      if (await checkChain(chainSwitchStep)) {
+        return web3.library.getSigner()
+      }
+    }
+  }
+
+  // called on every execution status change
+  const updateCallback = (updatedRoute: Route) => {
+    storeActiveRoute(updatedRoute)
+    updateRoute(updatedRoute)
   }
 
   const getMainButton = () => {
@@ -455,6 +460,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           Restart from Failed Step
         </Button>
       )
+    }
+
+    const chainSwitchRequired = steps.some(
+      (step) => step.execution?.status === 'CHAIN_SWITCH_REQUIRED',
+    )
+    if (chainSwitchRequired) {
+      return <></>
     }
 
     // NOT_STARTED
