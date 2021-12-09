@@ -9,7 +9,7 @@
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/network-connector": "^6.1.9",
-    "@lifinance/sdk": "lifinance/sdk#implement-new-status-types",
+    "@lifinance/sdk": "lifinance/sdk#main",
     "antd": "^4.16.0",
     "motion": "^10.0.2",
     "react": "^17.0.2",

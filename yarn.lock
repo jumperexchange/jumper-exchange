@@ -2260,9 +2260,9 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@lifinance/sdk@lifinance/sdk#implement-new-status-types":
+"@lifinance/sdk@lifinance/sdk#main":
   version "0.0.2"
-  resolved "git+ssh://git@github.com/lifinance/sdk.git#6d1439e4907dfa77e296babaf59ff045872af8a5"
+  resolved "https://codeload.github.com/lifinance/sdk/tar.gz/b4a38963a03bc506592e21aa4a54766fcb8cdcd0"
   dependencies:
     "@connext/nxtp-sdk" "^0.0.99"
     "@hop-protocol/sdk" "^0.0.1-beta.272"
