@@ -17,10 +17,16 @@ interface ActiveTrasactionsTableProps {
 function getStateText(route: Route) {
   if (route.steps.some((step) => step.execution?.status === 'FAILED')) {
     return 'Failed'
-  } else if (route.steps.some((step) => step.execution?.status === 'ACTION_REQUIRED')) {
-    return 'Action Required'
   } else if (route.steps.every((step) => step.execution?.status === 'DONE')) {
     return 'Done'
+  } else if (route.steps.every((step) => step.execution?.status === 'CHAIN_SWITCH_REQUIRED')) {
+    return 'Chain Switch Required'
+  } else if (
+    route.steps.some((step) =>
+      step.execution?.process.some((process) => process.status === 'ACTION_REQUIRED'),
+    )
+  ) {
+    return 'Action Required'
   } else {
     return 'Pending'
   }
