@@ -2,6 +2,7 @@ import './Swap.css'
 
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
+import LiFi from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Button,
@@ -26,7 +27,6 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import LIFI from '../services/LIFI/Lifi'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -37,7 +37,7 @@ import {
   ChainKey,
   CoinKey,
   defaultTokens,
-  findDefaultCoinOnChain,
+  findDefaultToken,
   getChainById,
   getChainByKey,
   isSwapStep,
@@ -121,13 +121,13 @@ const parseToken = (
   const coinKeys = Object.values(CoinKey)
   const coinKey = passed.toUpperCase() as CoinKey
   if (coinKeys.includes(coinKey)) {
-    return findDefaultCoinOnChain(coinKey, chainKey)
+    return findDefaultToken(coinKey, getChainByKey(chainKey).id)
   }
 
   // is token address valid?
   const fromTokenId = ethers.utils.getAddress(passed.trim()).toLowerCase()
   // does token address exist in our default tokens? (tokenlists not loaded yet)
-  return transferTokens[chainKey].find((token) => token.id === fromTokenId)
+  return transferTokens[chainKey].find((token) => token.address === fromTokenId)
 }
 
 const getDefaultParams = (
@@ -166,23 +166,22 @@ const getDefaultParams = (
     try {
       const foundToken = parseToken(params.fromToken, defaultParams.depositChain, transferTokens)
       const inDefault = transferTokens[defaultParams.depositChain].find(
-        (token) => token.id === foundToken?.id,
+        (token) => token.address === foundToken?.address,
       )
       if (foundToken && inDefault) {
-        defaultParams.depositToken = foundToken.id
+        defaultParams.depositToken = foundToken.address
       } else if (foundToken) {
         transferTokens[defaultParams.depositChain].push(foundToken)
-        defaultParams.depositToken = foundToken.id
+        defaultParams.depositToken = foundToken.address
       } else if (newFromChain) {
         // only add unknow token if chain was specified with it
         const fromTokenId = ethers.utils.getAddress(params.fromToken.trim()).toLowerCase()
         transferTokens[defaultParams.depositChain].push({
-          id: fromTokenId,
+          address: fromTokenId,
           symbol: 'Unknown',
           decimals: 18,
           chainId: newFromChain.id,
-          chainKey: newFromChain.key,
-          key: '' as CoinKey,
+          coinKey: '' as CoinKey,
           name: 'Unknown',
           logoURI: '',
         })
@@ -228,23 +227,22 @@ const getDefaultParams = (
     try {
       const foundToken = parseToken(params.toToken, defaultParams.withdrawChain, transferTokens)
       const inDefault = transferTokens[defaultParams.withdrawChain].find(
-        (token) => token.id === foundToken?.id,
+        (token) => token.address === foundToken?.address,
       )
       if (foundToken && inDefault) {
-        defaultParams.withdrawToken = foundToken.id
+        defaultParams.withdrawToken = foundToken.address
       } else if (foundToken) {
         transferTokens[defaultParams.withdrawChain].push(foundToken)
-        defaultParams.withdrawToken = foundToken.id
+        defaultParams.withdrawToken = foundToken.address
       } else if (newToChain) {
         // only add unknow token if chain was specified with it
         const toTokenId = ethers.utils.getAddress(params.toToken.trim()).toLowerCase()
         transferTokens[defaultParams.withdrawChain].push({
-          id: toTokenId,
+          address: toTokenId,
           symbol: 'Unknown',
           decimals: 18,
           chainId: newToChain.id,
-          chainKey: newToChain.key,
-          key: '' as CoinKey,
+          coinKey: '' as CoinKey,
           name: 'Unknown',
           logoURI: '',
         })
@@ -325,7 +323,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   useEffect(() => {
     const load = async () => {
-      const possibilities = await LIFI.getPossibilities()
+      const possibilities = await LiFi.getPossibilities()
 
       // bridges
       const bridges: string[] = possibilities.bridges
@@ -400,7 +398,7 @@ const Swap = ({ transferChains }: SwapProps) => {
     if (web3.account) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(async ([chainKey, tokenList]) => {
-        LIFI.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
+        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -437,7 +435,9 @@ const Swap = ({ transferChains }: SwapProps) => {
       return new BigNumber(0)
     }
 
-    const tokenBalance = currentBalances[chainKey].find((tokenAmount) => tokenAmount.id === tokenId)
+    const tokenBalance = currentBalances[chainKey].find(
+      (tokenAmount) => tokenAmount.address === tokenId,
+    )
     return tokenBalance?.amount ? new BigNumber(tokenBalance?.amount) : new BigNumber(0)
   }
 
@@ -451,7 +451,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           token.amountRendered = undefined
         } else {
           // balances loaded
-          token.amount = getBalance(balances, chain.key, token.id)
+          token.amount = getBalance(balances, chain.key, token.address)
           token.amountRendered =
             token.amount.gte(0.0001) || token.amount.isZero()
               ? token.amount.toFixed(4)
@@ -516,7 +516,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   const findToken = useCallback(
     (chainKey: ChainKey, tokenId: string) => {
-      const token = tokens[chainKey].find((token) => token.id === tokenId)
+      const token = tokens[chainKey].find((token) => token.address === tokenId)
       if (!token) {
         throw new Error('Token not found')
       }
@@ -557,7 +557,7 @@ const Swap = ({ transferChains }: SwapProps) => {
         const id = uuid()
         try {
           currentRouteCallId = id
-          const result = await LIFI.getRoutes(request)
+          const result = await LiFi.getRoutes(request)
           setRouteCallResult({ result, id })
         } catch {
           if (id === currentRouteCallId || !currentRouteCallId) {

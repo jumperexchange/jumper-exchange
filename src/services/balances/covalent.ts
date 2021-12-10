@@ -1,10 +1,4 @@
-import {
-  ChainId,
-  CoinKey,
-  findTokenByChainIdAndAddress,
-  getChainById,
-  TokenAmount,
-} from '@lifinance/types'
+import { ChainId, CoinKey, findTokenByChainIdAndAddress, TokenAmount } from '@lifinance/types'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 
@@ -52,7 +46,6 @@ const getBalanceOnChain = async (walletAdress: string, chainId: number): Promise
   }
 
   const tokenAmounts: TokenAmount[] = []
-  const chain = getChainById(chainId)
   for (const covalentResult of result.data.data.items) {
     const localToken = findTokenByChainIdAndAddress(chainId, covalentResult.contract_address)
     const amount = new BigNumber(covalentResult.balance)
@@ -68,11 +61,10 @@ const getBalanceOnChain = async (walletAdress: string, chainId: number): Promise
       })
     } else {
       tokenAmounts.push({
-        id: covalentResult.contract_address,
+        address: covalentResult.contract_address,
         name: covalentResult.contract_name,
-        key: covalentResult.contract_ticker_symbol as CoinKey,
-        chainId: chain.id,
-        chainKey: chain.key,
+        coinKey: covalentResult.contract_ticker_symbol as CoinKey,
+        chainId,
         symbol: covalentResult.contract_ticker_symbol,
         logoURI: covalentResult.logo_url,
         decimals: covalentResult.contract_decimals,

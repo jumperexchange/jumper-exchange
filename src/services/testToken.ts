@@ -54,12 +54,11 @@ Object.entries(testTokenAddresses).forEach(([key, tokenAddress]) => {
   const chain = getChainById(chainId)
   testToken[chain.key] = [
     {
-      id: tokenAddress,
+      address: tokenAddress,
       symbol: CoinKey.TEST,
       decimals: 18,
-      chainId: chainId,
-      chainKey: chain.key,
-      key: CoinKey.TEST,
+      chainId,
+      coinKey: CoinKey.TEST,
       name: CoinKey.TEST,
       logoURI: '',
     },
@@ -115,23 +114,24 @@ export const getBalancesForWallet = async (address: string) => {
       console.warn(e)
       return new BigNumber(0)
     })
-    const testAmount = getBalance(address, token[0].id, chainProviders[token[0].chainId]).catch(
-      (e) => {
-        console.warn(e)
-        return new BigNumber(0)
-      },
-    )
+    const testAmount = getBalance(
+      address,
+      token[0].address,
+      chainProviders[token[0].chainId],
+    ).catch((e) => {
+      console.warn(e)
+      return new BigNumber(0)
+    })
     promises.push(ethAmount)
     promises.push(testAmount)
 
-    portfolio[token[0].chainKey] = [
+    portfolio[chainKey] = [
       // native token
       {
-        id: constants.AddressZero,
+        address: constants.AddressZero,
         name: 'ETH',
         symbol: 'ETH',
-        key: 'ETH' as CoinKey,
-        chainKey: token[0].chainKey,
+        coinKey: 'ETH' as CoinKey,
         chainId: token[0].chainId,
         decimals: token[0].decimals,
         logoURI: '',
@@ -140,11 +140,10 @@ export const getBalancesForWallet = async (address: string) => {
       },
       // test token
       {
-        id: token[0].id,
+        address: token[0].address,
         name: token[0].name,
         symbol: token[0].symbol,
-        key: 'ETH' as CoinKey,
-        chainKey: token[0].chainKey,
+        coinKey: 'ETH' as CoinKey,
         chainId: token[0].chainId,
         decimals: token[0].decimals,
         logoURI: '',
@@ -172,10 +171,12 @@ export const getDefaultTokenBalancesForWallet = async (
     }
 
     tokens.forEach(async (token) => {
-      const amount = getBalance(address, token.id, chainProviders[token.chainId]).catch((e) => {
-        console.warn(e)
-        return new BigNumber(0)
-      })
+      const amount = getBalance(address, token.address, chainProviders[token.chainId]).catch(
+        (e) => {
+          console.warn(e)
+          return new BigNumber(0)
+        },
+      )
       promises.push(amount)
       portfolio[chainKey].push({
         ...token,

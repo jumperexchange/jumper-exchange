@@ -65,7 +65,8 @@ const HistoricTransactionsTableNxtp = ({
       render: (transaction: HistoricalTransaction) => {
         const chain = getChainById(transaction.crosschainTx.invariant.sendingChainId)
         const token = tokens[chain.key].find(
-          (token) => token.id === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase(),
+          (token) =>
+            token.address === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase(),
         )
         const amount = new BigNumber(transaction.crosschainTx.sending?.amount || '0').shiftedBy(
           -(token?.decimals || 18),
@@ -104,7 +105,8 @@ const HistoricTransactionsTableNxtp = ({
       render: (transaction: HistoricalTransaction) => {
         const chain = getChainById(transaction.crosschainTx.invariant.receivingChainId)
         const token = tokens[chain.key].find(
-          (token) => token.id === transaction.crosschainTx.invariant.receivingAssetId.toLowerCase(),
+          (token) =>
+            token.address === transaction.crosschainTx.invariant.receivingAssetId.toLowerCase(),
         )
         const amount = new BigNumber(transaction.crosschainTx.receiving?.amount || '0').shiftedBy(
           -(token?.decimals || 18),
@@ -154,7 +156,8 @@ const HistoricTransactionsTableNxtp = ({
         if (transaction.crosschainTx.sending && transaction.crosschainTx.receiving) {
           const fromChain = getChainById(transaction.crosschainTx.invariant.sendingChainId)
           const fromToken = tokens[fromChain.key].find(
-            (token) => token.id === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase(),
+            (token) =>
+              token.address === transaction.crosschainTx.invariant.sendingAssetId.toLowerCase(),
           )
           const fromAmount = new BigNumber(transaction.crosschainTx.sending.amount).shiftedBy(
             -(fromToken?.decimals || 18),
@@ -163,7 +166,7 @@ const HistoricTransactionsTableNxtp = ({
           const toChain = getChainById(transaction.crosschainTx.invariant.receivingChainId)
           const toToken = tokens[toChain.key].find(
             (token) =>
-              token.id === transaction.crosschainTx.invariant.receivingAssetId.toLowerCase(),
+              token.address === transaction.crosschainTx.invariant.receivingAssetId.toLowerCase(),
           )
           const toAmount = new BigNumber(transaction.crosschainTx.receiving.amount).shiftedBy(
             -(toToken?.decimals || 18),

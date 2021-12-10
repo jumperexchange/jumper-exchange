@@ -79,8 +79,8 @@ const SwapFormNxtp = ({
     setDepositChain(chainKey)
 
     // find same deposit token
-    const symbol = tokens[depositChain].find((token) => token.id === depositToken)?.symbol
-    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
+    const symbol = tokens[depositChain].find((token) => token.address === depositToken)?.symbol
+    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.address
     setDepositToken(tokenId)
   }
 
@@ -92,8 +92,8 @@ const SwapFormNxtp = ({
     setWithdrawChain(chainKey)
 
     // find same withdraw token
-    const symbol = tokens[withdrawChain].find((token) => token.id === withdrawToken)?.symbol
-    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
+    const symbol = tokens[withdrawChain].find((token) => token.address === withdrawToken)?.symbol
+    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.address
     setWithdrawToken(tokenId)
   }
 
@@ -102,7 +102,7 @@ const SwapFormNxtp = ({
       return new BigNumber(0)
     }
 
-    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.id === tokenId)
+    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.address === tokenId)
 
     return new BigNumber(tokenBalance?.amount || 0)
   }
@@ -126,8 +126,8 @@ const SwapFormNxtp = ({
 
     // set withdraw token?
     if (forceSameToken) {
-      const symbol = tokens[depositChain].find((token) => token.id === tokenId)?.symbol
-      const withdrawToken = tokens[withdrawChain].find((token) => token.symbol === symbol)?.id
+      const symbol = tokens[depositChain].find((token) => token.address === tokenId)?.symbol
+      const withdrawToken = tokens[withdrawChain].find((token) => token.symbol === symbol)?.address
       setWithdrawToken(withdrawToken)
     }
   }
@@ -147,8 +147,8 @@ const SwapFormNxtp = ({
 
     // set withdraw token?
     if (forceSameToken) {
-      const symbol = tokens[withdrawChain].find((token) => token.id === tokenId)?.symbol
-      const depositToken = tokens[depositChain].find((token) => token.symbol === symbol)?.id
+      const symbol = tokens[withdrawChain].find((token) => token.address === tokenId)?.symbol
+      const depositToken = tokens[depositChain].find((token) => token.symbol === symbol)?.address
       setDepositToken(depositToken)
     }
   }
@@ -174,7 +174,7 @@ const SwapFormNxtp = ({
   }
 
   const setMaxDeposit = () => {
-    const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
+    const selectedToken = tokens[depositChain].find((token) => token.address === depositToken)
     setDepositAmount(selectedToken?.amount)
   }
 
@@ -274,7 +274,8 @@ const SwapFormNxtp = ({
                 {depositToken &&
                   balances &&
                   new BigNumber(
-                    (balances[depositChain] ?? []).find((p) => p.id === depositToken)?.amount || 0,
+                    (balances[depositChain] ?? []).find((p) => p.address === depositToken)
+                      ?.amount || 0,
                   ).toFixed(4)}
               </div>
             </Col>
@@ -357,8 +358,8 @@ const SwapFormNxtp = ({
                 {withdrawToken &&
                   balances &&
                   new BigNumber(
-                    (balances[withdrawChain] ?? []).find((p) => p.id === withdrawToken)?.amount ||
-                      0,
+                    (balances[withdrawChain] ?? []).find((p) => p.address === withdrawToken)
+                      ?.amount || 0,
                   ).toFixed(4)}
               </div>
             </Col>

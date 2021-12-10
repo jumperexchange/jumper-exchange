@@ -1,8 +1,10 @@
 /* eslint-disable max-params */
+import { UpdateExecution } from '@lifinance/sdk'
+
 import { emptyExecution, Execution, Process, ProcessMessage } from '../types'
 import { deepClone } from './utils'
 
-export const initStatus = (updateStatus?: Function, initialStatus?: Execution) => {
+export const initStatus = (updateStatus?: UpdateExecution, initialStatus?: Execution) => {
   const status = initialStatus || (deepClone(emptyExecution) as Execution)
   // eslint-disable-next-line no-console
   const update = updateStatus || console.log
@@ -14,7 +16,7 @@ export const initStatus = (updateStatus?: Function, initialStatus?: Execution) =
 
 export const createAndPushProcess = (
   id: string,
-  updateStatus: Function,
+  updateStatus: UpdateExecution,
   status: Execution,
   message: ProcessMessage,
   params?: object,

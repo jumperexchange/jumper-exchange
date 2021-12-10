@@ -94,11 +94,10 @@ const getBalances = async (walletAdress: string): Promise<TokenAmount[]> => {
       })
     } else {
       tokenAmounts.push({
-        id: tokenAddress,
+        address: tokenAddress,
         name: debankResultItem.name,
-        key: debankResultItem.symbol as CoinKey,
+        coinKey: debankResultItem.symbol as CoinKey,
         chainId: chain.id,
-        chainKey: chain.key,
         symbol: debankResultItem.optimized_symbol,
         logoURI: debankResultItem.logo_url,
         decimals: debankResultItem.decimals,

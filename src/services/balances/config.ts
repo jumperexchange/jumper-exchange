@@ -1,14 +1,14 @@
-import { ChainKey } from '@lifinance/types'
+import { ChainId } from '@lifinance/types'
 
 type BlockedTokens = {
   [ChainKey: string]: Array<string>
 }
 
 export const blockedTokens: BlockedTokens = {
-  [ChainKey.ETH]: [
+  [ChainId.ETH]: [
     '0x82dfdb2ec1aa6003ed4acba663403d7c2127ff67', // akSwap.io - scam
   ],
-  [ChainKey.BSC]: [
+  [ChainId.BSC]: [
     '0x119e2ad8f0c85c6f61afdf0df69693028cdc10be', // Zepe.io - scam
     '0xb0557906c617f0048a700758606f64b33d0c41a6', // Zepe.io - scam
     '0xbc6675de91e3da8eac51293ecb87c359019621cf', // BestAir.io - scam
@@ -27,7 +27,7 @@ export const blockedTokens: BlockedTokens = {
     '0x0d05a204e27e4815f1f5afdb9d82aa221aa0bdfa', // GemSwap.net
     '0xd22202d23fe7de9e3dbe11a2a88f42f4cb9507cf', // Minereum BSC
   ],
-  [ChainKey.POL]: [
+  [ChainId.POL]: [
     '0xe4fb1bb8423417a460286b0ed44b64e104c5fae5', // Zepe.io - scam
     '0x8ae127d224094cb1b27e1b28a472e588cbcc7620', // https://aaxexchange.org/ - scam
     '0x6142f62e7996faec5c5bb9d10669d60299d69dfe', // buy SpaceRat.Finance - spam
@@ -50,7 +50,7 @@ export const blockedTokens: BlockedTokens = {
     '0xa85f8a198d59f0fda82333be9aeeb50f24dd59ff', // FlowDAO.io
     '0xd7f1d4f5a1b44d827a7c3cc5dd46a80fade55558', // Zers.io
   ],
-  [ChainKey.DAI]: [
+  [ChainId.DAI]: [
     '0x0f1b956128ac17407c29c5600983c6cedf3b2820', // softbalanced.com
   ],
 }
