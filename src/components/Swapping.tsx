@@ -3,6 +3,8 @@ import { Web3Provider } from '@ethersproject/providers'
 import LiFi, {
   createAndPushProcess,
   ExecutionSettings,
+  getEthereumDecyptionHook,
+  getEthereumPublicKeyHook,
   initStatus,
   setStatusDone,
   setStatusFailed,
@@ -339,18 +341,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
-      decryptHook: async (encryptedData: string) => {
-        return (window as any).ethereum.request({
-          method: 'eth_decrypt',
-          params: [encryptedData, await signer.getAddress()],
-        })
-      },
-      getPublicKeyHook: async () => {
-        return (window as any).ethereum.request({
-          method: 'eth_getEncryptionPublicKey',
-          params: [await signer.getAddress()],
-        })
-      },
+      decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
+      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
     storeActiveRoute(route)
     setIsSwapping(true)
@@ -373,10 +365,15 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const resumeExecution = async () => {
     if (!web3.account || !web3.library) return
-    const settings = {
-      updateCallback,
-      switchChainHook,
+    const signer = web3.library.getSigner()
+
+    const settings: ExecutionSettings = {
+      updateCallback: updateCallback,
+      switchChainHook: switchChainHook,
+      decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
+      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
+
     setIsSwapping(true)
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), route, settings)
