@@ -1,5 +1,4 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
-import { encrypt } from '@connext/nxtp-sdk/dist/utils'
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, {
   createAndPushProcess,
@@ -341,17 +340,17 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
       decryptHook: async (encryptedData: string) => {
+        const address = await signer.getAddress()
         return await (window as any).ethereum.request({
           method: 'eth_decrypt',
-          params: [encryptedData, await signer.getAddress()],
+          params: [encryptedData, address],
         })
       },
-      encryptHook: async (data: string) => {
-        const encryptionPublicKey = await (window as any).ethereum.request({
+      getPublicKeyHook: async () => {
+        return (window as any).ethereum.request({
           method: 'eth_getEncryptionPublicKey',
           params: [await signer.getAddress()],
         })
-        return encrypt(data, encryptionPublicKey)
       },
     }
     storeActiveRoute(route)
