@@ -340,10 +340,9 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
       decryptHook: async (encryptedData: string) => {
-        const address = await signer.getAddress()
-        return await (window as any).ethereum.request({
+        return (window as any).ethereum.request({
           method: 'eth_decrypt',
-          params: [encryptedData, address],
+          params: [encryptedData, await signer.getAddress()],
         })
       },
       getPublicKeyHook: async () => {
