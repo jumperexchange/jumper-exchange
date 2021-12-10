@@ -1,9 +1,18 @@
 import { NxtpSdkEvents } from '@connext/nxtp-sdk'
+import { getRandomBytes32 } from '@connext/nxtp-utils'
 import { TransactionResponse } from '@ethersproject/abstract-provider'
 import { constants } from 'ethers'
 
 import { getRpcUrls } from '../components/web3/connectors'
-import { ChainId, ExecuteCrossParams, getChainById, isLifiStep, isSwapStep } from '../types'
+import {
+  ChainId,
+  CrossStep,
+  ExecuteCrossParams,
+  getChainById,
+  isCrossStep,
+  isLifiStep,
+  isSwapStep,
+} from '../types'
 import { checkAllowance } from './allowance.execute'
 import Lifi from './LIFI/Lifi'
 import notifications, { NotificationType } from './notifications'
@@ -23,7 +32,6 @@ export class NXTPExecutionManager {
     const { status, update } = initStatus(updateStatus, execution)
     const fromChain = getChainById(action.fromChainId)
     const toChain = getChainById(action.toChainId)
-    const transactionId = step.id
 
     // STEP 0: Check Allowance ////////////////////////////////////////////////
     if (action.fromToken.id !== constants.AddressZero) {
@@ -77,6 +85,13 @@ export class NXTPExecutionManager {
           update(status)
           tx = await signer.provider.getTransaction(crossProcess.txHash)
         } else {
+          // enforce a new transaction id
+          step.id = getRandomBytes32()
+          if (isLifiStep(step)) {
+            const crossStep = step.includedSteps.find((step) => isCrossStep(step)) as CrossStep
+            crossStep.id = step.id
+          }
+
           const personalizedStep = await personalizeStep(signer, step)
           const { tx: transactionRequest } = await Lifi.getStepTransaction(personalizedStep)
 
@@ -120,6 +135,7 @@ export class NXTPExecutionManager {
     const crossableChains = [ChainId.ETH, action.fromChainId, action.toChainId]
     const chainProviders = getRpcUrls(crossableChains)
     const nxtpSDK = await nxtp.setup(signer, chainProviders)
+    const transactionId = step.id
 
     const preparedTransactionPromise = nxtpSDK.waitFor(
       NxtpSdkEvents.ReceiverTransactionPrepared,
