@@ -1,7 +1,9 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
+import { encrypt } from '@connext/nxtp-sdk/dist/utils'
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, {
   createAndPushProcess,
+  ExecutionSettings,
   initStatus,
   setStatusDone,
   setStatusFailed,
@@ -332,15 +334,31 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const startCrossChainSwap = async () => {
     if (!web3.account || !web3.library) return
-    const settings = {
+
+    const signer = web3.library.getSigner()
+
+    const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
+      decryptHook: async (encryptedData: string) => {
+        return await (window as any).ethereum.request({
+          method: 'eth_decrypt',
+          params: [encryptedData, await signer.getAddress()],
+        })
+      },
+      encryptHook: async (data: string) => {
+        const encryptionPublicKey = await (window as any).ethereum.request({
+          method: 'eth_getEncryptionPublicKey',
+          params: [await signer.getAddress()],
+        })
+        return encrypt(data, encryptionPublicKey)
+      },
     }
     storeActiveRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      await LiFi.executeRoute(web3.library.getSigner(), route, settings)
+      await LiFi.executeRoute(signer, route, settings)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
