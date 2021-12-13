@@ -4,11 +4,11 @@ import { Avatar, Select } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import React from 'react'
 
-import { ChainKey, ChainPortfolio, TokenWithAmounts } from '../types'
+import { ChainKey, TokenAmount, TokenWithAmounts } from '../types'
 
 interface TokenSelectProps {
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
-  balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined
+  balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   selectedChain?: ChainKey
   selectedToken: string | undefined
   onChangeSelectedToken: Function
@@ -28,7 +28,7 @@ const TokenSelect = ({
   showBalance = true,
 }: TokenSelectProps) => {
   const findToken = (chainKey: ChainKey, tokenId: string) => {
-    const token = tokens[chainKey].find((token) => token.id === tokenId)
+    const token = tokens[chainKey].find((token) => token.address === tokenId)
     if (!token) {
       throw new Error('Token not found')
     }
@@ -78,8 +78,8 @@ const TokenSelect = ({
                 .filter((token) => token.amount?.gt(0))
                 .map((token) => (
                   <Select.Option
-                    key={'own_' + token.id}
-                    value={token.id}
+                    key={'own_' + token.address}
+                    value={token.address}
                     label={token.symbol + ' ' + token.name}
                     data-label={
                       token.symbol +
@@ -112,8 +112,8 @@ const TokenSelect = ({
           <Select.OptGroup label="All Token">
             {tokens[selectedChain].map((token) => (
               <Select.Option
-                key={token.id}
-                value={token.id}
+                key={token.address}
+                value={token.address}
                 label={token.symbol + ' - ' + token.name}
                 data-label={
                   token.symbol +

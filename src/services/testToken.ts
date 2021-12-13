@@ -7,10 +7,10 @@ import { getRpcProviders } from '../components/web3/connectors'
 import {
   ChainId,
   chainKeysToObject,
-  ChainPortfolio,
   CoinKey,
   defaultTokens,
   getChainById,
+  TokenAmount,
   TokenWithAmounts,
 } from '../types'
 
@@ -54,12 +54,11 @@ Object.entries(testTokenAddresses).forEach(([key, tokenAddress]) => {
   const chain = getChainById(chainId)
   testToken[chain.key] = [
     {
-      id: tokenAddress,
+      address: tokenAddress,
       symbol: CoinKey.TEST,
       decimals: 18,
-      chainId: chainId,
-      chainKey: chain.key,
-      key: CoinKey.TEST,
+      chainId,
+      coinKey: CoinKey.TEST,
       name: CoinKey.TEST,
       logoURI: '',
     },
@@ -103,7 +102,7 @@ export const getBalance = async (
 }
 
 export const getBalancesForWallet = async (address: string) => {
-  const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = {}
+  const portfolio: { [ChainKey: string]: Array<TokenAmount> } = {}
   const promises: Array<Promise<any>> = []
 
   Object.entries(testToken).forEach(async ([chainKey, token]) => {
@@ -115,35 +114,41 @@ export const getBalancesForWallet = async (address: string) => {
       console.warn(e)
       return new BigNumber(0)
     })
-    const testAmount = getBalance(address, token[0].id, chainProviders[token[0].chainId]).catch(
-      (e) => {
-        console.warn(e)
-        return new BigNumber(0)
-      },
-    )
+    const testAmount = getBalance(
+      address,
+      token[0].address,
+      chainProviders[token[0].chainId],
+    ).catch((e) => {
+      console.warn(e)
+      return new BigNumber(0)
+    })
     promises.push(ethAmount)
     promises.push(testAmount)
 
-    portfolio[token[0].chainKey] = [
+    portfolio[chainKey] = [
       // native token
       {
-        id: constants.AddressZero,
+        address: constants.AddressZero,
         name: 'ETH',
         symbol: 'ETH',
-        img_url: '',
-        amount: (await ethAmount).shiftedBy(-18),
-        pricePerCoin: new BigNumber(0),
-        verified: false,
+        coinKey: 'ETH' as CoinKey,
+        chainId: token[0].chainId,
+        decimals: token[0].decimals,
+        logoURI: '',
+        amount: (await ethAmount).shiftedBy(-18).toString(),
+        priceUSD: new BigNumber(0).toString(),
       },
       // test token
       {
-        id: token[0].id,
+        address: token[0].address,
         name: token[0].name,
         symbol: token[0].symbol,
-        img_url: '',
-        amount: (await testAmount).shiftedBy(-18),
-        pricePerCoin: new BigNumber(0),
-        verified: false,
+        coinKey: 'ETH' as CoinKey,
+        chainId: token[0].chainId,
+        decimals: token[0].decimals,
+        logoURI: '',
+        amount: (await testAmount).shiftedBy(-18).toString(),
+        priceUSD: new BigNumber(0).toString(),
       },
     ]
   })
@@ -157,7 +162,7 @@ export const getDefaultTokenBalancesForWallet = async (
   address: string,
   onChains?: Array<number>,
 ) => {
-  const portfolio: { [ChainKey: string]: Array<ChainPortfolio> } = chainKeysToObject([])
+  const portfolio: { [ChainKey: string]: Array<TokenAmount> } = chainKeysToObject([])
   const promises: Array<Promise<any>> = []
 
   Object.entries(defaultTokens).forEach(async ([chainKey, tokens]) => {
@@ -166,19 +171,16 @@ export const getDefaultTokenBalancesForWallet = async (
     }
 
     tokens.forEach(async (token) => {
-      const amount = getBalance(address, token.id, chainProviders[token.chainId]).catch((e) => {
-        console.warn(e)
-        return new BigNumber(0)
-      })
+      const amount = getBalance(address, token.address, chainProviders[token.chainId]).catch(
+        (e) => {
+          console.warn(e)
+          return new BigNumber(0)
+        },
+      )
       promises.push(amount)
       portfolio[chainKey].push({
-        id: token.id,
-        name: token.name,
-        symbol: token.key,
-        img_url: '',
-        amount: (await amount).shiftedBy(-token.decimals),
-        pricePerCoin: new BigNumber(0),
-        verified: false,
+        ...token,
+        amount: (await amount).shiftedBy(-token.decimals).toString(),
       })
     })
   })

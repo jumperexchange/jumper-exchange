@@ -178,7 +178,7 @@ const TransactionsTableNxtp = ({
       render: (txData: CrosschainTransaction) => {
         const chain = getChainById(txData.invariant.sendingChainId)
         const token = tokens[chain.key].find(
-          (token) => token.id.toLowerCase() === txData.invariant.sendingAssetId.toLowerCase(),
+          (token) => token.address.toLowerCase() === txData.invariant.sendingAssetId.toLowerCase(),
         )
         const path = chain.id === ChainId.MOR ? 'tokens/' : 'token/'
         const link = chain.metamask.blockExplorerUrls[0] + path + txData.invariant.receivingAssetId

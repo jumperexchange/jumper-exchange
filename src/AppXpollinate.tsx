@@ -7,7 +7,7 @@ import SwapXpollinate from './components/nxtp/SwapXpollinate'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
 import analytics from './services/analytics'
-import { ChainKey, CoinKey, findDefaultCoinOnChain, getChainById } from './types'
+import { ChainId, ChainKey, CoinKey, findDefaultToken, getChainById } from './types'
 
 const getTransferChains = () => {
   try {
@@ -21,65 +21,65 @@ const transferChains = getTransferChains()
 
 const transferTokens = {
   [ChainKey.BSC]: [
-    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.BSC),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.BSC),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.BSC),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.BSC),
-    // findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.BSC),
+    findDefaultToken(CoinKey.ETH, ChainId.BSC),
+    findDefaultToken(CoinKey.USDC, ChainId.BSC),
+    findDefaultToken(CoinKey.USDT, ChainId.BSC),
+    findDefaultToken(CoinKey.DAI, ChainId.BSC),
+    // findDefaultToken(CoinKey.WBTC, ChainId.BSC),
   ],
   [ChainKey.POL]: [
-    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.POL),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.POL),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.POL),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.POL),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.POL),
+    findDefaultToken(CoinKey.ETH, ChainId.POL),
+    findDefaultToken(CoinKey.USDC, ChainId.POL),
+    findDefaultToken(CoinKey.USDT, ChainId.POL),
+    findDefaultToken(CoinKey.DAI, ChainId.POL),
+    findDefaultToken(CoinKey.WBTC, ChainId.POL),
   ],
   [ChainKey.DAI]: [
-    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.DAI),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.DAI),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.DAI),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.DAI),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.DAI),
+    findDefaultToken(CoinKey.ETH, ChainId.DAI),
+    findDefaultToken(CoinKey.USDC, ChainId.DAI),
+    findDefaultToken(CoinKey.USDT, ChainId.DAI),
+    findDefaultToken(CoinKey.DAI, ChainId.DAI),
+    findDefaultToken(CoinKey.WBTC, ChainId.DAI),
   ],
   [ChainKey.FTM]: [
-    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.FTM),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.FTM),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.FTM),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.FTM),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.FTM),
+    findDefaultToken(CoinKey.ETH, ChainId.FTM),
+    findDefaultToken(CoinKey.USDC, ChainId.FTM),
+    findDefaultToken(CoinKey.USDT, ChainId.FTM),
+    findDefaultToken(CoinKey.DAI, ChainId.FTM),
+    findDefaultToken(CoinKey.WBTC, ChainId.FTM),
   ],
   [ChainKey.ARB]: [
-    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ARB),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ARB),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ARB),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ARB),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.ARB),
+    findDefaultToken(CoinKey.ETH, ChainId.ARB),
+    findDefaultToken(CoinKey.USDC, ChainId.ARB),
+    findDefaultToken(CoinKey.USDT, ChainId.ARB),
+    findDefaultToken(CoinKey.DAI, ChainId.ARB),
+    findDefaultToken(CoinKey.WBTC, ChainId.ARB),
   ],
   [ChainKey.AVA]: [
-    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.AVA),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.AVA),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.AVA),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.AVA),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.AVA),
+    findDefaultToken(CoinKey.ETH, ChainId.AVA),
+    findDefaultToken(CoinKey.USDC, ChainId.AVA),
+    findDefaultToken(CoinKey.USDT, ChainId.AVA),
+    findDefaultToken(CoinKey.DAI, ChainId.AVA),
+    findDefaultToken(CoinKey.WBTC, ChainId.AVA),
   ],
   [ChainKey.ETH]: [
-    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.ETH),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.ETH),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.ETH),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.ETH),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.ETH),
+    findDefaultToken(CoinKey.ETH, ChainId.ETH),
+    findDefaultToken(CoinKey.USDC, ChainId.ETH),
+    findDefaultToken(CoinKey.USDT, ChainId.ETH),
+    findDefaultToken(CoinKey.DAI, ChainId.ETH),
+    findDefaultToken(CoinKey.WBTC, ChainId.ETH),
   ],
   [ChainKey.MOR]: [
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.MOR),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.MOR),
-    // findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.MOR),
+    findDefaultToken(CoinKey.USDC, ChainId.MOR),
+    findDefaultToken(CoinKey.USDT, ChainId.MOR),
+    // findDefaultToken(CoinKey.WBTC, ChainId.MOR),
   ],
   [ChainKey.OPT]: [
-    findDefaultCoinOnChain(CoinKey.ETH, ChainKey.OPT),
-    findDefaultCoinOnChain(CoinKey.USDC, ChainKey.OPT),
-    findDefaultCoinOnChain(CoinKey.USDT, ChainKey.OPT),
-    findDefaultCoinOnChain(CoinKey.DAI, ChainKey.OPT),
-    findDefaultCoinOnChain(CoinKey.WBTC, ChainKey.OPT),
+    findDefaultToken(CoinKey.ETH, ChainId.OPT),
+    findDefaultToken(CoinKey.USDC, ChainId.OPT),
+    findDefaultToken(CoinKey.USDT, ChainId.OPT),
+    findDefaultToken(CoinKey.DAI, ChainId.OPT),
+    findDefaultToken(CoinKey.WBTC, ChainId.OPT),
   ],
 }
 

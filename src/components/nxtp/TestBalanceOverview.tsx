@@ -2,17 +2,18 @@ import { ArrowUpOutlined, SettingOutlined, SyncOutlined } from '@ant-design/icon
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Col, Row } from 'antd'
+import BigNumber from 'bignumber.js'
 import React, { useState } from 'react'
 
 import { switchChain } from '../../services/metamask'
 import { mintTokens, testToken } from '../../services/testToken'
-import { Chain, ChainKey, ChainPortfolio, getChainByKey } from '../../types'
+import { Chain, ChainKey, getChainByKey, TokenAmount } from '../../types'
 
 interface TestBalanceOverviewProps {
   transferChains: Chain[]
   updateBalances: Function
   updatingBalances: boolean
-  balances?: { [ChainKey: string]: Array<ChainPortfolio> }
+  balances?: { [ChainKey: string]: Array<TokenAmount> }
 }
 
 const TestBalanceOverview = ({
@@ -31,7 +32,7 @@ const TestBalanceOverview = ({
     if (web3.chainId !== chainId) return
     setMinting(true)
     try {
-      const res = await mintTokens(web3.library.getSigner(), testToken[chainKey][0].id)
+      const res = await mintTokens(web3.library.getSigner(), testToken[chainKey][0].address)
       await res.wait(1)
       await updateBalances(web3.account)
     } finally {
@@ -62,12 +63,12 @@ const TestBalanceOverview = ({
               <Row gutter={16}>
                 <Col xs={24} sm={12}>
                   {balances &&
-                    balances[chain.key]
-                      .find(
+                    new BigNumber(
+                      balances[chain.key].find(
                         (portfolio) =>
-                          portfolio.id === '0x0000000000000000000000000000000000000000',
-                      )
-                      ?.amount.toFixed(4)}
+                          portfolio.address === '0x0000000000000000000000000000000000000000',
+                      )?.amount || 0,
+                    ).toFixed(4)}
                 </Col>
                 <Col xs={24} sm={12}>
                   {chain.faucetUrls && (
@@ -88,12 +89,12 @@ const TestBalanceOverview = ({
               <Row gutter={16}>
                 <Col xs={24} sm={12}>
                   {balances &&
-                    balances[chain.key]
-                      .find(
+                    new BigNumber(
+                      balances[chain.key].find(
                         (portfolio) =>
-                          portfolio.id !== '0x0000000000000000000000000000000000000000',
-                      )
-                      ?.amount.toFixed(4)}
+                          portfolio.address !== '0x0000000000000000000000000000000000000000',
+                      )?.amount || 0,
+                    ).toFixed(4)}
                 </Col>
                 <Col xs={24} sm={12}>
                   {minting ? (

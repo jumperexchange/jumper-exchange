@@ -1,5 +1,5 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { ChainKey, Coin, CrossStep, LifiStep, SwapStep, Token } from '@lifinance/types'
+import { ChainKey, Coin, CrossStep, LifiStep, SwapStep, Token, TokenAmount } from '@lifinance/types'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
@@ -8,6 +8,7 @@ export interface Amounts {
   amount_usd: BigNumber
 }
 
+// TODO we should try to get rid of this
 export interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
@@ -32,20 +33,10 @@ export interface ColomnType extends TableColumnType<DataType> {
   children?: Array<ColomnType>
 }
 
-export interface ChainPortfolio {
-  id: string
-  name: string
-  symbol: string
-  img_url: string
-  pricePerCoin: BigNumber
-  amount: BigNumber
-  verified: boolean
-}
-
 export interface Wallet {
   address: string
   loading: boolean
-  portfolio: { [ChainKey: string]: Array<ChainPortfolio> } // ChainKeys -> [ChainPortfolio]
+  portfolio: { [ChainKey: string]: Array<TokenAmount> }
 }
 
 export enum Currencies {

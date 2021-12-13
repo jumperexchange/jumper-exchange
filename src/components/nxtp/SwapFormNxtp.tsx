@@ -6,7 +6,7 @@ import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Chain, ChainKey, ChainPortfolio, TokenWithAmounts } from '../../types'
+import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../../types'
 import ChainSelect from '../ChainSelect'
 import TokenSelect from '../TokenSelect'
 import { injected } from '../web3/connectors'
@@ -30,7 +30,7 @@ interface SwapFormNxtpProps {
 
   transferChains: Array<Chain>
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
-  balances: { [ChainKey: string]: Array<ChainPortfolio> } | undefined
+  balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   allowSameChains?: boolean
   forceSameToken?: boolean
   syncStatus?: Record<number, SubgraphSyncRecord>
@@ -79,8 +79,8 @@ const SwapFormNxtp = ({
     setDepositChain(chainKey)
 
     // find same deposit token
-    const symbol = tokens[depositChain].find((token) => token.id === depositToken)?.symbol
-    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
+    const symbol = tokens[depositChain].find((token) => token.address === depositToken)?.symbol
+    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.address
     setDepositToken(tokenId)
   }
 
@@ -92,8 +92,8 @@ const SwapFormNxtp = ({
     setWithdrawChain(chainKey)
 
     // find same withdraw token
-    const symbol = tokens[withdrawChain].find((token) => token.id === withdrawToken)?.symbol
-    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.id
+    const symbol = tokens[withdrawChain].find((token) => token.address === withdrawToken)?.symbol
+    const tokenId = tokens[chainKey].find((token) => token.symbol === symbol)?.address
     setWithdrawToken(tokenId)
   }
 
@@ -102,9 +102,9 @@ const SwapFormNxtp = ({
       return new BigNumber(0)
     }
 
-    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.id === tokenId)
+    const tokenBalance = balances[chainKey].find((portfolio) => portfolio.address === tokenId)
 
-    return tokenBalance?.amount || new BigNumber(0)
+    return new BigNumber(tokenBalance?.amount || 0)
   }
 
   const onChangeDepositToken = (tokenId: string) => {
@@ -126,8 +126,8 @@ const SwapFormNxtp = ({
 
     // set withdraw token?
     if (forceSameToken) {
-      const symbol = tokens[depositChain].find((token) => token.id === tokenId)?.symbol
-      const withdrawToken = tokens[withdrawChain].find((token) => token.symbol === symbol)?.id
+      const symbol = tokens[depositChain].find((token) => token.address === tokenId)?.symbol
+      const withdrawToken = tokens[withdrawChain].find((token) => token.symbol === symbol)?.address
       setWithdrawToken(withdrawToken)
     }
   }
@@ -147,8 +147,8 @@ const SwapFormNxtp = ({
 
     // set withdraw token?
     if (forceSameToken) {
-      const symbol = tokens[withdrawChain].find((token) => token.id === tokenId)?.symbol
-      const depositToken = tokens[depositChain].find((token) => token.symbol === symbol)?.id
+      const symbol = tokens[withdrawChain].find((token) => token.address === tokenId)?.symbol
+      const depositToken = tokens[depositChain].find((token) => token.symbol === symbol)?.address
       setDepositToken(depositToken)
     }
   }
@@ -174,7 +174,7 @@ const SwapFormNxtp = ({
   }
 
   const setMaxDeposit = () => {
-    const selectedToken = tokens[depositChain].find((token) => token.id === depositToken)
+    const selectedToken = tokens[depositChain].find((token) => token.address === depositToken)
     setDepositAmount(selectedToken?.amount)
   }
 
@@ -273,9 +273,10 @@ const SwapFormNxtp = ({
               <div>
                 {depositToken &&
                   balances &&
-                  (balances[depositChain] ?? [])
-                    .find((p) => p.id === depositToken)
-                    ?.amount.toFixed(4)}
+                  new BigNumber(
+                    (balances[depositChain] ?? []).find((p) => p.address === depositToken)
+                      ?.amount || 0,
+                  ).toFixed(4)}
               </div>
             </Col>
           </Row>
@@ -356,9 +357,10 @@ const SwapFormNxtp = ({
               <div>
                 {withdrawToken &&
                   balances &&
-                  (balances[withdrawChain] ?? [])
-                    .find((p) => p.id === withdrawToken)
-                    ?.amount.toFixed(4)}
+                  new BigNumber(
+                    (balances[withdrawChain] ?? []).find((p) => p.address === withdrawToken)
+                      ?.amount || 0,
+                  ).toFixed(4)}
               </div>
             </Col>
           </Row>

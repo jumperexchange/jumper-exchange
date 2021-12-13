@@ -28,7 +28,7 @@ export const checkWrappedTokenId = (chainId: number, tokenId: string) => {
     return tokenId
   }
 
-  return wrappedTokens[getChainById(chainId).key].id
+  return wrappedTokens[getChainById(chainId).key].address
 }
 
 export const deepClone = (src: any) => {
