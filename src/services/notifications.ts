@@ -5,6 +5,8 @@ export enum NotificationType {
   CROSS_SUCCESSFUL,
   SWAP_ERROR,
   CROSS_ERROR,
+  TRANSACTION_SUCCESSFULL,
+  TRANSACTION_ERROR,
 }
 
 const notificationsSupported = (): boolean => {
@@ -50,6 +52,14 @@ const getNotificationContents = (
       title = 'Cross Chain Transfer Failed!'
       alwaysShow = true
       break
+    case NotificationType.TRANSACTION_SUCCESSFULL:
+      title = 'Transaction Successful!'
+      alwaysShow = true // intended for entire transaction containing multiple swaps / crosses. It makes sense to always inform user about this, no matter the page visibility
+      break
+    case NotificationType.TRANSACTION_ERROR:
+      title = 'Transaction Failed!'
+      alwaysShow = true
+      break
     default:
       break
   }
@@ -57,10 +67,10 @@ const getNotificationContents = (
   return { title, options, alwaysShow }
 }
 
-const showNotification = (type: NotificationType) => {
+const showNotification = (type: NotificationType, visibilityOverride = false) => {
   if (Notification.permission === 'denied') return
   const { title, options, alwaysShow } = getNotificationContents(type)
-  if (document.hidden || alwaysShow) {
+  if (document.hidden || alwaysShow || visibilityOverride) {
     new Notification(title, options)
   }
 }

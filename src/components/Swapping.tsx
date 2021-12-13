@@ -23,6 +23,7 @@ import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
 import { storeActiveRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
+import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount } from '../services/utils'
 import {
@@ -346,12 +347,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
+      Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
     setFinalTokenAmount(await getFinalBalace(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
+    Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
     onSwapDone()
   }
 
@@ -369,12 +372,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
+      Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
     setFinalTokenAmount(await getFinalBalace(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
+    Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
     onSwapDone()
   }
 
