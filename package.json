@@ -6,10 +6,10 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@lifinance/sdk": "0.1.1",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/network-connector": "^6.1.9",
-    "@lifinance/sdk": "git://github.com/lifinance/sdk.git#LF-139",
     "antd": "^4.16.0",
     "motion": "^10.0.2",
     "react": "^17.0.2",
