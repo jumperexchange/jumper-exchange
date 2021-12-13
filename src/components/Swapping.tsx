@@ -2,6 +2,9 @@ import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-d
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, {
   createAndPushProcess,
+  ExecutionSettings,
+  getEthereumDecyptionHook,
+  getEthereumPublicKeyHook,
   initStatus,
   setStatusDone,
   setStatusFailed,
@@ -31,6 +34,8 @@ import {
   getChainById,
   getChainByKey,
   getIcon,
+  isCrossStep,
+  isLifiStep,
   Route,
   Step,
   TokenAmount,
@@ -203,6 +208,21 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     )
   }
 
+  const getBridgeAvatar = (tool: string) => {
+    switch (tool) {
+      case 'nxtp':
+        return connextAvatar
+      case 'hop':
+        return hopAvatar
+      case 'horizon':
+        return horizonAvatar
+      case 'cbridge':
+        return cbridgeAvatar
+      default:
+        return
+    }
+  }
+
   const formatToolName = (name: string) => {
     const nameOnly = name.split('-')[0]
     return nameOnly[0].toUpperCase() + nameOnly.slice(1)
@@ -256,23 +276,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
       case 'cross': {
         const { action, estimate } = step
-        let avatar
-        switch (step.tool) {
-          case 'nxtp':
-            avatar = connextAvatar
-            break
-          case 'hop':
-            avatar = hopAvatar
-            break
-          case 'horizon':
-            avatar = horizonAvatar
-            break
-          case 'cbridge':
-            avatar = cbridgeAvatar
-            break
-          default:
-            break
-        }
         return [
           <Timeline.Item
             position={isMobile ? 'right' : 'right'}
@@ -280,7 +283,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             color={color}>
             <h4>
               Transfer from {getChainAvatar(getChainById(action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(action.toChainId).key)} via {avatar}
+              {getChainAvatar(getChainById(action.toChainId).key)} via {getBridgeAvatar(step.tool)}
             </h4>
             <span>
               {formatTokenAmount(action.fromToken, estimate.fromAmount)} <ArrowRightOutlined />{' '}
@@ -306,7 +309,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             color={color}>
             <h4>
               LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(step.action.toChainId).key)}
+              {getChainAvatar(getChainById(step.action.toChainId).key)} via{' '}
+              {getBridgeAvatar(step.tool)}
             </h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
@@ -332,15 +336,20 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const startCrossChainSwap = async () => {
     if (!web3.account || !web3.library) return
-    const settings = {
+
+    const signer = web3.library.getSigner()
+
+    const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
+      decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
+      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
     storeActiveRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      await LiFi.executeRoute(web3.library.getSigner(), route, settings)
+      await LiFi.executeRoute(signer, route, settings)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
@@ -357,10 +366,15 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const resumeExecution = async () => {
     if (!web3.account || !web3.library) return
-    const settings = {
-      updateCallback,
-      switchChainHook,
+    const signer = web3.library.getSigner()
+
+    const settings: ExecutionSettings = {
+      updateCallback: updateCallback,
+      switchChainHook: switchChainHook,
+      decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
+      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
+
     setIsSwapping(true)
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), route, settings)
@@ -413,7 +427,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (isSwapping) {
       return <></>
     }
-    const isCrossChainSwap = steps.filter((step) => step.type === 'cross').length > 0
+    const isCrossChainSwap = !!steps.find((step) => isCrossStep(step) || isLifiStep(step))
 
     // DONE
     const isDone = steps.filter((step) => step.execution?.status !== 'DONE').length === 0
