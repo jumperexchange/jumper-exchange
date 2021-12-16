@@ -327,6 +327,9 @@ const Swap = ({ transferChains }: SwapProps) => {
       LiFi.setConfig({
         apiUrl: process.env.REACT_APP_API_URL,
         rpcs: getRpcs(),
+        defaultRouteOptions: {
+          integrator: 'li.finance',
+        },
       })
 
       const possibilities = await LiFi.getPossibilities()
