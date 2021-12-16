@@ -325,6 +325,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   useEffect(() => {
     const load = async () => {
       LiFi.setConfig({
+        apiUrl: process.env.REACT_APP_API_URL,
         rpcs: getRpcs(),
       })
 
