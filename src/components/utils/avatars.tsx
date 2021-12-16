@@ -1,11 +1,11 @@
 import { Avatar, Tooltip } from 'antd'
 
-import cbridgeIcon from '../assets/icons/cbridge.png'
-import connextIcon from '../assets/icons/connext.png'
-import harmonyIcon from '../assets/icons/harmony.png'
-import hopIcon from '../assets/icons/hop.png'
-import oneinchIcon from '../assets/icons/oneinch.png'
-import paraswapIcon from '../assets/icons/paraswap.png'
+import cbridgeIcon from '../../assets/icons/cbridge.png'
+import connextIcon from '../../assets/icons/connext.png'
+import harmonyIcon from '../../assets/icons/harmony.png'
+import hopIcon from '../../assets/icons/hop.png'
+import oneinchIcon from '../../assets/icons/oneinch.png'
+import paraswapIcon from '../../assets/icons/paraswap.png'
 
 export const connextAvatar = (
   <Tooltip title="NXTP by Connext">
