@@ -43,6 +43,14 @@ import {
 } from '../types'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
+import {
+  cbridgeAvatar,
+  connextAvatar,
+  hopAvatar,
+  horizonAvatar,
+  oneinchAvatar,
+  paraswapAvatar,
+} from './utils/avatars'
 
 interface SwappingProps {
   route: Route
@@ -75,42 +83,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-
-  const connextAvatar = (
-    <Tooltip title="NXTP by Connext">
-      <Avatar size="small" src={connextIcon} alt="NXTP"></Avatar>
-    </Tooltip>
-  )
-
-  const hopAvatar = (
-    <Tooltip title="Hop">
-      <Avatar size="small" src={hopIcon} alt="Hop"></Avatar>
-    </Tooltip>
-  )
-
-  const paraswapAvatar = (
-    <Tooltip title="Paraswap">
-      <Avatar size="small" src={paraswapIcon} alt="Paraswap"></Avatar>
-    </Tooltip>
-  )
-
-  const oneinchAvatar = (
-    <Tooltip title="1inch">
-      <Avatar size="small" src={oneinchIcon} alt="1inch"></Avatar>
-    </Tooltip>
-  )
-
-  const horizonAvatar = (
-    <Tooltip title="horizon bridge">
-      <Avatar size="small" src={harmonyIcon} alt="horizon bridge"></Avatar>
-    </Tooltip>
-  )
-
-  const cbridgeAvatar = (
-    <Tooltip title="cBridge">
-      <Avatar size="small" src={cbridgeIcon} alt="cBridge"></Avatar>
-    </Tooltip>
-  )
 
   useEffect(() => {
     // check if route is eligible for automatic resuming
