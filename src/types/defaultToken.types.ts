@@ -1,4 +1,4 @@
-import { ChainId, ChainKey, CoinKey, findDefaultToken, Token } from '@lifinance/types'
+import { ChainId, ChainKey, CoinKey, findDefaultToken, Token } from '@lifinance/sdk'
 
 export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ETH]: [

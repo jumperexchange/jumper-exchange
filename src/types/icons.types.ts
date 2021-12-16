@@ -1,4 +1,4 @@
-import { ChainKey } from '@lifinance/types'
+import { ChainKey } from '@lifinance/sdk'
 
 import arb from '../assets/icons/arbitrum.svg'
 import arbt from '../assets/icons/arbitrum_test.png'
