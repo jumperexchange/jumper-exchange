@@ -1,5 +1,5 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { ChainKey, Coin, CrossStep, LifiStep, SwapStep, Token, TokenAmount } from '@lifinance/types'
+import { ChainKey, Coin, CrossStep, LifiStep, SwapStep, Token, TokenAmount } from '@lifinance/sdk'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 

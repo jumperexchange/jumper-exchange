@@ -1,4 +1,4 @@
-import { ChainId, CoinKey, findTokenByChainIdAndAddress, TokenAmount } from '@lifinance/types'
+import { ChainId, CoinKey, findTokenByChainIdAndAddress, TokenAmount } from '@lifinance/sdk'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 
