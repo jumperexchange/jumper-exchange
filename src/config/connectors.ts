@@ -1,6 +1,6 @@
-import { ChainId, multicallAddresses } from '@lifinance/sdk'
+import { ChainId } from '@lifinance/sdk'
 
-import { chainIdToObject, deepClone } from '../services/utils'
+import { deepClone } from '../services/utils'
 
 const customRpc: Record<number, (string | undefined)[]> = {
   [ChainId.ETH]: [process.env.REACT_APP_RPC_URL_MAINNET],
@@ -30,13 +30,4 @@ export const getRpcs = (): Record<number, string[]> => {
   })
 
   return rpcs
-}
-
-export const getMulticallAddresses = (): Record<ChainId, string | undefined> => {
-  const object: Record<ChainId, string | undefined> = chainIdToObject(undefined)
-  Object.values(ChainId).forEach((chainId) => {
-    object[chainId as ChainId] = multicallAddresses[chainId as ChainId]
-  })
-
-  return object
 }

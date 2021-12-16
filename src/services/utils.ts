@@ -4,7 +4,7 @@ import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
 import BigNumber from 'bignumber.js'
 import { Contract } from 'ethers'
 
-import { ChainId, getChainById, Step, Token, wrappedTokens } from '../types'
+import { getChainById, Step, Token, wrappedTokens } from '../types'
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
   if (!amount) {
@@ -96,17 +96,4 @@ export const isTransactionMined = async (
     return true
   }
   return false
-}
-
-export const chainIdToObject = <T>(val: T): Record<ChainId, T> => {
-  const result: Record<number, T> = {}
-
-  const values = Object.values(ChainId)
-  values.forEach((chainId) => {
-    if (typeof chainId !== 'string') {
-      result[chainId] = val ? JSON.parse(JSON.stringify(val)) : val
-    }
-  })
-
-  return result
 }

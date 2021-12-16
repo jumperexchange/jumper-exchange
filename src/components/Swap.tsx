@@ -27,7 +27,7 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { getMulticallAddresses, getRpcs } from '../config/connectors'
+import { getRpcs } from '../config/connectors'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -326,7 +326,6 @@ const Swap = ({ transferChains }: SwapProps) => {
     const load = async () => {
       LiFi.setConfig({
         rpcs: getRpcs(),
-        multicallAddresses: getMulticallAddresses(),
       })
 
       const possibilities = await LiFi.getPossibilities()
