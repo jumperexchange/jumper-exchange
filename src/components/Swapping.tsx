@@ -18,7 +18,7 @@ import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
 import walletIcon from '../assets/wallet.png'
-import { storeActiveRoute } from '../services/localStorage'
+import { storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessMessage } from '../services/processRenderer'
@@ -96,7 +96,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const checkChain = async (step: Step) => {
     const updateFunction = (step: Step, status: Execution) => {
       step.execution = status
-      storeActiveRoute(route)
+      storeRoute(route)
       updateRoute(route)
     }
 
@@ -312,7 +312,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
       getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
-    storeActiveRoute(route)
+    storeRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
@@ -389,7 +389,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
-    storeActiveRoute(updatedRoute)
+    storeRoute(updatedRoute)
     updateRoute(updatedRoute)
   }
 
