@@ -1433,12 +1433,17 @@ const SwapXpollinate = ({
           </Row>
         )}
 
-        {process.env.REACT_APP_WARNING_MESSAGE && (
+        {true && (
           <Row justify="center" style={{ padding: 20, paddingBottom: 0 }}>
             <Col span={24} flex="auto" style={{ maxWidth: 700 }}>
               <Alert
-                message={process.env.REACT_APP_WARNING_MESSAGE}
-                description={process.env.REACT_APP_WARNING_DESCRIPTION}
+                message="Preview the new version of xPollinate"
+                description={
+                  <p>
+                    Visit <a href="https://beta.xpollinate.io">https://beta.xpollinate.io</a> to
+                    preview the new UI!
+                  </p>
+                }
                 type="info"
                 closable={true}
               />
