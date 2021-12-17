@@ -12,6 +12,21 @@ const isSupported = () => {
   }
 }
 
+// TODO: Migrating old localStorage key. Can be removed after being deployed for a while (17.12.2021)
+const migrateOldProperties = () => {
+  if (!isSupported()) return
+  const alreadyMigrated = localStorage.getItem('routes')
+  if (alreadyMigrated) return
+
+  const oldRoutes = localStorage.getItem('activeRoute')
+  if (oldRoutes) {
+    localStorage.setItem('routes', oldRoutes)
+  }
+  localStorage.removeItem('activeRoute')
+}
+
+migrateOldProperties()
+
 const clearLocalStorage = () => {
   if (isSupported()) {
     localStorage.clear()
@@ -62,9 +77,9 @@ const readHideAbout = () => {
   return !(value === 'false')
 }
 
-const storeActiveRoute = (route: Route) => {
+const storeRoute = (route: Route) => {
   if (!isSupported()) return
-  const storedRoutes = readActiveRoutes()
+  const storedRoutes = readAllRoutes()
   let updatedRoutes: Route[]
   if (!storedRoutes.length) {
     updatedRoutes = [route]
@@ -82,12 +97,7 @@ const storeActiveRoute = (route: Route) => {
     }
   }
 
-  localStorage.setItem(
-    'activeRoute',
-    JSON.stringify(updatedRoutes, (k, v) =>
-      typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
-    ),
-  )
+  localStorage.setItem('routes', JSON.stringify(updatedRoutes))
 }
 
 const deleteRoute = (route: Route) => {
@@ -97,27 +107,18 @@ const deleteRoute = (route: Route) => {
   const storedRoutes = readAllRoutes()
   const updatedRoutes = storedRoutes.filter((storedRoute) => storedRoute.id !== route.id)
 
-  localStorage.setItem(
-    'activeRoute',
-    JSON.stringify(updatedRoutes, (k, v) =>
-      typeof v === 'symbol' ? `$$Symbol:${Symbol.keyFor(v)}` : v,
-    ),
-  )
+  localStorage.setItem('routes', JSON.stringify(updatedRoutes))
 }
 
 const readAllRoutes = (): Array<Route> => {
   if (!isSupported()) {
     return [] as Array<Route>
   }
-  const routeString = localStorage.getItem('activeRoute')
+  const routeString = localStorage.getItem('routes')
 
   if (routeString) {
     try {
-      const routes = JSON.parse(routeString, (k, v) => {
-        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
-
-        return matches ? Symbol.for(matches[1]) : v
-      }) as Array<Route>
+      const routes = JSON.parse(routeString) as Array<Route>
       return routes as Array<Route>
     } catch (e) {
       return [] as Array<Route>
@@ -131,60 +132,16 @@ const readHistoricalRoutes = (): Array<Route> => {
   if (!isSupported()) {
     return [] as Array<Route>
   }
-  const routeString = localStorage.getItem('activeRoute')
-
-  if (routeString) {
-    try {
-      const routes = JSON.parse(routeString, (k, v) => {
-        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
-
-        return matches ? Symbol.for(matches[1]) : v
-      }) as Array<Route>
-      const filteredRoutes = routes.filter((route) => {
-        const allDone = route.steps.every((step) => step.execution?.status === 'DONE')
-        if (allDone) {
-          return route
-        } else {
-          return null
-        }
-      })
-      return filteredRoutes as Array<Route>
-    } catch (e) {
-      return [] as Array<Route>
-    }
-  } else {
-    return [] as Array<Route>
-  }
+  const routes = readAllRoutes()
+  return routes.filter((route) => route.steps.every((step) => step.execution?.status === 'DONE'))
 }
 
 const readActiveRoutes = (): Array<Route> => {
   if (!isSupported()) {
     return [] as Array<Route>
   }
-  const routeString = localStorage.getItem('activeRoute')
-
-  if (routeString) {
-    try {
-      const routes = JSON.parse(routeString, (k, v) => {
-        const matches = v && v.match && v.match(/^\$\$Symbol:(.*)$/)
-
-        return matches ? Symbol.for(matches[1]) : v
-      }) as Array<Route>
-      const filteredRoutes = routes.filter((route) => {
-        const allDone = route.steps.every((step) => step.execution?.status === 'DONE')
-        if (allDone) {
-          return null
-        } else {
-          return route
-        }
-      })
-      return filteredRoutes as Array<Route>
-    } catch (e) {
-      return [] as Array<Route>
-    }
-  } else {
-    return [] as Array<Route>
-  }
+  const routes = readAllRoutes()
+  return routes.filter((route) => !route.steps.every((step) => step.execution?.status === 'DONE'))
 }
 
 export {
@@ -195,7 +152,7 @@ export {
   readHideAbout,
   readHistoricalRoutes,
   readWallets,
-  storeActiveRoute,
   storeHideAbout,
+  storeRoute,
   storeWallets,
 }
