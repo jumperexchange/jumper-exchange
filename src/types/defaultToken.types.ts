@@ -1,4 +1,4 @@
-import { ChainId, ChainKey, CoinKey, findDefaultToken, Token } from '@lifinance/types'
+import { ChainId, ChainKey, CoinKey, findDefaultToken, Token } from '@lifinance/sdk'
 
 export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
   [ChainKey.ETH]: [
@@ -7,6 +7,18 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.ETH),
     findDefaultToken(CoinKey.MATIC, ChainId.ETH),
     findDefaultToken(CoinKey.WBTC, ChainId.ETH),
+
+    // Partners
+    // > MAGIC: https://etherscan.io/token/0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a
+    {
+      address: '0xb0c7a3ba49c7a6eaba6cd4a96c55a1391070ac9a',
+      chainId: ChainId.ETH,
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x539bdE0d7Dbd336b79148AA742883198BBF60342/logo.png',
+      name: 'MAGIC',
+      symbol: 'MAGIC',
+    },
   ],
   [ChainKey.BSC]: [
     findDefaultToken(CoinKey.BNB, ChainId.BSC),
@@ -42,6 +54,18 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.ARB),
     findDefaultToken(CoinKey.DAI, ChainId.ARB),
     findDefaultToken(CoinKey.WBTC, ChainId.ARB),
+
+    // Partners
+    // > MAGIC
+    {
+      address: '0x539bdE0d7Dbd336b79148AA742883198BBF60342',
+      chainId: ChainId.ARB,
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x539bdE0d7Dbd336b79148AA742883198BBF60342/logo.png',
+      name: 'MAGIC',
+      symbol: 'MAGIC',
+    },
   ],
   [ChainKey.OPT]: [
     findDefaultToken(CoinKey.ETH, ChainId.OPT),

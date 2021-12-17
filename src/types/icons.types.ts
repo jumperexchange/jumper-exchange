@@ -1,4 +1,4 @@
-import { ChainKey } from '@lifinance/types'
+import { ChainKey } from '@lifinance/sdk'
 
 import arb from '../assets/icons/arbitrum.svg'
 import arbt from '../assets/icons/arbitrum_test.png'
@@ -21,6 +21,7 @@ import pancake from '../assets/icons/pancake.png'
 import pol from '../assets/icons/polygon.png'
 import mum from '../assets/icons/polygon_test.png'
 import quick from '../assets/icons/quick.png'
+import solarbeam from '../assets/icons/solarbeam.png'
 import spooky from '../assets/icons/spooky.png'
 import sushi from '../assets/icons/sushi.png'
 import uniswap from '../assets/icons/uniswap.png'
@@ -61,6 +62,7 @@ export const icons: { [key: string]: string } = {
   Spookyswap: spooky,
   Viperswap: viper,
   Sushiswap: sushi,
+  Solarbeam: solarbeam,
 }
 export const getIcon = (name: string | undefined) => {
   if (name && icons[name]) {

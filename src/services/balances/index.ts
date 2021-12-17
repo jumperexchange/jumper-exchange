@@ -1,5 +1,4 @@
-import LiFi from '@lifinance/sdk'
-import { ChainId, ChainKey, Token, TokenAmount } from '@lifinance/types'
+import LiFi, { ChainId, ChainKey, Token, TokenAmount } from '@lifinance/sdk'
 
 import { defaultTokens } from '../../types'
 import covalent from './covalent'

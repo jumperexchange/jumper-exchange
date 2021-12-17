@@ -17,15 +17,10 @@ import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
-import cbridgeIcon from '../assets/icons/cbridge.png'
-import connextIcon from '../assets/icons/connext.png'
-import harmonyIcon from '../assets/icons/harmony.png'
-import hopIcon from '../assets/icons/hop.png'
-import oneinchIcon from '../assets/icons/oneinch.png'
-import paraswapIcon from '../assets/icons/paraswap.png'
 import walletIcon from '../assets/wallet.png'
-import { storeActiveRoute } from '../services/localStorage'
+import { storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
+import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount } from '../services/utils'
 import {
@@ -42,6 +37,14 @@ import {
 } from '../types'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
+import {
+  cbridgeAvatar,
+  connextAvatar,
+  hopAvatar,
+  horizonAvatar,
+  oneinchAvatar,
+  paraswapAvatar,
+} from './utils/avatars'
 
 interface SwappingProps {
   route: Route
@@ -75,42 +78,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
-  const connextAvatar = (
-    <Tooltip title="NXTP by Connext">
-      <Avatar size="small" src={connextIcon} alt="NXTP"></Avatar>
-    </Tooltip>
-  )
-
-  const hopAvatar = (
-    <Tooltip title="Hop">
-      <Avatar size="small" src={hopIcon} alt="Hop"></Avatar>
-    </Tooltip>
-  )
-
-  const paraswapAvatar = (
-    <Tooltip title="Paraswap">
-      <Avatar size="small" src={paraswapIcon} alt="Paraswap"></Avatar>
-    </Tooltip>
-  )
-
-  const oneinchAvatar = (
-    <Tooltip title="1inch">
-      <Avatar size="small" src={oneinchIcon} alt="1inch"></Avatar>
-    </Tooltip>
-  )
-
-  const horizonAvatar = (
-    <Tooltip title="horizon bridge">
-      <Avatar size="small" src={harmonyIcon} alt="horizon bridge"></Avatar>
-    </Tooltip>
-  )
-
-  const cbridgeAvatar = (
-    <Tooltip title="cBridge">
-      <Avatar size="small" src={cbridgeIcon} alt="cBridge"></Avatar>
-    </Tooltip>
-  )
-
   useEffect(() => {
     // check if route is eligible for automatic resuming
     const allDone = steps.every((step) => step.execution?.status === 'DONE')
@@ -129,7 +96,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const checkChain = async (step: Step) => {
     const updateFunction = (step: Step, status: Execution) => {
       step.execution = status
-      storeActiveRoute(route)
+      storeRoute(route)
       updateRoute(route)
     }
 
@@ -345,7 +312,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
       getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
-    storeActiveRoute(route)
+    storeRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
@@ -355,12 +322,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
+      Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
     setFinalTokenAmount(await getFinalBalace(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
+    Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
     onSwapDone()
   }
 
@@ -383,12 +352,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
+      Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
     setFinalTokenAmount(await getFinalBalace(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
+    Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
     onSwapDone()
   }
 
@@ -418,7 +389,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
-    storeActiveRoute(updatedRoute)
+    storeRoute(updatedRoute)
     updateRoute(updatedRoute)
   }
 

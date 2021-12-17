@@ -4,7 +4,7 @@ import {
   findTokenByChainIdAndAddress,
   getChainById,
   TokenAmount,
-} from '@lifinance/types'
+} from '@lifinance/sdk'
 import axios from 'axios'
 import { BigNumber } from 'bignumber.js'
 import { ethers } from 'ethers'

@@ -27,6 +27,7 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
+import { getRpcs } from '../config/connectors'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -323,6 +324,14 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   useEffect(() => {
     const load = async () => {
+      LiFi.setConfig({
+        apiUrl: process.env.REACT_APP_API_URL,
+        rpcs: getRpcs(),
+        defaultRouteOptions: {
+          integrator: 'li.finance',
+        },
+      })
+
       const possibilities = await LiFi.getPossibilities()
 
       // bridges

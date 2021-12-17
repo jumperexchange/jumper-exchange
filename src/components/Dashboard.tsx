@@ -558,18 +558,19 @@ const Dashboard = () => {
         },
       }
       registeredWallets.forEach((wallet) => {
-        Object.values(ChainKey).forEach((chain) => {
+        Object.values(ChainKey).forEach((chainKey) => {
+          const chain = getChainByKey(chainKey)
           const emptyAmounts: Amounts = {
             amount_coin: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
             amount_usd: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
           }
-          const inPortfolio = wallet.portfolio[chain].find(
-            (e) => e.address === coin.chains[chain]?.address,
+          const inPortfolio = wallet.portfolio[chainKey].find(
+            (e) => e.address === coin.chains[chain.id]?.address,
           )
           const cellContent: Amounts = inPortfolio
             ? parsePortfolioToAmount(inPortfolio)
             : emptyAmounts
-          coinRow[`${wallet.address}_${chain}`] = cellContent
+          coinRow[`${wallet.address}_${chainKey}`] = cellContent
 
           if (cellContent.amount_coin.gt(0)) {
             coinRow.portfolio.amount_coin = coinRow.portfolio.amount_coin.plus(
@@ -604,7 +605,7 @@ const Dashboard = () => {
       // add new coins
       chainPortfolio.forEach((token) => {
         const exists = coins.find(
-          (existingCoin) => existingCoin.chains[chainKey]?.address === token.address,
+          (existingCoin) => existingCoin.chains[chain.id]?.address === token.address,
         )
         if (!exists) {
           let symbolExists = coins.find((existingCoin) => existingCoin.key === token.symbol)
