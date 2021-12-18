@@ -95,11 +95,8 @@ const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>)
   }, 0)
 }
 
-const filterDefaultTokenByChains = (
-  tokens: { [ChainKey: string]: Array<TokenWithAmounts> },
-  transferChains: Chain[],
-) => {
-  const result: { [ChainKey: string]: Array<TokenWithAmounts> } = {}
+const filterDefaultTokenByChains = (tokens: TokenAmountList, transferChains: Chain[]) => {
+  const result: TokenAmountList = {}
 
   transferChains.forEach((chain) => {
     if (tokens[chain.key]) {
@@ -268,6 +265,10 @@ const getDefaultParams = (
   return defaultParams
 }
 
+interface TokenAmountList {
+  [ChainKey: string]: Array<TokenWithAmounts>
+}
+
 interface StartParams {
   depositChain?: ChainKey
   depositToken?: string
@@ -301,9 +302,8 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [toTokenAddress, setToTokenAddress] = useState<string | undefined>(
     startParams.withdrawToken,
   )
-  const [tokens, setTokens] =
-    useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
-  const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
+  const [tokens, setTokens] = useState<TokenAmountList>(transferTokens)
+  const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
@@ -393,6 +393,16 @@ const Swap = ({ transferChains }: SwapProps) => {
       const allExchanges = Array.from(new Set(exchanges))
       setAvailableExchanges(allExchanges)
       setOptionEnabledExchanges(allExchanges)
+
+      // tokens
+      const newTokens: TokenAmountList = {}
+      possibilities.tokens.forEach((token) => {
+        const chain = getChainById(token.chainId)
+        if (!newTokens[chain.key]) newTokens[chain.key] = []
+        newTokens[chain.key].push(token)
+      })
+      setTokens((tokens) => Object.assign(tokens, newTokens))
+      setRefreshBalances(true) // TODO: does not yet work
     }
 
     load()
