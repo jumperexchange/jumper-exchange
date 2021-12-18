@@ -33,6 +33,27 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.POL),
     findDefaultToken(CoinKey.DAI, ChainId.POL),
     findDefaultToken(CoinKey.WBTC, ChainId.POL),
+
+    // Partners
+    // > MIVA:
+    {
+      name: 'Minerva Wallet SuperToken',
+      symbol: 'MIVA',
+      coinKey: 'MIVA' as CoinKey,
+      decimals: 18,
+      chainId: ChainId.POL,
+      logoURI: 'https://minerva.digital/i/MIVA-Token_200x200.png',
+      address: '0xc0b2983a17573660053beeed6fdb1053107cf387',
+    },
+    {
+      name: 'Own a fraction',
+      symbol: 'FRACTION',
+      coinKey: 'FRACTION' as CoinKey,
+      decimals: 18,
+      chainId: ChainId.POL,
+      logoURI: 'https://assets.coingecko.com/coins/images/15099/large/fraction.png?1619691519',
+      address: '0xbd80cfa9d93a87d1bb895f810ea348e496611cd4',
+    },
   ],
   [ChainKey.DAI]: [
     findDefaultToken(CoinKey.DAI, ChainId.DAI),
@@ -40,6 +61,27 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.DAI),
     findDefaultToken(CoinKey.MATIC, ChainId.DAI),
     findDefaultToken(CoinKey.WBTC, ChainId.DAI),
+
+    // Partners
+    // > MIVA:
+    {
+      name: 'Minerva Wallet SuperToken',
+      symbol: 'MIVA',
+      coinKey: 'MIVA' as CoinKey,
+      decimals: 18,
+      chainId: ChainId.DAI,
+      logoURI: 'https://minerva.digital/i/MIVA-Token_200x200.png',
+      address: '0x63e62989d9eb2d37dfdb1f93a22f063635b07d51',
+    },
+    {
+      name: 'Own a fraction',
+      symbol: 'FRACTION',
+      coinKey: 'FRACTION' as CoinKey,
+      decimals: 18,
+      chainId: ChainId.DAI,
+      logoURI: 'https://assets.coingecko.com/coins/images/15099/large/fraction.png?1619691519',
+      address: '0x2bf2ba13735160624a0feae98f6ac8f70885ea61',
+    },
   ],
   [ChainKey.FTM]: [
     findDefaultToken(CoinKey.FTM, ChainId.FTM),
