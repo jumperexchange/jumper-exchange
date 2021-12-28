@@ -19,6 +19,15 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: 'MAGIC',
       symbol: 'MAGIC',
     },
+    // > METIS: https://etherscan.io/token/0x9e32b13ce7f2e80a01932b42553652e053d6ed8e
+    {
+      address: '0x9e32b13ce7f2e80a01932b42553652e053d6ed8e',
+      chainId: ChainId.ETH,
+      decimals: 18,
+      logoURI: 'https://assets.coingecko.com/coins/images/15595/small/metis.PNG',
+      name: 'Metis Token',
+      symbol: 'Metis',
+    },
   ],
   [ChainKey.BSC]: [
     findDefaultToken(CoinKey.BNB, ChainId.BSC),
@@ -26,6 +35,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.BSC),
     findDefaultToken(CoinKey.DAI, ChainId.BSC),
     // findDefaultToken(CoinKey.WBTC, ChainId.BSC),
+
+    // Partners
+    // > METIS: https://bscscan.com/token/0xe552fb52a4f19e44ef5a967632dbc320b0820639
+    {
+      address: '0xe552fb52a4f19e44ef5a967632dbc320b0820639',
+      chainId: ChainId.BSC,
+      decimals: 18,
+      logoURI: 'https://assets.coingecko.com/coins/images/15595/small/metis.PNG',
+      name: 'Metis Token',
+      symbol: 'Metis',
+    },
   ],
   [ChainKey.POL]: [
     findDefaultToken(CoinKey.MATIC, ChainId.POL),
