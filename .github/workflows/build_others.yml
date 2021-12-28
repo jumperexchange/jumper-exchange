@@ -48,8 +48,5 @@ jobs:
       - name: Build li.finance
         run: yarn build:lifinance
 
-      - name: Build xpollinate
-        run: yarn build:xpollinate
-
       - name: Insert DataUnlocker
         run: output=$(curl --fail -F html=@build/index.html 'https://api.dataunlocker.com/properties/46555a39346d356231644a4f/scripts/latest/inject?endpoint=paru601nzh8t') && echo "$output" > build/index.html || echo "Failed to inject DataUnlocker's script"
