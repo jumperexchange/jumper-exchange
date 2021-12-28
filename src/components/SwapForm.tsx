@@ -160,7 +160,7 @@ const SwapForm = ({
   // sync depositAmountString if depositAmount changes
   useEffect(() => {
     if (!new BigNumber(depositAmountString).eq(depositAmount) && depositAmount.gte(0)) {
-      setDepositAmountString(depositAmount.toString())
+      setDepositAmountString(depositAmount.toFixed())
     }
   }, [depositAmount, depositAmountString])
 
