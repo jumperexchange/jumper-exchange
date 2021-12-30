@@ -292,3 +292,49 @@ h4.swap-title {
   background: #f0f2f5 !important;
   padding-top: 1px !important;
 }
+
+.site-layout-swap {
+  min-height: calc(100vh - 64px);
+  margin-top: 64px;
+}
+
+.historicalTransfers,
+.activeTransfers {
+  margin-top: 48px;
+}
+
+.ant-table table {
+  background-color: white;
+}
+
+/* lifiEmbed view */
+.lifiEmbed .site-layout-swap {
+  margin-top: 0;
+  min-height: auto;
+}
+
+.lifiEmbed .historicalTransfers {
+  display: none;
+}
+
+.lifiEmbed .activeTransfers {
+  margin-top: 12px;
+}
+
+.lifiEmbed .ant-pagination {
+  background-color: white;
+}
+
+.lifiEmbed .swapping-modal-timeline {
+  min-height: auto;
+}
+
+.lifiEmbed .poweredBy {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 6px 12px;
+  background-color: white;
+  border-radius: 6px;
+  z-index: -1;
+}
