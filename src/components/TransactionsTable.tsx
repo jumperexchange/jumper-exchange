@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Popconfirm, Table } from 'antd'
 
 import { formatTokenAmount } from '../services/utils'
-import { getChainById, Route } from '../types'
+import { findTool, getChainById, Route } from '../types'
 import { injected } from './web3/connectors'
 
 interface ActiveTrasactionsTableProps {
@@ -136,7 +136,7 @@ function TrasactionsTable({
       toChain: getChainById(toChainId).name,
       fromToken: `${formatTokenAmount(firstStep.action.fromToken, firstStep.estimate.fromAmount)}`,
       toToken: `${formatTokenAmount(lastStep.action.toToken, lastStep.estimate.toAmount)}`,
-      protocols: route.steps.map((step) => step.tool).join(' > '),
+      protocols: route.steps.map((step) => findTool(step.tool)?.name).join(' > '),
       state: getStateText(route),
       action: renderActionButton(route),
     }

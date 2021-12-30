@@ -2,7 +2,7 @@ import { SubgraphSyncRecord } from '@connext/nxtp-sdk'
 import { Avatar, Badge, Select } from 'antd'
 import React from 'react'
 
-import { Chain, ChainKey, getChainByKey, getIcon } from '../types'
+import { Chain, ChainKey, getChainByKey } from '../types'
 
 interface ChainSelectProps {
   transferChains: Array<Chain>
@@ -22,7 +22,7 @@ const ChainSelect = ({
   return (
     <>
       {chain ? (
-        <Avatar size="small" src={getIcon(chain.key)} alt={chain.name}>
+        <Avatar size="small" src={chain.logoURI} alt={chain.name}>
           {chain.name[0]}
         </Avatar>
       ) : (
@@ -49,7 +49,7 @@ const ChainSelect = ({
                 <span role="img" aria-label={chain.name}>
                   <Avatar
                     size="small"
-                    src={getIcon(chain.key)}
+                    src={chain.logoURI}
                     alt={chain.key}
                     style={{ marginRight: 10 }}>
                     {chain.name[0]}
