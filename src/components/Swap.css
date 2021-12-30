@@ -27,6 +27,11 @@ input[type='number']::-webkit-outer-spin-button {
   cursor: pointer;
 }
 
+.swap-route:hover {
+   -webkit-box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
+  box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
+}
+
 .swap-route.optimal {
   -webkit-box-shadow: 0px 0px 22px -6px rgba(23, 144, 255, 0.5);
   box-shadow: 0px 0px 22px -6px rgba(23, 144, 255, 0.5);
@@ -97,7 +102,7 @@ input[type='number']::-webkit-outer-spin-button {
   align-items: center;
   justify-content: center;
 }
-@media only screen and (max-height: 600px) {
+@media only screen and (max-height: 650px) {
   .swapping-modal-timeline {
     padding-top: 38px;
     height: 55vh;
@@ -317,6 +322,10 @@ h4.swap-title {
   display: none;
 }
 
+.lifiEmbed .swap-form {
+  margin-top: 20px;
+}
+
 .lifiEmbed .activeTransfers {
   margin-top: 12px;
 }
@@ -325,16 +334,12 @@ h4.swap-title {
   background-color: white;
 }
 
-.lifiEmbed .swapping-modal-timeline {
-  min-height: auto;
-}
-
 .lifiEmbed .poweredBy {
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
   padding: 6px 12px;
   background-color: white;
   border-radius: 6px;
-  z-index: -1;
+  z-index: 100;
 }
