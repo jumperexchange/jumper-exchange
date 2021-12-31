@@ -1,5 +1,17 @@
 import { JsonRpcSigner } from '@ethersproject/providers'
-import { ChainKey, Coin, CrossStep, LifiStep, SwapStep, Token, TokenAmount } from '@lifinance/sdk'
+import {
+  ChainKey,
+  Coin,
+  CrossStep,
+  LifiStep,
+  StepTool,
+  supportedBridges,
+  supportedExchangeAggregators,
+  supportedExchanges,
+  SwapStep,
+  Token,
+  TokenAmount,
+} from '@lifinance/sdk'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
@@ -80,4 +92,10 @@ export type ExecuteCrossParams = {
   signer: JsonRpcSigner
   step: CrossStep | LifiStep
   updateStatus?: Function
+}
+
+export const findTool = (toolKey: StepTool) => {
+  const allTools = [...supportedExchanges, ...supportedExchangeAggregators, ...supportedBridges]
+  const tool = allTools.find((tool) => tool.key === toolKey)
+  return tool
 }

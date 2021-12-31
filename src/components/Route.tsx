@@ -1,7 +1,7 @@
 import { Button, Steps } from 'antd'
 
 import { formatTokenAmount } from '../services/utils'
-import { getChainById, Route as RouteType, Step } from '../types'
+import { findTool, getChainById, Route as RouteType, Step } from '../types'
 
 interface RouteProps {
   route: RouteType
@@ -10,9 +10,13 @@ interface RouteProps {
 }
 
 const Route = ({ route, selected, onSelect }: RouteProps) => {
-  const formatToolName = (name: string) => {
-    const nameOnly = name.split('-')[0]
-    return nameOnly[0].toUpperCase() + nameOnly.slice(1)
+  const formatToolName = (toolKey: string) => {
+    const tool = findTool(toolKey)
+    if (tool) {
+      return tool.name
+    } else {
+      return toolKey
+    }
   }
 
   const parseStepShort = (step: Step) => {
@@ -20,14 +24,15 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
       case 'swap':
         return (
           <>
-            Swap to {formatTokenAmount(step.action.toToken, step.estimate.toAmount)} via {step.tool}
+            Swap to {formatTokenAmount(step.action.toToken, step.estimate.toAmount)} via{' '}
+            {formatToolName(step.tool)}
           </>
         )
       case 'cross':
         return (
           <>
             Transfer to {formatTokenAmount(step.action.toToken, step.estimate.toAmount)} via{' '}
-            {step.tool}
+            {formatToolName(step.tool)}
           </>
         )
       default:
@@ -68,7 +73,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
             <>
               Single transaction including:
               <br />
-              <ol>
+              <ol style={{ paddingLeft: 22 }}>
                 {step.includedSteps.map(parseStepShort).map((line, index) => (
                   <li key={index}>{line}</li>
                 ))}

@@ -20,7 +20,11 @@ export const formatTokenAmountOnly = (token: Token, amount: string | undefined) 
   }
 
   const floated = new BigNumber(amount).shiftedBy(-token.decimals)
-  return floated.toFixed(4, 1)
+
+  // show at least 4 decimal places and at least two non-zero digests
+  let decimalPlaces = 3
+  while (floated.lt(1 / 10 ** decimalPlaces)) decimalPlaces++
+  return floated.toFixed(decimalPlaces + 1, 1)
 }
 
 export const checkWrappedTokenId = (chainId: number, tokenId: string) => {

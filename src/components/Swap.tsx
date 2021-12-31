@@ -698,11 +698,11 @@ const Swap = ({ transferChains }: SwapProps) => {
   }
 
   return (
-    <Content className="site-layout" style={{ minHeight: 'calc(100vh - 64px)', marginTop: 64 }}>
+    <Content className="site-layout site-layout-swap">
       <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
         {/* Historical Routes */}
         {!!historicalRoutes.length && (
-          <Row justify={'center'} style={{ marginTop: 48 }}>
+          <Row justify={'center'} className="historicalTransfers">
             <Collapse
               defaultActiveKey={['']}
               ghost
@@ -730,7 +730,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
         {/* Active Routes */}
         {!!activeRoutes.length && (
-          <Row justify={'center'} style={{ marginTop: 48 }}>
+          <Row justify={'center'} className="activeTransfers">
             <Collapse
               defaultActiveKey={activeRoutes.length ? ['1'] : ['']}
               ghost
@@ -743,7 +743,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                 className="site-collapse-active-transfer-panel">
                 <div>
                   <TrasactionsTable
-                    routes={activeRoutes}
+                    routes={activeRoutes.reverse()}
                     selectRoute={(route: RouteType) => setSelectedRoute(route)}
                     deleteRoute={(route: RouteType) => {
                       deleteRoute(route)

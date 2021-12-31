@@ -8,6 +8,7 @@ import LiFi, {
   initStatus,
   setStatusDone,
   setStatusFailed,
+  StepTool,
 } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
@@ -26,9 +27,9 @@ import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
   Execution,
+  findTool,
   getChainById,
   getChainByKey,
-  getIcon,
   isCrossStep,
   isLifiStep,
   Route,
@@ -37,14 +38,6 @@ import {
 } from '../types'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
-import {
-  cbridgeAvatar,
-  connextAvatar,
-  hopAvatar,
-  horizonAvatar,
-  oneinchAvatar,
-  paraswapAvatar,
-} from './utils/avatars'
 
 interface SwappingProps {
   route: Route
@@ -147,8 +140,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
               <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
                 {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
                 {'errorMessage' in process &&
-                  `${process.errorMessage.substring(0, 150)}${
-                    process.errorMessage.length > 150 ? '...' : ''
+                  `${process.errorMessage.substring(0, 350)}${
+                    process.errorMessage.length > 350 ? '...' : ''
                   }`}
               </Typography.Text>
             )}
@@ -167,39 +160,18 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const getChainAvatar = (chainKey: ChainKey) => {
     const chain = getChainByKey(chainKey)
-
     return (
       <Tooltip title={chain.name}>
-        <Avatar size="small" src={getIcon(chain.key)} alt={chain.name}></Avatar>
+        <Avatar size="small" src={chain.logoURI} alt={chain.name}></Avatar>
       </Tooltip>
     )
   }
 
-  const getBridgeAvatar = (tool: string) => {
-    switch (tool) {
-      case 'nxtp':
-        return connextAvatar
-      case 'hop':
-        return hopAvatar
-      case 'horizon':
-        return horizonAvatar
-      case 'cbridge':
-        return cbridgeAvatar
-      default:
-        return
-    }
-  }
-
-  const formatToolName = (name: string) => {
-    const nameOnly = name.split('-')[0]
-    return nameOnly[0].toUpperCase() + nameOnly.slice(1)
-  }
-
-  const getExchangeAvatar = (tool: string) => {
-    const name = formatToolName(tool)
+  const getAvatar = (toolKey: StepTool) => {
+    const tool = findTool(toolKey)
     return (
-      <Tooltip title={name}>
-        <Avatar size="small" src={getIcon(name)} alt={name}></Avatar>
+      <Tooltip title={tool?.name}>
+        <Avatar size="small" src={tool?.logoURI} alt={tool?.name}></Avatar>
       </Tooltip>
     )
   }
@@ -217,14 +189,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             position={isMobile ? 'right' : 'right'}
             key={index + '_left'}
             color={color}>
-            <h4>
-              Swap on{' '}
-              {step.tool === '1inch'
-                ? oneinchAvatar
-                : step.tool === 'paraswap'
-                ? paraswapAvatar
-                : getExchangeAvatar(step.tool)}
-            </h4>
+            <h4>Swap on {getAvatar(step.tool)}</h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
               <ArrowRightOutlined />{' '}
@@ -250,7 +215,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             color={color}>
             <h4>
               Transfer from {getChainAvatar(getChainById(action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(action.toChainId).key)} via {getBridgeAvatar(step.tool)}
+              {getChainAvatar(getChainById(action.toChainId).key)} via {getAvatar(step.tool)}
             </h4>
             <span>
               {formatTokenAmount(action.fromToken, estimate.fromAmount)} <ArrowRightOutlined />{' '}
@@ -276,8 +241,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             color={color}>
             <h4>
               LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(step.action.toChainId).key)} via{' '}
-              {getBridgeAvatar(step.tool)}
+              {getChainAvatar(getChainById(step.action.toChainId).key)} via {getAvatar(step.tool)}
             </h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
