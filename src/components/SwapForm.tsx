@@ -1,7 +1,7 @@
 import { SwapOutlined } from '@ant-design/icons'
 import { SubgraphSyncRecord } from '@connext/nxtp-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Col, Input, Row } from 'antd'
+import { Badge, Button, Col, Input, Row, Tooltip } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useRef, useState } from 'react'
@@ -294,6 +294,12 @@ const SwapForm = ({
               bordered={false}
               disabled
             />
+            <Tooltip
+              className="amountTooltip"
+              color={'gray'}
+              title="The final amount might change due to slippage">
+              <Badge size="small" count={'?'} style={{ backgroundColor: 'gray' }} />
+            </Tooltip>
           </div>
         </Col>
         <Col span={14}>
