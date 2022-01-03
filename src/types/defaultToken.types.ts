@@ -74,6 +74,16 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       logoURI: 'https://assets.coingecko.com/coins/images/15099/large/fraction.png?1619691519',
       address: '0xbd80cfa9d93a87d1bb895f810ea348e496611cd4',
     },
+    // RAIDER
+    {
+      name: 'Crypto Raiders',
+      symbol: 'RAIDER',
+      coinKey: 'RAIDER' as CoinKey,
+      decimals: 18,
+      chainId: ChainId.POL,
+      logoURI: 'https://assets.coingecko.com/coins/images/17638/small/Ue3Hfh8.png?1630737936',
+      address: '0xcd7361ac3307d1c5a46b63086a90742ff44c63b3',
+    },
   ],
   [ChainKey.DAI]: [
     findDefaultToken(CoinKey.DAI, ChainId.DAI),
