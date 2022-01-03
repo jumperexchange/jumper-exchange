@@ -461,10 +461,7 @@ const Swap = ({ transferChains }: SwapProps) => {
         } else {
           // balances loaded
           token.amount = getBalance(balances, chain.key, token.address)
-          token.amountRendered =
-            token.amount.gte(0.0001) || token.amount.isZero()
-              ? token.amount.toFixed(4)
-              : token.amount.toFixed()
+          token.amountRendered = formatTokenAmountOnly(token, token.amount)
         }
       }
     }
