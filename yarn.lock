@@ -1119,12 +1119,12 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@connext/nxtp-contracts@0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.1.7.tgz#153ab8a1fef879432c0d8efa707ec873b8f29af4"
-  integrity sha512-yDp8J8QUCwav66/TnJX3HuQ+ADjJkA9/c7I5NLmX6oZS/GkJ+5CmoidurqUF2EQ5BP8xEEaFNO3l9NUo9bT5ag==
+"@connext/nxtp-contracts@0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-contracts/-/nxtp-contracts-0.1.8.tgz#40a021e4f857444d1c0906d2ce54dd83f42211f1"
+  integrity sha512-32bf4yHgztBiami51uuqqYPytgFcetwEb4IbFQJ9YiMW0ntmizP0cycJkeq72HpsqkURYDC/Z0iBotelAR6gFQ==
   dependencies:
-    "@connext/nxtp-utils" "0.1.7"
+    "@connext/nxtp-utils" "0.1.8"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     adv "^0.1.5"
     ajv "^8.6.2"
@@ -1134,14 +1134,14 @@
     hardhat-gas-reporter "^1.0.4"
     typechain "^5.1.2"
 
-"@connext/nxtp-sdk@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.1.7.tgz#ac08f85ee3e877f42d39e58ed92f5b5cdd1add17"
-  integrity sha512-yr5FvYic5UCeZXLcIe4PXPsPO1SkoIBum4Wi1k4hdeuMWnV/L/DZlqrWgEfZrERUXGUwKWQRWOfo3qS0ygtmdg==
+"@connext/nxtp-sdk@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-sdk/-/nxtp-sdk-0.1.8.tgz#1e08ec0af6be9b36defd02d49cdef0a8196b752d"
+  integrity sha512-/bzFIIQe28363mQAC1i5FpA3sWlPnA5pnuJpDFUeBFGyqksuT4O532+Wu8n82b0yxBGrqOQxOSIFFn67WMu6Hw==
   dependencies:
-    "@connext/nxtp-contracts" "0.1.7"
-    "@connext/nxtp-txservice" "0.1.7"
-    "@connext/nxtp-utils" "0.1.7"
+    "@connext/nxtp-contracts" "0.1.8"
+    "@connext/nxtp-txservice" "0.1.8"
+    "@connext/nxtp-utils" "0.1.8"
     "@sinclair/typebox" "^0.20.4"
     ajv "^8.6.2"
     ajv-formats "^2.1.1"
@@ -1152,13 +1152,13 @@
     graphql-tag "^2.12.5"
     pino "^6.13.0"
 
-"@connext/nxtp-txservice@0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.1.7.tgz#3d5c84679356843dab7acd67d7c4a1427a8b4639"
-  integrity sha512-LRAwL6uwLFQQf5gf2mXoJK5rmxzeRRKwVil2r11nPp/MxV6ym/geJSlFkrAv+s5B9ku60sU7878Y8IjQgOIoig==
+"@connext/nxtp-txservice@0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-txservice/-/nxtp-txservice-0.1.8.tgz#5ce97ec9cb2aeb6b4f245be69b00497beec0d4df"
+  integrity sha512-zFn/6GK/WNmvMmRpg/bBzWr6Vww8yQhbN3PtSvWLYWd71eCXZ0yqNVGN0Ar87YzSs97U8zZmDINmnPrzgOEpTQ==
   dependencies:
-    "@connext/nxtp-contracts" "0.1.7"
-    "@connext/nxtp-utils" "0.1.7"
+    "@connext/nxtp-contracts" "0.1.8"
+    "@connext/nxtp-utils" "0.1.8"
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
     ajv "^8.6.2"
@@ -1171,10 +1171,10 @@
     p-queue "6.6.2"
     pino "^6.13.0"
 
-"@connext/nxtp-utils@0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.1.7.tgz#3c7708665487a46d8f92f271ebe4331c995acf77"
-  integrity sha512-1YfpPO7IKoIx5dhLOetqZQlvTsTcGU0CUZZj79elDdlu7n051NPgODp9Y50F3yOdt0Njihc9eUPMgDsFCZrDkw==
+"@connext/nxtp-utils@0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@connext/nxtp-utils/-/nxtp-utils-0.1.8.tgz#3bf30bef29f74d9a1d5fd3949dd07ca398cb7916"
+  integrity sha512-GPGx0xyQZb2aYIrxa+bLk5u6SzMUc8d1f2ieZy/2J5hZV0q6iibRH1UDxC/325XiMWN2yQTpDANaFZyz8n27Mg==
   dependencies:
     "@sinclair/typebox" "^0.20.4"
     "@typescript-eslint/eslint-plugin" "^4.29.2"
@@ -2126,25 +2126,23 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@lifinance/sdk@^0.2.1":
+"@lifinance/sdk@https://github.com/lifinance/sdk.git#LF-186":
   version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.2.3.tgz#eafe3ecc4010dd8d660c05caa0c470b3284d4405"
-  integrity sha512-lYIJW7cKVuTsKvjfYn1ChE3No/57VMRUiSpmXD53mxv2sQbZjmlckI4TDx+OhrByjyXOLwGynhtljT8CI+KOFA==
+  resolved "https://github.com/lifinance/sdk.git#7b106461954a16142f97deee5f3ecec1a56e2da5"
   dependencies:
-    "@connext/nxtp-sdk" "^0.1.7"
+    "@connext/nxtp-sdk" "^0.1.8"
     "@ethersproject/abi" "^5.5.0"
     "@ethersproject/contracts" "^5.4.0"
     "@hop-protocol/sdk" "^0.0.1-beta.282"
-    "@lifinance/types" "^0.8.2"
+    "@lifinance/types" "https://github.com/lifinance/types.git#LF-186"
     axios "^0.24.0"
     bignumber.js "^9.0.1"
     bridge-sdk "^2.13.0"
     ethers "^5.5.2"
 
-"@lifinance/types@^0.8.2":
+"@lifinance/types@https://github.com/lifinance/types.git#LF-186":
   version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.8.2.tgz#a1f6821fc26ff821eb5fe3283bc0049b0824f723"
-  integrity sha512-vCNTjr9HkOyT+XCRE6gFnedzTdN5EJiN4LdoT7EkLW8q5V66+jKiH+CdrQH/s4ASWZ+C6unqsGidc69BqlBtbQ==
+  resolved "https://github.com/lifinance/types.git#55ed3d86240777bcbbd35e7c3ab4e53a17312b6d"
   dependencies:
     ethers "^5.4.7"
 
