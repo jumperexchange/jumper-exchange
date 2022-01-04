@@ -60,8 +60,8 @@ function TrasactionsTable({
     return (
       <span style={{ whiteSpace: 'nowrap' }}>
         <Button
-          style={{ marginRight: 10 }}
-          type="ghost"
+          style={{ marginRight: 10, padding: '3px 16px 4px 16px' }}
+          type="primary"
           shape="round"
           onClick={() => selectRoute(route)}>
           Resume Swap
@@ -69,11 +69,10 @@ function TrasactionsTable({
         <Popconfirm
           title={<>Are you sure to delete this transfer?</>}
           onConfirm={() => deleteRoute(route)}
-          // onCancel={cancel}
           okText="Yes"
           okType="danger"
           cancelText="No">
-          <Button danger type="ghost" shape="round" onClick={() => {}}>
+          <Button style={{ padding: '3px 16px 4px 16px' }} danger type="ghost" shape="round">
             <DeleteOutlined />
           </Button>
         </Popconfirm>
@@ -122,11 +121,6 @@ function TrasactionsTable({
       firstStep.execution?.process?.[0]?.startedAt &&
       new Date(firstStep.execution.process[0].startedAt).toLocaleString()
     const lastStep = route.steps[route.steps.length - 1]
-    // const firstAction = firstStep.action
-    // const firstEstimate = firstStep.estimate
-    // const lastAction = lastStep.action
-    // const lastEstimate = lastStep.estimate
-
     let toChainId = lastStep.action.toChainId
 
     return {

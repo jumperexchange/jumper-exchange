@@ -14,12 +14,17 @@ export const formatTokenAmount = (token: Token, amount: string | undefined) => {
   return formatTokenAmountOnly(token, amount) + ' ' + token.symbol
 }
 
-export const formatTokenAmountOnly = (token: Token, amount: string | undefined) => {
+export const formatTokenAmountOnly = (token: Token, amount: string | BigNumber | undefined) => {
   if (!amount) {
     return '0.0'
   }
 
-  const floated = new BigNumber(amount).shiftedBy(-token.decimals)
+  let floated
+  if (typeof amount === 'string') {
+    floated = new BigNumber(amount).shiftedBy(-token.decimals)
+  } else {
+    floated = amount
+  }
 
   // show at least 4 decimal places and at least two non-zero digests
   let decimalPlaces = 3

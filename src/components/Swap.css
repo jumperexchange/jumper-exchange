@@ -28,7 +28,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .swap-route:hover {
-   -webkit-box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
+  -webkit-box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
   box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
 }
 
@@ -266,6 +266,22 @@ h4.swap-title {
 
 .maxButton:hover {
   opacity: 1;
+}
+
+.amountBadge {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 14px;
+  border-radius: 7px;
+  background-color: gray;
+  color: white;
+  text-align: center;
+  font-weight: 400;
+  position: relative;
+  right: 5px;
+  cursor: default;
 }
 
 .no-route-custom-collapse > .ant-collapse-item > .ant-collapse-header {
