@@ -26,6 +26,7 @@ interface SwapFormProps {
   withdrawAmount: BigNumber
   setWithdrawAmount: Function
   estimatedWithdrawAmount: string
+  estimatedMinWithdrawAmount?: string
 
   transferChains: Array<Chain>
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
@@ -50,6 +51,7 @@ const SwapForm = ({
   withdrawAmount,
   setWithdrawAmount,
   estimatedWithdrawAmount,
+  estimatedMinWithdrawAmount,
 
   transferChains,
   tokens,
@@ -294,12 +296,13 @@ const SwapForm = ({
               bordered={false}
               disabled
             />
-            <Tooltip
-              className="amountTooltip"
-              color={'gray'}
-              title="The final amount might change due to slippage">
-              <Badge size="small" count={'?'} style={{ backgroundColor: 'gray' }} />
-            </Tooltip>
+            {estimatedMinWithdrawAmount && (
+              <Tooltip
+                color={'gray'}
+                title={`The final amount might change due to slippage but will not fall below ${estimatedMinWithdrawAmount}`}>
+                <span className="amountBadge">?</span>
+              </Tooltip>
+            )}
           </div>
         </Col>
         <Col span={14}>
