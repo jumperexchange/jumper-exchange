@@ -268,6 +268,22 @@ h4.swap-title {
   opacity: 1;
 }
 
+.amountBadge {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 14px;
+  border-radius: 7px;
+  background-color: gray;
+  color: white;
+  text-align: center;
+  font-weight: 400;
+  position: relative;
+  right: 5px;
+  cursor: default;
+}
+
 .no-route-custom-collapse > .ant-collapse-item > .ant-collapse-header {
   color: grey;
   text-align: left;

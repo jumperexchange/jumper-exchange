@@ -1,7 +1,7 @@
 import { SwapOutlined } from '@ant-design/icons'
 import { SubgraphSyncRecord } from '@connext/nxtp-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Col, Input, Row } from 'antd'
+import { Button, Col, Input, Row, Tooltip } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useRef, useState } from 'react'
@@ -26,6 +26,7 @@ interface SwapFormProps {
   withdrawAmount: BigNumber
   setWithdrawAmount: Function
   estimatedWithdrawAmount: string
+  estimatedMinWithdrawAmount?: string
 
   transferChains: Array<Chain>
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
@@ -50,6 +51,7 @@ const SwapForm = ({
   withdrawAmount,
   setWithdrawAmount,
   estimatedWithdrawAmount,
+  estimatedMinWithdrawAmount,
 
   transferChains,
   tokens,
@@ -294,6 +296,13 @@ const SwapForm = ({
               bordered={false}
               disabled
             />
+            {!!estimatedMinWithdrawAmount && (
+              <Tooltip
+                color={'gray'}
+                title={`The final amount might change due to slippage but will not fall below ${estimatedMinWithdrawAmount}`}>
+                <span className="amountBadge">?</span>
+              </Tooltip>
+            )}
           </div>
         </Col>
         <Col span={14}>
