@@ -296,7 +296,7 @@ const SwapForm = ({
               bordered={false}
               disabled
             />
-            {estimatedMinWithdrawAmount && (
+            {!!estimatedMinWithdrawAmount && (
               <Tooltip
                 color={'gray'}
                 title={`The final amount might change due to slippage but will not fall below ${estimatedMinWithdrawAmount}`}>
