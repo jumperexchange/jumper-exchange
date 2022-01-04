@@ -72,12 +72,7 @@ function TrasactionsTable({
           okText="Yes"
           okType="danger"
           cancelText="No">
-          <Button
-            style={{ padding: '3px 16px 4px 16px' }}
-            danger
-            type="ghost"
-            shape="round"
-            onClick={() => {}}>
+          <Button style={{ padding: '3px 16px 4px 16px' }} danger type="ghost" shape="round">
             <DeleteOutlined />
           </Button>
         </Popconfirm>
