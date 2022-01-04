@@ -1,7 +1,7 @@
 import { SwapOutlined } from '@ant-design/icons'
 import { SubgraphSyncRecord } from '@connext/nxtp-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Badge, Button, Col, Input, Row, Tooltip } from 'antd'
+import { Button, Col, Input, Row, Tooltip } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useRef, useState } from 'react'
