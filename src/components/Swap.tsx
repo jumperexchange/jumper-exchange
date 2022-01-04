@@ -31,7 +31,7 @@ import { getRpcs } from '../config/connectors'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
-import { deepClone, formatTokenAmountOnly } from '../services/utils'
+import { deepClone, formatTokenAmount, formatTokenAmountOnly } from '../services/utils'
 import {
   Chain,
   ChainId,
@@ -356,11 +356,16 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
-      return '0.0'
+      return {
+        estimate: '0.0',
+      }
     } else {
       const selectedRoute = routes[highlightedIndex]
       const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1]
-      return formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount)
+      return {
+        estimate: formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount),
+        min: formatTokenAmount(lastStep.action.toToken, lastStep.estimate?.toAmountMin),
+      }
     }
   }
 
@@ -461,10 +466,7 @@ const Swap = ({ transferChains }: SwapProps) => {
         } else {
           // balances loaded
           token.amount = getBalance(balances, chain.key, token.address)
-          token.amountRendered =
-            token.amount.gte(0.0001) || token.amount.isZero()
-              ? token.amount.toFixed(4)
-              : token.amount.toFixed()
+          token.amountRendered = formatTokenAmountOnly(token, token.amount)
         }
       }
     }
@@ -781,7 +783,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                   setWithdrawToken={setToTokenAddress}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
-                  estimatedWithdrawAmount={getSelectedWithdraw()}
+                  estimatedWithdrawAmount={getSelectedWithdraw().estimate}
+                  estimatedMinWithdrawAmount={getSelectedWithdraw().min}
                   transferChains={transferChains}
                   tokens={tokens}
                   balances={balances}
