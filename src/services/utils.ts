@@ -15,15 +15,23 @@ export const formatTokenAmount = (token: Token, amount: string | undefined) => {
 }
 
 export const formatTokenAmountOnly = (token: Token, amount: string | BigNumber | undefined) => {
-  if (!amount || (amount instanceof BigNumber && !amount.toNumber())) {
+  if (!amount) {
     return '0.0'
   }
 
   let floated
   if (typeof amount === 'string') {
+    if (amount === '0') {
+      return '0.0'
+    }
+
     floated = new BigNumber(amount).shiftedBy(-token.decimals)
   } else {
     floated = amount
+
+    if (floated.isZero()) {
+      return '0.0'
+    }
   }
 
   // show at least 4 decimal places and at least two non-zero digests
