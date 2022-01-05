@@ -15,7 +15,7 @@ export const formatTokenAmount = (token: Token, amount: string | undefined) => {
 }
 
 export const formatTokenAmountOnly = (token: Token, amount: string | BigNumber | undefined) => {
-  if (!amount) {
+  if (!amount || (amount instanceof BigNumber && !amount.toNumber())) {
     return '0.0'
   }
 
