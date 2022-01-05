@@ -25,26 +25,30 @@ describe('utils', () => {
       })
     })
 
-    describe('when the token has 4 decimals', () => {
-      const SOME_TOKEN_WITH_4_DECIMALS = {
+    describe('when the token has 18 decimals', () => {
+      const SOME_TOKEN_WITH_18_DECIMALS = {
         address: 'some address',
-        decimals: 4,
+        decimals: 18,
         symbol: 'USDC',
         chainId: 100 as ChainId,
         coinKey: 'USDC' as CoinKey,
         name: 'USDC',
       }
 
-      it("should parse '11' as 0.0011", () => {
-        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_4_DECIMALS, '11')).toEqual('0.0011')
+      it("should parse '11' as 0.000000000000000011", () => {
+        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_18_DECIMALS, '11')).toEqual(
+          '0.000000000000000011',
+        )
       })
 
-      it("should parse '1.1' as 0.00011", () => {
-        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_4_DECIMALS, '1.1')).toEqual('0.00011')
+      it("should parse '1999' as 0.0000000000000019", () => {
+        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_18_DECIMALS, '1999')).toEqual(
+          '0.0000000000000019',
+        )
       })
 
       it("should parse BigNumber('11') as 11.0000", () => {
-        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_4_DECIMALS, new BigNumber('11'))).toEqual(
+        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_18_DECIMALS, new BigNumber('11'))).toEqual(
           '11.0000',
         )
       })
@@ -64,8 +68,8 @@ describe('utils', () => {
         expect(formatTokenAmountOnly(SOME_TOKEN_WITH_1_DECIMAL, '11')).toEqual('1.1000')
       })
 
-      it("should parse '1.1' as 0.1100", () => {
-        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_1_DECIMAL, '1.1')).toEqual('0.1100')
+      it("should parse '1999' as 199.9000", () => {
+        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_1_DECIMAL, '1999')).toEqual('199.9000')
       })
 
       it("should parse BigNumber('11') as 11.0000", () => {
@@ -89,8 +93,8 @@ describe('utils', () => {
         expect(formatTokenAmountOnly(SOME_TOKEN_WITH_0_DECIMALS, '11')).toEqual('11.0000')
       })
 
-      it("should parse '1.1' as 1.1000", () => {
-        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_0_DECIMALS, '1.1')).toEqual('1.1000')
+      it("should parse '1999' as 1999.0000", () => {
+        expect(formatTokenAmountOnly(SOME_TOKEN_WITH_0_DECIMALS, '1999')).toEqual('1999.0000')
       })
 
       it("should parse BigNumber('11') as 11.0000", () => {
