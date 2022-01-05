@@ -84,5 +84,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   }
 }
