@@ -90,12 +90,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       const type =
         process.status === 'DONE' ? 'success' : process.status === 'FAILED' ? 'danger' : undefined
       const hasFailed = process.status === 'FAILED'
+      const isLastPendingProcess =
+        index === execution.process.length - 1 && process.status === 'PENDING'
       return (
         <span key={index} style={{ display: 'flex' }}>
           <Typography.Text
             type={type}
             style={{ maxWidth: 250 }}
-            className={isSwapping && process.status === 'PENDING' ? 'flashing' : undefined}>
+            className={isSwapping && isLastPendingProcess ? 'flashing' : undefined}>
             <p>{renderProcessMessage(process)}</p>
 
             {hasFailed && (
