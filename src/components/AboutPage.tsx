@@ -37,10 +37,10 @@ function AboutPage() {
                       </a>
                       <a
                         className="button"
-                        href="https://gitcoin.co/grants/3133/lifinance-the-cross-chain-defi-mesh-widget"
+                        href="https://docs.li.finance/"
                         target="_blank"
                         rel="nofollow noreferrer">
-                        Support on Gitcoin
+                        Check our Docs
                       </a>
                     </div>
                   </div>
