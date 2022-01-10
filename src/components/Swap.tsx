@@ -665,7 +665,7 @@ const Swap = ({ transferChains }: SwapProps) => {
     if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
-          Insufficient Gas on Start Chain
+          Insufficient Gas on Chain
         </Button>
       )
     }
