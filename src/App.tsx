@@ -108,7 +108,7 @@ function App() {
                           Blog
                         </a>
                       </Menu.Item>
-                      <Menu.Item key="blog">
+                      <Menu.Item key="docs">
                         <a
                           href="https://docs.li.finance/"
                           target="_blank"
