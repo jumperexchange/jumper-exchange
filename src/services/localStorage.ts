@@ -138,8 +138,8 @@ const sortRoutesByExecutionDate = (routes: Route[]): Route[] =>
     }
 
     return (
-      routeB.steps[0].execution!.process[0].startedAt -
-      routeA.steps[0].execution!.process[0].startedAt
+      routeB.steps[0].execution.process[0].startedAt -
+      routeA.steps[0].execution.process[0].startedAt
     )
   })
 
