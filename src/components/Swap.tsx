@@ -2,7 +2,7 @@ import './Swap.css'
 
 import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi from '@lifinance/sdk'
+import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Button,
@@ -304,6 +304,10 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [availableBridges, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
+  const [fallbackAccountInformation, setFallbackAccountInformation] = useState<{
+    chainId: number
+    accounts: string[]
+  }>({ chainId: -1, accounts: [] })
 
   // Routes
   const [routes, setRoutes] = useState<Array<RouteType>>([])
@@ -321,6 +325,22 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
+
+  // Loading the current network id on component load. This is necessary to check if the user is on a supported chain or not
+  // web3-react currently requires specifying a list of supported chainIds in v6.
+  // If the user is currently on a chain we did not explicitly define, we don't have any provider
+  // This seems to be solved with a new metamask connector in the newest (unreleased) version. https://github.com/NoahZinsmeister/web3-react
+  // Until we will have to use this fallback
+  useEffect(() => {
+    const provider = new ethers.providers.Web3Provider((window as any).ethereum)
+    const getNetworkId = async () => {
+      const network = await provider.getNetwork()
+      const chainId = network.chainId
+      const accounts = await provider.listAccounts()
+      setFallbackAccountInformation({ chainId, accounts })
+    }
+    getNetworkId()
+  }, [web3])
 
   useEffect(() => {
     const load = async () => {
@@ -371,13 +391,17 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
+    const walletChainIsSupported = supportedChains.some(
+      (chain) => chain.id === fallbackAccountInformation.chainId,
+    )
+    if (!walletChainIsSupported) return
     if (web3.chainId && !fromChainKey) {
       const chain = transferChains.find((chain) => chain.id === web3.chainId)
       if (chain) {
         setFromChainKey(chain.key)
       }
     }
-  }, [web3.chainId, fromChainKey])
+  }, [web3.chainId, fromChainKey, fallbackAccountInformation.chainId])
 
   // update query string
   useEffect(() => {
@@ -617,7 +641,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   }
 
   const submitButton = () => {
-    if (!web3.account) {
+    if (fallbackAccountInformation.accounts.length === 0) {
       return (
         <Button
           shape="round"
@@ -629,7 +653,7 @@ const Swap = ({ transferChains }: SwapProps) => {
         </Button>
       )
     }
-    if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
+    if (fromChainKey && fallbackAccountInformation.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
