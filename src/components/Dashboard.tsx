@@ -193,7 +193,7 @@ const showGasModal = (gas: ChainKey) => {
       break
     case ChainKey.DAI:
       Modal.info({
-        title: 'Gas Info for xDAI chain',
+        title: 'Gas Info for Gnosis chain',
         content: (
           <div>
             <p>
