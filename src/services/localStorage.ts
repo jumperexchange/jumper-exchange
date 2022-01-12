@@ -128,12 +128,30 @@ const readAllRoutes = (): Array<Route> => {
   }
 }
 
+const sortRoutesByExecutionDate = (routes: Route[]): Route[] =>
+  routes.sort((routeA, routeB) => {
+    if (!routeA.steps[0].execution?.process.length) {
+      return -1 // A doesn't have an execution, so move it to the top of the list
+    }
+    if (!routeB.steps[0].execution?.process.length) {
+      return 1 // B doesn't have an execution, so move it to the top of the list
+    }
+
+    return (
+      routeB.steps[0].execution!.process[0].startedAt -
+      routeA.steps[0].execution!.process[0].startedAt
+    )
+  })
+
 const readHistoricalRoutes = (): Array<Route> => {
   if (!isSupported()) {
     return [] as Array<Route>
   }
   const routes = readAllRoutes()
-  return routes.filter((route) => route.steps.every((step) => step.execution?.status === 'DONE'))
+  const historicalRoutes = routes.filter((route) =>
+    route.steps.every((step) => step.execution?.status === 'DONE'),
+  )
+  return sortRoutesByExecutionDate(historicalRoutes)
 }
 
 const readActiveRoutes = (): Array<Route> => {
@@ -141,7 +159,11 @@ const readActiveRoutes = (): Array<Route> => {
     return [] as Array<Route>
   }
   const routes = readAllRoutes()
-  return routes.filter((route) => !route.steps.every((step) => step.execution?.status === 'DONE'))
+  const activeRoutes = routes.filter(
+    (route) => !route.steps.every((step) => step.execution?.status === 'DONE'),
+  )
+
+  return sortRoutesByExecutionDate(activeRoutes)
 }
 
 export {
@@ -152,6 +174,7 @@ export {
   readHideAbout,
   readHistoricalRoutes,
   readWallets,
+  sortRoutesByExecutionDate,
   storeHideAbout,
   storeRoute,
   storeWallets,

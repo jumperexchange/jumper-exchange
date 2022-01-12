@@ -745,7 +745,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                 className="site-collapse-active-transfer-panel">
                 <div>
                   <TrasactionsTable
-                    routes={activeRoutes.reverse()}
+                    routes={activeRoutes}
                     selectRoute={(route: RouteType) => setSelectedRoute(route)}
                     deleteRoute={(route: RouteType) => {
                       deleteRoute(route)
