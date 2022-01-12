@@ -1,4 +1,4 @@
-import { chainKeysToObject, Route, Wallet } from '../types'
+import { chainKeysToObject, Route, Status, Wallet } from '../types'
 
 const isSupported = () => {
   try {
@@ -143,13 +143,17 @@ const sortRoutesByExecutionDate = (routes: Route[]): Route[] =>
     )
   })
 
+const HISTORICAL_STATI: Status[] = ['DONE', 'CANCELLED']
+
 const readHistoricalRoutes = (): Array<Route> => {
   if (!isSupported()) {
     return [] as Array<Route>
   }
   const routes = readAllRoutes()
   const historicalRoutes = routes.filter((route) =>
-    route.steps.every((step) => step.execution?.status === 'DONE'),
+    route.steps.every(
+      (step) => step.execution?.status && HISTORICAL_STATI.includes(step.execution.status),
+    ),
   )
   return sortRoutesByExecutionDate(historicalRoutes)
 }
@@ -160,7 +164,10 @@ const readActiveRoutes = (): Array<Route> => {
   }
   const routes = readAllRoutes()
   const activeRoutes = routes.filter(
-    (route) => !route.steps.every((step) => step.execution?.status === 'DONE'),
+    (route) =>
+      !route.steps.every(
+        (step) => step.execution?.status && HISTORICAL_STATI.includes(step.execution.status),
+      ),
   )
 
   return sortRoutesByExecutionDate(activeRoutes)
