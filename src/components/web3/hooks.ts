@@ -48,8 +48,6 @@ export function useInactiveListener(suppress = false) {
       }
       const handleChainChanged = async (chainId: string | number) => {
         console.log("Handling 'chainChanged' event with payload", chainId)
-        console.log('asdf')
-
         activate(await getInjectedConnector())
       }
       const handleAccountsChanged = async (accounts: string[]) => {
