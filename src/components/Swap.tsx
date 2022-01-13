@@ -1,6 +1,6 @@
 import './Swap.css'
 
-import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { LoadingOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -316,7 +316,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { activate } = useWeb3React()
+  const { active, activate } = useWeb3React()
   const login = async () => activate(await getInjectedConnector())
 
   // Elements used for animations
@@ -619,6 +619,16 @@ const Swap = ({ transferChains }: SwapProps) => {
   }
 
   const submitButton = () => {
+    if (!active) {
+      return (
+        <Button
+          disabled={true}
+          shape="round"
+          type="primary"
+          icon={<LoadingOutlined />}
+          size={'large'}></Button>
+      )
+    }
     if (!web3.account) {
       return (
         <Button
