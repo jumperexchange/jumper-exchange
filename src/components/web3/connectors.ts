@@ -76,6 +76,8 @@ export const getInjectedConnector = async () => {
   const { ethereum } = window as any
   const currentProvider = new providers.Web3Provider(ethereum)
   const chainId = (await currentProvider.getNetwork()).chainId
+  // append the current chain to the supported chains.
+  // can push duplicate ids, when user is on supported chain but that does not seem to make any problems.
   const chains = [...supportedChains.map((chain) => chain.id), chainId]
   return new InjectedConnector({
     supportedChainIds: chains,
