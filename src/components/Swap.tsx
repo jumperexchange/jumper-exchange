@@ -304,10 +304,6 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [availableBridges, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
-  // const [fallbackAccountInformation, setFallbackAccountInformation] = useState<{
-  //   chainId: number
-  //   accounts: string[]
-  // }>({ chainId: -1, accounts: [] })
 
   // Routes
   const [routes, setRoutes] = useState<Array<RouteType>>([])
