@@ -2,13 +2,16 @@ import { useWeb3React } from '@web3-react/core'
 import { Button } from 'antd'
 import React from 'react'
 
-import { injected } from './connectors'
+import { getInjectedConnector } from './connectors'
 
 function ConnectButton() {
   const { activate } = useWeb3React()
 
   return (
-    <Button type="primary" style={{ display: 'block' }} onClick={() => activate(injected)}>
+    <Button
+      type="primary"
+      style={{ display: 'block' }}
+      onClick={async () => activate(await getInjectedConnector())}>
       Connect with MetaMask
     </Button>
   )

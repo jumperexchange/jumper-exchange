@@ -5,7 +5,7 @@ import { Button, Popconfirm, Table } from 'antd'
 
 import { formatTokenAmount } from '../services/utils'
 import { findTool, getChainById, Route } from '../types'
-import { injected } from './web3/connectors'
+import { getInjectedConnector } from './web3/connectors'
 
 interface ActiveTrasactionsTableProps {
   routes: Array<Route>
@@ -42,7 +42,7 @@ function TrasactionsTable({
 }: ActiveTrasactionsTableProps) {
   const web3 = useWeb3React<Web3Provider>()
   const { activate } = useWeb3React()
-  const login = () => activate(injected)
+  const login = async () => activate(await getInjectedConnector())
 
   const renderActionButton = (route: Route) => {
     if (historical) {

@@ -2,24 +2,24 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 
-import { injected } from './connectors'
+import { getInjectedConnector, injected } from './connectors'
 
 export function useEagerConnect() {
-  const { activate, active } = useWeb3React()
+  const { activate, active, library } = useWeb3React()
 
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
-    injected.isAuthorized().then((isAuthorized: boolean) => {
+    injected.isAuthorized().then(async (isAuthorized: boolean) => {
       if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
+        activate(await getInjectedConnector(), undefined, true).catch(() => {
           setTried(true)
         })
       } else {
         setTried(true)
       }
     })
-  }, [activate]) // intentionally only running on mount (make sure it's only mounted once :))
+  }, [activate, library]) // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
@@ -37,24 +37,30 @@ export function useInactiveListener(suppress = false) {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { ethereum } = window as any // TODO: Fix typing
-    if (ethereum && ethereum.on && !active && !error && !suppress) {
-      const handleConnect = () => {
+    if (ethereum && ethereum.on && !error && !suppress) {
+      const handleConnect = async () => {
         console.log("Handling 'connect' event")
-        activate(injected)
-      }
-      const handleChainChanged = (chainId: string | number) => {
-        console.log("Handling 'chainChanged' event with payload", chainId)
-        activate(injected)
-      }
-      const handleAccountsChanged = (accounts: string[]) => {
-        console.log("Handling 'accountsChanged' event with payload", accounts)
-        if (accounts.length > 0) {
-          activate(injected)
+        if (!active) {
+          activate(await getInjectedConnector())
         }
       }
-      const handleNetworkChanged = (networkId: string | number) => {
+      const handleChainChanged = async (chainId: string | number) => {
+        console.log("Handling 'chainChanged' event with payload", chainId)
+        if (!active) {
+          activate(await getInjectedConnector())
+        }
+      }
+      const handleAccountsChanged = async (accounts: string[]) => {
+        console.log("Handling 'accountsChanged' event with payload", accounts)
+        if (accounts.length > 0) {
+          activate(await getInjectedConnector())
+        }
+      }
+      const handleNetworkChanged = async (networkId: string | number) => {
         console.log("Handling 'networkChanged' event with payload", networkId)
-        activate(injected)
+        if (!active) {
+          activate(await getInjectedConnector())
+        }
       }
 
       ethereum.on('connect', handleConnect)

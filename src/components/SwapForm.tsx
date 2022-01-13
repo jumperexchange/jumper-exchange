@@ -9,7 +9,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../types'
 import ChainSelect from './ChainSelect'
 import TokenSelect from './TokenSelect'
-import { injected } from './web3/connectors'
+import { getInjectedConnector } from './web3/connectors'
 
 interface SwapFormProps {
   depositChain?: ChainKey
@@ -67,8 +67,8 @@ const SwapForm = ({
   // Wallet
   const { activate } = useWeb3React()
 
-  const connectWallet = () => {
-    activate(injected)
+  const connectWallet = async () => {
+    activate(await getInjectedConnector())
   }
 
   const onChangeDepositChain = (chainKey: ChainKey) => {

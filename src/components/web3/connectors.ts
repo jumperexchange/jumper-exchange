@@ -71,6 +71,17 @@ export const injected = new InjectedConnector({
   supportedChainIds: supportedChains.map((chain) => chain.id),
 })
 
+// get our standard supported chain and try to append the possibly unknown chain the user is on
+export const getInjectedConnector = async () => {
+  const { ethereum } = window as any
+  const currentProvider = new providers.Web3Provider(ethereum)
+  const chainId = (await currentProvider.getNetwork()).chainId
+  const chains = [...supportedChains.map((chain) => chain.id), chainId]
+  return new InjectedConnector({
+    supportedChainIds: chains,
+  })
+}
+
 export const network = new NetworkConnector({
   urls: Object.fromEntries(
     supportedChains.map((chain) => chain.id).map((chainId) => [chainId, getRpcUrl(chainId)]),
