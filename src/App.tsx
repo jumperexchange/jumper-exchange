@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import WalletButtons from './components/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
 import analytics from './services/analytics'
@@ -140,6 +141,9 @@ function App() {
                   {/* Links */}
                   <Col xs={0} sm={0} md={10} lg={10} xl={10} style={{ paddingRight: 10 }}>
                     <Row justify="end" gutter={15}>
+                      <Col>
+                        <WalletButtons></WalletButtons>
+                      </Col>
                       <Col>
                         <a
                           className="headerIconLink"
