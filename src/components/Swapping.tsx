@@ -22,7 +22,7 @@ import walletIcon from '../assets/wallet.png'
 import { storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
-import { renderProcessMessage } from '../services/processRenderer'
+import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
@@ -120,11 +120,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     return true
   }
 
-  const parseExecution = (execution?: Execution) => {
-    if (!execution) {
+  const parseExecution = (step: Step) => {
+    if (!step.execution) {
       return []
     }
-    return execution.process.map((process, index) => {
+    return step.execution.process.map((process, index) => {
       const type =
         process.status === 'DONE' ? 'success' : process.status === 'FAILED' ? 'danger' : undefined
       const hasFailed = process.status === 'FAILED'
@@ -138,11 +138,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
             {hasFailed && (
               <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
-                {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
-                {'errorMessage' in process &&
-                  `${process.errorMessage.substring(0, 350)}${
-                    process.errorMessage.length > 350 ? '...' : ''
-                  }`}
+                {renderProcessError(step, process)}
               </Typography.Text>
             )}
           </Typography.Text>
@@ -177,7 +173,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   }
 
   const parseStepToTimeline = (step: Step, index: number) => {
-    const executionSteps = parseExecution(step.execution)
+    const executionSteps = parseExecution(step)
     const isDone = step.execution && step.execution.status === 'DONE'
     const isLoading = isSwapping && step.execution && step.execution.status === 'PENDING'
     const isPaused = !isSwapping && step.execution && step.execution.status === 'PENDING'
