@@ -1,8 +1,8 @@
 import './Swap.css'
 
-import { LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { LoadingOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi from '@lifinance/sdk'
+import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Button,
@@ -53,7 +53,7 @@ import Route from './Route'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
 import TrasactionsTable from './TransactionsTable'
-import { injected } from './web3/connectors'
+import { getInjectedConnector } from './web3/connectors'
 
 const history = createBrowserHistory()
 const { Panel } = Collapse
@@ -316,8 +316,8 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { activate } = useWeb3React()
-  const login = () => activate(injected)
+  const { active, activate } = useWeb3React()
+  const login = async () => activate(await getInjectedConnector())
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -371,6 +371,8 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
+    const walletChainIsSupported = supportedChains.some((chain) => chain.id === web3.chainId)
+    if (!walletChainIsSupported) return
     if (web3.chainId && !fromChainKey) {
       const chain = transferChains.find((chain) => chain.id === web3.chainId)
       if (chain) {
@@ -617,6 +619,16 @@ const Swap = ({ transferChains }: SwapProps) => {
   }
 
   const submitButton = () => {
+    if (!active) {
+      return (
+        <Button
+          disabled={true}
+          shape="round"
+          type="primary"
+          icon={<LoadingOutlined />}
+          size={'large'}></Button>
+      )
+    }
     if (!web3.account) {
       return (
         <Button
@@ -745,7 +757,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                 className="site-collapse-active-transfer-panel">
                 <div>
                   <TrasactionsTable
-                    routes={activeRoutes.reverse()}
+                    routes={activeRoutes}
                     selectRoute={(route: RouteType) => setSelectedRoute(route)}
                     deleteRoute={(route: RouteType) => {
                       deleteRoute(route)

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { CoinKey, defaultTokens, getChainById, Token } from '../types'
+import { ChainId, CoinKey, defaultTokens, getChainById, Token } from '../types'
 
 export interface TokenListToken {
   chainId: number
@@ -9,6 +9,10 @@ export interface TokenListToken {
   symbol: string
   decimals: number
   logoURI: string
+}
+
+const blacklist: Record<number, string[]> = {
+  [ChainId.AVA]: ['0x4e1581f01046efdd7a1a2cdb0f82cdd7f71f2e59'],
 }
 
 export const loadTokenList = async (chainId: number): Promise<Array<TokenListToken>> => {
@@ -33,7 +37,11 @@ export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Toke
   const chain = getChainById(chainId)
   const tokenList = await loadTokenList(chainId)
   const filteredTokens = tokenList ? tokenList.filter((token) => token.chainId === chainId) : []
-  const mappedTokens = filteredTokens.map((token) => {
+  const filterBlacklistedTokens = filteredTokens.filter(
+    (token) =>
+      !blacklist[token.chainId] || !blacklist[token.chainId].includes(token.address.toLowerCase()),
+  )
+  const mappedTokens = filterBlacklistedTokens.map((token) => {
     return {
       address: token.address.toLowerCase(),
       symbol: token.symbol,
