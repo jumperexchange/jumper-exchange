@@ -2126,25 +2126,25 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@lifinance/sdk@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.3.3.tgz#1d042fe8262c474b6a9861706615a04c2c08f73c"
-  integrity sha512-4doUWxP/CJmUgiEXbVQL9w8gLnR2Upr0rsMivlNP9GK+medmSYreng9thkcPwVDqGBLeQP9PiYACXe7ecVJN2w==
+"@lifinance/sdk@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.0.tgz#d0b679abbad4291dcdf7bc688fb9baff7cd5929d"
+  integrity sha512-oBuzBzBEXi1Jli5rTfK7QTohWt+fjyx+fdnf44uWY2UkNgakrf32CjQs0jdoFJA4pVRcl/xq3TmklEweWFEB5w==
   dependencies:
     "@connext/nxtp-sdk" "^0.1.8"
     "@ethersproject/abi" "^5.5.0"
     "@ethersproject/contracts" "^5.4.0"
     "@hop-protocol/sdk" "^0.0.1-beta.282"
-    "@lifinance/types" "0.9.2"
+    "@lifinance/types" "0.9.4"
     axios "^0.24.0"
     bignumber.js "^9.0.1"
     bridge-sdk "^2.13.0"
     ethers "^5.5.2"
 
-"@lifinance/types@0.9.2":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.9.2.tgz#a9db8c0db0457178bd7295b76a650df8ea0eaf49"
-  integrity sha512-0LbYQx++v5djz0n3mLpNy8HPefAtQThwQXmglTwJXYCrmKeACvBp5fmBV0Vwgl+KB5kNnSkzLaV7Uvo7Yfht2Q==
+"@lifinance/types@0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.9.4.tgz#ec403337791a998c605da9a709dbd9b2248a63a8"
+  integrity sha512-mXIcELeMeqM4CrExqutWYcpCP+pAMpaAMmUYIHnkWnS3AVwMzLxAwCNcgRHbnjbwubrNJ2Abe5HyWu9dB+3XNQ==
   dependencies:
     ethers "^5.4.7"
 
