@@ -36,7 +36,8 @@ export const formatTokenAmountOnly = (token: Token, amount: string | BigNumber |
 
   // show at least 4 decimal places and at least two non-zero digests
   let decimalPlaces = 3
-  while (floated.lt(1 / 10 ** decimalPlaces)) decimalPlaces++
+  // since values can in theory be negative we need to use the absolute value to determine the decimal places
+  while (floated.absoluteValue().lt(1 / 10 ** decimalPlaces)) decimalPlaces++
   return floated.toFixed(decimalPlaces + 1, 1)
 }
 
