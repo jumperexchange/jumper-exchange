@@ -2104,10 +2104,10 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-5.50.0.tgz#29c6419e8379d496ab6d0426eadf3c4d100cd186"
   integrity sha512-swKHYCOZUGyVt4ge0u8a7AwNcA//h4nx5wIi0sruGye1IJ5Cva0GyK9L2/WdX+kWVTKp92ZiEo1df31lrWGPgA==
 
-"@lifinance/sdk@^0.3.3":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.3.4.tgz#a838fa90835b9a93b56b34a377c35fd79a5c0671"
-  integrity sha512-E9f3013HvmR/cQ0tbiPnDzTgWvGnE8FO8IjhsyisgKTSLoSc67E4OBU87rrSk3RubGpqt647v9OqJCP2Sour9g==
+"@lifinance/sdk@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.1.tgz#c3355a82248ba6005a0cda3ee5479e182265ebdd"
+  integrity sha512-gtJ3RY83KMbhvdAQ0mCaedaDA8xTynQePbyczZ8bhnKUyLNz25k/k+1cH7rUDcQlHyVP942Y5L+KLcMPGuOYrQ==
   dependencies:
     "@connext/nxtp-sdk" "^0.1.8"
     "@ethersproject/abi" "^5.5.0"
