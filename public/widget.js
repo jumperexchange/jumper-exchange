@@ -1,5 +1,5 @@
 (function () {
-  const host = 'https://li.finance' // 'https://li.finance';
+  const host = 'https://li.finance'
   let config = {
     elementId: 'lifi-widget',
     mode: 'drawer', // default | drawer,
@@ -35,9 +35,6 @@
       }
     }
   }
-
-  //globalObject = handler;
-  // globalObject.config = config;
 
   function init() {
     const element = document.getElementById(config.elementId);
