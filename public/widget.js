@@ -181,7 +181,7 @@
     setTimeout(function () {
       target.classList.add(drawerSettings.visibleClass);
       trapFocus(target);
-    }, 0);
+    }, 50);
   };
 
   function closeDrawer(event) {
@@ -192,7 +192,7 @@
     toggleAccessibility(trigger);
     setTimeout(function () {
       target.classList.remove(drawerSettings.activeClass);
-    }, 0);
+    }, 300);
   };
 
   function clickHandler(event) {

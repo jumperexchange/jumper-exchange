@@ -90,6 +90,7 @@
 .lifi__button {
   background-color: transparent;
   position: fixed;
+  width: 48px;
   top: 50%;
   z-index: 9999;
   cursor: pointer;
@@ -197,15 +198,18 @@
   display: flex;
   height: 40px;
   justify-content: center;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateZ(0);
 }
 
 .lifi__button[aria-expanded=true] .lifi__button__text::before {
   opacity: 1;
+  transform: translateZ(0);
 }
 
 .lifi__button[aria-expanded=true] .lifi__button__text>span {
   opacity: 0;
+  transform: translateZ(0);
 }
 
 @media only screen and (min-width: 480px) {
