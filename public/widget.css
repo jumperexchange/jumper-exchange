@@ -74,16 +74,16 @@
   height: 24px;
 }
 
-.lifi__drawer.is-active {
+.lifi__drawer.lifi__is-active {
   display: block;
 }
 
-.lifi__drawer.is-visible .lifi__drawer__wrapper {
+.lifi__drawer.lifi__is-visible .lifi__drawer__wrapper {
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
-.lifi__drawer.is-visible .lifi__drawer__overlay {
+.lifi__drawer.lifi__is-visible .lifi__drawer__overlay {
   opacity: 0.5;
 }
 
@@ -110,7 +110,7 @@
   outline: none;
 }
 
-.is-visible+.lifi__button {
+.lifi__is-visible+.lifi__button {
   -webkit-transform: translate3d(-100vw, 0, 0);
   transform: translate3d(-100vw, 0, 0);
 }
@@ -217,7 +217,7 @@
     max-width: var(--drawer-width);
   }
 
-  .is-visible+.lifi__button {
+  .lifi__is-visible+.lifi__button {
     -webkit-transform: translate3d(calc(var(--drawer-width) * -1), 0, 0);
     transform: translate3d(calc(var(--drawer-width) * -1), 0, 0);
   }

@@ -13,8 +13,8 @@
     },
   };
   const drawerSettings = {
-    activeClass: 'is-active',
-    visibleClass: 'is-visible',
+    activeClass: 'lifi__is-active',
+    visibleClass: 'lifi__is-visible',
     targetAttribute: 'data-drawer-target',
     triggerAttribute: 'data-drawer-trigger',
     closeAttribute: 'data-drawer-close',
