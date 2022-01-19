@@ -9,7 +9,7 @@ import {
   storeWallets,
 } from '../../services/localStorage'
 import { chainKeysToObject } from '../../types'
-import { injected } from './connectors'
+import { getInjectedConnector, injected } from './connectors'
 
 const addToActiveWallets = (address: string | null | undefined) => {
   if (!address) return
@@ -40,7 +40,7 @@ function ConnectButton() {
     const accountAddress = await injected.getAccount()
     removeFromDeativatedWallets(accountAddress)
     addToActiveWallets(accountAddress)
-    activate(injected)
+    activate(await getInjectedConnector())
   }
 
   return (

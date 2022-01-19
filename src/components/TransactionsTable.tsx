@@ -1,11 +1,11 @@
-import { DeleteOutlined, LoginOutlined } from '@ant-design/icons'
+import { DeleteOutlined, LoadingOutlined, LoginOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Popconfirm, Table } from 'antd'
 
 import { formatTokenAmount } from '../services/utils'
 import { findTool, getChainById, Route } from '../types'
-import { injected } from './web3/connectors'
+import { getInjectedConnector } from './web3/connectors'
 
 interface ActiveTrasactionsTableProps {
   routes: Array<Route>
@@ -41,8 +41,8 @@ function TrasactionsTable({
   historical,
 }: ActiveTrasactionsTableProps) {
   const web3 = useWeb3React<Web3Provider>()
-  const { activate } = useWeb3React()
-  const login = () => activate(injected)
+  const { active, activate } = useWeb3React()
+  const login = async () => activate(await getInjectedConnector())
 
   const renderActionButton = (route: Route) => {
     if (historical) {
@@ -53,6 +53,14 @@ function TrasactionsTable({
       )
     }
     if (!web3.account) {
+      if (!active) {
+        return (
+          <Button disabled={true} type="ghost" shape="round" icon={<LoadingOutlined />}>
+            Connect Wallet
+          </Button>
+        )
+      }
+
       return (
         <Button type="ghost" shape="round" icon={<LoginOutlined />} onClick={() => login()}>
           Connect Wallet

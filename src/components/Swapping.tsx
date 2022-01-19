@@ -1,13 +1,9 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, {
-  createAndPushProcess,
   ExecutionSettings,
   getEthereumDecyptionHook,
   getEthereumPublicKeyHook,
-  initStatus,
-  setStatusDone,
-  setStatusFailed,
   StepTool,
 } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -86,40 +82,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
   }, [])
 
-  const checkChain = async (step: Step) => {
-    const updateFunction = (step: Step, status: Execution) => {
-      step.execution = status
-      storeRoute(route)
-      updateRoute(route)
-    }
-
-    const { status, update } = initStatus(
-      (status: Execution) => updateFunction(step, status),
-      step.execution,
-    )
-    const chain = getChainById(step.action.fromChainId)
-    const switchProcess = createAndPushProcess(
-      'switchProcess',
-      update,
-      status,
-      `Change Chain to ${chain.name}`,
-    )
-    try {
-      const switched = await switchChain(step.action.fromChainId)
-      if (!switched) {
-        throw new Error('Chain was not switched')
-      }
-    } catch (e: any) {
-      if (e.message) switchProcess.errorMessage = e.message
-      if (e.code) switchProcess.errorCode = e.code
-      setStatusFailed(update, status, switchProcess)
-      setIsSwapping(false)
-      return false
-    }
-    setStatusDone(update, status, switchProcess)
-    return true
-  }
-
   const parseExecution = (execution?: Execution) => {
     if (!execution) {
       return []
@@ -128,12 +90,14 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       const type =
         process.status === 'DONE' ? 'success' : process.status === 'FAILED' ? 'danger' : undefined
       const hasFailed = process.status === 'FAILED'
+      const isLastPendingProcess =
+        index === execution.process.length - 1 && process.status === 'PENDING'
       return (
         <span key={index} style={{ display: 'flex' }}>
           <Typography.Text
             type={type}
             style={{ maxWidth: 250 }}
-            className={isSwapping && process.status === 'PENDING' ? 'flashing' : undefined}>
+            className={isSwapping && isLastPendingProcess ? 'flashing' : undefined}>
             <p>{renderProcessMessage(process)}</p>
 
             {hasFailed && (
@@ -302,8 +266,8 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const signer = web3.library.getSigner()
 
     const settings: ExecutionSettings = {
-      updateCallback: updateCallback,
-      switchChainHook: switchChainHook,
+      updateCallback,
+      switchChainHook,
       decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
       getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
@@ -342,13 +306,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const switchChainHook = async (requiredChainId: number) => {
     if (!web3.account || !web3.library) return
-    // check if execution stopped because of a required chain switch
-    const chainSwitchStep = steps.find((step) => step.action.fromChainId === requiredChainId)
-    if (chainSwitchStep && requiredChainId !== web3.chainId) {
-      if (await checkChain(chainSwitchStep)) {
-        return web3.library.getSigner()
+    if ((await web3.library.getSigner().getChainId()) !== requiredChainId) {
+      const switched = await switchChain(requiredChainId)
+      if (!switched) {
+        throw new Error('Chain was not switched')
       }
     }
+    return web3.library.getSigner()
   }
 
   // called on every execution status change

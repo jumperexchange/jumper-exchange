@@ -5,6 +5,8 @@ build
 
 #specific files
 public/index.html
+public/widget.js
+public/widget.css
 tsconfig.json
 .vscode/settings.json
 package.json

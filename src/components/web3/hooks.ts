@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 
 import { isWalletDeactivated } from '../../services/utils'
-import { injected } from './connectors'
+import { getInjectedConnector, injected } from './connectors'
 
 export function useEagerConnect() {
   const { activate, active, deactivate } = useWeb3React()
@@ -14,27 +14,26 @@ export function useEagerConnect() {
     const eagerConnect = async () => {
       // get account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
       const accountAddress = await injected.getAccount()
-
       if (isWalletDeactivated(accountAddress as string)) {
         deactivate()
-        setTried(true)
         return
       }
 
-      // check if permissions were given
-      injected.isAuthorized().then((isAuthorized: boolean) => {
-        if (isAuthorized) {
-          activate(injected, undefined, true).catch(() => {
-            setTried(true)
-          })
-        } else {
+      if (await injected.isAuthorized()) {
+        activate(await getInjectedConnector(), undefined, true).catch(() => {
           setTried(true)
-        }
-      })
+        })
+      } else {
+        setTried(true)
+      }
     }
 
+    // Run this on mount and every time the 'active' state changes.
+    // I.E: switches to chain that is not supported:
+    // This would cause the library to switch to inactive.
+    // getInjectedConnector() would fetch connectors for all supported Chains and the current unsupported one.
     eagerConnect()
-  }, [activate]) // intentionally only running on mount (make sure it's only mounted once :))
+  }, [activate, active])
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
@@ -53,23 +52,23 @@ export function useInactiveListener(suppress = false) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { ethereum } = window as any // TODO: Fix typing
     if (ethereum && ethereum.on && !active && !error && !suppress) {
-      const handleConnect = () => {
+      const handleConnect = async () => {
         console.log("Handling 'connect' event")
-        activate(injected)
+        activate(await getInjectedConnector())
       }
-      const handleChainChanged = (chainId: string | number) => {
+      const handleChainChanged = async (chainId: string | number) => {
         console.log("Handling 'chainChanged' event with payload", chainId)
-        activate(injected)
+        activate(await getInjectedConnector())
       }
-      const handleAccountsChanged = (accounts: string[]) => {
+      const handleAccountsChanged = async (accounts: string[]) => {
         console.log("Handling 'accountsChanged' event with payload", accounts)
         if (accounts.length > 0) {
-          activate(injected)
+          activate(await getInjectedConnector())
         }
       }
-      const handleNetworkChanged = (networkId: string | number) => {
+      const handleNetworkChanged = async (networkId: string | number) => {
         console.log("Handling 'networkChanged' event with payload", networkId)
-        activate(injected)
+        activate(await getInjectedConnector())
       }
 
       ethereum.on('connect', handleConnect)
