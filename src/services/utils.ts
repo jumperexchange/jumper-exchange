@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { Contract } from 'ethers'
 
 import { getChainById, Step, Token, wrappedTokens } from '../types'
+import { readDeactivatedWallets } from './localStorage'
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
   if (!amount) {
@@ -113,4 +114,11 @@ export const isTransactionMined = async (
     return true
   }
   return false
+}
+
+export const isWalletDeactivated = (address: string): boolean => {
+  const lowerCaseAddress = address.toLowerCase()
+  const deactivatedWallets = readDeactivatedWallets()
+  const deactivatedAddresses = deactivatedWallets.map((wallet) => wallet.address.toLowerCase())
+  return deactivatedAddresses.includes(lowerCaseAddress)
 }

@@ -1,14 +1,51 @@
 import { DisconnectOutlined } from '@ant-design/icons'
 import { useWeb3React } from '@web3-react/core'
-import { Button } from 'antd'
+import { Button, Modal } from 'antd'
+
+import {
+  readDeactivatedWallets,
+  readWallets,
+  storeDeactivatedWallets,
+  storeWallets,
+} from '../../services/localStorage'
+import { chainKeysToObject } from '../../types'
+
+const removeFromActiveWallets = (address: string | null | undefined) => {
+  if (!address) return
+  const lowerCaseAddress = address.toLowerCase()
+  const wallets = readWallets()
+  const filteredWallets = wallets.filter((wallet) => wallet.address !== lowerCaseAddress)
+  storeWallets(filteredWallets)
+}
+
+const addToDeactivatedWallets = (address: string | null | undefined) => {
+  if (!address) return
+  const lowerCaseAddress = address.toLowerCase()
+  const deactivatedWallets = readDeactivatedWallets()
+  deactivatedWallets.push({
+    address: lowerCaseAddress,
+    loading: false,
+    portfolio: chainKeysToObject([]),
+  })
+  storeDeactivatedWallets(deactivatedWallets)
+}
 
 function DisconnectButton() {
-  const { deactivate } = useWeb3React()
+  const { deactivate, account } = useWeb3React()
+
+  const handleDisconnect = () => {
+    removeFromActiveWallets(account)
+    addToDeactivatedWallets(account)
+    deactivate()
+  }
 
   return (
-    <Button shape="round" danger icon={<DisconnectOutlined />} onClick={() => deactivate()}>
-      Disconnect
-    </Button>
+    <>
+      <Button shape="round" danger icon={<DisconnectOutlined />} onClick={() => handleDisconnect()}>
+        Deactivate Wallet
+      </Button>
+      <Modal></Modal>
+    </>
   )
 }
 

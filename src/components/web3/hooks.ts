@@ -2,23 +2,38 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 
+import { isWalletDeactivated } from '../../services/utils'
 import { injected } from './connectors'
 
 export function useEagerConnect() {
-  const { activate, active } = useWeb3React()
+  const { activate, active, deactivate } = useWeb3React()
 
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
-    injected.isAuthorized().then((isAuthorized: boolean) => {
-      if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
-          setTried(true)
-        })
-      } else {
+    const eagerConnect = async () => {
+      // get account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
+      const accountAddress = await injected.getAccount()
+
+      if (isWalletDeactivated(accountAddress as string)) {
+        deactivate()
         setTried(true)
+        return
       }
-    })
+
+      // check if permissions were given
+      injected.isAuthorized().then((isAuthorized: boolean) => {
+        if (isAuthorized) {
+          activate(injected, undefined, true).catch(() => {
+            setTried(true)
+          })
+        } else {
+          setTried(true)
+        }
+      })
+    }
+
+    eagerConnect()
   }, [activate]) // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag

@@ -63,6 +63,36 @@ const readWallets = (): Array<Wallet> => {
   }
 }
 
+const storeDeactivatedWallets = (wallets: Wallet[]) => {
+  if (isSupported()) {
+    localStorage.setItem('deactivatedWallets', JSON.stringify(wallets.map((item) => item.address)))
+  }
+}
+
+const readDeactivatedWallets = (): Array<Wallet> => {
+  if (!isSupported()) {
+    return []
+  }
+
+  const walletsString = localStorage.getItem('deactivatedWallets')
+  if (walletsString) {
+    try {
+      const addresses = JSON.parse(walletsString)
+      return addresses.map((address: string) => {
+        return {
+          address: address,
+          loading: false,
+          portfolio: chainKeysToObject([]),
+        }
+      })
+    } catch (e) {
+      return []
+    }
+  } else {
+    return []
+  }
+}
+
 const storeHideAbout = (hide: boolean) => {
   if (isSupported()) {
     localStorage.setItem('nxtpHideDemo', hide ? 'true' : 'false')
@@ -178,10 +208,12 @@ export {
   deleteRoute,
   isSupported,
   readActiveRoutes,
+  readDeactivatedWallets,
   readHideAbout,
   readHistoricalRoutes,
   readWallets,
   sortRoutesByExecutionDate,
+  storeDeactivatedWallets,
   storeHideAbout,
   storeRoute,
   storeWallets,
