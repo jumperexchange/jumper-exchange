@@ -3,7 +3,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Popconfirm, Table } from 'antd'
 
-import { formatTokenAmount } from '../services/utils'
+import { formatTokenAmount, isWalletDeactivated } from '../services/utils'
 import { findTool, getChainById, Route } from '../types'
 import { getInjectedConnector } from './web3/connectors'
 
@@ -53,7 +53,7 @@ function TrasactionsTable({
       )
     }
     if (!web3.account) {
-      if (!active) {
+      if (!active && isWalletDeactivated(web3.account)) {
         return (
           <Button disabled={true} type="ghost" shape="round" icon={<LoadingOutlined />}>
             Connect Wallet
