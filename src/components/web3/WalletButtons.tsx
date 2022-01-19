@@ -3,13 +3,14 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Button } from 'antd'
 
+import { isWalletDeactivated } from '../../services/utils'
 import ConnectButton from './ConnectButton'
 import DisconnectButton from './DisconnectButton'
 
 function WalletButtons() {
   const web3 = useWeb3React<Web3Provider>()
 
-  if (!web3.active) {
+  if (!web3.active && isWalletDeactivated(web3.account)) {
     return (
       <Button
         disabled

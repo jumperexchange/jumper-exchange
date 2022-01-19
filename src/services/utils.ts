@@ -48,7 +48,8 @@ export const sleep = (mills: number) => {
   })
 }
 
-export const isWalletDeactivated = (address: string): boolean => {
+export const isWalletDeactivated = (address: string | null | undefined): boolean => {
+  if (!address) return false
   const lowerCaseAddress = address.toLowerCase()
   const deactivatedWallets = readDeactivatedWallets()
   const deactivatedAddresses = deactivatedWallets.map((wallet) => wallet.address.toLowerCase())

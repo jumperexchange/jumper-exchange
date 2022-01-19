@@ -14,7 +14,7 @@ export function useEagerConnect() {
     const eagerConnect = async () => {
       // get account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
       const accountAddress = await injected.getAccount()
-      if (isWalletDeactivated(accountAddress as string)) {
+      if (isWalletDeactivated(accountAddress)) {
         deactivate()
         return
       }

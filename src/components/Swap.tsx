@@ -31,7 +31,12 @@ import { getRpcs } from '../config/connectors'
 import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
-import { deepClone, formatTokenAmount, formatTokenAmountOnly } from '../services/utils'
+import {
+  deepClone,
+  formatTokenAmount,
+  formatTokenAmountOnly,
+  isWalletDeactivated,
+} from '../services/utils'
 import {
   Chain,
   ChainId,
@@ -619,7 +624,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   }
 
   const submitButton = () => {
-    if (!active) {
+    if (!active && isWalletDeactivated(web3.account)) {
       return (
         <Button
           disabled={true}
