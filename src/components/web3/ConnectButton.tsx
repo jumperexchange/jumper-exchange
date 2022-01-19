@@ -33,7 +33,11 @@ const removeFromDeativatedWallets = (address: string | null | undefined) => {
   storeDeactivatedWallets(deactivatedWalletsWithoutAccount)
 }
 
-function ConnectButton() {
+type ConnectButtonPropType = {
+  style?: React.CSSProperties
+}
+
+function ConnectButton({ style }: ConnectButtonPropType) {
   const { activate } = useWeb3React()
 
   const handleConnect = async () => {
@@ -45,10 +49,10 @@ function ConnectButton() {
 
   return (
     <Button
+      style={style}
       shape="round"
       type="primary"
       icon={<WalletOutlined />}
-      size={'large'}
       onClick={async () => await handleConnect()}>
       Connect with MetaMask
     </Button>

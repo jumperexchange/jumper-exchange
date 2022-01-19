@@ -806,9 +806,14 @@ const Dashboard = () => {
           </Button>,
         ]}>
         {!web3.account ? (
-          <ConnectButton />
+          <ConnectButton
+            style={{
+              display: 'block',
+              margin: ' auto 0 16px 0',
+            }}
+          />
         ) : (
-          <Button style={{ display: 'block' }}>
+          <Button style={{ display: 'block', margin: ' auto 0 16px 0' }}>
             Connected with {web3.account.substr(0, 4)}...
           </Button>
         )}

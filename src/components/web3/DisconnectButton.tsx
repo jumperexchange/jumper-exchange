@@ -30,7 +30,11 @@ const addToDeactivatedWallets = (address: string | null | undefined) => {
   storeDeactivatedWallets(deactivatedWallets)
 }
 
-function DisconnectButton() {
+type DisconnectButtonPropType = {
+  style?: React.CSSProperties
+}
+
+function DisconnectButton({ style }: DisconnectButtonPropType) {
   const { deactivate, account } = useWeb3React()
 
   const handleDisconnect = () => {
@@ -41,7 +45,12 @@ function DisconnectButton() {
 
   return (
     <>
-      <Button shape="round" danger icon={<DisconnectOutlined />} onClick={() => handleDisconnect()}>
+      <Button
+        style={style}
+        shape="round"
+        danger
+        icon={<DisconnectOutlined />}
+        onClick={() => handleDisconnect()}>
         Deactivate Wallet
       </Button>
       <Modal></Modal>
