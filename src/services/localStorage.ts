@@ -93,6 +93,17 @@ const readDeactivatedWallets = (): Array<Wallet> => {
   }
 }
 
+const storeHideDisconnectPopup = (shouldHide: boolean) => {
+  if (!isSupported()) return
+  localStorage.setItem('hideDisconnetPopup', JSON.stringify(shouldHide))
+}
+
+const readHideDisconnectPopup = (): boolean => {
+  if (!isSupported()) return false
+  const shouldHideString = localStorage.getItem('hideDisconnetPopup')
+  return JSON.parse(shouldHideString as string) === true
+}
+
 const storeHideAbout = (hide: boolean) => {
   if (isSupported()) {
     localStorage.setItem('nxtpHideDemo', hide ? 'true' : 'false')
@@ -210,11 +221,13 @@ export {
   readActiveRoutes,
   readDeactivatedWallets,
   readHideAbout,
+  readHideDisconnectPopup,
   readHistoricalRoutes,
   readWallets,
   sortRoutesByExecutionDate,
   storeDeactivatedWallets,
   storeHideAbout,
+  storeHideDisconnectPopup,
   storeRoute,
   storeWallets,
 }
