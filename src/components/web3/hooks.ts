@@ -13,9 +13,11 @@ export function useEagerConnect() {
   useEffect(() => {
     const eagerConnect = async () => {
       // get account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
-      const accountAddress = await injected.getAccount()
-      if (isWalletDeactivated(accountAddress)) {
+      // const accountAddress = await injected.getAccount()
+      const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
+      if (isWalletDeactivated(currentlySelectedUserAddress)) {
         deactivate()
+        setTried(true)
         return
       }
 
@@ -47,7 +49,6 @@ export function useEagerConnect() {
 
 export function useInactiveListener(suppress = false) {
   const { active, error, activate } = useWeb3React()
-
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { ethereum } = window as any // TODO: Fix typing
