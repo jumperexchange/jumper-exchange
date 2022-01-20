@@ -15,7 +15,8 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 
 import { getTokenBalancesForChainsFromDebank } from '../services/balances'
-import { readWallets, storeWallets } from '../services/localStorage'
+import { readWallets } from '../services/localStorage'
+import { isWalletDeactivated } from '../services/utils'
 import {
   Amounts,
   ChainId,
@@ -506,6 +507,12 @@ const Dashboard = () => {
     )
   }
 
+  // update registeredWallets on activate or deactivate
+  useEffect(() => {
+    if (isWalletDeactivated(web3.account)) return
+    setRegisteredWallets(readWallets())
+  }, [web3.account])
+
   const buildWalletColumns = () => {
     var walletColumns: Array<ColomnType> = []
     registeredWallets.forEach((wallet) => {
@@ -679,10 +686,6 @@ const Dashboard = () => {
     }
     setRegisteredWallets((registeredWallets) => [...registeredWallets, newWallet])
   }
-
-  useEffect(() => {
-    storeWallets(registeredWallets)
-  }, [registeredWallets])
 
   // Add Wallet Modal Handlers
   const resolveEnsName = async (name: string) => {
