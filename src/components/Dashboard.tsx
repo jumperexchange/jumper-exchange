@@ -488,9 +488,13 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
 
 // actual component
 const Dashboard = () => {
-  const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() => {
-    return readWallets()
-  })
+  const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() =>
+    readWallets().map((address) => ({
+      address: address,
+      loading: false,
+      portfolio: chainKeysToObject([]),
+    })),
+  )
   const web3 = useWeb3React()
   const [columns, setColumns] = useState<Array<ColomnType>>(initialColumns)
   const [walletModalVisible, setWalletModalVisible] = useState(false)
@@ -510,7 +514,13 @@ const Dashboard = () => {
   // update registeredWallets on activate or deactivate
   useEffect(() => {
     if (isWalletDeactivated(web3.account)) return
-    setRegisteredWallets(readWallets())
+    setRegisteredWallets(
+      readWallets().map((address) => ({
+        address: address,
+        loading: false,
+        portfolio: chainKeysToObject([]),
+      })),
+    )
   }, [web3.account])
 
   const buildWalletColumns = () => {

@@ -8,18 +8,13 @@ import {
   storeDeactivatedWallets,
   storeWallets,
 } from '../../services/localStorage'
-import { chainKeysToObject } from '../../types'
 import { getInjectedConnector, injected } from './connectors'
 
 const addToActiveWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()
   const activeWallets = readWallets()
-  activeWallets.push({
-    address: lowerCaseAddress,
-    loading: false,
-    portfolio: chainKeysToObject([]),
-  })
+  activeWallets.push(lowerCaseAddress)
   storeWallets(activeWallets)
 }
 
@@ -28,7 +23,7 @@ const removeFromDeativatedWallets = (address: string | null | undefined) => {
   const lowerCaseAddress = address.toLowerCase()
   const deactivatedWallets = readDeactivatedWallets()
   const deactivatedWalletsWithoutAccount = deactivatedWallets.filter(
-    (wallet) => wallet.address !== lowerCaseAddress,
+    (wallet) => wallet !== lowerCaseAddress,
   )
   storeDeactivatedWallets(deactivatedWalletsWithoutAccount)
 }

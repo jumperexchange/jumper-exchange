@@ -52,6 +52,6 @@ export const isWalletDeactivated = (address: string | null | undefined): boolean
   if (!address) return false
   const lowerCaseAddress = address.toLowerCase()
   const deactivatedWallets = readDeactivatedWallets()
-  const deactivatedAddresses = deactivatedWallets.map((wallet) => wallet.address.toLowerCase())
+  const deactivatedAddresses = deactivatedWallets.map((address) => address.toLowerCase())
   return deactivatedAddresses.includes(lowerCaseAddress)
 }

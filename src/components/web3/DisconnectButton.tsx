@@ -12,7 +12,6 @@ import {
   storeHideDisconnectPopup,
   storeWallets,
 } from '../../services/localStorage'
-import { chainKeysToObject } from '../../types'
 
 const { Text } = Typography
 
@@ -20,7 +19,7 @@ const removeFromActiveWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()
   const wallets = readWallets()
-  const filteredWallets = wallets.filter((wallet) => wallet.address !== lowerCaseAddress)
+  const filteredWallets = wallets.filter((address) => address !== lowerCaseAddress)
   storeWallets(filteredWallets)
 }
 
@@ -28,11 +27,7 @@ const addToDeactivatedWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()
   const deactivatedWallets = readDeactivatedWallets()
-  deactivatedWallets.push({
-    address: lowerCaseAddress,
-    loading: false,
-    portfolio: chainKeysToObject([]),
-  })
+  deactivatedWallets.push(lowerCaseAddress)
   storeDeactivatedWallets(deactivatedWallets)
 }
 

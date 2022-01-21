@@ -1,4 +1,4 @@
-import { chainKeysToObject, Route, Status, Wallet } from '../types'
+import { Route, Status } from '../types'
 
 const isSupported = () => {
   try {
@@ -33,28 +33,21 @@ const clearLocalStorage = () => {
   }
 }
 
-const storeWallets = (wallets: Array<Wallet>) => {
+const storeWallets = (wallets: Array<string>) => {
   if (isSupported()) {
-    localStorage.setItem('wallets', JSON.stringify(wallets.map((item) => item.address)))
+    const lowerCaseWallets = wallets.map((address) => address.toLowerCase())
+    localStorage.setItem('wallets', JSON.stringify(Array.from(new Set(lowerCaseWallets))))
   }
 }
 
-const readWallets = (): Array<Wallet> => {
+const readWallets = (): Array<string> => {
   if (!isSupported()) {
     return []
   }
-
   const walletsString = localStorage.getItem('wallets')
   if (walletsString) {
     try {
-      const addresses = JSON.parse(walletsString)
-      return addresses.map((address: string) => {
-        return {
-          address: address,
-          loading: false,
-          portfolio: chainKeysToObject([]),
-        }
-      })
+      return JSON.parse(walletsString)
     } catch (e) {
       return []
     }
@@ -63,28 +56,24 @@ const readWallets = (): Array<Wallet> => {
   }
 }
 
-const storeDeactivatedWallets = (wallets: Wallet[]) => {
+const storeDeactivatedWallets = (wallets: string[]) => {
   if (isSupported()) {
-    localStorage.setItem('deactivatedWallets', JSON.stringify(wallets.map((item) => item.address)))
+    const lowerCaseWallets = wallets.map((address) => address.toLowerCase())
+    localStorage.setItem(
+      'deactivatedWallets',
+      JSON.stringify(Array.from(new Set(lowerCaseWallets))),
+    )
   }
 }
 
-const readDeactivatedWallets = (): Array<Wallet> => {
+const readDeactivatedWallets = (): Array<string> => {
   if (!isSupported()) {
     return []
   }
-
   const walletsString = localStorage.getItem('deactivatedWallets')
   if (walletsString) {
     try {
-      const addresses = JSON.parse(walletsString)
-      return addresses.map((address: string) => {
-        return {
-          address: address,
-          loading: false,
-          portfolio: chainKeysToObject([]),
-        }
-      })
+      return JSON.parse(walletsString)
     } catch (e) {
       return []
     }
