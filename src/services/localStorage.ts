@@ -12,7 +12,7 @@ const isSupported = () => {
   }
 }
 
-// TODO: Migrating old localStorage key. Can be removed after being deployed for a while (17.12.2021)
+// TODO: Migrating old localStorage key. Can be removed after being deployed for a while (deployed on 17.12.2021)
 const migrateOldProperties = () => {
   if (!isSupported()) return
   const alreadyMigrated = localStorage.getItem('routes')

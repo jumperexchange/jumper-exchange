@@ -8,7 +8,19 @@ import {
   WalletOutlined,
 } from '@ant-design/icons'
 import { useWeb3React } from '@web3-react/core'
-import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd'
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  Input,
+  Modal,
+  Row,
+  Skeleton,
+  Table,
+  Tooltip,
+  Typography,
+} from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
@@ -801,9 +813,10 @@ const Dashboard = () => {
         onOk={handleWalletModalAdd}
         onCancel={handleWalletModalClose}
         zIndex={800}
+        closable={!!registeredWallets.length}
         footer={[
           // only show close if other wallets have been added already
-          registeredWallets.length === 0 ? (
+          registeredWallets.length ? (
             <Button key="back" onClick={handleWalletModalClose}>
               Close
             </Button>
@@ -818,26 +831,27 @@ const Dashboard = () => {
             {walletModalLoading ? 'Loading' : 'Add'}
           </Button>,
         ]}>
-        {!web3.account ? (
-          <ConnectButton
-            style={{
-              display: 'block',
-              margin: ' auto 0 16px 0',
-            }}
-          />
-        ) : (
-          <Button style={{ display: 'block', margin: ' auto 0 16px 0' }}>
-            Connected with {web3.account.substr(0, 4)}...
-          </Button>
-        )}
-        Enter a wallet address / ens domain:
+        <div className="connected-wallets-section" style={{ marginBottom: '32px' }}>
+          {!web3.account ? (
+            <ConnectButton style={{ display: 'block', margin: ' auto' }} />
+          ) : (
+            <Button shape="round" style={{ display: 'block', margin: ' auto' }}>
+              Connected with {web3.account.substr(0, 4)}...
+            </Button>
+          )}
+        </div>
+        <Typography.Text style={{ display: 'block', margin: '0 auto', textAlign: 'center' }}>
+          Temporarily inspect a wallet address / ens domain:
+        </Typography.Text>
         <Input
           size="large"
           placeholder="0x..."
           prefix={<WalletOutlined />}
-          value={getModalAddressSuggestion()}
           onChange={(event) => setWalletModalAddress(event.target.value)}
           disabled={walletModalLoading}
+          style={{
+            borderRadius: 6,
+          }}
         />
       </Modal>
     </Content>
