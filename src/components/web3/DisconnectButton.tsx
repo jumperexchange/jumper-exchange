@@ -55,7 +55,10 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
   useEffect(() => {
     library
       .lookupAddress(account)
-      .then((name: string) => setWalletIdentifier(name))
+      .then((name: string) => {
+        if (!name) return setWalletIdentifier('Wallet')
+        setWalletIdentifier(name)
+      })
       .catch((e: unknown) => setWalletIdentifier('Wallet'))
   }, [library, account])
 
