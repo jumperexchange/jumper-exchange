@@ -33,9 +33,10 @@ const addToDeactivatedWallets = (address: string | null | undefined) => {
 
 type DisconnectButtonPropType = {
   style?: React.CSSProperties
+  className?: string
 }
 
-function DisconnectButton({ style }: DisconnectButtonPropType) {
+function DisconnectButton({ style, className }: DisconnectButtonPropType) {
   const { deactivate, account } = useWeb3React()
 
   const [hideDisconnectPopup] = useState<boolean>(readHideDisconnectPopup())
@@ -74,9 +75,9 @@ function DisconnectButton({ style }: DisconnectButtonPropType) {
     return (
       <>
         <Button
-          style={style}
+          className={className}
+          style={{ borderRadius: 6 }}
           onClick={() => handleDisconnect()}
-          shape="round"
           danger
           icon={<DisconnectOutlined />}>
           Deactivate Wallet
@@ -86,8 +87,12 @@ function DisconnectButton({ style }: DisconnectButtonPropType) {
   } else {
     return (
       <>
-        <Popover placement="bottom" content={infoContent} trigger="click">
-          <Button style={style} shape="round" danger icon={<DisconnectOutlined />}>
+        <Popover content={infoContent} trigger="click">
+          <Button
+            className={className}
+            style={{ borderRadius: 6 }}
+            danger
+            icon={<DisconnectOutlined />}>
             Deactivate Wallet
           </Button>
         </Popover>

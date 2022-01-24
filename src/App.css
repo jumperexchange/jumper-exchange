@@ -77,16 +77,7 @@
   color: #c930e4;
   border: 1px solid #c930e4;
   background: white;
-
-  line-height: 1;
-  padding: 10px;
   border-radius: 6px;
-}
-
-.lifiSupport.support-header {
-  position: absolute;
-  top: 14px;
-  right: 14px;
 }
 
 .lifiSupport.support-content {
@@ -95,12 +86,21 @@
 
 .lifiSupport:hover {
   background: #c930e4;
+  border-color: #c930e4;
   color: white;
 }
 
-@media only screen and (max-width: 768px) {
+.ant-btn.ant-btn-primary.wallet-buttons.wallet-header {
+  border-radius: 6px !important;
+}
+
+.ant-btn.ant-btn-primary.wallet-buttons.wallet-content {
+  display: none;
+}
+
+@media only screen and (max-width: 934px) {
   .lifiSupport.support-header {
-    visibility: hidden;
+    display: none;
   }
 
   .lifiSupport.support-content {
@@ -109,6 +109,23 @@
     top: 60px;
     right: 14px;
     z-index: 99;
+    line-height: 1;
+    padding: 10px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .ant-btn.ant-btn-primary.wallet-buttons.wallet-header {
+    display: none;
+  }
+
+  .ant-btn.ant-btn-primary.wallet-buttons.wallet-content {
+    display: block !important;
+    position: fixed !important;
+    bottom: 8px !important;
+    right: 14px !important;
+    border-radius: 6px !important;
+    z-index: 99 !important;
   }
 }
 

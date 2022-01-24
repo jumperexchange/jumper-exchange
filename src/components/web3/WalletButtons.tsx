@@ -7,22 +7,21 @@ import { isWalletDeactivated } from '../../services/utils'
 import ConnectButton from './ConnectButton'
 import DisconnectButton from './DisconnectButton'
 
-function WalletButtons() {
+type WalletButtonsPropType = {
+  className?: string
+}
+
+function WalletButtons({ className }: WalletButtonsPropType) {
   const web3 = useWeb3React<Web3Provider>()
 
   if (!web3.active && isWalletDeactivated(web3.account)) {
     return (
-      <Button
-        disabled
-        shape="round"
-        type="primary"
-        icon={<LoadingOutlined />}
-        size={'large'}></Button>
+      <Button className={className} disabled type="primary" icon={<LoadingOutlined />}></Button>
     )
   } else if (!web3.account) {
-    return <ConnectButton></ConnectButton>
+    return <ConnectButton className={className}></ConnectButton>
   } else {
-    return <DisconnectButton></DisconnectButton>
+    return <DisconnectButton className={className}></DisconnectButton>
   }
 }
 

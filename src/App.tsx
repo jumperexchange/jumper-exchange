@@ -138,12 +138,15 @@ function App() {
                     </Menu>
                   </Col>
 
-                  {/* Links */}
-                  <Col xs={0} sm={0} md={10} lg={10} xl={10} style={{ paddingRight: 10 }}>
+                  {/* Rigth */}
+                  <Col
+                    xs={0}
+                    sm={0}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    style={{ float: 'right', paddingRight: 10 }}>
                     <Row justify="end" gutter={15}>
-                      <Col>
-                        <WalletButtons></WalletButtons>
-                      </Col>
                       <Col>
                         <a
                           className="headerIconLink"
@@ -163,13 +166,16 @@ function App() {
                         </a>
                       </Col>
                       <Col>
-                        <a
-                          className="lifiSupport"
+                        <Button
+                          className="lifiSupport support-header"
                           href="https://discord.gg/lifi"
                           target="_blank"
                           rel="nofollow noreferrer">
-                          Support (Discord)
-                        </a>
+                          Support
+                        </Button>
+                      </Col>
+                      <Col>
+                        <WalletButtons className="wallet-buttons wallet-header"></WalletButtons>
                       </Col>
                     </Row>
                   </Col>
@@ -183,6 +189,7 @@ function App() {
                   rel="nofollow noreferrer">
                   Support
                 </a>
+                <WalletButtons className="wallet-buttons wallet-content"></WalletButtons>
 
                 <Switch>
                   <Redirect exact from="/" to="/swap" />
