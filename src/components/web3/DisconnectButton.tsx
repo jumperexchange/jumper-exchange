@@ -1,7 +1,7 @@
 import { DisconnectOutlined } from '@ant-design/icons'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Checkbox, Image, Popover, Typography } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import metamaskGif from '../../assets/gifs/metamask_disconnect.gif'
 import {
@@ -37,9 +37,10 @@ type DisconnectButtonPropType = {
 }
 
 function DisconnectButton({ style, className }: DisconnectButtonPropType) {
-  const { deactivate, account } = useWeb3React()
+  const { deactivate, account, library } = useWeb3React()
 
   const [hideDisconnectPopup] = useState<boolean>(readHideDisconnectPopup())
+  const [walletIdentifier, setWalletIdentifier] = useState<string>('Wallet')
 
   const handleDisconnect = () => {
     removeFromActiveWallets(account)
@@ -50,6 +51,13 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
   const handleHideDisconnectPopup = (event: any) => {
     storeHideDisconnectPopup(event.target.checked)
   }
+
+  useEffect(() => {
+    library
+      .lookupAddress(account)
+      .then((name: string) => setWalletIdentifier(name))
+      .catch((e: unknown) => setWalletIdentifier('Wallet'))
+  }, [library, account])
 
   const infoContent = (
     <>
@@ -66,7 +74,7 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
         type="link"
         onClick={() => handleDisconnect()}
         style={{ display: 'block', paddingLeft: 0 }}>
-        <u>Deactivate Wallet </u>
+        <u>Deactivate {walletIdentifier} </u>
       </Button>
     </>
   )
@@ -80,7 +88,7 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
           onClick={() => handleDisconnect()}
           danger
           icon={<DisconnectOutlined />}>
-          Deactivate Wallet
+          Deactivate {walletIdentifier}
         </Button>
       </>
     )
@@ -93,7 +101,7 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
             style={{ borderRadius: 6 }}
             danger
             icon={<DisconnectOutlined />}>
-            Deactivate Wallet
+            Deactivate {walletIdentifier}
           </Button>
         </Popover>
       </>
