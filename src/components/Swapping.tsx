@@ -22,7 +22,6 @@ import { renderProcessError, renderProcessMessage } from '../services/processRen
 import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
-  Execution,
   findTool,
   getChainById,
   getChainByKey,
@@ -41,13 +40,13 @@ interface SwappingProps {
   onSwapDone: Function
 }
 
-const getFinalBalace = (account: string, route: Route): Promise<TokenAmount | null> => {
+const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
   const lastStep = route.steps[route.steps.length - 1]
-  const { toToken } = getRecevingInfo(lastStep)
+  const { toToken } = getReceivingInfo(lastStep)
   return LiFi.getTokenBalance(account, toToken)
 }
 
-const getRecevingInfo = (step: Step) => {
+const getReceivingInfo = (step: Step) => {
   const toChain = getChainById(step.action.toChainId)
   const toToken = step.action.toToken
   return { toChain, toToken }
@@ -86,12 +85,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (!step.execution) {
       return []
     }
-    return step.execution.process.map((process, index) => {
+    return step.execution.process.map((process, index, processList) => {
       const type =
         process.status === 'DONE' ? 'success' : process.status === 'FAILED' ? 'danger' : undefined
       const hasFailed = process.status === 'FAILED'
-      const isLastPendingProcess =
-        index === step.execution.process.length - 1 && process.status === 'PENDING'
+      const isLastPendingProcess = index === processList.length - 1 && process.status === 'PENDING'
       return (
         <span key={index} style={{ display: 'flex' }}>
           <Typography.Text
@@ -250,7 +248,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalace(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalance(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -280,7 +278,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalace(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalance(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -328,7 +326,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const isDone = steps.filter((step) => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
       const lastStep = steps[steps.length - 1]
-      const { toChain } = getRecevingInfo(lastStep)
+      const { toChain } = getReceivingInfo(lastStep)
       return (
         <Space direction="vertical">
           <Typography.Text strong>Swap Successful!</Typography.Text>
