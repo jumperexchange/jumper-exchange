@@ -28,7 +28,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { getRpcs } from '../config/connectors'
-import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
+import {
+  deleteRoute,
+  readActiveRoutes,
+  readHistoricalRoutes,
+  storeRoute,
+} from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import { deepClone, formatTokenAmount, formatTokenAmountOnly } from '../services/utils'
@@ -321,6 +326,22 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    // get new execution status on page load
+    activeRoutes.map((route) => {
+      if (!web3 || !web3.library) return
+      const settings = {
+        updateCallback: (updatedRoute: RouteType) => {
+          storeRoute(updatedRoute)
+          setActiveRoutes(readActiveRoutes())
+          setHistoricalRoutes(readHistoricalRoutes())
+        },
+      }
+      LiFi.resumeRoute(web3.library.getSigner(), route, settings)
+      LiFi.moveExecutionToBackground(route)
+    })
+  }, [web3.library])
 
   useEffect(() => {
     const load = async () => {
@@ -732,6 +753,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                     routes={historicalRoutes}
                     selectRoute={() => {}}
                     deleteRoute={(route: RouteType) => {
+                      LiFi.stopExecution(route)
                       deleteRoute(route)
                       setHistoricalRoutes(readHistoricalRoutes())
                     }}
@@ -760,6 +782,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                     routes={activeRoutes}
                     selectRoute={(route: RouteType) => setSelectedRoute(route)}
                     deleteRoute={(route: RouteType) => {
+                      LiFi.stopExecution(route)
                       deleteRoute(route)
                       setActiveRoutes(readActiveRoutes())
                     }}></TrasactionsTable>
