@@ -46,7 +46,7 @@ export const renderProcessError = (step: Step, process: Process) => {
   return (
     <>
       {errorMessage ? <div style={{ marginBottom: '5px' }}>{errorMessage}</div> : ''}
-      <div>{htmlMessage}</div>
+      {htmlMessage}
     </>
   )
 }
