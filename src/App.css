@@ -73,49 +73,47 @@
   animation: blinker 1s linear infinite;
 }
 
-.lifiSupport {
+.lifi-content-social-links {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  background: white;
+  padding: 16px;
+  border-top-right-radius: 8px;
+  -webkit-box-shadow: 0px 0px 50px -18px #000000;
+  box-shadow: 0px 0px 50px -18px #000000;
+  display: flex;
+  align-items: center;
+}
+
+.lifi-support-link {
   color: #c930e4;
   border: 1px solid #c930e4;
   background: white;
   border-radius: 6px;
+  margin: 0 8px;
 }
 
-.lifiSupport.support-content {
-  display: none;
-}
-
-.lifiSupport:hover {
+.lifi-support-link:hover {
   background: #c930e4;
   border-color: #c930e4;
   color: white;
 }
 
-.ant-btn.ant-btn-primary.wallet-buttons.wallet-header {
+.ant-btn.ant-btn-primary.wallet-buttons {
   border-radius: 6px !important;
 }
-
-.ant-btn.ant-btn-primary.wallet-buttons.wallet-content {
-  display: none;
+.icon-link {
+  margin: 0 8px 0 8px;
+  font-size: 24px;
 }
 
-@media only screen and (max-width: 934px) {
-  .lifiSupport.support-header {
-    display: none;
-  }
-
-  .lifiSupport.support-content {
-    display: block;
-    position: fixed;
-    top: 60px;
-    right: 14px;
-    z-index: 99;
-    line-height: 1;
-    padding: 10px;
-  }
+.icon-link:hover {
+  color: #c930e4;
 }
 
 @media only screen and (max-width: 767px) {
-  .ant-btn.ant-btn-primary.wallet-buttons.wallet-header {
+  /* .ant-btn.ant-btn-primary.wallet-buttons.wallet-header {
     display: none;
   }
 
@@ -126,20 +124,11 @@
     right: 14px !important;
     border-radius: 6px !important;
     z-index: 99 !important;
-  }
+  } */
 }
 
 .ant-btn .anticon-spin {
   height: 18px;
   padding-top: 1px;
   padding-bottom: 1px;
-}
-
-.headerIconLink {
-  color: white;
-  font-size: 20px;
-}
-
-.headerIconLink:hover {
-  color: #c930e4;
 }

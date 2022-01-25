@@ -138,7 +138,7 @@ function App() {
                     </Menu>
                   </Col>
 
-                  {/* Rigth */}
+                  {/* Right */}
                   <Col
                     xs={0}
                     sm={0}
@@ -148,49 +148,14 @@ function App() {
                     style={{ float: 'right', paddingRight: 10 }}>
                     <Row justify="end" gutter={15}>
                       <Col>
-                        <a
-                          className="headerIconLink"
-                          href="https://twitter.com/lifiprotocol"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <TwitterOutlined />
-                        </a>
-                      </Col>
-                      <Col>
-                        <a
-                          className="headerIconLink"
-                          href="https://github.com/lifinance"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <GithubOutlined />
-                        </a>
-                      </Col>
-                      <Col>
-                        <Button
-                          className="lifiSupport support-header"
-                          href="https://discord.gg/lifi"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          Support
-                        </Button>
-                      </Col>
-                      <Col>
-                        <WalletButtons className="wallet-buttons wallet-header"></WalletButtons>
+                        <WalletButtons className="wallet-buttons"></WalletButtons>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
               </Header>
-              <Content>
-                <a
-                  className="lifiSupport support-content"
-                  href="https://discord.gg/lifi"
-                  target="_blank"
-                  rel="nofollow noreferrer">
-                  Support
-                </a>
-                <WalletButtons className="wallet-buttons wallet-content"></WalletButtons>
 
+              <Content>
                 <Switch>
                   <Redirect exact from="/" to="/swap" />
                   <Route
@@ -264,6 +229,32 @@ function App() {
                   />
                 </Switch>
               </Content>
+
+              {/* Social Links */}
+              <div className="lifi-content-social-links">
+                <a
+                  className="icon-link"
+                  href="https://twitter.com/lifiprotocol"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  <TwitterOutlined />
+                </a>
+                <a
+                  className="icon-link"
+                  href="https://github.com/lifinance"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  <GithubOutlined />
+                </a>
+                <Button
+                  className="lifi-support-link"
+                  href="https://discord.gg/lifi"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  Support
+                </Button>
+              </div>
+
               {/* <Footer></Footer> */}
               <NotificationOverlay />
             </Layout>
