@@ -1,6 +1,6 @@
 import './App.css'
 
-import { GithubOutlined, TwitterOutlined, WalletOutlined } from '@ant-design/icons'
+import { DownOutlined, GithubOutlined, TwitterOutlined, WalletOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
@@ -79,7 +79,7 @@ function App() {
               <Header style={{ position: 'fixed', zIndex: 900, width: '100%', padding: 0 }}>
                 <Row>
                   {/* Menu */}
-                  <Col xs={24} sm={24} md={14} lg={14} xl={14}>
+                  <Col xs={24} sm={24} md={14} lg={24} xl={24}>
                     <Link to="/" className="wordmark">
                       <img
                         src={logo}
@@ -90,7 +90,12 @@ function App() {
                       />
                       <span>Li.Finance</span>
                     </Link>
-                    <Menu theme="light" mode="horizontal" defaultSelectedKeys={path ? [path] : []}>
+                    <Menu
+                      theme="light"
+                      mode="horizontal"
+                      defaultSelectedKeys={path ? [path] : []}
+                      overflowedIndicator={<DownOutlined />}
+                      inlineCollapsed={false}>
                       <Menu.Item key="/dashboard">
                         <Link to="/dashboard">Dashboard</Link>
                       </Menu.Item>
@@ -128,29 +133,10 @@ function App() {
                           Developer Waitinglist
                         </a>
                       </Menu.Item>
-                      {false && (
-                        <Menu.Item key="wallets" style={{ float: 'right' }}>
-                          <Button shape="round" icon={<WalletOutlined />}>
-                            Add Wallets
-                          </Button>
-                        </Menu.Item>
-                      )}
-                    </Menu>
-                  </Col>
-
-                  {/* Right */}
-                  <Col
-                    xs={0}
-                    sm={0}
-                    md={10}
-                    lg={10}
-                    xl={10}
-                    style={{ float: 'right', paddingRight: 10 }}>
-                    <Row justify="end" gutter={15}>
-                      <Col>
+                      <Menu.Item key="wallet-button">
                         <WalletButtons className="wallet-buttons"></WalletButtons>
-                      </Col>
-                    </Row>
+                      </Menu.Item>
+                    </Menu>
                   </Col>
                 </Row>
               </Header>

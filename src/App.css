@@ -55,6 +55,16 @@
   border: none !important;
 }
 
+.ant-menu-overflow-item {
+  opacity: 1 !important;
+  color: white;
+}
+.ant-menu.ant-menu-sub.ant-menu-vertical {
+  background-color: white !important;
+  opacity: 1;
+  z-index: 999;
+}
+
 .beta-badge {
   position: absolute;
   background: #c930e4;
@@ -126,7 +136,6 @@
     z-index: 99 !important;
   } */
 }
-
 .ant-btn .anticon-spin {
   height: 18px;
   padding-top: 1px;
