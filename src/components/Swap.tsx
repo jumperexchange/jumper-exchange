@@ -331,6 +331,18 @@ const Swap = ({ transferChains }: SwapProps) => {
     // get new execution status on page load
     activeRoutes.map((route) => {
       if (!web3 || !web3.library) return
+      // check if it makes sense to fetch the status of a route:
+      // if failed or action required it makes no sense
+      const routeFailed = route.steps.some(
+        (step) => step.execution && step.execution.status === 'FAILED',
+      )
+      const actionRequired = route.steps.some(
+        (step) =>
+          step.execution &&
+          step.execution.process.some((process) => process.status === 'ACTION_REQUIRED'),
+      )
+
+      if (routeFailed || actionRequired) return
       const settings = {
         updateCallback: (updatedRoute: RouteType) => {
           storeRoute(updatedRoute)
