@@ -2,7 +2,7 @@ import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-d
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, {
   ExecutionSettings,
-  getEthereumDecyptionHook,
+  getEthereumDecryptionHook,
   getEthereumPublicKeyHook,
   StepTool,
 } from '@lifinance/sdk'
@@ -231,7 +231,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
-      decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
+      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
       getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
     storeRoute(route)
@@ -262,7 +262,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
-      decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
+      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
       getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
 
