@@ -1,6 +1,6 @@
 import './App.css'
 
-import { DownOutlined, GithubOutlined, TwitterOutlined, WalletOutlined } from '@ant-design/icons'
+import { DownOutlined, GithubOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
