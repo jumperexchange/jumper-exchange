@@ -270,6 +270,7 @@ interface StartParams {
   withdrawChain?: ChainKey
   withdrawToken?: string
 }
+
 let startParams: StartParams
 
 interface SwapProps {
@@ -318,6 +319,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+  const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -329,30 +331,34 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   useEffect(() => {
     // get new execution status on page load
-    activeRoutes.map((route) => {
-      if (!web3 || !web3.library) return
-      // check if it makes sense to fetch the status of a route:
-      // if failed or action required it makes no sense
-      const routeFailed = route.steps.some(
-        (step) => step.execution && step.execution.status === 'FAILED',
-      )
-      const actionRequired = route.steps.some(
-        (step) =>
-          step.execution &&
-          step.execution.process.some((process) => process.status === 'ACTION_REQUIRED'),
-      )
+    if (!restartedOnPageLoad) {
+      setRestartedOnPageLoad(true)
 
-      if (routeFailed || actionRequired) return
-      const settings = {
-        updateCallback: (updatedRoute: RouteType) => {
-          storeRoute(updatedRoute)
-          setActiveRoutes(readActiveRoutes())
-          setHistoricalRoutes(readHistoricalRoutes())
-        },
-      }
-      LiFi.resumeRoute(web3.library.getSigner(), route, settings)
-      LiFi.moveExecutionToBackground(route)
-    })
+      activeRoutes.map((route) => {
+        if (!web3 || !web3.library) return
+        // check if it makes sense to fetch the status of a route:
+        // if failed or action required it makes no sense
+        const routeFailed = route.steps.some(
+          (step) => step.execution && step.execution.status === 'FAILED',
+        )
+        const actionRequired = route.steps.some(
+          (step) =>
+            step.execution &&
+            step.execution.process.some((process) => process.status === 'ACTION_REQUIRED'),
+        )
+
+        if (routeFailed || actionRequired) return
+        const settings = {
+          updateCallback: (updatedRoute: RouteType) => {
+            storeRoute(updatedRoute)
+            setActiveRoutes(readActiveRoutes())
+            setHistoricalRoutes(readHistoricalRoutes())
+          },
+        }
+        LiFi.resumeRoute(web3.library.getSigner(), route, settings)
+        LiFi.moveExecutionToBackground(route)
+      })
+    }
   }, [web3.library])
 
   useEffect(() => {
