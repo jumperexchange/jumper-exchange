@@ -2,7 +2,7 @@ import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-d
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, {
   ExecutionSettings,
-  getEthereumDecyptionHook,
+  getEthereumDecryptionHook,
   getEthereumPublicKeyHook,
   StepTool,
 } from '@lifinance/sdk'
@@ -18,11 +18,10 @@ import walletIcon from '../assets/wallet.png'
 import { storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
-import { renderProcessMessage } from '../services/processRenderer'
+import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount } from '../services/utils'
 import {
   ChainKey,
-  Execution,
   findTool,
   getChainById,
   getChainByKey,
@@ -41,13 +40,13 @@ interface SwappingProps {
   onSwapDone: Function
 }
 
-const getFinalBalace = (account: string, route: Route): Promise<TokenAmount | null> => {
+const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
   const lastStep = route.steps[route.steps.length - 1]
-  const { toToken } = getRecevingInfo(lastStep)
+  const { toToken } = getReceivingInfo(lastStep)
   return LiFi.getTokenBalance(account, toToken)
 }
 
-const getRecevingInfo = (step: Step) => {
+const getReceivingInfo = (step: Step) => {
   const toChain = getChainById(step.action.toChainId)
   const toToken = step.action.toToken
   return { toChain, toToken }
@@ -82,16 +81,15 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     }
   }, [])
 
-  const parseExecution = (execution?: Execution) => {
-    if (!execution) {
+  const parseExecution = (step: Step) => {
+    if (!step.execution) {
       return []
     }
-    return execution.process.map((process, index) => {
+    return step.execution.process.map((process, index, processList) => {
       const type =
         process.status === 'DONE' ? 'success' : process.status === 'FAILED' ? 'danger' : undefined
       const hasFailed = process.status === 'FAILED'
-      const isLastPendingProcess =
-        index === execution.process.length - 1 && process.status === 'PENDING'
+      const isLastPendingProcess = index === processList.length - 1 && process.status === 'PENDING'
       return (
         <span key={index} style={{ display: 'flex' }}>
           <Typography.Text
@@ -102,11 +100,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
             {hasFailed && (
               <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
-                {'errorCode' in process && `Error Code: ${process.errorCode} \n`}
-                {'errorMessage' in process &&
-                  `${process.errorMessage.substring(0, 350)}${
-                    process.errorMessage.length > 350 ? '...' : ''
-                  }`}
+                {renderProcessError(step, process)}
               </Typography.Text>
             )}
           </Typography.Text>
@@ -141,7 +135,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   }
 
   const parseStepToTimeline = (step: Step, index: number) => {
-    const executionSteps = parseExecution(step.execution)
+    const executionSteps = parseExecution(step)
     const isDone = step.execution && step.execution.status === 'DONE'
     const isLoading = isSwapping && step.execution && step.execution.status === 'PENDING'
     const isPaused = !isSwapping && step.execution && step.execution.status === 'PENDING'
@@ -237,7 +231,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
-      decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
+      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
       getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
     storeRoute(route)
@@ -254,7 +248,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalace(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalance(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -268,7 +262,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
-      decryptHook: getEthereumDecyptionHook(await signer.getAddress()),
+      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
       getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
 
@@ -284,7 +278,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalace(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalance(web3.account!, route))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -332,7 +326,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const isDone = steps.filter((step) => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
       const lastStep = steps[steps.length - 1]
-      const { toChain } = getRecevingInfo(lastStep)
+      const { toChain } = getReceivingInfo(lastStep)
       return (
         <Space direction="vertical">
           <Typography.Text strong>Swap Successful!</Typography.Text>
