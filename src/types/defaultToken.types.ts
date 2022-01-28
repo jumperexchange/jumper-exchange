@@ -119,6 +119,16 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.FTM),
     findDefaultToken(CoinKey.DAI, ChainId.FTM),
     findDefaultToken(CoinKey.WBTC, ChainId.FTM),
+    
+    //For marketing 0xDAO token
+    {
+      address: '0xc165d941481e68696f43ee6e99bfb2b23e0e3114', 
+      chainId: ChainId.FTM, 
+      decimals: 18, 
+      logoURI: ' https://assets.coingecko.com/coins/images/22888/small/rjks-OoT_400x400.jpg?1642827011 ', 
+      name: '0xDAO', 
+      symbol: 'OXD',
+    },
   ],
   [ChainKey.ARB]: [
     findDefaultToken(CoinKey.ETH, ChainId.ARB),
