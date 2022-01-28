@@ -156,6 +156,18 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.OPT),
     findDefaultToken(CoinKey.DAI, ChainId.OPT),
     findDefaultToken(CoinKey.WBTC, ChainId.OPT),
+
+    // For marketing MAGIC token
+    // > MAGIC TreasrueDAO
+    {
+      address: '0x539bdE0d7Dbd336b79148AA742883198BBF60342',
+      chainId: ChainId.ARB,
+      decimals: 18,
+      logoURI:
+        'https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/arbitrum/assets/0x539bdE0d7Dbd336b79148AA742883198BBF60342/logo.png',
+      name: 'MAGIC',
+      symbol: 'MAGIC',
+    },
   ],
   [ChainKey.ONE]: [
     findDefaultToken(CoinKey.ONE, ChainId.ONE),
