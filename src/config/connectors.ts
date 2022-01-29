@@ -24,7 +24,7 @@ const customRpc: Record<number, (string | undefined)[]> = {
 export const getRpcs = (): Record<number, string[]> => {
   const rpcs = deepClone(customRpc)
   Object.keys(rpcs).forEach((key) => {
-    if (!rpcs[key]) {
+    if (!rpcs[key] || !rpcs[key].length || !rpcs[key][0]) {
       delete rpcs[key]
     }
   })
