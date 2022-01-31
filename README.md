@@ -18,10 +18,6 @@ yarn install
 # server local development version
 # > li.finance
 yarn start
-# > xpollinate.io
-yarn start:xpollinate
-# > testnet.xpollinate.io
-yarn start:xpollinate:testnet
 ```
 
 > If you are on windows or if you have problems running the `start` commands, please try to run `yarn windows` and create a local `.env.local` file to define your environment (e.g. if you want to use xpollinate, copy one of the xpollinate files)
