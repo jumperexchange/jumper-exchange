@@ -13,8 +13,7 @@ env:
   REGISTRY: 403372804574.dkr.ecr.us-east-2.amazonaws.com/lifi-docker-repo
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
