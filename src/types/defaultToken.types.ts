@@ -19,6 +19,19 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: 'MAGIC',
       symbol: 'MAGIC',
     },
+    
+    // ADDED TOKEN FOR MARKETING PURPOSES
+    // > LOOKS: https://etherscan.io/token/0xf4d2888d29D722226FafA5d9B24F9164c092421E
+    {
+      address: '0xf4d2888d29D722226FafA5d9B24F9164c092421E',
+      chainId: ChainId.ETH,
+      decimals: 18,
+      logoURI:
+        'https://etherscan.io/token/images/looksrare_32.png',
+      name: 'LooksRare',
+      symbol: 'LOOKS',
+    },
+    
     // > METIS: https://etherscan.io/token/0x9e32b13ce7f2e80a01932b42553652e053d6ed8e
     {
       address: '0x9e32b13ce7f2e80a01932b42553652e053d6ed8e',
