@@ -57,6 +57,7 @@
     "build": "react-scripts build",
     "build-env": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
     "build:lifinance:staging": "REACT_APP_ENV=lifinance-mainnet.staging npm run build-env",
+    "build:lifinance:develop": "REACT_APP_ENV=lifinance-mainnet.staging npm run build-env",
     "build:lifinance": "REACT_APP_ENV=lifinance-mainnet npm run build-env",
     "test": "react-scripts test",
     "pre-push": "react-scripts test unit --watchAll=false --passWithNoTests",
