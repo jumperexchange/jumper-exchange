@@ -126,12 +126,12 @@
   display: none !important;
 }
 .wallet-buttons-menu-full {
-  display: inline !important;
+  display: inline-block !important;
 }
 
 @media only screen and (max-width: 767px) {
   .wallet-buttons-menu-collapse {
-    display: inline !important;
+    display: inline-block !important;
   }
   .wallet-buttons-menu-full {
     display: none !important;
