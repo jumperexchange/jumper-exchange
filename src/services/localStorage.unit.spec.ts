@@ -10,14 +10,6 @@ import { getRoute } from './localStorage.fixture'
 const SOME_NEWER_DATE = new Date('2021-04-10').getTime()
 const SOME_OLDER_DATE = new Date('2020-04-10').getTime()
 
-// Object.setPrototypeOf(localStorage.__proto__.setItem, jest.fn())
-// Object.setPrototypeOf(localStorage.__proto__.getItem, jest.fn())
-// Object.setPrototypeOf(localStorage.__proto__.removeItem, jest.fn())
-
-// Storage.prototype.setItem = jest.fn()
-// Storage.prototype.getItem = jest.fn()
-// Storage.prototype.removeItem = jest.fn()
-
 afterAll(() => {
   jest.clearAllMocks()
 })

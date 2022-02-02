@@ -18,7 +18,7 @@ const addToActiveWallets = (address: string | null | undefined) => {
   storeWallets(activeWallets)
 }
 
-const removeFromDeativatedWallets = (address: string | null | undefined) => {
+const removeFromDeactivatedWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()
   const deactivatedWallets = readDeactivatedWallets()
@@ -38,7 +38,7 @@ function ConnectButton({ style, className }: ConnectButtonPropType) {
 
   const handleConnect = async () => {
     const accountAddress = await injected.getAccount()
-    removeFromDeativatedWallets(accountAddress)
+    removeFromDeactivatedWallets(accountAddress)
     addToActiveWallets(accountAddress)
     activate(await getInjectedConnector())
   }
