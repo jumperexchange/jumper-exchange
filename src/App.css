@@ -90,8 +90,8 @@
   background: white;
   padding: 16px;
   border-top-right-radius: 8px;
-  -webkit-box-shadow: 0px 0px 50px -18px #000000;
-  box-shadow: 0px 0px 50px -18px #000000;
+  -webkit-box-shadow: 0px 0px 50px -2px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 0px 50px -2px rgba(0, 0, 0, 0.19);
   display: flex;
   align-items: center;
 }
@@ -122,19 +122,20 @@
   color: #c930e4;
 }
 
-@media only screen and (max-width: 767px) {
-  /* .ant-btn.ant-btn-primary.wallet-buttons.wallet-header {
-    display: none;
-  }
+.wallet-buttons-menu-collapse {
+  display: none !important;
+}
+.wallet-buttons-menu-full {
+  display: inline !important;
+}
 
-  .ant-btn.ant-btn-primary.wallet-buttons.wallet-content {
-    display: block !important;
-    position: fixed !important;
-    bottom: 8px !important;
-    right: 14px !important;
-    border-radius: 6px !important;
-    z-index: 99 !important;
-  } */
+@media only screen and (max-width: 767px) {
+  .wallet-buttons-menu-collapse {
+    display: inline !important;
+  }
+  .wallet-buttons-menu-full {
+    display: none !important;
+  }
 }
 .ant-btn .anticon-spin {
   height: 18px;

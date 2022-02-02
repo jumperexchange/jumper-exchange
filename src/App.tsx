@@ -79,7 +79,7 @@ function App() {
               <Header style={{ position: 'fixed', zIndex: 900, width: '100%', padding: 0 }}>
                 <Row>
                   {/* Menu */}
-                  <Col xs={24} sm={24} md={14} lg={24} xl={24}>
+                  <Col xs={24} sm={24} md={14} lg={14} xl={14}>
                     <Link to="/" className="wordmark">
                       <img
                         src={logo}
@@ -133,10 +133,25 @@ function App() {
                           Developer Waitinglist
                         </a>
                       </Menu.Item>
-                      <Menu.Item key="wallet-button">
-                        <WalletButtons className="wallet-buttons"></WalletButtons>
+                      <Menu.Item className="wallet-buttons-menu-collapse" key="wallet-button">
+                        <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>
                       </Menu.Item>
                     </Menu>
+                  </Col>
+
+                  {/* Links */}
+                  <Col
+                    xs={0}
+                    sm={0}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    style={{ float: 'right', paddingRight: 10 }}>
+                    <Row justify="end" gutter={15}>
+                      <Col className="">
+                        <WalletButtons className="wallet-buttons wallet-buttons-menu-full"></WalletButtons>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Header>
