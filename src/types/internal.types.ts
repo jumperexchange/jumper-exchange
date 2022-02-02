@@ -1,15 +1,10 @@
-import { JsonRpcSigner } from '@ethersproject/providers'
 import {
   ChainKey,
   Coin,
-  CrossStep,
-  LifiStep,
   StepTool,
   supportedBridges,
   supportedExchangeAggregators,
   supportedExchanges,
-  SwapStep,
-  Token,
   TokenAmount,
 } from '@lifinance/sdk'
 import { TableColumnType } from 'antd'
@@ -18,12 +13,6 @@ import BigNumber from 'bignumber.js'
 export interface Amounts {
   amount_coin: BigNumber
   amount_usd: BigNumber
-}
-
-// TODO we should try to get rid of this
-export interface TokenWithAmounts extends Token {
-  amount?: BigNumber
-  amountRendered?: string
 }
 
 export interface DataType {
@@ -66,32 +55,6 @@ export interface WalletSummary {
   chains: {
     [ChainKey: string]: SummaryAmounts
   }
-}
-
-export interface ProgressStep {
-  title: string
-  description: string
-}
-
-export type ParsedReceipt = {
-  fromAmount: string
-  toAmount: string
-  gasUsed: string
-  gasPrice: string
-  gasFee: string
-}
-
-export type ExecuteSwapParams = {
-  signer: JsonRpcSigner
-  step: SwapStep
-  parseReceipt: (...args: any[]) => ParsedReceipt
-  updateStatus?: Function
-}
-
-export type ExecuteCrossParams = {
-  signer: JsonRpcSigner
-  step: CrossStep | LifiStep
-  updateStatus?: Function
 }
 
 export const findTool = (toolKey: StepTool) => {

@@ -1,11 +1,11 @@
 (function () {
-  const host = 'https://li.finance'
   let config = {
+    host: 'https://li.finance',
     elementId: 'lifi-widget',
-    mode: 'drawer', // default | drawer,
+    mode: 'drawer', // drawer | inline
     buttonText: 'Li.Fi Swap',
     options: {
-      fromChain: 'eth',
+      fromChain: null,
       fromToken: null,
       toChain: null,
       toToken: null,
@@ -38,16 +38,18 @@
 
   function init() {
     const element = document.getElementById(config.elementId);
-    if (config.mode !== 'drawer' && !element) {
+    if (config.mode === 'inline' && !element) {
       console.warn(`Couldn't find element with id ${config.elementId}. Did you forget to add it?`);
       return;
     }
+
     switch (config.mode) {
-      case 'drawer':
-        createDrawer();
-        break;
-      default:
+      case 'inline':
         createIframe(element);
+        break;
+      case 'drawer':
+      default:
+        createDrawer();
         break;
     }
   };
@@ -57,7 +59,7 @@
     const styleTag = document.createElement('link');
     styleTag.rel = 'stylesheet';
     styleTag.type = 'text/css';
-    styleTag.href = `${host}/widget.css`;
+    styleTag.href = `${config.host}/widget.css`;
     styleTag.media = 'all';
     head.appendChild(styleTag);
 
@@ -138,7 +140,7 @@
 
   function createLink() {
     Object.keys(config.options).forEach(key => !config.options[key] && delete config.options[key]);
-    return `${host}/embed?${new URLSearchParams(config.options)}`;
+    return `${config.host}/embed?${new URLSearchParams(config.options)}`;
   };
 
   function trapFocus(element) {

@@ -28,7 +28,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { getRpcs } from '../config/connectors'
-import { deleteRoute, readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
+import {
+  deleteRoute,
+  readActiveRoutes,
+  readHistoricalRoutes,
+  storeRoute,
+} from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
@@ -270,6 +275,7 @@ interface StartParams {
   withdrawChain?: ChainKey
   withdrawToken?: string
 }
+
 let startParams: StartParams
 
 interface SwapProps {
@@ -318,6 +324,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+  const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -326,6 +333,38 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    // get new execution status on page load
+    if (!restartedOnPageLoad) {
+      setRestartedOnPageLoad(true)
+
+      activeRoutes.map((route) => {
+        if (!web3 || !web3.library) return
+        // check if it makes sense to fetch the status of a route:
+        // if failed or action required it makes no sense
+        const routeFailed = route.steps.some(
+          (step) => step.execution && step.execution.status === 'FAILED',
+        )
+        const actionRequired = route.steps.some(
+          (step) =>
+            step.execution &&
+            step.execution.process.some((process) => process.status === 'ACTION_REQUIRED'),
+        )
+
+        if (routeFailed || actionRequired) return
+        const settings = {
+          updateCallback: (updatedRoute: RouteType) => {
+            storeRoute(updatedRoute)
+            setActiveRoutes(readActiveRoutes())
+            setHistoricalRoutes(readHistoricalRoutes())
+          },
+        }
+        LiFi.resumeRoute(web3.library.getSigner(), route, settings)
+        LiFi.moveExecutionToBackground(route)
+      })
+    }
+  }, [web3.library])
 
   useEffect(() => {
     const load = async () => {
@@ -737,6 +776,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                     routes={historicalRoutes}
                     selectRoute={() => {}}
                     deleteRoute={(route: RouteType) => {
+                      LiFi.stopExecution(route)
                       deleteRoute(route)
                       setHistoricalRoutes(readHistoricalRoutes())
                     }}
@@ -765,6 +805,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                     routes={activeRoutes}
                     selectRoute={(route: RouteType) => setSelectedRoute(route)}
                     deleteRoute={(route: RouteType) => {
+                      LiFi.stopExecution(route)
                       deleteRoute(route)
                       setActiveRoutes(readActiveRoutes())
                     }}></TrasactionsTable>

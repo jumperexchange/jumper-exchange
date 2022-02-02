@@ -1,0 +1,100 @@
+name: Docker
+
+on:
+  push:
+    branches: [ "main", "develop", "staging" ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+#   pull_request:
+#     branches: [ "main", "develop" ]
+  workflow_dispatch:
+  
+env:  
+  REGISTRY: 403372804574.dkr.ecr.us-east-2.amazonaws.com/lifi-docker-repo
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      docker-tag: ${{ steps.out.outputs.docker-tag }}
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch  
+      - name: Set current date as env variable
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.REG_ID }}
+          password: ${{ secrets.REG_KEY }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+           BUILD_ENV=${{steps.extract_branch.outputs.branch == 'main' && ' ' || format(':{0}',steps.extract_branch.outputs.branch) }}
+      - id: out
+        run: echo "::set-output name=docker-tag::${UNIQ_ID}-${{ steps.extract_branch.outputs.branch }}"
+ ###########
+  publish-tags:  
+    needs: build
+    concurrency: charts/lifi-web/values.yaml
+    runs-on: ubuntu-latest
+    steps:    
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch  
+      - name: Checkout helm charts
+        uses: actions/checkout@v2
+        with: 
+          repository: lifinance/lifi-deployment
+          ssh-key: ${{ secrets.DEPLOY_SSH }}
+          ref: develop
+      - name: 🏗 Set up yq 
+        run: |
+          if [ ! -f "yq" ]; then
+            curl -L https://github.com/mikefarah/yq/releases/download/v4.13.4/yq_linux_amd64 -o yq
+            chmod +x yq
+          fi
+      - name: push image ID
+        run: |
+          ./yq -i eval ".image.tag = \"${{needs.build.outputs.docker-tag}}\"" charts/lifi-web/${{ steps.extract_branch.outputs.branch }}-values.yaml
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add charts/lifi-web/${{ steps.extract_branch.outputs.branch }}-values.yaml
+          git commit -m "auto build version:${{needs.build.outputs.docker-tag}}"
+          git push
