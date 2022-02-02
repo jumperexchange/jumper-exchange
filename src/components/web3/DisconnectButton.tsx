@@ -88,7 +88,7 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
       <>
         <Button
           className={className}
-          style={{ borderRadius: 6 }}
+          style={{ ...{ borderRadius: 6 }, ...style }}
           onClick={() => handleDisconnect()}
           danger
           icon={<DisconnectOutlined />}>

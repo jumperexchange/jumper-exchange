@@ -9,6 +9,7 @@ import {
   storeWallets,
 } from '../../services/localStorage'
 import { getInjectedConnector, injected } from './connectors'
+import WalletButtons from './WalletButtons'
 
 const addToActiveWallets = (address: string | null | undefined) => {
   if (!address) return
@@ -46,7 +47,7 @@ function ConnectButton({ style, className }: ConnectButtonPropType) {
   return (
     <Button
       className={className}
-      style={style}
+      style={{ ...{ borderRadius: '6px' }, ...style }}
       type="primary"
       icon={<WalletOutlined />}
       onClick={async () => await handleConnect()}>

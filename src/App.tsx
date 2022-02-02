@@ -64,6 +64,9 @@ function App() {
             Li.Finance
           </a>
         </div>
+        <div className="wallet-buttons-embed-view">
+          <WalletButtons />
+        </div>
       </div>
     )
   }
