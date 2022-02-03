@@ -9,7 +9,6 @@ import {
   storeWallets,
 } from '../../services/localStorage'
 import { getInjectedConnector, injected } from './connectors'
-import WalletButtons from './WalletButtons'
 
 const addToActiveWallets = (address: string | null | undefined) => {
   if (!address) return

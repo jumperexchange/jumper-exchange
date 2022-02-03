@@ -151,7 +151,34 @@ function App() {
                     xl={10}
                     style={{ float: 'right', paddingRight: 10 }}>
                     <Row justify="end" gutter={15}>
-                      <Col className="">
+                      <Col>
+                        <a
+                          className="icon-link headerIconLink lifi-header-social-links"
+                          href="https://twitter.com/lifiprotocol"
+                          target="_blank"
+                          rel="nofollow noreferrer">
+                          <TwitterOutlined />
+                        </a>
+                      </Col>
+                      <Col>
+                        <a
+                          className="icon-link headerIconLink lifi-header-social-links"
+                          href="https://github.com/lifinance"
+                          target="_blank"
+                          rel="nofollow noreferrer">
+                          <GithubOutlined />
+                        </a>
+                      </Col>
+                      <Col>
+                        <a
+                          className="lifi-support-link headerIconLink lifi-header-social-links"
+                          href="https://discord.gg/lifi"
+                          target="_blank"
+                          rel="nofollow noreferrer">
+                          Support
+                        </a>
+                      </Col>
+                      <Col>
                         <WalletButtons className="wallet-buttons wallet-buttons-menu-full"></WalletButtons>
                       </Col>
                     </Row>

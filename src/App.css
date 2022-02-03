@@ -77,23 +77,10 @@
   font-size: 12px;
 }
 
-/* Annimations */
-/* .ant-timeline-item-head-blue, */
-.flashing {
-  animation: blinker 1s linear infinite;
-}
+/* Social Links */
 
 .lifi-content-social-links {
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  background: white;
-  padding: 16px;
-  border-top-right-radius: 8px;
-  -webkit-box-shadow: 0px 0px 50px -2px rgba(0, 0, 0, 0.19);
-  box-shadow: 0px 0px 50px -2px rgba(0, 0, 0, 0.19);
-  display: flex;
-  align-items: center;
+  display: none;
 }
 
 .lifi-support-link {
@@ -104,15 +91,11 @@
   margin: 0 8px;
 }
 
-.lifi-support-link:hover {
-  background: #c930e4;
-  border-color: #c930e4;
-  color: white;
+.lifi-support-link.headerIconLink {
+  line-height: 1;
+  padding: 6.5px;
 }
 
-.ant-btn.ant-btn-primary.wallet-buttons {
-  border-radius: 6px !important;
-}
 .icon-link {
   margin: 0 8px 0 8px;
   font-size: 24px;
@@ -122,6 +105,36 @@
   color: #c930e4;
 }
 
+.icon-link.headerIconLink {
+  color: white;
+  font-size: 20px;
+}
+
+.icon-link.headerIconLink:hover {
+  color: #c930e4;
+}
+.lifi-header-social-links {
+  display: inline;
+}
+@media only screen and (max-width: 1050px) {
+  .lifi-content-social-links {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background: white;
+    padding: 16px;
+    border-top-right-radius: 8px;
+    -webkit-box-shadow: 0px 0px 50px -2px rgba(0, 0, 0, 0.19);
+    box-shadow: 0px 0px 50px -2px rgba(0, 0, 0, 0.19);
+    display: flex;
+    align-items: center;
+  }
+  .lifi-header-social-links {
+    display: none;
+  }
+}
+
+/* Wallet Button styles */
 .wallet-buttons-menu-collapse {
   display: none !important;
 }
@@ -137,8 +150,16 @@
     display: none !important;
   }
 }
+
+/* MISC */
 .ant-btn .anticon-spin {
   height: 18px;
   padding-top: 1px;
   padding-bottom: 1px;
+}
+
+/* Annimations */
+/* .ant-timeline-item-head-blue, */
+.flashing {
+  animation: blinker 1s linear infinite;
 }
