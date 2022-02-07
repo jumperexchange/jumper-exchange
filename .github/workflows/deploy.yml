@@ -65,7 +65,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-           BUILD_ENV=${{steps.extract_branch.outputs.branch == 'main' && '' || format(':{0}',steps.extract_branch.outputs.branch) }}
+           BUILD_ENV=${{steps.extract_branch.outputs.branch == 'main' && ' ' || format(':{0}',steps.extract_branch.outputs.branch) }}
       - id: out
         run: echo "::set-output name=docker-tag::${UNIQ_ID}-${{ steps.extract_branch.outputs.branch }}"
  ###########
