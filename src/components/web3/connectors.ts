@@ -1,5 +1,6 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { NetworkConnector } from '@web3-react/network-connector'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { providers } from 'ethers'
 
 import { ChainId, getChainById, multicallAddresses, supportedChains } from '../../types'
@@ -84,6 +85,14 @@ export const getInjectedConnector = async () => {
   })
 }
 
+export const getWalletConnectConnector = async () => {
+  return new WalletConnectConnector({
+    supportedChainIds: [...supportedChains.map((chain) => chain.id)],
+    bridge: 'https://bridge.walletconnect.org',
+    qrcode: true,
+    // rpc: customRpc as { [k: number]: string },
+  })
+}
 export const network = new NetworkConnector({
   urls: Object.fromEntries(
     supportedChains.map((chain) => chain.id).map((chainId) => [chainId, getRpcUrl(chainId)]),

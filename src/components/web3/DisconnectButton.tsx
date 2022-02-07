@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 
 import metamaskGif from '../../assets/gifs/metamask_disconnect.gif'
 import {
+  isWalletConnectWallet,
   readDeactivatedWallets,
   readHideDisconnectPopup,
   readWallets,
@@ -34,13 +35,17 @@ const addToDeactivatedWallets = (address: string | null | undefined) => {
 type DisconnectButtonPropType = {
   style?: React.CSSProperties
   className?: string
+  size?: 'large' | 'middle' | 'small'
 }
 
-function DisconnectButton({ style, className }: DisconnectButtonPropType) {
+function DisconnectButton({ style, className, size = 'middle' }: DisconnectButtonPropType) {
   const { deactivate, account, library } = useWeb3React()
 
   const [hideDisconnectPopup] = useState<boolean>(readHideDisconnectPopup())
   const [walletIdentifier, setWalletIdentifier] = useState<string>('Wallet')
+  const [isWalletConnectAccount, setIsWalletConnectAccount] = useState<boolean>(
+    isWalletConnectWallet(account!),
+  )
 
   const handleDisconnect = () => {
     removeFromActiveWallets(account)
@@ -51,16 +56,19 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
   const handleHideDisconnectPopup = (event: any) => {
     storeHideDisconnectPopup(event.target.checked)
   }
+  useEffect(() => {
+    setIsWalletConnectAccount(isWalletConnectWallet(account!))
+  }, [account])
 
   useEffect(() => {
     if (!account) return
     library
       .lookupAddress(account)
       .then((name: string) => {
-        if (!name) return setWalletIdentifier(`${account.substr(0, 4)}...`)
+        if (!name) return setWalletIdentifier(`${account.substr(0, 6)}...`)
         setWalletIdentifier(name)
       })
-      .catch((e: unknown) => setWalletIdentifier(`${account.substr(0, 4)}...`))
+      .catch((e: unknown) => setWalletIdentifier(`${account.substr(0, 6)}...`))
   }, [library, account])
 
   const infoContent = (
@@ -76,20 +84,22 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
       </Checkbox>
       <Button
         type="link"
-        onClick={() => handleDisconnect()}
-        style={{ display: 'block', paddingLeft: 0 }}>
+        onClick={handleDisconnect}
+        style={{ display: 'block', paddingLeft: 0 }}
+        size={size}>
         <u>Deactivate {walletIdentifier} </u>
       </Button>
     </>
   )
 
-  if (hideDisconnectPopup) {
+  if (hideDisconnectPopup || isWalletConnectAccount) {
     return (
       <>
         <Button
           className={className}
           style={{ ...{ borderRadius: 6 }, ...style }}
-          onClick={() => handleDisconnect()}
+          size={size}
+          onClick={handleDisconnect}
           danger
           icon={<DisconnectOutlined />}>
           Deactivate {walletIdentifier}
@@ -101,6 +111,7 @@ function DisconnectButton({ style, className }: DisconnectButtonPropType) {
       <>
         <Popover content={infoContent} trigger="click">
           <Button
+            size={size}
             className={className}
             style={{ borderRadius: 6 }}
             danger

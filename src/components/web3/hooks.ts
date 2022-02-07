@@ -14,13 +14,17 @@ export function useEagerConnect() {
     const eagerConnect = async () => {
       // get account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
       // const accountAddress = await injected.getAccount()
+      if (!(window as any).ethereum) {
+        setTried(true)
+        return
+      }
       const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
       if (isWalletDeactivated(currentlySelectedUserAddress)) {
         deactivate()
         setTried(true)
         return
       }
-
+      // try to activate Metamask wallet
       if (await injected.isAuthorized()) {
         activate(await getInjectedConnector(), undefined, true).catch(() => {
           setTried(true)
@@ -28,6 +32,8 @@ export function useEagerConnect() {
       } else {
         setTried(true)
       }
+
+      // TODO: try to activate walletConnect Wallet
     }
 
     // Run this on mount and every time the 'active' state changes.
