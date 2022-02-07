@@ -35,7 +35,6 @@ export function useEagerConnect() {
 
   useEffect(() => {
     // check account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
-
     if ((window as any).ethereum) {
       const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
       if (isWalletDeactivated(currentlySelectedUserAddress)) {
@@ -45,7 +44,7 @@ export function useEagerConnect() {
         return
       }
     }
-  })
+  }, [])
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
