@@ -6,31 +6,21 @@ import { isWalletDeactivated } from '../../services/utils'
 import { getInjectedConnector, injected } from './connectors'
 
 export function useEagerConnect() {
-  const { activate, active, deactivate } = useWeb3React()
+  const { activate, active, deactivate, account } = useWeb3React()
 
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
     const eagerConnect = async () => {
-      // get account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
-      // const accountAddress = await injected.getAccount()
-      if (!(window as any).ethereum) {
-        setTried(true)
-        return
-      }
-      const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
-      if (isWalletDeactivated(currentlySelectedUserAddress)) {
-        deactivate()
-        setTried(true)
-        return
-      }
-      // try to activate Metamask wallet
-      if (await injected.isAuthorized()) {
-        activate(await getInjectedConnector(), undefined, true).catch(() => {
+      if ((window as any).ethereum) {
+        // try to activate Metamask wallet
+        if (await injected.isAuthorized()) {
+          activate(await getInjectedConnector(), undefined, true).catch(() => {
+            setTried(true)
+          })
+        } else {
           setTried(true)
-        })
-      } else {
-        setTried(true)
+        }
       }
 
       // TODO: try to activate walletConnect Wallet
@@ -42,6 +32,20 @@ export function useEagerConnect() {
     // getInjectedConnector() would fetch connectors for all supported Chains and the current unsupported one.
     eagerConnect()
   }, [activate, active])
+
+  useEffect(() => {
+    // check account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
+
+    if ((window as any).ethereum) {
+      const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
+      if (isWalletDeactivated(currentlySelectedUserAddress)) {
+        console.log('EAGER CONNECT: AUTO DEACTIVATING')
+        deactivate()
+        setTried(true)
+        return
+      }
+    }
+  })
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {
@@ -65,6 +69,8 @@ export function useInactiveListener(suppress = false) {
       }
       const handleChainChanged = async (chainId: string | number) => {
         console.log("Handling 'chainChanged' event with payload", chainId)
+        console.log('UNSP')
+
         activate(await getInjectedConnector())
       }
       const handleAccountsChanged = async (accounts: string[]) => {
