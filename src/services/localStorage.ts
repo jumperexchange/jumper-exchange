@@ -1,4 +1,4 @@
-import { Route, Status } from '../types'
+import { Route, Status, WalletConnectInfo } from '../types'
 
 const isSupported = () => {
   try {
@@ -221,6 +221,25 @@ const isWalletConnectWallet = (wallet: string): boolean => {
   return false
 }
 
+const readWalletConnectInfo = () => {
+  if (!isSupported()) {
+    return
+  }
+  const walletConnectInfoString = localStorage.getItem('walletconnect')
+  if (!walletConnectInfoString) {
+    return
+  }
+  const walletConnectInfo = JSON.parse(walletConnectInfoString)
+  if (walletConnectInfo) {
+    try {
+      return walletConnectInfo as WalletConnectInfo
+    } catch {
+      return
+    }
+  }
+  return
+}
+
 export {
   clearLocalStorage,
   deleteRoute,
@@ -231,6 +250,7 @@ export {
   readHideAbout,
   readHideDisconnectPopup,
   readHistoricalRoutes,
+  readWalletConnectInfo,
   readWallets,
   sortRoutesByExecutionDate,
   storeDeactivatedWallets,

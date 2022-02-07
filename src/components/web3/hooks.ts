@@ -2,11 +2,12 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 
+import { readWalletConnectInfo } from '../../services/localStorage'
 import { isWalletDeactivated } from '../../services/utils'
-import { getInjectedConnector, injected } from './connectors'
+import { getInjectedConnector, getWalletConnectConnector, injected } from './connectors'
 
 export function useEagerConnect() {
-  const { activate, active, deactivate, account } = useWeb3React()
+  const { activate, active, deactivate } = useWeb3React()
 
   const [tried, setTried] = useState(false)
 
@@ -24,9 +25,17 @@ export function useEagerConnect() {
       }
 
       // TODO: try to activate walletConnect Wallet
+      const walletConnect = readWalletConnectInfo()
+      if (walletConnect && walletConnect.connected) {
+        activate(await getWalletConnectConnector(), undefined, true).catch(() => {
+          setTried(true)
+        })
+      } else {
+        setTried(true)
+      }
     }
 
-    // Run this on mount and every time the 'active' state changes.
+    // Run this every time the 'active' state changes.
     // I.E: switches to chain that is not supported:
     // This would cause the library to switch to inactive.
     // getInjectedConnector() would fetch connectors for all supported Chains and the current unsupported one.
@@ -38,7 +47,6 @@ export function useEagerConnect() {
     if ((window as any).ethereum) {
       const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
       if (isWalletDeactivated(currentlySelectedUserAddress)) {
-        console.log('EAGER CONNECT: AUTO DEACTIVATING')
         deactivate()
         setTried(true)
         return
@@ -68,8 +76,6 @@ export function useInactiveListener(suppress = false) {
       }
       const handleChainChanged = async (chainId: string | number) => {
         console.log("Handling 'chainChanged' event with payload", chainId)
-        console.log('UNSP')
-
         activate(await getInjectedConnector())
       }
       const handleAccountsChanged = async (accounts: string[]) => {
