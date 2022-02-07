@@ -181,6 +181,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.AVA),
     findDefaultToken(CoinKey.DAI, ChainId.AVA),
     findDefaultToken(CoinKey.WBTC, ChainId.AVA),
+
+    // ADDED TOKEN FOR MARKETING PURPOSES
+    // > Defrost Finance Token: https://snowtrace.io/token/0x47EB6F7525C1aA999FBC9ee92715F5231eB1241D
+    {
+      address: '0x47EB6F7525C1aA999FBC9ee92715F5231eB1241D',
+      chainId: ChainId.AVA,
+      decimals: 18,
+      logoURI: 'https://snowtrace.io/token/images/defrostfinance_32.png',
+      name: 'Defrost Finance Token',
+      symbol: 'MELT',
+    },
   ],
   [ChainKey.MOR]: [
     findDefaultToken(CoinKey.MOVR, ChainId.MOR),
