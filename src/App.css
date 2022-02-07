@@ -55,6 +55,16 @@
   border: none !important;
 }
 
+.ant-menu-overflow-item {
+  opacity: 1 !important;
+  color: white;
+}
+.ant-menu.ant-menu-sub.ant-menu-vertical {
+  background-color: white !important;
+  opacity: 1;
+  z-index: 999;
+}
+
 .beta-badge {
   position: absolute;
   background: #c930e4;
@@ -67,62 +77,89 @@
   font-size: 12px;
 }
 
-/* Annimations */
-/* .ant-timeline-item-head-blue, */
-.flashing {
-  animation: blinker 1s linear infinite;
-}
+/* Social Links */
 
-.lifiSupport {
-  color: #c930e4;
-  border: 1px solid #c930e4;
-  background: white;
-
-  line-height: 1;
-  padding: 10px;
-  border-radius: 6px;
-}
-
-.lifiSupport.support-header {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-}
-
-.lifiSupport.support-content {
+.lifi-content-social-links {
   display: none;
 }
 
-.lifiSupport:hover {
-  background: #c930e4;
+.lifi-support-link {
+  color: #c930e4;
+  border: 1px solid #c930e4;
+  background: white;
+  border-radius: 6px;
+  margin: 0 8px;
+}
+
+.lifi-support-link.headerIconLink {
+  line-height: 1;
+  padding: 6.5px;
+}
+
+.icon-link {
+  margin: 0 8px 0 8px;
+  font-size: 24px;
+}
+
+.icon-link:hover {
+  color: #c930e4;
+}
+
+.icon-link.headerIconLink {
   color: white;
+  font-size: 20px;
 }
 
-@media only screen and (max-width: 768px) {
-  .lifiSupport.support-header {
-    visibility: hidden;
-  }
-
-  .lifiSupport.support-content {
-    display: block;
+.icon-link.headerIconLink:hover {
+  color: #c930e4;
+}
+.lifi-header-social-links {
+  display: inline;
+}
+@media only screen and (max-width: 1050px) {
+  .lifi-content-social-links {
     position: fixed;
-    top: 60px;
-    right: 14px;
-    z-index: 99;
+    bottom: 0px;
+    left: 0px;
+    background: white;
+    padding: 16px;
+    border-top-right-radius: 8px;
+    -webkit-box-shadow: 0px 0px 50px -2px rgba(0, 0, 0, 0.19);
+    box-shadow: 0px 0px 50px -2px rgba(0, 0, 0, 0.19);
+    display: flex;
+    align-items: center;
+  }
+  .lifi-header-social-links {
+    display: none;
   }
 }
 
+/* Wallet Button styles */
+.wallet-buttons-menu-collapse {
+  display: none !important;
+}
+.wallet-buttons-menu-full {
+  display: inline-block !important;
+}
+
+@media only screen and (max-width: 767px) {
+  .wallet-buttons-menu-collapse {
+    display: inline-block !important;
+  }
+  .wallet-buttons-menu-full {
+    display: none !important;
+  }
+}
+
+/* MISC */
 .ant-btn .anticon-spin {
   height: 18px;
   padding-top: 1px;
   padding-bottom: 1px;
 }
 
-.headerIconLink {
-  color: white;
-  font-size: 20px;
-}
-
-.headerIconLink:hover {
-  color: #c930e4;
+/* Annimations */
+/* .ant-timeline-item-head-blue, */
+.flashing {
+  animation: blinker 1s linear infinite;
 }

@@ -1,6 +1,6 @@
 import './App.css'
 
-import { GithubOutlined, TwitterOutlined, WalletOutlined } from '@ant-design/icons'
+import { DownOutlined, GithubOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
 import analytics from './services/analytics'
@@ -63,6 +64,9 @@ function App() {
             Li.Finance
           </a>
         </div>
+        <div className="wallet-buttons-embed-view">
+          <WalletButtons />
+        </div>
       </div>
     )
   }
@@ -89,7 +93,12 @@ function App() {
                       />
                       <span>Li.Finance</span>
                     </Link>
-                    <Menu theme="light" mode="horizontal" defaultSelectedKeys={path ? [path] : []}>
+                    <Menu
+                      theme="light"
+                      mode="horizontal"
+                      defaultSelectedKeys={path ? [path] : []}
+                      overflowedIndicator={<DownOutlined />}
+                      inlineCollapsed={false}>
                       <Menu.Item key="/dashboard">
                         <Link to="/dashboard">Dashboard</Link>
                       </Menu.Item>
@@ -127,22 +136,24 @@ function App() {
                           Developer Waitinglist
                         </a>
                       </Menu.Item>
-                      {false && (
-                        <Menu.Item key="wallets" style={{ float: 'right' }}>
-                          <Button shape="round" icon={<WalletOutlined />}>
-                            Add Wallets
-                          </Button>
-                        </Menu.Item>
-                      )}
+                      <Menu.Item className="wallet-buttons-menu-collapse" key="wallet-button">
+                        <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>
+                      </Menu.Item>
                     </Menu>
                   </Col>
 
                   {/* Links */}
-                  <Col xs={0} sm={0} md={10} lg={10} xl={10} style={{ paddingRight: 10 }}>
+                  <Col
+                    xs={0}
+                    sm={0}
+                    md={10}
+                    lg={10}
+                    xl={10}
+                    style={{ float: 'right', paddingRight: 10 }}>
                     <Row justify="end" gutter={15}>
                       <Col>
                         <a
-                          className="headerIconLink"
+                          className="icon-link headerIconLink lifi-header-social-links"
                           href="https://twitter.com/lifiprotocol"
                           target="_blank"
                           rel="nofollow noreferrer">
@@ -151,7 +162,7 @@ function App() {
                       </Col>
                       <Col>
                         <a
-                          className="headerIconLink"
+                          className="icon-link headerIconLink lifi-header-social-links"
                           href="https://github.com/lifinance"
                           target="_blank"
                           rel="nofollow noreferrer">
@@ -160,26 +171,22 @@ function App() {
                       </Col>
                       <Col>
                         <a
-                          className="lifiSupport"
+                          className="lifi-support-link headerIconLink lifi-header-social-links"
                           href="https://discord.gg/lifi"
                           target="_blank"
                           rel="nofollow noreferrer">
-                          Support (Discord)
+                          Support
                         </a>
+                      </Col>
+                      <Col>
+                        <WalletButtons className="wallet-buttons wallet-buttons-menu-full"></WalletButtons>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
               </Header>
-              <Content>
-                <a
-                  className="lifiSupport support-content"
-                  href="https://discord.gg/lifi"
-                  target="_blank"
-                  rel="nofollow noreferrer">
-                  Support
-                </a>
 
+              <Content>
                 <Switch>
                   <Redirect exact from="/" to="/swap" />
                   <Route
@@ -253,6 +260,32 @@ function App() {
                   />
                 </Switch>
               </Content>
+
+              {/* Social Links */}
+              <div className="lifi-content-social-links">
+                <a
+                  className="icon-link"
+                  href="https://twitter.com/lifiprotocol"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  <TwitterOutlined />
+                </a>
+                <a
+                  className="icon-link"
+                  href="https://github.com/lifinance"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  <GithubOutlined />
+                </a>
+                <Button
+                  className="lifi-support-link"
+                  href="https://discord.gg/lifi"
+                  target="_blank"
+                  rel="nofollow noreferrer">
+                  Support
+                </Button>
+              </div>
+
               {/* <Footer></Footer> */}
               <NotificationOverlay />
             </Layout>

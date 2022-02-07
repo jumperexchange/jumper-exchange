@@ -1,10 +1,104 @@
-import { sortRoutesByExecutionDate } from './localStorage'
+import {
+  readDeactivatedWallets,
+  readWallets,
+  sortRoutesByExecutionDate,
+  storeDeactivatedWallets,
+  storeWallets,
+} from './localStorage'
 import { getRoute } from './localStorage.fixture'
 
 const SOME_NEWER_DATE = new Date('2021-04-10').getTime()
 const SOME_OLDER_DATE = new Date('2020-04-10').getTime()
 
+afterAll(() => {
+  jest.clearAllMocks()
+})
+
+afterEach(() => {
+  jest.restoreAllMocks()
+})
+
+afterEach(() => {
+  localStorage.clear()
+})
+
 describe('localStorage', () => {
+  describe('reading and writing Wallets', () => {
+    const walletString1 = '1234'
+    const walletString2 = '7890'
+    describe('writing wallets', () => {
+      it('should correctly store ACTIVE wallets', () => {
+        jest.spyOn(window.localStorage.__proto__, 'setItem')
+        storeWallets([walletString1])
+        expect(localStorage.setItem).toBeCalledWith('wallets', JSON.stringify([walletString1]))
+      })
+
+      it('should not store duplicate addresses of ACTIVE wallets', () => {
+        jest.spyOn(window.localStorage.__proto__, 'setItem')
+        const duplicateArray = [walletString1, walletString1, walletString2, walletString2]
+        storeWallets(duplicateArray)
+        const noDuplicateString = JSON.stringify([walletString1, walletString2])
+        expect(localStorage.setItem).toBeCalledWith('wallets', noDuplicateString)
+      })
+
+      it('should correctly store DEACTIVATED wallets', () => {
+        jest.spyOn(window.localStorage.__proto__, 'setItem')
+        storeDeactivatedWallets([walletString1])
+        expect(localStorage.setItem).toBeCalledWith(
+          'deactivatedWallets',
+          JSON.stringify([walletString1]),
+        )
+      })
+      it('should not store duplicate addresses of DEACTIVATED wallets', () => {
+        jest.spyOn(window.localStorage.__proto__, 'setItem')
+        const duplicateArray = [walletString1, walletString1, walletString2, walletString2]
+        storeDeactivatedWallets(duplicateArray)
+        const noDuplicateString = JSON.stringify([walletString1, walletString2])
+        expect(localStorage.setItem).toBeCalledWith('deactivatedWallets', noDuplicateString)
+      })
+    })
+
+    describe('reading wallets (testing 0, 1, n wallets)', () => {
+      describe('when 0 wallets stored', () => {
+        it('ACTIVE wallets: should return empty array', () => {
+          const emptyaddress = readWallets()
+          expect(emptyaddress).toStrictEqual([])
+        })
+        it('DEACTIVATED wallets: should return empty array', () => {
+          const emptyaddress = readDeactivatedWallets()
+          expect(emptyaddress).toStrictEqual([])
+        })
+      })
+
+      describe('when 1 wallet stored', () => {
+        it('ACTIVE wallets: should return wallet array', () => {
+          storeWallets([walletString1])
+          const walletArray = readWallets()
+          expect(walletArray).toStrictEqual([walletString1])
+        })
+
+        it('DEACTIVATED wallets: should return wallet array', () => {
+          storeDeactivatedWallets([walletString1])
+          const walletArray = readDeactivatedWallets()
+          expect(walletArray).toStrictEqual([walletString1])
+        })
+      })
+
+      describe('when n wallets stored', () => {
+        it('ACTIVE wallets: should return wallet array', () => {
+          storeWallets([walletString1, walletString2])
+          const walletArray = readWallets()
+          expect(walletArray).toStrictEqual([walletString1, walletString2])
+        })
+
+        it('DEACTIVATED wallets: should return wallet array', () => {
+          storeDeactivatedWallets([walletString1, walletString2])
+          const walletArray = readDeactivatedWallets()
+          expect(walletArray).toStrictEqual([walletString1, walletString2])
+        })
+      })
+    })
+  })
   describe('sortRoutesByExecutionDate', () => {
     describe("When routes don't have an execution", () => {
       const SOME_ROUTE_WITHOUT_EXECUTION = getRoute({ includingExecution: false })
