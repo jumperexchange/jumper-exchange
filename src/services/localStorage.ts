@@ -245,9 +245,15 @@ const storeWalletConnectInfo = (walletConnectInfo: WalletConnectInfo) => {
   localStorage.setItem('walletconnect', JSON.stringify(walletConnectInfo))
 }
 
+const deleteWalletConnectInfo = () => {
+  if (!isSupported()) return
+  localStorage.removeItem('walletconnect')
+}
+
 export {
   clearLocalStorage,
   deleteRoute,
+  deleteWalletConnectInfo,
   isSupported,
   isWalletConnectWallet,
   readActiveRoutes,

@@ -2,9 +2,10 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 
-import { readWalletConnectInfo, storeWalletConnectInfo } from '../../services/localStorage'
+import { deleteWalletConnectInfo, readWalletConnectInfo } from '../../services/localStorage'
 import { isWalletDeactivated } from '../../services/utils'
-import { getInjectedConnector, getWalletConnectConnector, injected } from './connectors'
+import { getInjectedConnector, injected } from './connectors'
+import { removeFromActiveWallets } from './DisconnectButton'
 
 export function useEagerConnect() {
   const { activate, active, deactivate } = useWeb3React()
@@ -23,19 +24,6 @@ export function useEagerConnect() {
           setTried(true)
         }
       }
-
-      // TODO: try to activate walletConnect Wallet
-      const walletConnectInfo = readWalletConnectInfo()
-      if (walletConnectInfo && walletConnectInfo.connected) {
-        try {
-          await activate(await getWalletConnectConnector(), undefined, true)
-        } catch {
-          setTried(true)
-        }
-        storeWalletConnectInfo(walletConnectInfo)
-      } else {
-        setTried(true)
-      }
     }
 
     // Run this every time the 'active' state changes.
@@ -46,7 +34,17 @@ export function useEagerConnect() {
   }, [active])
 
   useEffect(() => {
+    // Eager Connect is disabled for walletConnect (not working)
+    deleteWalletConnectInfo()
+    // TODO: try to activate walletConnect Wallet
+    const walletConnectInfo = readWalletConnectInfo()
+    if (walletConnectInfo) {
+      walletConnectInfo.accounts.map((account) => removeFromActiveWallets(account))
+    }
+    deleteWalletConnectInfo()
+
     // check account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library
+
     if ((window as any).ethereum) {
       const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
       if (isWalletDeactivated(currentlySelectedUserAddress)) {

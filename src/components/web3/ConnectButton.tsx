@@ -30,7 +30,7 @@ const supportedWallets = [
   },
 ]
 
-const addToActiveWallets = (address: string | null | undefined) => {
+export const addToActiveWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()
   const activeWallets = readWallets()
@@ -38,7 +38,7 @@ const addToActiveWallets = (address: string | null | undefined) => {
   storeWallets(activeWallets)
 }
 
-const removeFromDeactivatedWallets = (address: string | null | undefined) => {
+export const removeFromDeactivatedWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()
   const deactivatedWallets = readDeactivatedWallets()
@@ -77,9 +77,9 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
         Connect Your Wallet
       </Button>
       <Modal
+        className="wallet-selection-modal"
         visible={showConnectModal}
-        // onOk={handleOk}
-        // confirmLoading={confirmLoading}
+        onOk={() => setShowConnectModal(false)}
         onCancel={() => setShowConnectModal(false)}
         footer={null}>
         <Typography.Title level={4} style={{ marginBottom: 32 }}>

@@ -85,14 +85,21 @@ export const getInjectedConnector = async () => {
   })
 }
 
+const walletConnectConnector = new WalletConnectConnector({
+  supportedChainIds: [...supportedChains.map((chain) => chain.id)],
+  bridge: 'https://bridge.walletconnect.org',
+  qrcode: true,
+  rpc: Object.fromEntries(
+    supportedChains.map((chain) => {
+      return [chain.id, chain.metamask.rpcUrls[0] || '']
+    }),
+  ),
+})
+
 export const getWalletConnectConnector = async () => {
-  return new WalletConnectConnector({
-    supportedChainIds: [...supportedChains.map((chain) => chain.id)],
-    bridge: 'https://bridge.walletconnect.org',
-    qrcode: true,
-    // rpc: customRpc as { [k: number]: string },
-  })
+  return walletConnectConnector
 }
+
 export const network = new NetworkConnector({
   urls: Object.fromEntries(
     supportedChains.map((chain) => chain.id).map((chainId) => [chainId, getRpcUrl(chainId)]),

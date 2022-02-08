@@ -1,3 +1,6 @@
+.wallet-selection-modal div.ant-modal-content {
+  border-radius: 8px !important;
+}
 .wallet-provider-button {
   margin: 24px;
   padding: 16px;

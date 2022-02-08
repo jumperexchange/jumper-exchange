@@ -16,7 +16,7 @@ import {
 
 const { Text } = Typography
 
-const removeFromActiveWallets = (address: string | null | undefined) => {
+export const removeFromActiveWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()
   const wallets = readWallets()
@@ -24,7 +24,7 @@ const removeFromActiveWallets = (address: string | null | undefined) => {
   storeWallets(filteredWallets)
 }
 
-const addToDeactivatedWallets = (address: string | null | undefined) => {
+export const addToDeactivatedWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()
   const deactivatedWallets = readDeactivatedWallets()
