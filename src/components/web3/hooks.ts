@@ -2,7 +2,7 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 
-import { readWalletConnectInfo } from '../../services/localStorage'
+import { readWalletConnectInfo, storeWalletConnectInfo } from '../../services/localStorage'
 import { isWalletDeactivated } from '../../services/utils'
 import { getInjectedConnector, getWalletConnectConnector, injected } from './connectors'
 
@@ -25,11 +25,14 @@ export function useEagerConnect() {
       }
 
       // TODO: try to activate walletConnect Wallet
-      const walletConnect = readWalletConnectInfo()
-      if (walletConnect && walletConnect.connected) {
-        activate(await getWalletConnectConnector(), undefined, true).catch(() => {
+      const walletConnectInfo = readWalletConnectInfo()
+      if (walletConnectInfo && walletConnectInfo.connected) {
+        try {
+          await activate(await getWalletConnectConnector(), undefined, true)
+        } catch {
           setTried(true)
-        })
+        }
+        storeWalletConnectInfo(walletConnectInfo)
       } else {
         setTried(true)
       }
@@ -40,7 +43,7 @@ export function useEagerConnect() {
     // This would cause the library to switch to inactive.
     // getInjectedConnector() would fetch connectors for all supported Chains and the current unsupported one.
     eagerConnect()
-  }, [activate, active])
+  }, [active])
 
   useEffect(() => {
     // check account if exists and check if in deactivated wallets. if in deactivated wallets don't activate library

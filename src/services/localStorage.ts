@@ -240,6 +240,11 @@ const readWalletConnectInfo = () => {
   return
 }
 
+const storeWalletConnectInfo = (walletConnectInfo: WalletConnectInfo) => {
+  if (!isSupported()) return
+  localStorage.setItem('walletconnect', JSON.stringify(walletConnectInfo))
+}
+
 export {
   clearLocalStorage,
   deleteRoute,
@@ -257,5 +262,6 @@ export {
   storeHideAbout,
   storeHideDisconnectPopup,
   storeRoute,
+  storeWalletConnectInfo,
   storeWallets,
 }
