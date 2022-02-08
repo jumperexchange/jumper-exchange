@@ -39,6 +39,7 @@ export const getRoute = ({ includingExecution = true, executionTime = SOME_DATE 
         toAmount: '260982615655554',
         toAmountMin: '253153137185887',
         approvalAddress: '0x11111112542d85b3ef69ae05771c2dccff4faa26',
+        executionDuration: 300,
       },
       execution: includingExecution
         ? {
