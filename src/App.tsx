@@ -122,7 +122,7 @@ function App() {
                           href="https://docs.li.finance/"
                           target="_blank"
                           rel="nofollow noreferrer">
-                          Docs
+                          Explore Docs
                         </a>
                       </Menu.Item>
                       {/* <Menu.Item>
