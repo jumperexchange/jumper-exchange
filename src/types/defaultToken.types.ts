@@ -142,6 +142,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: '0xDAO',
       symbol: 'OXD',
     },
+
+    // Partners - for marketing purposes
+    // > TOMB: https://ftmscan.com/token/0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7
+    {
+      address: '0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7',
+      chainId: ChainId.FTM,
+      decimals: 18,
+      logoURI: 'https://ftmscan.com/token/images/tomb_32.png',
+      name: 'TOMB',
+      symbol: 'TOMB',
+    },
   ],
   [ChainKey.ARB]: [
     findDefaultToken(CoinKey.ETH, ChainId.ARB),
