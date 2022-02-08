@@ -135,7 +135,7 @@ const parseToken = (
   // is token address valid?
   const fromTokenId = ethers.utils.getAddress(passed.trim()).toLowerCase()
   // does token address exist in our default tokens? (tokenlists not loaded yet)
-  return transferTokens[chainKey].find((token) => token.address === fromTokenId)
+  return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
 
 const getDefaultParams = (
@@ -402,7 +402,7 @@ const Swap = ({ transferChains }: SwapProps) => {
         newTokens[chain.key].push(token)
       })
       setTokens((tokens) => Object.assign(tokens, newTokens))
-      setRefreshBalances(true) // TODO: does not yet work
+      setRefreshBalances(true)
     }
 
     load()
@@ -467,7 +467,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const updateBalances = useCallback(async () => {
     if (web3.account) {
       // one call per chain to show balances as soon as the request comes back
-      Object.entries(tokens).forEach(async ([chainKey, tokenList]) => {
+      Object.entries(tokens).forEach(([chainKey, tokenList]) => {
         LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
           setBalances((balances) => {
             if (!balances) balances = {}
@@ -491,8 +491,6 @@ const Swap = ({ transferChains }: SwapProps) => {
   useEffect(() => {
     if (!web3.account) {
       setBalances(undefined) // reset old balances
-    } else {
-      setRefreshBalances(true)
     }
   }, [web3.account])
 
@@ -514,6 +512,9 @@ const Swap = ({ transferChains }: SwapProps) => {
   useEffect(() => {
     // merge tokens and balances
     for (const chain of transferChains) {
+      if (!tokens[chain.key]) {
+        continue
+      }
       for (const token of tokens[chain.key]) {
         if (!balances || !balances[chain.key]) {
           // balances for chain not loaded yet

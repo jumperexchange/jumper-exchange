@@ -60,14 +60,14 @@ const TokenSelect = ({
           return ((option?.label as string) || '').toLowerCase().indexOf(input.toLowerCase()) >= 0
         }}>
         {/* Separate between Owned and All token if more than 6 */}
-        {selectedChain && tokens[selectedChain].length > 6 && (
+        {selectedChain && tokens[selectedChain]?.length > 6 && (
           <Select.OptGroup label="Owned Token">
             {!web3.account && (
               <Select.Option key="Select Coin" value="connect">
                 Connect your wallet
               </Select.Option>
             )}
-            {balances && balances[selectedChain] && balances[selectedChain].length === 0 && (
+            {balances && balances[selectedChain] && balances[selectedChain]?.length === 0 && (
               <Select.Option key="No Owned" value="no" disabled={true}>
                 You don't own any token on this chain.
               </Select.Option>
@@ -110,7 +110,7 @@ const TokenSelect = ({
         {/* All Token */}
         {selectedChain ? (
           <Select.OptGroup label="All Token">
-            {tokens[selectedChain].map((token) => (
+            {tokens[selectedChain]?.map((token) => (
               <Select.Option
                 key={token.address}
                 value={token.address}
