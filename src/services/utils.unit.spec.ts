@@ -1,7 +1,7 @@
 import { ChainId, CoinKey, findDefaultToken } from '@lifinance/sdk'
 import BigNumber from 'bignumber.js'
 
-import { formatTokenAmountOnly } from './utils'
+import { formatTokenAmountOnly, parseSecondsAsTime } from './utils'
 
 const SOME_TOKEN = findDefaultToken(CoinKey.USDC, ChainId.DAI)
 
@@ -101,6 +101,45 @@ describe('utils', () => {
         expect(formatTokenAmountOnly(SOME_TOKEN_WITH_0_DECIMALS, new BigNumber('11'))).toEqual(
           '11.0000',
         )
+      })
+    })
+  })
+
+  describe('parseSecondsAsTime', () => {
+    describe('when the passed value is not a number', () => {
+      it('should return a placeholder', () => {
+        const time = parseSecondsAsTime('what?' as unknown as number)
+        expect(time).toEqual(' - ')
+      })
+    })
+
+    describe('when the passed value is below zero', () => {
+      it('should return a placeholder', () => {
+        const time = parseSecondsAsTime(-5)
+        expect(time).toEqual(' - ')
+      })
+    })
+
+    describe('when the passed value is valid', () => {
+      describe('and it has a one digit amount of seconds', () => {
+        it('should add a padding 0', () => {
+          const time = parseSecondsAsTime(61)
+          expect(time).toEqual('1:01')
+        })
+      })
+
+      describe('and it has a two digit amount of seconds', () => {
+        it('should not add a padding 0', () => {
+          const time = parseSecondsAsTime(83)
+          expect(time).toEqual('1:23')
+        })
+      })
+
+      describe('and it contains a fraction', () => {
+        it('should round to 2 digits', () => {
+          const time = parseSecondsAsTime(83.12345)
+          expect(time).toEqual('1:24')
+        })
       })
     })
   })

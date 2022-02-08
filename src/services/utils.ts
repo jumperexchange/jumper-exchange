@@ -55,3 +55,17 @@ export const isWalletDeactivated = (address: string | null | undefined): boolean
   const deactivatedAddresses = deactivatedWallets.map((address) => address.toLowerCase())
   return deactivatedAddresses.includes(lowerCaseAddress)
 }
+
+/**
+ * Parses seconds as time string in the format "02:25"
+ * @param seconds
+ */
+export const parseSecondsAsTime = (seconds: number): string => {
+  if (isNaN(seconds) || seconds < 0) {
+    return ' - '
+  }
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = Math.ceil(seconds % 60)
+  const prefix = remainingSeconds < 10 ? '0' : ''
+  return `${minutes}:${prefix}${remainingSeconds}`
+}
