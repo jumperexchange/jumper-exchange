@@ -2,6 +2,7 @@ import './web3.css'
 
 import { WalletOutlined } from '@ant-design/icons'
 import { useWeb3React } from '@web3-react/core'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { Button, Modal, Typography } from 'antd'
 import { useState } from 'react'
 
@@ -63,6 +64,10 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
     const accountAddress = await connector.getAccount()
     removeFromDeactivatedWallets(accountAddress)
     addToActiveWallets(accountAddress)
+    if (connector instanceof WalletConnectConnector) {
+      // apparently this is necessary
+      connector.walletConnectProvider.enable()
+    }
   }
 
   return (

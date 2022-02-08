@@ -7,7 +7,18 @@ import LiFi, {
   StepTool,
 } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
+import {
+  Avatar,
+  Button,
+  Divider,
+  Modal,
+  Row,
+  Space,
+  Spin,
+  Timeline,
+  Tooltip,
+  Typography,
+} from 'antd'
 import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
@@ -15,7 +26,7 @@ import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
 import walletIcon from '../assets/wallet.png'
-import { storeRoute } from '../services/localStorage'
+import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
@@ -33,6 +44,7 @@ import {
 } from '../types'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
+import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
 interface SwappingProps {
   route: Route
@@ -62,6 +74,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
   const [finalTokenAmount, setFinalTokenAmount] = useState<TokenAmount | null>()
+  const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
+    show: boolean
+    chainId: number
+    promiseResolver?: Function
+  }>({ show: false, chainId: 1 })
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -225,7 +242,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const startCrossChainSwap = async () => {
     if (!web3.account || !web3.library) return
-
     const signer = web3.library.getSigner()
 
     const settings: ExecutionSettings = {
@@ -300,7 +316,23 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const switchChainHook = async (requiredChainId: number) => {
     if (!web3.account || !web3.library) return
+
+    if (isWalletConnectWallet(web3.account)) {
+      let promiseResolver
+      const signerAwaiter = new Promise<void>((resolve) => (promiseResolver = resolve))
+
+      setShowWalletConnectChainSwitchModal({
+        show: true,
+        chainId: requiredChainId,
+        promiseResolver,
+      })
+
+      await signerAwaiter
+      return web3.library.getSigner()
+    }
+
     if ((await web3.library.getSigner().getChainId()) !== requiredChainId) {
+      // Fallback is Metamask
       const switched = await switchChain(requiredChainId)
       if (!switched) {
         throw new Error('Chain was not switched')
@@ -449,6 +481,35 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
             </Row>
           </>
         )}
+        <Modal
+          className="wallet-selection-modal"
+          visible={showWalletConnectChainSwitchModal.show}
+          onOk={() =>
+            setShowWalletConnectChainSwitchModal({
+              show: false,
+              chainId: 1,
+            })
+          }
+          onCancel={() =>
+            setShowWalletConnectChainSwitchModal({
+              show: false,
+              chainId: 1,
+            })
+          }
+          footer={null}>
+          <WalletConnectChainSwitchModal
+            chainId={showWalletConnectChainSwitchModal.chainId}
+            okHandler={() => {
+              if (showWalletConnectChainSwitchModal.promiseResolver) {
+                showWalletConnectChainSwitchModal.promiseResolver()
+              }
+              setShowWalletConnectChainSwitchModal({
+                show: false,
+                chainId: 1,
+              })
+            }}
+          />
+        </Modal>
       </div>
     </>
   )
