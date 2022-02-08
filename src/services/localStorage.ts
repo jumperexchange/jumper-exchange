@@ -202,7 +202,6 @@ const readActiveRoutes = (): Array<Route> => {
 
   return sortRoutesByExecutionDate(activeRoutes)
 }
-
 const isWalletConnectWallet = (wallet: string): boolean => {
   if (!isSupported() || !wallet) {
     return false
@@ -215,10 +214,9 @@ const isWalletConnectWallet = (wallet: string): boolean => {
   if (!walletConnect.accounts) {
     return false
   }
-  if (walletConnect.accounts.includes(wallet)) {
-    return true
-  }
-  return false
+
+  const lowerCaseAddresses = walletConnect.accounts.map((account: string) => account.toLowerCase())
+  return lowerCaseAddresses.includes(wallet.toLowerCase())
 }
 
 const readWalletConnectInfo = () => {
