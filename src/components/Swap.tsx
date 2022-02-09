@@ -324,7 +324,10 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+
+  // Misc
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
+  const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -365,6 +368,22 @@ const Swap = ({ transferChains }: SwapProps) => {
       })
     }
   }, [web3.library])
+
+  useEffect(() => {
+    // executed once after page is loaded
+    if (!balancePollingStarted) {
+      setBalancePollingStarted(true)
+
+      // start balance polling
+      const pollingInterval = setInterval(() => {
+        setRefreshBalances(true)
+      }, 60_000)
+
+      return () => {
+        clearInterval(pollingInterval)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const load = async () => {
