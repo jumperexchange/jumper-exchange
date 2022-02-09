@@ -58,7 +58,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: 'Metis Token',
       symbol: 'Metis',
     },
-       
+
     // ADDED TOKEN FOR MARKETING PURPOSES
     // > BOLE: https://bscscan.com/token/0x3375AfA606F5836154C95F1Df5830EA2e4F41DF2
     {
