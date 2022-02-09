@@ -58,6 +58,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: 'Metis Token',
       symbol: 'Metis',
     },
+
+    // ADDED TOKEN FOR MARKETING PURPOSES
+    // > BOLE: https://bscscan.com/token/0x3375AfA606F5836154C95F1Df5830EA2e4F41DF2
+    {
+      address: '0x3375AfA606F5836154C95F1Df5830EA2e4F41DF2',
+      chainId: ChainId.BSC,
+      decimals: 18,
+      logoURI: 'https://bscscan.com/token/images/boleinc_32.png',
+      name: 'BoleToken',
+      symbol: 'BOLE',
+    },
   ],
   [ChainKey.POL]: [
     findDefaultToken(CoinKey.MATIC, ChainId.POL),
@@ -142,6 +153,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: '0xDAO',
       symbol: 'OXD',
     },
+
+    // Partners - for marketing purposes
+    // > TOMB: https://ftmscan.com/token/0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7
+    {
+      address: '0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7',
+      chainId: ChainId.FTM,
+      decimals: 18,
+      logoURI: 'https://ftmscan.com/token/images/tomb_32.png',
+      name: 'TOMB',
+      symbol: 'TOMB',
+    },
   ],
   [ChainKey.ARB]: [
     findDefaultToken(CoinKey.ETH, ChainId.ARB),
@@ -181,6 +203,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
     findDefaultToken(CoinKey.USDT, ChainId.AVA),
     findDefaultToken(CoinKey.DAI, ChainId.AVA),
     findDefaultToken(CoinKey.WBTC, ChainId.AVA),
+
+    // ADDED TOKEN FOR MARKETING PURPOSES
+    // > Defrost Finance Token: https://snowtrace.io/token/0x47EB6F7525C1aA999FBC9ee92715F5231eB1241D
+    {
+      address: '0x47EB6F7525C1aA999FBC9ee92715F5231eB1241D',
+      chainId: ChainId.AVA,
+      decimals: 18,
+      logoURI: 'https://snowtrace.io/token/images/defrostfinance_32.png',
+      name: 'Defrost Finance Token',
+      symbol: 'MELT',
+    },
   ],
   [ChainKey.MOR]: [
     findDefaultToken(CoinKey.MOVR, ChainId.MOR),

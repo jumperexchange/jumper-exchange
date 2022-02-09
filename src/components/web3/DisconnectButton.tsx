@@ -65,10 +65,10 @@ function DisconnectButton({ style, className, size = 'middle' }: DisconnectButto
     library
       .lookupAddress(account)
       .then((name: string) => {
-        if (!name) return setWalletIdentifier(`${account.substr(0, 6)}...`)
+        if (!name) return setWalletIdentifier(`${account.substr(0, 4)}...`)
         setWalletIdentifier(name)
       })
-      .catch((e: unknown) => setWalletIdentifier(`${account.substr(0, 6)}...`))
+      .catch((e: unknown) => setWalletIdentifier(`${account.substr(0, 4)}...`))
   }, [library, account])
 
   const infoContent = (
