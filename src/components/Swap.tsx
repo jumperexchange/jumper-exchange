@@ -63,7 +63,7 @@ import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
-import TrasactionsTable from './TransactionsTable'
+import TransactionsTable from './TransactionsTable'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 import ConnectButton from './web3/ConnectButton'
 
@@ -780,7 +780,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                 key="1"
                 className="site-collapse-active-transfer-panel">
                 <div>
-                  <TrasactionsTable
+                  <TransactionsTable
                     routes={historicalRoutes}
                     selectRoute={() => {}}
                     deleteRoute={(route: RouteType) => {
@@ -788,7 +788,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                       deleteRoute(route)
                       setHistoricalRoutes(readHistoricalRoutes())
                     }}
-                    historical={true}></TrasactionsTable>
+                    historical={true}></TransactionsTable>
                 </div>
               </Panel>
             </Collapse>
@@ -809,14 +809,14 @@ const Swap = ({ transferChains }: SwapProps) => {
                 key="1"
                 className="site-collapse-active-transfer-panel">
                 <div>
-                  <TrasactionsTable
+                  <TransactionsTable
                     routes={activeRoutes}
                     selectRoute={(route: RouteType) => setSelectedRoute(route)}
                     deleteRoute={(route: RouteType) => {
                       LiFi.stopExecution(route)
                       deleteRoute(route)
                       setActiveRoutes(readActiveRoutes())
-                    }}></TrasactionsTable>
+                    }}></TransactionsTable>
                 </div>
               </Panel>
             </Collapse>

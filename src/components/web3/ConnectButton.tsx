@@ -62,7 +62,15 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
   const [showConnectModal, setShowConnectModal] = useState<boolean>(false)
 
   const login = async (connector: any) => {
-    await activate(connector)
+    try {
+      await activate(connector, undefined, true)
+    } catch {
+      if (connector instanceof WalletConnectConnector) {
+        // resetting the walletConnectProvider is necessary in case of errors
+        connector.walletConnectProvider = undefined
+      }
+      return
+    }
     const accountAddress = await connector.getAccount()
     removeFromDeactivatedWallets(accountAddress)
     addToActiveWallets(accountAddress)

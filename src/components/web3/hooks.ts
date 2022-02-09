@@ -16,7 +16,8 @@ export function useEagerConnect() {
     const eagerConnect = async () => {
       if ((window as any).ethereum) {
         // try to activate Metamask wallet
-        if (await injected.isAuthorized()) {
+        const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
+        if ((await injected.isAuthorized()) && !isWalletDeactivated(currentlySelectedUserAddress)) {
           activate(await getInjectedConnector(), undefined, true).catch(() => {
             setTried(true)
           })
@@ -35,7 +36,6 @@ export function useEagerConnect() {
 
   useEffect(() => {
     // Eager Connect is disabled for walletConnect (not working)
-    deleteWalletConnectInfo()
     // TODO: try to activate walletConnect Wallet
     const walletConnectInfo = readWalletConnectInfo()
     if (walletConnectInfo) {
