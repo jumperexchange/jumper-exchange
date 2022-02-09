@@ -58,6 +58,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: 'Metis Token',
       symbol: 'Metis',
     },
+
+    // ADDED TOKEN FOR MARKETING PURPOSES
+    // > BOLE: https://bscscan.com/token/0x3375AfA606F5836154C95F1Df5830EA2e4F41DF2
+    {
+      address: '0x3375AfA606F5836154C95F1Df5830EA2e4F41DF2',
+      chainId: ChainId.BSC,
+      decimals: 18,
+      logoURI: 'https://bscscan.com/token/images/boleinc_32.png',
+      name: 'BoleToken',
+      symbol: 'BOLE',
+    },
   ],
   [ChainKey.POL]: [
     findDefaultToken(CoinKey.MATIC, ChainId.POL),
