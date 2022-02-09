@@ -757,7 +757,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   return (
     <Content className="site-layout site-layout-swap">
-      <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
+      <div className="swap-view">
         {/* Historical Routes */}
         {!!historicalRoutes.length && (
           <Row justify={'center'} className="historicalTransfers">
