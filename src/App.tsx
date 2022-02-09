@@ -220,7 +220,7 @@ function App() {
                       )
                     }}
                   />
-                  <Route
+                  {/* <Route
                     path="/testnet"
                     render={() => {
                       setMetatags({
@@ -236,7 +236,7 @@ function App() {
                         </div>
                       )
                     }}
-                  />
+                  /> */}
                   <Route
                     path="/about"
                     render={() => {
