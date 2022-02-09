@@ -3,9 +3,11 @@ import './web3.css'
 import { WalletOutlined } from '@ant-design/icons'
 import { useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { Button, Modal, Typography } from 'antd'
+import { Avatar, Button, Modal, Typography } from 'antd'
 import { useState } from 'react'
 
+import metamaskIcon from '../../assets/wallets/metamask.svg'
+import walletConnectIcon from '../../assets/wallets/walletconnect.svg'
 import {
   readDeactivatedWallets,
   readWallets,
@@ -17,14 +19,14 @@ import { getInjectedConnector, getWalletConnectConnector } from './connectors'
 const supportedWallets = [
   {
     name: 'MetaMask',
-    icon: '',
+    icon: metamaskIcon,
     connector: async () => {
       return await getInjectedConnector()
     },
   },
   {
     name: 'WalletConnect',
-    icon: '',
+    icon: walletConnectIcon,
     connector: async () => {
       return await getWalletConnectConnector()
     },
@@ -93,10 +95,20 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
         {supportedWallets.map((wallet) => {
           return (
             <div
+              style={{
+                // width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+              }}
               key={wallet.name}
               onClick={async () => login(await wallet.connector())}
               className="wallet-provider-button">
-              {wallet.name}
+              <div>{wallet.name}</div>
+              <div>
+                <Avatar shape="square" size={'large'} src={wallet.icon}></Avatar>
+              </div>
             </div>
           )
         })}
