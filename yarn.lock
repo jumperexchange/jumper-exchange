@@ -1977,7 +1977,7 @@
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
 
-"@lifinance/sdk@^0.4.4-beta.0":
+"@lifinance/sdk@^0.4.4":
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.4.tgz#8edd48a0e7fd914e37fe19ad10771da68c49dd16"
   integrity sha512-JCizex5t6eOUd5Vf0xTD6Jd5K0RFttp1V0NIOQjE9xB/x7aVjv0tGahJsjC4UtuPG8hMuPdG1DmXDaGL0Q06pw==
