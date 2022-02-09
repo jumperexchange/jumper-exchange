@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+import { parseSecondsAsTime } from '../services/utils'
+
 interface ClockProps {
   startedAt: number
   successAt?: number | undefined
@@ -22,11 +24,7 @@ const Clock = ({ startedAt, successAt, failedAt }: ClockProps) => {
 
   const renderTime = () => {
     const total = getCount()
-    const minutes = Math.floor(total / 60)
-    const seconds = total % 60
-    const prefix = seconds < 10 ? '0' : ''
-
-    return `${minutes}:${prefix}${seconds}`
+    return parseSecondsAsTime(total)
   }
 
   useEffect(() => {
