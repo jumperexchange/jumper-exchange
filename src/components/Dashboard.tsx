@@ -8,14 +8,27 @@ import {
   WalletOutlined,
 } from '@ant-design/icons'
 import { useWeb3React } from '@web3-react/core'
-import { Avatar, Badge, Button, Col, Input, Modal, Row, Skeleton, Table, Tooltip } from 'antd'
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  Input,
+  Modal,
+  Row,
+  Skeleton,
+  Table,
+  Tooltip,
+  Typography,
+} from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 
 import { getTokenBalancesForChainsFromDebank } from '../services/balances'
-import { readWallets, storeWallets } from '../services/localStorage'
+import { readWallets } from '../services/localStorage'
+import { isWalletDeactivated } from '../services/utils'
 import {
   Amounts,
   ChainId,
@@ -487,9 +500,13 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
 
 // actual component
 const Dashboard = () => {
-  const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() => {
-    return readWallets()
-  })
+  const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() =>
+    readWallets().map((address) => ({
+      address: address,
+      loading: false,
+      portfolio: chainKeysToObject([]),
+    })),
+  )
   const web3 = useWeb3React()
   const [columns, setColumns] = useState<Array<ColomnType>>(initialColumns)
   const [walletModalVisible, setWalletModalVisible] = useState(false)
@@ -505,6 +522,18 @@ const Dashboard = () => {
       registeredWallets.filter((item) => item.address !== wallet.address),
     )
   }
+
+  // update registeredWallets on activate or deactivate
+  useEffect(() => {
+    if (isWalletDeactivated(web3.account)) return
+    setRegisteredWallets(
+      readWallets().map((address) => ({
+        address: address,
+        loading: false,
+        portfolio: chainKeysToObject([]),
+      })),
+    )
+  }, [web3.account])
 
   const buildWalletColumns = () => {
     var walletColumns: Array<ColomnType> = []
@@ -680,10 +709,6 @@ const Dashboard = () => {
     setRegisteredWallets((registeredWallets) => [...registeredWallets, newWallet])
   }
 
-  useEffect(() => {
-    storeWallets(registeredWallets)
-  }, [registeredWallets])
-
   // Add Wallet Modal Handlers
   const resolveEnsName = async (name: string) => {
     const ethereum = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_MAINNET)
@@ -788,9 +813,10 @@ const Dashboard = () => {
         onOk={handleWalletModalAdd}
         onCancel={handleWalletModalClose}
         zIndex={800}
+        closable={!!registeredWallets.length}
         footer={[
           // only show close if other wallets have been added already
-          registeredWallets.length === 0 ? (
+          registeredWallets.length ? (
             <Button key="back" onClick={handleWalletModalClose}>
               Close
             </Button>
@@ -805,21 +831,27 @@ const Dashboard = () => {
             {walletModalLoading ? 'Loading' : 'Add'}
           </Button>,
         ]}>
-        {!web3.account ? (
-          <ConnectButton />
-        ) : (
-          <Button style={{ display: 'block' }}>
-            Connected with {web3.account.substr(0, 4)}...
-          </Button>
-        )}
-        Enter a wallet address / ens domain:
+        <div className="connected-wallets-section" style={{ marginBottom: '32px' }}>
+          {!web3.account ? (
+            <ConnectButton style={{ display: 'block', margin: ' auto' }} />
+          ) : (
+            <Button shape="round" style={{ display: 'block', margin: ' auto' }}>
+              Connected with {web3.account.substr(0, 4)}...
+            </Button>
+          )}
+        </div>
+        <Typography.Text style={{ display: 'block', margin: '0 auto', textAlign: 'center' }}>
+          Temporarily inspect a wallet address / ens domain:
+        </Typography.Text>
         <Input
           size="large"
           placeholder="0x..."
           prefix={<WalletOutlined />}
-          value={getModalAddressSuggestion()}
           onChange={(event) => setWalletModalAddress(event.target.value)}
           disabled={walletModalLoading}
+          style={{
+            borderRadius: 6,
+          }}
         />
       </Modal>
     </Content>

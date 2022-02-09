@@ -339,7 +339,7 @@ h4.swap-title {
 }
 
 .lifiEmbed .swap-form {
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .lifiEmbed .activeTransfers {
@@ -351,6 +351,15 @@ h4.swap-title {
 }
 
 .lifiEmbed .poweredBy {
+  position: absolute;
+  top: 38px;
+  right: 0;
+  padding: 6px 12px;
+  background-color: white;
+  border-radius: 6px;
+  z-index: 100;
+}
+.lifiEmbed .wallet-buttons-embed-view {
   position: absolute;
   top: 0;
   right: 0;

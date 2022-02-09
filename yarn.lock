@@ -1952,25 +1952,25 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@lifinance/sdk@^0.4.2":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.3.tgz#f2120ff41d09f00520efe5d919cb3f4799996316"
-  integrity sha512-QLXSGTTNkW0F0cvUwUU/zdoQ9oC71qz5m13Iyvfz+VacgOwilqDK92Rhvz/Nlvt2D/NH4h4Ertm2S9aCRmhOuA==
+"@lifinance/sdk@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.4.tgz#8edd48a0e7fd914e37fe19ad10771da68c49dd16"
+  integrity sha512-JCizex5t6eOUd5Vf0xTD6Jd5K0RFttp1V0NIOQjE9xB/x7aVjv0tGahJsjC4UtuPG8hMuPdG1DmXDaGL0Q06pw==
   dependencies:
     "@connext/nxtp-sdk" "^0.1.8"
     "@ethersproject/abi" "^5.5.0"
     "@ethersproject/contracts" "^5.4.0"
-    "@lifinance/types" "0.9.8"
-    axios "^0.24.0"
+    "@lifinance/types" "0.10.0"
+    axios "^0.25.0"
     bignumber.js "^9.0.1"
     bridge-sdk "^2.13.0"
     eth-rpc-errors "^4.0.3"
     ethers "^5.5.2"
 
-"@lifinance/types@0.9.8":
-  version "0.9.8"
-  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.9.8.tgz#11175c6e44c9e1804639e5adb371e04e6c832125"
-  integrity sha512-lwa3xFapXzeE81xqTFzoloWpC53iT3IhlMIny9lRTKXT93uI+x5V57vRDVcf/va0woLkpYmwClLMt0qalOrU3g==
+"@lifinance/types@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.10.0.tgz#79317373a9f070bc363caa8b8bd44c9758b6463b"
+  integrity sha512-f2p78lcX62jHQzM9kEOmenUTX2yg9LDIr7ofNdmSyhxHN2u7g0zigfZJrs5II1FTWNL9lItgN0Tt/PF6PeYV7A==
   dependencies:
     ethers "^5.4.7"
 
@@ -3467,12 +3467,12 @@ axios@^0.21.1, axios@^0.21.4:
   dependencies:
     follow-redirects "^1.14.0"
 
-axios@^0.24.0:
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
-  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
+axios@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.25.0.tgz#349cfbb31331a9b4453190791760a8d35b093e0a"
+  integrity sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==
   dependencies:
-    follow-redirects "^1.14.4"
+    follow-redirects "^1.14.7"
 
 axobject-query@^2.2.0:
   version "2.2.0"
@@ -6763,10 +6763,15 @@ fmix@^0.1.0:
   dependencies:
     imul "^1.0.0"
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.14.4:
+follow-redirects@^1.0.0, follow-redirects@^1.14.0:
   version "1.14.7"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
   integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
+
+follow-redirects@^1.14.7:
+  version "1.14.8"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.8.tgz#016996fb9a11a100566398b1c6839337d7bfa8fc"
+  integrity sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==
 
 for-in@^1.0.2:
   version "1.0.2"

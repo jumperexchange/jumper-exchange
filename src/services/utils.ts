@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 
 import { Token } from '../types'
+import { readDeactivatedWallets } from './localStorage'
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
   if (!amount) {
@@ -45,4 +46,12 @@ export const sleep = (mills: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, mills)
   })
+}
+
+export const isWalletDeactivated = (address: string | null | undefined): boolean => {
+  if (!address) return false
+  const lowerCaseAddress = address.toLowerCase()
+  const deactivatedWallets = readDeactivatedWallets()
+  const deactivatedAddresses = deactivatedWallets.map((address) => address.toLowerCase())
+  return deactivatedAddresses.includes(lowerCaseAddress)
 }

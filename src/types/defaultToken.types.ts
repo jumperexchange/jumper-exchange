@@ -58,6 +58,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: 'Metis Token',
       symbol: 'Metis',
     },
+
+    // ADDED TOKEN FOR MARKETING PURPOSES
+    // > BOLE: https://bscscan.com/token/0x3375AfA606F5836154C95F1Df5830EA2e4F41DF2
+    {
+      address: '0x3375AfA606F5836154C95F1Df5830EA2e4F41DF2',
+      chainId: ChainId.BSC,
+      decimals: 18,
+      logoURI: 'https://bscscan.com/token/images/boleinc_32.png',
+      name: 'BoleToken',
+      symbol: 'BOLE',
+    },
   ],
   [ChainKey.POL]: [
     findDefaultToken(CoinKey.MATIC, ChainId.POL),
@@ -141,6 +152,17 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
         ' https://assets.coingecko.com/coins/images/22888/small/rjks-OoT_400x400.jpg?1642827011 ',
       name: '0xDAO',
       symbol: 'OXD',
+    },
+
+    // Partners - for marketing purposes
+    // > TOMB: https://ftmscan.com/token/0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7
+    {
+      address: '0x6c021Ae822BEa943b2E66552bDe1D2696a53fbB7',
+      chainId: ChainId.FTM,
+      decimals: 18,
+      logoURI: 'https://ftmscan.com/token/images/tomb_32.png',
+      name: 'TOMB',
+      symbol: 'TOMB',
     },
   ],
   [ChainKey.ARB]: [
