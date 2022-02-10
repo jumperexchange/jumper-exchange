@@ -60,6 +60,19 @@ export const isWalletActivated = (address: string | null | undefined): boolean =
   if (!address) return false
   const lowerCaseAddress = address.toLowerCase()
   const activeWallets = readWallets()
-  const activeAdresses = activeWallets.map((address) => address.toLowerCase())
-  return activeAdresses.includes(lowerCaseAddress)
+  const activeAddresses = activeWallets.map((address) => address.toLowerCase())
+  return activeAddresses.includes(lowerCaseAddress)
+}
+/**
+ * Parses seconds as time string in the format "02:25"
+ * @param seconds
+ */
+export const parseSecondsAsTime = (seconds: number): string => {
+  if (isNaN(seconds) || seconds < 0) {
+    return ' - '
+  }
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = Math.ceil(seconds % 60)
+  const prefix = remainingSeconds < 10 ? '0' : ''
+  return `${minutes}:${prefix}${remainingSeconds}`
 }
