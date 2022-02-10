@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 
 import { deleteWalletConnectInfo, readWalletConnectInfo } from '../../services/localStorage'
-import { isWalletDeactivated } from '../../services/utils'
+import { isWalletActivated, isWalletDeactivated } from '../../services/utils'
 import { getInjectedConnector, injected } from './connectors'
 import { removeFromActiveWallets } from './DisconnectButton'
 
@@ -16,8 +16,13 @@ export function useEagerConnect() {
     const eagerConnect = async () => {
       if ((window as any).ethereum) {
         // try to activate Metamask wallet
+
         const currentlySelectedUserAddress = (window as any).ethereum.selectedAddress
-        if ((await injected.isAuthorized()) && !isWalletDeactivated(currentlySelectedUserAddress)) {
+        if (
+          (await injected.isAuthorized()) &&
+          !isWalletDeactivated(currentlySelectedUserAddress) &&
+          isWalletActivated(currentlySelectedUserAddress) // be really restrictive about what we automatically log in.
+        ) {
           activate(await getInjectedConnector(), undefined, true).catch(() => {
             setTried(true)
           })

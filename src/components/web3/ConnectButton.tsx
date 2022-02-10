@@ -1,6 +1,7 @@
 import './web3.css'
 
 import { WalletOutlined } from '@ant-design/icons'
+import { AbstractConnector } from '@web3-react/abstract-connector'
 import { useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { Avatar, Button, Modal, Typography } from 'antd'
@@ -15,6 +16,7 @@ import {
   storeWallets,
 } from '../../services/localStorage'
 import { getInjectedConnector, getWalletConnectConnector } from './connectors'
+import { addToDeactivatedWallets, removeFromActiveWallets } from './DisconnectButton'
 
 const supportedWallets = [
   {
@@ -61,7 +63,7 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
   const { activate } = useWeb3React()
   const [showConnectModal, setShowConnectModal] = useState<boolean>(false)
 
-  const login = async (connector: any) => {
+  const login = async (connector: AbstractConnector) => {
     try {
       await activate(connector, undefined, true)
     } catch {
@@ -74,10 +76,11 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
     const accountAddress = await connector.getAccount()
     removeFromDeactivatedWallets(accountAddress)
     addToActiveWallets(accountAddress)
-    if (connector instanceof WalletConnectConnector) {
-      // apparently this is necessary
-      connector.walletConnectProvider.enable()
-    }
+
+    connector.on('Web3ReactDeactivate', () => {
+      removeFromActiveWallets(accountAddress)
+      addToDeactivatedWallets(accountAddress)
+    })
   }
 
   return (
