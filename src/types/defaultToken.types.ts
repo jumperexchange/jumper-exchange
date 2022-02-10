@@ -69,8 +69,7 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: 'BoleToken',
       symbol: 'BOLE',
     },
-    
-      
+
     // ADDED TOKEN FOR MARKETING PURPOSES
     // > Dinoland Metaverse: https://bscscan.com/token/0x6B9481FB5465ef9Ab9347b332058D894aB09B2f6
     {
