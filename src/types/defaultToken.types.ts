@@ -69,6 +69,18 @@ export const defaultTokens: { [ChainKey: string]: Array<Token> } = {
       name: 'BoleToken',
       symbol: 'BOLE',
     },
+    
+      
+    // ADDED TOKEN FOR MARKETING PURPOSES
+    // > Dinoland Metaverse: https://bscscan.com/token/0x6B9481FB5465ef9Ab9347b332058D894aB09B2f6
+    {
+      address: '0x6B9481FB5465ef9Ab9347b332058D894aB09B2f6',
+      chainId: ChainId.BSC,
+      decimals: 18,
+      logoURI: 'https://bscscan.com/token/images/dinoland_32.png',
+      name: 'Dinoland Metaverse',
+      symbol: 'DNL',
+    },
   ],
   [ChainKey.POL]: [
     findDefaultToken(CoinKey.MATIC, ChainId.POL),
