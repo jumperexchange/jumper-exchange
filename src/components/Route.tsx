@@ -1,6 +1,6 @@
 import { Button, Steps } from 'antd'
 
-import { formatTokenAmount } from '../services/utils'
+import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import { findTool, getChainById, Route as RouteType, Step } from '../types'
 
 interface RouteProps {
@@ -89,6 +89,13 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
     }
   }
 
+  const aggregatedDuration = route.steps.reduce<number>(
+    (duration, step) => duration + step.estimate?.executionDuration || 1,
+    0,
+  )
+
+  const parsedDuration = parseSecondsAsTime(aggregatedDuration)
+
   return (
     <div
       className={'swap-route ' + (selected ? 'optimal' : '')}
@@ -121,6 +128,8 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
           Estimated result: {route.toAmountUSD} USD
           <br />
           Estimated gas costs: {route.gasCostUSD} USD
+          <br />
+          Estimated duration: {parsedDuration} min
           <br />
         </div>
 
