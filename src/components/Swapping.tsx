@@ -342,18 +342,36 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
           <Typography.Text strong>Swap Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
-              <Typography.Text>
-                {'You now have '}
-                {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-                {` ${finalTokenAmount.symbol}`}
-                {` on ${toChain.name}`}
-              </Typography.Text>
+              <>
+                <Typography.Text>
+                  {'You received '}
+                  {new BigNumber(lastStep.execution?.toAmount!)
+                    .shiftedBy(-finalTokenAmount.decimals)
+                    .toFixed(4)}
+                  {` ${finalTokenAmount.symbol}`}
+                </Typography.Text>
+                <br />
+                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                  {'You now have '}
+                  {new BigNumber(finalTokenAmount.amount).toFixed(4)}
+                  {` ${finalTokenAmount.symbol}`}
+                  {` on ${toChain.name}`}
+                </Typography.Text>
+              </>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
                   onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
                   <Typography.Text>
+                    {'You received '}
+                    {new BigNumber(lastStep.execution?.toAmount!)
+                      .shiftedBy(-finalTokenAmount.decimals)
+                      .toFixed(4)}
+                    {` ${finalTokenAmount.symbol}`}
+                  </Typography.Text>
+                  <br />
+                  <Typography.Text type="secondary" style={{ fontSize: 12 }}>
                     {'You now have '}
                     {new BigNumber(finalTokenAmount.amount).toFixed(4)}
                     {` ${finalTokenAmount.symbol}`}
