@@ -420,12 +420,48 @@ const Swap = ({ transferChains }: SwapProps) => {
         if (!newTokens[chain.key]) newTokens[chain.key] = []
         newTokens[chain.key].push(token)
       })
-      setTokens((tokens) => Object.assign(tokens, newTokens))
+
+      setTokens((tokens) => {
+        // which existing tokens are not included?
+        Object.keys(tokens).forEach((chainKey) => {
+          tokens[chainKey].forEach((token) => {
+            if (!newTokens[chainKey]) newTokens[chainKey] = []
+            if (!newTokens[chainKey].find((item) => item.address === token.address)) {
+              newTokens[chainKey].push(token)
+
+              // -> load token from API to get current version (e.g. if token was added via url)
+              updateTokenData(token)
+            }
+          })
+        })
+        return newTokens
+      })
       setRefreshBalances(true)
     }
 
     load()
   }, [])
+
+  const updateTokenData = (token: Token) => {
+    LiFi.getToken(token.chainId, token.address).then((updatedToken) => {
+      // sync optional properties
+      updatedToken.logoURI = updatedToken.logoURI || token.logoURI
+      updatedToken.priceUSD = updatedToken.priceUSD || token.priceUSD
+
+      // update tokens
+      setTokens((tokens) => {
+        const chain = getChainById(updatedToken.chainId)
+        if (!tokens[chain.key]) tokens[chain.key] = []
+        const index = tokens[chain.key].findIndex((token) => token.address === updatedToken.address)
+        if (index === -1) {
+          tokens[chain.key].push(updatedToken)
+        } else {
+          tokens[chain.key][index] = updatedToken
+        }
+        return tokens
+      })
+    })
+  }
 
   const getSelectedWithdraw = () => {
     if (highlightedIndex === -1) {
