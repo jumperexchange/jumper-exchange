@@ -36,7 +36,12 @@ import {
 } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
-import { deepClone, formatTokenAmount, formatTokenAmountOnly } from '../services/utils'
+import {
+  deepClone,
+  formatTokenAmount,
+  formatTokenAmountOnly,
+  isWalletDeactivated,
+} from '../services/utils'
 import {
   Chain,
   ChainId,
@@ -90,11 +95,8 @@ const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>)
   }, 0)
 }
 
-const filterDefaultTokenByChains = (
-  tokens: { [ChainKey: string]: Array<TokenWithAmounts> },
-  transferChains: Chain[],
-) => {
-  const result: { [ChainKey: string]: Array<TokenWithAmounts> } = {}
+const filterDefaultTokenByChains = (tokens: TokenAmountList, transferChains: Chain[]) => {
+  const result: TokenAmountList = {}
 
   transferChains.forEach((chain) => {
     if (tokens[chain.key]) {
@@ -133,7 +135,7 @@ const parseToken = (
   // is token address valid?
   const fromTokenId = ethers.utils.getAddress(passed.trim()).toLowerCase()
   // does token address exist in our default tokens? (tokenlists not loaded yet)
-  return transferTokens[chainKey].find((token) => token.address === fromTokenId)
+  return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
 
 const getDefaultParams = (
@@ -263,6 +265,10 @@ const getDefaultParams = (
   return defaultParams
 }
 
+interface TokenAmountList {
+  [ChainKey: string]: Array<TokenWithAmounts>
+}
+
 interface StartParams {
   depositChain?: ChainKey
   depositToken?: string
@@ -296,9 +302,8 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [toTokenAddress, setToTokenAddress] = useState<string | undefined>(
     startParams.withdrawToken,
   )
-  const [tokens, setTokens] =
-    useState<{ [ChainKey: string]: Array<TokenWithAmounts> }>(transferTokens)
-  const [refreshTokens, setRefreshTokens] = useState<boolean>(true)
+  const [tokens, setTokens] = useState<TokenAmountList>(transferTokens)
+  const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
@@ -319,7 +324,10 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+
+  // Misc
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
+  const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -362,6 +370,22 @@ const Swap = ({ transferChains }: SwapProps) => {
   }, [web3.library])
 
   useEffect(() => {
+    // executed once after page is loaded
+    if (!balancePollingStarted) {
+      setBalancePollingStarted(true)
+
+      // start balance polling
+      const pollingInterval = setInterval(() => {
+        setRefreshBalances(true)
+      }, 60_000)
+
+      return () => {
+        clearInterval(pollingInterval)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
     const load = async () => {
       LiFi.setConfig({
         apiUrl: process.env.REACT_APP_API_URL,
@@ -388,6 +412,16 @@ const Swap = ({ transferChains }: SwapProps) => {
       const allExchanges = Array.from(new Set(exchanges))
       setAvailableExchanges(allExchanges)
       setOptionEnabledExchanges(allExchanges)
+
+      // tokens
+      const newTokens: TokenAmountList = {}
+      possibilities.tokens.forEach((token) => {
+        const chain = getChainById(token.chainId)
+        if (!newTokens[chain.key]) newTokens[chain.key] = []
+        newTokens[chain.key].push(token)
+      })
+      setTokens((tokens) => Object.assign(tokens, newTokens))
+      setRefreshBalances(true)
     }
 
     load()
@@ -452,7 +486,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const updateBalances = useCallback(async () => {
     if (web3.account) {
       // one call per chain to show balances as soon as the request comes back
-      Object.entries(tokens).forEach(async ([chainKey, tokenList]) => {
+      Object.entries(tokens).forEach(([chainKey, tokenList]) => {
         LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
           setBalances((balances) => {
             if (!balances) balances = {}
@@ -476,8 +510,6 @@ const Swap = ({ transferChains }: SwapProps) => {
   useEffect(() => {
     if (!web3.account) {
       setBalances(undefined) // reset old balances
-    } else {
-      setRefreshBalances(true)
     }
   }, [web3.account])
 
@@ -499,6 +531,9 @@ const Swap = ({ transferChains }: SwapProps) => {
   useEffect(() => {
     // merge tokens and balances
     for (const chain of transferChains) {
+      if (!tokens[chain.key]) {
+        continue
+      }
       for (const token of tokens[chain.key]) {
         if (!balances || !balances[chain.key]) {
           // balances for chain not loaded yet
@@ -658,7 +693,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   }
 
   const submitButton = () => {
-    if (!active) {
+    if (!active && isWalletDeactivated(web3.account)) {
       return (
         <Button
           disabled={true}
@@ -752,7 +787,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   return (
     <Content className="site-layout site-layout-swap">
-      <div className="swap-view" style={{ minHeight: '900px', maxWidth: 1600, margin: 'auto' }}>
+      <div className="swap-view">
         {/* Historical Routes */}
         {!!historicalRoutes.length && (
           <Row justify={'center'} className="historicalTransfers">

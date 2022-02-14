@@ -1,4 +1,4 @@
-import { chainKeysToObject, Route, Status, Wallet } from '../types'
+import { Route, Status } from '../types'
 
 const isSupported = () => {
   try {
@@ -12,7 +12,7 @@ const isSupported = () => {
   }
 }
 
-// TODO: Migrating old localStorage key. Can be removed after being deployed for a while (17.12.2021)
+// TODO: Migrating old localStorage key. Can be removed after being deployed for a while (deployed on 17.12.2021)
 const migrateOldProperties = () => {
   if (!isSupported()) return
   const alreadyMigrated = localStorage.getItem('routes')
@@ -33,34 +33,64 @@ const clearLocalStorage = () => {
   }
 }
 
-const storeWallets = (wallets: Array<Wallet>) => {
+const storeWallets = (wallets: Array<string>) => {
   if (isSupported()) {
-    localStorage.setItem('wallets', JSON.stringify(wallets.map((item) => item.address)))
+    const lowerCaseWallets = wallets.map((address) => address.toLowerCase())
+    localStorage.setItem('wallets', JSON.stringify(Array.from(new Set(lowerCaseWallets))))
   }
 }
 
-const readWallets = (): Array<Wallet> => {
+const readWallets = (): Array<string> => {
   if (!isSupported()) {
     return []
   }
-
   const walletsString = localStorage.getItem('wallets')
   if (walletsString) {
     try {
-      const addresses = JSON.parse(walletsString)
-      return addresses.map((address: string) => {
-        return {
-          address: address,
-          loading: false,
-          portfolio: chainKeysToObject([]),
-        }
-      })
+      return JSON.parse(walletsString)
     } catch (e) {
       return []
     }
   } else {
     return []
   }
+}
+
+const storeDeactivatedWallets = (wallets: string[]) => {
+  if (isSupported()) {
+    const lowerCaseWallets = wallets.map((address) => address.toLowerCase())
+    localStorage.setItem(
+      'deactivatedWallets',
+      JSON.stringify(Array.from(new Set(lowerCaseWallets))),
+    )
+  }
+}
+
+const readDeactivatedWallets = (): Array<string> => {
+  if (!isSupported()) {
+    return []
+  }
+  const walletsString = localStorage.getItem('deactivatedWallets')
+  if (walletsString) {
+    try {
+      return JSON.parse(walletsString)
+    } catch (e) {
+      return []
+    }
+  } else {
+    return []
+  }
+}
+
+const storeHideDisconnectPopup = (shouldHide: boolean) => {
+  if (!isSupported()) return
+  localStorage.setItem('hideDisconnetPopup', JSON.stringify(shouldHide))
+}
+
+const readHideDisconnectPopup = (): boolean => {
+  if (!isSupported()) return false
+  const shouldHideString = localStorage.getItem('hideDisconnetPopup')
+  return JSON.parse(shouldHideString as string) === true
 }
 
 const storeHideAbout = (hide: boolean) => {
@@ -178,11 +208,15 @@ export {
   deleteRoute,
   isSupported,
   readActiveRoutes,
+  readDeactivatedWallets,
   readHideAbout,
+  readHideDisconnectPopup,
   readHistoricalRoutes,
   readWallets,
   sortRoutesByExecutionDate,
+  storeDeactivatedWallets,
   storeHideAbout,
+  storeHideDisconnectPopup,
   storeRoute,
   storeWallets,
 }

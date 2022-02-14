@@ -19,7 +19,7 @@ import { storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
-import { formatTokenAmount } from '../services/utils'
+import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import {
   ChainKey,
   findTool,
@@ -140,6 +140,13 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const isLoading = isSwapping && step.execution && step.execution.status === 'PENDING'
     const isPaused = !isSwapping && step.execution && step.execution.status === 'PENDING'
     const color = isDone ? 'green' : step.execution ? 'blue' : 'gray'
+    const executionDuration = !!step.estimate.executionDuration && (
+      <>
+        <br />
+        <span>Estimated duration: {parseSecondsAsTime(step.estimate.executionDuration)} min</span>
+      </>
+    )
+
     switch (step.type) {
       case 'swap': {
         return [
@@ -153,6 +160,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
               <ArrowRightOutlined />{' '}
               {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
             </span>
+            {executionDuration}
           </Timeline.Item>,
           <Timeline.Item
             position={isMobile ? 'right' : 'left'}
@@ -179,6 +187,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
               {formatTokenAmount(action.fromToken, estimate.fromAmount)} <ArrowRightOutlined />{' '}
               {formatTokenAmount(action.toToken, estimate.toAmount)}
             </span>
+            {executionDuration}
           </Timeline.Item>,
           <Timeline.Item
             position={isMobile ? 'right' : 'left'}
@@ -206,6 +215,7 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
               <ArrowRightOutlined />{' '}
               {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
             </span>
+            {executionDuration}
           </Timeline.Item>,
           <Timeline.Item
             position={isMobile ? 'right' : 'left'}

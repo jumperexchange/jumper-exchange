@@ -1,4 +1,5 @@
 @import '../css/animations.css';
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -52,6 +53,7 @@ input[type='number']::-webkit-outer-spin-button {
   padding: 20px 20px 30px 20px;
   min-width: 433px;
 }
+
 @media only screen and (max-width: 480px) {
   .no-routes-found {
     min-width: 280px;
@@ -63,7 +65,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .progress-step-list {
-  margin-bottom: 90px;
+  margin-bottom: 120px;
 }
 
 .progress-step-title {
@@ -85,10 +87,12 @@ input[type='number']::-webkit-outer-spin-button {
   .swapModal.ant-modal {
     margin-top: -92px;
   }
+
   .swapModal .ant-timeline-item {
     padding-bottom: 12px;
   }
 }
+
 .swapping-modal-timeline {
   padding-top: 38px;
   min-height: 350px;
@@ -102,6 +106,7 @@ input[type='number']::-webkit-outer-spin-button {
   align-items: center;
   justify-content: center;
 }
+
 @media only screen and (max-height: 650px) {
   .swapping-modal-timeline {
     padding-top: 38px;
@@ -118,11 +123,13 @@ input[type='number']::-webkit-outer-spin-button {
   margin-top: 36px;
   overflow: hidden;
 }
+
 h4.swap-title {
   /* color: #1e1451; */
   margin: 0px auto 24px;
   font-size: 16px;
 }
+
 .only-mobile {
   display: none;
 }
@@ -136,23 +143,29 @@ h4.swap-title {
   display: flex;
   align-items: center;
 }
+
 .form-input-wrapper.disabled {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
+
 .form-input-wrapper .ant-avatar {
   margin-left: 4px;
   flex-shrink: 0;
 }
+
 .form-input-wrapper .ant-select {
   flex-grow: 1;
   overflow: hidden;
 }
+
 .form-input-wrapper input {
   font-weight: 700;
 }
+
 .insufficient {
   color: #e4305f;
 }
+
 .form-text {
   font-weight: 700;
   align-items: center;
@@ -166,6 +179,7 @@ h4.swap-title {
   .swap-form {
     margin-top: 0;
   }
+
   .only-mobile {
     display: block;
   }
@@ -182,6 +196,7 @@ h4.swap-title {
   .form-input-wrapper {
     padding: 8px 4px;
   }
+
   .form-input-wrapper .ant-select,
   .form-input-wrapper input,
   .form-text {
@@ -230,9 +245,11 @@ h4.swap-title {
 .ant-select-item-option-content .disabled {
   opacity: 0.25;
 }
+
 .option-item {
   display: flex;
 }
+
 .option-name {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -319,6 +336,18 @@ h4.swap-title {
   margin-top: 64px;
 }
 
+.swap-view {
+  min-height: 900px;
+  max-width: 1600px;
+  margin: auto;
+}
+
+@media only screen and (max-width: 1050px) {
+  .swap-view {
+    padding-bottom: 70px;
+  }
+}
+
 .historicalTransfers,
 .activeTransfers {
   margin-top: 48px;
@@ -339,7 +368,7 @@ h4.swap-title {
 }
 
 .lifiEmbed .swap-form {
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .lifiEmbed .activeTransfers {
@@ -351,6 +380,16 @@ h4.swap-title {
 }
 
 .lifiEmbed .poweredBy {
+  position: absolute;
+  top: 38px;
+  right: 0;
+  padding: 6px 12px;
+  background-color: white;
+  border-radius: 6px;
+  z-index: 100;
+}
+
+.lifiEmbed .wallet-buttons-embed-view {
   position: absolute;
   top: 0;
   right: 0;
