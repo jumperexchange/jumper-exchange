@@ -311,6 +311,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
+  const [optionEncryption, setOptionEncryption] = useState<boolean>(false)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
   const [availableBridges, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
@@ -919,6 +920,14 @@ const Swap = ({ transferChains }: SwapProps) => {
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
+                        Encryption (Connext only)
+                        <div>
+                          <Checkbox
+                            checked={optionEncryption}
+                            onChange={(e) => setOptionEncryption(e.target.checked)}>
+                            Activate Encryption
+                          </Checkbox>
+                        </div>
                         Bridges
                         <div>
                           <Select
@@ -1037,6 +1046,9 @@ const Swap = ({ transferChains }: SwapProps) => {
           footer={null}>
           <Swapping
             route={selectedRoute}
+            options={{
+              encryption: optionEncryption,
+            }}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
