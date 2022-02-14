@@ -100,7 +100,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .swapp-modal-footer {
-  height: 130px;
+  height: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
