@@ -38,6 +38,9 @@ interface SwappingProps {
   route: Route
   updateRoute: Function
   onSwapDone: Function
+  options: {
+    encryption: boolean
+  }
 }
 
 const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
@@ -52,7 +55,7 @@ const getReceivingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
+const Swapping = ({ route, updateRoute, onSwapDone, options }: SwappingProps) => {
   const { steps } = route
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -241,8 +244,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
-      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
-      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
+      decryptHook: options.encryption
+        ? getEthereumDecryptionHook(await signer.getAddress())
+        : undefined,
+      getPublicKeyHook: options.encryption
+        ? getEthereumPublicKeyHook(await signer.getAddress())
+        : undefined,
     }
     storeRoute(route)
     setIsSwapping(true)
@@ -272,8 +279,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
-      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
-      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
+      decryptHook: options.encryption
+        ? getEthereumDecryptionHook(await signer.getAddress())
+        : undefined,
+      getPublicKeyHook: options.encryption
+        ? getEthereumPublicKeyHook(await signer.getAddress())
+        : undefined,
     }
 
     setIsSwapping(true)
