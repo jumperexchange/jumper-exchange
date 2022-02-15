@@ -52,7 +52,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:stagingBackend": "bash -ac '. .env.development.stagingBackend; react-scripts start'",
+    "start:developBackend": "bash -ac '. .env.development.developBackend; react-scripts start'",
     "start-env": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts start'",
     "build": "react-scripts build",
     "build-env": "bash -ac '. .env.${REACT_APP_ENV}; react-scripts build'",
