@@ -401,7 +401,7 @@ const Swap = ({ transferChains }: SwapProps) => {
       // bridges
       const bridges: string[] = possibilities.bridges
         .map((bridge: any) => bridge.tool)
-        .map((bridegTool: string) => bridegTool.split('-')[0])
+        .map((bridgeTool: string) => bridgeTool.split('-')[0])
       const allBridges = Array.from(new Set(bridges))
       setAvailableBridges(allBridges)
       setOptionEnabledBridges(allBridges)

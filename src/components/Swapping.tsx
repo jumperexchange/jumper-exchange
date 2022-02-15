@@ -349,58 +349,43 @@ const Swapping = ({ route, updateRoute, onSwapDone, options }: SwappingProps) =>
       const lastStep = steps[steps.length - 1]
       const { toChain } = getReceivingInfo(lastStep)
       const receivedAmount = lastStep.execution?.toAmount
+      const successMessage = !!finalTokenAmount ? (
+        <>
+          {!!receivedAmount && (
+            <>
+              <Typography.Text>
+                {'You received '}
+                {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
+                {` ${finalTokenAmount.symbol}`}
+              </Typography.Text>
+              <br />
+            </>
+          )}
+          <Typography.Text
+            type={receivedAmount ? 'secondary' : undefined}
+            style={{ fontSize: receivedAmount ? 12 : 14 }}>
+            {'You now have '}
+            {new BigNumber(finalTokenAmount.amount).toFixed(4)}
+            {` ${finalTokenAmount.symbol}`}
+            {` on ${toChain.name}`}
+          </Typography.Text>
+        </>
+      ) : (
+        ''
+      )
+
       return (
         <Space direction="vertical">
           <Typography.Text strong>Swap Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
-              <>
-                {!!receivedAmount && (
-                  <>
-                    <Typography.Text>
-                      {'You received '}
-                      {new BigNumber(receivedAmount)
-                        .shiftedBy(-finalTokenAmount.decimals)
-                        .toFixed(4)}
-                      {` ${finalTokenAmount.symbol}`}
-                    </Typography.Text>
-                    <br />
-                  </>
-                )}
-                <Typography.Text
-                  type={receivedAmount ? 'secondary' : undefined}
-                  style={{ fontSize: receivedAmount ? 12 : 14 }}>
-                  {'You now have '}
-                  {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-                  {` ${finalTokenAmount.symbol}`}
-                  {` on ${toChain.name}`}
-                </Typography.Text>
-              </>
+              <span>{successMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
                   onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
-                  {!!receivedAmount && (
-                    <>
-                      <Typography.Text>
-                        {'You received '}
-                        {new BigNumber(receivedAmount)
-                          .shiftedBy(-finalTokenAmount.decimals)
-                          .toFixed(4)}
-                        {` ${finalTokenAmount.symbol}`}
-                      </Typography.Text>
-                      <br />
-                    </>
-                  )}
-                  <Typography.Text
-                    type={receivedAmount ? 'secondary' : undefined}
-                    style={{ fontSize: receivedAmount ? 12 : 14 }}>
-                    {'You now have '}
-                    {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-                    {` ${finalTokenAmount.symbol}`}
-                    {` on ${toChain.name}`}
-                  </Typography.Text>
+                  {successMessage}
                 </span>
               </Tooltip>
             ))}
