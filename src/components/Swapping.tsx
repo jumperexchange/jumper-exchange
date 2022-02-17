@@ -337,20 +337,18 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (isDone) {
       const lastStep = steps[steps.length - 1]
       const { toChain } = getReceivingInfo(lastStep)
-      const receivedAmount = lastStep.execution?.toAmount
+      const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
       return (
         <Space direction="vertical">
           <Typography.Text strong>Swap Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
               <>
-                {!!receivedAmount && (
+                {!receivedAmount.isZero() && (
                   <>
                     <Typography.Text>
                       {'You received '}
-                      {new BigNumber(receivedAmount)
-                        .shiftedBy(-finalTokenAmount.decimals)
-                        .toFixed(4)}
+                      {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
                       {` ${finalTokenAmount.symbol}`}
                     </Typography.Text>
                     <br />
@@ -370,13 +368,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
                 <span
                   style={{ cursor: 'copy' }}
                   onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
-                  {!!receivedAmount && (
+                  {!receivedAmount.isZero() && (
                     <>
                       <Typography.Text>
                         {'You received '}
-                        {new BigNumber(receivedAmount)
-                          .shiftedBy(-finalTokenAmount.decimals)
-                          .toFixed(4)}
+                        {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
                         {` ${finalTokenAmount.symbol}`}
                       </Typography.Text>
                       <br />
