@@ -348,10 +348,10 @@ const Swapping = ({ route, updateRoute, onSwapDone, options }: SwappingProps) =>
     if (isDone) {
       const lastStep = steps[steps.length - 1]
       const { toChain } = getReceivingInfo(lastStep)
-      const receivedAmount = lastStep.execution?.toAmount
+      const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
       const successMessage = !!finalTokenAmount ? (
         <>
-          {!!receivedAmount && (
+          {!receivedAmount.isZero() && (
             <>
               <Typography.Text>
                 {'You received '}
@@ -362,8 +362,8 @@ const Swapping = ({ route, updateRoute, onSwapDone, options }: SwappingProps) =>
             </>
           )}
           <Typography.Text
-            type={receivedAmount ? 'secondary' : undefined}
-            style={{ fontSize: receivedAmount ? 12 : 14 }}>
+            type={!receivedAmount.isZero() ? 'secondary' : undefined}
+            style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
             {'You now have '}
             {new BigNumber(finalTokenAmount.amount).toFixed(4)}
             {` ${finalTokenAmount.symbol}`}
