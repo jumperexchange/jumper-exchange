@@ -38,6 +38,9 @@ interface SwappingProps {
   route: Route
   updateRoute: Function
   onSwapDone: Function
+  options: {
+    encryption: boolean
+  }
 }
 
 const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
@@ -52,7 +55,7 @@ const getReceivingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
+const Swapping = ({ route, updateRoute, onSwapDone, options }: SwappingProps) => {
   const { steps } = route
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -241,8 +244,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
-      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
-      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
+      decryptHook: options.encryption
+        ? getEthereumDecryptionHook(await signer.getAddress())
+        : undefined,
+      getPublicKeyHook: options.encryption
+        ? getEthereumPublicKeyHook(await signer.getAddress())
+        : undefined,
     }
     storeRoute(route)
     setIsSwapping(true)
@@ -272,8 +279,12 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
-      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
-      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
+      decryptHook: options.encryption
+        ? getEthereumDecryptionHook(await signer.getAddress())
+        : undefined,
+      getPublicKeyHook: options.encryption
+        ? getEthereumPublicKeyHook(await signer.getAddress())
+        : undefined,
     }
 
     setIsSwapping(true)
@@ -338,54 +349,43 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       const lastStep = steps[steps.length - 1]
       const { toChain } = getReceivingInfo(lastStep)
       const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
+      const successMessage = !!finalTokenAmount ? (
+        <>
+          {!receivedAmount.isZero() && (
+            <>
+              <Typography.Text>
+                {'You received '}
+                {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
+                {` ${finalTokenAmount.symbol}`}
+              </Typography.Text>
+              <br />
+            </>
+          )}
+          <Typography.Text
+            type={!receivedAmount.isZero() ? 'secondary' : undefined}
+            style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
+            {'You now have '}
+            {new BigNumber(finalTokenAmount.amount).toFixed(4)}
+            {` ${finalTokenAmount.symbol}`}
+            {` on ${toChain.name}`}
+          </Typography.Text>
+        </>
+      ) : (
+        ''
+      )
+
       return (
         <Space direction="vertical">
           <Typography.Text strong>Swap Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
-              <>
-                {!receivedAmount.isZero() && (
-                  <>
-                    <Typography.Text>
-                      {'You received '}
-                      {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
-                      {` ${finalTokenAmount.symbol}`}
-                    </Typography.Text>
-                    <br />
-                  </>
-                )}
-                <Typography.Text
-                  type={receivedAmount ? 'secondary' : undefined}
-                  style={{ fontSize: receivedAmount ? 12 : 14 }}>
-                  {'You now have '}
-                  {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-                  {` ${finalTokenAmount.symbol}`}
-                  {` on ${toChain.name}`}
-                </Typography.Text>
-              </>
+              <span>{successMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
                   onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
-                  {!receivedAmount.isZero() && (
-                    <>
-                      <Typography.Text>
-                        {'You received '}
-                        {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
-                        {` ${finalTokenAmount.symbol}`}
-                      </Typography.Text>
-                      <br />
-                    </>
-                  )}
-                  <Typography.Text
-                    type={receivedAmount ? 'secondary' : undefined}
-                    style={{ fontSize: receivedAmount ? 12 : 14 }}>
-                    {'You now have '}
-                    {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-                    {` ${finalTokenAmount.symbol}`}
-                    {` on ${toChain.name}`}
-                  </Typography.Text>
+                  {successMessage}
                 </span>
               </Tooltip>
             ))}
