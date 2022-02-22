@@ -1,11 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, {
-  ExecutionSettings,
-  getEthereumDecryptionHook,
-  getEthereumPublicKeyHook,
-  StepTool,
-} from '@lifinance/sdk'
+import LiFi, { ExecutionSettings, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
