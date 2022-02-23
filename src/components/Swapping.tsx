@@ -1,11 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, {
-  ExecutionSettings,
-  getEthereumDecryptionHook,
-  getEthereumPublicKeyHook,
-  StepTool,
-} from '@lifinance/sdk'
+import LiFi, { ExecutionSettings, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Button, Divider, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
@@ -38,9 +33,6 @@ interface SwappingProps {
   route: Route
   updateRoute: Function
   onSwapDone: Function
-  options: {
-    encryption: boolean
-  }
 }
 
 const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
@@ -55,7 +47,7 @@ const getReceivingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const Swapping = ({ route, updateRoute, onSwapDone, options }: SwappingProps) => {
+const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
   const { steps } = route
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -244,12 +236,6 @@ const Swapping = ({ route, updateRoute, onSwapDone, options }: SwappingProps) =>
     const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
-      decryptHook: options.encryption
-        ? getEthereumDecryptionHook(await signer.getAddress())
-        : undefined,
-      getPublicKeyHook: options.encryption
-        ? getEthereumPublicKeyHook(await signer.getAddress())
-        : undefined,
     }
     storeRoute(route)
     setIsSwapping(true)
@@ -274,17 +260,10 @@ const Swapping = ({ route, updateRoute, onSwapDone, options }: SwappingProps) =>
 
   const resumeExecution = async () => {
     if (!web3.account || !web3.library) return
-    const signer = web3.library.getSigner()
 
     const settings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
-      decryptHook: options.encryption
-        ? getEthereumDecryptionHook(await signer.getAddress())
-        : undefined,
-      getPublicKeyHook: options.encryption
-        ? getEthereumPublicKeyHook(await signer.getAddress())
-        : undefined,
     }
 
     setIsSwapping(true)
