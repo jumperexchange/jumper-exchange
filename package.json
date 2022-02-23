@@ -30,6 +30,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
     "@types/uuid": "^8.3.1",
+    "@types/qs": "^6.9.7",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "babel-eslint": "^10.1.0",
