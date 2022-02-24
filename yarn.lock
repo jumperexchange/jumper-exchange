@@ -1728,10 +1728,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@lifinance/sdk@0.4.5-beta.2":
-  version "0.4.5-beta.2"
-  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.5-beta.2.tgz#eff8d634bbce2b9471987aa4382ccf13ce013275"
-  integrity sha512-JPRMHDlSQtzgLntkltKPDgTg92NSDBlUA8DDzI9DNEDQ2KpWfYdQGUR1O8DWzClRFFYUyq+SK4dSwuW63rj1Bg==
+"@lifinance/sdk@0.4.6":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.6.tgz#f6da5c6658e12afe51bf948126b994b2f6d88f6c"
+  integrity sha512-MUcOz6GBwVeGzhYYpMUUEX9+EOG6IR4tq8Us5SBlJHhQd9ahE+fPwxtJHc3OD+buI5069/APCpWEJwVEPTQUIQ==
   dependencies:
     "@ethersproject/abi" "^5.5.0"
     "@ethersproject/contracts" "^5.4.0"
