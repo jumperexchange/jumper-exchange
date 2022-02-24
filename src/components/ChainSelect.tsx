@@ -1,5 +1,4 @@
-import { SubgraphSyncRecord } from '@connext/nxtp-sdk'
-import { Avatar, Badge, Select } from 'antd'
+import { Avatar, Select } from 'antd'
 import React from 'react'
 
 import { Chain, ChainKey, getChainByKey } from '../types'
@@ -8,14 +7,12 @@ interface ChainSelectProps {
   transferChains: Array<Chain>
   selectedChain?: ChainKey
   onChangeSelectedChain: Function
-  syncStatus?: Record<number, SubgraphSyncRecord>
 }
 
 const ChainSelect = ({
   transferChains,
   selectedChain,
   onChangeSelectedChain,
-  syncStatus,
 }: ChainSelectProps) => {
   const chain = selectedChain ? getChainByKey(selectedChain) : undefined
 
@@ -38,13 +35,7 @@ const ChainSelect = ({
         optionLabelProp="data-label">
         <Select.OptGroup label="Supported Chains">
           {transferChains.map((chain) => (
-            <Select.Option
-              key={chain.key}
-              value={chain.key}
-              data-label={
-                chain.name + (syncStatus && !syncStatus[chain.id].synced ? ' (Unsynced)' : '')
-              }
-              disabled={syncStatus && !syncStatus[chain.id].synced}>
+            <Select.Option key={chain.key} value={chain.key} data-label={chain.name}>
               <div className="option-item">
                 <span role="img" aria-label={chain.name}>
                   <Avatar
@@ -56,14 +47,6 @@ const ChainSelect = ({
                   </Avatar>
                 </span>
                 <span className="option-name">{chain.name}</span>
-                <span className="option-balance">
-                  {syncStatus && (
-                    <Badge
-                      color={syncStatus[chain.id].synced ? 'green' : 'orange'}
-                      text={syncStatus[chain.id].synced ? 'synced' : 'unsynced'}
-                    />
-                  )}
-                </span>
               </div>
             </Select.Option>
           ))}
