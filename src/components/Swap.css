@@ -332,8 +332,8 @@ h4.swap-title {
 }
 
 .site-layout-swap {
-  min-height: calc(100vh - 64px);
-  margin-top: 64px;
+  min-height: calc(100vh - 104px);
+  margin-top: 104px;
 }
 
 .swap-view {

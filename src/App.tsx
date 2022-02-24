@@ -79,7 +79,43 @@ function App() {
             embedView()
           ) : (
             <Layout>
-              <Header style={{ position: 'fixed', zIndex: 900, width: '100%', padding: 0 }}>
+              <Header
+                className="transferto-disclaimer"
+                style={{
+                  background: 'black',
+                  color: 'white',
+                  zIndex: 900,
+                  height: 40,
+                  position: 'fixed',
+                  width: '100%',
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                {/* <Row> */}
+                <div>
+                  Li.Finance is moving to{' '}
+                  <a
+                    href="https://transferto.xyz"
+                    target="blank"
+                    style={{ color: '#F5B5FF', textDecoration: 'underline', fontWeight: 'bold' }}>
+                    transferto.xyz
+                  </a>
+                </div>
+                {/* </Row> */}
+              </Header>
+
+              <Header
+                style={{
+                  marginTop: 0,
+                  position: 'fixed',
+                  zIndex: 900,
+                  width: '100%',
+                  padding: 0,
+                  top: 40,
+                }}>
                 <Row>
                   {/* Menu */}
                   <Col xs={24} sm={24} md={14} lg={14} xl={14}>
