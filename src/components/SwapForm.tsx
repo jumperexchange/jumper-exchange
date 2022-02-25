@@ -1,5 +1,4 @@
 import { SwapOutlined } from '@ant-design/icons'
-import { SubgraphSyncRecord } from '@connext/nxtp-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Col, Input, Row, Tooltip } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
@@ -33,7 +32,6 @@ interface SwapFormProps {
   balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   allowSameChains?: boolean
   forceSameToken?: boolean
-  syncStatus?: Record<number, SubgraphSyncRecord>
 }
 
 const SwapForm = ({
@@ -58,7 +56,6 @@ const SwapForm = ({
   balances,
   allowSameChains,
   forceSameToken,
-  syncStatus,
 }: SwapFormProps) => {
   const depositSelectRef = useRef<RefSelectProps>()
   const withdrawSelectRef = useRef<RefSelectProps>()
@@ -218,7 +215,6 @@ const SwapForm = ({
               transferChains={transferChains}
               selectedChain={depositChain}
               onChangeSelectedChain={onChangeDepositChain}
-              syncStatus={syncStatus}
             />
           </div>
         </Col>
@@ -278,7 +274,6 @@ const SwapForm = ({
               transferChains={transferChains}
               selectedChain={withdrawChain}
               onChangeSelectedChain={onChangeWithdrawChain}
-              syncStatus={syncStatus}
             />
           </div>
         </Col>
