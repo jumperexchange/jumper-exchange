@@ -1728,23 +1728,23 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@lifinance/sdk@0.4.6":
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.6.tgz#f6da5c6658e12afe51bf948126b994b2f6d88f6c"
-  integrity sha512-MUcOz6GBwVeGzhYYpMUUEX9+EOG6IR4tq8Us5SBlJHhQd9ahE+fPwxtJHc3OD+buI5069/APCpWEJwVEPTQUIQ==
+"@lifinance/sdk@0.4.7":
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.4.7.tgz#afa24aa758bc790e5621564139851a34269b4e92"
+  integrity sha512-Cb70tlaEWzghfr9jnhQLEa/gtfElM5/0oxuZaf8G3+nV8MlEl/+swjFTrRB6zsM7MkO1wLnYn+KoFJulW6y2xA==
   dependencies:
     "@ethersproject/abi" "^5.5.0"
     "@ethersproject/contracts" "^5.4.0"
-    "@lifinance/types" "0.10.5"
+    "@lifinance/types" "0.10.8"
     axios "^0.25.0"
     bignumber.js "^9.0.1"
     eth-rpc-errors "^4.0.3"
     ethers "^5.5.2"
 
-"@lifinance/types@0.10.5":
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.10.5.tgz#098df60e20675828042f269787c114035ca1859f"
-  integrity sha512-1lXQTPppB09z1ctVj9NwouMXNJ0kOGmr003+JYivmGtRRTB9vBS0FZquMsPWe/bNQmNrbN+cD04HX6KSNH8ZoA==
+"@lifinance/types@0.10.8":
+  version "0.10.8"
+  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.10.8.tgz#3d466ce935227bb855221fc3f478be45fb09555c"
+  integrity sha512-dsHZ3/760tsGk9lTTacJqQjVsGGLWRMah7bBlX3HmYD8+eki5zWTwX1kIFArdeTU6b1FPkajRfpg7Zjh6AQ0fg==
   dependencies:
     ethers "^5.4.7"
 

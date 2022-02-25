@@ -11,6 +11,7 @@ const customRpc: Record<number, string | undefined> = {
   [ChainId.DAI]: process.env.REACT_APP_RPC_URL_XDAI,
   [ChainId.FTM]: process.env.REACT_APP_RPC_URL_FANTOM,
   [ChainId.ARB]: process.env.REACT_APP_RPC_URL_ARBITRUM,
+  [ChainId.OPT]: process.env.REACT_APP_RPC_URL_OPTIMISM,
 
   // Testnet
   [ChainId.ROP]: process.env.REACT_APP_RPC_URL_ROPSTEN,
