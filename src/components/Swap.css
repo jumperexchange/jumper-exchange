@@ -331,10 +331,10 @@ h4.swap-title {
   padding-top: 1px !important;
 }
 
-.site-layout-swap {
+/* .site-layout-swap {
   min-height: calc(100vh - 104px);
   margin-top: 104px;
-}
+} */
 
 .swap-view {
   min-height: 900px;
