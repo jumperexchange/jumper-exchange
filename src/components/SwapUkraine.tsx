@@ -29,6 +29,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { TwitterTweetEmbed } from 'react-twitter-embed'
 import { v4 as uuid } from 'uuid'
 
+import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
 import { getRpcs } from '../config/connectors'
 import {
   deleteRoute,
@@ -1005,6 +1006,9 @@ const Swap = ({ transferChains }: SwapProps) => {
                   </Row>
                 </span>
               </Form>
+            </div>
+            <div style={{ position: 'absolute', right: 24 }}>
+              <PoweredByLiFi />
             </div>
           </Col>
         </Row>
