@@ -1,6 +1,6 @@
 import './Swap.css'
 
-import { LoadingOutlined, LoginOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -63,7 +63,7 @@ import Route from './Route'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
 import TrasactionsTable from './TransactionsTable'
-import { getInjectedConnector } from './web3/connectors'
+import ConnectButton from './web3/ConnectButton'
 
 const history = createBrowserHistory()
 const { Panel } = Collapse
@@ -331,8 +331,7 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { active, activate } = useWeb3React()
-  const login = async () => activate(await getInjectedConnector())
+  const { active } = useWeb3React()
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -740,16 +739,7 @@ const Swap = ({ transferChains }: SwapProps) => {
       )
     }
     if (!web3.account) {
-      return (
-        <Button
-          shape="round"
-          type="primary"
-          icon={<LoginOutlined />}
-          size={'large'}
-          onClick={() => login()}>
-          Connect Wallet
-        </Button>
-      )
+      return <ConnectButton size="large" />
     }
     if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)

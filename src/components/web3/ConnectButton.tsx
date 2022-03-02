@@ -31,9 +31,10 @@ const removeFromDeactivatedWallets = (address: string | null | undefined) => {
 type ConnectButtonPropType = {
   style?: React.CSSProperties
   className?: string
+  size?: 'large' | 'middle' | 'small'
 }
 
-function ConnectButton({ style, className }: ConnectButtonPropType) {
+function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropType) {
   const { activate } = useWeb3React()
 
   const handleConnect = async () => {
@@ -45,6 +46,7 @@ function ConnectButton({ style, className }: ConnectButtonPropType) {
 
   return (
     <Button
+      size={size}
       className={className}
       style={{ ...{ borderRadius: '6px' }, ...style }}
       type="primary"
