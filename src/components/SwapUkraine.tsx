@@ -31,12 +31,7 @@ import { v4 as uuid } from 'uuid'
 
 import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
 import { getRpcs } from '../config/connectors'
-import {
-  deleteRoute,
-  readActiveRoutes,
-  readHistoricalRoutes,
-  storeRoute,
-} from '../services/localStorage'
+import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
@@ -61,11 +56,8 @@ import {
   Token,
   TokenAmount,
 } from '../types'
-import LoadingIndicator from './LoadingIndicator'
-import Route from './Route'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
-import TrasactionsTable from './TransactionsTable'
 import { getInjectedConnector } from './web3/connectors'
 
 const history = createBrowserHistory()
@@ -300,11 +292,9 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
     startParams.depositToken,
   )
-  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>(startParams.withdrawChain)
+  const [toChainKey] = useState<ChainKey | undefined>(startParams.withdrawChain)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress, setToTokenAddress] = useState<string | undefined>(
-    startParams.withdrawToken,
-  )
+  const [toTokenAddress] = useState<string | undefined>(startParams.withdrawToken)
   const [tokens, setTokens] = useState<TokenAmountList>(transferTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
@@ -326,7 +316,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
-  const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+  const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
 
   // Misc
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
