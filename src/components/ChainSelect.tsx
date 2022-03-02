@@ -7,12 +7,14 @@ interface ChainSelectProps {
   transferChains: Array<Chain>
   selectedChain?: ChainKey
   onChangeSelectedChain: Function
+  disabled?: boolean
 }
 
 const ChainSelect = ({
   transferChains,
   selectedChain,
   onChangeSelectedChain,
+  disabled = false,
 }: ChainSelectProps) => {
   const chain = selectedChain ? getChainByKey(selectedChain) : undefined
 
@@ -27,6 +29,7 @@ const ChainSelect = ({
       )}
 
       <Select
+        disabled={disabled}
         placeholder="Select Chain"
         value={selectedChain}
         onChange={(v: ChainKey) => onChangeSelectedChain(v)}
