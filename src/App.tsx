@@ -145,6 +145,10 @@ function App() {
                         <span className="beta-badge">Beta</span>
                         <Link to="/swap">Swap</Link>
                       </Menu.Item>
+                      <Menu.Item key="/ukraine" danger={true}>
+                        <span className="ukraine-flag">&#127482;&#127462;</span>
+                        <Link to="/ukraine">Help Ukraine!</Link>
+                      </Menu.Item>
                       <Menu.Item key="/about">
                         <Link to="/about">About</Link>
                       </Menu.Item>
@@ -174,9 +178,6 @@ function App() {
                           rel="nofollow noreferrer">
                           Developer Waitinglist
                         </a>
-                      </Menu.Item>
-                      <Menu.Item key="/ukraine">
-                        <Link to="/ukraine">Help Ukraine!</Link>
                       </Menu.Item>
                       <Menu.Item className="wallet-buttons-menu-collapse" key="wallet-button">
                         <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>
