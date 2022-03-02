@@ -79,33 +79,35 @@ function App() {
             embedView()
           ) : (
             <Layout>
-              <Header
-                className="transferto-disclaimer"
-                style={{
-                  background: 'black',
-                  color: 'white',
-                  zIndex: 900,
-                  height: 40,
-                  position: 'fixed',
-                  width: '100%',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {/* <Row> */}
-                <div>
-                  Li.Finance is moving to{' '}
-                  <a
-                    href="https://transferto.xyz"
-                    target="blank"
-                    style={{ color: '#F5B5FF', textDecoration: 'underline', fontWeight: 'bold' }}>
-                    transferto.xyz
-                  </a>
-                </div>
-                {/* </Row> */}
-              </Header>
+              {!window.location.href.includes('transferto') && (
+                <Header
+                  className="transferto-disclaimer"
+                  style={{
+                    background: 'black',
+                    color: 'white',
+                    zIndex: 900,
+                    height: 40,
+                    position: 'fixed',
+                    width: '100%',
+                    padding: 0,
+                    margin: 0,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  {/* <Row> */}
+                  <div>
+                    Li.Finance is moving to{' '}
+                    <a
+                      href="https://transferto.xyz"
+                      target="blank"
+                      style={{ color: '#F5B5FF', textDecoration: 'underline', fontWeight: 'bold' }}>
+                      transferto.xyz
+                    </a>
+                  </div>
+                  {/* </Row> */}
+                </Header>
+              )}
 
               <Header
                 style={{
