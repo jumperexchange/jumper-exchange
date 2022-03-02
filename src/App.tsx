@@ -70,6 +70,7 @@ function App() {
       </div>
     )
   }
+  const isTransferto = window.location.href.includes('transferto')
 
   return (
     <BrowserRouter>
@@ -79,7 +80,7 @@ function App() {
             embedView()
           ) : (
             <Layout>
-              {!window.location.href.includes('transferto') && (
+              {!isTransferto && (
                 <Header
                   className="transferto-disclaimer"
                   style={{
@@ -116,7 +117,7 @@ function App() {
                   zIndex: 900,
                   width: '100%',
                   padding: 0,
-                  top: 40,
+                  top: !isTransferto ? 40 : 0,
                 }}>
                 <Row>
                   {/* Menu */}
