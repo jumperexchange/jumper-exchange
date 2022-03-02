@@ -834,15 +834,15 @@ const Swap = ({ transferChains }: SwapProps) => {
       }}>
       <div className="swap-view">
         {/* Swap Form */}
-        <Row gutter={[32, 32]} style={{ padding: '80px 20px 20px 20px' }}>
-          <Col span={12}>
+        <Row gutter={[32, 32]} justify="space-around" style={{ padding: '80px 8px 8px 8px' }}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={14}>
             <Title level={1}>Cross-chain donation to Ukraine</Title>
             <Title level={4}>
               You can <b>donate any token</b> from <b>any EVM chain</b> we support.{' '}
               <b>Every dollar counts!</b>
             </Title>
             <br />
-            <Paragraph>
+            <Paragraph style={{ fontSize: 16 }}>
               Hello World. Ukraine is in a very tough situation right now, all of us want to help,
               but we can only do so much. We all know that Ethereum gas fees make it harder to
               donate smaller amounts. So, we’ve spun up a simple system using LI.FI protocol to
@@ -863,7 +863,7 @@ const Swap = ({ transferChains }: SwapProps) => {
               <b>You can verify our transactions on the blockchain.</b>
             </Title>
             <Button
-              style={{ margin: '16px 32px 16px 0px !important' }}
+              style={{ margin: 16 }}
               shape="round"
               type="primary"
               //   icon={<LoginOutlined />}
@@ -884,10 +884,17 @@ const Swap = ({ transferChains }: SwapProps) => {
               Wallet address
             </Button>
           </Col>
-          <Col className="swap-form" span={12}>
+          <Col className="swap-form">
             <div
               className="swap-input"
-              style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: '0 auto' }}>
+              style={{
+                maxWidth: 450,
+                borderRadius: 16,
+                padding: 24,
+                margin: '16px auto',
+                WebkitBoxShadow: '0px 0px 24px -11px #000000',
+                boxShadow: '0px 0px 24px -11px #000000',
+              }}>
               <Row>
                 <Title className="swap-title" level={4}>
                   Please Specify Your Transaction
