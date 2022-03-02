@@ -142,8 +142,8 @@ const getDefaultParams = (
     depositChain: undefined,
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
-    withdrawChain: ChainKey.ETH,
-    withdrawToken: undefined, // TODO: change this
+    withdrawChain: ChainKey.DAI,
+    withdrawToken: findDefaultToken(CoinKey.USDC, ChainId.DAI).address, // TODO: change this
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -292,9 +292,11 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
     startParams.depositToken,
   )
-  const [toChainKey] = useState<ChainKey | undefined>(startParams.withdrawChain)
+  const [toChainKey] = useState<ChainKey | undefined>(ChainKey.DAI) // TODO: Change This
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress] = useState<string | undefined>(startParams.withdrawToken)
+  const [toTokenAddress] = useState<string | undefined>(
+    findDefaultToken(CoinKey.USDC, ChainId.DAI).address,
+  ) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>(transferTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
@@ -657,7 +659,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           toChainId: toToken.chainId,
           toTokenAddress,
           fromAddress: web3.account || undefined,
-          toAddress: web3.account || undefined,
+          toAddress: web3.account || undefined, // TODO: change this to the recipient address
           options: {
             slippage: optionSlippage / 100,
             bridges: {
@@ -890,9 +892,9 @@ const Swap = ({ transferChains }: SwapProps) => {
                   setDepositToken={setFromTokenAddress}
                   depositAmount={depositAmount}
                   setDepositAmount={setDepositAmount}
-                  withdrawChain={ChainKey.ETH}
+                  withdrawChain={ChainKey.DAI}
                   setWithdrawChain={() => {}}
-                  withdrawToken={findDefaultToken(CoinKey.ETH, ChainId.ETH).address}
+                  withdrawToken={findDefaultToken(CoinKey.USDC, ChainId.DAI).address}
                   setWithdrawToken={() => {}}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
