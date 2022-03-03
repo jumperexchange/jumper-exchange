@@ -32,6 +32,7 @@ interface SwapFormProps {
   balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   allowSameChains?: boolean
   forceSameToken?: boolean
+  fixedWithdraw?: boolean
 }
 
 const SwapForm = ({
@@ -56,6 +57,7 @@ const SwapForm = ({
   balances,
   allowSameChains,
   forceSameToken,
+  fixedWithdraw,
 }: SwapFormProps) => {
   const depositSelectRef = useRef<RefSelectProps>()
   const withdrawSelectRef = useRef<RefSelectProps>()
@@ -271,6 +273,7 @@ const SwapForm = ({
         <Col span={14}>
           <div className="form-input-wrapper">
             <ChainSelect
+              disabled={fixedWithdraw}
               transferChains={transferChains}
               selectedChain={withdrawChain}
               onChangeSelectedChain={onChangeWithdrawChain}
@@ -303,6 +306,7 @@ const SwapForm = ({
         <Col span={14}>
           <div className="form-input-wrapper">
             <TokenSelect
+              disabled={fixedWithdraw}
               tokens={tokens}
               balances={balances}
               selectedChain={withdrawChain}

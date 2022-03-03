@@ -18,6 +18,7 @@ import {
   Typography,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
+import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
@@ -25,15 +26,12 @@ import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { TwitterTweetEmbed } from 'react-twitter-embed'
 import { v4 as uuid } from 'uuid'
 
+import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
 import { getRpcs } from '../config/connectors'
-import {
-  deleteRoute,
-  readActiveRoutes,
-  readHistoricalRoutes,
-  storeRoute,
-} from '../services/localStorage'
+import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
@@ -58,11 +56,8 @@ import {
   Token,
   TokenAmount,
 } from '../types'
-import LoadingIndicator from './LoadingIndicator'
-import Route from './Route'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
-import TrasactionsTable from './TransactionsTable'
 import ConnectButton from './web3/ConnectButton'
 
 const history = createBrowserHistory()
@@ -147,8 +142,8 @@ const getDefaultParams = (
     depositChain: undefined,
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
-    withdrawChain: undefined,
-    withdrawToken: undefined,
+    withdrawChain: ChainKey.DAI,
+    withdrawToken: findDefaultToken(CoinKey.USDC, ChainId.DAI).address, // TODO: change this
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -297,11 +292,11 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
     startParams.depositToken,
   )
-  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>(startParams.withdrawChain)
+  const [toChainKey] = useState<ChainKey | undefined>(ChainKey.DAI) // TODO: Change This
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress, setToTokenAddress] = useState<string | undefined>(
-    startParams.withdrawToken,
-  )
+  const [toTokenAddress] = useState<string | undefined>(
+    findDefaultToken(CoinKey.USDC, ChainId.DAI).address,
+  ) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>(transferTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
@@ -323,7 +318,7 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
-  const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+  const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
 
   // Misc
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
@@ -664,7 +659,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           toChainId: toToken.chainId,
           toTokenAddress,
           fromAddress: web3.account || undefined,
-          toAddress: web3.account || undefined,
+          toAddress: web3.account || undefined, // TODO: change this to the recipient address
           options: {
             slippage: optionSlippage / 100,
             bridges: {
@@ -673,6 +668,7 @@ const Swap = ({ transferChains }: SwapProps) => {
             exchanges: {
               allow: optionEnabledExchanges,
             },
+            allowSwitchChain: false, // This is important for fixed recipients
           },
         }
 
@@ -717,9 +713,10 @@ const Swap = ({ transferChains }: SwapProps) => {
     }
   }, [routeCallResult, currentRouteCallId])
 
+  //TODO: check what is needed here!
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(routes[highlightedIndex]))
+    setSelectedRoute(deepClone(routes[0]))
 
     // Reset routes to avoid reexecution with same data
     setRoutes([])
@@ -814,75 +811,74 @@ const Swap = ({ transferChains }: SwapProps) => {
 
   return (
     <Content
-      className="site-layout site-layout-swap"
+      className="site-layout site-layout-swap-ukraine"
       style={{
         minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
         marginTop: !isTransferto ? '104px' : '64px',
       }}>
       <div className="swap-view">
-        {/* Historical Routes */}
-        {!!historicalRoutes.length && (
-          <Row justify={'center'} className="historicalTransfers">
-            <Collapse
-              defaultActiveKey={['']}
-              ghost
-              bordered={false}
-              className={`active-transfer-collapse`}
-              style={{ overflowX: 'scroll' }}>
-              <Panel
-                header={`Historical Transfers (${historicalRoutes.length})`}
-                key="1"
-                className="site-collapse-active-transfer-panel">
-                <div>
-                  <TrasactionsTable
-                    routes={historicalRoutes}
-                    selectRoute={() => {}}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setHistoricalRoutes(readHistoricalRoutes())
-                    }}
-                    historical={true}></TrasactionsTable>
-                </div>
-              </Panel>
-            </Collapse>
-          </Row>
-        )}
-
-        {/* Active Routes */}
-        {!!activeRoutes.length && (
-          <Row justify={'center'} className="activeTransfers">
-            <Collapse
-              defaultActiveKey={activeRoutes.length ? ['1'] : ['']}
-              ghost
-              bordered={false}
-              className={`active-transfer-collapse`}
-              style={{ overflowX: 'scroll' }}>
-              <Panel
-                header={`Active Transfers (${activeRoutes.length})`}
-                key="1"
-                className="site-collapse-active-transfer-panel">
-                <div>
-                  <TrasactionsTable
-                    routes={activeRoutes}
-                    selectRoute={(route: RouteType) => setSelectedRoute(route)}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setActiveRoutes(readActiveRoutes())
-                    }}></TrasactionsTable>
-                </div>
-              </Panel>
-            </Collapse>
-          </Row>
-        )}
-
         {/* Swap Form */}
-        <Row style={{ margin: 20 }} justify={'center'}>
+        <Row gutter={[32, 32]} justify="space-around" style={{ padding: '80px 8px 8px 8px' }}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={14}>
+            <Title level={1}>Cross-chain donation to Ukraine</Title>
+            <Title level={4}>
+              You can <b>donate any token</b> from <b>any EVM chain</b> we support.{' '}
+              <b>Every dollar counts!</b>
+            </Title>
+            <br />
+            <Paragraph style={{ fontSize: 16 }}>
+              Hello World. Ukraine is in a very tough situation right now, all of us want to help,
+              but we can only do so much. We all know that Ethereum gas fees make it harder to
+              donate smaller amounts. So, we’ve spun up a simple system using LI.FI protocol to
+              donate from any EVM chain, it will be stored in a Hardware Wallet controlled by LI.FI
+              team and will be bridged to Ethereum every 8 hours and sent to the ETH address used by
+              the Ukraine govt.
+            </Paragraph>
+
+            <br />
+
+            <TwitterTweetEmbed
+              tweetId="1497594592438497282"
+              options={{ theme: 'dark' }}></TwitterTweetEmbed>
+
+            <br />
+
+            <Title level={4}>
+              <b>You can verify our transactions on the blockchain.</b>
+            </Title>
+            <Button
+              style={{ margin: 16 }}
+              shape="round"
+              type="primary"
+              //   icon={<LoginOutlined />}
+              size={'large'}
+              //   onClick={() => login()}
+            >
+              Click here for more details
+            </Button>
+
+            <Button
+              style={{ margin: 16 }}
+              shape="round"
+              type="primary"
+              //   icon={<LoginOutlined />}
+              size={'large'}
+              //   onClick={() => login()}
+            >
+              Wallet address
+            </Button>
+          </Col>
           <Col className="swap-form">
             <div
               className="swap-input"
-              style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: '0 auto' }}>
+              style={{
+                maxWidth: 450,
+                borderRadius: 16,
+                padding: 24,
+                margin: '16px auto',
+                WebkitBoxShadow: '0px 0px 24px -11px #000000',
+                boxShadow: '0px 0px 24px -11px #000000',
+              }}>
               <Row>
                 <Title className="swap-title" level={4}>
                   Please Specify Your Transaction
@@ -897,10 +893,10 @@ const Swap = ({ transferChains }: SwapProps) => {
                   setDepositToken={setFromTokenAddress}
                   depositAmount={depositAmount}
                   setDepositAmount={setDepositAmount}
-                  withdrawChain={toChainKey}
-                  setWithdrawChain={setToChainKey}
-                  withdrawToken={toTokenAddress}
-                  setWithdrawToken={setToTokenAddress}
+                  withdrawChain={ChainKey.DAI}
+                  setWithdrawChain={() => {}}
+                  withdrawToken={findDefaultToken(CoinKey.USDC, ChainId.DAI).address}
+                  setWithdrawToken={() => {}}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
                   estimatedWithdrawAmount={getSelectedWithdraw().estimate}
@@ -909,6 +905,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                   tokens={tokens}
                   balances={balances}
                   allowSameChains={true}
+                  fixedWithdraw={true}
                 />
                 <span>
                   {/* Disclaimer */}
@@ -993,6 +990,9 @@ const Swap = ({ transferChains }: SwapProps) => {
                 </span>
               </Form>
             </div>
+            <div style={{ position: 'absolute', right: 24 }}>
+              <PoweredByLiFi />
+            </div>
           </Col>
         </Row>
 
@@ -1000,7 +1000,7 @@ const Swap = ({ transferChains }: SwapProps) => {
         <Row
           justify={'center'}
           style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
-          {routes.length > 0 && (
+          {/* {routes.length > 0 && (
             <Col>
               <h3 style={{ textAlign: 'center' }}>Available routes</h3>
               <div
@@ -1016,14 +1016,14 @@ const Swap = ({ transferChains }: SwapProps) => {
                 ))}
               </div>
             </Col>
-          )}
-          {routesLoading && (
+          )} */}
+          {/* {routesLoading && (
             <Col>
               <Row gutter={[32, 62]} justify={'center'} style={{ marginTop: 0 }}>
                 <LoadingIndicator></LoadingIndicator>
               </Row>
             </Col>
-          )}
+          )} */}
           {!routesLoading && noRoutesAvailable && (
             <Col style={{ width: '50%' }} className="no-routes-found">
               <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
