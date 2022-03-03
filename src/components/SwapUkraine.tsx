@@ -57,10 +57,8 @@ import {
   Token,
   TokenAmount,
 } from '../types'
-import ChainSelect from './ChainSelect'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
-import TokenSelect from './TokenSelect'
 import ConnectButton from './web3/ConnectButton'
 
 const history = createBrowserHistory()
