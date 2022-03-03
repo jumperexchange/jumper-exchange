@@ -668,6 +668,7 @@ const Swap = ({ transferChains }: SwapProps) => {
             exchanges: {
               allow: optionEnabledExchanges,
             },
+            allowSwitchChain: false, // This is important for fixed recipients
           },
         }
 
