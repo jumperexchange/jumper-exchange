@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Col, Input, Row, Tooltip } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
-import React, { Component, ReactElement, useEffect, useRef, useState } from 'react'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
 import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../types'
 import ChainSelect from './ChainSelect'
