@@ -446,6 +446,7 @@ h4.swap-title {
   background-color: black;
   color: white;
   border-color: black;
+  margin: 16px 16px 16px 0;
 }
 
 .btn-wallet-ukraine,
@@ -455,6 +456,13 @@ h4.swap-title {
   background-color: #efefef;
   border-color: #efefef;
   color: black;
+  margin: 16px;
+}
+
+@media only screen and (max-width: 535px) {
+  .btn-wallet-ukraine {
+    margin: 16px 16px 16px 0;
+  }
 }
 
 .btn-ukraine-swap-form,

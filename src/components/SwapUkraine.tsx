@@ -991,7 +991,9 @@ const Swap = ({ transferChains }: SwapProps) => {
                 </span>
               </Form>
             </div>
-            <div style={{ margin: '32px auto', textAlign: 'center' }}>
+            <div
+              onClick={() => window.open('https://li.fi', '_blank')}
+              style={{ margin: '32px auto', textAlign: 'center', cursor: 'pointer' }}>
               <PoweredByLiFi />
             </div>
           </Col>
@@ -1013,13 +1015,12 @@ const Swap = ({ transferChains }: SwapProps) => {
               the Ukraine govt.
             </Paragraph>
 
-            <div className="tweet-wrapper">
+            <div className="tweet-wrapper" style={{ marginTop: 64 }}>
               <TwitterTweetEmbed tweetId="1497594592438497282"></TwitterTweetEmbed>
             </div>
 
             <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
             <Button
-              style={{ margin: '16px 16px 16px 0' }}
               className="btn-info-ukraine"
               shape="round"
               type="primary"
@@ -1032,7 +1033,6 @@ const Swap = ({ transferChains }: SwapProps) => {
             </Button>
 
             <Button
-              style={{ margin: 16 }}
               className="btn-wallet-ukraine"
               shape="round"
               type="primary"
@@ -1044,65 +1044,12 @@ const Swap = ({ transferChains }: SwapProps) => {
               }}>
               Wallet address <ArrowRightOutlined />
             </Button>
-            <div style={{ marginTop: 94 }}>
+            <div
+              onClick={() => window.open('https://li.fi', '_blank')}
+              style={{ marginTop: 94, cursor: 'pointer' }}>
               <LifiTeam></LifiTeam>
             </div>
           </Col>
-        </Row>
-
-        {/* Routes */}
-        <Row
-          justify={'center'}
-          style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
-          {/* {routes.length > 0 && (
-            <Col>
-              <h3 style={{ textAlign: 'center' }}>Available routes</h3>
-              <div
-                style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}
-                ref={routeCards}>
-                {routes.map((route, index) => (
-                  <Route
-                    key={index}
-                    route={route}
-                    selected={highlightedIndex === index}
-                    onSelect={() => setHighlightedIndex(index)}
-                  />
-                ))}
-              </div>
-            </Col>
-          )} */}
-          {/* {routesLoading && (
-            <Col>
-              <Row gutter={[32, 62]} justify={'center'} style={{ marginTop: 0 }}>
-                <LoadingIndicator></LoadingIndicator>
-              </Row>
-            </Col>
-          )} */}
-          {/* {!routesLoading && noRoutesAvailable && (
-            <Col style={{ width: '50%' }} className="no-routes-found">
-              <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
-              <Typography.Text type="secondary" style={{ textAlign: 'left' }}>
-                We couldn't find suitable routes for your desired transfer. We do have some
-                suggestions why that could be: <br />
-              </Typography.Text>
-              <Collapse ghost className="no-route-custom-collapse">
-                <Panel header="A route for this transaction simply does not exist yet." key="1">
-                  <p style={{ color: 'grey' }}>
-                    We are working hard on integrating more exchanges to find possible transactions
-                    for you! Look out for updates and try again later.
-                  </p>
-                </Panel>
-
-                <Panel header="You are not sending enough tokens - Try a greater amount." key="2">
-                  <p style={{ color: 'grey' }}>
-                    Transactions cost money. These transaction costs are deducted from your swapping
-                    amount. If this amount is not enough to cover the expenses, we can not execute
-                    the transaction or compute routes.
-                  </p>
-                </Panel>
-              </Collapse>
-            </Col>
-          )} */}
         </Row>
       </div>
 
