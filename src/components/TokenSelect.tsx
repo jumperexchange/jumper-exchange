@@ -15,6 +15,7 @@ interface TokenSelectProps {
   selectReference: React.MutableRefObject<RefSelectProps | undefined>
   grayed: boolean
   showBalance?: boolean
+  disabled?: boolean
 }
 
 const TokenSelect = ({
@@ -26,6 +27,7 @@ const TokenSelect = ({
   selectReference,
   grayed,
   showBalance = true,
+  disabled = false,
 }: TokenSelectProps) => {
   const findToken = (chainKey: ChainKey, tokenId: string) => {
     const token = tokens[chainKey].find((token) => token.address === tokenId)
@@ -44,6 +46,7 @@ const TokenSelect = ({
         {token ? token.name : '?'}
       </Avatar>
       <Select
+        disabled={disabled}
         placeholder="Select Coin"
         value={selectedToken}
         onChange={(v) => onChangeSelectedToken(v)}
