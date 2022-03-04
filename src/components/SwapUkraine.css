@@ -5,6 +5,7 @@
   color: black;
 }
 .swap-view-ukraine {
+  position: relative;
   max-width: 100vw;
   margin: auto;
 }
@@ -12,6 +13,10 @@
 .ukraine-content-column {
   font-size: 20px;
   padding: 80px !important;
+}
+.ukraine-content-column.title-row {
+  font-size: 20px;
+  padding: 80px 0 0 80px !important;
 }
 .ukraine-content-column h1 {
   font-size: 72px;

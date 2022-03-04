@@ -32,6 +32,7 @@ import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li:Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
+import { UkraineLogo } from '../assets/misc/ukraine_logo'
 import { getRpcs } from '../config/connectors'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -805,14 +806,6 @@ const Swap = ({ transferChains }: SwapProps) => {
       <Button
         disabled={highlightedIndex === -1}
         shape="round"
-        // style={{
-        //   display: 'flex',
-        //   alignItems: 'center',
-        //   justifyContent: 'center',
-        //   backgroundColor: 'rgba(0, 0, 0, 0.85)',
-        //   borderColor: 'rgba(0, 0, 0, 0.85)',
-        //   color: 'white',
-        // }}
         className="btn-ukraine-swap-form"
         type="primary"
         size={'large'}
@@ -860,56 +853,8 @@ const Swap = ({ transferChains }: SwapProps) => {
       <div className="swap-view-ukraine">
         {/* Swap Form */}
         <Row>
-          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
             <Title level={1}>Cross-chain donation to Ukraine</Title>
-            <Title level={4}>
-              You can <b>donate any token</b> from <b>any EVM chain</b> we support.{' '}
-              <b>Every dollar counts!</b>
-            </Title>
-            <br />
-            <Paragraph>
-              Hello World. Ukraine is in a very tough situation right now, all of us want to help,
-              but we can only do so much. We all know that Ethereum gas fees make it harder to
-              donate smaller amounts. So, we’ve spun up a simple system using LI.FI protocol to
-              donate from any EVM chain, it will be stored in a Hardware Wallet controlled by LI.FI
-              team and will be bridged to Ethereum every 8 hours and sent to the ETH address used by
-              the Ukraine govt.
-            </Paragraph>
-
-            <div className="tweet-wrapper">
-              <TwitterTweetEmbed tweetId="1497594592438497282"></TwitterTweetEmbed>
-            </div>
-
-            <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
-            <Button
-              style={{ margin: '16px 16px 16px 0' }}
-              className="btn-info-ukraine"
-              shape="round"
-              type="primary"
-              //   icon={<LoginOutlined />}
-              size={'large'}
-              onClick={() => {
-                window.open(MORE_INFO_PAGE_URL, '_blank')
-              }}>
-              More details <ArrowRightOutlined />
-            </Button>
-
-            <Button
-              style={{ margin: 16 }}
-              className="btn-wallet-ukraine"
-              shape="round"
-              type="primary"
-              //   icon={<LoginOutlined />}
-              size={'large'}
-              onClick={() => {
-                const scanUrl = getChainById(ChainId.FTM).metamask.blockExplorerUrls[0]
-                window.open(scanUrl + 'address/' + DONATION_FTM_WALLET, '_blank')
-              }}>
-              Wallet address <ArrowRightOutlined />
-            </Button>
-            <div style={{ marginTop: 94 }}>
-              <LifiTeam></LifiTeam>
-            </div>
           </Col>
           <Col
             className="swap-form-ukraine"
@@ -1048,6 +993,59 @@ const Swap = ({ transferChains }: SwapProps) => {
             </div>
             <div style={{ margin: '32px auto', textAlign: 'center' }}>
               <PoweredByLiFi />
+            </div>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
+            <Title level={4}>
+              You can <b>donate any token</b> from <b>any EVM chain</b> we support.{' '}
+              <b>Every dollar counts!</b>
+            </Title>
+            <br />
+            <Paragraph>
+              Hello World. Ukraine is in a very tough situation right now, all of us want to help,
+              but we can only do so much. We all know that Ethereum gas fees make it harder to
+              donate smaller amounts. So, we’ve spun up a simple system using LI.FI protocol to
+              donate from any EVM chain, it will be stored in a Hardware Wallet controlled by LI.FI
+              team and will be bridged to Ethereum every 8 hours and sent to the ETH address used by
+              the Ukraine govt.
+            </Paragraph>
+
+            <div className="tweet-wrapper">
+              <TwitterTweetEmbed tweetId="1497594592438497282"></TwitterTweetEmbed>
+            </div>
+
+            <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
+            <Button
+              style={{ margin: '16px 16px 16px 0' }}
+              className="btn-info-ukraine"
+              shape="round"
+              type="primary"
+              //   icon={<LoginOutlined />}
+              size={'large'}
+              onClick={() => {
+                window.open(MORE_INFO_PAGE_URL, '_blank')
+              }}>
+              More details <ArrowRightOutlined />
+            </Button>
+
+            <Button
+              style={{ margin: 16 }}
+              className="btn-wallet-ukraine"
+              shape="round"
+              type="primary"
+              //   icon={<LoginOutlined />}
+              size={'large'}
+              onClick={() => {
+                const scanUrl = getChainById(ChainId.FTM).metamask.blockExplorerUrls[0]
+                window.open(scanUrl + 'address/' + DONATION_FTM_WALLET, '_blank')
+              }}>
+              Wallet address <ArrowRightOutlined />
+            </Button>
+            <div style={{ marginTop: 94 }}>
+              <LifiTeam></LifiTeam>
             </div>
           </Col>
         </Row>
