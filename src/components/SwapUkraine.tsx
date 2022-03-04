@@ -30,6 +30,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { TwitterTweetEmbed } from 'react-twitter-embed'
 import { v4 as uuid } from 'uuid'
 
+import { DonateIcon } from '../assets/icons/donateIcon'
+import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
+import { UkraineIcon } from '../assets/icons/ukraineIcon'
 import { LifiTeam } from '../assets/Li:Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
 import { getRpcs } from '../config/connectors'
@@ -1005,6 +1008,30 @@ const Swap = ({ transferChains }: SwapProps) => {
               <b>the smallest donations count the most!</b>
             </Title>
             <br />
+
+            <div className="ukraine-infographic">
+              <Row gutter={[40, 24]} justify="center" align="middle">
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 250 }}>
+                  <DonateIcon />
+                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
+                    Choose your donation amount and currency.
+                  </div>
+                </Col>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 250 }}>
+                  <SecuredWalletIcon />
+
+                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
+                    Funds are sent to our multi-sig wallet on Fantom.
+                  </div>
+                </Col>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 250 }}>
+                  <UkraineIcon />
+                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
+                    Every 8h we donate all collected funds.
+                  </div>
+                </Col>
+              </Row>
+            </div>
             <Paragraph>
               Hello World 👋 <br />
               Ukraine is in a very tough situation right now, all of us want to help, but we can

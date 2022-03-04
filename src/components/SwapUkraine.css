@@ -22,6 +22,14 @@
   font-weight: bold;
 }
 
+.ukraine-infographic {
+  text-align: center;
+  min-height: 90px;
+  margin-top: 64px;
+  /* margin-bottom: 16px; */
+  font-size: 15px;
+}
+
 @media only screen and (max-width: 700px) {
   .ukraine-content-column h1 {
     font-size: 50px;
