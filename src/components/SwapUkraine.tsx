@@ -1,6 +1,6 @@
 import './SwapUkraine.css'
 
-import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -30,6 +30,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { TwitterTweetEmbed } from 'react-twitter-embed'
 import { v4 as uuid } from 'uuid'
 
+import { LifiTeam } from '../assets/Li:Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
 import { getRpcs } from '../config/connectors'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
@@ -143,8 +144,8 @@ const getDefaultParams = (
     depositChain: undefined,
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
-    withdrawChain: ChainKey.DAI,
-    withdrawToken: findDefaultToken(CoinKey.USDC, ChainId.DAI).address, // TODO: change this
+    withdrawChain: ChainKey.FTM,
+    withdrawToken: findDefaultToken(CoinKey.ETH, ChainId.FTM).address, // TODO: change this
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -293,10 +294,10 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
     startParams.depositToken,
   )
-  const [toChainKey] = useState<ChainKey | undefined>(ChainKey.DAI) // TODO: Change This
+  const [toChainKey] = useState<ChainKey | undefined>(ChainKey.FTM) // TODO: Change This
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(
-    findDefaultToken(CoinKey.USDC, ChainId.DAI).address,
+    findDefaultToken(CoinKey.ETH, ChainId.FTM).address,
   ) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>(transferTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
@@ -660,7 +661,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           toChainId: toToken.chainId,
           toTokenAddress,
           fromAddress: web3.account || undefined,
-          toAddress: web3.account || undefined, // TODO: change this to the recipient address
+          toAddress: '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9', // TODO: change this to the recipient address
           options: {
             slippage: optionSlippage / 100,
             bridges: {
@@ -815,7 +816,6 @@ const Swap = ({ transferChains }: SwapProps) => {
       </Button>
     )
   }
-  const isTransferto = window.location.href.includes('transferto')
 
   const toSection = (
     <Row
@@ -843,25 +843,26 @@ const Swap = ({ transferChains }: SwapProps) => {
     </Row>
   )
 
+  const isTransferto = window.location.href.includes('transferto')
+
   return (
     <Content
-      className="site-layout site-layout-swap-ukraine"
-      // style={{
-      //   minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
-      //   marginTop: !isTransferto ? '104px' : '64px',
-      // }}
-    >
-      <div className="swap-view">
+      className="site-layout-swap-ukraine"
+      style={{
+        minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+        marginTop: !isTransferto ? '104px' : '64px',
+      }}>
+      <div className="swap-view-ukraine">
         {/* Swap Form */}
-        <Row gutter={[32, 32]} justify="space-around" style={{ padding: '80px 8px 8px 8px' }}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={14}>
+        <Row>
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={1}>Cross-chain donation to Ukraine</Title>
             <Title level={4}>
               You can <b>donate any token</b> from <b>any EVM chain</b> we support.{' '}
               <b>Every dollar counts!</b>
             </Title>
             <br />
-            <Paragraph style={{ fontSize: 16 }}>
+            <Paragraph>
               Hello World. Ukraine is in a very tough situation right now, all of us want to help,
               but we can only do so much. We all know that Ethereum gas fees make it harder to
               donate smaller amounts. So, we’ve spun up a simple system using LI.FI protocol to
@@ -870,56 +871,64 @@ const Swap = ({ transferChains }: SwapProps) => {
               the Ukraine govt.
             </Paragraph>
 
-            <br />
+            <div className="tweet-wrapper">
+              <TwitterTweetEmbed tweetId="1497594592438497282"></TwitterTweetEmbed>
+            </div>
 
-            <TwitterTweetEmbed
-              tweetId="1497594592438497282"
-              options={{ theme: 'dark' }}></TwitterTweetEmbed>
-
-            <br />
-
-            <Title level={4}>
-              <b>You can verify our transactions on the blockchain.</b>
-            </Title>
+            <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
             <Button
-              style={{ margin: 16 }}
+              style={{ margin: '16px 16px 16px 0' }}
+              className="btn-info-ukraine"
               shape="round"
               type="primary"
               //   icon={<LoginOutlined />}
               size={'large'}
               //   onClick={() => login()}
             >
-              Click here for more details
+              More details <ArrowRightOutlined />
             </Button>
 
             <Button
               style={{ margin: 16 }}
+              className="btn-wallet-ukraine"
               shape="round"
               type="primary"
               //   icon={<LoginOutlined />}
               size={'large'}
               //   onClick={() => login()}
             >
-              Wallet address
+              Wallet address <ArrowRightOutlined />
             </Button>
+            <div style={{ marginTop: 94 }}>
+              <LifiTeam></LifiTeam>
+            </div>
           </Col>
-          <Col className="swap-form">
+          <Col
+            className="swap-form-ukraine"
+            xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={12}
+            style={{
+              minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+              // marginTop: !isTransferto ? '104px' : '64px',
+            }}>
             <div
               className="swap-input"
               style={{
+                margin: '0 auto',
                 maxWidth: 450,
                 borderRadius: 16,
-                padding: 24,
-                margin: '16px auto',
-                WebkitBoxShadow: '0px 0px 24px -11px #000000',
-                boxShadow: '0px 0px 24px -11px #000000',
+                padding: 32,
               }}>
               <Row>
                 <Title
                   className="swap-title"
-                  level={4}
-                  style={{ marginLeft: '0', fontWeight: 'bold' }}>
-                  Stand with Ukraine
+                  level={3}
+                  style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
+                  Stand with <br />
+                  Ukraine
                 </Title>
               </Row>
 
@@ -1029,7 +1038,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                 </span>
               </Form>
             </div>
-            <div style={{ position: 'absolute', right: 24 }}>
+            <div style={{ margin: '32px auto', textAlign: 'center' }}>
               <PoweredByLiFi />
             </div>
           </Col>

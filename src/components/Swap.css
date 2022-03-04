@@ -331,11 +331,6 @@ h4.swap-title {
   padding-top: 1px !important;
 }
 
-.site-layout-swap-ukraine {
-  background: url('../assets/misc/ukraine.svg');
-  background-size: cover;
-}
-
 .swap-view {
   min-height: 900px;
   max-width: 1600px;
