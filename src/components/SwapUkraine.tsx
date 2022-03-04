@@ -32,7 +32,6 @@ import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li:Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
-import { UkraineLogo } from '../assets/misc/ukraine_logo'
 import { getRpcs } from '../config/connectors'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -1002,17 +1001,18 @@ const Swap = ({ transferChains }: SwapProps) => {
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              You can <b>donate any token</b> from <b>any EVM chain</b> we support.{' '}
-              <b>Every dollar counts!</b>
+              Pooling resources to avoid high transaction fees. This means even{' '}
+              <b>the smallest donations count the most!</b>
             </Title>
             <br />
             <Paragraph>
-              Hello World. Ukraine is in a very tough situation right now, all of us want to help,
-              but we can only do so much. We all know that Ethereum gas fees make it harder to
-              donate smaller amounts. So, we’ve spun up a simple system using LI.FI protocol to
-              donate from any EVM chain, it will be stored in a Hardware Wallet controlled by LI.FI
-              team and will be bridged to Ethereum every 8 hours and sent to the ETH address used by
-              the Ukraine govt.
+              Hello World 👋 <br />
+              Ukraine is in a very tough situation right now, all of us want to help, but we can
+              only do so much. We all know that Ethereum gas fees make it harder to donate smaller
+              amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
+              chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
+              bridged to Ethereum every 8 hours and sent to the ETH address used by the Ukraine
+              govt.
             </Paragraph>
 
             <div className="tweet-wrapper" style={{ marginTop: 64 }}>
@@ -1027,6 +1027,7 @@ const Swap = ({ transferChains }: SwapProps) => {
               //   icon={<LoginOutlined />}
               size={'large'}
               onClick={() => {
+                // eslint-disable-next-line security/detect-non-literal-fs-filename
                 window.open(MORE_INFO_PAGE_URL, '_blank')
               }}>
               More details <ArrowRightOutlined />
@@ -1040,6 +1041,7 @@ const Swap = ({ transferChains }: SwapProps) => {
               size={'large'}
               onClick={() => {
                 const scanUrl = getChainById(ChainId.FTM).metamask.blockExplorerUrls[0]
+                // eslint-disable-next-line security/detect-non-literal-fs-filename
                 window.open(scanUrl + 'address/' + DONATION_FTM_WALLET, '_blank')
               }}>
               Wallet address <ArrowRightOutlined />
