@@ -396,7 +396,9 @@ const Swap = ({ transferChains }: SwapProps) => {
         },
       })
 
-      const possibilities = await LiFi.getPossibilities()
+      const possibilities = await LiFi.getPossibilities({
+        exchanges: { deny: ['dodo', 'openocean', '0x'] },
+      })
 
       // bridges
       const bridges: string[] = possibilities.bridges
@@ -923,8 +925,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                     {submitButton()}
                   </Row>
                   {/* Advanced Options */}
-                  <Row justify={'center'} style={{ marginTop: '12px' }}>
-                    <Collapse ghost style={{ width: '100%' }}>
+                  <Row justify={'center'} style={{ marginTop: '12px', overflow: 'scroll' }}>
+                    <Collapse ghost style={{ width: '100%', overflow: 'scroll' }}>
                       <Collapse.Panel header={`Advanced Options`} key="1">
                         Slippage
                         <div>
