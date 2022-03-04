@@ -15,12 +15,31 @@
   padding: 80px !important;
 }
 .ukraine-content-column.title-row {
-  font-size: 20px;
   padding: 80px 80px 0 80px !important;
 }
 .ukraine-content-column h1 {
   font-size: 72px;
   font-weight: bold;
+}
+
+@media only screen and (max-width: 700px) {
+  .ukraine-content-column h1 {
+    font-size: 50px;
+  }
+
+  .ukraine-content-column {
+    font-size: 20px;
+    padding: 80px 16px 80px 16px !important;
+  }
+  .ukraine-content-column.title-row {
+    padding: 80px 16px 0 16px !important;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .ukraine-content-column h1 {
+    font-size: 50px;
+  }
 }
 
 input[type='number']::-webkit-inner-spin-button,
@@ -172,6 +191,13 @@ input[type='number']::-webkit-outer-spin-button {
 @media only screen and (max-width: 700px) {
   .swap-form-ukraine {
     background-size: cover;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .swap-input {
+    margin-left: 16px !important;
+    margin-right: 16px !important;
   }
 }
 
