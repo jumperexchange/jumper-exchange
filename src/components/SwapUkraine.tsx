@@ -68,7 +68,7 @@ import ConnectButton from './web3/ConnectButton'
 const history = createBrowserHistory()
 const DONATION_FTM_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
 const MORE_INFO_PAGE_URL =
-  'https://www.notion.so/lifi/More-Information-about-Ukraine-donation-dapp-d0c8c529262b45519246c2aa5292f602'
+  'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
 
 let currentRouteCallId: string
 
@@ -1036,10 +1036,10 @@ const Swap = ({ transferChains }: SwapProps) => {
               Hello World 👋 <br />
               Ukraine is in a very tough situation right now, all of us want to help, but we can
               only do so much. We all know that Ethereum gas fees make it harder to donate smaller
-              amounts. So, we’ve spun up a simple system using <b>LI.FI protocol</b> to donate from
-              any EVM chain, it will be stored in a Hardware Wallet controlled by LI.FI team and
-              will be bridged to Ethereum every 8 hours and sent to the ETH address used by the{' '}
-              <b>Ukraine gov</b>.
+              amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
+              chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
+              bridged to Ethereum every 8 hours and sent to the ETH address used by the{' '}
+              <b>Ukraine government</b>.
             </Paragraph>
 
             <div className="tweet-wrapper" style={{ marginTop: 64 }}>
