@@ -63,7 +63,9 @@ import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
 
 const history = createBrowserHistory()
-const { Panel } = Collapse
+const DONATION_FTM_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
+const MORE_INFO_PAGE_URL =
+  'https://www.notion.so/lifi/More-Information-about-Ukraine-donation-dapp-d0c8c529262b45519246c2aa5292f602'
 
 let currentRouteCallId: string
 
@@ -661,7 +663,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           toChainId: toToken.chainId,
           toTokenAddress,
           fromAddress: web3.account || undefined,
-          toAddress: '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9', // TODO: change this to the recipient address
+          toAddress: DONATION_FTM_WALLET, // TODO: change this to the recipient address
           options: {
             slippage: optionSlippage / 100,
             bridges: {
@@ -883,8 +885,9 @@ const Swap = ({ transferChains }: SwapProps) => {
               type="primary"
               //   icon={<LoginOutlined />}
               size={'large'}
-              //   onClick={() => login()}
-            >
+              onClick={() => {
+                window.open(MORE_INFO_PAGE_URL, '_blank')
+              }}>
               More details <ArrowRightOutlined />
             </Button>
 
@@ -895,8 +898,10 @@ const Swap = ({ transferChains }: SwapProps) => {
               type="primary"
               //   icon={<LoginOutlined />}
               size={'large'}
-              //   onClick={() => login()}
-            >
+              onClick={() => {
+                const scanUrl = getChainById(ChainId.FTM).metamask.blockExplorerUrls[0]
+                window.open(scanUrl + 'address/' + DONATION_FTM_WALLET, '_blank')
+              }}>
               Wallet address <ArrowRightOutlined />
             </Button>
             <div style={{ marginTop: 94 }}>
@@ -1072,7 +1077,7 @@ const Swap = ({ transferChains }: SwapProps) => {
               </Row>
             </Col>
           )} */}
-          {!routesLoading && noRoutesAvailable && (
+          {/* {!routesLoading && noRoutesAvailable && (
             <Col style={{ width: '50%' }} className="no-routes-found">
               <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
               <Typography.Text type="secondary" style={{ textAlign: 'left' }}>
@@ -1096,7 +1101,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                 </Panel>
               </Collapse>
             </Col>
-          )}
+          )} */}
         </Row>
       </div>
 

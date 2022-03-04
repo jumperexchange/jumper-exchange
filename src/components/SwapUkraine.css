@@ -436,7 +436,8 @@ h4.swap-title {
 
 .btn-info-ukraine,
 .btn-info-ukraine:hover,
-.btn-info-ukraine:active {
+.btn-info-ukraine:active,
+.btn-info-ukraine:focus {
   background-color: black;
   color: white;
   border-color: black;
@@ -444,7 +445,8 @@ h4.swap-title {
 
 .btn-wallet-ukraine,
 .btn-wallet-ukraine:hover,
-.btn-wallet-ukraine:active {
+.btn-wallet-ukraine:active,
+.btn-info-ukraine:focus {
   background-color: #efefef;
   border-color: #efefef;
   color: black;
