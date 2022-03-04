@@ -1069,6 +1069,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           width={700}
           footer={null}>
           <Swapping
+            fixedRecipient={true}
             route={selectedRoute}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
