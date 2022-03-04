@@ -806,6 +806,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           justifyContent: 'center',
           backgroundColor: 'rgba(0, 0, 0, 0.85)',
           borderColor: 'rgba(0, 0, 0, 0.85)',
+          color: 'white',
         }}
         type="primary"
         size={'large'}
