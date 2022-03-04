@@ -1009,10 +1009,10 @@ const Swap = ({ transferChains }: SwapProps) => {
               Hello World 👋 <br />
               Ukraine is in a very tough situation right now, all of us want to help, but we can
               only do so much. We all know that Ethereum gas fees make it harder to donate smaller
-              amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
-              chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
-              bridged to Ethereum every 8 hours and sent to the ETH address used by the Ukraine
-              govt.
+              amounts. So, we’ve spun up a simple system using <b>LI.FI protocol</b> to donate from
+              any EVM chain, it will be stored in a Hardware Wallet controlled by LI.FI team and
+              will be bridged to Ethereum every 8 hours and sent to the ETH address used by the{' '}
+              <b>Ukraine gov</b>.
             </Paragraph>
 
             <div className="tweet-wrapper" style={{ marginTop: 64 }}>
