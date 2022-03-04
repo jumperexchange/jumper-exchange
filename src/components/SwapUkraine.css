@@ -451,3 +451,15 @@ h4.swap-title {
   border-color: #efefef;
   color: black;
 }
+
+.btn-ukraine-swap-form,
+.btn-ukraine-swap-form:hover,
+.btn-ukraine-swap-form:active,
+.btn-ukraine-swap-form:focus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  border-color: black;
+  color: white;
+}

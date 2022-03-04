@@ -732,6 +732,7 @@ const Swap = ({ transferChains }: SwapProps) => {
     if (!active && isWalletDeactivated(web3.account)) {
       return (
         <Button
+          className="btn-ukraine-swap-form"
           disabled={true}
           shape="round"
           type="primary"
@@ -740,12 +741,13 @@ const Swap = ({ transferChains }: SwapProps) => {
       )
     }
     if (!web3.account) {
-      return <ConnectButton size="large" />
+      return <ConnectButton className="btn-ukraine-swap-form" size="large" />
     }
     if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
+          className="btn-ukraine-swap-form"
           shape="round"
           type="primary"
           icon={<SwapOutlined />}
@@ -803,14 +805,15 @@ const Swap = ({ transferChains }: SwapProps) => {
       <Button
         disabled={highlightedIndex === -1}
         shape="round"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.85)',
-          borderColor: 'rgba(0, 0, 0, 0.85)',
-          color: 'white',
-        }}
+        // style={{
+        //   display: 'flex',
+        //   alignItems: 'center',
+        //   justifyContent: 'center',
+        //   backgroundColor: 'rgba(0, 0, 0, 0.85)',
+        //   borderColor: 'rgba(0, 0, 0, 0.85)',
+        //   color: 'white',
+        // }}
+        className="btn-ukraine-swap-form"
         type="primary"
         size={'large'}
         onClick={() => openModal()}>
