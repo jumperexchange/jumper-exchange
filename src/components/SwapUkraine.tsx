@@ -10,6 +10,7 @@ import {
   Col,
   Collapse,
   Form,
+  Input,
   InputNumber,
   Modal,
   Row,
@@ -799,15 +800,47 @@ const Swap = ({ transferChains }: SwapProps) => {
       <Button
         disabled={highlightedIndex === -1}
         shape="round"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.85)',
+          borderColor: 'rgba(0, 0, 0, 0.85)',
+        }}
         type="primary"
-        icon={<SwapOutlined />}
         size={'large'}
         onClick={() => openModal()}>
-        Swap
+        <span className="ukraine-flag">&#127482;&#127462;</span> Donate
       </Button>
     )
   }
   const isTransferto = window.location.href.includes('transferto')
+
+  const toSection = (
+    <Row
+      style={{
+        marginTop: '32px',
+      }}
+      gutter={[
+        { xs: 8, sm: 16 },
+        { xs: 8, sm: 16 },
+      ]}>
+      <Col span={10}>
+        <div className="form-text">To:</div>
+      </Col>
+      <Col span={14}>
+        <div className="form-input-wrapper">
+          <Input
+            type="text"
+            value={'ETH for Ukraine'}
+            bordered={false}
+            disabled
+            style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
+          />
+        </div>
+      </Col>
+    </Row>
+  )
 
   return (
     <Content
@@ -880,8 +913,11 @@ const Swap = ({ transferChains }: SwapProps) => {
                 boxShadow: '0px 0px 24px -11px #000000',
               }}>
               <Row>
-                <Title className="swap-title" level={4}>
-                  Please Specify Your Transaction
+                <Title
+                  className="swap-title"
+                  level={4}
+                  style={{ marginLeft: '0', fontWeight: 'bold' }}>
+                  Stand with Ukraine
                 </Title>
               </Row>
 
@@ -906,6 +942,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                   balances={balances}
                   allowSameChains={true}
                   fixedWithdraw={true}
+                  alternativeToSection={toSection}
                 />
                 <span>
                   {/* Disclaimer */}
@@ -920,7 +957,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                     {submitButton()}
                   </Row>
                   {/* Advanced Options */}
-                  <Row justify={'center'}>
+                  <Row justify={'center'} style={{ marginTop: '12px' }}>
                     <Collapse ghost style={{ width: '100%' }}>
                       <Collapse.Panel header={`Advanced Options`} key="1">
                         Slippage
