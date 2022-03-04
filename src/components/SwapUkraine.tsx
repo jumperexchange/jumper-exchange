@@ -1,4 +1,4 @@
-import './Swap.css'
+import './SwapUkraine.css'
 
 import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
@@ -812,10 +812,11 @@ const Swap = ({ transferChains }: SwapProps) => {
   return (
     <Content
       className="site-layout site-layout-swap-ukraine"
-      style={{
-        minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
-        marginTop: !isTransferto ? '104px' : '64px',
-      }}>
+      // style={{
+      //   minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+      //   marginTop: !isTransferto ? '104px' : '64px',
+      // }}
+    >
       <div className="swap-view">
         {/* Swap Form */}
         <Row gutter={[32, 32]} justify="space-around" style={{ padding: '80px 8px 8px 8px' }}>
