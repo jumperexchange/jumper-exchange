@@ -65,7 +65,7 @@ import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
 
 const history = createBrowserHistory()
-const DONATION_FTM_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
+const DONATION_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
 const MORE_INFO_PAGE_URL =
   'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
 
@@ -148,8 +148,8 @@ const getDefaultParams = (
     depositChain: undefined,
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
-    withdrawChain: ChainKey.FTM,
-    withdrawToken: findDefaultToken(CoinKey.ETH, ChainId.FTM).address, // TODO: change this
+    withdrawChain: ChainKey.POL,
+    withdrawToken: findDefaultToken(CoinKey.ETH, ChainId.POL).address, // TODO: change this
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -298,10 +298,10 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
     startParams.depositToken,
   )
-  const [toChainKey] = useState<ChainKey | undefined>(ChainKey.FTM) // TODO: Change This
+  const [toChainKey] = useState<ChainKey | undefined>(ChainKey.POL) // TODO: Change This
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(
-    findDefaultToken(CoinKey.ETH, ChainId.FTM).address,
+    findDefaultToken(CoinKey.ETH, ChainId.POL).address,
   ) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>(transferTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
@@ -667,7 +667,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           toChainId: toToken.chainId,
           toTokenAddress,
           fromAddress: web3.account || undefined,
-          toAddress: DONATION_FTM_WALLET, // TODO: change this to the recipient address
+          toAddress: DONATION_WALLET, // TODO: change this to the recipient address
           options: {
             slippage: optionSlippage / 100,
             bridges: {
@@ -989,7 +989,7 @@ const Swap = ({ transferChains }: SwapProps) => {
                   <SecuredWalletIcon />
 
                   <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Funds are sent to our multi-sig wallet on Fantom.
+                    Funds are sent to our multi-sig wallet on Polygon.
                   </div>
                 </Col>
                 <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 250 }}>
@@ -1019,7 +1019,6 @@ const Swap = ({ transferChains }: SwapProps) => {
               className="btn-info-ukraine"
               shape="round"
               type="primary"
-              //   icon={<LoginOutlined />}
               size={'large'}
               onClick={() => {
                 // eslint-disable-next-line security/detect-non-literal-fs-filename
@@ -1032,12 +1031,11 @@ const Swap = ({ transferChains }: SwapProps) => {
               className="btn-wallet-ukraine"
               shape="round"
               type="primary"
-              //   icon={<LoginOutlined />}
               size={'large'}
               onClick={() => {
-                const scanUrl = getChainById(ChainId.FTM).metamask.blockExplorerUrls[0]
+                const scanUrl = getChainById(ChainId.POL).metamask.blockExplorerUrls[0]
                 // eslint-disable-next-line security/detect-non-literal-fs-filename
-                window.open(scanUrl + 'address/' + DONATION_FTM_WALLET + '#tokentxns', '_blank')
+                window.open(scanUrl + 'address/' + DONATION_WALLET + '#tokentxns', '_blank')
               }}>
               Wallet address <ArrowRightOutlined />
             </Button>
