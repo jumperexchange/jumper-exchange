@@ -14,7 +14,6 @@ import {
   InputNumber,
   Modal,
   Row,
-  Select,
   Tooltip,
   Typography,
 } from 'antd'
@@ -314,9 +313,9 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
-  const [availableBridges, setAvailableBridges] = useState<string[]>([])
+  const [, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
-  const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
+  const [, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
   const [routes, setRoutes] = useState<Array<RouteType>>([])
@@ -956,42 +955,6 @@ const Swap = ({ transferChains }: SwapProps) => {
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
-                        Bridges
-                        <div>
-                          <Select
-                            mode="multiple"
-                            placeholder="Select enabled bridges"
-                            value={optionEnabledBridges}
-                            onChange={setOptionEnabledBridges}
-                            style={{
-                              borderRadius: 6,
-                              width: '100%',
-                            }}>
-                            {availableBridges.map((bridge) => (
-                              <Select.Option key={bridge} value={bridge}>
-                                {bridge}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </div>
-                        Exchanges
-                        <div>
-                          <Select
-                            mode="multiple"
-                            placeholder="Select enabled exchanges"
-                            value={optionEnabledExchanges}
-                            onChange={setOptionEnabledExchanges}
-                            style={{
-                              borderRadius: 6,
-                              width: '100%',
-                            }}>
-                            {availableExchanges.map((exchange) => (
-                              <Select.Option key={exchange} value={exchange}>
-                                {exchange}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </div>
                       </Collapse.Panel>
                     </Collapse>
                   </Row>
@@ -1074,7 +1037,7 @@ const Swap = ({ transferChains }: SwapProps) => {
               onClick={() => {
                 const scanUrl = getChainById(ChainId.FTM).metamask.blockExplorerUrls[0]
                 // eslint-disable-next-line security/detect-non-literal-fs-filename
-                window.open(scanUrl + 'address/' + DONATION_FTM_WALLET, '_blank')
+                window.open(scanUrl + 'address/' + DONATION_FTM_WALLET + '#tokentxns', '_blank')
               }}>
               Wallet address <ArrowRightOutlined />
             </Button>
