@@ -2,7 +2,7 @@ import { InjectedConnector } from '@web3-react/injected-connector'
 import { NetworkConnector } from '@web3-react/network-connector'
 import { providers } from 'ethers'
 
-import { ChainId, getChainById, multicallAddresses, supportedChains } from '../../types'
+import { ChainId, getChainById, supportedChains } from '../../types'
 
 const customRpc: Record<number, string | undefined> = {
   [ChainId.ETH]: process.env.REACT_APP_RPC_URL_MAINNET
