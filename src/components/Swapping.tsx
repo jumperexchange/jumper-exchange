@@ -331,16 +331,26 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
       const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
       const successMessage = !!finalTokenAmount ? (
         <>
-          {!receivedAmount.isZero() && (
-            <>
-              <Typography.Text>
-                {!fixedRecipient ? 'You received ' : 'You sent '}
-                {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
-                {` ${finalTokenAmount.symbol}`}
-              </Typography.Text>
-              <br />
-            </>
-          )}
+          {!receivedAmount.isZero() &&
+            (!fixedRecipient ? (
+              <>
+                <Typography.Text>
+                  You received{' '}
+                  {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
+                  {` ${finalTokenAmount.symbol}`}
+                </Typography.Text>
+                <br />
+              </>
+            ) : (
+              <>
+                <Typography.Text>
+                  You sent{' '}
+                  {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(20)}
+                  {` ${finalTokenAmount.symbol}`}
+                </Typography.Text>
+                <br />
+              </>
+            ))}
           {!fixedRecipient && (
             <Typography.Text
               type={!receivedAmount.isZero() ? 'secondary' : undefined}

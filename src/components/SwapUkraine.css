@@ -179,7 +179,8 @@ input[type='number']::-webkit-outer-spin-button {
   position: fixed;
   right: 0 !important;
   width: 50vw;
-  padding: 80px 0;
+  height: 100vh;
+  overflow-y: scroll !important;
   overflow: hidden;
   background: url('../assets/misc/ukraine.svg');
   background-size: cover;
