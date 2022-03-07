@@ -5,7 +5,9 @@ import { providers } from 'ethers'
 import { ChainId, getChainById, multicallAddresses, supportedChains } from '../../types'
 
 const customRpc: Record<number, string | undefined> = {
-  [ChainId.ETH]: process.env.REACT_APP_RPC_URL_MAINNET,
+  [ChainId.ETH]: process.env.REACT_APP_RPC_URL_MAINNET
+    ? process.env.REACT_APP_RPC_URL_MAINNET.split(',')[0]
+    : undefined,
   [ChainId.POL]: process.env.REACT_APP_RPC_URL_POLYGON,
   [ChainId.BSC]: process.env.REACT_APP_RPC_URL_BSC,
   [ChainId.DAI]: process.env.REACT_APP_RPC_URL_XDAI,
@@ -29,18 +31,6 @@ const chainProviders: Record<number, providers.FallbackProvider> = {}
 
 export const getRpcUrl = (chainId: number) => {
   return customRpc[chainId] || getChainById(chainId).metamask.rpcUrls[0]
-}
-
-export const getMulticallAddresse = (chainId: number) => {
-  return multicallAddresses[chainId]
-}
-
-export const getMulticallAddresses = (chainIds: Array<number>) => {
-  const addresses: Record<number, string> = {}
-  chainIds.forEach((chainId) => {
-    addresses[chainId] = getMulticallAddresse(chainId)
-  })
-  return addresses
 }
 
 export const getRpcProvider = (chainId: number) => {
