@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
@@ -145,6 +146,10 @@ function App() {
                         <span className="beta-badge">Beta</span>
                         <Link to="/swap">Swap</Link>
                       </Menu.Item>
+                      <Menu.Item key="/ukraine" danger={true}>
+                        <span className="ukraine-flag">&#127482;&#127462;</span>
+                        <Link to="/ukraine">Help Ukraine!</Link>
+                      </Menu.Item>
                       <Menu.Item key="/about">
                         <Link to="/about">About</Link>
                       </Menu.Item>
@@ -255,6 +260,23 @@ function App() {
                       return (
                         <div className="lifiWrap">
                           <Swap transferChains={transferChains} />
+                        </div>
+                      )
+                    }}
+                  />
+                  <Route
+                    path="/ukraine"
+                    render={() => {
+                      setMetatags({
+                        title: 'Li.Finance - Help Ukraine!',
+                      })
+                      initStomt('swap')
+                      const transferChains = getTransferChains(
+                        process.env.REACT_APP_LIFI_ENABLED_CHAINS_JSON!,
+                      )
+                      return (
+                        <div className="lifiWrap">
+                          <SwapUkraine transferChains={transferChains} />
                         </div>
                       )
                     }}

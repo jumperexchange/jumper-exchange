@@ -33,6 +33,7 @@ interface SwappingProps {
   route: Route
   updateRoute: Function
   onSwapDone: Function
+  fixedRecipient?: boolean
 }
 
 const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
@@ -47,7 +48,7 @@ const getReceivingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
+const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: SwappingProps) => {
   const { steps } = route
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -330,24 +331,36 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
       const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
       const successMessage = !!finalTokenAmount ? (
         <>
-          {!receivedAmount.isZero() && (
-            <>
-              <Typography.Text>
-                {'You received '}
-                {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
-                {` ${finalTokenAmount.symbol}`}
-              </Typography.Text>
-              <br />
-            </>
+          {!receivedAmount.isZero() &&
+            (!fixedRecipient ? (
+              <>
+                <Typography.Text>
+                  You received{' '}
+                  {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
+                  {` ${finalTokenAmount.symbol}`}
+                </Typography.Text>
+                <br />
+              </>
+            ) : (
+              <>
+                <Typography.Text>
+                  You sent{' '}
+                  {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(20)}
+                  {` ${finalTokenAmount.symbol}`}
+                </Typography.Text>
+                <br />
+              </>
+            ))}
+          {!fixedRecipient && (
+            <Typography.Text
+              type={!receivedAmount.isZero() ? 'secondary' : undefined}
+              style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
+              {'You now have '}
+              {new BigNumber(finalTokenAmount.amount).toFixed(4)}
+              {` ${finalTokenAmount.symbol}`}
+              {` on ${toChain.name}`}
+            </Typography.Text>
           )}
-          <Typography.Text
-            type={!receivedAmount.isZero() ? 'secondary' : undefined}
-            style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
-            {'You now have '}
-            {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-            {` ${finalTokenAmount.symbol}`}
-            {` on ${toChain.name}`}
-          </Typography.Text>
         </>
       ) : (
         ''
@@ -368,9 +381,11 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
                 </span>
               </Tooltip>
             ))}
-          <Link to="/dashboard">
-            <Button type="link">Dashboard</Button>
-          </Link>
+          {!fixedRecipient && (
+            <Link to="/dashboard">
+              <Button type="link">Dashboard</Button>
+            </Link>
+          )}
         </Space>
       )
     }
