@@ -176,3 +176,9 @@
 .ant-menu-item-danger a {
   color: yellow !important;
 }
+
+@media only screen and (max-width: 1060px) {
+  .ant-menu-item-danger a {
+    color: black !important;
+  }
+}
