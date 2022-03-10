@@ -335,8 +335,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
             (!fixedRecipient ? (
               <>
                 <Typography.Text>
-                  You received{' '}
-                  {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
+                  You received {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
                   {` ${finalTokenAmount.symbol}`}
                 </Typography.Text>
                 <br />
@@ -344,8 +343,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
             ) : (
               <>
                 <Typography.Text>
-                  You sent{' '}
-                  {new BigNumber(receivedAmount).shiftedBy(-finalTokenAmount.decimals).toFixed(20)}
+                  You sent {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(20)}
                   {` ${finalTokenAmount.symbol}`}
                 </Typography.Text>
                 <br />
