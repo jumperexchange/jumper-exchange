@@ -12,8 +12,14 @@
 
 .ukraine-content-column {
   font-size: 20px;
-  padding: 80px !important;
+  padding: 0 80px 80px !important;
 }
+@media only screen and (max-width: 1199px) {
+  .ukraine-content-column {
+    padding: 80px !important;
+  }
+}
+
 .ukraine-content-column.title-row {
   padding: 80px 80px 0 80px !important;
 }
@@ -183,30 +189,16 @@ input[type='number']::-webkit-outer-spin-button {
   padding: 80px 0;
   overflow-y: scroll !important;
   overflow: hidden;
-  background: url('../assets/misc/ukraine.svg');
-  background-size: cover;
+  background: linear-gradient(0deg, rgba(0, 91, 187, 1) 50%, rgba(255, 213, 13, 1) 50%);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-@media only screen and (min-width: 1369px) {
-  .swap-form-ukraine {
-    background-size: cover;
-  }
-}
-
 @media only screen and (max-width: 1199px) {
   .swap-form-ukraine {
     position: relative;
-    background-size: contain;
-  }
-}
-/* ukraine flag for small devices */
-@media only screen and (max-width: 756px) {
-  .swap-form-ukraine {
-    background-size: cover;
   }
 }
 

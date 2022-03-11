@@ -9,6 +9,7 @@ import {
   Checkbox,
   Col,
   Collapse,
+  Divider,
   Form,
   Input,
   InputNumber,
@@ -855,7 +856,7 @@ const Swap = ({ transferChains }: SwapProps) => {
       }}>
       <div className="swap-view-ukraine">
         {/* Swap Form */}
-        <Row>
+        <Row className="ukraine-title-row">
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
             <Title level={1}>Cross-chain donation to Ukraine</Title>
           </Col>
@@ -979,20 +980,20 @@ const Swap = ({ transferChains }: SwapProps) => {
 
             <div className="ukraine-infographic">
               <Row gutter={[40, 24]} justify="center" align="middle">
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 250 }}>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
                   <DonateIcon />
                   <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
                     Choose your donation amount and currency.
                   </div>
                 </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 250 }}>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
                   <SecuredWalletIcon />
 
                   <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
                     Funds are sent to our multi-sig wallet on Polygon.
                   </div>
                 </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 250 }}>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
                   <UkraineIcon />
                   <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
                     Every 8h we donate all collected funds.
@@ -1000,7 +1001,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                 </Col>
               </Row>
             </div>
-            <Paragraph>
+            <Divider style={{ borderColor: 'black' }} />
+            <Paragraph style={{ marginTop: 64 }}>
               Hello World 👋 <br />
               Ukraine is in a very tough situation right now, all of us want to help, but we can
               only do so much. We all know that Ethereum gas fees make it harder to donate smaller
