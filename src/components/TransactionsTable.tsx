@@ -133,13 +133,19 @@ function TrasactionsTable({
     const lastStep = route.steps[route.steps.length - 1]
     let toChainId = lastStep.action.toChainId
 
+    // take the real received value instead of the estimation if possible
+    const toAmount = lastStep.execution?.toAmount ?? lastStep.estimate.toAmount
+    // in case the destination swap fails the user receives the bridge token and the transaction is marked as successful.
+    // we need to make sure to always show the token the user actually received
+    const toToken = lastStep.execution?.toToken ?? lastStep.action.toToken
+
     return {
       key: index,
       date: startedDate,
       fromChain: getChainById(firstStep.action.fromChainId).name,
       toChain: getChainById(toChainId).name,
       fromToken: `${formatTokenAmount(firstStep.action.fromToken, firstStep.estimate.fromAmount)}`,
-      toToken: `${formatTokenAmount(lastStep.action.toToken, lastStep.estimate.toAmount)}`,
+      toToken: `${formatTokenAmount(toToken, toAmount)}`,
       protocols: route.steps.map((step) => findTool(step.tool)?.name).join(' > '),
       state: getStateText(route),
       action: renderActionButton(route),
