@@ -2,27 +2,29 @@ import { ChainId } from '@lifinance/sdk'
 
 import { deepClone } from '../services/utils'
 
+const load = (value?: string) => {
+  return value ? value.split(',') : []
+}
+
 const customRpc: Record<number, (string | undefined)[]> = {
-  [ChainId.ETH]: process.env.REACT_APP_RPC_URL_MAINNET
-    ? process.env.REACT_APP_RPC_URL_MAINNET.split(',')
-    : [],
-  [ChainId.POL]: [process.env.REACT_APP_RPC_URL_POLYGON],
-  [ChainId.BSC]: [process.env.REACT_APP_RPC_URL_BSC],
-  [ChainId.DAI]: [process.env.REACT_APP_RPC_URL_XDAI],
-  [ChainId.FTM]: [process.env.REACT_APP_RPC_URL_FANTOM],
-  [ChainId.ARB]: [process.env.REACT_APP_RPC_URL_ARBITRUM],
-  [ChainId.OPT]: [process.env.REACT_APP_RPC_URL_OPTIMISM],
-  [ChainId.MOR]: [process.env.REACT_APP_RPC_URL_MOONRIVER],
+  [ChainId.ETH]: load(process.env.REACT_APP_RPC_URL_MAINNET),
+  [ChainId.POL]: load(process.env.REACT_APP_RPC_URL_POLYGON),
+  [ChainId.BSC]: load(process.env.REACT_APP_RPC_URL_BSC),
+  [ChainId.DAI]: load(process.env.REACT_APP_RPC_URL_XDAI),
+  [ChainId.FTM]: load(process.env.REACT_APP_RPC_URL_FANTOM),
+  [ChainId.ARB]: load(process.env.REACT_APP_RPC_URL_ARBITRUM),
+  [ChainId.OPT]: load(process.env.REACT_APP_RPC_URL_OPTIMISM),
+  [ChainId.MOR]: load(process.env.REACT_APP_RPC_URL_MOONRIVER),
 
   // Testnet
-  [ChainId.ROP]: [process.env.REACT_APP_RPC_URL_ROPSTEN],
-  [ChainId.RIN]: [process.env.REACT_APP_RPC_URL_RINKEBY],
-  [ChainId.GOR]: [process.env.REACT_APP_RPC_URL_GORLI],
-  [ChainId.KOV]: [process.env.REACT_APP_RPC_URL_KOVAN],
-  [ChainId.ARBT]: [process.env.REACT_APP_RPC_URL_ARBITRUM_RINKEBY],
-  [ChainId.OPTT]: [process.env.REACT_APP_RPC_URL_OPTIMISM_KOVAN],
-  [ChainId.MUM]: [process.env.REACT_APP_RPC_URL_POLYGON_MUMBAI],
-  [ChainId.BSCT]: [process.env.REACT_APP_RPC_URL_BSC_TESTNET],
+  [ChainId.ROP]: load(process.env.REACT_APP_RPC_URL_ROPSTEN),
+  [ChainId.RIN]: load(process.env.REACT_APP_RPC_URL_RINKEBY),
+  [ChainId.GOR]: load(process.env.REACT_APP_RPC_URL_GORLI),
+  [ChainId.KOV]: load(process.env.REACT_APP_RPC_URL_KOVAN),
+  [ChainId.ARBT]: load(process.env.REACT_APP_RPC_URL_ARBITRUM_RINKEBY),
+  [ChainId.OPTT]: load(process.env.REACT_APP_RPC_URL_OPTIMISM_KOVAN),
+  [ChainId.MUM]: load(process.env.REACT_APP_RPC_URL_POLYGON_MUMBAI),
+  [ChainId.BSCT]: load(process.env.REACT_APP_RPC_URL_BSC_TESTNET),
 }
 
 export const getRpcs = (): Record<number, string[]> => {
