@@ -20,6 +20,7 @@ import { addToDeactivatedWallets, removeFromActiveWallets } from './DisconnectBu
 
 const supportedWallets = [
   {
+    key: 'metamask',
     name: 'MetaMask',
     icon: metamaskIcon,
     connector: async () => {
@@ -27,6 +28,7 @@ const supportedWallets = [
     },
   },
   {
+    key: 'walletconnect',
     name: 'WalletConnect',
     icon: walletConnectIcon,
     connector: async () => {
@@ -34,6 +36,11 @@ const supportedWallets = [
     },
   },
 ]
+
+const configuredWalletKeys = JSON.parse(process.env.REACT_APP_SUPPORTED_WALLETS || '[]') as string[]
+const enabledWallets = supportedWallets.filter((wallet) =>
+  configuredWalletKeys.includes(wallet.key),
+)
 
 export const addToActiveWallets = (address: string | null | undefined) => {
   if (!address) return
@@ -103,7 +110,7 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
         <Typography.Title level={4} style={{ marginBottom: 32 }}>
           Choose a wallet
         </Typography.Title>
-        {supportedWallets.map((wallet) => {
+        {enabledWallets.map((wallet) => {
           return (
             <div
               style={{
