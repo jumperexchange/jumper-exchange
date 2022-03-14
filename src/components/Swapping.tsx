@@ -1,11 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, {
-  ExecutionSettings,
-  getEthereumDecryptionHook,
-  getEthereumPublicKeyHook,
-  StepTool,
-} from '@lifinance/sdk'
+import LiFi, { ExecutionSettings, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
@@ -50,6 +45,7 @@ interface SwappingProps {
   route: Route
   updateRoute: Function
   onSwapDone: Function
+  fixedRecipient?: boolean
 }
 
 const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
@@ -64,7 +60,7 @@ const getReceivingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
+const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: SwappingProps) => {
   const { steps } = route
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -257,8 +253,6 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     const settings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
-      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
-      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
     storeRoute(route)
     setIsSwapping(true)
@@ -283,13 +277,10 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
 
   const resumeExecution = async () => {
     if (!web3.account || !web3.library) return
-    const signer = web3.library.getSigner()
 
     const settings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
-      decryptHook: getEthereumDecryptionHook(await signer.getAddress()),
-      getPublicKeyHook: getEthereumPublicKeyHook(await signer.getAddress()),
     }
 
     setIsSwapping(true)
@@ -369,34 +360,62 @@ const Swapping = ({ route, updateRoute, onSwapDone }: SwappingProps) => {
     if (isDone) {
       const lastStep = steps[steps.length - 1]
       const { toChain } = getReceivingInfo(lastStep)
+      const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
+      const successMessage = !!finalTokenAmount ? (
+        <>
+          {!receivedAmount.isZero() &&
+            (!fixedRecipient ? (
+              <>
+                <Typography.Text>
+                  You received {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
+                  {` ${finalTokenAmount.symbol}`}
+                </Typography.Text>
+                <br />
+              </>
+            ) : (
+              <>
+                <Typography.Text>
+                  You sent {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(20)}
+                  {` ${finalTokenAmount.symbol}`}
+                </Typography.Text>
+                <br />
+              </>
+            ))}
+          {!fixedRecipient && (
+            <Typography.Text
+              type={!receivedAmount.isZero() ? 'secondary' : undefined}
+              style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
+              {'You now have '}
+              {new BigNumber(finalTokenAmount.amount).toFixed(4)}
+              {` ${finalTokenAmount.symbol}`}
+              {` on ${toChain.name}`}
+            </Typography.Text>
+          )}
+        </>
+      ) : (
+        ''
+      )
+
       return (
         <Space direction="vertical">
           <Typography.Text strong>Swap Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
-              <Typography.Text>
-                {'You now have '}
-                {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-                {` ${finalTokenAmount.symbol}`}
-                {` on ${toChain.name}`}
-              </Typography.Text>
+              <span>{successMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
                   onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
-                  <Typography.Text>
-                    {'You now have '}
-                    {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-                    {` ${finalTokenAmount.symbol}`}
-                    {` on ${toChain.name}`}
-                  </Typography.Text>
+                  {successMessage}
                 </span>
               </Tooltip>
             ))}
-          <Link to="/dashboard">
-            <Button type="link">Dashboard</Button>
-          </Link>
+          {!fixedRecipient && (
+            <Link to="/dashboard">
+              <Button type="link">Dashboard</Button>
+            </Link>
+          )}
         </Space>
       )
     }

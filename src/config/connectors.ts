@@ -3,12 +3,16 @@ import { ChainId } from '@lifinance/sdk'
 import { deepClone } from '../services/utils'
 
 const customRpc: Record<number, (string | undefined)[]> = {
-  [ChainId.ETH]: [process.env.REACT_APP_RPC_URL_MAINNET],
+  [ChainId.ETH]: process.env.REACT_APP_RPC_URL_MAINNET
+    ? process.env.REACT_APP_RPC_URL_MAINNET.split(',')
+    : [],
   [ChainId.POL]: [process.env.REACT_APP_RPC_URL_POLYGON],
   [ChainId.BSC]: [process.env.REACT_APP_RPC_URL_BSC],
   [ChainId.DAI]: [process.env.REACT_APP_RPC_URL_XDAI],
   [ChainId.FTM]: [process.env.REACT_APP_RPC_URL_FANTOM],
   [ChainId.ARB]: [process.env.REACT_APP_RPC_URL_ARBITRUM],
+  [ChainId.OPT]: [process.env.REACT_APP_RPC_URL_OPTIMISM],
+  [ChainId.MOR]: [process.env.REACT_APP_RPC_URL_MOONRIVER],
 
   // Testnet
   [ChainId.ROP]: [process.env.REACT_APP_RPC_URL_ROPSTEN],

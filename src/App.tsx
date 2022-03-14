@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
@@ -70,6 +71,7 @@ function App() {
       </div>
     )
   }
+  const isTransferto = window.location.href.includes('transferto')
 
   return (
     <BrowserRouter>
@@ -79,7 +81,45 @@ function App() {
             embedView()
           ) : (
             <Layout>
-              <Header style={{ position: 'fixed', zIndex: 900, width: '100%', padding: 0 }}>
+              {!isTransferto && (
+                <Header
+                  className="transferto-disclaimer"
+                  style={{
+                    background: 'black',
+                    color: 'white',
+                    zIndex: 900,
+                    height: 40,
+                    position: 'fixed',
+                    width: '100%',
+                    padding: 0,
+                    margin: 0,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  {/* <Row> */}
+                  <div>
+                    Li.Finance is moving to{' '}
+                    <a
+                      href="https://transferto.xyz"
+                      target="blank"
+                      style={{ color: '#F5B5FF', textDecoration: 'underline', fontWeight: 'bold' }}>
+                      transferto.xyz
+                    </a>
+                  </div>
+                  {/* </Row> */}
+                </Header>
+              )}
+
+              <Header
+                style={{
+                  marginTop: 0,
+                  position: 'fixed',
+                  zIndex: 900,
+                  width: '100%',
+                  padding: 0,
+                  top: !isTransferto ? 40 : 0,
+                }}>
                 <Row>
                   {/* Menu */}
                   <Col xs={24} sm={24} md={14} lg={14} xl={14}>
@@ -105,6 +145,10 @@ function App() {
                       <Menu.Item key="/swap">
                         <span className="beta-badge">Beta</span>
                         <Link to="/swap">Swap</Link>
+                      </Menu.Item>
+                      <Menu.Item key="/ukraine" danger={true}>
+                        <span className="ukraine-flag">&#127482;&#127462;</span>
+                        <Link to="/ukraine">Help Ukraine!</Link>
                       </Menu.Item>
                       <Menu.Item key="/about">
                         <Link to="/about">About</Link>
@@ -216,6 +260,23 @@ function App() {
                       return (
                         <div className="lifiWrap">
                           <Swap transferChains={transferChains} />
+                        </div>
+                      )
+                    }}
+                  />
+                  <Route
+                    path="/ukraine"
+                    render={() => {
+                      setMetatags({
+                        title: 'Li.Finance - Help Ukraine!',
+                      })
+                      initStomt('swap')
+                      const transferChains = getTransferChains(
+                        process.env.REACT_APP_LIFI_ENABLED_CHAINS_JSON!,
+                      )
+                      return (
+                        <div className="lifiWrap">
+                          <SwapUkraine transferChains={transferChains} />
                         </div>
                       )
                     }}

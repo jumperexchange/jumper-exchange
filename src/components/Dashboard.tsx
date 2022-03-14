@@ -747,15 +747,21 @@ const Dashboard = () => {
   }
 
   let summaryIndex = 0
+  const isTransferto = window.location.href.includes('transferto')
   return (
     <Content className="site-layout dashboard">
-      <div className="site-layout-background" style={{ minHeight: 'calc(100vh - 64px)' }}>
+      <div
+        className="site-layout-background"
+        style={{
+          minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+          marginTop: 104,
+        }}>
         <Table
           columns={columns}
           dataSource={data}
           bordered
           size="middle"
-          scroll={{ x: '1000px', y: 'calc(100vh - 277px)' }}
+          scroll={{ x: '1000px', y: !isTransferto ? 'calc(100vh - 317px)' : 'calc(100vh - 277px)' }}
           pagination={false}
           summary={() => (
             <Table.Summary fixed>

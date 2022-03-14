@@ -1,6 +1,6 @@
-import './Swap.css'
+import './SwapUkraine.css'
 
-import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -9,15 +9,17 @@ import {
   Checkbox,
   Col,
   Collapse,
+  Divider,
   Form,
+  Input,
   InputNumber,
   Modal,
   Row,
-  Select,
   Tooltip,
   Typography,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
+import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
@@ -25,17 +27,17 @@ import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { TwitterTweetEmbed } from 'react-twitter-embed'
 import { v4 as uuid } from 'uuid'
 
+import { DonateIcon } from '../assets/icons/donateIcon'
+import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
+import { UkraineIcon } from '../assets/icons/ukraineIcon'
+import { LifiTeam } from '../assets/Li:Fi/LiFiTeam'
+import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
 import { getRpcs } from '../config/connectors'
-import {
-  deleteRoute,
-  isWalletConnectWallet,
-  readActiveRoutes,
-  readHistoricalRoutes,
-  storeRoute,
-} from '../services/localStorage'
-import { switchChain as switchChainMetaMask } from '../services/metamask'
+import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
+import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
@@ -59,16 +61,14 @@ import {
   Token,
   TokenAmount,
 } from '../types'
-import LoadingIndicator from './LoadingIndicator'
-import Route from './Route'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
-import TransactionsTable from './TransactionsTable'
-import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 import ConnectButton from './web3/ConnectButton'
 
 const history = createBrowserHistory()
-const { Panel } = Collapse
+const DONATION_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
+const MORE_INFO_PAGE_URL =
+  'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
 
 let currentRouteCallId: string
 
@@ -149,8 +149,8 @@ const getDefaultParams = (
     depositChain: undefined,
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
-    withdrawChain: undefined,
-    withdrawToken: undefined,
+    withdrawChain: ChainKey.POL,
+    withdrawToken: findDefaultToken(CoinKey.ETH, ChainId.POL).address, // TODO: change this
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -299,11 +299,11 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>(
     startParams.depositToken,
   )
-  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>(startParams.withdrawChain)
+  const [toChainKey] = useState<ChainKey | undefined>(ChainKey.POL) // TODO: Change This
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress, setToTokenAddress] = useState<string | undefined>(
-    startParams.withdrawToken,
-  )
+  const [toTokenAddress] = useState<string | undefined>(
+    findDefaultToken(CoinKey.ETH, ChainId.POL).address,
+  ) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>(transferTokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
@@ -314,9 +314,9 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
-  const [availableBridges, setAvailableBridges] = useState<string[]>([])
+  const [, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
-  const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
+  const [, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
   const [routes, setRoutes] = useState<Array<RouteType>>([])
@@ -325,16 +325,11 @@ const Swap = ({ transferChains }: SwapProps) => {
   const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
-  const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+  const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
 
   // Misc
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
-
-  const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
-    show: boolean
-    chainId: number
-  }>({ show: false, chainId: 1 })
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -401,7 +396,9 @@ const Swap = ({ transferChains }: SwapProps) => {
         },
       })
 
-      const possibilities = await LiFi.getPossibilities()
+      const possibilities = await LiFi.getPossibilities({
+        exchanges: { deny: ['dodo', 'openocean', '0x'] },
+      })
 
       // bridges
       const bridges: string[] = possibilities.bridges
@@ -671,7 +668,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           toChainId: toToken.chainId,
           toTokenAddress,
           fromAddress: web3.account || undefined,
-          toAddress: web3.account || undefined,
+          toAddress: DONATION_WALLET, // TODO: change this to the recipient address
           options: {
             slippage: optionSlippage / 100,
             bridges: {
@@ -680,6 +677,7 @@ const Swap = ({ transferChains }: SwapProps) => {
             exchanges: {
               allow: optionEnabledExchanges,
             },
+            allowSwitchChain: false, // This is important for fixed recipients
           },
         }
 
@@ -724,9 +722,10 @@ const Swap = ({ transferChains }: SwapProps) => {
     }
   }, [routeCallResult, currentRouteCallId])
 
+  //TODO: check what is needed here!
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(routes[highlightedIndex]))
+    setSelectedRoute(deepClone(routes[0]))
 
     // Reset routes to avoid reexecution with same data
     setRoutes([])
@@ -734,21 +733,11 @@ const Swap = ({ transferChains }: SwapProps) => {
     setNoRoutesAvailable(false)
   }
 
-  const switchChain = async (chainId: number) => {
-    if (!web3.account) {
-      return
-    }
-    if (isWalletConnectWallet(web3.account)) {
-      setShowWalletConnectChainSwitchModal({ show: true, chainId })
-      return
-    }
-    await switchChainMetaMask(chainId)
-  }
-
   const submitButton = () => {
     if (!active && isWalletDeactivated(web3.account)) {
       return (
         <Button
+          className="btn-ukraine-swap-form"
           disabled={true}
           shape="round"
           type="primary"
@@ -757,12 +746,13 @@ const Swap = ({ transferChains }: SwapProps) => {
       )
     }
     if (!web3.account) {
-      return <ConnectButton size={'large'} />
+      return <ConnectButton className="btn-ukraine-swap-form" size="large" />
     }
     if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
+          className="btn-ukraine-swap-form"
           shape="round"
           type="primary"
           icon={<SwapOutlined />}
@@ -820,90 +810,82 @@ const Swap = ({ transferChains }: SwapProps) => {
       <Button
         disabled={highlightedIndex === -1}
         shape="round"
+        className="btn-ukraine-swap-form"
         type="primary"
-        icon={<SwapOutlined />}
         size={'large'}
         onClick={() => openModal()}>
-        Swap
+        <span className="ukraine-flag">&#127482;&#127462;</span> Donate
       </Button>
     )
   }
+
+  const toSection = (
+    <Row
+      style={{
+        marginTop: '32px',
+      }}
+      gutter={[
+        { xs: 8, sm: 16 },
+        { xs: 8, sm: 16 },
+      ]}>
+      <Col span={10}>
+        <div className="form-text">To:</div>
+      </Col>
+      <Col span={14}>
+        <div className="form-input-wrapper">
+          <Input
+            type="text"
+            value={'ETH for Ukraine'}
+            bordered={false}
+            disabled
+            style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
+          />
+        </div>
+      </Col>
+    </Row>
+  )
+
   const isTransferto = window.location.href.includes('transferto')
 
   return (
     <Content
-      className="site-layout site-layout-swap"
+      className="site-layout-swap-ukraine"
       style={{
         minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
         marginTop: !isTransferto ? '104px' : '64px',
       }}>
-      <div className="swap-view">
-        {/* Historical Routes */}
-        {!!historicalRoutes.length && (
-          <Row justify={'center'} className="historicalTransfers">
-            <Collapse
-              defaultActiveKey={['']}
-              ghost
-              bordered={false}
-              className={`active-transfer-collapse`}
-              style={{ overflowX: 'scroll' }}>
-              <Panel
-                header={`Historical Transfers (${historicalRoutes.length})`}
-                key="1"
-                className="site-collapse-active-transfer-panel">
-                <div>
-                  <TransactionsTable
-                    routes={historicalRoutes}
-                    selectRoute={() => {}}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setHistoricalRoutes(readHistoricalRoutes())
-                    }}
-                    historical={true}></TransactionsTable>
-                </div>
-              </Panel>
-            </Collapse>
-          </Row>
-        )}
-
-        {/* Active Routes */}
-        {!!activeRoutes.length && (
-          <Row justify={'center'} className="activeTransfers">
-            <Collapse
-              defaultActiveKey={activeRoutes.length ? ['1'] : ['']}
-              ghost
-              bordered={false}
-              className={`active-transfer-collapse`}
-              style={{ overflowX: 'scroll' }}>
-              <Panel
-                header={`Active Transfers (${activeRoutes.length})`}
-                key="1"
-                className="site-collapse-active-transfer-panel">
-                <div>
-                  <TransactionsTable
-                    routes={activeRoutes}
-                    selectRoute={(route: RouteType) => setSelectedRoute(route)}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setActiveRoutes(readActiveRoutes())
-                    }}></TransactionsTable>
-                </div>
-              </Panel>
-            </Collapse>
-          </Row>
-        )}
-
+      <div className="swap-view-ukraine">
         {/* Swap Form */}
-        <Row style={{ margin: 20 }} justify={'center'}>
-          <Col className="swap-form">
+        <Row className="ukraine-title-row">
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
+            <Title level={1}>Cross-chain donation to Ukraine</Title>
+          </Col>
+          <Col
+            className="swap-form-ukraine"
+            xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={12}
+            style={{
+              minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+              // marginTop: !isTransferto ? '104px' : '64px',
+            }}>
             <div
               className="swap-input"
-              style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: '0 auto' }}>
+              style={{
+                margin: '0 auto',
+                maxWidth: 450,
+                borderRadius: 16,
+                padding: 32,
+              }}>
               <Row>
-                <Title className="swap-title" level={4}>
-                  Please Specify Your Transaction
+                <Title
+                  className="swap-title"
+                  level={3}
+                  style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
+                  Stand with <br />
+                  Ukraine
                 </Title>
               </Row>
 
@@ -915,10 +897,10 @@ const Swap = ({ transferChains }: SwapProps) => {
                   setDepositToken={setFromTokenAddress}
                   depositAmount={depositAmount}
                   setDepositAmount={setDepositAmount}
-                  withdrawChain={toChainKey}
-                  setWithdrawChain={setToChainKey}
-                  withdrawToken={toTokenAddress}
-                  setWithdrawToken={setToTokenAddress}
+                  withdrawChain={ChainKey.DAI}
+                  setWithdrawChain={() => {}}
+                  withdrawToken={findDefaultToken(CoinKey.USDC, ChainId.DAI).address}
+                  setWithdrawToken={() => {}}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
                   estimatedWithdrawAmount={getSelectedWithdraw().estimate}
@@ -927,6 +909,8 @@ const Swap = ({ transferChains }: SwapProps) => {
                   tokens={tokens}
                   balances={balances}
                   allowSameChains={true}
+                  fixedWithdraw={true}
+                  alternativeToSection={toSection}
                 />
                 <span>
                   {/* Disclaimer */}
@@ -941,9 +925,12 @@ const Swap = ({ transferChains }: SwapProps) => {
                     {submitButton()}
                   </Row>
                   {/* Advanced Options */}
-                  <Row justify={'center'}>
+                  <Row justify={'center'} style={{ marginTop: '12px' }}>
                     <Collapse ghost style={{ width: '100%' }}>
-                      <Collapse.Panel header={`Advanced Options`} key="1">
+                      <Collapse.Panel
+                        header={`Advanced Options`}
+                        style={{ maxHeight: 390, overflow: 'scroll' }}
+                        key="1">
                         Slippage
                         <div>
                           <InputNumber
@@ -969,104 +956,97 @@ const Swap = ({ transferChains }: SwapProps) => {
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
-                        Bridges
-                        <div>
-                          <Select
-                            mode="multiple"
-                            placeholder="Select enabled bridges"
-                            value={optionEnabledBridges}
-                            onChange={setOptionEnabledBridges}
-                            style={{
-                              borderRadius: 6,
-                              width: '100%',
-                            }}>
-                            {availableBridges.map((bridge) => (
-                              <Select.Option key={bridge} value={bridge}>
-                                {bridge}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </div>
-                        Exchanges
-                        <div>
-                          <Select
-                            mode="multiple"
-                            placeholder="Select enabled exchanges"
-                            value={optionEnabledExchanges}
-                            onChange={setOptionEnabledExchanges}
-                            style={{
-                              borderRadius: 6,
-                              width: '100%',
-                            }}>
-                            {availableExchanges.map((exchange) => (
-                              <Select.Option key={exchange} value={exchange}>
-                                {exchange}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </div>
                       </Collapse.Panel>
                     </Collapse>
                   </Row>
                 </span>
               </Form>
             </div>
+            <div
+              onClick={() => window.open('https://li.fi', '_blank')}
+              style={{ margin: '32px auto', textAlign: 'center', cursor: 'pointer' }}>
+              <PoweredByLiFi />
+            </div>
           </Col>
         </Row>
 
-        {/* Routes */}
-        <Row
-          justify={'center'}
-          style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
-          {routes.length > 0 && (
-            <Col>
-              <h3 style={{ textAlign: 'center' }}>Available routes</h3>
-              <div
-                style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}
-                ref={routeCards}>
-                {routes.map((route, index) => (
-                  <Route
-                    key={index}
-                    route={route}
-                    selected={highlightedIndex === index}
-                    onSelect={() => setHighlightedIndex(index)}
-                  />
-                ))}
-              </div>
-            </Col>
-          )}
-          {routesLoading && (
-            <Col>
-              <Row gutter={[32, 62]} justify={'center'} style={{ marginTop: 0 }}>
-                <LoadingIndicator></LoadingIndicator>
-              </Row>
-            </Col>
-          )}
-          {!routesLoading && noRoutesAvailable && (
-            <Col style={{ width: '50%' }} className="no-routes-found">
-              <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
-              <Typography.Text type="secondary" style={{ textAlign: 'left' }}>
-                We couldn't find suitable routes for your desired transfer. We do have some
-                suggestions why that could be: <br />
-              </Typography.Text>
-              <Collapse ghost className="no-route-custom-collapse">
-                <Panel header="A route for this transaction simply does not exist yet." key="1">
-                  <p style={{ color: 'grey' }}>
-                    We are working hard on integrating more exchanges to find possible transactions
-                    for you! Look out for updates and try again later.
-                  </p>
-                </Panel>
+        <Row>
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
+            <Title level={4}>
+              Pooling resources to avoid high transaction fees. This means even{' '}
+              <b>the smallest donations count the most!</b>
+            </Title>
+            <br />
 
-                <Panel header="You are not sending enough tokens - Try a greater amount." key="2">
-                  <p style={{ color: 'grey' }}>
-                    Transactions cost money. These transaction costs are deducted from your swapping
-                    amount. If this amount is not enough to cover the expenses, we can not execute
-                    the transaction or compute routes.
-                  </p>
-                </Panel>
-              </Collapse>
-            </Col>
-          )}
+            <div className="ukraine-infographic">
+              <Row gutter={[40, 24]} justify="center" align="middle">
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
+                  <DonateIcon />
+                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
+                    Choose your donation amount and currency.
+                  </div>
+                </Col>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
+                  <SecuredWalletIcon />
+
+                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
+                    Funds are sent to our multi-sig wallet on Polygon.
+                  </div>
+                </Col>
+                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
+                  <UkraineIcon />
+                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
+                    Every 8h we donate all collected funds.
+                  </div>
+                </Col>
+              </Row>
+            </div>
+            <Divider style={{ borderColor: 'black' }} />
+            <Paragraph style={{ marginTop: 64 }}>
+              Hello World 👋 <br />
+              Ukraine is in a very tough situation right now, all of us want to help, but we can
+              only do so much. We all know that Ethereum gas fees make it harder to donate smaller
+              amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
+              chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
+              bridged to Ethereum every 8 hours and sent to the ETH address used by the{' '}
+              <b>Ukraine government</b>.
+            </Paragraph>
+
+            <div className="tweet-wrapper" style={{ marginTop: 64 }}>
+              <TwitterTweetEmbed tweetId="1497594592438497282"></TwitterTweetEmbed>
+            </div>
+
+            <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
+            <Button
+              className="btn-info-ukraine"
+              shape="round"
+              type="primary"
+              size={'large'}
+              onClick={() => {
+                // eslint-disable-next-line security/detect-non-literal-fs-filename
+                window.open(MORE_INFO_PAGE_URL, '_blank')
+              }}>
+              More details <ArrowRightOutlined />
+            </Button>
+
+            <Button
+              className="btn-wallet-ukraine"
+              shape="round"
+              type="primary"
+              size={'large'}
+              onClick={() => {
+                const scanUrl = getChainById(ChainId.POL).metamask.blockExplorerUrls[0]
+                // eslint-disable-next-line security/detect-non-literal-fs-filename
+                window.open(scanUrl + 'address/' + DONATION_WALLET + '#tokentxns', '_blank')
+              }}>
+              Wallet address <ArrowRightOutlined />
+            </Button>
+            <div
+              onClick={() => window.open('https://li.fi', '_blank')}
+              style={{ marginTop: 94, cursor: 'pointer' }}>
+              <LifiTeam></LifiTeam>
+            </div>
+          </Col>
         </Row>
       </div>
 
@@ -1086,6 +1066,7 @@ const Swap = ({ transferChains }: SwapProps) => {
           width={700}
           footer={null}>
           <Swapping
+            fixedRecipient={true}
             route={selectedRoute}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
@@ -1098,20 +1079,6 @@ const Swap = ({ transferChains }: SwapProps) => {
             }}></Swapping>
         </Modal>
       )}
-
-      <Modal
-        className="wallet-selection-modal"
-        visible={showWalletConnectChainSwitchModal.show}
-        onOk={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
-        onCancel={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
-        footer={null}>
-        <WalletConnectChainSwitchModal
-          chainId={showWalletConnectChainSwitchModal.chainId}
-          okHandler={() => {
-            setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })
-          }}
-        />
-      </Modal>
     </Content>
   )
 }
