@@ -55,14 +55,16 @@ export const loadTokenListAsTokens = async (chainId: number): Promise<Array<Toke
   })
 
   // default token
-  defaultTokens[chain.key].forEach((defaultToken) => {
-    const found = !!mappedTokens.find(
-      (token) => token.address.toLowerCase() === defaultToken.address.toLowerCase(),
-    )
-    if (!found) {
-      mappedTokens.unshift(defaultToken)
-    }
-  })
+  if (defaultTokens[chain.key] && defaultTokens[chain.key].length) {
+    defaultTokens[chain.key].forEach((defaultToken) => {
+      const found = !!mappedTokens.find(
+        (token) => token.address.toLowerCase() === defaultToken.address.toLowerCase(),
+      )
+      if (!found) {
+        mappedTokens.unshift(defaultToken)
+      }
+    })
+  }
 
   return mappedTokens
 }

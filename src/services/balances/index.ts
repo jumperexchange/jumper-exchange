@@ -1,6 +1,5 @@
-import LiFi, { ChainId, ChainKey, Token, TokenAmount } from '@lifinance/sdk'
+import { ChainId, Token, TokenAmount } from '@lifinance/sdk'
 
-import { defaultTokens } from '../../types'
 import covalent from './covalent'
 import debank from './debank'
 import { filterBlockedTokenAmounts } from './utils'
@@ -10,20 +9,6 @@ export const getTokenBalancesFromDebank = async (
   tokens?: Token[],
 ): Promise<TokenAmount[]> => {
   const tokenAmounts: TokenAmount[] = []
-
-  const harmonyToken = tokens && tokens.find((token) => token.chainId === ChainId.ONE)
-
-  // Harmony Support
-  if (harmonyToken) {
-    try {
-      tokenAmounts.push(
-        ...(await LiFi.getTokenBalances(walletAddress, defaultTokens[ChainKey.ONE])),
-      )
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error('Failed access harmony balance', e)
-    }
-  }
 
   try {
     const result = await debank.getBalances(walletAddress)

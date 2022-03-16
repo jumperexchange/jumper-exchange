@@ -19,16 +19,6 @@ import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider
 import analytics from './services/analytics'
 import setMetatags from './services/metatags'
 import { initStomt } from './services/stomt'
-import { getChainById } from './types'
-
-const getTransferChains = (jsonArraySting: string) => {
-  try {
-    const chainIds = JSON.parse(jsonArraySting)
-    return chainIds.map(getChainById)
-  } catch (e) {
-    return []
-  }
-}
 
 function usePageViews() {
   const [path, setPath] = useState<string>()
@@ -55,10 +45,9 @@ function App() {
     setMetatags({
       title: 'Li.Finance - Swap (embed)',
     })
-    const transferChains = getTransferChains(process.env.REACT_APP_LIFI_ENABLED_CHAINS_JSON!)
     return (
       <div className="lifiEmbed">
-        <Swap transferChains={transferChains} />
+        <Swap />
         <div className="poweredBy">
           powered by{' '}
           <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
@@ -254,12 +243,9 @@ function App() {
                         title: 'Li.Finance - Swap',
                       })
                       initStomt('swap')
-                      const transferChains = getTransferChains(
-                        process.env.REACT_APP_LIFI_ENABLED_CHAINS_JSON!,
-                      )
                       return (
                         <div className="lifiWrap">
-                          <Swap transferChains={transferChains} />
+                          <Swap />
                         </div>
                       )
                     }}
@@ -271,12 +257,9 @@ function App() {
                         title: 'Li.Finance - Help Ukraine!',
                       })
                       initStomt('swap')
-                      const transferChains = getTransferChains(
-                        process.env.REACT_APP_LIFI_ENABLED_CHAINS_JSON!,
-                      )
                       return (
                         <div className="lifiWrap">
-                          <SwapUkraine transferChains={transferChains} />
+                          <SwapUkraine />
                         </div>
                       )
                     }}
