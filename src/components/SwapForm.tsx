@@ -27,7 +27,7 @@ interface SwapFormProps {
   estimatedWithdrawAmount: string
   estimatedMinWithdrawAmount?: string
 
-  transferChains: Array<Chain>
+  availableChains: Array<Chain>
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
   balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   allowSameChains?: boolean
@@ -53,7 +53,7 @@ const SwapForm = ({
   estimatedWithdrawAmount,
   estimatedMinWithdrawAmount,
 
-  transferChains,
+  availableChains,
   tokens,
   balances,
   allowSameChains,
@@ -81,8 +81,8 @@ const SwapForm = ({
 
     // find same deposit token
     if (depositChain) {
-      const symbol = tokens[depositChain].find((token) => token.address === depositToken)?.symbol
-      const tokenAddress = tokens[chainKey].find((token) => token.symbol === symbol)?.address
+      const symbol = tokens[depositChain]?.find((token) => token.address === depositToken)?.symbol
+      const tokenAddress = tokens[chainKey]?.find((token) => token.symbol === symbol)?.address
       setDepositToken(tokenAddress)
     }
   }
@@ -216,7 +216,7 @@ const SwapForm = ({
         <Col span={14}>
           <div className="form-input-wrapper">
             <ChainSelect
-              transferChains={transferChains}
+              availableChains={availableChains}
               selectedChain={depositChain}
               onChangeSelectedChain={onChangeDepositChain}
             />
@@ -283,7 +283,7 @@ const SwapForm = ({
             <div className="form-input-wrapper">
               <ChainSelect
                 disabled={fixedWithdraw}
-                transferChains={transferChains}
+                availableChains={availableChains}
                 selectedChain={withdrawChain}
                 onChangeSelectedChain={onChangeWithdrawChain}
               />
