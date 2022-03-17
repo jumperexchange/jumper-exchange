@@ -427,7 +427,7 @@ const Swap = () => {
         } else if (newToChain) {
           // only add unknow token if chain was specified with it
           const toTokenId = ethers.utils.getAddress(params.toToken.trim()).toLowerCase()
-          transferTokens[defaultParams.withdrawChain].push({
+          const newToken = {
             address: toTokenId,
             symbol: 'Unknown',
             decimals: 18,
@@ -435,7 +435,9 @@ const Swap = () => {
             coinKey: '' as CoinKey,
             name: 'Unknown',
             logoURI: '',
-          })
+          }
+          transferTokens[defaultParams.withdrawChain].push(newToken)
+          updateTokenData(newToken)
           defaultParams.withdrawToken = toTokenId
         }
       } catch (e) {
