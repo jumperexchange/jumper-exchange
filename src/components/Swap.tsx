@@ -159,7 +159,7 @@ const Swap = () => {
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
-  const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
+  const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
   const [availableBridges, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
