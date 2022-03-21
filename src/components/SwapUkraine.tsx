@@ -291,7 +291,7 @@ const Swap = () => {
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
-  const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
+  const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
   const [, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
@@ -949,8 +949,7 @@ const Swap = () => {
                         <div>
                           <Checkbox
                             checked={optionInfiniteApproval}
-                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}
-                            disabled={true}>
+                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
@@ -1066,6 +1065,7 @@ const Swap = () => {
           <Swapping
             fixedRecipient={true}
             route={selectedRoute}
+            settings={{ infiniteApproval: optionInfiniteApproval }}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
