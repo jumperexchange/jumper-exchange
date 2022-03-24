@@ -98,7 +98,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
 
   return (
     <div
-      className={'swap-route ' + (selected ? 'optimal' : '')}
+      className="swap-route"
       style={{
         padding: 24,
         paddingTop: 24,
@@ -133,13 +133,14 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
           <br />
         </div>
 
-        {selected ? (
-          <div className="selected-label">Selected</div>
-        ) : (
-          <Button shape="round" type="text" size={'large'} onClick={() => onSelect()}>
-            Click To Select Route
-          </Button>
-        )}
+        <Button
+          shape="round"
+          disabled={selected}
+          type="primary"
+          size={'large'}
+          onClick={() => onSelect()}>
+          {selected ? 'Selected' : 'Click To Select Route'}
+        </Button>
       </div>
     </div>
   )

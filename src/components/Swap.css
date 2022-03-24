@@ -25,34 +25,15 @@ input[type='number']::-webkit-outer-spin-button {
 
 .swap-route {
   background-color: white;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  transition: box-shadow 200ms;
-  transition: -webkit-box-shadow 200ms;
+  -webkit-box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.25) !important;
   min-width: 300px;
-  opacity: 0;
-
-  border-radius: 6px;
+  border-radius: 16px;
   cursor: pointer;
 }
 
-.swap-route:hover {
-  -webkit-box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
-  box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
-}
-
-.swap-route.optimal {
-  -webkit-box-shadow: 0px 0px 22px -6px rgba(23, 144, 255, 0.5);
-  box-shadow: 0px 0px 22px -6px rgba(23, 144, 255, 0.5);
-}
-
-.swap-route .ant-btn span {
-  text-decoration: none;
-  transition: text-decoration 400ms;
-}
-
-.swap-route:hover .ant-btn span {
-  text-decoration: underline;
+.swap-route .ant-btn {
+  margin-top: 18px;
 }
 
 .no-routes-found {
@@ -237,16 +218,6 @@ h4.swap-title {
   left: 0;
   right: 0;
   text-align: center;
-}
-
-.selected-label {
-  line-height: 1.5715;
-  /* color: #07d207; */
-  color: #1790ff;
-  font-weight: 400;
-  padding: 6.4px;
-  font-size: 16px;
-  text-decoration: underline;
 }
 
 .ant-btn-round.ant-btn-lg {
