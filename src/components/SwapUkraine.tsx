@@ -602,7 +602,8 @@ const Swap = () => {
     }
 
     const fromChain = getChainById(route.fromChainId)
-    const balance = getBalance(balances, fromChain.key, ethers.constants.AddressZero)
+    const token = findDefaultToken(fromChain.coin, fromChain.id)
+    const balance = getBalance(balances, fromChain.key, token.address)
 
     const requiredAmount = route.steps
       .filter((step) => step.action.fromChainId === route.fromChainId)
@@ -628,7 +629,8 @@ const Swap = () => {
     }
 
     const crossChain = getChainById(lastStep.action.fromChainId)
-    const balance = getBalance(balances, crossChain.key, ethers.constants.AddressZero)
+    const token = findDefaultToken(crossChain.coin, crossChain.id)
+    const balance = getBalance(balances, crossChain.key, token.address)
 
     const gasEstimate =
       lastStep.estimate.gasCosts &&
