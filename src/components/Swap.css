@@ -7,12 +7,20 @@ input[type='number']::-webkit-outer-spin-button {
   margin-right: -8px;
 }
 
+.site-layout-swap {
+  background: white;
+}
+
 .beta-disclaimer {
   margin-top: 24px;
 }
 
 .swap-input {
   background: white;
+  max-width: 450px;
+  border-radius: 6px;
+  padding: 24px;
+  margin: 0 auto;
 }
 
 .swap-route {
@@ -122,6 +130,9 @@ input[type='number']::-webkit-outer-spin-button {
 .swap-form {
   margin-top: 36px;
   overflow: hidden;
+  -webkit-box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
 }
 
 h4.swap-title {
@@ -135,7 +146,7 @@ h4.swap-title {
 }
 
 .form-input-wrapper {
-  background: #ffffff;
+  background: white;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 6px;
   padding: 4px 4px;
@@ -327,7 +338,7 @@ h4.swap-title {
 
 .tx-table .ant-pagination-item-active {
   border: none !important;
-  background: #f0f2f5 !important;
+  /* background: #f0f2f5 !important; */
   padding-top: 1px !important;
 }
 

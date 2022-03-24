@@ -6,7 +6,7 @@ import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
 
-import logo from './assets/icon192.png'
+import logo from './assets/Li.Fi/LiFi.svg'
 import AboutPage from './components/AboutPage'
 import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
@@ -102,14 +102,13 @@ function App() {
 
               <Header
                 style={{
-                  marginTop: 0,
                   position: 'fixed',
                   zIndex: 900,
                   width: '100%',
                   padding: 0,
                   top: !isTransferto ? 40 : 0,
                 }}>
-                <Row>
+                <Row className="site-layout-menu">
                   {/* Menu */}
                   <Col xs={24} sm={24} md={14} lg={14} xl={14}>
                     <Link to="/" className="wordmark">
@@ -120,7 +119,7 @@ function App() {
                         width="36"
                         height="36"
                       />
-                      <span>Li.Finance</span>
+                      <span>Li.Fi</span>
                     </Link>
                     <Menu
                       theme="light"

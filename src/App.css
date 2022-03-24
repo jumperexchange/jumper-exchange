@@ -3,15 +3,20 @@
 
 .wordmark {
   float: left;
-  color: white;
+  color: black;
   font-size: 22px;
   line-height: 62px;
   margin-right: 20px;
+  font-weight: bold;
 }
 .logo {
-  width: 36px;
-  height: 36px;
-  margin: 8px 20px 8px 50px;
+  /* width: 36px;
+  height: 36px; */
+  margin: 0;
+}
+
+.wordmark span {
+  margin: auto 7px;
 }
 
 @media only screen and (max-width: 480px) {
@@ -28,26 +33,23 @@
 .site-layout {
   margin-top: 64px;
 }
+.site-layout-menu {
+  width: 90%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
 
 .site-layout .site-layout-background {
-  background: #fff;
+  background: white;
 }
-
+.ant-layout {
+  background: white;
+  /*  */
+}
 .ant-layout-header {
   overflow: hidden;
-  background: rgb(24, 21, 35);
-  background: linear-gradient(
-    140deg,
-    rgba(24, 21, 35, 1) 0%,
-    rgba(9, 9, 121, 1) 93%,
-    rgba(9, 9, 121, 1) 100%
-  );
-  border: none;
-}
-
-.ant-menu-horizontal > .ant-menu-item a,
-.ant-menu-horizontal > .ant-menu-item-selected a {
-  color: white;
+  background: white;
+  display: flex;
+  justify-content: center;
 }
 
 .ant-menu {
@@ -57,7 +59,7 @@
 
 .ant-menu-overflow-item {
   opacity: 1 !important;
-  color: white;
+  color: black;
 }
 .ant-menu.ant-menu-sub.ant-menu-vertical {
   background-color: white !important;
@@ -174,7 +176,7 @@
 }
 
 .ant-menu-item-danger a {
-  color: yellow !important;
+  color: #3f49e1 !important;
 }
 
 @media only screen and (max-width: 1060px) {
