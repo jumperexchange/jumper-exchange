@@ -954,8 +954,7 @@ const Swap = () => {
                         <div>
                           <Checkbox
                             checked={optionInfiniteApproval}
-                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}
-                            disabled={true}>
+                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
@@ -1077,6 +1076,9 @@ const Swap = () => {
           footer={null}>
           <Swapping
             route={selectedRoute}
+            settings={{
+              infiniteApproval: optionInfiniteApproval,
+            }}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
