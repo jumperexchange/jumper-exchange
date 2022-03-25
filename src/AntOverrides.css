@@ -46,7 +46,13 @@ Global overrides of ant design styles
 }
 
 /* Menu */
-.ant-menu-item-active {
-  /* background-color: #6069e6; */
-  color: #6069e6 !important;
+.ant-menu-item-selected a,
+.ant-menu-item-active a {
+  color: #3f49e1 !important;
+}
+.ant-menu-item-selected:hover::after,
+.ant-menu-item-selected::after,
+.ant-menu-item-active::after {
+  border-bottom: 1px solid #3f49e1 !important;
+  /* color: #3f49e1 !important; */
 }
