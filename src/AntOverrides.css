@@ -5,7 +5,9 @@
 Global overrides of ant design styles
 */
 
+/* Buttons */
 .ant-btn-primary {
+  font-family: 'GT America' !important;
   background-color: #3f49e1;
   border-color: #3f49e1;
 }
@@ -15,4 +17,36 @@ Global overrides of ant design styles
 .ant-btn-primary:active {
   background-color: #6069e6;
   border-color: #6069e6;
+}
+
+.ant-btn-ghost {
+  border-color: black;
+}
+
+/* Collapse */
+.ant-collapse-header {
+  font-family: 'GT America' !important;
+}
+
+/* Select */
+.ant-select-selection-item {
+  border-color: #eeeeee !important;
+  background-color: white !important;
+}
+
+/* Steps */
+/* .ant-steps-item-title {
+  font-family: 'GT America' !important;
+  color: rgba(0, 0, 0, 0.45) !important;
+} */
+
+/* Input */
+.ant-input {
+  font-family: 'GT America' !important;
+}
+
+/* Menu */
+.ant-menu-item-active {
+  /* background-color: #6069e6; */
+  color: #6069e6 !important;
 }
