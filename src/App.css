@@ -10,9 +10,12 @@
   font-weight: bold;
   font-family: 'GT America' !important;
 }
+.wordmark:hover,
+.wordmark:focus,
+.wordmark:active {
+  color: #3f49e1;
+}
 .logo {
-  /* width: 36px;
-  height: 36px; */
   margin: 0;
 }
 
