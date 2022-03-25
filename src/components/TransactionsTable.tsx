@@ -42,12 +42,20 @@ function TrasactionsTable({
 }: ActiveTrasactionsTableProps) {
   const web3 = useWeb3React<Web3Provider>()
   const { active, activate } = useWeb3React()
-  const login = async () => activate(await getInjectedConnector())
+  const login = async () => {
+    const connector = await getInjectedConnector()
+    activate(connector)
+  }
 
   const renderActionButton = (route: Route) => {
     if (historical) {
       return (
-        <Button danger type="ghost" shape="round" onClick={() => deleteRoute(route)}>
+        <Button
+          className="route-delete-button"
+          size="large"
+          type="ghost"
+          shape="round"
+          onClick={() => deleteRoute(route)}>
           <DeleteOutlined />
         </Button>
       )
@@ -60,6 +68,7 @@ function TrasactionsTable({
             type="ghost"
             size={'large'}
             shape="round"
+            onClick={() => login()}
             icon={<LoadingOutlined />}>
             Connect Wallet
           </Button>
@@ -93,7 +102,12 @@ function TrasactionsTable({
           okText="Yes"
           okType="danger"
           cancelText="No">
-          <Button style={{ padding: '3px 16px 4px 16px' }} danger type="ghost" shape="round">
+          <Button
+            style={{ padding: '3px 16px 4px 16px' }}
+            className="route-delete-button"
+            size="large"
+            type="ghost"
+            shape="round">
             <DeleteOutlined />
           </Button>
         </Popconfirm>
@@ -165,6 +179,7 @@ function TrasactionsTable({
 
   return (
     <Table
+      bordered={false}
       columns={columns}
       dataSource={data}
       pagination={{ hideOnSinglePage: true, size: 'small', position: ['bottomCenter'] }}
