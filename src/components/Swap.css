@@ -19,7 +19,7 @@ input[type='number']::-webkit-outer-spin-button {
   background: white;
   max-width: 450px;
   border-radius: 6px;
-  padding: 24px;
+  padding: 24px 48px;
   margin: 0 auto;
 }
 
@@ -136,6 +136,14 @@ h4.swap-title {
   display: flex;
   align-items: center;
 }
+.chain-select {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.token-select {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
 
 .form-input-wrapper.disabled {
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -160,10 +168,11 @@ h4.swap-title {
 }
 
 .form-text {
-  font-weight: 700;
+  font-family: 'Inter';
   align-items: center;
+  color: #888888;
   display: flex;
-  padding-left: 15px;
+  padding-left: 0 !important;
   height: 100%;
 }
 
