@@ -1,4 +1,5 @@
 import './App.css'
+import './AntOverrides.css'
 
 import { DownOutlined, GithubOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row } from 'antd'
@@ -119,7 +120,7 @@ function App() {
                         width="36"
                         height="36"
                       />
-                      <span>Li.Fi</span>
+                      <span>LI.FI</span>
                     </Link>
                     <Menu
                       theme="light"

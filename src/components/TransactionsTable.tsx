@@ -55,14 +55,24 @@ function TrasactionsTable({
     if (!web3.account) {
       if (!active && isWalletDeactivated(web3.account)) {
         return (
-          <Button disabled={true} type="ghost" shape="round" icon={<LoadingOutlined />}>
+          <Button
+            disabled={true}
+            type="ghost"
+            size={'large'}
+            shape="round"
+            icon={<LoadingOutlined />}>
             Connect Wallet
           </Button>
         )
       }
 
       return (
-        <Button type="ghost" shape="round" icon={<LoginOutlined />} onClick={() => login()}>
+        <Button
+          type="ghost"
+          icon={<LoginOutlined />}
+          size={'large'}
+          shape="round"
+          onClick={() => login()}>
           Connect Wallet
         </Button>
       )
@@ -72,6 +82,7 @@ function TrasactionsTable({
         <Button
           style={{ marginRight: 10, padding: '3px 16px 4px 16px' }}
           type="primary"
+          size={'large'}
           shape="round"
           onClick={() => selectRoute(route)}>
           Resume Swap

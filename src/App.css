@@ -1,16 +1,6 @@
 @import '~antd/dist/antd.css';
 @import './css/animations.css';
 
-.ant-btn-primary {
-  background-color: #3f49e1;
-  border-color: #3f49e1;
-}
-
-.ant-btn-primary:hover {
-  background-color: #6069e6;
-  border-color: #6069e6;
-}
-
 .wordmark {
   float: left;
   color: black;
@@ -18,6 +8,7 @@
   line-height: 62px;
   margin-right: 20px;
   font-weight: bold;
+  font-family: 'GT America' !important;
 }
 .logo {
   /* width: 36px;
