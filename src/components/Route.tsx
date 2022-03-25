@@ -122,7 +122,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
       </Steps>
 
       <div className="selected">
-        <div style={{ textAlign: 'left', paddingLeft: 20 }}>
+        <div style={{ textAlign: 'justify', paddingLeft: 50 }}>
           Estimated token: <b>{formatTokenAmount(route.toToken, route.toAmount)}</b>
           <br />
           Estimated result: {route.toAmountUSD} USD

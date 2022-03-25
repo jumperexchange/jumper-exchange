@@ -433,7 +433,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
       {alerts}
       <br />
 
-      <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
+      <Timeline mode={isMobile ? 'left' : 'right'} className="swapping-modal-timeline">
         {/* Steps */}
         {steps.map(parseStepToTimeline)}
       </Timeline>

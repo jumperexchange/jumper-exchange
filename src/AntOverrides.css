@@ -55,3 +55,23 @@ Global overrides of ant design styles
 .ant-menu-item-active::after {
   border-bottom: 1px solid #3f49e1 !important;
 }
+
+/* Steps */
+.ant-steps-item-tail::after {
+  background-color: transparent !important;
+}
+.ant-steps-icon-dot {
+  position: absolute;
+  top: -4.5px;
+  background-color: black !important;
+}
+
+.ant-steps-item-title {
+  color: black;
+  font-family: 'GT America';
+}
+
+.ant-timeline-item-head-blue {
+  border-color: #f0f0f1 !important;
+  color: #f0f0f1 !important;
+}

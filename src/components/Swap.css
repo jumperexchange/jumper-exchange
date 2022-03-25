@@ -84,6 +84,8 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .swapping-modal-timeline {
+  width: fit-content;
+  margin: 0 auto;
   padding-top: 38px;
   min-height: 350px;
   overflow-y: scroll;
@@ -228,6 +230,9 @@ h4.swap-title {
   left: 0;
   right: 0;
   text-align: center;
+}
+
+.route-digest {
 }
 
 .ant-btn-round.ant-btn-lg {
