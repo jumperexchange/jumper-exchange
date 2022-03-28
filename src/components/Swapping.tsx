@@ -143,6 +143,16 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
       </>
     )
 
+    const executionItem = [
+      <Timeline.Item
+        position={isMobile ? 'right' : 'left'}
+        key={index + '_right'}
+        color={color}
+        dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
+        {executionSteps}
+      </Timeline.Item>,
+    ]
+
     switch (step.type) {
       case 'swap': {
         return [
@@ -158,13 +168,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -185,14 +189,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            style={{ paddingBottom: isMobile ? 30 : 0 }}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -213,13 +210,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -433,7 +424,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
       {alerts}
       <br />
 
-      <Timeline mode={isMobile ? 'left' : 'right'} className="swapping-modal-timeline">
+      <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
         {steps.map(parseStepToTimeline)}
       </Timeline>

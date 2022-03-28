@@ -84,8 +84,6 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .swapping-modal-timeline {
-  width: fit-content;
-  margin: 0 auto;
   padding-top: 38px;
   min-height: 350px;
   overflow-y: scroll;

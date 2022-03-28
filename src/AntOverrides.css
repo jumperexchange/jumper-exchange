@@ -71,7 +71,11 @@ Global overrides of ant design styles
   font-family: 'GT America';
 }
 
-.ant-timeline-item-head-blue {
-  border-color: #f0f0f1 !important;
-  color: #f0f0f1 !important;
+.ant-timeline-item-head {
+  border-color: #3f49e1 !important;
+  color: #3f49e1 !important;
+}
+.ant-timeline-item-tail {
+  border-color: #3f49e1 !important;
+  color: #3f49e1 !important;
 }
