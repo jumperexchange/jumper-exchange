@@ -140,7 +140,9 @@ function App() {
                         <Link to="/ukraine">Help Ukraine!</Link>
                       </Menu.Item>
                       <Menu.Item key="/about">
-                        <Link to="/about">About</Link>
+                        <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+                          About
+                        </a>
                       </Menu.Item>
                       <Menu.Item key="blog">
                         <a
