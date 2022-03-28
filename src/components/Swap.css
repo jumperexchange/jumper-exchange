@@ -25,8 +25,8 @@ input[type='number']::-webkit-outer-spin-button {
 
 .swap-route {
   background-color: white;
-  -webkit-box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.25) !important;
-  box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.25) !important;
+  -webkit-box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17) !important;
+  box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17) !important;
   min-width: 300px;
   min-height: 320px;
   border-radius: 16px;
@@ -112,8 +112,8 @@ input[type='number']::-webkit-outer-spin-button {
 .swap-form {
   margin-top: 36px;
   overflow: hidden;
-  -webkit-box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.25);
-  box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17);
+  box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17);
   border-radius: 16px;
 }
 
@@ -228,9 +228,6 @@ h4.swap-title {
   left: 0;
   right: 0;
   text-align: center;
-}
-
-.route-digest {
 }
 
 .ant-btn-round.ant-btn-lg {
