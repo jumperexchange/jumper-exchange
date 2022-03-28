@@ -204,6 +204,7 @@ function App() {
                       </Col>
                       <Col>
                         <a
+                          style={{ padding: '12px 24px 12px 24px' }}
                           className="lifi-support-link headerIconLink lifi-header-social-links"
                           href="https://discord.gg/lifi"
                           target="_blank"

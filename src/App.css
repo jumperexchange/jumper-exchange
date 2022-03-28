@@ -154,6 +154,8 @@
 }
 .wallet-buttons-menu-full {
   display: inline-block !important;
+  padding: 12px 24px 12px 24px;
+  height: fit-content;
 }
 
 @media only screen and (max-width: 767px) {
