@@ -19,14 +19,19 @@ input[type='number']::-webkit-outer-spin-button {
   background: white;
   max-width: 450px;
   border-radius: 6px;
-  padding: 24px 48px;
+  padding: 20px 16px;
   margin: 0 auto;
+}
+@media only screen and (min-width: 480px) {
+  .swap-input {
+    padding: 24px 48px;
+  }
 }
 
 .swap-route {
   background-color: white;
   -webkit-box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17) !important;
-  box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17) !important;
+  box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17) !important;
   min-width: 300px;
   min-height: 320px;
   border-radius: 16px;
@@ -112,8 +117,8 @@ input[type='number']::-webkit-outer-spin-button {
 .swap-form {
   margin-top: 36px;
   overflow: hidden;
-  -webkit-box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17);
-  box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17);
+  -webkit-box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
+  box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
   border-radius: 16px;
 }
 
@@ -143,6 +148,7 @@ h4.swap-title {
 .token-select {
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+  border-left: none;
 }
 
 .form-input-wrapper.disabled {

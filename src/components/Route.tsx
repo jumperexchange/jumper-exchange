@@ -103,10 +103,10 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         padding: 24,
         paddingTop: 24,
         paddingBottom: 24,
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: 20,
-        marginBottom: 20,
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 30,
+        marginBottom: 30,
       }}
       onClick={() => onSelect()}>
       <Steps
