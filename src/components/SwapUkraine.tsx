@@ -33,8 +33,8 @@ import { v4 as uuid } from 'uuid'
 import { DonateIcon } from '../assets/icons/donateIcon'
 import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
 import { UkraineIcon } from '../assets/icons/ukraineIcon'
-import { LifiTeam } from '../assets/Li:Fi/LiFiTeam'
-import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
+import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
+import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { getRpcs } from '../config/connectors'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -1007,7 +1007,7 @@ const Swap = () => {
               only do so much. We all know that Ethereum gas fees make it harder to donate smaller
               amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
               chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
-              bridged to Ethereum every 8 hours and sent to the ETH address used by the{' '}
+              bridged to Ethereum periodically and sent to the ETH address used by the{' '}
               <b>Ukraine government</b>.
             </Paragraph>
 

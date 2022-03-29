@@ -890,9 +890,7 @@ const Swap = () => {
         {/* Swap Form */}
         <Row style={{ margin: 20 }} justify={'center'}>
           <Col className="swap-form">
-            <div
-              className="swap-input"
-              style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: '0 auto' }}>
+            <div className="swap-input">
               <Row>
                 <Title className="swap-title" level={4}>
                   Please Specify Your Transaction
@@ -933,7 +931,7 @@ const Swap = () => {
                     {submitButton()}
                   </Row>
                   {/* Advanced Options */}
-                  <Row justify={'center'}>
+                  <Row justify={'center'} style={{ marginTop: 16 }}>
                     <Collapse ghost style={{ width: '100%' }}>
                       <Collapse.Panel header={`Advanced Options`} key="1">
                         Slippage

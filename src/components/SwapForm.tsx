@@ -205,16 +205,15 @@ const SwapForm = ({
 
   return (
     <>
-      <Row
-        gutter={[
-          { xs: 8, sm: 16 },
-          { xs: 8, sm: 16 },
-        ]}>
+      <Row style={{ marginBottom: 8 }}>
         <Col span={10}>
           <div className="form-text">From:</div>
         </Col>
-        <Col span={14}>
-          <div className="form-input-wrapper">
+      </Row>
+
+      <Row style={{ marginBottom: 8 }} gutter={[0, 0]}>
+        <Col span={12}>
+          <div className="form-input-wrapper chain-select">
             <ChainSelect
               availableChains={availableChains}
               selectedChain={depositChain}
@@ -222,10 +221,30 @@ const SwapForm = ({
             />
           </div>
         </Col>
-
-        <Col span={10}>
+        <Col span={12}>
+          <div
+            className="form-input-wrapper token-select"
+            style={{
+              borderTopLeftRadius: '0px !important',
+              borderBottomLeftRadius: '0px !important',
+            }}>
+            <TokenSelect
+              tokens={tokens}
+              balances={balances}
+              selectedChain={depositChain}
+              selectedToken={depositToken}
+              onChangeSelectedToken={onChangeDepositToken}
+              selectReference={depositSelectRef}
+              grayed={true}
+            />
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
           <div className="form-input-wrapper">
             <Input
+              style={{ height: 50 }}
               type="number"
               defaultValue={0.0}
               min={0}
@@ -245,19 +264,6 @@ const SwapForm = ({
             </Button>
           </div>
         </Col>
-        <Col span={14}>
-          <div className="form-input-wrapper">
-            <TokenSelect
-              tokens={tokens}
-              balances={balances}
-              selectedChain={depositChain}
-              selectedToken={depositToken}
-              onChangeSelectedToken={onChangeDepositToken}
-              selectReference={depositSelectRef}
-              grayed={true}
-            />
-          </div>
-        </Col>
       </Row>
 
       {/* Swap from <-> to button */}
@@ -271,62 +277,65 @@ const SwapForm = ({
 
       {/* "To" section*/}
       {!alternativeToSection ? (
-        <Row
-          gutter={[
-            { xs: 8, sm: 16 },
-            { xs: 8, sm: 16 },
-          ]}>
-          <Col span={10}>
-            <div className="form-text">To:</div>
-          </Col>
-          <Col span={14}>
-            <div className="form-input-wrapper">
-              <ChainSelect
-                disabled={fixedWithdraw}
-                availableChains={availableChains}
-                selectedChain={withdrawChain}
-                onChangeSelectedChain={onChangeWithdrawChain}
-              />
-            </div>
-          </Col>
+        <>
+          <Row style={{ marginBottom: 8 }}>
+            <Col span={10}>
+              <div className="form-text">To:</div>
+            </Col>
+          </Row>
+          <Row gutter={[0, 0]} style={{ marginBottom: 8 }}>
+            <Col span={12}>
+              <div className="form-input-wrapper chain-select">
+                <ChainSelect
+                  disabled={fixedWithdraw}
+                  availableChains={availableChains}
+                  selectedChain={withdrawChain}
+                  onChangeSelectedChain={onChangeWithdrawChain}
+                />
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className="form-input-wrapper token-select">
+                <TokenSelect
+                  disabled={fixedWithdraw}
+                  tokens={tokens}
+                  balances={balances}
+                  selectedChain={withdrawChain}
+                  selectedToken={withdrawToken}
+                  onChangeSelectedToken={onChangeWithdrawToken}
+                  selectReference={withdrawSelectRef}
+                  grayed={false}
+                />
+              </div>
+            </Col>
+          </Row>
 
-          <Col span={10}>
-            <div className="form-input-wrapper disabled">
-              <Input
-                type="text"
-                defaultValue={0.0}
-                min={0}
-                value={estimatedWithdrawAmount}
-                // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
-                onChange={(event) => onChangeWithdrawAmount(formatAmountInput(event))}
-                placeholder="..."
-                bordered={false}
-                disabled
-              />
-              {!!estimatedMinWithdrawAmount && (
-                <Tooltip
-                  color={'gray'}
-                  title={`The final amount might change due to slippage but will not fall below ${estimatedMinWithdrawAmount}`}>
-                  <span className="amountBadge">?</span>
-                </Tooltip>
-              )}
-            </div>
-          </Col>
-          <Col span={14}>
-            <div className="form-input-wrapper">
-              <TokenSelect
-                disabled={fixedWithdraw}
-                tokens={tokens}
-                balances={balances}
-                selectedChain={withdrawChain}
-                selectedToken={withdrawToken}
-                onChangeSelectedToken={onChangeWithdrawToken}
-                selectReference={withdrawSelectRef}
-                grayed={false}
-              />
-            </div>
-          </Col>
-        </Row>
+          <Row style={{ marginBottom: 8 }}>
+            <Col span={24}>
+              <div className="form-input-wrapper disabled">
+                <Input
+                  style={{ height: 50 }}
+                  type="text"
+                  defaultValue={0.0}
+                  min={0}
+                  value={estimatedWithdrawAmount}
+                  // value={isFinite(withdrawAmount) ? withdrawAmount : ''}
+                  onChange={(event) => onChangeWithdrawAmount(formatAmountInput(event))}
+                  placeholder="..."
+                  bordered={false}
+                  disabled
+                />
+                {!!estimatedMinWithdrawAmount && (
+                  <Tooltip
+                    color={'gray'}
+                    title={`The final amount might change due to slippage but will not fall below ${estimatedMinWithdrawAmount}`}>
+                    <span className="amountBadge">?</span>
+                  </Tooltip>
+                )}
+              </div>
+            </Col>
+          </Row>
+        </>
       ) : (
         alternativeToSection
       )}

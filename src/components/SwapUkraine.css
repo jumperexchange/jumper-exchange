@@ -203,7 +203,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 @media only screen and (max-width: 500px) {
-  .swap-input {
+  .swap-form-ukraine .swap-input {
     margin-left: 16px !important;
     margin-right: 16px !important;
   }
@@ -219,7 +219,7 @@ h4.swap-title {
   display: none;
 }
 
-.form-input-wrapper {
+/* .form-input-wrapper {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 6px;
@@ -227,7 +227,7 @@ h4.swap-title {
   font-weight: 700;
   display: flex;
   align-items: center;
-}
+} */
 
 .form-input-wrapper.disabled {
   border: 1px solid rgba(0, 0, 0, 0.1);

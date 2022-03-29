@@ -154,6 +154,16 @@ const Swapping = ({
       </>
     )
 
+    const executionItem = [
+      <Timeline.Item
+        position={isMobile ? 'right' : 'left'}
+        key={index + '_right'}
+        color={color}
+        dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
+        {executionSteps}
+      </Timeline.Item>,
+    ]
+
     switch (step.type) {
       case 'swap': {
         return [
@@ -169,13 +179,7 @@ const Swapping = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -196,14 +200,7 @@ const Swapping = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            style={{ paddingBottom: isMobile ? 30 : 0 }}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -224,13 +221,7 @@ const Swapping = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
