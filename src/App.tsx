@@ -168,14 +168,14 @@ function App() {
                     {/* <Menu.Item>
                       <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
                     </Menu.Item> */}
-                    <Menu.Item key="dev-list">
+                    {/* <Menu.Item key="dev-list">
                       <a
                         href="https://docs.google.com/forms/d/e/1FAIpQLSe4vZSN02dmN4W0V_-sB1Aw4erZh577L2h0aDbnzfoRhurPQQ/viewform?usp=send_form"
                         target="_blank"
                         rel="nofollow noreferrer">
                         Developer Waitinglist
                       </a>
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <Menu.Item className="wallet-buttons-menu-collapse" key="wallet-button">
                       <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>
                     </Menu.Item>
