@@ -18,6 +18,8 @@ import {
 import { getInjectedConnector, getWalletConnectConnector } from './connectors'
 import { addToDeactivatedWallets, removeFromActiveWallets } from './DisconnectButton'
 
+const ENABLED_WALLETS = process.env.REACT_APP_SUPPORTED_WALLETS
+
 const supportedWallets = [
   {
     key: 'metamask',
@@ -111,24 +113,26 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
           Choose a wallet
         </Typography.Title>
         {enabledWallets.map((wallet) => {
-          return (
-            <div
-              style={{
-                // width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                cursor: 'pointer',
-              }}
-              key={wallet.name}
-              onClick={async () => login(await wallet.connector())}
-              className="wallet-provider-button">
-              <div>{wallet.name}</div>
-              <div>
-                <Avatar shape="square" size={'large'} src={wallet.icon}></Avatar>
+          if (ENABLED_WALLETS?.includes(wallet.key)) {
+            return (
+              <div
+                style={{
+                  // width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                }}
+                key={wallet.name}
+                onClick={async () => login(await wallet.connector())}
+                className="wallet-provider-button">
+                <div>{wallet.name}</div>
+                <div>
+                  <Avatar shape="square" size={'large'} src={wallet.icon}></Avatar>
+                </div>
               </div>
-            </div>
-          )
+            )
+          }
         })}
       </Modal>
     </>
