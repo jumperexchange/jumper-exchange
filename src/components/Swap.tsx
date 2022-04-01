@@ -608,7 +608,8 @@ const Swap = () => {
     }
 
     const fromChain = getChainById(route.fromChainId)
-    const balance = getBalance(balances, fromChain.key, ethers.constants.AddressZero)
+    const token = findDefaultToken(fromChain.coin, fromChain.id)
+    const balance = getBalance(balances, fromChain.key, token.address)
 
     const requiredAmount = route.steps
       .filter((step) => step.action.fromChainId === route.fromChainId)
@@ -634,7 +635,8 @@ const Swap = () => {
     }
 
     const crossChain = getChainById(lastStep.action.fromChainId)
-    const balance = getBalance(balances, crossChain.key, ethers.constants.AddressZero)
+    const token = findDefaultToken(crossChain.coin, crossChain.id)
+    const balance = getBalance(balances, crossChain.key, token.address)
 
     const gasEstimate =
       lastStep.estimate.gasCosts &&
@@ -888,9 +890,7 @@ const Swap = () => {
         {/* Swap Form */}
         <Row style={{ margin: 20 }} justify={'center'}>
           <Col className="swap-form">
-            <div
-              className="swap-input"
-              style={{ maxWidth: 450, borderRadius: 6, padding: 24, margin: '0 auto' }}>
+            <div className="swap-input">
               <Row>
                 <Title className="swap-title" level={4}>
                   Please Specify Your Transaction
@@ -931,7 +931,7 @@ const Swap = () => {
                     {submitButton()}
                   </Row>
                   {/* Advanced Options */}
-                  <Row justify={'center'}>
+                  <Row justify={'center'} style={{ marginTop: 16 }}>
                     <Collapse ghost style={{ width: '100%' }}>
                       <Collapse.Panel header={`Advanced Options`} key="1">
                         Slippage
@@ -954,8 +954,7 @@ const Swap = () => {
                         <div>
                           <Checkbox
                             checked={optionInfiniteApproval}
-                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}
-                            disabled={true}>
+                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
@@ -1077,6 +1076,9 @@ const Swap = () => {
           footer={null}>
           <Swapping
             route={selectedRoute}
+            settings={{
+              infiniteApproval: optionInfiniteApproval,
+            }}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())

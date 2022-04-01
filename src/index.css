@@ -1,6 +1,17 @@
+@font-face {
+  font-family: 'GT America';
+  src: local('GT America'), local('GT America'),
+    url('./fonts/gt-america/GT-America-LC-Standard-Bold.ttf') format('ttf'),
+    url('./fonts/gt-america/GT-America-LC-Standard-Bold.woff') format('woff'),
+    url('./fonts/gt-america/GT-America-LC-Standard-Bold.woff2') format('woff2'),
+    url('./fonts/gt-america/GT-America-LC-Standard-Bold.otf') format('otf');
+}
+
 html {
   height: auto !important;
   width: auto !important;
+  background: white !important;
+  background: linear-gradient(180deg, #f6f3f2 0%, rgba(246, 243, 242, 0) 100%) !important;
 }
 
 body {
@@ -9,6 +20,15 @@ body {
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'GT America' !important;
 }
 
 code {

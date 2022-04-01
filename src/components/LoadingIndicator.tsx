@@ -5,7 +5,7 @@ function LoadingIndicator() {
   const element = useRef<HTMLDivElement | null>(null)
 
   const bubbleStyle: React.CSSProperties = {
-    background: '#096dd9',
+    background: '#3f49e1',
     display: 'inline-block',
     margin: 10,
     width: 14,

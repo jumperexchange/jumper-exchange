@@ -358,13 +358,13 @@ function renderGas(wallet: Wallet, chainKey: ChainKey, coinName: CoinKey) {
             <Skeleton.Button style={{ width: 60 }} active={true} size={'small'} shape={'round'} />
           </Tooltip>
         ) : amounts.amount_coin.isZero() ? (
-          <Tooltip color={isChainUsed ? 'red' : 'gray'} title={tooltipEmpty}>
+          <Tooltip color={isChainUsed ? '#ff4d4f' : 'gray'} title={tooltipEmpty}>
             {coinName}: -
             <Badge
               size="small"
               count={'!'}
               offset={[5, -15]}
-              style={{ backgroundColor: isChainUsed ? 'red' : 'gray' }}
+              style={{ backgroundColor: isChainUsed ? '#ff4d4f' : 'gray' }}
             />
           </Tooltip>
         ) : (
