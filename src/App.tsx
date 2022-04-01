@@ -61,7 +61,7 @@ function App() {
         <Swap />
         <div className="poweredBy">
           powered by{' '}
-          <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
+          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
             Li.Finance
           </a>
         </div>
