@@ -30,11 +30,12 @@ import { v4 as uuid } from 'uuid'
 import { getRpcs } from '../config/connectors'
 import {
   deleteRoute,
+  isWalletConnectWallet,
   readActiveRoutes,
   readHistoricalRoutes,
   storeRoute,
 } from '../services/localStorage'
-import { switchChain } from '../services/metamask'
+import { switchChain as switchChainMetaMask } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
@@ -61,7 +62,8 @@ import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
-import TrasactionsTable from './TransactionsTable'
+import TransactionsTable from './TransactionsTable'
+import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 import ConnectButton from './web3/ConnectButton'
 
 const history = createBrowserHistory()
@@ -179,6 +181,11 @@ const Swap = () => {
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
   const [possibilitiesLoaded, setPossibilitiesLoaded] = useState<boolean>(false)
+
+  const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
+    show: boolean
+    chainId: number
+  }>({ show: false, chainId: 1 })
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -737,6 +744,17 @@ const Swap = () => {
     setNoRoutesAvailable(false)
   }
 
+  const switchChain = async (chainId: number) => {
+    if (!web3.account) {
+      return
+    }
+    if (isWalletConnectWallet(web3.account)) {
+      setShowWalletConnectChainSwitchModal({ show: true, chainId })
+      return
+    }
+    await switchChainMetaMask(chainId)
+  }
+
   const submitButton = () => {
     if (!active && isWalletDeactivated(web3.account)) {
       return (
@@ -749,7 +767,7 @@ const Swap = () => {
       )
     }
     if (!web3.account) {
-      return <ConnectButton size="large" />
+      return <ConnectButton size={'large'} />
     }
     if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
@@ -844,7 +862,7 @@ const Swap = () => {
                 key="1"
                 className="site-collapse-active-transfer-panel">
                 <div>
-                  <TrasactionsTable
+                  <TransactionsTable
                     routes={historicalRoutes}
                     selectRoute={() => {}}
                     deleteRoute={(route: RouteType) => {
@@ -852,7 +870,7 @@ const Swap = () => {
                       deleteRoute(route)
                       setHistoricalRoutes(readHistoricalRoutes())
                     }}
-                    historical={true}></TrasactionsTable>
+                    historical={true}></TransactionsTable>
                 </div>
               </Panel>
             </Collapse>
@@ -873,14 +891,14 @@ const Swap = () => {
                 key="1"
                 className="site-collapse-active-transfer-panel">
                 <div>
-                  <TrasactionsTable
+                  <TransactionsTable
                     routes={activeRoutes}
                     selectRoute={(route: RouteType) => setSelectedRoute(route)}
                     deleteRoute={(route: RouteType) => {
                       LiFi.stopExecution(route)
                       deleteRoute(route)
                       setActiveRoutes(readActiveRoutes())
-                    }}></TrasactionsTable>
+                    }}></TransactionsTable>
                 </div>
               </Panel>
             </Collapse>
@@ -1090,6 +1108,20 @@ const Swap = () => {
             }}></Swapping>
         </Modal>
       )}
+
+      <Modal
+        className="wallet-selection-modal"
+        visible={showWalletConnectChainSwitchModal.show}
+        onOk={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
+        onCancel={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
+        footer={null}>
+        <WalletConnectChainSwitchModal
+          chainId={showWalletConnectChainSwitchModal.chainId}
+          okHandler={() => {
+            setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })
+          }}
+        />
+      </Modal>
     </Content>
   )
 }

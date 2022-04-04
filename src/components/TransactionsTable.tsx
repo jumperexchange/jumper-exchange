@@ -1,13 +1,13 @@
-import { DeleteOutlined, LoadingOutlined, LoginOutlined } from '@ant-design/icons'
+import { DeleteOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Popconfirm, Table } from 'antd'
 
-import { formatTokenAmount, isWalletDeactivated } from '../services/utils'
+import { formatTokenAmount } from '../services/utils'
 import { findTool, getChainById, Route } from '../types'
-import { getInjectedConnector } from './web3/connectors'
+import ConnectButton from './web3/ConnectButton'
 
-interface ActiveTrasactionsTableProps {
+interface ActiveTransactionsTableProps {
   routes: Array<Route>
   selectRoute: Function
   deleteRoute: Function
@@ -34,18 +34,13 @@ function getStateText(route: Route) {
   }
 }
 
-function TrasactionsTable({
+function TransactionsTable({
   routes,
   selectRoute,
   deleteRoute,
   historical,
-}: ActiveTrasactionsTableProps) {
+}: ActiveTransactionsTableProps) {
   const web3 = useWeb3React<Web3Provider>()
-  const { active, activate } = useWeb3React()
-  const login = async () => {
-    const connector = await getInjectedConnector()
-    activate(connector)
-  }
 
   const renderActionButton = (route: Route) => {
     if (historical) {
@@ -61,30 +56,7 @@ function TrasactionsTable({
       )
     }
     if (!web3.account) {
-      if (!active && isWalletDeactivated(web3.account)) {
-        return (
-          <Button
-            disabled={true}
-            type="ghost"
-            size={'large'}
-            shape="round"
-            onClick={() => login()}
-            icon={<LoadingOutlined />}>
-            Connect Wallet
-          </Button>
-        )
-      }
-
-      return (
-        <Button
-          type="ghost"
-          icon={<LoginOutlined />}
-          size={'large'}
-          shape="round"
-          onClick={() => login()}>
-          Connect Wallet
-        </Button>
-      )
+      return <ConnectButton></ConnectButton>
     }
     return (
       <span style={{ whiteSpace: 'nowrap' }}>
@@ -188,4 +160,4 @@ function TrasactionsTable({
   )
 }
 
-export default TrasactionsTable
+export default TransactionsTable
