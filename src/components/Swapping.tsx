@@ -41,8 +41,13 @@ import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
+interface SwapSettings {
+  infiniteApproval: boolean
+}
+
 interface SwappingProps {
   route: Route
+  settings: SwapSettings
   updateRoute: Function
   onSwapDone: Function
   fixedRecipient?: boolean
@@ -60,7 +65,13 @@ const getReceivingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: SwappingProps) => {
+const Swapping = ({
+  route,
+  updateRoute,
+  settings,
+  onSwapDone,
+  fixedRecipient = false,
+}: SwappingProps) => {
   const { steps } = route
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -160,6 +171,16 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
       </>
     )
 
+    const executionItem = [
+      <Timeline.Item
+        position={isMobile ? 'right' : 'left'}
+        key={index + '_right'}
+        color={color}
+        dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
+        {executionSteps}
+      </Timeline.Item>,
+    ]
+
     switch (step.type) {
       case 'swap': {
         return [
@@ -175,13 +196,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -202,14 +217,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            style={{ paddingBottom: isMobile ? 30 : 0 }}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -230,13 +238,7 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
             </span>
             {executionDuration}
           </Timeline.Item>,
-          <Timeline.Item
-            position={isMobile ? 'right' : 'left'}
-            key={index + '_right'}
-            color={color}
-            dot={isLoading ? <LoadingOutlined /> : null}>
-            {executionSteps}
-          </Timeline.Item>,
+          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -250,15 +252,16 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
     if (!web3.account || !web3.library) return
     const signer = web3.library.getSigner()
 
-    const settings: ExecutionSettings = {
+    const executionSettings: ExecutionSettings = {
       updateCallback: updateCallback,
       switchChainHook: switchChainHook,
+      infiniteApproval: settings.infiniteApproval,
     }
     storeRoute(route)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      await LiFi.executeRoute(signer, route, settings)
+      await LiFi.executeRoute(signer, route, executionSettings)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
@@ -278,14 +281,15 @@ const Swapping = ({ route, updateRoute, onSwapDone, fixedRecipient = false }: Sw
   const resumeExecution = async () => {
     if (!web3.account || !web3.library) return
 
-    const settings: ExecutionSettings = {
+    const executionSettings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
+      infiniteApproval: settings.infiniteApproval,
     }
 
     setIsSwapping(true)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), route, settings)
+      await LiFi.resumeRoute(web3.library.getSigner(), route, executionSettings)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)

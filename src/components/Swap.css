@@ -7,44 +7,39 @@ input[type='number']::-webkit-outer-spin-button {
   margin-right: -8px;
 }
 
+.site-layout-swap {
+  background: transparent !important;
+}
+
 .beta-disclaimer {
   margin-top: 24px;
 }
 
 .swap-input {
   background: white;
+  max-width: 450px;
+  border-radius: 6px;
+  padding: 20px 16px;
+  margin: 0 auto;
+}
+@media only screen and (min-width: 480px) {
+  .swap-input {
+    padding: 24px 48px;
+  }
 }
 
 .swap-route {
   background-color: white;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  transition: box-shadow 200ms;
-  transition: -webkit-box-shadow 200ms;
+  -webkit-box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17) !important;
+  box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17) !important;
   min-width: 300px;
-  opacity: 0;
-
-  border-radius: 6px;
+  min-height: 320px;
+  border-radius: 16px;
   cursor: pointer;
 }
 
-.swap-route:hover {
-  -webkit-box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
-  box-shadow: 0px 0px 17px -6px rgba(23, 144, 255, 0.5);
-}
-
-.swap-route.optimal {
-  -webkit-box-shadow: 0px 0px 22px -6px rgba(23, 144, 255, 0.5);
-  box-shadow: 0px 0px 22px -6px rgba(23, 144, 255, 0.5);
-}
-
-.swap-route .ant-btn span {
-  text-decoration: none;
-  transition: text-decoration 400ms;
-}
-
-.swap-route:hover .ant-btn span {
-  text-decoration: underline;
+.swap-route .ant-btn {
+  margin-top: 18px;
 }
 
 .no-routes-found {
@@ -65,7 +60,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .progress-step-list {
-  margin-bottom: 120px;
+  padding-bottom: 24px !important;
 }
 
 .progress-step-title {
@@ -122,6 +117,9 @@ input[type='number']::-webkit-outer-spin-button {
 .swap-form {
   margin-top: 36px;
   overflow: hidden;
+  -webkit-box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
+  box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
+  border-radius: 16px;
 }
 
 h4.swap-title {
@@ -135,13 +133,22 @@ h4.swap-title {
 }
 
 .form-input-wrapper {
-  background: #ffffff;
+  background: white;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 6px;
   padding: 4px 4px;
   font-weight: 700;
   display: flex;
   align-items: center;
+}
+.chain-select {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.token-select {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-left: none;
 }
 
 .form-input-wrapper.disabled {
@@ -167,10 +174,11 @@ h4.swap-title {
 }
 
 .form-text {
-  font-weight: 700;
+  font-family: 'Inter';
   align-items: center;
+  color: #888888;
   display: flex;
-  padding-left: 15px;
+  padding-left: 0 !important;
   height: 100%;
 }
 
@@ -228,16 +236,6 @@ h4.swap-title {
   text-align: center;
 }
 
-.selected-label {
-  line-height: 1.5715;
-  /* color: #07d207; */
-  color: #1790ff;
-  font-weight: 400;
-  padding: 6.4px;
-  font-size: 16px;
-  text-decoration: underline;
-}
-
 .ant-btn-round.ant-btn-lg {
   border-radius: 6px;
 }
@@ -279,6 +277,7 @@ h4.swap-title {
   padding-right: 5px;
   font-weight: bold;
   opacity: 0.5;
+  font-family: 'GT America' !important;
 }
 
 .maxButton:hover {
@@ -324,11 +323,21 @@ h4.swap-title {
 .active-transfer-collapse .ant-collapse-content-box {
   overflow-x: scroll;
 }
+.tx-table {
+  background: rgb(246, 243, 242);
+  background: linear-gradient(180deg, rgba(246, 243, 242, 1) 0%, rgba(253, 252, 252, 1) 50%);
+  border-radius: 16px;
+  -webkit-box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.25) !important;
+}
 
 .tx-table .ant-pagination-item-active {
   border: none !important;
-  background: #f0f2f5 !important;
   padding-top: 1px !important;
+}
+
+.route-delete-button {
+  border-radius: 25px !important;
 }
 
 .swap-view {

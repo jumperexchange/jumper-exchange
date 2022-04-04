@@ -16,6 +16,7 @@ const customRpc: Record<number, string | undefined> = {
   [ChainId.ARB]: process.env.REACT_APP_RPC_URL_ARBITRUM,
   [ChainId.OPT]: process.env.REACT_APP_RPC_URL_OPTIMISM,
   [ChainId.MOR]: process.env.REACT_APP_RPC_URL_MOONRIVER,
+  [ChainId.ONE]: process.env.REACT_APP_RPC_URL_ONE,
 
   // Testnet
   [ChainId.ROP]: process.env.REACT_APP_RPC_URL_ROPSTEN,

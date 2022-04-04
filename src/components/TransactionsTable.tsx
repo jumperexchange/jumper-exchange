@@ -45,7 +45,12 @@ function TransactionsTable({
   const renderActionButton = (route: Route) => {
     if (historical) {
       return (
-        <Button danger type="ghost" shape="round" onClick={() => deleteRoute(route)}>
+        <Button
+          className="route-delete-button"
+          size="large"
+          type="ghost"
+          shape="round"
+          onClick={() => deleteRoute(route)}>
           <DeleteOutlined />
         </Button>
       )
@@ -58,6 +63,7 @@ function TransactionsTable({
         <Button
           style={{ marginRight: 10, padding: '3px 16px 4px 16px' }}
           type="primary"
+          size={'large'}
           shape="round"
           onClick={() => selectRoute(route)}>
           Resume Swap
@@ -68,7 +74,12 @@ function TransactionsTable({
           okText="Yes"
           okType="danger"
           cancelText="No">
-          <Button style={{ padding: '3px 16px 4px 16px' }} danger type="ghost" shape="round">
+          <Button
+            style={{ padding: '3px 16px 4px 16px' }}
+            className="route-delete-button"
+            size="large"
+            type="ghost"
+            shape="round">
             <DeleteOutlined />
           </Button>
         </Popconfirm>
@@ -119,13 +130,19 @@ function TransactionsTable({
     const lastStep = route.steps[route.steps.length - 1]
     let toChainId = lastStep.action.toChainId
 
+    // take the real received value instead of the estimation if possible
+    const toAmount = lastStep.execution?.toAmount ?? lastStep.estimate.toAmount
+    // in case the destination swap fails the user receives the bridge token and the transaction is marked as successful.
+    // we need to make sure to always show the token the user actually received
+    const toToken = lastStep.execution?.toToken ?? lastStep.action.toToken
+
     return {
       key: index,
       date: startedDate,
       fromChain: getChainById(firstStep.action.fromChainId).name,
       toChain: getChainById(toChainId).name,
       fromToken: `${formatTokenAmount(firstStep.action.fromToken, firstStep.estimate.fromAmount)}`,
-      toToken: `${formatTokenAmount(lastStep.action.toToken, lastStep.estimate.toAmount)}`,
+      toToken: `${formatTokenAmount(toToken, toAmount)}`,
       protocols: route.steps.map((step) => findTool(step.tool)?.name).join(' > '),
       state: getStateText(route),
       action: renderActionButton(route),
@@ -134,6 +151,7 @@ function TransactionsTable({
 
   return (
     <Table
+      bordered={false}
       columns={columns}
       dataSource={data}
       pagination={{ hideOnSinglePage: true, size: 'small', position: ['bottomCenter'] }}

@@ -46,6 +46,9 @@ const TokenSelect = ({
         {token ? token.name : '?'}
       </Avatar>
       <Select
+        style={{
+          width: 200,
+        }}
         disabled={disabled}
         placeholder="Select Coin"
         value={selectedToken}

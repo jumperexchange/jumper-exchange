@@ -4,14 +4,14 @@ import React from 'react'
 import { Chain, ChainKey, getChainByKey } from '../types'
 
 interface ChainSelectProps {
-  transferChains: Array<Chain>
+  availableChains: Array<Chain>
   selectedChain?: ChainKey
   onChangeSelectedChain: Function
   disabled?: boolean
 }
 
 const ChainSelect = ({
-  transferChains,
+  availableChains,
   selectedChain,
   onChangeSelectedChain,
   disabled = false,
@@ -29,6 +29,7 @@ const ChainSelect = ({
       )}
 
       <Select
+        style={{ width: 200 }}
         disabled={disabled}
         placeholder="Select Chain"
         value={selectedChain}
@@ -37,7 +38,7 @@ const ChainSelect = ({
         bordered={false}
         optionLabelProp="data-label">
         <Select.OptGroup label="Supported Chains">
-          {transferChains.map((chain) => (
+          {availableChains.map((chain) => (
             <Select.Option key={chain.key} value={chain.key} data-label={chain.name}>
               <div className="option-item">
                 <span role="img" aria-label={chain.name}>
