@@ -61,8 +61,8 @@ function App() {
         <Swap />
         <div className="poweredBy">
           powered by{' '}
-          <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
-            Li.Finance
+          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+            LI.FI
           </a>
         </div>
         <div className="wallet-buttons-embed-view">
