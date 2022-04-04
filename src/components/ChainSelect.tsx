@@ -29,6 +29,7 @@ const ChainSelect = ({
       )}
 
       <Select
+        style={{ width: 200 }}
         disabled={disabled}
         placeholder="Select Chain"
         value={selectedChain}

@@ -33,8 +33,8 @@ import { v4 as uuid } from 'uuid'
 import { DonateIcon } from '../assets/icons/donateIcon'
 import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
 import { UkraineIcon } from '../assets/icons/ukraineIcon'
-import { LifiTeam } from '../assets/Li:Fi/LiFiTeam'
-import { PoweredByLiFi } from '../assets/Li:Fi/poweredByLiFi'
+import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
+import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { getRpcs } from '../config/connectors'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -291,7 +291,7 @@ const Swap = () => {
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
-  const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(true)
+  const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
   const [, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
@@ -602,7 +602,8 @@ const Swap = () => {
     }
 
     const fromChain = getChainById(route.fromChainId)
-    const balance = getBalance(balances, fromChain.key, ethers.constants.AddressZero)
+    const token = findDefaultToken(fromChain.coin, fromChain.id)
+    const balance = getBalance(balances, fromChain.key, token.address)
 
     const requiredAmount = route.steps
       .filter((step) => step.action.fromChainId === route.fromChainId)
@@ -628,7 +629,8 @@ const Swap = () => {
     }
 
     const crossChain = getChainById(lastStep.action.fromChainId)
-    const balance = getBalance(balances, crossChain.key, ethers.constants.AddressZero)
+    const token = findDefaultToken(crossChain.coin, crossChain.id)
+    const balance = getBalance(balances, crossChain.key, token.address)
 
     const gasEstimate =
       lastStep.estimate.gasCosts &&
@@ -949,8 +951,7 @@ const Swap = () => {
                         <div>
                           <Checkbox
                             checked={optionInfiniteApproval}
-                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}
-                            disabled={true}>
+                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
@@ -1006,7 +1007,7 @@ const Swap = () => {
               only do so much. We all know that Ethereum gas fees make it harder to donate smaller
               amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
               chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
-              bridged to Ethereum every 8 hours and sent to the ETH address used by the{' '}
+              bridged to Ethereum periodically and sent to the ETH address used by the{' '}
               <b>Ukraine government</b>.
             </Paragraph>
 
@@ -1066,6 +1067,7 @@ const Swap = () => {
           <Swapping
             fixedRecipient={true}
             route={selectedRoute}
+            settings={{ infiniteApproval: optionInfiniteApproval }}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())

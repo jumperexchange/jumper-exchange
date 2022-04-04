@@ -1,0 +1,81 @@
+@import '~antd/dist/antd.css';
+@import './css/animations.css';
+
+/*
+Global overrides of ant design styles
+*/
+
+/* Buttons */
+.ant-btn-primary {
+  font-family: 'GT America' !important;
+  background-color: #3f49e1;
+  border-color: #3f49e1;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn-primary:active {
+  background-color: #6069e6;
+  border-color: #6069e6;
+}
+
+.ant-btn-ghost {
+  border-color: black;
+}
+
+/* Collapse */
+.ant-collapse-header {
+  font-family: 'GT America' !important;
+}
+
+/* Select */
+.ant-select-selection-item {
+  border-color: #eeeeee !important;
+  background-color: white !important;
+}
+
+/* Steps */
+/* .ant-steps-item-title {
+  font-family: 'GT America' !important;
+  color: rgba(0, 0, 0, 0.45) !important;
+} */
+
+/* Input */
+.ant-input {
+  font-family: 'GT America' !important;
+}
+
+/* Menu */
+.ant-menu-item-selected a,
+.ant-menu-item-active a {
+  color: #3f49e1 !important;
+}
+.ant-menu-item-selected:hover::after,
+.ant-menu-item-selected::after,
+.ant-menu-item-active::after {
+  border-bottom: 1px solid #3f49e1 !important;
+}
+
+/* Steps */
+.ant-steps-item-tail::after {
+  background-color: transparent !important;
+}
+.ant-steps-icon-dot {
+  position: absolute;
+  top: -4.5px;
+  background-color: black !important;
+}
+
+.ant-steps-item-title {
+  color: black;
+  font-family: 'GT America';
+}
+
+.ant-timeline-item-head {
+  border-color: #3f49e1 !important;
+  color: #3f49e1 !important;
+}
+.ant-timeline-item-tail {
+  border-color: #3f49e1 !important;
+  color: #3f49e1 !important;
+}
