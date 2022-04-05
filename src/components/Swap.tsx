@@ -749,11 +749,6 @@ const Swap = () => {
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
     setSelectedRoute(deepClone(routes[highlightedIndex]))
-
-    // Reset routes to avoid reexecution with same data
-    setRoutes([])
-    setHighlightedIndex(-1)
-    setNoRoutesAvailable(false)
   }
 
   const switchChain = async (chainId: number) => {
