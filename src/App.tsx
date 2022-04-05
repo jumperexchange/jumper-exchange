@@ -23,9 +23,9 @@ import { initStomt } from './services/stomt'
 
 function usePageViews() {
   const [path, setPath] = useState<string>()
+  const location = useLocation()
 
-  const currentPath =
-    (window as any).location.pathname === '/' ? '/swap' : (window as any).location.pathname
+  const currentPath = location.pathname === '/' ? '/swap' : location.pathname
   if (path !== currentPath) {
     setPath(currentPath)
   }
@@ -40,15 +40,15 @@ function usePageViews() {
 }
 
 function App() {
-  const [adjustToBgGradient, setAdjustToBgGradient] = useState(
-    !window.location.href.includes('dashboard') && !window.location.href.includes('ukraine'),
-  )
   const location = useLocation()
   const path = usePageViews()
+  const [adjustToBgGradient, setAdjustToBgGradient] = useState(
+    !location.pathname.includes('dashboard') && !location.pathname.includes('ukraine'),
+  )
 
   useEffect(() => {
     setAdjustToBgGradient(
-      !window.location.href.includes('dashboard') && !window.location.href.includes('ukraine'),
+      !location.pathname.includes('dashboard') && !location.pathname.includes('ukraine'),
     )
   }, [location])
 
@@ -74,7 +74,6 @@ function App() {
   const isTransferto = window.location.href.includes('transferto')
 
   return (
-    // <BrowserRouter>
     <WrappedWeb3ReactProvider>
       <Web3ConnectionManager>
         {path === '/embed' ? (
@@ -344,7 +343,6 @@ function App() {
         )}
       </Web3ConnectionManager>
     </WrappedWeb3ReactProvider>
-    // </BrowserRouter>
   )
 }
 

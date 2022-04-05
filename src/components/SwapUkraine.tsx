@@ -501,6 +501,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
+        pathname: 'ukraine',
         search,
       })
     }
