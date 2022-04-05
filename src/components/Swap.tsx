@@ -254,6 +254,17 @@ const Swap = () => {
 
       const possibilities = await LiFi.getPossibilities()
 
+      if (
+        !possibilities.chains ||
+        !possibilities.bridges ||
+        !possibilities.exchanges ||
+        !possibilities.tokens
+      ) {
+        // eslint-disable-next-line
+        console.warn('possibilities request did not contain required setup information')
+        return
+      }
+
       // chains
       setAvailableChains(possibilities.chains)
 
