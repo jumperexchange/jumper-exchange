@@ -19,7 +19,11 @@ function getStateText(route: Route) {
     return 'Failed'
   } else if (route.steps.every((step) => step.execution?.status === 'DONE')) {
     return 'Done'
-  } else if (route.steps.some((step) => step.execution?.status === 'CANCELLED')) {
+  } else if (
+    route.steps.some((step) =>
+      step.execution?.process.some((process) => process.status === 'CANCELLED'),
+    )
+  ) {
     return 'Cancelled'
   } else if (route.steps.some((step) => step.execution?.status === 'CHAIN_SWITCH_REQUIRED')) {
     return 'Chain Switch Required'
