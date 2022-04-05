@@ -7,6 +7,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { Avatar, Button, Modal, Typography } from 'antd'
 import { useState } from 'react'
 
+import blockWalletIcon from '../../assets/wallets/blockwallet.svg'
 import metamaskIcon from '../../assets/wallets/metamask.svg'
 import walletConnectIcon from '../../assets/wallets/walletconnect.svg'
 import {
@@ -35,6 +36,14 @@ const supportedWallets = [
     icon: walletConnectIcon,
     connector: async () => {
       return await getWalletConnectConnector()
+    },
+  },
+  {
+    key: 'blockwallet',
+    name: 'BlockWallet',
+    icon: blockWalletIcon,
+    connector: async () => {
+      return await getInjectedConnector()
     },
   },
 ]
