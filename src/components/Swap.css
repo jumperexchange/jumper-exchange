@@ -1,5 +1,11 @@
 @import '../css/animations.css';
 
+.swap-page {
+  background: white !important;
+  background: linear-gradient(180deg, #f6f3f2 0%, rgba(246, 243, 242, 0) 100%) !important;
+}
+
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;

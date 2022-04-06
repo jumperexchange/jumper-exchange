@@ -252,7 +252,7 @@ function App() {
                     })
                     initStomt('swap')
                     return (
-                      <div className="lifiWrap">
+                      <div className="lifiWrap swap-page">
                         <Swap />
                       </div>
                     )
