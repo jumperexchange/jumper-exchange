@@ -94,6 +94,7 @@ const Swapping = ({
     // check if route is eligible for automatic resuming
     const allDone = steps.every((step) => step.execution?.status === 'DONE')
     const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
+
     const alreadyStarted = steps.some((step) => step.execution)
     if (!allDone && !isFailed && alreadyStarted) {
       resumeExecution()
@@ -308,8 +309,15 @@ const Swapping = ({
 
   const restartCrossChainSwap = async () => {
     // remove failed
+
     for (let index = 0; index < steps.length; index++) {
-      if (steps[index].execution && steps[index].execution!.status === 'FAILED') {
+      const stepHasFailed = steps[index].execution?.status === 'FAILED'
+      // check if the step has been cancelled which is a "failed" state
+      const stepHasBeenCancelled = steps[index].execution?.process.some(
+        (process) => process.status === 'CANCELLED',
+      )
+
+      if (steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
         steps[index].execution!.status = 'RESUME'
         steps[index].execution!.process.pop() // remove last (failed) process
         updateRoute(route)
