@@ -402,3 +402,9 @@ h4.swap-title {
   border-radius: 6px;
   z-index: 100;
 }
+
+.token_verify {
+  position: absolute;
+  margin-left: -9px;
+  margin-top: 18px;
+}

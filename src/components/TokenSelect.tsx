@@ -1,9 +1,11 @@
+import { CheckCircleTwoTone, ClockCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { Avatar, Select } from 'antd'
+import { Avatar, Badge, Select, Tooltip } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
+import { goplus, TokenSecurity, TokenSecurityState } from '../services/goplus'
 import { ChainKey, TokenAmount, TokenWithAmounts } from '../types'
 
 interface TokenSelectProps {
@@ -40,11 +42,95 @@ const TokenSelect = ({
   const web3 = useWeb3React<Web3Provider>()
   const token = selectedToken && selectedChain ? findToken(selectedChain, selectedToken) : undefined
 
+  const [tokenSecurity, setTokenSecurity] = useState<TokenSecurity | undefined>()
+
+  useEffect(() => {
+    if (!token) {
+      setTokenSecurity(undefined)
+    } else {
+      goplus.getTokenSecurity(token.chainId, token.address).then(setTokenSecurity)
+    }
+  }, [token])
+
+  function getBadge() {
+    if (!token) {
+      return <></>
+    }
+    if (!tokenSecurity) {
+      return <ClockCircleTwoTone />
+    }
+
+    switch (tokenSecurity.state) {
+      case TokenSecurityState.SAFE:
+        return <CheckCircleTwoTone twoToneColor="#52c41a" />
+      case TokenSecurityState.UNSAFE:
+        return <CloseCircleTwoTone twoToneColor="#eb2f96" />
+      case TokenSecurityState.UNVALIDATED:
+        return <></> // if most tokens can be validated show: <QuestionCircleTwoTone />
+    }
+  }
+
+  function getTooltip() {
+    if (!token) {
+      return <></>
+    }
+    if (!tokenSecurity) {
+      return <></>
+    }
+
+    switch (tokenSecurity.state) {
+      case TokenSecurityState.SAFE:
+        return (
+          <>
+            Safe Token
+            <br />
+            {tokenSecurity.goplusUrl && (
+              <>
+                <a href={tokenSecurity.goplusUrl} target="_blank" rel="nofollow noreferrer">
+                  Verified by Go+
+                </a>
+                <br />
+              </>
+            )}
+            <a href={tokenSecurity.explorerUrl} target="_blank" rel="nofollow noreferrer">
+              View In Explorer
+            </a>
+          </>
+        )
+      case TokenSecurityState.UNSAFE:
+        return (
+          <>
+            Unsafe Token
+            <br />
+            {tokenSecurity.goplusUrl && (
+              <>
+                <a href={tokenSecurity.goplusUrl} target="_blank" rel="nofollow noreferrer">
+                  Check on Go+
+                </a>
+                <br />
+              </>
+            )}
+            <a href={tokenSecurity.explorerUrl} target="_blank" rel="nofollow noreferrer">
+              View In Explorer
+            </a>
+          </>
+        )
+      case TokenSecurityState.UNVALIDATED:
+        return <>Unable to validate</>
+    }
+  }
+
   return (
     <>
-      <Avatar size="small" src={token?.logoURI} alt={token?.name}>
-        {token ? token.name : '?'}
-      </Avatar>
+      <div>
+        <Tooltip title={getTooltip()}>
+          <Avatar size="small" src={token?.logoURI} alt={token?.name}>
+            {token ? token.name : '?'}
+          </Avatar>
+          <Badge className="token_verify" count={getBadge()}></Badge>
+        </Tooltip>
+      </div>
+
       <Select
         style={{
           width: 200,
