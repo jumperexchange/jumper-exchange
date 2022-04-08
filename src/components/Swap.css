@@ -155,6 +155,11 @@ h4.swap-title {
   border-bottom-left-radius: 0 !important;
   border-left: none;
 }
+.token-verify {
+  position: absolute;
+  left: 24px;
+  bottom: 7px;
+}
 
 .form-input-wrapper.disabled {
   border: 1px solid rgba(0, 0, 0, 0.1);
