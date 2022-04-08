@@ -54,7 +54,7 @@ function App() {
 
   function embedView() {
     setMetatags({
-      title: 'Li.Finance - Swap (embed)',
+      title: 'LI.FI - Swap',
     })
     return (
       <div className="lifiEmbed">
@@ -145,6 +145,14 @@ function App() {
                       <span className="beta-badge">Beta</span>
                       <Link to="/swap">Swap</Link>
                     </Menu.Item>
+                    <Menu.Item key="dev-list">
+                      <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
+                        target="_blank"
+                        rel="nofollow noreferrer">
+                        Contact Us
+                      </a>
+                    </Menu.Item>
                     <Menu.Item key="/ukraine" danger={true}>
                       <span className="ukraine-flag">&#127482;&#127462;</span>
                       <Link to="/ukraine">Help Ukraine!</Link>
@@ -233,7 +241,7 @@ function App() {
                   path="/dashboard"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Dashboard',
+                      title: 'LI.FI - Dashboard',
                     })
                     initStomt('dashboard')
                     return (
@@ -247,11 +255,11 @@ function App() {
                   path="/swap"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Swap',
+                      title: 'LI.FI - Swap',
                     })
                     initStomt('swap')
                     return (
-                      <div className="lifiWrap">
+                      <div className="lifiWrap swap-page">
                         <Swap />
                       </div>
                     )
@@ -261,7 +269,7 @@ function App() {
                   path="/ukraine"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Help Ukraine!',
+                      title: 'LI.FI - Help Ukraine!',
                     })
                     initStomt('swap')
                     return (
@@ -275,7 +283,7 @@ function App() {
                     path="/testnet"
                     render={() => {
                       setMetatags({
-                        title: 'Li.Finance - Testnet',
+                        title: 'LI.FI - Testnet',
                       })
                       initStomt('swap')
                       const transferChains = getTransferChains(
@@ -292,7 +300,7 @@ function App() {
                   path="/about"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - About',
+                      title: 'LI.FI - About',
                     })
                     initStomt('lifi')
                     return <AboutPage />
@@ -302,7 +310,7 @@ function App() {
                   path="*"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Not Found',
+                      title: 'LI.FI - Not Found',
                       status: 404,
                     })
                     initStomt('lifi')
