@@ -127,7 +127,7 @@ const TokenSelect = ({
           <Avatar size="small" src={token?.logoURI} alt={token?.name}>
             {token ? token.name : '?'}
           </Avatar>
-          <Badge className="token_verify" count={getBadge()}></Badge>
+          <Badge className="token-verify" count={getBadge()}></Badge>
         </Tooltip>
       </div>
 

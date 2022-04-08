@@ -151,6 +151,12 @@ h4.swap-title {
   border-left: none;
 }
 
+.token-verify {
+  position: absolute;
+  margin-left: -8px;
+  margin-top: 16px;
+}
+
 .form-input-wrapper.disabled {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -401,10 +407,4 @@ h4.swap-title {
   background-color: white;
   border-radius: 6px;
   z-index: 100;
-}
-
-.token_verify {
-  position: absolute;
-  margin-left: -8px;
-  margin-top: 16px;
 }
