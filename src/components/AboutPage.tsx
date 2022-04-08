@@ -24,7 +24,7 @@ function AboutPage() {
                   <div className="hero-copy">
                     <h1 className="hero-title mt-0">Cross-Chain Swap Aggregation</h1>
                     <p className="hero-paragraph">
-                      Li.Finance provides the best cross-chain swap across all liquidity pools and
+                      LI.FI provides the best cross-chain swap across all liquidity pools and
                       bridges.
                     </p>
                     <div className="hero-cta">
@@ -50,10 +50,7 @@ function AboutPage() {
                       target="_blank"
                       rel="nofollow noreferrer">
                       <small>Opens pitchdeck in new tab</small>
-                      <img
-                        src={slide}
-                        alt="Li.Finance Pitchdeck"
-                        style={{ maxWidth: '100%' }}></img>
+                      <img src={slide} alt="LI.FI Pitchdeck" style={{ maxWidth: '100%' }}></img>
                     </a>
                   </div>
                 </div>
@@ -185,7 +182,7 @@ function AboutPage() {
                     </a>
                   </li>
                 </ul>
-                <div className="footer-copyright">&copy; 2021 Li.Finance, all rights reserved</div>
+                <div className="footer-copyright">&copy; 2022 LI.FI, all rights reserved</div>
               </div>
             </div>
           </footer>

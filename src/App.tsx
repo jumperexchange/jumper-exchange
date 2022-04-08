@@ -54,7 +54,7 @@ function App() {
 
   function embedView() {
     setMetatags({
-      title: 'Li.Finance - Swap (embed)',
+      title: 'LI.FI - Swap',
     })
     return (
       <div className="lifiEmbed">
@@ -233,7 +233,7 @@ function App() {
                   path="/dashboard"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Dashboard',
+                      title: 'LI.FI - Dashboard',
                     })
                     initStomt('dashboard')
                     return (
@@ -247,7 +247,7 @@ function App() {
                   path="/swap"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Swap',
+                      title: 'LI.FI - Swap',
                     })
                     initStomt('swap')
                     return (
@@ -261,7 +261,7 @@ function App() {
                   path="/ukraine"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Help Ukraine!',
+                      title: 'LI.FI - Help Ukraine!',
                     })
                     initStomt('swap')
                     return (
@@ -275,7 +275,7 @@ function App() {
                     path="/testnet"
                     render={() => {
                       setMetatags({
-                        title: 'Li.Finance - Testnet',
+                        title: 'LI.FI - Testnet',
                       })
                       initStomt('swap')
                       const transferChains = getTransferChains(
@@ -292,7 +292,7 @@ function App() {
                   path="/about"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - About',
+                      title: 'LI.FI - About',
                     })
                     initStomt('lifi')
                     return <AboutPage />
@@ -302,7 +302,7 @@ function App() {
                   path="*"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Not Found',
+                      title: 'LI.FI - Not Found',
                       status: 404,
                     })
                     initStomt('lifi')
