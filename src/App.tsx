@@ -145,6 +145,14 @@ function App() {
                       <span className="beta-badge">Beta</span>
                       <Link to="/swap">Swap</Link>
                     </Menu.Item>
+                    <Menu.Item key="dev-list">
+                      <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
+                        target="_blank"
+                        rel="nofollow noreferrer">
+                        Contact Us
+                      </a>
+                    </Menu.Item>
                     <Menu.Item key="/ukraine" danger={true}>
                       <span className="ukraine-flag">&#127482;&#127462;</span>
                       <Link to="/ukraine">Help Ukraine!</Link>
