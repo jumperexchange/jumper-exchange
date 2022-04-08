@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react'
 import { Link, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
 import logo from './assets/Li.Fi/LiFi.svg'
-import AboutPage from './components/AboutPage'
 import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
@@ -296,16 +295,6 @@ function App() {
                       )
                     }}
                   /> */}
-                <Route
-                  path="/about"
-                  render={() => {
-                    setMetatags({
-                      title: 'LI.FI - About',
-                    })
-                    initStomt('lifi')
-                    return <AboutPage />
-                  }}
-                />
                 <Route
                   path="*"
                   render={() => {
