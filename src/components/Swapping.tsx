@@ -1,6 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, { ExecutionSettings, StepTool } from '@lifinance/sdk'
+import { ExecutionSettings, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
@@ -21,6 +21,7 @@ import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
 import walletIcon from '../assets/wallet.png'
+import LiFi from '../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'

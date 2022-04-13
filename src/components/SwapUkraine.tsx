@@ -2,7 +2,6 @@ import './SwapUkraine.css'
 
 import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Button,
@@ -35,7 +34,7 @@ import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
 import { UkraineIcon } from '../assets/icons/ukraineIcon'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
-import { getRpcs } from '../config/connectors'
+import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -369,14 +368,6 @@ const Swap = () => {
 
   useEffect(() => {
     const load = async () => {
-      LiFi.setConfig({
-        apiUrl: process.env.REACT_APP_API_URL,
-        rpcs: getRpcs(),
-        defaultRouteOptions: {
-          integrator: 'li.finance',
-        },
-      })
-
       const possibilities = await LiFi.getPossibilities({
         exchanges: { deny: ['dodo', 'openocean', '0x'] },
       })
@@ -479,14 +470,16 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    const walletChainIsSupported = supportedChains.some((chain) => chain.id === web3.chainId)
-    if (!walletChainIsSupported) return
-    if (web3.chainId && !fromChainKey) {
-      const chain = availableChains.find((chain) => chain.id === web3.chainId)
-      if (chain) {
-        setFromChainKey(chain.key)
+    LiFi.getChains().then((chains) => {
+      const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
+      if (!walletChainIsSupported) return
+      if (web3.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+        if (chain) {
+          setFromChainKey(chain.key)
+        }
       }
-    }
+    })
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {

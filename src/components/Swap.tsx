@@ -2,7 +2,6 @@ import './Swap.css'
 
 import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Button,
@@ -27,7 +26,7 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { getRpcs } from '../config/connectors'
+import LiFi from '../LiFi'
 import {
   deleteRoute,
   isWalletConnectWallet,
@@ -244,14 +243,6 @@ const Swap = () => {
 
   useEffect(() => {
     const load = async () => {
-      LiFi.setConfig({
-        apiUrl: process.env.REACT_APP_API_URL,
-        rpcs: getRpcs(),
-        defaultRouteOptions: {
-          integrator: 'li.finance',
-        },
-      })
-
       const possibilities = await LiFi.getPossibilities()
 
       if (
@@ -484,14 +475,16 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    const walletChainIsSupported = supportedChains.some((chain) => chain.id === web3.chainId)
-    if (!walletChainIsSupported) return
-    if (web3.chainId && !fromChainKey) {
-      const chain = availableChains.find((chain) => chain.id === web3.chainId)
-      if (chain) {
-        setFromChainKey(chain.key)
+    LiFi.getChains().then((chains) => {
+      const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
+      if (!walletChainIsSupported) return
+      if (web3.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+        if (chain) {
+          setFromChainKey(chain.key)
+        }
       }
-    }
+    })
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
