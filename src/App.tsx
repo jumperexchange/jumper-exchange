@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react'
 import { Link, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
 import logo from './assets/Li.Fi/LiFi.svg'
-import AboutPage from './components/AboutPage'
 import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
@@ -23,9 +22,9 @@ import { initStomt } from './services/stomt'
 
 function usePageViews() {
   const [path, setPath] = useState<string>()
+  const location = useLocation()
 
-  const currentPath =
-    (window as any).location.pathname === '/' ? '/swap' : (window as any).location.pathname
+  const currentPath = location.pathname === '/' ? '/swap' : location.pathname
   if (path !== currentPath) {
     setPath(currentPath)
   }
@@ -40,29 +39,29 @@ function usePageViews() {
 }
 
 function App() {
-  const [adjustToBgGradient, setAdjustToBgGradient] = useState(
-    !window.location.href.includes('dashboard') && !window.location.href.includes('ukraine'),
-  )
   const location = useLocation()
   const path = usePageViews()
+  const [adjustToBgGradient, setAdjustToBgGradient] = useState(
+    !location.pathname.includes('dashboard') && !location.pathname.includes('ukraine'),
+  )
 
   useEffect(() => {
     setAdjustToBgGradient(
-      !window.location.href.includes('dashboard') && !window.location.href.includes('ukraine'),
+      !location.pathname.includes('dashboard') && !location.pathname.includes('ukraine'),
     )
   }, [location])
 
   function embedView() {
     setMetatags({
-      title: 'Li.Finance - Swap (embed)',
+      title: 'LI.FI - Swap',
     })
     return (
       <div className="lifiEmbed">
         <Swap />
         <div className="poweredBy">
           powered by{' '}
-          <a href="https://li.finance/" target="_blank" rel="nofollow noreferrer">
-            Li.Finance
+          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+            LI.FI
           </a>
         </div>
         <div className="wallet-buttons-embed-view">
@@ -74,7 +73,6 @@ function App() {
   const isTransferto = window.location.href.includes('transferto')
 
   return (
-    // <BrowserRouter>
     <WrappedWeb3ReactProvider>
       <Web3ConnectionManager>
         {path === '/embed' ? (
@@ -145,6 +143,14 @@ function App() {
                     <Menu.Item key="/swap">
                       <span className="beta-badge">Beta</span>
                       <Link to="/swap">Swap</Link>
+                    </Menu.Item>
+                    <Menu.Item key="dev-list">
+                      <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
+                        target="_blank"
+                        rel="nofollow noreferrer">
+                        Contact Us
+                      </a>
                     </Menu.Item>
                     <Menu.Item key="/ukraine" danger={true}>
                       <span className="ukraine-flag">&#127482;&#127462;</span>
@@ -234,7 +240,7 @@ function App() {
                   path="/dashboard"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Dashboard',
+                      title: 'LI.FI - Dashboard',
                     })
                     initStomt('dashboard')
                     return (
@@ -248,11 +254,11 @@ function App() {
                   path="/swap"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Swap',
+                      title: 'LI.FI - Swap',
                     })
                     initStomt('swap')
                     return (
-                      <div className="lifiWrap">
+                      <div className="lifiWrap swap-page">
                         <Swap />
                       </div>
                     )
@@ -262,7 +268,7 @@ function App() {
                   path="/ukraine"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Help Ukraine!',
+                      title: 'LI.FI - Help Ukraine!',
                     })
                     initStomt('swap')
                     return (
@@ -276,7 +282,7 @@ function App() {
                     path="/testnet"
                     render={() => {
                       setMetatags({
-                        title: 'Li.Finance - Testnet',
+                        title: 'LI.FI - Testnet',
                       })
                       initStomt('swap')
                       const transferChains = getTransferChains(
@@ -290,20 +296,10 @@ function App() {
                     }}
                   /> */}
                 <Route
-                  path="/about"
-                  render={() => {
-                    setMetatags({
-                      title: 'Li.Finance - About',
-                    })
-                    initStomt('lifi')
-                    return <AboutPage />
-                  }}
-                />
-                <Route
                   path="*"
                   render={() => {
                     setMetatags({
-                      title: 'Li.Finance - Not Found',
+                      title: 'LI.FI - Not Found',
                       status: 404,
                     })
                     initStomt('lifi')
@@ -344,7 +340,6 @@ function App() {
         )}
       </Web3ConnectionManager>
     </WrappedWeb3ReactProvider>
-    // </BrowserRouter>
   )
 }
 

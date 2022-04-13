@@ -1,0 +1,13 @@
+import LIFI from '@lifinance/sdk'
+
+import { getRpcs } from './config/connectors'
+
+const LiFi = new LIFI({
+  apiUrl: process.env.REACT_APP_API_URL,
+  rpcs: getRpcs(),
+  defaultRouteOptions: {
+    integrator: 'li.finance',
+  },
+})
+
+export default LiFi

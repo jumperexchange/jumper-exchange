@@ -62,3 +62,17 @@ export const findTool = (toolKey: StepTool) => {
   const tool = allTools.find((tool) => tool.key === toolKey)
   return tool
 }
+
+export interface WalletConnectInfo {
+  accounts: string[]
+  bridge: string
+  chainId: number
+  clientId: string
+  clientMeta: { [k: string]: any } // not important as of now
+  connected: boolean
+  handshakeId: number
+  handshakeTopic: string
+  key: string
+  peerId: string
+  peerMeta: { [k: string]: any } // not important as of now
+}
