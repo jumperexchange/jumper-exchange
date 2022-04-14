@@ -22,7 +22,7 @@ import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-// import { Sdk } from 'etherspot'
+import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
@@ -64,6 +64,7 @@ import {
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
+import { getInjectedConnector } from './web3/connectors'
 
 const history = createBrowserHistory()
 const DONATION_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
@@ -325,24 +326,23 @@ const Swap = () => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { active, account } = useWeb3React()
-  // const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
+  const { active, account, library } = useWeb3React()
+  const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
+
   // setup etherspot sdk
-  // useEffect(() => {
-  //   // console.log(web3)
-
-  //   if (active && account) {
-  //     const signer = web3.library!.getSigner() as Signer
-
-  //     const sdk = new Sdk(
-  //       { ...signer, address: account, signMessage: signer.signMessage },
-  //       {
-  //         networkName: NetworkNames.Matic,
-  //       },
-  //     )
-  //     sdk.computeContractAccount().then(() => setEtherSpotSDK(sdk))
-  //   }
-  // }, [active, account])
+  useEffect(() => {
+    const ethersportSDKSetup = async () => {
+      const connector = await getInjectedConnector()
+      const provider = await Web3WalletProvider.connect(await connector.getProvider())
+      const sdk = new Sdk(provider, {
+        networkName: NetworkNames.Matic,
+      })
+      sdk.computeContractAccount().then(() => setEtherSpotSDK(sdk))
+    }
+    if (active && account && library) {
+      ethersportSDKSetup()
+    }
+  }, [active, account])
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -686,7 +686,14 @@ const Swap = () => {
       setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
-      if (depositAmount.gt(0) && fromChainKey && fromTokenAddress && toChainKey && toTokenAddress) {
+      if (
+        depositAmount.gt(0) &&
+        fromChainKey &&
+        fromTokenAddress &&
+        toChainKey &&
+        toTokenAddress &&
+        etherSpotSDK?.state.accountAddress
+      ) {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
         const toToken = findToken(toChainKey, toTokenAddress)
@@ -750,6 +757,7 @@ const Swap = () => {
     optionEnabledBridges,
     optionEnabledExchanges,
     findToken,
+    etherSpotSDK?.state.accountAddress,
   ])
 
   // set route call results
@@ -774,7 +782,7 @@ const Swap = () => {
     const quoteUsdcToMatic = await LiFi.getQuote({
       fromChain: initialTransferDestChain.id, // has been hardcoded in the routeRequest
       fromToken: initialTransferDestToken, // has been hardcoded in the routeRequest
-      fromAddress: web3.account!, //etherSpotSDK?.state.accountAddress!,
+      fromAddress: etherSpotSDK?.state.accountAddress!,
       fromAmount: amount, // TODO: check if correct value
       toChain: initialTransferDestChain.id,
       toToken: (await LiFi.getToken(initialTransferDestChain.id, 'MATIC')!).address, // hardcode return gastoken
@@ -791,7 +799,7 @@ const Swap = () => {
     const quoteUsdcToKlima = await LiFi.getQuote({
       fromChain: initialTransferDestChain.id, // has been hardcoded in the routeRequest
       fromToken: initialTransferDestToken, // has been hardcoded in the routeRequest
-      fromAddress: web3.account!, //etherSpotSDK?.state.accountAddress!,
+      fromAddress: etherSpotSDK?.state.accountAddress!,
       fromAmount: amount, // TODO: check if correct value
       toChain: initialTransferDestChain.id,
       toToken: tokenPolygonKLIMA!.address,
