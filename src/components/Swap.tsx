@@ -2,7 +2,6 @@ import './Swap.css'
 
 import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Button,
@@ -27,14 +26,15 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { getRpcs } from '../config/connectors'
+import LiFi from '../LiFi'
 import {
   deleteRoute,
+  isWalletConnectWallet,
   readActiveRoutes,
   readHistoricalRoutes,
   storeRoute,
 } from '../services/localStorage'
-import { switchChain } from '../services/metamask'
+import { switchChain as switchChainMetaMask } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
@@ -61,7 +61,8 @@ import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
 import SwapForm from './SwapForm'
 import Swapping from './Swapping'
-import TrasactionsTable from './TransactionsTable'
+import TransactionsTable from './TransactionsTable'
+import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 import ConnectButton from './web3/ConnectButton'
 
 const history = createBrowserHistory()
@@ -180,6 +181,11 @@ const Swap = () => {
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
   const [possibilitiesLoaded, setPossibilitiesLoaded] = useState<boolean>(false)
 
+  const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
+    show: boolean
+    chainId: number
+  }>({ show: false, chainId: 1 })
+
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
   const { active } = useWeb3React()
@@ -237,15 +243,18 @@ const Swap = () => {
 
   useEffect(() => {
     const load = async () => {
-      LiFi.setConfig({
-        apiUrl: process.env.REACT_APP_API_URL,
-        rpcs: getRpcs(),
-        defaultRouteOptions: {
-          integrator: 'li.finance',
-        },
-      })
-
       const possibilities = await LiFi.getPossibilities()
+
+      if (
+        !possibilities.chains ||
+        !possibilities.bridges ||
+        !possibilities.exchanges ||
+        !possibilities.tokens
+      ) {
+        // eslint-disable-next-line
+        console.warn('possibilities request did not contain required setup information')
+        return
+      }
 
       // chains
       setAvailableChains(possibilities.chains)
@@ -466,14 +475,16 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    const walletChainIsSupported = supportedChains.some((chain) => chain.id === web3.chainId)
-    if (!walletChainIsSupported) return
-    if (web3.chainId && !fromChainKey) {
-      const chain = availableChains.find((chain) => chain.id === web3.chainId)
-      if (chain) {
-        setFromChainKey(chain.key)
+    LiFi.getChains().then((chains) => {
+      const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
+      if (!walletChainIsSupported) return
+      if (web3.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+        if (chain) {
+          setFromChainKey(chain.key)
+        }
       }
-    }
+    })
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
@@ -500,6 +511,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
+        pathname: 'swap',
         search,
       })
     }
@@ -730,11 +742,17 @@ const Swap = () => {
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
     setSelectedRoute(deepClone(routes[highlightedIndex]))
+  }
 
-    // Reset routes to avoid reexecution with same data
-    setRoutes([])
-    setHighlightedIndex(-1)
-    setNoRoutesAvailable(false)
+  const switchChain = async (chainId: number) => {
+    if (!web3.account) {
+      return
+    }
+    if (isWalletConnectWallet(web3.account)) {
+      setShowWalletConnectChainSwitchModal({ show: true, chainId })
+      return
+    }
+    await switchChainMetaMask(chainId)
   }
 
   const submitButton = () => {
@@ -749,7 +767,7 @@ const Swap = () => {
       )
     }
     if (!web3.account) {
-      return <ConnectButton size="large" />
+      return <ConnectButton size={'large'} />
     }
     if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
@@ -844,7 +862,7 @@ const Swap = () => {
                 key="1"
                 className="site-collapse-active-transfer-panel">
                 <div>
-                  <TrasactionsTable
+                  <TransactionsTable
                     routes={historicalRoutes}
                     selectRoute={() => {}}
                     deleteRoute={(route: RouteType) => {
@@ -852,7 +870,7 @@ const Swap = () => {
                       deleteRoute(route)
                       setHistoricalRoutes(readHistoricalRoutes())
                     }}
-                    historical={true}></TrasactionsTable>
+                    historical={true}></TransactionsTable>
                 </div>
               </Panel>
             </Collapse>
@@ -873,14 +891,14 @@ const Swap = () => {
                 key="1"
                 className="site-collapse-active-transfer-panel">
                 <div>
-                  <TrasactionsTable
+                  <TransactionsTable
                     routes={activeRoutes}
                     selectRoute={(route: RouteType) => setSelectedRoute(route)}
                     deleteRoute={(route: RouteType) => {
                       LiFi.stopExecution(route)
                       deleteRoute(route)
                       setActiveRoutes(readActiveRoutes())
-                    }}></TrasactionsTable>
+                    }}></TransactionsTable>
                 </div>
               </Panel>
             </Collapse>
@@ -923,8 +941,6 @@ const Swap = () => {
                   <Row justify={'center'} className="beta-disclaimer">
                     <Typography.Text type="danger" style={{ textAlign: 'center' }}>
                       Beta product - use at own risk.
-                      <br />
-                      MetaMask recommended.
                     </Typography.Text>
                   </Row>
                   <Row style={{ marginTop: 24 }} justify={'center'}>
@@ -1090,6 +1106,20 @@ const Swap = () => {
             }}></Swapping>
         </Modal>
       )}
+
+      <Modal
+        className="wallet-selection-modal"
+        visible={showWalletConnectChainSwitchModal.show}
+        onOk={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
+        onCancel={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
+        footer={null}>
+        <WalletConnectChainSwitchModal
+          chainId={showWalletConnectChainSwitchModal.chainId}
+          okHandler={() => {
+            setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })
+          }}
+        />
+      </Modal>
     </Content>
   )
 }

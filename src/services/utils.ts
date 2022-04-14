@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 
 import { Token } from '../types'
-import { readDeactivatedWallets } from './localStorage'
+import { readDeactivatedWallets, readWallets } from './localStorage'
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
   if (!amount) {
@@ -56,6 +56,13 @@ export const isWalletDeactivated = (address: string | null | undefined): boolean
   return deactivatedAddresses.includes(lowerCaseAddress)
 }
 
+export const isWalletActivated = (address: string | null | undefined): boolean => {
+  if (!address) return false
+  const lowerCaseAddress = address.toLowerCase()
+  const activeWallets = readWallets()
+  const activeAddresses = activeWallets.map((address) => address.toLowerCase())
+  return activeAddresses.includes(lowerCaseAddress)
+}
 /**
  * Parses seconds as time string in the format "02:25"
  * @param seconds

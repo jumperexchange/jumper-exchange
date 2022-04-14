@@ -68,7 +68,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         }
       case 'lifi':
         return {
-          title: 'LiFi Contract',
+          title: 'LI.FI Contract',
           description: (
             <>
               Single transaction including:

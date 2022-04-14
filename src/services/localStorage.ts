@@ -1,4 +1,4 @@
-import { Route, Status } from '../types'
+import { Route, Status, WalletConnectInfo } from '../types'
 
 const isSupported = () => {
   try {
@@ -202,21 +202,70 @@ const readActiveRoutes = (): Array<Route> => {
 
   return sortRoutesByExecutionDate(activeRoutes)
 }
+const isWalletConnectWallet = (wallet: string): boolean => {
+  if (!isSupported() || !wallet) {
+    return false
+  }
+  const walletConnectString = localStorage.getItem('walletconnect')
+  if (!walletConnectString) {
+    return false
+  }
+  const walletConnect = JSON.parse(walletConnectString)
+  if (!walletConnect.accounts) {
+    return false
+  }
+
+  const lowerCaseAddresses = walletConnect.accounts.map((account: string) => account.toLowerCase())
+  return lowerCaseAddresses.includes(wallet.toLowerCase())
+}
+
+const readWalletConnectInfo = () => {
+  if (!isSupported()) {
+    return
+  }
+  const walletConnectInfoString = localStorage.getItem('walletconnect')
+  if (!walletConnectInfoString) {
+    return
+  }
+  const walletConnectInfo = JSON.parse(walletConnectInfoString)
+  if (walletConnectInfo) {
+    try {
+      return walletConnectInfo as WalletConnectInfo
+    } catch {
+      return
+    }
+  }
+  return
+}
+
+const storeWalletConnectInfo = (walletConnectInfo: WalletConnectInfo) => {
+  if (!isSupported()) return
+  localStorage.setItem('walletconnect', JSON.stringify(walletConnectInfo))
+}
+
+const deleteWalletConnectInfo = () => {
+  if (!isSupported()) return
+  localStorage.removeItem('walletconnect')
+}
 
 export {
   clearLocalStorage,
   deleteRoute,
+  deleteWalletConnectInfo,
   isSupported,
+  isWalletConnectWallet,
   readActiveRoutes,
   readDeactivatedWallets,
   readHideAbout,
   readHideDisconnectPopup,
   readHistoricalRoutes,
+  readWalletConnectInfo,
   readWallets,
   sortRoutesByExecutionDate,
   storeDeactivatedWallets,
   storeHideAbout,
   storeHideDisconnectPopup,
   storeRoute,
+  storeWalletConnectInfo,
   storeWallets,
 }
