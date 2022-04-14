@@ -62,7 +62,7 @@ import {
   TokenAmount,
 } from '../types'
 import SwapForm from './SwapForm'
-import Swapping from './Swapping'
+import SwappingExternalStep from './SwappingExternalStep'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
 
@@ -1158,7 +1158,7 @@ const Swap = () => {
           destroyOnClose={true}
           width={700}
           footer={null}>
-          <Swapping
+          <SwappingExternalStep
             fixedRecipient={true}
             route={selectedRoute}
             settings={{ infiniteApproval: optionInfiniteApproval }}
@@ -1170,7 +1170,7 @@ const Swap = () => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
-            }}></Swapping>
+            }}></SwappingExternalStep>
         </Modal>
       )}
     </Content>
