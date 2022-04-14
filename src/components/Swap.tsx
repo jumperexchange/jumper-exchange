@@ -838,14 +838,13 @@ const Swap = () => {
       </Button>
     )
   }
-  const isTransferto = window.location.href.includes('transferto')
 
   return (
     <Content
       className="site-layout site-layout-swap"
       style={{
-        minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
-        marginTop: !isTransferto ? '104px' : '64px',
+        minHeight: 'calc(100vh - 64px)',
+        marginTop: '64px',
       }}>
       <div className="swap-view">
         {/* Historical Routes */}

@@ -850,14 +850,12 @@ const Swap = () => {
     </Row>
   )
 
-  const isTransferto = window.location.href.includes('transferto')
-
   return (
     <Content
       className="site-layout-swap-ukraine"
       style={{
-        minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
-        marginTop: !isTransferto ? '104px' : '64px',
+        minHeight: 'calc(100vh - 64px)',
+        marginTop: '64px',
       }}>
       <div className="swap-view-ukraine">
         {/* Swap Form */}
@@ -873,7 +871,7 @@ const Swap = () => {
             lg={24}
             xl={12}
             style={{
-              minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+              minHeight: 'calc(100vh - 64px)',
               // marginTop: !isTransferto ? '104px' : '64px',
             }}>
             <div

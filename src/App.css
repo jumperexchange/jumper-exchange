@@ -5,7 +5,7 @@
   float: left;
   color: black;
   font-size: 22px;
-  line-height: 62px;
+  line-height: 42px;
   margin-right: 20px;
   font-weight: bold;
   font-family: 'GT America' !important;
@@ -31,6 +31,11 @@
     margin-left: 15px;
     margin-right: 0;
   }
+}
+.header-poweredBy {
+  color: black;
+  height: 20px;
+  font-size: 15px;
 }
 
 /* global styles */

@@ -70,7 +70,6 @@ function App() {
       </div>
     )
   }
-  const isTransferto = window.location.href.includes('transferto')
 
   return (
     <WrappedWeb3ReactProvider>
@@ -79,58 +78,34 @@ function App() {
           embedView()
         ) : (
           <Layout>
-            {!isTransferto && (
-              <Header
-                className="transferto-disclaimer"
-                style={{
-                  background: 'black',
-                  color: 'white',
-                  zIndex: 900,
-                  height: 40,
-                  position: 'fixed',
-                  width: '100%',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {/* <Row> */}
-                <div>
-                  Li.Finance is moving to{' '}
-                  <a
-                    href="https://transferto.xyz"
-                    target="blank"
-                    style={{ color: '#F5B5FF', textDecoration: 'underline', fontWeight: 'bold' }}>
-                    transferto.xyz
-                  </a>
-                </div>
-                {/* </Row> */}
-              </Header>
-            )}
-
             <Header
               style={{
                 position: 'fixed',
                 zIndex: 900,
                 width: '100%',
                 padding: 0,
-                top: !isTransferto ? 40 : 0,
+                top: 0,
                 background: adjustToBgGradient ? '#F6F3F2' : '#fff',
               }}>
               <Row className="site-layout-menu">
                 {/* Menu */}
                 <Col xs={24} sm={24} md={14} lg={14} xl={14}>
-                  <Link to="/" className="wordmark">
-                    <img
-                      src={logo}
-                      className="logo"
-                      alt={process.env.REACT_APP_PROJECT_NAME}
-                      width="36"
-                      height="36"
-                    />
-                    <span>LI.FI</span>
-                  </Link>
+                  <div className="header-linkWrapper">
+                    <Link to="/" className="wordmark">
+                      transferto.xyz
+                    </Link>
+                    <Link to="/" className="header-poweredBy">
+                      powered by
+                      <img
+                        src={logo}
+                        className="logo"
+                        alt={process.env.REACT_APP_PROJECT_NAME}
+                        width="18"
+                        height="18"
+                      />
+                      <span>LI.FI</span>
+                    </Link>
+                  </div>
                   <Menu
                     theme="light"
                     mode="horizontal"

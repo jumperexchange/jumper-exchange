@@ -1,9 +1,4 @@
-# Li.Finance
-
-What we are aiming at (blue parts are already implemented):
-
-![Screenshot](./src/assets/lifi_overview.jpg?raw=true)
-
+# transferto.xyz powered by [LI.LI](https://li.fi)
 
 ## Setup
 
@@ -16,12 +11,7 @@ Use [nvm](https://github.com/nvm-sh/nvm) to run the app with the latest node ver
 yarn install
 
 # server local development version
-# > li.finance
 yarn start
-# > xpollinate.io
-yarn start:xpollinate
-# > testnet.xpollinate.io
-yarn start:xpollinate:testnet
 ```
 
 > If you are on windows or if you have problems running the `start` commands, please try to run `yarn windows` and create a local `.env.local` file to define your environment (e.g. if you want to use xpollinate, copy one of the xpollinate files)
@@ -83,23 +73,7 @@ Follow the linked [Readme](https://github.com/lifinance/lifi-web/blob/develop/do
 Pushing code to the repository automatically triggers deployments to several environments:
 
 Branch `main`:
-- https://li.finance/ (with `.env.lifinance-mainnet` configuration)
-- https://xpollinate.io/ (with `.env.xpollinate-mainnet` configuration)
-- https://testnet.xpollinate.io/ (with `.env.xpollinate-testnet` configuration)
+- https://transferto.xyz/ (with `.env.lifinance-mainnet` configuration)
 
-Branch `develop`:
+Branch `staging`:
 - https://staging.li.finance/ (with `.env.lifinance-mainnet.staging` configuration)
-- https://staging.xpollinate.io/ (with `.env.xpollinate-mainnet.staging` configuration)
-- https://staging-testnet.xpollinate.io/ (with `.env.xpollinate-testnet.staging` configuration)
-
-Branchs `testing/*`:
-- https://testing.xpollinate.io/ (with `.env.xpollinate-mainnet.staging` configuration)
-- https://testing.li.finance/ (with `.env.lifinance-mainnet.staging` configuration)
-
-
-## Main Contributors
-
-- Max Klenk ([GitHub](https://github.com/maxklenk), [LinkedIn](https://www.linkedin.com/in/maxklenk/), [Gitcoin](https://gitcoin.co/maxklenk))
-- Adrian Weniger ([GitHub](https://github.com/Addminus), [LinkedIn](https://www.linkedin.com/in/adrian-weniger-8a35b6132/), [Gitcoin](https://gitcoin.co/addminus))
-- Philipp Zentner ([GitHub](https://github.com/philippzentner), [LinkedIn](https://www.linkedin.com/in/philippzentner/), [Gitcoin](https://gitcoin.co/philippzentner))
-# contracts
