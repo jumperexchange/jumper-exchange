@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import SwapPillarZap from './components/SwapPillarZap'
 import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
@@ -274,6 +275,20 @@ function App() {
                     return (
                       <div className="lifiWrap">
                         <SwapUkraine />
+                      </div>
+                    )
+                  }}
+                />
+                <Route
+                  path="/pillar"
+                  render={() => {
+                    setMetatags({
+                      title: 'LI.FI - Pillar',
+                    })
+                    initStomt('swap')
+                    return (
+                      <div className="lifiWrap">
+                        <SwapPillarZap />
                       </div>
                     )
                   }}

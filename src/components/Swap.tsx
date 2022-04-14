@@ -277,7 +277,7 @@ const Swap = () => {
 
       // tokens
       const newTokens: TokenAmountList = {}
-      possibilities.tokens.forEach((token) => {
+      possibilities.tokens.forEach((token: TokenWithAmounts) => {
         const chain = getChainById(token.chainId)
         if (!newTokens[chain.key]) newTokens[chain.key] = []
         newTokens[chain.key].push(token)
@@ -306,7 +306,7 @@ const Swap = () => {
   }, [])
 
   const updateTokenData = (token: Token) => {
-    LiFi.getToken(token.chainId, token.address).then((updatedToken) => {
+    LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
       // sync optional properties
       updatedToken.logoURI = updatedToken.logoURI || token.logoURI
       updatedToken.priceUSD = updatedToken.priceUSD || token.priceUSD
@@ -475,7 +475,7 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    LiFi.getChains().then((chains) => {
+    LiFi.getChains().then((chains: any[]) => {
       const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
       if (!walletChainIsSupported) return
       if (web3.chainId && !fromChainKey) {
@@ -542,7 +542,7 @@ const Swap = () => {
     if (web3.account) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(([chainKey, tokenList]) => {
-        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
+        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio: any) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {

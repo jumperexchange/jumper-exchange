@@ -1,4 +1,4 @@
-import './SwapUkraine.css'
+import './SwapPillarZap.css'
 
 import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
@@ -22,11 +22,11 @@ import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+// import { Sdk } from 'etherspot'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { TwitterTweetEmbed } from 'react-twitter-embed'
 import { v4 as uuid } from 'uuid'
 
 import { DonateIcon } from '../assets/icons/donateIcon'
@@ -53,9 +53,11 @@ import {
   getChainById,
   getChainByKey,
   isSwapStep,
+  PossibilitiesResponse,
+  Route,
   Route as RouteType,
   RoutesRequest,
-  RoutesResponse,
+  Step,
   Token,
   TokenAmount,
 } from '../types'
@@ -67,6 +69,11 @@ const history = createBrowserHistory()
 const DONATION_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
 const MORE_INFO_PAGE_URL =
   'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
+
+// pillar zap related stuff
+export const STAKE_KLIMA_CONTRACT_ADDRESS = '0x4D70a031Fc76DA6a9bC0C922101A05FA95c3A227'
+export const KLIMA_ADDRESS = '0x4e78011Ce80ee02d2c3e649Fb657E45898257815'
+export const sKLIMA_ADDRESS = '0xb0C22d8D350C67420f06F48936654f567C73E8C8'
 
 let currentRouteCallId: string
 
@@ -137,7 +144,7 @@ const getDefaultParams = (
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
     withdrawChain: ChainKey.POL,
-    withdrawToken: findDefaultToken(CoinKey.ETH, ChainId.POL).address, // TODO: change this
+    withdrawToken: findDefaultToken(CoinKey.USDC, ChainId.POL).address, // TODO: change this
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -286,7 +293,8 @@ const Swap = () => {
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
+  const [routeCallResult, setRouteCallResult] =
+    useState<{ routeResult: RouteType; gasStep: Step; stakingStep: Step; id: string }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -297,7 +305,9 @@ const Swap = () => {
   const [, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
-  const [routes, setRoutes] = useState<Array<RouteType>>([])
+  const [route, setRoute] = useState<{ route: RouteType; gasStep: Step; stakingStep: Step }>(
+    {} as any,
+  )
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
@@ -310,10 +320,29 @@ const Swap = () => {
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
   const [possibilitiesLoaded, setPossibilitiesLoaded] = useState<boolean>(false)
+  const [tokenPolygonKLIMA, setTokenPolygonKlima] = useState<Token>()
+  const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { active } = useWeb3React()
+  const { active, account } = useWeb3React()
+  // const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
+  // setup etherspot sdk
+  // useEffect(() => {
+  //   // console.log(web3)
+
+  //   if (active && account) {
+  //     const signer = web3.library!.getSigner() as Signer
+
+  //     const sdk = new Sdk(
+  //       { ...signer, address: account, signMessage: signer.signMessage },
+  //       {
+  //         networkName: NetworkNames.Matic,
+  //       },
+  //     )
+  //     sdk.computeContractAccount().then(() => setEtherSpotSDK(sdk))
+  //   }
+  // }, [active, account])
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -368,10 +397,20 @@ const Swap = () => {
 
   useEffect(() => {
     const load = async () => {
-      const possibilities = await LiFi.getPossibilities({
+      const possibilitiesPromise = LiFi.getPossibilities({
         exchanges: { deny: ['dodo', 'openocean', '0x'] },
       })
 
+      const klimaTokenPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
+      const sKlimaTokenPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
+      const setupPromises: [PossibilitiesResponse, Token, Token] = await Promise.all([
+        possibilitiesPromise,
+        klimaTokenPromise,
+        sKlimaTokenPromise,
+      ])
+      const possibilities = setupPromises[0]
+      setTokenPolygonKlima(setupPromises[1])
+      setTokenPolygonSKLIMA(setupPromises[2])
       if (
         !possibilities.chains ||
         !possibilities.bridges ||
@@ -453,21 +492,6 @@ const Swap = () => {
     })
   }
 
-  const getSelectedWithdraw = () => {
-    if (highlightedIndex === -1) {
-      return {
-        estimate: '0.0',
-      }
-    } else {
-      const selectedRoute = routes[highlightedIndex]
-      const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1]
-      return {
-        estimate: formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount),
-        min: formatTokenAmount(lastStep.action.toToken, lastStep.estimate?.toAmountMin),
-      }
-    }
-  }
-
   // autoselect from chain based on wallet
   useEffect(() => {
     LiFi.getChains().then((chains: any[]) => {
@@ -505,7 +529,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: 'ukraine',
+        pathname: 'pillar',
         search,
       })
     }
@@ -655,10 +679,10 @@ const Swap = () => {
     },
     [tokens],
   )
-
+  // TODO: fix TODOs here
   useEffect(() => {
     const getTransferRoutes = async () => {
-      setRoutes([])
+      setRoute({} as any)
       setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
@@ -673,14 +697,12 @@ const Swap = () => {
           toChainId: toToken.chainId,
           toTokenAddress,
           fromAddress: web3.account || undefined,
-          toAddress: DONATION_WALLET, // TODO: change this to the recipient address
+          toAddress: account!, // TODO: get the smartcontract wallet address and put it here
           options: {
+            integrator: 'lifi-pillar',
             slippage: optionSlippage / 100,
             bridges: {
-              allow: optionEnabledBridges,
-            },
-            exchanges: {
-              allow: optionEnabledExchanges,
+              allow: ['connext'], // TODO: check if connext is only option
             },
             allowSwitchChain: false, // This is important for fixed recipients
           },
@@ -690,7 +712,24 @@ const Swap = () => {
         try {
           currentRouteCallId = id
           const result = await LiFi.getRoutes(request)
-          setRouteCallResult({ result, id })
+          const amountUsdc = ethers.utils.parseUnits(
+            result.routes[0].toAmountMin,
+            result.routes[0].toToken.decimals,
+          )
+          const amountUsdcToMatic = ethers.utils
+            .parseUnits('0.2', result.routes[0].toToken.decimals)
+            .toString()
+          const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic).toString()
+          const gasStep = calculateFinalGasStep(result.routes[0], amountUsdcToMatic)
+          const stakingStep = calculateFinalStakingStep(result.routes[0], amountUsdcToKlima)
+          const additionalQuotes = await Promise.all([gasStep, stakingStep])
+
+          setRouteCallResult({
+            routeResult: result.routes[0],
+            gasStep: additionalQuotes[0],
+            stakingStep: additionalQuotes[1],
+            id,
+          })
         } catch {
           if (id === currentRouteCallId || !currentRouteCallId) {
             setNoRoutesAvailable(true)
@@ -716,24 +755,62 @@ const Swap = () => {
   // set route call results
   useEffect(() => {
     if (routeCallResult) {
-      const { result, id } = routeCallResult
+      const { routeResult, gasStep, stakingStep, id } = routeCallResult
       if (id === currentRouteCallId) {
-        setRoutes(result.routes)
+        setRoute({ route: routeResult, gasStep, stakingStep })
         fadeInAnimation(routeCards)
-        setHighlightedIndex(result.routes.length === 0 ? -1 : 0)
-        setNoRoutesAvailable(result.routes.length === 0)
+        setHighlightedIndex(routeResult ? -1 : 0)
+        setNoRoutesAvailable(!routeResult)
         setRoutesLoading(false)
       }
     }
   }, [routeCallResult, currentRouteCallId])
 
+  //
+  const calculateFinalGasStep = async (route: Route, amount: string) => {
+    const initialTransferDestChain = getChainByKey(toChainKey!)
+    const initialTransferDestToken = toTokenAddress!
+
+    const quoteUsdcToMatic = await LiFi.getQuote({
+      fromChain: initialTransferDestChain.id, // has been hardcoded in the routeRequest
+      fromToken: initialTransferDestToken, // has been hardcoded in the routeRequest
+      fromAddress: web3.account!, //etherSpotSDK?.state.accountAddress!,
+      fromAmount: amount, // TODO: check if correct value
+      toChain: initialTransferDestChain.id,
+      toToken: (await LiFi.getToken(initialTransferDestChain.id, 'MATIC')!).address, // hardcode return gastoken
+      slippage: 0.003,
+      integrator: 'lifi-pillar',
+      preferExchanges: ['sushiswap-pol'],
+    })
+    return quoteUsdcToMatic
+  }
+  const calculateFinalStakingStep = async (route: Route, amount: string) => {
+    const initialTransferDestChain = getChainByKey(toChainKey!)
+    const initialTransferDestToken = toTokenAddress!
+
+    const quoteUsdcToKlima = await LiFi.getQuote({
+      fromChain: initialTransferDestChain.id, // has been hardcoded in the routeRequest
+      fromToken: initialTransferDestToken, // has been hardcoded in the routeRequest
+      fromAddress: web3.account!, //etherSpotSDK?.state.accountAddress!,
+      fromAmount: amount, // TODO: check if correct value
+      toChain: initialTransferDestChain.id,
+      toToken: tokenPolygonKLIMA!.address,
+      slippage: 0.003,
+      integrator: 'lifi-pillar',
+      preferExchanges: ['sushiswap-pol'],
+    })
+    return quoteUsdcToKlima
+  }
+
+  useEffect(() => {})
+
   //TODO: check what is needed here!
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(routes[0]))
+    setSelectedRoute(deepClone(route.route))
 
     // Reset routes to avoid reexecution with same data
-    setRoutes([])
+    setRoute({} as any)
     setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
   }
@@ -742,7 +819,7 @@ const Swap = () => {
     if (!active && isWalletDeactivated(web3.account)) {
       return (
         <Button
-          className="btn-ukraine-swap-form"
+          className="btn-pillar-swap-form"
           disabled={true}
           shape="round"
           type="primary"
@@ -751,13 +828,13 @@ const Swap = () => {
       )
     }
     if (!web3.account) {
-      return <ConnectButton className="btn-ukraine-swap-form" size="large" />
+      return <ConnectButton className="btn-pillar-swap-form" size="large" />
     }
     if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
-          className="btn-ukraine-swap-form"
+          className="btn-pillar-swap-form"
           shape="round"
           type="primary"
           icon={<SwapOutlined />}
@@ -787,14 +864,14 @@ const Swap = () => {
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
+    if (!hasSufficientGasBalanceOnStartChain(route.route)) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Insufficient Gas on Start Chain
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnCrossChain(routes[highlightedIndex])) {
+    if (!hasSufficientGasBalanceOnCrossChain(route.route)) {
       return (
         <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
@@ -815,40 +892,44 @@ const Swap = () => {
       <Button
         disabled={highlightedIndex === -1}
         shape="round"
-        className="btn-ukraine-swap-form"
+        className="btn-pillar-swap-form"
         type="primary"
         size={'large'}
         onClick={() => openModal()}>
-        <span className="ukraine-flag">&#127482;&#127462;</span> Donate
+        Stake
       </Button>
     )
   }
 
-  const toSection = (
-    <Row
-      style={{
-        marginTop: '32px',
-      }}
-      gutter={[
-        { xs: 8, sm: 16 },
-        { xs: 8, sm: 16 },
-      ]}>
-      <Col span={10}>
-        <div className="form-text">To:</div>
-      </Col>
-      <Col span={14}>
-        <div className="form-input-wrapper">
-          <Input
-            type="text"
-            value={'ETH for Ukraine'}
-            bordered={false}
-            disabled
-            style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
-          />
-        </div>
-      </Col>
-    </Row>
-  )
+  const toSection = () => {
+    const amount = route?.stakingStep?.estimate?.toAmountMin || '0'
+    const formattedAmount = tokenPolygonSKLIMA ? formatTokenAmount(tokenPolygonSKLIMA, amount) : '0'
+    return (
+      <Row
+        style={{
+          marginTop: '32px',
+        }}
+        gutter={[
+          { xs: 8, sm: 16 },
+          { xs: 8, sm: 16 },
+        ]}>
+        <Col span={10}>
+          <div className="form-text">To:</div>
+        </Col>
+        <Col span={14}>
+          <div className="form-input-wrapper">
+            <Input
+              type="text"
+              value={`${formattedAmount}`}
+              bordered={false}
+              disabled
+              style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
+            />
+          </div>
+        </Col>
+      </Row>
+    )
+  }
 
   const isTransferto = window.location.href.includes('transferto')
 
@@ -863,7 +944,7 @@ const Swap = () => {
         {/* Swap Form */}
         <Row className="ukraine-title-row">
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
-            <Title level={1}>Cross-chain donation to Ukraine</Title>
+            <Title level={1}>Cross-chain Klima Staking</Title>
           </Col>
           <Col
             className="swap-form-ukraine"
@@ -889,8 +970,7 @@ const Swap = () => {
                   className="swap-title"
                   level={3}
                   style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                  Stand with <br />
-                  Ukraine
+                  Cross-chain Stake Klima into sKlima
                 </Title>
               </Row>
 
@@ -902,20 +982,20 @@ const Swap = () => {
                   setDepositToken={setFromTokenAddress}
                   depositAmount={depositAmount}
                   setDepositAmount={setDepositAmount}
-                  withdrawChain={ChainKey.DAI}
+                  withdrawChain={ChainKey.POL}
                   setWithdrawChain={() => {}}
-                  withdrawToken={findDefaultToken(CoinKey.USDC, ChainId.DAI).address}
+                  withdrawToken={findDefaultToken(CoinKey.USDC, ChainId.POL).address}
                   setWithdrawToken={() => {}}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
-                  estimatedWithdrawAmount={getSelectedWithdraw().estimate}
-                  estimatedMinWithdrawAmount={getSelectedWithdraw().min}
+                  estimatedWithdrawAmount={'0'}
+                  estimatedMinWithdrawAmount={'0'}
                   availableChains={availableChains}
                   tokens={tokens}
                   balances={balances}
                   allowSameChains={true}
                   fixedWithdraw={true}
-                  alternativeToSection={toSection}
+                  alternativeToSection={toSection()}
                 />
                 <span>
                   {/* Disclaimer */}
@@ -1013,10 +1093,6 @@ const Swap = () => {
               bridged to Ethereum periodically and sent to the ETH address used by the{' '}
               <b>Ukraine government</b>.
             </Paragraph>
-
-            <div className="tweet-wrapper" style={{ marginTop: 64 }}>
-              <TwitterTweetEmbed tweetId="1497594592438497282"></TwitterTweetEmbed>
-            </div>
 
             <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
             <Button
