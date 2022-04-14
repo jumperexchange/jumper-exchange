@@ -145,7 +145,7 @@ const getDefaultParams = (
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
     withdrawChain: ChainKey.POL,
-    withdrawToken: findDefaultToken(CoinKey.USDC, ChainId.POL).address, // TODO: change this
+    withdrawToken: findDefaultToken(CoinKey.USDC, ChainId.POL).address,
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -288,7 +288,7 @@ const Swap = () => {
   const [toChainKey, setToChainKey] = useState<ChainKey | undefined>()
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(
-    findDefaultToken(CoinKey.ETH, ChainId.POL).address,
+    findDefaultToken(CoinKey.USDC, ChainId.POL).address,
   ) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>({})
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
@@ -332,12 +332,19 @@ const Swap = () => {
   // setup etherspot sdk
   useEffect(() => {
     const ethersportSDKSetup = async () => {
+      // TODO: try generalized connector from web3 object
       const connector = await getInjectedConnector()
       const provider = await Web3WalletProvider.connect(await connector.getProvider())
       const sdk = new Sdk(provider, {
         networkName: NetworkNames.Matic,
       })
-      sdk.computeContractAccount().then(() => setEtherSpotSDK(sdk))
+      sdk
+        .computeContractAccount({
+          sync: false,
+        })
+        .then(() => {
+          setEtherSpotSDK(sdk)
+        })
     }
     if (active && account && library) {
       ethersportSDKSetup()
@@ -704,7 +711,7 @@ const Swap = () => {
           toChainId: toToken.chainId,
           toTokenAddress,
           fromAddress: web3.account || undefined,
-          toAddress: account!, // TODO: get the smartcontract wallet address and put it here
+          toAddress: etherSpotSDK.state.accountAddress,
           options: {
             integrator: 'lifi-pillar',
             slippage: optionSlippage / 100,
@@ -719,16 +726,20 @@ const Swap = () => {
         try {
           currentRouteCallId = id
           const result = await LiFi.getRoutes(request)
-          const amountUsdc = ethers.utils.parseUnits(
-            result.routes[0].toAmountMin,
+
+          const amountUsdc = ethers.BigNumber.from(result.routes[0].toAmountMin)
+
+          const amountUsdcToMatic = ethers.utils.parseUnits(
+            '0.2',
             result.routes[0].toToken.decimals,
           )
-          const amountUsdcToMatic = ethers.utils
-            .parseUnits('0.2', result.routes[0].toToken.decimals)
-            .toString()
-          const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic).toString()
-          const gasStep = calculateFinalGasStep(result.routes[0], amountUsdcToMatic)
-          const stakingStep = calculateFinalStakingStep(result.routes[0], amountUsdcToKlima)
+
+          const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
+          const gasStep = calculateFinalGasStep(result.routes[0], amountUsdcToMatic.toString())
+          const stakingStep = calculateFinalStakingStep(
+            result.routes[0],
+            amountUsdcToKlima.toString(),
+          )
           const additionalQuotes = await Promise.all([gasStep, stakingStep])
 
           setRouteCallResult({
@@ -737,7 +748,7 @@ const Swap = () => {
             stakingStep: additionalQuotes[1],
             id,
           })
-        } catch {
+        } catch (e) {
           if (id === currentRouteCallId || !currentRouteCallId) {
             setNoRoutesAvailable(true)
             setRoutesLoading(false)
@@ -764,6 +775,7 @@ const Swap = () => {
   useEffect(() => {
     if (routeCallResult) {
       const { routeResult, gasStep, stakingStep, id } = routeCallResult
+
       if (id === currentRouteCallId) {
         setRoute({ route: routeResult, gasStep, stakingStep })
         fadeInAnimation(routeCards)
@@ -774,7 +786,6 @@ const Swap = () => {
     }
   }, [routeCallResult, currentRouteCallId])
 
-  //
   const calculateFinalGasStep = async (route: Route, amount: string) => {
     const initialTransferDestChain = getChainByKey(toChainKey!)
     const initialTransferDestToken = toTokenAddress!
@@ -812,7 +823,6 @@ const Swap = () => {
 
   useEffect(() => {})
 
-  //TODO: check what is needed here!
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
     setSelectedRoute(deepClone(route.route))
