@@ -726,14 +726,11 @@ const Swap = () => {
         try {
           currentRouteCallId = id
           const result = await LiFi.getRoutes(request)
-
           const amountUsdc = ethers.BigNumber.from(result.routes[0].toAmountMin)
-
           const amountUsdcToMatic = ethers.utils.parseUnits(
             '0.2',
             result.routes[0].toToken.decimals,
           )
-
           const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
           const gasStep = calculateFinalGasStep(result.routes[0], amountUsdcToMatic.toString())
           const stakingStep = calculateFinalStakingStep(
