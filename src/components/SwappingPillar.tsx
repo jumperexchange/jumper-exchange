@@ -659,6 +659,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
           <Typography.Text
             type={!receivedAmount.isZero() ? 'secondary' : undefined}
             style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
+            <br />
             {'You now have '}
             {new BigNumber(finalTokenAmount.amount).toFixed(4)}
             {` ${finalTokenAmount.symbol}`}
