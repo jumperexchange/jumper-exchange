@@ -272,6 +272,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
   }
 
   const prepareEtherSpotStep = async () => {
+    etherspot.clearGatewayBatch()
     const tokenPolygonKLIMAPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
     const tokenPolygonSKLIMAPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
 
@@ -284,7 +285,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       toToken: route.gasStep.action.toToken.address, // hardcode return gastoken
       slippage: route.gasStep.action.slippage,
       integrator: 'lifi-pillar',
-      preferExchanges: [route.gasStep.tool],
+      allowExchanges: [route.gasStep.tool],
     })
     const klimaStepRefreshPromise = LiFi.getQuote({
       fromChain: route.klimaStep.action.fromChainId,
@@ -295,7 +296,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       toToken: route.klimaStep.action.toToken.address, // hardcode return gastoken
       slippage: route.gasStep.action.slippage,
       integrator: 'lifi-pillar',
-      preferExchanges: [route.klimaStep.tool],
+      allowExchanges: [route.klimaStep.tool],
     })
 
     const resolvedPromises = await Promise.all([

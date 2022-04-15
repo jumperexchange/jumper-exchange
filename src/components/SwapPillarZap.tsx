@@ -794,7 +794,7 @@ const Swap = () => {
       toToken: (await LiFi.getToken(initialTransferDestChain.id, 'MATIC')!).address, // hardcode return gastoken
       slippage: 0.005,
       integrator: 'lifi-pillar',
-      preferExchanges: [allowedDex],
+      allowExchanges: [allowedDex],
     })
     return quoteUsdcToMatic
   }
@@ -811,7 +811,7 @@ const Swap = () => {
       toToken: tokenPolygonKLIMA!.address,
       slippage: 0.005,
       integrator: 'lifi-pillar',
-      preferExchanges: [allowedDex],
+      allowExchanges: [allowedDex],
     })
     return quoteUsdcToKlima
   }
