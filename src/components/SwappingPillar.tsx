@@ -496,6 +496,10 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     })
 
     await switchChain(ChainId.POL)
+    const signer = web3.library!.getSigner()
+    if ((await signer.getChainId()) !== ChainId.POL) {
+      throw Error('Chain was not switched!')
+    }
 
     processList.map((process) => {
       if (process.id === 'chainSwitch') {
