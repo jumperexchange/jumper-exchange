@@ -578,6 +578,10 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     }
     // eslint-disable-next-line no-console
     console.log('gateway executed batch', batch.transaction.hash, batch)
+    processList.map((p) => {
+      p.status = 'DONE'
+      return p
+    })
     setEtherspotStepExecution({
       status: 'DONE',
       process: processList,
@@ -590,14 +594,21 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       tokenAmountSKlima.amount,
       tokenAmountSKlima.decimals,
     )
-
     let doneList = etherspotStepExecution?.process.map((p) => {
       p.status = 'DONE'
       return p
-    })
+    }) || [
+      {
+        // catch
+        status: 'DONE',
+        message: 'Staking successful',
+        startedAt: Date.now(),
+        doneAt: Date.now(),
+      },
+    ]
     setEtherspotStepExecution({
       status: 'DONE',
-      process: doneList!,
+      process: doneList,
       toAmount: amountSKlimaParsed.toString(),
     })
     setFinalTokenAmount(tokenAmountSKlima)
