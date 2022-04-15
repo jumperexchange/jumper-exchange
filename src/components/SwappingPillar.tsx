@@ -284,7 +284,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       toToken: route.gasStep.action.toToken.address, // hardcode return gastoken
       slippage: route.gasStep.action.slippage,
       integrator: 'lifi-pillar',
-      preferExchanges: ['paraswap'],
+      preferExchanges: [route.gasStep.tool],
     })
     const klimaStepRefreshPromise = LiFi.getQuote({
       fromChain: route.klimaStep.action.fromChainId,
@@ -295,7 +295,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       toToken: route.klimaStep.action.toToken.address, // hardcode return gastoken
       slippage: route.gasStep.action.slippage,
       integrator: 'lifi-pillar',
-      preferExchanges: ['paraswap'],
+      preferExchanges: [route.klimaStep.tool],
     })
 
     const resolvedPromises = await Promise.all([
@@ -335,7 +335,6 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
         data: route.klimaStep.transactionRequest.data as string,
       })
       const amountKlima = route.klimaStep.estimate.toAmountMin
-
       // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
       const txAllow = await getSetAllowanceTransaction(
         tokenPolygonKLIMA!.address,
@@ -353,7 +352,6 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
         to: txStake.to as string,
         data: txStake.data as string,
       })
-
       const txTransfer = await getTransferTransaction(
         tokenPolygonSKLIMA!.address,
         web3.account!,
@@ -495,7 +493,9 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       process: processList,
     })
     await prepareEtherSpotStep()
+
     await etherspot.estimateGatewayBatch()
+
     processList.map((process) => {
       if (process.id === 'prepare') {
         process.status = 'DONE'

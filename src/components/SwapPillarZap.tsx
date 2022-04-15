@@ -50,6 +50,7 @@ import {
   ChainId,
   ChainKey,
   CoinKey,
+  ExchangeTool,
   findDefaultToken,
   getChainById,
   getChainByKey,
@@ -69,6 +70,7 @@ import { getInjectedConnector } from './web3/connectors'
 
 const history = createBrowserHistory()
 let currentRouteCallId: string
+const allowedDex = ExchangeTool.paraswap
 
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
@@ -792,7 +794,7 @@ const Swap = () => {
       toToken: (await LiFi.getToken(initialTransferDestChain.id, 'MATIC')!).address, // hardcode return gastoken
       slippage: 0.005,
       integrator: 'lifi-pillar',
-      preferExchanges: ['paraswap'],
+      preferExchanges: [allowedDex],
     })
     return quoteUsdcToMatic
   }
@@ -809,7 +811,7 @@ const Swap = () => {
       toToken: tokenPolygonKLIMA!.address,
       slippage: 0.005,
       integrator: 'lifi-pillar',
-      preferExchanges: ['paraswap'],
+      preferExchanges: [allowedDex],
     })
     return quoteUsdcToKlima
   }
