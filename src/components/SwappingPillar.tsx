@@ -363,6 +363,15 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       console.warn('Execution failed!', route.lifiRoute)
       // eslint-disable-next-line no-console
       console.error(e)
+      if (etherspotStepExecution) {
+        const processList = etherspotStepExecution.process
+        processList[processList.length - 1].status = 'FAILED'
+        processList[processList.length - 1].errorMessage = e
+        setEtherspotStepExecution({
+          status: 'FAILED',
+          process: processList,
+        })
+      }
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -531,11 +540,12 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     const isCrossChainSwap = !!steps.find((step) => isCrossStep(step) || isLifiStep(step))
 
     // DONE
-    const isDone = steps.filter((step) => step.execution?.status !== 'DONE').length === 0
+    const isDone =
+      steps.filter((step) => step.execution?.status !== 'DONE').length === 0 &&
+      etherspotStepExecution?.status === 'DONE'
     if (isDone) {
-      const lastStep = steps[steps.length - 1]
-      const { toChain } = getReceivingInfo(lastStep)
-      const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
+      const toChain = getChainById(ChainId.POL)
+      const receivedAmount = new BigNumber(etherspotStepExecution?.toAmount || '0')
       const successMessage = !!finalTokenAmount ? (
         <>
           <Typography.Text>
@@ -557,7 +567,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
 
       return (
         <Space direction="vertical">
-          <Typography.Text strong>Swap Successful!</Typography.Text>
+          <Typography.Text strong>Staking Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
               <span>{successMessage}</span>
@@ -578,7 +588,9 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     }
 
     // FAILED
-    const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
+    const isFailed =
+      steps.some((step) => step.execution?.status === 'FAILED') ||
+      etherspotStepExecution?.status === 'FAILED'
     if (isFailed) {
       return (
         <Button type="primary" onClick={() => restartCrossChainSwap()} style={{ marginTop: 10 }}>
