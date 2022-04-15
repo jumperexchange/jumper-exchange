@@ -417,33 +417,32 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
   }
 
   const handlePotentialEtherSpotError = (e: any) => {
-    if (
-      etherspotStepExecution ||
-      route.lifiRoute.steps.filter((step) => step.execution?.status !== 'DONE')
-    ) {
-      if (!etherspotStepExecution) {
-        setEtherspotStepExecution({
-          status: 'FAILED',
-          process: [
-            {
-              errorMessage: e.errorMessage,
-              status: 'FAILED',
-              message: 'Prepare Transaction',
-              startedAt: Date.now(),
-              doneAt: Date.now(),
-            },
-          ],
-        })
-      } else {
-        const processList = etherspotStepExecution.process
-        processList[processList.length - 1].status = 'FAILED'
-        processList[processList.length - 1].errorMessage = e.errorMessage
-        processList[processList.length - 1].doneAt = Date.now()
-        setEtherspotStepExecution({
-          status: 'FAILED',
-          process: processList,
-        })
-      }
+    if (route.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')) {
+      return
+    }
+
+    if (!etherspotStepExecution) {
+      setEtherspotStepExecution({
+        status: 'FAILED',
+        process: [
+          {
+            errorMessage: e.errorMessage,
+            status: 'FAILED',
+            message: 'Prepare Transaction',
+            startedAt: Date.now(),
+            doneAt: Date.now(),
+          },
+        ],
+      })
+    } else {
+      const processList = etherspotStepExecution.process
+      processList[processList.length - 1].status = 'FAILED'
+      processList[processList.length - 1].errorMessage = e.errorMessage
+      processList[processList.length - 1].doneAt = Date.now()
+      setEtherspotStepExecution({
+        status: 'FAILED',
+        process: processList,
+      })
     }
   }
 
