@@ -272,7 +272,6 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
   }
 
   const prepareEtherSpotStep = async () => {
-    etherspot.clearGatewayBatch()
     const tokenPolygonKLIMAPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
     const tokenPolygonSKLIMAPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
 
@@ -485,12 +484,34 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
   const executeEtherspotStep = async () => {
     const processList: Process[] = [
       {
-        id: 'prepare',
-        message: 'Prepare Transaction',
+        id: 'chainSwitch',
+        message: 'Switch Chain',
         startedAt: Date.now(),
-        status: 'PENDING',
+        status: 'ACTION_REQUIRED',
       },
     ]
+    setEtherspotStepExecution({
+      status: 'ACTION_REQUIRED',
+      process: processList,
+    })
+
+    await switchChain(ChainId.POL)
+
+    processList.map((process) => {
+      if (process.id === 'chainSwitch') {
+        process.status = 'DONE'
+        process.doneAt = Date.now()
+      }
+      return process
+    })
+
+    processList.push({
+      id: 'prepare',
+      message: 'Prepare Transaction',
+      startedAt: Date.now(),
+      status: 'PENDING',
+    })
+
     setEtherspotStepExecution({
       status: 'PENDING',
       process: processList,
