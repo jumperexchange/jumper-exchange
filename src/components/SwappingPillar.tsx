@@ -93,18 +93,6 @@ const getTransferTransaction = async (
   return erc20.populateTransaction.transfer(toAddress, amount)
 }
 
-const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
-  const lastStep = route.steps[route.steps.length - 1]
-  const { toToken } = getReceivingInfo(lastStep)
-  return LiFi.getTokenBalance(account, toToken)
-}
-
-const getReceivingInfo = (step: Step) => {
-  const toChain = getChainById(step.action.toChainId)
-  const toToken = step.action.toToken
-  return { toChain, toToken }
-}
-
 const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }: SwappingProps) => {
   const { steps } = route.lifiRoute
 
@@ -363,20 +351,11 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       console.warn('Execution failed!', route.lifiRoute)
       // eslint-disable-next-line no-console
       console.error(e)
-      if (etherspotStepExecution) {
-        const processList = etherspotStepExecution.process
-        processList[processList.length - 1].status = 'FAILED'
-        processList[processList.length - 1].errorMessage = e
-        setEtherspotStepExecution({
-          status: 'FAILED',
-          process: processList,
-        })
-      }
+      handlePotentialEtherSpotError(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
-    // setFinalTokenAmount(await getFinalBalance(web3.account!, route.lifiRoute))
     await finalizeEtherSpotStep()
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
@@ -396,16 +375,18 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     setIsSwapping(true)
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
+      await executeEtherspotStep()
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
+      handlePotentialEtherSpotError(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalance(web3.account!, route.lifiRoute))
+    await finalizeEtherSpotStep()
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -428,8 +409,42 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
         updateRoute(route.lifiRoute)
       }
     }
+    if (etherspotStepExecution) {
+      setEtherspotStepExecution(undefined)
+    }
     // start again
     resumeExecution()
+  }
+
+  const handlePotentialEtherSpotError = (e: any) => {
+    if (
+      etherspotStepExecution ||
+      route.lifiRoute.steps.filter((step) => step.execution?.status !== 'DONE')
+    ) {
+      if (!etherspotStepExecution) {
+        setEtherspotStepExecution({
+          status: 'FAILED',
+          process: [
+            {
+              errorMessage: e,
+              status: 'FAILED',
+              message: 'Prepare Transaction',
+              startedAt: Date.now(),
+              doneAt: Date.now(),
+            },
+          ],
+        })
+      } else {
+        const processList = etherspotStepExecution.process
+        processList[processList.length - 1].status = 'FAILED'
+        processList[processList.length - 1].errorMessage = e
+        processList[processList.length - 1].doneAt = Date.now()
+        setEtherspotStepExecution({
+          status: 'FAILED',
+          process: processList,
+        })
+      }
+    }
   }
 
   const executeEtherspotStep = async () => {
@@ -437,7 +452,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       {
         id: 'prepare',
         message: 'Prepare Transaction',
-        startedAt: 0,
+        startedAt: Date.now(),
         status: 'PENDING',
       },
     ]
@@ -450,12 +465,14 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     processList.map((process) => {
       if (process.id === 'prepare') {
         process.status = 'DONE'
+        process.doneAt = Date.now()
       }
+      return process
     })
     processList.push({
       processId: 'sign',
       message: 'Sign Transaction',
-      startedAt: 0,
+      startedAt: Date.now(),
       status: 'ACTION_REQUIRED',
     })
     setEtherspotStepExecution({
@@ -466,12 +483,14 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     processList.map((process) => {
       if (process.id === 'sign') {
         process.status = 'DONE'
+        process.doneAt = Date.now()
       }
+      return process
     })
     processList.push({
       processId: 'wait',
       message: 'Wait For',
-      startedAt: 0,
+      startedAt: Date.now(),
       status: 'PENDING',
     })
     setEtherspotStepExecution({
@@ -487,7 +506,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       tokenAmountSKlima.decimals,
     )
 
-    const doneList = etherspotStepExecution?.process.map((p) => {
+    let doneList = etherspotStepExecution?.process.map((p) => {
       p.status = 'DONE'
       return p
     })
