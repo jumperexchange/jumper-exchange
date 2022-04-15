@@ -1,6 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ExecutionSettings, StepTool } from '@lifinance/sdk'
+import { ChainId, ExecutionSettings, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
@@ -15,12 +15,20 @@ import {
   Typography,
 } from 'antd'
 import BigNumber from 'bignumber.js'
-import { constants } from 'ethers'
+import { BigNumberish, constants, ethers } from 'ethers'
+import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
 import walletIcon from '../assets/wallet.png'
+import {
+  erc20Abi,
+  KLIMA_ADDRESS,
+  sKLIMA_ADDRESS,
+  STAKE_KLIMA_CONTRACT_ADDRESS,
+  stakeKlimaAbi,
+} from '../constants'
 import LiFi from '../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
@@ -47,11 +55,34 @@ interface SwapSettings {
 }
 
 interface SwappingProps {
-  route: Route
+  route: { lifiRoute: Route; gasStep: Step; stakingStep: Step }
+  etherspot: Sdk
   settings: SwapSettings
   updateRoute: Function
   onSwapDone: Function
   fixedRecipient?: boolean
+}
+
+const getSetAllowanceTransaction = async (
+  tokenAddress: string,
+  approvalAddress: string,
+  amount: BigNumberish,
+) => {
+  const erc20 = new ethers.Contract(tokenAddress, erc20Abi)
+  return erc20.populateTransaction.approve(approvalAddress, amount)
+}
+
+const getStakeKlimaTransaction = (amount: BigNumberish) => {
+  const contract = new ethers.Contract(STAKE_KLIMA_CONTRACT_ADDRESS, stakeKlimaAbi)
+  return contract.populateTransaction.stake(amount)
+}
+const getTransferTransaction = async (
+  tokenAddress: string,
+  toAddress: string,
+  amount: BigNumberish,
+) => {
+  const erc20 = new ethers.Contract(tokenAddress, erc20Abi)
+  return erc20.populateTransaction.transfer(toAddress, amount)
 }
 
 const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
@@ -66,14 +97,15 @@ const getReceivingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const SwappingExternalStep = ({
+const SwappingPillar = ({
   route,
+  etherspot,
   updateRoute,
   settings,
   onSwapDone,
   fixedRecipient = false,
 }: SwappingProps) => {
-  const { steps } = route
+  const { steps } = route.lifiRoute
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
@@ -103,7 +135,7 @@ const SwappingExternalStep = ({
 
     // move execution to background when modal is closed
     return function cleanup() {
-      LiFi.moveExecutionToBackground(route)
+      LiFi.moveExecutionToBackground(route.lifiRoute)
     }
   }, [])
 
@@ -198,7 +230,7 @@ const SwappingExternalStep = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -219,7 +251,7 @@ const SwappingExternalStep = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -240,13 +272,73 @@ const SwappingExternalStep = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
       default:
         // eslint-disable-next-line no-console
         console.warn('should never reach here')
+    }
+  }
+
+  const prepareEtherSpotStep = async () => {
+    const tokenPolygonKLIMA = await LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
+    const tokenPolygonSKLIMA = await LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
+    if (etherspot && route.gasStep.transactionRequest && route.stakingStep.transactionRequest) {
+      const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
+        route.stakingStep.estimate.fromAmount,
+      )
+      const txAllowTotal = await getSetAllowanceTransaction(
+        route.lifiRoute.toToken.address,
+        route.gasStep.estimate.approvalAddress as string,
+        totalAmount,
+      )
+
+      await etherspot.batchExecuteAccountTransaction({
+        to: txAllowTotal.to as string,
+        data: txAllowTotal.data as string,
+      })
+
+      // Swap
+      await etherspot.batchExecuteAccountTransaction({
+        to: route.gasStep.transactionRequest.to as string,
+        data: route.gasStep.transactionRequest.data as string,
+      })
+
+      await etherspot.batchExecuteAccountTransaction({
+        to: route.stakingStep.transactionRequest.to as string,
+        data: route.stakingStep.transactionRequest.data as string,
+      })
+      const amountKlima = route.stakingStep.estimate.toAmountMin
+
+      // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
+      const txAllow = await getSetAllowanceTransaction(
+        tokenPolygonKLIMA!.address,
+        STAKE_KLIMA_CONTRACT_ADDRESS,
+        amountKlima,
+      )
+      await etherspot.batchExecuteAccountTransaction({
+        to: txAllow.to as string,
+        data: txAllow.data as string,
+      })
+
+      // stake KLIMA: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
+      const txStake = await getStakeKlimaTransaction(amountKlima)
+      await etherspot.batchExecuteAccountTransaction({
+        to: txStake.to as string,
+        data: txStake.data as string,
+      })
+
+      const txTransfer = await getTransferTransaction(
+        tokenPolygonSKLIMA!.address,
+        web3.account!,
+        amountKlima,
+      )
+      await etherspot.batchExecuteAccountTransaction({
+        to: txTransfer.to as string,
+        data: txTransfer.data as string,
+      })
     }
   }
 
@@ -259,21 +351,28 @@ const SwappingExternalStep = ({
       switchChainHook: switchChainHook,
       infiniteApproval: settings.infiniteApproval,
     }
-    storeRoute(route)
+    storeRoute(route.lifiRoute)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      await LiFi.executeRoute(signer, route, executionSettings)
+      await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
+      // console.log(etherspot.state.accountAddress)
+
+      await prepareEtherSpotStep()
+      const gatewayBatch = await etherspot.estimateGatewayBatch()
+      // console.log(gatewayBatch)
+      const batch = await etherspot.submitGatewayBatch()
+      // console.log(batch)
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route)
+      console.warn('Execution failed!', route.lifiRoute)
       // eslint-disable-next-line no-console
       console.error(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalance(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalance(web3.account!, route.lifiRoute))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -291,7 +390,7 @@ const SwappingExternalStep = ({
 
     setIsSwapping(true)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), route, executionSettings)
+      await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
@@ -301,7 +400,7 @@ const SwappingExternalStep = ({
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalance(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalance(web3.account!, route.lifiRoute))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -321,7 +420,7 @@ const SwappingExternalStep = ({
       if (steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
         steps[index].execution!.status = 'RESUME'
         steps[index].execution!.process.pop() // remove last (failed) process
-        updateRoute(route)
+        updateRoute(route.lifiRoute)
       }
     }
     // start again
@@ -473,6 +572,42 @@ const SwappingExternalStep = ({
 
   const currentProcess = getCurrentProcess()
 
+  const parseEtherspotItem = () => {
+    const lastLiFiStep = route.lifiRoute.steps[route.lifiRoute.steps.length - 1]
+    const index = route.lifiRoute.steps.length
+    //const isDone = false //step.execution && step.execution.status === 'DONE'
+    const isLoading = false //isSwapping && step.execution && step.execution.status === 'PENDING'
+    const isPaused = false //!isSwapping && step.execution && step.execution.status === 'PENDING'
+    const color = 'blue' //isDone ? 'green' : step.execution ? 'blue' : 'gray'
+    // const executionDuration = !!step.estimate.executionDuration && (
+    //   <>
+    //     <br />
+    //     <span>Estimated duration: {parseSecondsAsTime(step.estimate.executionDuration)} min</span>
+    //   </>
+    // )
+    return [
+      <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
+        <h4>Swap on {'Pillar'}</h4>
+        <span>
+          {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
+          <ArrowRightOutlined />{' '}
+          {formatTokenAmount(
+            route.stakingStep.action.toToken,
+            route.stakingStep.estimate?.toAmount,
+          )}
+        </span>
+        {/* {executionDuration} */}
+      </Timeline.Item>,
+      <Timeline.Item
+        position={isMobile ? 'right' : 'left'}
+        key={index + '_right'}
+        color={color}
+        dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
+        {/* {executionSteps} */}
+      </Timeline.Item>,
+    ]
+  }
+
   return (
     <>
       {alerts}
@@ -481,6 +616,7 @@ const SwappingExternalStep = ({
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
         {steps.map(parseStepToTimeline)}
+        {parseEtherspotItem()}
       </Timeline>
 
       <div style={{ display: 'flex', backgroundColor: 'rgba(255,255,255, 0)' }}>
@@ -557,4 +693,4 @@ const SwappingExternalStep = ({
   )
 }
 
-export default SwappingExternalStep
+export default SwappingPillar

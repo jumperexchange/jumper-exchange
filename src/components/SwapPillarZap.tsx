@@ -34,6 +34,7 @@ import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
 import { UkraineIcon } from '../assets/icons/ukraineIcon'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
+import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -62,20 +63,11 @@ import {
   TokenAmount,
 } from '../types'
 import SwapForm from './SwapForm'
-import SwappingExternalStep from './SwappingExternalStep'
+import SwappingPillar from './SwappingPillar'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
 
 const history = createBrowserHistory()
-const DONATION_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
-const MORE_INFO_PAGE_URL =
-  'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
-
-// pillar zap related stuff
-export const STAKE_KLIMA_CONTRACT_ADDRESS = '0x4D70a031Fc76DA6a9bC0C922101A05FA95c3A227'
-export const KLIMA_ADDRESS = '0x4e78011Ce80ee02d2c3e649Fb657E45898257815'
-export const sKLIMA_ADDRESS = '0xb0C22d8D350C67420f06F48936654f567C73E8C8'
-
 let currentRouteCallId: string
 
 interface TokenWithAmounts extends Token {
@@ -266,6 +258,12 @@ interface TokenAmountList {
   [ChainKey: string]: Array<TokenWithAmounts>
 }
 
+interface ExtendedRoute {
+  lifiRoute: RouteType
+  gasStep: Step
+  stakingStep: Step
+}
+
 interface StartParams {
   depositChain?: ChainKey
   depositToken?: string
@@ -295,7 +293,7 @@ const Swap = () => {
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [routeCallResult, setRouteCallResult] =
-    useState<{ routeResult: RouteType; gasStep: Step; stakingStep: Step; id: string }>()
+    useState<{ lifiRoute: RouteType; gasStep: Step; stakingStep: Step; id: string }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -306,12 +304,10 @@ const Swap = () => {
   const [, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
-  const [route, setRoute] = useState<{ route: RouteType; gasStep: Step; stakingStep: Step }>(
-    {} as any,
-  )
+  const [route, setRoute] = useState<ExtendedRoute>({} as any)
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
+  const [selectedRoute, setSelectedRoute] = useState<ExtendedRoute | undefined>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
@@ -740,7 +736,7 @@ const Swap = () => {
           const additionalQuotes = await Promise.all([gasStep, stakingStep])
 
           setRouteCallResult({
-            routeResult: result.routes[0],
+            lifiRoute: result.routes[0],
             gasStep: additionalQuotes[0],
             stakingStep: additionalQuotes[1],
             id,
@@ -771,13 +767,13 @@ const Swap = () => {
   // set route call results
   useEffect(() => {
     if (routeCallResult) {
-      const { routeResult, gasStep, stakingStep, id } = routeCallResult
+      const { lifiRoute, gasStep, stakingStep, id } = routeCallResult
 
       if (id === currentRouteCallId) {
-        setRoute({ route: routeResult, gasStep, stakingStep })
+        setRoute({ lifiRoute, gasStep, stakingStep })
         fadeInAnimation(routeCards)
-        setHighlightedIndex(routeResult ? -1 : 0)
-        setNoRoutesAvailable(!routeResult)
+        setHighlightedIndex(lifiRoute && gasStep && stakingStep ? 0 : -1)
+        setNoRoutesAvailable(!lifiRoute || !gasStep || !stakingStep)
         setRoutesLoading(false)
       }
     }
@@ -818,14 +814,9 @@ const Swap = () => {
     return quoteUsdcToKlima
   }
 
-  useEffect(() => {})
-
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(route.route))
-
-    // Reset routes to avoid reexecution with same data
-    setRoute({} as any)
+    setSelectedRoute(deepClone(route))
     setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
   }
@@ -879,14 +870,14 @@ const Swap = () => {
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnStartChain(route.route)) {
+    if (!hasSufficientGasBalanceOnStartChain(route.lifiRoute)) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Insufficient Gas on Start Chain
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnCrossChain(route.route)) {
+    if (!hasSufficientGasBalanceOnCrossChain(route.lifiRoute)) {
       return (
         <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
@@ -1116,8 +1107,7 @@ const Swap = () => {
               type="primary"
               size={'large'}
               onClick={() => {
-                // eslint-disable-next-line security/detect-non-literal-fs-filename
-                window.open(MORE_INFO_PAGE_URL, '_blank')
+                window.open('https://li.fi', '_blank')
               }}>
               More details <ArrowRightOutlined />
             </Button>
@@ -1128,9 +1118,7 @@ const Swap = () => {
               type="primary"
               size={'large'}
               onClick={() => {
-                const scanUrl = getChainById(ChainId.POL).metamask.blockExplorerUrls[0]
-                // eslint-disable-next-line security/detect-non-literal-fs-filename
-                window.open(scanUrl + 'address/' + DONATION_WALLET + '#tokentxns', '_blank')
+                window.open('https://li.fi', '_blank')
               }}>
               Wallet address <ArrowRightOutlined />
             </Button>
@@ -1143,10 +1131,10 @@ const Swap = () => {
         </Row>
       </div>
 
-      {selectedRoute && !!selectedRoute.steps.length && (
+      {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
         <Modal
           className="swapModal"
-          visible={selectedRoute.steps.length > 0}
+          visible={selectedRoute.lifiRoute.steps.length > 0}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()
@@ -1158,9 +1146,10 @@ const Swap = () => {
           destroyOnClose={true}
           width={700}
           footer={null}>
-          <SwappingExternalStep
+          <SwappingPillar
             fixedRecipient={true}
             route={selectedRoute}
+            etherspot={etherSpotSDK!}
             settings={{ infiniteApproval: optionInfiniteApproval }}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
@@ -1170,7 +1159,7 @@ const Swap = () => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
-            }}></SwappingExternalStep>
+            }}></SwappingPillar>
         </Modal>
       )}
     </Content>
