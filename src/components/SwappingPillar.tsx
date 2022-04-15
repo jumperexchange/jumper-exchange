@@ -272,8 +272,43 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
   }
 
   const prepareEtherSpotStep = async () => {
-    const tokenPolygonKLIMA = await LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
-    const tokenPolygonSKLIMA = await LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
+    const tokenPolygonKLIMAPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
+    const tokenPolygonSKLIMAPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
+
+    const gasStepRefreshPromise = LiFi.getQuote({
+      fromChain: route.gasStep.action.fromChainId,
+      fromToken: route.gasStep.action.fromToken.address,
+      fromAddress: etherspot.state.accountAddress!,
+      fromAmount: route.gasStep.action.fromAmount, // TODO: check if correct value
+      toChain: route.gasStep.action.fromChainId,
+      toToken: route.gasStep.action.toToken.address, // hardcode return gastoken
+      slippage: route.gasStep.action.slippage,
+      integrator: 'lifi-pillar',
+      preferExchanges: ['paraswap'],
+    })
+    const klimaStepRefreshPromise = LiFi.getQuote({
+      fromChain: route.klimaStep.action.fromChainId,
+      fromToken: route.klimaStep.action.fromToken.address,
+      fromAddress: etherspot.state.accountAddress!,
+      fromAmount: route.klimaStep.action.fromAmount, // TODO: check if correct value
+      toChain: route.klimaStep.action.fromChainId,
+      toToken: route.klimaStep.action.toToken.address, // hardcode return gastoken
+      slippage: route.gasStep.action.slippage,
+      integrator: 'lifi-pillar',
+      preferExchanges: ['paraswap'],
+    })
+
+    const resolvedPromises = await Promise.all([
+      tokenPolygonKLIMAPromise,
+      tokenPolygonSKLIMAPromise,
+      gasStepRefreshPromise,
+      klimaStepRefreshPromise,
+    ])
+    const tokenPolygonKLIMA = resolvedPromises[0]
+    const tokenPolygonSKLIMA = resolvedPromises[1]
+    route.gasStep = resolvedPromises[2]
+    route.klimaStep = resolvedPromises[3]
+
     if (etherspot && route.gasStep.transactionRequest && route.klimaStep.transactionRequest) {
       const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
         route.klimaStep.estimate.fromAmount,

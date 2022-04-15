@@ -790,9 +790,9 @@ const Swap = () => {
       fromAmount: amount, // TODO: check if correct value
       toChain: initialTransferDestChain.id,
       toToken: (await LiFi.getToken(initialTransferDestChain.id, 'MATIC')!).address, // hardcode return gastoken
-      slippage: 0.003,
+      slippage: 0.005,
       integrator: 'lifi-pillar',
-      preferExchanges: ['sushiswap-pol'],
+      preferExchanges: ['paraswap'],
     })
     return quoteUsdcToMatic
   }
@@ -807,9 +807,9 @@ const Swap = () => {
       fromAmount: amount, // TODO: check if correct value
       toChain: initialTransferDestChain.id,
       toToken: tokenPolygonKLIMA!.address,
-      slippage: 0.003,
+      slippage: 0.005,
       integrator: 'lifi-pillar',
-      preferExchanges: ['sushiswap-pol'],
+      preferExchanges: ['paraswap'],
     })
     return quoteUsdcToKlima
   }
