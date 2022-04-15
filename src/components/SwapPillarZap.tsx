@@ -261,7 +261,7 @@ interface TokenAmountList {
 interface ExtendedRoute {
   lifiRoute: RouteType
   gasStep: Step
-  stakingStep: Step
+  klimaStep: Step
 }
 
 interface StartParams {
@@ -770,7 +770,7 @@ const Swap = () => {
       const { lifiRoute, gasStep, stakingStep, id } = routeCallResult
 
       if (id === currentRouteCallId) {
-        setRoute({ lifiRoute, gasStep, stakingStep })
+        setRoute({ lifiRoute, gasStep, klimaStep: stakingStep })
         fadeInAnimation(routeCards)
         setHighlightedIndex(lifiRoute && gasStep && stakingStep ? 0 : -1)
         setNoRoutesAvailable(!lifiRoute || !gasStep || !stakingStep)
@@ -908,7 +908,7 @@ const Swap = () => {
   }
 
   const toSection = () => {
-    const amount = route?.stakingStep?.estimate?.toAmountMin || '0'
+    const amount = route?.klimaStep?.estimate?.toAmountMin || '0'
     const formattedAmount = tokenPolygonSKLIMA ? formatTokenAmount(tokenPolygonSKLIMA, amount) : '0'
     return (
       <Row

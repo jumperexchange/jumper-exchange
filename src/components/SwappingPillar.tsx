@@ -1,6 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ChainId, ExecutionSettings, StepTool } from '@lifinance/sdk'
+import { ChainId, ExecutionSettings, StepTool, Token } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
@@ -55,7 +55,7 @@ interface SwapSettings {
 }
 
 interface SwappingProps {
-  route: { lifiRoute: Route; gasStep: Step; stakingStep: Step }
+  route: { lifiRoute: Route; gasStep: Step; klimaStep: Step }
   etherspot: Sdk
   settings: SwapSettings
   updateRoute: Function
@@ -119,6 +119,7 @@ const SwappingPillar = ({
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
+  const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -137,6 +138,12 @@ const SwappingPillar = ({
     return function cleanup() {
       LiFi.moveExecutionToBackground(route.lifiRoute)
     }
+  }, [])
+
+  useEffect(() => {
+    LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS).then((token) => {
+      setTokenPolygonSKLIMA(token)
+    })
   }, [])
 
   const parseExecution = (step: Step) => {
@@ -285,9 +292,9 @@ const SwappingPillar = ({
   const prepareEtherSpotStep = async () => {
     const tokenPolygonKLIMA = await LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
     const tokenPolygonSKLIMA = await LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
-    if (etherspot && route.gasStep.transactionRequest && route.stakingStep.transactionRequest) {
+    if (etherspot && route.gasStep.transactionRequest && route.klimaStep.transactionRequest) {
       const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
-        route.stakingStep.estimate.fromAmount,
+        route.klimaStep.estimate.fromAmount,
       )
       const txAllowTotal = await getSetAllowanceTransaction(
         route.lifiRoute.toToken.address,
@@ -307,10 +314,10 @@ const SwappingPillar = ({
       })
 
       await etherspot.batchExecuteAccountTransaction({
-        to: route.stakingStep.transactionRequest.to as string,
-        data: route.stakingStep.transactionRequest.data as string,
+        to: route.klimaStep.transactionRequest.to as string,
+        data: route.klimaStep.transactionRequest.data as string,
       })
-      const amountKlima = route.stakingStep.estimate.toAmountMin
+      const amountKlima = route.klimaStep.estimate.toAmountMin
 
       // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
       const txAllow = await getSetAllowanceTransaction(
@@ -592,8 +599,14 @@ const SwappingPillar = ({
           {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
           <ArrowRightOutlined />{' '}
           {formatTokenAmount(
-            route.stakingStep.action.toToken,
-            route.stakingStep.estimate?.toAmount,
+            {
+              symbol: 'sKLIMA',
+              decimals: 9,
+              name: 'sKLIMA',
+              chainId: 137,
+              address: sKLIMA_ADDRESS,
+            },
+            route.klimaStep.estimate?.toAmount,
           )}
         </span>
         {/* {executionDuration} */}
