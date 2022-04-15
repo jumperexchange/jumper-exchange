@@ -1,6 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ChainId, ExecutionSettings, StepTool, Token } from '@lifinance/sdk'
+import { ChainId, Execution, ExecutionSettings, Process, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
@@ -50,6 +50,14 @@ import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
+const SKLIMA_TOKEN_POL = {
+  symbol: 'sKLIMA',
+  decimals: 9,
+  name: 'sKLIMA',
+  chainId: 137,
+  address: sKLIMA_ADDRESS,
+}
+
 interface SwapSettings {
   infiniteApproval: boolean
 }
@@ -97,14 +105,7 @@ const getReceivingInfo = (step: Step) => {
   return { toChain, toToken }
 }
 
-const SwappingPillar = ({
-  route,
-  etherspot,
-  updateRoute,
-  settings,
-  onSwapDone,
-  fixedRecipient = false,
-}: SwappingProps) => {
+const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }: SwappingProps) => {
   const { steps } = route.lifiRoute
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -119,8 +120,7 @@ const SwappingPillar = ({
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
-  const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
-
+  const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
@@ -138,12 +138,6 @@ const SwappingPillar = ({
     return function cleanup() {
       LiFi.moveExecutionToBackground(route.lifiRoute)
     }
-  }, [])
-
-  useEffect(() => {
-    LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS).then((token) => {
-      setTokenPolygonSKLIMA(token)
-    })
   }, [])
 
   const parseExecution = (step: Step) => {
@@ -165,7 +159,7 @@ const SwappingPillar = ({
 
             {hasFailed && (
               <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
-                {renderProcessError(step, process)}
+                {renderProcessError(process)}
               </Typography.Text>
             )}
           </Typography.Text>
@@ -363,13 +357,7 @@ const SwappingPillar = ({
     setSwapStartedAt(Date.now())
     try {
       await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
-      // console.log(etherspot.state.accountAddress)
-
-      await prepareEtherSpotStep()
-      const gatewayBatch = await etherspot.estimateGatewayBatch()
-      // console.log(gatewayBatch)
-      const batch = await etherspot.submitGatewayBatch()
-      // console.log(batch)
+      await executeEtherspotStep()
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route.lifiRoute)
@@ -379,7 +367,8 @@ const SwappingPillar = ({
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalance(web3.account!, route.lifiRoute))
+    // setFinalTokenAmount(await getFinalBalance(web3.account!, route.lifiRoute))
+    await finalizeEtherSpotStep()
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -434,6 +423,73 @@ const SwappingPillar = ({
     resumeExecution()
   }
 
+  const executeEtherspotStep = async () => {
+    const processList: Process[] = [
+      {
+        id: 'prepare',
+        message: 'Prepare Transaction',
+        startedAt: 0,
+        status: 'PENDING',
+      },
+    ]
+    setEtherspotStepExecution({
+      status: 'PENDING',
+      process: processList,
+    })
+    await prepareEtherSpotStep()
+    await etherspot.estimateGatewayBatch()
+    processList.map((process) => {
+      if (process.id === 'prepare') {
+        process.status = 'DONE'
+      }
+    })
+    processList.push({
+      processId: 'sign',
+      message: 'Sign Transaction',
+      startedAt: 0,
+      status: 'ACTION_REQUIRED',
+    })
+    setEtherspotStepExecution({
+      status: 'ACTION_REQUIRED',
+      process: processList,
+    })
+    await etherspot.submitGatewayBatch()
+    processList.map((process) => {
+      if (process.id === 'sign') {
+        process.status = 'DONE'
+      }
+    })
+    processList.push({
+      processId: 'wait',
+      message: 'Wait For',
+      startedAt: 0,
+      status: 'PENDING',
+    })
+    setEtherspotStepExecution({
+      status: 'PENDING',
+      process: processList,
+    })
+  }
+
+  const finalizeEtherSpotStep = async () => {
+    const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
+    const amountSKlimaParsed = ethers.utils.parseUnits(
+      tokenAmountSKlima.amount,
+      tokenAmountSKlima.decimals,
+    )
+
+    const doneList = etherspotStepExecution?.process.map((p) => {
+      p.status = 'DONE'
+      return p
+    })
+    setEtherspotStepExecution({
+      status: 'DONE',
+      process: doneList!,
+      toAmount: amountSKlimaParsed.toString(),
+    })
+    setFinalTokenAmount(tokenAmountSKlima)
+  }
+
   const switchChainHook = async (requiredChainId: number) => {
     if (!web3.account || !web3.library) return
 
@@ -482,34 +538,18 @@ const SwappingPillar = ({
       const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
       const successMessage = !!finalTokenAmount ? (
         <>
-          {!receivedAmount.isZero() &&
-            (!fixedRecipient ? (
-              <>
-                <Typography.Text>
-                  You received {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
-                  {` ${finalTokenAmount.symbol}`}
-                </Typography.Text>
-                <br />
-              </>
-            ) : (
-              <>
-                <Typography.Text>
-                  You sent {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(20)}
-                  {` ${finalTokenAmount.symbol}`}
-                </Typography.Text>
-                <br />
-              </>
-            ))}
-          {!fixedRecipient && (
-            <Typography.Text
-              type={!receivedAmount.isZero() ? 'secondary' : undefined}
-              style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
-              {'You now have '}
-              {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-              {` ${finalTokenAmount.symbol}`}
-              {` on ${toChain.name}`}
-            </Typography.Text>
-          )}
+          <Typography.Text>
+            You received {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
+            {` ${finalTokenAmount.symbol}`}
+          </Typography.Text>
+          <Typography.Text
+            type={!receivedAmount.isZero() ? 'secondary' : undefined}
+            style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
+            {'You now have '}
+            {new BigNumber(finalTokenAmount.amount).toFixed(4)}
+            {` ${finalTokenAmount.symbol}`}
+            {` on ${toChain.name}`}
+          </Typography.Text>
         </>
       ) : (
         ''
@@ -530,11 +570,9 @@ const SwappingPillar = ({
                 </span>
               </Tooltip>
             ))}
-          {!fixedRecipient && (
-            <Link to="/dashboard">
-              <Button type="link">Dashboard</Button>
-            </Link>
-          )}
+          <Link to="/dashboard">
+            <Button type="link">Dashboard</Button>
+          </Link>
         </Space>
       )
     }
@@ -579,13 +617,49 @@ const SwappingPillar = ({
 
   const currentProcess = getCurrentProcess()
 
-  const parseEtherspotItem = () => {
+  const parseEtherspotExecution = () => {
+    if (!etherspotStepExecution) {
+      return []
+    }
+    return etherspotStepExecution.process.map((process, index, processList) => {
+      const type =
+        process.status === 'DONE' ? 'success' : process.status === 'FAILED' ? 'danger' : undefined
+      const hasFailed = process.status === 'FAILED'
+      const isLastPendingProcess = index === processList.length - 1 && process.status === 'PENDING'
+      return (
+        <span key={index} style={{ display: 'flex' }}>
+          <Typography.Text
+            type={type}
+            style={{ maxWidth: 250 }}
+            className={isSwapping && isLastPendingProcess ? 'flashing' : undefined}>
+            <p>{renderProcessMessage(process)}</p>
+
+            {hasFailed && (
+              <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
+                {renderProcessError(process)}
+              </Typography.Text>
+            )}
+          </Typography.Text>
+          <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
+            <Clock
+              startedAt={process.startedAt}
+              successAt={process.doneAt}
+              failedAt={process.failedAt}
+            />
+          </Typography.Text>
+        </span>
+      )
+    })
+  }
+  const parseEtherspotStep = () => {
     const lastLiFiStep = route.lifiRoute.steps[route.lifiRoute.steps.length - 1]
     const index = route.lifiRoute.steps.length
-    //const isDone = false //step.execution && step.execution.status === 'DONE'
-    const isLoading = false //isSwapping && step.execution && step.execution.status === 'PENDING'
-    const isPaused = false //!isSwapping && step.execution && step.execution.status === 'PENDING'
-    const color = 'blue' //isDone ? 'green' : step.execution ? 'blue' : 'gray'
+    const isDone = etherspotStepExecution && etherspotStepExecution.status === 'DONE'
+    const isLoading =
+      isSwapping && etherspotStepExecution && etherspotStepExecution.status === 'PENDING'
+    const isPaused =
+      !isSwapping && etherspotStepExecution && etherspotStepExecution.status === 'PENDING'
+    const color = isDone ? 'green' : etherspotStepExecution ? 'blue' : 'gray'
     // const executionDuration = !!step.estimate.executionDuration && (
     //   <>
     //     <br />
@@ -594,20 +668,11 @@ const SwappingPillar = ({
     // )
     return [
       <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
-        <h4>Swap on {'Pillar'}</h4>
+        <h4>Stake via Pillar</h4>
         <span>
           {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
           <ArrowRightOutlined />{' '}
-          {formatTokenAmount(
-            {
-              symbol: 'sKLIMA',
-              decimals: 9,
-              name: 'sKLIMA',
-              chainId: 137,
-              address: sKLIMA_ADDRESS,
-            },
-            route.klimaStep.estimate?.toAmount,
-          )}
+          {formatTokenAmount(SKLIMA_TOKEN_POL, route.klimaStep.estimate?.toAmount)}
         </span>
         {/* {executionDuration} */}
       </Timeline.Item>,
@@ -616,7 +681,7 @@ const SwappingPillar = ({
         key={index + '_right'}
         color={color}
         dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
-        {/* {executionSteps} */}
+        {parseEtherspotExecution()}
       </Timeline.Item>,
     ]
   }
@@ -629,7 +694,7 @@ const SwappingPillar = ({
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
         {steps.map(parseStepToTimeline)}
-        {parseEtherspotItem()}
+        {parseEtherspotStep()}
       </Timeline>
 
       <div style={{ display: 'flex', backgroundColor: 'rgba(255,255,255, 0)' }}>
