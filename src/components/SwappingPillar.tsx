@@ -311,15 +311,17 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     route.klimaStep = resolvedPromises[3]
 
     if (etherspot && route.gasStep.transactionRequest && route.klimaStep.transactionRequest) {
+      // reset gateway batch
+      etherspot.clearGatewayBatch()
+
       const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
         route.klimaStep.estimate.fromAmount,
       )
       const txAllowTotal = await getSetAllowanceTransaction(
-        route.lifiRoute.toToken.address,
+        route.gasStep.action.fromToken.address,
         route.gasStep.estimate.approvalAddress as string,
         totalAmount,
       )
-
       await etherspot.batchExecuteAccountTransaction({
         to: txAllowTotal.to as string,
         data: txAllowTotal.data as string,
@@ -495,7 +497,9 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     })
     await prepareEtherSpotStep()
 
-    await etherspot.estimateGatewayBatch()
+    const estimate = await etherspot.estimateGatewayBatch()
+    // eslint-disable-next-line no-console
+    console.log(estimate)
 
     processList.map((process) => {
       if (process.id === 'prepare') {
@@ -506,7 +510,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     })
     processList.push({
       processId: 'sign',
-      message: 'Sign Transaction',
+      message: 'Provide Signature',
       startedAt: Date.now(),
       status: 'ACTION_REQUIRED',
     })
@@ -514,7 +518,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       status: 'ACTION_REQUIRED',
       process: processList,
     })
-    await etherspot.submitGatewayBatch()
+    let batch = await etherspot.submitGatewayBatch()
     processList.map((process) => {
       if (process.id === 'sign') {
         process.status = 'DONE'
@@ -524,12 +528,33 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     })
     processList.push({
       processId: 'wait',
-      message: 'Wait For',
+      message: 'Wait For Execution',
       startedAt: Date.now(),
       status: 'PENDING',
     })
     setEtherspotStepExecution({
       status: 'PENDING',
+      process: processList,
+    })
+
+    // info: batch.state seams to wait for a lot of confirmations (6 minutes) before changing to 'Sent'
+    let isDone = !!(batch.transaction && batch.transaction.hash)
+    while (!isDone) {
+      batch = await etherspot.getGatewaySubmittedBatch({
+        hash: batch.hash,
+      })
+
+      isDone = !!(batch.transaction && batch.transaction.hash)
+      if (!isDone) {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 1000)
+        })
+      }
+    }
+    // eslint-disable-next-line no-console
+    console.log('gateway executed batch', batch.transaction.hash, batch)
+    setEtherspotStepExecution({
+      status: 'DONE',
       process: processList,
     })
   }
