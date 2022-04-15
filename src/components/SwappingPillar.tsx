@@ -426,7 +426,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
           status: 'FAILED',
           process: [
             {
-              errorMessage: e,
+              errorMessage: e.errorMessage,
               status: 'FAILED',
               message: 'Prepare Transaction',
               startedAt: Date.now(),
@@ -437,7 +437,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       } else {
         const processList = etherspotStepExecution.process
         processList[processList.length - 1].status = 'FAILED'
-        processList[processList.length - 1].errorMessage = e
+        processList[processList.length - 1].errorMessage = e.errorMessage
         processList[processList.length - 1].doneAt = Date.now()
         setEtherspotStepExecution({
           status: 'FAILED',
@@ -699,7 +699,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     // )
     return [
       <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
-        <h4>Stake via Pillar</h4>
+        <h4>Stake for sKLIMA</h4>
         <span>
           {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
           <ArrowRightOutlined />{' '}
