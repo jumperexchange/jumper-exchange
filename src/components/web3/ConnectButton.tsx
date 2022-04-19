@@ -3,7 +3,7 @@ import './web3.css'
 import { WalletOutlined } from '@ant-design/icons'
 import { useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { Avatar, Button, Modal, Popconfirm, Popover, Typography } from 'antd'
+import { Avatar, Button, Modal, Popconfirm, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 
 import blockWalletIcon from '../../assets/wallets/blockwallet.svg'
