@@ -1753,7 +1753,6 @@
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
 
-
 "@lifinance/sdk@0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-0.5.2.tgz#502fab8adb0a6517510f93eef8dbbea15342b508"
