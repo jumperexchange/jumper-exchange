@@ -1,6 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, { ExecutionSettings, StepTool } from '@lifinance/sdk'
+import { ExecutionSettings, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
@@ -21,6 +21,7 @@ import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
 
 import walletIcon from '../assets/wallet.png'
+import LiFi from '../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
@@ -94,6 +95,7 @@ const Swapping = ({
     // check if route is eligible for automatic resuming
     const allDone = steps.every((step) => step.execution?.status === 'DONE')
     const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
+
     const alreadyStarted = steps.some((step) => step.execution)
     if (!allDone && !isFailed && alreadyStarted) {
       resumeExecution()
@@ -308,8 +310,15 @@ const Swapping = ({
 
   const restartCrossChainSwap = async () => {
     // remove failed
+
     for (let index = 0; index < steps.length; index++) {
-      if (steps[index].execution && steps[index].execution!.status === 'FAILED') {
+      const stepHasFailed = steps[index].execution?.status === 'FAILED'
+      // check if the step has been cancelled which is a "failed" state
+      const stepHasBeenCancelled = steps[index].execution?.process.some(
+        (process) => process.status === 'CANCELLED',
+      )
+
+      if (steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
         steps[index].execution!.status = 'RESUME'
         steps[index].execution!.process.pop() // remove last (failed) process
         updateRoute(route)

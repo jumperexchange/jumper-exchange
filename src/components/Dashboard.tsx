@@ -748,13 +748,14 @@ const Dashboard = () => {
 
   let summaryIndex = 0
   const isTransferto = window.location.href.includes('transferto')
+
   return (
     <Content className="site-layout dashboard">
       <div
         className="site-layout-background"
         style={{
           minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
-          marginTop: 104,
+          marginTop: !isTransferto ? 104 : 64,
         }}>
         <Table
           columns={columns}

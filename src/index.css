@@ -10,8 +10,6 @@
 html {
   height: auto !important;
   width: auto !important;
-  background: white !important;
-  background: linear-gradient(180deg, #f6f3f2 0%, rgba(246, 243, 242, 0) 100%) !important;
 }
 
 body {

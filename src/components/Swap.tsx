@@ -2,7 +2,6 @@ import './Swap.css'
 
 import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import LiFi, { supportedChains } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Button,
@@ -27,7 +26,7 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { getRpcs } from '../config/connectors'
+import LiFi from '../LiFi'
 import {
   deleteRoute,
   isWalletConnectWallet,
@@ -244,15 +243,18 @@ const Swap = () => {
 
   useEffect(() => {
     const load = async () => {
-      LiFi.setConfig({
-        apiUrl: process.env.REACT_APP_API_URL,
-        rpcs: getRpcs(),
-        defaultRouteOptions: {
-          integrator: 'li.finance',
-        },
-      })
-
       const possibilities = await LiFi.getPossibilities()
+
+      if (
+        !possibilities.chains ||
+        !possibilities.bridges ||
+        !possibilities.exchanges ||
+        !possibilities.tokens
+      ) {
+        // eslint-disable-next-line
+        console.warn('possibilities request did not contain required setup information')
+        return
+      }
 
       // chains
       setAvailableChains(possibilities.chains)
@@ -473,14 +475,16 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    const walletChainIsSupported = supportedChains.some((chain) => chain.id === web3.chainId)
-    if (!walletChainIsSupported) return
-    if (web3.chainId && !fromChainKey) {
-      const chain = availableChains.find((chain) => chain.id === web3.chainId)
-      if (chain) {
-        setFromChainKey(chain.key)
+    LiFi.getChains().then((chains) => {
+      const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
+      if (!walletChainIsSupported) return
+      if (web3.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+        if (chain) {
+          setFromChainKey(chain.key)
+        }
       }
-    }
+    })
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
@@ -507,6 +511,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
+        pathname: 'swap',
         search,
       })
     }
@@ -737,11 +742,6 @@ const Swap = () => {
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
     setSelectedRoute(deepClone(routes[highlightedIndex]))
-
-    // Reset routes to avoid reexecution with same data
-    setRoutes([])
-    setHighlightedIndex(-1)
-    setNoRoutesAvailable(false)
   }
 
   const switchChain = async (chainId: number) => {
@@ -941,8 +941,6 @@ const Swap = () => {
                   <Row justify={'center'} className="beta-disclaimer">
                     <Typography.Text type="danger" style={{ textAlign: 'center' }}>
                       Beta product - use at own risk.
-                      <br />
-                      MetaMask recommended.
                     </Typography.Text>
                   </Row>
                   <Row style={{ marginTop: 24 }} justify={'center'}>
