@@ -534,7 +534,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       return process
     })
     processList.push({
-      processId: 'sign',
+      id: 'sign',
       message: 'Provide Signature',
       startedAt: Date.now(),
       status: 'ACTION_REQUIRED',
@@ -594,6 +594,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       tokenAmountSKlima.amount,
       tokenAmountSKlima.decimals,
     )
+
     let doneList = etherspotStepExecution?.process.map((p) => {
       p.status = 'DONE'
       return p
@@ -611,6 +612,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       process: doneList,
       toAmount: amountSKlimaParsed.toString(),
     })
+
     setFinalTokenAmount(tokenAmountSKlima)
   }
 

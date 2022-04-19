@@ -6,14 +6,14 @@ export const switchChain = async (chainId: number) => {
   if (typeof ethereum === 'undefined') return false
 
   try {
-    await ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: getChainById(chainId).metamask?.chainId }],
-    })
     ethereum.once('networkChanged', async (id: string) => {
       if (parseInt(id) === chainId) {
         return true
       }
+    })
+    await ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: getChainById(chainId).metamask?.chainId }],
     })
   } catch (error: any) {
     // const ERROR_CODE_UNKNOWN_CHAIN = 4902
