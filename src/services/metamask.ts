@@ -6,11 +6,15 @@ export const switchChain = async (chainId: number) => {
   if (typeof ethereum === 'undefined') return false
 
   try {
+    ethereum.once('networkChanged', async (id: string) => {
+      if (parseInt(id) === chainId) {
+        return true
+      }
+    })
     await ethereum.request({
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: getChainById(chainId).metamask?.chainId }],
     })
-    return true
   } catch (error: any) {
     // const ERROR_CODE_UNKNOWN_CHAIN = 4902
     const ERROR_CODE_USER_REJECTED = 4001

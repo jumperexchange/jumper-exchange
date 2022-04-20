@@ -126,7 +126,7 @@ const Swapping = ({
 
             {hasFailed && (
               <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
-                {renderProcessError(step, process)}
+                {renderProcessError(process)}
               </Typography.Text>
             )}
           </Typography.Text>

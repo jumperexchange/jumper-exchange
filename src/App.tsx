@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
 import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
@@ -152,9 +153,9 @@ function App() {
                         Contact Us
                       </a>
                     </Menu.Item>
-                    <Menu.Item key="/ukraine" danger={true}>
+                    <Menu.Item key="/showcase/ukraine" danger={true}>
                       <span className="ukraine-flag">&#127482;&#127462;</span>
-                      <Link to="/ukraine">Help Ukraine!</Link>
+                      <Link to="/showcase/ukraine">Help Ukraine!</Link>
                     </Menu.Item>
                     <Menu.Item key="/about">
                       <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
@@ -171,6 +172,10 @@ function App() {
                         Explore Docs
                       </a>
                     </Menu.Item>
+                    {/* Hidden until officially announced */}
+                    {/* <Menu.Item key="/showcase/etherspot-klima">
+                      <Link to="/showcase/etherspot-klima">Etherspot+KLIMA</Link>
+                    </Menu.Item> */}
                     {/* <Menu.Item>
                       <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
                     </Menu.Item> */}
@@ -265,15 +270,28 @@ function App() {
                   }}
                 />
                 <Route
-                  path="/ukraine"
+                  path="/showcase/ukraine"
                   render={() => {
                     setMetatags({
                       title: 'LI.FI - Help Ukraine!',
                     })
-                    initStomt('swap')
                     return (
                       <div className="lifiWrap">
                         <SwapUkraine />
+                      </div>
+                    )
+                  }}
+                />
+                <Redirect path="/ukraine" to="/showcase/ukraine" />
+                <Route
+                  path="/showcase/etherspot-klima"
+                  render={() => {
+                    setMetatags({
+                      title: 'LI.FI - Etherspot KLIMA',
+                    })
+                    return (
+                      <div className="lifiWrap">
+                        <SwapEtherspotKlimaZap />
                       </div>
                     )
                   }}
