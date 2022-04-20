@@ -1,12 +1,12 @@
 import './web3.css'
 
 import { WalletOutlined } from '@ant-design/icons'
-import { AbstractConnector } from '@web3-react/abstract-connector'
 import { useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { Avatar, Button, Modal, Typography } from 'antd'
-import { useState } from 'react'
+import { Avatar, Button, Modal, Popconfirm, Typography } from 'antd'
+import { useEffect, useState } from 'react'
 
+import blockWalletIcon from '../../assets/wallets/blockwallet.svg'
 import metamaskIcon from '../../assets/wallets/metamask.svg'
 import walletConnectIcon from '../../assets/wallets/walletconnect.svg'
 import {
@@ -20,13 +20,23 @@ import { addToDeactivatedWallets, removeFromActiveWallets } from './DisconnectBu
 
 const ENABLED_WALLETS = process.env.REACT_APP_SUPPORTED_WALLETS
 
-const supportedWallets = [
+interface Wallet {
+  key: string
+  name: string
+  icon: string
+  connector: Function
+  providerCheck?: Function
+}
+const supportedWallets: Wallet[] = [
   {
     key: 'metamask',
     name: 'MetaMask',
     icon: metamaskIcon,
     connector: async () => {
       return await getInjectedConnector()
+    },
+    providerCheck: () => {
+      return !!(window as any).ethereum && !!(window as any).ethereum['isMetaMask']
     },
   },
   {
@@ -35,6 +45,21 @@ const supportedWallets = [
     icon: walletConnectIcon,
     connector: async () => {
       return await getWalletConnectConnector()
+    },
+  },
+  {
+    key: 'blockwallet',
+    name: 'BlockWallet',
+    icon: blockWalletIcon,
+    connector: async () => {
+      return await getInjectedConnector()
+    },
+    providerCheck: () => {
+      if ((window as any).ethereum && (window as any).ethereum.isBlockWallet) {
+        return true
+      } else {
+        return false
+      }
     },
   },
 ]
@@ -71,8 +96,18 @@ type ConnectButtonPropType = {
 function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropType) {
   const { activate } = useWeb3React()
   const [showConnectModal, setShowConnectModal] = useState<boolean>(false)
+  const [showWalletIdentityPopover, setShowWalletIdentityPopover] = useState<Wallet>()
 
-  const login = async (connector: AbstractConnector) => {
+  const login = async (wallet: Wallet) => {
+    if (wallet.providerCheck) {
+      const checkResult = wallet.providerCheck?.()
+      if (!checkResult) {
+        setShowWalletIdentityPopover(wallet)
+        return
+      }
+    }
+
+    const connector = await wallet.connector()
     try {
       await activate(connector, undefined, true)
     } catch {
@@ -92,6 +127,10 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
     })
   }
 
+  useEffect(() => {
+    setShowWalletIdentityPopover(undefined)
+  }, [showConnectModal])
+
   return (
     <>
       <Button
@@ -104,6 +143,7 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
         Connect Your Wallet
       </Button>
       <Modal
+        destroyOnClose={true}
         className="wallet-selection-modal"
         visible={showConnectModal}
         onOk={() => setShowConnectModal(false)}
@@ -115,22 +155,38 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
         {enabledWallets.map((wallet) => {
           if (ENABLED_WALLETS?.includes(wallet.key)) {
             return (
-              <div
-                style={{
-                  // width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  cursor: 'pointer',
+              <Popconfirm
+                key={wallet.name + '_identitiy_popover'}
+                showCancel={false}
+                onConfirm={() => {
+                  setShowWalletIdentityPopover(undefined)
                 }}
-                key={wallet.name}
-                onClick={async () => login(await wallet.connector())}
-                className="wallet-provider-button">
-                <div>{wallet.name}</div>
-                <div>
-                  <Avatar shape="square" size={'large'} src={wallet.icon}></Avatar>
+                onCancel={() => {
+                  setShowWalletIdentityPopover(undefined)
+                }}
+                title={
+                  <Typography.Text>
+                    {`Please make sure that only the ${wallet.name} browser extension is active before choosing this wallet.`}
+                  </Typography.Text>
+                }
+                visible={showWalletIdentityPopover?.key === wallet.key}>
+                <div
+                  style={{
+                    // width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: 'pointer',
+                  }}
+                  key={wallet.name}
+                  onClick={async () => login(wallet)}
+                  className="wallet-provider-button">
+                  <div>{wallet.name}</div>
+                  <div>
+                    <Avatar shape="square" size={'large'} src={wallet.icon}></Avatar>
+                  </div>
                 </div>
-              </div>
+              </Popconfirm>
             )
           }
         })}
