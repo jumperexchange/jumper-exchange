@@ -16,7 +16,7 @@ import {
 } from 'antd'
 import BigNumber from 'bignumber.js'
 import { BigNumberish, constants, ethers } from 'ethers'
-import { Sdk } from 'etherspot'
+import { GatewayBatchStates, Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Link } from 'react-router-dom'
@@ -64,7 +64,7 @@ interface SwapSettings {
 
 interface SwappingProps {
   route: { lifiRoute: Route; gasStep: Step; klimaStep: Step }
-  etherspot: Sdk
+  etherspot?: Sdk
   settings: SwapSettings
   updateRoute: Function
   onSwapDone: Function
@@ -272,6 +272,9 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
   }
 
   const prepareEtherSpotStep = async () => {
+    if (!etherspot) {
+      throw new Error('Etherspot not initialized.')
+    }
     const tokenPolygonKLIMAPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
     const tokenPolygonSKLIMAPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
 
@@ -309,61 +312,63 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     route.gasStep = resolvedPromises[2]
     route.klimaStep = resolvedPromises[3]
 
-    if (etherspot && route.gasStep.transactionRequest && route.klimaStep.transactionRequest) {
-      // reset gateway batch
-      etherspot.clearGatewayBatch()
-
-      const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
-        route.klimaStep.estimate.fromAmount,
-      )
-      const txAllowTotal = await getSetAllowanceTransaction(
-        route.gasStep.action.fromToken.address,
-        route.gasStep.estimate.approvalAddress as string,
-        totalAmount,
-      )
-      await etherspot.batchExecuteAccountTransaction({
-        to: txAllowTotal.to as string,
-        data: txAllowTotal.data as string,
-      })
-
-      // Swap
-      await etherspot.batchExecuteAccountTransaction({
-        to: route.gasStep.transactionRequest.to as string,
-        data: route.gasStep.transactionRequest.data as string,
-      })
-
-      await etherspot.batchExecuteAccountTransaction({
-        to: route.klimaStep.transactionRequest.to as string,
-        data: route.klimaStep.transactionRequest.data as string,
-      })
-      const amountKlima = route.klimaStep.estimate.toAmountMin
-      // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
-      const txAllow = await getSetAllowanceTransaction(
-        tokenPolygonKLIMA!.address,
-        STAKE_KLIMA_CONTRACT_ADDRESS,
-        amountKlima,
-      )
-      await etherspot.batchExecuteAccountTransaction({
-        to: txAllow.to as string,
-        data: txAllow.data as string,
-      })
-
-      // stake KLIMA: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
-      const txStake = await getStakeKlimaTransaction(amountKlima)
-      await etherspot.batchExecuteAccountTransaction({
-        to: txStake.to as string,
-        data: txStake.data as string,
-      })
-      const txTransfer = await getTransferTransaction(
-        tokenPolygonSKLIMA!.address,
-        web3.account!,
-        amountKlima,
-      )
-      await etherspot.batchExecuteAccountTransaction({
-        to: txTransfer.to as string,
-        data: txTransfer.data as string,
-      })
+    if (!route.gasStep.transactionRequest || !route.klimaStep.transactionRequest) {
+      throw new Error('Swap transaction missing')
     }
+
+    // reset gateway batch
+    etherspot.clearGatewayBatch()
+
+    const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
+      route.klimaStep.estimate.fromAmount,
+    )
+    const txAllowTotal = await getSetAllowanceTransaction(
+      route.gasStep.action.fromToken.address,
+      route.gasStep.estimate.approvalAddress as string,
+      totalAmount,
+    )
+    await etherspot.batchExecuteAccountTransaction({
+      to: txAllowTotal.to as string,
+      data: txAllowTotal.data as string,
+    })
+
+    // Swap
+    await etherspot.batchExecuteAccountTransaction({
+      to: route.gasStep.transactionRequest.to as string,
+      data: route.gasStep.transactionRequest.data as string,
+    })
+
+    await etherspot.batchExecuteAccountTransaction({
+      to: route.klimaStep.transactionRequest.to as string,
+      data: route.klimaStep.transactionRequest.data as string,
+    })
+    const amountKlima = route.klimaStep.estimate.toAmountMin
+    // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
+    const txAllow = await getSetAllowanceTransaction(
+      tokenPolygonKLIMA!.address,
+      STAKE_KLIMA_CONTRACT_ADDRESS,
+      amountKlima,
+    )
+    await etherspot.batchExecuteAccountTransaction({
+      to: txAllow.to as string,
+      data: txAllow.data as string,
+    })
+
+    // stake KLIMA: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
+    const txStake = await getStakeKlimaTransaction(amountKlima)
+    await etherspot.batchExecuteAccountTransaction({
+      to: txStake.to as string,
+      data: txStake.data as string,
+    })
+    const txTransfer = await getTransferTransaction(
+      tokenPolygonSKLIMA!.address,
+      web3.account!,
+      amountKlima,
+    )
+    await etherspot.batchExecuteAccountTransaction({
+      to: txTransfer.to as string,
+      data: txTransfer.data as string,
+    })
   }
 
   const startCrossChainSwap = async () => {
@@ -482,36 +487,42 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
   }
 
   const executeEtherspotStep = async () => {
-    const processList: Process[] = [
-      {
+    const processList: Process[] = []
+
+    // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
+    if (!etherspot) {
+      processList.push({
         id: 'chainSwitch',
         message: 'Switch Chain',
         startedAt: Date.now(),
         status: 'ACTION_REQUIRED',
-      },
-    ]
-    setEtherspotStepExecution({
-      status: 'ACTION_REQUIRED',
-      process: processList,
-    })
+      })
+      setEtherspotStepExecution({
+        status: 'ACTION_REQUIRED',
+        process: processList,
+      })
 
-    await switchChain(ChainId.POL)
-    const signer = web3.library!.getSigner()
-    if ((await signer.getChainId()) !== ChainId.POL) {
-      throw Error('Chain was not switched!')
-    }
-
-    processList.map((process) => {
-      if (process.id === 'chainSwitch') {
-        process.status = 'DONE'
-        process.doneAt = Date.now()
+      await switchChain(ChainId.POL)
+      const signer = web3.library!.getSigner()
+      if ((await signer.getChainId()) !== ChainId.POL) {
+        throw Error('Chain was not switched!')
       }
-      return process
-    })
+
+      processList.map((process) => {
+        if (process.id === 'chainSwitch') {
+          process.status = 'DONE'
+          process.doneAt = Date.now()
+        }
+        return process
+      })
+    }
+    if (!etherspot) {
+      throw new Error('Etherspot not initialized.')
+    }
 
     processList.push({
       id: 'prepare',
-      message: 'Prepare Transaction',
+      message: 'Initialize Etherspot',
       startedAt: Date.now(),
       status: 'PENDING',
     })
@@ -569,10 +580,16 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
         hash: batch.hash,
       })
 
+      if (batch.state === GatewayBatchStates.Reverted) {
+        // eslint-disable-next-line no-console
+        console.error(batch)
+        throw new Error('Execution Reverted')
+      }
+
       isDone = !!(batch.transaction && batch.transaction.hash)
       if (!isDone) {
         await new Promise((resolve) => {
-          setTimeout(resolve, 1000)
+          setTimeout(resolve, 3000)
         })
       }
     }

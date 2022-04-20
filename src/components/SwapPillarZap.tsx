@@ -70,7 +70,7 @@ import { getInjectedConnector } from './web3/connectors'
 
 const history = createBrowserHistory()
 let currentRouteCallId: string
-const allowedDex = ExchangeTool.paraswap
+const allowedDex = ExchangeTool.zerox
 
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
@@ -274,6 +274,16 @@ interface StartParams {
   withdrawToken?: string
 }
 
+const etherspotSupportedChains: number[] = [
+  ChainId.ETH,
+  ChainId.DAI,
+  ChainId.BSC,
+  ChainId.FTM,
+  ChainId.POL,
+  ChainId.AUR,
+  ChainId.AVA,
+]
+
 const Swap = () => {
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
@@ -324,30 +334,27 @@ const Swap = () => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { active, account, library } = useWeb3React()
+  const { active, account, library, chainId } = useWeb3React()
   const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
 
   // setup etherspot sdk
   useEffect(() => {
-    const ethersportSDKSetup = async () => {
+    const etherspotSDKSetup = async () => {
       // TODO: try generalized connector from web3 object
       const connector = await getInjectedConnector()
       const provider = await Web3WalletProvider.connect(await connector.getProvider())
-      const sdk = new Sdk(provider, {
-        networkName: NetworkNames.Matic,
+      const sdk = new Sdk(provider)
+      sdk.services.networkService.switchNetwork(NetworkNames.Matic)
+      await sdk.computeContractAccount({
+        sync: false,
       })
-      sdk
-        .computeContractAccount({
-          sync: false,
-        })
-        .then(() => {
-          setEtherSpotSDK(sdk)
-        })
+      setEtherSpotSDK(sdk)
     }
-    if (active && account && library) {
-      ethersportSDKSetup()
+
+    if (active && account && library && chainId && etherspotSupportedChains.includes(chainId)) {
+      etherspotSDKSetup()
     }
-  }, [active, account])
+  }, [active, account, library, chainId])
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -428,7 +435,11 @@ const Swap = () => {
       }
 
       // chains
-      setAvailableChains(possibilities.chains)
+      // FIXME: limit available chains to etherspot supported ones
+      const chains = possibilities.chains.filter((chain) => {
+        return etherspotSupportedChains.includes(chain.id)
+      })
+      setAvailableChains(chains)
 
       // bridges
       const bridges: string[] = possibilities.bridges
@@ -713,9 +724,6 @@ const Swap = () => {
           options: {
             integrator: 'lifi-pillar',
             slippage: optionSlippage / 100,
-            bridges: {
-              allow: ['connext'], // TODO: check if connext is only option
-            },
             allowSwitchChain: false, // This is important for fixed recipients
           },
         }
@@ -1151,7 +1159,7 @@ const Swap = () => {
           <SwappingPillar
             fixedRecipient={true}
             route={selectedRoute}
-            etherspot={etherSpotSDK!}
+            etherspot={etherSpotSDK}
             settings={{ infiniteApproval: optionInfiniteApproval }}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
