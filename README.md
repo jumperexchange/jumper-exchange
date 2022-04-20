@@ -76,4 +76,4 @@ Branch `main`:
 - https://transferto.xyz/ (with `.env.lifinance-mainnet` configuration)
 
 Branch `staging`:
-- https://staging.li.finance/ (with `.env.lifinance-mainnet.staging` configuration)
+- https://staging.transferto.xyz/ (with `.env.lifinance-mainnet.staging` configuration)
