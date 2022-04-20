@@ -31,6 +31,7 @@ import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
+import { Etherspot } from '../assets/misc/etherspot'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
@@ -43,10 +44,12 @@ import {
   isWalletDeactivated,
 } from '../services/utils'
 import {
+  BridgeDefinition,
   Chain,
   ChainId,
   ChainKey,
   CoinKey,
+  ExchangeDefinition,
   ExchangeTool,
   findDefaultToken,
   getChainById,
@@ -441,7 +444,7 @@ const Swap = () => {
 
       // bridges
       const bridges: string[] = possibilities.bridges
-        .map((bridge: any) => bridge.tool)
+        .map((bridge: BridgeDefinition) => bridge.tool)
         .map((bridgeTool: string) => bridgeTool.split('-')[0])
       const allBridges = Array.from(new Set(bridges))
       setAvailableBridges(allBridges)
@@ -449,7 +452,7 @@ const Swap = () => {
 
       // exchanges
       const exchanges: string[] = possibilities.exchanges
-        .map((exchange: any) => exchange.tool)
+        .map((exchange: ExchangeDefinition) => exchange.tool)
         .map((exchangeTool: string) => exchangeTool.split('-')[0])
       const allExchanges = Array.from(new Set(exchanges))
       setAvailableExchanges(allExchanges)
@@ -508,7 +511,7 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    LiFi.getChains().then((chains: any[]) => {
+    LiFi.getChains().then((chains: Chain[]) => {
       const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
       if (!walletChainIsSupported) return
       if (web3.chainId && !fromChainKey) {
@@ -567,7 +570,7 @@ const Swap = () => {
     if (web3.account) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(([chainKey, tokenList]) => {
-        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio: any) => {
+        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio: TokenAmount[]) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -1057,7 +1060,6 @@ const Swap = () => {
               </Form>
             </div>
             <div
-              onClick={() => window.open('https://li.fi', '_blank')}
               style={{
                 margin: '32px auto',
                 padding: '14px 20px 10px',
@@ -1066,7 +1068,15 @@ const Swap = () => {
                 borderRadius: 18,
                 cursor: 'pointer',
               }}>
-              <PoweredByLiFi />
+              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+                <PoweredByLiFi />
+              </a>
+
+              <span style={{ verticalAlign: 'super', margin: 8 }}>&</span>
+
+              <a href="https://etherspot.io/" target="_blank" rel="nofollow noreferrer">
+                <Etherspot />
+              </a>
             </div>
           </Col>
         </Row>
@@ -1074,7 +1084,7 @@ const Swap = () => {
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              LI.FI and Etherspot teams has joined hands to support cross-chain deposits into the
+              LI.FI and Etherspot teams have joined hands to support cross-chain deposits into the
               Klima staking contract.
             </Title>
             <br />

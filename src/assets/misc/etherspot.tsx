@@ -3,8 +3,8 @@ import React from 'react'
 export function Etherspot() {
   return (
     <svg
-      width="214"
-      height="48"
+      width="107"
+      height="24"
       viewBox="0 0 214 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
