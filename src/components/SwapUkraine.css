@@ -431,48 +431,6 @@ h4.swap-title {
   background-color: white;
 }
 
-/* lifiEmbed view */
-.lifiEmbed .site-layout-swap {
-  margin-top: 0;
-  min-height: auto;
-}
-
-.lifiEmbed .historicalTransfers {
-  display: none;
-}
-
-.lifiEmbed .swap-form {
-  margin-top: 40px;
-}
-
-.lifiEmbed .activeTransfers {
-  margin-top: 12px;
-}
-
-.lifiEmbed .ant-pagination {
-  background-color: white;
-}
-
-.lifiEmbed .poweredBy {
-  position: absolute;
-  top: 38px;
-  right: 0;
-  padding: 6px 12px;
-  background-color: white;
-  border-radius: 6px;
-  z-index: 100;
-}
-
-.lifiEmbed .wallet-buttons-embed-view {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 6px 12px;
-  background-color: white;
-  border-radius: 6px;
-  z-index: 100;
-}
-
 .btn-info-ukraine,
 .btn-info-ukraine:hover,
 .btn-info-ukraine:active,

@@ -6,7 +6,7 @@
   color: black;
   font-size: 22px;
   line-height: 42px;
-  margin-right: 20px;
+  margin-right: 60px;
   font-weight: bold;
   font-family: 'GT America' !important;
 }
@@ -34,8 +34,14 @@
 }
 .header-poweredBy {
   color: black;
-  height: 20px;
-  font-size: 15px;
+  position: absolute;
+  left: 46px;
+  top: 33px;
+  display: block;
+  line-height: 1;
+}
+.header-poweredBy:hover path {
+  fill: #3f49e1;
 }
 
 /* global styles */

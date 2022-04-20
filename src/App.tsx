@@ -7,7 +7,7 @@ import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
 import { Link, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
-import logo from './assets/Li.Fi/LiFi.svg'
+import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
 import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
@@ -59,9 +59,8 @@ function App() {
       <div className="lifiEmbed">
         <Swap />
         <div className="poweredBy">
-          powered by{' '}
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-            LI.FI
+            <PoweredByLiFi />
           </a>
         </div>
         <div className="wallet-buttons-embed-view">
@@ -94,17 +93,13 @@ function App() {
                     <Link to="/" className="wordmark">
                       transferto.xyz
                     </Link>
-                    <Link to="/" className="header-poweredBy">
-                      powered by
-                      <img
-                        src={logo}
-                        className="logo"
-                        alt={process.env.REACT_APP_PROJECT_NAME}
-                        width="18"
-                        height="18"
-                      />
-                      <span>LI.FI</span>
-                    </Link>
+                    <a
+                      className="header-poweredBy"
+                      href="https://li.fi/"
+                      target="_blank"
+                      rel="nofollow noreferrer">
+                      <PoweredByLiFi />
+                    </a>
                   </div>
                   <Menu
                     theme="light"
