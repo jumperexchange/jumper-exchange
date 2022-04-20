@@ -385,7 +385,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     setSwapStartedAt(Date.now())
     try {
       await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
-      await executeEtherspotStep()
+      await finalizeEtherSpotStep(await executeEtherspotStep())
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route.lifiRoute)
@@ -396,7 +396,6 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       setIsSwapping(false)
       return
     }
-    await finalizeEtherSpotStep()
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -415,7 +414,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     setIsSwapping(true)
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
-      await executeEtherspotStep()
+      await finalizeEtherSpotStep(await executeEtherspotStep())
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
@@ -426,7 +425,6 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       setIsSwapping(false)
       return
     }
-    await finalizeEtherSpotStep()
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -563,7 +561,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       return process
     })
     processList.push({
-      processId: 'wait',
+      id: 'wait',
       message: 'Wait For Execution',
       startedAt: Date.now(),
       status: 'PENDING',
@@ -595,35 +593,35 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
     }
     // eslint-disable-next-line no-console
     console.log('gateway executed batch', batch.transaction.hash, batch)
-    processList.map((p) => {
-      p.status = 'DONE'
-      return p
+    const chain = getChainById(ChainId.POL)
+    processList.map((process) => {
+      if (process.id === 'wait') {
+        process.status = 'DONE'
+        process.message = 'Staking successful'
+        process.txHash = batch.transaction.hash
+        process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
+        process.doneAt = Date.now()
+      }
+      return process
     })
-    setEtherspotStepExecution({
+
+    const stepExecution: Execution = {
       status: 'DONE',
       process: processList,
-    })
+    }
+    setEtherspotStepExecution(stepExecution)
+    return stepExecution
   }
 
-  const finalizeEtherSpotStep = async () => {
+  const finalizeEtherSpotStep = async (stepExecution: Execution) => {
     const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
-    const amountSKlimaParsed = ethers.utils.parseUnits(
-      tokenAmountSKlima.amount,
-      tokenAmountSKlima.decimals,
-    )
+    const amountSKlimaParsed = route.klimaStep.estimate.toAmountMin
 
-    let doneList = etherspotStepExecution?.process.map((p) => {
+    const doneList = stepExecution.process.map((p) => {
       p.status = 'DONE'
       return p
-    }) || [
-      {
-        // catch
-        status: 'DONE',
-        message: 'Staking successful',
-        startedAt: Date.now(),
-        doneAt: Date.now(),
-      },
-    ]
+    })
+
     setEtherspotStepExecution({
       status: 'DONE',
       process: doneList,

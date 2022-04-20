@@ -29,9 +29,6 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { DonateIcon } from '../assets/icons/donateIcon'
-import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
-import { UkraineIcon } from '../assets/icons/ukraineIcon'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
@@ -63,6 +60,7 @@ import {
   Token,
   TokenAmount,
 } from '../types'
+import forest from './../assets/misc/forest.jpg'
 import SwapForm from './SwapForm'
 import SwappingPillar from './SwappingPillar'
 import ConnectButton from './web3/ConnectButton'
@@ -963,7 +961,7 @@ const Swap = () => {
             <Title level={1}>Cross-chain Klima Staking</Title>
           </Col>
           <Col
-            className="swap-form-ukraine"
+            className="swap-form-pillar"
             xs={24}
             sm={24}
             md={24}
@@ -971,6 +969,7 @@ const Swap = () => {
             xl={12}
             style={{
               minHeight: !isTransferto ? 'calc(100vh - 104px)' : 'calc(100vh - 64px)',
+              backgroundImage: `url(${forest})`,
               // marginTop: !isTransferto ? '104px' : '64px',
             }}>
             <div
@@ -986,7 +985,7 @@ const Swap = () => {
                   className="swap-title"
                   level={3}
                   style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                  Cross-chain Stake Klima into sKlima
+                  Cross-chain Stake into sKlima
                 </Title>
               </Row>
 
@@ -1062,7 +1061,14 @@ const Swap = () => {
             </div>
             <div
               onClick={() => window.open('https://li.fi', '_blank')}
-              style={{ margin: '32px auto', textAlign: 'center', cursor: 'pointer' }}>
+              style={{
+                margin: '32px auto',
+                padding: '14px 20px 10px',
+                textAlign: 'center',
+                background: 'rgba(255, 255, 255, 0.69)',
+                borderRadius: 18,
+                cursor: 'pointer',
+              }}>
               <PoweredByLiFi />
             </div>
           </Col>
@@ -1071,55 +1077,52 @@ const Swap = () => {
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              Pooling resources to avoid high transaction fees. This means even{' '}
-              <b>the smallest donations count the most!</b>
+              LI.FI and Etherspot teams has joined hands to support cross-chain deposits into the
+              Klima staking contract.
             </Title>
             <br />
 
-            <div className="ukraine-infographic">
-              <Row gutter={[40, 24]} justify="center" align="middle">
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <DonateIcon />
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Choose your donation amount and currency.
-                  </div>
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <SecuredWalletIcon />
-
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Funds are sent to our multi-sig wallet on Polygon.
-                  </div>
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <UkraineIcon />
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Every 8h we donate all collected funds.
-                  </div>
-                </Col>
-              </Row>
-            </div>
             <Divider style={{ borderColor: 'black' }} />
             <Paragraph style={{ marginTop: 64 }}>
-              Hello World 👋 <br />
-              Ukraine is in a very tough situation right now, all of us want to help, but we can
-              only do so much. We all know that Ethereum gas fees make it harder to donate smaller
-              amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
-              chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
-              bridged to Ethereum periodically and sent to the ETH address used by the{' '}
-              <b>Ukraine government</b>.
+              <h2>What is happening here?</h2>
+              We’re combining
+              <ol>
+                <li>
+                  LI.FI’s ability to perform <b>any-2-any cross-chain swaps</b> and
+                </li>
+                <li>
+                  Etherspot’s smart contract wallet feature through which we can{' '}
+                  <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
+                </li>
+              </ol>
+              to <b>facilitate cross-chain staking into the Klima</b> smart contract in just 3 steps
+              which would normally be 9 steps on 3 different dapps.
+            </Paragraph>
+            <Paragraph style={{ marginTop: 64 }}>
+              <h2>What is happening in the background?</h2>
+              When a cross-chain swap is completed via LI.FI, the asset is received on the
+              counterfactual smart wallet that the user controls on Polygon. The user then executes
+              a transaction that:
+              <ol>
+                <li>Swaps USDC to MATIC.</li>
+                <li>Swaps the USDC to KLIMA.</li>
+                <li>Deploys the Smart Wallet.</li>
+                <li>Stakes KLIMA to receive sKLIMA.</li>
+                <li>Sends sKLIMA back to the keywallet address (e.g. Metamask)</li>
+              </ol>
+              All in a single transaction on the destination chain, with no need to switch RPC
+              networks and no need to have the gas token.
             </Paragraph>
 
-            <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
             <Button
               className="btn-info-ukraine"
               shape="round"
               type="primary"
               size={'large'}
               onClick={() => {
-                window.open('https://li.fi', '_blank')
+                window.open('https://etherspot.io/', '_blank')
               }}>
-              More details <ArrowRightOutlined />
+              Etherspot <ArrowRightOutlined />
             </Button>
 
             <Button
@@ -1128,13 +1131,13 @@ const Swap = () => {
               type="primary"
               size={'large'}
               onClick={() => {
-                window.open('https://li.fi', '_blank')
+                window.open('https://www.klimadao.finance/', '_blank')
               }}>
-              Wallet address <ArrowRightOutlined />
+              KlimaDAO <ArrowRightOutlined />
             </Button>
             <div
               onClick={() => window.open('https://li.fi', '_blank')}
-              style={{ marginTop: 94, cursor: 'pointer' }}>
+              style={{ marginTop: 34, cursor: 'pointer' }}>
               <LifiTeam></LifiTeam>
             </div>
           </Col>
