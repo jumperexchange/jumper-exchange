@@ -93,7 +93,13 @@ const getTransferTransaction = async (
   return erc20.populateTransaction.transfer(toAddress, amount)
 }
 
-const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }: SwappingProps) => {
+const SwappingEtherspotKlima = ({
+  route,
+  etherspot,
+  updateRoute,
+  settings,
+  onSwapDone,
+}: SwappingProps) => {
   const { steps } = route.lifiRoute
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
@@ -286,7 +292,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       toChain: route.gasStep.action.fromChainId,
       toToken: route.gasStep.action.toToken.address, // hardcode return gastoken
       slippage: route.gasStep.action.slippage,
-      integrator: 'lifi-pillar',
+      integrator: 'lifi-etherspot',
       allowExchanges: [route.gasStep.tool],
     })
     const klimaStepRefreshPromise = LiFi.getQuote({
@@ -297,7 +303,7 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
       toChain: route.klimaStep.action.fromChainId,
       toToken: route.klimaStep.action.toToken.address, // hardcode return gastoken
       slippage: route.gasStep.action.slippage,
-      integrator: 'lifi-pillar',
+      integrator: 'lifi-etherspot',
       allowExchanges: [route.klimaStep.tool],
     })
 
@@ -916,4 +922,4 @@ const SwappingPillar = ({ route, etherspot, updateRoute, settings, onSwapDone }:
   )
 }
 
-export default SwappingPillar
+export default SwappingEtherspotKlima

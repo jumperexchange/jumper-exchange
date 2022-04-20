@@ -1,4 +1,4 @@
-import './SwapPillarZap.css'
+import './SwapEtherspotKlimaZap.css'
 
 import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
@@ -62,7 +62,7 @@ import {
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
 import SwapForm from './SwapForm'
-import SwappingPillar from './SwappingPillar'
+import SwappingEtherspotKlima from './SwappingEtherspotKlima'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
 
@@ -543,7 +543,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: 'pillar',
+        pathname: history.location.pathname,
         search,
       })
     }
@@ -720,7 +720,7 @@ const Swap = () => {
           fromAddress: web3.account || undefined,
           toAddress: etherSpotSDK.state.accountAddress,
           options: {
-            integrator: 'lifi-pillar',
+            integrator: 'lifi-etherspot',
             slippage: optionSlippage / 100,
             allowSwitchChain: false, // This is important for fixed recipients
           },
@@ -799,7 +799,7 @@ const Swap = () => {
       toChain: initialTransferDestChain.id,
       toToken: (await LiFi.getToken(initialTransferDestChain.id, 'MATIC')!).address, // hardcode return gastoken
       slippage: 0.005,
-      integrator: 'lifi-pillar',
+      integrator: 'lifi-etherspot',
       allowExchanges: [allowedDex],
     })
     return quoteUsdcToMatic
@@ -816,7 +816,7 @@ const Swap = () => {
       toChain: initialTransferDestChain.id,
       toToken: tokenPolygonKLIMA!.address,
       slippage: 0.005,
-      integrator: 'lifi-pillar',
+      integrator: 'lifi-etherspot',
       allowExchanges: [allowedDex],
     })
     return quoteUsdcToKlima
@@ -833,7 +833,6 @@ const Swap = () => {
     if (!active && isWalletDeactivated(web3.account)) {
       return (
         <Button
-          className="btn-pillar-swap-form"
           disabled={true}
           shape="round"
           type="primary"
@@ -842,13 +841,12 @@ const Swap = () => {
       )
     }
     if (!web3.account) {
-      return <ConnectButton className="btn-pillar-swap-form" size="large" />
+      return <ConnectButton size="large" />
     }
     if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
-          className="btn-pillar-swap-form"
           shape="round"
           type="primary"
           icon={<SwapOutlined />}
@@ -906,7 +904,6 @@ const Swap = () => {
       <Button
         disabled={highlightedIndex === -1}
         shape="round"
-        className="btn-pillar-swap-form"
         type="primary"
         size={'large'}
         onClick={() => openModal()}>
@@ -961,7 +958,7 @@ const Swap = () => {
             <Title level={1}>Cross-chain Klima Staking</Title>
           </Col>
           <Col
-            className="swap-form-pillar"
+            className="swap-form-etherspot"
             xs={24}
             sm={24}
             md={24}
@@ -1159,7 +1156,7 @@ const Swap = () => {
           destroyOnClose={true}
           width={700}
           footer={null}>
-          <SwappingPillar
+          <SwappingEtherspotKlima
             fixedRecipient={true}
             route={selectedRoute}
             etherspot={etherSpotSDK}
@@ -1172,7 +1169,7 @@ const Swap = () => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
-            }}></SwappingPillar>
+            }}></SwappingEtherspotKlima>
         </Modal>
       )}
     </Content>

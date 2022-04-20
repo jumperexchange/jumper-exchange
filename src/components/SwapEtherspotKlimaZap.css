@@ -1,4 +1,4 @@
-.swap-form-pillar {
+.swap-form-etherspot {
   position: fixed;
   right: 0 !important;
   width: 50vw;
@@ -14,13 +14,13 @@
 }
 
 @media only screen and (max-width: 1199px) {
-  .swap-form-pillar {
+  .swap-form-etherspot {
     position: relative;
   }
 }
 
 @media only screen and (max-width: 500px) {
-  .swap-form-pillar .swap-input {
+  .swap-form-etherspot .swap-input {
     margin-left: 16px !important;
     margin-right: 16px !important;
   }
