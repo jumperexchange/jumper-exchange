@@ -21,6 +21,7 @@ import analytics from './services/analytics'
 import setMetatags from './services/metatags'
 import { initStomt } from './services/stomt'
 
+const ENABLE_ETHERSPOT_KLIMA_SHOWCASE = process.env.REACT_APP_ENABLE_ETHERSPOT_KLIMA === 'true'
 function usePageViews() {
   const [path, setPath] = useState<string>()
   const location = useLocation()
@@ -252,19 +253,21 @@ function App() {
                   }}
                 />
                 <Redirect path="/ukraine" to="/showcase/ukraine" />
-                <Route
-                  path="/showcase/etherspot-klima"
-                  render={() => {
-                    setMetatags({
-                      title: 'LI.FI - Etherspot KLIMA',
-                    })
-                    return (
-                      <div className="lifiWrap">
-                        <SwapEtherspotKlimaZap />
-                      </div>
-                    )
-                  }}
-                />
+                {ENABLE_ETHERSPOT_KLIMA_SHOWCASE && (
+                  <Route
+                    path="/showcase/etherspot-klima"
+                    render={() => {
+                      setMetatags({
+                        title: 'LI.FI - Etherspot KLIMA',
+                      })
+                      return (
+                        <div className="lifiWrap">
+                          <SwapEtherspotKlimaZap />
+                        </div>
+                      )
+                    }}
+                  />
+                )}
                 {/* <Route
                     path="/testnet"
                     render={() => {
