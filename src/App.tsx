@@ -21,6 +21,7 @@ import analytics from './services/analytics'
 import setMetatags from './services/metatags'
 import { initStomt } from './services/stomt'
 
+const ENABLE_ETHERSPOT_KLIMA_SHOWCASE = process.env.REACT_APP_ENABLE_ETHERSPOT_KLIMA === 'true'
 function usePageViews() {
   const [path, setPath] = useState<string>()
   const location = useLocation()
@@ -71,7 +72,6 @@ function App() {
       </div>
     )
   }
-  const isTransferto = window.location.href.includes('transferto')
 
   return (
     <WrappedWeb3ReactProvider>
@@ -80,44 +80,14 @@ function App() {
           embedView()
         ) : (
           <Layout>
-            {!isTransferto && (
-              <Header
-                className="transferto-disclaimer"
-                style={{
-                  background: 'black',
-                  color: 'white',
-                  zIndex: 900,
-                  height: 40,
-                  position: 'fixed',
-                  width: '100%',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {/* <Row> */}
-                <div>
-                  Li.Finance is moving to{' '}
-                  <a
-                    href="https://transferto.xyz"
-                    target="blank"
-                    style={{ color: '#F5B5FF', textDecoration: 'underline', fontWeight: 'bold' }}>
-                    transferto.xyz
-                  </a>
-                </div>
-                {/* </Row> */}
-              </Header>
-            )}
-
             <Header
               style={{
                 position: 'fixed',
                 zIndex: 900,
                 width: '100%',
                 padding: 0,
-                top: !isTransferto ? 40 : 0,
-                background: adjustNavBarToBgGradient ? '#F6F3F2' : '#fff',
+                top: 0,
+                background: adjustToBgGradient ? '#F6F3F2' : '#fff',
               }}>
               <Row className="site-layout-menu">
                 {/* Menu */}
@@ -283,19 +253,21 @@ function App() {
                   }}
                 />
                 <Redirect path="/ukraine" to="/showcase/ukraine" />
-                <Route
-                  path="/showcase/etherspot-klima"
-                  render={() => {
-                    setMetatags({
-                      title: 'LI.FI - Etherspot KLIMA',
-                    })
-                    return (
-                      <div className="lifiWrap">
-                        <SwapEtherspotKlimaZap />
-                      </div>
-                    )
-                  }}
-                />
+                {ENABLE_ETHERSPOT_KLIMA_SHOWCASE && (
+                  <Route
+                    path="/showcase/etherspot-klima"
+                    render={() => {
+                      setMetatags({
+                        title: 'LI.FI - Etherspot KLIMA',
+                      })
+                      return (
+                        <div className="lifiWrap">
+                          <SwapEtherspotKlimaZap />
+                        </div>
+                      )
+                    }}
+                  />
+                )}
                 {/* <Route
                     path="/testnet"
                     render={() => {
