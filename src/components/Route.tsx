@@ -1,4 +1,5 @@
 import { Button, Steps } from 'antd'
+import BigNumber from 'bignumber.js'
 
 import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import { findTool, getChainById, Route as RouteType, Step } from '../types'
@@ -95,7 +96,6 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
   )
 
   const parsedDuration = parseSecondsAsTime(aggregatedDuration)
-
   return (
     <div
       className="swap-route"
@@ -125,7 +125,8 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         <div style={{ textAlign: 'justify', width: 'fit-content', margin: '0 auto' }}>
           Estimated token: <b>{formatTokenAmount(route.toToken, route.toAmount)}</b>
           <br />
-          Estimated result: {route.toAmountUSD !== '0.00' ? `${route.toAmountUSD} USD` : '~'}
+          Estimated result:{' '}
+          {!new BigNumber(route.toAmountUSD).isZero() ? `${route.toAmountUSD} USD` : '~'}
           <br />
           Estimated gas costs: {route.gasCostUSD} USD
           <br />
