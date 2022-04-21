@@ -42,12 +42,12 @@ function usePageViews() {
 function App() {
   const location = useLocation()
   const path = usePageViews()
-  const [adjustToBgGradient, setAdjustToBgGradient] = useState(
+  const [adjustNavBarToBgGradient, setAdjustNavBarToBgGradient] = useState(
     !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
   )
 
   useEffect(() => {
-    setAdjustToBgGradient(
+    setAdjustNavBarToBgGradient(
       !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
     )
   }, [location])
@@ -117,7 +117,7 @@ function App() {
                 width: '100%',
                 padding: 0,
                 top: !isTransferto ? 40 : 0,
-                background: adjustToBgGradient ? '#F6F3F2' : '#fff',
+                background: adjustNavBarToBgGradient ? '#F6F3F2' : '#fff',
               }}>
               <Row className="site-layout-menu">
                 {/* Menu */}
