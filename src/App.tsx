@@ -71,7 +71,6 @@ function App() {
       </div>
     )
   }
-  const isTransferto = window.location.href.includes('transferto')
 
   return (
     <WrappedWeb3ReactProvider>
@@ -80,43 +79,13 @@ function App() {
           embedView()
         ) : (
           <Layout>
-            {!isTransferto && (
-              <Header
-                className="transferto-disclaimer"
-                style={{
-                  background: 'black',
-                  color: 'white',
-                  zIndex: 900,
-                  height: 40,
-                  position: 'fixed',
-                  width: '100%',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {/* <Row> */}
-                <div>
-                  Li.Finance is moving to{' '}
-                  <a
-                    href="https://transferto.xyz"
-                    target="blank"
-                    style={{ color: '#F5B5FF', textDecoration: 'underline', fontWeight: 'bold' }}>
-                    transferto.xyz
-                  </a>
-                </div>
-                {/* </Row> */}
-              </Header>
-            )}
-
             <Header
               style={{
                 position: 'fixed',
                 zIndex: 900,
                 width: '100%',
                 padding: 0,
-                top: !isTransferto ? 40 : 0,
+                top: 0,
                 background: adjustToBgGradient ? '#F6F3F2' : '#fff',
               }}>
               <Row className="site-layout-menu">
