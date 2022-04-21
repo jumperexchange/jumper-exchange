@@ -43,12 +43,12 @@ function App() {
   const location = useLocation()
   const path = usePageViews()
   const [adjustToBgGradient, setAdjustToBgGradient] = useState(
-    !location.pathname.includes('dashboard') && !location.pathname.includes('ukraine'),
+    !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
   )
 
   useEffect(() => {
     setAdjustToBgGradient(
-      !location.pathname.includes('dashboard') && !location.pathname.includes('ukraine'),
+      !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
     )
   }, [location])
 
