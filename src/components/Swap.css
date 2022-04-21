@@ -396,11 +396,14 @@ h4.swap-title {
 .lifiEmbed .poweredBy {
   position: absolute;
   top: 38px;
-  right: 0;
+  right: 5px;
   padding: 6px 12px;
   background-color: white;
   border-radius: 6px;
   z-index: 100;
+}
+.lifiEmbed .poweredBy:hover path {
+  fill: #3f49e1;
 }
 
 .lifiEmbed .wallet-buttons-embed-view {

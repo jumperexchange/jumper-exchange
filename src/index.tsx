@@ -10,7 +10,8 @@ import reportWebVitals from './services/reportWebVitals'
 analytics.initialize(process.env.REACT_APP_ANALYTICS_ID)
 
 switch (process.env.REACT_APP_PACKAGE) {
-  case 'lifi':
+  case 'transferto.xyz':
+  default:
     import('./App').then(({ App }) => {
       ReactDOM.render(
         <React.StrictMode>
