@@ -45,10 +45,12 @@ import {
   isWalletDeactivated,
 } from '../services/utils'
 import {
+  BridgeDefinition,
   Chain,
   ChainId,
   ChainKey,
   CoinKey,
+  ExchangeDefinition,
   findDefaultToken,
   getChainById,
   getChainByKey,
@@ -388,7 +390,7 @@ const Swap = () => {
 
       // bridges
       const bridges: string[] = possibilities.bridges
-        .map((bridge: any) => bridge.tool)
+        .map((bridge: BridgeDefinition) => bridge.tool)
         .map((bridgeTool: string) => bridgeTool.split('-')[0])
       const allBridges = Array.from(new Set(bridges))
       setAvailableBridges(allBridges)
@@ -396,7 +398,7 @@ const Swap = () => {
 
       // exchanges
       const exchanges: string[] = possibilities.exchanges
-        .map((exchange: any) => exchange.tool)
+        .map((exchange: ExchangeDefinition) => exchange.tool)
         .map((exchangeTool: string) => exchangeTool.split('-')[0])
       const allExchanges = Array.from(new Set(exchanges))
       setAvailableExchanges(allExchanges)
@@ -404,7 +406,7 @@ const Swap = () => {
 
       // tokens
       const newTokens: TokenAmountList = {}
-      possibilities.tokens.forEach((token) => {
+      possibilities.tokens.forEach((token: TokenWithAmounts) => {
         const chain = getChainById(token.chainId)
         if (!newTokens[chain.key]) newTokens[chain.key] = []
         newTokens[chain.key].push(token)
@@ -433,7 +435,7 @@ const Swap = () => {
   }, [])
 
   const updateTokenData = (token: Token) => {
-    LiFi.getToken(token.chainId, token.address).then((updatedToken) => {
+    LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
       // sync optional properties
       updatedToken.logoURI = updatedToken.logoURI || token.logoURI
       updatedToken.priceUSD = updatedToken.priceUSD || token.priceUSD
@@ -470,7 +472,7 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    LiFi.getChains().then((chains) => {
+    LiFi.getChains().then((chains: Chain[]) => {
       const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
       if (!walletChainIsSupported) return
       if (web3.chainId && !fromChainKey) {
@@ -505,7 +507,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: 'ukraine',
+        pathname: history.location.pathname,
         search,
       })
     }
@@ -529,7 +531,7 @@ const Swap = () => {
     if (web3.account) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(([chainKey, tokenList]) => {
-        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio) => {
+        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio: TokenAmount[]) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -872,7 +874,6 @@ const Swap = () => {
             xl={12}
             style={{
               minHeight: 'calc(100vh - 64px)',
-              // marginTop: !isTransferto ? '104px' : '64px',
             }}>
             <div
               className="swap-input"
