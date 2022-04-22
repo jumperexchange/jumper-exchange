@@ -398,8 +398,7 @@ const Swapping = ({
             <Typography.Text
               type={!receivedAmount.isZero() ? 'secondary' : undefined}
               style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
-              {'You now have '}
-              {formatTokenAmount(finalTokenAmount, finalTokenAmount.amount)}
+              {`You now have ${finalTokenAmount.amount} ${finalTokenAmount.symbol}`}
               {` on ${toChain.name}`}
             </Typography.Text>
           )}

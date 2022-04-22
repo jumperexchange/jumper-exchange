@@ -1,6 +1,7 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { ChainId, Execution, ExecutionSettings, Process, StepTool } from '@lifinance/sdk'
+import { getRpcProvider } from '@lifinance/sdk/dist/connectors'
 import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
@@ -537,9 +538,7 @@ const SwappingEtherspotKlima = ({
     })
     await prepareEtherSpotStep()
 
-    const estimate = await etherspot.estimateGatewayBatch()
-    // eslint-disable-next-line no-console
-    console.log(estimate)
+    await etherspot.estimateGatewayBatch()
 
     processList.map((process) => {
       if (process.id === 'prepare') {
@@ -578,11 +577,17 @@ const SwappingEtherspotKlima = ({
     })
 
     // info: batch.state seams to wait for a lot of confirmations (6 minutes) before changing to 'Sent'
-    let isDone = !!(batch.transaction && batch.transaction.hash)
-    while (!isDone) {
-      batch = await etherspot.getGatewaySubmittedBatch({
-        hash: batch.hash,
-      })
+    let hasTransaction = !!(batch.transaction && batch.transaction.hash)
+    while (!hasTransaction) {
+      try {
+        batch = await etherspot.getGatewaySubmittedBatch({
+          hash: batch.hash,
+        })
+      } catch (e) {
+        // ignore failed requests and try again
+        // eslint-disable-next-line no-console
+        console.error(e)
+      }
 
       if (batch.state === GatewayBatchStates.Reverted) {
         // eslint-disable-next-line no-console
@@ -590,16 +595,48 @@ const SwappingEtherspotKlima = ({
         throw new Error('Execution Reverted')
       }
 
-      isDone = !!(batch.transaction && batch.transaction.hash)
-      if (!isDone) {
+      hasTransaction = !!(batch.transaction && batch.transaction.hash)
+      if (!hasTransaction) {
         await new Promise((resolve) => {
           setTimeout(resolve, 3000)
         })
       }
     }
-    // eslint-disable-next-line no-console
-    console.log('gateway executed batch', batch.transaction.hash, batch)
+
+    // Add Transaction
     const chain = getChainById(ChainId.POL)
+    processList.map((process) => {
+      if (process.id === 'wait') {
+        process.txHash = batch.transaction.hash
+        process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
+      }
+      return process
+    })
+    setEtherspotStepExecution({
+      status: 'PENDING',
+      process: processList,
+    })
+
+    // Wait for Transaction
+    const provider = await getRpcProvider(ChainId.POL)
+    let receipt
+    while (!receipt) {
+      try {
+        const tx = await provider.getTransaction(batch.transaction.hash!)
+        receipt = await tx.wait()
+      } catch (e) {
+        // ignore failed requests and try again
+        // eslint-disable-next-line no-console
+        console.error(e)
+      }
+
+      if (!receipt) {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 3000)
+        })
+      }
+    }
+
     processList.map((process) => {
       if (process.id === 'wait') {
         process.status = 'DONE'
@@ -610,7 +647,6 @@ const SwappingEtherspotKlima = ({
       }
       return process
     })
-
     const stepExecution: Execution = {
       status: 'DONE',
       process: processList,
@@ -694,8 +730,7 @@ const SwappingEtherspotKlima = ({
             type={!receivedAmount.isZero() ? 'secondary' : undefined}
             style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
             <br />
-            {'You now have '}
-            {formatTokenAmount(finalTokenAmount, finalTokenAmount.amount)}
+            {`You now have ${finalTokenAmount.amount} ${finalTokenAmount.symbol}`}
             {` on ${toChain.name}`}
           </Typography.Text>
         </>
