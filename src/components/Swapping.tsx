@@ -380,16 +380,16 @@ const Swapping = ({
             (!fixedRecipient ? (
               <>
                 <Typography.Text>
-                  You received {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(4)}
-                  {` ${finalTokenAmount.symbol}`}
+                  You received{` `}
+                  {formatTokenAmount(finalTokenAmount, receivedAmount.toString())}
                 </Typography.Text>
                 <br />
               </>
             ) : (
               <>
                 <Typography.Text>
-                  You sent {receivedAmount.shiftedBy(-finalTokenAmount.decimals).toFixed(20)}
-                  {` ${finalTokenAmount.symbol}`}
+                  You sent{` `}
+                  {formatTokenAmount(finalTokenAmount, receivedAmount.toString())}
                 </Typography.Text>
                 <br />
               </>
@@ -399,8 +399,7 @@ const Swapping = ({
               type={!receivedAmount.isZero() ? 'secondary' : undefined}
               style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
               {'You now have '}
-              {new BigNumber(finalTokenAmount.amount).toFixed(4)}
-              {` ${finalTokenAmount.symbol}`}
+              {formatTokenAmount(finalTokenAmount, finalTokenAmount.amount)}
               {` on ${toChain.name}`}
             </Typography.Text>
           )}
