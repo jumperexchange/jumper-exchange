@@ -8,7 +8,7 @@ export function Etherspot() {
       viewBox="0 0 214 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_26_25)">
+      <g clipPath="url(#clip0_26_25)">
         <path
           d="M11.0771 35.8011L18.6037 23.1945L26.1302 35.8011L18.6037 40.2995L11.0771 35.8011Z"
           fill="black"

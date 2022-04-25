@@ -14,6 +14,7 @@ import {
   InputNumber,
   Modal,
   Row,
+  Select,
   Tooltip,
   Typography,
 } from 'antd'
@@ -312,9 +313,9 @@ const Swap = () => {
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
-  const [, setAvailableBridges] = useState<string[]>([])
+  const [availableBridges, setAvailableBridges] = useState<string[]>([])
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
-  const [, setAvailableExchanges] = useState<string[]>([])
+  const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
   const [route, setRoute] = useState<ExtendedRoute>({} as any)
@@ -726,6 +727,12 @@ const Swap = () => {
             integrator: 'lifi-etherspot',
             slippage: optionSlippage / 100,
             allowSwitchChain: false, // This is important for fixed recipients
+            bridges: {
+              allow: optionEnabledBridges,
+            },
+            exchanges: {
+              allow: optionEnabledExchanges,
+            },
           },
         }
 
@@ -1050,6 +1057,42 @@ const Swap = () => {
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
+                        Bridges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled bridges"
+                            value={optionEnabledBridges}
+                            onChange={setOptionEnabledBridges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableBridges.map((bridge) => (
+                              <Select.Option key={bridge} value={bridge}>
+                                {bridge}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                        Exchanges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled exchanges"
+                            value={optionEnabledExchanges}
+                            onChange={setOptionEnabledExchanges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableExchanges.map((exchange) => (
+                              <Select.Option key={exchange} value={exchange}>
+                                {exchange}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
                       </Collapse.Panel>
                     </Collapse>
                   </Row>
@@ -1161,6 +1204,7 @@ const Swap = () => {
             updateBalances()
           }}
           destroyOnClose={true}
+          maskClosable={false}
           width={700}
           footer={null}>
           <SwappingEtherspotKlima
