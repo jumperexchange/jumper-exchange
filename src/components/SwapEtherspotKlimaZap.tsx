@@ -1204,6 +1204,7 @@ const Swap = () => {
             updateBalances()
           }}
           destroyOnClose={true}
+          maskClosable={false}
           width={700}
           footer={null}>
           <SwappingEtherspotKlima

@@ -623,7 +623,9 @@ const SwappingEtherspotKlima = ({
     while (!receipt) {
       try {
         const tx = await provider.getTransaction(batch.transaction.hash!)
-        receipt = await tx.wait()
+        if (tx) {
+          receipt = await tx.wait()
+        }
       } catch (e) {
         // ignore failed requests and try again
         // eslint-disable-next-line no-console
@@ -753,9 +755,9 @@ const SwappingEtherspotKlima = ({
                 </span>
               </Tooltip>
             ))}
-          <Link to="/dashboard">
+          {/* <Link to="/dashboard">
             <Button type="link">Dashboard</Button>
-          </Link>
+          </Link> */}
         </Space>
       )
     }
