@@ -62,7 +62,7 @@ const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | n
 
 const getReceivingInfo = (step: Step) => {
   const toChain = getChainById(step.action.toChainId)
-  const toToken = step.action.toToken
+  const toToken = step.execution?.toToken || step.action.toToken
   return { toChain, toToken }
 }
 
@@ -374,7 +374,10 @@ const Swapping = ({
       const lastStep = steps[steps.length - 1]
       const { toChain } = getReceivingInfo(lastStep)
       const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
-      const successMessage = !!finalTokenAmount ? (
+      const receivedTokenMatchesPlannedToken =
+        lastStep.action.toToken.address ===
+        (lastStep.execution?.toToken?.address || lastStep.action.toToken.address) // use the planned token as fallback to catch errors in receipt parsing
+      const infoMessage = !!finalTokenAmount ? (
         <>
           {!receivedAmount.isZero() &&
             (!fixedRecipient ? (
@@ -409,16 +412,20 @@ const Swapping = ({
 
       return (
         <Space direction="vertical">
-          <Typography.Text strong>Swap Successful!</Typography.Text>
+          {receivedTokenMatchesPlannedToken ? (
+            <Typography.Text strong>Swap Successful!</Typography.Text>
+          ) : (
+            <Typography.Text strong>Problem Encountered!</Typography.Text>
+          )}
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
-              <span>{successMessage}</span>
+              <span>{infoMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
                   onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
-                  {successMessage}
+                  {infoMessage}
                 </span>
               </Tooltip>
             ))}
