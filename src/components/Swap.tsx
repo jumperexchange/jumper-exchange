@@ -11,6 +11,7 @@ import {
   Form,
   InputNumber,
   Modal,
+  Popconfirm,
   Row,
   Select,
   Tooltip,
@@ -825,17 +826,49 @@ const Swap = () => {
         </Button>
       )
     }
+    const fromAmountUSD = routes[highlightedIndex]?.fromAmountUSD || undefined
+    const toAmountUSD = routes[highlightedIndex]?.toAmountUSD || undefined
+    const gasCostUSD = routes[highlightedIndex]?.gasCostUSD || undefined
 
-    return (
-      <Button
-        disabled={highlightedIndex === -1}
-        shape="round"
-        type="primary"
-        icon={<SwapOutlined />}
-        size={'large'}
-        onClick={() => openModal()}>
-        Swap
-      </Button>
+    const totalExpenditure = new BigNumber(fromAmountUSD || 0).plus(new BigNumber(gasCostUSD || 0))
+    const amountReceivedPercentage = new BigNumber(toAmountUSD || 0).dividedBy(totalExpenditure)
+    const receivedAmountTooLow = amountReceivedPercentage.isLessThan(new BigNumber(0.75))
+
+    const swapButton = (clickHandler?: Function) => {
+      return (
+        <Button
+          disabled={highlightedIndex === -1}
+          shape="round"
+          type="primary"
+          icon={<SwapOutlined />}
+          size={'large'}
+          onClick={() => clickHandler?.()}>
+          Swap
+        </Button>
+      )
+    }
+    const popoverContent = (
+      <div
+        style={{
+          maxWidth: '100px !important',
+        }}>
+        <Typography.Paragraph>
+          The value of the received tokens is significantly lower than the cost required to execute
+          the transaction. Do you still want to proceed?
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          Swapped token value: {fromAmountUSD ? `${fromAmountUSD} USD` : '˜'} <br />
+          Gas costs: {gasCostUSD ? `${gasCostUSD} USD` : '˜'} <br />
+          Received token value: {toAmountUSD ? `${toAmountUSD} USD` : '˜'}
+        </Typography.Paragraph>
+      </div>
+    )
+    return receivedAmountTooLow ? (
+      <Popconfirm onConfirm={() => openModal()} title={popoverContent}>
+        {swapButton()}
+      </Popconfirm>
+    ) : (
+      swapButton(openModal)
     )
   }
 
