@@ -826,12 +826,14 @@ const Swap = () => {
         </Button>
       )
     }
-    const fromAmountUSD = routes[highlightedIndex]?.fromAmountUSD || undefined
-    const toAmountUSD = routes[highlightedIndex]?.toAmountUSD || undefined
-    const gasCostUSD = routes[highlightedIndex]?.gasCostUSD || undefined
+    const fromAmountUSD = new BigNumber(routes[highlightedIndex]?.fromAmountUSD)
+    const toAmountUSD = new BigNumber(routes[highlightedIndex]?.toAmountUSD)
+    const gasCostUSD = new BigNumber(routes[highlightedIndex]?.gasCostUSD || 0)
+    const allValuesAvailable =
+      !fromAmountUSD.isZero() && !toAmountUSD.isZero() && !gasCostUSD.isZero()
 
-    const totalExpenditure = new BigNumber(fromAmountUSD || 0).plus(new BigNumber(gasCostUSD || 0))
-    const amountReceivedPercentage = new BigNumber(toAmountUSD || 0).dividedBy(totalExpenditure)
+    const totalExpenditure = fromAmountUSD.plus(gasCostUSD)
+    const amountReceivedPercentage = toAmountUSD.dividedBy(totalExpenditure)
     const receivedAmountTooLow = amountReceivedPercentage.isLessThan(new BigNumber(0.75))
 
     const swapButton = (clickHandler?: Function) => {
@@ -852,18 +854,25 @@ const Swap = () => {
         style={{
           maxWidth: '100px !important',
         }}>
+        {allValuesAvailable ? (
+          <Typography.Paragraph>
+            The value of the received tokens is significantly lower than the cost required to
+            execute the transaction. Do you still want to proceed?
+          </Typography.Paragraph>
+        ) : (
+          <Typography.Paragraph>
+            We could not fetch the FIAT price of one or more of the listed values.
+          </Typography.Paragraph>
+        )}
         <Typography.Paragraph>
-          The value of the received tokens is significantly lower than the cost required to execute
-          the transaction. Do you still want to proceed?
-        </Typography.Paragraph>
-        <Typography.Paragraph>
-          Swapped token value: {fromAmountUSD ? `${fromAmountUSD} USD` : '˜'} <br />
-          Gas costs: {gasCostUSD ? `${gasCostUSD} USD` : '˜'} <br />
-          Received token value: {toAmountUSD ? `${toAmountUSD} USD` : '˜'}
+          Swapped token value: {!fromAmountUSD.isZero() ? `${fromAmountUSD.toFixed(2)} USD` : '~'}{' '}
+          <br />
+          Gas costs: {!gasCostUSD.isZero() ? `${gasCostUSD.toFixed(2)} USD` : '~'} <br />
+          Received token value: {!toAmountUSD.isZero() ? `${toAmountUSD.toFixed(2)} USD` : '~'}
         </Typography.Paragraph>
       </div>
     )
-    return receivedAmountTooLow ? (
+    return receivedAmountTooLow || !allValuesAvailable ? (
       <Popconfirm onConfirm={() => openModal()} title={popoverContent}>
         {swapButton()}
       </Popconfirm>
