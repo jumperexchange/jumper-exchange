@@ -1,4 +1,4 @@
-import './SwapEtherspotKlimaZap.css'
+import './SwapCarbonOffset.css'
 
 import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
@@ -1140,8 +1140,8 @@ const Swap = () => {
                   <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
                 </li>
               </ol>
-              to <b>facilitate cross-chain staking into the Klima</b> smart contract in just 3 steps
-              which would normally be 9 steps on 3 different dapps.
+              to <b>facilitate cross-chain carbon retirements</b> in just X steps which would
+              normally be X steps on X different dapps.
             </Paragraph>
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening in the background?</h2>
@@ -1150,10 +1150,13 @@ const Swap = () => {
               a transaction that:
               <ol>
                 <li>Swaps USDC to MATIC.</li>
-                <li>Swaps the USDC to KLIMA.</li>
                 <li>Deploys the Smart Wallet.</li>
-                <li>Stakes KLIMA to receive sKLIMA.</li>
-                <li>Sends sKLIMA back to the keywallet address (e.g. Metamask)</li>
+                <li>
+                  Calls the Klima DAO contract to retire carbon based on the{' '}
+                  <a href="https://toucan.earth/" target="_blank" rel="noreferrer">
+                    Toucan Protocol: Base Carbon Tonne Token.
+                  </a>
+                </li>
               </ol>
               All in a single transaction on the destination chain, with no need to switch RPC
               networks and no need to have the gas token.
