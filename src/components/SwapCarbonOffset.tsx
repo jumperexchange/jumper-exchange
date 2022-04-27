@@ -33,7 +33,7 @@ import { v4 as uuid } from 'uuid'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
-import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
+import { TOUCAN_BCT_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -331,8 +331,8 @@ const Swap = () => {
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
   const [possibilitiesLoaded, setPossibilitiesLoaded] = useState<boolean>(false)
-  const [tokenPolygonKLIMA, setTokenPolygonKlima] = useState<Token>()
-  const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
+
+  const [tokenPolygonBCT, setTokenPolygonBCT] = useState<Token>()
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -415,16 +415,13 @@ const Swap = () => {
         exchanges: { deny: ['dodo', 'openocean', '0x'] },
       })
 
-      const klimaTokenPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
-      const sKlimaTokenPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
-      const setupPromises: [PossibilitiesResponse, Token, Token] = await Promise.all([
+      const tokenBCTPromise = LiFi.getToken(ChainId.POL, TOUCAN_BCT_ADDRESS)!
+      const setupPromises: [PossibilitiesResponse, Token] = await Promise.all([
         possibilitiesPromise,
-        klimaTokenPromise,
-        sKlimaTokenPromise,
+        tokenBCTPromise,
       ])
       const possibilities = setupPromises[0]
-      setTokenPolygonKlima(setupPromises[1])
-      setTokenPolygonSKLIMA(setupPromises[2])
+      setTokenPolygonBCT(setupPromises[1])
       if (
         !possibilities.chains ||
         !possibilities.bridges ||
@@ -824,7 +821,7 @@ const Swap = () => {
       fromAddress: etherSpotSDK?.state.accountAddress!,
       fromAmount: amount, // TODO: check if correct value
       toChain: initialTransferDestChain.id,
-      toToken: tokenPolygonKLIMA!.address,
+      toToken: tokenPolygonBCT!.address,
       slippage: 0.005,
       integrator: 'lifi-etherspot',
       allowExchanges: [allowedDex],
@@ -924,7 +921,7 @@ const Swap = () => {
 
   const toSection = () => {
     const amount = route?.klimaStep?.estimate?.toAmountMin || '0'
-    const formattedAmount = tokenPolygonSKLIMA ? formatTokenAmount(tokenPolygonSKLIMA, amount) : '0'
+    const formattedAmount = tokenPolygonBCT ? formatTokenAmount(tokenPolygonBCT, amount) : '0'
     return (
       <Row
         style={{
@@ -935,13 +932,13 @@ const Swap = () => {
           { xs: 8, sm: 16 },
         ]}>
         <Col span={10}>
-          <div className="form-text">To:</div>
+          <div className="form-text">To retire</div>
         </Col>
         <Col span={14}>
           <div className="form-input-wrapper">
             <Input
               type="text"
-              value={`${formattedAmount}`}
+              value={`${formattedAmount.split(' ')[0]} tons of carbon`}
               bordered={false}
               disabled
               style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
@@ -963,7 +960,7 @@ const Swap = () => {
         {/* Swap Form */}
         <Row className="ukraine-title-row">
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
-            <Title level={1}>Cross-Chain Klima Staking</Title>
+            <Title level={1}>Cross-chain carbon offsets</Title>
           </Col>
           <Col
             className="swap-form-etherspot"
@@ -989,7 +986,7 @@ const Swap = () => {
                   className="swap-title"
                   level={3}
                   style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                  Cross-chain Stake into sKlima
+                  Bond Carbon via BCT
                 </Title>
               </Row>
 
@@ -1015,6 +1012,8 @@ const Swap = () => {
                   allowSameChains={true}
                   fixedWithdraw={true}
                   alternativeToSection={toSection()}
+                  fromSectionDesignator={'Use'}
+                  toSectionDesignator={'To retire'}
                 />
                 <span>
                   {/* Disclaimer */}
@@ -1124,8 +1123,7 @@ const Swap = () => {
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              LI.FI and Etherspot teams have joined hands to support cross-chain deposits into the
-              Klima staking contract.
+              LI.FI and Etherspot teams have joined hands to support cross-chain carbon offsets.
             </Title>
             <br />
 
