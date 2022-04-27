@@ -476,38 +476,12 @@ const Swapping = ({
     return null
   }
 
-  const renderAmountMessage = () => {
-    const fromAmountUSD = route?.fromAmountUSD || undefined
-    const toAmountUSD = route?.toAmountUSD || undefined
-    const gasCostUSD = route?.gasCostUSD || undefined
-
-    const totalExpenditure = new BigNumber(fromAmountUSD || 0).plus(new BigNumber(gasCostUSD || 0))
-    const amountReceivedPercentage = new BigNumber(toAmountUSD || 0).dividedBy(totalExpenditure)
-    const receivedAmountTooLow = amountReceivedPercentage.isLessThan(new BigNumber(0.75))
-    if (!receivedAmountTooLow) {
-      return
-    }
-
-    return (
-      <div
-        style={{
-          padding: '20px',
-        }}>
-        <Typography.Paragraph>
-          The value of the received tokens is significantly lower than the cost required to execute
-          the transaction. You can still close this window without starting the transaction.
-        </Typography.Paragraph>
-      </div>
-    )
-  }
-
   const currentProcess = getCurrentProcess()
 
   return (
     <>
       {alerts}
       <br />
-      {renderAmountMessage()}
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
         {steps.map(parseStepToTimeline)}
