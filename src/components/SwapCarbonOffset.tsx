@@ -986,7 +986,7 @@ const Swap = () => {
                   className="swap-title"
                   level={3}
                   style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                  Bond Carbon via BCT
+                  Carbon offsets via BCT
                 </Title>
               </Row>
 
