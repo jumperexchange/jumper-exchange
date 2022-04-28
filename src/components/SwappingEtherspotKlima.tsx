@@ -16,7 +16,7 @@ import {
   Typography,
 } from 'antd'
 import BigNumber from 'bignumber.js'
-import { BigNumberish, constants, ethers } from 'ethers'
+import { BigNumberish, constants, ethers, providers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
@@ -63,7 +63,12 @@ interface SwapSettings {
 }
 
 interface SwappingProps {
-  route: { lifiRoute: Route; gasStep: Step; klimaStep: Step }
+  route: {
+    lifiRoute?: Route
+    gasStep: Step
+    klimaStep: Step
+    transactionRequest?: providers.TransactionRequest
+  }
   etherspot?: Sdk
   settings: SwapSettings
   updateRoute: Function
@@ -100,7 +105,7 @@ const SwappingEtherspotKlima = ({
   settings,
   onSwapDone,
 }: SwappingProps) => {
-  const { steps } = route.lifiRoute
+  const { steps } = route.lifiRoute!
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 

@@ -10,7 +10,6 @@ import {
   Collapse,
   Divider,
   Form,
-  Input,
   InputNumber,
   Modal,
   Row,
@@ -22,7 +21,7 @@ import { Content } from 'antd/lib/layout/layout'
 import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
+import { ethers, providers } from 'ethers'
 import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
@@ -37,11 +36,12 @@ import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
+import getRoute from '../services/routingService'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
-  formatTokenAmount,
   formatTokenAmountOnly,
+  isLiFiRoute,
   isWalletDeactivated,
 } from '../services/utils'
 import {
@@ -65,7 +65,8 @@ import {
   TokenAmount,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
-import SwapForm from './SwapForm'
+import SwapForm from './SwapForm/SwapForm'
+import { ToSectionKlimaStaking } from './SwapForm/SwapFormToSections/ToSectionKlimaStaking'
 import SwappingEtherspotKlima from './SwappingEtherspotKlima'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
@@ -263,7 +264,8 @@ interface TokenAmountList {
 }
 
 interface ExtendedRoute {
-  lifiRoute: RouteType
+  lifiRoute?: RouteType
+  transactionRequest?: providers.TransactionRequest
   gasStep: Step
   klimaStep: Step
 }
@@ -306,8 +308,13 @@ const Swap = () => {
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [routeCallResult, setRouteCallResult] =
-    useState<{ lifiRoute: RouteType; gasStep: Step; stakingStep: Step; id: string }>()
+  const [routeCallResult, setRouteCallResult] = useState<{
+    lifiRoute?: RouteType
+    transactionRequest?: providers.TransactionRequest
+    gasStep: Step
+    stakingStep: Step
+    id: string
+  }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -322,7 +329,6 @@ const Swap = () => {
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setSelectedRoute] = useState<ExtendedRoute | undefined>()
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
 
@@ -701,7 +707,6 @@ const Swap = () => {
   useEffect(() => {
     const getTransferRoutes = async () => {
       setRoute({} as any)
-      setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
       if (
@@ -739,26 +744,37 @@ const Swap = () => {
         const id = uuid()
         try {
           currentRouteCallId = id
-          const result = await LiFi.getRoutes(request)
-          const amountUsdc = ethers.BigNumber.from(result.routes[0].toAmountMin)
-          const amountUsdcToMatic = ethers.utils.parseUnits(
-            '0.2',
-            result.routes[0].toToken.decimals,
-          )
+          // const result = await LiFi.getRoutes(request)
+          const routeCall = await getRoute(request, web3.library?.getSigner())
+          let toAmountMin
+          if (isLiFiRoute(routeCall[0])) {
+            toAmountMin = routeCall[0].toAmountMin
+          } else {
+            toAmountMin = request.fromAmount // get this from the request as there is no specific amount field in TransactionRequest
+          }
+          const amountUsdc = ethers.BigNumber.from(toAmountMin)
+          const toToken = await LiFi.getToken(request.toChainId, request.toTokenAddress)
+          const amountUsdcToMatic = ethers.utils.parseUnits('0.2', toToken.decimals)
           const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
-          const gasStep = calculateFinalGasStep(result.routes[0], amountUsdcToMatic.toString())
-          const stakingStep = calculateFinalStakingStep(
-            result.routes[0],
-            amountUsdcToKlima.toString(),
-          )
+          const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
+          const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
           const additionalQuotes = await Promise.all([gasStep, stakingStep])
 
-          setRouteCallResult({
-            lifiRoute: result.routes[0],
-            gasStep: additionalQuotes[0],
-            stakingStep: additionalQuotes[1],
-            id,
-          })
+          if (isLiFiRoute(routeCall[0])) {
+            setRouteCallResult({
+              lifiRoute: routeCall[0],
+              gasStep: additionalQuotes[0],
+              stakingStep: additionalQuotes[1],
+              id: id,
+            })
+          } else {
+            setRouteCallResult({
+              transactionRequest: routeCall[0],
+              gasStep: additionalQuotes[0],
+              stakingStep: additionalQuotes[1],
+              id: id,
+            })
+          }
         } catch (e) {
           if (id === currentRouteCallId || !currentRouteCallId) {
             setNoRoutesAvailable(true)
@@ -785,19 +801,18 @@ const Swap = () => {
   // set route call results
   useEffect(() => {
     if (routeCallResult) {
-      const { lifiRoute, gasStep, stakingStep, id } = routeCallResult
+      const { lifiRoute, gasStep, stakingStep, transactionRequest, id } = routeCallResult
 
       if (id === currentRouteCallId) {
-        setRoute({ lifiRoute, gasStep, klimaStep: stakingStep })
+        setRoute({ lifiRoute, gasStep, klimaStep: stakingStep, transactionRequest })
         fadeInAnimation(routeCards)
-        setHighlightedIndex(lifiRoute && gasStep && stakingStep ? 0 : -1)
-        setNoRoutesAvailable(!lifiRoute || !gasStep || !stakingStep)
+        setNoRoutesAvailable((!lifiRoute && !transactionRequest) || !gasStep || !stakingStep)
         setRoutesLoading(false)
       }
     }
   }, [routeCallResult, currentRouteCallId])
 
-  const calculateFinalGasStep = async (route: Route, amount: string) => {
+  const calculateFinalGasStep = async (amount: string) => {
     const initialTransferDestChain = getChainByKey(toChainKey!)
     const initialTransferDestToken = toTokenAddress!
 
@@ -814,7 +829,7 @@ const Swap = () => {
     })
     return quoteUsdcToMatic
   }
-  const calculateFinalStakingStep = async (route: Route, amount: string) => {
+  const calculateFinalStakingStep = async (amount: string) => {
     const initialTransferDestChain = getChainByKey(toChainKey!)
     const initialTransferDestToken = toTokenAddress!
 
@@ -835,7 +850,6 @@ const Swap = () => {
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
     setSelectedRoute(deepClone(route))
-    setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
   }
 
@@ -912,43 +926,13 @@ const Swap = () => {
 
     return (
       <Button
-        disabled={highlightedIndex === -1}
+        disabled={!route}
         shape="round"
         type="primary"
         size={'large'}
         onClick={() => openModal()}>
         Stake
       </Button>
-    )
-  }
-
-  const toSection = () => {
-    const amount = route?.klimaStep?.estimate?.toAmountMin || '0'
-    const formattedAmount = tokenPolygonSKLIMA ? formatTokenAmount(tokenPolygonSKLIMA, amount) : '0'
-    return (
-      <Row
-        style={{
-          marginTop: '32px',
-        }}
-        gutter={[
-          { xs: 8, sm: 16 },
-          { xs: 8, sm: 16 },
-        ]}>
-        <Col span={10}>
-          <div className="form-text">To:</div>
-        </Col>
-        <Col span={14}>
-          <div className="form-input-wrapper">
-            <Input
-              type="text"
-              value={`${formattedAmount}`}
-              bordered={false}
-              disabled
-              style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
-            />
-          </div>
-        </Col>
-      </Row>
     )
   }
 
@@ -1014,7 +998,12 @@ const Swap = () => {
                   balances={balances}
                   allowSameChains={true}
                   fixedWithdraw={true}
-                  alternativeToSection={toSection()}
+                  alternativeToSection={
+                    <ToSectionKlimaStaking
+                      step={route?.klimaStep}
+                      tokenPolygonSKLIMA={tokenPolygonSKLIMA}
+                    />
+                  }
                 />
                 <span>
                   {/* Disclaimer */}
@@ -1191,7 +1180,7 @@ const Swap = () => {
         </Row>
       </div>
 
-      {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
+      {selectedRoute && !!selectedRoute.lifiRoute?.steps.length && (
         <Modal
           className="swapModal"
           visible={selectedRoute.lifiRoute.steps.length > 0}
