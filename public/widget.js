@@ -1,6 +1,6 @@
 (function () {
   let config = {
-    host: 'https://li.finance',
+    host: 'https://transferto.xyz',
     elementId: 'lifi-widget',
     mode: 'drawer', // drawer | inline
     buttonText: 'Li.Fi Swap',

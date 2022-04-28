@@ -7,11 +7,12 @@ import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
 import { Link, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
-import logo from './assets/Li.Fi/LiFi.svg'
+import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
 import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
 import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
@@ -20,6 +21,7 @@ import analytics from './services/analytics'
 import setMetatags from './services/metatags'
 import { initStomt } from './services/stomt'
 
+const ENABLE_ETHERSPOT_KLIMA_SHOWCASE = process.env.REACT_APP_ENABLE_ETHERSPOT_KLIMA === 'true'
 function usePageViews() {
   const [path, setPath] = useState<string>()
   const location = useLocation()
@@ -41,13 +43,13 @@ function usePageViews() {
 function App() {
   const location = useLocation()
   const path = usePageViews()
-  const [adjustToBgGradient, setAdjustToBgGradient] = useState(
-    !location.pathname.includes('dashboard') && !location.pathname.includes('ukraine'),
+  const [adjustNavBarToBgGradient, setAdjustNavBarToBgGradient] = useState(
+    !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
   )
 
   useEffect(() => {
-    setAdjustToBgGradient(
-      !location.pathname.includes('dashboard') && !location.pathname.includes('ukraine'),
+    setAdjustNavBarToBgGradient(
+      !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
     )
   }, [location])
 
@@ -59,9 +61,8 @@ function App() {
       <div className="lifiEmbed">
         <Swap />
         <div className="poweredBy">
-          powered by{' '}
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-            LI.FI
+            <PoweredByLiFi />
           </a>
         </div>
         <div className="wallet-buttons-embed-view">
@@ -70,7 +71,6 @@ function App() {
       </div>
     )
   }
-  const isTransferto = window.location.href.includes('transferto')
 
   return (
     <WrappedWeb3ReactProvider>
@@ -79,58 +79,30 @@ function App() {
           embedView()
         ) : (
           <Layout>
-            {!isTransferto && (
-              <Header
-                className="transferto-disclaimer"
-                style={{
-                  background: 'black',
-                  color: 'white',
-                  zIndex: 900,
-                  height: 40,
-                  position: 'fixed',
-                  width: '100%',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {/* <Row> */}
-                <div>
-                  Li.Finance is moving to{' '}
-                  <a
-                    href="https://transferto.xyz"
-                    target="blank"
-                    style={{ color: '#F5B5FF', textDecoration: 'underline', fontWeight: 'bold' }}>
-                    transferto.xyz
-                  </a>
-                </div>
-                {/* </Row> */}
-              </Header>
-            )}
-
             <Header
               style={{
                 position: 'fixed',
                 zIndex: 900,
                 width: '100%',
                 padding: 0,
-                top: !isTransferto ? 40 : 0,
-                background: adjustToBgGradient ? '#F6F3F2' : '#fff',
+                top: 0,
+                background: adjustNavBarToBgGradient ? '#F6F3F2' : '#fff',
               }}>
               <Row className="site-layout-menu">
                 {/* Menu */}
                 <Col xs={24} sm={24} md={14} lg={14} xl={14}>
-                  <Link to="/" className="wordmark">
-                    <img
-                      src={logo}
-                      className="logo"
-                      alt={process.env.REACT_APP_PROJECT_NAME}
-                      width="36"
-                      height="36"
-                    />
-                    <span>LI.FI</span>
-                  </Link>
+                  <div className="header-linkWrapper">
+                    <Link to="/" className="wordmark">
+                      transferto.xyz
+                    </Link>
+                    <a
+                      className="header-poweredBy"
+                      href="https://li.fi/"
+                      target="_blank"
+                      rel="nofollow noreferrer">
+                      <PoweredByLiFi />
+                    </a>
+                  </div>
                   <Menu
                     theme="light"
                     mode="horizontal"
@@ -152,9 +124,9 @@ function App() {
                         Contact Us
                       </a>
                     </Menu.Item>
-                    <Menu.Item key="/ukraine" danger={true}>
+                    <Menu.Item key="/showcase/ukraine" danger={true}>
                       <span className="ukraine-flag">&#127482;&#127462;</span>
-                      <Link to="/ukraine">Help Ukraine!</Link>
+                      <Link to="/showcase/ukraine">Help Ukraine!</Link>
                     </Menu.Item>
                     <Menu.Item key="/about">
                       <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
@@ -170,6 +142,9 @@ function App() {
                       <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
                         Explore Docs
                       </a>
+                    </Menu.Item>
+                    <Menu.Item key="/showcase/etherspot-klima">
+                      <Link to="/showcase/etherspot-klima">Etherspot+KLIMA</Link>
                     </Menu.Item>
                     {/* <Menu.Item>
                       <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
@@ -265,12 +240,11 @@ function App() {
                   }}
                 />
                 <Route
-                  path="/ukraine"
+                  path="/showcase/ukraine"
                   render={() => {
                     setMetatags({
                       title: 'LI.FI - Help Ukraine!',
                     })
-                    initStomt('swap')
                     return (
                       <div className="lifiWrap">
                         <SwapUkraine />
@@ -278,6 +252,22 @@ function App() {
                     )
                   }}
                 />
+                <Redirect path="/ukraine" to="/showcase/ukraine" />
+                {ENABLE_ETHERSPOT_KLIMA_SHOWCASE && (
+                  <Route
+                    path="/showcase/etherspot-klima"
+                    render={() => {
+                      setMetatags({
+                        title: 'LI.FI - Etherspot KLIMA',
+                      })
+                      return (
+                        <div className="lifiWrap">
+                          <SwapEtherspotKlimaZap />
+                        </div>
+                      )
+                    }}
+                  />
+                )}
                 {/* <Route
                     path="/testnet"
                     render={() => {

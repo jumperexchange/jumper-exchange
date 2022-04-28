@@ -6,7 +6,7 @@ const LiFi = new LIFI({
   apiUrl: process.env.REACT_APP_API_URL,
   rpcs: getRpcs(),
   defaultRouteOptions: {
-    integrator: 'li.finance',
+    integrator: 'transferto.xyz',
   },
 })
 

@@ -1,6 +1,6 @@
 import { Badge, Tooltip } from 'antd'
 
-import { Process, Step } from '../types'
+import { Process } from '../types'
 
 const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
@@ -31,7 +31,7 @@ export function renderProcessMessage(process: Process) {
   return <>{process.message.toString()}</>
 }
 
-export const renderProcessError = (step: Step, process: Process) => {
+export const renderProcessError = (process: Process) => {
   const errorMessage = process.errorMessage && (
     <>
       Error: {process.errorMessage.substring(0, 350)}

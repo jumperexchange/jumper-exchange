@@ -2,23 +2,30 @@
 import { getChainById, prefixChainId, Token } from '../types'
 
 export const switchChain = async (chainId: number) => {
-  const ethereum = (window as any).ethereum
-  if (typeof ethereum === 'undefined') return false
+  return new Promise(async (resolve, reject) => {
+    const ethereum = (window as any).ethereum
+    if (typeof ethereum === 'undefined') resolve(false)
 
-  try {
-    await ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: getChainById(chainId).metamask?.chainId }],
-    })
-    return true
-  } catch (error: any) {
-    // const ERROR_CODE_UNKNOWN_CHAIN = 4902
-    const ERROR_CODE_USER_REJECTED = 4001
-    if (error.code !== ERROR_CODE_USER_REJECTED) {
-      return await addChain(chainId)
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: getChainById(chainId).metamask?.chainId }],
+      })
+      ethereum.once('networkChanged', async (id: string) => {
+        if (parseInt(id) === chainId) {
+          resolve(true)
+        }
+      })
+    } catch (error: any) {
+      // const ERROR_CODE_UNKNOWN_CHAIN = 4902
+      const ERROR_CODE_USER_REJECTED = 4001
+      if (error.code !== ERROR_CODE_USER_REJECTED) {
+        return await addChain(chainId)
+      } else {
+        resolve(false)
+      }
     }
-  }
-  return false
+  })
 }
 
 export const addChain = async (chainId: number) => {
