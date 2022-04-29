@@ -1,22 +1,24 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Timeline, Typography } from 'antd'
-import { providers } from 'ethers'
 
 import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
+import { ExtendedTransactionRequest } from '../../../services/routingService'
 import { formatTokenAmount } from '../../../services/utils'
-import { Execution, Step } from '../../../types'
+import { Execution } from '../../../types'
 import Clock from '../../Clock'
 
 interface SimpleTransferStepProps {
-  simpleTransfer: providers.TransactionRequest
+  simpleTransfer: ExtendedTransactionRequest
   isSwapping: boolean
+  simpleTransferDestination?: string
   simpleStepExecution?: Execution
 }
 
 export const SimpleTransferStep = ({
   simpleTransfer,
   isSwapping,
+  simpleTransferDestination,
   simpleStepExecution,
 }: SimpleTransferStepProps) => {
   const isMobile = useIsMobile()
@@ -55,6 +57,10 @@ export const SimpleTransferStep = ({
       )
     })
   }
+
+  const parseSimpleTransferDestination = (destination?: string) => {
+    return destination?.substring(0, 9) + '...'
+  }
   const parseSimpleTransferStep = () => {
     const index = 0
     const isDone = simpleStepExecution && simpleStepExecution.status === 'DONE'
@@ -71,9 +77,8 @@ export const SimpleTransferStep = ({
       <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
         <h4>Transfer USDC</h4>
         <span>
-          {/* {formatTokenAmount(simpleTransfer., lastLiFiStep.estimate?.toAmount)}{' '}
-          <ArrowRightOutlined />{' '}
-          {formatTokenAmount(SKLIMA_TOKEN_POL, stakingStep.estimate?.toAmount)} */}
+          {formatTokenAmount(simpleTransfer.token, simpleTransfer.amount)} <ArrowRightOutlined />{' '}
+          {parseSimpleTransferDestination(simpleTransferDestination)}
         </span>
         {/* {executionDuration} */}
       </Timeline.Item>,

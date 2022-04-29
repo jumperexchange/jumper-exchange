@@ -4,7 +4,7 @@ import { getRpcProvider } from '@lifinance/sdk/dist/connectors'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
-import { BigNumberish, constants, ethers, providers } from 'ethers'
+import { BigNumberish, constants, ethers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
@@ -22,6 +22,7 @@ import { isWalletConnectWallet, storeRoute } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
 import { renderProcessMessage } from '../../services/processRenderer'
+import { ExtendedTransactionRequest } from '../../services/routingService'
 import { formatTokenAmount } from '../../services/utils'
 import { getChainById, isCrossStep, isLifiStep, Route, Step, TokenAmount } from '../../types'
 import Clock from '../Clock'
@@ -48,7 +49,7 @@ interface SwappingProps {
     lifiRoute?: Route
     gasStep: Step
     stakingStep: Step
-    simpleTransfer?: providers.TransactionRequest
+    simpleTransfer?: ExtendedTransactionRequest
   }
   etherspot?: Sdk
   settings: SwapSettings
@@ -261,7 +262,7 @@ const SwappingEtherspotKlima = ({
   }
 
   const startSimpleTransfer = async () => {
-    if (!web3.account || !web3.library || !route.lifiRoute) return
+    if (!web3.account || !web3.library || !route.simpleTransfer) return
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
@@ -389,7 +390,7 @@ const SwappingEtherspotKlima = ({
     })
     let tx
     try {
-      tx = await signer.sendTransaction(route.simpleTransfer)
+      tx = await signer.sendTransaction(route.simpleTransfer.tx)
     } catch (e) {
       handleSimpleTransferError(e)
       throw e
@@ -824,12 +825,13 @@ const SwappingEtherspotKlima = ({
             simpleTransfer={route.simpleTransfer}
             simpleStepExecution={simpleTransferExecution}
             isSwapping={isSwapping}
+            simpleTransferDestination={etherspot?.state.accountAddress!}
           />
         )}
         {!!route.lifiRoute && !route.simpleTransfer && (
           <LIFIRouteSteps lifiRoute={route.lifiRoute!} isSwapping={isSwapping} />
         )}
-        {!!route.lifiRoute && (
+        {!!route.stakingStep && !!route.lifiRoute && (
           <EtherspotStep
             lifiRoute={route.lifiRoute}
             etherspotStepExecution={etherspotStepExecution}

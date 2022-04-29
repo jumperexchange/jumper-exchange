@@ -21,7 +21,7 @@ import { Content } from 'antd/lib/layout/layout'
 import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
-import { ethers, providers } from 'ethers'
+import { ethers } from 'ethers'
 import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
@@ -36,7 +36,7 @@ import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
-import getRoute from '../services/routingService'
+import getRoute, { ExtendedTransactionRequest } from '../services/routingService'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
@@ -264,7 +264,7 @@ interface TokenAmountList {
 
 interface ExtendedRoute {
   lifiRoute?: RouteType
-  simpleTransfer?: providers.TransactionRequest
+  simpleTransfer?: ExtendedTransactionRequest
   gasStep: Step
   stakingStep: Step
 }
@@ -309,7 +309,7 @@ const Swap = () => {
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [routeCallResult, setRouteCallResult] = useState<{
     lifiRoute?: RouteType
-    simpleTransfer?: providers.TransactionRequest
+    simpleTransfer?: ExtendedTransactionRequest
     gasStep: Step
     stakingStep: Step
     id: string

@@ -1,14 +1,21 @@
-import { Route, RoutesRequest } from '@lifinance/sdk'
+import { Route, RoutesRequest, Token } from '@lifinance/sdk'
 import { ethers, providers, Signer } from 'ethers'
 
 import { erc20Abi } from '../constants'
 import LiFi from '../LiFi'
 import { isZeroAddress } from './utils'
 
+export interface ExtendedTransactionRequest {
+  tx: providers.TransactionRequest
+  amount: string
+  token: Token
+  chainId: number
+}
+
 const getRoute = async (
   request: RoutesRequest,
   signer?: Signer,
-): Promise<Route[] | providers.TransactionRequest[]> => {
+): Promise<Route[] | ExtendedTransactionRequest[]> => {
   if (request.fromAddress !== request.toAddress && signer) {
     if (
       request.fromTokenAddress === request.toTokenAddress &&
@@ -36,7 +43,13 @@ const getSimpleTransfer = async (request: RoutesRequest, signer: Signer) => {
     let contract = new ethers.Contract(request.fromTokenAddress, erc20Abi, signer)
     tx = await contract.populateTransaction.transfer(request.toAddress, request.fromAmount)
   }
-  return [tx]
+  const extendedTx: ExtendedTransactionRequest = {
+    tx,
+    amount: request.fromAmount,
+    token: await LiFi.getToken(request.fromChainId, request.fromTokenAddress),
+    chainId: request.fromChainId,
+  }
+  return [extendedTx]
 }
 
 const getLIFIRoute = async (request: RoutesRequest) => {
