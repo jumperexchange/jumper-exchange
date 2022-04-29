@@ -117,7 +117,9 @@ const SwappingEtherspotKlima = ({
 
       // move execution to background when modal is closed
       return function cleanup() {
-        LiFi.moveExecutionToBackground(route.lifiRoute!)
+        if (route.lifiRoute) {
+          LiFi.moveExecutionToBackground(route.lifiRoute!)
+        }
       }
     }
   }, [])
@@ -432,9 +434,9 @@ const SwappingEtherspotKlima = ({
         status: 'FAILED',
         process: [
           {
-            errorMessage: e.errorMessage,
+            errorMessage: e.message,
             status: 'FAILED',
-            message: e.message || 'Prepare Transaction',
+            message: 'Prepare Transaction',
             startedAt: Date.now(),
             doneAt: Date.now(),
           },
@@ -456,7 +458,8 @@ const SwappingEtherspotKlima = ({
     if (
       (route.lifiRoute &&
         route.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')) ||
-      (route.simpleTransfer && simpleTransferExecution?.status === 'FAILED')
+      (route.simpleTransfer &&
+        (!simpleTransferExecution || simpleTransferExecution?.status === 'FAILED'))
     ) {
       return
     }
