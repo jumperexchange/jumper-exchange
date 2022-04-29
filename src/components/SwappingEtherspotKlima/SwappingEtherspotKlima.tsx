@@ -804,6 +804,14 @@ const SwappingEtherspotKlima = ({
         }
       }
       return null
+    } else {
+      if (simpleTransferExecution) {
+        for (const process of simpleTransferExecution.process) {
+          if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
+            return process
+          }
+        }
+      }
     }
   }
 
