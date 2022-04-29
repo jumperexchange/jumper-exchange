@@ -1,6 +1,7 @@
-import { ERC20_ABI, Route, RoutesRequest } from '@lifinance/sdk'
+import { Route, RoutesRequest } from '@lifinance/sdk'
 import { ethers, providers, Signer } from 'ethers'
 
+import { erc20Abi } from '../constants'
 import LiFi from '../LiFi'
 import { isZeroAddress } from './utils'
 
@@ -13,7 +14,8 @@ const getRoute = async (
       request.fromTokenAddress === request.toTokenAddress &&
       request.fromChainId === request.toChainId
     ) {
-      return getSimpleTransfer(request, signer)
+      const tx = getSimpleTransfer(request, signer)
+      return tx
     }
     return getLIFIRoute(request)
   }
@@ -31,10 +33,9 @@ const getSimpleTransfer = async (request: RoutesRequest, signer: Signer) => {
       gasPrice: await signer.getGasPrice(),
     }
   } else {
-    let contract = new ethers.Contract(request.fromTokenAddress, ERC20_ABI, signer)
+    let contract = new ethers.Contract(request.fromTokenAddress, erc20Abi, signer)
     tx = await contract.populateTransaction.transfer(request.toAddress, request.fromAmount)
   }
-
   return [tx]
 }
 
