@@ -329,6 +329,7 @@ const Swap = () => {
   const web3 = useWeb3React<Web3Provider>()
   const { active, account, library, chainId } = useWeb3React()
   const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
+  const [etherspotWalletBalance, setEtherspotWalletBalance] = useState<BigNumber>()
 
   // setup etherspot sdk
   useEffect(() => {
@@ -360,6 +361,24 @@ const Swap = () => {
       etherspotSDKSetup()
     }
   }, [active, account, library, chainId])
+
+  // Check Etherspot Wallet balance
+  useEffect(() => {
+    const checkEtherspotWalletBalance = async (wallet: string) => {
+      const usdcToken = findDefaultToken(CoinKey.USDC, ChainId.POL)
+      const balance = await LiFi.getTokenBalance(wallet, usdcToken)
+      const amount = new BigNumber(balance?.amount || 0)
+
+      if (amount.gte(0.3)) {
+        setEtherspotWalletBalance(amount)
+      } else {
+        setEtherspotWalletBalance(undefined)
+      }
+    }
+    if (etherSpotSDK?.state.accountAddress) {
+      checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
+    }
+  }, [etherSpotSDK])
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -1221,6 +1240,13 @@ const Swap = () => {
               setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
             }}></SwappingEtherspotKlima>
+        </Modal>
+      )}
+
+      {etherspotWalletBalance && (
+        <Modal visible={true}>
+          You still have {etherspotWalletBalance.toFixed(2)} USDC in your smart contract based
+          wallet, do you want swap and stake it to sKLIMA?
         </Modal>
       )}
     </Content>
