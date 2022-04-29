@@ -1,8 +1,8 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Timeline, Typography } from 'antd'
-import { useMediaQuery } from 'react-responsive'
 
 import { sKLIMA_ADDRESS } from '../../../constants'
+import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
 import { formatTokenAmount } from '../../../services/utils'
 import { Execution, Step, Token } from '../../../types'
@@ -31,7 +31,7 @@ export const EtherspotStep = ({
   index,
   previousStepInfo,
 }: EtherspotStepProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+  const isMobile = useIsMobile()
 
   const parseEtherspotExecution = () => {
     if (!etherspotStepExecution) {

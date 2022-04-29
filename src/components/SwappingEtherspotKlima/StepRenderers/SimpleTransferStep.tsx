@@ -1,7 +1,7 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Timeline, Typography } from 'antd'
-import { useMediaQuery } from 'react-responsive'
 
+import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
 import { ExtendedTransactionRequest } from '../../../services/routingService'
 import { formatTokenAmount } from '../../../services/utils'
@@ -21,7 +21,7 @@ export const SimpleTransferStep = ({
   simpleTransferDestination,
   simpleStepExecution,
 }: SimpleTransferStepProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+  const isMobile = useIsMobile()
 
   const parseSimpleTransferExecution = () => {
     if (!simpleStepExecution) {

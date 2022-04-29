@@ -2,8 +2,8 @@ import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-d
 import { getChainById, Route, Step } from '@lifinance/sdk'
 import { Timeline, Typography } from 'antd'
 import { useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
 
+import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../../../services/utils'
 import { getChainAvatar, getToolAvatar } from '../../Avatars/Avatars'
@@ -14,7 +14,7 @@ interface LIFIRouteStepsProps {
   isSwapping: boolean
 }
 export const LIFIRouteSteps = ({ lifiRoute, isSwapping }: LIFIRouteStepsProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+  const isMobile = useIsMobile()
   const [steps] = useState<Step[]>(lifiRoute.steps)
 
   const parseExecution = (step: Step) => {

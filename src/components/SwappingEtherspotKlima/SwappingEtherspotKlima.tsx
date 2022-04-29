@@ -7,7 +7,6 @@ import BigNumber from 'bignumber.js'
 import { BigNumberish, constants, ethers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
 
 import walletIcon from '../../assets/wallet.png'
 import {
@@ -17,6 +16,7 @@ import {
   STAKE_KLIMA_CONTRACT_ADDRESS,
   stakeKlimaAbi,
 } from '../../constants'
+import { useIsMobile } from '../../hooks/useIsMobile'
 import LiFi from '../../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
@@ -87,7 +87,7 @@ const SwappingEtherspotKlima = ({
   settings,
   onSwapDone,
 }: SwappingProps) => {
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+  const isMobile = useIsMobile()
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
