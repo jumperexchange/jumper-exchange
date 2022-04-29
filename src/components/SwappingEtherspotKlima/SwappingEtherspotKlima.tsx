@@ -434,7 +434,7 @@ const SwappingEtherspotKlima = ({
 
   const handleSimpleTransferError = async (e: any) => {
     if (!simpleTransferExecution) {
-      setEtherspotStepExecution({
+      setSimpleTransferExecution({
         status: 'FAILED',
         process: [
           {
@@ -451,7 +451,7 @@ const SwappingEtherspotKlima = ({
       processList[processList.length - 1].status = 'FAILED'
       processList[processList.length - 1].errorMessage = e.errorMessage
       processList[processList.length - 1].doneAt = Date.now()
-      setEtherspotStepExecution({
+      setSimpleTransferExecution({
         status: 'FAILED',
         process: processList,
       })
