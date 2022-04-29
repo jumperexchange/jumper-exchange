@@ -269,9 +269,10 @@ const SwappingEtherspotKlima = ({
       await finalizeEtherSpotStep(await executeEtherspotStep())
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route.lifiRoute)
+      console.warn('Execution failed!', route.simpleTransfer)
       // eslint-disable-next-line no-console
       console.error(e)
+      handleSimpleTransferError(e)
       handlePotentialEtherSpotError(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
@@ -388,12 +389,8 @@ const SwappingEtherspotKlima = ({
       process: processList,
     })
     let tx
-    try {
-      tx = await signer.sendTransaction(route.simpleTransfer.tx)
-    } catch (e) {
-      handleSimpleTransferError(e)
-      throw e
-    }
+
+    tx = await signer.sendTransaction(route.simpleTransfer.tx)
 
     processList.map((process) => {
       if (process.id === 'signTransfer') {
@@ -404,7 +401,7 @@ const SwappingEtherspotKlima = ({
     })
     processList.push({
       id: 'wait',
-      message: 'Wait for transfer',
+      message: 'Wait For Transfer',
       startedAt: Date.now(),
       status: 'PENDING',
     })
@@ -412,12 +409,9 @@ const SwappingEtherspotKlima = ({
       status: 'PENDING',
       process: processList,
     })
-    try {
-      await tx.wait()
-    } catch (e) {
-      handleSimpleTransferError(e)
-      throw e
-    }
+
+    await tx.wait()
+
     processList.map((process) => {
       if (process.id === 'wait') {
         process.status = 'DONE'
@@ -432,7 +426,7 @@ const SwappingEtherspotKlima = ({
     })
   }
 
-  const handleSimpleTransferError = async (e: any) => {
+  const handleSimpleTransferError = (e: any) => {
     if (!simpleTransferExecution) {
       setSimpleTransferExecution({
         status: 'FAILED',
@@ -440,7 +434,7 @@ const SwappingEtherspotKlima = ({
           {
             errorMessage: e.errorMessage,
             status: 'FAILED',
-            message: 'Prepare Transaction',
+            message: e.message || 'Prepare Transaction',
             startedAt: Date.now(),
             doneAt: Date.now(),
           },
