@@ -923,10 +923,9 @@ const Swap = () => {
         </Button>
       )
     }
-
     return (
       <Button
-        disabled={!route}
+        disabled={!route.lifiRoute || !route.simpleTransfer || !route.stakingStep}
         shape="round"
         type="primary"
         size={'large'}
