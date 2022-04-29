@@ -1,11 +1,11 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Timeline, Typography } from 'antd'
+import { useMediaQuery } from 'react-responsive'
 
 import { sKLIMA_ADDRESS } from '../../../constants'
-import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
 import { formatTokenAmount } from '../../../services/utils'
-import { Execution, Route, Step } from '../../../types'
+import { Execution, Step, Token } from '../../../types'
 import Clock from '../../Clock'
 
 const SKLIMA_TOKEN_POL = {
@@ -17,19 +17,21 @@ const SKLIMA_TOKEN_POL = {
 }
 
 interface EtherspotStepProps {
-  lifiRoute: Route
   stakingStep: Step
   isSwapping: boolean
   etherspotStepExecution?: Execution
+  index: number
+  previousStepInfo: { token?: Token; amount?: string }
 }
 
 export const EtherspotStep = ({
-  lifiRoute,
   etherspotStepExecution,
   stakingStep,
   isSwapping,
+  index,
+  previousStepInfo,
 }: EtherspotStepProps) => {
-  const isMobile = useIsMobile()
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
   const parseEtherspotExecution = () => {
     if (!etherspotStepExecution) {
@@ -66,29 +68,21 @@ export const EtherspotStep = ({
     })
   }
   const parseEtherspotStep = () => {
-    const lastLiFiStep = lifiRoute.steps[lifiRoute.steps.length - 1]
-    const index = lifiRoute.steps.length
     const isDone = etherspotStepExecution && etherspotStepExecution.status === 'DONE'
     const isLoading =
       isSwapping && etherspotStepExecution && etherspotStepExecution.status === 'PENDING'
     const isPaused =
       !isSwapping && etherspotStepExecution && etherspotStepExecution.status === 'PENDING'
     const color = isDone ? 'green' : etherspotStepExecution ? 'blue' : 'gray'
-    // const executionDuration = !!step.estimate.executionDuration && (
-    //   <>
-    //     <br />
-    //     <span>Estimated duration: {parseSecondsAsTime(step.estimate.executionDuration)} min</span>
-    //   </>
-    // )
+
     return [
-      <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
+      <Timeline.Item position={'right'} key={index + '_left'} color={color}>
         <h4>Stake for sKLIMA</h4>
         <span>
-          {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
+          {formatTokenAmount(previousStepInfo.token!, previousStepInfo.amount!)}{' '}
           <ArrowRightOutlined />{' '}
           {formatTokenAmount(SKLIMA_TOKEN_POL, stakingStep.estimate?.toAmount)}
         </span>
-        {/* {executionDuration} */}
       </Timeline.Item>,
       <Timeline.Item
         position={isMobile ? 'right' : 'left'}
@@ -100,5 +94,5 @@ export const EtherspotStep = ({
     ]
   }
 
-  return <>{parseEtherspotStep()}</>
+  return parseEtherspotStep()
 }

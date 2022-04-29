@@ -88,7 +88,6 @@ const SwappingEtherspotKlima = ({
   onSwapDone,
 }: SwappingProps) => {
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
-
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
@@ -815,30 +814,43 @@ const SwappingEtherspotKlima = ({
   }
 
   const currentProcess = getCurrentProcess()
-
+  const getLastStepBeforeStakingStepInfo = () => {
+    if (route.lifiRoute) {
+      const lastLIFIStep = route.lifiRoute.steps[route.lifiRoute.steps.length - 1]
+      return {
+        token: lastLIFIStep.action.toToken,
+        amount: lastLIFIStep.estimate.toAmountMin,
+      }
+    } else {
+      return {
+        token: route.simpleTransfer?.token,
+        amount: route.simpleTransfer?.amount,
+      }
+    }
+  }
   return (
     <>
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
-        {!!route.simpleTransfer && !route.lifiRoute && (
-          <SimpleTransferStep
-            simpleTransfer={route.simpleTransfer}
-            simpleStepExecution={simpleTransferExecution}
-            isSwapping={isSwapping}
-            simpleTransferDestination={etherspot?.state.accountAddress!}
-          />
-        )}
-        {!!route.lifiRoute && !route.simpleTransfer && (
-          <LIFIRouteSteps lifiRoute={route.lifiRoute!} isSwapping={isSwapping} />
-        )}
-        {!!route.stakingStep && !!route.lifiRoute && (
-          <EtherspotStep
-            lifiRoute={route.lifiRoute}
-            etherspotStepExecution={etherspotStepExecution}
-            stakingStep={route.stakingStep}
-            isSwapping
-          />
-        )}
+        {!!route.simpleTransfer &&
+          !route.lifiRoute &&
+          SimpleTransferStep({
+            simpleTransfer: route.simpleTransfer,
+            simpleStepExecution: simpleTransferExecution,
+            isSwapping: isSwapping,
+            simpleTransferDestination: etherspot?.state.accountAddress!,
+          })}
+        {!!route.lifiRoute &&
+          !route.simpleTransfer &&
+          LIFIRouteSteps({ lifiRoute: route.lifiRoute!, isSwapping: isSwapping })}
+        {!!route.stakingStep &&
+          EtherspotStep({
+            index: route.simpleTransfer ? 1 : route.lifiRoute?.steps.length || 100,
+            previousStepInfo: getLastStepBeforeStakingStepInfo(),
+            etherspotStepExecution: etherspotStepExecution,
+            stakingStep: route.stakingStep,
+            isSwapping,
+          })}
       </Timeline>
 
       <div style={{ display: 'flex', backgroundColor: 'rgba(255,255,255, 0)' }}>

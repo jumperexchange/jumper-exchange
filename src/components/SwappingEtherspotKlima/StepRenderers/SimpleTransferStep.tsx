@@ -1,7 +1,7 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Timeline, Typography } from 'antd'
+import { useMediaQuery } from 'react-responsive'
 
-import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
 import { ExtendedTransactionRequest } from '../../../services/routingService'
 import { formatTokenAmount } from '../../../services/utils'
@@ -21,7 +21,7 @@ export const SimpleTransferStep = ({
   simpleTransferDestination,
   simpleStepExecution,
 }: SimpleTransferStepProps) => {
-  const isMobile = useIsMobile()
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
   const parseSimpleTransferExecution = () => {
     if (!simpleStepExecution) {
@@ -67,12 +67,7 @@ export const SimpleTransferStep = ({
     const isLoading = isSwapping && simpleStepExecution && simpleStepExecution.status === 'PENDING'
     const isPaused = !isSwapping && simpleStepExecution && simpleStepExecution.status === 'PENDING'
     const color = isDone ? 'green' : simpleStepExecution ? 'blue' : 'gray'
-    // const executionDuration = !!step.estimate.executionDuration && (
-    //   <>
-    //     <br />
-    //     <span>Estimated duration: {parseSecondsAsTime(step.estimate.executionDuration)} min</span>
-    //   </>
-    // )
+
     return [
       <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
         <h4>Transfer USDC</h4>
@@ -80,7 +75,6 @@ export const SimpleTransferStep = ({
           {formatTokenAmount(simpleTransfer.token, simpleTransfer.amount)} <ArrowRightOutlined />{' '}
           {parseSimpleTransferDestination(simpleTransferDestination)}
         </span>
-        {/* {executionDuration} */}
       </Timeline.Item>,
       <Timeline.Item
         position={isMobile ? 'right' : 'left'}
@@ -92,5 +86,5 @@ export const SimpleTransferStep = ({
     ]
   }
 
-  return <>{parseSimpleTransferStep()}</>
+  return parseSimpleTransferStep()
 }
