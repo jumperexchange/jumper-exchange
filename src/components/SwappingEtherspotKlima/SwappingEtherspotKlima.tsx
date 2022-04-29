@@ -812,6 +812,13 @@ const SwappingEtherspotKlima = ({
           }
         }
       }
+      if (etherspotStepExecution) {
+        for (const process of etherspotStepExecution.process) {
+          if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
+            return process
+          }
+        }
+      }
     }
   }
 
