@@ -52,6 +52,7 @@ import {
   CoinKey,
   ExchangeDefinition,
   ExchangeTool,
+  ExtendedRoute,
   findDefaultToken,
   getChainById,
   getChainByKey,
@@ -66,7 +67,7 @@ import {
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
 import SwapForm from './SwapForm'
-import SwappingEtherspotKlima from './SwappingEtherspotKlima'
+import SwappingCarbonOffset from './SwappingCarbonOffset'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
 
@@ -260,12 +261,6 @@ const getDefaultParams = (
 
 interface TokenAmountList {
   [ChainKey: string]: Array<TokenWithAmounts>
-}
-
-interface ExtendedRoute {
-  lifiRoute: RouteType
-  gasStep: Step
-  klimaStep: Step
 }
 
 interface StartParams {
@@ -785,7 +780,7 @@ const Swap = () => {
       const { lifiRoute, gasStep, stakingStep, id } = routeCallResult
 
       if (id === currentRouteCallId) {
-        setRoute({ lifiRoute, gasStep, klimaStep: stakingStep })
+        setRoute({ lifiRoute, gasStep, stakingStep: stakingStep })
         fadeInAnimation(routeCards)
         setHighlightedIndex(lifiRoute && gasStep && stakingStep ? 0 : -1)
         setNoRoutesAvailable(!lifiRoute || !gasStep || !stakingStep)
@@ -920,7 +915,7 @@ const Swap = () => {
   }
 
   const toSection = () => {
-    const amount = route?.klimaStep?.estimate?.toAmountMin || '0'
+    const amount = route?.stakingStep?.estimate?.toAmountMin || '0'
     const formattedAmount = tokenPolygonBCT ? formatTokenAmount(tokenPolygonBCT, amount) : '0'
     return (
       <Row
@@ -1208,7 +1203,7 @@ const Swap = () => {
           maskClosable={false}
           width={700}
           footer={null}>
-          <SwappingEtherspotKlima
+          <SwappingCarbonOffset
             fixedRecipient={true}
             route={selectedRoute}
             etherspot={etherSpotSDK}
@@ -1221,7 +1216,7 @@ const Swap = () => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
-            }}></SwappingEtherspotKlima>
+            }}></SwappingCarbonOffset>
         </Modal>
       )}
     </Content>
