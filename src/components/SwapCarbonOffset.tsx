@@ -689,7 +689,6 @@ const Swap = () => {
     },
     [tokens],
   )
-  // TODO: fix TODOs here
   useEffect(() => {
     const getTransferRoutes = async () => {
       setRoute({} as any)
@@ -737,11 +736,11 @@ const Swap = () => {
             '0.2',
             result.routes[0].toToken.decimals,
           )
-          const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
+          const amountUsdcToBCT = amountUsdc.sub(amountUsdcToMatic)
           const gasStep = calculateFinalGasStep(result.routes[0], amountUsdcToMatic.toString())
           const stakingStep = calculateFinalStakingStep(
             result.routes[0],
-            amountUsdcToKlima.toString(),
+            amountUsdcToBCT.toString(),
           )
           const additionalQuotes = await Promise.all([gasStep, stakingStep])
 
@@ -780,7 +779,7 @@ const Swap = () => {
       const { lifiRoute, gasStep, stakingStep, id } = routeCallResult
 
       if (id === currentRouteCallId) {
-        setRoute({ lifiRoute, gasStep, stakingStep: stakingStep })
+        setRoute({ lifiRoute, gasStep, stakingStep })
         fadeInAnimation(routeCards)
         setHighlightedIndex(lifiRoute && gasStep && stakingStep ? 0 : -1)
         setNoRoutesAvailable(!lifiRoute || !gasStep || !stakingStep)
@@ -810,18 +809,18 @@ const Swap = () => {
     const initialTransferDestChain = getChainByKey(toChainKey!)
     const initialTransferDestToken = toTokenAddress!
 
-    const quoteUsdcToKlima = await LiFi.getQuote({
+    const quoteUsdcToBCT = await LiFi.getQuote({
       fromChain: initialTransferDestChain.id, // has been hardcoded in the routeRequest
       fromToken: initialTransferDestToken, // has been hardcoded in the routeRequest
       fromAddress: etherSpotSDK?.state.accountAddress!,
-      fromAmount: amount, // TODO: check if correct value
+      fromAmount: amount,
       toChain: initialTransferDestChain.id,
       toToken: tokenPolygonBCT!.address,
       slippage: 0.005,
       integrator: 'lifi-etherspot',
       allowExchanges: [allowedDex],
     })
-    return quoteUsdcToKlima
+    return quoteUsdcToBCT
   }
 
   const openModal = () => {
