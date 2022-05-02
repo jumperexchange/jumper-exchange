@@ -28,7 +28,7 @@ import {
   getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
 } from '../services/ethersportTxService'
-import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
+import { isWalletConnectWallet } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
@@ -85,7 +85,7 @@ const SwappingEtherspotKlima = ({
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalTokenAmount, setFinalTokenAmount] = useState<TokenAmount | null>()
+  const [finalTokenAmount] = useState<TokenAmount | null>()
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
     chainId: number
@@ -314,7 +314,7 @@ const SwappingEtherspotKlima = ({
     })
 
     const amountBCT = route.stakingStep.estimate.toAmountMin
-    // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
+    // approve BCT: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
     const txAllow = await getSetAllowanceTransaction(
       TOUCAN_BCT_ADDRESS,
       KLIMA_CARBON_OFFSET_CONTRACT,
@@ -326,7 +326,7 @@ const SwappingEtherspotKlima = ({
       data: txAllow.data as string,
     })
 
-    // stake KLIMA: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
+    // retire BCT: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
 
     const txOffset = await getOffsetCarbonTransaction({
       address: route.lifiRoute.toAddress || route.lifiRoute.fromAddress!,
@@ -336,6 +336,7 @@ const SwappingEtherspotKlima = ({
       retirementTokenAddress: TOUCAN_BCT_ADDRESS,
       beneficiaryAddress: route.lifiRoute.fromAddress,
     })
+
     await etherspot.batchExecuteAccountTransaction({
       to: txOffset.to as string,
       data: txOffset.data as string,
@@ -351,7 +352,6 @@ const SwappingEtherspotKlima = ({
       switchChainHook: switchChainHook,
       infiniteApproval: settings.infiniteApproval,
     }
-    storeRoute(route.lifiRoute)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
@@ -668,7 +668,6 @@ const SwappingEtherspotKlima = ({
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
-    storeRoute(updatedRoute)
     updateRoute(updatedRoute)
   }
 

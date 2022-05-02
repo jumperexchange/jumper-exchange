@@ -16,19 +16,13 @@ import {
   Typography,
 } from 'antd'
 import BigNumber from 'bignumber.js'
-import { BigNumberish, constants, ethers } from 'ethers'
+import { constants, ethers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
 import walletIcon from '../assets/wallet.png'
-import {
-  erc20Abi,
-  KLIMA_ADDRESS,
-  sKLIMA_ADDRESS,
-  STAKE_KLIMA_CONTRACT_ADDRESS,
-  stakeKlimaAbi,
-} from '../constants'
+import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import {
   getSetAllowanceTransaction,

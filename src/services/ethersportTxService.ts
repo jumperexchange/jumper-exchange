@@ -17,7 +17,7 @@ export const getSetAllowanceTransaction = async (
   return erc20.populateTransaction.approve(approvalAddress, amount)
 }
 
-export const getOffsetCarbonTransaction = (params: {
+export const getOffsetCarbonTransaction = async (params: {
   address: string
   inputTokenAddress: string
   retirementTokenAddress: string
@@ -29,7 +29,7 @@ export const getOffsetCarbonTransaction = (params: {
   specificAddresses?: string[]
 }) => {
   const contract = new ethers.Contract(KLIMA_CARBON_OFFSET_CONTRACT, KlimaRetirementAggregator.abi)
-  return contract.populateTransaction.retireCarbon(
+  return await contract.populateTransaction.retireCarbon(
     params.inputTokenAddress,
     params.retirementTokenAddress,
     params.quantity,
