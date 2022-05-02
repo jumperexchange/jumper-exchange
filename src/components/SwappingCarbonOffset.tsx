@@ -16,15 +16,18 @@ import {
   Typography,
 } from 'antd'
 import BigNumber from 'bignumber.js'
-import { BigNumberish, constants, ethers } from 'ethers'
+import { constants, ethers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
 import walletIcon from '../assets/wallet.png'
-import { erc20Abi, KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../constants'
-import KlimaRetirementAggregator from '../constants/abis/KlimaRetirementAggregator.json'
+import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
+import {
+  getOffsetCarbonTransaction,
+  getSetAllowanceTransaction,
+} from '../services/ethersportTxService'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
@@ -65,46 +68,6 @@ interface SwappingProps {
   updateRoute: Function
   onSwapDone: Function
   fixedRecipient?: boolean
-}
-
-const getSetAllowanceTransaction = async (
-  tokenAddress: string,
-  approvalAddress: string,
-  amount: BigNumberish,
-) => {
-  const erc20 = new ethers.Contract(tokenAddress, erc20Abi)
-  return erc20.populateTransaction.approve(approvalAddress, amount)
-}
-
-const getOffsetCarbonTransaction = (params: {
-  address: string
-  inputTokenAddress: string
-  retirementTokenAddress: string
-  quantity: string
-  amountInCarbon: boolean
-  beneficiaryAddress?: string
-  beneficiaryName?: string
-  retirementMessage?: string
-  specificAddresses?: string[]
-}) => {
-  const contract = new ethers.Contract(KLIMA_CARBON_OFFSET_CONTRACT, KlimaRetirementAggregator.abi)
-  return contract.populateTransaction.retireCarbon(
-    params.inputTokenAddress,
-    params.retirementTokenAddress,
-    params.quantity,
-    params.amountInCarbon,
-    params.beneficiaryAddress || params.address,
-    params.beneficiaryName || '',
-    params.retirementMessage || '',
-  )
-}
-const getTransferTransaction = async (
-  tokenAddress: string,
-  toAddress: string,
-  amount: BigNumberish,
-) => {
-  const erc20 = new ethers.Contract(tokenAddress, erc20Abi)
-  return erc20.populateTransaction.transfer(toAddress, amount)
 }
 
 const SwappingEtherspotKlima = ({

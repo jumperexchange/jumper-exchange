@@ -30,6 +30,11 @@ import {
   stakeKlimaAbi,
 } from '../constants'
 import LiFi from '../LiFi'
+import {
+  getSetAllowanceTransaction,
+  getStakeKlimaTransaction,
+  getTransferTransaction,
+} from '../services/ethersportTxService'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
@@ -69,28 +74,6 @@ interface SwappingProps {
   updateRoute: Function
   onSwapDone: Function
   fixedRecipient?: boolean
-}
-
-const getSetAllowanceTransaction = async (
-  tokenAddress: string,
-  approvalAddress: string,
-  amount: BigNumberish,
-) => {
-  const erc20 = new ethers.Contract(tokenAddress, erc20Abi)
-  return erc20.populateTransaction.approve(approvalAddress, amount)
-}
-
-const getStakeKlimaTransaction = (amount: BigNumberish) => {
-  const contract = new ethers.Contract(STAKE_KLIMA_CONTRACT_ADDRESS, stakeKlimaAbi)
-  return contract.populateTransaction.stake(amount)
-}
-const getTransferTransaction = async (
-  tokenAddress: string,
-  toAddress: string,
-  amount: BigNumberish,
-) => {
-  const erc20 = new ethers.Contract(tokenAddress, erc20Abi)
-  return erc20.populateTransaction.transfer(toAddress, amount)
 }
 
 const SwappingEtherspotKlima = ({
