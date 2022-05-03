@@ -70,7 +70,7 @@ interface SwappingProps {
   fixedRecipient?: boolean
 }
 
-const SwappingEtherspotKlima = ({
+const SwappingCarbonOffset = ({
   route,
   etherspot,
   updateRoute,
@@ -313,12 +313,16 @@ const SwappingEtherspotKlima = ({
       data: route.gasStep.transactionRequest.data as string,
     })
 
-    const amountBCT = route.stakingStep.estimate.toAmountMin
+    const amountUSDC = new BigNumber(route.stakingStep.action.fromAmount)
+    const safetyMargin = new BigNumber(
+      ethers.utils.parseUnits('1.1', route.stakingStep.action.fromToken.decimals).toString(),
+    )
+    const amountUSDCAllowance = amountUSDC.multipliedBy(safetyMargin).toString()
     // approve BCT: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
     const txAllow = await getSetAllowanceTransaction(
-      TOUCAN_BCT_ADDRESS,
+      route.stakingStep.action.fromToken.address,
       KLIMA_CARBON_OFFSET_CONTRACT,
-      amountBCT,
+      amountUSDCAllowance,
     )
 
     await etherspot.batchExecuteAccountTransaction({
@@ -327,7 +331,7 @@ const SwappingEtherspotKlima = ({
     })
 
     // retire BCT: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
-
+    const amountBCT = route.stakingStep.estimate.toAmountMin
     const txOffset = await getOffsetCarbonTransaction({
       address: route.lifiRoute.toAddress || route.lifiRoute.fromAddress!,
       amountInCarbon: true,
@@ -606,7 +610,7 @@ const SwappingEtherspotKlima = ({
     processList.map((process) => {
       if (process.id === 'wait') {
         process.status = 'DONE'
-        process.message = 'Staking successful'
+        process.message = 'Offsetting Successful'
         process.txHash = batch.transaction.hash
         process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
         process.doneAt = Date.now()
@@ -705,7 +709,7 @@ const SwappingEtherspotKlima = ({
 
       return (
         <Space direction="vertical">
-          <Typography.Text strong>Staking Successful!</Typography.Text>
+          <Typography.Text strong>Offsetting Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
               <span>{successMessage}</span>
@@ -921,4 +925,4 @@ const SwappingEtherspotKlima = ({
   )
 }
 
-export default SwappingEtherspotKlima
+export default SwappingCarbonOffset
