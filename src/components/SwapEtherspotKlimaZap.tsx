@@ -363,22 +363,22 @@ const Swap = () => {
   }, [active, account, library, chainId])
 
   // Check Etherspot Wallet balance
-  useEffect(() => {
-    const checkEtherspotWalletBalance = async (wallet: string) => {
-      const usdcToken = findDefaultToken(CoinKey.USDC, ChainId.POL)
-      const balance = await LiFi.getTokenBalance(wallet, usdcToken)
-      const amount = new BigNumber(balance?.amount || 0)
+  // useEffect(() => {
+  //   const checkEtherspotWalletBalance = async (wallet: string) => {
+  //     const usdcToken = findDefaultToken(CoinKey.USDC, ChainId.POL)
+  //     const balance = await LiFi.getTokenBalance(wallet, usdcToken)
+  //     const amount = new BigNumber(balance?.amount || 0)
 
-      if (amount.gte(0.3)) {
-        setEtherspotWalletBalance(amount)
-      } else {
-        setEtherspotWalletBalance(undefined)
-      }
-    }
-    if (etherSpotSDK?.state.accountAddress) {
-      checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
-    }
-  }, [etherSpotSDK])
+  //     if (amount.gte(0.3)) {
+  //       setEtherspotWalletBalance(amount)
+  //     } else {
+  //       setEtherspotWalletBalance(undefined)
+  //     }
+  //   }
+  //   if (etherSpotSDK?.state.accountAddress) {
+  //     checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
+  //   }
+  // }, [etherSpotSDK])
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)

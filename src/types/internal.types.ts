@@ -1,6 +1,8 @@
 import {
   ChainKey,
   Coin,
+  Route,
+  Step,
   StepTool,
   supportedBridges,
   supportedExchangeAggregators,
@@ -75,4 +77,10 @@ export interface WalletConnectInfo {
   key: string
   peerId: string
   peerMeta: { [k: string]: any } // not important as of now
+}
+
+export interface ExtendedRoute {
+  lifiRoute: Route
+  gasStep: Step
+  klimaStep: Step
 }
