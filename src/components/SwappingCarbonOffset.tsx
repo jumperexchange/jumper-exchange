@@ -24,6 +24,7 @@ import { useMediaQuery } from 'react-responsive'
 import walletIcon from '../assets/wallet.png'
 import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
+import { useBeneficiaryInfo } from '../providers/ToSectionCarbonOffsetProvider'
 import {
   getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
@@ -80,6 +81,7 @@ const SwappingCarbonOffset = ({
   const { steps } = route.lifiRoute
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+  const beneficiaryInfo = useBeneficiaryInfo()
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
@@ -338,7 +340,9 @@ const SwappingCarbonOffset = ({
       quantity: amountBCT,
       inputTokenAddress: route.lifiRoute.toToken.address,
       retirementTokenAddress: TOUCAN_BCT_ADDRESS,
-      beneficiaryAddress: route.lifiRoute.fromAddress,
+      beneficiaryAddress: beneficiaryInfo.beneficiaryAddress,
+      beneficiaryName: beneficiaryInfo.beneficiaryName,
+      retirementMessage: beneficiaryInfo.retirementMessage,
     })
 
     await etherspot.batchExecuteAccountTransaction({
