@@ -1,4 +1,4 @@
-# transferto.xyz powered by [LI.LI](https://li.fi)
+# transferto.xyz powered by [LI.FI](https://li.fi)
 
 ## Setup
 
