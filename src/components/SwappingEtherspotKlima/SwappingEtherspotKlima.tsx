@@ -76,7 +76,7 @@ const SwappingEtherspotKlima = ({
   }>({ show: false, chainId: 1 })
   const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
   const [simpleTransferExecution, setSimpleTransferExecution] = useState<Execution>()
-
+  const [executionError, setExecutionError] = useState<any>()
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
@@ -243,16 +243,18 @@ const SwappingEtherspotKlima = ({
     if (!web3.account || !web3.library || !route.simpleTransfer) return
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
+
     try {
-      await executeSimpleTransfer()
+      if (simpleTransferExecution?.status !== 'DONE') {
+        await executeSimpleTransfer()
+      }
       await finalizeEtherSpotStep(await executeEtherspotStep())
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route.simpleTransfer)
       // eslint-disable-next-line no-console
       console.error(e)
-      handleSimpleTransferError(e)
-      handlePotentialEtherSpotError(e)
+      setExecutionError(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -262,6 +264,19 @@ const SwappingEtherspotKlima = ({
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
     onSwapDone()
   }
+
+  useEffect(() => {
+    if (executionError) {
+      handleSimpleTransferError(executionError)
+      handlePotentialEtherSpotError(executionError)
+    }
+    setExecutionError(undefined)
+  }, [executionError])
+
+  // const nonLIFIErrorHandler = (e: any) => {
+  //   handleSimpleTransferError(e)
+  //   handlePotentialEtherSpotError(e)
+  // }
 
   const resumeLIFIRoute = async () => {
     if (!web3.account || !web3.library || !route.lifiRoute) return
@@ -318,7 +333,7 @@ const SwappingEtherspotKlima = ({
 
     if (route.simpleTransfer) {
       if (simpleTransferExecution && simpleTransferExecution.status === 'FAILED') {
-        setEtherspotStepExecution(undefined)
+        setSimpleTransferExecution(undefined)
       }
       if (etherspotStepExecution && etherspotStepExecution.status === 'FAILED') {
         setEtherspotStepExecution(undefined)
@@ -406,7 +421,7 @@ const SwappingEtherspotKlima = ({
   }
 
   const handleSimpleTransferError = (e: any) => {
-    if (etherspotStepExecution) return // We are already on the next step
+    if (etherspotStepExecution || simpleTransferExecution?.status === 'DONE') return // We are already on the next step
     if (!simpleTransferExecution) {
       setSimpleTransferExecution({
         status: 'FAILED',
@@ -436,8 +451,7 @@ const SwappingEtherspotKlima = ({
     if (
       (route.lifiRoute &&
         route.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')) ||
-      (route.simpleTransfer &&
-        (!simpleTransferExecution || simpleTransferExecution?.status === 'FAILED'))
+      (route.simpleTransfer && simpleTransferExecution?.status !== 'DONE')
     ) {
       return
     }
