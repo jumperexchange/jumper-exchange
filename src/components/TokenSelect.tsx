@@ -20,6 +20,8 @@ interface TokenSelectProps {
   disabled?: boolean
 }
 
+const positionFixed = window.location.pathname.includes('showcase')
+
 const TokenSelect = ({
   tokens,
   balances,
@@ -134,6 +136,7 @@ const TokenSelect = ({
       <Select
         style={{
           width: 200,
+          position: 'relative',
         }}
         disabled={disabled}
         placeholder="Select Coin"
@@ -141,7 +144,7 @@ const TokenSelect = ({
         onChange={(v) => onChangeSelectedToken(v)}
         optionLabelProp="data-label"
         bordered={false}
-        dropdownStyle={{ minWidth: 300 }}
+        dropdownStyle={{ minWidth: 300, position: positionFixed ? 'fixed' : 'relative' }}
         showSearch
         ref={(select) => {
           if (select) {

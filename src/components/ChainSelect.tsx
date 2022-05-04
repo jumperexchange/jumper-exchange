@@ -10,6 +10,8 @@ interface ChainSelectProps {
   disabled?: boolean
 }
 
+const positionFixed = window.location.pathname.includes('showcase')
+
 const ChainSelect = ({
   availableChains,
   selectedChain,
@@ -29,12 +31,12 @@ const ChainSelect = ({
       )}
 
       <Select
-        style={{ width: 200 }}
+        style={{ width: 200, position: 'relative' }}
         disabled={disabled}
         placeholder="Select Chain"
         value={selectedChain}
         onChange={(v: ChainKey) => onChangeSelectedChain(v)}
-        dropdownStyle={{ minWidth: 300 }}
+        dropdownStyle={{ minWidth: 300, position: positionFixed ? 'fixed' : 'relative' }}
         bordered={false}
         optionLabelProp="data-label">
         <Select.OptGroup label="Supported Chains">

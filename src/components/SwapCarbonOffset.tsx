@@ -10,7 +10,6 @@ import {
   Collapse,
   Divider,
   Form,
-  Input,
   InputNumber,
   Modal,
   Row,
@@ -38,12 +37,7 @@ import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
-import {
-  deepClone,
-  formatTokenAmount,
-  formatTokenAmountOnly,
-  isWalletDeactivated,
-} from '../services/utils'
+import { deepClone, formatTokenAmountOnly, isWalletDeactivated } from '../services/utils'
 import {
   BridgeDefinition,
   Chain,
@@ -66,7 +60,8 @@ import {
   TokenAmount,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
-import SwapForm from './SwapForm'
+import SwapForm from './SwapForm/SwapForm'
+import { ToSectionCarbonOffset } from './SwapForm/SwapFormToSections/ToSectionCarbonOffset'
 import SwappingCarbonOffset from './SwappingCarbonOffset'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
@@ -913,36 +908,6 @@ const Swap = () => {
     )
   }
 
-  const toSection = () => {
-    const amount = route?.stakingStep?.estimate?.toAmountMin || '0'
-    const formattedAmount = tokenPolygonBCT ? formatTokenAmount(tokenPolygonBCT, amount) : '0'
-    return (
-      <Row
-        style={{
-          marginTop: '32px',
-        }}
-        gutter={[
-          { xs: 8, sm: 16 },
-          { xs: 8, sm: 16 },
-        ]}>
-        <Col span={10}>
-          <div className="form-text">To retire</div>
-        </Col>
-        <Col span={14}>
-          <div className="form-input-wrapper">
-            <Input
-              type="text"
-              value={`${formattedAmount.split(' ')[0]} tons of carbon`}
-              bordered={false}
-              disabled
-              style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
-            />
-          </div>
-        </Col>
-      </Row>
-    )
-  }
-
   return (
     <Content
       className="site-layout-swap-ukraine"
@@ -1005,9 +970,14 @@ const Swap = () => {
                   balances={balances}
                   allowSameChains={true}
                   fixedWithdraw={true}
-                  alternativeToSection={toSection()}
                   fromSectionDesignator={'Use'}
                   toSectionDesignator={'To retire'}
+                  alternativeToSection={
+                    <ToSectionCarbonOffset
+                      step={route?.stakingStep}
+                      tokenPolygonBCT={tokenPolygonBCT}
+                    />
+                  }
                 />
                 <span>
                   {/* Disclaimer */}

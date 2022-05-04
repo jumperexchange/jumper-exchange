@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 
-import { Token } from '../types'
+import { Route, Token } from '../types'
 import { readDeactivatedWallets, readWallets } from './localStorage'
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
@@ -75,4 +76,16 @@ export const parseSecondsAsTime = (seconds: number): string => {
   const remainingSeconds = Math.ceil(seconds % 60)
   const prefix = remainingSeconds < 10 ? '0' : ''
   return `${minutes}:${prefix}${remainingSeconds}`
+}
+
+export const isZeroAddress = (address: string): boolean => {
+  address = address.toLowerCase()
+  return (
+    address === ethers.constants.AddressZero ||
+    address === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  )
+}
+
+export const isLiFiRoute = (route: any): route is Route => {
+  return (route as Route).steps !== undefined
 }

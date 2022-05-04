@@ -10,7 +10,6 @@ import {
   Collapse,
   Divider,
   Form,
-  Input,
   InputNumber,
   Modal,
   Row,
@@ -61,7 +60,8 @@ import {
   Token,
   TokenAmount,
 } from '../types'
-import SwapForm from './SwapForm'
+import SwapForm from './SwapForm/SwapForm'
+import { ToSectionUkraine } from './SwapForm/SwapFormToSections/ToSectionUkraine'
 import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
 
@@ -283,7 +283,7 @@ const Swap = () => {
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(
     findDefaultToken(CoinKey.ETH, ChainId.POL).address,
-  ) // TODO: Change This
+  )
   const [tokens, setTokens] = useState<TokenAmountList>({})
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
@@ -303,7 +303,6 @@ const Swap = () => {
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
 
@@ -456,13 +455,13 @@ const Swap = () => {
   }
 
   const getSelectedWithdraw = () => {
-    if (highlightedIndex === -1) {
+    if (!routes.length) {
       return {
         estimate: '0.0',
       }
     } else {
-      const selectedRoute = routes[highlightedIndex]
-      const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1]
+      const route = routes[0]
+      const lastStep = route.steps[route.steps.length - 1]
       return {
         estimate: formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount),
         min: formatTokenAmount(lastStep.action.toToken, lastStep.estimate?.toAmountMin),
@@ -661,7 +660,6 @@ const Swap = () => {
   useEffect(() => {
     const getTransferRoutes = async () => {
       setRoutes([])
-      setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
       if (depositAmount.gt(0) && fromChainKey && fromTokenAddress && toChainKey && toTokenAddress) {
@@ -692,6 +690,8 @@ const Swap = () => {
         try {
           currentRouteCallId = id
           const result = await LiFi.getRoutes(request)
+          // const result = await getRoute(request, web3.library?.getSigner())
+
           setRouteCallResult({ result, id })
         } catch {
           if (id === currentRouteCallId || !currentRouteCallId) {
@@ -722,7 +722,6 @@ const Swap = () => {
       if (id === currentRouteCallId) {
         setRoutes(result.routes)
         fadeInAnimation(routeCards)
-        setHighlightedIndex(result.routes.length === 0 ? -1 : 0)
         setNoRoutesAvailable(result.routes.length === 0)
         setRoutesLoading(false)
       }
@@ -736,7 +735,6 @@ const Swap = () => {
 
     // Reset routes to avoid reexecution with same data
     setRoutes([])
-    setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
   }
 
@@ -789,14 +787,14 @@ const Swap = () => {
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
+    if (!hasSufficientGasBalanceOnStartChain(routes[0])) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Insufficient Gas on Start Chain
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnCrossChain(routes[highlightedIndex])) {
+    if (!hasSufficientGasBalanceOnCrossChain(routes[0])) {
       return (
         <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
@@ -815,7 +813,7 @@ const Swap = () => {
 
     return (
       <Button
-        disabled={highlightedIndex === -1}
+        disabled={!routes}
         shape="round"
         className="btn-ukraine-swap-form"
         type="primary"
@@ -825,32 +823,6 @@ const Swap = () => {
       </Button>
     )
   }
-
-  const toSection = (
-    <Row
-      style={{
-        marginTop: '32px',
-      }}
-      gutter={[
-        { xs: 8, sm: 16 },
-        { xs: 8, sm: 16 },
-      ]}>
-      <Col span={10}>
-        <div className="form-text">To:</div>
-      </Col>
-      <Col span={14}>
-        <div className="form-input-wrapper">
-          <Input
-            type="text"
-            value={'ETH for Ukraine'}
-            bordered={false}
-            disabled
-            style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
-          />
-        </div>
-      </Col>
-    </Row>
-  )
 
   return (
     <Content
@@ -914,7 +886,7 @@ const Swap = () => {
                   balances={balances}
                   allowSameChains={true}
                   fixedWithdraw={true}
-                  alternativeToSection={toSection}
+                  alternativeToSection={<ToSectionUkraine />}
                 />
                 <span>
                   {/* Disclaimer */}

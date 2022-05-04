@@ -5,10 +5,10 @@ import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
-import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../types'
-import ChainSelect from './ChainSelect'
-import TokenSelect from './TokenSelect'
-import { getInjectedConnector } from './web3/connectors'
+import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../../types'
+import ChainSelect from '../ChainSelect'
+import TokenSelect from '../TokenSelect'
+import { getInjectedConnector } from '../web3/connectors'
 
 interface SwapFormProps {
   depositChain?: ChainKey

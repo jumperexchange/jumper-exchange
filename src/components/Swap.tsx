@@ -59,7 +59,7 @@ import {
 } from '../types'
 import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
-import SwapForm from './SwapForm'
+import SwapForm from './SwapForm/SwapForm'
 import Swapping from './Swapping'
 import TransactionsTable from './TransactionsTable'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
