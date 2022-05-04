@@ -273,11 +273,6 @@ const SwappingEtherspotKlima = ({
     setExecutionError(undefined)
   }, [executionError])
 
-  // const nonLIFIErrorHandler = (e: any) => {
-  //   handleSimpleTransferError(e)
-  //   handlePotentialEtherSpotError(e)
-  // }
-
   const resumeLIFIRoute = async () => {
     if (!web3.account || !web3.library || !route.lifiRoute) return
 
