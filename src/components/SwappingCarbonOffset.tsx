@@ -22,20 +22,20 @@ import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
 import walletIcon from '../assets/wallet.png'
-import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../constants'
+import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import {
+  getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
-  getStakeKlimaTransaction,
-  getTransferTransaction,
 } from '../services/etherspotTxService'
-import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
+import { isWalletConnectWallet } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import {
   ChainKey,
+  ExtendedRoute,
   findTool,
   getChainById,
   getChainByKey,
@@ -49,12 +49,12 @@ import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
-const SKLIMA_TOKEN_POL = {
-  symbol: 'sKLIMA',
-  decimals: 9,
-  name: 'sKLIMA',
+const TOUCAN_BCT_TOKEN = {
+  symbol: 'BCT',
+  decimals: 18,
+  name: 'Toucan Protocol: Base Carbon Tonne',
   chainId: 137,
-  address: sKLIMA_ADDRESS,
+  address: TOUCAN_BCT_ADDRESS,
 }
 
 interface SwapSettings {
@@ -62,7 +62,7 @@ interface SwapSettings {
 }
 
 interface SwappingProps {
-  route: { lifiRoute: Route; gasStep: Step; klimaStep: Step }
+  route: ExtendedRoute
   etherspot?: Sdk
   settings: SwapSettings
   updateRoute: Function
@@ -70,7 +70,7 @@ interface SwappingProps {
   fixedRecipient?: boolean
 }
 
-const SwappingEtherspotKlima = ({
+const SwappingCarbonOffset = ({
   route,
   etherspot,
   updateRoute,
@@ -85,7 +85,7 @@ const SwappingEtherspotKlima = ({
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalTokenAmount, setFinalTokenAmount] = useState<TokenAmount | null>()
+  const [finalTokenAmount] = useState<TokenAmount | null>()
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
     chainId: number
@@ -258,8 +258,6 @@ const SwappingEtherspotKlima = ({
     if (!etherspot) {
       throw new Error('Etherspot not initialized.')
     }
-    const tokenPolygonKLIMAPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
-    const tokenPolygonSKLIMAPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
 
     const gasStepRefreshPromise = LiFi.getQuote({
       fromChain: route.gasStep.action.fromChainId,
@@ -272,30 +270,23 @@ const SwappingEtherspotKlima = ({
       integrator: 'lifi-etherspot',
       allowExchanges: [route.gasStep.tool],
     })
-    const klimaStepRefreshPromise = LiFi.getQuote({
-      fromChain: route.klimaStep.action.fromChainId,
-      fromToken: route.klimaStep.action.fromToken.address,
+    const offsetStepPromise = LiFi.getQuote({
+      fromChain: route.stakingStep.action.fromChainId,
+      fromToken: route.stakingStep.action.fromToken.address,
       fromAddress: etherspot.state.accountAddress!,
-      fromAmount: route.klimaStep.action.fromAmount, // TODO: check if correct value
-      toChain: route.klimaStep.action.fromChainId,
-      toToken: route.klimaStep.action.toToken.address, // hardcode return gastoken
+      fromAmount: route.stakingStep.action.fromAmount, // TODO: check if correct value
+      toChain: route.stakingStep.action.fromChainId,
+      toToken: route.stakingStep.action.toToken.address, // hardcode return gastoken
       slippage: route.gasStep.action.slippage,
       integrator: 'lifi-etherspot',
-      allowExchanges: [route.klimaStep.tool],
+      allowExchanges: [route.stakingStep.tool],
     })
 
-    const resolvedPromises = await Promise.all([
-      tokenPolygonKLIMAPromise,
-      tokenPolygonSKLIMAPromise,
-      gasStepRefreshPromise,
-      klimaStepRefreshPromise,
-    ])
-    const tokenPolygonKLIMA = resolvedPromises[0]
-    const tokenPolygonSKLIMA = resolvedPromises[1]
-    route.gasStep = resolvedPromises[2]
-    route.klimaStep = resolvedPromises[3]
+    const resolvedPromises = await Promise.all([gasStepRefreshPromise, offsetStepPromise])
+    route.gasStep = resolvedPromises[0]
+    route.stakingStep = resolvedPromises[1]
 
-    if (!route.gasStep.transactionRequest || !route.klimaStep.transactionRequest) {
+    if (!route.gasStep.transactionRequest || !route.stakingStep.transactionRequest) {
       throw new Error('Swap transaction missing')
     }
 
@@ -303,8 +294,9 @@ const SwappingEtherspotKlima = ({
     etherspot.clearGatewayBatch()
 
     const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
-      route.klimaStep.estimate.fromAmount,
+      route.stakingStep.estimate.fromAmount,
     )
+
     const txAllowTotal = await getSetAllowanceTransaction(
       route.gasStep.action.fromToken.address,
       route.gasStep.estimate.approvalAddress as string,
@@ -315,42 +307,43 @@ const SwappingEtherspotKlima = ({
       data: txAllowTotal.data as string,
     })
 
-    // Swap
+    // Swap for gas
     await etherspot.batchExecuteAccountTransaction({
       to: route.gasStep.transactionRequest.to as string,
       data: route.gasStep.transactionRequest.data as string,
     })
 
-    await etherspot.batchExecuteAccountTransaction({
-      to: route.klimaStep.transactionRequest.to as string,
-      data: route.klimaStep.transactionRequest.data as string,
-    })
-    const amountKlima = route.klimaStep.estimate.toAmountMin
-    // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
-    const txAllow = await getSetAllowanceTransaction(
-      tokenPolygonKLIMA!.address,
-      STAKE_KLIMA_CONTRACT_ADDRESS,
-      amountKlima,
+    const amountUSDC = new BigNumber(route.stakingStep.action.fromAmount)
+    const safetyMargin = new BigNumber(
+      ethers.utils.parseUnits('1.1', route.stakingStep.action.fromToken.decimals).toString(),
     )
+    const amountUSDCAllowance = amountUSDC.multipliedBy(safetyMargin).toString()
+    // approve BCT: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
+    const txAllow = await getSetAllowanceTransaction(
+      route.stakingStep.action.fromToken.address,
+      KLIMA_CARBON_OFFSET_CONTRACT,
+      amountUSDCAllowance,
+    )
+
     await etherspot.batchExecuteAccountTransaction({
       to: txAllow.to as string,
       data: txAllow.data as string,
     })
 
-    // stake KLIMA: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
-    const txStake = await getStakeKlimaTransaction(amountKlima)
-    await etherspot.batchExecuteAccountTransaction({
-      to: txStake.to as string,
-      data: txStake.data as string,
+    // retire BCT: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
+    const amountBCT = route.stakingStep.estimate.toAmountMin
+    const txOffset = await getOffsetCarbonTransaction({
+      address: route.lifiRoute.toAddress || route.lifiRoute.fromAddress!,
+      amountInCarbon: true,
+      quantity: amountBCT,
+      inputTokenAddress: route.lifiRoute.toToken.address,
+      retirementTokenAddress: TOUCAN_BCT_ADDRESS,
+      beneficiaryAddress: route.lifiRoute.fromAddress,
     })
-    const txTransfer = await getTransferTransaction(
-      tokenPolygonSKLIMA!.address,
-      web3.account!,
-      amountKlima,
-    )
+
     await etherspot.batchExecuteAccountTransaction({
-      to: txTransfer.to as string,
-      data: txTransfer.data as string,
+      to: txOffset.to as string,
+      data: txOffset.data as string,
     })
   }
 
@@ -363,7 +356,6 @@ const SwappingEtherspotKlima = ({
       switchChainHook: switchChainHook,
       infiniteApproval: settings.infiniteApproval,
     }
-    storeRoute(route.lifiRoute)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
@@ -618,7 +610,7 @@ const SwappingEtherspotKlima = ({
     processList.map((process) => {
       if (process.id === 'wait') {
         process.status = 'DONE'
-        process.message = 'Staking successful'
+        process.message = 'Offsetting Successful'
         process.txHash = batch.transaction.hash
         process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
         process.doneAt = Date.now()
@@ -634,8 +626,8 @@ const SwappingEtherspotKlima = ({
   }
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
-    const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
-    const amountSKlimaParsed = route.klimaStep.estimate.toAmountMin
+    // const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
+    // const amountSKlimaParsed = route.stakingStep.estimate.toAmountMin
 
     const doneList = stepExecution.process.map((p) => {
       p.status = 'DONE'
@@ -645,10 +637,10 @@ const SwappingEtherspotKlima = ({
     setEtherspotStepExecution({
       status: 'DONE',
       process: doneList,
-      toAmount: amountSKlimaParsed.toString(),
+      toAmount: route.stakingStep.estimate.toAmountMin.toString(),
     })
 
-    setFinalTokenAmount(tokenAmountSKlima)
+    // setFinalTokenAmount(tokenAmountSKlima)
   }
 
   const switchChainHook = async (requiredChainId: number) => {
@@ -680,7 +672,6 @@ const SwappingEtherspotKlima = ({
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
-    storeRoute(updatedRoute)
     updateRoute(updatedRoute)
   }
 
@@ -718,7 +709,7 @@ const SwappingEtherspotKlima = ({
 
       return (
         <Space direction="vertical">
-          <Typography.Text strong>Staking Successful!</Typography.Text>
+          <Typography.Text strong>Offsetting Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
               <span>{successMessage}</span>
@@ -831,11 +822,11 @@ const SwappingEtherspotKlima = ({
     // )
     return [
       <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
-        <h4>Stake for sKLIMA</h4>
+        <h4>Offset Carbon With BCT</h4>
         <span>
           {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
           <ArrowRightOutlined />{' '}
-          {formatTokenAmount(SKLIMA_TOKEN_POL, route.klimaStep.estimate?.toAmount)}
+          {formatTokenAmount(TOUCAN_BCT_TOKEN, route.stakingStep.estimate?.toAmount)}
         </span>
         {/* {executionDuration} */}
       </Timeline.Item>,
@@ -934,4 +925,4 @@ const SwappingEtherspotKlima = ({
   )
 }
 
-export default SwappingEtherspotKlima
+export default SwappingCarbonOffset
