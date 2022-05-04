@@ -1,29 +1,41 @@
+import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ChainId, Execution, ExecutionSettings, Process } from '@lifinance/sdk'
+import { ChainId, Execution, ExecutionSettings, Process, StepTool } from '@lifinance/sdk'
 import { getRpcProvider } from '@lifinance/sdk/dist/connectors'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
+import {
+  Avatar,
+  Button,
+  Divider,
+  Modal,
+  Row,
+  Space,
+  Spin,
+  Timeline,
+  Tooltip,
+  Typography,
+} from 'antd'
 import BigNumber from 'bignumber.js'
 import { constants, ethers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
 
-import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../../constants'
-import { useIsMobile } from '../../hooks/useIsMobile'
-import LiFi from '../../LiFi'
+import walletIcon from '../assets/wallet.png'
+import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../constants'
+import LiFi from '../LiFi'
 import {
+  getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
-  getStakeKlimaTransaction,
-  getTransferTransaction,
-} from '../../services/etherspotTxService'
-import { isWalletConnectWallet, storeRoute } from '../../services/localStorage'
-import { switchChain, switchChainAndAddToken } from '../../services/metamask'
-import Notification, { NotificationType } from '../../services/notifications'
-import { renderProcessError, renderProcessMessage } from '../../services/processRenderer'
-import { ExtendedTransactionRequest } from '../../services/routingService'
-import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
+} from '../services/etherspotTxService'
+import { isWalletConnectWallet } from '../services/localStorage'
+import { switchChain, switchChainAndAddToken } from '../services/metamask'
+import Notification, { NotificationType } from '../services/notifications'
+import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
+import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import {
   ChainKey,
+  ExtendedRoute,
   findTool,
   getChainById,
   getChainByKey,
@@ -32,21 +44,17 @@ import {
   Route,
   Step,
   TokenAmount,
-} from '../../types'
-import walletIcon from '../assets/wallet.png'
-import Clock from '../Clock'
-import LoadingIndicator from '../LoadingIndicator'
-import { WalletConnectChainSwitchModal } from '../WalletConnectChainSwitchModal'
-import { EtherspotStep } from './StepRenderers/EtherspotStep'
-import { LIFIRouteSteps } from './StepRenderers/LIFIRouteSteps'
-import { SimpleTransferStep } from './StepRenderers/SimpleTransferStep'
+} from '../types'
+import Clock from './Clock'
+import LoadingIndicator from './LoadingIndicator'
+import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
-const SKLIMA_TOKEN_POL = {
-  symbol: 'sKLIMA',
-  decimals: 9,
-  name: 'sKLIMA',
+const TOUCAN_BCT_TOKEN = {
+  symbol: 'BCT',
+  decimals: 18,
+  name: 'Toucan Protocol: Base Carbon Tonne',
   chainId: 137,
-  address: sKLIMA_ADDRESS,
+  address: TOUCAN_BCT_ADDRESS,
 }
 
 interface SwapSettings {
@@ -54,12 +62,7 @@ interface SwapSettings {
 }
 
 interface SwappingProps {
-  route: {
-    lifiRoute?: Route
-    gasStep: Step
-    stakingStep: Step
-    simpleTransfer?: ExtendedTransactionRequest
-  }
+  route: ExtendedRoute
   etherspot?: Sdk
   settings: SwapSettings
   updateRoute: Function
@@ -67,56 +70,194 @@ interface SwappingProps {
   fixedRecipient?: boolean
 }
 
-const SwappingEtherspotKlima = ({
+const SwappingCarbonOffset = ({
   route,
   etherspot,
   updateRoute,
   settings,
   onSwapDone,
 }: SwappingProps) => {
-  const isMobile = useIsMobile()
+  const { steps } = route.lifiRoute
+
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
-  const [finalTokenAmount, setFinalTokenAmount] = useState<TokenAmount | null>()
+  const [alerts] = useState<Array<JSX.Element>>([])
+  const [finalTokenAmount] = useState<TokenAmount | null>()
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
   const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
-  const [simpleTransferExecution, setSimpleTransferExecution] = useState<Execution>()
-
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
   useEffect(() => {
-    if (route.lifiRoute) {
-      const { steps } = route.lifiRoute
-      // check if route is eligible for automatic resuming
-      const allDone = steps.every((step) => step.execution?.status === 'DONE')
-      const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
+    // check if route is eligible for automatic resuming
+    const allDone = steps.every((step) => step.execution?.status === 'DONE')
+    const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
 
-      const alreadyStarted = steps.some((step) => step.execution)
-      if (!allDone && !isFailed && alreadyStarted) {
-        resumeLIFIRoute()
-      }
+    const alreadyStarted = steps.some((step) => step.execution)
+    if (!allDone && !isFailed && alreadyStarted) {
+      resumeExecution()
+    }
 
-      // move execution to background when modal is closed
-      return function cleanup() {
-        if (route.lifiRoute) {
-          LiFi.moveExecutionToBackground(route.lifiRoute!)
-        }
-      }
+    // move execution to background when modal is closed
+    return function cleanup() {
+      LiFi.moveExecutionToBackground(route.lifiRoute)
     }
   }, [])
+
+  const parseExecution = (step: Step) => {
+    if (!step.execution) {
+      return []
+    }
+    return step.execution.process.map((process, index, processList) => {
+      const type =
+        process.status === 'DONE' ? 'success' : process.status === 'FAILED' ? 'danger' : undefined
+      const hasFailed = process.status === 'FAILED'
+      const isLastPendingProcess = index === processList.length - 1 && process.status === 'PENDING'
+      return (
+        <span key={index} style={{ display: 'flex' }}>
+          <Typography.Text
+            type={type}
+            style={{ maxWidth: 250 }}
+            className={isSwapping && isLastPendingProcess ? 'flashing' : undefined}>
+            <p>{renderProcessMessage(process)}</p>
+
+            {hasFailed && (
+              <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
+                {renderProcessError(process)}
+              </Typography.Text>
+            )}
+          </Typography.Text>
+          <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
+            <Clock
+              startedAt={process.startedAt}
+              successAt={process.doneAt}
+              failedAt={process.failedAt}
+            />
+          </Typography.Text>
+        </span>
+      )
+    })
+  }
+
+  const getChainAvatar = (chainKey: ChainKey) => {
+    const chain = getChainByKey(chainKey)
+    return (
+      <Tooltip title={chain.name}>
+        <Avatar size="small" src={chain.logoURI} alt={chain.name}></Avatar>
+      </Tooltip>
+    )
+  }
+
+  const getAvatar = (toolKey: StepTool) => {
+    const tool = findTool(toolKey)
+    return (
+      <Tooltip title={tool?.name}>
+        <Avatar size="small" src={tool?.logoURI} alt={tool?.name}></Avatar>
+      </Tooltip>
+    )
+  }
+
+  const parseStepToTimeline = (step: Step, index: number) => {
+    const executionSteps = parseExecution(step)
+    const isDone = step.execution && step.execution.status === 'DONE'
+    const isLoading = isSwapping && step.execution && step.execution.status === 'PENDING'
+    const isPaused = !isSwapping && step.execution && step.execution.status === 'PENDING'
+    const color = isDone ? 'green' : step.execution ? 'blue' : 'gray'
+    const executionDuration = !!step.estimate.executionDuration && (
+      <>
+        <br />
+        <span>Estimated duration: {parseSecondsAsTime(step.estimate.executionDuration)} min</span>
+      </>
+    )
+
+    const executionItem = [
+      <Timeline.Item
+        position={isMobile ? 'right' : 'left'}
+        key={index + '_right'}
+        color={color}
+        dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
+        {executionSteps}
+      </Timeline.Item>,
+    ]
+
+    switch (step.type) {
+      case 'swap': {
+        return [
+          <Timeline.Item
+            position={isMobile ? 'right' : 'right'}
+            key={index + '_left'}
+            color={color}>
+            <h4>Swap on {getAvatar(step.tool)}</h4>
+            <span>
+              {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
+              <ArrowRightOutlined />{' '}
+              {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
+            </span>
+            {executionDuration}
+          </Timeline.Item>,
+          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
+        ]
+      }
+
+      case 'cross': {
+        const { action, estimate } = step
+        return [
+          <Timeline.Item
+            position={isMobile ? 'right' : 'right'}
+            key={index + '_left'}
+            color={color}>
+            <h4>
+              Transfer from {getChainAvatar(getChainById(action.fromChainId).key)} to{' '}
+              {getChainAvatar(getChainById(action.toChainId).key)} via {getAvatar(step.tool)}
+            </h4>
+            <span>
+              {formatTokenAmount(action.fromToken, estimate.fromAmount)} <ArrowRightOutlined />{' '}
+              {formatTokenAmount(action.toToken, estimate.toAmount)}
+            </span>
+            {executionDuration}
+          </Timeline.Item>,
+          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
+        ]
+      }
+
+      case 'lifi': {
+        return [
+          <Timeline.Item
+            position={isMobile ? 'right' : 'right'}
+            key={index + '_left'}
+            color={color}>
+            <h4>
+              LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
+              {getChainAvatar(getChainById(step.action.toChainId).key)} via {getAvatar(step.tool)}
+            </h4>
+            <span>
+              {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
+              <ArrowRightOutlined />{' '}
+              {formatTokenAmount(step.action.toToken, step.estimate?.toAmount)}
+            </span>
+            {executionDuration}
+          </Timeline.Item>,
+          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
+        ]
+      }
+
+      default:
+        // eslint-disable-next-line no-console
+        console.warn('should never reach here')
+    }
+  }
 
   const prepareEtherSpotStep = async () => {
     if (!etherspot) {
       throw new Error('Etherspot not initialized.')
     }
-    const tokenPolygonKLIMAPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
-    const tokenPolygonSKLIMAPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
 
     const gasStepRefreshPromise = LiFi.getQuote({
       fromChain: route.gasStep.action.fromChainId,
@@ -129,7 +270,7 @@ const SwappingEtherspotKlima = ({
       integrator: 'lifi-etherspot',
       allowExchanges: [route.gasStep.tool],
     })
-    const klimaStepRefreshPromise = LiFi.getQuote({
+    const offsetStepPromise = LiFi.getQuote({
       fromChain: route.stakingStep.action.fromChainId,
       fromToken: route.stakingStep.action.fromToken.address,
       fromAddress: etherspot.state.accountAddress!,
@@ -141,16 +282,9 @@ const SwappingEtherspotKlima = ({
       allowExchanges: [route.stakingStep.tool],
     })
 
-    const resolvedPromises = await Promise.all([
-      tokenPolygonKLIMAPromise,
-      tokenPolygonSKLIMAPromise,
-      gasStepRefreshPromise,
-      klimaStepRefreshPromise,
-    ])
-    const tokenPolygonKLIMA = resolvedPromises[0]
-    const tokenPolygonSKLIMA = resolvedPromises[1]
-    route.gasStep = resolvedPromises[2]
-    route.stakingStep = resolvedPromises[3]
+    const resolvedPromises = await Promise.all([gasStepRefreshPromise, offsetStepPromise])
+    route.gasStep = resolvedPromises[0]
+    route.stakingStep = resolvedPromises[1]
 
     if (!route.gasStep.transactionRequest || !route.stakingStep.transactionRequest) {
       throw new Error('Swap transaction missing')
@@ -162,6 +296,7 @@ const SwappingEtherspotKlima = ({
     const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
       route.stakingStep.estimate.fromAmount,
     )
+
     const txAllowTotal = await getSetAllowanceTransaction(
       route.gasStep.action.fromToken.address,
       route.gasStep.estimate.approvalAddress as string,
@@ -172,55 +307,48 @@ const SwappingEtherspotKlima = ({
       data: txAllowTotal.data as string,
     })
 
-    // Swap
+    // Swap for gas
     await etherspot.batchExecuteAccountTransaction({
       to: route.gasStep.transactionRequest.to as string,
       data: route.gasStep.transactionRequest.data as string,
     })
 
-    await etherspot.batchExecuteAccountTransaction({
-      to: route.stakingStep.transactionRequest.to as string,
-      data: route.stakingStep.transactionRequest.data as string,
-    })
-    const amountKlima = route.stakingStep.estimate.toAmountMin
-    // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
-    const txAllow = await getSetAllowanceTransaction(
-      tokenPolygonKLIMA!.address,
-      STAKE_KLIMA_CONTRACT_ADDRESS,
-      amountKlima,
+    const amountUSDC = new BigNumber(route.stakingStep.action.fromAmount)
+    const safetyMargin = new BigNumber(
+      ethers.utils.parseUnits('1.1', route.stakingStep.action.fromToken.decimals).toString(),
     )
+    const amountUSDCAllowance = amountUSDC.multipliedBy(safetyMargin).toString()
+    // approve BCT: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
+    const txAllow = await getSetAllowanceTransaction(
+      route.stakingStep.action.fromToken.address,
+      KLIMA_CARBON_OFFSET_CONTRACT,
+      amountUSDCAllowance,
+    )
+
     await etherspot.batchExecuteAccountTransaction({
       to: txAllow.to as string,
       data: txAllow.data as string,
     })
 
-    // stake KLIMA: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
-    const txStake = await getStakeKlimaTransaction(amountKlima)
-    await etherspot.batchExecuteAccountTransaction({
-      to: txStake.to as string,
-      data: txStake.data as string,
+    // retire BCT: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
+    const amountBCT = route.stakingStep.estimate.toAmountMin
+    const txOffset = await getOffsetCarbonTransaction({
+      address: route.lifiRoute.toAddress || route.lifiRoute.fromAddress!,
+      amountInCarbon: true,
+      quantity: amountBCT,
+      inputTokenAddress: route.lifiRoute.toToken.address,
+      retirementTokenAddress: TOUCAN_BCT_ADDRESS,
+      beneficiaryAddress: route.lifiRoute.fromAddress,
     })
-    const txTransfer = await getTransferTransaction(
-      tokenPolygonSKLIMA!.address,
-      web3.account!,
-      amountKlima,
-    )
+
     await etherspot.batchExecuteAccountTransaction({
-      to: txTransfer.to as string,
-      data: txTransfer.data as string,
+      to: txOffset.to as string,
+      data: txOffset.data as string,
     })
   }
 
-  const startExecution = async () => {
-    if (route.lifiRoute) {
-      await startLIFIRoute()
-    } else {
-      await startSimpleTransfer()
-    }
-  }
-
-  const startLIFIRoute = async () => {
-    if (!web3.account || !web3.library || !route.lifiRoute) return
+  const startCrossChainSwap = async () => {
+    if (!web3.account || !web3.library) return
     const signer = web3.library.getSigner()
 
     const executionSettings: ExecutionSettings = {
@@ -249,32 +377,8 @@ const SwappingEtherspotKlima = ({
     onSwapDone()
   }
 
-  const startSimpleTransfer = async () => {
-    if (!web3.account || !web3.library || !route.simpleTransfer) return
-    setIsSwapping(true)
-    setSwapStartedAt(Date.now())
-    try {
-      await executeSimpleTransfer()
-      await finalizeEtherSpotStep(await executeEtherspotStep())
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route.simpleTransfer)
-      // eslint-disable-next-line no-console
-      console.error(e)
-      handleSimpleTransferError(e)
-      handlePotentialEtherSpotError(e)
-      Notification.showNotification(NotificationType.TRANSACTION_ERROR)
-      setIsSwapping(false)
-      return
-    }
-    setIsSwapping(false)
-    setSwapDoneAt(Date.now())
-    Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
-    onSwapDone()
-  }
-
-  const resumeLIFIRoute = async () => {
-    if (!web3.account || !web3.library || !route.lifiRoute) return
+  const resumeExecution = async () => {
+    if (!web3.account || !web3.library) return
 
     const executionSettings: ExecutionSettings = {
       updateCallback,
@@ -302,152 +406,31 @@ const SwappingEtherspotKlima = ({
     onSwapDone()
   }
 
-  const restartExecution = async () => {
+  const restartCrossChainSwap = async () => {
     // remove failed
-    if (route.lifiRoute) {
-      const { steps } = route.lifiRoute!
-      for (let index = 0; index < steps.length; index++) {
-        const stepHasFailed = steps[index].execution?.status === 'FAILED'
-        // check if the step has been cancelled which is a "failed" state
-        const stepHasBeenCancelled = steps[index].execution?.process.some(
-          (process) => process.status === 'CANCELLED',
-        )
 
-        if (steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
-          steps[index].execution!.status = 'RESUME'
-          steps[index].execution!.process.pop() // remove last (failed) process
-          updateRoute(route.lifiRoute)
-        }
+    for (let index = 0; index < steps.length; index++) {
+      const stepHasFailed = steps[index].execution?.status === 'FAILED'
+      // check if the step has been cancelled which is a "failed" state
+      const stepHasBeenCancelled = steps[index].execution?.process.some(
+        (process) => process.status === 'CANCELLED',
+      )
+
+      if (steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
+        steps[index].execution!.status = 'RESUME'
+        steps[index].execution!.process.pop() // remove last (failed) process
+        updateRoute(route.lifiRoute)
       }
-      if (etherspotStepExecution) {
-        setEtherspotStepExecution(undefined)
-      }
-      // start again
-      resumeLIFIRoute()
     }
-
-    if (route.simpleTransfer) {
-      if (simpleTransferExecution) {
-        setEtherspotStepExecution(undefined)
-      }
-      if (etherspotStepExecution) {
-        setEtherspotStepExecution(undefined)
-      }
-      executeSimpleTransfer()
+    if (etherspotStepExecution) {
+      setEtherspotStepExecution(undefined)
     }
-  }
-
-  const executeSimpleTransfer = async () => {
-    const processList: Process[] = []
-    if (!web3.library || !route.simpleTransfer) return
-    const signer = web3.library!.getSigner()
-    if (route.simpleTransfer.chainId !== (await signer.getChainId())) {
-      processList.push({
-        id: 'chainSwitch',
-        message: 'Switch Chain',
-        startedAt: Date.now(),
-        status: 'ACTION_REQUIRED',
-      })
-      setSimpleTransferExecution({
-        status: 'ACTION_REQUIRED',
-        process: processList,
-      })
-
-      await switchChain(route.simpleTransfer.chainId!)
-      const signer = web3.library!.getSigner()
-      if ((await signer.getChainId()) !== route.simpleTransfer.chainId) {
-        throw Error('Chain was not switched!')
-      }
-
-      processList.map((process) => {
-        if (process.id === 'chainSwitch') {
-          process.status = 'DONE'
-          process.doneAt = Date.now()
-        }
-        return process
-      })
-    }
-    processList.push({
-      id: 'signTransfer',
-      message: 'Sign Transaction',
-      startedAt: Date.now(),
-      status: 'ACTION_REQUIRED',
-    })
-    setSimpleTransferExecution({
-      status: 'ACTION_REQUIRED',
-      process: processList,
-    })
-    let tx
-
-    tx = await signer.sendTransaction(route.simpleTransfer.tx)
-
-    processList.map((process) => {
-      if (process.id === 'signTransfer') {
-        process.status = 'DONE'
-        process.doneAt = Date.now()
-      }
-      return process
-    })
-    processList.push({
-      id: 'wait',
-      message: 'Wait For Transfer',
-      startedAt: Date.now(),
-      status: 'PENDING',
-    })
-    setSimpleTransferExecution({
-      status: 'PENDING',
-      process: processList,
-    })
-
-    await tx.wait()
-
-    processList.map((process) => {
-      if (process.id === 'wait') {
-        process.status = 'DONE'
-        process.doneAt = Date.now()
-      }
-      return process
-    })
-
-    setSimpleTransferExecution({
-      status: 'DONE',
-      process: processList,
-    })
-  }
-
-  const handleSimpleTransferError = (e: any) => {
-    if (!simpleTransferExecution) {
-      setSimpleTransferExecution({
-        status: 'FAILED',
-        process: [
-          {
-            errorMessage: e.message,
-            status: 'FAILED',
-            message: 'Prepare Transaction',
-            startedAt: Date.now(),
-            doneAt: Date.now(),
-          },
-        ],
-      })
-    } else {
-      const processList = simpleTransferExecution.process
-      processList[processList.length - 1].status = 'FAILED'
-      processList[processList.length - 1].errorMessage = e.errorMessage
-      processList[processList.length - 1].doneAt = Date.now()
-      setSimpleTransferExecution({
-        status: 'FAILED',
-        process: processList,
-      })
-    }
+    // start again
+    resumeExecution()
   }
 
   const handlePotentialEtherSpotError = (e: any) => {
-    if (
-      (route.lifiRoute &&
-        route.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')) ||
-      (route.simpleTransfer &&
-        (!simpleTransferExecution || simpleTransferExecution?.status === 'FAILED'))
-    ) {
+    if (route.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')) {
       return
     }
 
@@ -479,7 +462,7 @@ const SwappingEtherspotKlima = ({
   const executeEtherspotStep = async () => {
     const processList: Process[] = []
 
-    // FIXME: May be needed if user is bridging from chain which is not supported by etherspot
+    // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
     if (!etherspot) {
       processList.push({
         id: 'chainSwitch',
@@ -627,7 +610,7 @@ const SwappingEtherspotKlima = ({
     processList.map((process) => {
       if (process.id === 'wait') {
         process.status = 'DONE'
-        process.message = 'Staking successful'
+        process.message = 'Offsetting Successful'
         process.txHash = batch.transaction.hash
         process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
         process.doneAt = Date.now()
@@ -643,8 +626,8 @@ const SwappingEtherspotKlima = ({
   }
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
-    const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
-    const amountSKlimaParsed = route.stakingStep.estimate.toAmountMin
+    // const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
+    // const amountSKlimaParsed = route.stakingStep.estimate.toAmountMin
 
     const doneList = stepExecution.process.map((p) => {
       p.status = 'DONE'
@@ -654,10 +637,10 @@ const SwappingEtherspotKlima = ({
     setEtherspotStepExecution({
       status: 'DONE',
       process: doneList,
-      toAmount: amountSKlimaParsed.toString(),
+      toAmount: route.stakingStep.estimate.toAmountMin.toString(),
     })
 
-    setFinalTokenAmount(tokenAmountSKlima)
+    // setFinalTokenAmount(tokenAmountSKlima)
   }
 
   const switchChainHook = async (requiredChainId: number) => {
@@ -689,26 +672,15 @@ const SwappingEtherspotKlima = ({
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
-    storeRoute(updatedRoute)
     updateRoute(updatedRoute)
   }
 
   const getMainButton = () => {
-    // const { steps } = route.lifiRoute!
-    let steps
-    if (route.lifiRoute) {
-      steps = route.lifiRoute.steps
-    } else {
-      steps = [{ execution: simpleTransferExecution, action: {} } as Step]
-    }
-
     // PENDING
     if (isSwapping) {
       return <></>
     }
-    const isCrossChainSwap = !!route.lifiRoute?.steps.find(
-      (step) => isCrossStep(step) || isLifiStep(step),
-    )
+    const isCrossChainSwap = !!steps.find((step) => isCrossStep(step) || isLifiStep(step))
 
     // DONE
     const isDone =
@@ -737,7 +709,7 @@ const SwappingEtherspotKlima = ({
 
       return (
         <Space direction="vertical">
-          <Typography.Text strong>Staking Successful!</Typography.Text>
+          <Typography.Text strong>Offsetting Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
               <span>{successMessage}</span>
@@ -750,6 +722,9 @@ const SwappingEtherspotKlima = ({
                 </span>
               </Tooltip>
             ))}
+          {/* <Link to="/dashboard">
+            <Button type="link">Dashboard</Button>
+          </Link> */}
         </Space>
       )
     }
@@ -760,7 +735,7 @@ const SwappingEtherspotKlima = ({
       etherspotStepExecution?.status === 'FAILED'
     if (isFailed) {
       return (
-        <Button type="primary" onClick={() => restartExecution()} style={{ marginTop: 10 }}>
+        <Button type="primary" onClick={() => restartCrossChainSwap()} style={{ marginTop: 10 }}>
           Restart from Failed Step
         </Button>
       )
@@ -775,81 +750,105 @@ const SwappingEtherspotKlima = ({
 
     // NOT_STARTED
     return (
-      <Button type="primary" onClick={() => startExecution()} style={{ marginTop: 10 }}>
+      <Button type="primary" onClick={() => startCrossChainSwap()} style={{ marginTop: 10 }}>
         {isCrossChainSwap ? 'Start Cross Chain Swap' : 'Start Swap'}
       </Button>
     )
   }
 
   const getCurrentProcess = () => {
-    if (route.lifiRoute) {
-      const { steps } = route.lifiRoute!
-      for (const step of steps) {
-        if (step.execution?.process) {
-          for (const process of step.execution?.process) {
-            if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
-              return process
-            }
-          }
-        }
-      }
-      return null
-    } else {
-      if (simpleTransferExecution) {
-        for (const process of simpleTransferExecution.process) {
-          if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
-            return process
-          }
-        }
-      }
-      if (etherspotStepExecution) {
-        for (const process of etherspotStepExecution.process) {
+    for (const step of steps) {
+      if (step.execution?.process) {
+        for (const process of step.execution?.process) {
           if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
             return process
           }
         }
       }
     }
+    return null
   }
 
   const currentProcess = getCurrentProcess()
-  const getLastStepBeforeStakingStepInfo = () => {
-    if (route.lifiRoute) {
-      const lastLIFIStep = route.lifiRoute.steps[route.lifiRoute.steps.length - 1]
-      return {
-        token: lastLIFIStep.action.toToken,
-        amount: lastLIFIStep.estimate.toAmountMin,
-      }
-    } else {
-      return {
-        token: route.simpleTransfer?.token,
-        amount: route.simpleTransfer?.amount,
-      }
+
+  const parseEtherspotExecution = () => {
+    if (!etherspotStepExecution) {
+      return []
     }
+    return etherspotStepExecution.process.map((process, index, processList) => {
+      const type =
+        process.status === 'DONE' ? 'success' : process.status === 'FAILED' ? 'danger' : undefined
+      const hasFailed = process.status === 'FAILED'
+      const isLastPendingProcess = index === processList.length - 1 && process.status === 'PENDING'
+      return (
+        <span key={index} style={{ display: 'flex' }}>
+          <Typography.Text
+            type={type}
+            style={{ maxWidth: 250 }}
+            className={isSwapping && isLastPendingProcess ? 'flashing' : undefined}>
+            <p>{renderProcessMessage(process)}</p>
+
+            {hasFailed && (
+              <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
+                {renderProcessError(process)}
+              </Typography.Text>
+            )}
+          </Typography.Text>
+          <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
+            <Clock
+              startedAt={process.startedAt}
+              successAt={process.doneAt}
+              failedAt={process.failedAt}
+            />
+          </Typography.Text>
+        </span>
+      )
+    })
   }
+  const parseEtherspotStep = () => {
+    const lastLiFiStep = route.lifiRoute.steps[route.lifiRoute.steps.length - 1]
+    const index = route.lifiRoute.steps.length
+    const isDone = etherspotStepExecution && etherspotStepExecution.status === 'DONE'
+    const isLoading =
+      isSwapping && etherspotStepExecution && etherspotStepExecution.status === 'PENDING'
+    const isPaused =
+      !isSwapping && etherspotStepExecution && etherspotStepExecution.status === 'PENDING'
+    const color = isDone ? 'green' : etherspotStepExecution ? 'blue' : 'gray'
+    // const executionDuration = !!step.estimate.executionDuration && (
+    //   <>
+    //     <br />
+    //     <span>Estimated duration: {parseSecondsAsTime(step.estimate.executionDuration)} min</span>
+    //   </>
+    // )
+    return [
+      <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
+        <h4>Offset Carbon With BCT</h4>
+        <span>
+          {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
+          <ArrowRightOutlined />{' '}
+          {formatTokenAmount(TOUCAN_BCT_TOKEN, route.stakingStep.estimate?.toAmount)}
+        </span>
+        {/* {executionDuration} */}
+      </Timeline.Item>,
+      <Timeline.Item
+        position={isMobile ? 'right' : 'left'}
+        key={index + '_right'}
+        color={color}
+        dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
+        {parseEtherspotExecution()}
+      </Timeline.Item>,
+    ]
+  }
+
   return (
     <>
+      {alerts}
+      <br />
+
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
-        {!!route.simpleTransfer &&
-          !route.lifiRoute &&
-          SimpleTransferStep({
-            simpleTransfer: route.simpleTransfer,
-            simpleStepExecution: simpleTransferExecution,
-            isSwapping: isSwapping,
-            simpleTransferDestination: etherspot?.state.accountAddress!,
-          })}
-        {!!route.lifiRoute &&
-          !route.simpleTransfer &&
-          LIFIRouteSteps({ lifiRoute: route.lifiRoute!, isSwapping: isSwapping })}
-        {!!route.stakingStep &&
-          EtherspotStep({
-            index: route.simpleTransfer ? 1 : route.lifiRoute?.steps.length || 100,
-            previousStepInfo: getLastStepBeforeStakingStepInfo(),
-            etherspotStepExecution: etherspotStepExecution,
-            stakingStep: route.stakingStep,
-            isSwapping,
-          })}
+        {steps.map(parseStepToTimeline)}
+        {parseEtherspotStep()}
       </Timeline>
 
       <div style={{ display: 'flex', backgroundColor: 'rgba(255,255,255, 0)' }}>
@@ -926,4 +925,4 @@ const SwappingEtherspotKlima = ({
   )
 }
 
-export default SwappingEtherspotKlima
+export default SwappingCarbonOffset
