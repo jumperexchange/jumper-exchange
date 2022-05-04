@@ -82,5 +82,5 @@ export interface WalletConnectInfo {
 export interface ExtendedRoute {
   lifiRoute: Route
   gasStep: Step
-  klimaStep: Step
+  stakingStep: Step
 }

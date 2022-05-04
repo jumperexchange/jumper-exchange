@@ -1,2 +1,2 @@
-export * from './abis'
+export * from './abis/abis'
 export * from './constants'

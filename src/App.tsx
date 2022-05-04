@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
 import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
@@ -22,6 +23,8 @@ import setMetatags from './services/metatags'
 import { initStomt } from './services/stomt'
 
 const ENABLE_ETHERSPOT_KLIMA_SHOWCASE = process.env.REACT_APP_ENABLE_ETHERSPOT_KLIMA === 'true'
+const REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE =
+  process.env.REACT_APP_ENABLE_OFFSET_CARBON === 'true'
 function usePageViews() {
   const [path, setPath] = useState<string>()
   const location = useLocation()
@@ -268,6 +271,22 @@ function App() {
                     }}
                   />
                 )}
+                {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
+                  <Route
+                    path="/showcase/carbon-offset"
+                    render={() => {
+                      setMetatags({
+                        title: 'LI.FI - Carbon Offset',
+                      })
+                      return (
+                        <div className="lifiWrap">
+                          <SwapCarbonOffset />
+                        </div>
+                      )
+                    }}
+                  />
+                )}
+
                 {/* <Route
                     path="/testnet"
                     render={() => {

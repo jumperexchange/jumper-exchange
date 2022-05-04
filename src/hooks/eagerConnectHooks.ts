@@ -2,10 +2,10 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 
-import { deleteWalletConnectInfo, readWalletConnectInfo } from '../../services/localStorage'
-import { isWalletActivated, isWalletDeactivated } from '../../services/utils'
-import { getInjectedConnector, injected } from './connectors'
-import { removeFromActiveWallets } from './DisconnectButton'
+import { getInjectedConnector, injected } from '../components/web3/connectors'
+import { removeFromActiveWallets } from '../components/web3/DisconnectButton'
+import { deleteWalletConnectInfo, readWalletConnectInfo } from '../services/localStorage'
+import { isWalletActivated, isWalletDeactivated } from '../services/utils'
 
 export function useEagerConnect() {
   const { activate, active, deactivate } = useWeb3React()

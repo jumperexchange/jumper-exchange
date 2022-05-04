@@ -21,15 +21,16 @@ import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
 import walletIcon from '../assets/wallet.png'
-import { sKLIMA_ADDRESS } from '../constants'
+import { TOUCAN_BCT_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
-import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
+import { isWalletConnectWallet } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import {
   ChainKey,
+  ExtendedRoute,
   findTool,
   getChainById,
   getChainByKey,
@@ -40,16 +41,16 @@ import {
   TokenAmount,
 } from '../types'
 import Clock from './Clock'
-import { useEtherspotKlimaExecutor } from './Etherspot/etherspotKlimaExecutor'
+import { useOffsetCarbonExecutor } from './Etherspot/offsetCarbonExecutor'
 import LoadingIndicator from './LoadingIndicator'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
-const SKLIMA_TOKEN_POL = {
-  symbol: 'sKLIMA',
-  decimals: 9,
-  name: 'sKLIMA',
+const TOUCAN_BCT_TOKEN = {
+  symbol: 'BCT',
+  decimals: 18,
+  name: 'Toucan Protocol: Base Carbon Tonne',
   chainId: 137,
-  address: sKLIMA_ADDRESS,
+  address: TOUCAN_BCT_ADDRESS,
 }
 
 interface SwapSettings {
@@ -57,7 +58,7 @@ interface SwapSettings {
 }
 
 interface SwappingProps {
-  route: { lifiRoute: Route; gasStep: Step; klimaStep: Step }
+  route: ExtendedRoute
   etherspot?: Sdk
   settings: SwapSettings
   updateRoute: Function
@@ -65,29 +66,7 @@ interface SwappingProps {
   fixedRecipient?: boolean
 }
 
-// const getSetAllowanceTransaction = async (
-//   tokenAddress: string,
-//   approvalAddress: string,
-//   amount: BigNumberish,
-// ) => {
-//   const erc20 = new ethers.Contract(tokenAddress, erc20Abi)
-//   return erc20.populateTransaction.approve(approvalAddress, amount)
-// }
-
-// const getStakeKlimaTransaction = (amount: BigNumberish) => {
-//   const contract = new ethers.Contract(STAKE_KLIMA_CONTRACT_ADDRESS, stakeKlimaAbi)
-//   return contract.populateTransaction.stake(amount)
-// }
-// const getTransferTransaction = async (
-//   tokenAddress: string,
-//   toAddress: string,
-//   amount: BigNumberish,
-// ) => {
-//   const erc20 = new ethers.Contract(tokenAddress, erc20Abi)
-//   return erc20.populateTransaction.transfer(toAddress, amount)
-// }
-
-const SwappingEtherspotKlima = ({
+const SwappingCarbonOffset = ({
   route,
   etherspot,
   updateRoute,
@@ -101,7 +80,7 @@ const SwappingEtherspotKlima = ({
     resetEtherspotExecution,
     handlePotentialEtherSpotError,
     finalizeEtherSpotExecution,
-  } = useEtherspotKlimaExecutor(etherspot!, route.gasStep, route.klimaStep)
+  } = useOffsetCarbonExecutor(etherspot!, route.gasStep, route.stakingStep)
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
@@ -109,13 +88,12 @@ const SwappingEtherspotKlima = ({
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalTokenAmount, setFinalTokenAmount] = useState<TokenAmount | null>()
+  const [finalTokenAmount] = useState<TokenAmount | null>()
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
-  // const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
@@ -287,7 +265,6 @@ const SwappingEtherspotKlima = ({
       switchChainHook: switchChainHook,
       infiniteApproval: settings.infiniteApproval,
     }
-    storeRoute(route.lifiRoute)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
@@ -362,12 +339,12 @@ const SwappingEtherspotKlima = ({
   }
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
-    const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
-    const amountSKlimaParsed = route.klimaStep.estimate.toAmountMin
+    const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
+    const toAmount = route.stakingStep.estimate.toAmountMin
 
-    finalizeEtherSpotExecution(stepExecution, amountSKlimaParsed)
+    finalizeEtherSpotExecution(etherspotStepExecution!, toAmount)
 
-    setFinalTokenAmount(tokenAmountSKlima)
+    // setFinalTokenAmount(tokenAmountSKlima)
   }
 
   const switchChainHook = async (requiredChainId: number) => {
@@ -399,7 +376,6 @@ const SwappingEtherspotKlima = ({
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
-    storeRoute(updatedRoute)
     updateRoute(updatedRoute)
   }
 
@@ -437,7 +413,7 @@ const SwappingEtherspotKlima = ({
 
       return (
         <Space direction="vertical">
-          <Typography.Text strong>Staking Successful!</Typography.Text>
+          <Typography.Text strong>Offsetting Successful!</Typography.Text>
           {finalTokenAmount &&
             (finalTokenAmount.address === constants.AddressZero ? (
               <span>{successMessage}</span>
@@ -550,11 +526,11 @@ const SwappingEtherspotKlima = ({
     // )
     return [
       <Timeline.Item position={isMobile ? 'right' : 'right'} key={index + '_left'} color={color}>
-        <h4>Stake for sKLIMA</h4>
+        <h4>Offset Carbon With BCT</h4>
         <span>
           {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
           <ArrowRightOutlined />{' '}
-          {formatTokenAmount(SKLIMA_TOKEN_POL, route.klimaStep.estimate?.toAmount)}
+          {formatTokenAmount(TOUCAN_BCT_TOKEN, route.stakingStep.estimate?.toAmount)}
         </span>
         {/* {executionDuration} */}
       </Timeline.Item>,
@@ -653,4 +629,4 @@ const SwappingEtherspotKlima = ({
   )
 }
 
-export default SwappingEtherspotKlima
+export default SwappingCarbonOffset
