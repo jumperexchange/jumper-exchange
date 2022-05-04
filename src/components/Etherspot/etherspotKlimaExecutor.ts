@@ -13,7 +13,7 @@ import {
 } from '../../constants'
 import LiFi from '../../LiFi'
 import { switchChain } from '../../services/metamask'
-import { ChainId, Execution, ExtendedRoute, getChainById, Process } from '../../types'
+import { ChainId, Execution, getChainById, Process, Route, Step } from '../../types'
 import { getRpcProvider } from '../web3/connectors'
 
 const getSetAllowanceTransaction = async (
@@ -38,7 +38,13 @@ const getTransferTransaction = async (
   return erc20.populateTransaction.transfer(toAddress, amount)
 }
 
-export const useEtherspotKlimaExecutor = (etherspot: Sdk, route: ExtendedRoute) => {
+export const useEtherspotKlimaExecutor = (
+  etherspot: Sdk,
+  gasStep: Step,
+  stakingStep: Step,
+  lifiRoute?: Route,
+  // eslint-disable-next-line max-params
+) => {
   const web3 = useWeb3React<Web3Provider>()
   const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
 
@@ -47,7 +53,7 @@ export const useEtherspotKlimaExecutor = (etherspot: Sdk, route: ExtendedRoute) 
   }
 
   const handlePotentialEtherSpotError = (e: any) => {
-    if (route.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')) {
+    if (lifiRoute?.steps.some((step) => step.execution?.status === 'FAILED')) {
       return
     }
 
@@ -97,26 +103,26 @@ export const useEtherspotKlimaExecutor = (etherspot: Sdk, route: ExtendedRoute) 
     const tokenPolygonSKLIMAPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
 
     const gasStepRefreshPromise = LiFi.getQuote({
-      fromChain: route.gasStep.action.fromChainId,
-      fromToken: route.gasStep.action.fromToken.address,
+      fromChain: gasStep.action.fromChainId,
+      fromToken: gasStep.action.fromToken.address,
       fromAddress: etherspot.state.accountAddress!,
-      fromAmount: route.gasStep.action.fromAmount, // TODO: check if correct value
-      toChain: route.gasStep.action.fromChainId,
-      toToken: route.gasStep.action.toToken.address, // hardcode return gastoken
-      slippage: route.gasStep.action.slippage,
+      fromAmount: gasStep.action.fromAmount, // TODO: check if correct value
+      toChain: gasStep.action.fromChainId,
+      toToken: gasStep.action.toToken.address, // hardcode return gastoken
+      slippage: gasStep.action.slippage,
       integrator: 'lifi-etherspot',
-      allowExchanges: [route.gasStep.tool],
+      allowExchanges: [gasStep.tool],
     })
     const klimaStepRefreshPromise = LiFi.getQuote({
-      fromChain: route.klimaStep.action.fromChainId,
-      fromToken: route.klimaStep.action.fromToken.address,
+      fromChain: stakingStep.action.fromChainId,
+      fromToken: stakingStep.action.fromToken.address,
       fromAddress: etherspot.state.accountAddress!,
-      fromAmount: route.klimaStep.action.fromAmount, // TODO: check if correct value
-      toChain: route.klimaStep.action.fromChainId,
-      toToken: route.klimaStep.action.toToken.address, // hardcode return gastoken
-      slippage: route.gasStep.action.slippage,
+      fromAmount: stakingStep.action.fromAmount, // TODO: check if correct value
+      toChain: stakingStep.action.fromChainId,
+      toToken: stakingStep.action.toToken.address, // hardcode return gastoken
+      slippage: gasStep.action.slippage,
       integrator: 'lifi-etherspot',
-      allowExchanges: [route.klimaStep.tool],
+      allowExchanges: [stakingStep.tool],
     })
 
     const resolvedPromises = await Promise.all([
@@ -127,22 +133,22 @@ export const useEtherspotKlimaExecutor = (etherspot: Sdk, route: ExtendedRoute) 
     ])
     const tokenPolygonKLIMA = resolvedPromises[0]
     const tokenPolygonSKLIMA = resolvedPromises[1]
-    route.gasStep = resolvedPromises[2]
-    route.klimaStep = resolvedPromises[3]
+    gasStep = resolvedPromises[2]
+    stakingStep = resolvedPromises[3]
 
-    if (!route.gasStep.transactionRequest || !route.klimaStep.transactionRequest) {
+    if (!gasStep.transactionRequest || !stakingStep.transactionRequest) {
       throw new Error('Swap transaction missing')
     }
 
     // reset gateway batch
     etherspot.clearGatewayBatch()
 
-    const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
-      route.klimaStep.estimate.fromAmount,
+    const totalAmount = ethers.BigNumber.from(gasStep.estimate.fromAmount).add(
+      stakingStep.estimate.fromAmount,
     )
     const txAllowTotal = await getSetAllowanceTransaction(
-      route.gasStep.action.fromToken.address,
-      route.gasStep.estimate.approvalAddress as string,
+      gasStep.action.fromToken.address,
+      gasStep.estimate.approvalAddress as string,
       totalAmount,
     )
     await etherspot.batchExecuteAccountTransaction({
@@ -152,15 +158,15 @@ export const useEtherspotKlimaExecutor = (etherspot: Sdk, route: ExtendedRoute) 
 
     // Swap
     await etherspot.batchExecuteAccountTransaction({
-      to: route.gasStep.transactionRequest.to as string,
-      data: route.gasStep.transactionRequest.data as string,
+      to: gasStep.transactionRequest.to as string,
+      data: gasStep.transactionRequest.data as string,
     })
 
     await etherspot.batchExecuteAccountTransaction({
-      to: route.klimaStep.transactionRequest.to as string,
-      data: route.klimaStep.transactionRequest.data as string,
+      to: stakingStep.transactionRequest.to as string,
+      data: stakingStep.transactionRequest.data as string,
     })
-    const amountKlima = route.klimaStep.estimate.toAmountMin
+    const amountKlima = stakingStep.estimate.toAmountMin
     // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
     const txAllow = await getSetAllowanceTransaction(
       tokenPolygonKLIMA!.address,
@@ -188,6 +194,7 @@ export const useEtherspotKlimaExecutor = (etherspot: Sdk, route: ExtendedRoute) 
       data: txTransfer.data as string,
     })
   }
+
   const executeEtherspotStep = async () => {
     const processList: Process[] = []
 
@@ -353,6 +360,7 @@ export const useEtherspotKlimaExecutor = (etherspot: Sdk, route: ExtendedRoute) 
     setEtherspotStepExecution(stepExecution)
     return stepExecution
   }
+
   return {
     etherspotStepExecution,
     executeEtherspotStep,

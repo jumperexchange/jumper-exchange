@@ -101,7 +101,7 @@ const SwappingEtherspotKlima = ({
     resetEtherspotExecution,
     handlePotentialEtherSpotError,
     finalizeEtherSpotExecution,
-  } = useEtherspotKlimaExecutor(etherspot!, route)
+  } = useEtherspotKlimaExecutor(etherspot!, route.gasStep, route.klimaStep)
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
