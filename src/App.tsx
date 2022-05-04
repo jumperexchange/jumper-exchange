@@ -146,10 +146,9 @@ function App() {
                         Explore Docs
                       </a>
                     </Menu.Item>
-                    {/* Hidden until officially announced */}
-                    {/* <Menu.Item key="/showcase/etherspot-klima">
+                    <Menu.Item key="/showcase/etherspot-klima">
                       <Link to="/showcase/etherspot-klima">Etherspot+KLIMA</Link>
-                    </Menu.Item> */}
+                    </Menu.Item>
                     {/* <Menu.Item>
                       <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
                     </Menu.Item> */}
