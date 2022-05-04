@@ -14,6 +14,7 @@ import {
   Modal,
   Row,
   Select,
+  Timeline,
   Tooltip,
   Typography,
 } from 'antd'
@@ -34,6 +35,7 @@ import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
+import { useEtherspotKlimaExecutor } from '../hooks/Etherspot/etherspotKlimaExecutor'
 import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -279,6 +281,13 @@ interface StartParams {
 }
 
 const Swap = () => {
+  const {
+    etherspotStepExecution,
+    executeEtherspotStep,
+    // resetEtherspotExecution,
+    handlePotentialEtherSpotError,
+    finalizeEtherSpotExecution,
+  } = useEtherspotKlimaExecutor()
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
 
@@ -368,22 +377,22 @@ const Swap = () => {
   }, [active, account, library, chainId, availableChains])
 
   // Check Etherspot Wallet balance
-  // useEffect(() => {
-  //   const checkEtherspotWalletBalance = async (wallet: string) => {
-  //     const usdcToken = findDefaultToken(CoinKey.USDC, ChainId.POL)
-  //     const balance = await LiFi.getTokenBalance(wallet, usdcToken)
-  //     const amount = new BigNumber(balance?.amount || 0)
+  useEffect(() => {
+    const checkEtherspotWalletBalance = async (wallet: string) => {
+      const usdcToken = findDefaultToken(CoinKey.USDC, ChainId.POL)
+      const balance = await LiFi.getTokenBalance(wallet, usdcToken)
+      const amount = new BigNumber(balance?.amount || 0)
 
-  //     if (amount.gte(0.3)) {
-  //       setEtherspotWalletBalance(amount)
-  //     } else {
-  //       setEtherspotWalletBalance(undefined)
-  //     }
-  //   }
-  //   if (etherSpotSDK?.state.accountAddress) {
-  //     checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
-  //   }
-  // }, [etherSpotSDK])
+      if (amount.gte(0.3)) {
+        setEtherspotWalletBalance(amount)
+      } else {
+        setEtherspotWalletBalance(undefined)
+      }
+    }
+    if (etherSpotSDK?.state.accountAddress) {
+      checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
+    }
+  }, [etherSpotSDK])
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -866,6 +875,25 @@ const Swap = () => {
     return quoteUsdcToKlima
   }
 
+  const useStakeResidualFunds = async () => {
+    const toToken = findToken(toChainKey!, toTokenAddress!)
+    const amountUsdc = ethers.BigNumber.from(
+      etherspotWalletBalance?.shiftedBy(toToken.decimals).toString(),
+    )
+    const amountUsdcToMatic = ethers.utils.parseUnits('0.2', toToken.decimals)
+    const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
+    const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
+    const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
+    const quotes = await Promise.all([gasStep, stakingStep])
+
+    try {
+      await executeEtherspotStep(etherSpotSDK!, quotes[0], quotes[1])
+      finalizeEtherSpotExecution(etherspotStepExecution!, quotes[1].estimate.toAmountMin)
+    } catch (e) {
+      handlePotentialEtherSpotError(e)
+    }
+  }
+
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
     setSelectedRoute(deepClone(route))
@@ -1233,9 +1261,17 @@ const Swap = () => {
       )}
 
       {etherspotWalletBalance && (
-        <Modal visible={true}>
+        <Modal
+          onOk={useStakeResidualFunds}
+          // onCancel={() => {}}
+          visible={true}
+          okText="Swap, stake and receive sKlima"
+          // cancelText="Send USDC to my wallet"
+        >
           You still have {etherspotWalletBalance.toFixed(2)} USDC in your smart contract based
-          wallet, do you want swap and stake it to sKLIMA?
+          wallet, do you want to swap and stake it to sKLIMA?
+          {!!etherspotStepExecution &&
+            `${etherspotStepExecution.process[etherspotStepExecution.process.length - 1].message}`}
         </Modal>
       )}
     </Content>

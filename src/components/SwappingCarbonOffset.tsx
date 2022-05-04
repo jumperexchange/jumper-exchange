@@ -22,6 +22,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import walletIcon from '../assets/wallet.png'
 import { TOUCAN_BCT_ADDRESS } from '../constants'
+import { useOffsetCarbonExecutor } from '../hooks/Etherspot/offsetCarbonExecutor'
 import LiFi from '../LiFi'
 import { isWalletConnectWallet } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
@@ -41,7 +42,6 @@ import {
   TokenAmount,
 } from '../types'
 import Clock from './Clock'
-import { useOffsetCarbonExecutor } from './Etherspot/offsetCarbonExecutor'
 import LoadingIndicator from './LoadingIndicator'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
@@ -80,7 +80,7 @@ const SwappingCarbonOffset = ({
     resetEtherspotExecution,
     handlePotentialEtherSpotError,
     finalizeEtherSpotExecution,
-  } = useOffsetCarbonExecutor(etherspot!, route.gasStep, route.stakingStep)
+  } = useOffsetCarbonExecutor()
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
 
@@ -269,7 +269,9 @@ const SwappingCarbonOffset = ({
     setSwapStartedAt(Date.now())
     try {
       await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
-      await finalizeEtherSpotStep(await executeEtherspotStep())
+      await finalizeEtherSpotStep(
+        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+      )
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route.lifiRoute)
@@ -298,7 +300,9 @@ const SwappingCarbonOffset = ({
     setIsSwapping(true)
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
-      await finalizeEtherSpotStep(await executeEtherspotStep())
+      await finalizeEtherSpotStep(
+        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+      )
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
@@ -339,7 +343,7 @@ const SwappingCarbonOffset = ({
   }
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
-    const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
+    // const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
     const toAmount = route.stakingStep.estimate.toAmountMin
 
     finalizeEtherSpotExecution(etherspotStepExecution!, toAmount)
