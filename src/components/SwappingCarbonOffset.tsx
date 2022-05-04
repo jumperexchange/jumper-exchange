@@ -27,7 +27,7 @@ import LiFi from '../LiFi'
 import {
   getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
-} from '../services/ethersportTxService'
+} from '../services/etherspotTxService'
 import { isWalletConnectWallet } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'

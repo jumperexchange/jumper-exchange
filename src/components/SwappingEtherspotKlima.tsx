@@ -28,7 +28,7 @@ import {
   getSetAllowanceTransaction,
   getStakeKlimaTransaction,
   getTransferTransaction,
-} from '../services/ethersportTxService'
+} from '../services/etherspotTxService'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
