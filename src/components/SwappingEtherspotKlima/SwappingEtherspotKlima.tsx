@@ -8,6 +8,7 @@ import { constants, ethers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 
+import walletIcon from '../../assets/wallet.png'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../../constants'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import LiFi from '../../LiFi'
@@ -19,21 +20,10 @@ import {
 import { isWalletConnectWallet, storeRoute } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
-import { renderProcessError, renderProcessMessage } from '../../services/processRenderer'
+import { renderProcessMessage } from '../../services/processRenderer'
 import { ExtendedTransactionRequest } from '../../services/routingService'
-import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
-import {
-  ChainKey,
-  findTool,
-  getChainById,
-  getChainByKey,
-  isCrossStep,
-  isLifiStep,
-  Route,
-  Step,
-  TokenAmount,
-} from '../../types'
-import walletIcon from '../assets/wallet.png'
+import { formatTokenAmount } from '../../services/utils'
+import { getChainById, isCrossStep, isLifiStep, Route, Step, TokenAmount } from '../../types'
 import Clock from '../Clock'
 import LoadingIndicator from '../LoadingIndicator'
 import { WalletConnectChainSwitchModal } from '../WalletConnectChainSwitchModal'
@@ -327,13 +317,13 @@ const SwappingEtherspotKlima = ({
     }
 
     if (route.simpleTransfer) {
-      if (simpleTransferExecution) {
+      if (simpleTransferExecution && simpleTransferExecution.status === 'FAILED') {
         setEtherspotStepExecution(undefined)
       }
-      if (etherspotStepExecution) {
+      if (etherspotStepExecution && etherspotStepExecution.status === 'FAILED') {
         setEtherspotStepExecution(undefined)
       }
-      executeSimpleTransfer()
+      startSimpleTransfer()
     }
   }
 
@@ -416,6 +406,7 @@ const SwappingEtherspotKlima = ({
   }
 
   const handleSimpleTransferError = (e: any) => {
+    if (etherspotStepExecution) return // We are already on the next step
     if (!simpleTransferExecution) {
       setSimpleTransferExecution({
         status: 'FAILED',
@@ -758,6 +749,7 @@ const SwappingEtherspotKlima = ({
     const isFailed =
       steps.some((step) => step.execution?.status === 'FAILED') ||
       etherspotStepExecution?.status === 'FAILED'
+
     if (isFailed) {
       return (
         <Button type="primary" onClick={() => restartExecution()} style={{ marginTop: 10 }}>
@@ -766,9 +758,9 @@ const SwappingEtherspotKlima = ({
       )
     }
 
-    const chainSwitchRequired = steps.some(
-      (step) => step.execution?.status === 'CHAIN_SWITCH_REQUIRED',
-    )
+    const chainSwitchRequired =
+      steps.some((step) => step.execution?.status === 'CHAIN_SWITCH_REQUIRED') ||
+      etherspotStepExecution?.status === 'CHAIN_SWITCH_REQUIRED'
     if (chainSwitchRequired) {
       return <></>
     }
@@ -813,6 +805,7 @@ const SwappingEtherspotKlima = ({
   }
 
   const currentProcess = getCurrentProcess()
+
   const getLastStepBeforeStakingStepInfo = () => {
     if (route.lifiRoute) {
       const lastLIFIStep = route.lifiRoute.steps[route.lifiRoute.steps.length - 1]

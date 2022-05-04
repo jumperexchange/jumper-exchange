@@ -364,7 +364,7 @@ const Swap = () => {
     if (active && account && library && availableChains.find((chain) => chain.id === chainId)) {
       etherspotSDKSetup()
     }
-  }, [active, account, library, chainId])
+  }, [active, account, library, chainId, availableChains])
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -703,7 +703,6 @@ const Swap = () => {
     [tokens],
   )
 
-  // TODO: fix TODOs here
   useEffect(() => {
     const getTransferRoutes = async () => {
       setRoute({} as any)
@@ -746,6 +745,7 @@ const Swap = () => {
           currentRouteCallId = id
           const signer = web3.library?.getSigner()
           const routeCall = await getRoute(request, signer)
+
           let toAmountMin
           if (isLiFiRoute(routeCall[0])) {
             toAmountMin = routeCall[0].toAmountMin
@@ -795,7 +795,7 @@ const Swap = () => {
     optionEnabledBridges,
     optionEnabledExchanges,
     findToken,
-    etherSpotSDK?.state.accountAddress,
+    etherSpotSDK,
   ])
 
   // set route call results

@@ -66,7 +66,7 @@ import {
   TokenAmount,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
-import SwapForm from './SwapForm'
+import SwapForm from './SwapForm/SwapForm'
 import SwappingCarbonOffset from './SwappingCarbonOffset'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
