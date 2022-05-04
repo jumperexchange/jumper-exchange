@@ -1,4 +1,4 @@
-import { Col, Input, Row } from 'antd'
+import { Col, Input, Row, Tooltip } from 'antd'
 
 import {
   useBeneficiaryInfo,
@@ -72,15 +72,17 @@ export const ToSectionCarbonOffset = ({ step, tokenPolygonBCT }: ToSectionCarbon
         />
       </Row>
       <Row>
-        <Input
-          className="input-beneficiary"
-          key="input-beneficiary-address"
-          type="text"
-          placeholder={`Enter 0x address`}
-          // value={beneficiaryAddress}
-          onChange={(event) => handleBeneficiaryAddressChange(event.currentTarget.value)}
-          style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
-        />
+        <Tooltip title="Defaults to the connected wallet address">
+          <Input
+            className="input-beneficiary"
+            key="input-beneficiary-address"
+            type="text"
+            placeholder={`Enter 0x address (optional)`}
+            // value={beneficiaryAddress}
+            onChange={(event) => handleBeneficiaryAddressChange(event.currentTarget.value)}
+            style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
+          />
+        </Tooltip>
       </Row>
       <Row>
         <TextArea
