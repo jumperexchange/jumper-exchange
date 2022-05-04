@@ -5803,10 +5803,10 @@ ethers@^5.4.7, ethers@^5.5.2:
     "@ethersproject/web" "5.5.1"
     "@ethersproject/wordlists" "5.5.0"
 
-etherspot@^1.30.0:
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/etherspot/-/etherspot-1.30.0.tgz#d2c7553f0670b67205f78ee54de8a6af2ee17e4b"
-  integrity sha512-llzhJ1k/v0d9lIV/fg4s4qiB/L6RpvMDrlnHnPlM1c5/Mdt+pFM4UjqVII8wyOxBOqVnMiN9qbxLI4foxhW3Lw==
+etherspot@^1.31.0:
+  version "1.31.0"
+  resolved "https://registry.yarnpkg.com/etherspot/-/etherspot-1.31.0.tgz#581d6faf72eeaac75f34ba9ef5d1c5ecdc4d1711"
+  integrity sha512-yuwvYCZWvoJQ7SdgNExZL1vY7pvdCJlEgfVLvbQji7hbTZVTSYqqGJE9CMVZVNnb36jkzFrJ03Un+pTUZyMpdg==
   dependencies:
     "@apollo/client" "3.4.0"
     "@etherspot/contracts" "1.4.0"

@@ -23,6 +23,7 @@ import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
+import { CHAIN_ID_TO_NETWORK_NAME } from 'etherspot/dist/sdk/network/constants'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
@@ -277,16 +278,6 @@ interface StartParams {
   withdrawToken?: string
 }
 
-const etherspotSupportedChains: number[] = [
-  ChainId.ETH,
-  ChainId.DAI,
-  ChainId.BSC,
-  ChainId.FTM,
-  ChainId.POL,
-  ChainId.AUR,
-  ChainId.AVA,
-]
-
 const Swap = () => {
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
@@ -347,18 +338,30 @@ const Swap = () => {
   // setup etherspot sdk
   useEffect(() => {
     const etherspotSDKSetup = async () => {
-      // TODO: try generalized connector from web3 object
+      // overwrite know chains in etherspot SDK
+      for (const chain of availableChains) {
+        CHAIN_ID_TO_NETWORK_NAME[chain.id] = chain.name as NetworkNames
+      }
+
+      // get provider
       const connector = await getInjectedConnector()
       const provider = await Web3WalletProvider.connect(await connector.getProvider())
-      const sdk = new Sdk(provider)
+
+      // setup sdk for polygon
+      const sdk = new Sdk(provider, {
+        // don't fail if provider is on unknown chain
+        omitWalletProviderNetworkCheck: true,
+      })
+      // all sdk actions will be executed on polygon
       sdk.services.networkService.switchNetwork(NetworkNames.Matic)
+      // generate smart contract wallet address
       await sdk.computeContractAccount({
         sync: false,
       })
       setEtherSpotSDK(sdk)
     }
 
-    if (active && account && library && chainId && etherspotSupportedChains.includes(chainId)) {
+    if (active && account && library && availableChains.find((chain) => chain.id === chainId)) {
       etherspotSDKSetup()
     }
   }, [active, account, library, chainId])
@@ -442,10 +445,7 @@ const Swap = () => {
       }
 
       // chains
-      // FIXME: limit available chains to etherspot supported ones
-      const chains = possibilities.chains.filter((chain) => {
-        return etherspotSupportedChains.includes(chain.id)
-      })
+      const chains = possibilities.chains
       setAvailableChains(chains)
 
       // bridges
