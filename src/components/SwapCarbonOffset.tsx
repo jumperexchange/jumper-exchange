@@ -904,7 +904,7 @@ const Swap = () => {
         type="primary"
         size={'large'}
         onClick={() => openModal()}>
-        Stake
+        Retire Carbon
       </Button>
     )
   }
