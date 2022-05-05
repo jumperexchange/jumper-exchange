@@ -121,14 +121,15 @@ function App() {
                         <span className="ukraine-flag">&#127482;&#127462;</span>
                         <Link to="/showcase/ukraine">Help Ukraine!</Link>
                       </Menu.Item>
-                      <Menu.ItemGroup title="KlimaDAO">
+                      <Menu.ItemGroup title="KlimaDAO & Etherspot">
                         <Menu.Item key="/showcase/etherspot-klima">
                           <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>
                         </Menu.Item>
-                        {/* Hidden until officially announced*/}
-                        {/* <Menu.Item key="/showcase/carbon-offset">
-                          <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>
-                        </Menu.Item> */}
+                        {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
+                          <Menu.Item key="/showcase/carbon-offset">
+                            <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>
+                          </Menu.Item>
+                        )}
                       </Menu.ItemGroup>
                     </Menu.SubMenu>
                     <Menu.Item key="/dashboard">
