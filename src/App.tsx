@@ -123,11 +123,11 @@ function App() {
                       </Menu.Item>
                       <Menu.ItemGroup title="KlimaDAO">
                         <Menu.Item key="/showcase/etherspot-klima">
-                          <Link to="/showcase/etherspot-klima">Cross-chain Klima staking</Link>
+                          <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>
                         </Menu.Item>
                         {/* Hidden until officially announced*/}
                         {/* <Menu.Item key="/showcase/carbon-offset">
-                          <Link to="/showcase/etherspot-klima">Cross-chain carbon offsetting</Link>
+                          <Link to="/showcase/etherspot-klima">Cross-Chain Carbon Offsetting</Link>
                         </Menu.Item> */}
                       </Menu.ItemGroup>
                     </Menu.SubMenu>
