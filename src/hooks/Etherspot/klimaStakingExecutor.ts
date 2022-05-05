@@ -13,9 +13,9 @@ import {
   getTransferTransaction,
 } from '../../services/etherspotTxService'
 import { switchChain } from '../../services/metamask'
-import { ChainId, Execution, getChainById, Process, Route, Step } from '../../types'
+import { ChainId, Execution, ExtendedRouteOptional, getChainById, Process, Step } from '../../types'
 
-export const useEtherspotKlimaExecutor = () =>
+export const useKlimaStakingExecutor = () =>
   // eslint-disable-next-line max-params
   {
     const web3 = useWeb3React<Web3Provider>()
@@ -25,8 +25,16 @@ export const useEtherspotKlimaExecutor = () =>
       setEtherspotStepExecution(undefined)
     }
 
-    const handlePotentialEtherSpotError = (e: any, lifiRoute?: Route) => {
-      if (lifiRoute?.steps.some((step) => step.execution?.status === 'FAILED')) {
+    const handlePotentialEtherSpotError = (
+      e: any,
+      route: ExtendedRouteOptional,
+      simpleTransferExecution?: Execution,
+      // eslint-disable-next-line max-params
+    ) => {
+      if (
+        route.lifiRoute?.steps.some((step) => step.execution?.status === 'FAILED') ||
+        (route.simpleTransfer && simpleTransferExecution?.status !== 'DONE')
+      ) {
         return
       }
 

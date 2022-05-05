@@ -12,6 +12,8 @@ import {
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
+import { ExtendedTransactionRequest } from '../services/routingService'
+
 export interface Amounts {
   amount_coin: BigNumber
   amount_usd: BigNumber
@@ -83,4 +85,11 @@ export interface ExtendedRoute {
   lifiRoute: Route
   gasStep: Step
   stakingStep: Step
+}
+
+export interface ExtendedRouteOptional {
+  lifiRoute?: Route
+  gasStep?: Step
+  stakingStep?: Step
+  simpleTransfer?: ExtendedTransactionRequest
 }

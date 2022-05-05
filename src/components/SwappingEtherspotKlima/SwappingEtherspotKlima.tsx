@@ -1,22 +1,17 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { ChainId, Execution, ExecutionSettings, Process } from '@lifinance/sdk'
-import { getRpcProvider } from '@lifinance/sdk/dist/connectors'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
-import { constants, ethers } from 'ethers'
-import { GatewayBatchStates, Sdk } from 'etherspot'
+import { constants } from 'ethers'
+import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 
 import walletIcon from '../../assets/wallet.png'
-import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../../constants'
+import { sKLIMA_ADDRESS } from '../../constants'
+import { useKlimaStakingExecutor } from '../../hooks/Etherspot/klimaStakingExecutor'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import LiFi from '../../LiFi'
-import {
-  getSetAllowanceTransaction,
-  getStakeKlimaTransaction,
-  getTransferTransaction,
-} from '../../services/etherspotTxService'
 import { isWalletConnectWallet, storeRoute } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
@@ -65,6 +60,13 @@ const SwappingEtherspotKlima = ({
   onSwapDone,
 }: SwappingProps) => {
   const isMobile = useIsMobile()
+  const {
+    etherspotStepExecution,
+    executeEtherspotStep,
+    resetEtherspotExecution,
+    handlePotentialEtherSpotError,
+    finalizeEtherSpotExecution,
+  } = useKlimaStakingExecutor()
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
@@ -74,9 +76,8 @@ const SwappingEtherspotKlima = ({
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
-  const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
   const [simpleTransferExecution, setSimpleTransferExecution] = useState<Execution>()
-  const [executionError, setExecutionError] = useState<any>()
+  const [transferExecutionError, setTransferExecutionError] = useState<any>()
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
@@ -101,106 +102,6 @@ const SwappingEtherspotKlima = ({
     }
   }, [])
 
-  const prepareEtherSpotStep = async () => {
-    if (!etherspot) {
-      throw new Error('Etherspot not initialized.')
-    }
-    const tokenPolygonKLIMAPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)!
-    const tokenPolygonSKLIMAPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
-
-    const gasStepRefreshPromise = LiFi.getQuote({
-      fromChain: route.gasStep.action.fromChainId,
-      fromToken: route.gasStep.action.fromToken.address,
-      fromAddress: etherspot.state.accountAddress!,
-      fromAmount: route.gasStep.action.fromAmount, // TODO: check if correct value
-      toChain: route.gasStep.action.fromChainId,
-      toToken: route.gasStep.action.toToken.address, // hardcode return gastoken
-      slippage: route.gasStep.action.slippage,
-      integrator: 'lifi-etherspot',
-      allowExchanges: [route.gasStep.tool],
-    })
-    const klimaStepRefreshPromise = LiFi.getQuote({
-      fromChain: route.stakingStep.action.fromChainId,
-      fromToken: route.stakingStep.action.fromToken.address,
-      fromAddress: etherspot.state.accountAddress!,
-      fromAmount: route.stakingStep.action.fromAmount, // TODO: check if correct value
-      toChain: route.stakingStep.action.fromChainId,
-      toToken: route.stakingStep.action.toToken.address, // hardcode return gastoken
-      slippage: route.gasStep.action.slippage,
-      integrator: 'lifi-etherspot',
-      allowExchanges: [route.stakingStep.tool],
-    })
-
-    const resolvedPromises = await Promise.all([
-      tokenPolygonKLIMAPromise,
-      tokenPolygonSKLIMAPromise,
-      gasStepRefreshPromise,
-      klimaStepRefreshPromise,
-    ])
-    const tokenPolygonKLIMA = resolvedPromises[0]
-    const tokenPolygonSKLIMA = resolvedPromises[1]
-    route.gasStep = resolvedPromises[2]
-    route.stakingStep = resolvedPromises[3]
-
-    if (!route.gasStep.transactionRequest || !route.stakingStep.transactionRequest) {
-      throw new Error('Swap transaction missing')
-    }
-
-    // reset gateway batch
-    etherspot.clearGatewayBatch()
-
-    const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
-      route.stakingStep.estimate.fromAmount,
-    )
-    const txAllowTotal = await getSetAllowanceTransaction(
-      route.gasStep.action.fromToken.address,
-      route.gasStep.estimate.approvalAddress as string,
-      totalAmount,
-    )
-    await etherspot.batchExecuteAccountTransaction({
-      to: txAllowTotal.to as string,
-      data: txAllowTotal.data as string,
-    })
-
-    // Swap
-    await etherspot.batchExecuteAccountTransaction({
-      to: route.gasStep.transactionRequest.to as string,
-      data: route.gasStep.transactionRequest.data as string,
-    })
-
-    await etherspot.batchExecuteAccountTransaction({
-      to: route.stakingStep.transactionRequest.to as string,
-      data: route.stakingStep.transactionRequest.data as string,
-    })
-    const amountKlima = route.stakingStep.estimate.toAmountMin
-    // approve KLIMA: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
-    const txAllow = await getSetAllowanceTransaction(
-      tokenPolygonKLIMA!.address,
-      STAKE_KLIMA_CONTRACT_ADDRESS,
-      amountKlima,
-    )
-    await etherspot.batchExecuteAccountTransaction({
-      to: txAllow.to as string,
-      data: txAllow.data as string,
-    })
-
-    // stake KLIMA: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
-    const txStake = await getStakeKlimaTransaction(amountKlima)
-    await etherspot.batchExecuteAccountTransaction({
-      to: txStake.to as string,
-      data: txStake.data as string,
-    })
-    const txTransfer = await getTransferTransaction(
-      tokenPolygonSKLIMA!.address,
-      web3.account!,
-      amountKlima,
-    )
-    await etherspot.batchExecuteAccountTransaction({
-      to: txTransfer.to as string,
-      data: txTransfer.data as string,
-    })
-  }
-
   const startExecution = async () => {
     if (route.lifiRoute) {
       await startLIFIRoute()
@@ -222,13 +123,15 @@ const SwappingEtherspotKlima = ({
     setSwapStartedAt(Date.now())
     try {
       await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
-      await finalizeEtherSpotStep(await executeEtherspotStep())
+      await finalizeEtherSpotStep(
+        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+      )
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route.lifiRoute)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e)
+      handlePotentialEtherSpotError(e, route)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -248,13 +151,15 @@ const SwappingEtherspotKlima = ({
       if (simpleTransferExecution?.status !== 'DONE') {
         await executeSimpleTransfer()
       }
-      await finalizeEtherSpotStep(await executeEtherspotStep())
+      await finalizeEtherSpotStep(
+        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+      )
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route.simpleTransfer)
       // eslint-disable-next-line no-console
       console.error(e)
-      setExecutionError(e)
+      setTransferExecutionError(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -266,12 +171,12 @@ const SwappingEtherspotKlima = ({
   }
 
   useEffect(() => {
-    if (executionError) {
-      handleSimpleTransferError(executionError)
-      handlePotentialEtherSpotError(executionError)
+    if (transferExecutionError) {
+      handleSimpleTransferError(transferExecutionError)
+      handlePotentialEtherSpotError(transferExecutionError, route, simpleTransferExecution)
     }
-    setExecutionError(undefined)
-  }, [executionError])
+    setTransferExecutionError(undefined)
+  }, [transferExecutionError])
 
   const resumeLIFIRoute = async () => {
     if (!web3.account || !web3.library || !route.lifiRoute) return
@@ -285,13 +190,15 @@ const SwappingEtherspotKlima = ({
     setIsSwapping(true)
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
-      await finalizeEtherSpotStep(await executeEtherspotStep())
+      await finalizeEtherSpotStep(
+        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+      )
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e)
+      handlePotentialEtherSpotError(e, route)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -320,7 +227,7 @@ const SwappingEtherspotKlima = ({
         }
       }
       if (etherspotStepExecution) {
-        setEtherspotStepExecution(undefined)
+        resetEtherspotExecution()
       }
       // start again
       resumeLIFIRoute()
@@ -331,7 +238,7 @@ const SwappingEtherspotKlima = ({
         setSimpleTransferExecution(undefined)
       }
       if (etherspotStepExecution && etherspotStepExecution.status === 'FAILED') {
-        setEtherspotStepExecution(undefined)
+        resetEtherspotExecution()
       }
       startSimpleTransfer()
     }
@@ -442,220 +349,11 @@ const SwappingEtherspotKlima = ({
     }
   }
 
-  const handlePotentialEtherSpotError = (e: any) => {
-    if (
-      (route.lifiRoute &&
-        route.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')) ||
-      (route.simpleTransfer && simpleTransferExecution?.status !== 'DONE')
-    ) {
-      return
-    }
-
-    if (!etherspotStepExecution) {
-      setEtherspotStepExecution({
-        status: 'FAILED',
-        process: [
-          {
-            errorMessage: e.errorMessage,
-            status: 'FAILED',
-            message: 'Prepare Transaction',
-            startedAt: Date.now(),
-            doneAt: Date.now(),
-          },
-        ],
-      })
-    } else {
-      const processList = etherspotStepExecution.process
-      processList[processList.length - 1].status = 'FAILED'
-      processList[processList.length - 1].errorMessage = e.errorMessage
-      processList[processList.length - 1].doneAt = Date.now()
-      setEtherspotStepExecution({
-        status: 'FAILED',
-        process: processList,
-      })
-    }
-  }
-
-  const executeEtherspotStep = async () => {
-    const processList: Process[] = []
-
-    // FIXME: May be needed if user is bridging from chain which is not supported by etherspot
-    if (!etherspot) {
-      processList.push({
-        id: 'chainSwitch',
-        message: 'Switch Chain',
-        startedAt: Date.now(),
-        status: 'ACTION_REQUIRED',
-      })
-      setEtherspotStepExecution({
-        status: 'ACTION_REQUIRED',
-        process: processList,
-      })
-
-      await switchChain(ChainId.POL)
-      const signer = web3.library!.getSigner()
-      if ((await signer.getChainId()) !== ChainId.POL) {
-        throw Error('Chain was not switched!')
-      }
-
-      processList.map((process) => {
-        if (process.id === 'chainSwitch') {
-          process.status = 'DONE'
-          process.doneAt = Date.now()
-        }
-        return process
-      })
-    }
-    if (!etherspot) {
-      throw new Error('Etherspot not initialized.')
-    }
-
-    processList.push({
-      id: 'prepare',
-      message: 'Initialize Etherspot',
-      startedAt: Date.now(),
-      status: 'PENDING',
-    })
-
-    setEtherspotStepExecution({
-      status: 'PENDING',
-      process: processList,
-    })
-    await prepareEtherSpotStep()
-
-    await etherspot.estimateGatewayBatch()
-
-    processList.map((process) => {
-      if (process.id === 'prepare') {
-        process.status = 'DONE'
-        process.doneAt = Date.now()
-      }
-      return process
-    })
-    processList.push({
-      id: 'sign',
-      message: 'Provide Signature',
-      startedAt: Date.now(),
-      status: 'ACTION_REQUIRED',
-    })
-    setEtherspotStepExecution({
-      status: 'ACTION_REQUIRED',
-      process: processList,
-    })
-    let batch = await etherspot.submitGatewayBatch()
-    processList.map((process) => {
-      if (process.id === 'sign') {
-        process.status = 'DONE'
-        process.doneAt = Date.now()
-      }
-      return process
-    })
-    processList.push({
-      id: 'wait',
-      message: 'Wait For Execution',
-      startedAt: Date.now(),
-      status: 'PENDING',
-    })
-    setEtherspotStepExecution({
-      status: 'PENDING',
-      process: processList,
-    })
-
-    // info: batch.state seams to wait for a lot of confirmations (6 minutes) before changing to 'Sent'
-    let hasTransaction = !!(batch.transaction && batch.transaction.hash)
-    while (!hasTransaction) {
-      try {
-        batch = await etherspot.getGatewaySubmittedBatch({
-          hash: batch.hash,
-        })
-      } catch (e) {
-        // ignore failed requests and try again
-        // eslint-disable-next-line no-console
-        console.error(e)
-      }
-
-      if (batch.state === GatewayBatchStates.Reverted) {
-        // eslint-disable-next-line no-console
-        console.error(batch)
-        throw new Error('Execution Reverted')
-      }
-
-      hasTransaction = !!(batch.transaction && batch.transaction.hash)
-      if (!hasTransaction) {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 3000)
-        })
-      }
-    }
-
-    // Add Transaction
-    const chain = getChainById(ChainId.POL)
-    processList.map((process) => {
-      if (process.id === 'wait') {
-        process.txHash = batch.transaction.hash
-        process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
-      }
-      return process
-    })
-    setEtherspotStepExecution({
-      status: 'PENDING',
-      process: processList,
-    })
-
-    // Wait for Transaction
-    const provider = await getRpcProvider(ChainId.POL)
-    let receipt
-    while (!receipt) {
-      try {
-        const tx = await provider.getTransaction(batch.transaction.hash!)
-        if (tx) {
-          receipt = await tx.wait()
-        }
-      } catch (e) {
-        // ignore failed requests and try again
-        // eslint-disable-next-line no-console
-        console.error(e)
-      }
-
-      if (!receipt) {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 3000)
-        })
-      }
-    }
-
-    processList.map((process) => {
-      if (process.id === 'wait') {
-        process.status = 'DONE'
-        process.message = 'Staking successful'
-        process.txHash = batch.transaction.hash
-        process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
-        process.doneAt = Date.now()
-      }
-      return process
-    })
-    const stepExecution: Execution = {
-      status: 'DONE',
-      process: processList,
-    }
-    setEtherspotStepExecution(stepExecution)
-    return stepExecution
-  }
-
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
     const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
     const amountSKlimaParsed = route.stakingStep.estimate.toAmountMin
 
-    const doneList = stepExecution.process.map((p) => {
-      p.status = 'DONE'
-      return p
-    })
-
-    setEtherspotStepExecution({
-      status: 'DONE',
-      process: doneList,
-      toAmount: amountSKlimaParsed.toString(),
-    })
+    finalizeEtherSpotExecution(etherspotStepExecution!, amountSKlimaParsed)
 
     setFinalTokenAmount(tokenAmountSKlima)
   }

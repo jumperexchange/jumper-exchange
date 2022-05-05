@@ -14,7 +14,6 @@ import {
   Modal,
   Row,
   Select,
-  Timeline,
   Tooltip,
   Typography,
 } from 'antd'
@@ -35,7 +34,7 @@ import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
-import { useEtherspotKlimaExecutor } from '../hooks/Etherspot/etherspotKlimaExecutor'
+import { useKlimaStakingExecutor } from '../hooks/Etherspot/klimaStakingExecutor'
 import LiFi from '../LiFi'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -55,6 +54,7 @@ import {
   CoinKey,
   ExchangeDefinition,
   ExchangeTool,
+  ExtendedRouteOptional,
   findDefaultToken,
   getChainById,
   getChainByKey,
@@ -67,8 +67,10 @@ import {
   TokenAmount,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
+import LoadingIndicator from './LoadingIndicator'
 import SwapForm from './SwapForm/SwapForm'
 import { ToSectionKlimaStaking } from './SwapForm/SwapFormToSections/ToSectionKlimaStaking'
+import { MinimalEtherspotStep } from './SwappingEtherspotKlima/StepRenderers/MinimalStepRenderers/MinimalEtherspotStep'
 import SwappingEtherspotKlima from './SwappingEtherspotKlima/SwappingEtherspotKlima'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
@@ -284,10 +286,10 @@ const Swap = () => {
   const {
     etherspotStepExecution,
     executeEtherspotStep,
-    // resetEtherspotExecution,
+    resetEtherspotExecution,
     handlePotentialEtherSpotError,
     finalizeEtherSpotExecution,
-  } = useEtherspotKlimaExecutor()
+  } = useKlimaStakingExecutor()
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
 
@@ -330,7 +332,7 @@ const Swap = () => {
   const [selectedRoute, setSelectedRoute] = useState<ExtendedRoute | undefined>()
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
-
+  const [residualRoute, setResidualRoute] = useState<ExtendedRouteOptional>()
   // Misc
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
@@ -382,6 +384,18 @@ const Swap = () => {
       const usdcToken = findDefaultToken(CoinKey.USDC, ChainId.POL)
       const balance = await LiFi.getTokenBalance(wallet, usdcToken)
       const amount = new BigNumber(balance?.amount || 0)
+      const toToken = findToken(toChainKey!, toTokenAddress!)
+      const amountUsdc = ethers.BigNumber.from(amount.shiftedBy(toToken.decimals).toString())
+      const amountUsdcToMatic = ethers.utils.parseUnits('0.2', toToken.decimals)
+      const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
+      const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
+      const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
+      const quotes = await Promise.all([gasStep, stakingStep])
+      const residualRoute: ExtendedRouteOptional = {
+        gasStep: quotes[0],
+        stakingStep: quotes[1],
+      }
+      setResidualRoute(residualRoute)
 
       if (amount.gte(0.3)) {
         setEtherspotWalletBalance(amount)
@@ -875,22 +889,19 @@ const Swap = () => {
     return quoteUsdcToKlima
   }
 
-  const useStakeResidualFunds = async () => {
-    const toToken = findToken(toChainKey!, toTokenAddress!)
-    const amountUsdc = ethers.BigNumber.from(
-      etherspotWalletBalance?.shiftedBy(toToken.decimals).toString(),
-    )
-    const amountUsdcToMatic = ethers.utils.parseUnits('0.2', toToken.decimals)
-    const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
-    const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
-    const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
-    const quotes = await Promise.all([gasStep, stakingStep])
-
+  const stakeResidualFunds = async () => {
     try {
-      await executeEtherspotStep(etherSpotSDK!, quotes[0], quotes[1])
-      finalizeEtherSpotExecution(etherspotStepExecution!, quotes[1].estimate.toAmountMin)
+      await executeEtherspotStep(
+        etherSpotSDK!,
+        residualRoute!.gasStep!,
+        residualRoute!.stakingStep!,
+      )
+      finalizeEtherSpotExecution(
+        etherspotStepExecution!,
+        residualRoute!.stakingStep!.estimate.toAmountMin,
+      )
     } catch (e) {
-      handlePotentialEtherSpotError(e)
+      handlePotentialEtherSpotError(e, residualRoute!)
     }
   }
 
@@ -1262,16 +1273,73 @@ const Swap = () => {
 
       {etherspotWalletBalance && (
         <Modal
-          onOk={useStakeResidualFunds}
-          // onCancel={() => {}}
+          onOk={stakeResidualFunds}
+          onCancel={() => {
+            setEtherspotWalletBalance(undefined)
+            setResidualRoute(undefined)
+          }}
+          closable={etherspotStepExecution?.status === 'DONE'}
           visible={true}
           okText="Swap, stake and receive sKlima"
           // cancelText="Send USDC to my wallet"
-        >
-          You still have {etherspotWalletBalance.toFixed(2)} USDC in your smart contract based
-          wallet, do you want to swap and stake it to sKLIMA?
-          {!!etherspotStepExecution &&
-            `${etherspotStepExecution.process[etherspotStepExecution.process.length - 1].message}`}
+          footer={null}>
+          <>
+            <Typography.Paragraph>
+              You still have {etherspotWalletBalance.toFixed(2)} USDC in your smart contract based
+              wallet, do you want to swap and stake it to sKLIMA?
+            </Typography.Paragraph>
+            <div style={{ marginBottom: 16, height: 80 }}>
+              {MinimalEtherspotStep({
+                etherspotStepExecution,
+                stakingStep: residualRoute?.stakingStep,
+                isSwapping: true,
+                index: 0,
+                previousStepInfo: {
+                  amount: ethers.BigNumber.from(
+                    etherspotWalletBalance
+                      ?.shiftedBy(findToken(toChainKey!, toTokenAddress!).decimals)
+                      .toString(),
+                  ).toString(),
+                  token: findToken(toChainKey!, toTokenAddress!),
+                },
+              })}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
+              {!etherspotStepExecution ? (
+                <>
+                  <Button
+                    style={{ margin: 8 }}
+                    onClick={() => {
+                      setEtherspotWalletBalance(undefined)
+                      setResidualRoute(undefined)
+                    }}>
+                    Cancel
+                  </Button>
+                  <Button style={{ margin: 8 }} type="primary" onClick={stakeResidualFunds}>
+                    Swap and Stake
+                  </Button>
+                </>
+              ) : etherspotStepExecution.status === 'FAILED' ? (
+                <Button
+                  style={{ margin: 8 }}
+                  type="primary"
+                  onClick={() => {
+                    resetEtherspotExecution()
+                    stakeResidualFunds()
+                  }}>
+                  Retry
+                </Button>
+              ) : etherspotStepExecution.status === 'DONE' ? (
+                <>
+                  <Typography.Paragraph>Transaction Successful!</Typography.Paragraph>
+                </>
+              ) : (
+                <Typography.Paragraph>
+                  <LoadingIndicator />
+                </Typography.Paragraph>
+              )}
+            </div>
+          </>
         </Modal>
       )}
     </Content>
