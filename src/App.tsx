@@ -116,7 +116,7 @@ function App() {
                       <span className="beta-badge">Beta</span>
                       <Link to="/swap">Swap</Link>
                     </Menu.Item>
-                    <Menu.SubMenu title="Showcases">
+                    <Menu.SubMenu title="Showcases" key="showcase-submenu">
                       <Menu.Item key="/showcase/ukraine" danger={true}>
                         <span className="ukraine-flag">&#127482;&#127462;</span>
                         <Link to="/showcase/ukraine">Help Ukraine!</Link>
