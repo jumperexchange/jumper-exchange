@@ -127,7 +127,7 @@ function App() {
                         </Menu.Item>
                         {/* Hidden until officially announced*/}
                         {/* <Menu.Item key="/showcase/carbon-offset">
-                          <Link to="/showcase/etherspot-klima">Cross-Chain Carbon Offsetting</Link>
+                          <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>
                         </Menu.Item> */}
                       </Menu.ItemGroup>
                     </Menu.SubMenu>
