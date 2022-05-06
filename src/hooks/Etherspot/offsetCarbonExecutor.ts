@@ -13,15 +13,7 @@ import {
   getSetAllowanceTransaction,
 } from '../../services/etherspotTxService'
 import { switchChain } from '../../services/metamask'
-import {
-  ChainId,
-  Execution,
-  ExtendedRouteOptional,
-  getChainById,
-  Process,
-  Route,
-  Step,
-} from '../../types'
+import { ChainId, Execution, ExtendedRouteOptional, getChainById, Process, Step } from '../../types'
 
 export const useOffsetCarbonExecutor = () =>
   // eslint-disable-next-line max-params

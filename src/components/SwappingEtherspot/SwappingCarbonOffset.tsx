@@ -20,6 +20,7 @@ import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
+import walletIcon from '../../assets/wallet.png'
 import { TOUCAN_BCT_ADDRESS } from '../../constants'
 import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
 import LiFi from '../../LiFi'
@@ -40,7 +41,6 @@ import {
   Step,
   TokenAmount,
 } from '../../types'
-import walletIcon from '../assets/wallet.png'
 import Clock from '../Clock'
 import LoadingIndicator from '../LoadingIndicator'
 import { WalletConnectChainSwitchModal } from '../WalletConnectChainSwitchModal'
