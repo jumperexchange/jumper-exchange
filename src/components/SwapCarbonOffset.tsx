@@ -54,7 +54,6 @@ import {
   getChainByKey,
   isSwapStep,
   PossibilitiesResponse,
-  Route,
   Route as RouteType,
   RoutesRequest,
   Step,

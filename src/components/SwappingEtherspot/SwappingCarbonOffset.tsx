@@ -277,7 +277,7 @@ const SwappingCarbonOffset = ({
       console.warn('Execution failed!', route.lifiRoute)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e)
+      handlePotentialEtherSpotError(e, route)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -308,7 +308,7 @@ const SwappingCarbonOffset = ({
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e)
+      handlePotentialEtherSpotError(e, route)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
