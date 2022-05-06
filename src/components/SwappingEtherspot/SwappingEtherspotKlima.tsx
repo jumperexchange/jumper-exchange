@@ -353,7 +353,7 @@ const SwappingEtherspotKlima = ({
     const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
     const amountSKlimaParsed = route.stakingStep.estimate.toAmountMin
 
-    finalizeEtherSpotExecution(etherspotStepExecution!, amountSKlimaParsed)
+    finalizeEtherSpotExecution(stepExecution!, amountSKlimaParsed)
 
     setFinalTokenAmount(tokenAmountSKlima)
   }

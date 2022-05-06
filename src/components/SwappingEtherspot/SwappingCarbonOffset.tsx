@@ -20,15 +20,14 @@ import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
-import walletIcon from '../assets/wallet.png'
-import { TOUCAN_BCT_ADDRESS } from '../constants'
-import { useOffsetCarbonExecutor } from '../hooks/Etherspot/offsetCarbonExecutor'
-import LiFi from '../LiFi'
-import { isWalletConnectWallet } from '../services/localStorage'
-import { switchChain, switchChainAndAddToken } from '../services/metamask'
-import Notification, { NotificationType } from '../services/notifications'
-import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
-import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
+import { TOUCAN_BCT_ADDRESS } from '../../constants'
+import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
+import LiFi from '../../LiFi'
+import { isWalletConnectWallet } from '../../services/localStorage'
+import { switchChain, switchChainAndAddToken } from '../../services/metamask'
+import Notification, { NotificationType } from '../../services/notifications'
+import { renderProcessError, renderProcessMessage } from '../../services/processRenderer'
+import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
 import {
   ChainKey,
   ExtendedRoute,
@@ -40,10 +39,11 @@ import {
   Route,
   Step,
   TokenAmount,
-} from '../types'
-import Clock from './Clock'
-import LoadingIndicator from './LoadingIndicator'
-import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
+} from '../../types'
+import walletIcon from '../assets/wallet.png'
+import Clock from '../Clock'
+import LoadingIndicator from '../LoadingIndicator'
+import { WalletConnectChainSwitchModal } from '../WalletConnectChainSwitchModal'
 
 const TOUCAN_BCT_TOKEN = {
   symbol: 'BCT',
@@ -346,7 +346,7 @@ const SwappingCarbonOffset = ({
     // const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
     const toAmount = route.stakingStep.estimate.toAmountMin
 
-    finalizeEtherSpotExecution(etherspotStepExecution!, toAmount)
+    finalizeEtherSpotExecution(stepExecution!, toAmount)
 
     // setFinalTokenAmount(tokenAmountSKlima)
   }

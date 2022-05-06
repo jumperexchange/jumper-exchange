@@ -70,8 +70,8 @@ import forest from './../assets/misc/forest.jpg'
 import LoadingIndicator from './LoadingIndicator'
 import SwapForm from './SwapForm/SwapForm'
 import { ToSectionKlimaStaking } from './SwapForm/SwapFormToSections/ToSectionKlimaStaking'
-import { MinimalEtherspotStep } from './SwappingEtherspotKlima/StepRenderers/MinimalStepRenderers/MinimalEtherspotStep'
-import SwappingEtherspotKlima from './SwappingEtherspotKlima/SwappingEtherspotKlima'
+import { MinimalEtherspotStep } from './SwappingEtherspot/StepRenderers/MinimalStepRenderers/MinimalEtherspotStep'
+import SwappingEtherspotKlima from './SwappingEtherspot/SwappingEtherspotKlima'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
 
@@ -384,24 +384,26 @@ const Swap = () => {
       const usdcToken = findDefaultToken(CoinKey.USDC, ChainId.POL)
       const balance = await LiFi.getTokenBalance(wallet, usdcToken)
       const amount = new BigNumber(balance?.amount || 0)
+      if (amount.gte(0.3)) {
+        setEtherspotWalletBalance(amount)
+      } else {
+        setEtherspotWalletBalance(undefined)
+        return
+      }
       const toToken = findToken(toChainKey!, toTokenAddress!)
       const amountUsdc = ethers.BigNumber.from(amount.shiftedBy(toToken.decimals).toString())
       const amountUsdcToMatic = ethers.utils.parseUnits('0.2', toToken.decimals)
       const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
+
       const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
       const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
       const quotes = await Promise.all([gasStep, stakingStep])
+
       const residualRoute: ExtendedRouteOptional = {
         gasStep: quotes[0],
         stakingStep: quotes[1],
       }
       setResidualRoute(residualRoute)
-
-      if (amount.gte(0.3)) {
-        setEtherspotWalletBalance(amount)
-      } else {
-        setEtherspotWalletBalance(undefined)
-      }
     }
     if (etherSpotSDK?.state.accountAddress) {
       checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
@@ -891,13 +893,12 @@ const Swap = () => {
 
   const stakeResidualFunds = async () => {
     try {
-      await executeEtherspotStep(
-        etherSpotSDK!,
-        residualRoute!.gasStep!,
-        residualRoute!.stakingStep!,
-      )
       finalizeEtherSpotExecution(
-        etherspotStepExecution!,
+        await executeEtherspotStep(
+          etherSpotSDK!,
+          residualRoute!.gasStep!,
+          residualRoute!.stakingStep!,
+        ),
         residualRoute!.stakingStep!.estimate.toAmountMin,
       )
     } catch (e) {
@@ -1271,7 +1272,7 @@ const Swap = () => {
         </Modal>
       )}
 
-      {etherspotWalletBalance && (
+      {etherspotWalletBalance && residualRoute && (
         <Modal
           onOk={stakeResidualFunds}
           onCancel={() => {
@@ -1279,7 +1280,7 @@ const Swap = () => {
             setResidualRoute(undefined)
           }}
           closable={etherspotStepExecution?.status === 'DONE'}
-          visible={true}
+          visible={!!etherspotWalletBalance && !!residualRoute}
           okText="Swap, stake and receive sKlima"
           // cancelText="Send USDC to my wallet"
           footer={null}>

@@ -13,7 +13,15 @@ import {
   getSetAllowanceTransaction,
 } from '../../services/etherspotTxService'
 import { switchChain } from '../../services/metamask'
-import { ChainId, Execution, getChainById, Process, Route, Step } from '../../types'
+import {
+  ChainId,
+  Execution,
+  ExtendedRouteOptional,
+  getChainById,
+  Process,
+  Route,
+  Step,
+} from '../../types'
 
 export const useOffsetCarbonExecutor = () =>
   // eslint-disable-next-line max-params
@@ -298,8 +306,15 @@ export const useOffsetCarbonExecutor = () =>
       })
     }
 
-    const handlePotentialEtherSpotError = (e: any, lifiRoute?: Route) => {
-      if (lifiRoute?.steps.some((step) => step.execution?.status === 'FAILED')) {
+    const handlePotentialEtherSpotError = (
+      e: any,
+      route: ExtendedRouteOptional,
+      simpleTransferExecution?: Execution,
+    ) => {
+      if (
+        route.lifiRoute?.steps.some((step) => step.execution?.status === 'FAILED') ||
+        (route.simpleTransfer && simpleTransferExecution?.status !== 'DONE')
+      ) {
         return
       }
 
