@@ -75,6 +75,8 @@ import SwappingEtherspotKlima from './SwappingEtherspot/SwappingEtherspotKlima'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
 
+const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
+
 const history = createBrowserHistory()
 let currentRouteCallId: string
 const allowedDex = ExchangeTool.zerox
@@ -146,7 +148,7 @@ const getDefaultParams = (
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
     withdrawChain: ChainKey.POL,
-    withdrawToken: findDefaultToken(CoinKey.USDC, ChainId.POL).address,
+    withdrawToken: TOKEN_POLYGON_USDC.address,
   }
 
   const params = QueryString.parse(search, { ignoreQueryPrefix: true })
@@ -302,9 +304,7 @@ const Swap = () => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
   const [toChainKey, setToChainKey] = useState<ChainKey | undefined>()
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress] = useState<string | undefined>(
-    findDefaultToken(CoinKey.USDC, ChainId.POL).address,
-  ) // TODO: Change This
+  const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>({})
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
@@ -381,8 +381,7 @@ const Swap = () => {
   // Check Etherspot Wallet balance
   useEffect(() => {
     const checkEtherspotWalletBalance = async (wallet: string) => {
-      const usdcToken = findDefaultToken(CoinKey.USDC, ChainId.POL)
-      const balance = await LiFi.getTokenBalance(wallet, usdcToken)
+      const balance = await LiFi.getTokenBalance(wallet, TOKEN_POLYGON_USDC)
       const amount = new BigNumber(balance?.amount || 0)
       if (amount.gte(0.3)) {
         setEtherspotWalletBalance(amount)
@@ -390,9 +389,10 @@ const Swap = () => {
         setEtherspotWalletBalance(undefined)
         return
       }
-      const toToken = findToken(toChainKey!, toTokenAddress!)
-      const amountUsdc = ethers.BigNumber.from(amount.shiftedBy(toToken.decimals).toString())
-      const amountUsdcToMatic = ethers.utils.parseUnits('0.2', toToken.decimals)
+      const amountUsdc = ethers.BigNumber.from(
+        amount.shiftedBy(TOKEN_POLYGON_USDC.decimals).toString(),
+      )
+      const amountUsdcToMatic = ethers.utils.parseUnits('0.2', TOKEN_POLYGON_USDC.decimals)
       const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
 
       const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
@@ -408,7 +408,7 @@ const Swap = () => {
     if (etherSpotSDK?.state.accountAddress) {
       checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
     }
-  }, [etherSpotSDK])
+  }, [etherSpotSDK, tokenPolygonKLIMA, tokenPolygonSKLIMA])
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -857,16 +857,15 @@ const Swap = () => {
   }, [routeCallResult, currentRouteCallId])
 
   const calculateFinalGasStep = async (amount: string) => {
-    const initialTransferDestChain = getChainByKey(toChainKey!)
-    const initialTransferDestToken = toTokenAddress!
+    const polChain = getChainByKey(ChainKey.POL)
 
     const quoteUsdcToMatic = await LiFi.getQuote({
-      fromChain: initialTransferDestChain.id, // has been hardcoded in the routeRequest
-      fromToken: initialTransferDestToken, // has been hardcoded in the routeRequest
+      fromChain: polChain.id,
+      fromToken: TOKEN_POLYGON_USDC.address,
       fromAddress: etherSpotSDK?.state.accountAddress!,
-      fromAmount: amount, // TODO: check if correct value
-      toChain: initialTransferDestChain.id,
-      toToken: (await LiFi.getToken(initialTransferDestChain.id, 'MATIC')!).address, // hardcode return gastoken
+      fromAmount: amount,
+      toChain: polChain.id,
+      toToken: (await LiFi.getToken(polChain.id, 'MATIC')!).address, // hardcode return gastoken
       slippage: 0.005,
       integrator: 'lifi-etherspot',
       allowExchanges: [allowedDex],
@@ -874,16 +873,15 @@ const Swap = () => {
     return quoteUsdcToMatic
   }
   const calculateFinalStakingStep = async (amount: string) => {
-    const initialTransferDestChain = getChainByKey(toChainKey!)
-    const initialTransferDestToken = toTokenAddress!
+    const polChain = getChainByKey(ChainKey.POL)
 
     const quoteUsdcToKlima = await LiFi.getQuote({
-      fromChain: initialTransferDestChain.id, // has been hardcoded in the routeRequest
-      fromToken: initialTransferDestToken, // has been hardcoded in the routeRequest
+      fromChain: polChain.id,
+      fromToken: TOKEN_POLYGON_USDC.address,
       fromAddress: etherSpotSDK?.state.accountAddress!,
-      fromAmount: amount, // TODO: check if correct value
-      toChain: initialTransferDestChain.id,
-      toToken: tokenPolygonKLIMA!.address,
+      fromAmount: amount,
+      toChain: polChain.id,
+      toToken: KLIMA_ADDRESS,
       slippage: 0.005,
       integrator: 'lifi-etherspot',
       allowExchanges: [allowedDex],
@@ -1046,7 +1044,7 @@ const Swap = () => {
                   setDepositAmount={setDepositAmount}
                   withdrawChain={ChainKey.POL}
                   setWithdrawChain={() => {}}
-                  withdrawToken={findDefaultToken(CoinKey.USDC, ChainId.POL).address}
+                  withdrawToken={TOKEN_POLYGON_USDC.address}
                   setWithdrawToken={() => {}}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
@@ -1298,11 +1296,9 @@ const Swap = () => {
                 alternativeToToken: tokenPolygonSKLIMA,
                 previousStepInfo: {
                   amount: ethers.BigNumber.from(
-                    etherspotWalletBalance
-                      ?.shiftedBy(findToken(toChainKey!, toTokenAddress!).decimals)
-                      .toString(),
+                    etherspotWalletBalance?.shiftedBy(TOKEN_POLYGON_USDC.decimals).toString(),
                   ).toString(),
-                  token: findToken(toChainKey!, toTokenAddress!),
+                  token: TOKEN_POLYGON_USDC,
                 },
               })}
             </div>
