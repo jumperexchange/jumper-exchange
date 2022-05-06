@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { getRpcProvider } from '../../components/web3/connectors'
 import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../../constants'
 import LiFi from '../../LiFi'
+import { useBeneficiaryInfo } from '../../providers/ToSectionCarbonOffsetProvider'
 import {
   getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
@@ -18,6 +19,8 @@ import { ChainId, Execution, ExtendedRouteOptional, getChainById, Process, Step 
 export const useOffsetCarbonExecutor = () =>
   // eslint-disable-next-line max-params
   {
+    const beneficiaryInfo = useBeneficiaryInfo()
+
     const web3 = useWeb3React<Web3Provider>()
 
     const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
@@ -110,7 +113,9 @@ export const useOffsetCarbonExecutor = () =>
         quantity: amountBCT,
         inputTokenAddress: gasStep.action.fromToken.address,
         retirementTokenAddress: TOUCAN_BCT_ADDRESS,
-        beneficiaryAddress: web3.account!,
+        beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || web3.account!,
+        beneficiaryName: beneficiaryInfo.beneficiaryName,
+        retirementMessage: beneficiaryInfo.retirementMessage,
       })
 
       await etherspot.batchExecuteAccountTransaction({
