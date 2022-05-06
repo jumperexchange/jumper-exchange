@@ -6,19 +6,19 @@ import {
 } from '@ant-design/icons'
 import { Col, Row, Typography } from 'antd'
 
-import { sKLIMA_ADDRESS } from '../../../../constants'
+// import { sKLIMA_ADDRESS } from '../../../../constants'
 // import { sKLIMA_ADDRESS } from '../../../../constants'
 import { renderProcessError, renderProcessMessage } from '../../../../services/processRenderer'
 import { formatTokenAmount } from '../../../../services/utils'
 import { Execution, Step, Token } from '../../../../types'
 
-const SKLIMA_TOKEN_POL = {
-  symbol: 'sKLIMA',
-  decimals: 9,
-  name: 'sKLIMA',
-  chainId: 137,
-  address: sKLIMA_ADDRESS,
-}
+// const SKLIMA_TOKEN_POL = {
+//   symbol: 'sKLIMA',
+//   decimals: 9,
+//   name: 'sKLIMA',
+//   chainId: 137,
+//   address: sKLIMA_ADDRESS,
+// }
 
 interface EtherspotStepProps {
   stakingStep?: Step
@@ -26,6 +26,7 @@ interface EtherspotStepProps {
   etherspotStepExecution?: Execution
   index: number
   previousStepInfo: { token?: Token; amount?: string }
+  alternativeToToken?: Token
 }
 
 export const MinimalEtherspotStep = ({
@@ -33,6 +34,7 @@ export const MinimalEtherspotStep = ({
   isSwapping,
   previousStepInfo,
   stakingStep,
+  alternativeToToken,
 }: EtherspotStepProps) => {
   const parseEtherspotExecution = () => {
     if (!etherspotStepExecution) {
@@ -86,7 +88,10 @@ export const MinimalEtherspotStep = ({
           <Typography.Text>
             Stake {formatTokenAmount(previousStepInfo.token!, previousStepInfo.amount)} into{' '}
             {!!stakingStep
-              ? formatTokenAmount(SKLIMA_TOKEN_POL, stakingStep.estimate.toAmountMin)
+              ? formatTokenAmount(
+                  alternativeToToken || stakingStep.action.toToken,
+                  stakingStep.estimate.toAmountMin,
+                )
               : 'Loading...'}
           </Typography.Text>
         </Col>

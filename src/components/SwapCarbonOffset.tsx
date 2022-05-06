@@ -1259,7 +1259,8 @@ const Swap = () => {
           <>
             <Typography.Paragraph>
               You still have {etherspotWalletBalance.toFixed(2)} USDC in your smart contract based
-              wallet, do you want to swap and stake it to sKLIMA?
+              wallet, do you want to swap and offset carbon using the Toucan Protocol: Base Carbon
+              Tonne (BCT)?
             </Typography.Paragraph>
             <div style={{ marginBottom: 16, height: 80 }}>
               {MinimalEtherspotStep({
@@ -1267,6 +1268,7 @@ const Swap = () => {
                 stakingStep: residualRoute?.stakingStep,
                 isSwapping: true,
                 index: 0,
+                // alternativeToToken: findToken(ChainKey.POL, TOUCAN_BCT_ADDRESS),
                 previousStepInfo: {
                   amount: ethers.BigNumber.from(
                     etherspotWalletBalance

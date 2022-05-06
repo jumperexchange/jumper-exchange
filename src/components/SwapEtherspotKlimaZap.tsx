@@ -1295,6 +1295,7 @@ const Swap = () => {
                 stakingStep: residualRoute?.stakingStep,
                 isSwapping: true,
                 index: 0,
+                alternativeToToken: tokenPolygonSKLIMA,
                 previousStepInfo: {
                   amount: ethers.BigNumber.from(
                     etherspotWalletBalance
