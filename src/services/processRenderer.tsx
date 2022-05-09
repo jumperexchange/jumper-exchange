@@ -28,7 +28,7 @@ export function renderProcessMessage(process: Process) {
       </>
     )
   }
-  return <>{process.message.toString()}</>
+  return <>{process.message?.toString() || 'Wait for Transaction'}</>
 }
 
 export const renderProcessError = (process: Process) => {

@@ -43,11 +43,15 @@ export const useKlimaStakingExecutor = () =>
           status: 'FAILED',
           process: [
             {
-              errorMessage: e.errorMessage,
               status: 'FAILED',
+              type: 'TRANSACTION',
               message: 'Prepare Transaction',
               startedAt: Date.now(),
               doneAt: Date.now(),
+              error: {
+                message: e.errorMessage,
+                code: e.code,
+              },
             },
           ],
         })
@@ -182,13 +186,13 @@ export const useKlimaStakingExecutor = () =>
       // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
       if (!etherspot) {
         processList.push({
-          id: 'chainSwitch',
+          type: 'SWITCH_CHAIN',
           message: 'Switch Chain',
           startedAt: Date.now(),
-          status: 'ACTION_REQUIRED',
+          status: 'CHAIN_SWITCH_REQUIRED',
         })
         setEtherspotStepExecution({
-          status: 'ACTION_REQUIRED',
+          status: 'CHAIN_SWITCH_REQUIRED',
           process: processList,
         })
 
@@ -211,7 +215,7 @@ export const useKlimaStakingExecutor = () =>
       }
 
       processList.push({
-        id: 'prepare',
+        type: 'TRANSACTION',
         message: 'Initialize Etherspot',
         startedAt: Date.now(),
         status: 'PENDING',
@@ -226,14 +230,14 @@ export const useKlimaStakingExecutor = () =>
       await etherspot.estimateGatewayBatch()
 
       processList.map((process) => {
-        if (process.id === 'prepare') {
+        if (process.type === 'TRANSACTION') {
           process.status = 'DONE'
           process.doneAt = Date.now()
         }
         return process
       })
       processList.push({
-        id: 'sign',
+        type: 'TRANSACTION',
         message: 'Provide Signature',
         startedAt: Date.now(),
         status: 'ACTION_REQUIRED',
@@ -251,7 +255,7 @@ export const useKlimaStakingExecutor = () =>
         return process
       })
       processList.push({
-        id: 'wait',
+        type: 'TRANSACTION',
         message: 'Wait For Execution',
         startedAt: Date.now(),
         status: 'PENDING',
