@@ -250,13 +250,13 @@ const SwappingEtherspotKlima = ({
     const signer = web3.library!.getSigner()
     if (route.simpleTransfer.chainId !== (await signer.getChainId())) {
       processList.push({
-        id: 'chainSwitch',
+        type: 'SWITCH_CHAIN',
         message: 'Switch Chain',
         startedAt: Date.now(),
-        status: 'ACTION_REQUIRED',
+        status: 'CHAIN_SWITCH_REQUIRED',
       })
       setSimpleTransferExecution({
-        status: 'ACTION_REQUIRED',
+        status: 'CHAIN_SWITCH_REQUIRED',
         process: processList,
       })
 
@@ -275,7 +275,7 @@ const SwappingEtherspotKlima = ({
       })
     }
     processList.push({
-      id: 'signTransfer',
+      type: 'TRANSACTION',
       message: 'Sign Transaction',
       startedAt: Date.now(),
       status: 'ACTION_REQUIRED',
@@ -296,7 +296,7 @@ const SwappingEtherspotKlima = ({
       return process
     })
     processList.push({
-      id: 'wait',
+      type: 'TRANSACTION',
       message: 'Wait For Transfer',
       startedAt: Date.now(),
       status: 'PENDING',
@@ -329,11 +329,15 @@ const SwappingEtherspotKlima = ({
         status: 'FAILED',
         process: [
           {
-            errorMessage: e.message,
             status: 'FAILED',
+            type: 'TRANSACTION',
             message: 'Prepare Transaction',
             startedAt: Date.now(),
             doneAt: Date.now(),
+            error: {
+              message: e.errorMessage,
+              code: e.code,
+            },
           },
         ],
       })
