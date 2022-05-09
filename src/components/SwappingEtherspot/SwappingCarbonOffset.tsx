@@ -18,11 +18,11 @@ import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
 
 import walletIcon from '../../assets/wallet.png'
 import { TOUCAN_BCT_ADDRESS } from '../../constants'
 import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
+import { useIsMobile } from '../../hooks/useIsMobile'
 import LiFi from '../../LiFi'
 import { isWalletConnectWallet } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
@@ -81,7 +81,7 @@ const SwappingCarbonOffset = ({
     finalizeEtherSpotExecution,
   } = useOffsetCarbonExecutor()
 
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+  const isMobile = useIsMobile()
 
   const [localRoute, setLocalRoute] = useState<ExtendedRoute>(route)
 

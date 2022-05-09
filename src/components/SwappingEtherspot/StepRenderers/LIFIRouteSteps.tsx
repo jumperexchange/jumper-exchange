@@ -1,9 +1,7 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { getChainById, Route, Step } from '@lifinance/sdk'
 import { Timeline, Typography } from 'antd'
-import { useState } from 'react'
 
-import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../../../services/utils'
 import { getChainAvatar, getToolAvatar } from '../../Avatars/Avatars'
@@ -12,11 +10,10 @@ import Clock from '../../Clock'
 interface LIFIRouteStepsProps {
   lifiRoute: Route
   isSwapping: boolean
+  isMobile: boolean
 }
-export const LIFIRouteSteps = ({ lifiRoute, isSwapping }: LIFIRouteStepsProps) => {
-  const isMobile = useIsMobile()
-  const [steps] = useState<Step[]>(lifiRoute.steps)
 
+export const LIFIRouteSteps = ({ lifiRoute, isSwapping, isMobile }: LIFIRouteStepsProps) => {
   const parseExecution = (step: Step) => {
     if (!step.execution) {
       return []
@@ -142,5 +139,5 @@ export const LIFIRouteSteps = ({ lifiRoute, isSwapping }: LIFIRouteStepsProps) =
     }
   }
 
-  return steps.map(parseStepToTimeline)
+  return lifiRoute.steps.map(parseStepToTimeline)
 }
