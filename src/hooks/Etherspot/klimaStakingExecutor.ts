@@ -203,7 +203,7 @@ export const useKlimaStakingExecutor = () =>
         }
 
         processList.map((process) => {
-          if (process.id === 'chainSwitch') {
+          if (process.type === 'SWITCH_CHAIN') {
             process.status = 'DONE'
             process.doneAt = Date.now()
           }
@@ -237,7 +237,7 @@ export const useKlimaStakingExecutor = () =>
         return process
       })
       processList.push({
-        type: 'TRANSACTION',
+        type: 'SWAP',
         message: 'Provide Signature',
         startedAt: Date.now(),
         status: 'ACTION_REQUIRED',
@@ -248,14 +248,15 @@ export const useKlimaStakingExecutor = () =>
       })
       let batch = await etherspot.submitGatewayBatch()
       processList.map((process) => {
-        if (process.id === 'sign') {
+        if (process.type === 'SWAP') {
           process.status = 'DONE'
           process.doneAt = Date.now()
         }
         return process
       })
+
       processList.push({
-        type: 'TRANSACTION',
+        type: 'RECEIVING_CHAIN',
         message: 'Wait For Execution',
         startedAt: Date.now(),
         status: 'PENDING',
@@ -295,7 +296,7 @@ export const useKlimaStakingExecutor = () =>
       // Add Transaction
       const chain = getChainById(ChainId.POL)
       processList.map((process) => {
-        if (process.id === 'wait') {
+        if (process.type === 'RECEIVING_CHAIN') {
           process.txHash = batch.transaction.hash
           process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
         }
@@ -329,7 +330,7 @@ export const useKlimaStakingExecutor = () =>
       }
 
       processList.map((process) => {
-        if (process.id === 'wait') {
+        if (process.type === 'RECEIVING_CHAIN') {
           process.status = 'DONE'
           process.message = 'Staking successful'
           process.txHash = batch.transaction.hash
