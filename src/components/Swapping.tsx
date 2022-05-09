@@ -73,8 +73,6 @@ const Swapping = ({
   onSwapDone,
   fixedRecipient = false,
 }: SwappingProps) => {
-  const { steps } = route
-
   const isMobile = useIsMobile()
 
   const [localRoute, setLocalRoute] = useState<Route>(route)
