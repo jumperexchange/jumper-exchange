@@ -453,6 +453,10 @@ const Swap = () => {
         .map((bridge: BridgeDefinition) => bridge.tool)
         .map((bridgeTool: string) => bridgeTool.split('-')[0])
       const allBridges = Array.from(new Set(bridges))
+      const index = allBridges.indexOf('multichain')
+      if (index > -1) {
+        allBridges.splice(index, 1)
+      }
       setAvailableBridges(allBridges)
       setOptionEnabledBridges(allBridges)
 
@@ -733,6 +737,7 @@ const Swap = () => {
             allowSwitchChain: false, // This is important for fixed recipients
             bridges: {
               allow: optionEnabledBridges,
+              deny: ['multichain'],
             },
             exchanges: {
               allow: optionEnabledExchanges,
