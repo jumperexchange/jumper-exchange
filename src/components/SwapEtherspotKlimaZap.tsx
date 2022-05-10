@@ -421,6 +421,7 @@ const Swap = () => {
     const load = async () => {
       const possibilitiesPromise = LiFi.getPossibilities({
         exchanges: { deny: ['dodo', 'openocean', '0x'] },
+        bridges: { deny: ['multichain'] },
       })
 
       const klimaTokenPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
@@ -453,10 +454,6 @@ const Swap = () => {
         .map((bridge: BridgeDefinition) => bridge.tool)
         .map((bridgeTool: string) => bridgeTool.split('-')[0])
       const allBridges = Array.from(new Set(bridges))
-      const index = allBridges.indexOf('multichain')
-      if (index > -1) {
-        allBridges.splice(index, 1)
-      }
       setAvailableBridges(allBridges)
       setOptionEnabledBridges(allBridges)
 
