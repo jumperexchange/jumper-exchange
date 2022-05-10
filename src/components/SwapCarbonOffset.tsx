@@ -447,6 +447,7 @@ const Swap = () => {
     const load = async () => {
       const possibilitiesPromise = LiFi.getPossibilities({
         exchanges: { deny: ['dodo', 'openocean', '0x'] },
+        bridges: { deny: ['multichain'] },
       })
 
       const tokenBCTPromise = LiFi.getToken(ChainId.POL, TOUCAN_BCT_ADDRESS)!
@@ -759,6 +760,7 @@ const Swap = () => {
             allowSwitchChain: false, // This is important for fixed recipients
             bridges: {
               allow: optionEnabledBridges,
+              deny: ['multichain'],
             },
             exchanges: {
               allow: optionEnabledExchanges,
