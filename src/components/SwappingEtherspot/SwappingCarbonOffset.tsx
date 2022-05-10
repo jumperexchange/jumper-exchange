@@ -1,7 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ChainId, Execution, ExecutionSettings, Process, StepTool } from '@lifinance/sdk'
-import { getRpcProvider } from '@lifinance/sdk/dist/connectors'
+import { ChainId, Execution, ExecutionSettings, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
@@ -16,24 +15,20 @@ import {
   Typography,
 } from 'antd'
 import BigNumber from 'bignumber.js'
-import { constants, ethers } from 'ethers'
-import { GatewayBatchStates, Sdk } from 'etherspot'
+import { constants } from 'ethers'
+import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 
-import walletIcon from '../assets/wallet.png'
-import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../constants'
-import LiFi from '../LiFi'
-import { useBeneficiaryInfo } from '../providers/ToSectionCarbonOffsetProvider'
-import {
-  getOffsetCarbonTransaction,
-  getSetAllowanceTransaction,
-} from '../services/etherspotTxService'
-import { isWalletConnectWallet } from '../services/localStorage'
-import { switchChain, switchChainAndAddToken } from '../services/metamask'
-import Notification, { NotificationType } from '../services/notifications'
-import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
-import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
+import walletIcon from '../../assets/wallet.png'
+import { TOUCAN_BCT_ADDRESS } from '../../constants'
+import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
+import LiFi from '../../LiFi'
+import { isWalletConnectWallet } from '../../services/localStorage'
+import { switchChain, switchChainAndAddToken } from '../../services/metamask'
+import Notification, { NotificationType } from '../../services/notifications'
+import { renderProcessError, renderProcessMessage } from '../../services/processRenderer'
+import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
 import {
   ChainKey,
   ExtendedRoute,
@@ -45,10 +40,10 @@ import {
   Route,
   Step,
   TokenAmount,
-} from '../types'
-import Clock from './Clock'
-import LoadingIndicator from './LoadingIndicator'
-import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
+} from '../../types'
+import Clock from '../Clock'
+import LoadingIndicator from '../LoadingIndicator'
+import { WalletConnectChainSwitchModal } from '../WalletConnectChainSwitchModal'
 
 const TOUCAN_BCT_TOKEN = {
   symbol: 'BCT',
@@ -79,9 +74,15 @@ const SwappingCarbonOffset = ({
   onSwapDone,
 }: SwappingProps) => {
   const { steps } = route.lifiRoute
+  const {
+    etherspotStepExecution,
+    executeEtherspotStep,
+    resetEtherspotExecution,
+    handlePotentialEtherSpotError,
+    finalizeEtherSpotExecution,
+  } = useOffsetCarbonExecutor()
 
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
-  const beneficiaryInfo = useBeneficiaryInfo()
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
@@ -93,7 +94,6 @@ const SwappingCarbonOffset = ({
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
-  const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
@@ -256,101 +256,6 @@ const SwappingCarbonOffset = ({
     }
   }
 
-  const prepareEtherSpotStep = async () => {
-    if (!etherspot) {
-      throw new Error('Etherspot not initialized.')
-    }
-
-    const gasStepRefreshPromise = LiFi.getQuote({
-      fromChain: route.gasStep.action.fromChainId,
-      fromToken: route.gasStep.action.fromToken.address,
-      fromAddress: etherspot.state.accountAddress!,
-      fromAmount: route.gasStep.action.fromAmount, // TODO: check if correct value
-      toChain: route.gasStep.action.fromChainId,
-      toToken: route.gasStep.action.toToken.address, // hardcode return gastoken
-      slippage: route.gasStep.action.slippage,
-      integrator: 'lifi-etherspot',
-      allowExchanges: [route.gasStep.tool],
-    })
-    const offsetStepPromise = LiFi.getQuote({
-      fromChain: route.stakingStep.action.fromChainId,
-      fromToken: route.stakingStep.action.fromToken.address,
-      fromAddress: etherspot.state.accountAddress!,
-      fromAmount: route.stakingStep.action.fromAmount, // TODO: check if correct value
-      toChain: route.stakingStep.action.fromChainId,
-      toToken: route.stakingStep.action.toToken.address, // hardcode return gastoken
-      slippage: route.gasStep.action.slippage,
-      integrator: 'lifi-etherspot',
-      allowExchanges: [route.stakingStep.tool],
-    })
-
-    const resolvedPromises = await Promise.all([gasStepRefreshPromise, offsetStepPromise])
-    route.gasStep = resolvedPromises[0]
-    route.stakingStep = resolvedPromises[1]
-
-    if (!route.gasStep.transactionRequest || !route.stakingStep.transactionRequest) {
-      throw new Error('Swap transaction missing')
-    }
-
-    // reset gateway batch
-    etherspot.clearGatewayBatch()
-
-    const totalAmount = ethers.BigNumber.from(route.gasStep.estimate.fromAmount).add(
-      route.stakingStep.estimate.fromAmount,
-    )
-
-    const txAllowTotal = await getSetAllowanceTransaction(
-      route.gasStep.action.fromToken.address,
-      route.gasStep.estimate.approvalAddress as string,
-      totalAmount,
-    )
-    await etherspot.batchExecuteAccountTransaction({
-      to: txAllowTotal.to as string,
-      data: txAllowTotal.data as string,
-    })
-
-    // Swap for gas
-    await etherspot.batchExecuteAccountTransaction({
-      to: route.gasStep.transactionRequest.to as string,
-      data: route.gasStep.transactionRequest.data as string,
-    })
-
-    const amountUSDC = new BigNumber(route.stakingStep.action.fromAmount)
-    const safetyMargin = new BigNumber(
-      ethers.utils.parseUnits('1.1', route.stakingStep.action.fromToken.decimals).toString(),
-    )
-    const amountUSDCAllowance = amountUSDC.multipliedBy(safetyMargin).toString()
-    // approve BCT: e.g. https://polygonscan.com/tx/0xb1aca780869956f7a79d9915ff58fd47acbaf9b34f0eb13f9b18d1772f1abef2
-    const txAllow = await getSetAllowanceTransaction(
-      route.stakingStep.action.fromToken.address,
-      KLIMA_CARBON_OFFSET_CONTRACT,
-      amountUSDCAllowance,
-    )
-
-    await etherspot.batchExecuteAccountTransaction({
-      to: txAllow.to as string,
-      data: txAllow.data as string,
-    })
-
-    // retire BCT: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
-    const amountBCT = route.stakingStep.estimate.toAmountMin
-    const txOffset = await getOffsetCarbonTransaction({
-      address: route.lifiRoute.toAddress || route.lifiRoute.fromAddress!,
-      amountInCarbon: true,
-      quantity: amountBCT,
-      inputTokenAddress: route.lifiRoute.toToken.address,
-      retirementTokenAddress: TOUCAN_BCT_ADDRESS,
-      beneficiaryAddress: beneficiaryInfo.beneficiaryAddress,
-      beneficiaryName: beneficiaryInfo.beneficiaryName,
-      retirementMessage: beneficiaryInfo.retirementMessage,
-    })
-
-    await etherspot.batchExecuteAccountTransaction({
-      to: txOffset.to as string,
-      data: txOffset.data as string,
-    })
-  }
-
   const startCrossChainSwap = async () => {
     if (!web3.account || !web3.library) return
     const signer = web3.library.getSigner()
@@ -364,13 +269,15 @@ const SwappingCarbonOffset = ({
     setSwapStartedAt(Date.now())
     try {
       await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
-      await finalizeEtherSpotStep(await executeEtherspotStep())
+      await finalizeEtherSpotStep(
+        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+      )
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route.lifiRoute)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e)
+      handlePotentialEtherSpotError(e, route)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -393,13 +300,15 @@ const SwappingCarbonOffset = ({
     setIsSwapping(true)
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
-      await finalizeEtherSpotStep(await executeEtherspotStep())
+      await finalizeEtherSpotStep(
+        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+      )
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', route)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e)
+      handlePotentialEtherSpotError(e, route)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -427,222 +336,17 @@ const SwappingCarbonOffset = ({
       }
     }
     if (etherspotStepExecution) {
-      setEtherspotStepExecution(undefined)
+      resetEtherspotExecution()
     }
     // start again
     resumeExecution()
   }
 
-  const handlePotentialEtherSpotError = (e: any) => {
-    if (route.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')) {
-      return
-    }
-
-    if (!etherspotStepExecution) {
-      setEtherspotStepExecution({
-        status: 'FAILED',
-        process: [
-          {
-            errorMessage: e.errorMessage,
-            status: 'FAILED',
-            message: 'Prepare Transaction',
-            startedAt: Date.now(),
-            doneAt: Date.now(),
-          },
-        ],
-      })
-    } else {
-      const processList = etherspotStepExecution.process
-      processList[processList.length - 1].status = 'FAILED'
-      processList[processList.length - 1].errorMessage = e.errorMessage
-      processList[processList.length - 1].doneAt = Date.now()
-      setEtherspotStepExecution({
-        status: 'FAILED',
-        process: processList,
-      })
-    }
-  }
-
-  const executeEtherspotStep = async () => {
-    const processList: Process[] = []
-
-    // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
-    if (!etherspot) {
-      processList.push({
-        id: 'chainSwitch',
-        message: 'Switch Chain',
-        startedAt: Date.now(),
-        status: 'ACTION_REQUIRED',
-      })
-      setEtherspotStepExecution({
-        status: 'ACTION_REQUIRED',
-        process: processList,
-      })
-
-      await switchChain(ChainId.POL)
-      const signer = web3.library!.getSigner()
-      if ((await signer.getChainId()) !== ChainId.POL) {
-        throw Error('Chain was not switched!')
-      }
-
-      processList.map((process) => {
-        if (process.id === 'chainSwitch') {
-          process.status = 'DONE'
-          process.doneAt = Date.now()
-        }
-        return process
-      })
-    }
-    if (!etherspot) {
-      throw new Error('Etherspot not initialized.')
-    }
-
-    processList.push({
-      id: 'prepare',
-      message: 'Initialize Etherspot',
-      startedAt: Date.now(),
-      status: 'PENDING',
-    })
-
-    setEtherspotStepExecution({
-      status: 'PENDING',
-      process: processList,
-    })
-    await prepareEtherSpotStep()
-
-    await etherspot.estimateGatewayBatch()
-
-    processList.map((process) => {
-      if (process.id === 'prepare') {
-        process.status = 'DONE'
-        process.doneAt = Date.now()
-      }
-      return process
-    })
-    processList.push({
-      id: 'sign',
-      message: 'Provide Signature',
-      startedAt: Date.now(),
-      status: 'ACTION_REQUIRED',
-    })
-    setEtherspotStepExecution({
-      status: 'ACTION_REQUIRED',
-      process: processList,
-    })
-    let batch = await etherspot.submitGatewayBatch()
-    processList.map((process) => {
-      if (process.id === 'sign') {
-        process.status = 'DONE'
-        process.doneAt = Date.now()
-      }
-      return process
-    })
-    processList.push({
-      id: 'wait',
-      message: 'Wait For Execution',
-      startedAt: Date.now(),
-      status: 'PENDING',
-    })
-    setEtherspotStepExecution({
-      status: 'PENDING',
-      process: processList,
-    })
-
-    // info: batch.state seams to wait for a lot of confirmations (6 minutes) before changing to 'Sent'
-    let hasTransaction = !!(batch.transaction && batch.transaction.hash)
-    while (!hasTransaction) {
-      try {
-        batch = await etherspot.getGatewaySubmittedBatch({
-          hash: batch.hash,
-        })
-      } catch (e) {
-        // ignore failed requests and try again
-        // eslint-disable-next-line no-console
-        console.error(e)
-      }
-
-      if (batch.state === GatewayBatchStates.Reverted) {
-        // eslint-disable-next-line no-console
-        console.error(batch)
-        throw new Error('Execution Reverted')
-      }
-
-      hasTransaction = !!(batch.transaction && batch.transaction.hash)
-      if (!hasTransaction) {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 3000)
-        })
-      }
-    }
-
-    // Add Transaction
-    const chain = getChainById(ChainId.POL)
-    processList.map((process) => {
-      if (process.id === 'wait') {
-        process.txHash = batch.transaction.hash
-        process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
-      }
-      return process
-    })
-    setEtherspotStepExecution({
-      status: 'PENDING',
-      process: processList,
-    })
-
-    // Wait for Transaction
-    const provider = await getRpcProvider(ChainId.POL)
-    let receipt
-    while (!receipt) {
-      try {
-        const tx = await provider.getTransaction(batch.transaction.hash!)
-        if (tx) {
-          receipt = await tx.wait()
-        }
-      } catch (e) {
-        // ignore failed requests and try again
-        // eslint-disable-next-line no-console
-        console.error(e)
-      }
-
-      if (!receipt) {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 3000)
-        })
-      }
-    }
-
-    processList.map((process) => {
-      if (process.id === 'wait') {
-        process.status = 'DONE'
-        process.message = 'Offsetting Successful'
-        process.txHash = batch.transaction.hash
-        process.txLink = chain.metamask.blockExplorerUrls[0] + 'tx/' + batch.transaction.hash
-        process.doneAt = Date.now()
-      }
-      return process
-    })
-    const stepExecution: Execution = {
-      status: 'DONE',
-      process: processList,
-    }
-    setEtherspotStepExecution(stepExecution)
-    return stepExecution
-  }
-
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
     // const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
-    // const amountSKlimaParsed = route.stakingStep.estimate.toAmountMin
+    const toAmount = route.stakingStep.estimate.toAmountMin
 
-    const doneList = stepExecution.process.map((p) => {
-      p.status = 'DONE'
-      return p
-    })
-
-    setEtherspotStepExecution({
-      status: 'DONE',
-      process: doneList,
-      toAmount: route.stakingStep.estimate.toAmountMin.toString(),
-    })
+    finalizeEtherSpotExecution(stepExecution!, toAmount)
 
     // setFinalTokenAmount(tokenAmountSKlima)
   }
