@@ -36,6 +36,7 @@ import { TOUCAN_BCT_ADDRESS } from '../constants'
 import { useOffsetCarbonExecutor } from '../hooks/Etherspot/offsetCarbonExecutor'
 import LiFi from '../LiFi'
 import { ToSectionCarbonOffsetProvider } from '../providers/ToSectionCarbonOffsetProvider'
+import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxService'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -374,18 +375,24 @@ const Swap = () => {
       const amountUsdc = ethers.BigNumber.from(
         amount.shiftedBy(TOKEN_POLYGON_USDC.decimals).toString(),
       )
+      const { feeAmount } = await getFeeTransferTransactionBasedOnAmount(
+        TOKEN_POLYGON_USDC,
+        amountUsdc,
+      )
       const amountUsdcToMatic = ethers.utils.parseUnits('0.2', TOKEN_POLYGON_USDC.decimals)
-      const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
+      const amountUsdcToCarbon = amountUsdc.sub(amountUsdcToMatic).sub(feeAmount)
 
       const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
-      const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
+      const stakingStep = calculateFinalStakingStep(amountUsdcToCarbon.toString())
       const quotes = await Promise.all([gasStep, stakingStep])
 
       const residualRoute: ExtendedRouteOptional = {
         gasStep: quotes[0],
         stakingStep: quotes[1],
       }
-      setResidualRoute(residualRoute)
+      if (residualRoute.gasStep && residualRoute.stakingStep) {
+        setResidualRoute(residualRoute)
+      }
     }
     if (etherSpotSDK?.state.accountAddress) {
       checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
@@ -771,13 +778,15 @@ const Swap = () => {
           currentRouteCallId = id
           const result = await LiFi.getRoutes(request)
           const amountUsdc = ethers.BigNumber.from(result.routes[0].toAmountMin)
-          const amountUsdcToMatic = ethers.utils.parseUnits(
-            '0.2',
-            result.routes[0].toToken.decimals,
+          const { feeAmount } = await getFeeTransferTransactionBasedOnAmount(
+            TOKEN_POLYGON_USDC,
+            amountUsdc,
           )
-          const amountUsdcToBCT = amountUsdc.sub(amountUsdcToMatic)
+          const amountUsdcToMatic = ethers.utils.parseUnits('0.2', TOKEN_POLYGON_USDC.decimals)
+          const amountUsdcToCarbon = amountUsdc.sub(amountUsdcToMatic).sub(feeAmount)
+
           const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
-          const stakingStep = calculateFinalStakingStep(amountUsdcToBCT.toString())
+          const stakingStep = calculateFinalStakingStep(amountUsdcToCarbon.toString())
           const additionalQuotes = await Promise.all([gasStep, stakingStep])
 
           setRouteCallResult({

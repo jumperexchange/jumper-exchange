@@ -36,6 +36,7 @@ import { Etherspot } from '../assets/misc/etherspot'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
 import { useKlimaStakingExecutor } from '../hooks/Etherspot/klimaStakingExecutor'
 import LiFi from '../LiFi'
+import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxService'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import getRoute, { ExtendedTransactionRequest } from '../services/routingService'
@@ -392,8 +393,12 @@ const Swap = () => {
       const amountUsdc = ethers.BigNumber.from(
         amount.shiftedBy(TOKEN_POLYGON_USDC.decimals).toString(),
       )
+      const { feeAmount } = await getFeeTransferTransactionBasedOnAmount(
+        TOKEN_POLYGON_USDC,
+        amountUsdc,
+      )
       const amountUsdcToMatic = ethers.utils.parseUnits('0.2', TOKEN_POLYGON_USDC.decimals)
-      const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
+      const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic).sub(feeAmount)
 
       const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
       const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
@@ -403,7 +408,9 @@ const Swap = () => {
         gasStep: quotes[0],
         stakingStep: quotes[1],
       }
-      setResidualRoute(residualRoute)
+      if (residualRoute.gasStep && residualRoute.stakingStep) {
+        setResidualRoute(residualRoute)
+      }
     }
     if (etherSpotSDK?.state.accountAddress) {
       checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
@@ -797,9 +804,13 @@ const Swap = () => {
             toAmountMin = request.fromAmount // get this from the request as there is no specific amount field in TransactionRequest
           }
           const amountUsdc = ethers.BigNumber.from(toAmountMin)
-          const toToken = await LiFi.getToken(request.toChainId, request.toTokenAddress)
-          const amountUsdcToMatic = ethers.utils.parseUnits('0.2', toToken.decimals)
-          const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
+          const { feeAmount } = await getFeeTransferTransactionBasedOnAmount(
+            TOKEN_POLYGON_USDC,
+            amountUsdc,
+          )
+          const amountUsdcToMatic = ethers.utils.parseUnits('0.2', TOKEN_POLYGON_USDC.decimals)
+          const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic).sub(feeAmount)
+
           const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
           const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
           const additionalQuotes = await Promise.all([gasStep, stakingStep])

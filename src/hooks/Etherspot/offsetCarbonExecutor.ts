@@ -10,6 +10,7 @@ import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../../constant
 import LiFi from '../../LiFi'
 import { useBeneficiaryInfo } from '../../providers/ToSectionCarbonOffsetProvider'
 import {
+  getFeeTransferTransactionBasedOnAmount,
   getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
 } from '../../services/etherspotTxService'
@@ -86,6 +87,23 @@ export const useOffsetCarbonExecutor = () =>
       await etherspot.batchExecuteAccountTransaction({
         to: gasStep.transactionRequest.to as string,
         data: gasStep.transactionRequest.data as string,
+      })
+      // Collect fee
+      const baseFromAmountMatic = ethers.utils.parseUnits(
+        gasStep.action.fromAmount,
+        gasStep.action.fromToken.decimals,
+      )
+      const baseFromAmountBCT = ethers.utils.parseUnits(
+        stakingStep.action.fromAmount,
+        stakingStep.action.fromToken.decimals,
+      )
+      const { txFee } = await getFeeTransferTransactionBasedOnAmount(
+        stakingStep.action.fromToken,
+        baseFromAmountBCT.add(baseFromAmountMatic),
+      )
+      await etherspot.batchExecuteAccountTransaction({
+        to: txFee.to as string,
+        data: txFee.data as string,
       })
 
       const amountUSDC = new BigNumber(stakingStep.action.fromAmount)

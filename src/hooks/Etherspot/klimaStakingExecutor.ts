@@ -8,6 +8,7 @@ import { getRpcProvider } from '../../components/web3/connectors'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../../constants'
 import LiFi from '../../LiFi'
 import {
+  getFeeTransferTransactionBasedOnAmount,
   getSetAllowanceTransaction,
   getStakeKlimaTransaction,
   getTransferTransaction,
@@ -137,12 +138,30 @@ export const useKlimaStakingExecutor = () =>
         data: txAllowTotal.data as string,
       })
 
-      // Swap
+      // Swap for gas
       await etherspot.batchExecuteAccountTransaction({
         to: gasStep.transactionRequest.to as string,
         data: gasStep.transactionRequest.data as string,
       })
 
+      // Collect fee
+      const baseFromAmountMatic = ethers.utils.parseUnits(
+        gasStep.action.fromAmount,
+        gasStep.action.fromToken.decimals,
+      )
+      const baseFromAmountKlima = ethers.utils.parseUnits(
+        stakingStep.action.fromAmount,
+        stakingStep.action.fromToken.decimals,
+      )
+      const { txFee } = await getFeeTransferTransactionBasedOnAmount(
+        stakingStep.action.fromToken,
+        baseFromAmountKlima.add(baseFromAmountMatic),
+      )
+      await etherspot.batchExecuteAccountTransaction({
+        to: txFee.to as string,
+        data: txFee.data as string,
+      })
+      // Swap for KLIMA
       await etherspot.batchExecuteAccountTransaction({
         to: stakingStep.transactionRequest.to as string,
         data: stakingStep.transactionRequest.data as string,
