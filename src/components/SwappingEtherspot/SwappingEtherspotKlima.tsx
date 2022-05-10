@@ -185,7 +185,7 @@ const SwappingEtherspotKlima = ({
 
   useEffect(() => {
     if (transferExecutionError) {
-      !!transferExecutionError && handleSimpleTransferError(transferExecutionError)
+      !!simpleTransferExecution && handleSimpleTransferError(transferExecutionError)
       handlePotentialEtherSpotError(transferExecutionError, localRoute, simpleTransferExecution)
     }
     setTransferExecutionError(undefined)
