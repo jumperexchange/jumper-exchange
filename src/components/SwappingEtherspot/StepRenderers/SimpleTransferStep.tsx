@@ -1,7 +1,6 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Timeline, Typography } from 'antd'
 
-import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
 import { ExtendedTransactionRequest } from '../../../services/routingService'
 import { formatTokenAmount } from '../../../services/utils'
@@ -13,6 +12,7 @@ interface SimpleTransferStepProps {
   isSwapping: boolean
   simpleTransferDestination?: string
   simpleStepExecution?: Execution
+  isMobile: boolean
 }
 
 export const SimpleTransferStep = ({
@@ -20,9 +20,8 @@ export const SimpleTransferStep = ({
   isSwapping,
   simpleTransferDestination,
   simpleStepExecution,
+  isMobile,
 }: SimpleTransferStepProps) => {
-  const isMobile = useIsMobile()
-
   const parseSimpleTransferExecution = () => {
     if (!simpleStepExecution) {
       return []

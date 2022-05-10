@@ -18,11 +18,11 @@ import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
 
 import walletIcon from '../../assets/wallet.png'
 import { TOUCAN_BCT_ADDRESS } from '../../constants'
 import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
+import { useIsMobile } from '../../hooks/useIsMobile'
 import LiFi from '../../LiFi'
 import { isWalletConnectWallet } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
@@ -73,7 +73,6 @@ const SwappingCarbonOffset = ({
   settings,
   onSwapDone,
 }: SwappingProps) => {
-  const { steps } = route.lifiRoute
   const {
     etherspotStepExecution,
     executeEtherspotStep,
@@ -82,7 +81,9 @@ const SwappingCarbonOffset = ({
     finalizeEtherSpotExecution,
   } = useOffsetCarbonExecutor()
 
-  const isMobile = useMediaQuery({ query: `(max-width: 760px)` })
+  const isMobile = useIsMobile()
+
+  const [localRoute, setLocalRoute] = useState<ExtendedRoute>(route)
 
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
@@ -94,22 +95,28 @@ const SwappingCarbonOffset = ({
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
+  const [transferExecutionError, setTransferExecutionError] = useState<any>()
+
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
 
   useEffect(() => {
-    // check if route is eligible for automatic resuming
-    const allDone = steps.every((step) => step.execution?.status === 'DONE')
-    const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
+    setLocalRoute((oldRoute) => ({ ...oldRoute, ...route }))
+  }, [route])
 
-    const alreadyStarted = steps.some((step) => step.execution)
+  useEffect(() => {
+    // check if route is eligible for automatic resuming
+    const allDone = localRoute.lifiRoute.steps.every((step) => step.execution?.status === 'DONE')
+    const isFailed = localRoute.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED')
+
+    const alreadyStarted = localRoute.lifiRoute.steps.some((step) => step.execution)
     if (!allDone && !isFailed && alreadyStarted) {
       resumeExecution()
     }
 
     // move execution to background when modal is closed
     return function cleanup() {
-      LiFi.moveExecutionToBackground(route.lifiRoute)
+      LiFi.moveExecutionToBackground(localRoute.lifiRoute)
     }
   }, [])
 
@@ -204,7 +211,11 @@ const SwappingCarbonOffset = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || localRoute.lifiRoute.steps.length - 1 === index ? (
+            executionItem
+          ) : (
+            <></>
+          ),
         ]
       }
 
@@ -225,7 +236,11 @@ const SwappingCarbonOffset = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || localRoute.lifiRoute.steps.length - 1 === index ? (
+            executionItem
+          ) : (
+            <></>
+          ),
         ]
       }
 
@@ -246,7 +261,11 @@ const SwappingCarbonOffset = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.lifiRoute.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || localRoute.lifiRoute.steps.length - 1 === index ? (
+            executionItem
+          ) : (
+            <></>
+          ),
         ]
       }
 
@@ -268,16 +287,17 @@ const SwappingCarbonOffset = ({
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
+      await LiFi.executeRoute(signer, localRoute.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
-        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+        await executeEtherspotStep(etherspot!, localRoute.gasStep, localRoute.stakingStep),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route.lifiRoute)
+      console.warn('Execution failed!', localRoute.lifiRoute)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e, route)
+      setTransferExecutionError(e)
+
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -287,6 +307,13 @@ const SwappingCarbonOffset = ({
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
     onSwapDone()
   }
+
+  useEffect(() => {
+    if (transferExecutionError) {
+      handlePotentialEtherSpotError(transferExecutionError, localRoute)
+      setTransferExecutionError(undefined)
+    }
+  }, [transferExecutionError])
 
   const resumeExecution = async () => {
     if (!web3.account || !web3.library) return
@@ -299,16 +326,16 @@ const SwappingCarbonOffset = ({
 
     setIsSwapping(true)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
+      await LiFi.resumeRoute(web3.library.getSigner(), localRoute.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
-        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+        await executeEtherspotStep(etherspot!, localRoute.gasStep, localRoute.stakingStep),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route)
+      console.warn('Execution failed!', localRoute)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e, route)
+      setTransferExecutionError(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -322,16 +349,16 @@ const SwappingCarbonOffset = ({
   const restartCrossChainSwap = async () => {
     // remove failed
 
-    for (let index = 0; index < steps.length; index++) {
-      const stepHasFailed = steps[index].execution?.status === 'FAILED'
+    for (let index = 0; index < localRoute.lifiRoute.steps.length; index++) {
+      const stepHasFailed = localRoute.lifiRoute.steps[index].execution?.status === 'FAILED'
       // check if the step has been cancelled which is a "failed" state
-      const stepHasBeenCancelled = steps[index].execution?.process.some(
+      const stepHasBeenCancelled = localRoute.lifiRoute.steps[index].execution?.process.some(
         (process) => process.status === 'CANCELLED',
       )
 
-      if (steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
-        steps[index].execution!.status = 'RESUME'
-        steps[index].execution!.process.pop() // remove last (failed) process
+      if (localRoute.lifiRoute.steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
+        localRoute.lifiRoute.steps[index].execution!.status = 'RESUME'
+        localRoute.lifiRoute.steps[index].execution!.process.pop() // remove last (failed) process
         updateRoute(route.lifiRoute)
       }
     }
@@ -344,7 +371,7 @@ const SwappingCarbonOffset = ({
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
     // const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
-    const toAmount = route.stakingStep.estimate.toAmountMin
+    const toAmount = localRoute.stakingStep.estimate.toAmountMin
 
     finalizeEtherSpotExecution(stepExecution!, toAmount)
 
@@ -380,6 +407,7 @@ const SwappingCarbonOffset = ({
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
+    setLocalRoute((route) => ({ ...route, lifiRoute: updatedRoute }))
     updateRoute(updatedRoute)
   }
 
@@ -388,11 +416,13 @@ const SwappingCarbonOffset = ({
     if (isSwapping) {
       return <></>
     }
-    const isCrossChainSwap = !!steps.find((step) => isCrossStep(step) || isLifiStep(step))
+    const isCrossChainSwap = !!localRoute.lifiRoute.steps.find(
+      (step) => isCrossStep(step) || isLifiStep(step),
+    )
 
     // DONE
     const isDone =
-      steps.filter((step) => step.execution?.status !== 'DONE').length === 0 &&
+      localRoute.lifiRoute.steps.filter((step) => step.execution?.status !== 'DONE').length === 0 &&
       etherspotStepExecution?.status === 'DONE'
     if (isDone) {
       const toChain = getChainById(ChainId.POL)
@@ -439,7 +469,7 @@ const SwappingCarbonOffset = ({
 
     // FAILED
     const isFailed =
-      steps.some((step) => step.execution?.status === 'FAILED') ||
+      localRoute.lifiRoute.steps.some((step) => step.execution?.status === 'FAILED') ||
       etherspotStepExecution?.status === 'FAILED'
     if (isFailed) {
       return (
@@ -449,7 +479,7 @@ const SwappingCarbonOffset = ({
       )
     }
 
-    const chainSwitchRequired = steps.some(
+    const chainSwitchRequired = localRoute.lifiRoute.steps.some(
       (step) => step.execution?.status === 'CHAIN_SWITCH_REQUIRED',
     )
     if (chainSwitchRequired) {
@@ -465,7 +495,7 @@ const SwappingCarbonOffset = ({
   }
 
   const getCurrentProcess = () => {
-    for (const step of steps) {
+    for (const step of localRoute.lifiRoute.steps) {
       if (step.execution?.process) {
         for (const process of step.execution?.process) {
           if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
@@ -514,8 +544,8 @@ const SwappingCarbonOffset = ({
     })
   }
   const parseEtherspotStep = () => {
-    const lastLiFiStep = route.lifiRoute.steps[route.lifiRoute.steps.length - 1]
-    const index = route.lifiRoute.steps.length
+    const lastLiFiStep = localRoute.lifiRoute.steps[localRoute.lifiRoute.steps.length - 1]
+    const index = localRoute.lifiRoute.steps.length
     const isDone = etherspotStepExecution && etherspotStepExecution.status === 'DONE'
     const isLoading =
       isSwapping && etherspotStepExecution && etherspotStepExecution.status === 'PENDING'
@@ -534,7 +564,7 @@ const SwappingCarbonOffset = ({
         <span>
           {formatTokenAmount(lastLiFiStep.action.toToken, lastLiFiStep.estimate?.toAmount)}{' '}
           <ArrowRightOutlined />{' '}
-          {formatTokenAmount(TOUCAN_BCT_TOKEN, route.stakingStep.estimate?.toAmount)}
+          {formatTokenAmount(TOUCAN_BCT_TOKEN, localRoute.stakingStep.estimate?.toAmount)}
         </span>
         {/* {executionDuration} */}
       </Timeline.Item>,
@@ -555,7 +585,7 @@ const SwappingCarbonOffset = ({
 
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
-        {steps.map(parseStepToTimeline)}
+        {localRoute.lifiRoute.steps.map(parseStepToTimeline)}
         {parseEtherspotStep()}
       </Timeline>
 
