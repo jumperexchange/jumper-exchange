@@ -75,6 +75,7 @@ const Swapping = ({
 }: SwappingProps) => {
   const isMobile = useIsMobile()
 
+  const [localRoute, setLocalRoute] = useState<Route>(route)
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
@@ -90,18 +91,22 @@ const Swapping = ({
   const web3 = useWeb3React<Web3Provider>()
 
   useEffect(() => {
-    // check if route is eligible for automatic resuming
-    const allDone = steps.every((step) => step.execution?.status === 'DONE')
-    const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
+    setLocalRoute(route)
+  }, [route])
 
-    const alreadyStarted = steps.some((step) => step.execution)
+  useEffect(() => {
+    // check if route is eligible for automatic resuming
+    const allDone = localRoute.steps.every((step) => step.execution?.status === 'DONE')
+    const isFailed = localRoute.steps.some((step) => step.execution?.status === 'FAILED')
+
+    const alreadyStarted = localRoute.steps.some((step) => step.execution)
     if (!allDone && !isFailed && alreadyStarted) {
       resumeExecution()
     }
 
     // move execution to background when modal is closed
     return function cleanup() {
-      LiFi.moveExecutionToBackground(route)
+      LiFi.moveExecutionToBackground(localRoute)
     }
   }, [])
 
@@ -196,7 +201,7 @@ const Swapping = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || localRoute.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -217,7 +222,7 @@ const Swapping = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || localRoute.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -238,7 +243,7 @@ const Swapping = ({
             </span>
             {executionDuration}
           </Timeline.Item>,
-          !!step.execution || route.steps.length - 1 === index ? executionItem : <></>,
+          !!step.execution || localRoute.steps.length - 1 === index ? executionItem : <></>,
         ]
       }
 
@@ -257,21 +262,21 @@ const Swapping = ({
       switchChainHook: switchChainHook,
       infiniteApproval: settings.infiniteApproval,
     }
-    storeRoute(route)
+    storeRoute(localRoute)
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      await LiFi.executeRoute(signer, route, executionSettings)
+      await LiFi.executeRoute(signer, localRoute, executionSettings)
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route)
+      console.warn('Execution failed!', localRoute)
       // eslint-disable-next-line no-console
       console.error(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalance(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalance(web3.account!, localRoute))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -289,17 +294,17 @@ const Swapping = ({
 
     setIsSwapping(true)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), route, executionSettings)
+      await LiFi.resumeRoute(web3.library.getSigner(), localRoute, executionSettings)
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route)
+      console.warn('Execution failed!', localRoute)
       // eslint-disable-next-line no-console
       console.error(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalance(web3.account!, route))
+    setFinalTokenAmount(await getFinalBalance(web3.account!, localRoute))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -309,17 +314,17 @@ const Swapping = ({
   const restartCrossChainSwap = async () => {
     // remove failed
 
-    for (let index = 0; index < steps.length; index++) {
-      const stepHasFailed = steps[index].execution?.status === 'FAILED'
+    for (let index = 0; index < localRoute.steps.length; index++) {
+      const stepHasFailed = localRoute.steps[index].execution?.status === 'FAILED'
       // check if the step has been cancelled which is a "failed" state
-      const stepHasBeenCancelled = steps[index].execution?.process.some(
+      const stepHasBeenCancelled = localRoute.steps[index].execution?.process.some(
         (process) => process.status === 'CANCELLED',
       )
 
-      if (steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
-        steps[index].execution!.status = 'RESUME'
-        steps[index].execution!.process.pop() // remove last (failed) process
-        updateRoute(route)
+      if (localRoute.steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
+        localRoute.steps[index].execution!.status = 'RESUME'
+        localRoute.steps[index].execution!.process.pop() // remove last (failed) process
+        updateRoute(localRoute)
       }
     }
     // start again
@@ -355,6 +360,7 @@ const Swapping = ({
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
+    setLocalRoute(updatedRoute)
     storeRoute(updatedRoute)
     updateRoute(updatedRoute)
   }
@@ -364,12 +370,14 @@ const Swapping = ({
     if (isSwapping) {
       return <></>
     }
-    const isCrossChainSwap = !!steps.find((step) => isCrossStep(step) || isLifiStep(step))
+    const isCrossChainSwap = !!localRoute.steps.find(
+      (step) => isCrossStep(step) || isLifiStep(step),
+    )
 
     // DONE
-    const isDone = steps.filter((step) => step.execution?.status !== 'DONE').length === 0
+    const isDone = localRoute.steps.filter((step) => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
-      const lastStep = steps[steps.length - 1]
+      const lastStep = localRoute.steps[localRoute.steps.length - 1]
       const { toChain } = getReceivingInfo(lastStep)
       const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
       const receivedTokenMatchesPlannedToken =
@@ -437,7 +445,7 @@ const Swapping = ({
     }
 
     // FAILED
-    const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
+    const isFailed = localRoute.steps.some((step) => step.execution?.status === 'FAILED')
     if (isFailed) {
       return (
         <Button type="primary" onClick={() => restartCrossChainSwap()} style={{ marginTop: 10 }}>
@@ -446,7 +454,7 @@ const Swapping = ({
       )
     }
 
-    const chainSwitchRequired = steps.some(
+    const chainSwitchRequired = localRoute.steps.some(
       (step) => step.execution?.status === 'CHAIN_SWITCH_REQUIRED',
     )
     if (chainSwitchRequired) {
@@ -462,7 +470,7 @@ const Swapping = ({
   }
 
   const getCurrentProcess = () => {
-    for (const step of steps) {
+    for (const step of localRoute.steps) {
       if (step.execution?.process) {
         for (const process of step.execution?.process) {
           if (process.status === 'ACTION_REQUIRED' || process.status === 'PENDING') {
@@ -483,7 +491,7 @@ const Swapping = ({
 
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
-        {steps.map(parseStepToTimeline)}
+        {localRoute.steps.map(parseStepToTimeline)}
       </Timeline>
 
       <div style={{ display: 'flex', backgroundColor: 'rgba(255,255,255, 0)' }}>
