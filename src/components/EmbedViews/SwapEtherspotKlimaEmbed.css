@@ -1,0 +1,87 @@
+/* site */
+.site-layout-swap-klima-embed {
+  color: white !important;
+  height: 100%;
+  padding: 80px 0;
+  overflow-y: scroll !important;
+  overflow: hidden;
+  background: #202020 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 0 !important;
+}
+
+.swap-view-klima-embed {
+  min-height: 900px;
+  max-width: 1600px;
+  margin: auto;
+}
+
+.swap-form-klima-embed {
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+/* inputs */
+.swap-input-klima-embed {
+  background: #202020;
+  max-width: 450px;
+  border-radius: 16px;
+  padding: 24px 48px;
+  margin: 0 auto;
+  border: 2px solid #303030;
+  color: white !important;
+}
+
+.swap-input-klima-embed form,
+.swap-input-klima-embed input,
+.swap-input-klima-embed .ant-input-disabled,
+.swap-input-klima-embed .form-input-wrapper,
+.swap-input-klima-embed .ant-select,
+.swap-input-klima-embed .ant-collapse-header,
+.swap-input-klima-embed .ant-collapse-content-box,
+.swap-input-klima-embed .ant-collapse-content-box span {
+  color: white !important;
+}
+
+.swap-input-klima-embed .form-input-wrapper {
+  background-color: #202020;
+  border: 2px solid #303030;
+}
+
+.swap-input-klima-embed .ant-collapse-content-box .ant-select-selection-item,
+.swap-input-klima-embed .ant-collapse-content-box .ant-select-selector,
+.swap-input-klima-embed .ant-input-number {
+  background-color: #202020 !important;
+  border: 1px solid #303030 !important;
+}
+
+.swap-input-klima-embed .ant-input-number-handler-wrap {
+  background-color: #202020 !important;
+}
+
+.swap-input-klima-embed .ant-checkbox {
+  background-color: #303030 !important;
+}
+
+.input-beneficiary {
+  margin-bottom: 8px;
+  height: 50px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 4px 4px;
+  font-weight: 700;
+}
+
+.ant-collapse {
+  color: white;
+}
+
+.swap-input-klima-embed .ant-btn-primary {
+  background-color: #00cc33;
+  color: white;
+  border-color: #00cc33;
+}
