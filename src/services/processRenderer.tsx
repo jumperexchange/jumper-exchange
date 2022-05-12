@@ -5,14 +5,18 @@ import { Process } from '../types'
 const DEFAULT_TRANSACTIONS_TO_LOG = 10
 
 export function renderProcessMessage(process: Process) {
+  const processMessage =
+    process.status === 'FAILED' ? ' Step Failed' : process.message?.toString() || ''
+
   if (process.txLink) {
-    if (process.message === 'Sign Message to Claim Funds') {
-      return <>{process.message.toString()}</>
+    if (processMessage === 'Sign Message to Claim Funds') {
+      return <>{processMessage}</>
     }
+
     if (process.confirmations) {
       return (
         <>
-          {process.message}{' '}
+          {processMessage}{' '}
           <a href={process.txLink} target="_blank" rel="nofollow noreferrer">
             Tx {renderConfirmations(process.confirmations, DEFAULT_TRANSACTIONS_TO_LOG)}
           </a>
@@ -21,26 +25,26 @@ export function renderProcessMessage(process: Process) {
     }
     return (
       <>
-        {process.message}{' '}
+        {processMessage}{' '}
         <a href={process.txLink} target="_blank" rel="nofollow noreferrer">
           Tx
         </a>
       </>
     )
   }
-  return <>{process.message.toString()}</>
+  return <>{processMessage}</>
 }
 
 export const renderProcessError = (process: Process) => {
-  const errorMessage = process.errorMessage && (
+  const errorMessage = process.error?.message && (
     <>
-      Error: {process.errorMessage.substring(0, 350)}
-      {process.errorMessage.length > 350 ? '...' : ''}
+      Error: {process.error?.message.substring(0, 350)}
+      {process.error?.message.length > 350 ? '...' : ''}
     </>
   )
 
-  const htmlMessage = process.htmlErrorMessage && (
-    <div dangerouslySetInnerHTML={{ __html: process.htmlErrorMessage }} />
+  const htmlMessage = process.error?.htmlMessage && (
+    <div dangerouslySetInnerHTML={{ __html: process.error?.htmlMessage }} />
   )
 
   return (

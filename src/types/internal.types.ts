@@ -1,6 +1,8 @@
 import {
   ChainKey,
   Coin,
+  Route,
+  Step,
   StepTool,
   supportedBridges,
   supportedExchangeAggregators,
@@ -9,6 +11,8 @@ import {
 } from '@lifinance/sdk'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
+
+import { ExtendedTransactionRequest } from '../services/routingService'
 
 export interface Amounts {
   amount_coin: BigNumber
@@ -75,4 +79,17 @@ export interface WalletConnectInfo {
   key: string
   peerId: string
   peerMeta: { [k: string]: any } // not important as of now
+}
+
+export interface ExtendedRoute {
+  lifiRoute: Route
+  gasStep: Step
+  stakingStep: Step
+}
+
+export interface ExtendedRouteOptional {
+  lifiRoute?: Route
+  gasStep?: Step
+  stakingStep?: Step
+  simpleTransfer?: ExtendedTransactionRequest
 }

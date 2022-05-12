@@ -46,7 +46,7 @@ export const getRoute = ({ includingExecution = true, executionTime = SOME_DATE 
             status: 'DONE',
             process: [
               {
-                id: 'allowanceProcess',
+                type: 'SWAP',
                 startedAt: executionTime,
                 message: 'Already Approved',
                 status: 'DONE',

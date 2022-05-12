@@ -2,8 +2,8 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
 
+import { useEagerConnect, useInactiveListener } from '../../hooks/eagerConnectHooks'
 import { network } from './connectors'
-import { useEagerConnect, useInactiveListener } from './hooks'
 
 function Web3ConnectionManager({ children }: { children: JSX.Element }) {
   const web3 = useWeb3React<Web3Provider>()

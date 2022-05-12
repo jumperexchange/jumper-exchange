@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
+import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
 import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
@@ -22,6 +23,8 @@ import setMetatags from './services/metatags'
 import { initStomt } from './services/stomt'
 
 const ENABLE_ETHERSPOT_KLIMA_SHOWCASE = process.env.REACT_APP_ENABLE_ETHERSPOT_KLIMA === 'true'
+const REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE =
+  process.env.REACT_APP_ENABLE_OFFSET_CARBON === 'true'
 function usePageViews() {
   const [path, setPath] = useState<string>()
   const location = useLocation()
@@ -109,13 +112,30 @@ function App() {
                     defaultSelectedKeys={path ? [path] : []}
                     overflowedIndicator={<DownOutlined />}
                     inlineCollapsed={false}>
-                    <Menu.Item key="/dashboard">
-                      <Link to="/dashboard">Dashboard</Link>
-                    </Menu.Item>
                     <Menu.Item key="/swap">
                       <span className="beta-badge">Beta</span>
                       <Link to="/swap">Swap</Link>
                     </Menu.Item>
+                    <Menu.SubMenu title="Showcases" key="showcase-submenu">
+                      <Menu.Item key="/showcase/ukraine" danger={true}>
+                        <span className="ukraine-flag">&#127482;&#127462;</span>
+                        <Link to="/showcase/ukraine">Help Ukraine!</Link>
+                      </Menu.Item>
+                      <Menu.ItemGroup title="KlimaDAO & Etherspot">
+                        <Menu.Item key="/showcase/etherspot-klima">
+                          <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>
+                        </Menu.Item>
+                        {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
+                          <Menu.Item key="/showcase/carbon-offset">
+                            <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>
+                          </Menu.Item>
+                        )}
+                      </Menu.ItemGroup>
+                    </Menu.SubMenu>
+                    <Menu.Item key="/dashboard">
+                      <Link to="/dashboard">Dashboard</Link>
+                    </Menu.Item>
+
                     <Menu.Item key="dev-list">
                       <a
                         href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
@@ -124,10 +144,7 @@ function App() {
                         Contact Us
                       </a>
                     </Menu.Item>
-                    <Menu.Item key="/showcase/ukraine" danger={true}>
-                      <span className="ukraine-flag">&#127482;&#127462;</span>
-                      <Link to="/showcase/ukraine">Help Ukraine!</Link>
-                    </Menu.Item>
+
                     <Menu.Item key="/about">
                       <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
                         About
@@ -142,9 +159,6 @@ function App() {
                       <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
                         Explore Docs
                       </a>
-                    </Menu.Item>
-                    <Menu.Item key="/showcase/etherspot-klima">
-                      <Link to="/showcase/etherspot-klima">Etherspot+KLIMA</Link>
                     </Menu.Item>
                     {/* <Menu.Item>
                       <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
@@ -268,6 +282,22 @@ function App() {
                     }}
                   />
                 )}
+                {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
+                  <Route
+                    path="/showcase/carbon-offset"
+                    render={() => {
+                      setMetatags({
+                        title: 'LI.FI - Carbon Offset',
+                      })
+                      return (
+                        <div className="lifiWrap">
+                          <SwapCarbonOffset />
+                        </div>
+                      )
+                    }}
+                  />
+                )}
+
                 {/* <Route
                     path="/testnet"
                     render={() => {
