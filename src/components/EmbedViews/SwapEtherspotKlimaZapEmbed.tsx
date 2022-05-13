@@ -1042,10 +1042,7 @@ const Swap = () => {
                   {/* Advanced Options */}
                   <Row justify={'center'} style={{ marginTop: '12px' }}>
                     <Collapse ghost style={{ width: '100%' }}>
-                      <Collapse.Panel
-                        header={`Advanced Options`}
-                        style={{ maxHeight: 390, overflow: 'scroll' }}
-                        key="1">
+                      <Collapse.Panel header={`Advanced Options`} key="1">
                         Slippage
                         <div>
                           <InputNumber
