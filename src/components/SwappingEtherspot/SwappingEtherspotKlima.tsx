@@ -1,3 +1,4 @@
+import { EditOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { ChainId, Execution, ExecutionSettings, Process } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -7,7 +8,6 @@ import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 
-import walletIcon from '../../assets/wallet.png'
 import { sKLIMA_ADDRESS } from '../../constants'
 import { useKlimaStakingExecutor } from '../../hooks/Etherspot/klimaStakingExecutor'
 import { useIsMobile } from '../../hooks/useIsMobile'
@@ -602,7 +602,7 @@ const SwappingEtherspotKlima = ({
               <Typography.Text>{renderProcessMessage(currentProcess)}</Typography.Text>
             </Row>
             <Row justify="center">
-              <img src={walletIcon} alt="Please Check Your Wallet" />
+              <EditOutlined style={{ fontSize: 40 }} />
             </Row>
           </>
         )}

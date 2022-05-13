@@ -1,4 +1,9 @@
-import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
+import {
+  ArrowRightOutlined,
+  EditOutlined,
+  LoadingOutlined,
+  PauseCircleOutlined,
+} from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { ChainId, Execution, ExecutionSettings, StepTool } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -19,7 +24,6 @@ import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 
-import walletIcon from '../../assets/wallet.png'
 import { TOUCAN_BCT_ADDRESS } from '../../constants'
 import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
 import { useIsMobile } from '../../hooks/useIsMobile'
@@ -612,7 +616,7 @@ const SwappingCarbonOffset = ({
               <Typography.Text>{renderProcessMessage(currentProcess)}</Typography.Text>
             </Row>
             <Row justify="center">
-              <img src={walletIcon} alt="Please Check Your Wallet" />
+              <EditOutlined style={{ fontSize: 40 }} />
             </Row>
           </>
         )}
