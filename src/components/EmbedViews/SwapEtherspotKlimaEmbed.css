@@ -99,7 +99,7 @@
 .modal-klima-embed .ant-btn-primary,
 .swap-input-klima-embed .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #00cc33 !important;
-  color: #dddddd;
+  color: white;
   border-color: #00cc33 !important;
 }
 
@@ -120,7 +120,7 @@
 
 .modal-klima-embed .lifi-loading-indicator-bubble {
   background-color: #00cc33 !important;
-  color: #dddddd;
+  color: white;
   border-color: #00cc33 !important;
 }
 
