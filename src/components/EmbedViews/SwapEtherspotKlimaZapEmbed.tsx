@@ -1,6 +1,6 @@
 import './SwapEtherspotKlimaEmbed.css'
 
-import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
@@ -8,7 +8,6 @@ import {
   Checkbox,
   Col,
   Collapse,
-  Divider,
   Form,
   InputNumber,
   Modal,
@@ -18,8 +17,6 @@ import {
   Typography,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import Paragraph from 'antd/lib/typography/Paragraph'
-import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
@@ -30,7 +27,6 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { LifiTeam } from '../../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../../assets/misc/etherspot'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../../constants'
@@ -66,7 +62,6 @@ import {
   Token,
   TokenAmount,
 } from '../../types'
-import forest from './../../assets/misc/forest.jpg'
 import LoadingIndicator from './../LoadingIndicator'
 import SwapForm from './../SwapForm/SwapForm'
 import { ToSectionKlimaStaking } from './../SwapForm/SwapFormToSections/ToSectionKlimaStaking'
