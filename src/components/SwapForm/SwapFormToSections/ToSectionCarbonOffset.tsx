@@ -12,9 +12,14 @@ const { TextArea } = Input
 interface ToSectionCarbonOffsetProps {
   step?: Step
   tokenPolygonBCT?: Token
+  className?: string
 }
 
-export const ToSectionCarbonOffset = ({ step, tokenPolygonBCT }: ToSectionCarbonOffsetProps) => {
+export const ToSectionCarbonOffset = ({
+  className,
+  step,
+  tokenPolygonBCT,
+}: ToSectionCarbonOffsetProps) => {
   const beneficiaryInfo = useBeneficiaryInfo()
   const setBeneficiaryInfo = useSetBeneficiaryInfo()
 
@@ -33,7 +38,7 @@ export const ToSectionCarbonOffset = ({ step, tokenPolygonBCT }: ToSectionCarbon
   }
 
   return (
-    <div key="to-section-carbon-offset">
+    <div className={className} key="to-section-carbon-offset">
       <Row
         style={{
           marginTop: '32px',

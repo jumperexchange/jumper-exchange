@@ -32,10 +32,10 @@ function LoadingIndicator() {
 
   return (
     <div ref={element}>
-      <div style={bubbleStyle}></div>
-      <div style={bubbleStyle}></div>
-      <div style={bubbleStyle}></div>
-      <div style={bubbleStyle}></div>
+      <div className="lifi-loading-indicator-bubble" style={bubbleStyle}></div>
+      <div className="lifi-loading-indicator-bubble" style={bubbleStyle}></div>
+      <div className="lifi-loading-indicator-bubble" style={bubbleStyle}></div>
+      <div className="lifi-loading-indicator-bubble" style={bubbleStyle}></div>
     </div>
   )
 }

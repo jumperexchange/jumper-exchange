@@ -82,6 +82,10 @@ input[type='number']::-webkit-outer-spin-button {
   margin-bottom: 0;
 }
 
+.swapModal .anticon-edit {
+  color: #9c9c9c;
+}
+
 /* laptop screen */
 @media only screen and (max-height: 900px) {
   .swapModal.ant-modal {
