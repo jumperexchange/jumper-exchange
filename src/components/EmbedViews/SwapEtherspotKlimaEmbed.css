@@ -126,6 +126,10 @@
   background: #2a2a2a !important;
 }
 
+.modal-klima-embed .input-beneficiary {
+  border: 2px solid #303030;
+}
+
 /* Swapping Modal */
 
 .modal-klima-embed .ant-timeline-item-content {
