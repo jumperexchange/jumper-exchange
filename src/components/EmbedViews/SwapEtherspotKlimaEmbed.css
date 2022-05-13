@@ -39,7 +39,6 @@
 .swap-input-klima-embed input,
 .swap-input-klima-embed .ant-input-disabled,
 .swap-input-klima-embed .form-input-wrapper,
-.swap-input-klima-embed .form-input-wrapper .maxButton,
 .swap-input-klima-embed .ant-select,
 .swap-input-klima-embed .ant-collapse-header,
 .swap-input-klima-embed .ant-collapse-content-box,
@@ -108,6 +107,12 @@
   background-color: #2f3030 !important;
   color: white;
   border-color: #2f3030 !important;
+}
+
+.swap-input-klima-embed .form-input-wrapper .maxButton {
+  color: white;
+  background-color: #202020 !important;
+  border-color: #202020 !importantr;
 }
 
 /* Modals */
