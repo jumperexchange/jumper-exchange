@@ -33,7 +33,6 @@ import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
 import { TOUCAN_BCT_ADDRESS } from '../constants'
-import { useOffsetCarbonExecutor } from '../hooks/Etherspot/offsetCarbonExecutor'
 import LiFi from '../LiFi'
 import { ToSectionCarbonOffsetProvider } from '../providers/ToSectionCarbonOffsetProvider'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
@@ -62,10 +61,9 @@ import {
   TokenAmount,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
-import LoadingIndicator from './LoadingIndicator'
+import { ResidualRouteCarbonOffsetModal } from './ResidualRouteSwappingModal/ResidualRouteCarbonOffsetModal'
 import SwapForm from './SwapForm/SwapForm'
 import { ToSectionCarbonOffset } from './SwapForm/SwapFormToSections/ToSectionCarbonOffset'
-import { MinimalEtherspotStep } from './SwappingEtherspot/StepRenderers/MinimalStepRenderers/MinimalEtherspotStep'
 import SwappingCarbonOffset from './SwappingEtherspot/SwappingCarbonOffset'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
@@ -282,13 +280,6 @@ const etherspotSupportedChains: number[] = [
 ]
 
 const Swap = () => {
-  const {
-    etherspotStepExecution,
-    executeEtherspotStep,
-    resetEtherspotExecution,
-    handlePotentialEtherSpotError,
-    finalizeEtherSpotExecution,
-  } = useOffsetCarbonExecutor()
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
 
@@ -326,7 +317,6 @@ const Swap = () => {
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
   const [residualRoute, setResidualRoute] = useState<ExtendedRouteOptional>()
-
   // Misc
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
@@ -949,21 +939,6 @@ const Swap = () => {
     )
   }
 
-  const stakeResidualFunds = async () => {
-    try {
-      finalizeEtherSpotExecution(
-        await executeEtherspotStep(
-          etherSpotSDK!,
-          residualRoute!.gasStep!,
-          residualRoute!.stakingStep!,
-        ),
-        residualRoute!.stakingStep!.estimate.toAmountMin,
-      )
-    } catch (e) {
-      handlePotentialEtherSpotError(e, residualRoute!)
-    }
-  }
-
   return (
     <ToSectionCarbonOffsetProvider>
       <Content
@@ -1255,27 +1230,31 @@ const Swap = () => {
 
         {!!etherspotWalletBalance && !!residualRoute && (
           <Modal
-            onOk={stakeResidualFunds}
             onCancel={() => {
               setEtherspotWalletBalance(undefined)
               setResidualRoute(undefined)
             }}
-            closable={etherspotStepExecution?.status === 'DONE'}
             visible={!!etherspotWalletBalance && !!residualRoute}
             okText="Swap, stake and receive sKlima"
-            // cancelText="Send USDC to my wallet"
             footer={null}>
-            <>
+            <ResidualRouteCarbonOffsetModal
+              etherSpotSDK={etherSpotSDK!}
+              etherspotWalletBalance={etherspotWalletBalance}
+              setEtherspotWalletBalance={setEtherspotWalletBalance}
+              residualRoute={residualRoute}
+              setResidualRoute={setResidualRoute}
+            />
+            {/* <>
               <Typography.Paragraph>
                 You still have {etherspotWalletBalance.toFixed(2)} USDC in your smart contract based
                 wallet, do you want to swap and offset carbon using the Toucan Protocol: Base Carbon
                 Tonne (BCT)?
               </Typography.Paragraph>
-              <div style={{ marginBottom: 16, height: 80 }}>
+              <div style={{ marginBottom: 8, height: 80 }}>
                 {MinimalEtherspotStep({
                   etherspotStepExecution,
                   stakingStep: residualRoute?.stakingStep,
-                  isSwapping: true,
+                  isSwapping: isSwapping,
                   index: 0,
                   previousStepInfo: {
                     amount: etherspotWalletBalance
@@ -1285,6 +1264,67 @@ const Swap = () => {
                   },
                 })}
               </div>
+
+              <Collapse ghost>
+                <Panel key={1} header="Add a message for this transaction">
+                  <Row
+                    style={{
+                      marginTop: '32px',
+                    }}>
+                    <Input
+                      disabled={isSwapping ? true : false}
+                      className="input-beneficiary"
+                      key="input-beneficiary-name"
+                      type="text"
+                      placeholder={`Name or organisation`}
+                      // value={beneficiaryName}
+                      onChange={(event) =>
+                        setBeneficiaryInfo({
+                          ...beneficiaryInfo,
+                          beneficiaryName: event.currentTarget.value,
+                        })
+                      }
+                      style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
+                    />
+                  </Row>
+                  <Row>
+                    <Tooltip title="Defaults to the connected wallet address">
+                      <Input
+                        disabled={isSwapping ? true : false}
+                        className="input-beneficiary"
+                        key="input-beneficiary-address"
+                        type="text"
+                        placeholder={`Enter 0x address (optional)`}
+                        // value={beneficiaryAddress}
+                        onChange={(event) =>
+                          setBeneficiaryInfo({
+                            ...beneficiaryInfo,
+                            beneficiaryAddress: event.currentTarget.value,
+                          })
+                        }
+                        style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
+                      />
+                    </Tooltip>
+                  </Row>
+                  <Row>
+                    <TextArea
+                      disabled={isSwapping ? true : false}
+                      className="input-beneficiary"
+                      key="input-beneficiary-message"
+                      rows={4}
+                      placeholder={`Enter retirement message`}
+                      // value={retirementMessage}
+                      onChange={(event) =>
+                        setBeneficiaryInfo({
+                          ...beneficiaryInfo,
+                          retirementMessage: event.currentTarget.value,
+                        })
+                      }
+                      style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
+                    />
+                  </Row>
+                </Panel>
+              </Collapse>
               <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
                 {!etherspotStepExecution ? (
                   <>
@@ -1320,7 +1360,7 @@ const Swap = () => {
                   </Typography.Paragraph>
                 )}
               </div>
-            </>
+            </> */}
           </Modal>
         )}
       </Content>

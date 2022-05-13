@@ -74,20 +74,6 @@
   background-color: #303030 !important;
 }
 
-.input-beneficiary {
-  margin-bottom: 8px;
-  height: 50px;
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  padding: 4px 4px;
-  font-weight: 700;
-}
-
-.ant-collapse {
-  color: white;
-}
-
 .swap-input-klima-embed .ant-btn,
 .modal-klima-embed .ant-btn {
   background-color: #2a2a2a;
@@ -133,6 +119,11 @@
   background-color: #00cc33 !important;
   color: white;
   border-color: #00cc33 !important;
+}
+.modal-klima-embed .ant-collapse-header,
+.modal-klima-embed .input-beneficiary {
+  color: #dddddd !important;
+  background: #2a2a2a !important;
 }
 
 /* Swapping Modal */
