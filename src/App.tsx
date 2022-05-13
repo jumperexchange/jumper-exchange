@@ -65,14 +65,14 @@ function App() {
     return (
       <div className="lifiEmbed">
         <Swap />
-        {/* <div className="poweredBy">
+        <div className="poweredBy">
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
             <PoweredByLiFi />
           </a>
-        </div> */}
-        {/* <div className="wallet-buttons-embed-view">
+        </div>
+        <div className="wallet-buttons-embed-view">
           <WalletButtons />
-        </div> */}
+        </div>
       </div>
     )
   }
@@ -102,14 +102,14 @@ function App() {
     return (
       <div className="lifiEmbed">
         <SwapEtherspotKlimaZapEmbed />
-        <div className="poweredBy">
+        {/* <div className="poweredBy">
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
             <PoweredByLiFi />
           </a>
         </div>
         <div className="wallet-buttons-embed-view">
           <WalletButtons />
-        </div>
+        </div> */}
       </div>
     )
   }
