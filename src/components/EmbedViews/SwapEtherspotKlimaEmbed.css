@@ -46,14 +46,16 @@
 .swap-input-klima-embed .ant-collapse-content-box span,
 .swap-input-klima-embed .ant-select-selection-placeholder,
 .swap-input-klima-embed .ant-select-arrow,
-.swap-input-klima-embed .ant-collapse {
+.swap-input-klima-embed .ant-collapse,
+.swap-input-klima-embed .to-section-carbon-offset-klima-embed .input-beneficiary {
   color: white !important;
 }
 .swap-input-klima-embed .ant-select-selection-item {
   background-color: #202020 !important;
 }
 
-.swap-input-klima-embed .form-input-wrapper {
+.swap-input-klima-embed .form-input-wrapper,
+.swap-input-klima-embed .to-section-carbon-offset-klima-embed .input-beneficiary {
   background-color: #202020;
   border: 2px solid #303030;
 }
@@ -101,6 +103,11 @@
   background-color: #00cc33 !important;
   color: white;
   border-color: #00cc33 !important;
+}
+.swap-input-klima-embed .ant-btn-primary:disabled {
+  background-color: #2f3030 !important;
+  color: white;
+  border-color: #2f3030 !important;
 }
 
 /* Modals */

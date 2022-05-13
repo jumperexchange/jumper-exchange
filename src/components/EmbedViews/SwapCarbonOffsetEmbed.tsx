@@ -729,6 +729,7 @@ const Swap = () => {
     },
     [tokens],
   )
+
   useEffect(() => {
     const getTransferRoutes = async () => {
       setRoute({} as any)
@@ -966,51 +967,20 @@ const Swap = () => {
 
   return (
     <ToSectionCarbonOffsetProvider>
-      <Content
-        className="site-layout-swap-ukraine"
-        style={{
-          minHeight: 'calc(100vh - 64px)',
-          marginTop: '64px',
-        }}>
-        <div className="swap-view-ukraine">
+      <Content className="site-layout site-layout-swap-klima-embed">
+        <div className="swap-view-klima-embed">
           {/* Swap Form */}
           <Row className="ukraine-title-row">
-            <Col
-              xs={24}
-              sm={24}
-              md={24}
-              lg={24}
-              xl={12}
-              className="ukraine-content-column title-row">
-              <Title level={1}>Cross-chain carbon offsets</Title>
-            </Col>
-            <Col
-              className="swap-form-etherspot"
-              xs={24}
-              sm={24}
-              md={24}
-              lg={24}
-              xl={12}
-              style={{
-                minHeight: 'calc(100vh - 64px)',
-                backgroundImage: `url(${forest})`,
-              }}>
-              <div
-                className="swap-input"
-                style={{
-                  margin: '0 auto',
-                  maxWidth: 450,
-                  borderRadius: 16,
-                  padding: 32,
-                }}>
-                <Row>
+            <Col className="swap-form-klima-embed">
+              <div className="swap-input-klima-embed">
+                {/* <Row>
                   <Title
                     className="swap-title"
                     level={3}
                     style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
                     Carbon offsets via BCT
                   </Title>
-                </Row>
+                </Row> */}
 
                 <Form>
                   <SwapForm
@@ -1037,6 +1007,7 @@ const Swap = () => {
                     toSectionDesignator={'To retire'}
                     alternativeToSection={
                       <ToSectionCarbonOffset
+                        className="to-section-carbon-offset-klima-embed"
                         step={route?.stakingStep}
                         tokenPolygonBCT={tokenPolygonBCT}
                       />
@@ -1147,82 +1118,11 @@ const Swap = () => {
               </div>
             </Col>
           </Row>
-
-          <Row>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
-              <Title level={4}>
-                LI.FI and Etherspot teams have joined hands to support cross-chain carbon offsets.
-              </Title>
-              <br />
-
-              <Divider style={{ borderColor: 'black' }} />
-              <Paragraph style={{ marginTop: 64 }}>
-                <h2>What is happening here?</h2>
-                We’re combining
-                <ol>
-                  <li>
-                    LI.FI’s ability to perform <b>any-2-any cross-chain swaps</b> and
-                  </li>
-                  <li>
-                    Etherspot’s smart contract wallet feature through which we can{' '}
-                    <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
-                  </li>
-                </ol>
-                to <b>facilitate cross-chain carbon retirements</b> in just X steps which would
-                normally be X steps on X different dapps.
-              </Paragraph>
-              <Paragraph style={{ marginTop: 64 }}>
-                <h2>What is happening in the background?</h2>
-                When a cross-chain swap is completed via LI.FI, the asset is received on the
-                counterfactual smart wallet that the user controls on Polygon. The user then
-                executes a transaction that:
-                <ol>
-                  <li>Swaps USDC to MATIC.</li>
-                  <li>Deploys the Smart Wallet.</li>
-                  <li>
-                    Calls the Klima DAO contract to retire carbon based on the{' '}
-                    <a href="https://toucan.earth/" target="_blank" rel="noreferrer">
-                      Toucan Protocol: Base Carbon Tonne Token.
-                    </a>
-                  </li>
-                </ol>
-                All in a single transaction on the destination chain, with no need to switch RPC
-                networks and no need to have the gas token.
-              </Paragraph>
-
-              <Button
-                className="btn-info-ukraine"
-                shape="round"
-                type="primary"
-                size={'large'}
-                onClick={() => {
-                  window.open('https://etherspot.io/', '_blank')
-                }}>
-                Etherspot <ArrowRightOutlined />
-              </Button>
-
-              <Button
-                className="btn-wallet-ukraine"
-                shape="round"
-                type="primary"
-                size={'large'}
-                onClick={() => {
-                  window.open('https://www.klimadao.finance/', '_blank')
-                }}>
-                KlimaDAO <ArrowRightOutlined />
-              </Button>
-              <div
-                onClick={() => window.open('https://li.fi', '_blank')}
-                style={{ marginTop: 34, cursor: 'pointer' }}>
-                <LifiTeam></LifiTeam>
-              </div>
-            </Col>
-          </Row>
         </div>
 
         {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
           <Modal
-            className="swapModal"
+            className="modal-klima-embed  swapModal"
             visible={selectedRoute.lifiRoute.steps.length > 0}
             onOk={() => {
               setSelectedRoute(undefined)
@@ -1255,6 +1155,7 @@ const Swap = () => {
 
         {!!etherspotWalletBalance && !!residualRoute && (
           <Modal
+            className="modal-klima-embed residual-route-modal"
             onOk={stakeResidualFunds}
             onCancel={() => {
               setEtherspotWalletBalance(undefined)
