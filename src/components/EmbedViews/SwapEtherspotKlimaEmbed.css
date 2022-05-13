@@ -39,11 +39,18 @@
 .swap-input-klima-embed input,
 .swap-input-klima-embed .ant-input-disabled,
 .swap-input-klima-embed .form-input-wrapper,
+.swap-input-klima-embed .form-input-wrapper .maxButton,
 .swap-input-klima-embed .ant-select,
 .swap-input-klima-embed .ant-collapse-header,
 .swap-input-klima-embed .ant-collapse-content-box,
-.swap-input-klima-embed .ant-collapse-content-box span {
+.swap-input-klima-embed .ant-collapse-content-box span,
+.swap-input-klima-embed .ant-select-selection-placeholder,
+.swap-input-klima-embed .ant-select-arrow,
+.swap-input-klima-embed .ant-collapse {
   color: white !important;
+}
+.swap-input-klima-embed .ant-select-selection-item {
+  background-color: #202020 !important;
 }
 
 .swap-input-klima-embed .form-input-wrapper {
@@ -80,8 +87,58 @@
   color: white;
 }
 
-.swap-input-klima-embed .ant-btn-primary {
-  background-color: #00cc33;
+.swap-input-klima-embed .ant-btn,
+.modal-klima-embed .ant-btn {
+  background-color: #2a2a2a;
   color: white;
-  border-color: #00cc33;
+  border-color: #2a2a2a;
+}
+
+/* General Buttonss */
+.swap-input-klima-embed .ant-btn-primary,
+.modal-klima-embed .ant-btn-primary,
+.swap-input-klima-embed .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #00cc33 !important;
+  color: #dddddd;
+  border-color: #00cc33 !important;
+}
+
+/* Modals */
+
+.modal-klima-embed .ant-modal-body {
+  background: #2a2a2a;
+}
+
+.modal-klima-embed .ant-typography,
+.modal-klima-embed .ant-modal-close-x {
+  color: #dddddd !important;
+}
+
+.modal-klima-embed a {
+  color: #00cc33 !important;
+}
+
+.modal-klima-embed .lifi-loading-indicator-bubble {
+  background-color: #00cc33 !important;
+  color: #dddddd;
+  border-color: #00cc33 !important;
+}
+
+/* Swapping Modal */
+
+.modal-klima-embed .ant-timeline-item-content {
+  color: #dddddd;
+  font-family: 'GT America';
+}
+
+.modal-klima-embed h4 {
+  color: #dddddd;
+  font-family: 'GT America';
+}
+
+.modal-klima-embed .ant-timeline-item-head,
+.modal-klima-embed .ant-timeline-item-tail {
+  border-color: #9c9c9c !important;
+  background-color: #2a2a2a;
+  color: #9c9c9c !important;
 }

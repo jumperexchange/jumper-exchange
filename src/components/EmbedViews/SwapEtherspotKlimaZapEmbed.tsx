@@ -1142,7 +1142,7 @@ const Swap = () => {
 
       {selectedRoute && (
         <Modal
-          className="swapModal"
+          className="modal-klima-embed  swapModal"
           visible={!!selectedRoute}
           onOk={() => {
             setSelectedRoute(undefined)
@@ -1175,6 +1175,7 @@ const Swap = () => {
 
       {etherspotWalletBalance && residualRoute && (
         <Modal
+          className="modal-klima-embed residual-route-modal"
           onOk={stakeResidualFunds}
           onCancel={() => {
             setEtherspotWalletBalance(undefined)
