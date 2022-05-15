@@ -49,6 +49,7 @@ export const blockedTokens: BlockedTokens = {
     '0x2744861accb5bd435017c1cfee789b6ebab42082', // AeFX.io
     '0xa85f8a198d59f0fda82333be9aeeb50f24dd59ff', // FlowDAO.io
     '0xd7f1d4f5a1b44d827a7c3cc5dd46a80fade55558', // Zers.io
+    '0xdc8fa3fab8421ff44cc6ca7f966673ff6c0b3b58', // Draf.io
   ],
   [ChainId.DAI]: [
     '0x0f1b956128ac17407c29c5600983c6cedf3b2820', // softbalanced.com
