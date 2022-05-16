@@ -963,6 +963,9 @@ const Swap = () => {
           etherSpotSDK!,
           residualRoute!.gasStep!,
           residualRoute!.stakingStep!,
+          ethers.utils
+            .parseUnits(etherspotWalletBalance?.toString()!, TOKEN_POLYGON_USDC.decimals)
+            .toString(),
         ),
         residualRoute!.stakingStep!.estimate.toAmountMin,
       )

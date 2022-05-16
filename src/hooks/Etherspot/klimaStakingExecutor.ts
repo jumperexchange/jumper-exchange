@@ -77,7 +77,13 @@ export const useKlimaStakingExecutor = () =>
       })
     }
 
-    const prepareEtherSpotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const prepareEtherSpotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       if (!etherspot) {
         throw new Error('Etherspot not initialized.')
       }
@@ -125,13 +131,10 @@ export const useKlimaStakingExecutor = () =>
       // reset gateway batch
       etherspot.clearGatewayBatch()
 
-      const totalAmount = ethers.BigNumber.from(gasStep.estimate.fromAmount).add(
-        stakingStep.estimate.fromAmount,
-      )
       const txAllowTotal = await getSetAllowanceTransaction(
         gasStep.action.fromToken.address,
         gasStep.estimate.approvalAddress as string,
-        totalAmount,
+        baseAmount,
       )
       await etherspot.batchExecuteAccountTransaction({
         to: txAllowTotal.to as string,
@@ -145,7 +148,7 @@ export const useKlimaStakingExecutor = () =>
       })
       const { txFee } = await getFeeTransferTransactionBasedOnAmount(
         stakingStep.action.fromToken,
-        totalAmount,
+        ethers.BigNumber.from(baseAmount),
       )
 
       await etherspot.batchExecuteAccountTransaction({
@@ -186,7 +189,13 @@ export const useKlimaStakingExecutor = () =>
       })
     }
 
-    const executeEtherspotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const executeEtherspotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       const processList: Process[] = []
 
       // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
@@ -231,7 +240,7 @@ export const useKlimaStakingExecutor = () =>
         status: 'PENDING',
         process: processList,
       })
-      await prepareEtherSpotStep(etherspot, gasStep, stakingStep)
+      await prepareEtherSpotStep(etherspot, gasStep, stakingStep, baseAmount)
 
       await etherspot.estimateGatewayBatch()
       processList.map((process) => {

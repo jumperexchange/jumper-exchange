@@ -270,7 +270,12 @@ const SwappingCarbonOffset = ({
     try {
       await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
-        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+        await executeEtherspotStep(
+          etherspot!,
+          route.gasStep,
+          route.stakingStep,
+          route.lifiRoute.toAmountMin,
+        ),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -301,7 +306,12 @@ const SwappingCarbonOffset = ({
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
-        await executeEtherspotStep(etherspot!, route.gasStep, route.stakingStep),
+        await executeEtherspotStep(
+          etherspot!,
+          route.gasStep,
+          route.stakingStep,
+          route.lifiRoute.toAmountMin,
+        ),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
