@@ -1005,6 +1005,7 @@ const Swap = () => {
                         className="to-section-carbon-offset-klima-embed"
                         step={route?.stakingStep}
                         tokenPolygonBCT={tokenPolygonBCT}
+                        routesLoading={routesLoading}
                       />
                     }
                   />

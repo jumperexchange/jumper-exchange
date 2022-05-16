@@ -1039,6 +1039,7 @@ const Swap = () => {
                       <ToSectionCarbonOffset
                         step={route?.stakingStep}
                         tokenPolygonBCT={tokenPolygonBCT}
+                        routesLoading={routesLoading}
                       />
                     }
                   />
