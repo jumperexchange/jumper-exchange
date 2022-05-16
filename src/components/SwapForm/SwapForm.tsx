@@ -5,10 +5,10 @@ import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
-import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../types'
-import ChainSelect from './ChainSelect'
-import TokenSelect from './TokenSelect'
-import { getInjectedConnector } from './web3/connectors'
+import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../../types'
+import ChainSelect from '../ChainSelect'
+import TokenSelect from '../TokenSelect'
+import { getInjectedConnector } from '../web3/connectors'
 
 interface SwapFormProps {
   depositChain?: ChainKey
@@ -34,6 +34,9 @@ interface SwapFormProps {
   forceSameToken?: boolean
   fixedWithdraw?: boolean
   alternativeToSection?: ReactElement
+
+  fromSectionDesignator?: string
+  toSectionDesignator?: string
 }
 
 const SwapForm = ({
@@ -60,6 +63,9 @@ const SwapForm = ({
   forceSameToken,
   fixedWithdraw,
   alternativeToSection,
+
+  fromSectionDesignator,
+  toSectionDesignator,
 }: SwapFormProps) => {
   const depositSelectRef = useRef<RefSelectProps>()
   const withdrawSelectRef = useRef<RefSelectProps>()
@@ -207,7 +213,7 @@ const SwapForm = ({
     <>
       <Row style={{ marginBottom: 8 }}>
         <Col span={10}>
-          <div className="form-text">From:</div>
+          <div className="form-text">{fromSectionDesignator ? fromSectionDesignator : 'From:'}</div>
         </Col>
       </Row>
 
@@ -280,7 +286,7 @@ const SwapForm = ({
         <>
           <Row style={{ marginBottom: 8 }}>
             <Col span={10}>
-              <div className="form-text">To:</div>
+              <div className="form-text">{toSectionDesignator ? toSectionDesignator : 'To:'}</div>
             </Col>
           </Row>
           <Row gutter={[0, 0]} style={{ marginBottom: 8 }}>

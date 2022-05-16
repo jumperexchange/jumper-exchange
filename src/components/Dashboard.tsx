@@ -39,7 +39,7 @@ import {
   ColomnType,
   DataType,
   defaultCoins,
-  getChainByKey,
+  getChainById,
   SummaryAmounts,
   supportedChains,
   TokenAmount,
@@ -59,6 +59,14 @@ const visibleChains: ChainId[] = [
   ChainId.ARB,
   ChainId.HEC,
   ChainId.MOR,
+  ChainId.CEL,
+  ChainId.OPT,
+  ChainId.CRO,
+  ChainId.BOB,
+  ChainId.MOO,
+  ChainId.MAM,
+  ChainId.FUS,
+  ChainId.ONE,
 ]
 
 const emptySummaryAmounts: SummaryAmounts = {
@@ -313,21 +321,20 @@ const showGasModal = (gas: ChainKey) => {
 
 const tooltipsEmpty: { [ChainKey: string]: JSX.Element } = {}
 const tooltips: { [ChainKey: string]: any } = {}
-for (const k in ChainKey) {
-  const key = k.toLowerCase() as ChainKey
-  const chain = getChainByKey(key)
-  tooltips[key] = (
+for (const chainId of visibleChains) {
+  const chain = getChainById(chainId)
+  tooltips[chain.key] = (
     <>
       The ${chain.name} chain requires ${chain.coin} to pay for gas.
     </>
   )
-  tooltipsEmpty[key] = (
+  tooltipsEmpty[chain.key] = (
     <>
       <span>
         The ${chain.name} requires ${chain.coin} to pay for gas. Without it you won't be able to do
         anything on this chain.
       </span>
-      <Button type="default" block onClick={() => showGasModal(key)}>
+      <Button type="default" block onClick={() => showGasModal(chain.key)}>
         Get ${chain.coin}
       </Button>
     </>
@@ -476,16 +483,18 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
     }),
   }
 
-  Object.values(ChainKey).forEach((chain) => {
-    wallet.portfolio[chain]?.forEach((tokenAmount) => {
-      summary.chains[chain].amount_usd = new BigNumber(summary.chains[chain].amount_usd) // chainKeysToObject retruns string
-      summary.chains[chain].amount_usd = tokenAmount.priceUSD
-        ? summary.chains[chain].amount_usd.plus(
+  visibleChains.forEach((chainId) => {
+    const chain = getChainById(chainId)
+    wallet.portfolio[chain.key]?.forEach((tokenAmount) => {
+      summary.chains[chain.key].amount_usd = new BigNumber(summary.chains[chain.key].amount_usd) // chainKeysToObject retruns string
+
+      summary.chains[chain.key].amount_usd = tokenAmount.priceUSD
+        ? summary.chains[chain.key].amount_usd.plus(
             new BigNumber(tokenAmount.amount).times(new BigNumber(tokenAmount.priceUSD)),
           )
-        : summary.chains[chain].amount_usd
+        : summary.chains[chain.key].amount_usd
     })
-    summary.chains[chain].percentage_of_portfolio = wallet.portfolio[chain]
+    summary.chains[chain.key].percentage_of_portfolio = wallet.portfolio[chain.key]
       ?.reduce(
         (sum, current) =>
           current.priceUSD
@@ -587,19 +596,20 @@ const Dashboard = () => {
         },
       }
       registeredWallets.forEach((wallet) => {
-        Object.values(ChainKey).forEach((chainKey) => {
-          const chain = getChainByKey(chainKey)
+        for (const chainId of visibleChains) {
+          const chain = getChainById(chainId)
+
           const emptyAmounts: Amounts = {
             amount_coin: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
             amount_usd: wallet.loading ? new BigNumber(-1) : new BigNumber(0),
           }
-          const inPortfolio = wallet.portfolio[chainKey].find(
+          const inPortfolio = wallet.portfolio[chain.key].find(
             (e) => e.address === coin.chains[chain.id]?.address,
           )
           const cellContent: Amounts = inPortfolio
             ? parsePortfolioToAmount(inPortfolio)
             : emptyAmounts
-          coinRow[`${wallet.address}_${chainKey}`] = cellContent
+          coinRow[`${wallet.address}_${chain.key}`] = cellContent
 
           if (cellContent.amount_coin.gt(0)) {
             coinRow.portfolio.amount_coin = coinRow.portfolio.amount_coin.plus(
@@ -607,7 +617,7 @@ const Dashboard = () => {
             )
             coinRow.portfolio.amount_usd = coinRow.portfolio.amount_usd.plus(cellContent.amount_usd)
           }
-        }) // for each chain
+        } // for each chain
       }) // for each wallet
       generatedRows.push(coinRow)
     }) // for each coin
@@ -626,10 +636,10 @@ const Dashboard = () => {
     const portfolio: { [ChainKey: string]: TokenAmount[] } =
       await getTokenBalancesForChainsFromDebank(wallet.address)
 
-    for (const chainKey of Object.values(ChainKey)) {
-      const chain = getChainByKey(chainKey)
+    for (const chainId of visibleChains) {
+      const chain = getChainById(chainId)
       const chainPortfolio = portfolio[chain.id]
-      wallet.portfolio[chainKey] = chainPortfolio
+      wallet.portfolio[chain.key] = chainPortfolio
 
       // add new coins
       chainPortfolio.forEach((token) => {
