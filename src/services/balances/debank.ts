@@ -38,10 +38,15 @@ const chainNameMapping: { [ChainName: string]: ChainId } = {
   heco: ChainId.HEC,
   avax: ChainId.AVA,
   arb: ChainId.ARB,
-  // celo: Celo
+  celo: ChainId.CEL,
   movr: ChainId.MOR,
-  // cro
-  // boba
+  op: ChainId.OPT,
+  cro: ChainId.CRO,
+  boba: ChainId.BOB,
+  mobm: ChainId.MOO,
+  metis: ChainId.MAM,
+  fuse: ChainId.FUS,
+  hmy: ChainId.ONE,
 }
 
 const supportedChains = Object.values(chainNameMapping)
