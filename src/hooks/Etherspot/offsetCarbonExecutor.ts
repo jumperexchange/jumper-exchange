@@ -89,17 +89,9 @@ export const useOffsetCarbonExecutor = () =>
         data: gasStep.transactionRequest.data as string,
       })
       // Collect fee
-      const baseFromAmountMatic = ethers.utils.parseUnits(
-        gasStep.action.fromAmount,
-        gasStep.action.fromToken.decimals,
-      )
-      const baseFromAmountBCT = ethers.utils.parseUnits(
-        stakingStep.action.fromAmount,
-        stakingStep.action.fromToken.decimals,
-      )
       const { txFee } = await getFeeTransferTransactionBasedOnAmount(
         stakingStep.action.fromToken,
-        baseFromAmountBCT.add(baseFromAmountMatic),
+        totalAmount,
       )
       await etherspot.batchExecuteAccountTransaction({
         to: txFee.to as string,

@@ -143,20 +143,11 @@ export const useKlimaStakingExecutor = () =>
         to: gasStep.transactionRequest.to as string,
         data: gasStep.transactionRequest.data as string,
       })
-
-      // Collect fee
-      const baseFromAmountMatic = ethers.utils.parseUnits(
-        gasStep.action.fromAmount,
-        gasStep.action.fromToken.decimals,
-      )
-      const baseFromAmountKlima = ethers.utils.parseUnits(
-        stakingStep.action.fromAmount,
-        stakingStep.action.fromToken.decimals,
-      )
       const { txFee } = await getFeeTransferTransactionBasedOnAmount(
         stakingStep.action.fromToken,
-        baseFromAmountKlima.add(baseFromAmountMatic),
+        totalAmount,
       )
+
       await etherspot.batchExecuteAccountTransaction({
         to: txFee.to as string,
         data: txFee.data as string,
@@ -243,7 +234,6 @@ export const useKlimaStakingExecutor = () =>
       await prepareEtherSpotStep(etherspot, gasStep, stakingStep)
 
       await etherspot.estimateGatewayBatch()
-
       processList.map((process) => {
         if (process.id === 'prepare') {
           process.status = 'DONE'

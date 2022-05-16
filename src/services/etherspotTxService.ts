@@ -55,7 +55,7 @@ export const getFeeTransferTransactionBasedOnAmount = async (token: Token, amoun
   const lowBoundary = ethers.utils.parseUnits('100', token.decimals)
   const midBoundary = ethers.utils.parseUnits('3000', token.decimals)
   const highBoundary = ethers.utils.parseUnits('30000', token.decimals)
-  const fixedFee = ethers.utils.parseUnits('0,5', token.decimals)
+  const fixedFee = ethers.utils.parseUnits('0.5', token.decimals)
   let feePercent: string | undefined
 
   if (amount.lt(lowBoundary)) {
@@ -70,8 +70,10 @@ export const getFeeTransferTransactionBasedOnAmount = async (token: Token, amoun
   const bnFeePercent = ethers.utils.parseUnits(feePercent || '0', token.decimals)
   const feeAmount = feePercent ? amount.mul(bnFeePercent) : fixedFee
   const erc20 = new ethers.Contract(token.address, erc20Abi)
+  const txFee = await erc20.populateTransaction.transfer(ETHERSPOT_LIFI_WALLET, feeAmount)
+
   return {
-    txFee: await erc20.populateTransaction.transfer(ETHERSPOT_LIFI_WALLET, feeAmount),
+    txFee,
     feeAmount,
   }
 }
