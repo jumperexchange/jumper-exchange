@@ -597,7 +597,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: history.location.pathname,
+        pathname: '/showcase/etherspot-klima',
         search,
       })
     }

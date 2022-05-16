@@ -25,10 +25,12 @@ input[type='number']::-webkit-outer-spin-button {
   max-width: 450px;
   border-radius: 6px;
   padding: 20px 16px;
-  margin: 0 auto;
+  margin: 20px;
 }
+
 @media only screen and (min-width: 480px) {
   .swap-input {
+    margin: 0 auto;
     padding: 24px 48px;
   }
 }
@@ -80,6 +82,10 @@ input[type='number']::-webkit-outer-spin-button {
 
 .ant-timeline-item-content p:last-child {
   margin-bottom: 0;
+}
+
+.swapModal .anticon-edit {
+  color: #9c9c9c;
 }
 
 /* laptop screen */
@@ -222,7 +228,7 @@ h4.swap-title {
   }
 
   h4.swap-title {
-    font-size: 20px;
+    font-size: 1.17em;
     margin-top: 4px;
     margin-bottom: 28px;
   }
@@ -362,8 +368,7 @@ h4.swap-title {
   }
 }
 
-.historicalTransfers,
-.activeTransfers {
+.historicalTransfers {
   margin-top: 48px;
 }
 
