@@ -1061,6 +1061,7 @@ const Swap = () => {
                     <ToSectionKlimaStaking
                       step={route?.stakingStep}
                       tokenPolygonSKLIMA={tokenPolygonSKLIMA}
+                      routesLoading={routesLoading}
                     />
                   }
                 />

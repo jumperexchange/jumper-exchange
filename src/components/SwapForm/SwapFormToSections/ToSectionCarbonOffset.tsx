@@ -13,12 +13,14 @@ interface ToSectionCarbonOffsetProps {
   step?: Step
   tokenPolygonBCT?: Token
   className?: string
+  routesLoading: boolean
 }
 
 export const ToSectionCarbonOffset = ({
   className,
   step,
   tokenPolygonBCT,
+  routesLoading,
 }: ToSectionCarbonOffsetProps) => {
   const beneficiaryInfo = useBeneficiaryInfo()
   const setBeneficiaryInfo = useSetBeneficiaryInfo()
@@ -55,7 +57,7 @@ export const ToSectionCarbonOffset = ({
             <Input
               key="output-input"
               type="text"
-              value={`${formattedAmount.split(' ')[0]} tons of carbon`}
+              value={routesLoading ? '.  .  .' : `${formattedAmount.split(' ')[0]} tons of carbon`}
               bordered={false}
               style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
             />
