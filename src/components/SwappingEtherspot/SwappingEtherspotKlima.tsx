@@ -1,3 +1,4 @@
+import { EditOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { ChainId, Execution, ExecutionSettings, Process } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -7,12 +8,11 @@ import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 
-import walletIcon from '../../assets/wallet.png'
 import { sKLIMA_ADDRESS } from '../../constants'
 import { useKlimaStakingExecutor } from '../../hooks/Etherspot/klimaStakingExecutor'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import LiFi from '../../LiFi'
-import { isWalletConnectWallet, storeRoute } from '../../services/localStorage'
+import { isWalletConnectWallet } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
 import { renderProcessMessage } from '../../services/processRenderer'
@@ -59,7 +59,6 @@ const SwappingEtherspotKlima = ({
   settings,
   onSwapDone,
 }: SwappingProps) => {
-  const isMobile = useIsMobile()
   const {
     etherspotStepExecution,
     executeEtherspotStep,
@@ -67,6 +66,16 @@ const SwappingEtherspotKlima = ({
     handlePotentialEtherSpotError,
     finalizeEtherSpotExecution,
   } = useKlimaStakingExecutor()
+
+  const isMobile = useIsMobile()
+
+  const [localRoute, setLocalRoute] = useState<{
+    lifiRoute?: Route
+    gasStep: Step
+    stakingStep: Step
+    simpleTransfer?: ExtendedTransactionRequest
+  }>(route)
+
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
@@ -82,8 +91,12 @@ const SwappingEtherspotKlima = ({
   const web3 = useWeb3React<Web3Provider>()
 
   useEffect(() => {
-    if (route.lifiRoute) {
-      const { steps } = route.lifiRoute
+    setLocalRoute((oldRoute) => ({ ...oldRoute, ...route }))
+  }, [route])
+
+  useEffect(() => {
+    if (localRoute.lifiRoute) {
+      const { steps } = localRoute.lifiRoute
       // check if route is eligible for automatic resuming
       const allDone = steps.every((step) => step.execution?.status === 'DONE')
       const isFailed = steps.some((step) => step.execution?.status === 'FAILED')
@@ -95,15 +108,15 @@ const SwappingEtherspotKlima = ({
 
       // move execution to background when modal is closed
       return function cleanup() {
-        if (route.lifiRoute) {
-          LiFi.moveExecutionToBackground(route.lifiRoute!)
+        if (localRoute.lifiRoute) {
+          LiFi.moveExecutionToBackground(localRoute.lifiRoute!)
         }
       }
     }
   }, [])
 
   const startExecution = async () => {
-    if (route.lifiRoute) {
+    if (localRoute.lifiRoute) {
       await startLIFIRoute()
     } else {
       await startSimpleTransfer()
@@ -111,7 +124,7 @@ const SwappingEtherspotKlima = ({
   }
 
   const startLIFIRoute = async () => {
-    if (!web3.account || !web3.library || !route.lifiRoute) return
+    if (!web3.account || !web3.library || !localRoute.lifiRoute) return
     const signer = web3.library.getSigner()
 
     const executionSettings: ExecutionSettings = {
@@ -122,21 +135,21 @@ const SwappingEtherspotKlima = ({
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
     try {
-      await LiFi.executeRoute(signer, route.lifiRoute, executionSettings)
+      await LiFi.executeRoute(signer, localRoute.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
         await executeEtherspotStep(
           etherspot!,
           route.gasStep,
           route.stakingStep,
-          route.lifiRoute.toAmountMin,
+          route.lifiRoute!.toAmountMin,
         ),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route.lifiRoute)
+      console.warn('Execution failed!', localRoute.lifiRoute)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e, route)
+      setTransferExecutionError(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -148,7 +161,7 @@ const SwappingEtherspotKlima = ({
   }
 
   const startSimpleTransfer = async () => {
-    if (!web3.account || !web3.library || !route.simpleTransfer) return
+    if (!web3.account || !web3.library || !localRoute.simpleTransfer) return
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
 
@@ -161,12 +174,12 @@ const SwappingEtherspotKlima = ({
           etherspot!,
           route.gasStep,
           route.stakingStep,
-          route.simpleTransfer.amount,
+          route.simpleTransfer!.amount,
         ),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route.simpleTransfer)
+      console.warn('Execution failed!', localRoute.simpleTransfer)
       // eslint-disable-next-line no-console
       console.error(e)
       setTransferExecutionError(e)
@@ -182,14 +195,14 @@ const SwappingEtherspotKlima = ({
 
   useEffect(() => {
     if (transferExecutionError) {
-      handleSimpleTransferError(transferExecutionError)
-      handlePotentialEtherSpotError(transferExecutionError, route, simpleTransferExecution)
+      !!transferExecutionError && handleSimpleTransferError(transferExecutionError)
+      handlePotentialEtherSpotError(transferExecutionError, localRoute, simpleTransferExecution)
     }
     setTransferExecutionError(undefined)
   }, [transferExecutionError])
 
   const resumeLIFIRoute = async () => {
-    if (!web3.account || !web3.library || !route.lifiRoute) return
+    if (!web3.account || !web3.library || !localRoute.lifiRoute) return
 
     const executionSettings: ExecutionSettings = {
       updateCallback,
@@ -199,21 +212,21 @@ const SwappingEtherspotKlima = ({
 
     setIsSwapping(true)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), route.lifiRoute, executionSettings)
+      await LiFi.resumeRoute(web3.library.getSigner(), localRoute.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
         await executeEtherspotStep(
           etherspot!,
           route.gasStep,
           route.stakingStep,
-          route.lifiRoute.toAmountMin,
+          route.lifiRoute!.toAmountMin,
         ),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('Execution failed!', route)
+      console.warn('Execution failed!', localRoute)
       // eslint-disable-next-line no-console
       console.error(e)
-      handlePotentialEtherSpotError(e, route)
+      setTransferExecutionError(e)
       Notification.showNotification(NotificationType.TRANSACTION_ERROR)
       setIsSwapping(false)
       return
@@ -226,8 +239,8 @@ const SwappingEtherspotKlima = ({
 
   const restartExecution = async () => {
     // remove failed
-    if (route.lifiRoute) {
-      const { steps } = route.lifiRoute!
+    if (localRoute.lifiRoute) {
+      const { steps } = localRoute.lifiRoute!
       for (let index = 0; index < steps.length; index++) {
         const stepHasFailed = steps[index].execution?.status === 'FAILED'
         // check if the step has been cancelled which is a "failed" state
@@ -238,7 +251,7 @@ const SwappingEtherspotKlima = ({
         if (steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
           steps[index].execution!.status = 'RESUME'
           steps[index].execution!.process.pop() // remove last (failed) process
-          updateRoute(route.lifiRoute)
+          updateRoute(localRoute.lifiRoute)
         }
       }
       if (etherspotStepExecution) {
@@ -248,7 +261,7 @@ const SwappingEtherspotKlima = ({
       resumeLIFIRoute()
     }
 
-    if (route.simpleTransfer) {
+    if (localRoute.simpleTransfer) {
       if (simpleTransferExecution && simpleTransferExecution.status === 'FAILED') {
         setSimpleTransferExecution(undefined)
       }
@@ -261,28 +274,28 @@ const SwappingEtherspotKlima = ({
 
   const executeSimpleTransfer = async () => {
     const processList: Process[] = []
-    if (!web3.library || !route.simpleTransfer) return
+    if (!web3.library || !localRoute.simpleTransfer) return
     const signer = web3.library!.getSigner()
-    if (route.simpleTransfer.chainId !== (await signer.getChainId())) {
+    if (localRoute.simpleTransfer.chainId !== (await signer.getChainId())) {
       processList.push({
-        id: 'chainSwitch',
+        type: 'SWITCH_CHAIN',
         message: 'Switch Chain',
         startedAt: Date.now(),
-        status: 'ACTION_REQUIRED',
+        status: 'CHAIN_SWITCH_REQUIRED',
       })
       setSimpleTransferExecution({
-        status: 'ACTION_REQUIRED',
+        status: 'CHAIN_SWITCH_REQUIRED',
         process: processList,
       })
 
-      await switchChain(route.simpleTransfer.chainId!)
+      await switchChain(localRoute.simpleTransfer.chainId!)
       const signer = web3.library!.getSigner()
-      if ((await signer.getChainId()) !== route.simpleTransfer.chainId) {
+      if ((await signer.getChainId()) !== localRoute.simpleTransfer.chainId) {
         throw Error('Chain was not switched!')
       }
 
       processList.map((process) => {
-        if (process.id === 'chainSwitch') {
+        if (process.type === 'SWITCH_CHAIN') {
           process.status = 'DONE'
           process.doneAt = Date.now()
         }
@@ -290,7 +303,7 @@ const SwappingEtherspotKlima = ({
       })
     }
     processList.push({
-      id: 'signTransfer',
+      type: 'TRANSACTION',
       message: 'Sign Transaction',
       startedAt: Date.now(),
       status: 'ACTION_REQUIRED',
@@ -301,20 +314,23 @@ const SwappingEtherspotKlima = ({
     })
     let tx
 
-    tx = await signer.sendTransaction(route.simpleTransfer.tx)
+    tx = await signer.sendTransaction(localRoute.simpleTransfer.tx)
 
     processList.map((process) => {
-      if (process.id === 'signTransfer') {
+      if (process.type === 'TRANSACTION') {
         process.status = 'DONE'
         process.doneAt = Date.now()
       }
       return process
     })
+    const chain = getChainById(ChainId.POL)
     processList.push({
-      id: 'wait',
+      type: 'RECEIVING_CHAIN',
       message: 'Wait For Transfer',
       startedAt: Date.now(),
       status: 'PENDING',
+      txHash: tx.hash,
+      txLink: chain.metamask.blockExplorerUrls[0] + 'tx/' + tx.hash,
     })
     setSimpleTransferExecution({
       status: 'PENDING',
@@ -324,7 +340,7 @@ const SwappingEtherspotKlima = ({
     await tx.wait()
 
     processList.map((process) => {
-      if (process.id === 'wait') {
+      if (process.type === 'RECEIVING_CHAIN') {
         process.status = 'DONE'
         process.doneAt = Date.now()
       }
@@ -344,11 +360,15 @@ const SwappingEtherspotKlima = ({
         status: 'FAILED',
         process: [
           {
-            errorMessage: e.message,
             status: 'FAILED',
+            type: 'TRANSACTION',
             message: 'Prepare Transaction',
             startedAt: Date.now(),
             doneAt: Date.now(),
+            error: {
+              message: e.errorMessage,
+              code: e.code,
+            },
           },
         ],
       })
@@ -366,7 +386,7 @@ const SwappingEtherspotKlima = ({
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
     const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
-    const amountSKlimaParsed = route.stakingStep.estimate.toAmountMin
+    const amountSKlimaParsed = localRoute.stakingStep.estimate.toAmountMin
 
     finalizeEtherSpotExecution(stepExecution!, amountSKlimaParsed)
 
@@ -402,15 +422,15 @@ const SwappingEtherspotKlima = ({
 
   // called on every execution status change
   const updateCallback = (updatedRoute: Route) => {
-    storeRoute(updatedRoute)
+    setLocalRoute((route) => ({ ...route, lifiRoute: updatedRoute }))
     updateRoute(updatedRoute)
   }
 
   const getMainButton = () => {
-    // const { steps } = route.lifiRoute!
+    // const { steps } = localRoute.lifiRoute!
     let steps
-    if (route.lifiRoute) {
-      steps = route.lifiRoute.steps
+    if (localRoute.lifiRoute) {
+      steps = localRoute.lifiRoute.steps
     } else {
       steps = [{ execution: simpleTransferExecution, action: {} } as Step]
     }
@@ -419,7 +439,7 @@ const SwappingEtherspotKlima = ({
     if (isSwapping) {
       return <></>
     }
-    const isCrossChainSwap = !!route.lifiRoute?.steps.find(
+    const isCrossChainSwap = !!localRoute.lifiRoute?.steps.find(
       (step) => isCrossStep(step) || isLifiStep(step),
     )
 
@@ -496,8 +516,8 @@ const SwappingEtherspotKlima = ({
   }
 
   const getCurrentProcess = () => {
-    if (route.lifiRoute) {
-      const { steps } = route.lifiRoute!
+    if (localRoute.lifiRoute) {
+      const { steps } = localRoute.lifiRoute!
       for (const step of steps) {
         if (step.execution?.process) {
           for (const process of step.execution?.process) {
@@ -529,41 +549,48 @@ const SwappingEtherspotKlima = ({
   const currentProcess = getCurrentProcess()
 
   const getLastStepBeforeStakingStepInfo = () => {
-    if (route.lifiRoute) {
-      const lastLIFIStep = route.lifiRoute.steps[route.lifiRoute.steps.length - 1]
+    if (localRoute.lifiRoute) {
+      const lastLIFIStep = localRoute.lifiRoute.steps[localRoute.lifiRoute.steps.length - 1]
       return {
         token: lastLIFIStep.action.toToken,
         amount: lastLIFIStep.estimate.toAmountMin,
       }
     } else {
       return {
-        token: route.simpleTransfer?.token,
-        amount: route.simpleTransfer?.amount,
+        token: localRoute.simpleTransfer?.token,
+        amount: localRoute.simpleTransfer?.amount,
       }
     }
   }
+
   return (
     <>
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
-        {!!route.simpleTransfer &&
-          !route.lifiRoute &&
+        {!!localRoute.simpleTransfer &&
+          !localRoute.lifiRoute &&
           SimpleTransferStep({
-            simpleTransfer: route.simpleTransfer,
+            simpleTransfer: localRoute.simpleTransfer,
             simpleStepExecution: simpleTransferExecution,
             isSwapping: isSwapping,
             simpleTransferDestination: etherspot?.state.accountAddress!,
+            isMobile,
           })}
-        {!!route.lifiRoute &&
-          !route.simpleTransfer &&
-          LIFIRouteSteps({ lifiRoute: route.lifiRoute!, isSwapping: isSwapping })}
-        {!!route.stakingStep &&
+        {!!localRoute.lifiRoute &&
+          !localRoute.simpleTransfer &&
+          LIFIRouteSteps({
+            lifiRoute: localRoute.lifiRoute!,
+            isSwapping: isSwapping,
+            isMobile,
+          })}
+        {!!localRoute.stakingStep &&
           EtherspotStep({
-            index: route.simpleTransfer ? 1 : route.lifiRoute?.steps.length || 100,
+            index: localRoute.simpleTransfer ? 1 : localRoute.lifiRoute?.steps.length || 100,
             previousStepInfo: getLastStepBeforeStakingStepInfo(),
             etherspotStepExecution: etherspotStepExecution,
-            stakingStep: route.stakingStep,
+            stakingStep: localRoute.stakingStep,
             isSwapping,
+            isMobile,
           })}
       </Timeline>
 
@@ -590,7 +617,7 @@ const SwappingEtherspotKlima = ({
               <Typography.Text>{renderProcessMessage(currentProcess)}</Typography.Text>
             </Row>
             <Row justify="center">
-              <img src={walletIcon} alt="Please Check Your Wallet" />
+              <EditOutlined style={{ fontSize: 40 }} />
             </Row>
           </>
         )}

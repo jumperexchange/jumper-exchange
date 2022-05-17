@@ -9,6 +9,8 @@ import { Link, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
 import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
 import Dashboard from './components/Dashboard'
+import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
+import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
 import NotFoundPage from './components/NotFoundPage'
 import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
@@ -56,7 +58,7 @@ function App() {
     )
   }, [location])
 
-  function embedView() {
+  function swapEmbedView() {
     setMetatags({
       title: 'LI.FI - Swap',
     })
@@ -75,11 +77,52 @@ function App() {
     )
   }
 
+  function offsetCarbonEmbedView() {
+    setMetatags({
+      title: 'LI.FI - Offset Carbon',
+    })
+    return (
+      <div className="lifiEmbed">
+        <SwapCarbonOffsetEmbed />
+        {/* <div className="poweredBy">
+          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+            <PoweredByLiFi />
+          </a>
+        </div> */}
+        {/* <div className="wallet-buttons-embed-view">
+          <WalletButtons />
+        </div> */}
+      </div>
+    )
+  }
+  function stakeKlimaEmbedView() {
+    setMetatags({
+      title: 'LI.FI - Stake Klima',
+    })
+    return (
+      <div className="lifiEmbed">
+        <SwapEtherspotKlimaZapEmbed />
+        {/* <div className="poweredBy">
+          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+            <PoweredByLiFi />
+          </a>
+        </div>
+        <div className="wallet-buttons-embed-view">
+          <WalletButtons />
+        </div> */}
+      </div>
+    )
+  }
+
   return (
     <WrappedWeb3ReactProvider>
       <Web3ConnectionManager>
         {path === '/embed' ? (
-          embedView()
+          swapEmbedView()
+        ) : path === '/embed/carbon-offset' ? (
+          offsetCarbonEmbedView()
+        ) : path === '/embed/stake-klima' ? (
+          stakeKlimaEmbedView()
         ) : (
           <Layout>
             <Header

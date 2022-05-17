@@ -34,7 +34,6 @@ import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
-import { useKlimaStakingExecutor } from '../hooks/Etherspot/klimaStakingExecutor'
 import LiFi from '../LiFi'
 import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxService'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
@@ -68,10 +67,9 @@ import {
   TokenAmount,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
-import LoadingIndicator from './LoadingIndicator'
+import { ResidualRouteKlimaStakeModal } from './ResidualRouteSwappingModal/ResidualRouteKlimaStakeModal'
 import SwapForm from './SwapForm/SwapForm'
 import { ToSectionKlimaStaking } from './SwapForm/SwapFormToSections/ToSectionKlimaStaking'
-import { MinimalEtherspotStep } from './SwappingEtherspot/StepRenderers/MinimalStepRenderers/MinimalEtherspotStep'
 import SwappingEtherspotKlima from './SwappingEtherspot/SwappingEtherspotKlima'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
@@ -286,13 +284,6 @@ interface StartParams {
 }
 
 const Swap = () => {
-  const {
-    etherspotStepExecution,
-    executeEtherspotStep,
-    resetEtherspotExecution,
-    handlePotentialEtherSpotError,
-    finalizeEtherSpotExecution,
-  } = useKlimaStakingExecutor()
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
 
@@ -472,6 +463,7 @@ const Swap = () => {
     const load = async () => {
       const possibilitiesPromise = LiFi.getPossibilities({
         exchanges: { deny: ['dodo', 'openocean', '0x'] },
+        bridges: { deny: ['multichain'] },
       })
 
       const klimaTokenPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
@@ -603,7 +595,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: history.location.pathname,
+        pathname: '/showcase/etherspot-klima',
         search,
       })
     }
@@ -784,6 +776,7 @@ const Swap = () => {
             allowSwitchChain: false, // This is important for fixed recipients
             bridges: {
               allow: optionEnabledBridges,
+              deny: ['multichain'],
             },
             exchanges: {
               allow: optionEnabledExchanges,
@@ -898,24 +891,6 @@ const Swap = () => {
       allowExchanges: [allowedDex],
     })
     return quoteUsdcToKlima
-  }
-
-  const stakeResidualFunds = async () => {
-    try {
-      finalizeEtherSpotExecution(
-        await executeEtherspotStep(
-          etherSpotSDK!,
-          residualRoute!.gasStep!,
-          residualRoute!.stakingStep!,
-          ethers.utils
-            .parseUnits(etherspotWalletBalance?.toString()!, TOKEN_POLYGON_USDC.decimals)
-            .toString(),
-        ),
-        residualRoute!.stakingStep!.estimate.toAmountMin,
-      )
-    } catch (e) {
-      handlePotentialEtherSpotError(e, residualRoute!)
-    }
   }
 
   const openModal = () => {
@@ -1073,6 +1048,7 @@ const Swap = () => {
                     <ToSectionKlimaStaking
                       step={route?.stakingStep}
                       tokenPolygonSKLIMA={tokenPolygonSKLIMA}
+                      routesLoading={routesLoading}
                     />
                   }
                 />
@@ -1286,72 +1262,22 @@ const Swap = () => {
 
       {etherspotWalletBalance && residualRoute && (
         <Modal
-          onOk={stakeResidualFunds}
           onCancel={() => {
             setEtherspotWalletBalance(undefined)
             setResidualRoute(undefined)
           }}
-          closable={etherspotStepExecution?.status === 'DONE'}
           visible={!!etherspotWalletBalance && !!residualRoute}
           okText="Swap, stake and receive sKlima"
           // cancelText="Send USDC to my wallet"
           footer={null}>
-          <>
-            <Typography.Paragraph>
-              You still have {etherspotWalletBalance.toFixed(2)} USDC in your smart contract based
-              wallet, do you want to swap and stake it to sKLIMA?
-            </Typography.Paragraph>
-            <div style={{ marginBottom: 16, height: 80 }}>
-              {MinimalEtherspotStep({
-                etherspotStepExecution,
-                stakingStep: residualRoute?.stakingStep,
-                isSwapping: true,
-                index: 0,
-                alternativeToToken: tokenPolygonSKLIMA,
-                previousStepInfo: {
-                  amount: ethers.BigNumber.from(
-                    etherspotWalletBalance?.shiftedBy(TOKEN_POLYGON_USDC.decimals).toString(),
-                  ).toString(),
-                  token: TOKEN_POLYGON_USDC,
-                },
-              })}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-              {!etherspotStepExecution ? (
-                <>
-                  <Button
-                    style={{ margin: 8 }}
-                    onClick={() => {
-                      setEtherspotWalletBalance(undefined)
-                      setResidualRoute(undefined)
-                    }}>
-                    Cancel
-                  </Button>
-                  <Button style={{ margin: 8 }} type="primary" onClick={stakeResidualFunds}>
-                    Swap and Stake
-                  </Button>
-                </>
-              ) : etherspotStepExecution.status === 'FAILED' ? (
-                <Button
-                  style={{ margin: 8 }}
-                  type="primary"
-                  onClick={() => {
-                    resetEtherspotExecution()
-                    stakeResidualFunds()
-                  }}>
-                  Retry
-                </Button>
-              ) : etherspotStepExecution.status === 'DONE' ? (
-                <>
-                  <Typography.Paragraph>Transaction Successful!</Typography.Paragraph>
-                </>
-              ) : (
-                <Typography.Paragraph>
-                  <LoadingIndicator />
-                </Typography.Paragraph>
-              )}
-            </div>
-          </>
+          <ResidualRouteKlimaStakeModal
+            etherSpotSDK={etherSpotSDK!}
+            etherspotWalletBalance={etherspotWalletBalance}
+            setEtherspotWalletBalance={setEtherspotWalletBalance}
+            residualRoute={residualRoute}
+            setResidualRoute={setResidualRoute}
+            tokenPolygonSKLIMA={tokenPolygonSKLIMA!}
+          />
         </Modal>
       )}
     </Content>

@@ -12,9 +12,16 @@ const { TextArea } = Input
 interface ToSectionCarbonOffsetProps {
   step?: Step
   tokenPolygonBCT?: Token
+  className?: string
+  routesLoading: boolean
 }
 
-export const ToSectionCarbonOffset = ({ step, tokenPolygonBCT }: ToSectionCarbonOffsetProps) => {
+export const ToSectionCarbonOffset = ({
+  className,
+  step,
+  tokenPolygonBCT,
+  routesLoading,
+}: ToSectionCarbonOffsetProps) => {
   const beneficiaryInfo = useBeneficiaryInfo()
   const setBeneficiaryInfo = useSetBeneficiaryInfo()
 
@@ -33,7 +40,7 @@ export const ToSectionCarbonOffset = ({ step, tokenPolygonBCT }: ToSectionCarbon
   }
 
   return (
-    <div key="to-section-carbon-offset">
+    <div className={className} key="to-section-carbon-offset">
       <Row
         style={{
           marginTop: '32px',
@@ -50,7 +57,7 @@ export const ToSectionCarbonOffset = ({ step, tokenPolygonBCT }: ToSectionCarbon
             <Input
               key="output-input"
               type="text"
-              value={`${formattedAmount.split(' ')[0]} tons of carbon`}
+              value={routesLoading ? '.  .  .' : `${formattedAmount.split(' ')[0]} tons of carbon`}
               bordered={false}
               style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
             />

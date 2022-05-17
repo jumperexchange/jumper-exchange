@@ -2,7 +2,6 @@ import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-d
 import { Timeline, Typography } from 'antd'
 
 import { sKLIMA_ADDRESS } from '../../../constants'
-import { useIsMobile } from '../../../hooks/useIsMobile'
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'
 import { formatTokenAmount } from '../../../services/utils'
 import { Execution, Step, Token } from '../../../types'
@@ -22,6 +21,7 @@ interface EtherspotStepProps {
   etherspotStepExecution?: Execution
   index: number
   previousStepInfo: { token?: Token; amount?: string }
+  isMobile: boolean
 }
 
 export const EtherspotStep = ({
@@ -30,9 +30,8 @@ export const EtherspotStep = ({
   isSwapping,
   index,
   previousStepInfo,
+  isMobile,
 }: EtherspotStepProps) => {
-  const isMobile = useIsMobile()
-
   const parseEtherspotExecution = () => {
     if (!etherspotStepExecution) {
       return []
