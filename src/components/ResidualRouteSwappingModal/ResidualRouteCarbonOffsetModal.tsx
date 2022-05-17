@@ -1,6 +1,7 @@
 import { Button, Collapse, Input, Row, Tooltip, Typography } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useState } from 'react'
 
@@ -53,6 +54,9 @@ export const ResidualRouteCarbonOffsetModal = ({
           etherSpotSDK!,
           residualRoute!.gasStep!,
           residualRoute!.stakingStep!,
+          ethers.utils
+            .parseUnits(etherspotWalletBalance?.toString()!, TOKEN_POLYGON_USDC.decimals)
+            .toString(),
         ),
         residualRoute!.stakingStep!.estimate.toAmountMin,
       )

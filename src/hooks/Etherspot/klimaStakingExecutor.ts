@@ -8,6 +8,7 @@ import { getRpcProvider } from '../../components/web3/connectors'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../../constants'
 import LiFi from '../../LiFi'
 import {
+  getFeeTransferTransactionBasedOnAmount,
   getSetAllowanceTransaction,
   getStakeKlimaTransaction,
   getTransferTransaction,
@@ -80,7 +81,13 @@ export const useKlimaStakingExecutor = () =>
       })
     }
 
-    const prepareEtherSpotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const prepareEtherSpotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       if (!etherspot) {
         throw new Error('Etherspot not initialized.')
       }
@@ -128,25 +135,31 @@ export const useKlimaStakingExecutor = () =>
       // reset gateway batch
       etherspot.clearGatewayBatch()
 
-      const totalAmount = ethers.BigNumber.from(gasStep.estimate.fromAmount).add(
-        stakingStep.estimate.fromAmount,
-      )
       const txAllowTotal = await getSetAllowanceTransaction(
         gasStep.action.fromToken.address,
         gasStep.estimate.approvalAddress as string,
-        totalAmount,
+        baseAmount,
       )
       await etherspot.batchExecuteAccountTransaction({
         to: txAllowTotal.to as string,
         data: txAllowTotal.data as string,
       })
 
-      // Swap
+      // Swap for gas
       await etherspot.batchExecuteAccountTransaction({
         to: gasStep.transactionRequest.to as string,
         data: gasStep.transactionRequest.data as string,
       })
+      const { txFee } = await getFeeTransferTransactionBasedOnAmount(
+        stakingStep.action.fromToken,
+        ethers.BigNumber.from(baseAmount),
+      )
 
+      await etherspot.batchExecuteAccountTransaction({
+        to: txFee.to as string,
+        data: txFee.data as string,
+      })
+      // Swap for KLIMA
       await etherspot.batchExecuteAccountTransaction({
         to: stakingStep.transactionRequest.to as string,
         data: stakingStep.transactionRequest.data as string,
@@ -180,7 +193,13 @@ export const useKlimaStakingExecutor = () =>
       })
     }
 
-    const executeEtherspotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const executeEtherspotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       const processList: Process[] = []
 
       // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
@@ -225,10 +244,9 @@ export const useKlimaStakingExecutor = () =>
         status: 'PENDING',
         process: processList,
       })
-      await prepareEtherSpotStep(etherspot, gasStep, stakingStep)
+      await prepareEtherSpotStep(etherspot, gasStep, stakingStep, baseAmount)
 
       await etherspot.estimateGatewayBatch()
-
       processList.map((process) => {
         if (process.type === 'TRANSACTION') {
           process.status = 'DONE'
