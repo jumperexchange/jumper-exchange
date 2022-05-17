@@ -24,6 +24,10 @@
   border-radius: 16px;
 }
 
+.swap-form-klima-embed .swap-title {
+  color: white;
+}
+
 /* inputs */
 .swap-input-klima-embed {
   background: #202020;

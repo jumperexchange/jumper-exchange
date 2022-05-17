@@ -17,6 +17,7 @@ import {
   Typography,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
+import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
@@ -941,152 +942,150 @@ const Swap = () => {
       <Content className="site-layout site-layout-swap-klima-embed">
         <div className="swap-view-klima-embed">
           {/* Swap Form */}
-          <Row className="ukraine-title-row">
-            <Col className="swap-form-klima-embed">
-              <div className="swap-input-klima-embed">
-                {/* <Row>
-                  <Title
-                    className="swap-title"
-                    level={3}
-                    style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                    Carbon offsets via BCT
-                  </Title>
-                </Row> */}
+          <Col className="swap-form-klima-embed">
+            <div className="swap-input-klima-embed">
+              <Row>
+                <Title
+                  className="swap-title"
+                  level={3}
+                  style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
+                  Carbon offsets via BCT
+                </Title>
+              </Row>
 
-                <Form>
-                  <SwapForm
-                    depositChain={fromChainKey}
-                    setDepositChain={setFromChainKey}
-                    depositToken={fromTokenAddress}
-                    setDepositToken={setFromTokenAddress}
-                    depositAmount={depositAmount}
-                    setDepositAmount={setDepositAmount}
-                    withdrawChain={ChainKey.POL}
-                    setWithdrawChain={() => {}}
-                    withdrawToken={TOKEN_POLYGON_USDC.address}
-                    setWithdrawToken={() => {}}
-                    withdrawAmount={withdrawAmount}
-                    setWithdrawAmount={setWithdrawAmount}
-                    estimatedWithdrawAmount={'0'}
-                    estimatedMinWithdrawAmount={'0'}
-                    availableChains={availableChains}
-                    tokens={tokens}
-                    balances={balances}
-                    allowSameChains={true}
-                    fixedWithdraw={true}
-                    fromSectionDesignator={'Use'}
-                    toSectionDesignator={'To retire'}
-                    alternativeToSection={
-                      <ToSectionCarbonOffset
-                        className="to-section-carbon-offset-klima-embed"
-                        step={route?.stakingStep}
-                        tokenPolygonBCT={tokenPolygonBCT}
-                        routesLoading={routesLoading}
-                      />
-                    }
-                  />
-                  <span>
-                    {/* Disclaimer */}
-                    <Row justify={'center'} className="beta-disclaimer">
-                      <Typography.Text type="danger" style={{ textAlign: 'center' }}>
-                        Beta product - use at own risk.
-                      </Typography.Text>
-                    </Row>
-                    <Row style={{ marginTop: 24 }} justify={'center'}>
-                      {submitButton()}
-                    </Row>
-                    {/* Advanced Options */}
-                    <Row justify={'center'} style={{ marginTop: '12px' }}>
-                      <Collapse ghost style={{ width: '100%' }}>
-                        <Collapse.Panel header={`Advanced Options`} key="1">
-                          Slippage
-                          <div>
-                            <InputNumber
-                              defaultValue={optionSlippage}
-                              min={0}
-                              max={100}
-                              formatter={(value) => `${value}%`}
-                              parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                              onChange={setOptionSlippage}
-                              style={{
-                                border: '1px solid rgba(0,0,0,0.25)',
-                                borderRadius: 6,
-                                width: '100%',
-                              }}
-                            />
-                          </div>
-                          Infinite Approval
-                          <div>
-                            <Checkbox
-                              checked={optionInfiniteApproval}
-                              onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
-                              Activate Infinite Approval
-                            </Checkbox>
-                          </div>
-                          Bridges
-                          <div>
-                            <Select
-                              mode="multiple"
-                              placeholder="Select enabled bridges"
-                              value={optionEnabledBridges}
-                              onChange={setOptionEnabledBridges}
-                              style={{
-                                borderRadius: 6,
-                                width: '100%',
-                              }}>
-                              {availableBridges.map((bridge) => (
-                                <Select.Option key={bridge} value={bridge}>
-                                  {bridge}
-                                </Select.Option>
-                              ))}
-                            </Select>
-                          </div>
-                          Exchanges
-                          <div>
-                            <Select
-                              mode="multiple"
-                              placeholder="Select enabled exchanges"
-                              value={optionEnabledExchanges}
-                              onChange={setOptionEnabledExchanges}
-                              style={{
-                                borderRadius: 6,
-                                width: '100%',
-                              }}>
-                              {availableExchanges.map((exchange) => (
-                                <Select.Option key={exchange} value={exchange}>
-                                  {exchange}
-                                </Select.Option>
-                              ))}
-                            </Select>
-                          </div>
-                        </Collapse.Panel>
-                      </Collapse>
-                    </Row>
-                  </span>
-                </Form>
-              </div>
+              <Form>
+                <SwapForm
+                  depositChain={fromChainKey}
+                  setDepositChain={setFromChainKey}
+                  depositToken={fromTokenAddress}
+                  setDepositToken={setFromTokenAddress}
+                  depositAmount={depositAmount}
+                  setDepositAmount={setDepositAmount}
+                  withdrawChain={ChainKey.POL}
+                  setWithdrawChain={() => {}}
+                  withdrawToken={TOKEN_POLYGON_USDC.address}
+                  setWithdrawToken={() => {}}
+                  withdrawAmount={withdrawAmount}
+                  setWithdrawAmount={setWithdrawAmount}
+                  estimatedWithdrawAmount={'0'}
+                  estimatedMinWithdrawAmount={'0'}
+                  availableChains={availableChains}
+                  tokens={tokens}
+                  balances={balances}
+                  allowSameChains={true}
+                  fixedWithdraw={true}
+                  fromSectionDesignator={'Use'}
+                  toSectionDesignator={'To retire'}
+                  alternativeToSection={
+                    <ToSectionCarbonOffset
+                      className="to-section-carbon-offset-klima-embed"
+                      step={route?.stakingStep}
+                      tokenPolygonBCT={tokenPolygonBCT}
+                      routesLoading={routesLoading}
+                    />
+                  }
+                />
+                <span>
+                  {/* Disclaimer */}
+                  <Row justify={'center'} className="beta-disclaimer">
+                    <Typography.Text type="danger" style={{ textAlign: 'center' }}>
+                      Beta product - use at own risk.
+                    </Typography.Text>
+                  </Row>
+                  <Row style={{ marginTop: 24 }} justify={'center'}>
+                    {submitButton()}
+                  </Row>
+                  {/* Advanced Options */}
+                  <Row justify={'center'} style={{ marginTop: '12px' }}>
+                    <Collapse ghost style={{ width: '100%' }}>
+                      <Collapse.Panel header={`Advanced Options`} key="1">
+                        Slippage
+                        <div>
+                          <InputNumber
+                            defaultValue={optionSlippage}
+                            min={0}
+                            max={100}
+                            formatter={(value) => `${value}%`}
+                            parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
+                            onChange={setOptionSlippage}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.25)',
+                              borderRadius: 6,
+                              width: '100%',
+                            }}
+                          />
+                        </div>
+                        Infinite Approval
+                        <div>
+                          <Checkbox
+                            checked={optionInfiniteApproval}
+                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
+                            Activate Infinite Approval
+                          </Checkbox>
+                        </div>
+                        Bridges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled bridges"
+                            value={optionEnabledBridges}
+                            onChange={setOptionEnabledBridges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableBridges.map((bridge) => (
+                              <Select.Option key={bridge} value={bridge}>
+                                {bridge}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                        Exchanges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled exchanges"
+                            value={optionEnabledExchanges}
+                            onChange={setOptionEnabledExchanges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableExchanges.map((exchange) => (
+                              <Select.Option key={exchange} value={exchange}>
+                                {exchange}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                      </Collapse.Panel>
+                    </Collapse>
+                  </Row>
+                </span>
+              </Form>
+            </div>
 
-              <div
-                style={{
-                  margin: '32px auto',
-                  padding: '14px 20px 10px',
-                  textAlign: 'center',
-                  background: 'rgba(255, 255, 255, 0.69)',
-                  borderRadius: 18,
-                  cursor: 'pointer',
-                }}>
-                <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-                  <PoweredByLiFi />
-                </a>
+            <div
+              style={{
+                margin: '32px auto',
+                padding: '14px 20px 10px',
+                textAlign: 'center',
+                background: 'rgba(255, 255, 255, 0.69)',
+                borderRadius: 18,
+                cursor: 'pointer',
+              }}>
+              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+                <PoweredByLiFi />
+              </a>
 
-                <span style={{ verticalAlign: 'super', margin: 8 }}>&</span>
+              <span style={{ verticalAlign: 'super', margin: 8 }}>&</span>
 
-                <a href="https://etherspot.io/" target="_blank" rel="nofollow noreferrer">
-                  <Etherspot />
-                </a>
-              </div>
-            </Col>
-          </Row>
+              <a href="https://etherspot.io/" target="_blank" rel="nofollow noreferrer">
+                <Etherspot />
+              </a>
+            </div>
+          </Col>
         </div>
 
         {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
