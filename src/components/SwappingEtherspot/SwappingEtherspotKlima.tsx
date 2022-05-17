@@ -137,7 +137,12 @@ const SwappingEtherspotKlima = ({
     try {
       await LiFi.executeRoute(signer, localRoute.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
-        await executeEtherspotStep(etherspot!, localRoute.gasStep, localRoute.stakingStep),
+        await executeEtherspotStep(
+          etherspot!,
+          route.gasStep,
+          route.stakingStep,
+          route.lifiRoute!.toAmountMin,
+        ),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -165,7 +170,12 @@ const SwappingEtherspotKlima = ({
         await executeSimpleTransfer()
       }
       await finalizeEtherSpotStep(
-        await executeEtherspotStep(etherspot!, localRoute.gasStep, localRoute.stakingStep),
+        await executeEtherspotStep(
+          etherspot!,
+          route.gasStep,
+          route.stakingStep,
+          route.simpleTransfer!.amount,
+        ),
       )
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -204,7 +214,12 @@ const SwappingEtherspotKlima = ({
     try {
       await LiFi.resumeRoute(web3.library.getSigner(), localRoute.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
-        await executeEtherspotStep(etherspot!, localRoute.gasStep, localRoute.stakingStep),
+        await executeEtherspotStep(
+          etherspot!,
+          route.gasStep,
+          route.stakingStep,
+          route.lifiRoute!.toAmountMin,
+        ),
       )
     } catch (e) {
       // eslint-disable-next-line no-console

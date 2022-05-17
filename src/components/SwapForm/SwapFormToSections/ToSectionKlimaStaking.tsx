@@ -6,10 +6,16 @@ import { formatTokenAmount } from '../../../services/utils'
 interface ToSectionKlimaStakingProps {
   step?: Step
   tokenPolygonSKLIMA?: Token
+  routesLoading: boolean
 }
-export const ToSectionKlimaStaking = ({ step, tokenPolygonSKLIMA }: ToSectionKlimaStakingProps) => {
+export const ToSectionKlimaStaking = ({
+  step,
+  tokenPolygonSKLIMA,
+  routesLoading,
+}: ToSectionKlimaStakingProps) => {
   const amount = step?.estimate?.toAmountMin || '0'
   const formattedAmount = tokenPolygonSKLIMA ? formatTokenAmount(tokenPolygonSKLIMA, amount) : '0'
+
   return (
     <Row
       style={{
@@ -26,7 +32,7 @@ export const ToSectionKlimaStaking = ({ step, tokenPolygonSKLIMA }: ToSectionKli
         <div className="form-input-wrapper">
           <Input
             type="text"
-            value={`${formattedAmount}`}
+            value={routesLoading ? '.  .  .' : `${formattedAmount}`}
             bordered={false}
             disabled
             style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}

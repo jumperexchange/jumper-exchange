@@ -10,6 +10,7 @@ import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../../constant
 import LiFi from '../../LiFi'
 import { useBeneficiaryInfo } from '../../providers/ToSectionCarbonOffsetProvider'
 import {
+  getFeeTransferTransactionBasedOnAmount,
   getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
 } from '../../services/etherspotTxService'
@@ -29,7 +30,13 @@ export const useOffsetCarbonExecutor = () =>
       setEtherspotStepExecution(undefined)
     }
 
-    const prepareEtherSpotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const prepareEtherSpotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       if (!etherspot) {
         throw new Error('Etherspot not initialized.')
       }
@@ -68,14 +75,10 @@ export const useOffsetCarbonExecutor = () =>
       // reset gateway batch
       etherspot.clearGatewayBatch()
 
-      const totalAmount = ethers.BigNumber.from(gasStep.estimate.fromAmount).add(
-        stakingStep.estimate.fromAmount,
-      )
-
       const txAllowTotal = await getSetAllowanceTransaction(
         gasStep.action.fromToken.address,
         gasStep.estimate.approvalAddress as string,
-        totalAmount,
+        ethers.BigNumber.from(baseAmount),
       )
       await etherspot.batchExecuteAccountTransaction({
         to: txAllowTotal.to as string,
@@ -86,6 +89,15 @@ export const useOffsetCarbonExecutor = () =>
       await etherspot.batchExecuteAccountTransaction({
         to: gasStep.transactionRequest.to as string,
         data: gasStep.transactionRequest.data as string,
+      })
+      // Collect fee
+      const { txFee } = await getFeeTransferTransactionBasedOnAmount(
+        stakingStep.action.fromToken,
+        ethers.BigNumber.from(baseAmount),
+      )
+      await etherspot.batchExecuteAccountTransaction({
+        to: txFee.to as string,
+        data: txFee.data as string,
       })
 
       const amountUSDC = new BigNumber(stakingStep.action.fromAmount)
@@ -124,7 +136,13 @@ export const useOffsetCarbonExecutor = () =>
       })
     }
 
-    const executeEtherspotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const executeEtherspotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       const processList: Process[] = []
 
       // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
@@ -169,7 +187,7 @@ export const useOffsetCarbonExecutor = () =>
         status: 'PENDING',
         process: processList,
       })
-      await prepareEtherSpotStep(etherspot, gasStep, stakingStep)
+      await prepareEtherSpotStep(etherspot, gasStep, stakingStep, baseAmount)
 
       await etherspot.estimateGatewayBatch()
 

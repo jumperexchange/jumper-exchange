@@ -488,7 +488,6 @@ const Swapping = ({
     <>
       {alerts}
       <br />
-
       <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
         {/* Steps */}
         {localRoute.steps.map(parseStepToTimeline)}
