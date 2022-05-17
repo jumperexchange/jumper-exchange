@@ -1,19 +1,8 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ExecutionSettings, StepTool } from '@lifinance/sdk'
+import { ExecutionSettings } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
-import {
-  Avatar,
-  Button,
-  Divider,
-  Modal,
-  Row,
-  Space,
-  Spin,
-  Timeline,
-  Tooltip,
-  Typography,
-} from 'antd'
+import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
@@ -27,17 +16,8 @@ import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
-import {
-  ChainKey,
-  findTool,
-  getChainById,
-  getChainByKey,
-  isCrossStep,
-  isLifiStep,
-  Route,
-  Step,
-  TokenAmount,
-} from '../types'
+import { getChainById, isCrossStep, isLifiStep, Route, Step, TokenAmount } from '../types'
+import { getChainAvatar, getToolAvatar } from './Avatars/Avatars'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
@@ -145,24 +125,6 @@ const Swapping = ({
     })
   }
 
-  const getChainAvatar = (chainKey: ChainKey) => {
-    const chain = getChainByKey(chainKey)
-    return (
-      <Tooltip title={chain.name}>
-        <Avatar size="small" src={chain.logoURI} alt={chain.name}></Avatar>
-      </Tooltip>
-    )
-  }
-
-  const getAvatar = (toolKey: StepTool) => {
-    const tool = findTool(toolKey)
-    return (
-      <Tooltip title={tool?.name}>
-        <Avatar size="small" src={tool?.logoURI} alt={tool?.name}></Avatar>
-      </Tooltip>
-    )
-  }
-
   const parseStepToTimeline = (step: Step, index: number) => {
     const executionSteps = parseExecution(step)
     const isDone = step.execution && step.execution.status === 'DONE'
@@ -193,7 +155,7 @@ const Swapping = ({
             position={isMobile ? 'right' : 'right'}
             key={index + '_left'}
             color={color}>
-            <h4>Swap on {getAvatar(step.tool)}</h4>
+            <h4>Swap on {getToolAvatar(step)}</h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
               <ArrowRightOutlined />{' '}
@@ -214,7 +176,7 @@ const Swapping = ({
             color={color}>
             <h4>
               Transfer from {getChainAvatar(getChainById(action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(action.toChainId).key)} via {getAvatar(step.tool)}
+              {getChainAvatar(getChainById(action.toChainId).key)} via {getToolAvatar(step)}
             </h4>
             <span>
               {formatTokenAmount(action.fromToken, estimate.fromAmount)} <ArrowRightOutlined />{' '}
@@ -234,7 +196,7 @@ const Swapping = ({
             color={color}>
             <h4>
               LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(step.action.toChainId).key)} via {getAvatar(step.tool)}
+              {getChainAvatar(getChainById(step.action.toChainId).key)} via {getToolAvatar(step)}
             </h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
