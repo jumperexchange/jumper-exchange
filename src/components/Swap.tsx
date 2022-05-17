@@ -60,7 +60,7 @@ import {
 } from '../types'
 import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
-import SwapForm from './SwapForm'
+import SwapForm from './SwapForm/SwapForm'
 import Swapping from './Swapping'
 import TransactionsTable from './TransactionsTable'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
@@ -512,7 +512,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: history.location.pathname,
+        pathname: '/swap',
         search,
       })
     }
@@ -889,34 +889,16 @@ const Swap = () => {
         marginTop: '64px',
       }}>
       <div className="swap-view">
-        {/* Historical Routes */}
-        {!!historicalRoutes.length && (
-          <Row justify={'center'} className="historicalTransfers">
-            <Collapse
-              defaultActiveKey={['']}
-              ghost
-              bordered={false}
-              className={`active-transfer-collapse`}
-              style={{ overflowX: 'scroll' }}>
-              <Panel
-                header={`Historical Transfers (${historicalRoutes.length})`}
-                key="1"
-                className="site-collapse-active-transfer-panel">
-                <div>
-                  <TransactionsTable
-                    routes={historicalRoutes}
-                    selectRoute={() => {}}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setHistoricalRoutes(readHistoricalRoutes())
-                    }}
-                    historical={true}></TransactionsTable>
-                </div>
-              </Panel>
-            </Collapse>
-          </Row>
-        )}
+        {/* Headline */}
+        <Row justify="center" className="" style={{ paddingTop: 24 }}>
+          <Col style={{ textAlign: 'center' }}>
+            <h1>Advanced Bridge & DEX Aggregation</h1>
+            <h3>
+              {availableBridges.length > 0 ? availableBridges.length : ''} Bridges,&nbsp;
+              {availableChains.length > 0 ? availableChains.length : ''} Chains and all the DEXs
+            </h3>
+          </Col>
+        </Row>
 
         {/* Active Routes */}
         {!!activeRoutes.length && (
@@ -947,7 +929,7 @@ const Swap = () => {
         )}
 
         {/* Swap Form */}
-        <Row style={{ margin: 20 }} justify={'center'}>
+        <Row justify={'center'}>
           <Col className="swap-form">
             <div className="swap-input">
               <Row>
@@ -1114,6 +1096,35 @@ const Swap = () => {
             </Col>
           )}
         </Row>
+
+        {/* Historical Routes */}
+        {!!historicalRoutes.length && (
+          <Row justify={'center'} className="historicalTransfers">
+            <Collapse
+              defaultActiveKey={['']}
+              ghost
+              bordered={false}
+              className={`active-transfer-collapse`}
+              style={{ overflowX: 'scroll' }}>
+              <Panel
+                header={`Historical Transfers (${historicalRoutes.length})`}
+                key="1"
+                className="site-collapse-active-transfer-panel">
+                <div>
+                  <TransactionsTable
+                    routes={historicalRoutes}
+                    selectRoute={() => {}}
+                    deleteRoute={(route: RouteType) => {
+                      LiFi.stopExecution(route)
+                      deleteRoute(route)
+                      setHistoricalRoutes(readHistoricalRoutes())
+                    }}
+                    historical={true}></TransactionsTable>
+                </div>
+              </Panel>
+            </Collapse>
+          </Row>
+        )}
       </div>
 
       {selectedRoute && !!selectedRoute.steps.length && (

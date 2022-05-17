@@ -67,11 +67,6 @@ input[type='number']::-webkit-outer-spin-button {
   margin-top: 24px;
 }
 
-.swap-input {
-  margin: 'auto';
-  background: white;
-}
-
 .swap-route {
   background-color: white;
   box-shadow: none;
@@ -209,12 +204,6 @@ input[type='number']::-webkit-outer-spin-button {
   }
 }
 
-h4.swap-title {
-  /* color: #1e1451; */
-  margin: 0px auto 24px;
-  font-size: 16px;
-}
-
 .only-mobile {
   display: none;
 }
@@ -286,12 +275,6 @@ h4.swap-title {
   .form-input-wrapper input,
   .form-text {
     font-size: 16px;
-  }
-
-  h4.swap-title {
-    font-size: 20px;
-    margin-top: 4px;
-    margin-bottom: 28px;
   }
 }
 
@@ -420,11 +403,6 @@ h4.swap-title {
   .swap-view-ukraine {
     padding-bottom: 70px;
   }
-}
-
-.historicalTransfers,
-.activeTransfers {
-  margin-top: 48px;
 }
 
 .ant-table table {
