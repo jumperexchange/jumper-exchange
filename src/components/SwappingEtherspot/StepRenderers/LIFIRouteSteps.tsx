@@ -78,7 +78,7 @@ export const LIFIRouteSteps = ({ lifiRoute, isSwapping, isMobile }: LIFIRouteSte
             position={isMobile ? 'right' : 'right'}
             key={index + '_left'}
             color={color}>
-            <h4>Swap on {getToolAvatar(step.tool)}</h4>
+            <h4>Swap on {getToolAvatar(step)}</h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
               <ArrowRightOutlined />{' '}
@@ -99,7 +99,7 @@ export const LIFIRouteSteps = ({ lifiRoute, isSwapping, isMobile }: LIFIRouteSte
             color={color}>
             <h4>
               Transfer from {getChainAvatar(getChainById(action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(action.toChainId).key)} via {getToolAvatar(step.tool)}
+              {getChainAvatar(getChainById(action.toChainId).key)} via {getToolAvatar(step)}
             </h4>
             <span>
               {formatTokenAmount(action.fromToken, estimate.fromAmount)} <ArrowRightOutlined />{' '}
@@ -119,8 +119,7 @@ export const LIFIRouteSteps = ({ lifiRoute, isSwapping, isMobile }: LIFIRouteSte
             color={color}>
             <h4>
               LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(step.action.toChainId).key)} via{' '}
-              {getToolAvatar(step.tool)}
+              {getChainAvatar(getChainById(step.action.toChainId).key)} via {getToolAvatar(step)}
             </h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
