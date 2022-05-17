@@ -66,6 +66,10 @@ import TransactionsTable from './TransactionsTable'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 import ConnectButton from './web3/ConnectButton'
 
+const ENABLE_USER_SLIPPAGE_NOTIFICATION =
+  process.env.REACT_APP_ENABLE_USER_SLIPPAGE_NOTIFICATION === 'true'
+const TOTAL_SLIPPAGE_GUARD_MODAL = new BigNumber(0.9)
+
 const history = createBrowserHistory()
 const { Panel } = Collapse
 
@@ -834,7 +838,7 @@ const Swap = () => {
 
     const totalExpenditure = fromAmountUSD.plus(gasCostUSD)
     const amountReceivedPercentage = toAmountUSD.dividedBy(totalExpenditure)
-    const receivedAmountTooLow = amountReceivedPercentage.isLessThan(new BigNumber(0.75))
+    const receivedAmountTooLow = amountReceivedPercentage.isLessThan(TOTAL_SLIPPAGE_GUARD_MODAL)
 
     const swapButton = (clickHandler?: Function) => {
       return (
@@ -872,7 +876,7 @@ const Swap = () => {
         </Typography.Paragraph>
       </div>
     )
-    return receivedAmountTooLow || !allValuesAvailable ? (
+    return (receivedAmountTooLow || !allValuesAvailable) && ENABLE_USER_SLIPPAGE_NOTIFICATION ? (
       <Popconfirm onConfirm={() => openModal()} title={popoverContent}>
         {swapButton()}
       </Popconfirm>
