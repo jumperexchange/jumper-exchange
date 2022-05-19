@@ -349,12 +349,8 @@ const SwappingCarbonOffset = ({
   }
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
-    // const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
     const toAmount = localRoute.stakingStep.estimate.toAmountMin
-
     finalizeEtherSpotExecution(stepExecution!, toAmount)
-
-    // setFinalTokenAmount(tokenAmountSKlima)
   }
 
   const switchChainHook = async (requiredChainId: number) => {
