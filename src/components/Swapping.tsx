@@ -3,20 +3,20 @@ import { Web3Provider } from '@ethersproject/providers'
 import { ExecutionSettings } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
-import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import walletIcon from '../assets/wallet.png'
 import { useIsMobile } from '../hooks/useIsMobile'
+import { useStepReturnInfo } from '../hooks/useStepReturnInfo'
 import LiFi from '../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
-import { getChainById, isCrossStep, isLifiStep, Route, Step, TokenAmount } from '../types'
+import { getChainById, isCrossStep, isLifiStep, Route, Step } from '../types'
 import { getChainAvatar, getToolAvatar } from './Avatars/Avatars'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
@@ -34,18 +34,6 @@ interface SwappingProps {
   fixedRecipient?: boolean
 }
 
-const getFinalBalance = (account: string, route: Route): Promise<TokenAmount | null> => {
-  const lastStep = route.steps[route.steps.length - 1]
-  const { toToken } = getReceivingInfo(lastStep)
-  return LiFi.getTokenBalance(account, toToken)
-}
-
-const getReceivingInfo = (step: Step) => {
-  const toChain = getChainById(step.action.toChainId)
-  const toToken = step.execution?.toToken || step.action.toToken
-  return { toChain, toToken }
-}
-
 const Swapping = ({
   route,
   updateRoute,
@@ -54,18 +42,18 @@ const Swapping = ({
   fixedRecipient = false,
 }: SwappingProps) => {
   const isMobile = useIsMobile()
-
   const [localRoute, setLocalRoute] = useState<Route>(route)
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalTokenAmount, setFinalTokenAmount] = useState<TokenAmount | null>()
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
+
+  const routeReturnInfo = useStepReturnInfo(localRoute.steps[localRoute.steps.length - 1])
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -238,7 +226,6 @@ const Swapping = ({
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalance(web3.account!, localRoute))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -266,7 +253,6 @@ const Swapping = ({
       setIsSwapping(false)
       return
     }
-    setFinalTokenAmount(await getFinalBalance(web3.account!, localRoute))
     setIsSwapping(false)
     setSwapDoneAt(Date.now())
     Notification.showNotification(NotificationType.TRANSACTION_SUCCESSFULL)
@@ -339,20 +325,17 @@ const Swapping = ({
     // DONE
     const isDone = localRoute.steps.filter((step) => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
-      const lastStep = localRoute.steps[localRoute.steps.length - 1]
-      const { toChain } = getReceivingInfo(lastStep)
-      const receivedAmount = new BigNumber(lastStep.execution?.toAmount || '0')
-      const receivedTokenMatchesPlannedToken =
-        lastStep.action.toToken.address ===
-        (lastStep.execution?.toToken?.address || lastStep.action.toToken.address) // use the planned token as fallback to catch errors in receipt parsing
-      const infoMessage = !!finalTokenAmount ? (
+      const infoMessage = !!routeReturnInfo?.totalBalanceOfReceivedToken ? (
         <>
-          {!receivedAmount.isZero() &&
+          {!routeReturnInfo.receivedAmount.isZero() &&
             (!fixedRecipient ? (
               <>
                 <Typography.Text>
                   You received{` `}
-                  {formatTokenAmount(finalTokenAmount, receivedAmount.toString())}
+                  {formatTokenAmount(
+                    routeReturnInfo.receivedToken,
+                    routeReturnInfo.receivedAmount.toString(),
+                  )}
                 </Typography.Text>
                 <br />
               </>
@@ -360,17 +343,20 @@ const Swapping = ({
               <>
                 <Typography.Text>
                   You sent{` `}
-                  {formatTokenAmount(finalTokenAmount, receivedAmount.toString())}
+                  {formatTokenAmount(
+                    routeReturnInfo.receivedToken,
+                    routeReturnInfo.receivedAmount.toString(),
+                  )}
                 </Typography.Text>
                 <br />
               </>
             ))}
           {!fixedRecipient && (
             <Typography.Text
-              type={!receivedAmount.isZero() ? 'secondary' : undefined}
-              style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
-              {`You now have ${finalTokenAmount.amount} ${finalTokenAmount.symbol}`}
-              {` on ${toChain.name}`}
+              type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
+              style={{ fontSize: !routeReturnInfo.receivedAmount.isZero() ? 12 : 14 }}>
+              {`You now have ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
+              {` on ${routeReturnInfo.toChain.name}`}
             </Typography.Text>
           )}
         </>
@@ -378,21 +364,34 @@ const Swapping = ({
         ''
       )
 
+      const infoTitle = routeReturnInfo ? (
+        routeReturnInfo.receivedTokenMatchesPlannedToken ? (
+          <Typography.Text strong>Swap Successful!</Typography.Text>
+        ) : (
+          <Typography.Text strong>
+            Warning! It seems like you received the wrong token
+          </Typography.Text>
+        )
+      ) : (
+        ''
+      )
+
       return (
         <Space direction="vertical">
-          {receivedTokenMatchesPlannedToken ? (
-            <Typography.Text strong>Swap Successful!</Typography.Text>
-          ) : (
-            <Typography.Text strong>Problem Encountered!</Typography.Text>
-          )}
-          {finalTokenAmount &&
-            (finalTokenAmount.address === constants.AddressZero ? (
+          {infoTitle}
+          {routeReturnInfo?.totalBalanceOfReceivedToken &&
+            (routeReturnInfo.totalBalanceOfReceivedToken.address === constants.AddressZero ? (
               <span>{infoMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
-                  onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
+                  onClick={() =>
+                    switchChainAndAddToken(
+                      routeReturnInfo.toChain.id,
+                      routeReturnInfo.totalBalanceOfReceivedToken!,
+                    )
+                  }>
                   {infoMessage}
                 </span>
               </Tooltip>
