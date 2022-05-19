@@ -33,7 +33,7 @@ import { v4 as uuid } from 'uuid'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
-import { KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
+import { etherspotSupportedChains, KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxService'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
@@ -79,16 +79,6 @@ const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
 const history = createBrowserHistory()
 let currentRouteCallId: string
 const allowedDex = ExchangeTool.zerox
-
-const etherspotSupportedChains: number[] = [
-  ChainId.ETH,
-  ChainId.DAI,
-  ChainId.BSC,
-  ChainId.FTM,
-  ChainId.POL,
-  ChainId.AUR,
-  ChainId.AVA,
-]
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {

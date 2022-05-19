@@ -32,7 +32,7 @@ import { v4 as uuid } from 'uuid'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
-import { TOUCAN_BCT_ADDRESS } from '../constants'
+import { etherspotSupportedChains, TOUCAN_BCT_ADDRESS } from '../constants'
 import LiFi from '../LiFi'
 import { ToSectionCarbonOffsetProvider } from '../providers/ToSectionCarbonOffsetProvider'
 import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxService'
@@ -262,16 +262,6 @@ interface StartParams {
   withdrawChain?: ChainKey
   withdrawToken?: string
 }
-
-const etherspotSupportedChains: number[] = [
-  ChainId.ETH,
-  ChainId.DAI,
-  ChainId.BSC,
-  ChainId.FTM,
-  ChainId.POL,
-  ChainId.AUR,
-  ChainId.AVA,
-]
 
 const Swap = () => {
   // chains
