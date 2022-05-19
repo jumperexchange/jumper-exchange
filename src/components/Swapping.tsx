@@ -13,7 +13,6 @@ import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import walletIcon from '../assets/wallet.png'
 import { useIsMobile } from '../hooks/useIsMobile'
 import LiFi from '../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
