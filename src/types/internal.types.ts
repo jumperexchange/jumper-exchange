@@ -1,14 +1,4 @@
-import {
-  ChainKey,
-  Coin,
-  Route,
-  Step,
-  StepTool,
-  supportedBridges,
-  supportedExchangeAggregators,
-  supportedExchanges,
-  TokenAmount,
-} from '@lifinance/sdk'
+import { ChainKey, Coin, Route, Step, TokenAmount } from '@lifinance/sdk'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
@@ -59,12 +49,6 @@ export interface WalletSummary {
   chains: {
     [ChainKey: string]: SummaryAmounts
   }
-}
-
-export const findTool = (toolKey: StepTool) => {
-  const allTools = [...supportedExchanges, ...supportedExchangeAggregators, ...supportedBridges]
-  const tool = allTools.find((tool) => tool.key === toolKey)
-  return tool
 }
 
 export interface WalletConnectInfo {

@@ -5,21 +5,9 @@ import {
   PauseCircleOutlined,
 } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ChainId, Execution, ExecutionSettings, StepTool } from '@lifinance/sdk'
+import { Execution, ExecutionSettings } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
-import {
-  Avatar,
-  Button,
-  Divider,
-  Modal,
-  Row,
-  Space,
-  Spin,
-  Timeline,
-  Tooltip,
-  Typography,
-} from 'antd'
-import BigNumber from 'bignumber.js'
+import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
@@ -27,24 +15,15 @@ import { useEffect, useState } from 'react'
 import { TOUCAN_BCT_ADDRESS } from '../../constants'
 import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { useStepReturnInfo } from '../../hooks/useStepReturnInfo'
 import LiFi from '../../LiFi'
 import { isWalletConnectWallet } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
-import {
-  ChainKey,
-  ExtendedRoute,
-  findTool,
-  getChainById,
-  getChainByKey,
-  isCrossStep,
-  isLifiStep,
-  Route,
-  Step,
-  TokenAmount,
-} from '../../types'
+import { ExtendedRoute, getChainById, isCrossStep, isLifiStep, Route, Step } from '../../types'
+import { getChainAvatar, getToolAvatar } from '../Avatars/Avatars'
 import Clock from '../Clock'
 import LoadingIndicator from '../LoadingIndicator'
 import { WalletConnectChainSwitchModal } from '../WalletConnectChainSwitchModal'
@@ -93,7 +72,6 @@ const SwappingCarbonOffset = ({
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalTokenAmount] = useState<TokenAmount | null>()
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
     chainId: number
@@ -103,6 +81,11 @@ const SwappingCarbonOffset = ({
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
+
+  const routeReturnInfo = useStepReturnInfo({
+    ...localRoute.stakingStep,
+    execution: etherspotStepExecution,
+  })
 
   useEffect(() => {
     setLocalRoute((oldRoute) => ({ ...oldRoute, ...route }))
@@ -159,24 +142,6 @@ const SwappingCarbonOffset = ({
     })
   }
 
-  const getChainAvatar = (chainKey: ChainKey) => {
-    const chain = getChainByKey(chainKey)
-    return (
-      <Tooltip title={chain.name}>
-        <Avatar size="small" src={chain.logoURI} alt={chain.name}></Avatar>
-      </Tooltip>
-    )
-  }
-
-  const getAvatar = (toolKey: StepTool) => {
-    const tool = findTool(toolKey)
-    return (
-      <Tooltip title={tool?.name}>
-        <Avatar size="small" src={tool?.logoURI} alt={tool?.name}></Avatar>
-      </Tooltip>
-    )
-  }
-
   const parseStepToTimeline = (step: Step, index: number) => {
     const executionSteps = parseExecution(step)
     const isDone = step.execution && step.execution.status === 'DONE'
@@ -207,7 +172,7 @@ const SwappingCarbonOffset = ({
             position={isMobile ? 'right' : 'right'}
             key={index + '_left'}
             color={color}>
-            <h4>Swap on {getAvatar(step.tool)}</h4>
+            <h4>Swap on {getToolAvatar(step)}</h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
               <ArrowRightOutlined />{' '}
@@ -232,7 +197,7 @@ const SwappingCarbonOffset = ({
             color={color}>
             <h4>
               Transfer from {getChainAvatar(getChainById(action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(action.toChainId).key)} via {getAvatar(step.tool)}
+              {getChainAvatar(getChainById(action.toChainId).key)} via {getToolAvatar(step)}
             </h4>
             <span>
               {formatTokenAmount(action.fromToken, estimate.fromAmount)} <ArrowRightOutlined />{' '}
@@ -255,8 +220,8 @@ const SwappingCarbonOffset = ({
             key={index + '_left'}
             color={color}>
             <h4>
-              LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
-              {getChainAvatar(getChainById(step.action.toChainId).key)} via {getAvatar(step.tool)}
+              LI.FI Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
+              {getChainAvatar(getChainById(step.action.toChainId).key)} via {getToolAvatar(step)}
             </h4>
             <span>
               {formatTokenAmount(step.action.fromToken, step.estimate?.fromAmount)}{' '}
@@ -384,12 +349,9 @@ const SwappingCarbonOffset = ({
   }
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
-    // const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, TOUCAN_BCT_TOKEN))!
     const toAmount = localRoute.stakingStep.estimate.toAmountMin
 
     finalizeEtherSpotExecution(stepExecution!, toAmount)
-
-    // setFinalTokenAmount(tokenAmountSKlima)
   }
 
   const switchChainHook = async (requiredChainId: number) => {
@@ -439,44 +401,37 @@ const SwappingCarbonOffset = ({
       localRoute.lifiRoute.steps.filter((step) => step.execution?.status !== 'DONE').length === 0 &&
       etherspotStepExecution?.status === 'DONE'
     if (isDone) {
-      const toChain = getChainById(ChainId.POL)
-      const receivedAmount = new BigNumber(etherspotStepExecution?.toAmount || '0')
-      const successMessage = !!finalTokenAmount ? (
-        <>
-          <Typography.Text>
-            You received{` `}
-            {formatTokenAmount(finalTokenAmount, receivedAmount.toString())}
-          </Typography.Text>
-          <Typography.Text
-            type={!receivedAmount.isZero() ? 'secondary' : undefined}
-            style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
-            <br />
-            {`You now have ${finalTokenAmount.amount} ${finalTokenAmount.symbol}`}
-            {` on ${toChain.name}`}
-          </Typography.Text>
-        </>
+      const infoMessage = !!routeReturnInfo?.totalBalanceOfReceivedToken ? (
+        <Typography.Text>
+          Amount of carbon offsetted{` `}
+          {formatTokenAmount(
+            routeReturnInfo.receivedToken,
+            routeReturnInfo.receivedAmount.toString(),
+          )}
+        </Typography.Text>
       ) : (
         ''
       )
-
       return (
         <Space direction="vertical">
           <Typography.Text strong>Offsetting Successful!</Typography.Text>
-          {finalTokenAmount &&
-            (finalTokenAmount.address === constants.AddressZero ? (
-              <span>{successMessage}</span>
+          {routeReturnInfo?.receivedToken &&
+            (routeReturnInfo?.receivedToken.address === constants.AddressZero ? (
+              <span>{infoMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
-                  onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
-                  {successMessage}
+                  onClick={() =>
+                    switchChainAndAddToken(
+                      routeReturnInfo.toChain.id,
+                      routeReturnInfo.receivedToken!,
+                    )
+                  }>
+                  {infoMessage}
                 </span>
               </Tooltip>
             ))}
-          {/* <Link to="/dashboard">
-            <Button type="link">Dashboard</Button>
-          </Link> */}
         </Space>
       )
     }

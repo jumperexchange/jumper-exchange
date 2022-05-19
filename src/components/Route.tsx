@@ -2,7 +2,7 @@ import { Button, Steps } from 'antd'
 import BigNumber from 'bignumber.js'
 
 import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
-import { findTool, getChainById, Route as RouteType, Step } from '../types'
+import { getChainById, Route as RouteType, Step } from '../types'
 
 interface RouteProps {
   route: RouteType
@@ -11,29 +11,20 @@ interface RouteProps {
 }
 
 const Route = ({ route, selected, onSelect }: RouteProps) => {
-  const formatToolName = (toolKey: string) => {
-    const tool = findTool(toolKey)
-    if (tool) {
-      return tool.name
-    } else {
-      return toolKey
-    }
-  }
-
   const parseStepShort = (step: Step) => {
     switch (step.type) {
       case 'swap':
         return (
           <>
             Swap to {formatTokenAmount(step.action.toToken, step.estimate.toAmount)} via{' '}
-            {formatToolName(step.tool)}
+            {step.toolDetails.name}
           </>
         )
       case 'cross':
         return (
           <>
             Transfer to {formatTokenAmount(step.action.toToken, step.estimate.toAmount)} via{' '}
-            {formatToolName(step.tool)}
+            {step.toolDetails.name}
           </>
         )
       default:
@@ -52,9 +43,9 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
           description: `${formatTokenAmount(
             action.fromToken,
             estimate.fromAmount,
-          )} for ${formatTokenAmount(action.toToken, estimate.toAmount)} via ${formatToolName(
-            step.tool,
-          )}`,
+          )} for ${formatTokenAmount(action.toToken, estimate.toAmount)} via ${
+            step.toolDetails.name
+          }`,
         }
       case 'cross':
         return {
@@ -65,7 +56,7 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
           )} to ${getChainById(action.toChainId).name}: ${formatTokenAmount(
             action.toToken,
             estimate.toAmount,
-          )} via ${formatToolName(step.tool)}`,
+          )} via ${step.toolDetails.name}`,
         }
       case 'lifi':
         return {

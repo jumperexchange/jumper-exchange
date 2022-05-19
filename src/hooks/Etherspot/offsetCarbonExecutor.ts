@@ -153,10 +153,12 @@ export const useOffsetCarbonExecutor = () =>
           startedAt: Date.now(),
           status: 'CHAIN_SWITCH_REQUIRED',
         })
-        setEtherspotStepExecution({
+
+        setEtherspotStepExecution((execution) => ({
+          ...execution,
           status: 'CHAIN_SWITCH_REQUIRED',
-          process: processList,
-        })
+          process: [...processList],
+        }))
 
         await switchChain(ChainId.POL)
         const signer = web3.library!.getSigner()
@@ -183,10 +185,11 @@ export const useOffsetCarbonExecutor = () =>
         status: 'PENDING',
       })
 
-      setEtherspotStepExecution({
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
+        process: [...processList],
+      }))
       await prepareEtherSpotStep(etherspot, gasStep, stakingStep, baseAmount)
 
       await etherspot.estimateGatewayBatch()
@@ -204,10 +207,12 @@ export const useOffsetCarbonExecutor = () =>
         startedAt: Date.now(),
         status: 'ACTION_REQUIRED',
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'ACTION_REQUIRED',
-        process: processList,
-      })
+        process: [...processList],
+      }))
       let batch = await etherspot.submitGatewayBatch()
       processList.map((process) => {
         if (process.type === 'SWAP') {
@@ -222,10 +227,12 @@ export const useOffsetCarbonExecutor = () =>
         startedAt: Date.now(),
         status: 'PENDING',
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
+        process: [...processList],
+      }))
 
       // info: batch.state seams to wait for a lot of confirmations (6 minutes) before changing to 'Sent'
       let hasTransaction = !!(batch.transaction && batch.transaction.hash)
@@ -263,10 +270,12 @@ export const useOffsetCarbonExecutor = () =>
         }
         return process
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
+        process: [...processList],
+      }))
 
       // Wait for Transaction
       const provider = await getRpcProvider(ChainId.POL)
@@ -300,11 +309,15 @@ export const useOffsetCarbonExecutor = () =>
         }
         return process
       })
+
       const stepExecution: Execution = {
-        status: 'DONE',
+        status: 'PENDING',
         process: processList,
       }
-      setEtherspotStepExecution(stepExecution)
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
+        ...stepExecution,
+      }))
       return stepExecution
     }
 
@@ -314,11 +327,12 @@ export const useOffsetCarbonExecutor = () =>
         return p
       })
 
-      setEtherspotStepExecution({
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'DONE',
-        process: doneList,
-        toAmount: toAmount,
-      })
+        process: [...doneList],
+        toAmount,
+      }))
     }
 
     const handlePotentialEtherSpotError = (
@@ -334,7 +348,7 @@ export const useOffsetCarbonExecutor = () =>
       }
 
       if (!etherspotStepExecution) {
-        setEtherspotStepExecution({
+        setEtherspotStepExecution(() => ({
           status: 'FAILED',
           process: [
             {
@@ -349,16 +363,18 @@ export const useOffsetCarbonExecutor = () =>
               },
             },
           ],
-        })
+        }))
       } else {
         const processList = etherspotStepExecution.process
         processList[processList.length - 1].status = 'FAILED'
         processList[processList.length - 1].errorMessage = e.errorMessage
         processList[processList.length - 1].doneAt = Date.now()
-        setEtherspotStepExecution({
+
+        setEtherspotStepExecution((execution) => ({
+          ...execution,
           status: 'FAILED',
-          process: processList,
-        })
+          process: [...processList],
+        }))
       }
     }
 
