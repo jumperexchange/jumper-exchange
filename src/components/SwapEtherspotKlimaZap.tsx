@@ -47,24 +47,24 @@ import {
   isWalletDeactivated,
 } from '../services/utils'
 import {
-  BridgeDefinition,
   Chain,
   ChainId,
   ChainKey,
   CoinKey,
-  ExchangeDefinition,
   ExchangeTool,
   ExtendedRouteOptional,
   findDefaultToken,
   getChainById,
   getChainByKey,
   isSwapStep,
-  PossibilitiesResponse,
   Route as RouteType,
   RoutesRequest,
   Step,
+  SwapPageStartParams,
   Token,
   TokenAmount,
+  TokenAmountList,
+  TokenWithAmounts,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
 import { ResidualRouteKlimaStakeModal } from './ResidualRouteSwappingModal/ResidualRouteKlimaStakeModal'
@@ -80,10 +80,15 @@ const history = createBrowserHistory()
 let currentRouteCallId: string
 const allowedDex = ExchangeTool.zerox
 
-interface TokenWithAmounts extends Token {
-  amount?: BigNumber
-  amountRendered?: string
-}
+const etherspotSupportedChains: number[] = [
+  ChainId.ETH,
+  ChainId.DAI,
+  ChainId.BSC,
+  ChainId.FTM,
+  ChainId.POL,
+  ChainId.AUR,
+  ChainId.AVA,
+]
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
@@ -142,7 +147,7 @@ const getDefaultParams = (
   availableChains: Chain[],
   transferTokens: { [ChainKey: string]: Array<Token> },
 ) => {
-  const defaultParams: StartParams = {
+  const defaultParams: SwapPageStartParams = {
     depositChain: undefined,
     depositToken: undefined,
     depositAmount: new BigNumber(-1),
@@ -264,23 +269,11 @@ const getDefaultParams = (
   return defaultParams
 }
 
-interface TokenAmountList {
-  [ChainKey: string]: Array<TokenWithAmounts>
-}
-
 interface ExtendedRoute {
   lifiRoute?: RouteType
   simpleTransfer?: ExtendedTransactionRequest
   gasStep: Step
   stakingStep: Step
-}
-
-interface StartParams {
-  depositChain?: ChainKey
-  depositToken?: string
-  depositAmount: BigNumber
-  withdrawChain?: ChainKey
-  withdrawToken?: string
 }
 
 const Swap = () => {
@@ -461,47 +454,49 @@ const Swap = () => {
 
   useEffect(() => {
     const load = async () => {
-      const possibilitiesPromise = LiFi.getPossibilities({
-        exchanges: { deny: ['dodo', 'openocean', '0x'] },
-        bridges: { deny: ['multichain'] },
-      })
-
+      const chainPromise = LiFi.getChains()
+      const tokenPromise = LiFi.getTokens()
+      const toolsPromise = LiFi.getTools()
       const klimaTokenPromise = LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
       const sKlimaTokenPromise = LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
-      const setupPromises: [PossibilitiesResponse, Token, Token] = await Promise.all([
-        possibilitiesPromise,
+
+      const resolvedSetupPromises = await Promise.all([
+        chainPromise,
+        tokenPromise,
+        toolsPromise,
         klimaTokenPromise,
         sKlimaTokenPromise,
       ])
-      const possibilities = setupPromises[0]
-      setTokenPolygonKlima(setupPromises[1])
-      setTokenPolygonSKLIMA(setupPromises[2])
-      if (
-        !possibilities.chains ||
-        !possibilities.bridges ||
-        !possibilities.exchanges ||
-        !possibilities.tokens
-      ) {
+      const chains = resolvedSetupPromises[0]
+      const tokens = resolvedSetupPromises[1].tokens
+      const tools = resolvedSetupPromises[2]
+
+      setTokenPolygonKlima(resolvedSetupPromises[3])
+      setTokenPolygonSKLIMA(resolvedSetupPromises[4])
+
+      if (!chains || !tools.bridges || !tools.exchanges || !tokens) {
         // eslint-disable-next-line
         console.warn('possibilities request did not contain required setup information')
         return
       }
 
       // chains
-      const chains = possibilities.chains
-      setAvailableChains(chains)
+      const limitedChains = chains.filter((chain) => {
+        return etherspotSupportedChains.includes(chain.id)
+      })
+      setAvailableChains(limitedChains)
 
       // bridges
-      const bridges: string[] = possibilities.bridges
-        .map((bridge: BridgeDefinition) => bridge.tool)
+      const bridges: string[] = tools.bridges
+        .map((bridge: any) => bridge.key)
         .map((bridgeTool: string) => bridgeTool.split('-')[0])
       const allBridges = Array.from(new Set(bridges))
       setAvailableBridges(allBridges)
       setOptionEnabledBridges(allBridges)
 
       // exchanges
-      const exchanges: string[] = possibilities.exchanges
-        .map((exchange: ExchangeDefinition) => exchange.tool)
+      const exchanges: string[] = tools.exchanges
+        .map((exchange: any) => exchange.key)
         .map((exchangeTool: string) => exchangeTool.split('-')[0])
       const allExchanges = Array.from(new Set(exchanges))
       setAvailableExchanges(allExchanges)
@@ -509,16 +504,17 @@ const Swap = () => {
 
       // tokens
       const newTokens: TokenAmountList = {}
-      possibilities.tokens.forEach((token: TokenWithAmounts) => {
-        const chain = getChainById(token.chainId)
+      // let chain: keyof typeof tokens
+      for (let chainId in tokens) {
+        const chain = getChainById(Number(chainId))
         if (!newTokens[chain.key]) newTokens[chain.key] = []
-        newTokens[chain.key].push(token)
-      })
+        newTokens[chain.key] = tokens[chainId]
+      }
 
-      setTokens((tokens) => {
+      setTokens((oldTokens) => {
         // which existing tokens are not included?
-        Object.keys(tokens).forEach((chainKey) => {
-          tokens[chainKey].forEach((token) => {
+        Object.keys(oldTokens).forEach((chainKey) => {
+          oldTokens[chainKey].forEach((token) => {
             if (!newTokens[chainKey]) newTokens[chainKey] = []
             if (!newTokens[chainKey].find((item) => item.address === token.address)) {
               newTokens[chainKey].push(token)

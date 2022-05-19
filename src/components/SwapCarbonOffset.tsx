@@ -41,12 +41,10 @@ import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import { deepClone, formatTokenAmountOnly, isWalletDeactivated } from '../services/utils'
 import {
-  BridgeDefinition,
   Chain,
   ChainId,
   ChainKey,
   CoinKey,
-  ExchangeDefinition,
   ExchangeTool,
   ExtendedRoute,
   ExtendedRouteOptional,
@@ -54,12 +52,12 @@ import {
   getChainById,
   getChainByKey,
   isSwapStep,
-  PossibilitiesResponse,
   Route as RouteType,
   RoutesRequest,
   Step,
   Token,
   TokenAmount,
+  TokenWithAmounts,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
 import { ResidualRouteCarbonOffsetModal } from './ResidualRouteSwappingModal/ResidualRouteCarbonOffsetModal'
@@ -73,11 +71,6 @@ const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
 const history = createBrowserHistory()
 let currentRouteCallId: string
 const allowedDex = ExchangeTool.zerox
-
-interface TokenWithAmounts extends Token {
-  amount?: BigNumber
-  amountRendered?: string
-}
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
@@ -442,24 +435,23 @@ const Swap = () => {
 
   useEffect(() => {
     const load = async () => {
-      const possibilitiesPromise = LiFi.getPossibilities({
-        exchanges: { deny: ['dodo', 'openocean', '0x'] },
-        bridges: { deny: ['multichain'] },
-      })
-
+      const chainPromise = LiFi.getChains()
+      const tokenPromise = LiFi.getTokens()
+      const toolsPromise = LiFi.getTools()
       const tokenBCTPromise = LiFi.getToken(ChainId.POL, TOUCAN_BCT_ADDRESS)!
-      const setupPromises: [PossibilitiesResponse, Token] = await Promise.all([
-        possibilitiesPromise,
+
+      const resolvedSetupPromises = await Promise.all([
+        chainPromise,
+        tokenPromise,
+        toolsPromise,
         tokenBCTPromise,
       ])
-      const possibilities = setupPromises[0]
-      setTokenPolygonBCT(setupPromises[1])
-      if (
-        !possibilities.chains ||
-        !possibilities.bridges ||
-        !possibilities.exchanges ||
-        !possibilities.tokens
-      ) {
+      const chains = resolvedSetupPromises[0]
+      const tokens = resolvedSetupPromises[1].tokens
+      const tools = resolvedSetupPromises[2]
+      setTokenPolygonBCT(resolvedSetupPromises[3])
+
+      if (!chains || !tools.bridges || !tools.exchanges || !tokens) {
         // eslint-disable-next-line
         console.warn('possibilities request did not contain required setup information')
         return
@@ -467,22 +459,22 @@ const Swap = () => {
 
       // chains
       // FIXME: limit available chains to etherspot supported ones
-      const chains = possibilities.chains.filter((chain) => {
+      const limitedChains = chains.filter((chain) => {
         return etherspotSupportedChains.includes(chain.id)
       })
-      setAvailableChains(chains)
+      setAvailableChains(limitedChains)
 
       // bridges
-      const bridges: string[] = possibilities.bridges
-        .map((bridge: BridgeDefinition) => bridge.tool)
+      const bridges: string[] = tools.bridges
+        .map((bridge: any) => bridge.key)
         .map((bridgeTool: string) => bridgeTool.split('-')[0])
       const allBridges = Array.from(new Set(bridges))
       setAvailableBridges(allBridges)
       setOptionEnabledBridges(allBridges)
 
       // exchanges
-      const exchanges: string[] = possibilities.exchanges
-        .map((exchange: ExchangeDefinition) => exchange.tool)
+      const exchanges: string[] = tools.exchanges
+        .map((exchange: any) => exchange.key)
         .map((exchangeTool: string) => exchangeTool.split('-')[0])
       const allExchanges = Array.from(new Set(exchanges))
       setAvailableExchanges(allExchanges)
@@ -490,16 +482,17 @@ const Swap = () => {
 
       // tokens
       const newTokens: TokenAmountList = {}
-      possibilities.tokens.forEach((token: TokenWithAmounts) => {
-        const chain = getChainById(token.chainId)
+      // let chain: keyof typeof tokens
+      for (let chainId in tokens) {
+        const chain = getChainById(Number(chainId))
         if (!newTokens[chain.key]) newTokens[chain.key] = []
-        newTokens[chain.key].push(token)
-      })
+        newTokens[chain.key] = tokens[chainId]
+      }
 
-      setTokens((tokens) => {
+      setTokens((oldTokens) => {
         // which existing tokens are not included?
-        Object.keys(tokens).forEach((chainKey) => {
-          tokens[chainKey].forEach((token) => {
+        Object.keys(oldTokens).forEach((chainKey) => {
+          oldTokens[chainKey].forEach((token) => {
             if (!newTokens[chainKey]) newTokens[chainKey] = []
             if (!newTokens[chainKey].find((item) => item.address === token.address)) {
               newTokens[chainKey].push(token)

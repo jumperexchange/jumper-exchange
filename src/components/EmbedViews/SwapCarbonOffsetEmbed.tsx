@@ -1090,7 +1090,7 @@ const Swap = () => {
 
         {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
           <Modal
-            className="modal-klima-embed  swapModal"
+            className="modal-klima-embed swapModal"
             visible={selectedRoute.lifiRoute.steps.length > 0}
             onOk={() => {
               setSelectedRoute(undefined)

@@ -55,8 +55,10 @@ import {
   Route as RouteType,
   RoutesRequest,
   RoutesResponse,
+  SwapPageStartParams,
   Token,
   TokenAmount,
+  TokenAmountList,
 } from '../types'
 import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
@@ -130,18 +132,6 @@ const parseToken = (
   const fromTokenId = ethers.utils.getAddress(passed.trim()).toLowerCase()
   // does token address exist in our default tokens? (tokenlists not loaded yet)
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
-}
-
-interface TokenAmountList {
-  [ChainKey: string]: Array<TokenWithAmounts>
-}
-
-interface StartParams {
-  depositChain?: ChainKey
-  depositToken?: string
-  depositAmount: BigNumber
-  withdrawChain?: ChainKey
-  withdrawToken?: string
 }
 
 const Swap = () => {
@@ -248,33 +238,35 @@ const Swap = () => {
 
   useEffect(() => {
     const load = async () => {
-      const possibilities = await LiFi.getPossibilities()
+      const chainPromise = LiFi.getChains()
+      const tokenPromise = LiFi.getTokens()
+      const toolsPromise = LiFi.getTools()
 
-      if (
-        !possibilities.chains ||
-        !possibilities.bridges ||
-        !possibilities.exchanges ||
-        !possibilities.tokens
-      ) {
+      const resolvedSetupPromises = await Promise.all([chainPromise, tokenPromise, toolsPromise])
+      const chains = resolvedSetupPromises[0]
+      const tokens = resolvedSetupPromises[1].tokens
+      const tools = resolvedSetupPromises[2]
+
+      if (!chains || !tools.bridges || !tools.exchanges || !tokens) {
         // eslint-disable-next-line
         console.warn('possibilities request did not contain required setup information')
         return
       }
 
       // chains
-      setAvailableChains(possibilities.chains)
+      setAvailableChains(chains)
 
       // bridges
-      const bridges: string[] = possibilities.bridges
-        .map((bridge: any) => bridge.tool)
+      const bridges: string[] = tools.bridges
+        .map((bridge: any) => bridge.key)
         .map((bridgeTool: string) => bridgeTool.split('-')[0])
       const allBridges = Array.from(new Set(bridges))
       setAvailableBridges(allBridges)
       setOptionEnabledBridges(allBridges)
 
       // exchanges
-      const exchanges: string[] = possibilities.exchanges
-        .map((exchange: any) => exchange.tool)
+      const exchanges: string[] = tools.exchanges
+        .map((exchange: any) => exchange.key)
         .map((exchangeTool: string) => exchangeTool.split('-')[0])
       const allExchanges = Array.from(new Set(exchanges))
       setAvailableExchanges(allExchanges)
@@ -282,16 +274,17 @@ const Swap = () => {
 
       // tokens
       const newTokens: TokenAmountList = {}
-      possibilities.tokens.forEach((token: TokenWithAmounts) => {
-        const chain = getChainById(token.chainId)
+      // let chain: keyof typeof tokens
+      for (let chainId in tokens) {
+        const chain = getChainById(Number(chainId))
         if (!newTokens[chain.key]) newTokens[chain.key] = []
-        newTokens[chain.key].push(token)
-      })
+        newTokens[chain.key] = tokens[chainId]
+      }
 
-      setTokens((tokens) => {
+      setTokens((oldTokens) => {
         // which existing tokens are not included?
-        Object.keys(tokens).forEach((chainKey) => {
-          tokens[chainKey].forEach((token) => {
+        Object.keys(oldTokens).forEach((chainKey) => {
+          oldTokens[chainKey].forEach((token) => {
             if (!newTokens[chainKey]) newTokens[chainKey] = []
             if (!newTokens[chainKey].find((item) => item.address === token.address)) {
               newTokens[chainKey].push(token)
@@ -336,7 +329,7 @@ const Swap = () => {
     availableChains: Chain[],
     transferTokens: { [ChainKey: string]: Array<Token> },
   ) => {
-    const defaultParams: StartParams = {
+    const defaultParams: SwapPageStartParams = {
       depositChain: undefined,
       depositToken: undefined,
       depositAmount: new BigNumber(-1),
