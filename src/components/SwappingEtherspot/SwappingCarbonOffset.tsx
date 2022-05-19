@@ -5,10 +5,9 @@ import {
   PauseCircleOutlined,
 } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ChainId, Execution, ExecutionSettings } from '@lifinance/sdk'
+import { Execution, ExecutionSettings } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
-import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
@@ -23,15 +22,7 @@ import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
-import {
-  ExtendedRoute,
-  getChainById,
-  isCrossStep,
-  isLifiStep,
-  Route,
-  Step,
-  TokenAmount,
-} from '../../types'
+import { ExtendedRoute, getChainById, isCrossStep, isLifiStep, Route, Step } from '../../types'
 import { getChainAvatar, getToolAvatar } from '../Avatars/Avatars'
 import Clock from '../Clock'
 import LoadingIndicator from '../LoadingIndicator'
