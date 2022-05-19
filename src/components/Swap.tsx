@@ -11,6 +11,7 @@ import {
   Form,
   InputNumber,
   Modal,
+  Popconfirm,
   Row,
   Select,
   Tooltip,
@@ -64,6 +65,10 @@ import Swapping from './Swapping'
 import TransactionsTable from './TransactionsTable'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 import ConnectButton from './web3/ConnectButton'
+
+const ENABLE_USER_SLIPPAGE_NOTIFICATION =
+  process.env.REACT_APP_ENABLE_USER_SLIPPAGE_NOTIFICATION === 'true'
+const TOTAL_SLIPPAGE_GUARD_MODAL = new BigNumber(0.9)
 
 const history = createBrowserHistory()
 const { Panel } = Collapse
@@ -825,17 +830,60 @@ const Swap = () => {
         </Button>
       )
     }
+    const fromAmountUSD = new BigNumber(routes[highlightedIndex]?.fromAmountUSD)
+    const toAmountUSD = new BigNumber(routes[highlightedIndex]?.toAmountUSD)
+    const gasCostUSD = new BigNumber(routes[highlightedIndex]?.gasCostUSD || 0)
+    const allValuesAvailable =
+      !fromAmountUSD.isZero() && !toAmountUSD.isZero() && !gasCostUSD.isZero()
 
-    return (
-      <Button
-        disabled={highlightedIndex === -1}
-        shape="round"
-        type="primary"
-        icon={<SwapOutlined />}
-        size={'large'}
-        onClick={() => openModal()}>
-        Swap
-      </Button>
+    const totalExpenditure = fromAmountUSD.plus(gasCostUSD)
+    const amountReceivedPercentage = toAmountUSD.dividedBy(totalExpenditure)
+    const receivedAmountTooLow = amountReceivedPercentage.isLessThan(TOTAL_SLIPPAGE_GUARD_MODAL)
+
+    const swapButton = (clickHandler?: Function) => {
+      return (
+        <Button
+          disabled={highlightedIndex === -1}
+          shape="round"
+          type="primary"
+          icon={<SwapOutlined />}
+          size={'large'}
+          onClick={() => clickHandler?.()}>
+          Swap
+        </Button>
+      )
+    }
+    const popoverContent = (
+      <div
+        style={{
+          maxWidth: '100px !important',
+        }}>
+        {allValuesAvailable ? (
+          <Typography.Paragraph>
+            The value of the received tokens is significantly lower than the cost required to
+            execute the transaction. Do you still want to proceed?
+          </Typography.Paragraph>
+        ) : (
+          <Typography.Paragraph>
+            The value of the received tokens is significantly lower than the cost required to
+            execute the transaction. We could not fetch the FIAT price of one or more of the listed
+            values. Do you still want to proceed?
+          </Typography.Paragraph>
+        )}
+        <Typography.Paragraph>
+          Swapped token value: {!fromAmountUSD.isZero() ? `${fromAmountUSD.toFixed(2)} USD` : '~'}{' '}
+          <br />
+          Gas costs: {!gasCostUSD.isZero() ? `${gasCostUSD.toFixed(2)} USD` : '~'} <br />
+          Received token value: {!toAmountUSD.isZero() ? `${toAmountUSD.toFixed(2)} USD` : '~'}
+        </Typography.Paragraph>
+      </div>
+    )
+    return (receivedAmountTooLow || !allValuesAvailable) && ENABLE_USER_SLIPPAGE_NOTIFICATION ? (
+      <Popconfirm onConfirm={() => openModal()} title={popoverContent}>
+        {swapButton()}
+      </Popconfirm>
+    ) : (
+      swapButton(openModal)
     )
   }
 

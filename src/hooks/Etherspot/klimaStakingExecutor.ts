@@ -8,6 +8,7 @@ import { getRpcProvider } from '../../components/web3/connectors'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../../constants'
 import LiFi from '../../LiFi'
 import {
+  getFeeTransferTransactionBasedOnAmount,
   getSetAllowanceTransaction,
   getStakeKlimaTransaction,
   getTransferTransaction,
@@ -39,7 +40,7 @@ export const useKlimaStakingExecutor = () =>
       }
 
       if (!etherspotStepExecution) {
-        setEtherspotStepExecution({
+        setEtherspotStepExecution((exec) => ({
           status: 'FAILED',
           process: [
             {
@@ -54,16 +55,18 @@ export const useKlimaStakingExecutor = () =>
               },
             },
           ],
-        })
+        }))
       } else {
         const processList = etherspotStepExecution.process
         processList[processList.length - 1].status = 'FAILED'
         processList[processList.length - 1].errorMessage = e.errorMessage
         processList[processList.length - 1].doneAt = Date.now()
-        setEtherspotStepExecution({
+
+        setEtherspotStepExecution((execution) => ({
+          ...execution,
           status: 'FAILED',
-          process: processList,
-        })
+          process: [...processList],
+        }))
       }
     }
 
@@ -73,14 +76,21 @@ export const useKlimaStakingExecutor = () =>
         return p
       })
 
-      setEtherspotStepExecution({
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'DONE',
-        process: doneList,
+        process: [...doneList],
         toAmount: toAmount,
-      })
+      }))
     }
 
-    const prepareEtherSpotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const prepareEtherSpotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       if (!etherspot) {
         throw new Error('Etherspot not initialized.')
       }
@@ -128,25 +138,31 @@ export const useKlimaStakingExecutor = () =>
       // reset gateway batch
       etherspot.clearGatewayBatch()
 
-      const totalAmount = ethers.BigNumber.from(gasStep.estimate.fromAmount).add(
-        stakingStep.estimate.fromAmount,
-      )
       const txAllowTotal = await getSetAllowanceTransaction(
         gasStep.action.fromToken.address,
         gasStep.estimate.approvalAddress as string,
-        totalAmount,
+        baseAmount,
       )
       await etherspot.batchExecuteAccountTransaction({
         to: txAllowTotal.to as string,
         data: txAllowTotal.data as string,
       })
 
-      // Swap
+      // Swap for gas
       await etherspot.batchExecuteAccountTransaction({
         to: gasStep.transactionRequest.to as string,
         data: gasStep.transactionRequest.data as string,
       })
+      const { txFee } = await getFeeTransferTransactionBasedOnAmount(
+        stakingStep.action.fromToken,
+        ethers.BigNumber.from(baseAmount),
+      )
 
+      await etherspot.batchExecuteAccountTransaction({
+        to: txFee.to as string,
+        data: txFee.data as string,
+      })
+      // Swap for KLIMA
       await etherspot.batchExecuteAccountTransaction({
         to: stakingStep.transactionRequest.to as string,
         data: stakingStep.transactionRequest.data as string,
@@ -180,7 +196,13 @@ export const useKlimaStakingExecutor = () =>
       })
     }
 
-    const executeEtherspotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const executeEtherspotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       const processList: Process[] = []
 
       // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
@@ -191,10 +213,11 @@ export const useKlimaStakingExecutor = () =>
           startedAt: Date.now(),
           status: 'CHAIN_SWITCH_REQUIRED',
         })
-        setEtherspotStepExecution({
+        setEtherspotStepExecution((execution) => ({
+          ...execution,
           status: 'CHAIN_SWITCH_REQUIRED',
-          process: processList,
-        })
+          process: [...processList],
+        }))
 
         await switchChain(ChainId.POL)
         const signer = web3.library!.getSigner()
@@ -221,14 +244,14 @@ export const useKlimaStakingExecutor = () =>
         status: 'PENDING',
       })
 
-      setEtherspotStepExecution({
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
-      await prepareEtherSpotStep(etherspot, gasStep, stakingStep)
+        process: [...processList],
+      }))
+      await prepareEtherSpotStep(etherspot, gasStep, stakingStep, baseAmount)
 
       await etherspot.estimateGatewayBatch()
-
       processList.map((process) => {
         if (process.type === 'TRANSACTION') {
           process.status = 'DONE'
@@ -242,10 +265,13 @@ export const useKlimaStakingExecutor = () =>
         startedAt: Date.now(),
         status: 'ACTION_REQUIRED',
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'ACTION_REQUIRED',
-        process: processList,
-      })
+        process: [...processList],
+      }))
+
       let batch = await etherspot.submitGatewayBatch()
       processList.map((process) => {
         if (process.type === 'SWAP') {
@@ -261,10 +287,12 @@ export const useKlimaStakingExecutor = () =>
         startedAt: Date.now(),
         status: 'PENDING',
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
+        process: [...processList],
+      }))
 
       // info: batch.state seams to wait for a lot of confirmations (6 minutes) before changing to 'Sent'
       let hasTransaction = !!(batch.transaction && batch.transaction.hash)
@@ -302,10 +330,12 @@ export const useKlimaStakingExecutor = () =>
         }
         return process
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
+        process: [...processList],
+      }))
 
       // Wait for Transaction
       const provider = await getRpcProvider(ChainId.POL)
@@ -340,10 +370,13 @@ export const useKlimaStakingExecutor = () =>
         return process
       })
       const stepExecution: Execution = {
-        status: 'DONE',
+        status: 'PENDING',
         process: processList,
       }
-      setEtherspotStepExecution(stepExecution)
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
+        ...stepExecution,
+      }))
       return stepExecution
     }
 

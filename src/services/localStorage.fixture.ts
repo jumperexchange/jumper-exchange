@@ -24,6 +24,7 @@ export const getRoute = ({ includingExecution = true, executionTime = SOME_DATE 
       id: '8d3a0474-4ee3-4a7a-90c7-2a2264b7f3a9',
       type: 'swap',
       tool: '1inch',
+      toolDetails: { key: '', logoURI: '', name: '' },
       action: {
         fromChainId: 137,
         toChainId: 137,

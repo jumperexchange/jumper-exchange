@@ -10,6 +10,7 @@ import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../../constant
 import LiFi from '../../LiFi'
 import { useBeneficiaryInfo } from '../../providers/ToSectionCarbonOffsetProvider'
 import {
+  getFeeTransferTransactionBasedOnAmount,
   getOffsetCarbonTransaction,
   getSetAllowanceTransaction,
 } from '../../services/etherspotTxService'
@@ -29,7 +30,13 @@ export const useOffsetCarbonExecutor = () =>
       setEtherspotStepExecution(undefined)
     }
 
-    const prepareEtherSpotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const prepareEtherSpotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       if (!etherspot) {
         throw new Error('Etherspot not initialized.')
       }
@@ -68,14 +75,10 @@ export const useOffsetCarbonExecutor = () =>
       // reset gateway batch
       etherspot.clearGatewayBatch()
 
-      const totalAmount = ethers.BigNumber.from(gasStep.estimate.fromAmount).add(
-        stakingStep.estimate.fromAmount,
-      )
-
       const txAllowTotal = await getSetAllowanceTransaction(
         gasStep.action.fromToken.address,
         gasStep.estimate.approvalAddress as string,
-        totalAmount,
+        ethers.BigNumber.from(baseAmount),
       )
       await etherspot.batchExecuteAccountTransaction({
         to: txAllowTotal.to as string,
@@ -86,6 +89,15 @@ export const useOffsetCarbonExecutor = () =>
       await etherspot.batchExecuteAccountTransaction({
         to: gasStep.transactionRequest.to as string,
         data: gasStep.transactionRequest.data as string,
+      })
+      // Collect fee
+      const { txFee } = await getFeeTransferTransactionBasedOnAmount(
+        stakingStep.action.fromToken,
+        ethers.BigNumber.from(baseAmount),
+      )
+      await etherspot.batchExecuteAccountTransaction({
+        to: txFee.to as string,
+        data: txFee.data as string,
       })
 
       const amountUSDC = new BigNumber(stakingStep.action.fromAmount)
@@ -124,7 +136,13 @@ export const useOffsetCarbonExecutor = () =>
       })
     }
 
-    const executeEtherspotStep = async (etherspot: Sdk, gasStep: Step, stakingStep: Step) => {
+    const executeEtherspotStep = async (
+      etherspot: Sdk,
+      gasStep: Step,
+      stakingStep: Step,
+      baseAmount: string,
+      // eslint-disable-next-line max-params
+    ) => {
       const processList: Process[] = []
 
       // FIXME: My be needed if user is bridging from chain which is not supported by etherspot
@@ -135,10 +153,12 @@ export const useOffsetCarbonExecutor = () =>
           startedAt: Date.now(),
           status: 'CHAIN_SWITCH_REQUIRED',
         })
-        setEtherspotStepExecution({
+
+        setEtherspotStepExecution((execution) => ({
+          ...execution,
           status: 'CHAIN_SWITCH_REQUIRED',
-          process: processList,
-        })
+          process: [...processList],
+        }))
 
         await switchChain(ChainId.POL)
         const signer = web3.library!.getSigner()
@@ -165,11 +185,12 @@ export const useOffsetCarbonExecutor = () =>
         status: 'PENDING',
       })
 
-      setEtherspotStepExecution({
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
-      await prepareEtherSpotStep(etherspot, gasStep, stakingStep)
+        process: [...processList],
+      }))
+      await prepareEtherSpotStep(etherspot, gasStep, stakingStep, baseAmount)
 
       await etherspot.estimateGatewayBatch()
 
@@ -186,10 +207,12 @@ export const useOffsetCarbonExecutor = () =>
         startedAt: Date.now(),
         status: 'ACTION_REQUIRED',
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'ACTION_REQUIRED',
-        process: processList,
-      })
+        process: [...processList],
+      }))
       let batch = await etherspot.submitGatewayBatch()
       processList.map((process) => {
         if (process.type === 'SWAP') {
@@ -204,10 +227,12 @@ export const useOffsetCarbonExecutor = () =>
         startedAt: Date.now(),
         status: 'PENDING',
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
+        process: [...processList],
+      }))
 
       // info: batch.state seams to wait for a lot of confirmations (6 minutes) before changing to 'Sent'
       let hasTransaction = !!(batch.transaction && batch.transaction.hash)
@@ -245,10 +270,12 @@ export const useOffsetCarbonExecutor = () =>
         }
         return process
       })
-      setEtherspotStepExecution({
+
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'PENDING',
-        process: processList,
-      })
+        process: [...processList],
+      }))
 
       // Wait for Transaction
       const provider = await getRpcProvider(ChainId.POL)
@@ -282,11 +309,15 @@ export const useOffsetCarbonExecutor = () =>
         }
         return process
       })
+
       const stepExecution: Execution = {
-        status: 'DONE',
+        status: 'PENDING',
         process: processList,
       }
-      setEtherspotStepExecution(stepExecution)
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
+        ...stepExecution,
+      }))
       return stepExecution
     }
 
@@ -296,11 +327,12 @@ export const useOffsetCarbonExecutor = () =>
         return p
       })
 
-      setEtherspotStepExecution({
+      setEtherspotStepExecution((execution) => ({
+        ...execution,
         status: 'DONE',
-        process: doneList,
-        toAmount: toAmount,
-      })
+        process: [...doneList],
+        toAmount,
+      }))
     }
 
     const handlePotentialEtherSpotError = (
@@ -316,7 +348,7 @@ export const useOffsetCarbonExecutor = () =>
       }
 
       if (!etherspotStepExecution) {
-        setEtherspotStepExecution({
+        setEtherspotStepExecution(() => ({
           status: 'FAILED',
           process: [
             {
@@ -331,16 +363,18 @@ export const useOffsetCarbonExecutor = () =>
               },
             },
           ],
-        })
+        }))
       } else {
         const processList = etherspotStepExecution.process
         processList[processList.length - 1].status = 'FAILED'
         processList[processList.length - 1].errorMessage = e.errorMessage
         processList[processList.length - 1].doneAt = Date.now()
-        setEtherspotStepExecution({
+
+        setEtherspotStepExecution((execution) => ({
+          ...execution,
           status: 'FAILED',
-          process: processList,
-        })
+          process: [...processList],
+        }))
       }
     }
 

@@ -1,7 +1,5 @@
-import { ChainKey, getChainByKey, StepTool } from '@lifinance/sdk'
+import { ChainKey, getChainByKey, Step } from '@lifinance/sdk'
 import { Avatar, Tooltip } from 'antd'
-
-import { findTool } from '../../types'
 
 export const getChainAvatar = (chainKey: ChainKey) => {
   const chain = getChainByKey(chainKey)
@@ -12,11 +10,11 @@ export const getChainAvatar = (chainKey: ChainKey) => {
   )
 }
 
-export const getToolAvatar = (toolKey: StepTool) => {
-  const tool = findTool(toolKey)
+export const getToolAvatar = (step: Step) => {
+  const { toolDetails } = step
   return (
-    <Tooltip title={tool?.name}>
-      <Avatar size="small" src={tool?.logoURI} alt={tool?.name}></Avatar>
+    <Tooltip title={toolDetails.name}>
+      <Avatar size="small" src={toolDetails.logoURI} alt={toolDetails.name}></Avatar>
     </Tooltip>
   )
 }
