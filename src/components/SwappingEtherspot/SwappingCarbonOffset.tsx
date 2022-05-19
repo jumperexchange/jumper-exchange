@@ -7,16 +7,18 @@ import {
 import { Web3Provider } from '@ethersproject/providers'
 import { Execution, ExecutionSettings } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Divider, Modal, Row, Space, Spin, Timeline, Typography } from 'antd'
+import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
+import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
 
 import { TOUCAN_BCT_ADDRESS } from '../../constants'
 import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { useStepReturnInfo } from '../../hooks/useStepReturnInfo'
 import LiFi from '../../LiFi'
 import { isWalletConnectWallet } from '../../services/localStorage'
-import { switchChain } from '../../services/metamask'
+import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../../services/processRenderer'
 import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
@@ -79,6 +81,11 @@ const SwappingCarbonOffset = ({
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
+
+  const routeReturnInfo = useStepReturnInfo({
+    ...localRoute.stakingStep,
+    execution: etherspotStepExecution,
+  })
 
   useEffect(() => {
     setLocalRoute((oldRoute) => ({ ...oldRoute, ...route }))
@@ -394,9 +401,37 @@ const SwappingCarbonOffset = ({
       localRoute.lifiRoute.steps.filter((step) => step.execution?.status !== 'DONE').length === 0 &&
       etherspotStepExecution?.status === 'DONE'
     if (isDone) {
+      const infoMessage = !!routeReturnInfo?.totalBalanceOfReceivedToken ? (
+        <Typography.Text>
+          Amount of carbon offsetted{` `}
+          {formatTokenAmount(
+            routeReturnInfo.receivedToken,
+            routeReturnInfo.receivedAmount.toString(),
+          )}
+        </Typography.Text>
+      ) : (
+        ''
+      )
       return (
         <Space direction="vertical">
           <Typography.Text strong>Offsetting Successful!</Typography.Text>
+          {routeReturnInfo?.receivedToken &&
+            (routeReturnInfo?.receivedToken.address === constants.AddressZero ? (
+              <span>{infoMessage}</span>
+            ) : (
+              <Tooltip title="Click to add this token to your wallet.">
+                <span
+                  style={{ cursor: 'copy' }}
+                  onClick={() =>
+                    switchChainAndAddToken(
+                      routeReturnInfo.toChain.id,
+                      routeReturnInfo.receivedToken!,
+                    )
+                  }>
+                  {infoMessage}
+                </span>
+              </Tooltip>
+            ))}
         </Space>
       )
     }
