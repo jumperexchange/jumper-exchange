@@ -415,8 +415,8 @@ const SwappingCarbonOffset = ({
       return (
         <Space direction="vertical">
           <Typography.Text strong>Offsetting Successful!</Typography.Text>
-          {routeReturnInfo?.totalBalanceOfReceivedToken &&
-            (routeReturnInfo?.totalBalanceOfReceivedToken.address === constants.AddressZero ? (
+          {routeReturnInfo?.receivedToken &&
+            (routeReturnInfo?.receivedToken.address === constants.AddressZero ? (
               <span>{infoMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">

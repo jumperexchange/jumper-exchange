@@ -3,7 +3,6 @@ import { Web3Provider } from '@ethersproject/providers'
 import { ChainId, Execution, ExecutionSettings, Process } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
-import BigNumber from 'bignumber.js'
 import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useEffect, useState } from 'react'
@@ -11,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { sKLIMA_ADDRESS } from '../../constants'
 import { useKlimaStakingExecutor } from '../../hooks/Etherspot/klimaStakingExecutor'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { useStepReturnInfo } from '../../hooks/useStepReturnInfo'
 import LiFi from '../../LiFi'
 import { isWalletConnectWallet } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
@@ -18,7 +18,7 @@ import Notification, { NotificationType } from '../../services/notifications'
 import { renderProcessMessage } from '../../services/processRenderer'
 import { ExtendedTransactionRequest } from '../../services/routingService'
 import { formatTokenAmount } from '../../services/utils'
-import { getChainById, isCrossStep, isLifiStep, Route, Step, TokenAmount } from '../../types'
+import { getChainById, isCrossStep, isLifiStep, Route, Step } from '../../types'
 import Clock from '../Clock'
 import LoadingIndicator from '../LoadingIndicator'
 import { WalletConnectChainSwitchModal } from '../WalletConnectChainSwitchModal'
@@ -79,7 +79,6 @@ const SwappingEtherspotKlima = ({
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
-  const [finalTokenAmount, setFinalTokenAmount] = useState<TokenAmount | null>()
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
     chainId: number
@@ -89,6 +88,11 @@ const SwappingEtherspotKlima = ({
   const [transferExecutionError, setTransferExecutionError] = useState<any>()
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
+
+  const routeReturnInfo = useStepReturnInfo({
+    ...localRoute.stakingStep,
+    execution: etherspotStepExecution,
+  })
 
   useEffect(() => {
     setLocalRoute((oldRoute) => ({ ...oldRoute, ...route }))
@@ -385,12 +389,8 @@ const SwappingEtherspotKlima = ({
   }
 
   const finalizeEtherSpotStep = async (stepExecution: Execution) => {
-    const tokenAmountSKlima = (await LiFi.getTokenBalance(web3.account!, SKLIMA_TOKEN_POL))!
     const amountSKlimaParsed = localRoute.stakingStep.estimate.toAmountMin
-
     finalizeEtherSpotExecution(stepExecution!, amountSKlimaParsed)
-
-    setFinalTokenAmount(tokenAmountSKlima)
   }
 
   const switchChainHook = async (requiredChainId: number) => {
@@ -448,20 +448,18 @@ const SwappingEtherspotKlima = ({
       steps.filter((step) => step.execution?.status !== 'DONE').length === 0 &&
       etherspotStepExecution?.status === 'DONE'
     if (isDone) {
-      const toChain = getChainById(ChainId.POL)
-      const receivedAmount = new BigNumber(etherspotStepExecution?.toAmount || '0')
-      const successMessage = !!finalTokenAmount ? (
+      const infoMessage = !!routeReturnInfo?.totalBalanceOfReceivedToken ? (
         <>
           <Typography.Text>
             You received{` `}
-            {formatTokenAmount(finalTokenAmount, receivedAmount.toString())}
+            {formatTokenAmount(SKLIMA_TOKEN_POL, routeReturnInfo.receivedAmount.toString())}
           </Typography.Text>
           <Typography.Text
-            type={!receivedAmount.isZero() ? 'secondary' : undefined}
-            style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
+            type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
+            style={{ fontSize: !routeReturnInfo.receivedAmount.isZero() ? 12 : 14 }}>
             <br />
-            {`You now have ${finalTokenAmount.amount} ${finalTokenAmount.symbol}`}
-            {` on ${toChain.name}`}
+            {`You now have ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${SKLIMA_TOKEN_POL.symbol}`}
+            {` on ${routeReturnInfo.toChain.name}`}
           </Typography.Text>
         </>
       ) : (
@@ -471,15 +469,20 @@ const SwappingEtherspotKlima = ({
       return (
         <Space direction="vertical">
           <Typography.Text strong>Staking Successful!</Typography.Text>
-          {finalTokenAmount &&
-            (finalTokenAmount.address === constants.AddressZero ? (
-              <span>{successMessage}</span>
+          {routeReturnInfo &&
+            (routeReturnInfo?.totalBalanceOfReceivedToken?.address === constants.AddressZero ? (
+              <span>{infoMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
-                  onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
-                  {successMessage}
+                  onClick={() =>
+                    switchChainAndAddToken(
+                      routeReturnInfo.toChain.id,
+                      routeReturnInfo.receivedToken!,
+                    )
+                  }>
+                  {infoMessage}
                 </span>
               </Tooltip>
             ))}
