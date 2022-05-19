@@ -1,4 +1,9 @@
-import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
+import {
+  ArrowRightOutlined,
+  EditOutlined,
+  LoadingOutlined,
+  PauseCircleOutlined,
+} from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { ExecutionSettings } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -7,7 +12,6 @@ import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import walletIcon from '../assets/wallet.png'
 import { useIsMobile } from '../hooks/useIsMobile'
 import { useStepReturnInfo } from '../hooks/useStepReturnInfo'
 import LiFi from '../LiFi'
@@ -183,7 +187,7 @@ const Swapping = ({
             key={index + '_left'}
             color={color}>
             <h4>
-              LiFi Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
+              LI.FI Contract from {getChainAvatar(getChainById(step.action.fromChainId).key)} to{' '}
               {getChainAvatar(getChainById(step.action.toChainId).key)} via {getToolAvatar(step)}
             </h4>
             <span>
@@ -477,7 +481,7 @@ const Swapping = ({
               <Typography.Text>{renderProcessMessage(currentProcess)}</Typography.Text>
             </Row>
             <Row justify="center">
-              <img src={walletIcon} alt="Please Check Your Wallet" />
+              <EditOutlined style={{ fontSize: 40 }} />
             </Row>
           </>
         )}
