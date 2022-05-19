@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import { TOUCAN_BCT_ADDRESS } from '../../constants'
 import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { useStepReturnInfo } from '../../hooks/useStepReturnInfo'
 import LiFi from '../../LiFi'
 import { isWalletConnectWallet } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
@@ -80,13 +81,17 @@ const SwappingCarbonOffset = ({
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
   const [isSwapping, setIsSwapping] = useState<boolean>(false)
   const [alerts] = useState<Array<JSX.Element>>([])
-  const [finalTokenAmount] = useState<TokenAmount | null>()
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
   const [transferExecutionError, setTransferExecutionError] = useState<any>()
+
+  const routeReturnInfo = useStepReturnInfo({
+    ...localRoute.stakingStep,
+    execution: etherspotStepExecution,
+  })
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -408,22 +413,14 @@ const SwappingCarbonOffset = ({
       localRoute.lifiRoute.steps.filter((step) => step.execution?.status !== 'DONE').length === 0 &&
       etherspotStepExecution?.status === 'DONE'
     if (isDone) {
-      const toChain = getChainById(ChainId.POL)
-      const receivedAmount = new BigNumber(etherspotStepExecution?.toAmount || '0')
-      const successMessage = !!finalTokenAmount ? (
-        <>
-          <Typography.Text>
-            You received{` `}
-            {formatTokenAmount(finalTokenAmount, receivedAmount.toString())}
-          </Typography.Text>
-          <Typography.Text
-            type={!receivedAmount.isZero() ? 'secondary' : undefined}
-            style={{ fontSize: !receivedAmount.isZero() ? 12 : 14 }}>
-            <br />
-            {`You now have ${finalTokenAmount.amount} ${finalTokenAmount.symbol}`}
-            {` on ${toChain.name}`}
-          </Typography.Text>
-        </>
+      const infoMessage = !!routeReturnInfo?.totalBalanceOfReceivedToken ? (
+        <Typography.Text>
+          Amount of carbon offsetted{` `}
+          {formatTokenAmount(
+            routeReturnInfo.receivedToken,
+            routeReturnInfo.receivedAmount.toString(),
+          )}
+        </Typography.Text>
       ) : (
         ''
       )
@@ -431,21 +428,23 @@ const SwappingCarbonOffset = ({
       return (
         <Space direction="vertical">
           <Typography.Text strong>Offsetting Successful!</Typography.Text>
-          {finalTokenAmount &&
-            (finalTokenAmount.address === constants.AddressZero ? (
-              <span>{successMessage}</span>
+          {routeReturnInfo?.totalBalanceOfReceivedToken &&
+            (routeReturnInfo?.totalBalanceOfReceivedToken.address === constants.AddressZero ? (
+              <span>{infoMessage}</span>
             ) : (
               <Tooltip title="Click to add this token to your wallet.">
                 <span
                   style={{ cursor: 'copy' }}
-                  onClick={() => switchChainAndAddToken(toChain.id, finalTokenAmount)}>
-                  {successMessage}
+                  onClick={() =>
+                    switchChainAndAddToken(
+                      routeReturnInfo.toChain.id,
+                      routeReturnInfo.receivedToken!,
+                    )
+                  }>
+                  {infoMessage}
                 </span>
               </Tooltip>
             ))}
-          {/* <Link to="/dashboard">
-            <Button type="link">Dashboard</Button>
-          </Link> */}
         </Space>
       )
     }
