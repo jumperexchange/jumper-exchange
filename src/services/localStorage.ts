@@ -253,6 +253,9 @@ const migrateToolDetails = () => {
   const oldRoutes = readAllRoutes()
   const updatedRoutes = oldRoutes.map((oldRoute) => {
     oldRoute.steps.map((step) => {
+      if (step.toolDetails) {
+        return step
+      }
       step.toolDetails = { logoURI: '', name: step.tool, key: step.tool.split('-')[0] }
       return step
     })
