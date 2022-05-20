@@ -12,21 +12,6 @@ const isSupported = () => {
   }
 }
 
-// TODO: Migrating old localStorage key. Can be removed after being deployed for a while (deployed on 17.12.2021)
-const migrateOldProperties = () => {
-  if (!isSupported()) return
-  const alreadyMigrated = localStorage.getItem('routes')
-  if (alreadyMigrated) return
-
-  const oldRoutes = localStorage.getItem('activeRoute')
-  if (oldRoutes) {
-    localStorage.setItem('routes', oldRoutes)
-  }
-  localStorage.removeItem('activeRoute')
-}
-
-migrateOldProperties()
-
 const clearLocalStorage = () => {
   if (isSupported()) {
     localStorage.clear()
@@ -247,6 +232,39 @@ const deleteWalletConnectInfo = () => {
   if (!isSupported()) return
   localStorage.removeItem('walletconnect')
 }
+
+// TODO: Migrating old localStorage key. Can be removed after being deployed for a while (deployed on 17.12.2021)
+const migrateOldlocalStorageKey = () => {
+  if (!isSupported()) return
+  const alreadyMigrated = localStorage.getItem('routes')
+  if (alreadyMigrated) return
+
+  const oldRoutes = localStorage.getItem('activeRoute')
+  if (oldRoutes) {
+    localStorage.setItem('routes', oldRoutes)
+  }
+  localStorage.removeItem('activeRoute')
+}
+migrateOldlocalStorageKey()
+
+// TODO: Migrating and adding toolDetails. Can be removed after being deployed for a while (deployed on 20.05.2022)
+const migrateToolDetails = () => {
+  if (!isSupported()) return
+  const oldRoutes = readAllRoutes()
+  const updatedRoutes = oldRoutes.map((oldRoute) => {
+    oldRoute.steps.map((step) => {
+      if (step.toolDetails) {
+        return step
+      }
+      step.toolDetails = { logoURI: '', name: step.tool, key: step.tool.split('-')[0] }
+      return step
+    })
+    return oldRoute
+  })
+  localStorage.setItem('routes', JSON.stringify(updatedRoutes))
+}
+
+migrateToolDetails()
 
 export {
   clearLocalStorage,
