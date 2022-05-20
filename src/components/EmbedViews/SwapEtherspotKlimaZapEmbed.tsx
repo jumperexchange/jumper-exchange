@@ -31,6 +31,7 @@ import { PoweredByLiFi } from '../../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../../assets/misc/etherspot'
 import { etherspotSupportedChains, KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../../constants'
 import LiFi from '../../LiFi'
+import { useChainsTokensTools } from '../../providers/chainsTokensToolsProvider'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
 import getRoute, { ExtendedTransactionRequest } from '../../services/routingService'
@@ -275,6 +276,8 @@ interface StartParams {
 }
 
 const Swap = () => {
+  const chainsTokensTools = useChainsTokensTools()
+
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
 
@@ -320,11 +323,7 @@ const Swap = () => {
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
-  const [possibilities, setPossibilities] = useState<{
-    chainsLoaded: boolean
-    tokensLoaded: boolean
-    toolsLoaded: boolean
-  }>({ chainsLoaded: false, tokensLoaded: false, toolsLoaded: false })
+
   const [tokenPolygonKLIMA, setTokenPolygonKlima] = useState<Token>()
   const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
 
@@ -447,38 +446,25 @@ const Swap = () => {
       }
     }
   }, [])
+
   // get chains
   useEffect(() => {
-    const load = async () => {
-      const chains = await LiFi.getChains()
+    const limitedChains = chainsTokensTools.chains.filter((chain) => {
+      return etherspotSupportedChains.includes(chain.id)
+    })
+    setAvailableChains(limitedChains)
 
-      if (!chains) {
-        // eslint-disable-next-line
-        console.warn('possibilities request did not contain required setup information')
-        return
-      }
-
-      // chains
-      // FIXME: limit available chains to etherspot supported ones
-      const limitedChains = chains.filter((chain) => {
-        return etherspotSupportedChains.includes(chain.id)
-      })
-      setAvailableChains(limitedChains)
-      setPossibilities((possibilities) => ({ ...possibilities, chainsLoaded: true }))
-    }
-
-    load()
-  }, [])
+    // load()
+  }, [chainsTokensTools.chains])
 
   //get tokens
   useEffect(() => {
-    const load = async () => {
-      const tokens = (await LiFi.getTokens()).tokens
+    const loadTokens = async () => {
+      const tokens = chainsTokensTools.tokens
       const klimaToken = await LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
       const sKlimaToken = await LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
       setTokenPolygonKlima(klimaToken)
       setTokenPolygonSKLIMA(sKlimaToken)
-
       if (!tokens) {
         // eslint-disable-next-line
         console.warn('token request did not contain required setup information')
@@ -507,40 +493,32 @@ const Swap = () => {
         })
         return newTokens
       })
-      setPossibilities((possibilities) => ({ ...possibilities, tokensLoaded: true }))
     }
-    load()
-  }, [])
+
+    loadTokens()
+  }, [chainsTokensTools.tokens])
 
   //get tools
   useEffect(() => {
-    const load = async () => {
-      const tools = await LiFi.getTools()
-      if (!tools.bridges || !tools.exchanges) {
-        // eslint-disable-next-line
-        console.warn('tools request did not contain required setup information')
-        return
-      }
-      // bridges
-      const bridges: string[] = tools.bridges
-        .map((bridge: any) => bridge.key)
-        .map((bridgeTool: string) => bridgeTool.split('-')[0])
-      const allBridges = Array.from(new Set(bridges))
-      setAvailableBridges(allBridges)
-      setOptionEnabledBridges(allBridges)
+    setAvailableExchanges(chainsTokensTools.bridges)
+    setOptionEnabledExchanges(chainsTokensTools.exchanges)
+    setAvailableBridges(chainsTokensTools.bridges)
+    setOptionEnabledBridges(chainsTokensTools.bridges)
+  }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
-      // exchanges
-      const exchanges: string[] = tools.exchanges
-        .map((exchange: any) => exchange.key)
-        .map((exchangeTool: string) => exchangeTool.split('-')[0])
-      const allExchanges = Array.from(new Set(exchanges))
-      setAvailableExchanges(allExchanges)
-      setOptionEnabledExchanges(allExchanges)
-
-      setPossibilities((possibilities) => ({ ...possibilities, toolsLoaded: true }))
+  useEffect(() => {
+    if (
+      chainsTokensTools.chainsLoaded &&
+      chainsTokensTools.tokensLoaded &&
+      chainsTokensTools.toolsLoaded
+    ) {
+      setRefreshBalances(true)
     }
-    load()
-  }, [])
+  }, [
+    chainsTokensTools.chainsLoaded,
+    chainsTokensTools.tokensLoaded,
+    chainsTokensTools.toolsLoaded,
+  ])
 
   const updateTokenData = (token: Token) => {
     LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
@@ -578,7 +556,12 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
-    if (possibilities.chainsLoaded && possibilities.tokensLoaded && possibilities.toolsLoaded) {
+    if (
+      !!chainsTokensTools.chains.length &&
+      !!(Object.keys(chainsTokensTools.tokens).length === 0) &&
+      !!chainsTokensTools.exchanges.length &&
+      !!chainsTokensTools.bridges.length
+    ) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
@@ -586,7 +569,7 @@ const Swap = () => {
       setToChainKey(startParams.withdrawChain)
       setStartParamsDefined(true)
     }
-  }, [possibilities])
+  }, [chainsTokensTools])
 
   // update query string
   useEffect(() => {

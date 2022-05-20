@@ -34,6 +34,7 @@ import { UkraineIcon } from '../assets/icons/ukraineIcon'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import LiFi from '../LiFi'
+import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -267,6 +268,8 @@ interface StartParams {
 }
 
 const Swap = () => {
+  const chainsTokensTools = useChainsTokensTools()
+
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
 
@@ -308,11 +311,7 @@ const Swap = () => {
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
-  const [possibilities, setPossibilities] = useState<{
-    chainsLoaded: boolean
-    tokensLoaded: boolean
-    toolsLoaded: boolean
-  }>({ chainsLoaded: false, tokensLoaded: false, toolsLoaded: false })
+
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
   const { active } = useWeb3React()
@@ -370,90 +369,65 @@ const Swap = () => {
 
   // get chains
   useEffect(() => {
-    const load = async () => {
-      const chains = await LiFi.getChains()
+    setAvailableChains(chainsTokensTools.chains)
 
-      if (!chains) {
-        // eslint-disable-next-line
-        console.warn('possibilities request did not contain required setup information')
-        return
-      }
-
-      // chains
-      setAvailableChains(chains)
-      setPossibilities((possibilities) => ({ ...possibilities, chainsLoaded: true }))
-    }
-
-    load()
-  }, [])
+    // load()
+  }, [chainsTokensTools.chains])
 
   //get tokens
   useEffect(() => {
-    const load = async () => {
-      const tokens = (await LiFi.getTokens()).tokens
-
-      if (!tokens) {
-        // eslint-disable-next-line
-        console.warn('token request did not contain required setup information')
-        return
-      }
-      const newTokens: TokenAmountList = {}
-      // let chain: keyof typeof tokens
-      for (let chainId in tokens) {
-        const chain = getChainById(Number(chainId))
-        if (!newTokens[chain.key]) newTokens[chain.key] = []
-        newTokens[chain.key] = tokens[chainId]
-      }
-
-      setTokens((oldTokens) => {
-        // which existing tokens are not included?
-        Object.keys(oldTokens).forEach((chainKey) => {
-          oldTokens[chainKey].forEach((token) => {
-            if (!newTokens[chainKey]) newTokens[chainKey] = []
-            if (!newTokens[chainKey].find((item) => item.address === token.address)) {
-              newTokens[chainKey].push(token)
-
-              // -> load token from API to get current version (e.g. if token was added via url)
-              updateTokenData(token)
-            }
-          })
-        })
-        return newTokens
-      })
-      setPossibilities((possibilities) => ({ ...possibilities, tokensLoaded: true }))
+    const tokens = chainsTokensTools.tokens
+    if (!tokens) {
+      // eslint-disable-next-line
+      console.warn('token request did not contain required setup information')
+      return
     }
-    load()
-  }, [])
+    const newTokens: TokenAmountList = {}
+    // let chain: keyof typeof tokens
+    for (let chainId in tokens) {
+      const chain = getChainById(Number(chainId))
+      if (!newTokens[chain.key]) newTokens[chain.key] = []
+      newTokens[chain.key] = tokens[chainId]
+    }
+
+    setTokens((oldTokens) => {
+      // which existing tokens are not included?
+      Object.keys(oldTokens).forEach((chainKey) => {
+        oldTokens[chainKey].forEach((token) => {
+          if (!newTokens[chainKey]) newTokens[chainKey] = []
+          if (!newTokens[chainKey].find((item) => item.address === token.address)) {
+            newTokens[chainKey].push(token)
+
+            // -> load token from API to get current version (e.g. if token was added via url)
+            updateTokenData(token)
+          }
+        })
+      })
+      return newTokens
+    })
+  }, [chainsTokensTools.tokens])
 
   //get tools
   useEffect(() => {
-    const load = async () => {
-      const tools = await LiFi.getTools()
-      if (!tools.bridges || !tools.exchanges) {
-        // eslint-disable-next-line
-        console.warn('tools request did not contain required setup information')
-        return
-      }
-      // bridges
-      const bridges: string[] = tools.bridges
-        .map((bridge: any) => bridge.key)
-        .map((bridgeTool: string) => bridgeTool.split('-')[0])
-      const allBridges = Array.from(new Set(bridges))
-      setAvailableBridges(allBridges)
-      setOptionEnabledBridges(allBridges)
+    setAvailableExchanges(chainsTokensTools.bridges)
+    setOptionEnabledExchanges(chainsTokensTools.exchanges)
+    setAvailableBridges(chainsTokensTools.bridges)
+    setOptionEnabledBridges(chainsTokensTools.bridges)
+  }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
-      // exchanges
-      const exchanges: string[] = tools.exchanges
-        .map((exchange: any) => exchange.key)
-        .map((exchangeTool: string) => exchangeTool.split('-')[0])
-      const allExchanges = Array.from(new Set(exchanges))
-      setAvailableExchanges(allExchanges)
-      setOptionEnabledExchanges(allExchanges)
-
-      setPossibilities((possibilities) => ({ ...possibilities, toolsLoaded: true }))
+  useEffect(() => {
+    if (
+      chainsTokensTools.chainsLoaded &&
+      chainsTokensTools.tokensLoaded &&
+      chainsTokensTools.toolsLoaded
+    ) {
+      setRefreshBalances(true)
     }
-    load()
-  }, [])
+  }, [
+    chainsTokensTools.chainsLoaded,
+    chainsTokensTools.tokensLoaded,
+    chainsTokensTools.toolsLoaded,
+  ])
 
   const updateTokenData = (token: Token) => {
     LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
@@ -506,7 +480,12 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
-    if (possibilities.chainsLoaded && possibilities.toolsLoaded && possibilities.tokensLoaded) {
+    if (
+      !!chainsTokensTools.chains.length &&
+      !!(Object.keys(chainsTokensTools.tokens).length === 0) &&
+      !!chainsTokensTools.exchanges.length &&
+      !!chainsTokensTools.bridges.length
+    ) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
@@ -514,7 +493,7 @@ const Swap = () => {
       setToChainKey(startParams.withdrawChain)
       setStartParamsDefined(true)
     }
-  }, [possibilities])
+  }, [chainsTokensTools])
 
   // update query string
   useEffect(() => {
