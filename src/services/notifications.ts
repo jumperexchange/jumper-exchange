@@ -68,6 +68,7 @@ const getNotificationContents = (
 }
 
 const showNotification = (type: NotificationType, visibilityOverride = false) => {
+  if (!notificationsSupported()) return
   if (Notification.permission === 'denied') return
   const { title, options, alwaysShow } = getNotificationContents(type)
   if (document.hidden || alwaysShow || visibilityOverride) {
