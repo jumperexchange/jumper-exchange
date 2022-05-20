@@ -52,6 +52,7 @@ import {
   getChainById,
   getChainByKey,
   isSwapStep,
+  Order,
   Route as RouteType,
   RoutesRequest,
   RoutesResponse,
@@ -72,6 +73,24 @@ const TOTAL_SLIPPAGE_GUARD_MODAL = new BigNumber(0.9)
 
 const history = createBrowserHistory()
 const { Panel } = Collapse
+const availableOrders = [
+  {
+    key: 'RECOMMENDED',
+    name: 'Recommended',
+  },
+  {
+    key: 'SAFEST',
+    name: 'Safest',
+  },
+  {
+    key: 'FASTEST',
+    name: 'Fastest',
+  },
+  {
+    key: 'CHEAPEST',
+    name: 'Cheapest',
+  },
+]
 
 let currentRouteCallId: string
 
@@ -164,6 +183,7 @@ const Swap = () => {
   const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
 
   // Options
+  const [optionOrder, setOptionOrder] = useState<Order>('RECOMMENDED' as Order)
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
@@ -693,6 +713,7 @@ const Swap = () => {
           fromAddress: web3.account || undefined,
           toAddress: web3.account || undefined,
           options: {
+            order: optionOrder,
             slippage: optionSlippage / 100,
             bridges: {
               allow: optionEnabledBridges,
@@ -724,6 +745,7 @@ const Swap = () => {
     fromTokenAddress,
     toChainKey,
     toTokenAddress,
+    optionOrder,
     optionSlippage,
     optionEnabledBridges,
     optionEnabledExchanges,
@@ -979,6 +1001,25 @@ const Swap = () => {
                   <Row justify={'center'} style={{ marginTop: 16 }}>
                     <Collapse ghost style={{ width: '100%' }}>
                       <Collapse.Panel header={`Advanced Options`} key="1">
+                        Order
+                        <div>
+                          <Select
+                            placeholder="Select Chain"
+                            value={optionOrder}
+                            onChange={(v) => setOptionOrder(v)}
+                            style={{
+                              width: '100%',
+                            }}>
+                            {availableOrders.map((orderOption) => (
+                              <Select.Option
+                                key={orderOption.key}
+                                value={orderOption.key}
+                                data-label={orderOption.name}>
+                                {orderOption.name}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
                         Slippage
                         <div>
                           <InputNumber
@@ -989,8 +1030,7 @@ const Swap = () => {
                             parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
                             onChange={setOptionSlippage}
                             style={{
-                              border: '1px solid rgba(0,0,0,0.25)',
-                              borderRadius: 6,
+                              border: '1px solid #d9d9d9',
                               width: '100%',
                             }}
                           />
