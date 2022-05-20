@@ -305,8 +305,11 @@ const Swap = () => {
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
-  const [possibilitiesLoaded, setPossibilitiesLoaded] = useState<boolean>(false)
-
+  const [possibilities, setPossibilities] = useState<{
+    chainsLoaded: boolean
+    tokensLoaded: boolean
+    toolsLoaded: boolean
+  }>({ chainsLoaded: false, tokensLoaded: false, toolsLoaded: false })
   const [tokenPolygonBCT, setTokenPolygonBCT] = useState<Token>()
 
   // Wallet
@@ -423,25 +426,12 @@ const Swap = () => {
     }
   }, [])
 
+  //get chains
   useEffect(() => {
     const load = async () => {
-      const chainPromise = LiFi.getChains()
-      const tokenPromise = LiFi.getTokens()
-      const toolsPromise = LiFi.getTools()
-      const tokenBCTPromise = LiFi.getToken(ChainId.POL, TOUCAN_BCT_ADDRESS)!
+      const chains = await LiFi.getChains()
 
-      const resolvedSetupPromises = await Promise.all([
-        chainPromise,
-        tokenPromise,
-        toolsPromise,
-        tokenBCTPromise,
-      ])
-      const chains = resolvedSetupPromises[0]
-      const tokens = resolvedSetupPromises[1].tokens
-      const tools = resolvedSetupPromises[2]
-      setTokenPolygonBCT(resolvedSetupPromises[3])
-
-      if (!chains || !tools.bridges || !tools.exchanges || !tokens) {
+      if (!chains) {
         // eslint-disable-next-line
         console.warn('possibilities request did not contain required setup information')
         return
@@ -453,24 +443,25 @@ const Swap = () => {
         return etherspotSupportedChains.includes(chain.id)
       })
       setAvailableChains(limitedChains)
+      setPossibilities((possibilities) => ({ ...possibilities, chainsLoaded: true }))
+    }
 
-      // bridges
-      const bridges: string[] = tools.bridges
-        .map((bridge: any) => bridge.key)
-        .map((bridgeTool: string) => bridgeTool.split('-')[0])
-      const allBridges = Array.from(new Set(bridges))
-      setAvailableBridges(allBridges)
-      setOptionEnabledBridges(allBridges)
+    load()
+  }, [])
 
-      // exchanges
-      const exchanges: string[] = tools.exchanges
-        .map((exchange: any) => exchange.key)
-        .map((exchangeTool: string) => exchangeTool.split('-')[0])
-      const allExchanges = Array.from(new Set(exchanges))
-      setAvailableExchanges(allExchanges)
-      setOptionEnabledExchanges(allExchanges)
+  //get tokens
+  useEffect(() => {
+    const load = async () => {
+      const tokens = (await LiFi.getTokens()).tokens
+      const tokenBCT = await LiFi.getToken(ChainId.POL, TOUCAN_BCT_ADDRESS)!
 
-      // tokens
+      setTokenPolygonBCT(tokenBCT)
+
+      if (!tokens) {
+        // eslint-disable-next-line
+        console.warn('token request did not contain required setup information')
+        return
+      }
       const newTokens: TokenAmountList = {}
       // let chain: keyof typeof tokens
       for (let chainId in tokens) {
@@ -494,12 +485,46 @@ const Swap = () => {
         })
         return newTokens
       })
-      setRefreshBalances(true)
-      setPossibilitiesLoaded(true)
+      setPossibilities((possibilities) => ({ ...possibilities, tokensLoaded: true }))
     }
-
     load()
   }, [])
+
+  //get tools
+  useEffect(() => {
+    const load = async () => {
+      const tools = await LiFi.getTools()
+      if (!tools.bridges || !tools.exchanges) {
+        // eslint-disable-next-line
+        console.warn('tools request did not contain required setup information')
+        return
+      }
+      // bridges
+      const bridges: string[] = tools.bridges
+        .map((bridge: any) => bridge.key)
+        .map((bridgeTool: string) => bridgeTool.split('-')[0])
+      const allBridges = Array.from(new Set(bridges))
+      setAvailableBridges(allBridges)
+      setOptionEnabledBridges(allBridges)
+
+      // exchanges
+      const exchanges: string[] = tools.exchanges
+        .map((exchange: any) => exchange.key)
+        .map((exchangeTool: string) => exchangeTool.split('-')[0])
+      const allExchanges = Array.from(new Set(exchanges))
+      setAvailableExchanges(allExchanges)
+      setOptionEnabledExchanges(allExchanges)
+
+      setPossibilities((possibilities) => ({ ...possibilities, toolsLoaded: true }))
+    }
+    load()
+  }, [])
+
+  useEffect(() => {
+    if (possibilities.chainsLoaded && possibilities.tokensLoaded && possibilities.toolsLoaded) {
+      setRefreshBalances(true)
+    }
+  }, [possibilities.chainsLoaded, possibilities.tokensLoaded, possibilities.toolsLoaded])
 
   const updateTokenData = (token: Token) => {
     LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
@@ -537,7 +562,7 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
-    if (possibilitiesLoaded) {
+    if (possibilities.chainsLoaded && possibilities.tokensLoaded && possibilities.toolsLoaded) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
@@ -545,7 +570,7 @@ const Swap = () => {
       setToChainKey(startParams.withdrawChain)
       setStartParamsDefined(true)
     }
-  }, [possibilitiesLoaded])
+  }, [possibilities])
 
   // update query string
   useEffect(() => {
