@@ -35,9 +35,9 @@ const supportedWallets: Wallet[] = [
     connector: async () => {
       return await getInjectedConnector()
     },
-    providerCheck: () => {
-      return !!(window as any).ethereum && !!(window as any).ethereum['isMetaMask']
-    },
+    // providerCheck: () => {
+    //   return !!(window as any).ethereum && !!(window as any).ethereum['isMetaMask']
+    // },
   },
   {
     key: 'walletconnect',
