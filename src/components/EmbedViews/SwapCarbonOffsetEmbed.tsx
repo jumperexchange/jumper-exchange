@@ -430,42 +430,12 @@ const Swap = () => {
 
   //get tokens
   useEffect(() => {
-    const loadTokens = async () => {
-      const tokens = chainsTokensTools.tokens
+    setTokens(chainsTokensTools.tokens)
+    const loadAdditionalToken = async () => {
       const tokenBCT = await LiFi.getToken(ChainId.POL, TOUCAN_BCT_ADDRESS)!
-
       setTokenPolygonBCT(tokenBCT)
-      if (!tokens) {
-        // eslint-disable-next-line
-        console.warn('token request did not contain required setup information')
-        return
-      }
-      const newTokens: TokenAmountList = {}
-      // let chain: keyof typeof tokens
-      for (let chainId in tokens) {
-        const chain = getChainById(Number(chainId))
-        if (!newTokens[chain.key]) newTokens[chain.key] = []
-        newTokens[chain.key] = tokens[chainId]
-      }
-
-      setTokens((oldTokens) => {
-        // which existing tokens are not included?
-        Object.keys(oldTokens).forEach((chainKey) => {
-          oldTokens[chainKey].forEach((token) => {
-            if (!newTokens[chainKey]) newTokens[chainKey] = []
-            if (!newTokens[chainKey].find((item) => item.address === token.address)) {
-              newTokens[chainKey].push(token)
-
-              // -> load token from API to get current version (e.g. if token was added via url)
-              updateTokenData(token)
-            }
-          })
-        })
-        return newTokens
-      })
     }
-
-    loadTokens()
+    loadAdditionalToken()
   }, [chainsTokensTools.tokens])
 
   //get tools
@@ -484,32 +454,7 @@ const Swap = () => {
     ) {
       setRefreshBalances(true)
     }
-  }, [
-    chainsTokensTools.chainsLoaded,
-    chainsTokensTools.tokensLoaded,
-    chainsTokensTools.toolsLoaded,
-  ])
-
-  const updateTokenData = (token: Token) => {
-    LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
-      // sync optional properties
-      updatedToken.logoURI = updatedToken.logoURI || token.logoURI
-      updatedToken.priceUSD = updatedToken.priceUSD || token.priceUSD
-
-      // update tokens
-      setTokens((tokens) => {
-        const chain = getChainById(updatedToken.chainId)
-        if (!tokens[chain.key]) tokens[chain.key] = []
-        const index = tokens[chain.key].findIndex((token) => token.address === updatedToken.address)
-        if (index === -1) {
-          tokens[chain.key].push(updatedToken)
-        } else {
-          tokens[chain.key][index] = updatedToken
-        }
-        return tokens
-      })
-    })
-  }
+  }, [])
 
   // autoselect from chain based on wallet
   useEffect(() => {

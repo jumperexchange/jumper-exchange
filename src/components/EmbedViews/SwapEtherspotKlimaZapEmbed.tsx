@@ -279,7 +279,7 @@ const Swap = () => {
   const chainsTokensTools = useChainsTokensTools()
 
   // chains
-  const [availableChains, setAvailableChains] = useState<Chain[]>([])
+  const [availableChains, setAvailableChains] = useState<Chain[]>(chainsTokensTools.chains)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unused, setStateUpdate] = useState<number>(0)
@@ -291,7 +291,7 @@ const Swap = () => {
   const [toChainKey, setToChainKey] = useState<ChainKey | undefined>()
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address) // TODO: Change This
-  const [tokens, setTokens] = useState<TokenAmountList>({})
+  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
@@ -306,10 +306,16 @@ const Swap = () => {
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
-  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
-  const [availableBridges, setAvailableBridges] = useState<string[]>([])
-  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
-  const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
+  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>(
+    chainsTokensTools.bridges,
+  )
+  const [availableBridges, setAvailableBridges] = useState<string[]>(chainsTokensTools.bridges)
+  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>(
+    chainsTokensTools.exchanges,
+  )
+  const [availableExchanges, setAvailableExchanges] = useState<string[]>(
+    chainsTokensTools.exchanges,
+  )
 
   // Routes
   const [route, setRoute] = useState<ExtendedRoute>({} as any)
@@ -459,43 +465,14 @@ const Swap = () => {
 
   //get tokens
   useEffect(() => {
-    const loadTokens = async () => {
-      const tokens = chainsTokensTools.tokens
+    setTokens(chainsTokensTools.tokens)
+    const loadAdditionalToken = async () => {
       const klimaToken = await LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
       const sKlimaToken = await LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
       setTokenPolygonKlima(klimaToken)
       setTokenPolygonSKLIMA(sKlimaToken)
-      if (!tokens) {
-        // eslint-disable-next-line
-        console.warn('token request did not contain required setup information')
-        return
-      }
-      const newTokens: TokenAmountList = {}
-      // let chain: keyof typeof tokens
-      for (let chainId in tokens) {
-        const chain = getChainById(Number(chainId))
-        if (!newTokens[chain.key]) newTokens[chain.key] = []
-        newTokens[chain.key] = tokens[chainId]
-      }
-
-      setTokens((oldTokens) => {
-        // which existing tokens are not included?
-        Object.keys(oldTokens).forEach((chainKey) => {
-          oldTokens[chainKey].forEach((token) => {
-            if (!newTokens[chainKey]) newTokens[chainKey] = []
-            if (!newTokens[chainKey].find((item) => item.address === token.address)) {
-              newTokens[chainKey].push(token)
-
-              // -> load token from API to get current version (e.g. if token was added via url)
-              updateTokenData(token)
-            }
-          })
-        })
-        return newTokens
-      })
     }
-
-    loadTokens()
+    loadAdditionalToken()
   }, [chainsTokensTools.tokens])
 
   //get tools
@@ -514,32 +491,7 @@ const Swap = () => {
     ) {
       setRefreshBalances(true)
     }
-  }, [
-    chainsTokensTools.chainsLoaded,
-    chainsTokensTools.tokensLoaded,
-    chainsTokensTools.toolsLoaded,
-  ])
-
-  const updateTokenData = (token: Token) => {
-    LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
-      // sync optional properties
-      updatedToken.logoURI = updatedToken.logoURI || token.logoURI
-      updatedToken.priceUSD = updatedToken.priceUSD || token.priceUSD
-
-      // update tokens
-      setTokens((tokens) => {
-        const chain = getChainById(updatedToken.chainId)
-        if (!tokens[chain.key]) tokens[chain.key] = []
-        const index = tokens[chain.key].findIndex((token) => token.address === updatedToken.address)
-        if (index === -1) {
-          tokens[chain.key].push(updatedToken)
-        } else {
-          tokens[chain.key][index] = updatedToken
-        }
-        return tokens
-      })
-    })
-  }
+  }, [])
 
   // autoselect from chain based on wallet
   useEffect(() => {

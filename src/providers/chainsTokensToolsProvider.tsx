@@ -1,13 +1,12 @@
-import { Chain, Token } from '@lifinance/sdk'
+import { Chain, getChainById } from '@lifinance/sdk'
 import { createContext, ReactChild, ReactChildren, useContext, useEffect, useState } from 'react'
 
 import LiFi from '../LiFi'
+import { TokenAmountList } from '../types'
 
 export interface ChainsTokensToolsContextProps {
   chains: Chain[]
-  tokens: {
-    [chainId: number]: Token[]
-  }
+  tokens: TokenAmountList
   bridges: string[]
   exchanges: string[]
   chainsLoaded: boolean
@@ -64,8 +63,25 @@ export const ChainsTokensToolsProvider = ({ children }: AuxProps) => {
         console.warn('token request did not contain required setup information')
         return
       }
+      const newTokens: TokenAmountList = {}
+      // let chain: keyof typeof tokens
+      for (let chainId in tokens) {
+        const chain = getChainById(Number(chainId))
+        if (!newTokens[chain.key]) newTokens[chain.key] = []
+        newTokens[chain.key] = tokens[chainId]
+      }
 
-      setData((data) => ({ ...data, tokens: tokens, tokensLoaded: true }))
+      const oldTokens = data.tokens
+      Object.keys(oldTokens).forEach((chainKey) => {
+        oldTokens[chainKey].forEach((token) => {
+          if (!newTokens[chainKey]) newTokens[chainKey] = []
+          if (!newTokens[chainKey].find((item) => item.address === token.address)) {
+            newTokens[chainKey].push(token)
+          }
+        })
+      })
+
+      setData((data) => ({ ...data, tokens: newTokens, tokensLoaded: true }))
     }
     load()
   }, [])
