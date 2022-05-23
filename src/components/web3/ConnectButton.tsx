@@ -7,6 +7,7 @@ import { Avatar, Button, Modal, Popconfirm, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 
 import blockWalletIcon from '../../assets/wallets/blockwallet.svg'
+import imTokenIcon from '../../assets/wallets/imToken.svg'
 import metamaskIcon from '../../assets/wallets/metamask.svg'
 import walletConnectIcon from '../../assets/wallets/walletconnect.svg'
 import {
@@ -35,9 +36,10 @@ const supportedWallets: Wallet[] = [
     connector: async () => {
       return await getInjectedConnector()
     },
-    providerCheck: () => {
-      return !!(window as any).ethereum && !!(window as any).ethereum['isMetaMask']
-    },
+    // Removed for now to allow all kinds of injected wallets to connect using the metamask button
+    // providerCheck: () => {
+    //   return !!(window as any).ethereum && !!(window as any).ethereum['isMetaMask']
+    // },
   },
   {
     key: 'walletconnect',
@@ -60,6 +62,17 @@ const supportedWallets: Wallet[] = [
       } else {
         return false
       }
+    },
+  },
+  {
+    key: 'imtoken',
+    name: 'imToken',
+    icon: imTokenIcon,
+    connector: async () => {
+      return await getInjectedConnector()
+    },
+    providerCheck: () => {
+      return !!(window as any).ethereum && !!(window as any).ethereum['isImToken']
     },
   },
 ]
