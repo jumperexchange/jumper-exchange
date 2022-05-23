@@ -141,14 +141,6 @@ interface ExtendedRoute {
   stakingStep: Step
 }
 
-interface StartParams {
-  depositChain?: ChainKey
-  depositToken?: string
-  depositAmount: BigNumber
-  withdrawChain?: ChainKey
-  withdrawToken?: string
-}
-
 const Swap = () => {
   const chainsTokensTools = useChainsTokensTools()
 
