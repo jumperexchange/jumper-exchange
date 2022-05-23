@@ -1001,10 +1001,10 @@ const Swap = () => {
                   <Row justify={'center'} style={{ marginTop: 16 }}>
                     <Collapse ghost style={{ width: '100%' }}>
                       <Collapse.Panel header={`Advanced Options`} key="1">
-                        Order
+                        Bridge Prioritization
                         <div>
                           <Select
-                            placeholder="Select Chain"
+                            placeholder="Select Order"
                             value={optionOrder}
                             onChange={(v) => setOptionOrder(v)}
                             style={{
