@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import { Sdk } from 'etherspot'
 import { useState } from 'react'
 
-import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecutor'
+import { useKlimaStakingExecutor } from '../../hooks/Etherspot/klimaStakingExecutor'
 import { ChainId, CoinKey, ExtendedRouteOptional, findDefaultToken, Token } from '../../types'
 import LoadingIndicator from '../LoadingIndicator'
 import { MinimalEtherspotStep } from '../SwappingEtherspot/StepRenderers/MinimalStepRenderers/MinimalEtherspotStep'
@@ -35,7 +35,7 @@ export const ResidualRouteKlimaStakeModal = ({
     resetEtherspotExecution,
     handlePotentialEtherSpotError,
     finalizeEtherSpotExecution,
-  } = useOffsetCarbonExecutor()
+  } = useKlimaStakingExecutor()
 
   const stakeResidualFunds = async () => {
     setIsSwapping(true)
