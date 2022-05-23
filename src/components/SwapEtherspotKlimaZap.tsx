@@ -65,7 +65,6 @@ import {
   Token,
   TokenAmount,
   TokenAmountList,
-  TokenWithAmounts,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
 import { ResidualRouteKlimaStakeModal } from './ResidualRouteSwappingModal/ResidualRouteKlimaStakeModal'
