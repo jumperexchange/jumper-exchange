@@ -1,8 +1,20 @@
-import { ChainKey, Coin, Route, Step, TokenAmount } from '@lifinance/sdk'
+import { ChainKey, Coin, Route, Step, TokenAmount, TokenWithAmounts } from '@lifinance/sdk'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 
 import { ExtendedTransactionRequest } from '../services/routingService'
+
+export interface TokenAmountList {
+  [ChainKey: string]: Array<TokenWithAmounts>
+}
+
+export interface SwapPageStartParams {
+  depositChain?: ChainKey
+  depositToken?: string
+  depositAmount: BigNumber
+  withdrawChain?: ChainKey
+  withdrawToken?: string
+}
 
 export interface Amounts {
   amount_coin: BigNumber

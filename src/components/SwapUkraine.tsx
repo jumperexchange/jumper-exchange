@@ -34,6 +34,7 @@ import { UkraineIcon } from '../assets/icons/ukraineIcon'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import LiFi from '../LiFi'
+import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -44,12 +45,10 @@ import {
   isWalletDeactivated,
 } from '../services/utils'
 import {
-  BridgeDefinition,
   Chain,
   ChainId,
   ChainKey,
   CoinKey,
-  ExchangeDefinition,
   findDefaultToken,
   getChainById,
   getChainByKey,
@@ -57,6 +56,7 @@ import {
   Route as RouteType,
   RoutesRequest,
   RoutesResponse,
+  SwapPageStartParams,
   Token,
   TokenAmount,
 } from '../types'
@@ -128,149 +128,15 @@ const parseToken = (
   // does token address exist in our default tokens? (tokenlists not loaded yet)
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
-
-const getDefaultParams = (
-  search: string,
-  availableChains: Chain[],
-  transferTokens: { [ChainKey: string]: Array<Token> },
-) => {
-  const defaultParams: StartParams = {
-    depositChain: undefined,
-    depositToken: undefined,
-    depositAmount: new BigNumber(-1),
-    withdrawChain: ChainKey.POL,
-    withdrawToken: findDefaultToken(CoinKey.ETH, ChainId.POL).address, // TODO: change this
-  }
-
-  const params = QueryString.parse(search, { ignoreQueryPrefix: true })
-
-  // fromChain
-  let newFromChain
-  if (params.fromChain && typeof params.fromChain === 'string') {
-    try {
-      const newFromChainId = parseChain(params.fromChain)
-      newFromChain = availableChains.find((chain) => chain.id === newFromChainId)
-
-      if (newFromChain) {
-        defaultParams.depositChain = newFromChain.key
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(e)
-    }
-  }
-
-  // fromToken
-  if (params.fromToken && typeof params.fromToken === 'string' && defaultParams.depositChain) {
-    try {
-      const foundToken = parseToken(params.fromToken, defaultParams.depositChain, transferTokens)
-      const inDefault = transferTokens[defaultParams.depositChain].find(
-        (token) => token.address === foundToken?.address,
-      )
-      if (foundToken && inDefault) {
-        defaultParams.depositToken = foundToken.address
-      } else if (foundToken) {
-        transferTokens[defaultParams.depositChain].push(foundToken)
-        defaultParams.depositToken = foundToken.address
-      } else if (newFromChain) {
-        // only add unknow token if chain was specified with it
-        const fromTokenId = ethers.utils.getAddress(params.fromToken.trim()).toLowerCase()
-        transferTokens[defaultParams.depositChain].push({
-          address: fromTokenId,
-          symbol: 'Unknown',
-          decimals: 18,
-          chainId: newFromChain.id,
-          coinKey: '' as CoinKey,
-          name: 'Unknown',
-          logoURI: '',
-        })
-        defaultParams.depositToken = fromTokenId
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(e)
-    }
-  }
-
-  // fromAmount
-  if (params.fromAmount && typeof params.fromAmount === 'string') {
-    try {
-      const newAmount = new BigNumber(params.fromAmount)
-      if (newAmount.gt(0)) {
-        defaultParams.depositAmount = newAmount
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(e)
-    }
-  }
-
-  // toChain
-  let newToChain
-  if (params.toChain && typeof params.toChain === 'string') {
-    try {
-      const newToChainId = parseChain(params.toChain)
-      newToChain = availableChains.find((chain) => chain.id === newToChainId)
-
-      if (newToChain) {
-        defaultParams.withdrawChain = newToChain.key
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(e)
-    }
-  }
-
-  // toToken
-  if (params.toToken && typeof params.toToken === 'string' && defaultParams.withdrawChain) {
-    try {
-      const foundToken = parseToken(params.toToken, defaultParams.withdrawChain, transferTokens)
-      const inDefault = transferTokens[defaultParams.withdrawChain].find(
-        (token) => token.address === foundToken?.address,
-      )
-      if (foundToken && inDefault) {
-        defaultParams.withdrawToken = foundToken.address
-      } else if (foundToken) {
-        transferTokens[defaultParams.withdrawChain].push(foundToken)
-        defaultParams.withdrawToken = foundToken.address
-      } else if (newToChain) {
-        // only add unknow token if chain was specified with it
-        const toTokenId = ethers.utils.getAddress(params.toToken.trim()).toLowerCase()
-        transferTokens[defaultParams.withdrawChain].push({
-          address: toTokenId,
-          symbol: 'Unknown',
-          decimals: 18,
-          chainId: newToChain.id,
-          coinKey: '' as CoinKey,
-          name: 'Unknown',
-          logoURI: '',
-        })
-        defaultParams.withdrawToken = toTokenId
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(e)
-    }
-  }
-
-  return defaultParams
-}
-
 interface TokenAmountList {
   [ChainKey: string]: Array<TokenWithAmounts>
 }
 
-interface StartParams {
-  depositChain?: ChainKey
-  depositToken?: string
-  depositAmount: BigNumber
-  withdrawChain?: ChainKey
-  withdrawToken?: string
-}
-
 const Swap = () => {
+  const chainsTokensTools = useChainsTokensTools()
+
   // chains
-  const [availableChains, setAvailableChains] = useState<Chain[]>([])
+  const [availableChains, setAvailableChains] = useState<Chain[]>(chainsTokensTools.chains)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unused, setStateUpdate] = useState<number>(0)
@@ -284,7 +150,7 @@ const Swap = () => {
   const [toTokenAddress] = useState<string | undefined>(
     findDefaultToken(CoinKey.ETH, ChainId.POL).address,
   )
-  const [tokens, setTokens] = useState<TokenAmountList>({})
+  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
@@ -293,10 +159,14 @@ const Swap = () => {
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
-  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
-  const [, setAvailableBridges] = useState<string[]>([])
-  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
-  const [, setAvailableExchanges] = useState<string[]>([])
+  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>(
+    chainsTokensTools.bridges,
+  )
+  const [, setAvailableBridges] = useState<string[]>(chainsTokensTools.bridges)
+  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>(
+    chainsTokensTools.exchanges,
+  )
+  const [, setAvailableExchanges] = useState<string[]>(chainsTokensTools.exchanges)
 
   // Routes
   const [routes, setRoutes] = useState<Array<RouteType>>([])
@@ -310,7 +180,6 @@ const Swap = () => {
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
-  const [possibilitiesLoaded, setPossibilitiesLoaded] = useState<boolean>(false)
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -367,92 +236,35 @@ const Swap = () => {
     }
   }, [])
 
+  // get chains
   useEffect(() => {
-    const load = async () => {
-      const possibilities = await LiFi.getPossibilities({
-        exchanges: { deny: ['dodo', 'openocean', '0x'] },
-      })
+    setAvailableChains(chainsTokensTools.chains)
 
-      if (
-        !possibilities.chains ||
-        !possibilities.bridges ||
-        !possibilities.exchanges ||
-        !possibilities.tokens
-      ) {
-        // eslint-disable-next-line
-        console.warn('possibilities request did not contain required setup information')
-        return
-      }
+    // load()
+  }, [chainsTokensTools.chains])
 
-      // chains
-      setAvailableChains(possibilities.chains)
+  //get tokens
+  useEffect(() => {
+    setTokens(chainsTokensTools.tokens)
+  }, [chainsTokensTools.tokens])
 
-      // bridges
-      const bridges: string[] = possibilities.bridges
-        .map((bridge: BridgeDefinition) => bridge.tool)
-        .map((bridgeTool: string) => bridgeTool.split('-')[0])
-      const allBridges = Array.from(new Set(bridges))
-      setAvailableBridges(allBridges)
-      setOptionEnabledBridges(allBridges)
+  //get tools
+  useEffect(() => {
+    setAvailableExchanges(chainsTokensTools.bridges)
+    setOptionEnabledExchanges(chainsTokensTools.exchanges)
+    setAvailableBridges(chainsTokensTools.bridges)
+    setOptionEnabledBridges(chainsTokensTools.bridges)
+  }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
-      // exchanges
-      const exchanges: string[] = possibilities.exchanges
-        .map((exchange: ExchangeDefinition) => exchange.tool)
-        .map((exchangeTool: string) => exchangeTool.split('-')[0])
-      const allExchanges = Array.from(new Set(exchanges))
-      setAvailableExchanges(allExchanges)
-      setOptionEnabledExchanges(allExchanges)
-
-      // tokens
-      const newTokens: TokenAmountList = {}
-      possibilities.tokens.forEach((token: TokenWithAmounts) => {
-        const chain = getChainById(token.chainId)
-        if (!newTokens[chain.key]) newTokens[chain.key] = []
-        newTokens[chain.key].push(token)
-      })
-
-      setTokens((tokens) => {
-        // which existing tokens are not included?
-        Object.keys(tokens).forEach((chainKey) => {
-          tokens[chainKey].forEach((token) => {
-            if (!newTokens[chainKey]) newTokens[chainKey] = []
-            if (!newTokens[chainKey].find((item) => item.address === token.address)) {
-              newTokens[chainKey].push(token)
-
-              // -> load token from API to get current version (e.g. if token was added via url)
-              updateTokenData(token)
-            }
-          })
-        })
-        return newTokens
-      })
+  useEffect(() => {
+    if (
+      chainsTokensTools.chainsLoaded &&
+      chainsTokensTools.tokensLoaded &&
+      chainsTokensTools.toolsLoaded
+    ) {
       setRefreshBalances(true)
-      setPossibilitiesLoaded(true)
     }
-
-    load()
   }, [])
-
-  const updateTokenData = (token: Token) => {
-    LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
-      // sync optional properties
-      updatedToken.logoURI = updatedToken.logoURI || token.logoURI
-      updatedToken.priceUSD = updatedToken.priceUSD || token.priceUSD
-
-      // update tokens
-      setTokens((tokens) => {
-        const chain = getChainById(updatedToken.chainId)
-        if (!tokens[chain.key]) tokens[chain.key] = []
-        const index = tokens[chain.key].findIndex((token) => token.address === updatedToken.address)
-        if (index === -1) {
-          tokens[chain.key].push(updatedToken)
-        } else {
-          tokens[chain.key][index] = updatedToken
-        }
-        return tokens
-      })
-    })
-  }
 
   const getSelectedWithdraw = () => {
     if (!routes.length) {
@@ -484,7 +296,12 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
-    if (possibilitiesLoaded) {
+    if (
+      !!chainsTokensTools.chains.length &&
+      !!(Object.keys(chainsTokensTools.tokens).length === 0) &&
+      !!chainsTokensTools.exchanges.length &&
+      !!chainsTokensTools.bridges.length
+    ) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
@@ -492,7 +309,160 @@ const Swap = () => {
       setToChainKey(startParams.withdrawChain)
       setStartParamsDefined(true)
     }
-  }, [possibilitiesLoaded])
+  }, [chainsTokensTools])
+
+  const updateTokenData = (token: Token) => {
+    LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
+      // sync optional properties
+      updatedToken.logoURI = updatedToken.logoURI || token.logoURI
+      updatedToken.priceUSD = updatedToken.priceUSD || token.priceUSD
+
+      // update tokens
+      setTokens((tokens) => {
+        const chain = getChainById(updatedToken.chainId)
+        if (!tokens[chain.key]) tokens[chain.key] = []
+        const index = tokens[chain.key].findIndex((token) => token.address === updatedToken.address)
+        if (index === -1) {
+          tokens[chain.key].push(updatedToken)
+        } else {
+          tokens[chain.key][index] = updatedToken
+        }
+        return tokens
+      })
+    })
+  }
+
+  const getDefaultParams = (
+    search: string,
+    availableChains: Chain[],
+    transferTokens: { [ChainKey: string]: Array<Token> },
+  ) => {
+    const defaultParams: SwapPageStartParams = {
+      depositChain: undefined,
+      depositToken: undefined,
+      depositAmount: new BigNumber(-1),
+      withdrawChain: undefined,
+      withdrawToken: undefined,
+    }
+
+    const params = QueryString.parse(search, { ignoreQueryPrefix: true })
+
+    // fromChain
+    let newFromChain
+    if (params.fromChain && typeof params.fromChain === 'string') {
+      try {
+        const newFromChainId = parseChain(params.fromChain)
+        newFromChain = availableChains.find((chain) => chain.id === newFromChainId)
+
+        if (newFromChain) {
+          defaultParams.depositChain = newFromChain.key
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn(e)
+      }
+    }
+
+    // fromToken
+    if (params.fromToken && typeof params.fromToken === 'string' && defaultParams.depositChain) {
+      try {
+        const foundToken = parseToken(params.fromToken, defaultParams.depositChain, transferTokens)
+        const inDefault = transferTokens[defaultParams.depositChain].find(
+          (token) => token.address === foundToken?.address,
+        )
+        if (foundToken && inDefault) {
+          defaultParams.depositToken = foundToken.address
+        } else if (foundToken) {
+          transferTokens[defaultParams.depositChain].push(foundToken)
+          defaultParams.depositToken = foundToken.address
+        } else if (newFromChain) {
+          // only add unknow token if chain was specified with it
+          const fromTokenId = ethers.utils.getAddress(params.fromToken.trim()).toLowerCase()
+          const newToken = {
+            address: fromTokenId,
+            symbol: 'Unknown',
+            decimals: 18,
+            chainId: newFromChain.id,
+            coinKey: '' as CoinKey,
+            name: 'Unknown',
+            logoURI: '',
+          }
+          transferTokens[defaultParams.depositChain].push(newToken)
+
+          updateTokenData(newToken)
+          defaultParams.depositToken = fromTokenId
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn(e)
+      }
+    }
+
+    // fromAmount
+    if (params.fromAmount && typeof params.fromAmount === 'string') {
+      try {
+        const newAmount = new BigNumber(params.fromAmount)
+        if (newAmount.gt(0)) {
+          defaultParams.depositAmount = newAmount
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn(e)
+      }
+    }
+
+    // toChain
+    let newToChain
+    if (params.toChain && typeof params.toChain === 'string') {
+      try {
+        const newToChainId = parseChain(params.toChain)
+        newToChain = availableChains.find((chain) => chain.id === newToChainId)
+
+        if (newToChain) {
+          defaultParams.withdrawChain = newToChain.key
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn(e)
+      }
+    }
+
+    // toToken
+    if (params.toToken && typeof params.toToken === 'string' && defaultParams.withdrawChain) {
+      try {
+        const foundToken = parseToken(params.toToken, defaultParams.withdrawChain, transferTokens)
+        const inDefault = transferTokens[defaultParams.withdrawChain].find(
+          (token) => token.address === foundToken?.address,
+        )
+        if (foundToken && inDefault) {
+          defaultParams.withdrawToken = foundToken.address
+        } else if (foundToken) {
+          transferTokens[defaultParams.withdrawChain].push(foundToken)
+          defaultParams.withdrawToken = foundToken.address
+        } else if (newToChain) {
+          // only add unknow token if chain was specified with it
+          const toTokenId = ethers.utils.getAddress(params.toToken.trim()).toLowerCase()
+          const newToken = {
+            address: toTokenId,
+            symbol: 'Unknown',
+            decimals: 18,
+            chainId: newToChain.id,
+            coinKey: '' as CoinKey,
+            name: 'Unknown',
+            logoURI: '',
+          }
+          transferTokens[defaultParams.withdrawChain].push(newToken)
+          updateTokenData(newToken)
+          defaultParams.withdrawToken = toTokenId
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn(e)
+      }
+    }
+
+    return defaultParams
+  }
 
   // update query string
   useEffect(() => {
