@@ -28,6 +28,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import LiFi from '../LiFi'
+import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import {
   deleteRoute,
   isWalletConnectWallet,
@@ -56,8 +57,10 @@ import {
   Route as RouteType,
   RoutesRequest,
   RoutesResponse,
+  SwapPageStartParams,
   Token,
   TokenAmount,
+  TokenAmountList,
 } from '../types'
 import LoadingIndicator from './LoadingIndicator'
 import Route from './Route'
@@ -151,23 +154,13 @@ const parseToken = (
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
 
-interface TokenAmountList {
-  [ChainKey: string]: Array<TokenWithAmounts>
-}
-
-interface StartParams {
-  depositChain?: ChainKey
-  depositToken?: string
-  depositAmount: BigNumber
-  withdrawChain?: ChainKey
-  withdrawToken?: string
-}
-
 const Swap = () => {
-  const [availableChains, setAvailableChains] = useState<Chain[]>([])
+  const chainsTokensTools = useChainsTokensTools()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unused, setStateUpdate] = useState<number>(0)
+
+  const [availableChains, setAvailableChains] = useState<Chain[]>(chainsTokensTools.chains)
 
   // From
   const [fromChainKey, setFromChainKey] = useState<ChainKey | undefined>()
@@ -176,7 +169,7 @@ const Swap = () => {
   const [toChainKey, setToChainKey] = useState<ChainKey | undefined>()
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress, setToTokenAddress] = useState<string | undefined>()
-  const [tokens, setTokens] = useState<TokenAmountList>({})
+  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
@@ -186,10 +179,16 @@ const Swap = () => {
   const [optionOrder, setOptionOrder] = useState<Order>('RECOMMENDED' as Order)
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
-  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>()
-  const [availableBridges, setAvailableBridges] = useState<string[]>([])
-  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>()
-  const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
+  const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>(
+    chainsTokensTools.bridges,
+  )
+  const [availableBridges, setAvailableBridges] = useState<string[]>(chainsTokensTools.bridges)
+  const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>(
+    chainsTokensTools.exchanges,
+  )
+  const [availableExchanges, setAvailableExchanges] = useState<string[]>(
+    chainsTokensTools.exchanges,
+  )
 
   // Routes
   const [routes, setRoutes] = useState<Array<RouteType>>([])
@@ -204,7 +203,6 @@ const Swap = () => {
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
-  const [possibilitiesLoaded, setPossibilitiesLoaded] = useState<boolean>(false)
 
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
@@ -266,68 +264,34 @@ const Swap = () => {
     }
   }, [])
 
+  // get chains
   useEffect(() => {
-    const load = async () => {
-      const possibilities = await LiFi.getPossibilities()
+    setAvailableChains(chainsTokensTools.chains)
 
-      if (
-        !possibilities.chains ||
-        !possibilities.bridges ||
-        !possibilities.exchanges ||
-        !possibilities.tokens
-      ) {
-        // eslint-disable-next-line
-        console.warn('possibilities request did not contain required setup information')
-        return
-      }
+    // load()
+  }, [chainsTokensTools.chains])
 
-      // chains
-      setAvailableChains(possibilities.chains)
+  //get tokens
+  useEffect(() => {
+    setTokens(chainsTokensTools.tokens)
+  }, [chainsTokensTools.tokens])
 
-      // bridges
-      const bridges: string[] = possibilities.bridges
-        .map((bridge: any) => bridge.tool)
-        .map((bridgeTool: string) => bridgeTool.split('-')[0])
-      const allBridges = Array.from(new Set(bridges))
-      setAvailableBridges(allBridges)
-      setOptionEnabledBridges(allBridges)
+  //get tools
+  useEffect(() => {
+    setAvailableExchanges(chainsTokensTools.bridges)
+    setOptionEnabledExchanges(chainsTokensTools.exchanges)
+    setAvailableBridges(chainsTokensTools.bridges)
+    setOptionEnabledBridges(chainsTokensTools.bridges)
+  }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
-      // exchanges
-      const exchanges: string[] = possibilities.exchanges
-        .map((exchange: any) => exchange.tool)
-        .map((exchangeTool: string) => exchangeTool.split('-')[0])
-      const allExchanges = Array.from(new Set(exchanges))
-      setAvailableExchanges(allExchanges)
-      setOptionEnabledExchanges(allExchanges)
-
-      // tokens
-      const newTokens: TokenAmountList = {}
-      possibilities.tokens.forEach((token: TokenWithAmounts) => {
-        const chain = getChainById(token.chainId)
-        if (!newTokens[chain.key]) newTokens[chain.key] = []
-        newTokens[chain.key].push(token)
-      })
-
-      setTokens((tokens) => {
-        // which existing tokens are not included?
-        Object.keys(tokens).forEach((chainKey) => {
-          tokens[chainKey].forEach((token) => {
-            if (!newTokens[chainKey]) newTokens[chainKey] = []
-            if (!newTokens[chainKey].find((item) => item.address === token.address)) {
-              newTokens[chainKey].push(token)
-
-              // -> load token from API to get current version (e.g. if token was added via url)
-              updateTokenData(token)
-            }
-          })
-        })
-        return newTokens
-      })
+  useEffect(() => {
+    if (
+      chainsTokensTools.chainsLoaded &&
+      chainsTokensTools.tokensLoaded &&
+      chainsTokensTools.toolsLoaded
+    ) {
       setRefreshBalances(true)
-      setPossibilitiesLoaded(true)
     }
-
-    load()
   }, [])
 
   const updateTokenData = (token: Token) => {
@@ -356,7 +320,7 @@ const Swap = () => {
     availableChains: Chain[],
     transferTokens: { [ChainKey: string]: Array<Token> },
   ) => {
-    const defaultParams: StartParams = {
+    const defaultParams: SwapPageStartParams = {
       depositChain: undefined,
       depositToken: undefined,
       depositAmount: new BigNumber(-1),
@@ -513,16 +477,20 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
-    if (possibilitiesLoaded) {
+    if (
+      !!chainsTokensTools.chains.length &&
+      !!(Object.keys(chainsTokensTools.tokens).length === 0) &&
+      !!chainsTokensTools.exchanges.length &&
+      !!chainsTokensTools.bridges.length
+    ) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
       setFromTokenAddress(startParams.depositToken)
       setToChainKey(startParams.withdrawChain)
-      setToTokenAddress(startParams.withdrawToken)
       setStartParamsDefined(true)
     }
-  }, [possibilitiesLoaded])
+  }, [chainsTokensTools])
 
   // update query string
   useEffect(() => {
