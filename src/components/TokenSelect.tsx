@@ -223,7 +223,7 @@ const TokenSelect = ({
                       src={token.logoURI}
                       alt={token.symbol}
                       style={{ marginRight: 10 }}>
-                      {token.symbol[0]}
+                      {token.symbol?.[0]}
                     </Avatar>
                   </span>
                   <span className="option-name">
