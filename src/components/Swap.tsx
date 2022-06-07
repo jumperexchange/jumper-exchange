@@ -278,7 +278,7 @@ const Swap = () => {
 
   //get tools
   useEffect(() => {
-    setAvailableExchanges(chainsTokensTools.bridges)
+    setAvailableExchanges(chainsTokensTools.exchanges)
     setOptionEnabledExchanges(chainsTokensTools.exchanges)
     setAvailableBridges(chainsTokensTools.bridges)
     setOptionEnabledBridges(chainsTokensTools.bridges)
