@@ -477,12 +477,7 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
-    if (
-      !!chainsTokensTools.chains.length &&
-      !!(Object.keys(chainsTokensTools.tokens).length === 0) &&
-      !!chainsTokensTools.exchanges.length &&
-      !!chainsTokensTools.bridges.length
-    ) {
+    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
@@ -490,7 +485,7 @@ const Swap = () => {
       setToChainKey(startParams.withdrawChain)
       setStartParamsDefined(true)
     }
-  }, [chainsTokensTools])
+  }, [availableChains, tokens])
 
   // update query string
   useEffect(() => {
