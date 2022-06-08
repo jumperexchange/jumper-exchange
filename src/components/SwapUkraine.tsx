@@ -33,6 +33,7 @@ import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
 import { UkraineIcon } from '../assets/icons/ukraineIcon'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
+import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
@@ -133,6 +134,9 @@ interface TokenAmountList {
 }
 
 const Swap = () => {
+  useMetatags({
+    title: 'LI.FI - Help Ukraine!',
+  })
   const chainsTokensTools = useChainsTokensTools()
 
   // chains

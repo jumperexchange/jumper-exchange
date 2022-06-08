@@ -27,6 +27,7 @@ import QueryString from 'qs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
+import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import {
@@ -37,6 +38,7 @@ import {
   storeRoute,
 } from '../services/localStorage'
 import { switchChain as switchChainMetaMask } from '../services/metamask'
+import { useStomt } from '../services/stomt'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
@@ -155,6 +157,10 @@ const parseToken = (
 }
 
 const Swap = () => {
+  useMetatags({
+    title: 'LI.FI - Swap',
+  })
+  useStomt('swap')
   const chainsTokensTools = useChainsTokensTools()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
