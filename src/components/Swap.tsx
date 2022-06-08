@@ -414,6 +414,7 @@ const Swap = () => {
     if (params.toToken && typeof params.toToken === 'string' && defaultParams.withdrawChain) {
       try {
         const foundToken = parseToken(params.toToken, defaultParams.withdrawChain, transferTokens)
+
         const inDefault = transferTokens[defaultParams.withdrawChain].find(
           (token) => token.address === foundToken?.address,
         )
@@ -443,7 +444,6 @@ const Swap = () => {
         console.warn(e)
       }
     }
-
     return defaultParams
   }
 
@@ -464,16 +464,18 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    LiFi.getChains().then((chains: any[]) => {
-      const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
-      if (!walletChainIsSupported) return
-      if (web3.chainId && !fromChainKey) {
-        const chain = availableChains.find((chain) => chain.id === web3.chainId)
-        if (chain) {
-          setFromChainKey(chain.key)
+    if (!fromChainKey && startParamsDefined) {
+      LiFi.getChains().then((chains: Chain[]) => {
+        const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
+        if (!walletChainIsSupported) return
+        if (web3.chainId && !fromChainKey) {
+          const chain = availableChains.find((chain) => chain.id === web3.chainId)
+          if (chain) {
+            setFromChainKey(chain.key)
+          }
         }
-      }
-    })
+      })
+    }
   }, [web3.chainId, fromChainKey, availableChains])
 
   useEffect(() => {
@@ -483,6 +485,7 @@ const Swap = () => {
       setDepositAmount(startParams.depositAmount)
       setFromTokenAddress(startParams.depositToken)
       setToChainKey(startParams.withdrawChain)
+      setToTokenAddress(startParams.withdrawToken)
       setStartParamsDefined(true)
     }
   }, [availableChains, tokens])
