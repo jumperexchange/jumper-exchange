@@ -143,7 +143,7 @@ const Swap = () => {
   const [fromChainKey, setFromChainKey] = useState<ChainKey | undefined>()
   const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(0))
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
-  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>()
+  const [toChainKey] = useState<ChainKey>(ChainKey.POL)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address)
   const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
@@ -335,8 +335,8 @@ const Swap = () => {
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    LiFi.getChains().then((chains: Chain[]) => {
-      const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
+    if (!fromChainKey && startParamsDefined) {
+      const walletChainIsSupported = availableChains.some((chain) => chain.id === web3.chainId)
       if (!walletChainIsSupported) return
       if (web3.chainId && !fromChainKey) {
         const chain = availableChains.find((chain) => chain.id === web3.chainId)
@@ -344,24 +344,18 @@ const Swap = () => {
           setFromChainKey(chain.key)
         }
       }
-    })
-  }, [web3.chainId, fromChainKey, availableChains])
+    }
+  }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
-    if (
-      !!chainsTokensTools.chains.length &&
-      !!(Object.keys(chainsTokensTools.tokens).length === 0) &&
-      !!chainsTokensTools.exchanges.length &&
-      !!chainsTokensTools.bridges.length
-    ) {
+    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
       setFromTokenAddress(startParams.depositToken)
-      setToChainKey(startParams.withdrawChain)
       setStartParamsDefined(true)
     }
-  }, [chainsTokensTools])
+  }, [availableChains, tokens])
 
   const updateTokenData = (token: Token) => {
     LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
