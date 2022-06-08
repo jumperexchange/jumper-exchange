@@ -284,16 +284,14 @@ const Swap = () => {
   // autoselect from chain based on wallet
   useEffect(() => {
     if (!fromChainKey && startParamsDefined) {
-      LiFi.getChains().then((chains: Chain[]) => {
-        const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
-        if (!walletChainIsSupported) return
-        if (web3.chainId && !fromChainKey) {
-          const chain = availableChains.find((chain) => chain.id === web3.chainId)
-          if (chain) {
-            setFromChainKey(chain.key)
-          }
+      const walletChainIsSupported = availableChains.some((chain) => chain.id === web3.chainId)
+      if (!walletChainIsSupported) return
+      if (web3.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+        if (chain) {
+          setFromChainKey(chain.key)
         }
-      })
+      }
     }
   }, [web3.chainId, fromChainKey, availableChains])
 
