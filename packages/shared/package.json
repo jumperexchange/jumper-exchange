@@ -1,0 +1,25 @@
+{
+  "name": "@transferto/shared",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rimraf --no-glob ./tsconfig.tsbuildinfo",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit",
+    "test": "run-s 'test:*'",
+    "test:unit": "echo \"No tests yet\"",
+    "fix:staged-files": "lint-staged --allow-empty",
+    "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.41",
+    "@types/react": "^18.0.12"
+  },
+  "dependencies": {
+    "typescript": "^4.7.3",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  }
+}
