@@ -474,7 +474,7 @@ const Swap = () => {
         }
       }
     }
-  }, [web3.chainId, fromChainKey, availableChains])
+  }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
     if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
