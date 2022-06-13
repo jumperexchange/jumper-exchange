@@ -6,7 +6,8 @@
   },
   "scripts": {
     "bootstrap": "yarn install; lerna bootstrap;",
-    "start": "lerna run start --parallel"
+    "start": "lerna run start --parallel",
+    "storybook": "lerna run storybook"
   },
   "workspaces": [
     "packages/*"
