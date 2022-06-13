@@ -1,6 +1,9 @@
 {
+  "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
     "jsx": "react",
+    "esModuleInterop": true,
     "baseUrl": "./src",
     "paths": {
       // regular app aliases
