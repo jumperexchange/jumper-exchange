@@ -846,12 +846,12 @@ const Swap = () => {
         style={{
           maxWidth: '100px !important',
         }}>
-        {allValuesAvailable ? (
+        {allValuesAvailable && receivedAmountTooLow ? (
           <Typography.Paragraph>
             The value of the received tokens is significantly lower than the cost required to
             execute the transaction. Do you still want to proceed?
           </Typography.Paragraph>
-        ) : receivedAmountTooLow ? (
+        ) : !allValuesAvailable && receivedAmountTooLow ? (
           <Typography.Paragraph>
             The value of the received tokens is significantly lower than the cost required to
             execute the transaction. Also, we could not fetch the FIAT price of one or more of the
