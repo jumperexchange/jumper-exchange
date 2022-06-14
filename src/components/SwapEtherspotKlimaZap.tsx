@@ -27,7 +27,7 @@ import { CHAIN_ID_TO_NETWORK_NAME } from 'etherspot/dist/sdk/network/constants'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
@@ -197,6 +197,10 @@ const Swap = () => {
 
   const [tokenPolygonKLIMA, setTokenPolygonKlima] = useState<Token>()
   const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
+  const tokensAndChainsSet = useMemo(
+    () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
+    [tokens, availableChains],
+  )
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -355,7 +359,7 @@ const Swap = () => {
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
-    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
+    if (tokensAndChainsSet) {
       setRefreshBalances(true)
     }
   }, [availableChains, tokens])
@@ -375,7 +379,7 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
-    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
+    if (tokensAndChainsSet) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
