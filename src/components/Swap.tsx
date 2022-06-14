@@ -866,7 +866,7 @@ const Swap = () => {
         <Typography.Paragraph>
           Swapped token value: {!fromAmountUSD.isZero() ? `${fromAmountUSD.toFixed(2)} USD` : '~'}{' '}
           <br />
-          Gas costs: {!gasCostUSD.isZero() ? `${gasCostUSD.toFixed(2)} USD` : '~'} <br />
+          Gas costs: {!gasCostUSD.isNegative() ? `${gasCostUSD.toFixed(2)} USD` : '~'} <br />
           Received token value: {!toAmountUSD.isZero() ? `${toAmountUSD.toFixed(2)} USD` : '~'}
         </Typography.Paragraph>
       </div>
