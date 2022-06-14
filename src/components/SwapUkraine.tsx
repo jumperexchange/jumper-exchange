@@ -257,14 +257,10 @@ const Swap = () => {
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
-    if (
-      chainsTokensTools.chainsLoaded &&
-      chainsTokensTools.tokensLoaded &&
-      chainsTokensTools.toolsLoaded
-    ) {
+    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
       setRefreshBalances(true)
     }
-  }, [])
+  }, [availableChains, tokens])
 
   const getSelectedWithdraw = () => {
     if (!routes.length) {

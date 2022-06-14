@@ -150,8 +150,12 @@ const Swap = () => {
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [routeCallResult, setRouteCallResult] =
-    useState<{ lifiRoute: RouteType; gasStep: Step; stakingStep: Step; id: string }>()
+  const [routeCallResult, setRouteCallResult] = useState<{
+    lifiRoute: RouteType
+    gasStep: Step
+    stakingStep: Step
+    id: string
+  }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -324,14 +328,10 @@ const Swap = () => {
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
-    if (
-      chainsTokensTools.chainsLoaded &&
-      chainsTokensTools.tokensLoaded &&
-      chainsTokensTools.toolsLoaded
-    ) {
+    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
       setRefreshBalances(true)
     }
-  }, [])
+  }, [availableChains, tokens])
 
   // autoselect from chain based on wallet
   useEffect(() => {
