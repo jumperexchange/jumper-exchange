@@ -26,7 +26,7 @@ import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
@@ -150,8 +150,12 @@ const Swap = () => {
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [routeCallResult, setRouteCallResult] =
-    useState<{ lifiRoute: RouteType; gasStep: Step; stakingStep: Step; id: string }>()
+  const [routeCallResult, setRouteCallResult] = useState<{
+    lifiRoute: RouteType
+    gasStep: Step
+    stakingStep: Step
+    id: string
+  }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -182,6 +186,10 @@ const Swap = () => {
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
 
   const [tokenPolygonBCT, setTokenPolygonBCT] = useState<Token>()
+  const tokensAndChainsSet = useMemo(
+    () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
+    [tokens, availableChains],
+  )
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -324,14 +332,10 @@ const Swap = () => {
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
-    if (
-      chainsTokensTools.chainsLoaded &&
-      chainsTokensTools.tokensLoaded &&
-      chainsTokensTools.toolsLoaded
-    ) {
+    if (tokensAndChainsSet) {
       setRefreshBalances(true)
     }
-  }, [])
+  }, [availableChains, tokens])
 
   // autoselect from chain based on wallet
   useEffect(() => {
@@ -348,7 +352,7 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
-    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
+    if (tokensAndChainsSet) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)

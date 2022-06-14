@@ -24,7 +24,7 @@ import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import LiFi from '../LiFi'
@@ -203,6 +203,10 @@ const Swap = () => {
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
+  const tokensAndChainsSet = useMemo(
+    () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
+    [tokens, availableChains],
+  )
 
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
@@ -285,14 +289,10 @@ const Swap = () => {
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
-    if (
-      chainsTokensTools.chainsLoaded &&
-      chainsTokensTools.tokensLoaded &&
-      chainsTokensTools.toolsLoaded
-    ) {
+    if (tokensAndChainsSet) {
       setRefreshBalances(true)
     }
-  }, [])
+  }, [availableChains, tokens])
 
   const updateTokenData = (token: Token) => {
     LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
@@ -477,7 +477,7 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
-    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
+    if (tokensAndChainsSet) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
