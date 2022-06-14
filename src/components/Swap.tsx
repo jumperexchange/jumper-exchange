@@ -854,8 +854,8 @@ const Swap = () => {
         ) : receivedAmountTooLow ? (
           <Typography.Paragraph>
             The value of the received tokens is significantly lower than the cost required to
-            execute the transaction. We could not fetch the FIAT price of one or more of the listed
-            values. Do you still want to proceed?
+            execute the transaction. Also, we could not fetch the FIAT price of one or more of the
+            listed values. Do you still want to proceed?
           </Typography.Paragraph>
         ) : (
           <Typography.Paragraph>
