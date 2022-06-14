@@ -818,11 +818,14 @@ const Swap = () => {
     }
     const fromAmountUSD = new BigNumber(routes[highlightedIndex]?.fromAmountUSD)
     const toAmountUSD = new BigNumber(routes[highlightedIndex]?.toAmountUSD)
-    const gasCostUSD = new BigNumber(routes[highlightedIndex]?.gasCostUSD || 0)
-    const allValuesAvailable =
-      !fromAmountUSD.isZero() && !toAmountUSD.isZero() && !gasCostUSD.isZero()
 
-    const totalExpenditure = fromAmountUSD.plus(gasCostUSD)
+    const gasCostUSD = new BigNumber(routes[highlightedIndex]?.gasCostUSD || -1) // gasprices might be to low for correct USD /Cents rounding so might end up being 0.00
+    const allValuesAvailable =
+      !fromAmountUSD.isZero() && !toAmountUSD.isZero() && !gasCostUSD.isNegative()
+
+    const totalExpenditure = gasCostUSD.isNegative()
+      ? fromAmountUSD
+      : fromAmountUSD.plus(gasCostUSD)
     const amountReceivedPercentage = toAmountUSD.dividedBy(totalExpenditure)
     const receivedAmountTooLow = amountReceivedPercentage.isLessThan(TOTAL_SLIPPAGE_GUARD_MODAL)
 
@@ -849,11 +852,16 @@ const Swap = () => {
             The value of the received tokens is significantly lower than the cost required to
             execute the transaction. Do you still want to proceed?
           </Typography.Paragraph>
-        ) : (
+        ) : receivedAmountTooLow ? (
           <Typography.Paragraph>
             The value of the received tokens is significantly lower than the cost required to
             execute the transaction. We could not fetch the FIAT price of one or more of the listed
             values. Do you still want to proceed?
+          </Typography.Paragraph>
+        ) : (
+          <Typography.Paragraph>
+            We could not fetch the FIAT price of one or more of the listed values. Do you still want
+            to proceed?
           </Typography.Paragraph>
         )}
         <Typography.Paragraph>
