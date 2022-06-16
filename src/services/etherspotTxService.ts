@@ -1,4 +1,5 @@
 import { Token } from '@lifinance/sdk'
+import { BigNumber as BigJs } from 'bignumber.js'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 
 import {
@@ -52,23 +53,28 @@ export const getTransferTransaction = async (
 }
 
 export const getFeeTransferTransactionBasedOnAmount = async (token: Token, amount: BigNumber) => {
+  const bigJSAmount = new BigJs(amount.toString())
   const lowBoundary = ethers.utils.parseUnits('100', token.decimals)
   const midBoundary = ethers.utils.parseUnits('3000', token.decimals)
   const highBoundary = ethers.utils.parseUnits('30000', token.decimals)
-  const fixedFee = ethers.utils.parseUnits('0.5', token.decimals)
-  let feePercent: string | undefined
+  const fixedFee = new BigJs('0.5').shiftedBy(token.decimals)
+
+  let feePercent: BigJs | undefined
 
   if (amount.lt(lowBoundary)) {
     feePercent = undefined
   } else if (amount.lt(midBoundary)) {
-    feePercent = '0.005'
+    // feePercent =
+    feePercent = new BigJs(0.005)
   } else if (amount.lt(highBoundary)) {
-    feePercent = '0.003'
+    feePercent = new BigJs(0.003)
   } else {
-    feePercent = '0.001'
+    feePercent = new BigJs(0.003)
   }
-  const bnFeePercent = ethers.utils.parseUnits(feePercent || '0', token.decimals)
-  const feeAmount = feePercent ? amount.mul(bnFeePercent) : fixedFee
+
+  const feeAmountBigJS = feePercent ? bigJSAmount.times(feePercent) : fixedFee
+  const feeAmount = BigNumber.from(feeAmountBigJS.toFixed(0))
+
   const erc20 = new ethers.Contract(token.address, erc20Abi)
   const txFee = await erc20.populateTransaction.transfer(ETHERSPOT_LIFI_WALLET, feeAmount)
 
