@@ -24,7 +24,7 @@ import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import LiFi from '../LiFi'
@@ -70,8 +70,6 @@ import TransactionsTable from './TransactionsTable'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 import ConnectButton from './web3/ConnectButton'
 
-const ENABLE_USER_SLIPPAGE_NOTIFICATION =
-  process.env.REACT_APP_ENABLE_USER_SLIPPAGE_NOTIFICATION === 'true'
 const TOTAL_SLIPPAGE_GUARD_MODAL = new BigNumber(0.9)
 
 const history = createBrowserHistory()
@@ -203,6 +201,10 @@ const Swap = () => {
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
+  const tokensAndChainsSet = useMemo(
+    () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
+    [tokens, availableChains],
+  )
 
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
@@ -285,14 +287,10 @@ const Swap = () => {
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
-    if (
-      chainsTokensTools.chainsLoaded &&
-      chainsTokensTools.tokensLoaded &&
-      chainsTokensTools.toolsLoaded
-    ) {
+    if (tokensAndChainsSet) {
       setRefreshBalances(true)
     }
-  }, [])
+  }, [availableChains, tokens])
 
   const updateTokenData = (token: Token) => {
     LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
@@ -477,7 +475,7 @@ const Swap = () => {
   }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
-    if (availableChains.length !== 0 && Object.keys(tokens).length !== 0) {
+    if (tokensAndChainsSet) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
@@ -818,11 +816,15 @@ const Swap = () => {
     }
     const fromAmountUSD = new BigNumber(routes[highlightedIndex]?.fromAmountUSD)
     const toAmountUSD = new BigNumber(routes[highlightedIndex]?.toAmountUSD)
-    const gasCostUSD = new BigNumber(routes[highlightedIndex]?.gasCostUSD || 0)
-    const allValuesAvailable =
-      !fromAmountUSD.isZero() && !toAmountUSD.isZero() && !gasCostUSD.isZero()
 
-    const totalExpenditure = fromAmountUSD.plus(gasCostUSD)
+    const gasCostUSD = new BigNumber(routes[highlightedIndex]?.gasCostUSD || -1) // gasprices might be to low for correct USD /Cents rounding so might end up being 0.00
+
+    const allValuesAvailable =
+      !fromAmountUSD.isZero() && !toAmountUSD.isZero() && !gasCostUSD.isNegative()
+
+    const totalExpenditure = gasCostUSD.isNegative()
+      ? fromAmountUSD
+      : fromAmountUSD.plus(gasCostUSD)
     const amountReceivedPercentage = toAmountUSD.dividedBy(totalExpenditure)
     const receivedAmountTooLow = amountReceivedPercentage.isLessThan(TOTAL_SLIPPAGE_GUARD_MODAL)
 
@@ -844,27 +846,32 @@ const Swap = () => {
         style={{
           maxWidth: '100px !important',
         }}>
-        {allValuesAvailable ? (
+        {allValuesAvailable && receivedAmountTooLow ? (
           <Typography.Paragraph>
             The value of the received tokens is significantly lower than the cost required to
             execute the transaction. Do you still want to proceed?
           </Typography.Paragraph>
-        ) : (
+        ) : !allValuesAvailable && receivedAmountTooLow ? (
           <Typography.Paragraph>
             The value of the received tokens is significantly lower than the cost required to
-            execute the transaction. We could not fetch the FIAT price of one or more of the listed
-            values. Do you still want to proceed?
+            execute the transaction. Also, we could not fetch the FIAT price of one or more of the
+            listed values. Do you still want to proceed?
+          </Typography.Paragraph>
+        ) : (
+          <Typography.Paragraph>
+            We could not fetch the FIAT price of one or more of the listed values. Do you still want
+            to proceed?
           </Typography.Paragraph>
         )}
         <Typography.Paragraph>
           Swapped token value: {!fromAmountUSD.isZero() ? `${fromAmountUSD.toFixed(2)} USD` : '~'}{' '}
           <br />
-          Gas costs: {!gasCostUSD.isZero() ? `${gasCostUSD.toFixed(2)} USD` : '~'} <br />
+          Gas costs: {!gasCostUSD.isNegative() ? `${gasCostUSD.toFixed(2)} USD` : '~'} <br />
           Received token value: {!toAmountUSD.isZero() ? `${toAmountUSD.toFixed(2)} USD` : '~'}
         </Typography.Paragraph>
       </div>
     )
-    return (receivedAmountTooLow || !allValuesAvailable) && ENABLE_USER_SLIPPAGE_NOTIFICATION ? (
+    return receivedAmountTooLow || !allValuesAvailable ? (
       <Popconfirm onConfirm={() => openModal()} title={popoverContent}>
         {swapButton()}
       </Popconfirm>
