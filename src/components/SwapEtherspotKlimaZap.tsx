@@ -755,6 +755,7 @@ const Swap = () => {
             toAmountMin = request.fromAmount // get this from the request as there is no specific amount field in TransactionRequest
           }
           const amountUsdc = ethers.BigNumber.from(toAmountMin)
+
           const { feeAmount } = await getFeeTransferTransactionBasedOnAmount(
             TOKEN_POLYGON_USDC,
             amountUsdc,
