@@ -156,6 +156,7 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
         Connect Your Wallet
       </Button>
       <Modal
+        zIndex={9000}
         destroyOnClose={true}
         className="wallet-selection-modal"
         visible={showConnectModal}
