@@ -76,6 +76,10 @@
   opacity: 1 !important;
   color: black;
 }
+.ant-menu-submenu-popup {
+  z-index: 9000 !important;
+}
+
 .ant-menu.ant-menu-sub.ant-menu-vertical {
   background-color: white !important;
   opacity: 1;
