@@ -567,7 +567,7 @@ const Swap = () => {
 
     const formatPotentialZeroAddress = (address: string) => {
       if (isZeroAddress(address)) {
-        return address.replaceAll('e', '0')
+        return ethers.constants.AddressZero
       }
       return address
     }
