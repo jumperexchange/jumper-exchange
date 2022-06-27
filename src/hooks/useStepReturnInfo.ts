@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import LiFi from '../LiFi'
 
-interface stepReturnInfo {
+export interface stepReturnInfo {
   receivedToken: Token
   receivedAmount: BigNumber
   totalBalanceOfReceivedToken: TokenAmount | null
