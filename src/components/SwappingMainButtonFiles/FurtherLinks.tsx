@@ -29,36 +29,22 @@ export const FurtherLinks = ({
           </Button>
         </Link>
       )}
-      {routeReturnInfo?.receivedTokenMatchesPlannedToken === false &&
-        (routeReturnInfo.receivedToken.name.includes('any') ? (
-          <Button
-            type="link"
-            size="small"
-            style={{ fontSize: 12, margin: 8 }}
-            onClick={() => {
-              // eslint-disable-next-line security/detect-non-literal-fs-filename
-              window.open(
-                `https://multichain.zendesk.com/hc/en-us/articles/4410379722639`,
-                '_blank',
-              )
-            }}>
-            Swap to your desired token
-          </Button>
-        ) : (
-          <Button
-            type="link"
-            size="small"
-            style={{ fontSize: 12, margin: 8 }}
-            onClick={() => {
-              // eslint-disable-next-line security/detect-non-literal-fs-filename
-              window.open(
-                `https://transferto.xyz/swap?fromChain=${routeReturnInfo?.receivedToken.chainId}&fromToken=${routeReturnInfo?.receivedToken.address}&toChain=${localRoute?.toChainId}&toToken=${localRoute?.toToken.address}`,
-                '_blank',
-              )
-            }}>
-            Swap to your desired token
-          </Button>
-        ))}
+      {routeReturnInfo?.receivedTokenMatchesPlannedToken === false && (
+        <Button
+          type="link"
+          size="small"
+          style={{ fontSize: 12, margin: 8 }}
+          onClick={() => {
+            const receivedAnyToken = routeReturnInfo.receivedToken.name.includes('any')
+            const link = receivedAnyToken
+              ? `https://multichain.zendesk.com/hc/en-us/articles/4410379722639`
+              : `https://transferto.xyz/swap?fromChain=${routeReturnInfo?.receivedToken.chainId}&fromToken=${routeReturnInfo?.receivedToken.address}&toChain=${localRoute?.toChainId}&toToken=${localRoute?.toToken.address}`
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            window.open(link, '_blank')
+          }}>
+          Swap to your desired token
+        </Button>
+      )}
     </div>
   )
 }
