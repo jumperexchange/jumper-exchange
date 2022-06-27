@@ -1,4 +1,10 @@
-import { CheckCircleTwoTone, ClockCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons'
+import {
+  CheckCircleTwoTone,
+  ClockCircleTwoTone,
+  CloseCircleTwoTone,
+  DownOutlined,
+  SearchOutlined,
+} from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Avatar, Badge, Select, Tooltip } from 'antd'
@@ -33,6 +39,7 @@ const TokenSelect = ({
   showBalance = true,
   disabled = false,
 }: TokenSelectProps) => {
+  const [showDropdown, setShowDropdown] = useState(false)
   const findToken = (chainKey: ChainKey, tokenId: string) => {
     const token = tokens[chainKey].find((token) => token.address === tokenId)
     if (!token) {
@@ -137,6 +144,7 @@ const TokenSelect = ({
         style={{
           width: 200,
           position: 'relative',
+          // display: 'flex',
         }}
         disabled={disabled}
         placeholder="Select Coin"
@@ -144,8 +152,30 @@ const TokenSelect = ({
         onChange={(v) => onChangeSelectedToken(v)}
         optionLabelProp="data-label"
         bordered={false}
-        dropdownStyle={{ minWidth: 300, position: positionFixed ? 'fixed' : 'relative' }}
         showSearch
+        open={showDropdown}
+        onFocus={() => {
+          setShowDropdown((state) => !state)
+        }}
+        onBlur={() => {
+          setShowDropdown(() => false)
+        }}
+        suffixIcon={
+          showDropdown ? (
+            <SearchOutlined
+              onClick={() => {
+                selectReference.current?.blur()
+              }}
+            />
+          ) : (
+            <DownOutlined
+              onClick={() => {
+                selectReference.current?.focus()
+              }}
+            />
+          )
+        }
+        dropdownStyle={{ minWidth: 300, position: positionFixed ? 'fixed' : 'relative' }}
         ref={(select) => {
           if (select) {
             selectReference.current = select
