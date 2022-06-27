@@ -40,7 +40,12 @@ import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxS
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
-import { deepClone, formatTokenAmountOnly, isWalletDeactivated } from '../services/utils'
+import {
+  deepClone,
+  formatTokenAmountOnly,
+  isWalletDeactivated,
+  isZeroAddress,
+} from '../services/utils'
 import {
   Chain,
   ChainId,
@@ -585,8 +590,16 @@ const Swap = () => {
       return new BigNumber(0)
     }
 
+    const formatPotentialZeroAddress = (address: string) => {
+      if (isZeroAddress(address)) {
+        return address.replaceAll('e', '0')
+      }
+      return address
+    }
+
     const tokenBalance = currentBalances[chainKey].find(
-      (tokenAmount) => tokenAmount.address === tokenId,
+      (tokenAmount) =>
+        formatPotentialZeroAddress(tokenAmount.address) === formatPotentialZeroAddress(tokenId),
     )
     return tokenBalance?.amount ? new BigNumber(tokenBalance?.amount) : new BigNumber(0)
   }

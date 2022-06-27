@@ -43,6 +43,7 @@ import {
   formatTokenAmount,
   formatTokenAmountOnly,
   isWalletDeactivated,
+  isZeroAddress,
 } from '../services/utils'
 import {
   Chain,
@@ -564,8 +565,16 @@ const Swap = () => {
       return new BigNumber(0)
     }
 
+    const formatPotentialZeroAddress = (address: string) => {
+      if (isZeroAddress(address)) {
+        return address.replaceAll('e', '0')
+      }
+      return address
+    }
+
     const tokenBalance = currentBalances[chainKey].find(
-      (tokenAmount) => tokenAmount.address === tokenId,
+      (tokenAmount) =>
+        formatPotentialZeroAddress(tokenAmount.address) === formatPotentialZeroAddress(tokenId),
     )
     return tokenBalance?.amount ? new BigNumber(tokenBalance?.amount) : new BigNumber(0)
   }
