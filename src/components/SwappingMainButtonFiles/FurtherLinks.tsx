@@ -23,7 +23,7 @@ export const FurtherLinks = ({
         alignContent: 'center',
       }}>
       {!fixedRecipient && (
-        <Link to="/dashboard">
+        <Link to="/dashboard" target={'_blank'}>
           <Button style={{ fontSize: 12, margin: 8 }} type="link" size="small">
             Dashboard
           </Button>
