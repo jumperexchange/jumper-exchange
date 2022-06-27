@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 
-import { Route, Token } from '../types'
+import { ChainKey, Route, Token, TokenAmount } from '../types'
 import { readDeactivatedWallets, readWallets } from './localStorage'
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
@@ -88,4 +88,27 @@ export const isZeroAddress = (address: string): boolean => {
 
 export const isLiFiRoute = (route: any): route is Route => {
   return (route as Route).steps !== undefined
+}
+
+export const getBalance = (
+  currentBalances: { [ChainKey: string]: Array<TokenAmount> } | undefined,
+  chainKey: ChainKey,
+  tokenId: string,
+) => {
+  if (!currentBalances || !currentBalances[chainKey]) {
+    return new BigNumber(0)
+  }
+
+  const formatPotentialZeroAddress = (address: string) => {
+    if (isZeroAddress(address)) {
+      return ethers.constants.AddressZero
+    }
+    return address
+  }
+
+  const tokenBalance = currentBalances[chainKey].find(
+    (tokenAmount) =>
+      formatPotentialZeroAddress(tokenAmount.address) === formatPotentialZeroAddress(tokenId),
+  )
+  return tokenBalance?.amount ? new BigNumber(tokenBalance?.amount) : new BigNumber(0)
 }
