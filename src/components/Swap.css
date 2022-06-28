@@ -368,7 +368,9 @@ h4.swap-title {
 }
 
 .lifiEmbed .swap-form {
-  margin-top: 40px;
+  -webkit-box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
+  box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
+  max-width: 500px;
 }
 
 .lifiEmbed .activeTransfers {
