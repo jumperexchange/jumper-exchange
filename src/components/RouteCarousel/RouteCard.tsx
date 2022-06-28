@@ -1,8 +1,8 @@
 import { Button, Steps } from 'antd'
 import BigNumber from 'bignumber.js'
 
-import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
-import { getChainById, Route as RouteType, Step } from '../types'
+import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
+import { getChainById, Route as RouteType, Step } from '../../types'
 
 interface RouteProps {
   route: RouteType
@@ -10,7 +10,7 @@ interface RouteProps {
   onSelect: Function
 }
 
-const Route = ({ route, selected, onSelect }: RouteProps) => {
+const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
   const parseStepShort = (step: Step) => {
     switch (step.type) {
       case 'swap':
@@ -138,4 +138,4 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
   )
 }
 
-export default Route
+export default RouteCard
