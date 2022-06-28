@@ -1,5 +1,5 @@
 import { Route as RouteType } from '@lifinance/sdk'
-import { Col, Collapse, Row, Typography } from 'antd'
+import { Col, Row, Typography } from 'antd'
 import { animate, stagger } from 'motion'
 import { useEffect, useRef } from 'react'
 
