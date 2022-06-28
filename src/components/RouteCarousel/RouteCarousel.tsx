@@ -6,8 +6,6 @@ import { useEffect, useRef } from 'react'
 import LoadingIndicator from '../LoadingIndicator'
 import RouteCard from './RouteCard'
 
-const { Panel } = Collapse
-
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
     const nodes = element.current?.childNodes
@@ -96,21 +94,6 @@ export const RouteCarousel = ({
             try again later or change the tokens you intend to swap. If the problem persists, come
             to our Discord and leave a message in the support channel.
           </Typography.Paragraph>
-          {/* <Collapse ghost className="no-route-custom-collapse">
-            <Panel header="A route for this transaction simply does not exist yet." key="1">
-              <p style={{ color: 'grey' }}>
-                We are working hard on integrating more exchanges to find possible transactions for
-                you! Look out for updates and try again later.
-              </p>
-            </Panel>
-            <Panel header="You are not sending enough tokens - Try a greater amount." key="2">
-              <p style={{ color: 'grey' }}>
-                Transactions cost money. These transaction costs are deducted from your swapping
-                amount. If this amount is not enough to cover the expenses, we can not execute the
-                transaction or compute routes.
-              </p>
-            </Panel>
-          </Collapse> */}
         </Col>
       )}
     </>
