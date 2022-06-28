@@ -74,7 +74,7 @@ export const RouteCarousel = ({
           </div>
         </Col>
       )}
-      {routesLoading && (
+      {routesLoading && !routes.length && (
         <Col span={24}>
           <Row justify={'center'} align="middle" style={{ height: 200 }}>
             <LoadingIndicator></LoadingIndicator>

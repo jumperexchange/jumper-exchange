@@ -993,13 +993,21 @@ const Swap = () => {
           <Col sm={23} lg={23} xl={15}>
             <Tabs defaultActiveKey="1">
               <TabPane tab={`Available Routes (${routes.length})`} key="1">
-                <RouteCarousel
-                  highlightedIndex={highlightedIndex}
-                  routes={routes}
-                  routesLoading={routesLoading}
-                  noRoutesAvailable={noRoutesAvailable}
-                  setHighlightedIndex={setHighlightedIndex}
-                />
+                {routesLoading || noRoutesAvailable || routes.length ? (
+                  <RouteCarousel
+                    highlightedIndex={highlightedIndex}
+                    routes={routes}
+                    routesLoading={routesLoading}
+                    noRoutesAvailable={noRoutesAvailable}
+                    setHighlightedIndex={setHighlightedIndex}
+                  />
+                ) : (
+                  <Row style={{ paddingTop: 48 }}>
+                    <Typography.Title level={4} disabled>
+                      To get available routes, input your desired tokens to swap.
+                    </Typography.Title>
+                  </Row>
+                )}
               </TabPane>
 
               <TabPane
