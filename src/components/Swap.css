@@ -29,6 +29,12 @@ input[type='number']::-webkit-outer-spin-button {
 
 @media only screen and (min-width: 480px) {
   .swap-input {
+    padding: 24px 48px;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .swap-input {
     margin: 0 auto;
     padding: 24px 48px;
   }
@@ -340,6 +346,7 @@ h4.swap-title {
 }
 
 .swap-view {
+  width: 90%;
   margin: auto;
 }
 

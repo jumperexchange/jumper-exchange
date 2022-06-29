@@ -861,7 +861,7 @@ const Swap = () => {
         </Row> */}
         {/* Swap Form */}
         <Row gutter={[16, 96]} style={{ paddingTop: 48 }} justify="space-around">
-          <Col sm={23} lg={23} xl={7} className="swap-form">
+          <Col sm={23} lg={23} xl={10} className="swap-form">
             <div className="swap-input">
               <Row>
                 <Title className="swap-title" level={4}>
@@ -891,6 +891,27 @@ const Swap = () => {
                   allowSameChains={true}
                 />
                 <span>
+                  {/* Bridge Prio */}
+                  <Row justify="center" style={{ marginTop: 16 }}>
+                    <Form.Item name="bridgePrioritization" label="Bridge Prioritization">
+                      <Select
+                        placeholder="Recommended"
+                        value={optionOrder}
+                        onChange={(v) => setOptionOrder(v)}
+                        style={{
+                          width: '100%',
+                        }}>
+                        {availableOrders.map((orderOption) => (
+                          <Select.Option
+                            key={orderOption.key}
+                            value={orderOption.key}
+                            data-label={orderOption.name}>
+                            {orderOption.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Row>
                   {/* Disclaimer */}
                   <Row justify={'center'} className="beta-disclaimer">
                     <Typography.Text type="danger" style={{ textAlign: 'center' }}>
@@ -990,7 +1011,7 @@ const Swap = () => {
             </div>
           </Col>
 
-          <Col sm={23} lg={23} xl={15}>
+          <Col sm={23} lg={23} xl={14}>
             <Tabs defaultActiveKey="1">
               <TabPane tab={`Available Routes (${routes.length})`} key="1">
                 {routesLoading || noRoutesAvailable || routes.length ? (
