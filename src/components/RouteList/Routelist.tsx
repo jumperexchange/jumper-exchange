@@ -1,12 +1,10 @@
 import { Route as RouteType } from '@lifinance/sdk'
 import { Col, Row, Typography } from 'antd'
 import { animate, stagger } from 'motion'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import LoadingIndicator from '../LoadingIndicator'
 import RouteCard from './RouteCard'
-
-const ROUTE_CHUNK_SIZE = 2
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
@@ -45,15 +43,6 @@ export const RouteList = ({
 }: RouteCarouselProps) => {
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
-
-  const routesByX: Array<RouteType[]> = useMemo(() => {
-    const routeArray: Array<RouteType[]> = []
-    for (let i = 0; i < routes.length; i += ROUTE_CHUNK_SIZE) {
-      const chunk = routes.slice(i, i + ROUTE_CHUNK_SIZE)
-      routeArray.push(chunk)
-    }
-    return routeArray
-  }, [routes])
 
   useEffect(() => {
     if (routes.length) {

@@ -44,31 +44,51 @@ input[type='number']::-webkit-outer-spin-button {
   background-color: white;
   -webkit-box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17) !important;
   box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17) !important;
-  min-width: 300px;
-  min-height: 450px;
+  width: 320px;
+  min-height: 400px;
   border-radius: 0;
   cursor: pointer;
+  position: relative;
 }
 
 .route-grid {
   margin: 0 auto;
   max-height: 700px;
+  width: 100%;
   overflow-y: scroll;
   display: grid;
   grid-template-columns: repeat(2, minmax(150px, 400px));
-
   gap: 32px;
-  /* grid-auto-columns: ; */
+  column-gap: 20px;
 }
-
-@media only screen and (max-width: 745px) {
+@media only screen and (max-width: 1199px) {
   .route-grid {
+    justify-content: center;
+  }
+}
+@media only screen and (max-width: 845px) {
+  .route-grid {
+    justify-content: center;
+
     grid-template-columns: repeat(1, minmax(150px, 400px));
   }
 }
 
 .swap-route .ant-btn {
   margin-top: 18px;
+}
+
+.route-info {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+}
+
+.route-info-badge {
+  padding: 4px 8px !important;
+  border: 1px solid grey !important;
+  border-radius: 7px !important;
+  background-color: #fdfdfd !important;
 }
 
 .no-routes-found {
@@ -254,14 +274,6 @@ h4.swap-title {
   border-radius: 6px;
 }
 
-.selected {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
 .ant-btn-round.ant-btn-lg {
   border-radius: 6px;
 }
@@ -363,7 +375,7 @@ h4.swap-title {
 }
 
 .swap-view {
-  width: 90%;
+  width: 95%;
   margin: auto;
 }
 
