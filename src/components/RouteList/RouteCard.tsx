@@ -94,6 +94,7 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
         padding: 24,
         paddingTop: 24,
         paddingBottom: 24,
+        border: selected ? '1px solid #3f49e1' : 'none',
       }}
       onClick={() => onSelect()}>
       <Steps
