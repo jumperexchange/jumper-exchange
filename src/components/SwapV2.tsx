@@ -34,8 +34,7 @@ export const SwapV2 = () => {
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
-      disableInternalWalletManagement: true,
-      externalWalletManagementSettings: {
+      walletManagement: {
         signer: signer,
         connect: async () => {
           let promiseResolver
@@ -51,7 +50,7 @@ export const SwapV2 = () => {
           addToDeactivatedWallets(account)
           deactivate()
         },
-        provideSigner: async () => {
+        getSigner: async () => {
           const selectedAddress = (window as any).ethereum?.selectedAddress
 
           if (selectedAddress && isWalletActivated(selectedAddress)) {
