@@ -1,4 +1,4 @@
-import { Col, Row, Steps, Timeline, Typography } from 'antd'
+import { Col, Row, Timeline, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
 
 import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
