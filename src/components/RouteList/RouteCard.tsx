@@ -1,4 +1,4 @@
-import { Col, Row, Steps } from 'antd'
+import { Col, Row, Steps, Timeline, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
 
 import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
@@ -107,7 +107,7 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
         border: selected ? '1px solid #3f49e1' : 'none',
       }}
       onClick={() => onSelect()}>
-      <Steps size="small" direction="vertical" current={5} className="progress-step-list">
+      <Timeline className="progress-step-list">
         {/* {!!tag && (
           <Typography.Text
             // style={{ height: 24, fontSize: '14px !important' }}
@@ -120,16 +120,15 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
         {route.steps.map((step) => {
           let { title, description } = parseStep(step)
           return (
-            <>
-              <Steps.Step
-                icon={getToolAvatarPrioritizeLifi(step)}
-                key={title}
-                title={title}
-                description={description}></Steps.Step>
-            </>
+            <Timeline.Item dot={getToolAvatarPrioritizeLifi(step)} key={title}>
+              <Typography.Title style={{ fontSize: 14 }} level={5}>
+                {title}
+              </Typography.Title>
+              <Typography.Text type="secondary">{description}</Typography.Text>
+            </Timeline.Item>
           )
         })}
-      </Steps>
+      </Timeline>
 
       <div className="route-info">
         <div style={{ textAlign: 'justify', width: 'fit-content' }}>
