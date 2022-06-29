@@ -42,6 +42,7 @@ import {
   deepClone,
   formatTokenAmount,
   formatTokenAmountOnly,
+  getBalance,
   isWalletDeactivated,
 } from '../services/utils'
 import {
@@ -554,21 +555,6 @@ const Swap = () => {
       setBalances(undefined) // reset old balances
     }
   }, [web3.account])
-
-  const getBalance = (
-    currentBalances: { [ChainKey: string]: Array<TokenAmount> } | undefined,
-    chainKey: ChainKey,
-    tokenId: string,
-  ) => {
-    if (!currentBalances || !currentBalances[chainKey]) {
-      return new BigNumber(0)
-    }
-
-    const tokenBalance = currentBalances[chainKey].find(
-      (tokenAmount) => tokenAmount.address === tokenId,
-    )
-    return tokenBalance?.amount ? new BigNumber(tokenBalance?.amount) : new BigNumber(0)
-  }
 
   useEffect(() => {
     // merge tokens and balances

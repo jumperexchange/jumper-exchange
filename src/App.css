@@ -93,6 +93,10 @@
   color: white;
   font-size: 12px;
 }
+.ant-select-show-search.ant-select-arrow {
+  pointer-events: auto;
+  cursor: pointer !important;
+}
 
 /* Social Links */
 
