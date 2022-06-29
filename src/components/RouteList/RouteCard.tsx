@@ -1,5 +1,6 @@
 import { Col, Row, Timeline, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
+import { useMemo } from 'react'
 
 import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
 import { getChainById, Route as RouteType, Step } from '../../types'
@@ -12,15 +13,21 @@ interface RouteProps {
 }
 
 const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
-  // const tag: string | undefined = useMemo(() => {
-  //   if (!route.tags || !route.tags.length) {
-  //     return 'GENERAL'
-  //   } else if (route.tags.includes('RECOMMENDED')) {
-  //     return 'RECOMMENDED'
-  //   } else {
-  //     return route.tags[0]
-  //   }
-  // }, [route])
+  const tag: string | undefined = useMemo(() => {
+    if (!route.tags || !route.tags.length) {
+      return 'GENERAL'
+    } else if (route.tags.includes('RECOMMENDED')) {
+      return 'RECOMMENDED'
+    } else if (route.tags[0] === 'SAFEST') {
+      return 'SAFE'
+    } else if (route.tags[0] === 'CHEAPEST') {
+      return 'CHEAP'
+    } else if (route.tags[0] === 'FASTEST') {
+      return 'FAST'
+    } else {
+      return route.tags[0]
+    }
+  }, [route])
   const parseStepShort = (step: Step) => {
     switch (step.type) {
       case 'swap':
@@ -108,14 +115,11 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
       }}
       onClick={() => onSelect()}>
       <Timeline className="progress-step-list">
-        {/* {!!tag && (
-          <Typography.Text
-            // style={{ height: 24, fontSize: '14px !important' }}
-            // level={5}
-            key="route-tag">
+        {!!tag && (
+          <Typography.Title style={{ marginBottom: 24, fontSize: 14, color: 'grey' }} level={5}>
             {tag}
-          </Typography.Text>
-        )} */}
+          </Typography.Title>
+        )}
 
         {route.steps.map((step) => {
           let { title, description } = parseStep(step)
