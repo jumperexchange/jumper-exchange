@@ -850,16 +850,6 @@ const Swap = () => {
         marginTop: '64px',
       }}>
       <div className="swap-view">
-        {/* <Row className="" style={{ paddingTop: 24 }}>
-          <Col span={7}>
-            <h1>Advanced Bridge & DEX Aggregation</h1>
-            <h3>
-              {availableBridges.length > 0 ? availableBridges.length : ''} Bridges,&nbsp;
-              {availableChains.length > 0 ? availableChains.length : ''} Chains and all the DEXs
-            </h3>
-          </Col>
-        </Row> */}
-        {/* Swap Form */}
         <Row gutter={[16, 96]} style={{ paddingTop: 48 }} justify="space-around">
           <Col sm={23} lg={23} xl={10} className="swap-form">
             <div className="swap-input">
@@ -1012,7 +1002,7 @@ const Swap = () => {
           </Col>
 
           <Col sm={23} lg={23} xl={14}>
-            <Tabs defaultActiveKey="1">
+            <Tabs defaultActiveKey={activeRoutes.length ? '2' : '1'}>
               <TabPane tab={`Available Routes (${routes.length})`} key="1">
                 {routesLoading || noRoutesAvailable || routes.length ? (
                   <RouteCarousel
