@@ -10,7 +10,6 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 
 import { useIsMobile } from '../hooks/useIsMobile'
 import { useStepReturnInfo } from '../hooks/useStepReturnInfo'
@@ -24,6 +23,7 @@ import { getChainById, isCrossStep, isLifiStep, Route, Step } from '../types'
 import { getChainAvatar, getToolAvatar } from './Avatars/Avatars'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
+import { FurtherLinks } from './SwappingMainButtonFiles/FurtherLinks'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
 interface SwapSettings {
@@ -356,12 +356,14 @@ const Swapping = ({
               </>
             ))}
           {!fixedRecipient && (
-            <Typography.Text
-              type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
-              style={{ fontSize: !routeReturnInfo.receivedAmount.isZero() ? 12 : 14 }}>
-              {`You now have ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
-              {` on ${routeReturnInfo.toChain.name}`}
-            </Typography.Text>
+            <>
+              <Typography.Text
+                type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
+                style={{ fontSize: !routeReturnInfo.receivedAmount.isZero() ? 12 : 14 }}>
+                {`You now have ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
+                {` on ${routeReturnInfo.toChain.name}`}
+              </Typography.Text>
+            </>
           )}
         </>
       ) : (
@@ -370,7 +372,9 @@ const Swapping = ({
 
       const infoTitle = routeReturnInfo ? (
         routeReturnInfo.receivedTokenMatchesPlannedToken ? (
-          <Typography.Text strong>Swap Successful!</Typography.Text>
+          <>
+            <Typography.Text strong>Swap Successful!</Typography.Text>
+          </>
         ) : (
           <Typography.Text strong>
             Warning! It seems like you received the wrong token
@@ -400,11 +404,11 @@ const Swapping = ({
                 </span>
               </Tooltip>
             ))}
-          {!fixedRecipient && (
-            <Link to="/dashboard">
-              <Button type="link">Dashboard</Button>
-            </Link>
-          )}
+          <FurtherLinks
+            fixedRecipient={fixedRecipient}
+            routeReturnInfo={routeReturnInfo}
+            localRoute={localRoute}
+          />
         </Space>
       )
     }
