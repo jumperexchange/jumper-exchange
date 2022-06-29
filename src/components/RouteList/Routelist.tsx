@@ -1,10 +1,12 @@
 import { Route as RouteType } from '@lifinance/sdk'
 import { Col, Row, Typography } from 'antd'
 import { animate, stagger } from 'motion'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import LoadingIndicator from '../LoadingIndicator'
 import RouteCard from './RouteCard'
+
+const ROUTE_CHUNK_SIZE = 2
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
@@ -34,7 +36,7 @@ interface RouteCarouselProps {
   setHighlightedIndex: Function
 }
 
-export const RouteCarousel = ({
+export const RouteList = ({
   highlightedIndex,
   routes,
   routesLoading,
@@ -43,6 +45,15 @@ export const RouteCarousel = ({
 }: RouteCarouselProps) => {
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
+
+  const routesByX: Array<RouteType[]> = useMemo(() => {
+    const routeArray: Array<RouteType[]> = []
+    for (let i = 0; i < routes.length; i += ROUTE_CHUNK_SIZE) {
+      const chunk = routes.slice(i, i + ROUTE_CHUNK_SIZE)
+      routeArray.push(chunk)
+    }
+    return routeArray
+  }, [routes])
 
   useEffect(() => {
     if (routes.length) {
@@ -53,24 +64,38 @@ export const RouteCarousel = ({
   return (
     <>
       {routes.length > 0 && (
-        <Col span={24}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              overflowX: 'scroll',
-              justifyContent: 'start',
-              padding: 0,
-            }}
-            ref={routeCards}>
-            {routes.map((route, index) => (
-              <RouteCard
-                key={index}
-                route={route}
-                selected={highlightedIndex === index}
-                onSelect={() => setHighlightedIndex(index)}
-              />
-            ))}
+        <Col span={24} style={{ padding: 0 }}>
+          <div className="route-grid" ref={routeCards}>
+            {routes.map((route, index) => {
+              return (
+                <RouteCard
+                  key={index}
+                  route={route}
+                  selected={highlightedIndex === index}
+                  onSelect={() => setHighlightedIndex(index)}
+                />
+              )
+            })}
+            {/* {routesByX.map((routeChunk, chunkIndex) => {
+              return (
+                <Row>
+                  {routeChunk.map((route, index) => {
+                    const combinedIndex = chunkIndex + index
+                    // chunkIndex === 0 ? chunkIndex + index : chunkIndex + 1 + index
+                    return (
+                      <Col span={12}>
+                        <RouteCard
+                          key={combinedIndex}
+                          route={route}
+                          selected={highlightedIndex === combinedIndex}
+                          onSelect={() => setHighlightedIndex(combinedIndex)}
+                        />
+                      </Col>
+                    )
+                  })}
+                </Row>
+              )
+            })} */}
           </div>
         </Col>
       )}

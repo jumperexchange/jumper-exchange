@@ -63,7 +63,7 @@ import {
   TokenAmount,
   TokenAmountList,
 } from '../types'
-import { RouteCarousel } from './RouteCarousel/RouteCarousel'
+import { RouteList } from './RouteList/Routelist'
 import SwapForm from './SwapForm/SwapForm'
 import Swapping from './Swapping'
 import TransactionsTable from './TransactionsTable'
@@ -1005,7 +1005,7 @@ const Swap = () => {
             <Tabs defaultActiveKey={activeRoutes.length ? '2' : '1'}>
               <TabPane tab={`Available Routes (${routes.length})`} key="1">
                 {routesLoading || noRoutesAvailable || routes.length ? (
-                  <RouteCarousel
+                  <RouteList
                     highlightedIndex={highlightedIndex}
                     routes={routes}
                     routesLoading={routesLoading}

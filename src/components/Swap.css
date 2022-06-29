@@ -45,9 +45,26 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17) !important;
   box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17) !important;
   min-width: 300px;
-  min-height: 360px;
+  min-height: 500px;
   border-radius: 0;
   cursor: pointer;
+}
+
+.route-grid {
+  margin: 0 auto;
+  max-height: 700px;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 400px));
+
+  gap: 32px;
+  /* grid-auto-columns: ; */
+}
+
+@media only screen and (max-width: 745px) {
+  .route-grid {
+    grid-template-columns: repeat(1, minmax(150px, 400px));
+  }
 }
 
 .swap-route .ant-btn {
