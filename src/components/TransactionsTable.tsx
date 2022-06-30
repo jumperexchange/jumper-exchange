@@ -77,6 +77,7 @@ function TransactionsTable({
           onConfirm={() => deleteRoute(route)}
           okText="Yes"
           okType="danger"
+          placement="left"
           cancelText="No">
           <Button
             style={{ padding: '3px 16px 4px 16px' }}
@@ -95,34 +96,42 @@ function TransactionsTable({
     {
       title: 'Started',
       dataIndex: 'date',
+      width: 150,
     },
     {
       title: 'From Chain',
       dataIndex: 'fromChain',
+      width: 150,
     },
     {
       title: 'From Token',
       dataIndex: 'fromToken',
+      width: 150,
     },
     {
       title: 'To Chain',
       dataIndex: 'toChain',
+      width: 150,
     },
     {
       title: 'To Token',
       dataIndex: 'toToken',
+      width: 150,
     },
     {
       title: 'Protocols',
       dataIndex: 'protocols',
+      width: 150,
     },
     {
       title: 'State',
       dataIndex: 'state',
+      width: 150,
     },
     {
       title: 'Action',
       dataIndex: 'action',
+      width: 100,
     },
   ]
 
@@ -158,7 +167,12 @@ function TransactionsTable({
       bordered={false}
       columns={columns}
       dataSource={data}
-      pagination={{ hideOnSinglePage: true, size: 'small', position: ['bottomCenter'] }}
+      pagination={{
+        hideOnSinglePage: true,
+        size: 'small',
+        position: ['bottomCenter'],
+        defaultPageSize: 7,
+      }}
       className="tx-table"
     />
   )
