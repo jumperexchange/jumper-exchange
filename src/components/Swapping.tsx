@@ -10,7 +10,6 @@ import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 
 import { useIsMobile } from '../hooks/useIsMobile'
 import { useStepReturnInfo } from '../hooks/useStepReturnInfo'
@@ -19,11 +18,12 @@ import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
-import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
+import { copyToClipboard, formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import { getChainById, isCrossStep, isLifiStep, Route, Step } from '../types'
 import { getChainAvatar, getToolAvatar } from './Avatars/Avatars'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
+import { FurtherLinks } from './SwappingMainButtonFiles/FurtherLinks'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
 interface SwapSettings {
@@ -100,9 +100,42 @@ const Swapping = ({
             <p>{renderProcessMessage(process)}</p>
 
             {hasFailed && (
-              <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
-                {renderProcessError(process)}
-              </Typography.Text>
+              <>
+                <Typography.Text type="secondary" style={{ whiteSpace: 'pre-wrap' }}>
+                  {renderProcessError(process)}
+                </Typography.Text>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                  }}>
+                  <Button
+                    style={{ margin: 0 }}
+                    type="link"
+                    onClick={async () =>
+                      copyToClipboard(
+                        `${process.error?.message}\n${process.error?.htmlMessage?.replaceAll(
+                          /(<([^>]+)>)/gi,
+                          '\n',
+                        )}`,
+                      )
+                    }>
+                    Copy Error Message
+                  </Button>
+                  {!!step.execution?.process.some((process) => process.txHash) && (
+                    <Button
+                      type="link"
+                      onClick={async () => {
+                        const hashes = step.execution?.process
+                          .filter((process) => process.txHash)
+                          .map((process) => process.txHash)
+                        copyToClipboard((!!hashes && hashes[hashes?.length - 1]) || '')
+                      }}>
+                      Copy TX hash
+                    </Button>
+                  )}
+                </div>
+              </>
             )}
           </Typography.Text>
           <Typography.Text style={{ marginLeft: 'auto', minWidth: 35 }}>
@@ -356,12 +389,14 @@ const Swapping = ({
               </>
             ))}
           {!fixedRecipient && (
-            <Typography.Text
-              type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
-              style={{ fontSize: !routeReturnInfo.receivedAmount.isZero() ? 12 : 14 }}>
-              {`You now have ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
-              {` on ${routeReturnInfo.toChain.name}`}
-            </Typography.Text>
+            <>
+              <Typography.Text
+                type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
+                style={{ fontSize: !routeReturnInfo.receivedAmount.isZero() ? 12 : 14 }}>
+                {`You now have ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
+                {` on ${routeReturnInfo.toChain.name}`}
+              </Typography.Text>
+            </>
           )}
         </>
       ) : (
@@ -370,7 +405,9 @@ const Swapping = ({
 
       const infoTitle = routeReturnInfo ? (
         routeReturnInfo.receivedTokenMatchesPlannedToken ? (
-          <Typography.Text strong>Swap Successful!</Typography.Text>
+          <>
+            <Typography.Text strong>Swap Successful!</Typography.Text>
+          </>
         ) : (
           <Typography.Text strong>
             Warning! It seems like you received the wrong token
@@ -400,11 +437,11 @@ const Swapping = ({
                 </span>
               </Tooltip>
             ))}
-          {!fixedRecipient && (
-            <Link to="/dashboard">
-              <Button type="link">Dashboard</Button>
-            </Link>
-          )}
+          <FurtherLinks
+            fixedRecipient={fixedRecipient}
+            routeReturnInfo={routeReturnInfo}
+            localRoute={localRoute}
+          />
         </Space>
       )
     }

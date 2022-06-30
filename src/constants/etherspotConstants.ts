@@ -14,4 +14,8 @@ export const etherspotSupportedChains: number[] = [
   ChainId.POL,
   ChainId.AUR,
   ChainId.AVA,
+  ChainId.ARB,
+  ChainId.OPT,
+  ChainId.MOO,
+  ChainId.CEL,
 ]
