@@ -107,10 +107,10 @@ const Swapping = ({
                 <div
                   style={{
                     display: 'flex',
-                    justifyContent: 'flex-start',
+                    justifyContent: 'start',
                   }}>
                   <Button
-                    style={{ margin: 0 }}
+                    style={{ margin: 0, padding: 0 }}
                     type="link"
                     onClick={async () =>
                       copyToClipboard(
