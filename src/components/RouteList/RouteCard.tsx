@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 
 import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
 import { getChainById, Route as RouteType, Step } from '../../types'
-import { getToolAvatarPrioritizeLifi } from '../Avatars/Avatars'
+import { getTokenAvatar, getToolAvatarPrioritizeLifi } from '../Avatars/Avatars'
 
 interface RouteProps {
   route: RouteType
@@ -117,7 +117,10 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
       <Timeline className="progress-step-list">
         {!!tag && (
           <Typography.Title style={{ marginBottom: 24, fontSize: 14, color: 'grey' }} level={5}>
-            {tag}
+            {tag}{' '}
+            <span style={{ float: 'right', filter: selected ? 'none' : 'grayscale(50%)' }}>
+              {getTokenAvatar(route.toToken)}
+            </span>
           </Typography.Title>
         )}
 
@@ -136,14 +139,20 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
 
       <div className="route-info">
         <div style={{ textAlign: 'justify', width: 'fit-content' }}>
-          <b>Estimated token: {formatTokenAmount(route.toToken, route.toAmount)}</b>
+          <b style={{ position: 'relative' }}>
+            Estimated token:
+            {formatTokenAmount(route.toToken, route.toAmount) + //.replace(route.toToken.symbol, '')
+              ' '}
+          </b>
           <br />
           <b>
-            Estimated result:{' '}
+            Estimated result:{' $'}
             {!new BigNumber(route.toAmountUSD).isZero() ? `${route.toAmountUSD} USD` : '~'}
           </b>
           <Row style={{ marginTop: 8 }} justify="space-between">
-            <Col className="route-info-badge">{parsedDuration} min</Col>
+            <Col style={{ marginRight: 8 }} className="route-info-badge">
+              {parsedDuration} min
+            </Col>
             <Col className="route-info-badge">{route.gasCostUSD} USD Gas Cost</Col>
           </Row>
         </div>

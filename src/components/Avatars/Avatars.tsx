@@ -1,4 +1,4 @@
-import { ChainKey, getChainByKey, Step } from '@lifinance/sdk'
+import { ChainKey, getChainByKey, Step, Token } from '@lifinance/sdk'
 import { Avatar, Tooltip } from 'antd'
 
 import lifiLogo from '../../assets/Li.Fi/LiFi.svg'
@@ -32,6 +32,18 @@ export const getToolAvatarPrioritizeLifi = (step: Step) => {
   return (
     <Tooltip title={toolDetails.name}>
       <Avatar shape="square" size="small" src={logo} alt={toolDetails.name}></Avatar>
+    </Tooltip>
+  )
+}
+
+export const getTokenAvatar = (token: Token) => {
+  return (
+    <Tooltip title={token.name}>
+      <Avatar
+        style={{ width: 20, height: 20 }}
+        size="small"
+        src={token.logoURI}
+        alt={token.name}></Avatar>
     </Tooltip>
   )
 }

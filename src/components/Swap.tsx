@@ -902,12 +902,12 @@ const Swap = () => {
                       </Select>
                     </Form.Item>
                   </Row>
-                  {/* Disclaimer */}
-                  <Row justify={'center'} className="beta-disclaimer">
+                  {/* Disclaimer
+                  <Row style={{ marginTop }} justify={'center'} className="beta-disclaimer">
                     <Typography.Text type="danger" style={{ textAlign: 'center' }}>
                       Beta product - use at own risk.
                     </Typography.Text>
-                  </Row>
+                  </Row> */}
                   <Row style={{ marginTop: 24 }} justify={'center'}>
                     {submitButton()}
                   </Row>

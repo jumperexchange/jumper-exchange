@@ -158,7 +158,7 @@ function App() {
                       overflowedIndicator={<DownOutlined />}
                       inlineCollapsed={false}>
                       <Menu.Item key="/swap">
-                        <span className="beta-badge">Beta</span>
+                        {/* <span className="beta-badge">Beta</span> */}
                         <Link to="/swap">Swap & Bridge</Link>
                       </Menu.Item>
                       <Menu.Item key="/dashboard">
