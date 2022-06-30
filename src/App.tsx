@@ -154,11 +154,11 @@ function App() {
                     <Menu
                       theme="light"
                       mode="horizontal"
+                      triggerSubMenuAction="hover"
                       defaultSelectedKeys={path ? [path] : []}
                       overflowedIndicator={<DownOutlined />}
                       inlineCollapsed={false}>
                       <Menu.Item key="/swap">
-                        {/* <span className="beta-badge">Beta</span> */}
                         <Link to="/swap">Swap & Bridge</Link>
                       </Menu.Item>
                       <Menu.Item key="/dashboard">
@@ -173,7 +173,7 @@ function App() {
                         </a>
                       </Menu.Item>
 
-                      <Menu.SubMenu title="More" key="more-submenu">
+                      <Menu.SubMenu title="More" key="lifi-more-submenu">
                         <Menu.Item key="blog">
                           <a
                             href="https://blog.li.finance/"
@@ -213,7 +213,6 @@ function App() {
                             )}
                           </Menu.ItemGroup>
                         </Menu.SubMenu>
-
                         <Menu.SubMenu title="Legals" key="legals-submenu">
                           <Menu.Item key="privacy">
                             <Link to="https://li.fi/legal/privacy-policy/" target={'_blank'}>
