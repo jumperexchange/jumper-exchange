@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 
 import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
 import { getChainById, Route as RouteType, Step } from '../../types'
-import { getTokenAvatar, getToolAvatarPrioritizeLifi } from '../Avatars/Avatars'
+import { getToolAvatarPrioritizeLifi } from '../Avatars/Avatars'
 
 interface RouteProps {
   route: RouteType

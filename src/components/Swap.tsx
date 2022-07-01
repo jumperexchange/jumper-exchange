@@ -24,7 +24,7 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import LiFi from '../LiFi'
@@ -186,6 +186,8 @@ const Swap = () => {
     () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
     [tokens, availableChains],
   )
+  const transactionInfoRef = useRef<null | HTMLDivElement>(null)
+  const [activeTransactionInfoTabKey, setActiveTransactionInfoTabKey] = useState<string>()
 
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
@@ -686,6 +688,8 @@ const Swap = () => {
         setHighlightedIndex(result.routes.length === 0 ? -1 : 0)
         setNoRoutesAvailable(result.routes.length === 0)
         setRoutesLoading(false)
+        transactionInfoRef.current?.scrollIntoView({ behavior: 'smooth' })
+        setActiveTransactionInfoTabKey('1')
       }
     }
   }, [routeCallResult, currentRouteCallId])
@@ -1002,64 +1006,68 @@ const Swap = () => {
           </Col>
 
           <Col sm={23} lg={23} xl={14}>
-            <Tabs
-              style={{ width: '90%' }}
-              defaultActiveKey={activeRoutes.length ? '2' : historicalRoutes.length ? '3' : '1'}>
-              <TabPane tab={`Available Routes (${routes.length})`} key="1">
-                {routesLoading || noRoutesAvailable || routes.length ? (
-                  <RouteList
-                    highlightedIndex={highlightedIndex}
-                    routes={routes}
-                    routesLoading={routesLoading}
-                    noRoutesAvailable={noRoutesAvailable}
-                    setHighlightedIndex={setHighlightedIndex}
-                  />
-                ) : (
-                  <Row style={{ paddingTop: 48 }}>
-                    <Typography.Title level={4} disabled>
-                      To get available routes, input your desired tokens to swap.
-                    </Typography.Title>
-                  </Row>
-                )}
-              </TabPane>
+            <div ref={transactionInfoRef}>
+              <Tabs
+                style={{ width: '90%' }}
+                defaultActiveKey={activeRoutes.length ? '2' : historicalRoutes.length ? '3' : '1'}
+                activeKey={activeTransactionInfoTabKey}
+                onTabClick={(key: string) => setActiveTransactionInfoTabKey(key)}>
+                <TabPane tab={`Available Routes (${routes.length})`} key="1">
+                  {routesLoading || noRoutesAvailable || routes.length ? (
+                    <RouteList
+                      highlightedIndex={highlightedIndex}
+                      routes={routes}
+                      routesLoading={routesLoading}
+                      noRoutesAvailable={noRoutesAvailable}
+                      setHighlightedIndex={setHighlightedIndex}
+                    />
+                  ) : (
+                    <Row style={{ paddingTop: 48 }}>
+                      <Typography.Title level={4} disabled>
+                        To get available routes, input your desired tokens to swap.
+                      </Typography.Title>
+                    </Row>
+                  )}
+                </TabPane>
 
-              <TabPane
-                tab={`Active Transfers (${activeRoutes.length})`}
-                disabled={!activeRoutes.length}
-                key="2"
-                style={{ overflowX: 'scroll' }}>
-                {!!activeRoutes.length && (
-                  <TransactionsTable
-                    routes={activeRoutes}
-                    selectRoute={(route: RouteType) => setSelectedRoute(route)}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setActiveRoutes(readActiveRoutes())
-                    }}
-                  />
-                )}
-              </TabPane>
+                <TabPane
+                  tab={`Active Transfers (${activeRoutes.length})`}
+                  disabled={!activeRoutes.length}
+                  key="2"
+                  style={{ overflowX: 'scroll' }}>
+                  {!!activeRoutes.length && (
+                    <TransactionsTable
+                      routes={activeRoutes}
+                      selectRoute={(route: RouteType) => setSelectedRoute(route)}
+                      deleteRoute={(route: RouteType) => {
+                        LiFi.stopExecution(route)
+                        deleteRoute(route)
+                        setActiveRoutes(readActiveRoutes())
+                      }}
+                    />
+                  )}
+                </TabPane>
 
-              <TabPane
-                tab={`Historical Transfers (${historicalRoutes.length})`}
-                disabled={!historicalRoutes.length}
-                key="3"
-                style={{ overflowX: 'scroll' }}>
-                {!!historicalRoutes.length && (
-                  <TransactionsTable
-                    routes={historicalRoutes}
-                    selectRoute={() => {}}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setHistoricalRoutes(readHistoricalRoutes())
-                    }}
-                    historical={true}
-                  />
-                )}
-              </TabPane>
-            </Tabs>
+                <TabPane
+                  tab={`Historical Transfers (${historicalRoutes.length})`}
+                  disabled={!historicalRoutes.length}
+                  key="3"
+                  style={{ overflowX: 'scroll' }}>
+                  {!!historicalRoutes.length && (
+                    <TransactionsTable
+                      routes={historicalRoutes}
+                      selectRoute={() => {}}
+                      deleteRoute={(route: RouteType) => {
+                        LiFi.stopExecution(route)
+                        deleteRoute(route)
+                        setHistoricalRoutes(readHistoricalRoutes())
+                      }}
+                      historical={true}
+                    />
+                  )}
+                </TabPane>
+              </Tabs>
+            </div>
           </Col>
         </Row>
       </div>
