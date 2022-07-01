@@ -1002,7 +1002,9 @@ const Swap = () => {
           </Col>
 
           <Col sm={23} lg={23} xl={14}>
-            <Tabs style={{ width: '90%' }} defaultActiveKey={activeRoutes.length ? '2' : '1'}>
+            <Tabs
+              style={{ width: '90%' }}
+              defaultActiveKey={activeRoutes.length ? '2' : historicalRoutes.length ? '3' : '1'}>
               <TabPane tab={`Available Routes (${routes.length})`} key="1">
                 {routesLoading || noRoutesAvailable || routes.length ? (
                   <RouteList
