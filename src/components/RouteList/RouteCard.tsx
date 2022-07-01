@@ -117,10 +117,7 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
       <Timeline className="progress-step-list">
         {!!tag && (
           <Typography.Title style={{ marginBottom: 24, fontSize: 14, color: 'grey' }} level={5}>
-            {tag}{' '}
-            <span style={{ float: 'right', filter: selected ? 'none' : 'grayscale(50%)' }}>
-              {getTokenAvatar(route.toToken)}
-            </span>
+            {tag}
           </Typography.Title>
         )}
 
