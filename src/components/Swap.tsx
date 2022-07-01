@@ -24,7 +24,7 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
-import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import LiFi from '../LiFi'
