@@ -427,7 +427,7 @@ function App() {
               </div>
 
               {/* <Footer></Footer> */}
-              <NotificationOverlay />
+              {/* <NotificationOverlay /> */}
             </Layout>
           )}
         </ChainsTokensToolsProvider>
