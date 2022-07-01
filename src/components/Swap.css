@@ -24,7 +24,7 @@ input[type='number']::-webkit-outer-spin-button {
   background: white;
   max-width: 450px;
   padding: 20px 16px;
-  margin: 20px;
+  margin: 0 auto;
 }
 
 @media only screen and (min-width: 480px) {
