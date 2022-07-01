@@ -1,12 +1,12 @@
-import { viewports } from "@lifi/style";
+import { viewports } from "@transferto/shared/style";
 import { useMedia } from "use-media";
 import { MediaQueryObject } from "use-media/lib/types";
 
 import { UseMediaTypes } from "../types/use-media";
 // Usage:
 // 1.)  Import MediaTypes and hook:
-//      import { UseMediaTypes, useIsMobile } from '@lifi/hooks'
-//      import { UseMediaTypes } from '../../types/use-media'
+//      import { useIsMobile } from '@transferto/shared/hooks'
+//      import { UseMediaTypes } from '@transferto/shared/types/use-media'
 //
 // 2.)  Define variable using the MediaQuery-Hook and pass the option
 // Examples -->

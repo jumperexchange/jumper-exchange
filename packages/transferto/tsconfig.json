@@ -3,30 +3,59 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "esnext",
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "incremental": true,
     "paths": {
-      "@/test-utils": ["../config/tests/test-utils"],
-      "@/config/*": ["./config/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/components/*": ["./components/*"],
-      "@/backend/*": ["./backend/*"],
-      "@/features/*": ["./features/*"],
-      "@/pages/*": ["./pages/*"],
-      "@/public/*": ["../public/*"],
-      "@/themes/*": ["./themes/*"],
+      "@/test-utils": [
+        "../config/tests/test-utils"
+      ],
+      "@/config/*": [
+        "./config/*"
+      ],
+      "@/lib/*": [
+        "./lib/*"
+      ],
+      "@/components/*": [
+        "./components/*"
+      ],
+      "@/backend/*": [
+        "./backend/*"
+      ],
+      "@/features/*": [
+        "./features/*"
+      ],
+      "@/pages/*": [
+        "./pages/*"
+      ],
+      "@/public/*": [
+        "../public/*"
+      ],
+      "@/themes/*": [
+        "./themes/*"
+      ],
       // "@transferto/common-i18n": ["../../../packages/common-i18n/src/index"],
       // "@transferto/common-i18n/locales/*": [
       //   "../../../packages/common-i18n/src/locales/*"
       // ],
-      "@transferto/shared/*": ["../../../packages/shared/src/*"],
-      "@transferto/shared": ["../../../packages/shared/src/index"]
+      "@transferto/shared/*": [
+        "../../../packages/shared/src/*"
+      ],
+      "@transferto/shared": [
+        "../../../packages/shared/src/index"
+      ]
     }
   },
-  "exclude": ["**/node_modules", "**/.*/"],
+  "exclude": [
+    "**/node_modules",
+    "**/.*/"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
@@ -36,7 +65,10 @@
     "**/*.cjs",
     "**/*.mjs",
     "**/*.jsx",
-    "**/*.json"
+    "**/*.json",
+    "../shared/src/theme.ts"
   ],
-  "types": ["vitest/globals"]
+  "types": [
+    "vitest/globals"
+  ]
 }

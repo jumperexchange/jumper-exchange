@@ -1,4 +1,4 @@
-import { viewports } from "@lifi/style";
+import { viewports } from "@transferto/shared/style";
 import { useMedia } from "use-media";
 import { MediaQueryObject } from "use-media/lib/types";
 
@@ -6,9 +6,8 @@ import { UseMediaTypes } from "../types/use-media";
 
 // Usage:
 // 1.)  Import MediaTypes and hook:
-//      import { useIsDesktop } from '@lifi/hooks'
-//      import { UseMediaTypes } from '../../types/use-media'
-//
+//      import { useIsDesktop } from '@shared/hookshooks'
+//      import { UseMediaTypes } from '@transferto/shared/types/use-media'
 // 2.)  Define variable using the MediaQuery-Hook and pass the option
 // Examples -->
 //  default:        const isDesktop = useIsDesktop()
