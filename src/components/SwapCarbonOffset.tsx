@@ -26,7 +26,7 @@ import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
@@ -41,7 +41,12 @@ import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxS
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
-import { deepClone, formatTokenAmountOnly, isWalletDeactivated } from '../services/utils'
+import {
+  deepClone,
+  formatTokenAmountOnly,
+  getBalance,
+  isWalletDeactivated,
+} from '../services/utils'
 import {
   Chain,
   ChainId,
@@ -147,7 +152,7 @@ const Swap = () => {
   const [fromChainKey, setFromChainKey] = useState<ChainKey | undefined>()
   const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(0))
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
-  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>()
+  const [toChainKey] = useState<ChainKey>(ChainKey.POL)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address)
   const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
@@ -190,6 +195,10 @@ const Swap = () => {
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
 
   const [tokenPolygonBCT, setTokenPolygonBCT] = useState<Token>()
+  const tokensAndChainsSet = useMemo(
+    () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
+    [tokens, availableChains],
+  )
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -332,19 +341,15 @@ const Swap = () => {
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
-    if (
-      chainsTokensTools.chainsLoaded &&
-      chainsTokensTools.tokensLoaded &&
-      chainsTokensTools.toolsLoaded
-    ) {
+    if (tokensAndChainsSet) {
       setRefreshBalances(true)
     }
-  }, [])
+  }, [availableChains, tokens])
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    LiFi.getChains().then((chains: Chain[]) => {
-      const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
+    if (!fromChainKey && startParamsDefined) {
+      const walletChainIsSupported = availableChains.some((chain) => chain.id === web3.chainId)
       if (!walletChainIsSupported) return
       if (web3.chainId && !fromChainKey) {
         const chain = availableChains.find((chain) => chain.id === web3.chainId)
@@ -352,24 +357,18 @@ const Swap = () => {
           setFromChainKey(chain.key)
         }
       }
-    })
-  }, [web3.chainId, fromChainKey, availableChains])
+    }
+  }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
-    if (
-      !!chainsTokensTools.chains.length &&
-      !!(Object.keys(chainsTokensTools.tokens).length === 0) &&
-      !!chainsTokensTools.exchanges.length &&
-      !!chainsTokensTools.bridges.length
-    ) {
+    if (tokensAndChainsSet) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
       setFromTokenAddress(startParams.depositToken)
-      setToChainKey(startParams.withdrawChain)
       setStartParamsDefined(true)
     }
-  }, [chainsTokensTools])
+  }, [availableChains, tokens])
 
   const updateTokenData = (token: Token) => {
     LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
@@ -585,21 +584,6 @@ const Swap = () => {
       setBalances(undefined) // reset old balances
     }
   }, [web3.account])
-
-  const getBalance = (
-    currentBalances: { [ChainKey: string]: Array<TokenAmount> } | undefined,
-    chainKey: ChainKey,
-    tokenId: string,
-  ) => {
-    if (!currentBalances || !currentBalances[chainKey]) {
-      return new BigNumber(0)
-    }
-
-    const tokenBalance = currentBalances[chainKey].find(
-      (tokenAmount) => tokenAmount.address === tokenId,
-    )
-    return tokenBalance?.amount ? new BigNumber(tokenBalance?.amount) : new BigNumber(0)
-  }
 
   useEffect(() => {
     // merge tokens and balances
@@ -1113,8 +1097,15 @@ const Swap = () => {
                     <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
                   </li>
                 </ol>
-                to <b>facilitate cross-chain carbon retirements</b> in just X steps which would
-                normally be X steps on X different dapps.
+                to <b>facilitate cross-chain carbon retirements</b> in just 3 steps which would
+                normally be 9 steps on 3 different dapps. You can learn more about carbon offsetting
+                by KlimaDAO here:{' '}
+                <a
+                  href="https://www.klimadao.finance/blog/the-promise-and-challenges-of-carbon-offsetting"
+                  target="_blank"
+                  rel="noreferrer">
+                  The promise and challenges of carbon offsetting
+                </a>
               </Paragraph>
               <Paragraph style={{ marginTop: 64 }}>
                 <h2>What is happening in the background?</h2>
@@ -1214,123 +1205,6 @@ const Swap = () => {
               residualRoute={residualRoute}
               setResidualRoute={setResidualRoute}
             />
-            {/* <>
-              <Typography.Paragraph>
-                You still have {etherspotWalletBalance.toFixed(2)} USDC in your smart contract based
-                wallet, do you want to swap and offset carbon using the Toucan Protocol: Base Carbon
-                Tonne (BCT)?
-              </Typography.Paragraph>
-              <div style={{ marginBottom: 8, height: 80 }}>
-                {MinimalEtherspotStep({
-                  etherspotStepExecution,
-                  stakingStep: residualRoute?.stakingStep,
-                  isSwapping: isSwapping,
-                  index: 0,
-                  previousStepInfo: {
-                    amount: etherspotWalletBalance
-                      .shiftedBy(TOKEN_POLYGON_USDC.decimals)
-                      .toString(),
-                    token: TOKEN_POLYGON_USDC,
-                  },
-                })}
-              </div>
-
-              <Collapse ghost>
-                <Panel key={1} header="Add a message for this transaction">
-                  <Row
-                    style={{
-                      marginTop: '32px',
-                    }}>
-                    <Input
-                      disabled={isSwapping ? true : false}
-                      className="input-beneficiary"
-                      key="input-beneficiary-name"
-                      type="text"
-                      placeholder={`Name or organisation`}
-                      // value={beneficiaryName}
-                      onChange={(event) =>
-                        setBeneficiaryInfo({
-                          ...beneficiaryInfo,
-                          beneficiaryName: event.currentTarget.value,
-                        })
-                      }
-                      style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
-                    />
-                  </Row>
-                  <Row>
-                    <Tooltip title="Defaults to the connected wallet address">
-                      <Input
-                        disabled={isSwapping ? true : false}
-                        className="input-beneficiary"
-                        key="input-beneficiary-address"
-                        type="text"
-                        placeholder={`Enter 0x address (optional)`}
-                        // value={beneficiaryAddress}
-                        onChange={(event) =>
-                          setBeneficiaryInfo({
-                            ...beneficiaryInfo,
-                            beneficiaryAddress: event.currentTarget.value,
-                          })
-                        }
-                        style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
-                      />
-                    </Tooltip>
-                  </Row>
-                  <Row>
-                    <TextArea
-                      disabled={isSwapping ? true : false}
-                      className="input-beneficiary"
-                      key="input-beneficiary-message"
-                      rows={4}
-                      placeholder={`Enter retirement message`}
-                      // value={retirementMessage}
-                      onChange={(event) =>
-                        setBeneficiaryInfo({
-                          ...beneficiaryInfo,
-                          retirementMessage: event.currentTarget.value,
-                        })
-                      }
-                      style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
-                    />
-                  </Row>
-                </Panel>
-              </Collapse>
-              <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-                {!etherspotStepExecution ? (
-                  <>
-                    <Button
-                      style={{ margin: 8 }}
-                      onClick={() => {
-                        setEtherspotWalletBalance(undefined)
-                        setResidualRoute(undefined)
-                      }}>
-                      Cancel
-                    </Button>
-                    <Button style={{ margin: 8 }} type="primary" onClick={stakeResidualFunds}>
-                      Swap and Offset
-                    </Button>
-                  </>
-                ) : etherspotStepExecution.status === 'FAILED' ? (
-                  <Button
-                    style={{ margin: 8 }}
-                    type="primary"
-                    onClick={() => {
-                      resetEtherspotExecution()
-                      stakeResidualFunds()
-                    }}>
-                    Retry
-                  </Button>
-                ) : etherspotStepExecution.status === 'DONE' ? (
-                  <>
-                    <Typography.Paragraph>Transaction Successful!</Typography.Paragraph>
-                  </>
-                ) : (
-                  <Typography.Paragraph>
-                    <LoadingIndicator />
-                  </Typography.Paragraph>
-                )}
-              </div>
-            </> */}
           </Modal>
         )}
       </Content>

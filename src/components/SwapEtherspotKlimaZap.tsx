@@ -27,7 +27,7 @@ import { CHAIN_ID_TO_NETWORK_NAME } from 'etherspot/dist/sdk/network/constants'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
@@ -45,6 +45,7 @@ import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
   formatTokenAmountOnly,
+  getBalance,
   isLiFiRoute,
   isWalletDeactivated,
 } from '../services/utils'
@@ -157,7 +158,7 @@ const Swap = () => {
   const [fromChainKey, setFromChainKey] = useState<ChainKey | undefined>()
   const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(0))
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
-  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>()
+  const [toChainKey] = useState<ChainKey>(ChainKey.POL)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
@@ -201,6 +202,10 @@ const Swap = () => {
 
   const [tokenPolygonKLIMA, setTokenPolygonKlima] = useState<Token>()
   const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
+  const tokensAndChainsSet = useMemo(
+    () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
+    [tokens, availableChains],
+  )
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
@@ -359,19 +364,15 @@ const Swap = () => {
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
-    if (
-      chainsTokensTools.chainsLoaded &&
-      chainsTokensTools.tokensLoaded &&
-      chainsTokensTools.toolsLoaded
-    ) {
+    if (tokensAndChainsSet) {
       setRefreshBalances(true)
     }
-  }, [])
+  }, [availableChains, tokens])
 
   // autoselect from chain based on wallet
   useEffect(() => {
-    LiFi.getChains().then((chains: Chain[]) => {
-      const walletChainIsSupported = chains.some((chain) => chain.id === web3.chainId)
+    if (!fromChainKey && startParamsDefined) {
+      const walletChainIsSupported = availableChains.some((chain) => chain.id === web3.chainId)
       if (!walletChainIsSupported) return
       if (web3.chainId && !fromChainKey) {
         const chain = availableChains.find((chain) => chain.id === web3.chainId)
@@ -379,24 +380,18 @@ const Swap = () => {
           setFromChainKey(chain.key)
         }
       }
-    })
-  }, [web3.chainId, fromChainKey, availableChains])
+    }
+  }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
-    if (
-      !!chainsTokensTools.chains.length &&
-      !!(Object.keys(chainsTokensTools.tokens).length === 0) &&
-      !!chainsTokensTools.exchanges.length &&
-      !!chainsTokensTools.bridges.length
-    ) {
+    if (tokensAndChainsSet) {
       const startParams = getDefaultParams(history.location.search, availableChains, tokens)
       setFromChainKey(startParams.depositChain)
       setDepositAmount(startParams.depositAmount)
       setFromTokenAddress(startParams.depositToken)
-      setToChainKey(startParams.withdrawChain)
       setStartParamsDefined(true)
     }
-  }, [chainsTokensTools])
+  }, [availableChains, tokens])
 
   const updateTokenData = (token: Token) => {
     LiFi.getToken(token.chainId, token.address).then((updatedToken: TokenWithAmounts) => {
@@ -613,21 +608,6 @@ const Swap = () => {
     }
   }, [web3.account])
 
-  const getBalance = (
-    currentBalances: { [ChainKey: string]: Array<TokenAmount> } | undefined,
-    chainKey: ChainKey,
-    tokenId: string,
-  ) => {
-    if (!currentBalances || !currentBalances[chainKey]) {
-      return new BigNumber(0)
-    }
-
-    const tokenBalance = currentBalances[chainKey].find(
-      (tokenAmount) => tokenAmount.address === tokenId,
-    )
-    return tokenBalance?.amount ? new BigNumber(tokenBalance?.amount) : new BigNumber(0)
-  }
-
   useEffect(() => {
     // merge tokens and balances
     for (const chain of availableChains) {
@@ -765,6 +745,7 @@ const Swap = () => {
             toAmountMin = request.fromAmount // get this from the request as there is no specific amount field in TransactionRequest
           }
           const amountUsdc = ethers.BigNumber.from(toAmountMin)
+
           const { feeAmount } = await getFeeTransferTransactionBasedOnAmount(
             TOKEN_POLYGON_USDC,
             amountUsdc,

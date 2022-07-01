@@ -1,8 +1,10 @@
-import { Button, Steps } from 'antd'
+import { Col, Row, Timeline, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
+import { useMemo } from 'react'
 
-import { formatTokenAmount, parseSecondsAsTime } from '../services/utils'
-import { getChainById, Route as RouteType, Step } from '../types'
+import { formatTokenAmount, parseSecondsAsTime } from '../../services/utils'
+import { getChainById, Route as RouteType, Step } from '../../types'
+import { getTokenAvatar, getToolAvatarPrioritizeLifi } from '../Avatars/Avatars'
 
 interface RouteProps {
   route: RouteType
@@ -10,7 +12,22 @@ interface RouteProps {
   onSelect: Function
 }
 
-const Route = ({ route, selected, onSelect }: RouteProps) => {
+const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
+  const tag: string | undefined = useMemo(() => {
+    if (!route.tags || !route.tags.length) {
+      return 'GENERAL'
+    } else if (route.tags.includes('RECOMMENDED')) {
+      return 'RECOMMENDED'
+    } else if (route.tags[0] === 'SAFEST') {
+      return 'SAFE'
+    } else if (route.tags[0] === 'CHEAPEST') {
+      return 'CHEAP'
+    } else if (route.tags[0] === 'FASTEST') {
+      return 'FAST'
+    } else {
+      return route.tags[0]
+    }
+  }, [route])
   const parseStepShort = (step: Step) => {
     switch (step.type) {
       case 'swap':
@@ -94,48 +111,63 @@ const Route = ({ route, selected, onSelect }: RouteProps) => {
         padding: 24,
         paddingTop: 24,
         paddingBottom: 24,
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 30,
-        marginBottom: 30,
+        border: selected ? '1px solid #3f49e1' : 'none',
       }}
       onClick={() => onSelect()}>
-      <Steps
-        progressDot
-        size="small"
-        direction="vertical"
-        current={5}
-        className="progress-step-list">
+      <Timeline className="progress-step-list">
+        {!!tag && (
+          <Typography.Title style={{ marginBottom: 24, fontSize: 14, color: 'grey' }} level={5}>
+            {tag}{' '}
+            <span style={{ float: 'right', filter: selected ? 'none' : 'grayscale(50%)' }}>
+              {getTokenAvatar(route.toToken)}
+            </span>
+          </Typography.Title>
+        )}
+
         {route.steps.map((step) => {
           let { title, description } = parseStep(step)
-          return <Steps.Step key={title} title={title} description={description}></Steps.Step>
+          return (
+            <Timeline.Item dot={getToolAvatarPrioritizeLifi(step)} key={title}>
+              <Typography.Title style={{ fontSize: 14 }} level={5}>
+                {title}
+              </Typography.Title>
+              <Typography.Text type="secondary">{description}</Typography.Text>
+            </Timeline.Item>
+          )
         })}
-      </Steps>
+      </Timeline>
 
-      <div className="selected">
-        <div style={{ textAlign: 'justify', width: 'fit-content', margin: '0 auto' }}>
-          Estimated token: <b>{formatTokenAmount(route.toToken, route.toAmount)}</b>
+      <div className="route-info">
+        <div style={{ textAlign: 'justify', width: 'fit-content' }}>
+          <b style={{ position: 'relative' }}>
+            Estimated token:
+            {formatTokenAmount(route.toToken, route.toAmount) + //.replace(route.toToken.symbol, '')
+              ' '}
+          </b>
           <br />
-          Estimated result:{' '}
-          {!new BigNumber(route.toAmountUSD).isZero() ? `${route.toAmountUSD} USD` : '~'}
-          <br />
-          Estimated gas costs: {route.gasCostUSD} USD
-          <br />
-          Estimated duration: {parsedDuration} min
-          <br />
+          <b>
+            Estimated result:{' $'}
+            {!new BigNumber(route.toAmountUSD).isZero() ? `${route.toAmountUSD} USD` : '~'}
+          </b>
+          <Row style={{ marginTop: 8 }} justify="space-between">
+            <Col style={{ marginRight: 8 }} className="route-info-badge">
+              {parsedDuration} min
+            </Col>
+            <Col className="route-info-badge">{route.gasCostUSD} USD Gas Cost</Col>
+          </Row>
         </div>
 
-        <Button
+        {/* <Button
           shape="round"
           disabled={selected}
           type="primary"
           size={'large'}
           onClick={() => onSelect()}>
           {selected ? 'Selected' : 'Click To Select Route'}
-        </Button>
+        </Button> */}
       </div>
     </div>
   )
 }
 
-export default Route
+export default RouteCard

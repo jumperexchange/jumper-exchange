@@ -1,11 +1,10 @@
 .wallet-selection-modal div.ant-modal-content {
-  border-radius: 8px !important;
+  border-radius: 0px !important;
 }
 .wallet-provider-button {
   margin: 24px;
   padding: 16px;
   font-size: 16px;
-  overflow-x: scroll;
   border: 1px solid #ededed;
   border-radius: 8px;
   transition: box-shadow 0.3s ease-in-out;
