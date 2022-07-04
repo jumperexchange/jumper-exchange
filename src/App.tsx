@@ -12,7 +12,6 @@ import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
 import NotFoundPage from './components/NotFoundPage'
-import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
@@ -427,7 +426,7 @@ function App() {
               </div>
 
               {/* <Footer></Footer> */}
-              <NotificationOverlay />
+              {/* <NotificationOverlay /> */}
             </Layout>
           )}
         </ChainsTokensToolsProvider>
