@@ -4,6 +4,7 @@ import './AntOverrides.css'
 import { DownOutlined, GithubOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
+import { ItemType } from 'antd/lib/menu/hooks/useItems'
 import { useEffect, useState } from 'react'
 import { Link, Redirect, Route, Switch, useLocation } from 'react-router-dom'
 
@@ -45,6 +46,121 @@ function usePageViews() {
   return path
 }
 
+const menuItems: ItemType[] = [
+  { label: <Link to="/swap">Swap & Bridge</Link>, key: '/swap' },
+  { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
+  {
+    label: (
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
+        target="_blank"
+        rel="nofollow noreferrer">
+        Developers
+      </a>
+    ),
+    key: 'dev-list',
+  },
+  {
+    label: 'More',
+    key: 'lifi-more-submenu',
+    children: [
+      {
+        label: (
+          <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
+            Blog
+          </a>
+        ),
+        key: 'blog',
+      },
+      {
+        label: (
+          <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
+            Explore Docs
+          </a>
+        ),
+        key: 'docs',
+      },
+      {
+        label: (
+          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+            About
+          </a>
+        ),
+        key: 'about',
+      },
+      {
+        label: 'Showcases',
+        key: 'lifi-showcase-submenu',
+        children: [
+          {
+            key: '/showcase/ukraine',
+            label: (
+              <>
+                <span className="ukraine-flag">&#127482;&#127462;</span>
+                <Link to="/showcase/ukraine">Help Ukraine!</Link>
+              </>
+            ),
+          },
+          {
+            type: 'group',
+            label: 'Showcases',
+            key: '/showcase',
+            children: [
+              {
+                key: '/showcase/etherspot-klima',
+                label: <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>,
+              },
+              REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE
+                ? {
+                    key: '/showcase/carbon-offset',
+                    label: <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>,
+                  }
+                : null,
+            ],
+          },
+        ],
+      },
+      {
+        label: 'Legals',
+        key: 'legals-submenu',
+        children: [
+          {
+            label: (
+              <a href="https://li.fi/legal/privacy-policy/" target={'_blank'} rel="noreferrer">
+                Privacy Policy
+              </a>
+            ),
+            key: 'privacy',
+          },
+          {
+            label: (
+              <a href="https://li.fi/legal/imprint/" target={'_blank'} rel="noreferrer">
+                Imprint
+              </a>
+            ),
+            key: 'imprint',
+          },
+          {
+            label: (
+              <a
+                href="https://li.fi/legal/terms-and-conditions/"
+                target={'_blank'}
+                rel="noreferrer">
+                Terms & Conditions
+              </a>
+            ),
+            key: 'termsAndConditions',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    key: 'wallet-button',
+    label: <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>,
+    className: 'wallet-buttons-menu-collapse',
+  },
+]
 function App() {
   const location = useLocation()
   const path = usePageViews()
@@ -151,101 +267,14 @@ function App() {
                       </a>
                     </div>
                     <Menu
+                      items={menuItems}
                       theme="light"
                       mode="horizontal"
                       triggerSubMenuAction="hover"
                       defaultSelectedKeys={path ? [path] : []}
                       overflowedIndicator={<DownOutlined />}
-                      inlineCollapsed={false}>
-                      <Menu.Item key="/swap">
-                        <Link to="/swap">Swap & Bridge</Link>
-                      </Menu.Item>
-                      <Menu.Item key="/dashboard">
-                        <Link to="/dashboard">Dashboard</Link>
-                      </Menu.Item>
-                      <Menu.Item key="dev-list">
-                        <a
-                          href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          Developers
-                        </a>
-                      </Menu.Item>
-
-                      <Menu.SubMenu title="More" key="lifi-more-submenu">
-                        <Menu.Item key="blog">
-                          <a
-                            href="https://blog.li.finance/"
-                            target="_blank"
-                            rel="nofollow noreferrer">
-                            Blog
-                          </a>
-                        </Menu.Item>
-                        <Menu.Item key="docs">
-                          <a
-                            href="https://docs.li.finance/"
-                            target="_blank"
-                            rel="nofollow noreferrer">
-                            Explore Docs
-                          </a>
-                        </Menu.Item>
-                        <Menu.Item key="/about">
-                          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-                            About
-                          </a>
-                        </Menu.Item>
-                        <Menu.SubMenu title="Showcases" key="showcase-submenu">
-                          <Menu.Item key="/showcase/ukraine" danger={true}>
-                            <span className="ukraine-flag">&#127482;&#127462;</span>
-                            <Link to="/showcase/ukraine">Help Ukraine!</Link>
-                          </Menu.Item>
-                          <Menu.ItemGroup title="KlimaDAO & Etherspot">
-                            <Menu.Item key="/showcase/etherspot-klima">
-                              <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>
-                            </Menu.Item>
-                            {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
-                              <Menu.Item key="/showcase/carbon-offset">
-                                <Link to="/showcase/carbon-offset">
-                                  Cross-Chain Carbon Offsetting
-                                </Link>
-                              </Menu.Item>
-                            )}
-                          </Menu.ItemGroup>
-                        </Menu.SubMenu>
-                        <Menu.SubMenu title="Legals" key="legals-submenu">
-                          <Menu.Item key="privacy">
-                            <Link to="https://li.fi/legal/privacy-policy/" target={'_blank'}>
-                              Privacy Policy
-                            </Link>
-                          </Menu.Item>
-                          <Menu.Item key="imprint">
-                            <Link to="https://li.fi/legal/imprint/" target={'_blank'}>
-                              Imprint
-                            </Link>
-                          </Menu.Item>
-                          <Menu.Item key="termsAndConditions">
-                            <Link to="https://li.fi/legal/terms-and-conditions/" target={'_blank'}>
-                              Terms & Conditions
-                            </Link>
-                          </Menu.Item>
-                        </Menu.SubMenu>
-                      </Menu.SubMenu>
-
-                      {/* <Menu.Item>
-                      <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
-                    </Menu.Item> */}
-                      {/* <Menu.Item key="dev-list">
-                      <a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSe4vZSN02dmN4W0V_-sB1Aw4erZh577L2h0aDbnzfoRhurPQQ/viewform?usp=send_form"
-                        target="_blank"
-                        rel="nofollow noreferrer">
-                        Developer Waitinglist
-                      </a>
-                    </Menu.Item> */}
-                      <Menu.Item className="wallet-buttons-menu-collapse" key="wallet-button">
-                        <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>
-                      </Menu.Item>
-                    </Menu>
+                      inlineCollapsed={false}
+                    />
                   </Col>
 
                   {/* Links */}
