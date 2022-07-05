@@ -3,6 +3,7 @@ import {
   ClockCircleTwoTone,
   CloseCircleTwoTone,
   DownOutlined,
+  ExclamationCircleTwoTone,
   SearchOutlined,
 } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
@@ -72,8 +73,10 @@ const TokenSelect = ({
     switch (tokenSecurity.state) {
       case TokenSecurityState.SAFE:
         return <CheckCircleTwoTone twoToneColor="#52c41a" />
-      case TokenSecurityState.UNSAFE:
+      case TokenSecurityState.RISKY:
         return <CloseCircleTwoTone twoToneColor="#eb2f96" />
+      case TokenSecurityState.ATTENTION:
+        return <ExclamationCircleTwoTone twoToneColor="orange" />
       case TokenSecurityState.UNVALIDATED:
         return <></> // if most tokens can be validated show: <QuestionCircleTwoTone />
     }
@@ -106,10 +109,11 @@ const TokenSelect = ({
             </a>
           </>
         )
-      case TokenSecurityState.UNSAFE:
+      case TokenSecurityState.RISKY:
+      case TokenSecurityState.ATTENTION:
         return (
           <>
-            Unsafe Token
+            {tokenSecurity.state === TokenSecurityState.RISKY ? 'Risky Token' : 'Verify Token'}
             <br />
             {tokenSecurity.goplusUrl && (
               <>
