@@ -72,7 +72,7 @@ export const SwapV2 = () => {
       },
       containerStyle: {
         width: 392,
-        height: 640,
+        height: 'calc(100% - 256px)',
         border: `1px solid ${
           window.matchMedia('(prefers-color-scheme: dark)').matches
             ? 'rgb(66, 66, 66)'
