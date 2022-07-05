@@ -114,6 +114,15 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
         border: selected ? '1px solid #3f49e1' : 'none',
       }}
       onClick={() => onSelect()}>
+      <div style={{ float: 'right' }}>
+        {selected ? (
+          <Typography.Text style={{ fontSize: 14, color: '#3f49e1' }}>selected</Typography.Text>
+        ) : (
+          <Typography.Text type="secondary" style={{ fontSize: 14 }}>
+            click to select
+          </Typography.Text>
+        )}
+      </div>
       <Timeline className="progress-step-list">
         {!!tag && (
           <Typography.Title style={{ marginBottom: 24, fontSize: 14, color: 'grey' }} level={5}>
