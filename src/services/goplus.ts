@@ -4,14 +4,25 @@ import { ethers } from 'ethers'
 
 const API = 'https://api.gopluslabs.io/api/v1'
 
+// https://api.gopluslabs.io/api/v1/supported_chains
 const SUPPORTED_CHAINS = [
   ChainId.ETH,
   ChainId.BSC,
-  ChainId.HEC,
-  ChainId.POL,
   ChainId.ARB,
+  ChainId.POL,
+  ChainId.HEC,
   ChainId.AVA,
+  ChainId.FTM,
+  ChainId.OKT,
+  ChainId.ONE,
+  ChainId.CRO,
 ]
+
+const CUSTOM_TRUSTED_LIST: Record<number, string[]> = {
+  [ChainId.BSC]: [
+    '0x489580eb70a50515296ef31e8179ff3e77e24965', // RADAR: only mintable by multichain bridge + Partner
+  ],
+}
 
 // Data format is incomplete and based on sample requests
 // Based on the chain responses may contain more or less data
@@ -112,7 +123,8 @@ interface TokenSecurityData {
 }
 export enum TokenSecurityState {
   SAFE = 'safe',
-  UNSAFE = 'unsafe',
+  RISKY = 'risky',
+  ATTENTION = 'attention',
   UNVALIDATED = 'unvalidated',
 }
 export interface TokenSecurity {
@@ -189,29 +201,46 @@ const loadTokenSecurity = async (
   }
 }
 
-const isSafeToken = (data: TokenSecurityData) => {
-  if (!data.is_open_source) {
-    return false // unable to verify - dangerous
-  }
+const isSafeToken = (
+  chainId: ChainId,
+  tokenAddress: string,
+  data?: TokenSecurityData,
+): TokenSecurityState => {
+  // Parse how good the token is based on:
+  // https://docs.google.com/spreadsheets/d/1XwjKO3J-iwcVfe31dByyE4uxf25_boxpc1aOn5Iv8mA/edit#gid=0
 
-  if (data.is_airdrop_scam === true || data.is_true_token === false) {
-    return false // clearly scam
+  // SAFE
+  if (CUSTOM_TRUSTED_LIST[chainId]?.includes(tokenAddress)) {
+    return TokenSecurityState.SAFE // trusted
+  }
+  if (!data) {
+    return TokenSecurityState.UNVALIDATED
   }
   if (data.trust_list === true || data.is_true_token === true) {
-    return true // trusted
+    return TokenSecurityState.SAFE // trusted
   }
 
+  // RISKY
+  if (!data.is_open_source) {
+    return TokenSecurityState.RISKY // unable to verify - dangerous
+  }
+
+  if (data.is_airdrop_scam === true || data.is_true_token === false || data.is_honeypot === true) {
+    return TokenSecurityState.RISKY // clearly scam
+  }
+
+  // ATTENTION
   if (data.sell_tax === true || data.buy_tax === true) {
-    return false // can't be used and potential scam
+    return TokenSecurityState.ATTENTION // can't be used and potential scam
   }
   if (data.owner_change_balance === true) {
-    return false // owner can steal funds
+    return TokenSecurityState.ATTENTION // owner can steal funds
   }
-  if (data.is_honeypot === true) {
-    return false
+  if (data.is_mintable === true) {
+    return TokenSecurityState.ATTENTION // value can degrease any time
   }
 
-  return true
+  return TokenSecurityState.SAFE
 }
 
 const generateTokenSecurity = async (
@@ -228,14 +257,8 @@ const generateTokenSecurity = async (
 
   const data = await loadTokenSecurity(chainId, tokenAddress)
 
-  const secure = data ? isSafeToken(data) : false
-
   const tokenSecurity = {
-    state: data
-      ? secure
-        ? TokenSecurityState.SAFE
-        : TokenSecurityState.UNSAFE
-      : TokenSecurityState.UNVALIDATED,
+    state: isSafeToken(chainId, tokenAddress, data),
     data: data,
     explorerUrl: `${getChainById(chainId).metamask.blockExplorerUrls[0]}address/${tokenAddress}`,
     goplusUrl: data ? `https://gopluslabs.io/token-security/${chainId}/${tokenAddress}` : undefined,

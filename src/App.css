@@ -110,6 +110,8 @@
   background: white;
   border-radius: 6px;
   margin: 0 8px;
+  line-height: 1.5715;
+  height: fit-content;
 }
 
 .lifi-support-link:hover {

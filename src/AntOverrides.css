@@ -23,6 +23,26 @@ Global overrides of ant design styles
   border-color: black;
 }
 
+/* Tabs */
+/* .ant-tabs-tab {
+  font-family: 'GT America' !important;
+} */
+.ant-tabs-tab:not(.ant-tabs-tab-disabled),
+.ant-tabs-tab .ant-tabs-tab-btn:hover {
+  color: #3f49e1 !important;
+}
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #3f49e1 !important;
+}
+.ant-tabs-ink-bar {
+  background: #3f49e1 !important;
+}
+@media only screen and (max-width: 575px) {
+  .ant-tabs-nav-wrap {
+    padding: 0 24px;
+  }
+}
+
 /* Collapse */
 .ant-collapse-header {
   font-family: 'GT America' !important;
@@ -47,12 +67,20 @@ Global overrides of ant design styles
 
 /* Menu */
 .ant-menu-item-selected a,
+.ant-menu-submenu:hover,
+.ant-menu-submenu-title:hover,
+.ant-menu-submenu-title:focus,
+.ant-menu-submenu-title:active,
 .ant-menu-item-active a {
   color: #3f49e1 !important;
 }
 .ant-menu-item-selected:hover::after,
 .ant-menu-item-selected::after,
 .ant-menu-item-active::after {
+  border-bottom: 1px solid #3f49e1 !important;
+}
+.ant-menu-submenu:hover::after,
+.ant-menu-submenu-open::after {
   border-bottom: 1px solid #3f49e1 !important;
 }
 

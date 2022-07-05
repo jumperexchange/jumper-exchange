@@ -274,7 +274,7 @@ const SwapForm = ({
 
       {/* Swap from <-> to button */}
       {!alternativeToSection ? (
-        <Row style={{ margin: 32 }} justify={'center'}>
+        <Row style={{ marginTop: 32, marginBottom: 12 }} justify={'center'}>
           <SwapOutlined onClick={() => changeDirection()} />
         </Row>
       ) : (

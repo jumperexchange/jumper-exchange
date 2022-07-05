@@ -12,7 +12,6 @@ import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
 import NotFoundPage from './components/NotFoundPage'
-import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
@@ -154,65 +153,84 @@ function App() {
                     <Menu
                       theme="light"
                       mode="horizontal"
+                      triggerSubMenuAction="hover"
                       defaultSelectedKeys={path ? [path] : []}
                       overflowedIndicator={<DownOutlined />}
                       inlineCollapsed={false}>
                       <Menu.Item key="/swap">
-                        <span className="beta-badge">Beta</span>
-                        <Link to="/swap">Swap</Link>
+                        <Link to="/swap">Swap & Bridge</Link>
                       </Menu.Item>
-                      <Menu.SubMenu title="Showcases" key="showcase-submenu">
-                        <Menu.Item key="/showcase/ukraine" danger={true}>
-                          <span className="ukraine-flag">&#127482;&#127462;</span>
-                          <Link to="/showcase/ukraine">Help Ukraine!</Link>
-                        </Menu.Item>
-                        <Menu.ItemGroup title="KlimaDAO & Etherspot">
-                          <Menu.Item key="/showcase/etherspot-klima">
-                            <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>
-                          </Menu.Item>
-                          {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
-                            <Menu.Item key="/showcase/carbon-offset">
-                              <Link to="/showcase/carbon-offset">
-                                Cross-Chain Carbon Offsetting
-                              </Link>
-                            </Menu.Item>
-                          )}
-                        </Menu.ItemGroup>
-                      </Menu.SubMenu>
                       <Menu.Item key="/dashboard">
                         <Link to="/dashboard">Dashboard</Link>
                       </Menu.Item>
-
                       <Menu.Item key="dev-list">
                         <a
                           href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
                           target="_blank"
                           rel="nofollow noreferrer">
-                          Contact Us
+                          Developers
                         </a>
                       </Menu.Item>
 
-                      <Menu.Item key="/about">
-                        <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-                          About
-                        </a>
-                      </Menu.Item>
-                      <Menu.Item key="blog">
-                        <a
-                          href="https://blog.li.finance/"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          Blog
-                        </a>
-                      </Menu.Item>
-                      <Menu.Item key="docs">
-                        <a
-                          href="https://docs.li.finance/"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          Explore Docs
-                        </a>
-                      </Menu.Item>
+                      <Menu.SubMenu title="More" key="lifi-more-submenu">
+                        <Menu.Item key="blog">
+                          <a
+                            href="https://blog.li.finance/"
+                            target="_blank"
+                            rel="nofollow noreferrer">
+                            Blog
+                          </a>
+                        </Menu.Item>
+                        <Menu.Item key="docs">
+                          <a
+                            href="https://docs.li.finance/"
+                            target="_blank"
+                            rel="nofollow noreferrer">
+                            Explore Docs
+                          </a>
+                        </Menu.Item>
+                        <Menu.Item key="/about">
+                          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+                            About
+                          </a>
+                        </Menu.Item>
+                        <Menu.SubMenu title="Showcases" key="showcase-submenu">
+                          <Menu.Item key="/showcase/ukraine" danger={true}>
+                            <span className="ukraine-flag">&#127482;&#127462;</span>
+                            <Link to="/showcase/ukraine">Help Ukraine!</Link>
+                          </Menu.Item>
+                          <Menu.ItemGroup title="KlimaDAO & Etherspot">
+                            <Menu.Item key="/showcase/etherspot-klima">
+                              <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>
+                            </Menu.Item>
+                            {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
+                              <Menu.Item key="/showcase/carbon-offset">
+                                <Link to="/showcase/carbon-offset">
+                                  Cross-Chain Carbon Offsetting
+                                </Link>
+                              </Menu.Item>
+                            )}
+                          </Menu.ItemGroup>
+                        </Menu.SubMenu>
+                        <Menu.SubMenu title="Legals" key="legals-submenu">
+                          <Menu.Item key="privacy">
+                            <Link to="https://li.fi/legal/privacy-policy/" target={'_blank'}>
+                              Privacy Policy
+                            </Link>
+                          </Menu.Item>
+                          <Menu.Item key="imprint">
+                            <Link to="https://li.fi/legal/imprint/" target={'_blank'}>
+                              Imprint
+                            </Link>
+                          </Menu.Item>
+                          <Menu.Item key="termsAndConditions">
+                            <Link to="https://li.fi/legal/terms-and-conditions/" target={'_blank'}>
+                              Terms & Conditions
+                            </Link>
+                          </Menu.Item>
+                        </Menu.SubMenu>
+                      </Menu.SubMenu>
+
                       {/* <Menu.Item>
                       <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
                     </Menu.Item> */}
@@ -259,7 +277,7 @@ function App() {
                       </Col>
                       <Col>
                         <a
-                          style={{ padding: '12px 24px 12px 24px' }}
+                          style={{ padding: '13.5px 24px 13.5px 24px' }}
                           className="lifi-support-link headerIconLink lifi-header-social-links"
                           href="https://discord.gg/lifi"
                           target="_blank"
@@ -408,7 +426,7 @@ function App() {
               </div>
 
               {/* <Footer></Footer> */}
-              <NotificationOverlay />
+              {/* <NotificationOverlay /> */}
             </Layout>
           )}
         </ChainsTokensToolsProvider>
