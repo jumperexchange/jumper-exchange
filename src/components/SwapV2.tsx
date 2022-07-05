@@ -94,7 +94,7 @@ export const SwapV2 = () => {
           setShowConnectModal({ show: false })
           showConnectModal.promiseResolver?.()
         }}
-        onCancel={() => () => {
+        onCancel={() => {
           setShowConnectModal({ show: false, promiseResolver: undefined })
         }}
       />
