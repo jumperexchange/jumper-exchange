@@ -71,8 +71,7 @@ export const SwapV2 = () => {
         },
       },
       containerStyle: {
-        width: 392,
-        height: 'calc(100% - 256px)',
+        height: 'calc(100% - 160px)',
         border: `1px solid ${
           window.matchMedia('(prefers-color-scheme: dark)').matches
             ? 'rgb(66, 66, 66)'
@@ -80,7 +79,7 @@ export const SwapV2 = () => {
         }`,
         borderRadius: '16px',
         display: 'flex',
-        maxWidth: 392,
+        margin: 0.5,
       },
     }
   }, [library, account, signer])
