@@ -1,7 +1,7 @@
 import './App.css'
 import './AntOverrides.css'
 
-import { DownOutlined, GithubOutlined, TwitterOutlined } from '@ant-design/icons'
+import { CaretDownOutlined, GithubOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
 import { ItemType } from 'antd/lib/menu/hooks/useItems'
@@ -113,8 +113,13 @@ function App() {
       key: 'dev-list',
     },
     {
-      label: 'More',
+      label: (
+        <span className="lifi-more-submenu-title-wrapper">
+          More <CaretDownOutlined className="lifi-more-submenu-title-icon" />
+        </span>
+      ),
       key: 'lifi-more-submenu',
+      disabled: false,
       children: [
         {
           label: (
@@ -258,7 +263,6 @@ function App() {
                       mode="horizontal"
                       triggerSubMenuAction="hover"
                       defaultSelectedKeys={path ? [path] : []}
-                      overflowedIndicator={<DownOutlined />}
                       inlineCollapsed={false}
                     />
                   </Col>

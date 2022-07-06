@@ -98,6 +98,16 @@
   cursor: pointer !important;
 }
 
+.lifi-more-submenu-title-icon {
+  display: inline;
+}
+
+@media only screen and (max-width: 1352px) {
+  .lifi-more-submenu-title-icon {
+    display: none;
+  }
+}
+
 /* Social Links */
 
 .lifi-content-social-links {
