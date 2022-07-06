@@ -20,6 +20,7 @@ import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
+import { useIsMobile } from './hooks/useIsMobile'
 import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
 import setMetatags from './services/metatags'
@@ -30,6 +31,7 @@ const REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE =
   process.env.REACT_APP_ENABLE_OFFSET_CARBON === 'true'
 
 function App() {
+  const isMobile = useIsMobile()
   const location = useLocation()
   const path = usePageViews()
   const [adjustNavBarToBgGradient, setAdjustNavBarToBgGradient] = useState(
@@ -214,11 +216,12 @@ function App() {
         },
       ],
     },
-    {
-      key: 'wallet-button',
-      label: <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>,
-      className: 'wallet-buttons-menu-collapse',
-    },
+    isMobile
+      ? {
+          key: 'wallet-button',
+          label: <WalletButtons></WalletButtons>,
+        }
+      : null,
   ]
 
   return (
