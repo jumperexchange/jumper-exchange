@@ -1,7 +1,7 @@
 import './AntOverrides.css'
 import './App.css'
 
-import { DownOutlined, GithubOutlined, TwitterOutlined } from '@ant-design/icons'
+import { GithubOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
@@ -12,7 +12,6 @@ import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
 import NotFoundPage from './components/NotFoundPage'
-import NotificationOverlay from './components/NotificationsOverlay'
 import Swap from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
@@ -21,34 +20,17 @@ import { SwapV2 } from './components/SwapV2'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
+import {
+  ENABLE_ETHERSPOT_KLIMA_SHOWCASE,
+  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
+} from './constants/featureFlags'
+import { useNavConfig } from './hooks/useNavConfig'
+import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
-import analytics from './services/analytics'
 import setMetatags from './services/metatags'
 
-const ENABLE_ETHERSPOT_KLIMA_SHOWCASE = process.env.REACT_APP_ENABLE_ETHERSPOT_KLIMA === 'true'
-const REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE =
-  process.env.REACT_APP_ENABLE_OFFSET_CARBON === 'true'
-const ENABLE_SWAP_V2 = process.env.REACT_APP_ENABLE_SWAP_V2 === 'true'
-
-function usePageViews() {
-  const [path, setPath] = useState<string>()
-  const location = useLocation()
-
-  const currentPath = location.pathname === '/' ? '/swap' : location.pathname
-  if (path !== currentPath) {
-    setPath(currentPath)
-  }
-
-  useEffect(() => {
-    if (path) {
-      analytics.sendPageView(path)
-    }
-  }, [path])
-
-  return path
-}
-
 function App() {
+  const navConfig = useNavConfig()
   const location = useLocation()
   const path = usePageViews()
   const [adjustNavBarToBgGradient, setAdjustNavBarToBgGradient] = useState(
@@ -154,107 +136,13 @@ function App() {
                       </a>
                     </div>
                     <Menu
+                      items={navConfig}
                       theme="light"
                       mode="horizontal"
                       triggerSubMenuAction="hover"
                       defaultSelectedKeys={path ? [path] : []}
-                      overflowedIndicator={<DownOutlined />}
-                      inlineCollapsed={false}>
-                      <Menu.Item key="/swap">
-                        <Link to="/swap">Swap & Bridge</Link>
-                      </Menu.Item>
-                      {ENABLE_SWAP_V2 && (
-                        <Menu.Item key="/swap-v2">
-                          <span className="beta-badge">Beta</span>
-                          <Link to="/swap-v2">Swap & Bridge V2</Link>
-                        </Menu.Item>
-                      )}
-                      <Menu.Item key="/dashboard">
-                        <Link to="/dashboard">Dashboard</Link>
-                      </Menu.Item>
-                      <Menu.Item key="dev-list">
-                        <a
-                          href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          Developers
-                        </a>
-                      </Menu.Item>
-
-                      <Menu.SubMenu title="More" key="lifi-more-submenu">
-                        <Menu.Item key="blog">
-                          <a
-                            href="https://blog.li.finance/"
-                            target="_blank"
-                            rel="nofollow noreferrer">
-                            Blog
-                          </a>
-                        </Menu.Item>
-                        <Menu.Item key="docs">
-                          <a
-                            href="https://docs.li.finance/"
-                            target="_blank"
-                            rel="nofollow noreferrer">
-                            Explore Docs
-                          </a>
-                        </Menu.Item>
-                        <Menu.Item key="/about">
-                          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-                            About
-                          </a>
-                        </Menu.Item>
-                        <Menu.SubMenu title="Showcases" key="showcase-submenu">
-                          <Menu.Item key="/showcase/ukraine" danger={true}>
-                            <span className="ukraine-flag">&#127482;&#127462;</span>
-                            <Link to="/showcase/ukraine">Help Ukraine!</Link>
-                          </Menu.Item>
-                          <Menu.ItemGroup title="KlimaDAO & Etherspot">
-                            <Menu.Item key="/showcase/etherspot-klima">
-                              <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>
-                            </Menu.Item>
-                            {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
-                              <Menu.Item key="/showcase/carbon-offset">
-                                <Link to="/showcase/carbon-offset">
-                                  Cross-Chain Carbon Offsetting
-                                </Link>
-                              </Menu.Item>
-                            )}
-                          </Menu.ItemGroup>
-                        </Menu.SubMenu>
-                        <Menu.SubMenu title="Legals" key="legals-submenu">
-                          <Menu.Item key="privacy">
-                            <Link to="https://li.fi/legal/privacy-policy/" target={'_blank'}>
-                              Privacy Policy
-                            </Link>
-                          </Menu.Item>
-                          <Menu.Item key="imprint">
-                            <Link to="https://li.fi/legal/imprint/" target={'_blank'}>
-                              Imprint
-                            </Link>
-                          </Menu.Item>
-                          <Menu.Item key="termsAndConditions">
-                            <Link to="https://li.fi/legal/terms-and-conditions/" target={'_blank'}>
-                              Terms & Conditions
-                            </Link>
-                          </Menu.Item>
-                        </Menu.SubMenu>
-                      </Menu.SubMenu>
-
-                      {/* <Menu.Item>
-                      <a href="https://docs.li.finance/for-users/user-faq" target="_blank" rel="noreferrer">FAQ</a>
-                    </Menu.Item> */}
-                      {/* <Menu.Item key="dev-list">
-                      <a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSe4vZSN02dmN4W0V_-sB1Aw4erZh577L2h0aDbnzfoRhurPQQ/viewform?usp=send_form"
-                        target="_blank"
-                        rel="nofollow noreferrer">
-                        Developer Waitinglist
-                      </a>
-                    </Menu.Item> */}
-                      <Menu.Item className="wallet-buttons-menu-collapse" key="wallet-button">
-                        <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>
-                      </Menu.Item>
-                    </Menu>
+                      inlineCollapsed={false}
+                    />
                   </Col>
 
                   {/* Links */}
@@ -399,7 +287,7 @@ function App() {
               </div>
 
               {/* <Footer></Footer> */}
-              <NotificationOverlay />
+              {/* <NotificationOverlay /> */}
             </Layout>
           )}
         </ChainsTokensToolsProvider>

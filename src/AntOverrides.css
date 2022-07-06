@@ -54,6 +54,17 @@ Global overrides of ant design styles
   background-color: white !important;
 }
 
+.ant-select > .ant-select-arrow {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+.ant-select > .ant-select-arrow > .anticon {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* #root > section > main > div > main > div > div > div.ant-col.swap-form.ant-col-sm-23.ant-col-lg-23.ant-col-xl-10 > div > form > div:nth-child(6) > div:nth-child(2) > div > div.ant-select.ant-select-borderless.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open.ant-select-show-search > span */
+
 /* Steps */
 /* .ant-steps-item-title {
   font-family: 'GT America' !important;
@@ -66,6 +77,7 @@ Global overrides of ant design styles
 }
 
 /* Menu */
+
 .ant-menu-item-selected a,
 .ant-menu-submenu:hover,
 .ant-menu-submenu-title:hover,

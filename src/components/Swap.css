@@ -24,7 +24,7 @@ input[type='number']::-webkit-outer-spin-button {
   background: white;
   max-width: 450px;
   padding: 20px 16px;
-  margin: 20px;
+  margin: 0 auto;
 }
 
 @media only screen and (min-width: 480px) {
@@ -53,7 +53,7 @@ input[type='number']::-webkit-outer-spin-button {
 
 .route-grid {
   margin: 0 auto;
-  max-height: 700px;
+  max-height: 70vh;
   width: 100%;
   overflow-y: scroll;
   display: grid;
@@ -61,11 +61,19 @@ input[type='number']::-webkit-outer-spin-button {
   gap: 32px;
   column-gap: 20px;
 }
+
+@media only screen and (min-height: 1199px) {
+  .route-grid {
+    max-height: 80vh;
+  }
+}
+
 @media only screen and (max-width: 1199px) {
   .route-grid {
     justify-content: center;
   }
 }
+
 @media only screen and (max-width: 845px) {
   .route-grid {
     justify-content: center;
