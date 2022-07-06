@@ -28,6 +28,8 @@ import setMetatags from './services/metatags'
 const ENABLE_ETHERSPOT_KLIMA_SHOWCASE = process.env.REACT_APP_ENABLE_ETHERSPOT_KLIMA === 'true'
 const REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE =
   process.env.REACT_APP_ENABLE_OFFSET_CARBON === 'true'
+const ENABLE_SWAP_V2 = process.env.REACT_APP_ENABLE_SWAP_V2 === 'true'
+
 function usePageViews() {
   const [path, setPath] = useState<string>()
   const location = useLocation()
@@ -161,10 +163,12 @@ function App() {
                       <Menu.Item key="/swap">
                         <Link to="/swap">Swap & Bridge</Link>
                       </Menu.Item>
-                      <Menu.Item key="/swap-v2">
-                        <span className="beta-badge">Beta</span>
-                        <Link to="/swap-v2">Swap & Bridge V2</Link>
-                      </Menu.Item>
+                      {ENABLE_SWAP_V2 && (
+                        <Menu.Item key="/swap-v2">
+                          <span className="beta-badge">Beta</span>
+                          <Link to="/swap-v2">Swap & Bridge V2</Link>
+                        </Menu.Item>
+                      )}
                       <Menu.Item key="/dashboard">
                         <Link to="/dashboard">Dashboard</Link>
                       </Menu.Item>
