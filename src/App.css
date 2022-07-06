@@ -94,6 +94,16 @@
   font-size: 12px;
 }
 
+.lifi-more-submenu-title-icon {
+  display: inline;
+}
+
+@media only screen and (max-width: 1352px) {
+  .lifi-more-submenu-title-icon {
+    display: none;
+  }
+}
+
 /* Social Links */
 
 .lifi-content-social-links {
@@ -162,9 +172,6 @@
 }
 
 /* Wallet Button styles */
-.wallet-buttons-menu-collapse {
-  display: none !important;
-}
 .wallet-buttons-menu-full {
   display: inline-block !important;
   padding: 12px 24px 12px 24px;
@@ -172,9 +179,6 @@
 }
 
 @media only screen and (max-width: 767px) {
-  .wallet-buttons-menu-collapse {
-    display: inline-block !important;
-  }
   .wallet-buttons-menu-full {
     display: none !important;
   }
