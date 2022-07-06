@@ -46,121 +46,6 @@ function usePageViews() {
   return path
 }
 
-const menuItems: ItemType[] = [
-  { label: <Link to="/swap">Swap & Bridge</Link>, key: '/swap' },
-  { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
-  {
-    label: (
-      <a
-        href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
-        target="_blank"
-        rel="nofollow noreferrer">
-        Developers
-      </a>
-    ),
-    key: 'dev-list',
-  },
-  {
-    label: 'More',
-    key: 'lifi-more-submenu',
-    children: [
-      {
-        label: (
-          <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
-            Blog
-          </a>
-        ),
-        key: 'blog',
-      },
-      {
-        label: (
-          <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
-            Explore Docs
-          </a>
-        ),
-        key: 'docs',
-      },
-      {
-        label: (
-          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-            About
-          </a>
-        ),
-        key: 'about',
-      },
-      {
-        label: 'Showcases',
-        key: 'lifi-showcase-submenu',
-        children: [
-          {
-            key: '/showcase/ukraine',
-            label: (
-              <>
-                <span className="ukraine-flag">&#127482;&#127462;</span>
-                <Link to="/showcase/ukraine">Help Ukraine!</Link>
-              </>
-            ),
-          },
-          {
-            type: 'group',
-            label: 'Showcases',
-            key: '/showcase',
-            children: [
-              {
-                key: '/showcase/etherspot-klima',
-                label: <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>,
-              },
-              REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE
-                ? {
-                    key: '/showcase/carbon-offset',
-                    label: <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>,
-                  }
-                : null,
-            ],
-          },
-        ],
-      },
-      {
-        label: 'Legals',
-        key: 'legals-submenu',
-        children: [
-          {
-            label: (
-              <a href="https://li.fi/legal/privacy-policy/" target={'_blank'} rel="noreferrer">
-                Privacy Policy
-              </a>
-            ),
-            key: 'privacy',
-          },
-          {
-            label: (
-              <a href="https://li.fi/legal/imprint/" target={'_blank'} rel="noreferrer">
-                Imprint
-              </a>
-            ),
-            key: 'imprint',
-          },
-          {
-            label: (
-              <a
-                href="https://li.fi/legal/terms-and-conditions/"
-                target={'_blank'}
-                rel="noreferrer">
-                Terms & Conditions
-              </a>
-            ),
-            key: 'termsAndConditions',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'wallet-button',
-    label: <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>,
-    className: 'wallet-buttons-menu-collapse',
-  },
-]
 function App() {
   const location = useLocation()
   const path = usePageViews()
@@ -229,6 +114,124 @@ function App() {
       </div>
     )
   }
+
+  const menuItems: ItemType[] = [
+    { label: <Link to="/swap">Swap & Bridge</Link>, key: '/swap' },
+    { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
+    {
+      label: (
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
+          target="_blank"
+          rel="nofollow noreferrer">
+          Developers
+        </a>
+      ),
+      key: 'dev-list',
+    },
+    {
+      label: 'More',
+      key: 'lifi-more-submenu',
+      children: [
+        {
+          label: (
+            <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
+              Blog
+            </a>
+          ),
+          key: 'blog',
+        },
+        {
+          label: (
+            <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
+              Explore Docs
+            </a>
+          ),
+          key: 'docs',
+        },
+        {
+          label: (
+            <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+              About
+            </a>
+          ),
+          key: 'about',
+        },
+        {
+          label: 'Showcases',
+          key: 'lifi-showcase-submenu',
+          children: [
+            {
+              key: '/showcase/ukraine',
+              label: (
+                <>
+                  <span className="ukraine-flag">&#127482;&#127462;</span>
+                  <Link to="/showcase/ukraine">Help Ukraine!</Link>
+                </>
+              ),
+            },
+            {
+              type: 'group',
+              label: 'Showcases',
+              key: '/showcase',
+              children: [
+                {
+                  key: '/showcase/etherspot-klima',
+                  label: <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>,
+                },
+                REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE
+                  ? {
+                      key: '/showcase/carbon-offset',
+                      label: (
+                        <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>
+                      ),
+                    }
+                  : null,
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Legals',
+          key: 'legals-submenu',
+          children: [
+            {
+              label: (
+                <a href="https://li.fi/legal/privacy-policy/" target={'_blank'} rel="noreferrer">
+                  Privacy Policy
+                </a>
+              ),
+              key: 'privacy',
+            },
+            {
+              label: (
+                <a href="https://li.fi/legal/imprint/" target={'_blank'} rel="noreferrer">
+                  Imprint
+                </a>
+              ),
+              key: 'imprint',
+            },
+            {
+              label: (
+                <a
+                  href="https://li.fi/legal/terms-and-conditions/"
+                  target={'_blank'}
+                  rel="noreferrer">
+                  Terms & Conditions
+                </a>
+              ),
+              key: 'termsAndConditions',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'wallet-button',
+      label: <WalletButtons className="wallet-buttons menu-collapse"></WalletButtons>,
+      className: 'wallet-buttons-menu-collapse',
+    },
+  ]
 
   return (
     <WrappedWeb3ReactProvider>
