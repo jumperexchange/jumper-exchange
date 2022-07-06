@@ -1,4 +1,4 @@
-import { Col, Row, Timeline, Typography } from 'antd'
+import { Button, Col, Row, Timeline, Typography } from 'antd'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
 
@@ -115,6 +115,15 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
       }}
       onClick={() => onSelect()}>
       <Timeline className="progress-step-list">
+        <Button
+          shape="default"
+          style={{ float: 'right', marginTop: 0, borderRadius: 3 }}
+          disabled={selected}
+          type="primary"
+          size={'small'}
+          onClick={() => onSelect()}>
+          {selected ? 'Selected' : 'Click To Select'}
+        </Button>
         {!!tag && (
           <Typography.Title style={{ marginBottom: 24, fontSize: 14, color: 'grey' }} level={5}>
             {tag}
@@ -137,7 +146,7 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
       <div className="route-info">
         <div style={{ textAlign: 'justify', width: 'fit-content' }}>
           <b style={{ position: 'relative' }}>
-            Estimated token:
+            {`Estimated token: `}
             {formatTokenAmount(route.toToken, route.toAmount) + //.replace(route.toToken.symbol, '')
               ' '}
           </b>
