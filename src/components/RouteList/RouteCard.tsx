@@ -146,7 +146,7 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
       <div className="route-info">
         <div style={{ textAlign: 'justify', width: 'fit-content' }}>
           <b style={{ position: 'relative' }}>
-            Estimated token:
+            {`Estimated token: `}
             {formatTokenAmount(route.toToken, route.toAmount) + //.replace(route.toToken.symbol, '')
               ' '}
           </b>
