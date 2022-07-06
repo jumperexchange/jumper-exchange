@@ -167,6 +167,7 @@ const TokenSelect = ({
         suffixIcon={
           showDropdown ? (
             <SearchOutlined
+              style={{ cursor: 'pointer !important' }}
               onClick={() => {
                 selectReference.current?.blur()
               }}

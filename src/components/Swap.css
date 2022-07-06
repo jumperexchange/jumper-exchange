@@ -318,12 +318,14 @@ h4.swap-title {
   padding: 0;
   padding-right: 5px;
   font-weight: bold;
-  opacity: 0.5;
+  color: grey;
   font-family: 'GT America' !important;
+  background: transparent;
 }
 
 .maxButton:hover {
-  opacity: 1;
+  color: black;
+  background: transparent;
 }
 
 .amountBadge {
