@@ -79,7 +79,7 @@ export const SwapV2 = () => {
         }`,
         borderRadius: '16px',
         display: 'flex',
-        margin: 0.5,
+        minWidth: 360,
       },
     }
   }, [library, account, signer])

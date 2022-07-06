@@ -2053,10 +2053,10 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@lifi/wallet-management@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-1.0.4.tgz#25c24a53136fa022b9c48c1e3dbcc9ede77c4d14"
-  integrity sha512-v8I3xQPpeqRtldDpN6JJd6r/BO9Nb/VIT5laWIpjiWi3eZ6b0dzesARx1UkfZDtT96JD3Jme8QSDVcQ+XFCK6A==
+"@lifi/wallet-management@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-1.1.0.tgz#e91d0b6440d466a5c454839c5b68037615540b69"
+  integrity sha512-fBn5nbqtJM911iqqnRqJXvy/3nGA+GQn/nu4hgn78F8i+24c57HqiVkMBUDsiU2YIkswcvRVsVo0fmD/V4stCw==
   dependencies:
     "@ethersproject/experimental" "^5.6.3"
     "@ethersproject/providers" "^5.6.8"
@@ -2072,16 +2072,16 @@
     "@web3-react/walletconnect" "^8.0.25-beta.0"
     react "^18.2.0"
 
-"@lifi/widget@^1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.6.1.tgz#9025bf7fd35f1d6c7577a0c56fe9eaa6ded56b89"
-  integrity sha512-7C2vGGm9VBD13lSy29HtIHkdYF8uYpmLWLsTD0xHje6yGptc6OmgV9/K7i+iiERvPWFSabMLXzN0sqZoqdO+GA==
+"@lifi/widget@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.7.0.tgz#bca003e26c2b10aef06113707a6027738f33ff2f"
+  integrity sha512-X3ZN1LPqqUwuGRKe+hxhZJyXX6KRt6B1hk0XxlhhYdb20J5HFQcwCqbIE0UU4x+mLKbpVliU7GC7Fxfi4v8ptQ==
   dependencies:
     "@emotion/react" "^11.9.3"
     "@emotion/styled" "^11.9.3"
     "@ethersproject/experimental" "^5.6.3"
     "@ethersproject/providers" "^5.6.8"
-    "@lifi/wallet-management" "^1.0.4"
+    "@lifi/wallet-management" "^1.1.0"
     "@lifinance/sdk" "^1.0.0-beta.14"
     "@mui/icons-material" "^5.8.4"
     "@mui/lab" "^5.0.0-alpha.89"
