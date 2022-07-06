@@ -137,7 +137,9 @@ const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
               <Typography.Title style={{ fontSize: 14 }} level={5}>
                 {title}
               </Typography.Title>
-              <Typography.Text type="secondary">{description}</Typography.Text>
+              <Typography.Text style={{ color: 'grey' }} type="secondary">
+                {description}
+              </Typography.Text>
             </Timeline.Item>
           )
         })}
