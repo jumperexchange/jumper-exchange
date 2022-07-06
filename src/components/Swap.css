@@ -23,12 +23,17 @@ input[type='number']::-webkit-outer-spin-button {
 .swap-input {
   background: white;
   max-width: 450px;
-  border-radius: 6px;
   padding: 20px 16px;
-  margin: 20px;
+  margin: 0 auto;
 }
 
 @media only screen and (min-width: 480px) {
+  .swap-input {
+    padding: 24px 48px;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
   .swap-input {
     margin: 0 auto;
     padding: 24px 48px;
@@ -39,27 +44,68 @@ input[type='number']::-webkit-outer-spin-button {
   background-color: white;
   -webkit-box-shadow: 0px 12px 88px -33px rgba(0, 0, 0, 0.17) !important;
   box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17) !important;
-  min-width: 300px;
-  min-height: 320px;
-  border-radius: 16px;
+  width: 320px;
+  min-height: 450px;
+  border-radius: 0;
   cursor: pointer;
+  position: relative;
+}
+
+.route-grid {
+  margin: 0 auto;
+  max-height: 70vh;
+  width: 100%;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 400px));
+  gap: 32px;
+  column-gap: 20px;
+}
+
+@media only screen and (min-height: 1199px) {
+  .route-grid {
+    max-height: 80vh;
+  }
+}
+
+@media only screen and (max-width: 1199px) {
+  .route-grid {
+    justify-content: center;
+  }
+}
+
+@media only screen and (max-width: 845px) {
+  .route-grid {
+    justify-content: center;
+
+    grid-template-columns: repeat(1, minmax(150px, 400px));
+  }
 }
 
 .swap-route .ant-btn {
   margin-top: 18px;
 }
 
+.route-info {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+}
+
+.route-info-badge {
+  padding: 4px 8px !important;
+  border: 1px solid grey !important;
+  border-radius: 7px !important;
+  background-color: #fdfdfd !important;
+}
+
 .no-routes-found {
   background: white;
-  border-radius: 10px;
-  padding: 20px 20px 30px 20px;
-  min-width: 433px;
+  padding: 24px 24px 32px 48px !important;
+  width: 100%;
 }
 
 @media only screen and (max-width: 480px) {
-  .no-routes-found {
-    min-width: 280px;
-  }
 }
 
 .no-routes-found h3 {
@@ -126,11 +172,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .swap-form {
-  margin-top: 36px;
   overflow: hidden;
-  -webkit-box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
-  box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
-  border-radius: 16px;
 }
 
 h4.swap-title {
@@ -200,10 +242,6 @@ h4.swap-title {
 
 /* mobile screen */
 @media only screen and (max-width: 480px) {
-  .swap-form {
-    margin-top: 0;
-  }
-
   .only-mobile {
     display: block;
   }
@@ -244,14 +282,6 @@ h4.swap-title {
   border-radius: 6px;
 }
 
-.selected {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
 .ant-btn-round.ant-btn-lg {
   border-radius: 6px;
 }
@@ -284,20 +314,18 @@ h4.swap-title {
   border-top: 1px solid rgba(0, 0, 0, 0.85);
 }
 
-.ant-collapse-header {
-  justify-content: center;
-}
-
 .maxButton {
   padding: 0;
   padding-right: 5px;
   font-weight: bold;
-  opacity: 0.5;
+  color: grey;
   font-family: 'GT America' !important;
+  background: transparent;
 }
 
 .maxButton:hover {
-  opacity: 1;
+  color: black;
+  background: transparent;
 }
 
 .amountBadge {
@@ -320,6 +348,8 @@ h4.swap-title {
   color: grey;
   text-align: left;
   padding: 12px 16px 0px 0px;
+  justify-content: start !important;
+
   text-decoration: underline;
 }
 
@@ -340,11 +370,9 @@ h4.swap-title {
   overflow-x: scroll;
 }
 .tx-table {
-  background: rgb(246, 243, 242);
-  background: linear-gradient(180deg, rgba(246, 243, 242, 1) 0%, rgba(253, 252, 252, 1) 50%);
-  border-radius: 16px;
   -webkit-box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.25) !important;
   box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.25) !important;
+  min-width: 100%;
 }
 
 .tx-table .ant-pagination-item-active {
@@ -357,14 +385,13 @@ h4.swap-title {
 }
 
 .swap-view {
-  min-height: 900px;
-  max-width: 1600px;
+  width: 95%;
   margin: auto;
 }
 
 @media only screen and (max-width: 1050px) {
   .swap-view {
-    padding-bottom: 70px;
+    padding-bottom: 80px;
   }
 }
 
@@ -387,7 +414,9 @@ h4.swap-title {
 }
 
 .lifiEmbed .swap-form {
-  margin-top: 40px;
+  -webkit-box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
+  box-shadow: 0px 12px 60px -33px rgba(0, 0, 0, 0.17);
+  max-width: 500px;
 }
 
 .lifiEmbed .activeTransfers {

@@ -228,12 +228,7 @@ const SwapForm = ({
           </div>
         </Col>
         <Col span={12}>
-          <div
-            className="form-input-wrapper token-select"
-            style={{
-              borderTopLeftRadius: '0px !important',
-              borderBottomLeftRadius: '0px !important',
-            }}>
+          <div className="form-input-wrapper token-select">
             <TokenSelect
               tokens={tokens}
               balances={balances}
@@ -274,7 +269,7 @@ const SwapForm = ({
 
       {/* Swap from <-> to button */}
       {!alternativeToSection ? (
-        <Row style={{ margin: 32 }} justify={'center'}>
+        <Row style={{ marginTop: 32, marginBottom: 12 }} justify={'center'}>
           <SwapOutlined onClick={() => changeDirection()} />
         </Row>
       ) : (

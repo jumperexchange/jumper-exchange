@@ -14,6 +14,7 @@ import {
   Popconfirm,
   Row,
   Select,
+  Tabs,
   Tooltip,
   Typography,
 } from 'antd'
@@ -22,9 +23,8 @@ import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
-import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import LiFi from '../LiFi'
@@ -63,8 +63,7 @@ import {
   TokenAmount,
   TokenAmountList,
 } from '../types'
-import LoadingIndicator from './LoadingIndicator'
-import Route from './Route'
+import { RouteList } from './RouteList/Routelist'
 import SwapForm from './SwapForm/SwapForm'
 import Swapping from './Swapping'
 import TransactionsTable from './TransactionsTable'
@@ -74,7 +73,8 @@ import ConnectButton from './web3/ConnectButton'
 const TOTAL_SLIPPAGE_GUARD_MODAL = new BigNumber(0.9)
 
 const history = createBrowserHistory()
-const { Panel } = Collapse
+const { TabPane } = Tabs
+
 const availableOrders = [
   {
     key: 'RECOMMENDED',
@@ -99,26 +99,6 @@ let currentRouteCallId: string
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
-}
-
-const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
-  setTimeout(() => {
-    const nodes = element.current?.childNodes
-    if (nodes) {
-      animate(
-        nodes as NodeListOf<Element>,
-        {
-          y: ['50px', '0px'],
-          opacity: [0, 1],
-        },
-        {
-          delay: stagger(0.2),
-          duration: 0.5,
-          easing: 'ease-in-out',
-        },
-      )
-    }
-  }, 0)
 }
 
 const parseChain = (passed: string) => {
@@ -206,6 +186,8 @@ const Swap = () => {
     () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
     [tokens, availableChains],
   )
+  const transactionInfoRef = useRef<null | HTMLDivElement>(null)
+  const [activeTransactionInfoTabKey, setActiveTransactionInfoTabKey] = useState<string>()
 
   const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
     show: boolean
@@ -215,9 +197,6 @@ const Swap = () => {
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
   const { active } = useWeb3React()
-
-  // Elements used for animations
-  const routeCards = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     // get new execution status on page load
@@ -706,10 +685,11 @@ const Swap = () => {
       const { result, id } = routeCallResult
       if (id === currentRouteCallId) {
         setRoutes(result.routes)
-        fadeInAnimation(routeCards)
         setHighlightedIndex(result.routes.length === 0 ? -1 : 0)
         setNoRoutesAvailable(result.routes.length === 0)
         setRoutesLoading(false)
+        transactionInfoRef.current?.scrollIntoView({ behavior: 'smooth' })
+        setActiveTransactionInfoTabKey('1')
       }
     }
   }, [routeCallResult, currentRouteCallId])
@@ -874,48 +854,8 @@ const Swap = () => {
         marginTop: '64px',
       }}>
       <div className="swap-view">
-        {/* Headline */}
-        <Row justify="center" className="" style={{ paddingTop: 24 }}>
-          <Col style={{ textAlign: 'center' }}>
-            <h1>Advanced Bridge & DEX Aggregation</h1>
-            <h3>
-              {availableBridges.length > 0 ? availableBridges.length : ''} Bridges,&nbsp;
-              {availableChains.length > 0 ? availableChains.length : ''} Chains and all the DEXs
-            </h3>
-          </Col>
-        </Row>
-
-        {/* Active Routes */}
-        {!!activeRoutes.length && (
-          <Row justify={'center'} className="activeTransfers">
-            <Collapse
-              defaultActiveKey={activeRoutes.length ? ['1'] : ['']}
-              ghost
-              bordered={false}
-              className={`active-transfer-collapse`}
-              style={{ overflowX: 'scroll' }}>
-              <Panel
-                header={`Active Transfers (${activeRoutes.length})`}
-                key="1"
-                className="site-collapse-active-transfer-panel">
-                <div>
-                  <TransactionsTable
-                    routes={activeRoutes}
-                    selectRoute={(route: RouteType) => setSelectedRoute(route)}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setActiveRoutes(readActiveRoutes())
-                    }}></TransactionsTable>
-                </div>
-              </Panel>
-            </Collapse>
-          </Row>
-        )}
-
-        {/* Swap Form */}
-        <Row justify={'center'}>
-          <Col className="swap-form">
+        <Row gutter={[16, 96]} style={{ paddingTop: 48 }} justify="space-around">
+          <Col sm={23} lg={23} xl={10} className="swap-form">
             <div className="swap-input">
               <Row>
                 <Title className="swap-title" level={4}>
@@ -945,12 +885,33 @@ const Swap = () => {
                   allowSameChains={true}
                 />
                 <span>
-                  {/* Disclaimer */}
-                  <Row justify={'center'} className="beta-disclaimer">
+                  {/* Bridge Prio */}
+                  <Row justify="center" style={{ marginTop: 16 }}>
+                    <Form.Item name="bridgePrioritization" label="Bridge Prioritization">
+                      <Select
+                        placeholder="Recommended"
+                        value={optionOrder}
+                        onChange={(v) => setOptionOrder(v)}
+                        style={{
+                          width: '100%',
+                        }}>
+                        {availableOrders.map((orderOption) => (
+                          <Select.Option
+                            key={orderOption.key}
+                            value={orderOption.key}
+                            data-label={orderOption.name}>
+                            {orderOption.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Row>
+                  {/* Disclaimer
+                  <Row style={{ marginTop }} justify={'center'} className="beta-disclaimer">
                     <Typography.Text type="danger" style={{ textAlign: 'center' }}>
                       Beta product - use at own risk.
                     </Typography.Text>
-                  </Row>
+                  </Row> */}
                   <Row style={{ marginTop: 24 }} justify={'center'}>
                     {submitButton()}
                   </Row>
@@ -1043,91 +1004,72 @@ const Swap = () => {
               </Form>
             </div>
           </Col>
+
+          <Col sm={23} lg={23} xl={14}>
+            <div ref={transactionInfoRef}>
+              <Tabs
+                style={{ width: '90%' }}
+                defaultActiveKey={activeRoutes.length ? '2' : historicalRoutes.length ? '3' : '1'}
+                activeKey={activeTransactionInfoTabKey}
+                onTabClick={(key: string) => setActiveTransactionInfoTabKey(key)}>
+                <TabPane tab={`Available Routes (${routes.length})`} key="1">
+                  {routesLoading || noRoutesAvailable || routes.length ? (
+                    <RouteList
+                      highlightedIndex={highlightedIndex}
+                      routes={routes}
+                      routesLoading={routesLoading}
+                      noRoutesAvailable={noRoutesAvailable}
+                      setHighlightedIndex={setHighlightedIndex}
+                    />
+                  ) : (
+                    <Row style={{ paddingTop: 48 }}>
+                      <Typography.Title level={4} disabled>
+                        To get available routes, input your desired tokens to swap.
+                      </Typography.Title>
+                    </Row>
+                  )}
+                </TabPane>
+
+                <TabPane
+                  tab={`Active Transfers (${activeRoutes.length})`}
+                  disabled={!activeRoutes.length}
+                  key="2"
+                  style={{ overflowX: 'scroll' }}>
+                  {!!activeRoutes.length && (
+                    <TransactionsTable
+                      routes={activeRoutes}
+                      selectRoute={(route: RouteType) => setSelectedRoute(route)}
+                      deleteRoute={(route: RouteType) => {
+                        LiFi.stopExecution(route)
+                        deleteRoute(route)
+                        setActiveRoutes(readActiveRoutes())
+                      }}
+                    />
+                  )}
+                </TabPane>
+
+                <TabPane
+                  tab={`Historical Transfers (${historicalRoutes.length})`}
+                  disabled={!historicalRoutes.length}
+                  key="3"
+                  style={{ overflowX: 'scroll' }}>
+                  {!!historicalRoutes.length && (
+                    <TransactionsTable
+                      routes={historicalRoutes}
+                      selectRoute={() => {}}
+                      deleteRoute={(route: RouteType) => {
+                        LiFi.stopExecution(route)
+                        deleteRoute(route)
+                        setHistoricalRoutes(readHistoricalRoutes())
+                      }}
+                      historical={true}
+                    />
+                  )}
+                </TabPane>
+              </Tabs>
+            </div>
+          </Col>
         </Row>
-
-        {/* Routes */}
-        <Row
-          justify={'center'}
-          style={{ marginLeft: 12, marginRight: 12, marginTop: 48, padding: 12 }}>
-          {routes.length > 0 && (
-            <Col>
-              <h3 style={{ textAlign: 'center' }}>Available routes</h3>
-              <div
-                style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll' }}
-                ref={routeCards}>
-                {routes.map((route, index) => (
-                  <Route
-                    key={index}
-                    route={route}
-                    selected={highlightedIndex === index}
-                    onSelect={() => setHighlightedIndex(index)}
-                  />
-                ))}
-              </div>
-            </Col>
-          )}
-          {routesLoading && (
-            <Col>
-              <Row gutter={[32, 62]} justify={'center'} style={{ marginTop: 0 }}>
-                <LoadingIndicator></LoadingIndicator>
-              </Row>
-            </Col>
-          )}
-          {!routesLoading && noRoutesAvailable && (
-            <Col style={{ width: '50%' }} className="no-routes-found">
-              <h3 style={{ textAlign: 'center' }}>No Route Found</h3>
-              <Typography.Text type="secondary" style={{ textAlign: 'left' }}>
-                We couldn't find suitable routes for your desired transfer. We do have some
-                suggestions why that could be: <br />
-              </Typography.Text>
-              <Collapse ghost className="no-route-custom-collapse">
-                <Panel header="A route for this transaction simply does not exist yet." key="1">
-                  <p style={{ color: 'grey' }}>
-                    We are working hard on integrating more exchanges to find possible transactions
-                    for you! Look out for updates and try again later.
-                  </p>
-                </Panel>
-
-                <Panel header="You are not sending enough tokens - Try a greater amount." key="2">
-                  <p style={{ color: 'grey' }}>
-                    Transactions cost money. These transaction costs are deducted from your swapping
-                    amount. If this amount is not enough to cover the expenses, we can not execute
-                    the transaction or compute routes.
-                  </p>
-                </Panel>
-              </Collapse>
-            </Col>
-          )}
-        </Row>
-
-        {/* Historical Routes */}
-        {!!historicalRoutes.length && (
-          <Row justify={'center'} className="historicalTransfers">
-            <Collapse
-              defaultActiveKey={['']}
-              ghost
-              bordered={false}
-              className={`active-transfer-collapse`}
-              style={{ overflowX: 'scroll' }}>
-              <Panel
-                header={`Historical Transfers (${historicalRoutes.length})`}
-                key="1"
-                className="site-collapse-active-transfer-panel">
-                <div>
-                  <TransactionsTable
-                    routes={historicalRoutes}
-                    selectRoute={() => {}}
-                    deleteRoute={(route: RouteType) => {
-                      LiFi.stopExecution(route)
-                      deleteRoute(route)
-                      setHistoricalRoutes(readHistoricalRoutes())
-                    }}
-                    historical={true}></TransactionsTable>
-                </div>
-              </Panel>
-            </Collapse>
-          </Row>
-        )}
       </div>
 
       {selectedRoute && !!selectedRoute.steps.length && (
