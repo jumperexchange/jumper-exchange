@@ -228,12 +228,7 @@ const SwapForm = ({
           </div>
         </Col>
         <Col span={12}>
-          <div
-            className="form-input-wrapper token-select"
-            style={{
-              borderTopLeftRadius: '0px !important',
-              borderBottomLeftRadius: '0px !important',
-            }}>
+          <div className="form-input-wrapper token-select">
             <TokenSelect
               tokens={tokens}
               balances={balances}
