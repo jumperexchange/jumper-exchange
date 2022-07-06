@@ -20,31 +20,14 @@ import SwapUkraine from './components/SwapUkraine'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
+import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
-import analytics from './services/analytics'
 import setMetatags from './services/metatags'
 import { initStomt } from './services/stomt'
 
 const ENABLE_ETHERSPOT_KLIMA_SHOWCASE = process.env.REACT_APP_ENABLE_ETHERSPOT_KLIMA === 'true'
 const REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE =
   process.env.REACT_APP_ENABLE_OFFSET_CARBON === 'true'
-function usePageViews() {
-  const [path, setPath] = useState<string>()
-  const location = useLocation()
-
-  const currentPath = location.pathname === '/' ? '/swap' : location.pathname
-  if (path !== currentPath) {
-    setPath(currentPath)
-  }
-
-  useEffect(() => {
-    if (path) {
-      analytics.sendPageView(path)
-    }
-  }, [path])
-
-  return path
-}
 
 function App() {
   const location = useLocation()
