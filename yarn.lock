@@ -1168,12 +1168,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@etherspot/contracts@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@etherspot/contracts/-/contracts-1.6.0.tgz#e0c29ef2b0b49bd19f64c9a2737aec5cd32f3362"
-  integrity sha512-6J2ph/F8xZda+pavzF/LcOFf3shwg68f5E+DVo0mCUOhTSWkysfKZW6enQ6Vcakg+3tLsGfSBLe8+g7lNV7nUg==
-
-"@etherspot/contracts@^1.4.0":
+"@etherspot/contracts@1.4.0", "@etherspot/contracts@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@etherspot/contracts/-/contracts-1.4.0.tgz#6eea2de629096e613e9e40444708dd13ca77a107"
   integrity sha512-aVIKpG7+8gJkkJZTPhImxSSEanZZW4RkFTUeHwDmdJ1zjJaE84hFAMaLNxHQjOQ+vELUV9WShUg3gs2EmfK6ZA==
@@ -1193,7 +1188,7 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
-"@ethersproject/abi@5.6.4", "@ethersproject/abi@^5.6.3":
+"@ethersproject/abi@5.6.4", "@ethersproject/abi@^5.6.3", "@ethersproject/abi@^5.6.4":
   version "5.6.4"
   resolved "https://registry.yarnpkg.com/@ethersproject/abi/-/abi-5.6.4.tgz#f6e01b6ed391a505932698ecc0d9e7a99ee60362"
   integrity sha512-TTeZUlCeIHG6527/2goZA6gW5F8Emoc7MrZDC7hhP84aRGvW3TEdTnZR08Ls88YXM1m2SuK42Osw/jSi3uO8gg==
@@ -2181,23 +2176,23 @@
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
 
-"@lifinance/sdk@1.0.0-beta.12":
-  version "1.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-1.0.0-beta.12.tgz#55648cb13c5a3f051240b5d7511c5127cdd61d9b"
-  integrity sha512-RHuXLr7g3h1tUuKrZYUf05nkMc6DON8OgqPpce/tdy39XR/a8UGxskbTQ9v4m7+O+w5g3VAARH0CQjVTf20QrQ==
+"@lifinance/sdk@1.0.0-beta.14":
+  version "1.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/@lifinance/sdk/-/sdk-1.0.0-beta.14.tgz#e2f90af4cb51d57f934b7c2807a6e3a100b49ae5"
+  integrity sha512-ipbEfXot5aK4n+RjXKTfKsWMZOQgy6VVxVJvOb16KCSfQqKFe8EkxuOGwgP1xLUg+jXSRh3Au0QcXY6IaNcxoA==
   dependencies:
-    "@ethersproject/abi" "^5.6.3"
+    "@ethersproject/abi" "^5.6.4"
     "@ethersproject/contracts" "^5.6.2"
-    "@lifinance/types" "^0.14.12"
+    "@lifinance/types" "^0.14.16"
     axios "^0.27.2"
     bignumber.js "^9.0.1"
     eth-rpc-errors "^4.0.3"
-    ethers "^5.6.8"
+    ethers "^5.6.9"
 
-"@lifinance/types@^0.14.12":
-  version "0.14.14"
-  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.14.14.tgz#0665d6d100e9518fd639691ddef41e6cef548f2b"
-  integrity sha512-t8HmT15Ah+4aZxAYK8ds/AlK9quVPAFAnny9yjjgQZ1H/yoPoXkHh7EBQtNeGSHmXdHqxhq/lWjlt7ZC9fkq0A==
+"@lifinance/types@^0.14.16":
+  version "0.14.16"
+  resolved "https://registry.yarnpkg.com/@lifinance/types/-/types-0.14.16.tgz#85bcca5b610a859d9716e70246b85e7bac9ffc93"
+  integrity sha512-6V7piAFye3edStk0ry+v6bvFMqsdKoaRBYCIdXkXIEQHPNBLy7oOdFwLnfeYg3vUoC81W1uevnV48A7PavtEwg==
   dependencies:
     ethers "^5.6.6"
 
@@ -6209,7 +6204,7 @@ ethers@^5.6.6:
     "@ethersproject/web" "5.6.0"
     "@ethersproject/wordlists" "5.6.0"
 
-ethers@^5.6.8:
+ethers@^5.6.9:
   version "5.6.9"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.9.tgz#4e12f8dfcb67b88ae7a78a9519b384c23c576a4d"
   integrity sha512-lMGC2zv9HC5EC+8r429WaWu3uWJUCgUCt8xxKCFqkrFuBDZXDYIdzDUECxzjf2BMF8IVBByY1EBoGSL3RTm8RA==
@@ -6245,13 +6240,13 @@ ethers@^5.6.8:
     "@ethersproject/web" "5.6.1"
     "@ethersproject/wordlists" "5.6.1"
 
-etherspot@^1.33.2:
-  version "1.33.3"
-  resolved "https://registry.yarnpkg.com/etherspot/-/etherspot-1.33.3.tgz#5d9a05722e54a945e7d14cc6e8607eb92f414f1c"
-  integrity sha512-4VdsgDyb1IYsusK+E7Pw6YDYLEbRUI3csQEA3IC32Q56Exfng/h+4G0haAYt71Haa9DfFYWpKiBYxwIHyPEVvQ==
+etherspot@^1.31.0:
+  version "1.31.0"
+  resolved "https://registry.yarnpkg.com/etherspot/-/etherspot-1.31.0.tgz#581d6faf72eeaac75f34ba9ef5d1c5ecdc4d1711"
+  integrity sha512-yuwvYCZWvoJQ7SdgNExZL1vY7pvdCJlEgfVLvbQji7hbTZVTSYqqGJE9CMVZVNnb36jkzFrJ03Un+pTUZyMpdg==
   dependencies:
     "@apollo/client" "3.4.0"
-    "@etherspot/contracts" "1.6.0"
+    "@etherspot/contracts" "1.4.0"
     "@nerdwallet/apollo-cache-policies" "1.2.1"
     class-transformer "0.4.0"
     class-validator "0.13.1"
