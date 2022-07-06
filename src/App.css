@@ -10,11 +10,13 @@
   font-weight: bold;
   font-family: 'GT America' !important;
 }
+
 .wordmark:hover,
 .wordmark:focus,
 .wordmark:active {
   color: #3f49e1;
 }
+
 .logo {
   margin: 0;
 }
@@ -27,11 +29,13 @@
   .wordmark span {
     display: none;
   }
+
   .logo {
     margin-left: 15px;
     margin-right: 0;
   }
 }
+
 .header-poweredBy {
   color: black;
   position: absolute;
@@ -40,6 +44,7 @@
   display: block;
   line-height: 1;
 }
+
 .header-poweredBy:hover path {
   fill: #3f49e1;
 }
@@ -48,6 +53,7 @@
 .site-layout {
   margin-top: 64px;
 }
+
 .site-layout-menu {
   width: 90%;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -56,10 +62,12 @@
 .site-layout .site-layout-background {
   background: white;
 }
+
 .ant-layout {
   background: transparent;
   /*  */
 }
+
 .ant-layout-header {
   overflow: hidden;
   background: white;
@@ -76,6 +84,11 @@
   opacity: 1 !important;
   color: black;
 }
+
+.ant-menu-submenu-popup {
+  z-index: 9000 !important;
+}
+
 .ant-menu.ant-menu-sub.ant-menu-vertical {
   background-color: white !important;
   opacity: 1;
@@ -83,15 +96,13 @@
 }
 
 .beta-badge {
-  position: absolute;
   background: #f5b5ff;
-  top: 9px;
-  right: -1px;
   border-radius: 20px;
   line-height: 1;
   padding: 2px 4px;
   color: white;
   font-size: 12px;
+  margin-left: 8px;
 }
 
 .lifi-more-submenu-title-icon {
@@ -149,6 +160,7 @@
 .icon-link.headerIconLink:hover {
   color: #f5b5ff;
 }
+
 .lifi-header-social-links {
   display: inline;
 }
@@ -166,6 +178,7 @@
     display: flex;
     align-items: center;
   }
+
   .lifi-header-social-links {
     display: none;
   }

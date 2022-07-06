@@ -1,5 +1,5 @@
 import { Chain, getChainById } from '@lifinance/sdk'
-import { createContext, ReactChild, ReactChildren, useContext, useEffect, useState } from 'react'
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
 
 import LiFi from '../LiFi'
 import { TokenAmountList } from '../types'
@@ -30,11 +30,7 @@ export const useChainsTokensTools = () => {
   return useContext(chainsTokensToolsContext)
 }
 
-interface AuxProps {
-  children: ReactChild | ReactChild[] | ReactChildren | ReactChildren[]
-}
-
-export const ChainsTokensToolsProvider = ({ children }: AuxProps) => {
+export const ChainsTokensToolsProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [data, setData] = useState<ChainsTokensToolsContextProps>(initialData)
 
   //get chains

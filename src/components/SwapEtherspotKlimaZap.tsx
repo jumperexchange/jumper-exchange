@@ -34,6 +34,7 @@ import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
 import { etherspotSupportedChains, KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
+import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxService'
@@ -142,6 +143,9 @@ interface ExtendedRoute {
 }
 
 const Swap = () => {
+  useMetatags({
+    title: 'LI.FI - Etherspot KLIMA',
+  })
   const chainsTokensTools = useChainsTokensTools()
 
   // chains

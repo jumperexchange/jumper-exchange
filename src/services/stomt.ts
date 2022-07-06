@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 let inited = false
 
 type StomtPages = 'lifi' | 'swap' | 'dashboard'
@@ -41,4 +43,10 @@ export const initStomt = (page: StomtPages) => {
       appId: appId,
     })
   }
+}
+
+export const useStomt = (page: StomtPages) => {
+  useEffect(() => {
+    initStomt(page)
+  }, [])
 }

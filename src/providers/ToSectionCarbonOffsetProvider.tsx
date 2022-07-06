@@ -1,8 +1,7 @@
 import {
   createContext,
   Dispatch,
-  ReactChild,
-  ReactChildren,
+  PropsWithChildren,
   SetStateAction,
   useContext,
   useState,
@@ -32,11 +31,8 @@ export const useBeneficiaryInfo = () => {
 export const useSetBeneficiaryInfo = () => {
   return useContext(ToSectionCarbonOffsetUpdateContext)
 }
-interface AuxProps {
-  children: ReactChild | ReactChild[] | ReactChildren | ReactChildren[]
-}
 
-export const ToSectionCarbonOffsetProvider = ({ children }: AuxProps) => {
+export const ToSectionCarbonOffsetProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [_beneficiaryInfo, _setBeneficiaryInfo] =
     useState<ToSectionCarbonOffsetContextProps>(initialInfo)
 
