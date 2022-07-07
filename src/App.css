@@ -129,12 +129,21 @@
   margin: 0 8px;
   line-height: 1.5715;
   height: fit-content;
+  transition: all 400ms;
 }
 
+.lifi-support-link:hover,
 .lifi-support-link:hover {
   color: #f5b5ff;
   border: 1px solid #f5b5ff;
+  fill: #f5b5ff;
 }
+
+/* .lifi-support-link:hover,
+.lifi-support-link:hover svg {
+  color: #f5b5ff;
+  border: 1px solid #f5b5ff;
+} */
 
 .lifi-support-link.headerIconLink {
   line-height: 1;
