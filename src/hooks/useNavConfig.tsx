@@ -48,30 +48,6 @@ export const useNavConfig = () => {
         disabled: false,
         children: [
           {
-            label: (
-              <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
-                Blog
-              </a>
-            ),
-            key: 'blog',
-          },
-          {
-            label: (
-              <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
-                Explore Docs
-              </a>
-            ),
-            key: 'docs',
-          },
-          {
-            label: (
-              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-                About
-              </a>
-            ),
-            key: 'about',
-          },
-          {
             label: 'Showcases',
             key: 'lifi-showcase-submenu',
             children: [
@@ -104,6 +80,46 @@ export const useNavConfig = () => {
                 ],
               },
             ],
+          },
+          {
+            label: (
+              <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
+                Blog
+              </a>
+            ),
+            key: 'blog',
+          },
+          {
+            label: (
+              <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
+                Explore Docs
+              </a>
+            ),
+            key: 'docs',
+          },
+          {
+            label: (
+              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+                About
+              </a>
+            ),
+            key: 'about',
+          },
+          {
+            label: (
+              <a href="https://github.com/lifinance" target="_blank" rel="nofollow noreferrer">
+                Github
+              </a>
+            ),
+            key: 'github',
+          },
+          {
+            label: (
+              <a href="https://twitter.com/lifiprotocol" target="_blank" rel="nofollow noreferrer">
+                Twitter
+              </a>
+            ),
+            key: 'twitter',
           },
           {
             label: 'Legals',

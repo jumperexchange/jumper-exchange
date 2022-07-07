@@ -157,24 +157,6 @@ function App() {
                     <Row justify="end" gutter={15}>
                       <Col>
                         <a
-                          className="icon-link headerIconLink lifi-header-social-links"
-                          href="https://twitter.com/lifiprotocol"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <TwitterOutlined />
-                        </a>
-                      </Col>
-                      <Col>
-                        <a
-                          className="icon-link headerIconLink lifi-header-social-links"
-                          href="https://github.com/lifinance"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <GithubOutlined />
-                        </a>
-                      </Col>
-                      <Col>
-                        <a
                           style={{
                             padding: '13.5px 24px 13.5px 24px',
                           }}
