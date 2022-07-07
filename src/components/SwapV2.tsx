@@ -80,6 +80,7 @@ export const SwapV2 = () => {
         borderRadius: '16px',
         display: 'flex',
         minWidth: 360,
+        maxHeight: 736,
       },
     }
   }, [library, account, signer])
