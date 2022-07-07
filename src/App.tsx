@@ -7,6 +7,7 @@ import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
+import DiscordIcon from './assets/icons/discordIcon'
 import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
 import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
@@ -156,30 +157,14 @@ function App() {
                     <Row justify="end" gutter={15}>
                       <Col>
                         <a
-                          className="icon-link headerIconLink lifi-header-social-links"
-                          href="https://twitter.com/lifiprotocol"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <TwitterOutlined />
-                        </a>
-                      </Col>
-                      <Col>
-                        <a
-                          className="icon-link headerIconLink lifi-header-social-links"
-                          href="https://github.com/lifinance"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <GithubOutlined />
-                        </a>
-                      </Col>
-                      <Col>
-                        <a
-                          style={{ padding: '13.5px 24px 13.5px 24px' }}
+                          style={{
+                            padding: '13.5px 24px 13.5px 24px',
+                          }}
                           className="lifi-support-link headerIconLink lifi-header-social-links"
                           href="https://discord.gg/lifi"
                           target="_blank"
                           rel="nofollow noreferrer">
-                          Support
+                          <DiscordIcon style={{ marginRight: 4 }} /> Support
                         </a>
                       </Col>
                       <Col>
@@ -282,7 +267,7 @@ function App() {
                   href="https://discord.gg/lifi"
                   target="_blank"
                   rel="nofollow noreferrer">
-                  Support
+                  <DiscordIcon style={{ marginRight: 4 }} /> Support
                 </Button>
               </div>
 
