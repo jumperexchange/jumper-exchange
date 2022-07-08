@@ -130,6 +130,10 @@ input[type='number']::-webkit-outer-spin-button {
   margin-bottom: 0;
 }
 
+.swapModal {
+  max-width: 600px;
+}
+
 .swapModal .anticon-edit {
   color: #9c9c9c;
 }
@@ -146,9 +150,19 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .swapping-modal-timeline {
-  padding-top: 38px;
+  padding: 38px;
   min-height: 350px;
   overflow-y: scroll;
+}
+
+@media only screen and (max-width: 610px) {
+  .swapping-modal-timeline {
+    padding: 38px 0;
+  }
+
+  .swapModal {
+    max-width: unset;
+  }
 }
 
 .swapp-modal-footer {

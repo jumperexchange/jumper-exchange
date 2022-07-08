@@ -18,7 +18,12 @@ import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
 import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
-import { copyToClipboard, formatTokenAmount, parseSecondsAsTime } from '../services/utils'
+import {
+  copyToClipboard,
+  formatTokenAmount,
+  parseSecondsAsTime,
+  timeStampExceedsIntervalMinutes,
+} from '../services/utils'
 import { getChainById, isCrossStep, isLifiStep, Route, Step } from '../types'
 import { getChainAvatar, getToolAvatar } from './Avatars/Avatars'
 import Clock from './Clock'
@@ -110,7 +115,7 @@ const Swapping = ({
                     justifyContent: 'start',
                   }}>
                   <Button
-                    style={{ margin: 0, padding: 0 }}
+                    style={{ margin: 0, padding: 0, cursor: 'copy' }}
                     type="link"
                     onClick={async () =>
                       copyToClipboard(
@@ -125,6 +130,7 @@ const Swapping = ({
                   {!!step.execution?.process.some((process) => process.txHash) && (
                     <Button
                       type="link"
+                      style={{ cursor: 'copy' }}
                       onClick={async () => {
                         const hashes = step.execution?.process
                           .filter((process) => process.txHash)
@@ -165,7 +171,8 @@ const Swapping = ({
 
     const executionItem = [
       <Timeline.Item
-        position={isMobile ? 'right' : 'left'}
+        // position={isMobile ? 'right' : 'left'}
+        position="right"
         key={index + '_right'}
         color={color}
         dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
@@ -177,7 +184,8 @@ const Swapping = ({
       case 'swap': {
         return [
           <Timeline.Item
-            position={isMobile ? 'right' : 'right'}
+            // position={isMobile ? 'right' : 'right'}
+            position="right"
             key={index + '_left'}
             color={color}>
             <h4>Swap on {getToolAvatar(step)}</h4>
@@ -196,7 +204,8 @@ const Swapping = ({
         const { action, estimate } = step
         return [
           <Timeline.Item
-            position={isMobile ? 'right' : 'right'}
+            // position={isMobile ? 'right' : 'right'}
+            position="right"
             key={index + '_left'}
             color={color}>
             <h4>
@@ -216,7 +225,8 @@ const Swapping = ({
       case 'lifi': {
         return [
           <Timeline.Item
-            position={isMobile ? 'right' : 'right'}
+            // position={isMobile ? 'right' : 'right'}
+            position="right"
             key={index + '_left'}
             color={color}>
             <h4>
@@ -299,19 +309,19 @@ const Swapping = ({
   const restartCrossChainSwap = async () => {
     // remove failed
 
-    for (let index = 0; index < localRoute.steps.length; index++) {
-      const stepHasFailed = localRoute.steps[index].execution?.status === 'FAILED'
-      // check if the step has been cancelled which is a "failed" state
-      const stepHasBeenCancelled = localRoute.steps[index].execution?.process.some(
-        (process) => process.status === 'CANCELLED',
-      )
+    // for (let index = 0; index < localRoute.steps.length; index++) {
+    //   const stepHasFailed = localRoute.steps[index].execution?.status === 'FAILED'
+    //   // check if the step has been cancelled which is a "failed" state
+    //   const stepHasBeenCancelled = localRoute.steps[index].execution?.process.some(
+    //     (process) => process.status === 'CANCELLED',
+    //   )
 
-      if (localRoute.steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
-        localRoute.steps[index].execution!.status = 'RESUME'
-        localRoute.steps[index].execution!.process.pop() // remove last (failed) process
-        updateRoute(localRoute)
-      }
-    }
+    //   if (localRoute.steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
+    //     localRoute.steps[index].execution!.status = 'RESUME'
+    //     localRoute.steps[index].execution!.process.pop() // remove last (failed) process
+    //     updateRoute(localRoute)
+    //   }
+    // }
     // start again
     resumeExecution()
   }
@@ -490,7 +500,10 @@ const Swapping = ({
     <>
       {alerts}
       <br />
-      <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
+      <Timeline
+        // mode={isMobile ? 'left' : 'alternate'}
+        mode="left"
+        className="swapping-modal-timeline">
         {/* Steps */}
         {localRoute.steps.map(parseStepToTimeline)}
       </Timeline>
@@ -506,6 +519,16 @@ const Swapping = ({
           )}
         </Typography.Text>
       </div>
+
+      {currentProcess?.type === 'RECEIVING_CHAIN' &&
+      timeStampExceedsIntervalMinutes(20, currentProcess?.startedAt) ? (
+        // true
+        <div style={{ padding: 16, background: '#FFF1AD' }}>
+          `Cross-chain swaps can take longer due of low liquidity, network or bridge congestion.
+          Please check your wallet on the destination chain, your assets may have arrived. If not,
+          ask for help in the discord support channel.`{' '}
+        </div>
+      ) : undefined}
 
       <Divider />
 

@@ -122,3 +122,11 @@ export const copyToClipboard = async (text: string) => {
     message.error('Copying failed!')
   }
 }
+
+export const timeStampExceedsIntervalMinutes = (timeInMinutes: number, timestamp?: number) => {
+  if (!timestamp) return false
+
+  const timeInMilliseconds = timeInMinutes * 60 * 1000
+  const lowerBarrier = Date.now() - timeInMilliseconds
+  return timestamp < lowerBarrier
+}
