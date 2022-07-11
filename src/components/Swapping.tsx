@@ -11,7 +11,6 @@ import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
 
-import { useIsMobile } from '../hooks/useIsMobile'
 import { useStepReturnInfo } from '../hooks/useStepReturnInfo'
 import LiFi from '../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
@@ -29,6 +28,7 @@ import { getChainAvatar, getToolAvatar } from './Avatars/Avatars'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
 import { FurtherLinks } from './SwappingMainButtonFiles/FurtherLinks'
+import { SwappingModalInfoMessages } from './SwappingModalInfoMessages'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
 interface SwapSettings {
@@ -50,7 +50,6 @@ const Swapping = ({
   onSwapDone,
   fixedRecipient = false,
 }: SwappingProps) => {
-  const isMobile = useIsMobile()
   const [localRoute, setLocalRoute] = useState<Route>(route)
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
@@ -494,7 +493,17 @@ const Swapping = ({
     return null
   }
 
+  const getCurrentStep = () => {
+    for (const step of localRoute.steps) {
+      if (step.execution && step.execution.status !== 'DONE') {
+        return step
+      }
+    }
+    return null
+  }
+
   const currentProcess = getCurrentProcess()
+  const currentStep = getCurrentStep()
 
   return (
     <>
@@ -529,11 +538,12 @@ const Swapping = ({
           ask for help in the discord support channel.`{' '}
         </div>
       ) : undefined}
+      <SwappingModalInfoMessages process={currentProcess} tool={currentStep?.tool} />
 
       <Divider />
 
       <div className="swapp-modal-footer">
-        <div style={{ textAlign: 'center', transform: 'scale(1.3)' }}>{getMainButton()}</div>
+        <div style={{ transform: 'scale(1.3)' }}>{getMainButton()}</div>
 
         {isSwapping && currentProcess && currentProcess.status === 'ACTION_REQUIRED' && (
           <>
@@ -558,6 +568,7 @@ const Swapping = ({
             </Row>
           </>
         )}
+
         <Modal
           className="wallet-selection-modal"
           visible={showWalletConnectChainSwitchModal.show}
