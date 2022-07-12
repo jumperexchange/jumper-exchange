@@ -1,4 +1,4 @@
-import { Chain, getChainById } from '@lifinance/sdk'
+import { Chain, getChainById } from '@lifi/sdk'
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
 
 import LiFi from '../LiFi'

@@ -1,4 +1,4 @@
-import { Token } from '@lifinance/sdk'
+import { Token } from '@lifi/sdk'
 import { BigNumber as BigJs } from 'bignumber.js'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
 
