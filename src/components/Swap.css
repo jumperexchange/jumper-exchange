@@ -380,6 +380,20 @@ h4.swap-title {
   padding-top: 1px !important;
 }
 
+.tx-table-direction-cell {
+  position: relative;
+}
+
+.tx-table-direction-cell-chain-icon {
+  /* position: absolute; */
+  margin-left: -10px;
+  z-index: 100 !important;
+}
+.tx-table-direction-cell-token-icon {
+  /* position: absolute; */
+  z-index: 300 !important;
+}
+
 .route-delete-button {
   border-radius: 25px !important;
 }
