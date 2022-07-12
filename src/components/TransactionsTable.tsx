@@ -103,12 +103,12 @@ function TransactionsTable({
     {
       title: 'From',
       dataIndex: 'from',
-      width: 200,
+      width: 150,
     },
     {
       title: 'To',
       dataIndex: 'to',
-      width: 200,
+      width: 150,
     },
     {
       title: 'Via',
@@ -145,21 +145,35 @@ function TransactionsTable({
       date: startedDate,
       // from: getChainById(firstStep.action.fromChainId).name,
       from: (
-        <span className="tx-table-direction-cell">
-          <span className="tx-table-direction-cell-token-icon">
-            {getTokenAvatar(firstStep.action.fromToken)}
+        <span style={{ display: 'flex', justifyContent: 'start' }}>
+          <span className="tx-table-icon-container">
+            <span className="tx-table-direction-cell-token-icon">
+              {getTokenAvatar(firstStep.action.fromToken, 24, 24)}
+            </span>
+            <span className="tx-table-direction-cell-chain-icon">
+              {getChainAvatar(fromChain.key, 24, 24)}
+            </span>
           </span>
-          <span className="tx-table-direction-cell-chain-icon">
-            {getChainAvatar(fromChain.key)}
+          <span>
+            {
+              formatTokenAmount(firstStep.action.fromToken, firstStep.action.fromAmount).split(
+                ' ',
+              )[0]
+            }{' '}
           </span>
-          {formatTokenAmount(firstStep.action.fromToken, firstStep.action.fromAmount).split(' ')[0]}{' '}
         </span>
       ),
       to: (
-        <span>
-          <span className="tx-table-direction-cell-token-icon">{getTokenAvatar(toToken)}</span>
-          <span className="tx-table-direction-cell-chain-icon">{getChainAvatar(toChain.key)}</span>
-          {formatTokenAmount(toToken, toAmount).split(' ')[0]}{' '}
+        <span style={{ display: 'flex', justifyContent: 'start' }}>
+          <span className="tx-table-icon-container">
+            <span className="tx-table-direction-cell-token-icon">
+              {getTokenAvatar(toToken, 24, 24)}
+            </span>
+            <span className="tx-table-direction-cell-chain-icon">
+              {getChainAvatar(toChain.key, 24, 24)}
+            </span>
+          </span>
+          <span>{formatTokenAmount(toToken, toAmount).split(' ')[0]} </span>
         </span>
       ),
       via: route.steps.map((step) => step.toolDetails.name).join(' > '),
