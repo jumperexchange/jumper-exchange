@@ -635,6 +635,7 @@ const Swap = () => {
 
       if (depositAmount.gt(0) && fromChainKey && fromTokenAddress && toChainKey && toTokenAddress) {
         setRoutesLoading(true)
+        setActiveTransactionInfoTabKey('1')
         const fromToken = findToken(fromChainKey, fromTokenAddress)
         const toToken = findToken(toChainKey, toTokenAddress)
         const request: RoutesRequest = {
