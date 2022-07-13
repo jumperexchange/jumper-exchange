@@ -5,6 +5,7 @@ import { Button, Popconfirm, Table } from 'antd'
 
 import { formatTokenAmount } from '../services/utils'
 import { getChainById, Route } from '../types'
+import { getChainAvatar, getTokenAvatar } from './Avatars/Avatars'
 import ConnectButton from './web3/ConnectButton'
 
 interface ActiveTransactionsTableProps {
@@ -99,28 +100,18 @@ function TransactionsTable({
       width: 150,
     },
     {
-      title: 'From Chain',
-      dataIndex: 'fromChain',
+      title: 'From',
+      dataIndex: 'from',
       width: 150,
     },
     {
-      title: 'From Token',
-      dataIndex: 'fromToken',
+      title: 'To',
+      dataIndex: 'to',
       width: 150,
     },
     {
-      title: 'To Chain',
-      dataIndex: 'toChain',
-      width: 150,
-    },
-    {
-      title: 'To Token',
-      dataIndex: 'toToken',
-      width: 150,
-    },
-    {
-      title: 'Protocols',
-      dataIndex: 'protocols',
+      title: 'Via',
+      dataIndex: 'via',
       width: 150,
     },
     {
@@ -134,29 +125,57 @@ function TransactionsTable({
       width: 100,
     },
   ]
-
   const data = routes.map((route, index) => {
     const firstStep = route.steps[0]
     const startedDate =
       firstStep.execution?.process?.[0]?.startedAt &&
       new Date(firstStep.execution.process[0].startedAt).toLocaleString()
     const lastStep = route.steps[route.steps.length - 1]
-    let toChainId = lastStep.action.toChainId
 
     // take the real received value instead of the estimation if possible
-    const toAmount = lastStep.execution?.toAmount ?? lastStep.estimate.toAmount
     // in case the destination swap fails the user receives the bridge token and the transaction is marked as successful.
     // we need to make sure to always show the token the user actually received
+    const fromChain = getChainById(firstStep.action.fromChainId)
     const toToken = lastStep.execution?.toToken ?? lastStep.action.toToken
-
+    const toChain = getChainById(lastStep.action.fromChainId)
+    const toAmount = lastStep.execution?.toAmount ?? lastStep.estimate.toAmount
     return {
       key: index,
       date: startedDate,
-      fromChain: getChainById(firstStep.action.fromChainId).name,
-      toChain: getChainById(toChainId).name,
-      fromToken: `${formatTokenAmount(firstStep.action.fromToken, firstStep.estimate.fromAmount)}`,
-      toToken: `${formatTokenAmount(toToken, toAmount)}`,
-      protocols: route.steps.map((step) => step.toolDetails.name).join(' > '),
+      // from: getChainById(firstStep.action.fromChainId).name,
+      from: (
+        <span style={{ display: 'flex', justifyContent: 'start' }}>
+          <span className="tx-table-icon-container">
+            <span className="tx-table-direction-cell-token-icon">
+              {getTokenAvatar(firstStep.action.fromToken, 24, 24)}
+            </span>
+            <span className="tx-table-direction-cell-chain-icon">
+              {getChainAvatar(fromChain.key, 24, 24)}
+            </span>
+          </span>
+          <span>
+            {
+              formatTokenAmount(firstStep.action.fromToken, firstStep.action.fromAmount).split(
+                ' ',
+              )[0]
+            }{' '}
+          </span>
+        </span>
+      ),
+      to: (
+        <span style={{ display: 'flex', justifyContent: 'start' }}>
+          <span className="tx-table-icon-container">
+            <span className="tx-table-direction-cell-token-icon">
+              {getTokenAvatar(toToken, 24, 24)}
+            </span>
+            <span className="tx-table-direction-cell-chain-icon">
+              {getChainAvatar(toChain.key, 24, 24)}
+            </span>
+          </span>
+          <span>{formatTokenAmount(toToken, toAmount).split(' ')[0]} </span>
+        </span>
+      ),
+      via: route.steps.map((step) => step.toolDetails.name).join(' > '),
       state: getStateText(route),
       action: renderActionButton(route),
     }
