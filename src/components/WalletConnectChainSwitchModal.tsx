@@ -1,4 +1,4 @@
-import { findDefaultToken, getChainById } from '@lifinance/sdk'
+import { findDefaultToken, getChainById } from '@lifi/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Typography } from 'antd'
 

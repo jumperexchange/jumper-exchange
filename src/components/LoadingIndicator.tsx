@@ -1,15 +1,20 @@
 import { animate, stagger } from 'motion'
 import { useEffect, useRef } from 'react'
 
-function LoadingIndicator() {
+interface LoadingIndicatorProps {
+  size?: 'default' | 'small'
+}
+
+function LoadingIndicator({ size = 'default' }: LoadingIndicatorProps) {
   const element = useRef<HTMLDivElement | null>(null)
 
   const bubbleStyle: React.CSSProperties = {
     background: '#3f49e1',
     display: 'inline-block',
-    margin: 10,
-    width: 14,
-    height: 14,
+    margin: size === 'default' ? 10 : 5,
+    marginBottom: 0,
+    width: size === 'default' ? 14 : 8,
+    height: size === 'default' ? 14 : 8,
     borderRadius: 7,
   }
 
@@ -23,7 +28,7 @@ function LoadingIndicator() {
       },
       {
         delay: stagger(0.1),
-        duration: 1,
+        duration: size === 'default' ? 1 : 1.2,
         repeat: Infinity,
         easing: 'ease-in-out',
       },

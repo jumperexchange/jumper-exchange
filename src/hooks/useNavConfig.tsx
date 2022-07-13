@@ -3,7 +3,10 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import WalletButtons from '../components/web3/WalletButtons'
-import { REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE } from '../constants/featureFlags'
+import {
+  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
+  REACT_APP_ENABLE_SWAP_V2,
+} from '../constants/featureFlags'
 import { useIsMobile } from './useIsMobile'
 
 export const useNavConfig = () => {
@@ -12,6 +15,17 @@ export const useNavConfig = () => {
   const navConfig = useMemo(() => {
     return [
       { label: <Link to="/swap">Swap & Bridge</Link>, key: '/swap' },
+      REACT_APP_ENABLE_SWAP_V2
+        ? {
+            label: (
+              <>
+                <Link to="/swap-v2">Swap & Bridge V2</Link>
+                <span className="beta-badge">beta</span>
+              </>
+            ),
+            key: '/swap-v2',
+          }
+        : null,
       { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
       {
         label: (
@@ -33,30 +47,6 @@ export const useNavConfig = () => {
         key: 'lifi-more-submenu',
         disabled: false,
         children: [
-          {
-            label: (
-              <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
-                Blog
-              </a>
-            ),
-            key: 'blog',
-          },
-          {
-            label: (
-              <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
-                Explore Docs
-              </a>
-            ),
-            key: 'docs',
-          },
-          {
-            label: (
-              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-                About
-              </a>
-            ),
-            key: 'about',
-          },
           {
             label: 'Showcases',
             key: 'lifi-showcase-submenu',
@@ -90,6 +80,46 @@ export const useNavConfig = () => {
                 ],
               },
             ],
+          },
+          {
+            label: (
+              <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
+                Blog
+              </a>
+            ),
+            key: 'blog',
+          },
+          {
+            label: (
+              <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
+                Explore Docs
+              </a>
+            ),
+            key: 'docs',
+          },
+          {
+            label: (
+              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+                About
+              </a>
+            ),
+            key: 'about',
+          },
+          {
+            label: (
+              <a href="https://github.com/lifinance" target="_blank" rel="nofollow noreferrer">
+                Github
+              </a>
+            ),
+            key: 'github',
+          },
+          {
+            label: (
+              <a href="https://twitter.com/lifiprotocol" target="_blank" rel="nofollow noreferrer">
+                Twitter
+              </a>
+            ),
+            key: 'twitter',
           },
           {
             label: 'Legals',

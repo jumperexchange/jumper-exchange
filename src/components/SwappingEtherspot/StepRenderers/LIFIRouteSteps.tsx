@@ -1,5 +1,5 @@
 import { ArrowRightOutlined, LoadingOutlined, PauseCircleOutlined } from '@ant-design/icons'
-import { getChainById, Route, Step } from '@lifinance/sdk'
+import { getChainById, Route, Step } from '@lifi/sdk'
 import { Timeline, Typography } from 'antd'
 
 import { renderProcessError, renderProcessMessage } from '../../../services/processRenderer'

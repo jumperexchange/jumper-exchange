@@ -1,4 +1,4 @@
-import { ChainKey, Coin, Route, Step, TokenAmount, TokenWithAmounts } from '@lifinance/sdk'
+import { ChainKey, Coin, Route, Step, TokenAmount, TokenWithAmounts } from '@lifi/sdk'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
 

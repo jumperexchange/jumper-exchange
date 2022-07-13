@@ -27,6 +27,7 @@ import QueryString from 'qs'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
+import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import {
@@ -37,6 +38,7 @@ import {
   storeRoute,
 } from '../services/localStorage'
 import { switchChain as switchChainMetaMask } from '../services/metamask'
+import { useStomt } from '../services/stomt'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
@@ -134,6 +136,10 @@ const parseToken = (
 }
 
 const Swap = () => {
+  useMetatags({
+    title: 'LI.FI - Swap',
+  })
+  useStomt('swap')
   const chainsTokensTools = useChainsTokensTools()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -629,6 +635,7 @@ const Swap = () => {
 
       if (depositAmount.gt(0) && fromChainKey && fromTokenAddress && toChainKey && toTokenAddress) {
         setRoutesLoading(true)
+        setActiveTransactionInfoTabKey('1')
         const fromToken = findToken(fromChainKey, fromTokenAddress)
         const toToken = findToken(toChainKey, toTokenAddress)
         const request: RoutesRequest = {

@@ -1,4 +1,4 @@
-import { ChainId, CoinKey, findDefaultToken } from '@lifinance/sdk'
+import { ChainId, CoinKey, findDefaultToken } from '@lifi/sdk'
 import BigNumber from 'bignumber.js'
 
 import { formatTokenAmountOnly, parseSecondsAsTime } from './utils'

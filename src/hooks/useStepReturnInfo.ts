@@ -1,5 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers'
-import { Chain, getChainById, Step, Token, TokenAmount } from '@lifinance/sdk'
+import { Chain, getChainById, Step, Token, TokenAmount } from '@lifi/sdk'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useCallback, useEffect, useState } from 'react'
