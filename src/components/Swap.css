@@ -389,9 +389,27 @@ h4.swap-title {
   min-width: 100%;
 }
 
-.tx-table .ant-pagination-item-active {
+/* /* .tx-table .ant-pagination-item-active {
   border: none !important;
   padding-top: 1px !important;
+} */
+
+.tx-table-icon-container {
+  position: relative !important;
+  margin-right: 24px;
+  width: 42px;
+}
+
+.tx-table-direction-cell-chain-icon {
+  position: absolute;
+  left: 24px;
+  z-index: 1 !important;
+}
+
+.tx-table-direction-cell-token-icon {
+  position: absolute;
+
+  z-index: 200 !important;
 }
 
 .route-delete-button {

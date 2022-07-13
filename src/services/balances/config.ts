@@ -1,4 +1,4 @@
-import { ChainId } from '@lifinance/sdk'
+import { ChainId } from '@lifi/sdk'
 
 type BlockedTokens = {
   [ChainKey: string]: Array<string>

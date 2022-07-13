@@ -1,4 +1,4 @@
-import LIFI from '@lifinance/sdk'
+import LIFI from '@lifi/sdk'
 
 import { getRpcs } from './config/connectors'
 

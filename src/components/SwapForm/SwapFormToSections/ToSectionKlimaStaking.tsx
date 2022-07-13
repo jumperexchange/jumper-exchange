@@ -1,4 +1,4 @@
-import { Step, Token } from '@lifinance/sdk'
+import { Step, Token } from '@lifi/sdk'
 import { Col, Input, Row } from 'antd'
 
 import { formatTokenAmount } from '../../../services/utils'

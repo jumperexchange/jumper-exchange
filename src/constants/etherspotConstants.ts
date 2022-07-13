@@ -1,4 +1,4 @@
-import { ChainId } from '@lifinance/sdk'
+import { ChainId } from '@lifi/sdk'
 
 export const STAKE_KLIMA_CONTRACT_ADDRESS = '0x4D70a031Fc76DA6a9bC0C922101A05FA95c3A227'
 export const KLIMA_ADDRESS = '0x4e78011Ce80ee02d2c3e649Fb657E45898257815'
