@@ -2,7 +2,6 @@ import { DeleteOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Popconfirm, Table } from 'antd'
-import BigNumber from 'bignumber.js'
 
 import { formatTokenAmount } from '../services/utils'
 import { getChainById, Route } from '../types'
