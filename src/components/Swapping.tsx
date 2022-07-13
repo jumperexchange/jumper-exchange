@@ -7,7 +7,7 @@ import {
 import { Web3Provider } from '@ethersproject/providers'
 import { ExecutionSettings, StatusMessage } from '@lifi/sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
+import { Button, Divider, Modal, Row, Space, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
 
@@ -21,12 +21,7 @@ import {
   renderProcessMessage,
   renderSubstatusmessage,
 } from '../services/processRenderer'
-import {
-  copyToClipboard,
-  formatTokenAmount,
-  parseSecondsAsTime,
-  timeStampExceedsIntervalMinutes,
-} from '../services/utils'
+import { copyToClipboard, formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import { getChainById, isCrossStep, isLifiStep, Route, Step } from '../types'
 import { getChainAvatar, getToolAvatar } from './Avatars/Avatars'
 import Clock from './Clock'
@@ -389,14 +384,18 @@ const Swapping = ({
       ) : (
         ''
       )
+      const substatusmessage = lastProcess
+        ? renderSubstatusmessage(lastProcess.status as StatusMessage, lastProcess?.substatus)
+        : undefined
 
       const infoTitle = (
         <>
-          <Typography.Text strong>
-            Done -{' '}
-            {lastProcess &&
-              renderSubstatusmessage(lastProcess.status as StatusMessage, lastProcess?.substatus)}
-          </Typography.Text>
+          <Row justify="center">
+            <Typography.Text strong>
+              Done
+              {substatusmessage && `  - ${substatusmessage}`}
+            </Typography.Text>
+          </Row>
         </>
       )
 
@@ -528,13 +527,13 @@ const Swapping = ({
                 {renderProcessMessage(currentProcess)}
               </Typography.Text>
             </Row>
+            <Row style={{ margin: 8 }} justify="center">
+              <LoadingIndicator size="small" />
+            </Row>
             <Row justify="center">
-              <Typography.Text style={{ color: 'grey' }}>
+              <Typography.Text style={{ color: 'grey', textAlign: 'center' }}>
                 {renderSubstatusmessage(currentProcess.status, currentProcess.substatus)}
               </Typography.Text>
-            </Row>
-            <Row style={{ marginTop: 20 }} justify="center">
-              <Spin indicator={<LoadingIndicator />} />
             </Row>
           </>
         )}
