@@ -1,4 +1,4 @@
-import { ChainId, CoinKey, findTokenByChainIdAndAddress, TokenAmount } from '@lifinance/sdk'
+import { ChainId, CoinKey, findTokenByChainIdAndAddress, TokenAmount } from '@lifi/sdk'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 

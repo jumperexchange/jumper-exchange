@@ -1,4 +1,4 @@
-import { TokenAmount } from '@lifinance/sdk'
+import { TokenAmount } from '@lifi/sdk'
 
 import { blockedTokens } from './config'
 

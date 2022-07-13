@@ -1,7 +1,7 @@
 import './SwapV2.css'
 
+import { Token } from '@lifi/sdk'
 import { LiFiWidget, WidgetConfig } from '@lifi/widget'
-import { Token } from '@lifinance/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import { useMemo, useState } from 'react'
