@@ -5,7 +5,7 @@ import {
   PauseCircleOutlined,
 } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ExecutionSettings } from '@lifi/sdk'
+import { ExecutionSettings, StatusMessage } from '@lifi/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
@@ -16,7 +16,11 @@ import LiFi from '../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
-import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
+import {
+  renderProcessError,
+  renderProcessMessage,
+  renderSubstatusmessage,
+} from '../services/processRenderer'
 import {
   copyToClipboard,
   formatTokenAmount,
@@ -306,22 +310,6 @@ const Swapping = ({
   }
 
   const restartCrossChainSwap = async () => {
-    // remove failed
-
-    // for (let index = 0; index < localRoute.steps.length; index++) {
-    //   const stepHasFailed = localRoute.steps[index].execution?.status === 'FAILED'
-    //   // check if the step has been cancelled which is a "failed" state
-    //   const stepHasBeenCancelled = localRoute.steps[index].execution?.process.some(
-    //     (process) => process.status === 'CANCELLED',
-    //   )
-
-    //   if (localRoute.steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
-    //     localRoute.steps[index].execution!.status = 'RESUME'
-    //     localRoute.steps[index].execution!.process.pop() // remove last (failed) process
-    //     updateRoute(localRoute)
-    //   }
-    // }
-    // start again
     resumeExecution()
   }
 
@@ -371,38 +359,28 @@ const Swapping = ({
     // DONE
     const isDone = localRoute.steps.filter((step) => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
+      const lastStepProcesses = localRoute.steps[localRoute.steps.length - 1].execution?.process
+      const lastProcess = lastStepProcesses?.[lastStepProcesses?.length - 1]
       const infoMessage = !!routeReturnInfo?.totalBalanceOfReceivedToken ? (
         <>
-          {!routeReturnInfo.receivedAmount.isZero() &&
-            (!fixedRecipient ? (
-              <>
-                <Typography.Text>
-                  You received{` `}
-                  {formatTokenAmount(
-                    routeReturnInfo.receivedToken,
-                    routeReturnInfo.receivedAmount.toString(),
-                  )}
-                </Typography.Text>
-                <br />
-              </>
-            ) : (
-              <>
-                <Typography.Text>
-                  You sent{` `}
-                  {formatTokenAmount(
-                    routeReturnInfo.receivedToken,
-                    routeReturnInfo.receivedAmount.toString(),
-                  )}
-                </Typography.Text>
-                <br />
-              </>
-            ))}
-          {!fixedRecipient && (
+          {!routeReturnInfo.receivedAmount.isZero() && fixedRecipient && (
+            <>
+              <Typography.Text>
+                You sent{` `}
+                {formatTokenAmount(
+                  routeReturnInfo.receivedToken,
+                  routeReturnInfo.receivedAmount.toString(),
+                )}
+              </Typography.Text>
+              <br />
+            </>
+          )}
+          {!routeReturnInfo.receivedAmount.isZero() && !fixedRecipient && (
             <>
               <Typography.Text
                 type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
                 style={{ fontSize: !routeReturnInfo.receivedAmount.isZero() ? 12 : 14 }}>
-                {`You now have ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
+                {`You received ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
                 {` on ${routeReturnInfo.toChain.name}`}
               </Typography.Text>
             </>
@@ -412,18 +390,14 @@ const Swapping = ({
         ''
       )
 
-      const infoTitle = routeReturnInfo ? (
-        routeReturnInfo.receivedTokenMatchesPlannedToken ? (
-          <>
-            <Typography.Text strong>Swap Successful!</Typography.Text>
-          </>
-        ) : (
+      const infoTitle = (
+        <>
           <Typography.Text strong>
-            Warning! It seems like you received the wrong token
+            Done -{' '}
+            {lastProcess &&
+              renderSubstatusmessage(lastProcess.status as StatusMessage, lastProcess?.substatus)}
           </Typography.Text>
-        )
-      ) : (
-        ''
+        </>
       )
 
       return (
@@ -529,15 +503,6 @@ const Swapping = ({
         </Typography.Text>
       </div>
 
-      {currentProcess?.type === 'RECEIVING_CHAIN' &&
-      timeStampExceedsIntervalMinutes(20, currentProcess?.startedAt) ? (
-        // true
-        <div style={{ padding: 16, background: '#FFF1AD' }}>
-          `Cross-chain swaps can take longer due of low liquidity, network or bridge congestion.
-          Please check your wallet on the destination chain, your assets may have arrived. If not,
-          ask for help in the discord support channel.`{' '}
-        </div>
-      ) : undefined}
       <SwappingModalInfoMessages process={currentProcess} tool={currentStep?.tool} />
 
       <Divider />
@@ -561,6 +526,11 @@ const Swapping = ({
             <Row justify="center">
               <Typography.Text className="flashing">
                 {renderProcessMessage(currentProcess)}
+              </Typography.Text>
+            </Row>
+            <Row justify="center">
+              <Typography.Text style={{ color: 'grey' }}>
+                {renderSubstatusmessage(currentProcess.status, currentProcess.substatus)}
               </Typography.Text>
             </Row>
             <Row style={{ marginTop: 20 }} justify="center">

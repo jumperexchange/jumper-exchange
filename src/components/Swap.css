@@ -150,7 +150,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .swapping-modal-timeline {
-  padding: 38px;
+  padding: 38px 0 38px 38px;
   min-height: 350px;
   overflow-y: scroll;
 }
