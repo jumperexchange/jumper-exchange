@@ -2020,10 +2020,10 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@lifi/sdk@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-1.0.0.tgz#7e06d272bf73282f7d9539eea7026c89b7c25b5f"
-  integrity sha512-xblIaRjcqsha1IvF06+D06h8VKAuPY3zVyR6PLaBq0/Gci9sKfolMeoS4q1RvoftrGPRo4tmEBVAyhjIkwA0SQ==
+"@lifi/sdk@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-1.0.1.tgz#0872fca512993f24e9c87abee6710b536c923be1"
+  integrity sha512-XGlPtiKQZ/ZNYF4v5HzhrOiv3oj4vAeJBn+51zJbDQW3iPE5ZXQgl6lbRRMXbvchomakV8o8le02vDajIe9whQ==
   dependencies:
     "@ethersproject/abi" "^5.6.4"
     "@ethersproject/contracts" "^5.6.2"
@@ -2059,16 +2059,16 @@
     "@web3-react/walletconnect" "^8.0.25-beta.0"
     react "^18.2.0"
 
-"@lifi/widget@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.8.0.tgz#638caa177a6ef05870ca8831da7bd10df1a326cf"
-  integrity sha512-/Z1q9X7bGkAeeIKmstj2m4QTz2ivU4Bad6hJ6q/UDNdZtVvVYlM1UjRC6yYQtl5X8p31Sm2WdOuyM1TKCBH2yQ==
+"@lifi/widget@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.9.0.tgz#927e98971129b3a2b4583c223a1fc8745ec2ac80"
+  integrity sha512-0BnE6w9YscFm7hogDeWPvo1+XbzpsnjKUpFj78HFukxLESRqvQjIF9uewZkB1N/HfvJC1l2Y4wR/2GAHIogcnQ==
   dependencies:
     "@emotion/react" "^11.9.3"
     "@emotion/styled" "^11.9.3"
     "@ethersproject/experimental" "^5.6.3"
     "@ethersproject/providers" "^5.6.8"
-    "@lifi/sdk" "^1.0.0"
+    "@lifi/sdk" "^1.0.1"
     "@lifi/wallet-management" "^1.1.1"
     "@mui/icons-material" "^5.8.4"
     "@mui/lab" "^5.0.0-alpha.90"
@@ -2077,12 +2077,12 @@
     "@sentry/react" "^7.6.0"
     "@sentry/tracing" "^7.6.0"
     big.js "^6.2.1"
-    i18next "^21.8.13"
+    i18next "^21.8.14"
     immer "^9.0.15"
     react "^18.2.0"
     react-dom "^18.2.0"
     react-hook-form "^7.33.1"
-    react-i18next "^11.18.0"
+    react-i18next "^11.18.1"
     react-query "^4.0.0-beta.23"
     react-resize-detector "^7.1.2"
     react-router-dom "^6.3.0"
@@ -2805,10 +2805,18 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@*", "@types/jest@^28.1.4":
+"@types/jest@*":
   version "28.1.4"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-28.1.4.tgz#a11ee6c8fd0b52c19c9c18138b78bbcc201dad5a"
   integrity sha512-telv6G5N7zRJiLcI3Rs3o+ipZ28EnE+7EvF0pSrt2pZOMnAVI/f+6/LucDxOvcBcTeTL3JMF744BbVQAVBUQRA==
+  dependencies:
+    jest-matcher-utils "^28.0.0"
+    pretty-format "^28.0.0"
+
+"@types/jest@^28.1.5":
+  version "28.1.5"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-28.1.5.tgz#4337404efa059adbf96c4ac53b28fdc0af514475"
+  integrity sha512-TLAC2zXxGnohSP3GxgIyJn7yrTeRPDEyVFyCY1NE2wzg392auI+69uk5EPGjUXuhkq/K208J/TWpLG7J8ebIEQ==
   dependencies:
     jest-matcher-utils "^28.0.0"
     pretty-format "^28.0.0"
@@ -2833,10 +2841,15 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
   integrity sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==
 
-"@types/node@*", "@types/node@^18.0.3":
+"@types/node@*":
   version "18.0.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.3.tgz#463fc47f13ec0688a33aec75d078a0541a447199"
   integrity sha512-HzNRZtp4eepNitP+BD6k2L6DROIDG4Q0fm4x+dwfsr6LGmROENnok75VGw40628xf+iR24WeMFcHuuBDUAzzsQ==
+
+"@types/node@^18.0.4":
+  version "18.0.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.4.tgz#48aedbf35efb3af1248e4cd4d792c730290cd5d6"
+  integrity sha512-M0+G6V0Y4YV8cqzHssZpaNCqvYwlCiulmm0PwpNLF55r/+cT8Ol42CHRU1SEaYFH2rTwiiE1aYg/2g2rrtGdPA==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -5871,10 +5884,10 @@ ethers@^5.6.8, ethers@^5.6.9:
     "@ethersproject/web" "5.6.1"
     "@ethersproject/wordlists" "5.6.1"
 
-etherspot@^1.34.1:
-  version "1.34.1"
-  resolved "https://registry.yarnpkg.com/etherspot/-/etherspot-1.34.1.tgz#e7b8a8ee8d08fc87ee88312eb911b4ebc8e1d4c0"
-  integrity sha512-Acq/LzAj3n3iQZl3NDyKiJ03aTyQR+C1vpGUWMPNWAlvP4taalKAlH6OqtK+HrbDirf5syqMyvRRcI21Ep3j9A==
+etherspot@^1.34.2:
+  version "1.34.2"
+  resolved "https://registry.yarnpkg.com/etherspot/-/etherspot-1.34.2.tgz#6241368dbaf63ff136113f6f25f08451ac0b23f7"
+  integrity sha512-mz6Q84cUdAVBpqn6Vis3LBXaWzsJwK8+Lm/2CketU2CHk7PpVB1qyPQKXRGHL/GdY5EBygHKa9W2cAxjEdhVxg==
   dependencies:
     "@apollo/client" "3.4.0"
     "@etherspot/contracts" "1.8.0"
@@ -6655,10 +6668,10 @@ hyphenate-style-name@^1.0.0:
   resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.4.tgz#691879af8e220aea5750e8827db4ef62a54e361d"
   integrity sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==
 
-i18next@^21.8.13:
-  version "21.8.13"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.8.13.tgz#e5583bfe333bc41716b5a14693615d94a3dfd2cf"
-  integrity sha512-DpzwrJq7Y8tjUHxx6ByOkUIjrGYdQI5Mfv4XEI7q2RWdknQ7TaO9bKi8hS/LqYD6pBV5YGxJLReyLkOCxIpouA==
+i18next@^21.8.14:
+  version "21.8.14"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.8.14.tgz#03a3a669ef4520aadd9d152c80596f600e287c6a"
+  integrity sha512-4Yi+DtexvMm/Yw3Q9fllzY12SgLk+Mcmar+rCAccsOPul/2UmnBzoHbTGn/L48IPkFcmrNaH7xTLboBWIbH6pw==
   dependencies:
     "@babel/runtime" "^7.17.2"
 
@@ -9764,10 +9777,10 @@ react-hook-form@^7.33.1:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.33.1.tgz#8c4410e3420788d3b804d62cc4c142915c2e46d0"
   integrity sha512-ydTfTxEJdvgjCZBj5DDXRc58oTEfnFupEwwTAQ9FSKzykEJkX+3CiAkGtAMiZG7IPWHuzgT6AOBfogiKhUvKgg==
 
-react-i18next@^11.18.0:
-  version "11.18.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.18.0.tgz#38ec26e07f030f7f0109b3665759954dad2cc7f9"
-  integrity sha512-coJujU20xJ5Wa5rHjTyB5LFKZb1yfXo2A+40RRSyAF0FlZRHyy+3C1Mr92x1JPfS7W7v2TWNn8mRhpDFGJwXVg==
+react-i18next@^11.18.1:
+  version "11.18.1"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.18.1.tgz#ba86ed09069e129b8623a28f2b9a03d7f105ea6f"
+  integrity sha512-S8cl4mvIOSA7OQCE5jNy2yhv705Vwi+7PinpqKIYcBmX/trJtHKqrf6CL67WJSA8crr2JU+oxE9jn9DQIrQezg==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
@@ -10950,7 +10963,7 @@ tailwindcss@^3.0.2:
     postcss "^8.4.14"
     postcss-import "^14.1.0"
     postcss-js "^4.0.0"
-    postcss-load-config "^4.0.1"
+    postcss-load-config "^3.1.4"
     postcss-nested "5.0.6"
     postcss-selector-parser "^6.0.10"
     postcss-value-parser "^4.2.0"
