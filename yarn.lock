@@ -2020,19 +2020,6 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@lifi/sdk@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-1.0.1.tgz#0872fca512993f24e9c87abee6710b536c923be1"
-  integrity sha512-XGlPtiKQZ/ZNYF4v5HzhrOiv3oj4vAeJBn+51zJbDQW3iPE5ZXQgl6lbRRMXbvchomakV8o8le02vDajIe9whQ==
-  dependencies:
-    "@ethersproject/abi" "^5.6.4"
-    "@ethersproject/contracts" "^5.6.2"
-    "@lifi/types" "^1.0.0"
-    axios "^0.27.2"
-    bignumber.js "^9.0.1"
-    eth-rpc-errors "^4.0.3"
-    ethers "^5.6.9"
-
 "@lifi/sdk@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-1.0.2.tgz#c03e8d011dc153c12f970ae666c0696d6bc3fee0"
@@ -2044,13 +2031,6 @@
     axios "^0.27.2"
     bignumber.js "^9.0.1"
     eth-rpc-errors "^4.0.3"
-    ethers "^5.6.9"
-
-"@lifi/types@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@lifi/types/-/types-1.0.0.tgz#600392079439be7b5d3fb2d84bcce0b4b5f42054"
-  integrity sha512-Sxsar8aw0wsxCTynR/BF/NK9P8Yo/iqHEXoV4LUpFd5ZdK1HREKS1J2aIizqD9U8350lBeESuPBxPKYKRtVvHw==
-  dependencies:
     ethers "^5.6.9"
 
 "@lifi/types@^1.1.0":
@@ -2079,16 +2059,16 @@
     "@web3-react/walletconnect" "^8.0.25-beta.0"
     react "^18.2.0"
 
-"@lifi/widget@^1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.9.0.tgz#927e98971129b3a2b4583c223a1fc8745ec2ac80"
-  integrity sha512-0BnE6w9YscFm7hogDeWPvo1+XbzpsnjKUpFj78HFukxLESRqvQjIF9uewZkB1N/HfvJC1l2Y4wR/2GAHIogcnQ==
+"@lifi/widget@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.10.0.tgz#5b821397339cbbef9b2e2b6d152f211863d09156"
+  integrity sha512-V9i7PkrK5QMDsYJRQ+rSrxjFwUlbowEejQgk3twx3Po4rtuJVq09Xk+D6D7j6afzWNSVU4RaPjAmm8ZBs6kJAQ==
   dependencies:
     "@emotion/react" "^11.9.3"
     "@emotion/styled" "^11.9.3"
     "@ethersproject/experimental" "^5.6.3"
     "@ethersproject/providers" "^5.6.8"
-    "@lifi/sdk" "^1.0.1"
+    "@lifi/sdk" "^1.0.2"
     "@lifi/wallet-management" "^1.1.1"
     "@mui/icons-material" "^5.8.4"
     "@mui/lab" "^5.0.0-alpha.90"
@@ -2642,10 +2622,10 @@
     "@testing-library/dom" "^8.5.0"
     "@types/react-dom" "^18.0.0"
 
-"@testing-library/user-event@^14.2.1":
-  version "14.2.1"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.2.1.tgz#8c5ff2d004544bb2220e1d864f7267fe7eb6c556"
-  integrity sha512-HOr1QiODrq+0j9lKU5i10y9TbhxMBMRMGimNx10asdmau9cb8Xb1Vyg0GvTwyIL2ziQyh2kAloOtAQFBQVuecA==
+"@testing-library/user-event@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.2.5.tgz#a27a16ee7f915c22c62b9c065d743248ee79dcb6"
+  integrity sha512-xcSw47H8JidxQPAqPlHp4l51EYJx+2TlHgYBW9i+noNlgUMMrhgtefnrWcpZ1k9ep6SMhJVyx3N7F4tIKTuJ9w==
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -9719,7 +9699,7 @@ rc-upload@~4.3.0:
     classnames "^2.2.5"
     rc-util "^5.2.0"
 
-rc-util@^5.0.1, rc-util@^5.0.6, rc-util@^5.0.7, rc-util@^5.12.0, rc-util@^5.14.0, rc-util@^5.15.0, rc-util@^5.16.1, rc-util@^5.17.0, rc-util@^5.18.1, rc-util@^5.19.2, rc-util@^5.2.0, rc-util@^5.2.1, rc-util@^5.20.1, rc-util@^5.21.0, rc-util@^5.22.5, rc-util@^5.3.0, rc-util@^5.4.0, rc-util@^5.5.0, rc-util@^5.6.1, rc-util@^5.7.0, rc-util@^5.8.0, rc-util@^5.9.4, rc-util@^5.9.8:
+rc-util@^5.0.1, rc-util@^5.0.6, rc-util@^5.12.0, rc-util@^5.14.0, rc-util@^5.15.0, rc-util@^5.16.1, rc-util@^5.17.0, rc-util@^5.18.1, rc-util@^5.19.2, rc-util@^5.2.0, rc-util@^5.2.1, rc-util@^5.20.1, rc-util@^5.21.0, rc-util@^5.22.5, rc-util@^5.3.0, rc-util@^5.4.0, rc-util@^5.5.0, rc-util@^5.6.1, rc-util@^5.7.0, rc-util@^5.8.0, rc-util@^5.9.4, rc-util@^5.9.8:
   version "5.22.5"
   resolved "https://registry.yarnpkg.com/rc-util/-/rc-util-5.22.5.tgz#d4d6d886c5ecb6a2a51dde1840d780a2b70f5179"
   integrity sha512-awD2TGMGU97OZftT2R3JwrHWjR8k/xIwqjwcivPskciweUdgXE7QsyXkBKVSBHXS+c17AWWMDWuKWsJSheQy8g==
