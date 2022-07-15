@@ -2033,10 +2033,30 @@
     eth-rpc-errors "^4.0.3"
     ethers "^5.6.9"
 
+"@lifi/sdk@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-1.0.2.tgz#c03e8d011dc153c12f970ae666c0696d6bc3fee0"
+  integrity sha512-EFl/qNnS9ZrrYLbQpsg9djaHpr6mobcyd4k6IjvqpeMU/Rn+sYgNA7OywRNFdYQ6aGnh+V4XyBpxEbmJkyLmRg==
+  dependencies:
+    "@ethersproject/abi" "^5.6.4"
+    "@ethersproject/contracts" "^5.6.2"
+    "@lifi/types" "^1.1.0"
+    axios "^0.27.2"
+    bignumber.js "^9.0.1"
+    eth-rpc-errors "^4.0.3"
+    ethers "^5.6.9"
+
 "@lifi/types@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@lifi/types/-/types-1.0.0.tgz#600392079439be7b5d3fb2d84bcce0b4b5f42054"
   integrity sha512-Sxsar8aw0wsxCTynR/BF/NK9P8Yo/iqHEXoV4LUpFd5ZdK1HREKS1J2aIizqD9U8350lBeESuPBxPKYKRtVvHw==
+  dependencies:
+    ethers "^5.6.9"
+
+"@lifi/types@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@lifi/types/-/types-1.1.0.tgz#5a3ab3617a26df3216a10b17a13ec3556525396b"
+  integrity sha512-ZmZFJ72+bv+vw+dSmQbhmM0sJAyhhYX9ksf2p5PlslPoeQvrhOMj/npUgt2JZz2XuVcx1dPpWrA6NPWFU/wgQQ==
   dependencies:
     ethers "^5.6.9"
 
@@ -8822,13 +8842,13 @@ postcss-lab-function@^4.2.0:
     "@csstools/postcss-progressive-custom-properties" "^1.1.0"
     postcss-value-parser "^4.2.0"
 
-postcss-load-config@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/postcss-load-config/-/postcss-load-config-4.0.1.tgz#152383f481c2758274404e4962743191d73875bd"
-  integrity sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==
+postcss-load-config@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/postcss-load-config/-/postcss-load-config-3.1.4.tgz#1ab2571faf84bb078877e1d07905eabe9ebda855"
+  integrity sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==
   dependencies:
     lilconfig "^2.0.5"
-    yaml "^2.1.1"
+    yaml "^1.10.2"
 
 postcss-loader@^6.2.1:
   version "6.2.1"
