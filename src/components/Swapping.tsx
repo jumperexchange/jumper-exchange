@@ -375,8 +375,10 @@ const Swapping = ({
               <Typography.Text
                 type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
                 style={{ fontSize: 12 }}>
-                {`You received ${routeReturnInfo.receivedAmount}`}
-                {` on ${routeReturnInfo.toChain.name}`}
+                {`You received ${formatTokenAmount(
+                  routeReturnInfo.receivedToken,
+                  routeReturnInfo.receivedAmount.toString(),
+                )} on ${routeReturnInfo.toChain.name}`}
               </Typography.Text>
             </>
           )}
