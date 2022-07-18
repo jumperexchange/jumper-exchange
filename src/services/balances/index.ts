@@ -1,4 +1,4 @@
-import { ChainId, Token, TokenAmount } from '@lifinance/sdk'
+import { ChainId, Token, TokenAmount } from '@lifi/sdk'
 
 import covalent from './covalent'
 import debank from './debank'

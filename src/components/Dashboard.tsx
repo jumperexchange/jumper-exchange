@@ -26,8 +26,10 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 
+import { useMetatags } from '../hooks/useMetatags'
 import { getTokenBalancesForChainsFromDebank } from '../services/balances'
 import { readWallets } from '../services/localStorage'
+import { useStomt } from '../services/stomt'
 import { isWalletDeactivated } from '../services/utils'
 import {
   Amounts,
@@ -509,6 +511,10 @@ const calculateWalletSummary = (wallet: Wallet, totalSumUsd: BigNumber) => {
 
 // actual component
 const Dashboard = () => {
+  useMetatags({
+    title: 'LI.FI - Dashboard',
+  })
+  useStomt('dashboard')
   const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() =>
     readWallets().map((address) => ({
       address: address,

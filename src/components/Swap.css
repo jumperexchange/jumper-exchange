@@ -130,6 +130,10 @@ input[type='number']::-webkit-outer-spin-button {
   margin-bottom: 0;
 }
 
+.swapModal {
+  max-width: 600px;
+}
+
 .swapModal .anticon-edit {
   color: #9c9c9c;
 }
@@ -146,9 +150,19 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .swapping-modal-timeline {
-  padding-top: 38px;
+  padding: 38px 0 38px 38px;
   min-height: 350px;
   overflow-y: scroll;
+}
+
+@media only screen and (max-width: 610px) {
+  .swapping-modal-timeline {
+    padding: 38px 0;
+  }
+
+  .swapModal {
+    max-width: unset;
+  }
 }
 
 .swapp-modal-footer {
@@ -375,9 +389,27 @@ h4.swap-title {
   min-width: 100%;
 }
 
-.tx-table .ant-pagination-item-active {
+/* /* .tx-table .ant-pagination-item-active {
   border: none !important;
   padding-top: 1px !important;
+} */
+
+.tx-table-icon-container {
+  position: relative !important;
+  margin-right: 24px;
+  width: 42px;
+}
+
+.tx-table-direction-cell-chain-icon {
+  position: absolute;
+  left: 24px;
+  z-index: 1 !important;
+}
+
+.tx-table-direction-cell-token-icon {
+  position: absolute;
+
+  z-index: 200 !important;
 }
 
 .route-delete-button {

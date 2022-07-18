@@ -149,8 +149,12 @@ const Swap = () => {
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [routeCallResult, setRouteCallResult] =
-    useState<{ lifiRoute: RouteType; gasStep: Step; stakingStep: Step; id: string }>()
+  const [routeCallResult, setRouteCallResult] = useState<{
+    lifiRoute: RouteType
+    gasStep: Step
+    stakingStep: Step
+    id: string
+  }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)

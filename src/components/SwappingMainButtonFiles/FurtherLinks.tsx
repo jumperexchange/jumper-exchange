@@ -1,4 +1,4 @@
-import { Route } from '@lifinance/sdk'
+import { Route } from '@lifi/sdk'
 import { Button } from 'antd'
 import { Link } from 'react-router-dom'
 

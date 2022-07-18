@@ -33,6 +33,7 @@ import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
 import { etherspotSupportedChains, TOUCAN_BCT_ADDRESS } from '../constants'
+import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { ToSectionCarbonOffsetProvider } from '../providers/ToSectionCarbonOffsetProvider'
@@ -136,6 +137,9 @@ interface TokenAmountList {
 }
 
 const Swap = () => {
+  useMetatags({
+    title: 'LI.FI - Carbon Offset',
+  })
   const chainsTokensTools = useChainsTokensTools()
 
   // chains

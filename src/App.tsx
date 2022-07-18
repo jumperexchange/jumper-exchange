@@ -1,12 +1,13 @@
-import './App.css'
 import './AntOverrides.css'
+import './App.css'
 
 import { GithubOutlined, TwitterOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
-import { Link, Redirect, Route, Switch, useLocation } from 'react-router-dom'
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
+import DiscordIcon from './assets/icons/discordIcon'
 import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
 import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
@@ -16,6 +17,7 @@ import Swap from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
 import SwapUkraine from './components/SwapUkraine'
+import { SwapV2 } from './components/SwapV2'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
@@ -27,7 +29,6 @@ import { useNavConfig } from './hooks/useNavConfig'
 import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
 import setMetatags from './services/metatags'
-import { initStomt } from './services/stomt'
 
 function App() {
   const navConfig = useNavConfig()
@@ -156,30 +157,14 @@ function App() {
                     <Row justify="end" gutter={15}>
                       <Col>
                         <a
-                          className="icon-link headerIconLink lifi-header-social-links"
-                          href="https://twitter.com/lifiprotocol"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <TwitterOutlined />
-                        </a>
-                      </Col>
-                      <Col>
-                        <a
-                          className="icon-link headerIconLink lifi-header-social-links"
-                          href="https://github.com/lifinance"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <GithubOutlined />
-                        </a>
-                      </Col>
-                      <Col>
-                        <a
-                          style={{ padding: '13.5px 24px 13.5px 24px' }}
+                          style={{
+                            padding: '13.5px 24px 13.5px 24px',
+                          }}
                           className="lifi-support-link headerIconLink lifi-header-social-links"
                           href="https://discord.gg/lifi"
                           target="_blank"
                           rel="nofollow noreferrer">
-                          Support
+                          <DiscordIcon style={{ marginRight: 4 }} /> Support
                         </a>
                       </Col>
                       <Col>
@@ -191,84 +176,58 @@ function App() {
               </Header>
 
               <Content>
-                <Switch>
-                  <Redirect exact from="/" to="/swap" />
-                  <Route
-                    path="/dashboard"
-                    render={() => {
-                      setMetatags({
-                        title: 'LI.FI - Dashboard',
-                      })
-                      initStomt('dashboard')
-                      return (
-                        <>
-                          <Dashboard />
-                        </>
-                      )
-                    }}
-                  />
+                <Routes>
+                  <Route path="/" element={<Navigate to="/swap" />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
                   <Route
                     path="/swap"
-                    render={() => {
-                      setMetatags({
-                        title: 'LI.FI - Swap',
-                      })
-                      initStomt('swap')
-                      return (
-                        <div className="lifiWrap swap-page">
-                          <Swap />
-                        </div>
-                      )
-                    }}
+                    element={
+                      <div className="lifiWrap swap-page">
+                        <Swap />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="/swap-v2/*"
+                    element={
+                      <div className="lifiWrap swap-page-v2">
+                        <SwapV2 />
+                      </div>
+                    }
                   />
                   <Route
                     path="/showcase/ukraine"
-                    render={() => {
-                      setMetatags({
-                        title: 'LI.FI - Help Ukraine!',
-                      })
-                      return (
-                        <div className="lifiWrap">
-                          <SwapUkraine />
-                        </div>
-                      )
-                    }}
+                    element={
+                      <div className="lifiWrap">
+                        <SwapUkraine />
+                      </div>
+                    }
                   />
-                  <Redirect path="/ukraine" to="/showcase/ukraine" />
+                  <Route path="/ukraine" element={<Navigate to="/showcase/ukraine" />} />
                   {ENABLE_ETHERSPOT_KLIMA_SHOWCASE && (
                     <Route
                       path="/showcase/etherspot-klima"
-                      render={() => {
-                        setMetatags({
-                          title: 'LI.FI - Etherspot KLIMA',
-                        })
-                        return (
-                          <div className="lifiWrap">
-                            <SwapEtherspotKlimaZap />
-                          </div>
-                        )
-                      }}
+                      element={
+                        <div className="lifiWrap">
+                          <SwapEtherspotKlimaZap />
+                        </div>
+                      }
                     />
                   )}
                   {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
                     <Route
                       path="/showcase/carbon-offset"
-                      render={() => {
-                        setMetatags({
-                          title: 'LI.FI - Carbon Offset',
-                        })
-                        return (
-                          <div className="lifiWrap">
-                            <SwapCarbonOffset />
-                          </div>
-                        )
-                      }}
+                      element={
+                        <div className="lifiWrap">
+                          <SwapCarbonOffset />
+                        </div>
+                      }
                     />
                   )}
 
                   {/* <Route
                     path="/testnet"
-                    render={() => {
+                    element={() => {
                       setMetatags({
                         title: 'LI.FI - Testnet',
                       })
@@ -283,18 +242,8 @@ function App() {
                       )
                     }}
                   /> */}
-                  <Route
-                    path="*"
-                    render={() => {
-                      setMetatags({
-                        title: 'LI.FI - Not Found',
-                        status: 404,
-                      })
-                      initStomt('lifi')
-                      return <NotFoundPage />
-                    }}
-                  />
-                </Switch>
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
               </Content>
 
               {/* Social Links */}
@@ -318,7 +267,7 @@ function App() {
                   href="https://discord.gg/lifi"
                   target="_blank"
                   rel="nofollow noreferrer">
-                  Support
+                  <DiscordIcon style={{ marginRight: 4 }} /> Support
                 </Button>
               </div>
 

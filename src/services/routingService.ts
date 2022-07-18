@@ -1,4 +1,4 @@
-import { Route, RoutesRequest, Token } from '@lifinance/sdk'
+import { Route, RoutesRequest, Token } from '@lifi/sdk'
 import { ethers, providers, Signer } from 'ethers'
 
 import { erc20Abi } from '../constants'

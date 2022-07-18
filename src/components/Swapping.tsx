@@ -5,25 +5,29 @@ import {
   PauseCircleOutlined,
 } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { ExecutionSettings } from '@lifinance/sdk'
+import { ExecutionSettings, StatusMessage } from '@lifi/sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
+import { Button, Divider, Modal, Row, Space, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
 
-import { useIsMobile } from '../hooks/useIsMobile'
 import { useStepReturnInfo } from '../hooks/useStepReturnInfo'
 import LiFi from '../LiFi'
 import { isWalletConnectWallet, storeRoute } from '../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../services/metamask'
 import Notification, { NotificationType } from '../services/notifications'
-import { renderProcessError, renderProcessMessage } from '../services/processRenderer'
+import {
+  renderProcessError,
+  renderProcessMessage,
+  renderSubstatusmessage,
+} from '../services/processRenderer'
 import { copyToClipboard, formatTokenAmount, parseSecondsAsTime } from '../services/utils'
 import { getChainById, isCrossStep, isLifiStep, Route, Step } from '../types'
 import { getChainAvatar, getToolAvatar } from './Avatars/Avatars'
 import Clock from './Clock'
 import LoadingIndicator from './LoadingIndicator'
 import { FurtherLinks } from './SwappingMainButtonFiles/FurtherLinks'
+import { SwappingModalInfoMessages } from './SwappingModalInfoMessages'
 import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 
 interface SwapSettings {
@@ -45,7 +49,6 @@ const Swapping = ({
   onSwapDone,
   fixedRecipient = false,
 }: SwappingProps) => {
-  const isMobile = useIsMobile()
   const [localRoute, setLocalRoute] = useState<Route>(route)
   const [swapStartedAt, setSwapStartedAt] = useState<number>()
   const [swapDoneAt, setSwapDoneAt] = useState<number>()
@@ -110,7 +113,7 @@ const Swapping = ({
                     justifyContent: 'start',
                   }}>
                   <Button
-                    style={{ margin: 0, padding: 0 }}
+                    style={{ margin: 0, padding: 0, cursor: 'copy' }}
                     type="link"
                     onClick={async () =>
                       copyToClipboard(
@@ -125,6 +128,7 @@ const Swapping = ({
                   {!!step.execution?.process.some((process) => process.txHash) && (
                     <Button
                       type="link"
+                      style={{ cursor: 'copy' }}
                       onClick={async () => {
                         const hashes = step.execution?.process
                           .filter((process) => process.txHash)
@@ -165,7 +169,8 @@ const Swapping = ({
 
     const executionItem = [
       <Timeline.Item
-        position={isMobile ? 'right' : 'left'}
+        // position={isMobile ? 'right' : 'left'}
+        position="right"
         key={index + '_right'}
         color={color}
         dot={isLoading ? <LoadingOutlined /> : isPaused ? <PauseCircleOutlined /> : null}>
@@ -177,7 +182,8 @@ const Swapping = ({
       case 'swap': {
         return [
           <Timeline.Item
-            position={isMobile ? 'right' : 'right'}
+            // position={isMobile ? 'right' : 'right'}
+            position="right"
             key={index + '_left'}
             color={color}>
             <h4>Swap on {getToolAvatar(step)}</h4>
@@ -196,7 +202,8 @@ const Swapping = ({
         const { action, estimate } = step
         return [
           <Timeline.Item
-            position={isMobile ? 'right' : 'right'}
+            // position={isMobile ? 'right' : 'right'}
+            position="right"
             key={index + '_left'}
             color={color}>
             <h4>
@@ -216,7 +223,8 @@ const Swapping = ({
       case 'lifi': {
         return [
           <Timeline.Item
-            position={isMobile ? 'right' : 'right'}
+            // position={isMobile ? 'right' : 'right'}
+            position="right"
             key={index + '_left'}
             color={color}>
             <h4>
@@ -297,22 +305,6 @@ const Swapping = ({
   }
 
   const restartCrossChainSwap = async () => {
-    // remove failed
-
-    for (let index = 0; index < localRoute.steps.length; index++) {
-      const stepHasFailed = localRoute.steps[index].execution?.status === 'FAILED'
-      // check if the step has been cancelled which is a "failed" state
-      const stepHasBeenCancelled = localRoute.steps[index].execution?.process.some(
-        (process) => process.status === 'CANCELLED',
-      )
-
-      if (localRoute.steps[index].execution && (stepHasFailed || stepHasBeenCancelled)) {
-        localRoute.steps[index].execution!.status = 'RESUME'
-        localRoute.steps[index].execution!.process.pop() // remove last (failed) process
-        updateRoute(localRoute)
-      }
-    }
-    // start again
     resumeExecution()
   }
 
@@ -362,38 +354,28 @@ const Swapping = ({
     // DONE
     const isDone = localRoute.steps.filter((step) => step.execution?.status !== 'DONE').length === 0
     if (isDone) {
+      const lastStepProcesses = localRoute.steps[localRoute.steps.length - 1].execution?.process
+      const lastProcess = lastStepProcesses?.[lastStepProcesses?.length - 1]
       const infoMessage = !!routeReturnInfo?.totalBalanceOfReceivedToken ? (
         <>
-          {!routeReturnInfo.receivedAmount.isZero() &&
-            (!fixedRecipient ? (
-              <>
-                <Typography.Text>
-                  You received{` `}
-                  {formatTokenAmount(
-                    routeReturnInfo.receivedToken,
-                    routeReturnInfo.receivedAmount.toString(),
-                  )}
-                </Typography.Text>
-                <br />
-              </>
-            ) : (
-              <>
-                <Typography.Text>
-                  You sent{` `}
-                  {formatTokenAmount(
-                    routeReturnInfo.receivedToken,
-                    routeReturnInfo.receivedAmount.toString(),
-                  )}
-                </Typography.Text>
-                <br />
-              </>
-            ))}
-          {!fixedRecipient && (
+          {!routeReturnInfo.receivedAmount.isZero() && fixedRecipient && (
+            <>
+              <Typography.Text>
+                You sent{` `}
+                {formatTokenAmount(
+                  routeReturnInfo.receivedToken,
+                  routeReturnInfo.receivedAmount.toString(),
+                )}
+              </Typography.Text>
+              <br />
+            </>
+          )}
+          {!routeReturnInfo.receivedAmount.isZero() && !fixedRecipient && (
             <>
               <Typography.Text
                 type={!routeReturnInfo.receivedAmount.isZero() ? 'secondary' : undefined}
                 style={{ fontSize: !routeReturnInfo.receivedAmount.isZero() ? 12 : 14 }}>
-                {`You now have ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
+                {`You received ${routeReturnInfo.totalBalanceOfReceivedToken.amount} ${routeReturnInfo.totalBalanceOfReceivedToken.symbol}`}
                 {` on ${routeReturnInfo.toChain.name}`}
               </Typography.Text>
             </>
@@ -402,19 +384,19 @@ const Swapping = ({
       ) : (
         ''
       )
+      const substatusmessage = lastProcess
+        ? renderSubstatusmessage(lastProcess.status as StatusMessage, lastProcess?.substatus)
+        : undefined
 
-      const infoTitle = routeReturnInfo ? (
-        routeReturnInfo.receivedTokenMatchesPlannedToken ? (
-          <>
-            <Typography.Text strong>Swap Successful!</Typography.Text>
-          </>
-        ) : (
-          <Typography.Text strong>
-            Warning! It seems like you received the wrong token
-          </Typography.Text>
-        )
-      ) : (
-        ''
+      const infoTitle = (
+        <>
+          <Row justify="center">
+            <Typography.Text strong>
+              Done
+              {substatusmessage && `  - ${substatusmessage}`}
+            </Typography.Text>
+          </Row>
+        </>
       )
 
       return (
@@ -484,13 +466,26 @@ const Swapping = ({
     return null
   }
 
+  const getCurrentStep = () => {
+    for (const step of localRoute.steps) {
+      if (step.execution && step.execution.status !== 'DONE') {
+        return step
+      }
+    }
+    return null
+  }
+
   const currentProcess = getCurrentProcess()
+  const currentStep = getCurrentStep()
 
   return (
     <>
       {alerts}
       <br />
-      <Timeline mode={isMobile ? 'left' : 'alternate'} className="swapping-modal-timeline">
+      <Timeline
+        // mode={isMobile ? 'left' : 'alternate'}
+        mode="left"
+        className="swapping-modal-timeline">
         {/* Steps */}
         {localRoute.steps.map(parseStepToTimeline)}
       </Timeline>
@@ -507,10 +502,12 @@ const Swapping = ({
         </Typography.Text>
       </div>
 
+      <SwappingModalInfoMessages process={currentProcess} tool={currentStep?.tool} />
+
       <Divider />
 
       <div className="swapp-modal-footer">
-        <div style={{ textAlign: 'center', transform: 'scale(1.3)' }}>{getMainButton()}</div>
+        <div style={{ transform: 'scale(1.3)' }}>{getMainButton()}</div>
 
         {isSwapping && currentProcess && currentProcess.status === 'ACTION_REQUIRED' && (
           <>
@@ -530,11 +527,17 @@ const Swapping = ({
                 {renderProcessMessage(currentProcess)}
               </Typography.Text>
             </Row>
-            <Row style={{ marginTop: 20 }} justify="center">
-              <Spin indicator={<LoadingIndicator />} />
+            <Row style={{ margin: 8 }} justify="center">
+              <LoadingIndicator size="small" />
+            </Row>
+            <Row justify="center">
+              <Typography.Text style={{ color: 'grey', textAlign: 'center' }}>
+                {renderSubstatusmessage(currentProcess.status, currentProcess.substatus)}
+              </Typography.Text>
             </Row>
           </>
         )}
+
         <Modal
           className="wallet-selection-modal"
           visible={showWalletConnectChainSwitchModal.show}
