@@ -161,7 +161,7 @@ function App() {
                             padding: '13.5px 24px 13.5px 24px',
                           }}
                           className="lifi-support-link headerIconLink lifi-header-social-links"
-                          href="https://discord.gg/lifi"
+                          href="https://discord.com/channels/849912621360218112/863689862514343946"
                           target="_blank"
                           rel="nofollow noreferrer">
                           <DiscordIcon style={{ marginRight: 4 }} /> Support
@@ -264,7 +264,7 @@ function App() {
                 </a>
                 <Button
                   className="lifi-support-link"
-                  href="https://discord.gg/lifi"
+                  href="https://discord.com/channels/849912621360218112/863689862514343946"
                   target="_blank"
                   rel="nofollow noreferrer">
                   <DiscordIcon style={{ marginRight: 4 }} /> Support
