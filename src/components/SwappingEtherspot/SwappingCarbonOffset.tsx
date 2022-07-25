@@ -5,7 +5,7 @@ import {
   PauseCircleOutlined,
 } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { Execution, ExecutionSettings } from '@lifi/sdk'
+import { Execution, ExecutionSettings, Token } from '@lifi/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
@@ -77,6 +77,15 @@ const SwappingCarbonOffset = ({
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
+  const [showAcceptStepUpdateModal, setShowAcceptStepUpdateModal] = useState<{
+    show: boolean
+    oldReturnAmount?: string
+    newReturnAmount?: string
+    returnCurrency?: Token
+    oldSlippage?: number
+    newSlippage?: number
+    promiseResolver?: Function
+  }>({ show: false })
   const [transferExecutionError, setTransferExecutionError] = useState<any>()
 
   // Wallet
@@ -249,8 +258,9 @@ const SwappingCarbonOffset = ({
     const signer = web3.library.getSigner()
 
     const executionSettings: ExecutionSettings = {
-      updateCallback: updateCallback,
-      switchChainHook: switchChainHook,
+      updateCallback,
+      switchChainHook,
+      acceptStepUpdateHook,
       infiniteApproval: settings.infiniteApproval,
     }
     setIsSwapping(true)
@@ -295,6 +305,7 @@ const SwappingCarbonOffset = ({
     const executionSettings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
+      acceptStepUpdateHook,
       infiniteApproval: settings.infiniteApproval,
     }
 
@@ -353,7 +364,33 @@ const SwappingCarbonOffset = ({
 
     finalizeEtherSpotExecution(stepExecution!, toAmount)
   }
+  const acceptStepUpdateHook = async (
+    oldReturnAmount: string,
+    newReturnAmount: string,
+    returnCurrency: Token,
+    oldSlippage: number,
+    newSlippage: number,
+    // eslint-disable-next-line max-params
+  ) => {
+    if (!web3.account || !web3.library) return false
 
+    let promiseResolver
+    const awaiter = new Promise<boolean>((resolve) => (promiseResolver = resolve))
+
+    setShowAcceptStepUpdateModal({
+      show: true,
+      oldReturnAmount,
+      newReturnAmount,
+      returnCurrency,
+      oldSlippage,
+      newSlippage,
+      promiseResolver,
+    })
+
+    const accept = await awaiter
+
+    return accept
+  }
   const switchChainHook = async (requiredChainId: number) => {
     if (!web3.account || !web3.library) return
 
@@ -626,6 +663,55 @@ const SwappingCarbonOffset = ({
               })
             }}
           />
+        </Modal>
+        <Modal
+          className="accept-step-update-modal"
+          visible={showAcceptStepUpdateModal.show}
+          onOk={() => {
+            if (showAcceptStepUpdateModal.promiseResolver) {
+              showAcceptStepUpdateModal.promiseResolver(true)
+            }
+            setShowAcceptStepUpdateModal({
+              show: false,
+            })
+          }}
+          onCancel={() => {
+            if (showAcceptStepUpdateModal.promiseResolver) {
+              showAcceptStepUpdateModal.promiseResolver(false)
+            }
+            setShowAcceptStepUpdateModal({
+              show: false,
+            })
+          }}>
+          <Typography.Title level={4} style={{ marginBottom: 32 }}>
+            Warning
+          </Typography.Title>
+          <Typography.Paragraph>
+            The conditions of your transaction have changed. Do you accept the recalculated
+            estimates? If you refuse, this transaction will not proceed and no funds will be sent.
+          </Typography.Paragraph>
+          <Typography.Paragraph>
+            old return amount:{' '}
+            {showAcceptStepUpdateModal.returnCurrency &&
+              showAcceptStepUpdateModal.oldReturnAmount &&
+              formatTokenAmount(
+                showAcceptStepUpdateModal.returnCurrency!,
+                showAcceptStepUpdateModal.oldReturnAmount!,
+              )}{' '}
+            <br />
+            new return amount:{' '}
+            {showAcceptStepUpdateModal.returnCurrency &&
+              showAcceptStepUpdateModal.newReturnAmount &&
+              formatTokenAmount(
+                showAcceptStepUpdateModal.returnCurrency!,
+                showAcceptStepUpdateModal.newReturnAmount!,
+              )}
+          </Typography.Paragraph>
+
+          <Typography.Paragraph>
+            old slippage: {showAcceptStepUpdateModal.oldSlippage! * 100 || '~'} % <br />
+            new slippage: {showAcceptStepUpdateModal.newSlippage! * 100 || '~'} %
+          </Typography.Paragraph>
         </Modal>
       </div>
     </>
