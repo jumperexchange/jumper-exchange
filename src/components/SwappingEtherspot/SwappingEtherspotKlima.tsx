@@ -1,7 +1,7 @@
 import { EditOutlined } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
 import {
-  AcceptStepUpdateHookParams,
+  AcceptSlippageUpdateHookParams,
   ChainId,
   Execution,
   ExecutionSettings,
@@ -91,11 +91,11 @@ const SwappingEtherspotKlima = ({
     chainId: number
     promiseResolver?: Function
   }>({ show: false, chainId: 1 })
-  const [showAcceptStepUpdateModal, setShowAcceptStepUpdateModal] = useState<{
+  const [showAcceptSlippageUpdateModal, setShowAcceptSlippageUpdateModal] = useState<{
     show: boolean
-    oldReturnAmount?: string
-    newReturnAmount?: string
-    returnToken?: Token
+    oldToAmount?: string
+    newToAmount?: string
+    toToken?: Token
     oldSlippage?: number
     newSlippage?: number
     promiseResolver?: Function
@@ -150,7 +150,7 @@ const SwappingEtherspotKlima = ({
     const executionSettings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
-      acceptStepUpdateHook,
+      acceptSlippageUpdateHook,
       infiniteApproval: settings.infiniteApproval,
     }
     setIsSwapping(true)
@@ -228,7 +228,7 @@ const SwappingEtherspotKlima = ({
     const executionSettings: ExecutionSettings = {
       updateCallback,
       switchChainHook,
-      acceptStepUpdateHook,
+      acceptSlippageUpdateHook,
       infiniteApproval: settings.infiniteApproval,
     }
 
@@ -410,8 +410,8 @@ const SwappingEtherspotKlima = ({
     const amountSKlimaParsed = localRoute.stakingStep.estimate.toAmountMin
     finalizeEtherSpotExecution(stepExecution!, amountSKlimaParsed)
   }
-  const acceptStepUpdateHook = async (
-    params: AcceptStepUpdateHookParams,
+  const acceptSlippageUpdateHook = async (
+    params: AcceptSlippageUpdateHookParams,
     // eslint-disable-next-line max-params
   ) => {
     if (!web3.account || !web3.library) return false
@@ -419,11 +419,11 @@ const SwappingEtherspotKlima = ({
     let promiseResolver
     const awaiter = new Promise<boolean>((resolve) => (promiseResolver = resolve))
 
-    setShowAcceptStepUpdateModal({
+    setShowAcceptSlippageUpdateModal({
       show: true,
-      oldReturnAmount: params.oldReturnAmount,
-      newReturnAmount: params.newReturnAmount,
-      returnToken: params.returnToken,
+      oldToAmount: params.oldToAmount,
+      newToAmount: params.newToAmount,
+      toToken: params.toToken,
       oldSlippage: params.oldSlippage,
       newSlippage: params.newSlippage,
       promiseResolver,
@@ -709,20 +709,20 @@ const SwappingEtherspotKlima = ({
         </Modal>
         <Modal
           className="accept-step-update-modal"
-          visible={showAcceptStepUpdateModal.show}
+          visible={showAcceptSlippageUpdateModal.show}
           onOk={() => {
-            if (showAcceptStepUpdateModal.promiseResolver) {
-              showAcceptStepUpdateModal.promiseResolver(true)
+            if (showAcceptSlippageUpdateModal.promiseResolver) {
+              showAcceptSlippageUpdateModal.promiseResolver(true)
             }
-            setShowAcceptStepUpdateModal({
+            setShowAcceptSlippageUpdateModal({
               show: false,
             })
           }}
           onCancel={() => {
-            if (showAcceptStepUpdateModal.promiseResolver) {
-              showAcceptStepUpdateModal.promiseResolver(false)
+            if (showAcceptSlippageUpdateModal.promiseResolver) {
+              showAcceptSlippageUpdateModal.promiseResolver(false)
             }
-            setShowAcceptStepUpdateModal({
+            setShowAcceptSlippageUpdateModal({
               show: false,
             })
           }}>
@@ -735,25 +735,25 @@ const SwappingEtherspotKlima = ({
           </Typography.Paragraph>
           <Typography.Paragraph>
             old return amount:{' '}
-            {showAcceptStepUpdateModal.returnToken &&
-              showAcceptStepUpdateModal.oldReturnAmount &&
+            {showAcceptSlippageUpdateModal.toToken &&
+              showAcceptSlippageUpdateModal.oldToAmount &&
               formatTokenAmount(
-                showAcceptStepUpdateModal.returnToken!,
-                showAcceptStepUpdateModal.oldReturnAmount!,
+                showAcceptSlippageUpdateModal.toToken!,
+                showAcceptSlippageUpdateModal.oldToAmount!,
               )}{' '}
             <br />
             new return amount:{' '}
-            {showAcceptStepUpdateModal.returnToken &&
-              showAcceptStepUpdateModal.newReturnAmount &&
+            {showAcceptSlippageUpdateModal.toToken &&
+              showAcceptSlippageUpdateModal.newToAmount &&
               formatTokenAmount(
-                showAcceptStepUpdateModal.returnToken!,
-                showAcceptStepUpdateModal.newReturnAmount!,
+                showAcceptSlippageUpdateModal.toToken!,
+                showAcceptSlippageUpdateModal.newToAmount!,
               )}
           </Typography.Paragraph>
 
           <Typography.Paragraph>
-            old slippage: {showAcceptStepUpdateModal.oldSlippage! * 100 || '~'} % <br />
-            new slippage: {showAcceptStepUpdateModal.newSlippage! * 100 || '~'} %
+            old slippage: {showAcceptSlippageUpdateModal.oldSlippage! * 100 || '~'} % <br />
+            new slippage: {showAcceptSlippageUpdateModal.newSlippage! * 100 || '~'} %
           </Typography.Paragraph>
         </Modal>
       </div>
