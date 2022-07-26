@@ -16,7 +16,6 @@ const customRpc: Record<number, (string | undefined)[]> = {
   [ChainId.OPT]: load(process.env.REACT_APP_RPC_URL_OPTIMISM),
   [ChainId.MOR]: load(process.env.REACT_APP_RPC_URL_MOONRIVER),
   [ChainId.ONE]: load(process.env.REACT_APP_RPC_URL_ONE),
-  [ChainId.AUR]: load(process.env.REACT_APP_RPC_URL_AURORA),
 
   // Testnet
   [ChainId.ROP]: load(process.env.REACT_APP_RPC_URL_ROPSTEN),
