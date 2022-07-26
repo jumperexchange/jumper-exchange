@@ -35,7 +35,6 @@ import {
   isWalletConnectWallet,
   readActiveRoutes,
   readHistoricalRoutes,
-  resetForegroundRoute,
   storeRoute,
 } from '../services/localStorage'
 import { switchChain as switchChainMetaMask } from '../services/metamask'
@@ -1085,15 +1084,10 @@ const Swap = () => {
           className="swapModal"
           visible={selectedRoute.steps.length > 0}
           onOk={() => {
-            LiFi.moveExecutionToBackground(selectedRoute)
-            resetForegroundRoute()
             setSelectedRoute(undefined)
             updateBalances()
           }}
           onCancel={() => {
-            LiFi.moveExecutionToBackground(selectedRoute)
-            resetForegroundRoute()
-
             setSelectedRoute(undefined)
             updateBalances()
           }}
@@ -1110,7 +1104,6 @@ const Swap = () => {
               setHistoricalRoutes(readHistoricalRoutes())
             }}
             onSwapDone={() => {
-              resetForegroundRoute()
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
