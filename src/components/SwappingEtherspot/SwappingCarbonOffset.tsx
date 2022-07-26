@@ -5,7 +5,7 @@ import {
   PauseCircleOutlined,
 } from '@ant-design/icons'
 import { Web3Provider } from '@ethersproject/providers'
-import { Execution, ExecutionSettings, Token } from '@lifi/sdk'
+import { AcceptStepUpdateHookParams, Execution, ExecutionSettings, Token } from '@lifi/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
@@ -81,7 +81,7 @@ const SwappingCarbonOffset = ({
     show: boolean
     oldReturnAmount?: string
     newReturnAmount?: string
-    returnCurrency?: Token
+    returnToken?: Token
     oldSlippage?: number
     newSlippage?: number
     promiseResolver?: Function
@@ -365,11 +365,7 @@ const SwappingCarbonOffset = ({
     finalizeEtherSpotExecution(stepExecution!, toAmount)
   }
   const acceptStepUpdateHook = async (
-    oldReturnAmount: string,
-    newReturnAmount: string,
-    returnCurrency: Token,
-    oldSlippage: number,
-    newSlippage: number,
+    params: AcceptStepUpdateHookParams,
     // eslint-disable-next-line max-params
   ) => {
     if (!web3.account || !web3.library) return false
@@ -379,11 +375,11 @@ const SwappingCarbonOffset = ({
 
     setShowAcceptStepUpdateModal({
       show: true,
-      oldReturnAmount,
-      newReturnAmount,
-      returnCurrency,
-      oldSlippage,
-      newSlippage,
+      oldReturnAmount: params.oldReturnAmount,
+      newReturnAmount: params.newReturnAmount,
+      returnToken: params.returnToken,
+      oldSlippage: params.oldSlippage,
+      newSlippage: params.newSlippage,
       promiseResolver,
     })
 
@@ -692,18 +688,18 @@ const SwappingCarbonOffset = ({
           </Typography.Paragraph>
           <Typography.Paragraph>
             old return amount:{' '}
-            {showAcceptStepUpdateModal.returnCurrency &&
+            {showAcceptStepUpdateModal.returnToken &&
               showAcceptStepUpdateModal.oldReturnAmount &&
               formatTokenAmount(
-                showAcceptStepUpdateModal.returnCurrency!,
+                showAcceptStepUpdateModal.returnToken!,
                 showAcceptStepUpdateModal.oldReturnAmount!,
               )}{' '}
             <br />
             new return amount:{' '}
-            {showAcceptStepUpdateModal.returnCurrency &&
+            {showAcceptStepUpdateModal.returnToken &&
               showAcceptStepUpdateModal.newReturnAmount &&
               formatTokenAmount(
-                showAcceptStepUpdateModal.returnCurrency!,
+                showAcceptStepUpdateModal.returnToken!,
                 showAcceptStepUpdateModal.newReturnAmount!,
               )}
           </Typography.Paragraph>
