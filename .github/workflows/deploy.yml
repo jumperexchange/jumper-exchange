@@ -83,7 +83,7 @@ jobs:
         with: 
           repository: lifinance/lifi-deployment
           ssh-key: ${{ secrets.DEPLOY_SSH }}
-          ref: develop
+          ref: ${{ steps.extract_branch.outputs.branch }}
       - name: 🏗 Set up yq 
         run: |
           if [ ! -f "yq" ]; then
