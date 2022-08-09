@@ -2040,10 +2040,10 @@
     eth-rpc-errors "^4.0.3"
     ethers "^5.6.9"
 
-"@lifi/sdk@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-1.1.0.tgz#0fd0986d498c2334f7206e5c7215d12cdddbbeff"
-  integrity sha512-YJorBSE+vTz9+fMdso9saMmgs288pPhkUB5kdB1yvyRfWep1/a1HNJT7zfDIeSgfC4YKGNFZadATqlW3wsiRYQ==
+"@lifi/sdk@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-1.1.2.tgz#0db1bf6a661836b6ed0fad9fbab91719d774299c"
+  integrity sha512-uwnr9VAbOTDh0k94uIY+4OpV5QyHifHOumqb9DuyyVCQKqPqfT26SMu1MZofR9HZGDxdkAj/9m2/HL+Qms+hFQ==
   dependencies:
     "@ethersproject/abi" "^5.6.4"
     "@ethersproject/contracts" "^5.6.2"

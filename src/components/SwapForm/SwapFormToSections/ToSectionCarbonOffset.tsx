@@ -5,28 +5,31 @@ import {
   useSetBeneficiaryInfo,
 } from '../../../providers/ToSectionCarbonOffsetProvider'
 import { formatTokenAmount } from '../../../services/utils'
-import { Step, Token } from '../../../types'
+import { Route, Step, Token } from '../../../types'
 
 const { TextArea } = Input
 
 interface ToSectionCarbonOffsetProps {
+  route?: Route
   step?: Step
   tokenPolygonBCT?: Token
+  fromToken?: Token
   className?: string
   routesLoading: boolean
 }
 
 export const ToSectionCarbonOffset = ({
   className,
+  route,
   step,
-  tokenPolygonBCT,
+  fromToken,
   routesLoading,
 }: ToSectionCarbonOffsetProps) => {
   const beneficiaryInfo = useBeneficiaryInfo()
   const setBeneficiaryInfo = useSetBeneficiaryInfo()
 
-  const amount = step?.estimate?.toAmountMin || '0'
-  const formattedAmount = tokenPolygonBCT ? formatTokenAmount(tokenPolygonBCT, amount) : '0'
+  const amount = route?.fromAmount || step?.action?.fromAmount || '0'
+  const formattedAmount = fromToken ? formatTokenAmount(fromToken, amount) : '0'
 
   const handleBeneficiaryNameChange = (name: string) => {
     setBeneficiaryInfo({ ...beneficiaryInfo, beneficiaryName: name })
@@ -50,14 +53,14 @@ export const ToSectionCarbonOffset = ({
           { xs: 8, sm: 16 },
         ]}>
         <Col span={10}>
-          <div className="form-text">To retire</div>
+          <div className="form-text">You pay</div>
         </Col>
         <Col span={14}>
           <div className="form-input-wrapper">
             <Input
               key="output-input"
               type="text"
-              value={routesLoading ? '.  .  .' : `${formattedAmount.split(' ')[0]} tons of carbon`}
+              value={routesLoading ? '.  .  .' : formattedAmount}
               bordered={false}
               style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: '400' }}
             />
