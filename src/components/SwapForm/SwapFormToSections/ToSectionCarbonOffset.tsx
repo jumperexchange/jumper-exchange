@@ -12,9 +12,9 @@ const { TextArea } = Input
 interface ToSectionCarbonOffsetProps {
   route?: Route
   step?: Step
-  tokenPolygonBCT?: Token
   fromToken?: Token
   className?: string
+  tokenPolygonBCT?: Token
   routesLoading: boolean
 }
 
@@ -29,6 +29,7 @@ export const ToSectionCarbonOffset = ({
   const setBeneficiaryInfo = useSetBeneficiaryInfo()
 
   const amount = route?.fromAmount || step?.action?.fromAmount || '0'
+
   const formattedAmount = fromToken ? formatTokenAmount(fromToken, amount) : '0'
 
   const handleBeneficiaryNameChange = (name: string) => {

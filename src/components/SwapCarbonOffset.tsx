@@ -23,7 +23,6 @@ import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
-import { Step } from 'etherspot/dist/sdk/exchange/classes/cross-chain-bridge-route-transaction'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
@@ -69,19 +68,14 @@ import {
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
 import SwapForm from './SwapForm/SwapForm'
+import { FromSectionCarbonOffset } from './SwapForm/SwapFormFromSections/FromSectionCarbonOffset'
 import { ToSectionCarbonOffset } from './SwapForm/SwapFormToSections/ToSectionCarbonOffset'
 import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
 import { getInjectedConnector } from './web3/connectors'
 
 const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
-const TOKEN_POLYGON_BCT = {
-  address: TOUCAN_BCT_ADDRESS,
-  symbol: 'BCT',
-  decimals: 18,
-  chainId: 137,
-  name: 'Toucan Protocol: Base Carbon Tonne',
-}
+
 const history = createBrowserHistory()
 let currentRouteCallId: string
 
@@ -643,6 +637,7 @@ const Swap = () => {
         fromTokenAddress &&
         toChainKey &&
         toTokenAddress &&
+        tokenPolygonBCT &&
         web3.account
       ) {
         setRoutesLoading(true)
@@ -687,7 +682,7 @@ const Swap = () => {
             .shiftedBy(fromToken.decimals)
             .toFixed(0)
 
-          result.action.toToken = TOKEN_POLYGON_BCT
+          result.action.toToken = tokenPolygonBCT
 
           const route: RouteType = {
             id: result.id,
@@ -698,11 +693,11 @@ const Swap = () => {
             fromAddress: result.action.fromAddress,
             toChainId: result.action.toChainId,
             toAmountUSD: result.estimate.toAmountUSD || '',
-            toAmount: new BigNumber(depositAmount).shiftedBy(TOKEN_POLYGON_BCT.decimals).toFixed(0),
+            toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
             toAmountMin: new BigNumber(depositAmount)
-              .shiftedBy(TOKEN_POLYGON_BCT.decimals)
+              .shiftedBy(tokenPolygonBCT.decimals)
               .toFixed(0),
-            toToken: TOKEN_POLYGON_BCT,
+            toToken: tokenPolygonBCT,
             toAddress: result.action.toAddress,
             gasCostUSD: result.estimate.gasCosts?.[0].amountUSD,
             steps: [result],
@@ -908,13 +903,28 @@ const Swap = () => {
                     balances={balances}
                     allowSameChains={true}
                     fixedWithdraw={true}
-                    fromSectionDesignator={'Retire Carbon With'}
-                    toSectionDesignator={'You Pay'}
+                    alternativeFromSection={
+                      <FromSectionCarbonOffset
+                        depositChain={fromChainKey}
+                        setDepositChain={setFromChainKey}
+                        depositToken={fromTokenAddress}
+                        setDepositToken={setFromTokenAddress}
+                        depositAmount={depositAmount}
+                        availableChains={availableChains}
+                        tokens={tokens}
+                        balances={balances}
+                        setDepositAmount={setDepositAmount}
+                      />
+                    }
                     alternativeToSection={
                       <ToSectionCarbonOffset
                         route={route}
-                        tokenPolygonBCT={tokenPolygonBCT}
                         routesLoading={routesLoading}
+                        fromToken={
+                          fromChainKey && fromTokenAddress
+                            ? findToken(fromChainKey, fromTokenAddress)
+                            : undefined
+                        }
                       />
                     }
                   />
