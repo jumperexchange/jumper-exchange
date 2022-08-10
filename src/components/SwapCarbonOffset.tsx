@@ -22,7 +22,6 @@ import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
 import QueryString from 'qs'
@@ -32,7 +31,7 @@ import { v4 as uuid } from 'uuid'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
-import { etherspotSupportedChains, TOUCAN_BCT_ADDRESS } from '../constants'
+import { TOUCAN_BCT_ADDRESS } from '../constants'
 import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
@@ -41,7 +40,7 @@ import {
   useBeneficiaryInfo,
 } from '../providers/ToSectionCarbonOffsetProvider'
 import { getOffsetCarbonTransaction } from '../services/etherspotTxService'
-import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
+import { readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
@@ -72,7 +71,6 @@ import { FromSectionCarbonOffset } from './SwapForm/SwapFormFromSections/FromSec
 import { ToSectionCarbonOffset } from './SwapForm/SwapFormToSections/ToSectionCarbonOffset'
 import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
-import { getInjectedConnector } from './web3/connectors'
 
 const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
 
@@ -181,10 +179,9 @@ const Swap = () => {
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setSelectedRoute] = useState<RouteType>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-  const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
+  const [, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
   // Misc
-  const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
 
@@ -196,62 +193,10 @@ const Swap = () => {
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { active, account, library, chainId } = useWeb3React()
-  const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
-
-  // setup etherspot sdk
-  useEffect(() => {
-    const etherspotSDKSetup = async () => {
-      // TODO: try generalized connector from web3 object
-      const connector = await getInjectedConnector()
-      const provider = await Web3WalletProvider.connect(await connector.getProvider())
-      const sdk = new Sdk(provider)
-      sdk.services.networkService.switchNetwork(NetworkNames.Matic)
-      await sdk.computeContractAccount({
-        sync: false,
-      })
-      setEtherSpotSDK(sdk)
-    }
-
-    if (active && account && library && chainId && etherspotSupportedChains.includes(chainId)) {
-      etherspotSDKSetup()
-    }
-  }, [active, account, library, chainId])
+  const { active } = web3
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    // get new execution status on page load
-    if (!restartedOnPageLoad) {
-      setRestartedOnPageLoad(true)
-
-      activeRoutes.map((route) => {
-        if (!web3 || !web3.library) return
-        // check if it makes sense to fetch the status of a route:
-        // if failed or action required it makes no sense
-        const routeFailed = route.steps.some(
-          (step) => step.execution && step.execution.status === 'FAILED',
-        )
-        const actionRequired = route.steps.some(
-          (step) =>
-            step.execution &&
-            step.execution.process.some((process) => process.status === 'ACTION_REQUIRED'),
-        )
-
-        if (routeFailed || actionRequired) return
-        const settings = {
-          updateCallback: (updatedRoute: RouteType) => {
-            storeRoute(updatedRoute)
-            setActiveRoutes(readActiveRoutes())
-            setHistoricalRoutes(readHistoricalRoutes())
-          },
-        }
-        LiFi.resumeRoute(web3.library.getSigner(), route, settings)
-        LiFi.moveExecutionToBackground(route)
-      })
-    }
-  }, [web3.library])
 
   useEffect(() => {
     // executed once after page is loaded
@@ -271,10 +216,7 @@ const Swap = () => {
 
   // get chains
   useEffect(() => {
-    const limitedChains = chainsTokensTools.chains.filter((chain) => {
-      return etherspotSupportedChains.includes(chain.id)
-    })
-    setAvailableChains(limitedChains)
+    setAvailableChains(chainsTokensTools.chains)
   }, [chainsTokensTools.chains])
 
   //get tokens
@@ -727,7 +669,9 @@ const Swap = () => {
     optionEnabledBridges,
     optionEnabledExchanges,
     findToken,
-    etherSpotSDK?.state.accountAddress,
+    beneficiaryInfo.beneficiaryAddress,
+    beneficiaryInfo.beneficiaryName,
+    beneficiaryInfo.retirementMessage,
   ])
 
   // set route call results
@@ -1144,25 +1088,6 @@ const Swap = () => {
               }}></Swapping>
           </Modal>
         )}
-
-        {/* {!!etherspotWalletBalance && !!residualRoute && (
-          <Modal
-            onCancel={() => {
-              setEtherspotWalletBalance(undefined)
-              setResidualRoute(undefined)
-            }}
-            visible={!!etherspotWalletBalance && !!residualRoute}
-            okText="Swap, stake and receive sKlima"
-            footer={null}>
-            <ResidualRouteCarbonOffsetModal
-              etherSpotSDK={etherSpotSDK!}
-              etherspotWalletBalance={etherspotWalletBalance}
-              setEtherspotWalletBalance={setEtherspotWalletBalance}
-              residualRoute={residualRoute}
-              setResidualRoute={setResidualRoute}
-            />
-          </Modal>
-        )} */}
       </Content>
     </ToSectionCarbonOffsetProvider>
   )
