@@ -568,7 +568,7 @@ const Swap = () => {
         const txOffset = await getOffsetCarbonTransaction({
           address: web3.account!,
           amountInCarbon: false,
-          quantity: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
+          quantity: new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
           inputTokenAddress: toTokenAddress,
           retirementTokenAddress: TOUCAN_BCT_ADDRESS,
           beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || web3.account!,
