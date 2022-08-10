@@ -35,10 +35,7 @@ import { TOUCAN_BCT_ADDRESS } from '../constants'
 import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
-import {
-  ToSectionCarbonOffsetProvider,
-  useBeneficiaryInfo,
-} from '../providers/ToSectionCarbonOffsetProvider'
+import { useBeneficiaryInfo } from '../providers/ToSectionCarbonOffsetProvider'
 import { getOffsetCarbonTransaction } from '../services/etherspotTxService'
 import { readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -780,316 +777,308 @@ const Swap = () => {
   }
 
   return (
-    <ToSectionCarbonOffsetProvider>
-      <Content
-        className="site-layout-swap-ukraine"
-        style={{
-          minHeight: 'calc(100vh - 64px)',
-          marginTop: '64px',
-        }}>
-        <div className="swap-view-ukraine">
-          {/* Swap Form */}
-          <Row className="ukraine-title-row">
-            <Col
-              xs={24}
-              sm={24}
-              md={24}
-              lg={24}
-              xl={12}
-              className="ukraine-content-column title-row">
-              <Title level={1}>Cross-chain carbon offsets</Title>
-            </Col>
-            <Col
-              className="swap-form-etherspot swap-form-etherspot-carbon"
-              xs={24}
-              sm={24}
-              md={24}
-              lg={24}
-              xl={12}
+    <Content
+      className="site-layout-swap-ukraine"
+      style={{
+        minHeight: 'calc(100vh - 64px)',
+        marginTop: '64px',
+      }}>
+      <div className="swap-view-ukraine">
+        {/* Swap Form */}
+        <Row className="ukraine-title-row">
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
+            <Title level={1}>Cross-chain carbon offsets</Title>
+          </Col>
+          <Col
+            className="swap-form-etherspot swap-form-etherspot-carbon"
+            xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={12}
+            style={{
+              backgroundImage: `url(${forest})`,
+            }}>
+            <div
+              className="swap-input-etherspot"
               style={{
-                backgroundImage: `url(${forest})`,
+                margin: '0 auto',
+                maxWidth: 450,
+                borderRadius: 16,
+                padding: 32,
               }}>
-              <div
-                className="swap-input-etherspot"
-                style={{
-                  margin: '0 auto',
-                  maxWidth: 450,
-                  borderRadius: 16,
-                  padding: 32,
-                }}>
-                <Row>
-                  <Title
-                    className="swap-title"
-                    level={3}
-                    style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                    Carbon offsets via BCT
-                  </Title>
-                </Row>
+              <Row>
+                <Title
+                  className="swap-title"
+                  level={3}
+                  style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
+                  Carbon offsets via BCT
+                </Title>
+              </Row>
 
-                <Form>
-                  <SwapForm
-                    depositChain={fromChainKey}
-                    setDepositChain={setFromChainKey}
-                    depositToken={fromTokenAddress}
-                    setDepositToken={setFromTokenAddress}
-                    depositAmount={depositAmount}
-                    setDepositAmount={setDepositAmount}
-                    withdrawChain={ChainKey.POL}
-                    setWithdrawChain={() => {}}
-                    withdrawToken={TOKEN_POLYGON_USDC.address}
-                    setWithdrawToken={() => {}}
-                    withdrawAmount={withdrawAmount}
-                    setWithdrawAmount={setWithdrawAmount}
-                    estimatedWithdrawAmount={'0'}
-                    estimatedMinWithdrawAmount={'0'}
-                    availableChains={availableChains}
-                    tokens={tokens}
-                    balances={balances}
-                    allowSameChains={true}
-                    fixedWithdraw={true}
-                    alternativeFromSection={
-                      <FromSectionCarbonOffset
-                        depositChain={fromChainKey}
-                        setDepositChain={setFromChainKey}
-                        depositToken={fromTokenAddress}
-                        setDepositToken={setFromTokenAddress}
-                        depositAmount={depositAmount}
-                        availableChains={availableChains}
-                        tokens={tokens}
-                        balances={balances}
-                        setDepositAmount={setDepositAmount}
-                      />
-                    }
-                    alternativeToSection={
-                      <ToSectionCarbonOffset
-                        route={route}
-                        routesLoading={routesLoading}
-                        fromToken={
-                          fromChainKey && fromTokenAddress
-                            ? findToken(fromChainKey, fromTokenAddress)
-                            : undefined
-                        }
-                      />
-                    }
-                  />
-                  <span>
-                    {/* Disclaimer */}
-                    <Row justify={'center'} className="beta-disclaimer">
-                      <Typography.Text type="danger" style={{ textAlign: 'center' }}>
-                        Beta product - use at own risk.
-                      </Typography.Text>
-                    </Row>
-                    <Row style={{ marginTop: 24 }} justify={'center'}>
-                      {submitButton()}
-                    </Row>
-                    {/* Advanced Options */}
-                    <Row justify={'center'} style={{ marginTop: '12px' }}>
-                      <Collapse ghost style={{ width: '100%' }}>
-                        <Collapse.Panel
-                          header={`Advanced Options`}
-                          style={{ maxHeight: 390, overflow: 'scroll' }}
-                          key="1">
-                          Slippage
-                          <div>
-                            <InputNumber
-                              defaultValue={optionSlippage}
-                              min={0}
-                              max={100}
-                              formatter={(value) => `${value}%`}
-                              parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                              onChange={setOptionSlippage}
-                              style={{
-                                border: '1px solid rgba(0,0,0,0.25)',
-                                borderRadius: 6,
-                                width: '100%',
-                              }}
-                            />
-                          </div>
-                          Infinite Approval
-                          <div>
-                            <Checkbox
-                              checked={optionInfiniteApproval}
-                              onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
-                              Activate Infinite Approval
-                            </Checkbox>
-                          </div>
-                          Bridges
-                          <div>
-                            <Select
-                              mode="multiple"
-                              placeholder="Select enabled bridges"
-                              value={optionEnabledBridges}
-                              onChange={setOptionEnabledBridges}
-                              style={{
-                                borderRadius: 6,
-                                width: '100%',
-                              }}>
-                              {availableBridges.map((bridge) => (
-                                <Select.Option key={bridge} value={bridge}>
-                                  {bridge}
-                                </Select.Option>
-                              ))}
-                            </Select>
-                          </div>
-                          Exchanges
-                          <div>
-                            <Select
-                              mode="multiple"
-                              placeholder="Select enabled exchanges"
-                              value={optionEnabledExchanges}
-                              onChange={setOptionEnabledExchanges}
-                              style={{
-                                borderRadius: 6,
-                                width: '100%',
-                              }}>
-                              {availableExchanges.map((exchange) => (
-                                <Select.Option key={exchange} value={exchange}>
-                                  {exchange}
-                                </Select.Option>
-                              ))}
-                            </Select>
-                          </div>
-                        </Collapse.Panel>
-                      </Collapse>
-                    </Row>
-                  </span>
-                </Form>
-              </div>
+              <Form>
+                <SwapForm
+                  depositChain={fromChainKey}
+                  setDepositChain={setFromChainKey}
+                  depositToken={fromTokenAddress}
+                  setDepositToken={setFromTokenAddress}
+                  depositAmount={depositAmount}
+                  setDepositAmount={setDepositAmount}
+                  withdrawChain={ChainKey.POL}
+                  setWithdrawChain={() => {}}
+                  withdrawToken={TOKEN_POLYGON_USDC.address}
+                  setWithdrawToken={() => {}}
+                  withdrawAmount={withdrawAmount}
+                  setWithdrawAmount={setWithdrawAmount}
+                  estimatedWithdrawAmount={'0'}
+                  estimatedMinWithdrawAmount={'0'}
+                  availableChains={availableChains}
+                  tokens={tokens}
+                  balances={balances}
+                  allowSameChains={true}
+                  fixedWithdraw={true}
+                  alternativeFromSection={
+                    <FromSectionCarbonOffset
+                      depositChain={fromChainKey}
+                      setDepositChain={setFromChainKey}
+                      depositToken={fromTokenAddress}
+                      setDepositToken={setFromTokenAddress}
+                      depositAmount={depositAmount}
+                      availableChains={availableChains}
+                      tokens={tokens}
+                      balances={balances}
+                      setDepositAmount={setDepositAmount}
+                    />
+                  }
+                  alternativeToSection={
+                    <ToSectionCarbonOffset
+                      route={route}
+                      routesLoading={routesLoading}
+                      fromToken={
+                        fromChainKey && fromTokenAddress
+                          ? findToken(fromChainKey, fromTokenAddress)
+                          : undefined
+                      }
+                    />
+                  }
+                />
+                <span>
+                  {/* Disclaimer */}
+                  <Row justify={'center'} className="beta-disclaimer">
+                    <Typography.Text type="danger" style={{ textAlign: 'center' }}>
+                      Beta product - use at own risk.
+                    </Typography.Text>
+                  </Row>
+                  <Row style={{ marginTop: 24 }} justify={'center'}>
+                    {submitButton()}
+                  </Row>
+                  {/* Advanced Options */}
+                  <Row justify={'center'} style={{ marginTop: '12px' }}>
+                    <Collapse ghost style={{ width: '100%' }}>
+                      <Collapse.Panel
+                        header={`Advanced Options`}
+                        style={{ maxHeight: 390, overflow: 'scroll' }}
+                        key="1">
+                        Slippage
+                        <div>
+                          <InputNumber
+                            defaultValue={optionSlippage}
+                            min={0}
+                            max={100}
+                            formatter={(value) => `${value}%`}
+                            parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
+                            onChange={setOptionSlippage}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.25)',
+                              borderRadius: 6,
+                              width: '100%',
+                            }}
+                          />
+                        </div>
+                        Infinite Approval
+                        <div>
+                          <Checkbox
+                            checked={optionInfiniteApproval}
+                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
+                            Activate Infinite Approval
+                          </Checkbox>
+                        </div>
+                        Bridges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled bridges"
+                            value={optionEnabledBridges}
+                            onChange={setOptionEnabledBridges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableBridges.map((bridge) => (
+                              <Select.Option key={bridge} value={bridge}>
+                                {bridge}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                        Exchanges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled exchanges"
+                            value={optionEnabledExchanges}
+                            onChange={setOptionEnabledExchanges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableExchanges.map((exchange) => (
+                              <Select.Option key={exchange} value={exchange}>
+                                {exchange}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                      </Collapse.Panel>
+                    </Collapse>
+                  </Row>
+                </span>
+              </Form>
+            </div>
 
-              <div
-                style={{
-                  margin: '32px auto',
-                  padding: '14px 20px 10px',
-                  textAlign: 'center',
-                  background: 'rgba(255, 255, 255, 0.69)',
-                  borderRadius: 18,
-                  cursor: 'pointer',
-                }}>
-                <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-                  <PoweredByLiFi />
-                </a>
+            <div
+              style={{
+                margin: '32px auto',
+                padding: '14px 20px 10px',
+                textAlign: 'center',
+                background: 'rgba(255, 255, 255, 0.69)',
+                borderRadius: 18,
+                cursor: 'pointer',
+              }}>
+              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+                <PoweredByLiFi />
+              </a>
 
-                <span style={{ verticalAlign: 'super', margin: 8 }}>&</span>
+              <span style={{ verticalAlign: 'super', margin: 8 }}>&</span>
 
-                <a href="https://etherspot.io/" target="_blank" rel="nofollow noreferrer">
-                  <Etherspot />
-                </a>
-              </div>
-            </Col>
-          </Row>
+              <a href="https://etherspot.io/" target="_blank" rel="nofollow noreferrer">
+                <Etherspot />
+              </a>
+            </div>
+          </Col>
+        </Row>
 
-          <Row>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
-              <Title level={4}>
-                LI.FI and Etherspot teams have joined hands to support cross-chain carbon offsets.
-              </Title>
-              <br />
+        <Row>
+          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
+            <Title level={4}>
+              LI.FI and Etherspot teams have joined hands to support cross-chain carbon offsets.
+            </Title>
+            <br />
 
-              <Divider style={{ borderColor: 'black' }} />
-              <Paragraph style={{ marginTop: 64 }}>
-                <h2>What is happening here?</h2>
-                We’re combining
-                <ol>
-                  <li>
-                    LI.FI’s ability to perform <b>any-2-any cross-chain swaps</b> and
-                  </li>
-                  <li>
-                    Etherspot’s smart contract wallet feature through which we can{' '}
-                    <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
-                  </li>
-                </ol>
-                to <b>facilitate cross-chain carbon retirements</b> in just 3 steps which would
-                normally be 9 steps on 3 different dapps. You can learn more about carbon offsetting
-                by KlimaDAO here:{' '}
-                <a
-                  href="https://www.klimadao.finance/blog/the-promise-and-challenges-of-carbon-offsetting"
-                  target="_blank"
-                  rel="noreferrer">
-                  The promise and challenges of carbon offsetting
-                </a>
-              </Paragraph>
-              <Paragraph style={{ marginTop: 64 }}>
-                <h2>What is happening in the background?</h2>
-                When a cross-chain swap is completed via LI.FI, the asset is received on the
-                counterfactual smart wallet that the user controls on Polygon. The user then
-                executes a transaction that:
-                <ol>
-                  <li>Swaps USDC to MATIC.</li>
-                  <li>Deploys the Smart Wallet.</li>
-                  <li>
-                    Calls the Klima DAO contract to retire carbon based on the{' '}
-                    <a href="https://toucan.earth/" target="_blank" rel="noreferrer">
-                      Toucan Protocol: Base Carbon Tonne Token.
-                    </a>
-                  </li>
-                </ol>
-                All in a single transaction on the destination chain, with no need to switch RPC
-                networks and no need to have the gas token.
-              </Paragraph>
+            <Divider style={{ borderColor: 'black' }} />
+            <Paragraph style={{ marginTop: 64 }}>
+              <h2>What is happening here?</h2>
+              We’re combining
+              <ol>
+                <li>
+                  LI.FI’s ability to perform <b>any-2-any cross-chain swaps</b> and
+                </li>
+                <li>
+                  Etherspot’s smart contract wallet feature through which we can{' '}
+                  <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
+                </li>
+              </ol>
+              to <b>facilitate cross-chain carbon retirements</b> in just 3 steps which would
+              normally be 9 steps on 3 different dapps. You can learn more about carbon offsetting
+              by KlimaDAO here:{' '}
+              <a
+                href="https://www.klimadao.finance/blog/the-promise-and-challenges-of-carbon-offsetting"
+                target="_blank"
+                rel="noreferrer">
+                The promise and challenges of carbon offsetting
+              </a>
+            </Paragraph>
+            <Paragraph style={{ marginTop: 64 }}>
+              <h2>What is happening in the background?</h2>
+              When a cross-chain swap is completed via LI.FI, the asset is received on the
+              counterfactual smart wallet that the user controls on Polygon. The user then executes
+              a transaction that:
+              <ol>
+                <li>Swaps USDC to MATIC.</li>
+                <li>Deploys the Smart Wallet.</li>
+                <li>
+                  Calls the Klima DAO contract to retire carbon based on the{' '}
+                  <a href="https://toucan.earth/" target="_blank" rel="noreferrer">
+                    Toucan Protocol: Base Carbon Tonne Token.
+                  </a>
+                </li>
+              </ol>
+              All in a single transaction on the destination chain, with no need to switch RPC
+              networks and no need to have the gas token.
+            </Paragraph>
 
-              <Button
-                className="btn-info-ukraine"
-                shape="round"
-                type="primary"
-                size={'large'}
-                onClick={() => {
-                  window.open('https://etherspot.io/', '_blank')
-                }}>
-                Etherspot <ArrowRightOutlined />
-              </Button>
+            <Button
+              className="btn-info-ukraine"
+              shape="round"
+              type="primary"
+              size={'large'}
+              onClick={() => {
+                window.open('https://etherspot.io/', '_blank')
+              }}>
+              Etherspot <ArrowRightOutlined />
+            </Button>
 
-              <Button
-                className="btn-wallet-ukraine"
-                shape="round"
-                type="primary"
-                size={'large'}
-                onClick={() => {
-                  window.open('https://www.klimadao.finance/', '_blank')
-                }}>
-                KlimaDAO <ArrowRightOutlined />
-              </Button>
-              <div
-                onClick={() => window.open('https://li.fi', '_blank')}
-                style={{ marginTop: 34, cursor: 'pointer' }}>
-                <LifiTeam></LifiTeam>
-              </div>
-            </Col>
-          </Row>
-        </div>
+            <Button
+              className="btn-wallet-ukraine"
+              shape="round"
+              type="primary"
+              size={'large'}
+              onClick={() => {
+                window.open('https://www.klimadao.finance/', '_blank')
+              }}>
+              KlimaDAO <ArrowRightOutlined />
+            </Button>
+            <div
+              onClick={() => window.open('https://li.fi', '_blank')}
+              style={{ marginTop: 34, cursor: 'pointer' }}>
+              <LifiTeam></LifiTeam>
+            </div>
+          </Col>
+        </Row>
+      </div>
 
-        {selectedRoute && !!selectedRoute.steps.length && (
-          <Modal
-            className="swapModal"
-            visible={selectedRoute.steps.length > 0}
-            onOk={() => {
-              setSelectedRoute(undefined)
-              updateBalances()
+      {selectedRoute && !!selectedRoute.steps.length && (
+        <Modal
+          className="swapModal"
+          visible={selectedRoute.steps.length > 0}
+          onOk={() => {
+            setSelectedRoute(undefined)
+            updateBalances()
+          }}
+          onCancel={() => {
+            setSelectedRoute(undefined)
+            updateBalances()
+          }}
+          destroyOnClose={true}
+          maskClosable={false}
+          width={700}
+          footer={null}>
+          <Swapping
+            fixedRecipient={true}
+            route={selectedRoute}
+            settings={{ infiniteApproval: optionInfiniteApproval }}
+            updateRoute={() => {
+              setActiveRoutes(readActiveRoutes())
+              setHistoricalRoutes(readHistoricalRoutes())
             }}
-            onCancel={() => {
-              setSelectedRoute(undefined)
+            onSwapDone={() => {
+              setActiveRoutes(readActiveRoutes())
+              setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
-            }}
-            destroyOnClose={true}
-            maskClosable={false}
-            width={700}
-            footer={null}>
-            <Swapping
-              fixedRecipient={true}
-              route={selectedRoute}
-              settings={{ infiniteApproval: optionInfiniteApproval }}
-              updateRoute={() => {
-                setActiveRoutes(readActiveRoutes())
-                setHistoricalRoutes(readHistoricalRoutes())
-              }}
-              onSwapDone={() => {
-                setActiveRoutes(readActiveRoutes())
-                setHistoricalRoutes(readHistoricalRoutes())
-                updateBalances()
-              }}></Swapping>
-          </Modal>
-        )}
-      </Content>
-    </ToSectionCarbonOffsetProvider>
+            }}></Swapping>
+        </Modal>
+      )}
+    </Content>
   )
 }
 

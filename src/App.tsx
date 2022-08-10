@@ -28,6 +28,7 @@ import {
 import { useNavConfig } from './hooks/useNavConfig'
 import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
+import { ToSectionCarbonOffsetProvider } from './providers/ToSectionCarbonOffsetProvider'
 import setMetatags from './services/metatags'
 
 function App() {
@@ -69,7 +70,10 @@ function App() {
     })
     return (
       <div className="lifiEmbed">
-        <SwapCarbonOffsetEmbed />
+        <ToSectionCarbonOffsetProvider>
+          <SwapCarbonOffsetEmbed />
+        </ToSectionCarbonOffsetProvider>
+
         {/* <div className="poweredBy">
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
             <PoweredByLiFi />
@@ -219,7 +223,9 @@ function App() {
                       path="/showcase/carbon-offset"
                       element={
                         <div className="lifiWrap">
-                          <SwapCarbonOffset />
+                          <ToSectionCarbonOffsetProvider>
+                            <SwapCarbonOffset />
+                          </ToSectionCarbonOffsetProvider>
                         </div>
                       }
                     />

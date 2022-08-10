@@ -5,13 +5,12 @@ import {
   useSetBeneficiaryInfo,
 } from '../../../providers/ToSectionCarbonOffsetProvider'
 import { formatTokenAmount } from '../../../services/utils'
-import { Route, Step, Token } from '../../../types'
+import { Route, Token } from '../../../types'
 
 const { TextArea } = Input
 
 interface ToSectionCarbonOffsetProps {
   route?: Route
-  step?: Step
   fromToken?: Token
   className?: string
   tokenPolygonBCT?: Token
@@ -21,14 +20,13 @@ interface ToSectionCarbonOffsetProps {
 export const ToSectionCarbonOffset = ({
   className,
   route,
-  step,
   fromToken,
   routesLoading,
 }: ToSectionCarbonOffsetProps) => {
   const beneficiaryInfo = useBeneficiaryInfo()
   const setBeneficiaryInfo = useSetBeneficiaryInfo()
 
-  const amount = route?.fromAmount || step?.action?.fromAmount || '0'
+  const amount = route?.fromAmount || '0'
 
   const formattedAmount = fromToken ? formatTokenAmount(fromToken, amount) : '0'
 

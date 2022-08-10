@@ -20,20 +20,18 @@ import { Content } from 'antd/lib/layout/layout'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
 import { createBrowserHistory } from 'history'
-import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { PoweredByLiFi } from '../../assets/Li.Fi/poweredByLiFi'
-import { Etherspot } from '../../assets/misc/etherspot'
-import { etherspotSupportedChains, TOUCAN_BCT_ADDRESS } from '../../constants'
+import { TOUCAN_BCT_ADDRESS } from '../../constants'
 import LiFi from '../../LiFi'
 import { useChainsTokensTools } from '../../providers/chainsTokensToolsProvider'
-import { ToSectionCarbonOffsetProvider } from '../../providers/ToSectionCarbonOffsetProvider'
-import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../../services/localStorage'
+import { useBeneficiaryInfo } from '../../providers/ToSectionCarbonOffsetProvider'
+import { getOffsetCarbonTransaction } from '../../services/etherspotTxService'
+import { readActiveRoutes, readHistoricalRoutes } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
 import { loadTokenListAsTokens } from '../../services/tokenListService'
 import { deepClone, formatTokenAmountOnly, isWalletDeactivated } from '../../services/utils'
@@ -42,55 +40,29 @@ import {
   ChainId,
   ChainKey,
   CoinKey,
-  ExchangeTool,
-  ExtendedRoute,
-  ExtendedRouteOptional,
+  ContractCallQuoteRequest,
   findDefaultToken,
   getChainById,
   getChainByKey,
   isSwapStep,
   Route as RouteType,
-  RoutesRequest,
-  Step,
   SwapPageStartParams,
   Token,
   TokenAmount,
 } from '../../types'
-import { ResidualRouteCarbonOffsetModal } from '../ResidualRouteSwappingModal/ResidualRouteCarbonOffsetModal'
+import { FromSectionCarbonOffset } from '../SwapForm/SwapFormFromSections/FromSectionCarbonOffset'
+import Swapping from '../Swapping'
 import SwapForm from './../SwapForm/SwapForm'
 import { ToSectionCarbonOffset } from './../SwapForm/SwapFormToSections/ToSectionCarbonOffset'
-import SwappingCarbonOffset from './../SwappingEtherspot/SwappingCarbonOffset'
 import ConnectButton from './../web3/ConnectButton'
-import { getInjectedConnector } from './../web3/connectors'
 
 const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
 const history = createBrowserHistory()
 let currentRouteCallId: string
-const allowedDex = ExchangeTool.zerox
 
 interface TokenWithAmounts extends Token {
   amount?: BigNumber
   amountRendered?: string
-}
-
-const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
-  setTimeout(() => {
-    const nodes = element.current?.childNodes
-    if (nodes) {
-      animate(
-        nodes as NodeListOf<Element>,
-        {
-          y: ['50px', '0px'],
-          opacity: [0, 1],
-        },
-        {
-          delay: stagger(0.2),
-          duration: 0.5,
-          easing: 'ease-in-out',
-        },
-      )
-    }
-  }, 0)
 }
 
 const parseChain = (passed: string) => {
@@ -131,6 +103,7 @@ interface TokenAmountList {
 
 const Swap = () => {
   const chainsTokensTools = useChainsTokensTools()
+  const beneficiaryInfo = useBeneficiaryInfo()
 
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>([])
@@ -149,12 +122,7 @@ const Swap = () => {
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [routeCallResult, setRouteCallResult] = useState<{
-    lifiRoute: RouteType
-    gasStep: Step
-    stakingStep: Step
-    id: string
-  }>()
+  const [routeCallResult, setRouteCallResult] = useState<{ result: RouteType; id: string }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -165,112 +133,22 @@ const Swap = () => {
   const [availableExchanges, setAvailableExchanges] = useState<string[]>([])
 
   // Routes
-  const [route, setRoute] = useState<ExtendedRoute>({} as any)
+  const [route, setRoute] = useState<RouteType | undefined>(undefined)
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setSelectedRoute] = useState<ExtendedRoute | undefined>()
+  const [selectedRoute, setSelectedRoute] = useState<RouteType>()
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-  const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
+  const [, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
   const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
-  const [residualRoute, setResidualRoute] = useState<ExtendedRouteOptional>()
 
   // Misc
-  const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
   const [tokenPolygonBCT, setTokenPolygonBCT] = useState<Token>()
 
   // Wallet
   const web3 = useWeb3React<Web3Provider>()
-  const { active, account, library, chainId } = useWeb3React()
-  const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
-  const [etherspotWalletBalance, setEtherspotWalletBalance] = useState<BigNumber>()
-
-  // setup etherspot sdk
-  useEffect(() => {
-    const etherspotSDKSetup = async () => {
-      // TODO: try generalized connector from web3 object
-      const connector = await getInjectedConnector()
-      const provider = await Web3WalletProvider.connect(await connector.getProvider())
-      const sdk = new Sdk(provider)
-      sdk.services.networkService.switchNetwork(NetworkNames.Matic)
-      await sdk.computeContractAccount({
-        sync: false,
-      })
-      setEtherSpotSDK(sdk)
-    }
-
-    if (active && account && library && chainId && etherspotSupportedChains.includes(chainId)) {
-      etherspotSDKSetup()
-    }
-  }, [active, account, library, chainId])
-
-  // Check Etherspot Wallet balance
-  useEffect(() => {
-    const checkEtherspotWalletBalance = async (wallet: string) => {
-      const balance = await LiFi.getTokenBalance(wallet, TOKEN_POLYGON_USDC)
-      const amount = new BigNumber(balance?.amount || 0)
-      if (amount.gte(0.3)) {
-        setEtherspotWalletBalance(amount)
-      } else {
-        setEtherspotWalletBalance(undefined)
-        return
-      }
-      const amountUsdc = ethers.BigNumber.from(
-        amount.shiftedBy(TOKEN_POLYGON_USDC.decimals).toString(),
-      )
-      const amountUsdcToMatic = ethers.utils.parseUnits('0.2', TOKEN_POLYGON_USDC.decimals)
-      const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic)
-
-      const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
-      const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
-      const quotes = await Promise.all([gasStep, stakingStep])
-
-      const residualRoute: ExtendedRouteOptional = {
-        gasStep: quotes[0],
-        stakingStep: quotes[1],
-      }
-      setResidualRoute(residualRoute)
-    }
-    if (etherSpotSDK?.state.accountAddress) {
-      checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
-    }
-  }, [etherSpotSDK, tokenPolygonBCT])
-
-  // Elements used for animations
-  const routeCards = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    // get new execution status on page load
-    if (!restartedOnPageLoad) {
-      setRestartedOnPageLoad(true)
-
-      activeRoutes.map((route) => {
-        if (!web3 || !web3.library) return
-        // check if it makes sense to fetch the status of a route:
-        // if failed or action required it makes no sense
-        const routeFailed = route.steps.some(
-          (step) => step.execution && step.execution.status === 'FAILED',
-        )
-        const actionRequired = route.steps.some(
-          (step) =>
-            step.execution &&
-            step.execution.process.some((process) => process.status === 'ACTION_REQUIRED'),
-        )
-
-        if (routeFailed || actionRequired) return
-        const settings = {
-          updateCallback: (updatedRoute: RouteType) => {
-            storeRoute(updatedRoute)
-            setActiveRoutes(readActiveRoutes())
-            setHistoricalRoutes(readHistoricalRoutes())
-          },
-        }
-        LiFi.resumeRoute(web3.library.getSigner(), route, settings)
-        LiFi.moveExecutionToBackground(route)
-      })
-    }
-  }, [web3.library])
+  const { active } = web3
 
   useEffect(() => {
     // executed once after page is loaded
@@ -290,10 +168,7 @@ const Swap = () => {
 
   // get chains
   useEffect(() => {
-    const limitedChains = chainsTokensTools.chains.filter((chain) => {
-      return etherspotSupportedChains.includes(chain.id)
-    })
-    setAvailableChains(limitedChains)
+    setAvailableChains(chainsTokensTools.chains)
 
     // load()
   }, [chainsTokensTools.chains])
@@ -671,10 +546,10 @@ const Swap = () => {
     },
     [tokens],
   )
-
+  // TODO: finish conversion
   useEffect(() => {
     const getTransferRoutes = async () => {
-      setRoute({} as any)
+      setRoute(undefined)
       setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
@@ -684,51 +559,74 @@ const Swap = () => {
         fromTokenAddress &&
         toChainKey &&
         toTokenAddress &&
-        etherSpotSDK?.state.accountAddress
+        tokenPolygonBCT &&
+        web3.account
       ) {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
         const toToken = findToken(toChainKey, toTokenAddress)
-        const request: RoutesRequest = {
-          fromChainId: fromToken.chainId,
-          fromAmount: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
-          fromTokenAddress,
-          toChainId: toToken.chainId,
-          toTokenAddress,
-          fromAddress: web3.account || undefined,
-          toAddress: etherSpotSDK.state.accountAddress,
-          options: {
-            integrator: 'lifi-etherspot',
-            slippage: optionSlippage / 100,
-            allowSwitchChain: false, // This is important for fixed recipients
-            bridges: {
-              allow: optionEnabledBridges,
-              deny: ['multichain'],
-            },
-            exchanges: {
-              allow: optionEnabledExchanges,
-            },
-          },
-        }
+        const txOffset = await getOffsetCarbonTransaction({
+          address: web3.account!,
+          amountInCarbon: false,
+          quantity: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
+          inputTokenAddress: toTokenAddress,
+          retirementTokenAddress: TOUCAN_BCT_ADDRESS,
+          beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || web3.account!,
+          beneficiaryName: beneficiaryInfo.beneficiaryName,
+          retirementMessage: beneficiaryInfo.retirementMessage,
+        })
 
+        const request: ContractCallQuoteRequest = {
+          //from
+          fromChain: fromToken.chainId,
+          fromToken: fromTokenAddress,
+          fromAddress: web3.account!,
+          //to
+          toChain: toToken.chainId,
+          toToken: toTokenAddress,
+          toAmount: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
+          toContractAddress: txOffset.to!,
+          toContractCallData: txOffset.data!,
+          toContractGasLimit: '90000',
+          //optional
+          integrator: 'lifi-klima-carbon-offset',
+          slippage: optionSlippage / 100,
+        }
         const id = uuid()
         try {
           currentRouteCallId = id
-          const result = await LiFi.getRoutes(request)
-          const amountUsdc = ethers.BigNumber.from(result.routes[0].toAmountMin)
-          const amountUsdcToMatic = ethers.utils.parseUnits(
-            '0.2',
-            result.routes[0].toToken.decimals,
-          )
-          const amountUsdcToBCT = amountUsdc.sub(amountUsdcToMatic)
-          const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
-          const stakingStep = calculateFinalStakingStep(amountUsdcToBCT.toString())
-          const additionalQuotes = await Promise.all([gasStep, stakingStep])
+          const result = await LiFi.getContractCallQuote(request)
+
+          result.estimate.toAmount = new BigNumber(depositAmount)
+            .shiftedBy(fromToken.decimals)
+            .toFixed(0)
+          result.estimate.toAmountMin = new BigNumber(depositAmount)
+            .shiftedBy(fromToken.decimals)
+            .toFixed(0)
+
+          result.action.toToken = tokenPolygonBCT
+
+          const route: RouteType = {
+            id: result.id,
+            fromChainId: result.action.fromChainId,
+            fromAmountUSD: result.estimate.fromAmountUSD || '',
+            fromAmount: result.action.fromAmount,
+            fromToken: result.action.fromToken,
+            fromAddress: result.action.fromAddress,
+            toChainId: result.action.toChainId,
+            toAmountUSD: result.estimate.toAmountUSD || '',
+            toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
+            toAmountMin: new BigNumber(depositAmount)
+              .shiftedBy(tokenPolygonBCT.decimals)
+              .toFixed(0),
+            toToken: tokenPolygonBCT,
+            toAddress: result.action.toAddress,
+            gasCostUSD: result.estimate.gasCosts?.[0].amountUSD,
+            steps: [result],
+          }
 
           setRouteCallResult({
-            lifiRoute: result.routes[0],
-            gasStep: additionalQuotes[0],
-            stakingStep: additionalQuotes[1],
+            result: route,
             id,
           })
         } catch (e) {
@@ -751,56 +649,24 @@ const Swap = () => {
     optionEnabledBridges,
     optionEnabledExchanges,
     findToken,
-    etherSpotSDK?.state.accountAddress,
+    beneficiaryInfo.beneficiaryAddress,
+    beneficiaryInfo.beneficiaryName,
+    beneficiaryInfo.retirementMessage,
   ])
 
   // set route call results
   useEffect(() => {
     if (routeCallResult) {
-      const { lifiRoute, gasStep, stakingStep, id } = routeCallResult
+      const { result, id } = routeCallResult
 
       if (id === currentRouteCallId) {
-        setRoute({ lifiRoute, gasStep, stakingStep })
-        fadeInAnimation(routeCards)
-        setHighlightedIndex(lifiRoute && gasStep && stakingStep ? 0 : -1)
-        setNoRoutesAvailable(!lifiRoute || !gasStep || !stakingStep)
+        setRoute(result)
+        setHighlightedIndex(result ? 0 : -1)
+        setNoRoutesAvailable(!result)
         setRoutesLoading(false)
       }
     }
   }, [routeCallResult, currentRouteCallId])
-
-  const calculateFinalGasStep = async (amount: string) => {
-    const polChain = getChainByKey(ChainKey.POL)
-
-    const quoteUsdcToMatic = await LiFi.getQuote({
-      fromChain: polChain.id,
-      fromToken: TOKEN_POLYGON_USDC.address,
-      fromAddress: etherSpotSDK?.state.accountAddress!,
-      fromAmount: amount,
-      toChain: polChain.id,
-      toToken: (await LiFi.getToken(polChain.id, 'MATIC')!).address, // hardcode return gastoken
-      slippage: 0.005,
-      integrator: 'lifi-etherspot',
-      allowExchanges: [allowedDex],
-    })
-    return quoteUsdcToMatic
-  }
-  const calculateFinalStakingStep = async (amount: string) => {
-    const polChain = getChainByKey(ChainKey.POL)
-
-    const quoteUsdcToBCT = await LiFi.getQuote({
-      fromChain: polChain.id, // has been hardcoded in the routeRequest
-      fromToken: TOKEN_POLYGON_USDC.address, // has been hardcoded in the routeRequest
-      fromAddress: etherSpotSDK?.state.accountAddress!,
-      fromAmount: amount,
-      toChain: polChain.id,
-      toToken: TOUCAN_BCT_ADDRESS,
-      slippage: 0.005,
-      integrator: 'lifi-etherspot',
-      allowExchanges: [allowedDex],
-    })
-    return quoteUsdcToBCT
-  }
 
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
@@ -856,14 +722,14 @@ const Swap = () => {
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnStartChain(route.lifiRoute)) {
+    if (!hasSufficientGasBalanceOnStartChain(route)) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Insufficient Gas on Start Chain
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnCrossChain(route.lifiRoute)) {
+    if (!hasSufficientGasBalanceOnCrossChain(route)) {
       return (
         <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
@@ -893,211 +759,196 @@ const Swap = () => {
   }
 
   return (
-    <ToSectionCarbonOffsetProvider>
-      <Content className="site-layout site-layout-swap-klima-embed">
-        <div className="swap-view-klima-embed">
-          {/* Swap Form */}
-          <Col className="swap-form-klima-embed">
-            <div className="swap-input-klima-embed">
-              <Row>
-                <Title
-                  className="swap-title"
-                  level={3}
-                  style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                  Carbon offsets via BCT
-                </Title>
-              </Row>
+    <Content className="site-layout site-layout-swap-klima-embed">
+      <div className="swap-view-klima-embed">
+        {/* Swap Form */}
+        <Col className="swap-form-klima-embed">
+          <div className="swap-input-klima-embed">
+            <Row>
+              <Title
+                className="swap-title"
+                level={3}
+                style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
+                Carbon offsets via BCT
+              </Title>
+            </Row>
 
-              <Form>
-                <SwapForm
-                  depositChain={fromChainKey}
-                  setDepositChain={setFromChainKey}
-                  depositToken={fromTokenAddress}
-                  setDepositToken={setFromTokenAddress}
-                  depositAmount={depositAmount}
-                  setDepositAmount={setDepositAmount}
-                  withdrawChain={ChainKey.POL}
-                  setWithdrawChain={() => {}}
-                  withdrawToken={TOKEN_POLYGON_USDC.address}
-                  setWithdrawToken={() => {}}
-                  withdrawAmount={withdrawAmount}
-                  setWithdrawAmount={setWithdrawAmount}
-                  estimatedWithdrawAmount={'0'}
-                  estimatedMinWithdrawAmount={'0'}
-                  availableChains={availableChains}
-                  tokens={tokens}
-                  balances={balances}
-                  allowSameChains={true}
-                  fixedWithdraw={true}
-                  fromSectionDesignator={'Use'}
-                  toSectionDesignator={'To retire'}
-                  alternativeToSection={
-                    <ToSectionCarbonOffset
-                      className="to-section-carbon-offset-klima-embed"
-                      step={route?.stakingStep}
-                      tokenPolygonBCT={tokenPolygonBCT}
-                      routesLoading={routesLoading}
-                    />
-                  }
-                />
-                <span>
-                  {/* Disclaimer */}
-                  <Row justify={'center'} className="beta-disclaimer">
-                    <Typography.Text type="danger" style={{ textAlign: 'center' }}>
-                      Beta product - use at own risk.
-                    </Typography.Text>
-                  </Row>
-                  <Row style={{ marginTop: 24 }} justify={'center'}>
-                    {submitButton()}
-                  </Row>
-                  {/* Advanced Options */}
-                  <Row justify={'center'} style={{ marginTop: '12px' }}>
-                    <Collapse ghost style={{ width: '100%' }}>
-                      <Collapse.Panel header={`Advanced Options`} key="1">
-                        Slippage
-                        <div>
-                          <InputNumber
-                            defaultValue={optionSlippage}
-                            min={0}
-                            max={100}
-                            formatter={(value) => `${value}%`}
-                            parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                            onChange={setOptionSlippage}
-                            style={{
-                              border: '1px solid rgba(0,0,0,0.25)',
-                              borderRadius: 6,
-                              width: '100%',
-                            }}
-                          />
-                        </div>
-                        Infinite Approval
-                        <div>
-                          <Checkbox
-                            checked={optionInfiniteApproval}
-                            onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
-                            Activate Infinite Approval
-                          </Checkbox>
-                        </div>
-                        Bridges
-                        <div>
-                          <Select
-                            mode="multiple"
-                            placeholder="Select enabled bridges"
-                            value={optionEnabledBridges}
-                            onChange={setOptionEnabledBridges}
-                            style={{
-                              borderRadius: 6,
-                              width: '100%',
-                            }}>
-                            {availableBridges.map((bridge) => (
-                              <Select.Option key={bridge} value={bridge}>
-                                {bridge}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </div>
-                        Exchanges
-                        <div>
-                          <Select
-                            mode="multiple"
-                            placeholder="Select enabled exchanges"
-                            value={optionEnabledExchanges}
-                            onChange={setOptionEnabledExchanges}
-                            style={{
-                              borderRadius: 6,
-                              width: '100%',
-                            }}>
-                            {availableExchanges.map((exchange) => (
-                              <Select.Option key={exchange} value={exchange}>
-                                {exchange}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </div>
-                      </Collapse.Panel>
-                    </Collapse>
-                  </Row>
-                </span>
-              </Form>
-            </div>
+            <Form>
+              <SwapForm
+                depositChain={fromChainKey}
+                setDepositChain={setFromChainKey}
+                depositToken={fromTokenAddress}
+                setDepositToken={setFromTokenAddress}
+                depositAmount={depositAmount}
+                setDepositAmount={setDepositAmount}
+                withdrawChain={ChainKey.POL}
+                setWithdrawChain={() => {}}
+                withdrawToken={TOKEN_POLYGON_USDC.address}
+                setWithdrawToken={() => {}}
+                withdrawAmount={withdrawAmount}
+                setWithdrawAmount={setWithdrawAmount}
+                estimatedWithdrawAmount={'0'}
+                estimatedMinWithdrawAmount={'0'}
+                availableChains={availableChains}
+                tokens={tokens}
+                balances={balances}
+                allowSameChains={true}
+                fixedWithdraw={true}
+                fromSectionDesignator={'Use'}
+                toSectionDesignator={'To retire'}
+                alternativeFromSection={
+                  <FromSectionCarbonOffset
+                    depositChain={fromChainKey}
+                    setDepositChain={setFromChainKey}
+                    depositToken={fromTokenAddress}
+                    setDepositToken={setFromTokenAddress}
+                    depositAmount={depositAmount}
+                    availableChains={availableChains}
+                    tokens={tokens}
+                    balances={balances}
+                    setDepositAmount={setDepositAmount}
+                  />
+                }
+                alternativeToSection={
+                  <ToSectionCarbonOffset
+                    className="to-section-carbon-offset-klima-embed"
+                    route={route}
+                    tokenPolygonBCT={tokenPolygonBCT}
+                    routesLoading={routesLoading}
+                  />
+                }
+              />
+              <span>
+                {/* Disclaimer */}
+                <Row justify={'center'} className="beta-disclaimer">
+                  <Typography.Text type="danger" style={{ textAlign: 'center' }}>
+                    Beta product - use at own risk.
+                  </Typography.Text>
+                </Row>
+                <Row style={{ marginTop: 24 }} justify={'center'}>
+                  {submitButton()}
+                </Row>
+                {/* Advanced Options */}
+                <Row justify={'center'} style={{ marginTop: '12px' }}>
+                  <Collapse ghost style={{ width: '100%' }}>
+                    <Collapse.Panel header={`Advanced Options`} key="1">
+                      Slippage
+                      <div>
+                        <InputNumber
+                          defaultValue={optionSlippage}
+                          min={0}
+                          max={100}
+                          formatter={(value) => `${value}%`}
+                          parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
+                          onChange={setOptionSlippage}
+                          style={{
+                            border: '1px solid rgba(0,0,0,0.25)',
+                            borderRadius: 6,
+                            width: '100%',
+                          }}
+                        />
+                      </div>
+                      Infinite Approval
+                      <div>
+                        <Checkbox
+                          checked={optionInfiniteApproval}
+                          onChange={(e) => setOptionInfiniteApproval(e.target.checked)}>
+                          Activate Infinite Approval
+                        </Checkbox>
+                      </div>
+                      Bridges
+                      <div>
+                        <Select
+                          mode="multiple"
+                          placeholder="Select enabled bridges"
+                          value={optionEnabledBridges}
+                          onChange={setOptionEnabledBridges}
+                          style={{
+                            borderRadius: 6,
+                            width: '100%',
+                          }}>
+                          {availableBridges.map((bridge) => (
+                            <Select.Option key={bridge} value={bridge}>
+                              {bridge}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </div>
+                      Exchanges
+                      <div>
+                        <Select
+                          mode="multiple"
+                          placeholder="Select enabled exchanges"
+                          value={optionEnabledExchanges}
+                          onChange={setOptionEnabledExchanges}
+                          style={{
+                            borderRadius: 6,
+                            width: '100%',
+                          }}>
+                          {availableExchanges.map((exchange) => (
+                            <Select.Option key={exchange} value={exchange}>
+                              {exchange}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </div>
+                    </Collapse.Panel>
+                  </Collapse>
+                </Row>
+              </span>
+            </Form>
+          </div>
 
-            <div
-              style={{
-                margin: '32px auto',
-                padding: '14px 20px 10px',
-                textAlign: 'center',
-                background: 'rgba(255, 255, 255, 0.69)',
-                borderRadius: 18,
-                cursor: 'pointer',
-              }}>
-              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-                <PoweredByLiFi />
-              </a>
+          <div
+            style={{
+              margin: '32px auto',
+              padding: '14px 20px 10px',
+              textAlign: 'center',
+              background: 'rgba(255, 255, 255, 0.69)',
+              borderRadius: 18,
+              cursor: 'pointer',
+            }}>
+            <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+              <PoweredByLiFi />
+            </a>
 
-              <span style={{ verticalAlign: 'super', margin: 8 }}>&</span>
+            <span style={{ verticalAlign: 'super', margin: 8 }}>&</span>
+          </div>
+        </Col>
+      </div>
 
-              <a href="https://etherspot.io/" target="_blank" rel="nofollow noreferrer">
-                <Etherspot />
-              </a>
-            </div>
-          </Col>
-        </div>
-
-        {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
-          <Modal
-            className="modal-klima-embed swapModal"
-            visible={selectedRoute.lifiRoute.steps.length > 0}
-            onOk={() => {
-              setSelectedRoute(undefined)
+      {selectedRoute && !!selectedRoute.steps.length && (
+        <Modal
+          className="modal-klima-embed swapModal"
+          visible={selectedRoute.steps.length > 0}
+          onOk={() => {
+            setSelectedRoute(undefined)
+            updateBalances()
+          }}
+          onCancel={() => {
+            setSelectedRoute(undefined)
+            updateBalances()
+          }}
+          destroyOnClose={true}
+          maskClosable={false}
+          width={700}
+          footer={null}>
+          <Swapping
+            fixedRecipient={true}
+            route={selectedRoute}
+            settings={{ infiniteApproval: optionInfiniteApproval }}
+            updateRoute={() => {
+              setActiveRoutes(readActiveRoutes())
+              setHistoricalRoutes(readHistoricalRoutes())
+            }}
+            onSwapDone={() => {
+              setActiveRoutes(readActiveRoutes())
+              setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
-            }}
-            onCancel={() => {
-              setSelectedRoute(undefined)
-              updateBalances()
-            }}
-            destroyOnClose={true}
-            maskClosable={false}
-            width={700}
-            footer={null}>
-            <SwappingCarbonOffset
-              fixedRecipient={true}
-              route={selectedRoute}
-              etherspot={etherSpotSDK}
-              settings={{ infiniteApproval: optionInfiniteApproval }}
-              updateRoute={() => {
-                setActiveRoutes(readActiveRoutes())
-                setHistoricalRoutes(readHistoricalRoutes())
-              }}
-              onSwapDone={() => {
-                setActiveRoutes(readActiveRoutes())
-                setHistoricalRoutes(readHistoricalRoutes())
-                updateBalances()
-              }}></SwappingCarbonOffset>
-          </Modal>
-        )}
-
-        {!!etherspotWalletBalance && !!residualRoute && (
-          <Modal
-            className="modal-klima-embed residual-route-modal"
-            onCancel={() => {
-              setEtherspotWalletBalance(undefined)
-              setResidualRoute(undefined)
-            }}
-            visible={!!etherspotWalletBalance && !!residualRoute}
-            okText="Swap, stake and receive sKlima"
-            // cancelText="Send USDC to my wallet"
-            footer={null}>
-            <ResidualRouteCarbonOffsetModal
-              etherSpotSDK={etherSpotSDK!}
-              etherspotWalletBalance={etherspotWalletBalance}
-              setEtherspotWalletBalance={setEtherspotWalletBalance}
-              residualRoute={residualRoute}
-              setResidualRoute={setResidualRoute}
-            />
-          </Modal>
-        )}
-      </Content>
-    </ToSectionCarbonOffsetProvider>
+            }}></Swapping>
+        </Modal>
+      )}
+    </Content>
   )
 }
 
