@@ -91,21 +91,21 @@ export function useInactiveListener(suppress = false) {
         }
       }
       const handleNetworkChanged = async (networkId: string | number) => {
-        console.log("Handling 'networkChanged' event with payload", networkId)
+        console.log("Handling 'chainChanged' event with payload", networkId)
         activate(await getInjectedConnector())
       }
 
       ethereum.on('connect', handleConnect)
       ethereum.on('chainChanged', handleChainChanged)
       ethereum.on('accountsChanged', handleAccountsChanged)
-      ethereum.on('networkChanged', handleNetworkChanged)
+      ethereum.on('chainChanged', handleNetworkChanged)
 
       return () => {
         if (ethereum.removeListener) {
           ethereum.removeListener('connect', handleConnect)
           ethereum.removeListener('chainChanged', handleChainChanged)
           ethereum.removeListener('accountsChanged', handleAccountsChanged)
-          ethereum.removeListener('networkChanged', handleNetworkChanged)
+          ethereum.removeListener('chainChanged', handleNetworkChanged)
         }
       }
     }

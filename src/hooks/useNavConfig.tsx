@@ -83,7 +83,7 @@ export const useNavConfig = () => {
           },
           {
             label: (
-              <a href="https://blog.li.finance/" target="_blank" rel="nofollow noreferrer">
+              <a href="https://blog.li.fi/" target="_blank" rel="nofollow noreferrer">
                 Blog
               </a>
             ),
@@ -91,7 +91,7 @@ export const useNavConfig = () => {
           },
           {
             label: (
-              <a href="https://docs.li.finance/" target="_blank" rel="nofollow noreferrer">
+              <a href="https://docs.li.fi/" target="_blank" rel="nofollow noreferrer">
                 Explore Docs
               </a>
             ),
