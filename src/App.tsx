@@ -142,7 +142,6 @@ function App() {
                       mode="horizontal"
                       triggerSubMenuAction="hover"
                       defaultSelectedKeys={path ? [path] : []}
-                      inlineCollapsed={false}
                     />
                   </Col>
 
