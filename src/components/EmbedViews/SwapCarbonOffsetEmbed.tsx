@@ -584,7 +584,7 @@ const Swap = () => {
           //to
           toChain: toToken.chainId,
           toToken: toTokenAddress,
-          toAmount: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
+          toAmount: new BigNumber(depositAmount).shiftedBy(TOKEN_POLYGON_USDC.decimals).toFixed(0),
           toContractAddress: txOffset.to!,
           toContractCallData: txOffset.data!,
           toContractGasLimit: '90000',
