@@ -36,7 +36,10 @@ import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { useBeneficiaryInfo } from '../providers/ToSectionCarbonOffsetProvider'
-import { getOffsetCarbonTransaction } from '../services/etherspotTxService'
+import {
+  getCarbonOffsetSourceAmount,
+  getOffsetCarbonTransaction,
+} from '../services/etherspotTxService'
 import { readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -70,7 +73,6 @@ import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
 
 const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
-
 const history = createBrowserHistory()
 let currentRouteCallId: string
 
@@ -572,20 +574,33 @@ const Swap = () => {
 
       if (
         depositAmount.gt(0) &&
+        depositAmount &&
         fromChainKey &&
         fromTokenAddress &&
         toChainKey &&
         toTokenAddress &&
         tokenPolygonBCT &&
-        web3.account
+        web3.account &&
+        web3.library
       ) {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
         const toToken = findToken(toChainKey, toTokenAddress)
+
+        const polygonProvider = await LiFi.getRpcProvider(ChainId.POL)
+
+        const sourceAmount = await getCarbonOffsetSourceAmount(polygonProvider, {
+          inputToken: TOKEN_POLYGON_USDC,
+          retirementToken: tokenPolygonBCT,
+          amountInCarbon: new BigNumber(depositAmount)
+            .shiftedBy(tokenPolygonBCT.decimals)
+            .toFixed(0),
+        })
+
         const txOffset = await getOffsetCarbonTransaction({
           address: web3.account!,
-          amountInCarbon: false,
-          quantity: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
+          amountInCarbon: true,
+          quantity: sourceAmount.inputToken,
           inputTokenAddress: toTokenAddress,
           retirementTokenAddress: TOUCAN_BCT_ADDRESS,
           beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || web3.account!,
@@ -601,13 +616,14 @@ const Swap = () => {
           //to
           toChain: toToken.chainId,
           toToken: toTokenAddress,
-          toAmount: new BigNumber(depositAmount).shiftedBy(TOKEN_POLYGON_USDC.decimals).toFixed(0),
+          toAmount: sourceAmount.inputToken,
           toContractAddress: txOffset.to!,
           toContractCallData: txOffset.data!,
           toContractGasLimit: '90000',
           //optional
           integrator: 'lifi-klima-carbon-offset',
           slippage: optionSlippage / 100,
+          allowBridges: ['connext'],
         }
         const id = uuid()
         try {
