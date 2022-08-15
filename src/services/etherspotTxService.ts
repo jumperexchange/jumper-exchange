@@ -84,7 +84,7 @@ export const getFeeTransferTransactionBasedOnAmount = async (token: Token, amoun
   }
 }
 
-export const getStakeKlimaTransaction = (amount: BigNumberish) => {
+export const getStakeKlimaTransaction = (amount: string) => {
   const contract = new ethers.Contract(STAKE_KLIMA_CONTRACT_ADDRESS, stakeKlimaAbi)
   return contract.populateTransaction.stake(amount)
 }

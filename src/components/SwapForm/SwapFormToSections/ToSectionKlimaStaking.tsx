@@ -1,19 +1,21 @@
-import { Step, Token } from '@lifi/sdk'
+import { Route, Step, Token } from '@lifi/sdk'
 import { Col, Input, Row } from 'antd'
 
 import { formatTokenAmount } from '../../../services/utils'
 
 interface ToSectionKlimaStakingProps {
   step?: Step
+  route?: Route
   tokenPolygonSKLIMA?: Token
   routesLoading: boolean
 }
 export const ToSectionKlimaStaking = ({
   step,
+  route,
   tokenPolygonSKLIMA,
   routesLoading,
 }: ToSectionKlimaStakingProps) => {
-  const amount = step?.estimate?.toAmountMin || '0'
+  const amount = route?.toAmountMin || step?.estimate?.toAmountMin || '0'
   const formattedAmount = tokenPolygonSKLIMA ? formatTokenAmount(tokenPolygonSKLIMA, amount) : '0'
 
   return (
