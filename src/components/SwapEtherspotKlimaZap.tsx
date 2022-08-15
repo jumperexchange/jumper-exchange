@@ -556,7 +556,6 @@ const Swap = () => {
       ) {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
-        const toToken = findToken(toChainKey, toTokenAddress)
 
         const txStake = await getStakeKlimaTransaction(
           depositAmount.shiftedBy(tokenPolygonSKLIMA.decimals).toFixed(0),
@@ -568,8 +567,8 @@ const Swap = () => {
           fromToken: fromTokenAddress,
           fromAddress: web3.account!,
           //to
-          toChain: toToken.chainId,
-          toToken: toTokenAddress,
+          toChain: tokenPolygonKLIMA.chainId,
+          toToken: tokenPolygonKLIMA.address,
           toAmount: depositAmount.shiftedBy(tokenPolygonKLIMA.decimals).toFixed(0),
           toContractAddress: txStake.to!,
           toContractCallData: txStake.data!,
@@ -589,6 +588,11 @@ const Swap = () => {
 
           result.action.toToken = tokenPolygonSKLIMA
 
+          const toAmount = depositAmount.shiftedBy(tokenPolygonSKLIMA.decimals).toFixed(0)
+          result.estimate.toAmount = toAmount
+          result.estimate.toAmountMin = toAmount
+          result.estimate.toAmountUSD = ''
+
           const route: RouteType = {
             id: result.id,
             fromChainId: result.action.fromChainId,
@@ -598,8 +602,8 @@ const Swap = () => {
             fromAddress: result.action.fromAddress,
             toChainId: result.action.toChainId,
             toAmountUSD: result.estimate.toAmountUSD || '',
-            toAmount: result.estimate.toAmount,
-            toAmountMin: result.estimate.toAmountMin,
+            toAmount: toAmount,
+            toAmountMin: toAmount,
             toToken: tokenPolygonSKLIMA,
             toAddress: result.action.toAddress,
             gasCostUSD: result.estimate.gasCosts?.[0].amountUSD,
