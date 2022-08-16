@@ -631,10 +631,10 @@ const Swap = () => {
           const result = await LiFi.getContractCallQuote(request)
 
           result.estimate.toAmount = new BigNumber(depositAmount)
-            .shiftedBy(fromToken.decimals)
+            .shiftedBy(tokenPolygonBCT.decimals)
             .toFixed(0)
           result.estimate.toAmountMin = new BigNumber(depositAmount)
-            .shiftedBy(fromToken.decimals)
+            .shiftedBy(tokenPolygonBCT.decimals)
             .toFixed(0)
 
           result.action.toToken = tokenPolygonBCT
