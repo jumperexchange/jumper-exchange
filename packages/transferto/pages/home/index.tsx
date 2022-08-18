@@ -1,17 +1,34 @@
 import { Button, Typography } from "@mui/material";
-import { useIsMobile } from "@transferto/shared/hooks";
+import { Link } from "@transferto/shared/atoms/link";
+import { useIsMobile, useLocales } from "@transferto/shared/hooks";
 import { theme } from "@transferto/shared/theme";
 import { useEffect, useState } from "react";
-import { Link } from "@transferto/shared/atoms/link";
 
 export default function Home() {
+  const { allLangs, translate, currentLang, onChangeLang } = useLocales();
   const isMobile: boolean = useIsMobile();
   const [mobileActive, setMobileActive] = useState(false);
+
+  const handleChangeLang = () => {
+    if (currentLang.value === "en") {
+      onChangeLang("de");
+    }
+    if (currentLang.value === "de") {
+      onChangeLang("en");
+    }
+  };
+
   useEffect(() => {
     setMobileActive(isMobile);
   }, [isMobile]);
+
   return (
     <>
+      <div>
+        <button onClick={handleChangeLang}>change language</button>
+        <p>Current Lang: {currentLang.value}</p>
+        <p>{translate("Home.HomeHero.introduction")}</p>
+      </div>
       <Typography variant="h1">
         is mobile? {mobileActive ? "true" : "false"}
       </Typography>
