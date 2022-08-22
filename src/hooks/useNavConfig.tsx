@@ -3,10 +3,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import WalletButtons from '../components/web3/WalletButtons'
-import {
-  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
-  REACT_APP_ENABLE_SWAP_V2,
-} from '../constants/featureFlags'
+import { REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE } from '../constants/featureFlags'
 import { useIsMobile } from './useIsMobile'
 
 export const useNavConfig = () => {
@@ -15,17 +12,6 @@ export const useNavConfig = () => {
   const navConfig = useMemo(() => {
     return [
       { label: <Link to="/swap">Swap & Bridge</Link>, key: '/swap' },
-      REACT_APP_ENABLE_SWAP_V2
-        ? {
-            label: (
-              <>
-                <Link to="/swap-v2">Swap & Bridge V2</Link>
-                <span className="beta-badge">beta</span>
-              </>
-            ),
-            key: '/swap-v2',
-          }
-        : null,
       { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
       {
         label: (

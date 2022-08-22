@@ -13,11 +13,11 @@ import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
 import NotFoundPage from './components/NotFoundPage'
-import Swap from './components/Swap'
+import { Swap } from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
 import SwapUkraine from './components/SwapUkraine'
-import { SwapV2 } from './components/SwapV2'
+import SwapV1 from './components/SwapV1'
 import WalletButtons from './components/web3/WalletButtons'
 import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
 import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
@@ -50,7 +50,7 @@ function App() {
     })
     return (
       <div className="lifiEmbed">
-        <Swap />
+        <SwapV1 />
         <div className="poweredBy">
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
             <PoweredByLiFi />
@@ -179,7 +179,7 @@ function App() {
                   <Route path="/" element={<Navigate to="/swap" />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route
-                    path="/swap"
+                    path="/swap/*"
                     element={
                       <div className="lifiWrap swap-page">
                         <Swap />
@@ -187,10 +187,10 @@ function App() {
                     }
                   />
                   <Route
-                    path="/swap-v2/*"
+                    path="/swap-v1"
                     element={
-                      <div className="lifiWrap swap-page-v2">
-                        <SwapV2 />
+                      <div className="lifiWrap swap-page-v1">
+                        <SwapV1 />
                       </div>
                     }
                   />
