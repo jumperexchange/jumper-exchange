@@ -18,7 +18,7 @@ export const SwapV2 = () => {
   const { library, deactivate, account } = useWeb3React()
   const signer = useMemo(() => {
     try {
-      return library.getSigner()
+      return library?.getSigner()
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn(e)
