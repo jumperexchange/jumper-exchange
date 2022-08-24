@@ -4,22 +4,11 @@ import { useEffect, useState } from 'react'
 
 import { useWallet } from '../../providers/WalletProvider'
 
-const ENABLED_WALLETS = process.env.REACT_APP_SUPPORTED_WALLETS
-
-// TODO: remove wallet icons from assets
-// what about persistance methods
-
 interface WalletModalProps {
   show: boolean
   onOk: Function
   onCancel: Function
 }
-
-const configuredWalletKeys = JSON.parse(process.env.REACT_APP_SUPPORTED_WALLETS || '[]') as string[]
-
-// const enabledWallets = supportedWallets.filter((wallet) =>
-//   configuredWalletKeys.includes(wallet.key),
-// )
 
 export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] = useState<Wallet>()
