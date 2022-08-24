@@ -95,9 +95,15 @@ export const WalletProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   return <WalletContext.Provider value={value}> {children} </WalletContext.Provider>
 }
 
-const extractAccountFromSigner = async (signer?: Signer) => ({
-  address: (await signer?.getAddress()) || undefined,
-  isActive: (signer && !!(await signer.getAddress()) === null) || !!signer,
-  signer,
-  chainId: (await signer?.getChainId()) || undefined,
-})
+const extractAccountFromSigner = async (signer?: Signer) => {
+  try {
+    return {
+      address: (await signer?.getAddress()) || undefined,
+      isActive: (signer && !!(await signer.getAddress()) === null) || !!signer,
+      signer,
+      chainId: (await signer?.getChainId()) || undefined,
+    }
+  } catch {
+    return {} as WalletAccount
+  }
+}
