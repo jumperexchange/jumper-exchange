@@ -1,7 +1,7 @@
 import { findDefaultToken, getChainById } from '@lifi/sdk'
-import { useWeb3React } from '@web3-react/core'
 import { Button, Typography } from 'antd'
 
+import { useWallet } from '../providers/WalletProvider'
 import { readWalletConnectInfo } from '../services/localStorage'
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function WalletConnectChainSwitchModal({ chainId, okHandler }: Props) {
-  const { library } = useWeb3React()
+  const { account } = useWallet()
   const chain = getChainById(chainId)
   const walletConnectInfo = readWalletConnectInfo()
   return (
@@ -43,7 +43,7 @@ export function WalletConnectChainSwitchModal({ chainId, okHandler }: Props) {
         style={{ display: 'block', margin: ' auto 0 auto auto' }}
         type="link"
         onClick={() => {
-          okHandler(library)
+          okHandler(account)
         }}>
         <u>OK, done!</u>
       </Button>

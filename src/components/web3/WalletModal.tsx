@@ -1,17 +1,13 @@
-import { useWeb3React } from '@web3-react/core'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { supportedWallets, Wallet } from '@lifi/wallet-management'
 import { Avatar, Modal, Popconfirm, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 
-import blockWalletIcon from '../../assets/wallets/blockwallet.svg'
-import imTokenIcon from '../../assets/wallets/imToken.svg'
-import metamaskIcon from '../../assets/wallets/metamask.svg'
-import walletConnectIcon from '../../assets/wallets/walletconnect.svg'
-import { addToActiveWallets, removeFromDeactivatedWallets, Wallet } from './ConnectButton'
-import { getInjectedConnector, getWalletConnectConnector } from './connectors'
-import { addToDeactivatedWallets, removeFromActiveWallets } from './DisconnectButton'
+import { useWallet } from '../../providers/WalletProvider'
 
 const ENABLED_WALLETS = process.env.REACT_APP_SUPPORTED_WALLETS
+
+// TODO: remove wallet icons from assets
+// what about persistance methods
 
 interface WalletModalProps {
   show: boolean
@@ -19,92 +15,32 @@ interface WalletModalProps {
   onCancel: Function
 }
 
-const supportedWallets: Wallet[] = [
-  {
-    key: 'metamask',
-    name: 'MetaMask',
-    icon: metamaskIcon,
-    connector: async () => {
-      return await getInjectedConnector()
-    },
-    // Removed for now to allow all kinds of injected wallets to connect using the metamask button
-    // providerCheck: () => {
-    //   return !!(window as any).ethereum && !!(window as any).ethereum['isMetaMask']
-    // },
-  },
-  {
-    key: 'walletconnect',
-    name: 'WalletConnect',
-    icon: walletConnectIcon,
-    connector: async () => {
-      return await getWalletConnectConnector()
-    },
-  },
-  {
-    key: 'blockwallet',
-    name: 'BlockWallet',
-    icon: blockWalletIcon,
-    connector: async () => {
-      return await getInjectedConnector()
-    },
-    providerCheck: () => {
-      if ((window as any).ethereum && (window as any).ethereum.isBlockWallet) {
-        return true
-      } else {
-        return false
-      }
-    },
-  },
-  {
-    key: 'imtoken',
-    name: 'imToken',
-    icon: imTokenIcon,
-    connector: async () => {
-      return await getInjectedConnector()
-    },
-    providerCheck: () => {
-      return !!(window as any).ethereum && !!(window as any).ethereum['isImToken']
-    },
-  },
-]
-
 const configuredWalletKeys = JSON.parse(process.env.REACT_APP_SUPPORTED_WALLETS || '[]') as string[]
 
-const enabledWallets = supportedWallets.filter((wallet) =>
-  configuredWalletKeys.includes(wallet.key),
-)
+// const enabledWallets = supportedWallets.filter((wallet) =>
+//   configuredWalletKeys.includes(wallet.key),
+// )
 
 export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] = useState<Wallet>()
-  const { activate } = useWeb3React()
+  // const { connect, signer } = useLiFiWalletManagement()
+  const { ethereum } = window as any
+
+  const { connect } = useWallet()
 
   const login = async (wallet: Wallet) => {
-    if (wallet.providerCheck) {
-      const checkResult = wallet.providerCheck?.()
+    if (wallet.checkProviderIdentity) {
+      const checkResult = wallet.checkProviderIdentity(ethereum)
       if (!checkResult) {
         setShowWalletIdentityPopover(wallet)
         return
       }
     }
 
-    const connector = await wallet.connector()
+    await connect(wallet)
     try {
-      await activate(connector, undefined, true)
-    } catch {
-      if (connector instanceof WalletConnectConnector) {
-        // resetting the walletConnectProvider is necessary in case of errors
-        connector.walletConnectProvider = undefined
-      }
-      return
-    }
-    const accountAddress = await connector.getAccount()
-    removeFromDeactivatedWallets(accountAddress)
-    addToActiveWallets(accountAddress)
+    } catch (e) {}
 
-    connector.on('Web3ReactDeactivate', () => {
-      removeFromActiveWallets(accountAddress)
-      addToDeactivatedWallets(accountAddress)
-    })
     onOk()
   }
   useEffect(() => {
@@ -123,8 +59,9 @@ export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
       <Typography.Title level={4} style={{ marginBottom: 32 }}>
         Choose a wallet
       </Typography.Title>
-      {enabledWallets.map((wallet) => {
-        if (ENABLED_WALLETS?.includes(wallet.key)) {
+      {supportedWallets.map((wallet) => {
+        // if (ENABLED_WALLETS?.includes(wallet.name)) {
+        if (true) {
           return (
             <Popconfirm
               zIndex={9001}
@@ -141,7 +78,7 @@ export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
                   {`Please make sure that only the ${wallet.name} browser extension is active before choosing this wallet.`}
                 </Typography.Text>
               }
-              visible={showWalletIdentityPopover?.key === wallet.key}>
+              visible={showWalletIdentityPopover?.name === wallet.name}>
               <div
                 style={{
                   // width: '100%',

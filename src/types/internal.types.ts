@@ -1,6 +1,8 @@
-import { ChainKey, Coin, Route, Step, TokenAmount, TokenWithAmounts } from '@lifi/sdk'
+import { ChainKey, Coin, Route, Step, Token, TokenAmount, TokenWithAmounts } from '@lifi/sdk'
+import { Wallet as WalletManagementWallet } from '@lifi/wallet-management'
 import { TableColumnType } from 'antd'
 import BigNumber from 'bignumber.js'
+import { Signer } from 'ethers'
 
 import { ExtendedTransactionRequest } from '../services/routingService'
 
@@ -88,4 +90,20 @@ export interface ExtendedRouteOptional {
   gasStep?: Step
   stakingStep?: Step
   simpleTransfer?: ExtendedTransactionRequest
+}
+
+export interface WalletContextProps {
+  account: WalletAccount
+  addChain(chainId: number): Promise<boolean>
+  addToken(chainId: number, token: Token): Promise<void>
+  disconnect(): void
+  switchChain(chainId: number): Promise<boolean>
+  connect(wallet?: WalletManagementWallet | undefined): Promise<void>
+}
+
+export interface WalletAccount {
+  address?: string
+  isActive?: boolean
+  signer?: Signer
+  chainId?: number
 }
