@@ -1,8 +1,6 @@
 import './SwapEtherspotKlimaZap.css'
 
 import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
 import {
   Button,
   Checkbox,
@@ -37,6 +35,7 @@ import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { ToSectionCarbonOffsetProvider } from '../providers/ToSectionCarbonOffsetProvider'
+import { useWallet } from '../providers/WalletProvider'
 import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxService'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
@@ -73,7 +72,6 @@ import SwapForm from './SwapForm/SwapForm'
 import { ToSectionCarbonOffset } from './SwapForm/SwapFormToSections/ToSectionCarbonOffset'
 import SwappingCarbonOffset from './SwappingEtherspot/SwappingCarbonOffset'
 import ConnectButton from './web3/ConnectButton'
-import { getInjectedConnector } from './web3/connectors'
 
 const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
 const history = createBrowserHistory()
@@ -201,8 +199,7 @@ const Swap = () => {
   )
 
   // Wallet
-  const web3 = useWeb3React<Web3Provider>()
-  const { active, account, library, chainId } = useWeb3React()
+  const { account } = useWallet()
   const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
   const [etherspotWalletBalance, setEtherspotWalletBalance] = useState<BigNumber>()
 
@@ -210,7 +207,7 @@ const Swap = () => {
   useEffect(() => {
     const etherspotSDKSetup = async () => {
       // TODO: try generalized connector from web3 object
-      const connector = await getInjectedConnector()
+      const connector = (window as any).ethereum
       const provider = await Web3WalletProvider.connect(await connector.getProvider())
       const sdk = new Sdk(provider)
       sdk.services.networkService.switchNetwork(NetworkNames.Matic)
@@ -220,10 +217,15 @@ const Swap = () => {
       setEtherSpotSDK(sdk)
     }
 
-    if (active && account && library && chainId && etherspotSupportedChains.includes(chainId)) {
+    if (
+      account.isActive &&
+      account.chainId &&
+      etherspotSupportedChains.includes(account.chainId) &&
+      (window as any).ethereum
+    ) {
       etherspotSDKSetup()
     }
-  }, [active, account, library, chainId])
+  }, [account.isActive, account.chainId])
 
   // Check Etherspot Wallet balance
   useEffect(() => {
@@ -272,7 +274,7 @@ const Swap = () => {
       setRestartedOnPageLoad(true)
 
       activeRoutes.map((route) => {
-        if (!web3 || !web3.library) return
+        if (!account.signer) return
         // check if it makes sense to fetch the status of a route:
         // if failed or action required it makes no sense
         const routeFailed = route.steps.some(
@@ -292,11 +294,11 @@ const Swap = () => {
             setHistoricalRoutes(readHistoricalRoutes())
           },
         }
-        LiFi.resumeRoute(web3.library.getSigner(), route, settings)
+        LiFi.resumeRoute(account.signer, route, settings)
         LiFi.moveExecutionToBackground(route)
       })
     }
-  }, [web3.library])
+  }, [account.signer])
 
   useEffect(() => {
     // executed once after page is loaded
@@ -349,16 +351,16 @@ const Swap = () => {
   // autoselect from chain based on wallet
   useEffect(() => {
     if (!fromChainKey && startParamsDefined) {
-      const walletChainIsSupported = availableChains.some((chain) => chain.id === web3.chainId)
+      const walletChainIsSupported = availableChains.some((chain) => chain.id === account.chainId)
       if (!walletChainIsSupported) return
-      if (web3.chainId && !fromChainKey) {
-        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+      if (account.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === account.chainId)
         if (chain) {
           setFromChainKey(chain.key)
         }
       }
     }
-  }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
+  }, [account.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
     if (tokensAndChainsSet) {
@@ -556,10 +558,10 @@ const Swap = () => {
   }, [refreshTokens, availableChains])
 
   const updateBalances = useCallback(async () => {
-    if (web3.account) {
+    if (account.address) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(([chainKey, tokenList]) => {
-        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio: TokenAmount[]) => {
+        LiFi.getTokenBalances(account.address!, tokenList).then((portfolio: TokenAmount[]) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -570,20 +572,20 @@ const Swap = () => {
         })
       })
     }
-  }, [web3.account, tokens])
+  }, [account.address, tokens])
 
   useEffect(() => {
-    if (refreshBalances && web3.account) {
+    if (refreshBalances && account.address) {
       setRefreshBalances(false)
       updateBalances()
     }
-  }, [refreshBalances, web3.account, updateBalances])
+  }, [refreshBalances, account.address, updateBalances])
 
   useEffect(() => {
-    if (!web3.account) {
+    if (!account.address) {
       setBalances(undefined) // reset old balances
     }
-  }, [web3.account])
+  }, [account.address])
 
   useEffect(() => {
     // merge tokens and balances
@@ -693,7 +695,7 @@ const Swap = () => {
           fromTokenAddress,
           toChainId: toToken.chainId,
           toTokenAddress,
-          fromAddress: web3.account || undefined,
+          fromAddress: account.address || undefined,
           toAddress: etherSpotSDK.state.accountAddress,
           options: {
             integrator: 'lifi-etherspot',
@@ -810,7 +812,7 @@ const Swap = () => {
   }
 
   const submitButton = () => {
-    if (!active && isWalletDeactivated(web3.account)) {
+    if (!account.isActive && isWalletDeactivated(account.address)) {
       return (
         <Button
           disabled={true}
@@ -820,10 +822,10 @@ const Swap = () => {
           size={'large'}></Button>
       )
     }
-    if (!web3.account) {
+    if (!account.address) {
       return <ConnectButton size="large" />
     }
-    if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
+    if (fromChainKey && account.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button

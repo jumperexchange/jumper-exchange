@@ -1,14 +1,13 @@
 import { SwapOutlined } from '@ant-design/icons'
-import { useWeb3React } from '@web3-react/core'
 import { Button, Col, Input, Row, Tooltip } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import BigNumber from 'bignumber.js'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
+import { useWallet } from '../../providers/WalletProvider'
 import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../../types'
 import ChainSelect from '../ChainSelect'
 import TokenSelect from '../TokenSelect'
-import { getInjectedConnector } from '../web3/connectors'
 
 interface SwapFormProps {
   depositChain?: ChainKey
@@ -72,10 +71,10 @@ const SwapForm = ({
   const [depositAmountString, setDepositAmountString] = useState<string>('')
 
   // Wallet
-  const { activate } = useWeb3React()
+  const { connect } = useWallet()
 
   const connectWallet = async () => {
-    activate(await getInjectedConnector())
+    connect()
   }
 
   const onChangeDepositChain = (chainKey: ChainKey) => {

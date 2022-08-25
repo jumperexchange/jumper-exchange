@@ -1,6 +1,4 @@
-import { Web3Provider } from '@ethersproject/providers'
 import { CoinKey, findDefaultToken } from '@lifi/sdk'
-import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
@@ -9,6 +7,7 @@ import { useState } from 'react'
 import { getRpcProvider } from '../../components/web3/connectors'
 import { KLIMA_ADDRESS, sKLIMA_ADDRESS, STAKE_KLIMA_CONTRACT_ADDRESS } from '../../constants'
 import LiFi from '../../LiFi'
+import { useWallet } from '../../providers/WalletProvider'
 import {
   getFeeTransferTransactionBasedOnAmount,
   getSetAllowanceTransaction,
@@ -21,7 +20,7 @@ import { ChainId, Execution, ExtendedRouteOptional, getChainById, Process, Step 
 export const useKlimaStakingExecutor = () =>
   // eslint-disable-next-line max-params
   {
-    const web3 = useWeb3React<Web3Provider>()
+    const { account } = useWallet()
     const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
 
     const resetEtherspotExecution = () => {
@@ -199,7 +198,7 @@ export const useKlimaStakingExecutor = () =>
       })
       const txTransfer = await getTransferTransaction(
         tokenPolygonSKLIMA!.address,
-        web3.account!,
+        account.address!,
         amountKlima,
       )
       await etherspot.batchExecuteAccountTransaction({
@@ -232,8 +231,7 @@ export const useKlimaStakingExecutor = () =>
         }))
 
         await switchChain(ChainId.POL)
-        const signer = web3.library!.getSigner()
-        if ((await signer.getChainId()) !== ChainId.POL) {
+        if (account.chainId !== ChainId.POL) {
           throw Error('Chain was not switched!')
         }
 

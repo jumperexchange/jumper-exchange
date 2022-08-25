@@ -2,28 +2,20 @@ import './SwapV2.css'
 
 import { Token } from '@lifi/sdk'
 import { LiFiWidget, WidgetConfig } from '@lifi/widget'
-import { useWeb3React } from '@web3-react/core'
 import { useMemo, useState } from 'react'
 
 import { useMetatags } from '../hooks/useMetatags'
+import { useWallet } from '../providers/WalletProvider'
 import { addChain, switchChain, switchChainAndAddToken } from '../services/metamask'
 import { useStomt } from '../services/stomt'
-import { addToDeactivatedWallets, removeFromActiveWallets } from './web3/DisconnectButton'
 import { WalletModal } from './web3/WalletModal'
 
 export const SwapV2 = () => {
   useMetatags({ title: 'LI.FI - Swap' })
   useStomt('swap')
 
-  const { library, deactivate, account } = useWeb3React()
-  const signer = useMemo(() => {
-    try {
-      return library.getSigner()
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(e)
-    }
-  }, [library])
+  const { disconnect, account } = useWallet()
+  const signer = useMemo(() => account.signer, [account.signer])
 
   const [showConnectModal, setShowConnectModal] = useState<{
     show: boolean
@@ -41,16 +33,22 @@ export const SwapV2 = () => {
           setShowConnectModal({ show: true, promiseResolver })
 
           await loginAwaiter
-          return library.getSigner()
+          if (account.signer) {
+            return account.signer!
+          } else {
+            throw Error('No signer object after login')
+          }
         },
         disconnect: async () => {
-          removeFromActiveWallets(account)
-          addToDeactivatedWallets(account)
-          deactivate()
+          disconnect()
         },
         switchChain: async (reqChainId: number) => {
           await switchChain(reqChainId)
-          return library.getSigner()
+          if (account.signer) {
+            return account.signer!
+          } else {
+            throw Error('No signer object after chain switch')
+          }
         },
         addToken: async (token: Token, chainId: number) => {
           await switchChainAndAddToken(chainId, token)
@@ -72,7 +70,7 @@ export const SwapV2 = () => {
         maxHeight: 736,
       },
     }
-  }, [library, account, signer])
+  }, [account.signer])
 
   return (
     <>
