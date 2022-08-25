@@ -11,7 +11,7 @@ export const switchChain = async (chainId: number) => {
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: getChainById(chainId).metamask?.chainId }],
       })
-      ethereum.once('networkChanged', async (id: string) => {
+      ethereum.once('chainChanged', async (id: string) => {
         if (parseInt(id) === chainId) {
           resolve(true)
         }
@@ -73,7 +73,7 @@ export const switchChainAndAddToken = async (chainId: number, token: Token) => {
 
   if (chainIdPrefixed !== ethereum.chainId) {
     await switchChain(chainId)
-    ethereum.once('networkChanged', async (id: string) => {
+    ethereum.once('chainChanged', async (id: string) => {
       if (parseInt(id) === chainId) {
         await addToken(token)
       }

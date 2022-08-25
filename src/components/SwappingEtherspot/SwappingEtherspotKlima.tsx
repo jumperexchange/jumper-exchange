@@ -1,5 +1,4 @@
 import { EditOutlined } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
 import {
   AcceptSlippageUpdateHookParams,
   ChainId,
@@ -8,7 +7,6 @@ import {
   Process,
   Token,
 } from '@lifi/sdk'
-import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
@@ -19,6 +17,7 @@ import { useKlimaStakingExecutor } from '../../hooks/Etherspot/klimaStakingExecu
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useStepReturnInfo } from '../../hooks/useStepReturnInfo'
 import LiFi from '../../LiFi'
+import { useWallet } from '../../providers/WalletProvider'
 import { isWalletConnectWallet } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
@@ -103,7 +102,7 @@ const SwappingEtherspotKlima = ({
   const [simpleTransferExecution, setSimpleTransferExecution] = useState<Execution>()
   const [transferExecutionError, setTransferExecutionError] = useState<any>()
   // Wallet
-  const web3 = useWeb3React<Web3Provider>()
+  const { account } = useWallet()
 
   const routeReturnInfo = useStepReturnInfo({
     ...localRoute.stakingStep,
@@ -144,8 +143,8 @@ const SwappingEtherspotKlima = ({
   }
 
   const startLIFIRoute = async () => {
-    if (!web3.account || !web3.library || !localRoute.lifiRoute) return
-    const signer = web3.library.getSigner()
+    if (!account.address || !account.signer || !localRoute.lifiRoute) return
+    const signer = account.signer
 
     const executionSettings: ExecutionSettings = {
       updateCallback,
@@ -182,7 +181,7 @@ const SwappingEtherspotKlima = ({
   }
 
   const startSimpleTransfer = async () => {
-    if (!web3.account || !web3.library || !localRoute.simpleTransfer) return
+    if (!account.address || !account.signer || !localRoute.simpleTransfer) return
     setIsSwapping(true)
     setSwapStartedAt(Date.now())
 
@@ -223,7 +222,7 @@ const SwappingEtherspotKlima = ({
   }, [transferExecutionError])
 
   const resumeLIFIRoute = async () => {
-    if (!web3.account || !web3.library || !localRoute.lifiRoute) return
+    if (!account.address || !account.signer || !localRoute.lifiRoute) return
 
     const executionSettings: ExecutionSettings = {
       updateCallback,
@@ -234,7 +233,7 @@ const SwappingEtherspotKlima = ({
 
     setIsSwapping(true)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), localRoute.lifiRoute, executionSettings)
+      await LiFi.resumeRoute(account.signer, localRoute.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
         await executeEtherspotStep(
           etherspot!,
@@ -296,9 +295,9 @@ const SwappingEtherspotKlima = ({
 
   const executeSimpleTransfer = async () => {
     const processList: Process[] = []
-    if (!web3.library || !localRoute.simpleTransfer) return
-    const signer = web3.library!.getSigner()
-    if (localRoute.simpleTransfer.chainId !== (await signer.getChainId())) {
+    if (!account.signer || !localRoute.simpleTransfer) return
+    const signer = account.signer
+    if (localRoute.simpleTransfer.chainId !== account.chainId) {
       processList.push({
         type: 'SWITCH_CHAIN',
         message: 'Switch Chain',
@@ -311,7 +310,7 @@ const SwappingEtherspotKlima = ({
       })
 
       await switchChain(localRoute.simpleTransfer.chainId!)
-      const signer = web3.library!.getSigner()
+      const signer = account.signer
       if ((await signer.getChainId()) !== localRoute.simpleTransfer.chainId) {
         throw Error('Chain was not switched!')
       }
@@ -414,7 +413,7 @@ const SwappingEtherspotKlima = ({
     params: AcceptSlippageUpdateHookParams,
     // eslint-disable-next-line max-params
   ) => {
-    if (!web3.account || !web3.library) return false
+    if (!account.address || !account.signer) return false
 
     let promiseResolver
     const awaiter = new Promise<boolean>((resolve) => (promiseResolver = resolve))
@@ -435,9 +434,9 @@ const SwappingEtherspotKlima = ({
   }
 
   const switchChainHook = async (requiredChainId: number) => {
-    if (!web3.account || !web3.library) return
+    if (!account.address || !account.signer) return
 
-    if (isWalletConnectWallet(web3.account)) {
+    if (isWalletConnectWallet(account.address)) {
       let promiseResolver
       const signerAwaiter = new Promise<void>((resolve) => (promiseResolver = resolve))
 
@@ -448,17 +447,17 @@ const SwappingEtherspotKlima = ({
       })
 
       await signerAwaiter
-      return web3.library.getSigner()
+      return account.signer
     }
 
-    if ((await web3.library.getSigner().getChainId()) !== requiredChainId) {
+    if (account.chainId !== requiredChainId) {
       // Fallback is Metamask
       const switched = await switchChain(requiredChainId)
       if (!switched) {
         throw new Error('Chain was not switched')
       }
     }
-    return web3.library.getSigner()
+    return account.signer
   }
 
   // called on every execution status change

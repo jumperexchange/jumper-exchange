@@ -4,15 +4,14 @@ import {
   LoadingOutlined,
   PauseCircleOutlined,
 } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
 import { AcceptSlippageUpdateHookParams, ExecutionSettings, StatusMessage, Token } from '@lifi/sdk'
-import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
 import { useEffect, useState } from 'react'
 
 import { useStepReturnInfo } from '../hooks/useStepReturnInfo'
 import LiFi from '../LiFi'
+import { useWallet } from '../providers/WalletProvider'
 import {
   isWalletConnectWallet,
   readForegroundRoute,
@@ -77,7 +76,7 @@ const Swapping = ({
   const routeReturnInfo = useStepReturnInfo(localRoute.steps[localRoute.steps.length - 1])
 
   // Wallet
-  const web3 = useWeb3React<Web3Provider>()
+  const { account } = useWallet()
 
   useEffect(() => {
     setLocalRoute(route)
@@ -262,8 +261,8 @@ const Swapping = ({
   }
 
   const startCrossChainSwap = async () => {
-    if (!web3.account || !web3.library) return
-    const signer = web3.library.getSigner()
+    if (!account.address || !account.signer) return
+    const signer = account.signer
 
     const executionSettings: ExecutionSettings = {
       updateCallback,
@@ -293,7 +292,7 @@ const Swapping = ({
   }
 
   const resumeExecution = async () => {
-    if (!web3.account || !web3.library) return
+    if (!account.address || !account.signer) return
 
     const executionSettings: ExecutionSettings = {
       updateCallback,
@@ -305,7 +304,7 @@ const Swapping = ({
     setIsSwapping(true)
     storeForegroundRoute(localRoute)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), localRoute, executionSettings)
+      await LiFi.resumeRoute(account.signer, localRoute, executionSettings)
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Execution failed!', localRoute)
@@ -322,9 +321,9 @@ const Swapping = ({
   }
 
   const switchChainHook = async (requiredChainId: number) => {
-    if (!web3.account || !web3.library) return
+    if (!account.address || !account.address) return
 
-    if (isWalletConnectWallet(web3.account)) {
+    if (isWalletConnectWallet(account.address)) {
       let promiseResolver
       const signerAwaiter = new Promise<void>((resolve) => (promiseResolver = resolve))
 
@@ -335,24 +334,24 @@ const Swapping = ({
       })
 
       await signerAwaiter
-      return web3.library.getSigner()
+      return account.signer
     }
 
-    if ((await web3.library.getSigner().getChainId()) !== requiredChainId) {
+    if (account.chainId !== requiredChainId) {
       // Fallback is Metamask
       const switched = await switchChain(requiredChainId)
       if (!switched) {
         throw new Error('Chain was not switched')
       }
     }
-    return web3.library.getSigner()
+    return account.signer
   }
 
   const acceptSlippageUpdateHook = async (
     params: AcceptSlippageUpdateHookParams,
     // eslint-disable-next-line max-params
   ) => {
-    if (!web3.account || !web3.library) return false
+    if (!account.address || !account.address) return false
 
     let promiseResolver
     const awaiter = new Promise<boolean>((resolve) => (promiseResolver = resolve))

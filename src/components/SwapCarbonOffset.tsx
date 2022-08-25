@@ -1,8 +1,6 @@
 import './SwapEtherspotKlimaZap.css'
 
 import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
 import {
   Button,
   Checkbox,
@@ -36,6 +34,7 @@ import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { useBeneficiaryInfo } from '../providers/ToSectionCarbonOffsetProvider'
+import { useWallet } from '../providers/WalletProvider'
 import {
   getCarbonOffsetSourceAmount,
   getOffsetCarbonTransaction,
@@ -191,8 +190,7 @@ const Swap = () => {
   )
 
   // Wallet
-  const web3 = useWeb3React<Web3Provider>()
-  const { active } = web3
+  const { account } = useWallet()
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -245,16 +243,16 @@ const Swap = () => {
   // autoselect from chain based on wallet
   useEffect(() => {
     if (!fromChainKey && startParamsDefined) {
-      const walletChainIsSupported = availableChains.some((chain) => chain.id === web3.chainId)
+      const walletChainIsSupported = availableChains.some((chain) => chain.id === account.chainId)
       if (!walletChainIsSupported) return
-      if (web3.chainId && !fromChainKey) {
-        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+      if (account.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === account.chainId)
         if (chain) {
           setFromChainKey(chain.key)
         }
       }
     }
-  }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
+  }, [account.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
     if (tokensAndChainsSet) {
@@ -452,10 +450,10 @@ const Swap = () => {
   }, [refreshTokens, availableChains])
 
   const updateBalances = useCallback(async () => {
-    if (web3.account) {
+    if (account.address) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(([chainKey, tokenList]) => {
-        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio: TokenAmount[]) => {
+        LiFi.getTokenBalances(account.address!, tokenList).then((portfolio: TokenAmount[]) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -466,20 +464,20 @@ const Swap = () => {
         })
       })
     }
-  }, [web3.account, tokens])
+  }, [account.address, tokens])
 
   useEffect(() => {
-    if (refreshBalances && web3.account) {
+    if (refreshBalances && account.address) {
       setRefreshBalances(false)
       updateBalances()
     }
-  }, [refreshBalances, web3.account, updateBalances])
+  }, [refreshBalances, account.address, updateBalances])
 
   useEffect(() => {
-    if (!web3.account) {
+    if (!account.address) {
       setBalances(undefined) // reset old balances
     }
-  }, [web3.account])
+  }, [account.address])
 
   useEffect(() => {
     // merge tokens and balances
@@ -580,8 +578,7 @@ const Swap = () => {
         toChainKey &&
         toTokenAddress &&
         tokenPolygonBCT &&
-        web3.account &&
-        web3.library
+        account.address
       ) {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
@@ -598,12 +595,12 @@ const Swap = () => {
         })
 
         const txOffset = await getOffsetCarbonTransaction({
-          address: web3.account!,
+          address: account.address,
           amountInCarbon: true,
           quantity: sourceAmount.inputToken,
           inputTokenAddress: toTokenAddress,
           retirementTokenAddress: TOUCAN_BCT_ADDRESS,
-          beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || web3.account!,
+          beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || account.address,
           beneficiaryName: beneficiaryInfo.beneficiaryName,
           retirementMessage: beneficiaryInfo.retirementMessage,
         })
@@ -612,7 +609,7 @@ const Swap = () => {
           //from
           fromChain: fromToken.chainId,
           fromToken: fromTokenAddress,
-          fromAddress: web3.account!,
+          fromAddress: account.address,
           //to
           toChain: toToken.chainId,
           toToken: toTokenAddress,
@@ -710,7 +707,7 @@ const Swap = () => {
   }
 
   const submitButton = () => {
-    if (!active && isWalletDeactivated(web3.account)) {
+    if (!account.isActive && isWalletDeactivated(account.address)) {
       return (
         <Button
           disabled={true}
@@ -720,10 +717,10 @@ const Swap = () => {
           size={'large'}></Button>
       )
     }
-    if (!web3.account) {
+    if (!account.address) {
       return <ConnectButton size="large" />
     }
-    if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
+    if (fromChainKey && account.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
