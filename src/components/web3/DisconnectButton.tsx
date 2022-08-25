@@ -1,9 +1,9 @@
 import { DisconnectOutlined } from '@ant-design/icons'
-import { useWeb3React } from '@web3-react/core'
 import { Button, Checkbox, Image, Popover, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 
 import metamaskGif from '../../assets/gifs/metamask_disconnect.gif'
+import { useWallet } from '../../providers/WalletProvider'
 import {
   isWalletConnectWallet,
   readDeactivatedWallets,
@@ -39,37 +39,38 @@ type DisconnectButtonPropType = {
 }
 
 function DisconnectButton({ style, className, size = 'middle' }: DisconnectButtonPropType) {
-  const { deactivate, account, library } = useWeb3React()
+  const { account, disconnect } = useWallet()
 
   const [hideDisconnectPopup] = useState<boolean>(readHideDisconnectPopup())
   const [walletIdentifier, setWalletIdentifier] = useState<string>('Wallet')
   const [isWalletConnectAccount, setIsWalletConnectAccount] = useState<boolean>(
-    isWalletConnectWallet(account!),
+    isWalletConnectWallet(account.address!),
   )
 
   const handleDisconnect = () => {
-    removeFromActiveWallets(account)
-    addToDeactivatedWallets(account)
-    deactivate()
+    // removeFromActiveWallets(account)
+    // addToDeactivatedWallets(account)
+    disconnect()
   }
 
   const handleHideDisconnectPopup = (event: any) => {
     storeHideDisconnectPopup(event.target.checked)
   }
   useEffect(() => {
-    setIsWalletConnectAccount(isWalletConnectWallet(account!))
+    setIsWalletConnectAccount(isWalletConnectWallet(account.address!))
   }, [account])
 
   useEffect(() => {
-    if (!account) return
-    library
-      .lookupAddress(account)
-      .then((name: string) => {
-        if (!name) return setWalletIdentifier(`${account.substr(0, 4)}...`)
-        setWalletIdentifier(name)
-      })
-      .catch((e: unknown) => setWalletIdentifier(`${account.substr(0, 4)}...`))
-  }, [library, account])
+    if (!account.address) return
+    // library
+    //   .lookupAddress(account)
+    //   .then((name: string) => {
+    //     if (!name) return setWalletIdentifier(`${account.substr(0, 4)}...`)
+    //     setWalletIdentifier(name)
+    //   })
+    //   .catch((e: unknown) => setWalletIdentifier(`${account.substr(0, 4)}...`))
+    setWalletIdentifier(`${account.address?.substr(0, 4)}...`)
+  }, [account.address])
 
   const infoContent = (
     <>

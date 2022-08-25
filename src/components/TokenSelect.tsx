@@ -6,12 +6,11 @@ import {
   ExclamationCircleTwoTone,
   SearchOutlined,
 } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
 import { Avatar, Badge, Select, Tooltip } from 'antd'
 import { RefSelectProps } from 'antd/lib/select'
 import React, { useEffect, useState } from 'react'
 
+import { useWallet } from '../providers/WalletProvider'
 import { goplus, TokenSecurity, TokenSecurityState } from '../services/goplus'
 import { ChainKey, TokenAmount, TokenWithAmounts } from '../types'
 
@@ -49,7 +48,7 @@ const TokenSelect = ({
     return token
   }
 
-  const web3 = useWeb3React<Web3Provider>()
+  const { account } = useWallet()
   const token = selectedToken && selectedChain ? findToken(selectedChain, selectedToken) : undefined
 
   const [tokenSecurity, setTokenSecurity] = useState<TokenSecurity | undefined>()
@@ -192,7 +191,7 @@ const TokenSelect = ({
         {/* Separate between Owned and All token if more than 6 */}
         {selectedChain && tokens[selectedChain]?.length > 6 && (
           <Select.OptGroup label="Owned Token">
-            {!web3.account && (
+            {!account.address && (
               <Select.Option key="Select Coin" value="connect">
                 Connect your wallet
               </Select.Option>

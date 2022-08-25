@@ -7,7 +7,6 @@ import {
   SyncOutlined,
   WalletOutlined,
 } from '@ant-design/icons'
-import { useWeb3React } from '@web3-react/core'
 import {
   Avatar,
   Badge,
@@ -24,9 +23,10 @@ import {
 import { Content } from 'antd/lib/layout/layout'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useMetatags } from '../hooks/useMetatags'
+import { useWallet } from '../providers/WalletProvider'
 import { getTokenBalancesForChainsFromDebank } from '../services/balances'
 import { readWallets } from '../services/localStorage'
 import { useStomt } from '../services/stomt'
@@ -522,7 +522,7 @@ const Dashboard = () => {
       portfolio: chainKeysToObject([]),
     })),
   )
-  const web3 = useWeb3React()
+  const { account } = useWallet()
   const [columns, setColumns] = useState<Array<ColomnType>>(initialColumns)
   const [walletModalVisible, setWalletModalVisible] = useState(false)
   const [walletModalAddress, setWalletModalAddress] = useState('')
@@ -540,7 +540,7 @@ const Dashboard = () => {
 
   // update registeredWallets on activate or deactivate
   useEffect(() => {
-    if (isWalletDeactivated(web3.account)) return
+    if (isWalletDeactivated(account.address)) return
     setRegisteredWallets(
       readWallets().map((address) => ({
         address: address,
@@ -548,7 +548,7 @@ const Dashboard = () => {
         portfolio: chainKeysToObject([]),
       })),
     )
-  }, [web3.account])
+  }, [account.address])
 
   const buildWalletColumns = () => {
     var walletColumns: Array<ColomnType> = []
@@ -758,7 +758,7 @@ const Dashboard = () => {
   const getModalAddressSuggestion = () => {
     const addedWallets = registeredWallets.map((wallet) => wallet.address)
     const web3Account =
-      web3.account && addedWallets.indexOf(web3.account) === -1 ? web3.account : ''
+      account.address && addedWallets.indexOf(account.address) === -1 ? account.address : ''
     return walletModalAddress || web3Account
   }
 
@@ -854,11 +854,11 @@ const Dashboard = () => {
           </Button>,
         ]}>
         <div className="connected-wallets-section" style={{ marginBottom: '32px' }}>
-          {!web3.account ? (
+          {!account.address ? (
             <ConnectButton style={{ display: 'block', margin: ' auto' }} />
           ) : (
             <Button shape="round" style={{ display: 'block', margin: ' auto' }}>
-              Connected with {web3.account.substr(0, 4)}...
+              Connected with {account.address.substr(0, 4)}...
             </Button>
           )}
         </div>
