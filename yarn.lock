@@ -1451,6 +1451,13 @@
   dependencies:
     "@ethersproject/logger" "^5.7.0"
 
+"@ethersproject/bytes@^5.6.1":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/bytes/-/bytes-5.6.1.tgz#24f916e411f82a8a60412344bf4a813b917eefe7"
+  integrity sha512-NwQt7cKn5+ZE4uDn+X5RAXLp46E1chXoaMmrxAyA0rblpxz8t58lVkrHXoRIn0lz1joQElQ8410GqhTqMOwc6g==
+  dependencies:
+    "@ethersproject/logger" "^5.6.0"
+
 "@ethersproject/constants@5.7.0", "@ethersproject/constants@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/constants/-/constants-5.7.0.tgz#df80a9705a7e08984161f09014ea012d1c75295e"
@@ -1563,7 +1570,7 @@
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/sha2" "^5.7.0"
 
-"@ethersproject/properties@5.7.0", "@ethersproject/properties@^5.7.0":
+"@ethersproject/properties@5.7.0", "@ethersproject/properties@^5.6.0", "@ethersproject/properties@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/properties/-/properties-5.7.0.tgz#a6e12cb0439b878aaf470f1902a176033067ed30"
   integrity sha512-J87jy8suntrAkIZtecpxEPxY//szqr1mlBaYlQ0r4RCaiD2hjheqF9s1LVE8vVuJCXisjIP+JgtK/Do54ej4Sw==
@@ -2076,6 +2083,25 @@
   dependencies:
     ethers "^5.6.9"
 
+"@lifi/wallet-management@1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-1.1.7.tgz#14eed6183db7eeef63400361460cf91c95811a81"
+  integrity sha512-xE+/blkzEKPYDmxnVeXg8eHn9f3C/vt8cZttQmk5HCvAvMUY7waAGb9wc3w9ehrfWT6csGQsTYEOkDXI7OQ8SQ==
+  dependencies:
+    "@ethersproject/experimental" "^5.7.0"
+    "@ethersproject/providers" "^5.7.0"
+    "@walletconnect/ethereum-provider" "^1.8.0"
+    "@web3-react/coinbase-wallet" "^8.0.34-beta.0"
+    "@web3-react/core" "^8.0.35-beta.0"
+    "@web3-react/eip1193" "^8.0.26-beta.0"
+    "@web3-react/empty" "^8.0.20-beta.0"
+    "@web3-react/metamask" "^8.0.28-beta.0"
+    "@web3-react/network" "^8.0.27-beta.0"
+    "@web3-react/types" "^8.0.20-beta.0"
+    "@web3-react/url" "^8.0.25-beta.0"
+    "@web3-react/walletconnect" "^8.0.35-beta.0"
+    react "^18.2.0"
+
 "@lifi/wallet-management@^1.1.8":
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-1.1.8.tgz#f58fccd72e533f5aa91b1b552392ee878108acb8"
@@ -2095,10 +2121,10 @@
     "@web3-react/walletconnect" "^8.0.35-beta.0"
     react "^18.2.0"
 
-"@lifi/widget@^1.13.0":
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.15.0.tgz#bfbd68df466165d2cbfb56eb4df91dbece7d4c31"
-  integrity sha512-I4p0sLkkaW7cnh4bfsr44c7Zg18VzdDfRM80Qp+yIOiBq8Ng43AbktAHnCmCjtptAsTJjKWnU1Ho3E6aDdH85g==
+"@lifi/widget@^1.15.1":
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.15.1.tgz#89795570b7ba4590fc9b5c325e1bcc0ce7ff3660"
+  integrity sha512-HZ/5+sRJ7/XzPYsFjvBVG33u+/XXgOn+ohZ0ioiuDu+8yYHxSys16PaJixgkSehPMUhqZZdPL6z4rBfsScwMTQ==
   dependencies:
     "@emotion/react" "^11.10.0"
     "@emotion/styled" "^11.10.0"

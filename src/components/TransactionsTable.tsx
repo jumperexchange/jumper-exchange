@@ -1,8 +1,7 @@
 import { DeleteOutlined } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
 import { Button, Popconfirm, Table } from 'antd'
 
+import { useWallet } from '../providers/WalletProvider'
 import { formatTokenAmount } from '../services/utils'
 import { getChainById, Route } from '../types'
 import { getChainAvatar, getTokenAvatar } from './Avatars/Avatars'
@@ -45,7 +44,7 @@ function TransactionsTable({
   deleteRoute,
   historical,
 }: ActiveTransactionsTableProps) {
-  const web3 = useWeb3React<Web3Provider>()
+  const { account } = useWallet()
 
   const renderActionButton = (route: Route) => {
     if (historical) {
@@ -60,7 +59,7 @@ function TransactionsTable({
         </Button>
       )
     }
-    if (!web3.account) {
+    if (!account.address) {
       return <ConnectButton></ConnectButton>
     }
     return (

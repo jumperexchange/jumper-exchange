@@ -4,9 +4,7 @@ import {
   LoadingOutlined,
   PauseCircleOutlined,
 } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
 import { AcceptSlippageUpdateHookParams, Execution, ExecutionSettings, Token } from '@lifi/sdk'
-import { useWeb3React } from '@web3-react/core'
 import { Button, Divider, Modal, Row, Space, Spin, Timeline, Tooltip, Typography } from 'antd'
 import { constants } from 'ethers'
 import { Sdk } from 'etherspot'
@@ -17,6 +15,7 @@ import { useOffsetCarbonExecutor } from '../../hooks/Etherspot/offsetCarbonExecu
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { useStepReturnInfo } from '../../hooks/useStepReturnInfo'
 import LiFi from '../../LiFi'
+import { useWallet } from '../../providers/WalletProvider'
 import { isWalletConnectWallet } from '../../services/localStorage'
 import { switchChain, switchChainAndAddToken } from '../../services/metamask'
 import Notification, { NotificationType } from '../../services/notifications'
@@ -89,8 +88,7 @@ const SwappingCarbonOffset = ({
   const [transferExecutionError, setTransferExecutionError] = useState<any>()
 
   // Wallet
-  const web3 = useWeb3React<Web3Provider>()
-
+  const { account } = useWallet()
   const routeReturnInfo = useStepReturnInfo({
     ...localRoute.stakingStep,
     execution: etherspotStepExecution,
@@ -254,8 +252,8 @@ const SwappingCarbonOffset = ({
   }
 
   const startCrossChainSwap = async () => {
-    if (!web3.account || !web3.library) return
-    const signer = web3.library.getSigner()
+    if (!account.address || !account.signer) return
+    const signer = account.signer
 
     const executionSettings: ExecutionSettings = {
       updateCallback,
@@ -300,7 +298,7 @@ const SwappingCarbonOffset = ({
   }, [transferExecutionError])
 
   const resumeExecution = async () => {
-    if (!web3.account || !web3.library) return
+    if (!account.address || !account.signer) return
 
     const executionSettings: ExecutionSettings = {
       updateCallback,
@@ -311,7 +309,7 @@ const SwappingCarbonOffset = ({
 
     setIsSwapping(true)
     try {
-      await LiFi.resumeRoute(web3.library.getSigner(), localRoute.lifiRoute, executionSettings)
+      await LiFi.resumeRoute(account.signer, localRoute.lifiRoute, executionSettings)
       await finalizeEtherSpotStep(
         await executeEtherspotStep(
           etherspot!,
@@ -368,7 +366,7 @@ const SwappingCarbonOffset = ({
     params: AcceptSlippageUpdateHookParams,
     // eslint-disable-next-line max-params
   ) => {
-    if (!web3.account || !web3.library) return false
+    if (!account.address || !account.signer) return false
 
     let promiseResolver
     const awaiter = new Promise<boolean>((resolve) => (promiseResolver = resolve))
@@ -388,9 +386,9 @@ const SwappingCarbonOffset = ({
     return accept
   }
   const switchChainHook = async (requiredChainId: number) => {
-    if (!web3.account || !web3.library) return
+    if (!account.address || !account.signer) return
 
-    if (isWalletConnectWallet(web3.account)) {
+    if (isWalletConnectWallet(account.address)) {
       let promiseResolver
       const signerAwaiter = new Promise<void>((resolve) => (promiseResolver = resolve))
 
@@ -401,17 +399,17 @@ const SwappingCarbonOffset = ({
       })
 
       await signerAwaiter
-      return web3.library.getSigner()
+      return account.signer
     }
 
-    if ((await web3.library.getSigner().getChainId()) !== requiredChainId) {
+    if ((await account.signer.getChainId()) !== requiredChainId) {
       // Fallback is Metamask
       const switched = await switchChain(requiredChainId)
       if (!switched) {
         throw new Error('Chain was not switched')
       }
     }
-    return web3.library.getSigner()
+    return account.signer
   }
 
   // called on every execution status change
