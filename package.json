@@ -8,7 +8,7 @@
     "@ant-design/icons": "^4.6.2",
     "@etherspot/contracts": "^1.8.0",
     "@lifi/sdk": "^1.2.1",
-    "@lifi/widget": "^1.14.1",
+    "@lifi/widget": "^1.15.1",
     "@lifi/wallet-management":"1.1.7",
     "antd": "^4.22.4",
     "etherspot": "^1.35.2",
