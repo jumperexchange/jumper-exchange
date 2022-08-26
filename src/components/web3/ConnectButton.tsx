@@ -12,14 +12,6 @@ import {
 } from '../../services/localStorage'
 import { WalletModal } from './WalletModal'
 
-export interface Wallet {
-  key: string
-  name: string
-  icon: string
-  connector: Function
-  providerCheck?: Function
-}
-
 export const addToActiveWallets = (address: string | null | undefined) => {
   if (!address) return
   const lowerCaseAddress = address.toLowerCase()

@@ -1,6 +1,4 @@
-import { Web3Provider } from '@ethersproject/providers'
 import { CoinKey, findDefaultToken } from '@lifi/sdk'
-import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { GatewayBatchStates, Sdk } from 'etherspot'
@@ -10,6 +8,7 @@ import { getRpcProvider } from '../../components/web3/connectors'
 import { KLIMA_CARBON_OFFSET_CONTRACT, TOUCAN_BCT_ADDRESS } from '../../constants'
 import LiFi from '../../LiFi'
 import { useBeneficiaryInfo } from '../../providers/ToSectionCarbonOffsetProvider'
+import { useWallet } from '../../providers/WalletProvider'
 import {
   getFeeTransferTransactionBasedOnAmount,
   getOffsetCarbonTransaction,
@@ -23,7 +22,7 @@ export const useOffsetCarbonExecutor = () =>
   {
     const beneficiaryInfo = useBeneficiaryInfo()
 
-    const web3 = useWeb3React<Web3Provider>()
+    const { account } = useWallet()
 
     const [etherspotStepExecution, setEtherspotStepExecution] = useState<Execution>()
 
@@ -130,12 +129,12 @@ export const useOffsetCarbonExecutor = () =>
       // retire BCT: e.g. https://polygonscan.com/tx/0x5c392aa3487a1fa9e617c5697fe050d9d85930a44508ce74c90caf1bd36264bf
       const amountBCT = stakingStep.estimate.toAmountMin
       const txOffset = await getOffsetCarbonTransaction({
-        address: web3.account!,
+        address: account.address!,
         amountInCarbon: false,
         quantity: amountBCT,
         inputTokenAddress: gasStep.action.fromToken.address,
         retirementTokenAddress: TOUCAN_BCT_ADDRESS,
-        beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || web3.account!,
+        beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || account.address!,
         beneficiaryName: beneficiaryInfo.beneficiaryName,
         retirementMessage: beneficiaryInfo.retirementMessage,
       })
@@ -171,8 +170,7 @@ export const useOffsetCarbonExecutor = () =>
         }))
 
         await switchChain(ChainId.POL)
-        const signer = web3.library!.getSigner()
-        if ((await signer.getChainId()) !== ChainId.POL) {
+        if (account.chainId !== ChainId.POL) {
           throw Error('Chain was not switched!')
         }
 
