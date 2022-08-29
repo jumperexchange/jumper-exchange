@@ -1,0 +1,90 @@
+.site-layout--claiming {
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.claiming {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: calc(100vh - 64px);
+  width: 100%;
+  font-family: 'GT America';
+  background-image: url(/public/bg-raster.png);
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-color: #f9f6f6;
+}
+
+.claiming__label {
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -0.1px;
+  margin-bottom: 0;
+  font-weight: 100;
+}
+
+.claiming__amount {
+  font-size: 54px;
+  line-height: 64px;
+  letter-spacing: -0.2px;
+}
+
+.card {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0 auto;
+  min-width: 200px;
+  min-height: 330px;
+  padding-top: 40px;
+  /* background-color: white; */
+  background: linear-gradient(180deg, white, transparent);
+}
+
+.card__title {
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.card__button {
+  min-width: 120px;
+  margin: 0 auto;
+}
+
+
+@media only screen and (min-width: 550px) {
+  .site-layout--claiming {}
+
+  .claiming {}
+
+  .claiming__label {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.1px;
+    font-weight: 100;
+  }
+
+  .claiming__amount {
+    font-size: 54px;
+    line-height: 64px;
+    letter-spacing: -0.2px;
+  }
+
+  .card {
+    min-width: 320px;
+    width: 500px;
+  }
+
+  .card__title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .card__button {
+    width: 200px;
+    margin: 0 auto;
+  }
+}

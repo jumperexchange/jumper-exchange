@@ -9,6 +9,7 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import DiscordIcon from './assets/icons/discordIcon'
 import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
+import Claiming from './components/Claiming'
 import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
@@ -181,6 +182,14 @@ function App() {
                   element={
                     <div className="lifiWrap swap-page">
                       <Swap />
+                    </div>
+                  }
+                />
+                <Route
+                  path="/claiming"
+                  element={
+                    <div className="lifiWrap claim-page">
+                      <Claiming />
                     </div>
                   }
                 />
