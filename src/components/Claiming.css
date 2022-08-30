@@ -25,6 +25,15 @@
   font-weight: 100;
 }
 
+.claiming__label--success {
+  margin-top: 55px;
+}
+
+.claiming__social svg {
+  transform: scale(1.8);
+  margin-left: 8px;
+}
+
 .claiming__amount {
   font-size: 54px;
   line-height: 64px;
@@ -44,6 +53,12 @@
   background: linear-gradient(180deg, white, transparent);
 }
 
+.card--success {
+  border: 1px solid #E8E8E8;
+  border-radius: 15px;
+  box-shadow: 0px 2px 4px 0px #00000040;
+}
+
 .card--success svg {
   margin: 0 auto;
 }
@@ -61,7 +76,6 @@
   min-width: 250px;
   margin: 0 auto;
 }
-
 
 @media only screen and (min-width: 550px) {
   .site-layout--claiming {}

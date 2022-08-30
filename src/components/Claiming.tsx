@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { useState } from 'react'
 
+import DiscordIcon from '../../src/assets/icons/discordIcon'
 import { SuccessIcon } from '../../src/assets/icons/sucessIcon'
 import { useMetatags } from '../hooks/useMetatags'
 import { useWallet } from '../providers/WalletProvider'
@@ -24,7 +25,7 @@ const Claiming = () => {
   )
   const { account } = useWallet()
   const [claimingState, setClaimingState] = useState('network')
-  const [claimingAmount, setClaimingAmount] = useState(0.1)
+  const [claimingAmount, setClaimingAmount] = useState(0.0)
   const handleClick = () => {
     if (claimingState === 'network') {
       setClaimingState('claim')
@@ -90,7 +91,9 @@ const Claiming = () => {
             <p className="claiming__label claiming__label--notqualified">
               You don´t have any rewards yet.
             </p>
-            <h2 className="claiming__social">Join our Discord Community</h2>
+            <h2 className="claiming__social">
+              Join our Discord Community <DiscordIcon />
+            </h2>
           </>
         )}
         {claimingState === 'success' && (
@@ -101,7 +104,7 @@ const Claiming = () => {
                 <p className="card__title">Succesfully Claimed</p>
               </>
             </div>
-            <p className="claiming__label claiming__label--notqualified">
+            <p className="claiming__label claiming__label--success">
               Make some noise about your achievement!
             </p>
             <div>Tweet here</div>
