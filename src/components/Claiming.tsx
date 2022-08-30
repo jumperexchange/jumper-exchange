@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { useState } from 'react'
 
+import { SuccessIcon } from '../../src/assets/icons/sucessIcon'
 import { useMetatags } from '../hooks/useMetatags'
 import { useWallet } from '../providers/WalletProvider'
 import { readWallets } from '../services/localStorage'
@@ -22,20 +23,90 @@ const Claiming = () => {
     })),
   )
   const { account } = useWallet()
-  const [claimingState, setClainingState] = useState('claim')
-  const [claimingAmount, setClainingAmount] = useState(0.11)
+  const [claimingState, setClaimingState] = useState('network')
+  const [claimingAmount, setClaimingAmount] = useState(0.1)
+  const handleClick = () => {
+    if (claimingState === 'network') {
+      setClaimingState('claim')
+    }
+    if (claimingState === 'claim') {
+      if (claimingAmount > 0) {
+        setClaimingState('success')
+      } else {
+        setClaimingState('notqualified')
+      }
+    }
+  }
+
+  // if (claimingState === 'claim') {
+  //   button = (
+
+  //   )
+  // } else if (claimingState === 'network') {
+  //   button = (
+  //     <Button
+  //       className="card__button card__button--network"
+  //       onClick={handleClick}
+  //       type="primary"
+  //       size="large">
+  //       Switch Network to Arbitrum
+  //     </Button>
+  //   )
+  // }
 
   return (
     <div className="site-layout site-layout--claiming">
       <Content className="claiming">
-        <p className="claiming__label">Total Rewards</p>
-        <h2 className="claiming__amount">{claimingAmount} LZRD</h2>
-        <div className="card">
-          <p className="card__title">Claim your rewards</p>
-          <Button className="card__button" type="primary" size="large">
-            Claim
-          </Button>
-        </div>
+        {claimingState !== 'success' && claimingState !== 'notqualified' && (
+          <>
+            <p className="claiming__label">Total Rewards</p>
+            <h2 className="claiming__amount">{claimingAmount} LZRD</h2>
+            <div className="card">
+              <>
+                <p className="card__title">Claim your rewards</p>
+                <Button
+                  onClick={handleClick}
+                  className="card__button card__button--claim"
+                  type={
+                    claimingState === 'network'
+                      ? 'default'
+                      : claimingState === 'claim'
+                      ? 'primary'
+                      : 'ghost'
+                  }
+                  size="large">
+                  {claimingState === 'network'
+                    ? 'Switch Network to Arbitrum'
+                    : claimingState === 'claim'
+                    ? 'Claim'
+                    : 'undefined'}
+                </Button>
+              </>
+            </div>
+          </>
+        )}
+        {claimingState === 'notqualified' && (
+          <>
+            <p className="claiming__label claiming__label--notqualified">
+              You don´t have any rewards yet.
+            </p>
+            <h2 className="claiming__social">Join our Discord Community</h2>
+          </>
+        )}
+        {claimingState === 'success' && (
+          <>
+            <div className="card card--success">
+              <>
+                <SuccessIcon />
+                <p className="card__title">Succesfully Claimed</p>
+              </>
+            </div>
+            <p className="claiming__label claiming__label--notqualified">
+              Make some noise about your achievement!
+            </p>
+            <div>Tweet here</div>
+          </>
+        )}
       </Content>
     </div>
   )

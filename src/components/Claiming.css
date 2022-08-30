@@ -44,13 +44,21 @@
   background: linear-gradient(180deg, white, transparent);
 }
 
+.card--success svg {
+  margin: 0 auto;
+}
+
+.card--success .card__title {
+  margin-top: 70px;
+}
+
 .card__title {
   font-size: 32px;
   line-height: 40px;
 }
 
 .card__button {
-  min-width: 120px;
+  min-width: 250px;
   margin: 0 auto;
 }
 

@@ -26,6 +26,14 @@ export const useNavConfig = () => {
             key: '/swap-v2',
           }
         : null,
+      {
+        label: (
+          <a href="/claiming" rel="nofollow noreferrer">
+            Claiming
+          </a>
+        ),
+        key: '/claiming',
+      },
       { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
       {
         label: (
