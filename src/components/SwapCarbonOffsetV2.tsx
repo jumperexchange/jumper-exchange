@@ -995,7 +995,7 @@ const Swap = () => {
               perform xChain Contract Call staking with <b> one transaction confirmation</b>. We are
               abstracting steps needed to perform such actions - from 9 steps on 3 different dApps,
               to just a <b>single step</b> on LI.FI's interface. Read more about carbon offsets with
-              KlimDAO:{' '}
+              KlimaDAO:{' '}
               <a
                 href="https://www.klimadao.finance/blog/the-promise-and-challenges-of-carbon-offsetting"
                 target="_blank"
