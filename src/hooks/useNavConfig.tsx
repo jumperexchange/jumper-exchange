@@ -77,7 +77,9 @@ export const useNavConfig = () => {
                     ? {
                         key: '/showcase/carbon-offset-v2',
                         label: (
-                          <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting V2</Link>
+                          <Link to="/showcase/carbon-offset-v2">
+                            Cross-Chain Carbon Offsetting V2
+                          </Link>
                         ),
                       }
                     : null,
