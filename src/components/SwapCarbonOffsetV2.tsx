@@ -429,7 +429,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: '/showcase/carbon-offset',
+        pathname: '/showcase/carbon-offset-v2',
         search,
       })
     }
@@ -980,30 +980,22 @@ const Swap = () => {
             </div>
           </Col>
         </Row>
-
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              LI.FI and Etherspot teams have joined hands to support cross-chain carbon offsets.
+              LI.FI now supports xChain Contract Calls into the carbon offset contract with only one
+              transaction confirmation.
             </Title>
             <br />
 
             <Divider style={{ borderColor: 'black' }} />
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening here?</h2>
-              We’re combining
-              <ol>
-                <li>
-                  LI.FI’s ability to perform <b>any-2-any cross-chain swaps</b> and
-                </li>
-                <li>
-                  Etherspot’s smart contract wallet feature through which we can{' '}
-                  <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
-                </li>
-              </ol>
-              to <b>facilitate cross-chain carbon retirements</b> in just 3 steps which would
-              normally be 9 steps on 3 different dapps. You can learn more about carbon offsetting
-              by KlimaDAO here:{' '}
+              We are combining the power of asset bridging with cross-chain message passing to
+              perform xChain Contract Call staking with <b> one transaction confirmation</b>. We are
+              abstracting steps needed to perform such actions - from 9 steps on 3 different dApps,
+              to just a <b>single step</b> on LI.FI's interface. Read more about carbon offsets with
+              KlimDAO:{' '}
               <a
                 href="https://www.klimadao.finance/blog/the-promise-and-challenges-of-carbon-offsetting"
                 target="_blank"
@@ -1013,18 +1005,11 @@ const Swap = () => {
             </Paragraph>
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening in the background?</h2>
-              When a cross-chain swap is completed via LI.FI, the asset is received on the
-              counterfactual smart wallet that the user controls on Polygon. The user then executes
-              a transaction that:
+              When a cross-chain swap is completed via LI.FI, we combine swap + bridge + destination
+              contract call (xChain Contract Call) within our smart contract.
               <ol>
-                <li>Swaps USDC to MATIC.</li>
-                <li>Deploys the Smart Wallet.</li>
-                <li>
-                  Calls the Klima DAO contract to retire carbon based on the{' '}
-                  <a href="https://toucan.earth/" target="_blank" rel="noreferrer">
-                    Toucan Protocol: Base Carbon Tonne Token.
-                  </a>
-                </li>
+                <li>Swaps Input Token to USDC on Polygon</li>
+                <li>Use the USDC to call the offset contract</li>
               </ol>
               All in a single transaction on the destination chain, with no need to switch RPC
               networks and no need to have the gas token.
@@ -1032,17 +1017,6 @@ const Swap = () => {
 
             <Button
               className="btn-info-ukraine"
-              shape="round"
-              type="primary"
-              size={'large'}
-              onClick={() => {
-                window.open('https://etherspot.io/', '_blank')
-              }}>
-              Etherspot <ArrowRightOutlined />
-            </Button>
-
-            <Button
-              className="btn-wallet-ukraine"
               shape="round"
               type="primary"
               size={'large'}
