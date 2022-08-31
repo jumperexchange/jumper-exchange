@@ -62,7 +62,7 @@
 
 .claiming__share svg {
   width: auto;
-  margin-left: 6px
+  margin-left: 6px;
 }
 
 .claiming__share--discord {
@@ -72,7 +72,6 @@
 .claiming__share--discord svg {
   height: 40px;
 }
-
 
 .card {
   width: 80%;
@@ -118,9 +117,11 @@
 }
 
 @media only screen and (min-width: 550px) {
-  .site-layout--claiming {}
+  .site-layout--claiming {
+  }
 
-  .claiming {}
+  .claiming {
+  }
 
   .claiming__label {
     font-size: 32px;

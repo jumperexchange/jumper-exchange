@@ -10,8 +10,8 @@
 }
 
 @font-face {
-  font-family: "GT America";
-  src: url("./fonts//gt-america/GT-America-Regular.ttf") format("truetype");
+  font-family: 'GT America';
+  src: url('./fonts//gt-america/GT-America-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
