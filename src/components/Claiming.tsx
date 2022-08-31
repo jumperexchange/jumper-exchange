@@ -101,7 +101,7 @@ const Claiming = () => {
             </h2> */}
             <a
               className="claiming__share claiming__share--discord"
-              href="https://twitter.com/intent/tweet?text=I+have+just+claimed+my+LZRD+tokens!+Check+your+wallet+on+https://transferto.xyz/claiming+to+see+if+your+eligible,+too.%23lifiprotocol+%23transfertoxyz+%23multichainbridge"
+              href="https://discord.gg/lifi"
               target="_blank"
               rel="noreferrer">
               Join our Discord Community
