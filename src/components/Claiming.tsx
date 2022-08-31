@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 import DiscordIcon from '../../src/assets/icons/discordIcon'
 import { SuccessIcon } from '../../src/assets/icons/sucessIcon'
+import TwitterIcon from '../../src/assets/icons/twitterIcon'
 import { useMetatags } from '../hooks/useMetatags'
 import { useWallet } from '../providers/WalletProvider'
 import { readWallets } from '../services/localStorage'
@@ -95,9 +96,17 @@ const Claiming = () => {
             <p className="claiming__label claiming__label--notqualified">
               You don´t have any rewards yet.
             </p>
-            <h2 className="claiming__social">
+            {/* <h2 className="claiming__social">
               Join our Discord Community <DiscordIcon />
-            </h2>
+            </h2> */}
+            <a
+              className="claiming__share claiming__share--discord"
+              href="https://twitter.com/intent/tweet?text=I+have+just+claimed+my+LZRD+tokens!+Check+your+wallet+on+https://transferto.xyz/claiming+to+see+if+your+eligible,+too.%23lifiprotocol+%23transfertoxyz+%23multichainbridge"
+              target="_blank"
+              rel="noreferrer">
+              Join our Discord Community
+              <DiscordIcon />
+            </a>
           </>
         )}
         {claimingState === 'success' && (
@@ -111,15 +120,13 @@ const Claiming = () => {
             <p className="claiming__label claiming__label--success">
               Make some noise about your achievement!
             </p>
-            <div>Tweet here</div>
             <a
-              href="https://twitter.com/intent/tweet?text=I have just claimed my LZRD tokens! Check https://transferto.xyz/claiming to see if your eligible, too"
+              className="claiming__share"
+              href="https://twitter.com/intent/tweet?text=I+have+just+claimed+my+LZRD+tokens!+Check+your+wallet+on+https://transferto.xyz/claiming+to+see+if+your+eligible,+too.%23lifiprotocol+%23transfertoxyz+%23multichainbridge"
               target="_blank"
               rel="noreferrer">
-              <img
-                src="https://g.twimg.com/dev/documentation/image/Twitter_logo_blue_16.png"
-                alt="Tweet this"
-              />
+              Share this on Twitter
+              <TwitterIcon />
             </a>
           </>
         )}

@@ -26,7 +26,12 @@
 }
 
 .claiming__label--success {
-  margin-top: 55px;
+  font-weight: 800;
+  margin: 24px auto 0;
+}
+
+.claiming__social {
+  margin-top: 24px;
 }
 
 .claiming__social svg {
@@ -37,8 +42,37 @@
 .claiming__amount {
   font-size: 54px;
   line-height: 64px;
+  font-weight: 800;
   letter-spacing: -0.2px;
 }
+
+.claiming__share {
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 16px;
+  align-items: center;
+  margin: 12px auto 0;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  height: 48px;
+  width: 210px;
+  padding: 8px;
+}
+
+.claiming__share svg {
+  width: auto;
+  margin-left: 6px
+}
+
+.claiming__share--discord {
+  width: auto;
+}
+
+.claiming__share--discord svg {
+  height: 40px;
+}
+
 
 .card {
   width: 80%;
@@ -73,8 +107,14 @@
 }
 
 .card__button {
-  min-width: 250px;
   margin: 0 auto;
+}
+
+.card__button--claim {
+  width: auto;
+  min-width: 200px;
+  white-space: pre-wrap;
+  height: auto;
 }
 
 @media only screen and (min-width: 550px) {
@@ -86,7 +126,6 @@
     font-size: 32px;
     line-height: 40px;
     letter-spacing: -0.1px;
-    font-weight: 100;
   }
 
   .claiming__amount {
@@ -106,7 +145,27 @@
   }
 
   .card__button {
-    width: 200px;
     margin: 0 auto;
+  }
+
+  .claiming__label--notqualified {
+    min-width: 320px;
+    width: 500px;
+    margin: 0 auto;
+  }
+
+  .claiming__social {
+    margin: 0 auto;
+    min-width: 320px;
+    width: 500px;
+  }
+
+  .claiming__share--discord {
+    width: 300px;
+  }
+
+  .claiming__label--success {
+    min-width: 320px;
+    width: 500px;
   }
 }
