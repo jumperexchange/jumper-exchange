@@ -15,6 +15,10 @@ import { chainKeysToObject, Wallet } from '../types'
 const Claiming = () => {
   useMetatags({
     title: 'LI.FI - Claiming',
+    description: 'Some Claiming Description',
+    'og:title': 'LI.FI - Claim your LZRD',
+    'og:image': 'path/to/image.jpg',
+    'twitter:card': 'summary',
   })
   const [registeredWallets, setRegisteredWallets] = useState<Array<Wallet>>(() =>
     readWallets().map((address) => ({
@@ -25,7 +29,7 @@ const Claiming = () => {
   )
   const { account } = useWallet()
   const [claimingState, setClaimingState] = useState('network')
-  const [claimingAmount, setClaimingAmount] = useState(0.0)
+  const [claimingAmount, setClaimingAmount] = useState(0.1)
   const handleClick = () => {
     if (claimingState === 'network') {
       setClaimingState('claim')
@@ -108,6 +112,15 @@ const Claiming = () => {
               Make some noise about your achievement!
             </p>
             <div>Tweet here</div>
+            <a
+              href="https://twitter.com/intent/tweet?text=I have just claimed my LZRD tokens! Check https://transferto.xyz/claiming to see if your eligible, too"
+              target="_blank"
+              rel="noreferrer">
+              <img
+                src="https://g.twimg.com/dev/documentation/image/Twitter_logo_blue_16.png"
+                alt="Tweet this"
+              />
+            </a>
           </>
         )}
       </Content>
