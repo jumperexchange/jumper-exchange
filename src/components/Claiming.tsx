@@ -45,10 +45,6 @@ const Claiming = () => {
     'og:image': 'path/to/image.jpg',
     'twitter:card': 'summary',
   })
-
-  // dummy data
-  const [claimingAmount] = useState(0.1)
-
   //actual state
   const { account, switchChain } = useWallet()
   const claimContract = useMemo(
