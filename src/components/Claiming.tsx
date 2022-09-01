@@ -1,19 +1,28 @@
 import './Claiming.css'
 
+import { LoadingOutlined, WarningOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
+import { ethers } from 'ethers'
 import { useEffect, useMemo, useState } from 'react'
 
 import DiscordIcon from '../../src/assets/icons/discordIcon'
 import { SuccessIcon } from '../../src/assets/icons/sucessIcon'
 import TwitterIcon from '../../src/assets/icons/twitterIcon'
+import claimingContract from '../constants/abis/claimContract.json'
 import claims from '../constants/claims.json'
 import { useMetatags } from '../hooks/useMetatags'
 import { useWallet } from '../providers/WalletProvider'
 import { formatTokenAmount } from '../services/utils'
 import { ChainId, Token } from '../types'
 
-type ClaimingState = 'network' | 'claim' | 'success' | 'notqualified'
+type ClaimingState =
+  | 'network'
+  | 'claimQualified'
+  | 'success'
+  | 'notQualified'
+  | 'error'
+  | 'claimPending'
 
 const LZRD_TOKEN: Token = {
   address: '0x1a65532d7ffbbb8bab09f4eefd87d8518a630c95',
@@ -24,6 +33,8 @@ const LZRD_TOKEN: Token = {
   priceUSD: '0',
   logoURI: '',
 }
+
+const CLAIMING_CONTRACT_ADDRESS = '0x093653bc6d47eae0743200f8c7156ef8d554f23b'
 
 // actual component
 const Claiming = () => {
@@ -40,40 +51,55 @@ const Claiming = () => {
 
   //actual state
   const { account, switchChain } = useWallet()
-
-  const userClaim = useMemo(
+  const claimContract = useMemo(
+    () => new ethers.Contract(CLAIMING_CONTRACT_ADDRESS, claimingContract, account.signer),
+    [account.signer, account.chainId],
+  )
+  const userClaimData = useMemo(
     () => claims.claims.find((claim) => claim.address === account.address),
     [account.address],
   )
+  const [claimingState, setClaimingState] = useState<ClaimingState>('claimQualified')
 
-  const qualifiedSubstate: 'claim' | 'notqualified' = useMemo(() => {
-    if (!userClaim) return 'notqualified'
-    return 'claim'
-  }, [userClaim])
-
-  const [claimingState, setClaimingState] = useState<ClaimingState>(
-    account.chainId !== ChainId.ARB ? 'network' : qualifiedSubstate,
-  )
   useEffect(() => {
-    setClaimingState(account.chainId !== ChainId.ARB ? 'network' : qualifiedSubstate)
-  }, [account.chainId])
+    const setup = async () => {
+      if (!userClaimData) return setClaimingState('notQualified')
+      if (account.chainId !== ChainId.ARB) return setClaimingState('network')
+
+      if (userClaimData && account.signer && account.chainId === ChainId.ARB) {
+        const canClaim = await claimContract.functions.canClaim(
+          // account.address,
+          '0x38D77e28865Fe9a412a0FA5F5F12CBEa1f25a704',
+          userClaimData.amount,
+          userClaimData.series,
+          userClaimData.proof,
+        )
+        if (canClaim[0]) return setClaimingState('claimQualified')
+        return setClaimingState('notQualified')
+      }
+    }
+    setup()
+  }, [userClaimData, claimContract.signer, account.chainId])
 
   // logic
   const handleClick = async () => {
     if (claimingState === 'network') {
       await switchChain(ChainId.ARB)
     }
-    if (claimingState === 'claim') {
-      alert(
-        `User ${account.address?.substring(0, 5)}... claimed ${formatTokenAmount(
-          LZRD_TOKEN,
-          userClaim?.amount,
-        )}`,
-      )
-      if (claimingAmount > 0) {
+    if (claimingState === 'claimQualified') {
+      try {
+        setClaimingState('claimPending')
+        const claimTX = await claimContract.claim(
+          userClaimData!.amount, // TODO: check
+          userClaimData!.series,
+          userClaimData!.proof,
+        )
+
+        await claimTX.wait()
+
         setClaimingState('success')
-      } else {
-        setClaimingState('notqualified')
+      } catch (e) {
+        setClaimingState('error')
       }
     }
   }
@@ -81,35 +107,45 @@ const Claiming = () => {
   return (
     <div className="site-layout site-layout--claiming">
       <Content className="claiming">
-        {claimingState !== 'success' && claimingState !== 'notqualified' && (
-          <>
-            <p className="claiming__label">Total Rewards</p>
-            <h2 className="claiming__amount">{formatTokenAmount(LZRD_TOKEN, userClaim?.amount)}</h2>
-            <div className="card">
-              <>
-                <p className="card__title">Claim your rewards</p>
-                <Button
-                  onClick={handleClick}
-                  className="card__button card__button--claim"
-                  type={
-                    claimingState === 'network'
-                      ? 'default'
-                      : claimingState === 'claim'
-                      ? 'primary'
-                      : 'ghost'
-                  }
-                  size="large">
-                  {claimingState === 'network'
-                    ? 'Switch Network to Arbitrum'
-                    : claimingState === 'claim'
-                    ? 'Claim'
-                    : 'undefined'}
-                </Button>
-              </>
-            </div>
-          </>
-        )}
-        {claimingState === 'notqualified' && (
+        {claimingState !== 'success' &&
+          claimingState !== 'notQualified' &&
+          claimingState !== 'error' && (
+            <>
+              <p className="claiming__label">Total Rewards</p>
+              <h2 className="claiming__amount">
+                {formatTokenAmount(LZRD_TOKEN, userClaimData?.amount)}
+              </h2>
+              <div className="card">
+                <>
+                  <p className="card__title">
+                    {claimingState === 'claimQualified' ? 'Claim your rewards' : 'Pending'}
+                  </p>
+                  {claimingState === 'claimQualified' || claimingState === 'network' ? (
+                    <Button
+                      onClick={handleClick}
+                      className="card__button card__button--claim"
+                      type={
+                        claimingState === 'network'
+                          ? 'default'
+                          : claimingState === 'claimQualified'
+                          ? 'primary'
+                          : 'ghost'
+                      }
+                      size="large">
+                      {claimingState === 'network'
+                        ? 'Switch Network to Arbitrum'
+                        : claimingState === 'claimQualified'
+                        ? 'Claim'
+                        : 'undefined'}
+                    </Button>
+                  ) : (
+                    <LoadingOutlined style={{ color: 'green', fontSize: 100 }} />
+                  )}
+                </>
+              </div>
+            </>
+          )}
+        {claimingState === 'notQualified' && (
           <>
             <p className="claiming__label claiming__label--notqualified">
               You don´t have any rewards yet.
@@ -146,6 +182,17 @@ const Claiming = () => {
               Share this on Twitter
               <TwitterIcon />
             </a>
+          </>
+        )}
+        {claimingState === 'error' && ( // TODO: this is only WIP
+          <>
+            <div className="card card--success">
+              <>
+                <WarningOutlined style={{ color: 'red', fontSize: 163 }} />
+                <p className="card__title">Error During Transaction </p>
+              </>
+            </div>
+            <p className="claiming__label claiming__label--success">Please try again later</p>
           </>
         )}
       </Content>
