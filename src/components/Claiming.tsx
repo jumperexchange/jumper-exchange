@@ -64,14 +64,26 @@ const Claiming = () => {
 
       if (userClaimData && account.signer && account.chainId === ChainId.ARB) {
         const canClaim = await claimContract.functions.canClaim(
-          // account.address,
-          '0x38D77e28865Fe9a412a0FA5F5F12CBEa1f25a704',
+          account.address,
           userClaimData.amount,
           userClaimData.series,
           userClaimData.proof,
         )
-        if (canClaim[0]) return setClaimingState('claimQualified')
-        return setClaimingState('notQualified')
+
+        const hash = ethers.utils.solidityKeccak256(
+          ['address', 'uint256', 'string'],
+          [account.address, userClaimData.amount, userClaimData.series],
+        )
+
+        const alreadyClaimed = await claimContract.functions.claims(hash)
+
+        if (canClaim[0] && !alreadyClaimed[0]) {
+          return setClaimingState('claimQualified')
+        } else if (alreadyClaimed[0]) {
+          return setClaimingState('success')
+        } else {
+          return setClaimingState('notQualified')
+        }
       }
     }
     setup()
@@ -90,9 +102,7 @@ const Claiming = () => {
           userClaimData!.series,
           userClaimData!.proof,
         )
-
         await claimTX.wait()
-
         setClaimingState('success')
       } catch (e) {
         setClaimingState('error')
