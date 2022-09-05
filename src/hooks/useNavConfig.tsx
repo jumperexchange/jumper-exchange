@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import WalletButtons from '../components/web3/WalletButtons'
 import {
+  REACT_APP_ENABLE_CLAIMING,
   REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
   REACT_APP_ENABLE_SWAP_V2,
 } from '../constants/featureFlags'
@@ -26,14 +27,16 @@ export const useNavConfig = () => {
             key: '/swap-v2',
           }
         : null,
-      {
-        label: (
-          <a href="/claiming" rel="nofollow noreferrer">
-            Claiming
-          </a>
-        ),
-        key: '/claiming',
-      },
+      REACT_APP_ENABLE_CLAIMING
+        ? {
+            label: (
+              <a href="/claiming" rel="nofollow noreferrer">
+                Claiming
+              </a>
+            ),
+            key: '/claiming',
+          }
+        : null,
       { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
       {
         label: (
