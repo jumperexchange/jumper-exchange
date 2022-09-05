@@ -251,7 +251,7 @@ function App() {
                 )}
                 {ENABLE_KLIMA_STAKE_SHOWCASE && (
                   <Route
-                    path="/showcase/carbon-offset-v2"
+                    path="/showcase/klima-stake-v2"
                     element={
                       <div className="lifiWrap">
                         <SwapKlimaStakeV2 />
