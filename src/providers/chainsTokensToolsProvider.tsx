@@ -65,7 +65,7 @@ export const ChainsTokensToolsProvider: React.FC<PropsWithChildren<{}>> = ({ chi
         const chain: Chain | undefined = data.chains.find(
           (chain: Chain) => chain.id === Number(chainId),
         )
-        if (!chain) return setData((data) => ({ ...data, tokens: {}, tokensLoaded: false }))
+        if (!chain) return
         if (!newTokens[chain.key]) newTokens[chain.key] = []
         newTokens[chain.key] = tokens[chainId]
       }
@@ -82,8 +82,10 @@ export const ChainsTokensToolsProvider: React.FC<PropsWithChildren<{}>> = ({ chi
 
       setData((data) => ({ ...data, tokens: newTokens, tokensLoaded: true }))
     }
-    load()
-  }, [data.chains])
+    if (data.chains) {
+      load()
+    }
+  }, [data.chains.length])
 
   //get tools
   useEffect(() => {
