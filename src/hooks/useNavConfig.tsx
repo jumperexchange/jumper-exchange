@@ -80,11 +80,17 @@ export const useNavConfig = () => {
                     key: '/showcase/etherspot-klima',
                     label: <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>,
                   },
+                  {
+                    key: '/showcase/carbon-offset',
+                    label: <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>,
+                  },
                   REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE
                     ? {
-                        key: '/showcase/carbon-offset',
+                        key: '/showcase/carbon-offset-v2',
                         label: (
-                          <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>
+                          <Link to="/showcase/carbon-offset-v2">
+                            Cross-Chain Carbon Offsetting V2
+                          </Link>
                         ),
                       }
                     : null,

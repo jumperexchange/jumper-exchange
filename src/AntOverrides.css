@@ -46,6 +46,9 @@ Global overrides of ant design styles
 /* Collapse */
 .ant-collapse-header {
   font-family: 'GT America' !important;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
 }
 
 /* Select */
