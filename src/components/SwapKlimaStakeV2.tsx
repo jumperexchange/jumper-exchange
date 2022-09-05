@@ -65,9 +65,8 @@ import {
   TokenWithAmounts,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
-import { ResidualRouteKlimaStakeModal } from './ResidualRouteSwappingModal/ResidualRouteKlimaStakeModal'
 import SwapForm from './SwapForm/SwapForm'
-import { ToSectionKlimaStaking } from './SwapForm/SwapFormToSections/ToSectionKlimaStaking'
+import { FromSectionKlimaStaking } from './SwapForm/SwapFormFromSections/FromSectionKlimaStaking'
 import { ToSectionKlimaStakingV2 } from './SwapForm/SwapFormToSections/ToSectionKlimaStakingV2'
 import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
@@ -76,7 +75,6 @@ const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
 
 const history = createBrowserHistory()
 let currentRouteCallId: string
-const allowedDex = ExchangeTool.zerox
 
 const parseChain = (passed: string) => {
   // is ChainKey?
@@ -108,13 +106,6 @@ const parseToken = (
   const fromTokenId = ethers.utils.getAddress(passed.trim()).toLowerCase()
   // does token address exist in our default tokens? (tokenlists not loaded yet)
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
-}
-
-interface ExtendedRoute {
-  lifiRoute?: RouteType
-  simpleTransfer?: ExtendedTransactionRequest
-  gasStep: Step
-  stakingStep: Step
 }
 
 const Swap = () => {
@@ -603,6 +594,8 @@ const Swap = () => {
           currentRouteCallId = id
           const result = await LiFi.getContractCallQuote(request)
 
+          // console.log('result', result)
+
           result.estimate.toAmount = new BigNumber(depositAmount)
             .shiftedBy(tokenPolygonSKLIMA.decimals)
             .toFixed(0)
@@ -823,10 +816,23 @@ const Swap = () => {
                   balances={balances}
                   allowSameChains={true}
                   fixedWithdraw={true}
+                  alternativeFromSection={
+                    <FromSectionKlimaStaking
+                      depositChain={fromChainKey}
+                      setDepositChain={setFromChainKey}
+                      depositToken={fromTokenAddress}
+                      setDepositToken={setFromTokenAddress}
+                      depositAmount={depositAmount}
+                      availableChains={availableChains}
+                      tokens={tokens}
+                      balances={balances}
+                      setDepositAmount={setDepositAmount}
+                    />
+                  }
                   alternativeToSection={
                     <ToSectionKlimaStakingV2
                       route={route}
-                      tokenPolygonSKLIMA={tokenPolygonSKLIMA}
+                      fromToken={route.fromToken}
                       routesLoading={routesLoading}
                     />
                   }
