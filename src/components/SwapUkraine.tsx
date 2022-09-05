@@ -60,6 +60,8 @@ import {
   SwapPageStartParams,
   Token,
   TokenAmount,
+  TokenAmountList,
+  TokenWithAmounts,
 } from '../types'
 import SwapForm from './SwapForm/SwapForm'
 import { ToSectionUkraine } from './SwapForm/SwapFormToSections/ToSectionUkraine'
@@ -72,11 +74,6 @@ const MORE_INFO_PAGE_URL =
   'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
 
 let currentRouteCallId: string
-
-interface TokenWithAmounts extends Token {
-  amount?: BigNumber
-  amountRendered?: string
-}
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
@@ -129,9 +126,6 @@ const parseToken = (
   // does token address exist in our default tokens? (tokenlists not loaded yet)
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
-interface TokenAmountList {
-  [ChainKey: string]: Array<TokenWithAmounts>
-}
 
 const Swap = () => {
   useMetatags({
@@ -154,7 +148,7 @@ const Swap = () => {
   const [toTokenAddress] = useState<string | undefined>(
     findDefaultToken(CoinKey.ETH, ChainId.POL).address,
   )
-  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
+  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens as TokenAmountList)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
@@ -252,7 +246,7 @@ const Swap = () => {
 
   //get tokens
   useEffect(() => {
-    setTokens(chainsTokensTools.tokens)
+    setTokens(chainsTokensTools.tokens as TokenAmountList)
   }, [chainsTokensTools.tokens])
 
   //get tools

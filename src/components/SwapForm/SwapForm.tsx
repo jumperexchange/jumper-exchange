@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
 import { useWallet } from '../../providers/WalletProvider'
-import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../../types'
+import { Chain, ChainKey, TokenAmount, TokenAmountList } from '../../types'
 import ChainSelect from '../ChainSelect'
 import TokenSelect from '../TokenSelect'
 
@@ -27,7 +27,7 @@ interface SwapFormProps {
   estimatedMinWithdrawAmount?: string
 
   availableChains: Array<Chain>
-  tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
+  tokens: TokenAmountList
   balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   allowSameChains?: boolean
   forceSameToken?: boolean

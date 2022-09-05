@@ -597,7 +597,7 @@ const Swap = () => {
         const txOffset = await getOffsetCarbonTransaction({
           address: account.address,
           amountInCarbon: true,
-          quantity: sourceAmount.inputToken,
+          quantity: sourceAmount.retirementToken,
           inputTokenAddress: toTokenAddress,
           retirementTokenAddress: TOUCAN_BCT_ADDRESS,
           beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || account.address,
@@ -616,12 +616,13 @@ const Swap = () => {
           toAmount: sourceAmount.inputToken,
           toContractAddress: txOffset.to!,
           toContractCallData: txOffset.data!,
-          toContractGasLimit: '90000',
+          toContractGasLimit: '200000', //'90000',
           //optional
           integrator: 'lifi-klima-carbon-offset',
           slippage: optionSlippage / 100,
           allowBridges: ['connext'],
         }
+
         const id = uuid()
         try {
           currentRouteCallId = id
@@ -1051,7 +1052,6 @@ const Swap = () => {
           width={700}
           footer={null}>
           <Swapping
-            fixedRecipient={true}
             route={selectedRoute}
             settings={{ infiniteApproval: optionInfiniteApproval }}
             updateRoute={() => {
