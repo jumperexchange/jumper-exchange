@@ -22,8 +22,10 @@ export const useStepReturnInfo = (step: Step) => {
       const receivedToken = step.execution.toToken || step.action.toToken // use action.toToken as fallback in case the receipt parsing on backen fails and returns nothing
       const receivedAmount = new BigNumber(step.execution?.toAmount || '0')
       const totalBalanceOfReceivedToken = await LiFi.getTokenBalance(account.address, receivedToken)
-      const receivedTokenMatchesPlannedToken =
-        step.execution.toToken?.address === step.action.toToken.address
+      const receivedTokenMatchesPlannedToken = step.execution.toToken
+        ? step.execution.toToken.address === step.action.toToken.address
+        : true
+
       const toChain = getChainById(step.action.toChainId)
       setStepReturnInfo({
         receivedToken,

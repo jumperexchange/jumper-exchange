@@ -1464,13 +1464,6 @@
   dependencies:
     "@ethersproject/logger" "^5.7.0"
 
-"@ethersproject/bytes@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@ethersproject/bytes/-/bytes-5.6.1.tgz#24f916e411f82a8a60412344bf4a813b917eefe7"
-  integrity sha512-NwQt7cKn5+ZE4uDn+X5RAXLp46E1chXoaMmrxAyA0rblpxz8t58lVkrHXoRIn0lz1joQElQ8410GqhTqMOwc6g==
-  dependencies:
-    "@ethersproject/logger" "^5.6.0"
-
 "@ethersproject/constants@5.7.0", "@ethersproject/constants@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/constants/-/constants-5.7.0.tgz#df80a9705a7e08984161f09014ea012d1c75295e"
@@ -1583,7 +1576,7 @@
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/sha2" "^5.7.0"
 
-"@ethersproject/properties@5.7.0", "@ethersproject/properties@^5.6.0", "@ethersproject/properties@^5.7.0":
+"@ethersproject/properties@5.7.0", "@ethersproject/properties@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/properties/-/properties-5.7.0.tgz#a6e12cb0439b878aaf470f1902a176033067ed30"
   integrity sha512-J87jy8suntrAkIZtecpxEPxY//szqr1mlBaYlQ0r4RCaiD2hjheqF9s1LVE8vVuJCXisjIP+JgtK/Do54ej4Sw==
@@ -2089,10 +2082,30 @@
     eth-rpc-errors "^4.0.3"
     ethers "^5.7.0"
 
+"@lifi/sdk@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@lifi/sdk/-/sdk-1.4.1.tgz#164222d1eba815cfe0c5fcb04644866122b82ec8"
+  integrity sha512-B5/QpIhM82LKeO0dZVPmi4Y6Y8Sc/xBhu+zADUSZQL38ICB7IV3PbjEZ0GTzA13QWoEpix7TNrLpvvSjuxQ5uQ==
+  dependencies:
+    "@ethersproject/abi" "^5.7.0"
+    "@ethersproject/contracts" "^5.7.0"
+    "@lifi/types" "^1.6.0"
+    axios "^0.27.2"
+    bignumber.js "^9.1.0"
+    eth-rpc-errors "^4.0.3"
+    ethers "^5.7.0"
+
 "@lifi/types@^1.5.1":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@lifi/types/-/types-1.5.1.tgz#675656b01972da8c68cb514b80f17192089223a3"
   integrity sha512-hM8SH/rupv8ouVeU4S6teSiS33F29Q8Ly75MkMtSsS13X01EZ+YY7mFmgB3uFjTYDrzxnISb+TMmq/CD8b5HBA==
+  dependencies:
+    ethers "^5.6.9"
+
+"@lifi/types@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@lifi/types/-/types-1.6.0.tgz#ab8203bbfd063e406170e21b710cf4c9e6b03582"
+  integrity sha512-8oFhHmI+2z2b2nyKfSBWEsrtX1LIcWvjI88OC06maq7G6i8tbzMfD5N1lHW2JwTjamfavvALwEYpJVttZu1r2w==
   dependencies:
     ethers "^5.6.9"
 

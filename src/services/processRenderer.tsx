@@ -85,9 +85,9 @@ const substatusMessages: Record<StatusMessage, Partial<Record<Substatus, string>
       'Your transaction is still being processed. Sit back and relax. There is nothing you need to do on your end. It is also not possible to speed up this part of the process. If it takes an unusually long time for this to process, please do not worry. Your funds are not missing.',
   },
   DONE: {
-    PARTIAL: 'Congrats! Your assets have arrived.',
+    PARTIAL: 'Some of the received tokens are not the requested destination tokens.',
     REFUNDED: 'Your tokens have been returned to your address on your sending chain.',
-    COMPLETED: 'Congrats! Your assets have arrived.',
+    COMPLETED: 'Congrats! Your assets have been transferred.',
   },
   FAILED: {},
   INVALID: {},

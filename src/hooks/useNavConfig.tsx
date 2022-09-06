@@ -3,7 +3,10 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import WalletButtons from '../components/web3/WalletButtons'
-import { REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE } from '../constants/featureFlags'
+import {
+  REACT_APP_ENABLE_CLAIMING,
+  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
+} from '../constants/featureFlags'
 import { useIsMobile } from './useIsMobile'
 
 export const useNavConfig = () => {
@@ -12,6 +15,16 @@ export const useNavConfig = () => {
   const navConfig = useMemo(() => {
     return [
       { label: <Link to="/swap">Swap & Bridge</Link>, key: '/swap' },
+      REACT_APP_ENABLE_CLAIMING
+        ? {
+            label: (
+              <a href="/claiming" rel="nofollow noreferrer">
+                Claiming
+              </a>
+            ),
+            key: '/claiming',
+          }
+        : null,
       { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
       {
         label: (
@@ -55,11 +68,17 @@ export const useNavConfig = () => {
                     key: '/showcase/etherspot-klima',
                     label: <Link to="/showcase/etherspot-klima">Cross-Chain Klima Staking</Link>,
                   },
+                  {
+                    key: '/showcase/carbon-offset',
+                    label: <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>,
+                  },
                   REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE
                     ? {
-                        key: '/showcase/carbon-offset',
+                        key: '/showcase/carbon-offset-v2',
                         label: (
-                          <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>
+                          <Link to="/showcase/carbon-offset-v2">
+                            Cross-Chain Carbon Offsetting V2
+                          </Link>
                         ),
                       }
                     : null,

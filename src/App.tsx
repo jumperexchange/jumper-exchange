@@ -9,23 +9,23 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import DiscordIcon from './assets/icons/discordIcon'
 import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
+import Claiming from './components/Claiming'
 import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
 import NotFoundPage from './components/NotFoundPage'
 import { Swap } from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
+import SwapCarbonOffsetV2 from './components/SwapCarbonOffsetV2'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
 import SwapUkraine from './components/SwapUkraine'
 import SwapV1 from './components/SwapV1'
 import WalletButtons from './components/web3/WalletButtons'
-import {
-  ENABLE_ETHERSPOT_KLIMA_SHOWCASE,
-  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
-} from './constants/featureFlags'
+import { REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE } from './constants/featureFlags'
 import { useNavConfig } from './hooks/useNavConfig'
 import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
+import { ToSectionCarbonOffsetProvider } from './providers/ToSectionCarbonOffsetProvider'
 import { WalletProvider } from './providers/WalletProvider'
 import setMetatags from './services/metatags'
 
@@ -68,7 +68,10 @@ function App() {
     })
     return (
       <div className="lifiEmbed">
-        <SwapCarbonOffsetEmbed />
+        <ToSectionCarbonOffsetProvider>
+          <SwapCarbonOffsetEmbed />
+        </ToSectionCarbonOffsetProvider>
+
         {/* <div className="poweredBy">
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
             <PoweredByLiFi />
@@ -80,6 +83,7 @@ function App() {
       </div>
     )
   }
+
   function stakeKlimaEmbedView() {
     setMetatags({
       title: 'LI.FI - Stake Klima',
@@ -185,6 +189,14 @@ function App() {
                   }
                 />
                 <Route
+                  path="/claiming"
+                  element={
+                    <div className="lifiWrap claim-page">
+                      <Claiming />
+                    </div>
+                  }
+                />
+                <Route
                   path="/swap-v1"
                   element={
                     <div className="lifiWrap swap-page-v1">
@@ -201,22 +213,34 @@ function App() {
                   }
                 />
                 <Route path="/ukraine" element={<Navigate to="/showcase/ukraine" />} />
-                {ENABLE_ETHERSPOT_KLIMA_SHOWCASE && (
-                  <Route
-                    path="/showcase/etherspot-klima"
-                    element={
-                      <div className="lifiWrap">
-                        <SwapEtherspotKlimaZap />
-                      </div>
-                    }
-                  />
-                )}
+                <Route
+                  path="/showcase/etherspot-klima"
+                  element={
+                    <div className="lifiWrap">
+                      <SwapEtherspotKlimaZap />
+                    </div>
+                  }
+                />
+
+                <Route
+                  path="/showcase/carbon-offset"
+                  element={
+                    <div className="lifiWrap">
+                      <ToSectionCarbonOffsetProvider>
+                        <SwapCarbonOffset />
+                      </ToSectionCarbonOffsetProvider>
+                    </div>
+                  }
+                />
+
                 {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
                   <Route
-                    path="/showcase/carbon-offset"
+                    path="/showcase/carbon-offset-v2"
                     element={
                       <div className="lifiWrap">
-                        <SwapCarbonOffset />
+                        <ToSectionCarbonOffsetProvider>
+                          <SwapCarbonOffsetV2 />
+                        </ToSectionCarbonOffsetProvider>
                       </div>
                     }
                   />

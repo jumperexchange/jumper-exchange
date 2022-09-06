@@ -43,6 +43,39 @@ export const getOffsetCarbonTransaction = async (params: {
     params.retirementMessage || '',
   )
 }
+
+export const getCarbonOffsetSourceAmount = async (
+  signerOrProvider: ethers.Signer | ethers.providers.Provider,
+  params: {
+    inputToken: Token
+    retirementToken: Token
+    amountInCarbon: string
+  },
+) => {
+  const contract = new ethers.Contract(
+    KLIMA_CARBON_OFFSET_CONTRACT,
+    KlimaRetirementAggregator.abi,
+    signerOrProvider,
+  )
+
+  const sourceAmount: [BigNumberish, BigNumberish] = await contract.getSourceAmount(
+    params.inputToken.address,
+    params.retirementToken.address,
+    params.amountInCarbon,
+    true,
+  )
+
+  // return {
+  //   inputToken: ethers.utils.formatUnits(sourceAmount[0], params.inputToken.decimals),
+  //   retirementToken: ethers.utils.formatUnits(sourceAmount[1], params.retirementToken.decimals),
+  // }
+
+  return {
+    inputToken: sourceAmount[0].toString(),
+    retirementToken: sourceAmount[1].toString(),
+  }
+}
+
 export const getTransferTransaction = async (
   tokenAddress: string,
   toAddress: string,
