@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
 import { useWallet } from '../../providers/WalletProvider'
-import { Chain, ChainKey, TokenAmount, TokenWithAmounts } from '../../types'
+import { Chain, ChainKey, TokenAmount, TokenAmountList } from '../../types'
 import ChainSelect from '../ChainSelect'
 import TokenSelect from '../TokenSelect'
 
@@ -27,12 +27,13 @@ interface SwapFormProps {
   estimatedMinWithdrawAmount?: string
 
   availableChains: Array<Chain>
-  tokens: { [ChainKey: string]: Array<TokenWithAmounts> }
+  tokens: TokenAmountList
   balances: { [ChainKey: string]: Array<TokenAmount> } | undefined
   allowSameChains?: boolean
   forceSameToken?: boolean
   fixedWithdraw?: boolean
   alternativeToSection?: ReactElement
+  alternativeFromSection?: ReactElement
 
   fromSectionDesignator?: string
   toSectionDesignator?: string
@@ -62,6 +63,7 @@ const SwapForm = ({
   forceSameToken,
   fixedWithdraw,
   alternativeToSection,
+  alternativeFromSection,
 
   fromSectionDesignator,
   toSectionDesignator,
@@ -210,61 +212,69 @@ const SwapForm = ({
 
   return (
     <>
-      <Row style={{ marginBottom: 8 }}>
-        <Col span={10}>
-          <div className="form-text">{fromSectionDesignator ? fromSectionDesignator : 'From:'}</div>
-        </Col>
-      </Row>
+      {!alternativeFromSection ? (
+        <>
+          <Row style={{ marginBottom: 8 }}>
+            <Col span={10}>
+              <div className="form-text">
+                {fromSectionDesignator ? fromSectionDesignator : 'From:'}
+              </div>
+            </Col>
+          </Row>
 
-      <Row style={{ marginBottom: 8 }} gutter={[0, 0]}>
-        <Col span={12}>
-          <div className="form-input-wrapper chain-select">
-            <ChainSelect
-              availableChains={availableChains}
-              selectedChain={depositChain}
-              onChangeSelectedChain={onChangeDepositChain}
-            />
-          </div>
-        </Col>
-        <Col span={12}>
-          <div className="form-input-wrapper token-select">
-            <TokenSelect
-              tokens={tokens}
-              balances={balances}
-              selectedChain={depositChain}
-              selectedToken={depositToken}
-              onChangeSelectedToken={onChangeDepositToken}
-              selectReference={depositSelectRef}
-              grayed={true}
-            />
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24}>
-          <div className="form-input-wrapper">
-            <Input
-              style={{ height: 50 }}
-              type="number"
-              defaultValue={0.0}
-              min={0}
-              step={0.000000000000000001}
-              value={depositAmountString}
-              onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
-              placeholder="0.0"
-              bordered={false}
-              className={!hasSufficientBalance() ? 'insufficient' : ''}
-            />
-            <Button
-              className="maxButton"
-              type="text"
-              disabled={!depositToken}
-              onClick={() => setMaxDeposit()}>
-              MAX
-            </Button>
-          </div>
-        </Col>
-      </Row>
+          <Row style={{ marginBottom: 8 }} gutter={[0, 0]}>
+            <Col span={12}>
+              <div className="form-input-wrapper chain-select">
+                <ChainSelect
+                  availableChains={availableChains}
+                  selectedChain={depositChain}
+                  onChangeSelectedChain={onChangeDepositChain}
+                />
+              </div>
+            </Col>
+            <Col span={12}>
+              <div className="form-input-wrapper token-select">
+                <TokenSelect
+                  tokens={tokens}
+                  balances={balances}
+                  selectedChain={depositChain}
+                  selectedToken={depositToken}
+                  onChangeSelectedToken={onChangeDepositToken}
+                  selectReference={depositSelectRef}
+                  grayed={true}
+                />
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <div className="form-input-wrapper">
+                <Input
+                  style={{ height: 50 }}
+                  type="number"
+                  defaultValue={0.0}
+                  min={0}
+                  step={0.000000000000000001}
+                  value={depositAmountString}
+                  onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
+                  placeholder="0.0"
+                  bordered={false}
+                  className={!hasSufficientBalance() ? 'insufficient' : ''}
+                />
+                <Button
+                  className="maxButton"
+                  type="text"
+                  disabled={!depositToken}
+                  onClick={() => setMaxDeposit()}>
+                  MAX
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </>
+      ) : (
+        alternativeFromSection
+      )}
 
       {/* Swap from <-> to button */}
       {!alternativeToSection ? (

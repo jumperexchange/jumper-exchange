@@ -5,6 +5,15 @@
     url('./fonts/gt-america/GT-America-LC-Standard-Bold.woff') format('woff'),
     url('./fonts/gt-america/GT-America-LC-Standard-Bold.woff2') format('woff2'),
     url('./fonts/gt-america/GT-America-LC-Standard-Bold.otf') format('otf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GT America';
+  src: url('./fonts//gt-america/GT-America-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 html {

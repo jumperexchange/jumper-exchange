@@ -1,4 +1,4 @@
-import { Chain, getChainById } from '@lifi/sdk'
+import { Chain } from '@lifi/sdk'
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
 
 import LiFi from '../LiFi'
@@ -62,7 +62,10 @@ export const ChainsTokensToolsProvider: React.FC<PropsWithChildren<{}>> = ({ chi
       const newTokens: TokenAmountList = {}
       // let chain: keyof typeof tokens
       for (let chainId in tokens) {
-        const chain = getChainById(Number(chainId))
+        const chain: Chain | undefined = data.chains.find(
+          (chain: Chain) => chain.id === Number(chainId),
+        )
+        if (!chain) return
         if (!newTokens[chain.key]) newTokens[chain.key] = []
         newTokens[chain.key] = tokens[chainId]
       }
@@ -79,8 +82,10 @@ export const ChainsTokensToolsProvider: React.FC<PropsWithChildren<{}>> = ({ chi
 
       setData((data) => ({ ...data, tokens: newTokens, tokensLoaded: true }))
     }
-    load()
-  }, [])
+    if (data.chains) {
+      load()
+    }
+  }, [data.chains.length])
 
   //get tools
   useEffect(() => {
