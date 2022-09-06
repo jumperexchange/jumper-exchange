@@ -1160,7 +1160,7 @@ const Swap = () => {
         {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
           <Modal
             className="swapModal"
-            visible={selectedRoute.lifiRoute.steps.length > 0}
+            open={selectedRoute.lifiRoute.steps.length > 0}
             onOk={() => {
               setSelectedRoute(undefined)
               updateBalances()
@@ -1196,7 +1196,7 @@ const Swap = () => {
               setEtherspotWalletBalance(undefined)
               setResidualRoute(undefined)
             }}
-            visible={!!etherspotWalletBalance && !!residualRoute}
+            open={!!etherspotWalletBalance && !!residualRoute}
             okText="Swap, stake and receive sKlima"
             footer={null}>
             <ResidualRouteCarbonOffsetModal

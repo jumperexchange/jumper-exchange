@@ -831,7 +831,7 @@ const Dashboard = () => {
 
       <Modal
         title="Add Wallet"
-        visible={walletModalVisible}
+        open={walletModalVisible}
         onOk={handleWalletModalAdd}
         onCancel={handleWalletModalClose}
         zIndex={800}

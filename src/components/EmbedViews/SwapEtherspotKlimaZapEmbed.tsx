@@ -1083,7 +1083,7 @@ const Swap = () => {
       {selectedRoute && (
         <Modal
           className="modal-klima-embed  swapModal"
-          visible={!!selectedRoute}
+          open={!!selectedRoute}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()
@@ -1120,7 +1120,7 @@ const Swap = () => {
             setEtherspotWalletBalance(undefined)
             setResidualRoute(undefined)
           }}
-          visible={!!etherspotWalletBalance && !!residualRoute}
+          open={!!etherspotWalletBalance && !!residualRoute}
           okText="Swap, stake and receive sKlima"
           // cancelText="Send USDC to my wallet"
           footer={null}>

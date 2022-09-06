@@ -1038,7 +1038,7 @@ const Swap = () => {
       {selectedRoute && !!selectedRoute.steps.length && (
         <Modal
           className="swapModal"
-          visible={selectedRoute.steps.length > 0}
+          open={selectedRoute.steps.length > 0}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()

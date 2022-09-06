@@ -1083,7 +1083,7 @@ const SwapV1 = () => {
       {selectedRoute && !!selectedRoute.steps.length && (
         <Modal
           className="swapModal"
-          visible={selectedRoute.steps.length > 0}
+          open={selectedRoute.steps.length > 0}
           onOk={() => {
             LiFi.moveExecutionToBackground(selectedRoute)
             resetForegroundRoute()
@@ -1120,7 +1120,7 @@ const SwapV1 = () => {
 
       <Modal
         className="wallet-selection-modal"
-        visible={showWalletConnectChainSwitchModal.show}
+        open={showWalletConnectChainSwitchModal.show}
         onOk={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
         onCancel={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
         footer={null}>

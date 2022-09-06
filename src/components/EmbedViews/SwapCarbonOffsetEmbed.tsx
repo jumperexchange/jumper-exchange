@@ -1043,7 +1043,7 @@ const Swap = () => {
         {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
           <Modal
             className="modal-klima-embed swapModal"
-            visible={selectedRoute.lifiRoute.steps.length > 0}
+            open={selectedRoute.lifiRoute.steps.length > 0}
             onOk={() => {
               setSelectedRoute(undefined)
               updateBalances()
@@ -1080,7 +1080,7 @@ const Swap = () => {
               setEtherspotWalletBalance(undefined)
               setResidualRoute(undefined)
             }}
-            visible={!!etherspotWalletBalance && !!residualRoute}
+            open={!!etherspotWalletBalance && !!residualRoute}
             okText="Swap, stake and receive sKlima"
             // cancelText="Send USDC to my wallet"
             footer={null}>
