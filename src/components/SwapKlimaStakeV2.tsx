@@ -929,40 +929,30 @@ const Swap = () => {
             </div>
           </Col>
         </Row>
-
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              LI.FI and Etherspot teams have joined hands to support cross-chain deposits into the
-              Klima staking contract.
+              LI.FI now supports xChain Contract Calls into the Klima staking contract with only one
+              transaction confirmation.
             </Title>
             <br />
 
             <Divider style={{ borderColor: 'black' }} />
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening here?</h2>
-              We’re combining
-              <ol>
-                <li>
-                  LI.FI’s ability to perform <b>any-2-any cross-chain swaps</b> and
-                </li>
-                <li>
-                  Etherspot’s smart contract wallet feature through which we can{' '}
-                  <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
-                </li>
-              </ol>
-              to <b>facilitate cross-chain staking into the Klima</b> smart contract in just 3 steps
-              which would normally be 9 steps on 3 different dapps.
+              We are combining the power of asset bridging with cross-chain message passing to
+              perform xChain Contract Call staking with one transaction confirmation. We are
+              abstracting steps needed to perform such actions - from{' '}
+              <b>9 steps on 3 different dApps</b>, to just a <b>single step</b> on LI.FI's
+              interface.
             </Paragraph>
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening in the background?</h2>
-              When a cross-chain swap is completed via LI.FI, the asset is received on the
-              counterfactual smart wallet that the user controls on Polygon. The user then executes
-              a transaction that:
+              When a cross-chain swap is completed via LI.FI, we combine swap + bridge + destination
+              contract call (xChain Contract Call) within our smart contract:
               <ol>
-                <li>Swaps USDC to MATIC.</li>
-                <li>Swaps the USDC to KLIMA.</li>
-                <li>Deploys the Smart Wallet.</li>
+                <li>Swaps USDC to KLIMA. </li>
+                <li>Send xChain Contract Call to staking contract. </li>
                 <li>Stakes KLIMA to receive sKLIMA.</li>
                 <li>Sends sKLIMA back to the keywallet address (e.g. Metamask)</li>
               </ol>
@@ -972,17 +962,6 @@ const Swap = () => {
 
             <Button
               className="btn-info-ukraine"
-              shape="round"
-              type="primary"
-              size={'large'}
-              onClick={() => {
-                window.open('https://etherspot.io/', '_blank')
-              }}>
-              Etherspot <ArrowRightOutlined />
-            </Button>
-
-            <Button
-              className="btn-wallet-ukraine"
               shape="round"
               type="primary"
               size={'large'}
