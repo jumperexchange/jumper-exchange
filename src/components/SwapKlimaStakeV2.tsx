@@ -22,7 +22,7 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
@@ -34,9 +34,7 @@ import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { useWallet } from '../providers/WalletProvider'
 import { getStakeKlimaTransaction } from '../services/etherspotTxService'
-import { readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
-import { ExtendedTransactionRequest } from '../services/routingService'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
@@ -50,14 +48,11 @@ import {
   ChainKey,
   CoinKey,
   ContractCallQuoteRequest,
-  ExchangeTool,
-  ExtendedRouteOptional,
   findDefaultToken,
   getChainById,
   getChainByKey,
   isSwapStep,
   Route as RouteType,
-  Step,
   SwapPageStartParams,
   Token,
   TokenAmount,
@@ -155,11 +150,7 @@ const Swap = () => {
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
-  const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
-  const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
-  const [residualRoute, setResidualRoute] = useState<ExtendedRouteOptional>()
   // Misc
-  const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
 
@@ -557,10 +548,9 @@ const Swap = () => {
 
       if (
         depositAmount.gt(0) &&
+        depositAmount &&
         fromChainKey &&
         fromTokenAddress &&
-        toChainKey &&
-        toTokenAddress &&
         account.address &&
         tokenPolygonKLIMA &&
         tokenPolygonSKLIMA
@@ -583,18 +573,16 @@ const Swap = () => {
           toContractAddress: klimaStakeTx.to!,
           toContractCallData: klimaStakeTx.data!,
           toContractGasLimit: '200000', //'90000',
+          contractOutputsToken: sKLIMA_ADDRESS,
           //optional
           integrator: 'lifi-klima-xchain-staking',
           slippage: optionSlippage / 100,
-          allowBridges: ['connext'],
         }
 
         const id = uuid()
         try {
           currentRouteCallId = id
           const result = await LiFi.getContractCallQuote(request)
-
-          // console.log('result', result)
 
           result.estimate.toAmount = new BigNumber(depositAmount)
             .shiftedBy(tokenPolygonSKLIMA.decimals)
@@ -1031,13 +1019,8 @@ const Swap = () => {
           <Swapping
             route={selectedRoute}
             settings={{ infiniteApproval: optionInfiniteApproval }}
-            updateRoute={() => {
-              setActiveRoutes(readActiveRoutes())
-              setHistoricalRoutes(readHistoricalRoutes())
-            }}
+            updateRoute={() => {}}
             onSwapDone={() => {
-              setActiveRoutes(readActiveRoutes())
-              setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
             }}></Swapping>
         </Modal>
