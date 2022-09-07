@@ -1,12 +1,13 @@
 import './Swap.css'
 
 import { Token } from '@lifi/sdk'
+import { switchChain } from '@lifi/wallet-management'
 import { LiFiWidget, WidgetConfig } from '@lifi/widget'
-import { useWeb3React } from '@web3-react/core'
 import { useMemo, useState } from 'react'
 
 import { useMetatags } from '../hooks/useMetatags'
-import { addChain, switchChain, switchChainAndAddToken } from '../services/metamask'
+import { useWallet } from '../providers/WalletProvider'
+import { addChain, switchChainAndAddToken } from '../services/metamask'
 import { useStomt } from '../services/stomt'
 import { addToDeactivatedWallets, removeFromActiveWallets } from './web3/DisconnectButton'
 import { WalletModal } from './web3/WalletModal'
@@ -15,15 +16,7 @@ export const Swap = () => {
   useMetatags({ title: 'LI.FI - Swap' })
   useStomt('swap')
 
-  const { library, deactivate, account } = useWeb3React()
-  const signer = useMemo(() => {
-    try {
-      return library?.getSigner()
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn(e)
-    }
-  }, [library])
+  const { disconnect, account } = useWallet()
 
   const [showConnectModal, setShowConnectModal] = useState<{
     show: boolean
@@ -33,7 +26,7 @@ export const Swap = () => {
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
       walletManagement: {
-        signer: signer,
+        signer: account.signer,
         connect: async () => {
           let promiseResolver
           const loginAwaiter = new Promise<void>((resolve) => (promiseResolver = resolve))
@@ -41,16 +34,16 @@ export const Swap = () => {
           setShowConnectModal({ show: true, promiseResolver })
 
           await loginAwaiter
-          return library.getSigner()
+          return account.signer!
         },
         disconnect: async () => {
-          removeFromActiveWallets(account)
-          addToDeactivatedWallets(account)
-          deactivate()
+          removeFromActiveWallets(account.address)
+          addToDeactivatedWallets(account.address)
+          disconnect()
         },
         switchChain: async (reqChainId: number) => {
           await switchChain(reqChainId)
-          return library.getSigner()
+          return account.signer!
         },
         addToken: async (token: Token, chainId: number) => {
           await switchChainAndAddToken(chainId, token)
@@ -72,7 +65,7 @@ export const Swap = () => {
         maxHeight: 736,
       },
     }
-  }, [library, account, signer])
+  }, [account.address, account.signer, disconnect])
 
   return (
     <>
