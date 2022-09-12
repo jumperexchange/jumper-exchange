@@ -1,10 +1,9 @@
-import { Web3Provider } from '@ethersproject/providers'
 import { Chain, getChainById, Step, Token, TokenAmount } from '@lifi/sdk'
-import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useCallback, useEffect, useState } from 'react'
 
 import LiFi from '../LiFi'
+import { useWallet } from '../providers/WalletProvider'
 
 export interface stepReturnInfo {
   receivedToken: Token
@@ -15,16 +14,18 @@ export interface stepReturnInfo {
 }
 
 export const useStepReturnInfo = (step: Step) => {
-  const web3 = useWeb3React<Web3Provider>()
+  const { account } = useWallet()
   const [stepReturnInfo, setStepReturnInfo] = useState<stepReturnInfo>()
 
   const getInfo = useCallback(async () => {
-    if (step.execution?.status === 'DONE' && web3.account) {
+    if (step.execution?.status === 'DONE' && account.address) {
       const receivedToken = step.execution.toToken || step.action.toToken // use action.toToken as fallback in case the receipt parsing on backen fails and returns nothing
       const receivedAmount = new BigNumber(step.execution?.toAmount || '0')
-      const totalBalanceOfReceivedToken = await LiFi.getTokenBalance(web3.account, receivedToken)
-      const receivedTokenMatchesPlannedToken =
-        step.execution.toToken?.address === step.action.toToken.address
+      const totalBalanceOfReceivedToken = await LiFi.getTokenBalance(account.address, receivedToken)
+      const receivedTokenMatchesPlannedToken = step.execution.toToken
+        ? step.execution.toToken.address === step.action.toToken.address
+        : true
+
       const toChain = getChainById(step.action.toChainId)
       setStepReturnInfo({
         receivedToken,

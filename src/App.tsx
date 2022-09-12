@@ -9,25 +9,24 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import DiscordIcon from './assets/icons/discordIcon'
 import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
+import Claiming from './components/Claiming'
 import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
 import NotFoundPage from './components/NotFoundPage'
 import Swap from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
+import SwapCarbonOffsetV2 from './components/SwapCarbonOffsetV2'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
 import SwapUkraine from './components/SwapUkraine'
 import { SwapV2 } from './components/SwapV2'
 import WalletButtons from './components/web3/WalletButtons'
-import Web3ConnectionManager from './components/web3/Web3ConnectionManager'
-import WrappedWeb3ReactProvider from './components/web3/WrappedWeb3ReactProvider'
-import {
-  ENABLE_ETHERSPOT_KLIMA_SHOWCASE,
-  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
-} from './constants/featureFlags'
+import { REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE } from './constants/featureFlags'
 import { useNavConfig } from './hooks/useNavConfig'
 import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
+import { ToSectionCarbonOffsetProvider } from './providers/ToSectionCarbonOffsetProvider'
+import { WalletProvider } from './providers/WalletProvider'
 import setMetatags from './services/metatags'
 
 function App() {
@@ -69,7 +68,10 @@ function App() {
     })
     return (
       <div className="lifiEmbed">
-        <SwapCarbonOffsetEmbed />
+        <ToSectionCarbonOffsetProvider>
+          <SwapCarbonOffsetEmbed />
+        </ToSectionCarbonOffsetProvider>
+
         {/* <div className="poweredBy">
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
             <PoweredByLiFi />
@@ -81,6 +83,7 @@ function App() {
       </div>
     )
   }
+
   function stakeKlimaEmbedView() {
     setMetatags({
       title: 'LI.FI - Stake Klima',
@@ -101,130 +104,149 @@ function App() {
   }
 
   return (
-    <WrappedWeb3ReactProvider>
-      <Web3ConnectionManager>
-        <ChainsTokensToolsProvider>
-          {path === '/embed' ? (
-            swapEmbedView()
-          ) : path === '/embed/carbon-offset' ? (
-            offsetCarbonEmbedView()
-          ) : path === '/embed/stake-klima' ? (
-            stakeKlimaEmbedView()
-          ) : (
-            <Layout>
-              <Header
-                style={{
-                  position: 'fixed',
-                  zIndex: 900,
-                  width: '100%',
-                  padding: 0,
-                  top: 0,
-                  background: adjustNavBarToBgGradient ? '#F6F3F2' : '#fff',
-                }}>
-                <Row className="site-layout-menu">
-                  {/* Menu */}
-                  <Col xs={24} sm={24} md={14} lg={14} xl={14}>
-                    <div className="header-linkWrapper">
-                      <Link to="/" className="wordmark">
-                        transferto.xyz
-                      </Link>
+    <WalletProvider>
+      <ChainsTokensToolsProvider>
+        {path === '/embed' ? (
+          swapEmbedView()
+        ) : path === '/embed/carbon-offset' ? (
+          offsetCarbonEmbedView()
+        ) : path === '/embed/stake-klima' ? (
+          stakeKlimaEmbedView()
+        ) : (
+          <Layout>
+            <Header
+              style={{
+                position: 'fixed',
+                zIndex: 900,
+                width: '100%',
+                padding: 0,
+                top: 0,
+                background: adjustNavBarToBgGradient ? '#F6F3F2' : '#fff',
+              }}>
+              <Row className="site-layout-menu">
+                {/* Menu */}
+                <Col xs={24} sm={24} md={14} lg={14} xl={14}>
+                  <div className="header-linkWrapper">
+                    <Link to="/" className="wordmark">
+                      transferto.xyz
+                    </Link>
+                    <a
+                      className="header-poweredBy"
+                      href="https://li.fi/"
+                      target="_blank"
+                      rel="nofollow noreferrer">
+                      <PoweredByLiFi />
+                    </a>
+                  </div>
+                  <Menu
+                    items={navConfig}
+                    theme="light"
+                    mode="horizontal"
+                    triggerSubMenuAction="hover"
+                    defaultSelectedKeys={path ? [path] : []}
+                  />
+                </Col>
+
+                {/* Links */}
+                <Col
+                  xs={0}
+                  sm={0}
+                  md={10}
+                  lg={10}
+                  xl={10}
+                  style={{ float: 'right', paddingRight: 10 }}>
+                  <Row justify="end" gutter={15}>
+                    <Col>
                       <a
-                        className="header-poweredBy"
-                        href="https://li.fi/"
+                        style={{
+                          padding: '13.5px 24px 13.5px 24px',
+                        }}
+                        className="lifi-support-link headerIconLink lifi-header-social-links"
+                        href="https://discord.com/channels/849912621360218112/863689862514343946"
                         target="_blank"
                         rel="nofollow noreferrer">
-                        <PoweredByLiFi />
+                        <DiscordIcon style={{ marginRight: 4 }} /> Support
                       </a>
+                    </Col>
+                    <Col>
+                      <WalletButtons className="wallet-buttons wallet-buttons-menu-full"></WalletButtons>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Header>
+
+            <Content>
+              <Routes>
+                <Route path="/" element={<Navigate to="/swap" />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                  path="/swap"
+                  element={
+                    <div className="lifiWrap swap-page">
+                      <Swap />
                     </div>
-                    <Menu
-                      items={navConfig}
-                      theme="light"
-                      mode="horizontal"
-                      triggerSubMenuAction="hover"
-                      defaultSelectedKeys={path ? [path] : []}
-                    />
-                  </Col>
+                  }
+                />
+                <Route
+                  path="/claiming"
+                  element={
+                    <div className="lifiWrap claim-page">
+                      <Claiming />
+                    </div>
+                  }
+                />
+                <Route
+                  path="/swap-v2/*"
+                  element={
+                    <div className="lifiWrap swap-page-v2">
+                      <SwapV2 />
+                    </div>
+                  }
+                />
+                <Route
+                  path="/showcase/ukraine"
+                  element={
+                    <div className="lifiWrap">
+                      <SwapUkraine />
+                    </div>
+                  }
+                />
+                <Route path="/ukraine" element={<Navigate to="/showcase/ukraine" />} />
+                <Route
+                  path="/showcase/etherspot-klima"
+                  element={
+                    <div className="lifiWrap">
+                      <SwapEtherspotKlimaZap />
+                    </div>
+                  }
+                />
 
-                  {/* Links */}
-                  <Col
-                    xs={0}
-                    sm={0}
-                    md={10}
-                    lg={10}
-                    xl={10}
-                    style={{ float: 'right', paddingRight: 10 }}>
-                    <Row justify="end" gutter={15}>
-                      <Col>
-                        <a
-                          style={{
-                            padding: '13.5px 24px 13.5px 24px',
-                          }}
-                          className="lifi-support-link headerIconLink lifi-header-social-links"
-                          href="https://discord.com/channels/849912621360218112/863689862514343946"
-                          target="_blank"
-                          rel="nofollow noreferrer">
-                          <DiscordIcon style={{ marginRight: 4 }} /> Support
-                        </a>
-                      </Col>
-                      <Col>
-                        <WalletButtons className="wallet-buttons wallet-buttons-menu-full"></WalletButtons>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Header>
+                <Route
+                  path="/showcase/carbon-offset"
+                  element={
+                    <div className="lifiWrap">
+                      <ToSectionCarbonOffsetProvider>
+                        <SwapCarbonOffset />
+                      </ToSectionCarbonOffsetProvider>
+                    </div>
+                  }
+                />
 
-              <Content>
-                <Routes>
-                  <Route path="/" element={<Navigate to="/swap" />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
+                {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
                   <Route
-                    path="/swap"
-                    element={
-                      <div className="lifiWrap swap-page">
-                        <Swap />
-                      </div>
-                    }
-                  />
-                  <Route
-                    path="/swap-v2/*"
-                    element={
-                      <div className="lifiWrap swap-page-v2">
-                        <SwapV2 />
-                      </div>
-                    }
-                  />
-                  <Route
-                    path="/showcase/ukraine"
+                    path="/showcase/carbon-offset-v2"
                     element={
                       <div className="lifiWrap">
-                        <SwapUkraine />
+                        <ToSectionCarbonOffsetProvider>
+                          <SwapCarbonOffsetV2 />
+                        </ToSectionCarbonOffsetProvider>
                       </div>
                     }
                   />
-                  <Route path="/ukraine" element={<Navigate to="/showcase/ukraine" />} />
-                  {ENABLE_ETHERSPOT_KLIMA_SHOWCASE && (
-                    <Route
-                      path="/showcase/etherspot-klima"
-                      element={
-                        <div className="lifiWrap">
-                          <SwapEtherspotKlimaZap />
-                        </div>
-                      }
-                    />
-                  )}
-                  {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
-                    <Route
-                      path="/showcase/carbon-offset"
-                      element={
-                        <div className="lifiWrap">
-                          <SwapCarbonOffset />
-                        </div>
-                      }
-                    />
-                  )}
+                )}
 
-                  {/* <Route
+                {/* <Route
                     path="/testnet"
                     element={() => {
                       setMetatags({
@@ -241,42 +263,41 @@ function App() {
                       )
                     }}
                   /> */}
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </Content>
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </Content>
 
-              {/* Social Links */}
-              <div className="lifi-content-social-links">
-                <a
-                  className="icon-link"
-                  href="https://twitter.com/lifiprotocol"
-                  target="_blank"
-                  rel="nofollow noreferrer">
-                  <TwitterOutlined />
-                </a>
-                <a
-                  className="icon-link"
-                  href="https://github.com/lifinance"
-                  target="_blank"
-                  rel="nofollow noreferrer">
-                  <GithubOutlined />
-                </a>
-                <Button
-                  className="lifi-support-link"
-                  href="https://discord.com/channels/849912621360218112/863689862514343946"
-                  target="_blank"
-                  rel="nofollow noreferrer">
-                  <DiscordIcon style={{ marginRight: 4 }} /> Support
-                </Button>
-              </div>
+            {/* Social Links */}
+            <div className="lifi-content-social-links">
+              <a
+                className="icon-link"
+                href="https://twitter.com/lifiprotocol"
+                target="_blank"
+                rel="nofollow noreferrer">
+                <TwitterOutlined />
+              </a>
+              <a
+                className="icon-link"
+                href="https://github.com/lifinance"
+                target="_blank"
+                rel="nofollow noreferrer">
+                <GithubOutlined />
+              </a>
+              <Button
+                className="lifi-support-link"
+                href="https://discord.com/channels/849912621360218112/863689862514343946"
+                target="_blank"
+                rel="nofollow noreferrer">
+                <DiscordIcon style={{ marginRight: 4 }} /> Support
+              </Button>
+            </div>
 
-              {/* <Footer></Footer> */}
-              {/* <NotificationOverlay /> */}
-            </Layout>
-          )}
-        </ChainsTokensToolsProvider>
-      </Web3ConnectionManager>
-    </WrappedWeb3ReactProvider>
+            {/* <Footer></Footer> */}
+            {/* <NotificationOverlay /> */}
+          </Layout>
+        )}
+      </ChainsTokensToolsProvider>
+    </WalletProvider>
   )
 }
 

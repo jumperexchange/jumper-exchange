@@ -1,9 +1,6 @@
-import { InjectedConnector } from '@web3-react/injected-connector'
-import { NetworkConnector } from '@web3-react/network-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { providers } from 'ethers'
 
-import { ChainId, getChainById, supportedChains } from '../../types'
+import { ChainId, getChainById } from '../../types'
 
 const customRpc: Record<number, string | undefined> = {
   [ChainId.ETH]: process.env.REACT_APP_RPC_URL_MAINNET
@@ -61,42 +58,3 @@ export const getRpcUrls = (chainIds: Array<number>) => {
   })
   return selectedProviders
 }
-
-export const injected = new InjectedConnector({
-  supportedChainIds: supportedChains.map((chain) => chain.id),
-})
-
-// get our standard supported chain and try to append the possibly unknown chain the user is on
-export const getInjectedConnector = async () => {
-  const { ethereum } = window as any
-  const currentProvider = new providers.Web3Provider(ethereum)
-  const chainId = (await currentProvider.getNetwork()).chainId
-  // append the current chain to the supported chains.
-  // can push duplicate ids, when user is on supported chain but that does not seem to make any problems.
-  const chains = [...supportedChains.map((chain) => chain.id), chainId]
-  return new InjectedConnector({
-    supportedChainIds: chains,
-  })
-}
-
-const walletConnectConnector = new WalletConnectConnector({
-  supportedChainIds: [...supportedChains.map((chain) => chain.id)],
-  bridge: 'https://bridge.walletconnect.org',
-  qrcode: true,
-  rpc: Object.fromEntries(
-    supportedChains.map((chain) => {
-      return [chain.id, chain.metamask.rpcUrls[0] || '']
-    }),
-  ),
-})
-
-export const getWalletConnectConnector = async () => {
-  return walletConnectConnector
-}
-
-export const network = new NetworkConnector({
-  urls: Object.fromEntries(
-    supportedChains.map((chain) => chain.id).map((chainId) => [chainId, getRpcUrl(chainId)]),
-  ),
-  defaultChainId: ChainId.ETH,
-})

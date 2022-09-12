@@ -1,8 +1,6 @@
 import './SwapUkraine.css'
 
 import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
 import {
   Button,
   Checkbox,
@@ -36,6 +34,7 @@ import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
+import { useWallet } from '../providers/WalletProvider'
 import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
@@ -61,6 +60,8 @@ import {
   SwapPageStartParams,
   Token,
   TokenAmount,
+  TokenAmountList,
+  TokenWithAmounts,
 } from '../types'
 import SwapForm from './SwapForm/SwapForm'
 import { ToSectionUkraine } from './SwapForm/SwapFormToSections/ToSectionUkraine'
@@ -73,11 +74,6 @@ const MORE_INFO_PAGE_URL =
   'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
 
 let currentRouteCallId: string
-
-interface TokenWithAmounts extends Token {
-  amount?: BigNumber
-  amountRendered?: string
-}
 
 const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
   setTimeout(() => {
@@ -130,9 +126,6 @@ const parseToken = (
   // does token address exist in our default tokens? (tokenlists not loaded yet)
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
-interface TokenAmountList {
-  [ChainKey: string]: Array<TokenWithAmounts>
-}
 
 const Swap = () => {
   useMetatags({
@@ -155,7 +148,7 @@ const Swap = () => {
   const [toTokenAddress] = useState<string | undefined>(
     findDefaultToken(CoinKey.ETH, ChainId.POL).address,
   )
-  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
+  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens as TokenAmountList)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
@@ -191,8 +184,7 @@ const Swap = () => {
   )
 
   // Wallet
-  const web3 = useWeb3React<Web3Provider>()
-  const { active } = useWeb3React()
+  const { account } = useWallet()
 
   // Elements used for animations
   const routeCards = useRef<HTMLDivElement | null>(null)
@@ -203,7 +195,7 @@ const Swap = () => {
       setRestartedOnPageLoad(true)
 
       activeRoutes.map((route) => {
-        if (!web3 || !web3.library) return
+        if (!account.signer) return
         // check if it makes sense to fetch the status of a route:
         // if failed or action required it makes no sense
         const routeFailed = route.steps.some(
@@ -223,11 +215,11 @@ const Swap = () => {
             setHistoricalRoutes(readHistoricalRoutes())
           },
         }
-        LiFi.resumeRoute(web3.library.getSigner(), route, settings)
+        LiFi.resumeRoute(account.signer, route, settings)
         LiFi.moveExecutionToBackground(route)
       })
     }
-  }, [web3.library])
+  }, [account.signer])
 
   useEffect(() => {
     // executed once after page is loaded
@@ -254,7 +246,7 @@ const Swap = () => {
 
   //get tokens
   useEffect(() => {
-    setTokens(chainsTokensTools.tokens)
+    setTokens(chainsTokensTools.tokens as TokenAmountList)
   }, [chainsTokensTools.tokens])
 
   //get tools
@@ -289,16 +281,16 @@ const Swap = () => {
   // autoselect from chain based on wallet
   useEffect(() => {
     if (!fromChainKey && startParamsDefined) {
-      const walletChainIsSupported = availableChains.some((chain) => chain.id === web3.chainId)
+      const walletChainIsSupported = availableChains.some((chain) => chain.id === account.chainId)
       if (!walletChainIsSupported) return
-      if (web3.chainId && !fromChainKey) {
-        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+      if (account.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === account.chainId)
         if (chain) {
           setFromChainKey(chain.key)
         }
       }
     }
-  }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
+  }, [account.chainId, fromChainKey, availableChains, startParamsDefined])
 
   useEffect(() => {
     if (tokensAndChainsSet) {
@@ -497,10 +489,10 @@ const Swap = () => {
   }, [refreshTokens, availableChains])
 
   const updateBalances = useCallback(async () => {
-    if (web3.account) {
+    if (account.address) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(([chainKey, tokenList]) => {
-        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio: TokenAmount[]) => {
+        LiFi.getTokenBalances(account.address!, tokenList).then((portfolio: TokenAmount[]) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -511,20 +503,20 @@ const Swap = () => {
         })
       })
     }
-  }, [web3.account, tokens])
+  }, [account.address, tokens])
 
   useEffect(() => {
-    if (refreshBalances && web3.account) {
+    if (refreshBalances && account.address) {
       setRefreshBalances(false)
       updateBalances()
     }
-  }, [refreshBalances, web3.account, updateBalances])
+  }, [refreshBalances, account.address, updateBalances])
 
   useEffect(() => {
-    if (!web3.account) {
+    if (!account.address) {
       setBalances(undefined) // reset old balances
     }
-  }, [web3.account])
+  }, [account.address])
 
   useEffect(() => {
     // merge tokens and balances
@@ -627,7 +619,7 @@ const Swap = () => {
           fromTokenAddress,
           toChainId: toToken.chainId,
           toTokenAddress,
-          fromAddress: web3.account || undefined,
+          fromAddress: account.address || undefined,
           toAddress: DONATION_WALLET, // TODO: change this to the recipient address
           options: {
             slippage: optionSlippage / 100,
@@ -694,7 +686,7 @@ const Swap = () => {
   }
 
   const submitButton = () => {
-    if (!active && isWalletDeactivated(web3.account)) {
+    if (!account.isActive && isWalletDeactivated(account.address)) {
       return (
         <Button
           className="btn-ukraine-swap-form"
@@ -705,10 +697,10 @@ const Swap = () => {
           size={'large'}></Button>
       )
     }
-    if (!web3.account) {
+    if (!account.address) {
       return <ConnectButton className="btn-ukraine-swap-form" size="large" />
     }
-    if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
+    if (fromChainKey && account.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
