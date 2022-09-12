@@ -13,12 +13,16 @@ import claimingContract from '../constants/abis/claimContract.json'
 import claims from '../constants/claims.json'
 import { useMetatags } from '../hooks/useMetatags'
 import { useWallet } from '../providers/WalletProvider'
+import { addChain } from '../services/metamask'
 import { formatTokenAmount } from '../services/utils'
 import { ChainId, Token } from '../types'
+import ConnectButton from './web3/ConnectButton'
 
 type ClaimingState =
-  | 'network'
+  | 'connect'
   | 'claimQualified'
+  | 'network'
+  | 'connected'
   | 'success'
   | 'notQualified'
   | 'error'
@@ -51,17 +55,51 @@ const Claiming = () => {
     () => new ethers.Contract(CLAIMING_CONTRACT_ADDRESS, claimingContract, account.signer),
     [account.signer, account.chainId],
   )
+
+  const [alreadyClaimed, setAlreadyClaimed] = useState<Boolean>(false)
+  const [claimingState, setClaimingState] = useState<ClaimingState>('connect')
+  const [currentAccount, setCurrentAccount] = useState(null)
+
+  function handleAccountsChanged(accounts) {
+    if (accounts[0] !== currentAccount) {
+      setCurrentAccount(accounts[0])
+    }
+  }
+
   const userClaimData = useMemo(
     () => claims.claims.find((claim) => claim.address === account.address),
     [account.address],
   )
-  const [claimingState, setClaimingState] = useState<ClaimingState>('claimQualified')
 
-  useEffect(() => {
-    const setup = async () => {
-      if (!userClaimData) return setClaimingState('notQualified')
-      if (account.chainId !== ChainId.ARB) return setClaimingState('network')
+  const setup = async () => {
+    // check if account is connected
+    if (currentAccount === null) {
+      const checkWalletConnection = window?.ethereum
+        .request({ method: 'eth_requestAccounts' })
+        .then(handleAccountsChanged)
+        .catch((err) => {
+          if (err.code === 4001) {
+          } else {
+            // console.error(err)
+          }
+        })
+    }
+    account.chainId !== ChainId.ARB ? setClaimingState('network') : setClaimingState('connected')
 
+    // check if network is set to ARB
+    if (claimingState === 'network') {
+      try {
+        // await switchChain(ChainId.ARB)
+        await switchChain(ChainId.ARB)
+        await addChain(ChainId.ARB)
+        setClaimingState('connected')
+      } catch (error: any) {
+        // console.log('Error:', error.code)
+      }
+      return 0
+    }
+
+    if (!!account.signer && claimingState === 'connected') {
       if (userClaimData && account.signer && account.chainId === ChainId.ARB) {
         const canClaim = await claimContract.functions.canClaim(
           account.address,
@@ -75,25 +113,23 @@ const Claiming = () => {
           [account.address, userClaimData.amount, userClaimData.series],
         )
 
-        const alreadyClaimed = await claimContract.functions.claims(hash)
-
-        if (canClaim[0] && !alreadyClaimed[0]) {
-          return setClaimingState('claimQualified')
-        } else if (alreadyClaimed[0]) {
-          return setClaimingState('success')
+        const _alreadyClaimed = await claimContract.functions.claims(hash)
+        setAlreadyClaimed(_alreadyClaimed)
+        if (canClaim[0]) {
+          if (!_alreadyClaimed[0]) {
+            setClaimingState('claimQualified')
+          }
+          if (!!_alreadyClaimed[0]) {
+            setClaimingState('success')
+          }
         } else {
-          return setClaimingState('notQualified')
+          setClaimingState('notQualified')
         }
       }
+    } else {
+      // console.log('wallet is not connected?')
     }
-    setup()
-  }, [userClaimData, claimContract.signer, account.chainId])
 
-  // logic
-  const handleClick = async () => {
-    if (claimingState === 'network') {
-      await switchChain(ChainId.ARB)
-    }
     if (claimingState === 'claimQualified') {
       try {
         setClaimingState('claimPending')
@@ -103,6 +139,7 @@ const Claiming = () => {
           userClaimData!.proof,
         )
         await claimTX.wait()
+
         setClaimingState('success')
       } catch (e) {
         setClaimingState('error')
@@ -110,10 +147,28 @@ const Claiming = () => {
     }
   }
 
+  useEffect(() => {
+    setup()
+  }, [
+    userClaimData,
+    claimContract.signer,
+    account.signer,
+    account.chainId,
+    currentAccount,
+    account.isActive,
+  ]) //account.isActive, account.chainId
+
+  // logic
+  const handleClick = async () => {
+    setup()
+  }
+
   return (
     <div className="site-layout site-layout--claiming">
       <Content className="claiming">
-        {claimingState !== 'success' &&
+        {claimingState !== 'network' &&
+          claimingState !== 'connect' &&
+          claimingState !== 'success' &&
           claimingState !== 'notQualified' &&
           claimingState !== 'error' && (
             <>
@@ -126,22 +181,16 @@ const Claiming = () => {
                   <p className="card__title">
                     {claimingState === 'claimQualified' ? 'Claim your rewards' : 'Pending'}
                   </p>
-                  {claimingState === 'claimQualified' || claimingState === 'network' ? (
+                  {claimingState === 'claimQualified' ? (
                     <Button
                       onClick={handleClick}
                       className="card__button card__button--claim"
-                      type={
-                        claimingState === 'network'
-                          ? 'default'
-                          : claimingState === 'claimQualified'
-                          ? 'primary'
-                          : 'ghost'
-                      }
+                      type="primary"
                       size="large">
-                      {claimingState === 'network'
-                        ? 'Switch Network to Arbitrum'
-                        : claimingState === 'claimQualified'
+                      {claimingState === 'claimQualified'
                         ? 'Claim'
+                        : claimingState === 'connect'
+                        ? 'Connect Wallet'
                         : 'undefined'}
                     </Button>
                   ) : (
@@ -151,6 +200,21 @@ const Claiming = () => {
               </div>
             </>
           )}
+        {claimingState === 'connect' && (
+          <>
+            <p>Connect your Wallet to see if you are eligible</p>
+            <ConnectButton></ConnectButton>
+          </>
+        )}
+        {claimingState === 'network' && (
+          <Button
+            onClick={handleClick}
+            className="card__button card__button--claim"
+            type="primary"
+            size="large">
+            Switch Network to Arbitrum
+          </Button>
+        )}
         {claimingState === 'notQualified' && (
           <>
             <p className="claiming__label claiming__label--notqualified">

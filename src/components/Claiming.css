@@ -15,6 +15,7 @@
   background-repeat: no-repeat;
   background-position: bottom;
   background-color: #f9f6f6;
+  background-size: auto;
 }
 
 .claiming__label {
@@ -117,11 +118,9 @@
 }
 
 @media only screen and (min-width: 550px) {
-  .site-layout--claiming {
-  }
+  .site-layout--claiming {}
 
-  .claiming {
-  }
+  .claiming {}
 
   .claiming__label {
     font-size: 32px;
