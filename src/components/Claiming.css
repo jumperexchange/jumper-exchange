@@ -96,6 +96,7 @@
 
 .card--hidden {
   border: none;
+  padding-top: 0;
   border-radius: none;
   box-shadow: none;
   background: transparent;
@@ -126,11 +127,9 @@
 }
 
 @media only screen and (min-width: 550px) {
-  .site-layout--claiming {
-  }
+  .site-layout--claiming {}
 
-  .claiming {
-  }
+  .claiming {}
 
   .claiming__label {
     font-size: 32px;
