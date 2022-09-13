@@ -13,6 +13,7 @@ import Claiming from './components/Claiming'
 import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
+import GMXSwap from './components/GMXSwap'
 import NotFoundPage from './components/NotFoundPage'
 import Swap from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
@@ -245,6 +246,15 @@ function App() {
                     }
                   />
                 )}
+
+                <Route
+                  path="/showcase/gmx"
+                  element={
+                    <div className="lifiWrap">
+                      <GMXSwap />
+                    </div>
+                  }
+                />
 
                 {/* <Route
                     path="/testnet"

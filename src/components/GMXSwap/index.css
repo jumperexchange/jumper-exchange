@@ -1,0 +1,108 @@
+.gmx-swap {
+  position: relative;
+  max-width: 100vw;
+  margin: auto;
+}
+
+.swap-form-etherspot {
+  --primaryBackground: #101024;
+  --secondaryBackground: #17192e;
+  --borderColor: #1e2136;
+  --primaryText: #ffffff;
+
+  position: fixed;
+  right: 0 !important;
+  width: 100%;
+  height: 100%;
+  padding: 80px 0;
+  overflow-y: scroll !important;
+  overflow: hidden;
+  background: var(--primaryBackground);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--primaryText);
+}
+
+.swap-form-etherspot.swap-form-etherspot-carbon {
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media only screen and (max-width: 1199px) {
+  .swap-form-etherspot {
+    position: relative;
+  }
+}
+
+.swap-form-etherspot .swap-input-etherspot {
+  background-color: var(--secondaryBackground);
+  border: 1px solid var(--borderColor);
+  padding: 1.5rem 1.5rem 1.86rem;
+  border-radius: 0.4rem;
+  font-size: 1.5rem;
+  max-width: 30rem;
+  margin: auto;
+}
+@media only screen and (max-width: 500px) {
+  .swap-form-etherspot .swap-input-etherspot {
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+  }
+}
+
+.input-beneficiary {
+  margin-bottom: 8px;
+  height: 50px;
+  background: var(--secondaryBackground);
+  border-radius: 0.4rem;
+  padding: 4px 4px;
+  font-weight: 700;
+}
+
+.gmx-swap .form-input-wrapper {
+  background: var(--secondaryBackground);
+  border: 1px solid var(--borderColor);
+  color: var(--primaryText);
+}
+
+.gmx-swap .form-input-wrapper input {
+  color: var(--primaryText) !important;
+}
+
+.ant-form,
+.ant-input {
+  color: var(--primaryText);
+}
+
+.gmx-swap .swap-title {
+  color: var(--primaryText);
+  font-weight: lighter;
+}
+
+.gmx-swap .advanced-options .ant-collapse-header-text,
+.gmx-swap .advanced-options .ant-collapse-content,
+.gmx-swap .advanced-options .ant-checkbox-wrapper,
+.gmx-swap .advanced-options .anticon {
+  color: var(--primaryText);
+}
+
+.gmx-swap .ant-input-number {
+  border-radius: 2px !important;
+  border: 1px solid var(--borderColor) !important;
+  background: var(--secondaryBackground);
+}
+
+.gmx-swap .advanced-options input,
+.gmx-swap .ant-select-selector {
+  background: var(--secondaryBackground) !important;
+  color: var(--primaryText);
+}
+
+.gmx-swap .advanced-options .ant-select-selector {
+  border: 1px solid var(--borderColor) !important;
+}
+
+.gmx-swap .option-container {
+  margin-bottom: 1rem;
+}
