@@ -87,17 +87,25 @@
   background: linear-gradient(180deg, white, transparent);
 }
 
-.card--success {
+.card--transparent {
   border: 1px solid #e8e8e8;
   border-radius: 15px;
   box-shadow: 0px 2px 4px 0px #00000040;
+  background: transparent;
 }
 
-.card--success svg {
+.card--hidden {
+  border: none;
+  border-radius: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.card--transparent svg {
   margin: 0 auto;
 }
 
-.card--success .card__title {
+.card--transparent .card__title {
   margin-top: 70px;
 }
 
@@ -118,9 +126,11 @@
 }
 
 @media only screen and (min-width: 550px) {
-  .site-layout--claiming {}
+  .site-layout--claiming {
+  }
 
-  .claiming {}
+  .claiming {
+  }
 
   .claiming__label {
     font-size: 32px;
