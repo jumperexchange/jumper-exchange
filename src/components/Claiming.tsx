@@ -4,7 +4,7 @@ import { LoadingOutlined, WarningOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { ethers } from 'ethers'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import DiscordIcon from '../../src/assets/icons/discordIcon'
 import { SuccessIcon } from '../../src/assets/icons/sucessIcon'
@@ -13,16 +13,14 @@ import claimingContract from '../constants/abis/claimContract.json'
 import claims from '../constants/claims.json'
 import { useMetatags } from '../hooks/useMetatags'
 import { useWallet } from '../providers/WalletProvider'
-import { addChain } from '../services/metamask'
 import { formatTokenAmount } from '../services/utils'
 import { ChainId, Token } from '../types'
 import ConnectButton from './web3/ConnectButton'
 
 type ClaimingState =
-  | 'connect'
+  | null
   | 'claimQualified'
   | 'network'
-  | 'connected'
   | 'success'
   | 'notQualified'
   | 'error'
@@ -56,24 +54,30 @@ const Claiming = () => {
     [account.signer, account.chainId],
   )
 
-  const [alreadyClaimed, setAlreadyClaimed] = useState<Boolean>(false)
-  const [claimingState, setClaimingState] = useState<ClaimingState>('connect')
   const [currentAccount, setCurrentAccount] = useState(null)
+  const [claimingState, setClaimingState] = useState<ClaimingState>(null)
 
-  function handleAccountsChanged(accounts) {
-    if (accounts[0] !== currentAccount) {
-      setCurrentAccount(accounts[0])
-    }
-  }
+  const handleAccountsChanged = useCallback(
+    (accounts) => {
+      if (accounts[0] !== currentAccount) {
+        // console.log('clicked: setCurrentAccount', accounts)
+        setCurrentAccount(accounts[0])
+      }
+    },
+    [window.ethereum.accounts],
+  )
 
   const userClaimData = useMemo(
     () => claims.claims.find((claim) => claim.address === account.address),
     [account.address],
   )
 
-  const setup = async () => {
-    // check if account is connected
-    if (currentAccount === null) {
+  const checkWallet = useCallback(() => {
+    // console.log('checkwallet:', account)
+    if (!!account.address) {
+      // console.log('Wallet connected')
+    } else {
+      // console.log('No Wallet connected')
       const checkWalletConnection = window?.ethereum
         .request({ method: 'eth_requestAccounts' })
         .then(handleAccountsChanged)
@@ -84,37 +88,49 @@ const Claiming = () => {
           }
         })
     }
-    account.chainId !== ChainId.ARB ? setClaimingState('network') : setClaimingState('connected')
+    // setClaimingState('network')
+  }, [account])
 
-    // check if network is set to ARB
-    if (claimingState === 'network') {
+  const checkNetwork = useCallback(async () => {
+    if (!!account.address && account.chainId !== ChainId.ARB) {
+      // console.log('Wallet connected and network is ARB')
+    } else {
+      // console.log('No Wallet connected and/or network is not ARB')
       try {
-        // await switchChain(ChainId.ARB)
         await switchChain(ChainId.ARB)
-        await addChain(ChainId.ARB)
-        setClaimingState('connected')
       } catch (error: any) {
         // console.log('Error:', error.code)
       }
-      return 0
     }
+  }, [])
 
-    if (!!account.signer && claimingState === 'connected') {
+  const checkEligibility = useCallback(async () => {
+    if (userClaimData && account.signer && !!account.address && account.chainId !== ChainId.ARB) {
+      // console.log('Wallet connected and network is ARB and user can Claim')
+    } else {
+      // console.log('No Wallet connected and/or network is not ARB and/or user cannot Claim')
+      const canClaim = await claimContract.functions.canClaim(
+        account.address,
+        userClaimData.amount,
+        userClaimData.series,
+        userClaimData.proof,
+      )
+    }
+  }, [])
+
+  const setup = async () => {
+    // check if account is connected
+    checkWallet()
+    checkNetwork()
+
+    if (!!account.signer) {
       if (userClaimData && account.signer && account.chainId === ChainId.ARB) {
-        const canClaim = await claimContract.functions.canClaim(
-          account.address,
-          userClaimData.amount,
-          userClaimData.series,
-          userClaimData.proof,
-        )
-
         const hash = ethers.utils.solidityKeccak256(
           ['address', 'uint256', 'string'],
           [account.address, userClaimData.amount, userClaimData.series],
         )
 
         const _alreadyClaimed = await claimContract.functions.claims(hash)
-        setAlreadyClaimed(_alreadyClaimed)
         if (canClaim[0]) {
           if (!_alreadyClaimed[0]) {
             setClaimingState('claimQualified')
@@ -149,25 +165,18 @@ const Claiming = () => {
 
   useEffect(() => {
     setup()
-  }, [
-    userClaimData,
-    claimContract.signer,
-    account.signer,
-    account.chainId,
-    currentAccount,
-    account.isActive,
-  ]) //account.isActive, account.chainId
+  }, []) //account.isActive, account.chainId
 
   // logic
   const handleClick = async () => {
-    setup()
+    checkWallet()
+    checkNetwork()
   }
 
   return (
     <div className="site-layout site-layout--claiming">
       <Content className="claiming">
         {claimingState !== 'network' &&
-          claimingState !== 'connect' &&
           claimingState !== 'success' &&
           claimingState !== 'notQualified' &&
           claimingState !== 'error' && (
@@ -187,11 +196,7 @@ const Claiming = () => {
                       className="card__button card__button--claim"
                       type="primary"
                       size="large">
-                      {claimingState === 'claimQualified'
-                        ? 'Claim'
-                        : claimingState === 'connect'
-                        ? 'Connect Wallet'
-                        : 'undefined'}
+                      Claim
                     </Button>
                   ) : (
                     <LoadingOutlined style={{ color: 'green', fontSize: 100 }} />
@@ -200,7 +205,7 @@ const Claiming = () => {
               </div>
             </>
           )}
-        {claimingState === 'connect' && (
+        {!account && (
           <>
             <p>Connect your Wallet to see if you are eligible</p>
             <ConnectButton></ConnectButton>
