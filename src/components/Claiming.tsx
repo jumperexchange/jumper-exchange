@@ -53,7 +53,7 @@ const Claiming = () => {
     [account.signer, account.chainId],
   )
 
-  const [claimingState, setClaimingState] = useState<ClaimingState>('notQualified')
+  const [claimingState, setClaimingState] = useState<ClaimingState>('notConnected')
 
   const userClaimData = useMemo(
     () => claims.claims.find((claim) => claim.address === account.address),
@@ -105,7 +105,7 @@ const Claiming = () => {
   }
 
   useEffect(() => {
-    // setup()
+    setup()
   }, [userClaimData, account.address, account.chainId, account.signer])
 
   //logic
