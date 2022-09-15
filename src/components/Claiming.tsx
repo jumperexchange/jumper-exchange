@@ -1,12 +1,11 @@
 import './Claiming.css'
 
-import { LoadingOutlined, WarningOutlined } from '@ant-design/icons'
+import { CheckOutlined, LoadingOutlined, WarningOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { ethers } from 'ethers'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { SuccessIcon } from '../../src/assets/icons/sucessIcon'
 import DiscordIcon from '../assets/icons/discordIcon'
 import TwitterIcon from '../assets/icons/twitterIcon'
 import claimingContract from '../constants/abis/claimContract.json'
@@ -106,7 +105,7 @@ const Claiming = () => {
   }
 
   useEffect(() => {
-    setup()
+    // setup()
   }, [userClaimData, account.address, account.chainId, account.signer])
 
   //logic
@@ -155,7 +154,7 @@ const Claiming = () => {
 
   const cardSuffixClass = useMemo(() => {
     if (claimingState === 'success' || claimingState === 'error') {
-      return 'card--transparent'
+      return 'card'
     }
     if (claimingState === 'notQualified') {
       return 'card--hidden'
@@ -196,7 +195,7 @@ const Claiming = () => {
                 }}
               />
             )}
-            {claimingState === 'notQualified' && (
+            {(claimingState === 'notQualified' || claimingState === 'error') && (
               <a
                 className="claiming__share claiming__share--discord"
                 href="https://discord.gg/lifi"
@@ -225,14 +224,34 @@ const Claiming = () => {
 
 const CardIcon = ({ claimingState }: { claimingState: ClaimingState }) => {
   if (claimingState === 'success') {
-    return <SuccessIcon />
+    return (
+      <CheckOutlined
+        style={{
+          color: 'green',
+          fontSize: 140,
+          border: '8px solid green',
+          padding: 14,
+          borderRadius: '100%',
+          width: 'fit-content',
+          margin: '0 auto 12px',
+        }}
+      />
+    )
   }
   if (claimingState === 'error') {
-    return <WarningOutlined style={{ color: 'red', fontSize: 163 }} />
+    return (
+      <WarningOutlined
+        style={{
+          color: 'red',
+          fontSize: 160,
+          margin: '0 auto 8px',
+        }}
+      />
+    )
   }
 
   if (claimingState === 'claimPending') {
-    return <LoadingOutlined style={{ color: 'green', fontSize: 100 }} />
+    return <LoadingOutlined style={{ color: 'green', fontSize: 160, margin: '0 auto 12px' }} />
   }
   return null
 }
