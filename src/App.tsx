@@ -234,6 +234,15 @@ function App() {
                   }
                 />
 
+                <Route
+                  path="/showcase/gmx"
+                  element={
+                    <div className="lifiWrap">
+                      <GMXSwap />
+                    </div>
+                  }
+                />
+
                 {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
                   <Route
                     path="/showcase/carbon-offset-v2"
@@ -246,15 +255,6 @@ function App() {
                     }
                   />
                 )}
-
-                <Route
-                  path="/showcase/gmx"
-                  element={
-                    <div className="lifiWrap">
-                      <GMXSwap />
-                    </div>
-                  }
-                />
 
                 {/* <Route
                     path="/testnet"

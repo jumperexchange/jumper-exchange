@@ -1,0 +1,14 @@
+.middle-pay-text {
+  margin: 8px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.middle-pay-text svg {
+  height: 24px;
+  width: 24px;
+}
+
+.input-label {
+  margin: 8px 0;
+}

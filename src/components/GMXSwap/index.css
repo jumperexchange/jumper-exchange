@@ -4,7 +4,7 @@
   margin: auto;
 }
 
-.swap-form-etherspot {
+.gmx-swap .swap-form-etherspot {
   --primaryBackground: #101024;
   --secondaryBackground: #17192e;
   --borderColor: #1e2136;
@@ -36,7 +36,7 @@
 }
 
 .swap-form-etherspot .swap-input-etherspot {
-  background-color: var(--secondaryBackground);
+  background-color: var(--secondaryBackground) !important;
   border: 1px solid var(--borderColor);
   padding: 1.5rem 1.5rem 1.86rem;
   border-radius: 0.4rem;
@@ -94,7 +94,8 @@
 }
 
 .gmx-swap .advanced-options input,
-.gmx-swap .ant-select-selector {
+.gmx-swap .ant-select-selector,
+.gmx-swap .ant-select-selection-item {
   background: var(--secondaryBackground) !important;
   color: var(--primaryText);
 }
@@ -105,4 +106,8 @@
 
 .gmx-swap .option-container {
   margin-bottom: 1rem;
+}
+
+.margin-bottom-8px {
+  margin-bottom: 8px;
 }

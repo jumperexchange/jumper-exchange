@@ -8,7 +8,9 @@ import {
   STAKE_KLIMA_CONTRACT_ADDRESS,
   stakeKlimaAbi,
 } from '../constants'
+import GMXStaking from '../constants/abis/GMX/stakeGMX.json'
 import KlimaRetirementAggregator from '../constants/abis/KlimaRetirementAggregator.json'
+import { GMX_STAKING_CONTRACT } from './../constants/etherspotConstants'
 
 const ETHERSPOT_LIFI_WALLET = process.env.REACT_APP_LIFI_ETHERSPOT_WALLET
 
@@ -120,4 +122,16 @@ export const getFeeTransferTransactionBasedOnAmount = async (token: Token, amoun
 export const getStakeKlimaTransaction = (amount: BigNumberish) => {
   const contract = new ethers.Contract(STAKE_KLIMA_CONTRACT_ADDRESS, stakeKlimaAbi)
   return contract.populateTransaction.stake(amount)
+}
+
+export const stakeGMX = async (
+  signerOrProvider: ethers.Signer | ethers.providers.Provider,
+  params: {
+    depositToken: Token
+    stakeAmount: BigJs
+  },
+) => {
+  const contract = new ethers.Contract(GMX_STAKING_CONTRACT, GMXStaking, signerOrProvider)
+
+  return await contract.stake(params.depositToken.address, params.stakeAmount)
 }

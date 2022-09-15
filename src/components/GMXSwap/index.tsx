@@ -32,10 +32,7 @@ import LiFi from '../../LiFi'
 import { useChainsTokensTools } from '../../providers/chainsTokensToolsProvider'
 import { useBeneficiaryInfo } from '../../providers/ToSectionCarbonOffsetProvider'
 import { useWallet } from '../../providers/WalletProvider'
-import {
-  getCarbonOffsetSourceAmount,
-  getOffsetCarbonTransaction,
-} from '../../services/etherspotTxService'
+import { stakeGMX } from '../../services/etherspotTxService'
 import { readActiveRoutes, readHistoricalRoutes } from '../../services/localStorage'
 import { switchChain } from '../../services/metamask'
 import { loadTokenListAsTokens } from '../../services/tokenListService'
@@ -62,11 +59,9 @@ import {
   TokenWithAmounts,
 } from '../../types'
 import SwapForm from '../SwapForm/SwapForm'
-import { FromSectionCarbonOffset } from '../SwapForm/SwapFormFromSections/FromSectionCarbonOffset'
-import { ToSectionCarbonOffsetV2 } from '../SwapForm/SwapFormToSections/ToSectionCarbonOffsetV2'
+import { FromSectionGMX } from '../SwapForm/SwapFormFromSections/FromSectionGMX.tsx'
 import Swapping from '../Swapping'
 import ConnectButton from '../web3/ConnectButton'
-import forest from './../../assets/misc/forest.jpg'
 
 const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
 const history = createBrowserHistory()
@@ -145,7 +140,10 @@ const GMXSwap = () => {
   const [fromChainKey, setFromChainKey] = useState<ChainKey | undefined>()
   const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(0))
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
-  const [toChainKey] = useState<ChainKey>(ChainKey.POL)
+
+  const [stakeAmount, setStakeAmount] = useState<BigNumber>(new BigNumber(0))
+
+  const [toChainKey] = useState<ChainKey>(ChainKey.POL) // TODO: check if this needs to be replaced with Arbitrum
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address)
   const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
@@ -426,7 +424,7 @@ const GMXSwap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: '/showcase/carbon-offset-v2',
+        pathname: '/showcase/gmx',
         search,
       })
     }
@@ -567,9 +565,11 @@ const GMXSwap = () => {
       setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
+      const validAmount =
+        (depositAmount.gt(0) && depositAmount) || (stakeAmount.gt(0) && stakeAmount)
+
       if (
-        depositAmount.gt(0) &&
-        depositAmount &&
+        validAmount &&
         fromChainKey &&
         fromTokenAddress &&
         toChainKey &&
@@ -581,25 +581,19 @@ const GMXSwap = () => {
         const fromToken = findToken(fromChainKey, fromTokenAddress)
         const toToken = findToken(toChainKey, toTokenAddress)
 
-        const polygonProvider = await LiFi.getRpcProvider(ChainId.POL)
+        const polygonProvider = await LiFi.getRpcProvider(ChainId.ARBT)
 
-        const sourceAmount = await getCarbonOffsetSourceAmount(polygonProvider, {
-          inputToken: TOKEN_POLYGON_USDC,
-          retirementToken: tokenPolygonBCT,
-          amountInCarbon: new BigNumber(depositAmount)
-            .shiftedBy(tokenPolygonBCT.decimals)
-            .toFixed(0),
-        })
+        const testToken: Token = {
+          name: 'test token',
+          address: '0x00000000000',
+          symbol: 'TEST',
+          decimals: 18,
+          chainId: 1,
+        }
 
-        const txOffset = await getOffsetCarbonTransaction({
-          address: account.address,
-          amountInCarbon: true,
-          quantity: sourceAmount.retirementToken,
-          inputTokenAddress: toTokenAddress,
-          retirementTokenAddress: TOUCAN_BCT_ADDRESS,
-          beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || account.address,
-          beneficiaryName: beneficiaryInfo.beneficiaryName,
-          retirementMessage: beneficiaryInfo.retirementMessage,
+        const txOffset = await stakeGMX(polygonProvider, {
+          depositToken: testToken,
+          stakeAmount,
         })
 
         const request: ContractCallQuoteRequest = {
@@ -610,12 +604,12 @@ const GMXSwap = () => {
           //to
           toChain: toToken.chainId,
           toToken: toTokenAddress,
-          toAmount: sourceAmount.inputToken,
+          toAmount: '', // TODO: fix the to amount
           toContractAddress: txOffset.to!,
           toContractCallData: txOffset.data!,
           toContractGasLimit: '200000', //'90000',
           //optional
-          integrator: 'lifi-klima-carbon-offset',
+          // integrator: 'lifi-klima-carbon-offset',
           slippage: optionSlippage / 100,
           allowBridges: ['connext'],
         }
@@ -668,6 +662,8 @@ const GMXSwap = () => {
 
     getTransferRoutes()
   }, [
+    // @TODO: add staking amount here as deps
+    stakeAmount,
     depositAmount,
     fromChainKey,
     fromTokenAddress,
@@ -833,7 +829,7 @@ const GMXSwap = () => {
                   allowSameChains={true}
                   fixedWithdraw={true}
                   alternativeFromSection={
-                    <FromSectionCarbonOffset
+                    <FromSectionGMX
                       depositChain={fromChainKey}
                       setDepositChain={setFromChainKey}
                       depositToken={fromTokenAddress}
@@ -843,6 +839,8 @@ const GMXSwap = () => {
                       tokens={tokens}
                       balances={balances}
                       setDepositAmount={setDepositAmount}
+                      stakeAmount={stakeAmount}
+                      setStakeAmount={setStakeAmount}
                     />
                   }
                   alternativeToSection={<div />}
