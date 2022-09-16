@@ -3,23 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "dev": "next dev",
     "build": "next build",
-    "start": "next dev",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@lifi/wallet-management": "^1.1.9",
+    "@lifi/widget": "^1.17.1",
     "@mui/material": "^5.8.3",
-    "@transferto/shared": "0.0.0",
+    "@transferto/shared": "0.1.0",
+    "@transferto/dashboard-old": "0.1.0",
     "@types/js-cookie": "^3.0.2",
     "i18next": "^21.9.0",
     "i18next-browser-languagedetector": "^6.1.5",
     "js-cookie": "^3.0.1",
-    "next": "12.1.6",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
+    "next": "12.3.0",
+    "next-transpile-modules": "^9.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-i18next": "^11.18.3"
   },
   "devDependencies": {

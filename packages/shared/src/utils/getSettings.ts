@@ -1,11 +1,10 @@
-// next
-import { NextApiRequestCookies } from "next/dist/server/api-utils";
+
 // config
-import { cookiesKey, defaultSettings } from "@transferto/shared/config";
+import { cookiesKey, defaultSettings } from "../config";
 
 // ----------------------------------------------------------------------
 
-export const getSettings = (cookies: NextApiRequestCookies) => {
+export const getSettings = (cookies: any) => {
   const themeMode =
     getData(cookies[cookiesKey.themeMode]) || defaultSettings.themeMode;
 

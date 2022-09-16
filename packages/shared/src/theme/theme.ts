@@ -1,5 +1,5 @@
-import { createTheme } from "@mui/material/styles";
-import { viewports, bodyStyled, resetStyled } from "@transferto/shared/style/";
+import { createTheme, Theme } from "@mui/material/styles";
+import { viewports, bodyStyled, resetStyled } from "../style";
 import React from "react";
 import Fonts from "../fonts/fonts";
 
@@ -13,6 +13,8 @@ declare module "@mui/material/styles" {
     systemSuccess: Palette["primary"];
     systemWarning: Palette["primary"];
     systemError: Palette["primary"];
+    background: Palette["background"];
+    text: Palette["text"];
   }
   interface PaletteOptions {
     brandPrimary?: PaletteOptions["primary"];
@@ -23,6 +25,8 @@ declare module "@mui/material/styles" {
     systemSuccess?: PaletteOptions["primary"];
     systemWarning?: PaletteOptions["primary"];
     systemError?: PaletteOptions["primary"];
+    background?: PaletteOptions["background"];
+    text?: PaletteOptions["text"];
   }
   interface BreakpointOverrides {
     xs: false; // removes the `xs` breakpoint
@@ -158,7 +162,7 @@ declare module "@mui/material/Typography" {
   }
 }
 
-const themePresets = createTheme({
+const themeBase: Theme = createTheme({
   components: {
     MuiTypography: {
       defaultProps: {
@@ -212,60 +216,8 @@ const themePresets = createTheme({
   },
 });
 
-export const theme = createTheme({
-  ...themePresets,
-  spacing: 4,
-  palette: {
-    brandPrimary: {
-      light: "#13F287",
-      main: "#13F287",
-      dark: "#13F287",
-    },
-    brandPrimaryTint100: {
-      light: "#93FFCB",
-      main: "#93FFCB",
-      dark: "#93FFCB",
-      contrastText: "#fff",
-    },
-    brandSecondary: {
-      light: "#FF6C3E",
-      main: "#FF6C3E",
-      dark: "#FF6C3E",
-      contrastText: "#000",
-    },
-    brandTertiary: {
-      light: "#633DFF",
-      main: "#633DFF",
-      dark: "#633DFF",
-      contrastText: "#000",
-    },
-    grey: {
-      100: "#FFFFFF",
-      200: "#D9DADD",
-      300: "#B3B5BB",
-      400: "#838690",
-      500: "#61646D",
-      600: "#414348",
-      700: "#303135",
-      800: "#1C1D20",
-      900: "#000000",
-    },
-    systemSuccess: {
-      main: "#02C55B",
-      light: "#02C55B",
-      dark: "#02C55B",
-    },
-    systemWarning: {
-      main: "#FFF95F",
-      light: "#FFF95F",
-      dark: "#FFF95F",
-    },
-    systemError: {
-      main: "#E4294B",
-      light: "#E4294B",
-      dark: "#E4294B",
-    },
-  },
+const themeTypographyPreset: Theme = createTheme({
+  ...themeBase,
   typography: {
     fontFamily: ['"Inter"', "Arial", "sans-serif"].join(","),
     hero: {
@@ -273,7 +225,7 @@ export const theme = createTheme({
       fontSize: 50,
       lineHeight: "58px",
       fontWeight: 700,
-      [themePresets.breakpoints.up("tablet")]: {
+      [themeBase.breakpoints.up("tablet")]: {
         fontSize: 76,
         lineHeight: "84px",
         fontWeight: 400,
@@ -285,7 +237,7 @@ export const theme = createTheme({
       fontSize: 42,
       lineHeight: "50px",
       fontWeight: 700,
-      [themePresets.breakpoints.up("tablet")]: {
+      [themeBase.breakpoints.up("tablet")]: {
         fontSize: 68,
         lineHeight: "74px",
         fontWeight: 600,
@@ -296,7 +248,7 @@ export const theme = createTheme({
       fontSize: 36,
       lineHeight: "44px",
       fontWeight: 700,
-      [themePresets.breakpoints.up("tablet")]: {
+      [themeBase.breakpoints.up("tablet")]: {
         fontSize: 54,
         lineHeight: "64px",
         fontWeight: 600,
@@ -306,7 +258,7 @@ export const theme = createTheme({
       fontSize: 32,
       lineHeight: "42px",
       fontWeight: 700,
-      [themePresets.breakpoints.up("tablet")]: {
+      [themeBase.breakpoints.up("tablet")]: {
         fontSize: 48,
         lineHeight: "70px",
         fontWeight: 400,
@@ -316,7 +268,7 @@ export const theme = createTheme({
       fontSize: 27,
       lineHeight: "36px",
       fontWeight: 700,
-      [themePresets.breakpoints.up("tablet")]: {
+      [themeBase.breakpoints.up("tablet")]: {
         fontSize: 32,
         lineHeight: "40px",
         fontWeight: 400,
@@ -326,7 +278,7 @@ export const theme = createTheme({
       fontSize: 22,
       lineHeight: "30px",
       fontWeight: 700,
-      [themePresets.breakpoints.up("tablet")]: {
+      [themeBase.breakpoints.up("tablet")]: {
         fontSize: 24,
         lineHeight: "34px",
         fontWeight: 400,
@@ -336,7 +288,7 @@ export const theme = createTheme({
       fontSize: 20,
       lineHeight: "26px",
       fontWeight: 700,
-      [themePresets.breakpoints.up("tablet")]: {
+      [themeBase.breakpoints.up("tablet")]: {
         fontSize: 20,
         lineHeight: "28px",
         fontWeight: 400,
@@ -514,6 +466,142 @@ export const theme = createTheme({
       lineHeight: "16px",
       fontWeight: 400,
       letterSpacing: -0.1,
+    },
+  },
+});
+
+const themePreset: Theme = createTheme({
+  ...themeBase,
+  ...themeTypographyPreset,
+});
+
+export const lightTheme: Theme = createTheme({
+  ...themePreset,
+  spacing: 4,
+  palette: {
+    background: {
+      default: "#fff",
+    },
+    text: {
+      primary: "#000",
+    },
+    brandPrimary: {
+      main: "##3F49E1",
+      light: "##3F49E1",
+      dark: "#3F49E1",
+      contrastText: "#fff",
+    },
+    brandPrimaryTint100: {
+      light: "#ACBEFF",
+      main: "#7C83EB",
+      dark: "#7C83EB",
+      contrastText: "#000",
+    },
+    brandSecondary: {
+      light: "#F5B5FF",
+      main: "#F5B5FF",
+      dark: "#F5B5FF",
+      contrastText: "#000",
+    },
+    brandTertiary: {
+      light: "#F6F3F2",
+      main: "#F6F3F2",
+      dark: "#F6F3F2",
+      contrastText: "#000",
+    },
+    grey: {
+      100: "#FFFFFF",
+      200: "#D9DADD",
+      300: "#B3B5BB",
+      400: "#838690",
+      500: "#61646D",
+      600: "#414348",
+      700: "#303135",
+      800: "#1C1D20",
+      900: "#000000",
+    },
+    systemSuccess: {
+      main: "#0AA65B",
+      light: "#0AA65B",
+      dark: "#0AA65B",
+    },
+    systemWarning: {
+      main: "#FFE668",
+      light: "#FFE668",
+      dark: "#FFE668",
+    },
+    systemError: {
+      main: "#E5452F",
+      light: "#E5452F",
+      dark: "#E5452F",
+    },
+  },
+
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: `${resetStyled} ${bodyStyled} ${Fonts}`,
+    },
+  },
+});
+
+export const darkTheme: Theme = createTheme({
+  ...themePreset,
+  spacing: 4,
+  palette: {
+    background: {
+      default: "#000",
+    },
+    text: {
+      primary: "#fff",
+    },
+    brandPrimary: {
+      light: "#13F287",
+      main: "#13F287",
+      dark: "#13F287",
+    },
+    brandPrimaryTint100: {
+      light: "#93FFCB",
+      main: "#93FFCB",
+      dark: "#93FFCB",
+      contrastText: "#fff",
+    },
+    brandSecondary: {
+      light: "#FF6C3E",
+      main: "#FF6C3E",
+      dark: "#FF6C3E",
+      contrastText: "#000",
+    },
+    brandTertiary: {
+      light: "#633DFF",
+      main: "#633DFF",
+      dark: "#633DFF",
+      contrastText: "#000",
+    },
+    grey: {
+      100: "#FFFFFF",
+      200: "#D9DADD",
+      300: "#B3B5BB",
+      400: "#838690",
+      500: "#61646D",
+      600: "#414348",
+      700: "#303135",
+      800: "#1C1D20",
+      900: "#000000",
+    },
+    systemSuccess: {
+      main: "#02C55B",
+      light: "#02C55B",
+      dark: "#02C55B",
+    },
+    systemWarning: {
+      main: "#FFF95F",
+      light: "#FFF95F",
+      dark: "#FFF95F",
+    },
+    systemError: {
+      main: "#E4294B",
+      light: "#E4294B",
+      dark: "#E4294B",
     },
   },
 

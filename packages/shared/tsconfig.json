@@ -1,21 +1,8 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react",
-    "esModuleInterop": true,
-    "baseUrl": "./src",
-    "paths": {
-      // regular app aliases
-      "@/components/*": [
-        "./components/*"
-      ],
-      // packages aliases, relative to app_directory/baseUrl
-      "@transferto/shared/*": [
-        "../../../packages/shared/src/*"
-      ],
-      "@transferto/shared": [
-        "../../../packages/shared/src/index"
-      ],
-    }
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "preserve"
   }
 }

@@ -14,13 +14,13 @@ import {
   cookiesExpires,
   cookiesKey,
   defaultSettings,
-} from "@transferto/shared/config";
+} from "@transferto/shared/src";
 // @type
 import {
   SettingsContextProps,
   SettingsValueProps,
   ThemeMode,
-} from "../components/settings/type";
+} from "../types/settings";
 
 // ----------------------------------------------------------------------
 

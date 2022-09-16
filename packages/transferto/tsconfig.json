@@ -1,77 +1,113 @@
+// {
+//   "extends": "../../tsconfig.base.json",
+//   "compilerOptions": {
+//     "baseUrl": "./src",
+//     "target": "esnext",
+//     "lib": [
+//       "dom",
+//       "dom.iterable",
+//       "esnext"
+//     ],
+//     "module": "esnext",
+//     "jsx": "preserve",
+//     "jsxImportSource": "@emotion/react",
+//     "incremental": true,
+//     "paths": {
+//       "@/test-utils": [
+//         "../config/tests/test-utils"
+//       ],
+//       "@/config/*": [
+//         "./config/*"
+//       ],
+//       "@/lib/*": [
+//         "./lib/*"
+//       ],
+//       "@/components/*": [
+//         "./components/*"
+//       ],
+//       "@/backend/*": [
+//         "./backend/*"
+//       ],
+//       "@/features/*": [
+//         "./features/*"
+//       ],
+//       "@/pages/*": [
+//         "./pages/*"
+//       ],
+//       "@/public/*": [
+//         "../public/*"
+//       ],
+//       "@/themes/*": [
+//         "./themes/*"
+//       ],
+//       // "@transferto/common-i18n": ["../../../packages/common-i18n/src/index"],
+//       // "@transferto/common-i18n/locales/*": [
+//       //   "../../../packages/common-i18n/src/locales/*"
+//       // ],
+//       // packages aliases, relative to app_directory/baseUrl
+//       // "@transferto/shared/*": [
+//       //   "../../../packages/shared/src/*"
+//       // ],
+//       // "@transferto/shared": [
+//       //   "../../../packages/shared/src/index"
+//       // ],
+//       // "@transferto/dashboard-old/*": [
+//       //   "../../../packages/dashboard-old/src/*"
+//       // ],
+//       // "@transferto/dashboard-old": [
+//       //   "../../../packages/dashboard-old/src/index"
+//       // ],
+//     }
+//   },
+//   "exclude": [
+//     "**/node_modules",
+//     "**/.*/"
+//   ],
+//   "include": [
+//     "next-env.d.ts",
+//     "**/*.ts",
+//     "**/*.tsx",
+//     "../shared/src/config.ts",
+//     "**/*.mts",
+//     "**/*.js",
+//     "**/*.cjs",
+//     "**/*.mjs",
+//     "**/*.jsx",
+//     "**/*.json",
+//     "../shared/src/theme.ts",
+//     "../shared/src/hooks/useLocale.ts"
+//   ],
+//   "types": [
+//     "vitest/globals"
+//   ]
+// }
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": "./src",
-    "target": "esnext",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
     "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "jsx": "preserve",
-    "jsxImportSource": "@emotion/react",
-    "incremental": true,
-    "paths": {
-      "@/test-utils": [
-        "../config/tests/test-utils"
-      ],
-      "@/config/*": [
-        "./config/*"
-      ],
-      "@/lib/*": [
-        "./lib/*"
-      ],
-      "@/components/*": [
-        "./components/*"
-      ],
-      "@/backend/*": [
-        "./backend/*"
-      ],
-      "@/features/*": [
-        "./features/*"
-      ],
-      "@/pages/*": [
-        "./pages/*"
-      ],
-      "@/public/*": [
-        "../public/*"
-      ],
-      "@/themes/*": [
-        "./themes/*"
-      ],
-      // "@transferto/common-i18n": ["../../../packages/common-i18n/src/index"],
-      // "@transferto/common-i18n/locales/*": [
-      //   "../../../packages/common-i18n/src/locales/*"
-      // ],
-      // packages aliases, relative to app_directory/baseUrl
-      "@transferto/shared/*": [
-        "../../../packages/shared/src/*"
-      ],
-      "@transferto/shared": [
-        "../../../packages/shared/src/index"
-      ],
-    }
+    "incremental": true
   },
   "exclude": [
-    "**/node_modules",
-    "**/.*/"
+    "node_modules"
   ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "../shared/src/config.ts",
-    "**/*.mts",
-    "**/*.js",
-    "**/*.cjs",
-    "**/*.mjs",
-    "**/*.jsx",
-    "**/*.json",
-    "../shared/src/theme.ts",
-    "../shared/src/hooks/useLocale.ts"
-  ],
-  "types": [
-    "vitest/globals"
+    "**/*.tsx"
   ]
 }

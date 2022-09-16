@@ -1,6 +1,6 @@
 // @mui
 import { deDE, enUS } from "@mui/material/locale";
-import { SettingsValueProps } from "./components/settings/type";
+import { SettingsValueProps } from "./types/settings";
 
 export const cookiesExpires = 3;
 

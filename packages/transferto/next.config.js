@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const withTM = require("next-transpile-modules")(["@transferto/shared", "@lifi/widget", "@transferto/dashboard-old"]);
+module.exports = withTM({
   reactStrictMode: true,
+  swcMinify: true,
   experimental: {
     externalDir: true,
   },
@@ -15,6 +16,5 @@ const nextConfig = {
      */
     defaultLocale: "en-US",
   },
-};
+});
 
-module.exports = nextConfig;

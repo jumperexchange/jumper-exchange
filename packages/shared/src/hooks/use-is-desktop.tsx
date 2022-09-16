@@ -1,4 +1,4 @@
-import { viewports } from "@transferto/shared/style";
+import { viewports } from "@transferto/shared/src";
 import { useMedia } from "use-media";
 import { MediaQueryObject } from "use-media/lib/types";
 
