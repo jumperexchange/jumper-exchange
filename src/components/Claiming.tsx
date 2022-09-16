@@ -56,31 +56,35 @@ const Claiming = () => {
   const [claimingState, setClaimingState] = useState<ClaimingState>('notConnected')
 
   const userClaimData = useMemo(
-    () => claims.claims.find((claim) => claim.address === account.address),
+    () => claims.claims.filter((claim) => claim.address === account.address),
     [account.address],
   )
 
   const checkEligibility = useCallback(async (): Promise<boolean> => {
     if (userClaimData) {
-      const canClaim = await claimContract.functions.canClaim(
-        account.address,
-        userClaimData.amount,
-        userClaimData.series,
-        userClaimData.proof,
-      )
-      return canClaim[0]
+      userClaimData.map(async (el): Promise<any> => {
+        const canClaim = await claimContract.functions.canClaim(
+          account.address,
+          el.amount,
+          el.series,
+          el.proof,
+        )
+        el['canClaim'] = canClaim[0]
+      })
     }
     return false
   }, [userClaimData])
 
   const checkAlreadyClaimed = useCallback(async (): Promise<boolean> => {
     if (userClaimData) {
-      const hash = ethers.utils.solidityKeccak256(
-        ['address', 'uint256', 'string'],
-        [account.address, userClaimData.amount, userClaimData.series],
-      )
-      const _alreadyClaimed = await claimContract.functions.claims(hash)
-      return _alreadyClaimed[0]
+      userClaimData.map(async (el): Promise<any> => {
+        const hash = ethers.utils.solidityKeccak256(
+          ['address', 'uint256', 'string'],
+          [account.address, el.amount, el.series],
+        )
+        const _alreadyClaimed = await claimContract.functions.claims(hash)
+        el['alreadyClaimed'] = _alreadyClaimed[0]
+      })
     }
     return false
   }, [userClaimData])
@@ -110,21 +114,24 @@ const Claiming = () => {
 
   //logic
 
-  const handleClaimTX = useCallback(async () => {
-    try {
-      setClaimingState('claimPending')
-      const claimTX = await claimContract.claim(
-        userClaimData!.amount, // TODO: check
-        userClaimData!.series,
-        userClaimData!.proof,
-      )
-      await claimTX.wait()
+  const handleClaimTX = useCallback(
+    async (index) => {
+      try {
+        setClaimingState('claimPending')
+        const claimTX = await claimContract.claim(
+          userClaimData[index]!.amount, // TODO: check
+          userClaimData[index]!.series,
+          userClaimData[index]!.proof,
+        )
+        await claimTX.wait()
 
-      setClaimingState('success')
-    } catch (e) {
-      setClaimingState('error')
-    }
-  }, [userClaimData])
+        setClaimingState('success')
+      } catch (e) {
+        setClaimingState('error')
+      }
+    },
+    [userClaimData],
+  )
 
   const cardTitles = useMemo(() => {
     const cardTitles: { [key in ClaimingState]: string } = {
@@ -166,55 +173,131 @@ const Claiming = () => {
     <div className="site-layout site-layout--claiming">
       <Content className="claiming">
         <>
-          <p className="claiming__label">{claimingLabel[claimingState]}</p>
-          {(userClaimData && claimingState === 'claimQualified') ||
-          claimingState === 'claimPending' ? (
-            <h2 className="claiming__amount">
-              {formatTokenAmount(LZRD_TOKEN, userClaimData?.amount)}
-            </h2>
-          ) : null}
+          {claimingState === 'network' && (
+            <div className={`card ${cardSuffixClass}`}>
+              <CardIcon claimingState={claimingState}></CardIcon>
+              <p className="card__title">{cardTitles[claimingState]}</p>
 
-          <div className={`card ${cardSuffixClass}`}>
-            <CardIcon claimingState={claimingState}></CardIcon>
-            <p className="card__title">{cardTitles[claimingState]}</p>
-            {claimingState === 'notConnected' && (
-              <ConnectButton
-                className="card__button card__button--claim"
-                size="large"></ConnectButton>
-            )}
-            {(claimingState === 'claimQualified' || claimingState === 'network') && (
               <CardButton
                 claimingState={claimingState}
                 handler={() => {
-                  if (claimingState === 'claimQualified') {
-                    handleClaimTX()
-                  }
-                  if (claimingState === 'network') {
-                    switchChain(ChainId.ARB)
-                  }
+                  switchChain(ChainId.ARB)
                 }}
               />
-            )}
-            {(claimingState === 'notQualified' || claimingState === 'error') && (
-              <a
-                className="claiming__share claiming__share--discord"
-                href="https://discord.gg/lifi"
-                target="_blank"
-                rel="noreferrer">
-                Join our Discord Community
-                <DiscordIcon />
-              </a>
-            )}
-          </div>
-          {claimingState === 'success' && (
-            <a
-              className="claiming__share"
-              href="https://twitter.com/intent/tweet?text=I+have+just+claimed+my+LZRD+tokens!+Check+your+wallet+on+https://transferto.xyz/claiming+to+see+if+your+eligible,+too.%23lifiprotocol+%23transfertoxyz+%23multichainbridge"
-              target="_blank"
-              rel="noreferrer">
-              Share this on Twitter
-              <TwitterIcon />
-            </a>
+            </div>
+          )}
+          {(claimingState === 'notQualified' || claimingState === 'error') && (
+            <>
+              <p className="claiming__label">{claimingLabel[claimingState]}</p>
+
+              <div className={`card ${cardSuffixClass}`}>
+                <CardIcon claimingState={claimingState}></CardIcon>
+                <p className="card__title">{cardTitles[claimingState]}</p>
+                <a
+                  className="claiming__share claiming__share--discord"
+                  href="https://discord.gg/lifi"
+                  target="_blank"
+                  rel="noreferrer">
+                  Join our Discord Community
+                  <DiscordIcon />
+                </a>
+              </div>
+            </>
+          )}
+
+          {userClaimData.length > 0 &&
+            userClaimData.map((el: any, index, arr) => {
+              // console.log('EL:', el, index, arr.length)
+              if (!!el.canClaim && !el.alreadyClaimed) {
+                return (
+                  <>
+                    <p className="claiming__label">{claimingLabel[claimingState]}</p>
+                    {(userClaimData && claimingState === 'claimQualified') ||
+                    claimingState === 'claimPending' ? (
+                      <h2 className="claiming__amount">
+                        {formatTokenAmount(LZRD_TOKEN, el?.amount)}
+                      </h2>
+                    ) : null}
+                    <div className={`card ${cardSuffixClass}`}>
+                      <CardIcon claimingState={claimingState}></CardIcon>
+                      <p className="card__title">{cardTitles[claimingState]}</p>
+                      {claimingState === 'claimQualified' && (
+                        <CardButton
+                          claimingState={claimingState}
+                          handler={() => {
+                            if (claimingState === 'claimQualified') {
+                              handleClaimTX(index)
+                            }
+                          }}
+                        />
+                      )}
+                      {claimingState === 'error' && (
+                        <a
+                          className="claiming__share claiming__share--discord"
+                          href="https://discord.gg/lifi"
+                          target="_blank"
+                          rel="noreferrer">
+                          Join our Discord Community
+                          <DiscordIcon />
+                        </a>
+                      )}
+                    </div>
+                  </>
+                )
+              } else if (arr.length === index && !!el.alreadyClaimed) {
+                ;<p>HUHUHUHU</p>
+                claimingState === 'success' && (
+                  <a
+                    className="claiming__share"
+                    href="https://twitter.com/intent/tweet?text=I+have+just+claimed+my+LZRD+tokens!+Check+your+wallet+on+https://transferto.xyz/claiming+to+see+if+your+eligible,+too.%23lifiprotocol+%23transfertoxyz+%23multichainbridge"
+                    target="_blank"
+                    rel="noreferrer">
+                    Share this on Twitter
+                    <TwitterIcon />
+                  </a>
+                )
+              } else {
+                ;<>
+                  <p>No Claim</p>
+                  {claimingState === 'network' && (
+                    <>
+                      (
+                      <CardButton
+                        claimingState={claimingState}
+                        handler={() => {
+                          if (claimingState === 'network') {
+                            switchChain(ChainId.ARB)
+                          }
+                        }}
+                      />
+                      )
+                    </>
+                  )}
+                  {(claimingState === 'notQualified' || claimingState === 'error') && (
+                    <a
+                      className="claiming__share claiming__share--discord"
+                      href="https://discord.gg/lifi"
+                      target="_blank"
+                      rel="noreferrer">
+                      Join our Discord Community
+                      <DiscordIcon />
+                    </a>
+                  )}
+                </>
+              }
+            })}
+          {userClaimData.length === 0 && (
+            <>
+              <div className={`card ${cardSuffixClass}`}>
+                <CardIcon claimingState={claimingState}></CardIcon>
+                <p className="card__title">{cardTitles[claimingState]}</p>
+                {claimingState === 'notConnected' && (
+                  <ConnectButton
+                    className="card__button card__button--claim"
+                    size="large"></ConnectButton>
+                )}
+              </div>
+            </>
           )}
         </>
       </Content>
