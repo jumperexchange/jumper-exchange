@@ -14,7 +14,7 @@ export const ToSectionGMXStaking = ({
   routesLoading,
 }: ToSectionGMXStakingProps) => {
   const amount = route?.fromAmount || '0'
-  const formattedAmount = tokenGMX ? formatTokenAmount(tokenGMX, amount) : '0'
+  const formattedAmount = route?.fromToken ? formatTokenAmount(route?.fromToken, amount) : '0'
   // eslint-disable-next-line no-console
   console.log({ route, tokenGMX })
 

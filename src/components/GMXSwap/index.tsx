@@ -586,6 +586,7 @@ const GMXSwap = () => {
         const gmxStakeTx = await stakeGMX(
           new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
         )
+
         const request: ContractCallQuoteRequest = {
           //from
           fromChain: fromToken.chainId,
@@ -600,7 +601,7 @@ const GMXSwap = () => {
           toContractGasLimit: '200000', //'90000',
           contractOutputsToken: STAKED_GMX_CONTRACT,
           //optional
-          integrator: 'lifi-klima-xchain-staking', // TODO: Change for GMX
+          integrator: 'lifi-gmx-xchain-staking',
           slippage: optionSlippage / 100,
         }
 

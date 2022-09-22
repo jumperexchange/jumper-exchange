@@ -77,8 +77,6 @@ export const FromSectionGMX = (props: FromSectionGMXProps) => {
           ?.coinKey ?? null
       : null
 
-  const formattedToken = selectedToken ?? '...'
-
   return (
     <>
       <>
@@ -114,7 +112,6 @@ export const FromSectionGMX = (props: FromSectionGMXProps) => {
         </Row>
         <Row>
           <Col span={24}>
-            <div className="input-label">Amount to stake in ${formattedToken}</div>
             <div className="form-input-wrapper margin-bottom-8px">
               <Input
                 style={{ height: 50 }}
@@ -123,8 +120,9 @@ export const FromSectionGMX = (props: FromSectionGMXProps) => {
                 min={0}
                 step={0.000000000000000001}
                 value={depositAmountString}
+                disabled={!selectedToken}
                 onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
-                placeholder={`$${formattedToken}`}
+                placeholder={`Amount to stake in $GMX`}
                 bordered={false}
               />
             </div>

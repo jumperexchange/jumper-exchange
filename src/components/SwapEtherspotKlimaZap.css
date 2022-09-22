@@ -24,7 +24,7 @@
 }
 
 .swap-form-etherspot .swap-input-etherspot {
-  background-color: white;
+  background-color: white !important;
 }
 @media only screen and (max-width: 500px) {
   .swap-form-etherspot .swap-input-etherspot {

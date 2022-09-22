@@ -8,9 +8,9 @@ import {
   STAKE_KLIMA_CONTRACT_ADDRESS,
   stakeKlimaAbi,
 } from '../constants'
-import GMXStaking from '../constants/abis/GMX/stakeGMX.json'
+// import GMXStaking from '../constants/abis/GMX/stakeGMX.json'
 import KlimaRetirementAggregator from '../constants/abis/KlimaRetirementAggregator.json'
-import { GMX_STAKING_CONTRACT } from './../constants/etherspotConstants'
+// import { GMX_STAKING_CONTRACT } from './../constants/etherspotConstants'
 
 const ETHERSPOT_LIFI_WALLET = process.env.REACT_APP_LIFI_ETHERSPOT_WALLET
 
