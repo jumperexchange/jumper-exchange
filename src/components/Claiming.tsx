@@ -1,6 +1,12 @@
 import './Claiming.css'
 
-import { CheckOutlined, LoadingOutlined, WarningOutlined } from '@ant-design/icons'
+import {
+  CheckOutlined,
+  LeftOutlined,
+  LoadingOutlined,
+  RightOutlined,
+  WarningOutlined,
+} from '@ant-design/icons'
 import { Button } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { ethers } from 'ethers'
@@ -18,12 +24,12 @@ import ConnectButton from './web3/ConnectButton'
 
 type ClaimingState =
   | 'claimQualified'
-  | 'network'
+  | 'network' // general
   | 'success'
   | 'notQualified'
   | 'error'
   | 'claimPending'
-  | 'notConnected'
+  | 'notConnected' // general
 
 const LZRD_TOKEN: Token = {
   address: '0x1a65532d7ffbbb8bab09f4eefd87d8518a630c95',
@@ -54,42 +60,59 @@ const Claiming = () => {
   )
 
   const [claimingState, setClaimingState] = useState<ClaimingState>('notConnected')
+  const [claimingIndex, setClaimingIndex] = useState<number>(-1)
 
-  const userClaimData = useMemo(
-    () => claims.claims.filter((claim) => claim.address === account.address),
-    [account.address],
-  )
+  const userClaimData: {
+    address: string
+    amount: string
+    series: string
+    proof: string[]
+    canClaim: boolean
+    claimingState?: ClaimingState
+    alreadyClaimed: boolean
+  }[] = useMemo(() => {
+    const claimData = claims.claims.filter((claim) => claim.address === account.address)
+    return claimData.map((data) => ({
+      ...data,
+      canClaim: false,
+      alreadyClaimed: false,
+    }))
+  }, [account.address])
 
   const checkEligibility = useCallback(async (): Promise<boolean> => {
     if (userClaimData) {
-      userClaimData.map(async (el): Promise<any> => {
+      for (let i = 0; i < userClaimData.length; i++) {
         const canClaim = await claimContract.functions.canClaim(
           account.address,
-          el.amount,
-          el.series,
-          el.proof,
+          userClaimData[i].amount,
+          userClaimData[i].series,
+          userClaimData[i].proof,
         )
-        el['canClaim'] = canClaim[0]
-      })
+        userClaimData[i]['claimingState'] = canClaim[0] ? 'claimQualified' : 'notQualified'
+      }
+      return userClaimData.some((data) => data.canClaim)
     }
     return false
   }, [userClaimData])
 
   const checkAlreadyClaimed = useCallback(async (): Promise<boolean> => {
     if (userClaimData) {
-      userClaimData.map(async (el): Promise<any> => {
+      for (let i = 0; i < userClaimData.length; i++) {
         const hash = ethers.utils.solidityKeccak256(
           ['address', 'uint256', 'string'],
-          [account.address, el.amount, el.series],
+          [account.address, userClaimData[i].amount, userClaimData[i].series],
         )
         const _alreadyClaimed = await claimContract.functions.claims(hash)
-        el['alreadyClaimed'] = _alreadyClaimed[0]
-      })
+        userClaimData[i]['claimingState'] = _alreadyClaimed[0]
+          ? 'success'
+          : userClaimData[i]['claimingState']
+      }
+      return userClaimData.some((data) => data.alreadyClaimed)
     }
     return false
   }, [userClaimData])
 
-  const setup = async () => {
+  const setupClaimingState = useCallback(async () => {
     if (!account.address && !account.chainId && !account.signer) {
       return setClaimingState(() => 'notConnected')
     }
@@ -98,21 +121,48 @@ const Claiming = () => {
       return setClaimingState(() => 'network')
     }
 
-    if (userClaimData) {
-      if (!(await checkEligibility())) return setClaimingState('notQualified')
-      if (await checkAlreadyClaimed()) return setClaimingState('success')
+    if (userClaimData.length) {
+      if (!(await checkEligibility())) {
+        if (userClaimData.every((claimData) => claimData.claimingState === 'notQualified')) {
+          return setClaimingState(() => 'notQualified')
+        }
+      }
+      if (await checkAlreadyClaimed()) {
+        if (userClaimData.every((claimData) => claimData.claimingState === 'success')) {
+          return setClaimingState(() => 'success')
+        }
+      }
 
       return setClaimingState(() => 'claimQualified')
     } else {
       return setClaimingState(() => 'notQualified')
     }
-  }
+  }, [userClaimData.length, account.address, account.chainId, account.signer])
+
+  const setupClaimingIndex = useCallback(() => {
+    let index: number = -1
+    for (var i = 0; i < userClaimData.length; i++) {
+      if (userClaimData[i].claimingState === 'claimQualified') {
+        index = i
+        break
+      }
+    }
+    setClaimingIndex(() => index)
+  }, [userClaimData.length])
 
   useEffect(() => {
-    setup()
-  }, [userClaimData, account.address, account.chainId, account.signer])
+    if (userClaimData.length > 0) {
+      setupClaimingState()
+    } else {
+      setClaimingState(() => 'notQualified')
+    }
+  }, [userClaimData.length, account.address, account.chainId, account.signer])
 
-  //logic
+  useEffect(() => {
+    if (claimingState === 'claimQualified') {
+      setupClaimingIndex()
+    }
+  }, [claimingState, userClaimData.length])
 
   const handleClaimTX = useCallback(
     async (index) => {
@@ -133,20 +183,20 @@ const Claiming = () => {
     [userClaimData],
   )
 
-  const cardTitles = useMemo(() => {
+  const cardTitles = useCallback((label: ClaimingState | undefined) => {
     const cardTitles: { [key in ClaimingState]: string } = {
       error: 'An error during the transaction occured',
-      claimQualified: 'Totals Rewards',
+      claimQualified: '',
       network: 'Please switch to Arbitrum to check your claim',
       success: 'Succesfully Claimed',
       notQualified: '',
       claimPending: 'Transaction Pending',
       notConnected: 'Please conncect your wallet to check your eligibility',
     }
-    return cardTitles
+    return cardTitles[label || 'claimQualified']
   }, [])
 
-  const claimingLabel = useMemo(() => {
+  const claimingLabel = useCallback((label: ClaimingState | undefined) => {
     const claimingLabel: { [key in ClaimingState]: string } = {
       error: '',
       claimQualified: 'Totals Rewards',
@@ -156,23 +206,114 @@ const Claiming = () => {
       claimPending: 'Totals Rewards',
       notConnected: '',
     }
-    return claimingLabel
+    return claimingLabel[label || 'error']
   }, [])
 
-  const cardSuffixClass = useMemo(() => {
-    if (claimingState === 'success' || claimingState === 'error') {
-      return 'card'
-    }
-    if (claimingState === 'notQualified') {
-      return 'card--hidden'
-    }
-    return ''
-  }, [claimingState])
+  const cardSuffixClass = useCallback(
+    (index: number) => {
+      if (
+        userClaimData[index].claimingState === 'success' ||
+        userClaimData[index].claimingState === 'error'
+      ) {
+        return 'card'
+      }
+      if (userClaimData[index].claimingState === 'notQualified') {
+        return 'card--hidden'
+      }
+      return ''
+    },
+    [...userClaimData],
+  )
+
+  // TODO: do a tx
+  // TODO: switch between claims
 
   return (
     <div className="site-layout site-layout--claiming">
       <Content className="claiming">
-        <>
+        {userClaimData.every((claim) => claim.claimingState) ? (
+          <>
+            <p className="claiming__label">
+              {claimingLabel(userClaimData[claimingIndex].claimingState)}
+            </p>
+            {((userClaimData.length &&
+              userClaimData[claimingIndex].claimingState === 'claimQualified') ||
+              userClaimData[claimingIndex].claimingState === 'claimPending') &&
+            claimingIndex > -1 ? (
+              <h2 className="claiming__amount">
+                {formatTokenAmount(LZRD_TOKEN, userClaimData[claimingIndex].amount)}
+              </h2>
+            ) : null}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                margin: '0 auto',
+              }}>
+              <LeftOutlined
+                onClick={() => {
+                  setClaimingIndex((oldClaimingIndex) => oldClaimingIndex - 1)
+                }}
+                style={{
+                  fontSize: 32,
+                  cursor: 'pointer',
+                  margin: 8,
+                  visibility: claimingIndex + 1 === 1 ? 'hidden' : 'visible',
+                }}
+              />
+
+              <div>
+                <div className={`card ${cardSuffixClass}`}>
+                  <CardIcon claimingState={userClaimData[claimingIndex].claimingState}></CardIcon>
+                  <p className="card__title">
+                    {cardTitles(userClaimData[claimingIndex].claimingState)}
+                  </p>
+                  <CardButton
+                    claimingState={userClaimData[claimingIndex].claimingState}
+                    handler={() => {
+                      if (userClaimData[claimingIndex].claimingState === 'claimQualified') {
+                        // handleClaimTX()
+                      }
+                      if (userClaimData[claimingIndex].claimingState === 'network') {
+                        switchChain(ChainId.ARB)
+                      }
+                    }}
+                  />
+                  <p>claim {`${claimingIndex + 1}/${userClaimData.length}`}</p>
+                </div>
+
+                {(claimingState === 'notQualified' ||
+                  userClaimData[claimingIndex].claimingState === 'error') && (
+                  <a
+                    className="claiming__share claiming__share--discord"
+                    href="https://discord.gg/lifi"
+                    target="_blank"
+                    rel="noreferrer">
+                    Join our Discord Community
+                    <DiscordIcon />
+                  </a>
+                )}
+              </div>
+
+              <RightOutlined
+                onClick={() => {
+                  setClaimingIndex((oldClaimingIndex) => oldClaimingIndex + 1)
+                }}
+                style={{
+                  fontSize: 32,
+                  cursor: 'pointer',
+                  margin: 8,
+                  visibility: claimingIndex + 1 === userClaimData.length ? 'hidden' : 'visible',
+                }}
+              />
+            </div>
+          </>
+        ) : (
+          <LoadingOutlined style={{ color: 'green', fontSize: 160, margin: '0 auto 12px' }} />
+        )}
+
+        {/* <>
           {claimingState === 'network' && (
             <div className={`card ${cardSuffixClass}`}>
               <CardIcon claimingState={claimingState}></CardIcon>
@@ -299,13 +440,14 @@ const Claiming = () => {
               </div>
             </>
           )}
-        </>
+        </> */}
       </Content>
     </div>
   )
 }
 
-const CardIcon = ({ claimingState }: { claimingState: ClaimingState }) => {
+const CardIcon = ({ claimingState }: { claimingState: ClaimingState | undefined }) => {
+  if (!claimingState) return <></>
   if (claimingState === 'success') {
     return (
       <CheckOutlined
@@ -343,37 +485,46 @@ const CardButton = ({
   claimingState,
   handler,
 }: {
-  claimingState: ClaimingState
+  claimingState: ClaimingState | undefined
   handler: Function
 }) => {
-  if (claimingState === 'claimQualified') {
-    return (
-      <Button
-        onClick={() => {
-          handler()
-        }}
-        className="card__button card__button--claim"
-        type="primary"
-        size="large">
-        Claim
-      </Button>
-    )
-  }
+  if (!claimingState) return <></>
 
-  if (claimingState === 'network') {
-    return (
-      <Button
-        onClick={() => {
-          handler()
-        }}
-        className="card__button card__button--claim"
-        type="primary"
-        size="large">
-        Switch Network to Arbitrum
-      </Button>
-    )
+  switch (claimingState) {
+    case 'claimQualified':
+      return (
+        <Button
+          onClick={() => {
+            handler()
+          }}
+          className="card__button card__button--claim"
+          type="primary"
+          size="large">
+          Claim
+        </Button>
+      )
+
+    case 'network':
+      return (
+        <Button
+          onClick={() => {
+            handler()
+          }}
+          className="card__button card__button--claim"
+          type="primary"
+          size="large">
+          Switch Network to Arbitrum
+        </Button>
+      )
+
+    case 'notConnected':
+      return (
+        <ConnectButton className="card__button card__button--claim" size="large"></ConnectButton>
+      )
+
+    default:
+      return null
   }
-  return null
 }
 
 export default Claiming
