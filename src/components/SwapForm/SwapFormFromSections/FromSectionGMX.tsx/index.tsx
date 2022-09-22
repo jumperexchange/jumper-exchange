@@ -71,6 +71,14 @@ export const FromSectionGMX = (props: FromSectionGMXProps) => {
     props.setDepositAmount(new BigNumber(amount))
   }
 
+  const selectedToken =
+    props.depositChain && props.depositToken && props.tokens
+      ? props.tokens?.[props.depositChain].find((token) => token.address === props.depositToken)
+          ?.coinKey ?? null
+      : null
+
+  const formattedToken = selectedToken ?? '...'
+
   return (
     <>
       <>
@@ -106,7 +114,7 @@ export const FromSectionGMX = (props: FromSectionGMXProps) => {
         </Row>
         <Row>
           <Col span={24}>
-            <div className="input-label">Amount to stake in $USDT</div>
+            <div className="input-label">Amount to stake in ${formattedToken}</div>
             <div className="form-input-wrapper margin-bottom-8px">
               <Input
                 style={{ height: 50 }}
@@ -116,7 +124,7 @@ export const FromSectionGMX = (props: FromSectionGMXProps) => {
                 step={0.000000000000000001}
                 value={depositAmountString}
                 onChange={(event) => onChangeDepositAmount(event.currentTarget.value)}
-                placeholder="$GMX"
+                placeholder={`$${formattedToken}`}
                 bordered={false}
               />
             </div>

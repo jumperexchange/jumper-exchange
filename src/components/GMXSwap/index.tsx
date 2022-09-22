@@ -583,7 +583,7 @@ const GMXSwap = () => {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
 
-        const klimaStakeTx = await stakeGMX(
+        const gmxStakeTx = await stakeGMX(
           new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
         )
         const request: ContractCallQuoteRequest = {
@@ -595,12 +595,12 @@ const GMXSwap = () => {
           toChain: tokenPolygonBCT.chainId,
           toToken: tokenPolygonBCT.address,
           toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
-          toContractAddress: klimaStakeTx.to!,
-          toContractCallData: klimaStakeTx.data!,
+          toContractAddress: gmxStakeTx.to!,
+          toContractCallData: gmxStakeTx.data!,
           toContractGasLimit: '200000', //'90000',
           contractOutputsToken: STAKED_GMX_CONTRACT,
           //optional
-          integrator: 'lifi-klima-xchain-staking',
+          integrator: 'lifi-klima-xchain-staking', // TODO: Change for GMX
           slippage: optionSlippage / 100,
         }
 
