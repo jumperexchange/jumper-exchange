@@ -124,14 +124,7 @@ export const getStakeKlimaTransaction = (amount: BigNumberish) => {
   return contract.populateTransaction.stake(amount)
 }
 
-export const stakeGMX = async (
-  signerOrProvider: ethers.Signer | ethers.providers.Provider,
-  params: {
-    depositToken: Token
-    stakeAmount: BigJs
-  },
-) => {
-  const contract = new ethers.Contract(GMX_STAKING_CONTRACT, GMXStaking, signerOrProvider)
-
-  return await contract.stake(params.depositToken.address, params.stakeAmount)
+export const stakeGMX = async (amount: BigNumberish) => {
+  const contract = new ethers.Contract(STAKE_KLIMA_CONTRACT_ADDRESS, stakeKlimaAbi)
+  return contract.populateTransaction.stake(amount)
 }

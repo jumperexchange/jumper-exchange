@@ -26,7 +26,7 @@ import { v4 as uuid } from 'uuid'
 
 import { PoweredByLiFi } from '../../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../../assets/misc/etherspot'
-import { TOUCAN_BCT_ADDRESS } from '../../constants'
+import { GMX_STAKING_CONTRACT, STAKED_GMX_CONTRACT } from '../../constants'
 import { useMetatags } from '../../hooks/useMetatags'
 import LiFi from '../../LiFi'
 import { useChainsTokensTools } from '../../providers/chainsTokensToolsProvider'
@@ -60,6 +60,7 @@ import {
 } from '../../types'
 import SwapForm from '../SwapForm/SwapForm'
 import { FromSectionGMX } from '../SwapForm/SwapFormFromSections/FromSectionGMX.tsx'
+import { ToSectionGMXStaking } from '../SwapForm/SwapFormToSections/GMXSwapFormToSection'
 import Swapping from '../Swapping'
 import ConnectButton from '../web3/ConnectButton'
 
@@ -141,8 +142,6 @@ const GMXSwap = () => {
   const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(0))
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
 
-  const [stakeAmount, setStakeAmount] = useState<BigNumber>(new BigNumber(0))
-
   const [toChainKey] = useState<ChainKey>(ChainKey.POL) // TODO: check if this needs to be replaced with Arbitrum
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
   const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address)
@@ -179,6 +178,7 @@ const GMXSwap = () => {
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
 
   const [tokenPolygonBCT, setTokenPolygonBCT] = useState<Token>()
+  const [tokenPolygonSGMX, setTokenPolygonSGMX] = useState<Token>()
   const tokensAndChainsSet = useMemo(
     () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
     [tokens, availableChains],
@@ -215,8 +215,10 @@ const GMXSwap = () => {
   useEffect(() => {
     setTokens(chainsTokensTools.tokens)
     const loadAdditionalToken = async () => {
-      const tokenBCT = await LiFi.getToken(ChainId.POL, TOUCAN_BCT_ADDRESS)!
+      const tokenBCT = await LiFi.getToken(ChainId.POL, GMX_STAKING_CONTRACT)!
+      const sTokenGMX = await LiFi.getToken(ChainId.POL, STAKED_GMX_CONTRACT)!
       setTokenPolygonBCT(tokenBCT)
+      setTokenPolygonSGMX(sTokenGMX)
     }
     loadAdditionalToken()
   }, [chainsTokensTools.tokens])
@@ -565,8 +567,7 @@ const GMXSwap = () => {
       setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
-      const validAmount =
-        (depositAmount.gt(0) && depositAmount) || (stakeAmount.gt(0) && stakeAmount)
+      const validAmount = depositAmount.gt(0) && depositAmount
 
       if (
         validAmount &&
@@ -575,43 +576,32 @@ const GMXSwap = () => {
         toChainKey &&
         toTokenAddress &&
         tokenPolygonBCT &&
+        tokenPolygonSGMX &&
         account.address
       ) {
         setRoutesLoading(true)
+        setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
-        const toToken = findToken(toChainKey, toTokenAddress)
 
-        const polygonProvider = await LiFi.getRpcProvider(ChainId.ARBT)
-
-        const testToken: Token = {
-          name: 'test token',
-          address: '0x00000000000',
-          symbol: 'TEST',
-          decimals: 18,
-          chainId: 1,
-        }
-
-        const txOffset = await stakeGMX(polygonProvider, {
-          depositToken: testToken,
-          stakeAmount,
-        })
-
+        const klimaStakeTx = await stakeGMX(
+          new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
+        )
         const request: ContractCallQuoteRequest = {
           //from
           fromChain: fromToken.chainId,
           fromToken: fromTokenAddress,
           fromAddress: account.address,
           //to
-          toChain: toToken.chainId,
-          toToken: toTokenAddress,
-          toAmount: '', // TODO: fix the to amount
-          toContractAddress: txOffset.to!,
-          toContractCallData: txOffset.data!,
+          toChain: tokenPolygonBCT.chainId,
+          toToken: tokenPolygonBCT.address,
+          toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
+          toContractAddress: klimaStakeTx.to!,
+          toContractCallData: klimaStakeTx.data!,
           toContractGasLimit: '200000', //'90000',
+          contractOutputsToken: STAKED_GMX_CONTRACT,
           //optional
-          // integrator: 'lifi-klima-carbon-offset',
+          integrator: 'lifi-klima-xchain-staking',
           slippage: optionSlippage / 100,
-          allowBridges: ['connext'],
         }
 
         const id = uuid()
@@ -620,13 +610,13 @@ const GMXSwap = () => {
           const result = await LiFi.getContractCallQuote(request)
 
           result.estimate.toAmount = new BigNumber(depositAmount)
-            .shiftedBy(tokenPolygonBCT.decimals)
+            .shiftedBy(tokenPolygonSGMX.decimals)
             .toFixed(0)
           result.estimate.toAmountMin = new BigNumber(depositAmount)
-            .shiftedBy(tokenPolygonBCT.decimals)
+            .shiftedBy(tokenPolygonSGMX.decimals)
             .toFixed(0)
 
-          result.action.toToken = tokenPolygonBCT
+          result.action.toToken = tokenPolygonSGMX
 
           const route: RouteType = {
             id: result.id,
@@ -637,11 +627,11 @@ const GMXSwap = () => {
             fromAddress: result.action.fromAddress,
             toChainId: result.action.toChainId,
             toAmountUSD: result.estimate.toAmountUSD || '',
-            toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
+            toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonSGMX.decimals).toFixed(0),
             toAmountMin: new BigNumber(depositAmount)
-              .shiftedBy(tokenPolygonBCT.decimals)
+              .shiftedBy(tokenPolygonSGMX.decimals)
               .toFixed(0),
-            toToken: tokenPolygonBCT,
+            toToken: tokenPolygonSGMX,
             toAddress: result.action.toAddress,
             gasCostUSD: result.estimate.gasCosts?.[0].amountUSD,
             steps: [result],
@@ -662,8 +652,6 @@ const GMXSwap = () => {
 
     getTransferRoutes()
   }, [
-    // @TODO: add staking amount here as deps
-    stakeAmount,
     depositAmount,
     fromChainKey,
     fromTokenAddress,
@@ -839,11 +827,15 @@ const GMXSwap = () => {
                       tokens={tokens}
                       balances={balances}
                       setDepositAmount={setDepositAmount}
-                      stakeAmount={stakeAmount}
-                      setStakeAmount={setStakeAmount}
                     />
                   }
-                  alternativeToSection={<div />}
+                  alternativeToSection={
+                    <ToSectionGMXStaking
+                      route={route}
+                      tokenGMX={tokenPolygonBCT}
+                      routesLoading={routesLoading}
+                    />
+                  }
                 />
                 <span>
                   {/* Disclaimer */}
