@@ -53,7 +53,7 @@ export const Swap = () => {
         },
       },
       containerStyle: {
-        height: 'calc(100% - 160px)',
+        height: '100%',
         border: `1px solid ${
           window.matchMedia('(prefers-color-scheme: dark)').matches
             ? 'rgb(66, 66, 66)'
@@ -63,8 +63,9 @@ export const Swap = () => {
         boxShadow: '0px 8px 32px rgba(0, 0, 0, 0.08)',
         display: 'flex',
         minWidth: 360,
-        maxHeight: 736,
+        // maxHeight: 736,
       },
+      variant: 'expandable',
     }
   }, [account.address, account.signer, disconnect])
 
