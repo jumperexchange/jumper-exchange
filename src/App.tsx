@@ -126,13 +126,13 @@ function App() {
                     <Link to="/" className="wordmark">
                       transferto.xyz
                     </Link>
-                    {/* <a
+                    <a
                       className="header-poweredBy"
                       href="https://li.fi/"
                       target="_blank"
                       rel="nofollow noreferrer">
                       <PoweredByLiFi />
-                    </a> */}
+                    </a>
                   </div>
                   <Menu
                     items={navConfig}

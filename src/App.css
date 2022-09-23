@@ -5,7 +5,7 @@
   float: left;
   color: black;
   font-size: 22px;
-  /* line-height: 42px; */
+  line-height: 42px;
   margin-right: 60px;
   font-weight: bold;
   font-family: 'GT America' !important;
@@ -39,7 +39,8 @@
 .header-poweredBy {
   color: black;
   position: absolute;
-  left: 46px;
+  /* left: 46px; */
+  left: 0px;
   top: 33px;
   display: block;
   line-height: 1;
