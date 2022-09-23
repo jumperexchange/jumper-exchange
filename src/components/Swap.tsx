@@ -55,7 +55,6 @@ export const Swap = () => {
       containerStyle: {
         borderRadius: '16px',
         boxShadow: '0px 8px 32px rgba(0, 0, 0, 0.08)',
-        minWidth: 360,
       },
       variant: 'expandable',
     }
