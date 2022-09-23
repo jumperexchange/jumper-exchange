@@ -204,10 +204,15 @@ const Swap = () => {
 
   //get tools
   useEffect(() => {
-    setAvailableExchanges(chainsTokensTools.bridges)
+    setAvailableExchanges(chainsTokensTools.exchanges)
     setOptionEnabledExchanges(chainsTokensTools.exchanges)
-    setAvailableBridges(chainsTokensTools.bridges)
-    setOptionEnabledBridges(chainsTokensTools.bridges)
+
+    const allowedBridges = ['connext', 'stargate']
+    const filteredBridges = chainsTokensTools.bridges?.filter((bridge) =>
+      allowedBridges.includes(bridge),
+    )
+    setAvailableBridges(filteredBridges)
+    setOptionEnabledBridges(filteredBridges)
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
@@ -730,9 +735,11 @@ const Swap = () => {
       )
     }
 
+    const disableStakeButton = !route || !(depositAmount.toNumber() > 0)
+
     return (
       <Button
-        disabled={!route}
+        disabled={disableStakeButton}
         shape="round"
         type="primary"
         size={'large'}
