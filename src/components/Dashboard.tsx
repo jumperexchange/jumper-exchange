@@ -769,7 +769,7 @@ const Dashboard = () => {
       <div
         className="site-layout-background"
         style={{
-          minHeight: 'calc(100vh - 112px)',
+          minHeight: 'calc(100vh - 104px)',
           marginTop: 112,
         }}>
         <Table
@@ -777,7 +777,7 @@ const Dashboard = () => {
           dataSource={data}
           bordered
           size="middle"
-          scroll={{ x: '1000px', y: 'calc(100vh - 325px)' }}
+          scroll={{ x: '1000px', y: 'calc(100vh - 317px)' }}
           pagination={false}
           summary={() => (
             <Table.Summary fixed>
