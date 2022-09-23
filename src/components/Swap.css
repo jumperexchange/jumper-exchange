@@ -1,9 +1,9 @@
 @import '../css/animations.css';
 
 .swap-page {
-  display: grid;
-  place-items: center;
-  height: 100vh;
+  padding-top: 128px !important;
+  padding-bottom: 96px !important;
+  min-height: 100vh !important;
   background: white !important;
   background-image: url('../assets/bg/bg-net.svg');
   background-image: url('../assets/bg/bg-net.svg'),
@@ -11,6 +11,4 @@
   background-size: contain !important;
   background-repeat: no-repeat !important;
   background-position: bottom !important;
-  padding: 4px;
-  padding-top: 64px;
 }
