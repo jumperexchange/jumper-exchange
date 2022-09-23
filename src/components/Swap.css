@@ -5,6 +5,12 @@
   place-items: center;
   height: 100vh;
   background: white !important;
-  background: linear-gradient(180deg, #f6f3f2 0%, rgba(246, 243, 242, 0) 100%) !important;
+  background-image: url('../assets/bg/bg-net.svg');
+  background-image: url('../assets/bg/bg-net.svg'),
+    linear-gradient(180deg, #fefaff 9.96%, #fbebff 100%) !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: bottom !important;
   padding: 4px;
+  padding-top: 64px;
 }

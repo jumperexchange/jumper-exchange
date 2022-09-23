@@ -111,7 +111,7 @@ const Claiming = () => {
   }
 
   return (
-    <div className="site-layout site-layout--claiming">
+    <div className="site-layout--claiming">
       <Content className="claiming">
         {claimingState !== 'success' &&
           claimingState !== 'notQualified' &&

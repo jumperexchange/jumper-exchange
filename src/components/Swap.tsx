@@ -60,6 +60,7 @@ export const Swap = () => {
             : 'rgb(234, 234, 234)'
         }`,
         borderRadius: '16px',
+        boxShadow: '0px 8px 32px rgba(0, 0, 0, 0.08)',
         display: 'flex',
         minWidth: 360,
         maxHeight: 736,

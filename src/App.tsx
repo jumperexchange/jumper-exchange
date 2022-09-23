@@ -33,14 +33,10 @@ function App() {
   const navConfig = useNavConfig()
   const location = useLocation()
   const path = usePageViews()
-  const [adjustNavBarToBgGradient, setAdjustNavBarToBgGradient] = useState(
-    !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
-  )
+  const [adjustNavbar, setAdjustNavbar] = useState(location.pathname.includes('showcase'))
 
   useEffect(() => {
-    setAdjustNavBarToBgGradient(
-      !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
-    )
+    setAdjustNavbar(location.pathname.includes('showcase'))
   }, [location])
 
   function swapEmbedView() {
@@ -121,7 +117,7 @@ function App() {
                 width: '100%',
                 padding: 0,
                 top: 0,
-                background: adjustNavBarToBgGradient ? '#F6F3F2' : '#fff',
+                background: adjustNavbar ? 'white' : 'transparent',
               }}>
               <Row className="site-layout-menu">
                 {/* Menu */}
@@ -130,13 +126,13 @@ function App() {
                     <Link to="/" className="wordmark">
                       transferto.xyz
                     </Link>
-                    <a
+                    {/* <a
                       className="header-poweredBy"
                       href="https://li.fi/"
                       target="_blank"
                       rel="nofollow noreferrer">
                       <PoweredByLiFi />
-                    </a>
+                    </a> */}
                   </div>
                   <Menu
                     items={navConfig}

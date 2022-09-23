@@ -92,11 +92,13 @@ Global overrides of ant design styles
 .ant-menu-item-selected:hover::after,
 .ant-menu-item-selected::after,
 .ant-menu-item-active::after {
-  border-bottom: 1px solid #3f49e1 !important;
+  /* border-bottom: 1px solid #3f49e1 !important; */
+  border-bottom: none !important;
 }
 .ant-menu-submenu:hover::after,
 .ant-menu-submenu-open::after {
-  border-bottom: 1px solid #3f49e1 !important;
+  /* border-bottom: 1px solid #3f49e1 !important; */
+  border-bottom: none !important;
 }
 
 /* Steps */
