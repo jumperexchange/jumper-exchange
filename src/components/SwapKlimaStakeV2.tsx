@@ -810,7 +810,7 @@ const Swap = () => {
                   tokens={tokens}
                   balances={balances}
                   allowSameChains={true}
-                  fixedWithdraw={true}
+                  // fixedWithdraw={true}
                   alternativeFromSection={
                     <FromSectionKlimaStaking
                       depositChain={fromChainKey}
@@ -1006,6 +1006,7 @@ const Swap = () => {
             route={selectedRoute}
             settings={{ infiniteApproval: optionInfiniteApproval }}
             updateRoute={() => {}}
+            fixedRecipient={true}
             onSwapDone={() => {
               updateBalances()
             }}></Swapping>
