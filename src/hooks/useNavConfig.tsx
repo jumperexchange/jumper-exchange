@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import WalletButtons from '../components/web3/WalletButtons'
 import {
   REACT_APP_ENABLE_CLAIMING,
+  REACT_APP_ENABLE_GMX_SHOWCASE,
   REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
   REACT_APP_ENABLE_SWAP_V2,
 } from '../constants/featureFlags'
@@ -84,6 +85,12 @@ export const useNavConfig = () => {
                     key: '/showcase/carbon-offset',
                     label: <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>,
                   },
+                  REACT_APP_ENABLE_GMX_SHOWCASE
+                    ? {
+                        key: '/showcase/gmx',
+                        label: <Link to="/showcase/gmx">GMX Staking</Link>,
+                      }
+                    : null,
                   REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE
                     ? {
                         key: '/showcase/carbon-offset-v2',
