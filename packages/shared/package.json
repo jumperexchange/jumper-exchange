@@ -14,7 +14,8 @@
     "fix:staged-files": "lint-staged --allow-empty",
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "pre-commit": "echo 'Shared precomit running..."
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
@@ -28,7 +29,9 @@
     "@storybook/testing-library": "^0.0.13",
     "@types/node": "^17.0.41",
     "@types/react": "^18.0.12",
-    "babel-loader": "^8.2.5"
+    "babel-loader": "^8.2.5",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",

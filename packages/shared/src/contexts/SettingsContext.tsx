@@ -82,7 +82,7 @@ function SettingsProvider({
 
   const onResetSetting = () => {
     setSettings({
-      themeMode: initialState.themeMode,
+      themeMode: initialState.themeMode || "light",
     });
   };
 
