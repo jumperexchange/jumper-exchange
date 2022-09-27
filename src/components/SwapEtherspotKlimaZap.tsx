@@ -20,7 +20,7 @@ import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
+import { NetworkNames, Sdk, Web3Provider, Web3WalletProvider } from 'etherspot'
 import { CHAIN_ID_TO_NETWORK_NAME } from 'etherspot/dist/sdk/network/constants'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
@@ -220,7 +220,7 @@ const Swap = () => {
 
       // get provider
       const connector = (window as any).ethereum
-      const provider = await Web3WalletProvider.connect(await connector.getProvider())
+      const provider = await Web3WalletProvider.connect(connector)
 
       // setup sdk for polygon
       const sdk = new Sdk(provider, {
@@ -237,13 +237,13 @@ const Swap = () => {
     }
 
     if (
-      account.isActive &&
+      account.signer &&
       availableChains.find((chain) => chain.id === account.chainId) &&
       (window as any).ethereum
     ) {
       etherspotSDKSetup()
     }
-  }, [account.isActive, account.chainId, availableChains])
+  }, [account.chainId, availableChains, account.signer])
 
   // Check Etherspot Wallet balance
   useEffect(() => {
