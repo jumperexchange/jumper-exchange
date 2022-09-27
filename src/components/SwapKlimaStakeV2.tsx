@@ -21,25 +21,19 @@ import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
-import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { Etherspot } from '../assets/misc/etherspot'
-import { TOUCAN_BCT_ADDRESS } from '../constants'
+import { etherspotSupportedChains, KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
 import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
-import { useBeneficiaryInfo } from '../providers/ToSectionCarbonOffsetProvider'
 import { useWallet } from '../providers/WalletProvider'
-import {
-  getCarbonOffsetSourceAmount,
-  getOffsetCarbonTransaction,
-} from '../services/etherspotTxService'
-import { readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
+import { getStakeKlimaTransaction } from '../services/etherspotTxService'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
@@ -62,38 +56,20 @@ import {
   SwapPageStartParams,
   Token,
   TokenAmount,
+  TokenAmountList,
   TokenWithAmounts,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
 import SwapForm from './SwapForm/SwapForm'
-import { FromSectionCarbonOffset } from './SwapForm/SwapFormFromSections/FromSectionCarbonOffset'
-import { ToSectionCarbonOffsetV2 } from './SwapForm/SwapFormToSections/ToSectionCarbonOffsetV2'
+import { FromSectionKlimaStaking } from './SwapForm/SwapFormFromSections/FromSectionKlimaStaking'
+import { ToSectionKlimaStakingV2 } from './SwapForm/SwapFormToSections/ToSectionKlimaStakingV2'
 import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
 
 const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
+
 const history = createBrowserHistory()
 let currentRouteCallId: string
-
-const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
-  setTimeout(() => {
-    const nodes = element.current?.childNodes
-    if (nodes) {
-      animate(
-        nodes as NodeListOf<Element>,
-        {
-          y: ['50px', '0px'],
-          opacity: [0, 1],
-        },
-        {
-          delay: stagger(0.2),
-          duration: 0.5,
-          easing: 'ease-in-out',
-        },
-      )
-    }
-  }, 0)
-}
 
 const parseChain = (passed: string) => {
   // is ChainKey?
@@ -127,16 +103,11 @@ const parseToken = (
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
 
-interface TokenAmountList {
-  [ChainKey: string]: Array<TokenWithAmounts>
-}
-
 const Swap = () => {
   useMetatags({
-    title: 'LI.FI - Carbon Offset',
+    title: 'LI.FI - Etherspot KLIMA',
   })
   const chainsTokensTools = useChainsTokensTools()
-  const beneficiaryInfo = useBeneficiaryInfo()
 
   // chains
   const [availableChains, setAvailableChains] = useState<Chain[]>(chainsTokensTools.chains)
@@ -150,12 +121,15 @@ const Swap = () => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
   const [toChainKey] = useState<ChainKey>(ChainKey.POL)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address)
+  const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address) // TODO: Change This
   const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [routeCallResult, setRouteCallResult] = useState<{ result: RouteType; id: string }>()
+  const [routeCallResult, setRouteCallResult] = useState<{
+    result: RouteType
+    id: string
+  }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -172,18 +146,16 @@ const Swap = () => {
   )
 
   // Routes
-  const [route, setRoute] = useState<RouteType | undefined>(undefined)
+  const [route, setRoute] = useState<RouteType>({} as any)
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setSelectedRoute] = useState<RouteType>()
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-  const [, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
-  const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+  const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
   // Misc
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
 
-  const [tokenPolygonBCT, setTokenPolygonBCT] = useState<Token>()
+  const [tokenPolygonKLIMA, setTokenPolygonKlima] = useState<Token>()
+  const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
   const tokensAndChainsSet = useMemo(
     () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
     [tokens, availableChains],
@@ -191,9 +163,6 @@ const Swap = () => {
 
   // Wallet
   const { account } = useWallet()
-
-  // Elements used for animations
-  const routeCards = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     // executed once after page is loaded
@@ -213,25 +182,37 @@ const Swap = () => {
 
   // get chains
   useEffect(() => {
-    setAvailableChains(chainsTokensTools.chains)
+    const limitedChains = chainsTokensTools.chains.filter((chain) => {
+      return etherspotSupportedChains.includes(chain.id)
+    })
+    setAvailableChains(limitedChains)
+
+    // load()
   }, [chainsTokensTools.chains])
 
   //get tokens
   useEffect(() => {
     setTokens(chainsTokensTools.tokens)
     const loadAdditionalToken = async () => {
-      const tokenBCT = await LiFi.getToken(ChainId.POL, TOUCAN_BCT_ADDRESS)!
-      setTokenPolygonBCT(tokenBCT)
+      const klimaToken = await LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
+      const sKlimaToken = await LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
+      setTokenPolygonKlima(klimaToken)
+      setTokenPolygonSKLIMA(sKlimaToken)
     }
     loadAdditionalToken()
   }, [chainsTokensTools.tokens])
 
   //get tools
   useEffect(() => {
-    setAvailableExchanges(chainsTokensTools.bridges)
+    setAvailableExchanges(chainsTokensTools.exchanges)
     setOptionEnabledExchanges(chainsTokensTools.exchanges)
-    setAvailableBridges(chainsTokensTools.bridges)
-    setOptionEnabledBridges(chainsTokensTools.bridges)
+
+    const allowedBridges = ['connext', 'stargate']
+    const filteredBridges = chainsTokensTools.bridges?.filter((bridge) =>
+      allowedBridges.includes(bridge),
+    )
+    setAvailableBridges(filteredBridges)
+    setOptionEnabledBridges(filteredBridges)
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
@@ -429,7 +410,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: '/showcase/carbon-offset-v2',
+        pathname: '/showcase/klima-stake-v2',
         search,
       })
     }
@@ -564,10 +545,10 @@ const Swap = () => {
     },
     [tokens],
   )
+
   useEffect(() => {
     const getTransferRoutes = async () => {
-      setRoute(undefined)
-      setHighlightedIndex(-1)
+      setRoute({} as any)
       setNoRoutesAvailable(false)
 
       if (
@@ -575,52 +556,32 @@ const Swap = () => {
         depositAmount &&
         fromChainKey &&
         fromTokenAddress &&
-        toChainKey &&
-        toTokenAddress &&
-        tokenPolygonBCT &&
-        account.address
+        account.address &&
+        tokenPolygonKLIMA &&
+        tokenPolygonSKLIMA
       ) {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
-        const toToken = findToken(toChainKey, toTokenAddress)
 
-        const polygonProvider = await LiFi.getRpcProvider(ChainId.POL)
-
-        const sourceAmount = await getCarbonOffsetSourceAmount(polygonProvider, {
-          inputToken: TOKEN_POLYGON_USDC,
-          retirementToken: tokenPolygonBCT,
-          amountInCarbon: new BigNumber(depositAmount)
-            .shiftedBy(tokenPolygonBCT.decimals)
-            .toFixed(0),
-        })
-
-        const txOffset = await getOffsetCarbonTransaction({
-          address: account.address,
-          amountInCarbon: true,
-          quantity: sourceAmount.retirementToken,
-          inputTokenAddress: toTokenAddress,
-          retirementTokenAddress: TOUCAN_BCT_ADDRESS,
-          beneficiaryAddress: beneficiaryInfo.beneficiaryAddress || account.address,
-          beneficiaryName: beneficiaryInfo.beneficiaryName,
-          retirementMessage: beneficiaryInfo.retirementMessage,
-        })
-
+        const klimaStakeTx = await getStakeKlimaTransaction(
+          new BigNumber(depositAmount).shiftedBy(tokenPolygonKLIMA.decimals).toFixed(0),
+        )
         const request: ContractCallQuoteRequest = {
           //from
           fromChain: fromToken.chainId,
           fromToken: fromTokenAddress,
           fromAddress: account.address,
           //to
-          toChain: toToken.chainId,
-          toToken: toTokenAddress,
-          toAmount: sourceAmount.inputToken,
-          toContractAddress: txOffset.to!,
-          toContractCallData: txOffset.data!,
+          toChain: tokenPolygonKLIMA.chainId,
+          toToken: tokenPolygonKLIMA.address,
+          toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonKLIMA.decimals).toFixed(0),
+          toContractAddress: klimaStakeTx.to!,
+          toContractCallData: klimaStakeTx.data!,
           toContractGasLimit: '200000', //'90000',
+          contractOutputsToken: sKLIMA_ADDRESS,
           //optional
-          integrator: 'lifi-klima-carbon-offset',
+          integrator: 'lifi-klima-xchain-staking',
           slippage: optionSlippage / 100,
-          allowBridges: ['connext'],
         }
 
         const id = uuid()
@@ -629,13 +590,13 @@ const Swap = () => {
           const result = await LiFi.getContractCallQuote(request)
 
           result.estimate.toAmount = new BigNumber(depositAmount)
-            .shiftedBy(tokenPolygonBCT.decimals)
+            .shiftedBy(tokenPolygonSKLIMA.decimals)
             .toFixed(0)
           result.estimate.toAmountMin = new BigNumber(depositAmount)
-            .shiftedBy(tokenPolygonBCT.decimals)
+            .shiftedBy(tokenPolygonSKLIMA.decimals)
             .toFixed(0)
 
-          result.action.toToken = tokenPolygonBCT
+          result.action.toToken = tokenPolygonSKLIMA
 
           const route: RouteType = {
             id: result.id,
@@ -646,11 +607,13 @@ const Swap = () => {
             fromAddress: result.action.fromAddress,
             toChainId: result.action.toChainId,
             toAmountUSD: result.estimate.toAmountUSD || '',
-            toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonBCT.decimals).toFixed(0),
-            toAmountMin: new BigNumber(depositAmount)
-              .shiftedBy(tokenPolygonBCT.decimals)
+            toAmount: new BigNumber(depositAmount)
+              .shiftedBy(tokenPolygonSKLIMA.decimals)
               .toFixed(0),
-            toToken: tokenPolygonBCT,
+            toAmountMin: new BigNumber(depositAmount)
+              .shiftedBy(tokenPolygonSKLIMA.decimals)
+              .toFixed(0),
+            toToken: tokenPolygonSKLIMA,
             toAddress: result.action.toAddress,
             gasCostUSD: result.estimate.gasCosts?.[0].amountUSD,
             steps: [result],
@@ -680,9 +643,6 @@ const Swap = () => {
     optionEnabledBridges,
     optionEnabledExchanges,
     findToken,
-    beneficiaryInfo.beneficiaryAddress,
-    beneficiaryInfo.beneficiaryName,
-    beneficiaryInfo.retirementMessage,
   ])
 
   // set route call results
@@ -692,9 +652,7 @@ const Swap = () => {
 
       if (id === currentRouteCallId) {
         setRoute(result)
-        fadeInAnimation(routeCards)
-        setHighlightedIndex(result ? 0 : -1)
-        setNoRoutesAvailable(!result)
+        setNoRoutesAvailable(!route)
         setRoutesLoading(false)
       }
     }
@@ -703,7 +661,6 @@ const Swap = () => {
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
     setSelectedRoute(deepClone(route))
-    setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
   }
 
@@ -778,14 +735,16 @@ const Swap = () => {
       )
     }
 
+    const disableStakeButton = !route || !(depositAmount.toNumber() > 0)
+
     return (
       <Button
-        disabled={highlightedIndex === -1}
+        disabled={disableStakeButton}
         shape="round"
         type="primary"
         size={'large'}
         onClick={() => openModal()}>
-        Retire Carbon
+        Stake
       </Button>
     )
   }
@@ -801,20 +760,21 @@ const Swap = () => {
         {/* Swap Form */}
         <Row className="ukraine-title-row">
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
-            <Title level={1}>Cross-chain carbon offsets</Title>
+            <Title level={1}>Cross-Chain Klima Staking</Title>
           </Col>
           <Col
-            className="swap-form-etherspot swap-form-etherspot-carbon"
+            className="swap-form-etherspot"
             xs={24}
             sm={24}
             md={24}
             lg={24}
             xl={12}
             style={{
+              minHeight: 'calc(100vh - 64px)',
               backgroundImage: `url(${forest})`,
             }}>
             <div
-              className="swap-input-etherspot"
+              className="swap-input"
               style={{
                 margin: '0 auto',
                 maxWidth: 450,
@@ -826,7 +786,7 @@ const Swap = () => {
                   className="swap-title"
                   level={3}
                   style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                  Carbon offsets via BCT
+                  Cross-chain Stake into sKlima
                 </Title>
               </Row>
 
@@ -850,9 +810,9 @@ const Swap = () => {
                   tokens={tokens}
                   balances={balances}
                   allowSameChains={true}
-                  fixedWithdraw={true}
+                  // fixedWithdraw={true}
                   alternativeFromSection={
-                    <FromSectionCarbonOffset
+                    <FromSectionKlimaStaking
                       depositChain={fromChainKey}
                       setDepositChain={setFromChainKey}
                       depositToken={fromTokenAddress}
@@ -865,14 +825,10 @@ const Swap = () => {
                     />
                   }
                   alternativeToSection={
-                    <ToSectionCarbonOffsetV2
+                    <ToSectionKlimaStakingV2
                       route={route}
+                      fromToken={route.fromToken}
                       routesLoading={routesLoading}
-                      fromToken={
-                        fromChainKey && fromTokenAddress
-                          ? findToken(fromChainKey, fromTokenAddress)
-                          : undefined
-                      }
                     />
                   }
                 />
@@ -959,7 +915,6 @@ const Swap = () => {
                 </span>
               </Form>
             </div>
-
             <div
               style={{
                 margin: '32px auto',
@@ -984,7 +939,7 @@ const Swap = () => {
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              LI.FI now supports xChain Contract Calls into the carbon offset contract with only one
+              LI.FI now supports xChain Contract Calls into the Klima staking contract with only one
               transaction confirmation.
             </Title>
             <br />
@@ -993,24 +948,20 @@ const Swap = () => {
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening here?</h2>
               We are combining the power of asset bridging with cross-chain message passing to
-              perform xChain Contract Call staking with <b> one transaction confirmation</b>. We are
-              abstracting steps needed to perform such actions - from 9 steps on 3 different dApps,
-              to just a <b>single step</b> on LI.FI's interface. Read more about carbon offsets with
-              KlimaDAO:{' '}
-              <a
-                href="https://www.klimadao.finance/blog/the-promise-and-challenges-of-carbon-offsetting"
-                target="_blank"
-                rel="noreferrer">
-                The promise and challenges of carbon offsetting
-              </a>
+              perform xChain Contract Call staking with one transaction confirmation. We are
+              abstracting steps needed to perform such actions - from{' '}
+              <b>9 steps on 3 different dApps</b>, to just a <b>single step</b> on LI.FI's
+              interface.
             </Paragraph>
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening in the background?</h2>
               When a cross-chain swap is completed via LI.FI, we combine swap + bridge + destination
-              contract call (xChain Contract Call) within our smart contract.
+              contract call (xChain Contract Call) within our smart contract:
               <ol>
-                <li>Swaps Input Token to USDC on Polygon</li>
-                <li>Use the USDC to call the offset contract</li>
+                <li>Swaps USDC to KLIMA. </li>
+                <li>Send xChain Contract Call to staking contract. </li>
+                <li>Stakes KLIMA to receive sKLIMA.</li>
+                <li>Sends sKLIMA back to the keywallet address (e.g. Metamask)</li>
               </ol>
               All in a single transaction on the destination chain, with no need to switch RPC
               networks and no need to have the gas token.
@@ -1035,10 +986,10 @@ const Swap = () => {
         </Row>
       </div>
 
-      {selectedRoute && !!selectedRoute.steps.length && (
+      {selectedRoute && (
         <Modal
           className="swapModal"
-          visible={selectedRoute.steps.length > 0}
+          visible={!!selectedRoute}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()
@@ -1054,13 +1005,9 @@ const Swap = () => {
           <Swapping
             route={selectedRoute}
             settings={{ infiniteApproval: optionInfiniteApproval }}
-            updateRoute={() => {
-              setActiveRoutes(readActiveRoutes())
-              setHistoricalRoutes(readHistoricalRoutes())
-            }}
+            updateRoute={() => {}}
+            fixedRecipient={true}
             onSwapDone={() => {
-              setActiveRoutes(readActiveRoutes())
-              setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
             }}></Swapping>
         </Modal>
