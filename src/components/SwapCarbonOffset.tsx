@@ -208,7 +208,7 @@ const Swap = () => {
     const etherspotSDKSetup = async () => {
       // TODO: try generalized connector from web3 object
       const connector = (window as any).ethereum
-      const provider = await Web3WalletProvider.connect(await connector.getProvider())
+      const provider = await Web3WalletProvider.connect(await connector)
       const sdk = new Sdk(provider)
       sdk.services.networkService.switchNetwork(NetworkNames.Matic)
       await sdk.computeContractAccount({

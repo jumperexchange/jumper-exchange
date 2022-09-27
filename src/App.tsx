@@ -18,10 +18,14 @@ import Swap from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapCarbonOffsetV2 from './components/SwapCarbonOffsetV2'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
+import SwapKlimaStakeV2 from './components/SwapKlimaStakeV2'
 import SwapUkraine from './components/SwapUkraine'
 import { SwapV2 } from './components/SwapV2'
 import WalletButtons from './components/web3/WalletButtons'
-import { REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE } from './constants/featureFlags'
+import {
+  ENABLE_KLIMA_STAKE_SHOWCASE,
+  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
+} from './constants/featureFlags'
 import { useNavConfig } from './hooks/useNavConfig'
 import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
@@ -241,6 +245,16 @@ function App() {
                         <ToSectionCarbonOffsetProvider>
                           <SwapCarbonOffsetV2 />
                         </ToSectionCarbonOffsetProvider>
+                      </div>
+                    }
+                  />
+                )}
+                {ENABLE_KLIMA_STAKE_SHOWCASE && (
+                  <Route
+                    path="/showcase/klima-stake-v2"
+                    element={
+                      <div className="lifiWrap">
+                        <SwapKlimaStakeV2 />
                       </div>
                     }
                   />

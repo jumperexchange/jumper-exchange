@@ -20,12 +20,9 @@ import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { NetworkNames, Sdk, Web3Provider, Web3WalletProvider } from 'etherspot'
-import { CHAIN_ID_TO_NETWORK_NAME } from 'etherspot/dist/sdk/network/constants'
 import { createBrowserHistory } from 'history'
-import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
@@ -36,16 +33,13 @@ import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { useWallet } from '../providers/WalletProvider'
-import { getFeeTransferTransactionBasedOnAmount } from '../services/etherspotTxService'
-import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
+import { getStakeKlimaTransaction } from '../services/etherspotTxService'
 import { switchChain } from '../services/metamask'
-import getRoute, { ExtendedTransactionRequest } from '../services/routingService'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
   formatTokenAmountOnly,
   getBalance,
-  isLiFiRoute,
   isWalletDeactivated,
 } from '../services/utils'
 import {
@@ -53,15 +47,12 @@ import {
   ChainId,
   ChainKey,
   CoinKey,
-  ExchangeTool,
-  ExtendedRouteOptional,
+  ContractCallQuoteRequest,
   findDefaultToken,
   getChainById,
   getChainByKey,
   isSwapStep,
   Route as RouteType,
-  RoutesRequest,
-  Step,
   SwapPageStartParams,
   Token,
   TokenAmount,
@@ -69,37 +60,16 @@ import {
   TokenWithAmounts,
 } from '../types'
 import forest from './../assets/misc/forest.jpg'
-import { ResidualRouteKlimaStakeModal } from './ResidualRouteSwappingModal/ResidualRouteKlimaStakeModal'
 import SwapForm from './SwapForm/SwapForm'
-import { ToSectionKlimaStaking } from './SwapForm/SwapFormToSections/ToSectionKlimaStaking'
-import SwappingEtherspotKlima from './SwappingEtherspot/SwappingEtherspotKlima'
+import { FromSectionKlimaStaking } from './SwapForm/SwapFormFromSections/FromSectionKlimaStaking'
+import { ToSectionKlimaStakingV2 } from './SwapForm/SwapFormToSections/ToSectionKlimaStakingV2'
+import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
 
 const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
 
 const history = createBrowserHistory()
 let currentRouteCallId: string
-const allowedDex = ExchangeTool.zerox
-
-const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
-  setTimeout(() => {
-    const nodes = element.current?.childNodes
-    if (nodes) {
-      animate(
-        nodes as NodeListOf<Element>,
-        {
-          y: ['50px', '0px'],
-          opacity: [0, 1],
-        },
-        {
-          delay: stagger(0.2),
-          duration: 0.5,
-          easing: 'ease-in-out',
-        },
-      )
-    }
-  }, 0)
-}
 
 const parseChain = (passed: string) => {
   // is ChainKey?
@@ -133,13 +103,6 @@ const parseToken = (
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
 
-interface ExtendedRoute {
-  lifiRoute?: RouteType
-  simpleTransfer?: ExtendedTransactionRequest
-  gasStep: Step
-  stakingStep: Step
-}
-
 const Swap = () => {
   useMetatags({
     title: 'LI.FI - Etherspot KLIMA',
@@ -164,10 +127,7 @@ const Swap = () => {
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [routeCallResult, setRouteCallResult] = useState<{
-    lifiRoute?: RouteType
-    simpleTransfer?: ExtendedTransactionRequest
-    gasStep: Step
-    stakingStep: Step
+    result: RouteType
     id: string
   }>()
 
@@ -186,15 +146,11 @@ const Swap = () => {
   )
 
   // Routes
-  const [route, setRoute] = useState<ExtendedRoute>({} as any)
+  const [route, setRoute] = useState<RouteType>({} as any)
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
-  const [selectedRoute, setSelectedRoute] = useState<ExtendedRoute | undefined>()
-  const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
-  const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
-  const [residualRoute, setResidualRoute] = useState<ExtendedRouteOptional>()
+  const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
   // Misc
-  const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
 
@@ -207,116 +163,6 @@ const Swap = () => {
 
   // Wallet
   const { account } = useWallet()
-  const [etherSpotSDK, setEtherSpotSDK] = useState<Sdk>()
-  const [etherspotWalletBalance, setEtherspotWalletBalance] = useState<BigNumber>()
-
-  // setup etherspot sdk
-  useEffect(() => {
-    const etherspotSDKSetup = async () => {
-      // overwrite know chains in etherspot SDK
-      for (const chain of availableChains) {
-        CHAIN_ID_TO_NETWORK_NAME[chain.id] = chain.name as NetworkNames
-      }
-
-      // get provider
-      const connector = (window as any).ethereum
-      const provider = await Web3WalletProvider.connect(connector)
-
-      // setup sdk for polygon
-      const sdk = new Sdk(provider, {
-        // don't fail if provider is on unknown chain
-        omitWalletProviderNetworkCheck: true,
-      })
-      // all sdk actions will be executed on polygon
-      sdk.services.networkService.switchNetwork(NetworkNames.Matic)
-      // generate smart contract wallet address
-      await sdk.computeContractAccount({
-        sync: false,
-      })
-      setEtherSpotSDK(sdk)
-    }
-
-    if (
-      account.signer &&
-      availableChains.find((chain) => chain.id === account.chainId) &&
-      (window as any).ethereum
-    ) {
-      etherspotSDKSetup()
-    }
-  }, [account.chainId, availableChains, account.signer])
-
-  // Check Etherspot Wallet balance
-  useEffect(() => {
-    const checkEtherspotWalletBalance = async (wallet: string) => {
-      const balance = await LiFi.getTokenBalance(wallet, TOKEN_POLYGON_USDC)
-      const amount = new BigNumber(balance?.amount || 0)
-      if (amount.gte(0.3)) {
-        setEtherspotWalletBalance(amount)
-      } else {
-        setEtherspotWalletBalance(undefined)
-        return
-      }
-      const amountUsdc = ethers.BigNumber.from(
-        amount.shiftedBy(TOKEN_POLYGON_USDC.decimals).toString(),
-      )
-      const { feeAmount } = await getFeeTransferTransactionBasedOnAmount(
-        TOKEN_POLYGON_USDC,
-        amountUsdc,
-      )
-      const amountUsdcToMatic = ethers.utils.parseUnits('0.2', TOKEN_POLYGON_USDC.decimals)
-      const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic).sub(feeAmount)
-
-      const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
-      const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
-      const quotes = await Promise.all([gasStep, stakingStep])
-
-      const residualRoute: ExtendedRouteOptional = {
-        gasStep: quotes[0],
-        stakingStep: quotes[1],
-      }
-      if (residualRoute.gasStep && residualRoute.stakingStep) {
-        setResidualRoute(residualRoute)
-      }
-    }
-    if (etherSpotSDK?.state.accountAddress) {
-      checkEtherspotWalletBalance(etherSpotSDK.state.accountAddress)
-    }
-  }, [etherSpotSDK, tokenPolygonKLIMA, tokenPolygonSKLIMA])
-
-  // Elements used for animations
-  const routeCards = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    // get new execution status on page load
-    if (!restartedOnPageLoad) {
-      setRestartedOnPageLoad(true)
-
-      activeRoutes.map((route) => {
-        if (!account.signer) return
-        // check if it makes sense to fetch the status of a route:
-        // if failed or action required it makes no sense
-        const routeFailed = route.steps.some(
-          (step) => step.execution && step.execution.status === 'FAILED',
-        )
-        const actionRequired = route.steps.some(
-          (step) =>
-            step.execution &&
-            step.execution.process.some((process) => process.status === 'ACTION_REQUIRED'),
-        )
-
-        if (routeFailed || actionRequired) return
-        const settings = {
-          updateCallback: (updatedRoute: RouteType) => {
-            storeRoute(updatedRoute)
-            setActiveRoutes(readActiveRoutes())
-            setHistoricalRoutes(readHistoricalRoutes())
-          },
-        }
-        LiFi.resumeRoute(account.signer, route, settings)
-        LiFi.moveExecutionToBackground(route)
-      })
-    }
-  }, [account.signer])
 
   useEffect(() => {
     // executed once after page is loaded
@@ -358,10 +204,15 @@ const Swap = () => {
 
   //get tools
   useEffect(() => {
-    setAvailableExchanges(chainsTokensTools.bridges)
+    setAvailableExchanges(chainsTokensTools.exchanges)
     setOptionEnabledExchanges(chainsTokensTools.exchanges)
-    setAvailableBridges(chainsTokensTools.bridges)
-    setOptionEnabledBridges(chainsTokensTools.bridges)
+
+    const allowedBridges = ['connext', 'stargate']
+    const filteredBridges = chainsTokensTools.bridges?.filter((bridge) =>
+      allowedBridges.includes(bridge),
+    )
+    setAvailableBridges(filteredBridges)
+    setOptionEnabledBridges(filteredBridges)
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
@@ -559,7 +410,7 @@ const Swap = () => {
       }
       const search = QueryString.stringify(params)
       history.push({
-        pathname: '/showcase/etherspot-klima',
+        pathname: '/showcase/klima-stake-v2',
         search,
       })
     }
@@ -641,7 +492,7 @@ const Swap = () => {
   }
 
   const hasSufficientGasBalanceOnStartChain = (route?: RouteType) => {
-    if (!route) {
+    if (!route?.steps?.length) {
       return true
     }
 
@@ -664,7 +515,7 @@ const Swap = () => {
   }
 
   const hasSufficientGasBalanceOnCrossChain = (route?: RouteType) => {
-    if (!route) {
+    if (!route?.steps?.length) {
       return true
     }
     const lastStep = route.steps[route.steps.length - 1]
@@ -702,77 +553,76 @@ const Swap = () => {
 
       if (
         depositAmount.gt(0) &&
+        depositAmount &&
         fromChainKey &&
         fromTokenAddress &&
-        toChainKey &&
-        toTokenAddress &&
-        etherSpotSDK?.state.accountAddress
+        account.address &&
+        tokenPolygonKLIMA &&
+        tokenPolygonSKLIMA
       ) {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
-        const toToken = findToken(toChainKey, toTokenAddress)
-        const request: RoutesRequest = {
-          fromChainId: fromToken.chainId,
-          fromAmount: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
-          fromTokenAddress,
-          toChainId: toToken.chainId,
-          toTokenAddress,
-          fromAddress: account.address || undefined,
-          toAddress: etherSpotSDK.state.accountAddress,
-          options: {
-            integrator: 'lifi-etherspot',
-            slippage: optionSlippage / 100,
-            allowSwitchChain: false, // This is important for fixed recipients
-            bridges: {
-              allow: optionEnabledBridges,
-              deny: ['multichain'],
-            },
-            exchanges: {
-              allow: optionEnabledExchanges,
-            },
-          },
+
+        const klimaStakeTx = await getStakeKlimaTransaction(
+          new BigNumber(depositAmount).shiftedBy(tokenPolygonKLIMA.decimals).toFixed(0),
+        )
+        const request: ContractCallQuoteRequest = {
+          //from
+          fromChain: fromToken.chainId,
+          fromToken: fromTokenAddress,
+          fromAddress: account.address,
+          //to
+          toChain: tokenPolygonKLIMA.chainId,
+          toToken: tokenPolygonKLIMA.address,
+          toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonKLIMA.decimals).toFixed(0),
+          toContractAddress: klimaStakeTx.to!,
+          toContractCallData: klimaStakeTx.data!,
+          toContractGasLimit: '200000', //'90000',
+          contractOutputsToken: sKLIMA_ADDRESS,
+          //optional
+          integrator: 'lifi-klima-xchain-staking',
+          slippage: optionSlippage / 100,
         }
 
         const id = uuid()
         try {
           currentRouteCallId = id
-          const signer = account.signer
-          const routeCall = await getRoute(request, signer)
+          const result = await LiFi.getContractCallQuote(request)
 
-          let toAmountMin
-          if (isLiFiRoute(routeCall[0])) {
-            toAmountMin = routeCall[0].toAmountMin
-          } else {
-            toAmountMin = request.fromAmount // get this from the request as there is no specific amount field in TransactionRequest
+          result.estimate.toAmount = new BigNumber(depositAmount)
+            .shiftedBy(tokenPolygonSKLIMA.decimals)
+            .toFixed(0)
+          result.estimate.toAmountMin = new BigNumber(depositAmount)
+            .shiftedBy(tokenPolygonSKLIMA.decimals)
+            .toFixed(0)
+
+          result.action.toToken = tokenPolygonSKLIMA
+
+          const route: RouteType = {
+            id: result.id,
+            fromChainId: result.action.fromChainId,
+            fromAmountUSD: result.estimate.fromAmountUSD || '',
+            fromAmount: result.action.fromAmount,
+            fromToken: result.action.fromToken,
+            fromAddress: result.action.fromAddress,
+            toChainId: result.action.toChainId,
+            toAmountUSD: result.estimate.toAmountUSD || '',
+            toAmount: new BigNumber(depositAmount)
+              .shiftedBy(tokenPolygonSKLIMA.decimals)
+              .toFixed(0),
+            toAmountMin: new BigNumber(depositAmount)
+              .shiftedBy(tokenPolygonSKLIMA.decimals)
+              .toFixed(0),
+            toToken: tokenPolygonSKLIMA,
+            toAddress: result.action.toAddress,
+            gasCostUSD: result.estimate.gasCosts?.[0].amountUSD,
+            steps: [result],
           }
-          const amountUsdc = ethers.BigNumber.from(toAmountMin)
 
-          const { feeAmount } = await getFeeTransferTransactionBasedOnAmount(
-            TOKEN_POLYGON_USDC,
-            amountUsdc,
-          )
-          const amountUsdcToMatic = ethers.utils.parseUnits('0.2', TOKEN_POLYGON_USDC.decimals)
-          const amountUsdcToKlima = amountUsdc.sub(amountUsdcToMatic).sub(feeAmount)
-
-          const gasStep = calculateFinalGasStep(amountUsdcToMatic.toString())
-          const stakingStep = calculateFinalStakingStep(amountUsdcToKlima.toString())
-          const additionalQuotes = await Promise.all([gasStep, stakingStep])
-
-          if (isLiFiRoute(routeCall[0])) {
-            setRouteCallResult({
-              lifiRoute: routeCall[0],
-              gasStep: additionalQuotes[0],
-              stakingStep: additionalQuotes[1],
-              id: id,
-            })
-          } else {
-            setRouteCallResult({
-              simpleTransfer: routeCall[0],
-              gasStep: additionalQuotes[0],
-              stakingStep: additionalQuotes[1],
-              id: id,
-            })
-          }
+          setRouteCallResult({
+            result: route,
+            id,
+          })
         } catch (e) {
           if (id === currentRouteCallId || !currentRouteCallId) {
             setNoRoutesAvailable(true)
@@ -793,55 +643,20 @@ const Swap = () => {
     optionEnabledBridges,
     optionEnabledExchanges,
     findToken,
-    etherSpotSDK,
   ])
 
   // set route call results
   useEffect(() => {
     if (routeCallResult) {
-      const { lifiRoute, gasStep, stakingStep, simpleTransfer, id } = routeCallResult
+      const { result, id } = routeCallResult
 
       if (id === currentRouteCallId) {
-        setRoute({ lifiRoute, gasStep, stakingStep: stakingStep, simpleTransfer })
-        fadeInAnimation(routeCards)
-        setNoRoutesAvailable((!lifiRoute && !simpleTransfer) || !gasStep || !stakingStep)
+        setRoute(result)
+        setNoRoutesAvailable(!route)
         setRoutesLoading(false)
       }
     }
   }, [routeCallResult, currentRouteCallId])
-
-  const calculateFinalGasStep = async (amount: string) => {
-    const polChain = getChainByKey(ChainKey.POL)
-
-    const quoteUsdcToMatic = await LiFi.getQuote({
-      fromChain: polChain.id,
-      fromToken: TOKEN_POLYGON_USDC.address,
-      fromAddress: etherSpotSDK?.state.accountAddress!,
-      fromAmount: amount,
-      toChain: polChain.id,
-      toToken: (await LiFi.getToken(polChain.id, 'MATIC')!).address, // hardcode return gastoken
-      slippage: 0.005,
-      integrator: 'lifi-etherspot',
-      allowExchanges: [allowedDex],
-    })
-    return quoteUsdcToMatic
-  }
-  const calculateFinalStakingStep = async (amount: string) => {
-    const polChain = getChainByKey(ChainKey.POL)
-
-    const quoteUsdcToKlima = await LiFi.getQuote({
-      fromChain: polChain.id,
-      fromToken: TOKEN_POLYGON_USDC.address,
-      fromAddress: etherSpotSDK?.state.accountAddress!,
-      fromAmount: amount,
-      toChain: polChain.id,
-      toToken: KLIMA_ADDRESS,
-      slippage: 0.005,
-      integrator: 'lifi-etherspot',
-      allowExchanges: [allowedDex],
-    })
-    return quoteUsdcToKlima
-  }
 
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
@@ -896,16 +711,16 @@ const Swap = () => {
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnStartChain(route.lifiRoute)) {
+    if (!hasSufficientGasBalanceOnStartChain(route)) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Insufficient Gas on Start Chain
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnCrossChain(route.lifiRoute)) {
+    if (!hasSufficientGasBalanceOnCrossChain(route)) {
       return (
-        <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
+        <Tooltip title="The selected route requires a swap on the chain you are transferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
             Insufficient Gas on Destination Chain
           </Button>
@@ -920,9 +735,11 @@ const Swap = () => {
       )
     }
 
+    const disableStakeButton = !route || !(depositAmount.toNumber() > 0)
+
     return (
       <Button
-        disabled={!route.lifiRoute && !route.simpleTransfer}
+        disabled={disableStakeButton}
         shape="round"
         type="primary"
         size={'large'}
@@ -993,11 +810,24 @@ const Swap = () => {
                   tokens={tokens}
                   balances={balances}
                   allowSameChains={true}
-                  fixedWithdraw={true}
+                  // fixedWithdraw={true}
+                  alternativeFromSection={
+                    <FromSectionKlimaStaking
+                      depositChain={fromChainKey}
+                      setDepositChain={setFromChainKey}
+                      depositToken={fromTokenAddress}
+                      setDepositToken={setFromTokenAddress}
+                      depositAmount={depositAmount}
+                      availableChains={availableChains}
+                      tokens={tokens}
+                      balances={balances}
+                      setDepositAmount={setDepositAmount}
+                    />
+                  }
                   alternativeToSection={
-                    <ToSectionKlimaStaking
-                      step={route?.stakingStep}
-                      tokenPolygonSKLIMA={tokenPolygonSKLIMA}
+                    <ToSectionKlimaStakingV2
+                      route={route}
+                      fromToken={route.fromToken}
                       routesLoading={routesLoading}
                     />
                   }
@@ -1106,40 +936,30 @@ const Swap = () => {
             </div>
           </Col>
         </Row>
-
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              LI.FI and Etherspot teams have joined hands to support cross-chain deposits into the
-              Klima staking contract.
+              LI.FI now supports xChain Contract Calls into the Klima staking contract with only one
+              transaction confirmation.
             </Title>
             <br />
 
             <Divider style={{ borderColor: 'black' }} />
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening here?</h2>
-              We’re combining
-              <ol>
-                <li>
-                  LI.FI’s ability to perform <b>any-2-any cross-chain swaps</b> and
-                </li>
-                <li>
-                  Etherspot’s smart contract wallet feature through which we can{' '}
-                  <b>batch transactions and sign cross-chain transactions</b> without RPC switch,{' '}
-                </li>
-              </ol>
-              to <b>facilitate cross-chain staking into the Klima</b> smart contract in just 3 steps
-              which would normally be 9 steps on 3 different dapps.
+              We are combining the power of asset bridging with cross-chain message passing to
+              perform xChain Contract Call staking with one transaction confirmation. We are
+              abstracting steps needed to perform such actions - from{' '}
+              <b>9 steps on 3 different dApps</b>, to just a <b>single step</b> on LI.FI's
+              interface.
             </Paragraph>
             <Paragraph style={{ marginTop: 64 }}>
               <h2>What is happening in the background?</h2>
-              When a cross-chain swap is completed via LI.FI, the asset is received on the
-              counterfactual smart wallet that the user controls on Polygon. The user then executes
-              a transaction that:
+              When a cross-chain swap is completed via LI.FI, we combine swap + bridge + destination
+              contract call (xChain Contract Call) within our smart contract:
               <ol>
-                <li>Swaps USDC to MATIC.</li>
-                <li>Swaps the USDC to KLIMA.</li>
-                <li>Deploys the Smart Wallet.</li>
+                <li>Swaps USDC to KLIMA. </li>
+                <li>Send xChain Contract Call to staking contract. </li>
                 <li>Stakes KLIMA to receive sKLIMA.</li>
                 <li>Sends sKLIMA back to the keywallet address (e.g. Metamask)</li>
               </ol>
@@ -1149,17 +969,6 @@ const Swap = () => {
 
             <Button
               className="btn-info-ukraine"
-              shape="round"
-              type="primary"
-              size={'large'}
-              onClick={() => {
-                window.open('https://etherspot.io/', '_blank')
-              }}>
-              Etherspot <ArrowRightOutlined />
-            </Button>
-
-            <Button
-              className="btn-wallet-ukraine"
               shape="round"
               type="primary"
               size={'large'}
@@ -1193,41 +1002,14 @@ const Swap = () => {
           maskClosable={false}
           width={700}
           footer={null}>
-          <SwappingEtherspotKlima
-            fixedRecipient={true}
+          <Swapping
             route={selectedRoute}
-            etherspot={etherSpotSDK}
             settings={{ infiniteApproval: optionInfiniteApproval }}
-            updateRoute={() => {
-              setActiveRoutes(readActiveRoutes())
-              setHistoricalRoutes(readHistoricalRoutes())
-            }}
+            updateRoute={() => {}}
+            fixedRecipient={true}
             onSwapDone={() => {
-              setActiveRoutes(readActiveRoutes())
-              setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
-            }}></SwappingEtherspotKlima>
-        </Modal>
-      )}
-
-      {etherspotWalletBalance && residualRoute && (
-        <Modal
-          onCancel={() => {
-            setEtherspotWalletBalance(undefined)
-            setResidualRoute(undefined)
-          }}
-          visible={!!etherspotWalletBalance && !!residualRoute}
-          okText="Swap, stake and receive sKlima"
-          // cancelText="Send USDC to my wallet"
-          footer={null}>
-          <ResidualRouteKlimaStakeModal
-            etherSpotSDK={etherSpotSDK!}
-            etherspotWalletBalance={etherspotWalletBalance}
-            setEtherspotWalletBalance={setEtherspotWalletBalance}
-            residualRoute={residualRoute}
-            setResidualRoute={setResidualRoute}
-            tokenPolygonSKLIMA={tokenPolygonSKLIMA!}
-          />
+            }}></Swapping>
         </Modal>
       )}
     </Content>

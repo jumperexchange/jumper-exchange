@@ -9,7 +9,7 @@
     "@etherspot/contracts": "^1.8.0",
     "@lifi/sdk": "^1.4.1",
     "@lifi/widget": "^1.15.1",
-    "@lifi/wallet-management":"1.1.7",
+    "@lifi/wallet-management": "1.1.7",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/network-connector": "^6.1.9",
@@ -75,7 +75,8 @@
     "sdk:link": "yarn link '@lifi/sdk'",
     "sdk:unlink": "yarn unlink '@lifi/sdk' && yarn sdk:update",
     "sdk:update": "yarn install --force",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "winBuild": "set 'GENERATE_SOURCEMAP=false' && bash -ac '. .env.development.developBackend; react-scripts start'"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [

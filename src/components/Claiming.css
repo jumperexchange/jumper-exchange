@@ -15,6 +15,7 @@
   background-repeat: no-repeat;
   background-position: bottom;
   background-color: #f9f6f6;
+  background-size: auto;
 }
 
 .claiming__label {
@@ -86,17 +87,26 @@
   background: linear-gradient(180deg, white, transparent);
 }
 
-.card--success {
+.card--transparent {
   border: 1px solid #e8e8e8;
   border-radius: 15px;
   box-shadow: 0px 2px 4px 0px #00000040;
+  background: transparent;
 }
 
-.card--success svg {
+.card--hidden {
+  border: none;
+  padding-top: 0;
+  border-radius: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.card--transparent svg {
   margin: 0 auto;
 }
 
-.card--success .card__title {
+.card--transparent .card__title {
   margin-top: 70px;
 }
 
