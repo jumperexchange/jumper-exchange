@@ -1,4 +1,3 @@
-
 import App from './App';
 
-export const DashboardOld = App; 
+export const DashboardOld = App;

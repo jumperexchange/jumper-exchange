@@ -5,8 +5,9 @@
   "module": "./src/index.ts",
   "types": "./index.d.ts",
   "private": true,
-  "files": ["src/**/*"],
-
+  "files": [
+    "src/**/*"
+  ],
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
