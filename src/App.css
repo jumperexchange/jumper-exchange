@@ -39,7 +39,8 @@
 .header-poweredBy {
   color: black;
   position: absolute;
-  left: 46px;
+  /* left: 46px; */
+  left: 0px;
   top: 33px;
   display: block;
   line-height: 1;
@@ -55,8 +56,8 @@
 }
 
 .site-layout-menu {
-  width: 90%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  width: 95%;
+  padding: 20px;
 }
 
 .site-layout .site-layout-background {
@@ -73,6 +74,7 @@
   background: white;
   display: flex;
   justify-content: center;
+  height: auto;
 }
 
 .ant-menu {

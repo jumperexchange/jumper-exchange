@@ -69,12 +69,12 @@ const readDeactivatedWallets = (): Array<string> => {
 
 const storeHideDisconnectPopup = (shouldHide: boolean) => {
   if (!isSupported()) return
-  localStorage.setItem('hideDisconnetPopup', JSON.stringify(shouldHide))
+  localStorage.setItem('hideDisconnectPopup', JSON.stringify(shouldHide))
 }
 
 const readHideDisconnectPopup = (): boolean => {
   if (!isSupported()) return false
-  const shouldHideString = localStorage.getItem('hideDisconnetPopup')
+  const shouldHideString = localStorage.getItem('hideDisconnectPopup')
   return JSON.parse(shouldHideString as string) === true
 }
 

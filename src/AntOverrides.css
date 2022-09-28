@@ -80,23 +80,29 @@ Global overrides of ant design styles
 }
 
 /* Menu */
-
+.ant-menu-title-content {
+  font-weight: 500;
+}
 .ant-menu-item-selected a,
 .ant-menu-submenu:hover,
 .ant-menu-submenu-title:hover,
 .ant-menu-submenu-title:focus,
 .ant-menu-submenu-title:active,
+.ant-menu-submenu::after,
 .ant-menu-item-active a {
   color: #3f49e1 !important;
+  border: none !important;
 }
 .ant-menu-item-selected:hover::after,
 .ant-menu-item-selected::after,
+.ant-menu-item::after,
 .ant-menu-item-active::after {
-  border-bottom: 1px solid #3f49e1 !important;
+  border: none !important;
 }
 .ant-menu-submenu:hover::after,
+.ant-menu-item::after,
 .ant-menu-submenu-open::after {
-  border-bottom: 1px solid #3f49e1 !important;
+  border: none !important;
 }
 
 /* Steps */

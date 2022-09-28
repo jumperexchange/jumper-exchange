@@ -20,7 +20,7 @@ import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { NetworkNames, Sdk, Web3Provider, Web3WalletProvider } from 'etherspot'
+import { NetworkNames, Sdk, Web3WalletProvider } from 'etherspot'
 import { CHAIN_ID_TO_NETWORK_NAME } from 'etherspot/dist/sdk/network/constants'
 import { createBrowserHistory } from 'history'
 import { animate, stagger } from 'motion'
@@ -1027,7 +1027,9 @@ const Swap = () => {
                             max={100}
                             formatter={(value) => `${value}%`}
                             parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                            onChange={setOptionSlippage}
+                            onChange={(value: number | null) => {
+                              setOptionSlippage(value || 3)
+                            }}
                             style={{
                               border: '1px solid rgba(0,0,0,0.25)',
                               borderRadius: 6,
@@ -1180,7 +1182,7 @@ const Swap = () => {
       {selectedRoute && (
         <Modal
           className="swapModal"
-          visible={!!selectedRoute}
+          open={!!selectedRoute}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()
@@ -1216,7 +1218,7 @@ const Swap = () => {
             setEtherspotWalletBalance(undefined)
             setResidualRoute(undefined)
           }}
-          visible={!!etherspotWalletBalance && !!residualRoute}
+          open={!!etherspotWalletBalance && !!residualRoute}
           okText="Swap, stake and receive sKlima"
           // cancelText="Send USDC to my wallet"
           footer={null}>

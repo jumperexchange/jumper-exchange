@@ -124,7 +124,7 @@ const Claiming = () => {
     } catch (e) {
       setClaimingState('error')
     }
-  }, [userClaimData])
+  }, [claimContract, userClaimData])
 
   const cardTitles = useMemo(() => {
     const cardTitles: { [key in ClaimingState]: string } = {
@@ -163,7 +163,7 @@ const Claiming = () => {
   }, [claimingState])
 
   return (
-    <div className="site-layout site-layout--claiming">
+    <div className="site-layout--claiming">
       <Content className="claiming">
         <>
           <p className="claiming__label">{claimingLabel[claimingState]}</p>
