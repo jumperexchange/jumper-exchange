@@ -763,7 +763,7 @@ const Swap = () => {
     }
     if (!hasSufficientGasBalanceOnCrossChain(route)) {
       return (
-        <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
+        <Tooltip title="The selected route requires a swap on the chain you are transferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
             Insufficient Gas on Destination Chain
           </Button>

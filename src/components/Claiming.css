@@ -12,12 +12,13 @@
   width: 100%;
   font-family: 'GT America';
   background: white !important;
-  background-image: url('../assets/bg/bg-net.svg');
+  background: linear-gradient(180deg, #f6f3f2 0%, rgba(246, 243, 242, 0) 100%) !important;
+  /* background-image: url('../assets/bg/bg-net.svg');
   background-image: url('../assets/bg/bg-net.svg'),
     linear-gradient(180deg, #fefaff 9.96%, #fbebff 100%) !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-  background-position: bottom !important;
+  background-position: bottom !important; */
 }
 
 .claiming__label {
@@ -91,17 +92,26 @@
   box-shadow: '0px 8px 32px rgba(0, 0, 0, 0.08)';
 }
 
-.card--success {
+.card--transparent {
   border: 1px solid #e8e8e8;
   border-radius: 12px;
   box-shadow: 0px 2px 4px 0px #00000040;
+  background: transparent;
 }
 
-.card--success svg {
+.card--hidden {
+  border: none;
+  padding-top: 0;
+  border-radius: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.card--transparent svg {
   margin: 0 auto;
 }
 
-.card--success .card__title {
+.card--transparent .card__title {
   margin-top: 70px;
 }
 
