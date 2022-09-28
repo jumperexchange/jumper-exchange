@@ -41,7 +41,7 @@ export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
       zIndex={9000}
       destroyOnClose={true}
       className="wallet-selection-modal"
-      visible={show}
+      open={show}
       onOk={() => onOk()}
       onCancel={() => onCancel()}
       footer={null}>
@@ -67,7 +67,7 @@ export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
                   {`Please make sure that only the ${wallet.name} browser extension is active before choosing this wallet.`}
                 </Typography.Text>
               }
-              visible={showWalletIdentityPopover?.name === wallet.name}>
+              open={showWalletIdentityPopover?.name === wallet.name}>
               <div
                 style={{
                   // width: '100%',

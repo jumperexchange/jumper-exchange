@@ -24,10 +24,10 @@ const initialData = {
   toolsLoaded: false,
 }
 
-const chainsTokensToolsContext = createContext<ChainsTokensToolsContextProps>(initialData)
+const ChainsTokensToolsContext = createContext<ChainsTokensToolsContextProps>(initialData)
 
 export const useChainsTokensTools = () => {
-  return useContext(chainsTokensToolsContext)
+  return useContext(ChainsTokensToolsContext)
 }
 
 export const ChainsTokensToolsProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
@@ -116,6 +116,6 @@ export const ChainsTokensToolsProvider: React.FC<PropsWithChildren<{}>> = ({ chi
   }, [])
 
   return (
-    <chainsTokensToolsContext.Provider value={data}>{children}</chainsTokensToolsContext.Provider>
+    <ChainsTokensToolsContext.Provider value={data}>{children}</ChainsTokensToolsContext.Provider>
   )
 }

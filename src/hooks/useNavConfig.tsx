@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 
 import WalletButtons from '../components/web3/WalletButtons'
 import {
+  ENABLE_KLIMA_STAKE_SHOWCASE,
   REACT_APP_ENABLE_CLAIMING,
   REACT_APP_ENABLE_GMX_SHOWCASE,
   REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
-  REACT_APP_ENABLE_SWAP_V2,
 } from '../constants/featureFlags'
 import { useIsMobile } from './useIsMobile'
 
@@ -17,17 +17,6 @@ export const useNavConfig = () => {
   const navConfig = useMemo(() => {
     return [
       { label: <Link to="/swap">Swap & Bridge</Link>, key: '/swap' },
-      REACT_APP_ENABLE_SWAP_V2
-        ? {
-            label: (
-              <>
-                <Link to="/swap-v2">Swap & Bridge V2</Link>
-                <span className="beta-badge">beta</span>
-              </>
-            ),
-            key: '/swap-v2',
-          }
-        : null,
       REACT_APP_ENABLE_CLAIMING
         ? {
             label: (
@@ -98,6 +87,15 @@ export const useNavConfig = () => {
                           <Link to="/showcase/carbon-offset-v2">
                             Cross-Chain Carbon Offsetting V2
                           </Link>
+                        ),
+                      }
+                    : null,
+
+                  ENABLE_KLIMA_STAKE_SHOWCASE
+                    ? {
+                        key: '/showcase/klima-stake-v2',
+                        label: (
+                          <Link to="/showcase/klima-stake-v2">Cross-Chain Klima Staking V2</Link>
                         ),
                       }
                     : null,

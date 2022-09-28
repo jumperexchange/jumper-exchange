@@ -208,7 +208,7 @@ const Swap = () => {
     const etherspotSDKSetup = async () => {
       // TODO: try generalized connector from web3 object
       const connector = (window as any).ethereum
-      const provider = await Web3WalletProvider.connect(await connector.getProvider())
+      const provider = await Web3WalletProvider.connect(await connector)
       const sdk = new Sdk(provider)
       sdk.services.networkService.switchNetwork(NetworkNames.Matic)
       await sdk.computeContractAccount({
@@ -997,7 +997,9 @@ const Swap = () => {
                               max={100}
                               formatter={(value) => `${value}%`}
                               parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                              onChange={setOptionSlippage}
+                              onChange={(value: number | null) => {
+                                setOptionSlippage(value || 3)
+                              }}
                               style={{
                                 border: '1px solid rgba(0,0,0,0.25)',
                                 borderRadius: 6,
@@ -1160,7 +1162,7 @@ const Swap = () => {
         {selectedRoute && !!selectedRoute.lifiRoute.steps.length && (
           <Modal
             className="swapModal"
-            visible={selectedRoute.lifiRoute.steps.length > 0}
+            open={selectedRoute.lifiRoute.steps.length > 0}
             onOk={() => {
               setSelectedRoute(undefined)
               updateBalances()
@@ -1196,7 +1198,7 @@ const Swap = () => {
               setEtherspotWalletBalance(undefined)
               setResidualRoute(undefined)
             }}
-            visible={!!etherspotWalletBalance && !!residualRoute}
+            open={!!etherspotWalletBalance && !!residualRoute}
             okText="Swap, stake and receive sKlima"
             footer={null}>
             <ResidualRouteCarbonOffsetModal
