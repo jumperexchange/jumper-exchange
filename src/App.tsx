@@ -116,7 +116,7 @@ function App() {
           <Layout>
             <Header
               style={{
-                position: 'fixed',
+                position: adjustNavbar ? 'fixed' : 'absolute',
                 zIndex: 900,
                 width: '100%',
                 padding: 0,
