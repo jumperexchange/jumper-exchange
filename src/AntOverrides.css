@@ -88,6 +88,7 @@ Global overrides of ant design styles
 .ant-menu-submenu-title:hover,
 .ant-menu-submenu-title:focus,
 .ant-menu-submenu-title:active,
+.ant-menu-submenu::after,
 .ant-menu-item-active a {
   color: #3f49e1 !important;
   border: none !important;

@@ -112,7 +112,7 @@ function App() {
           <Layout>
             <Header
               style={{
-                position: 'absolute',
+                position: 'fixed',
                 zIndex: 900,
                 width: '100%',
                 padding: 0,
