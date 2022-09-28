@@ -124,7 +124,7 @@ const Claiming = () => {
     } catch (e) {
       setClaimingState('error')
     }
-  }, [userClaimData])
+  }, [claimContract, userClaimData])
 
   const cardTitles = useMemo(() => {
     const cardTitles: { [key in ClaimingState]: string } = {
