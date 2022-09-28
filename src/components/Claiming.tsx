@@ -13,7 +13,7 @@ import { ethers } from 'ethers'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import DiscordIcon from '../assets/icons/discordIcon'
-import TwitterIcon from '../assets/icons/twitterIcon'
+// import TwitterIcon from '../assets/icons/twitterIcon'
 import claimingContract from '../constants/abis/claimContract.json'
 import claims from '../constants/claims.json'
 import { useMetatags } from '../hooks/useMetatags'
@@ -164,24 +164,24 @@ const Claiming = () => {
     }
   }, [claimingState, userClaimData.length])
 
-  const handleClaimTX = useCallback(
-    async (index) => {
-      try {
-        setClaimingState('claimPending')
-        const claimTX = await claimContract.claim(
-          userClaimData[index]!.amount, // TODO: check
-          userClaimData[index]!.series,
-          userClaimData[index]!.proof,
-        )
-        await claimTX.wait()
+  // const handleClaimTX = useCallback(
+  //   async (index) => {
+  //     try {
+  //       setClaimingState('claimPending')
+  //       const claimTX = await claimContract.claim(
+  //         userClaimData[index]!.amount, // TODO: check
+  //         userClaimData[index]!.series,
+  //         userClaimData[index]!.proof,
+  //       )
+  //       await claimTX.wait()
 
-        setClaimingState('success')
-      } catch (e) {
-        setClaimingState('error')
-      }
-    },
-    [userClaimData],
-  )
+  //       setClaimingState('success')
+  //     } catch (e) {
+  //       setClaimingState('error')
+  //     }
+  //   },
+  //   [userClaimData],
+  // )
 
   const cardTitles = useCallback((label: ClaimingState | undefined) => {
     const cardTitles: { [key in ClaimingState]: string } = {
