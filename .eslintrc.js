@@ -8,7 +8,6 @@ module.exports = {
     'max-params': 'error',
     'security/detect-object-injection': 'off',
     'array-callback-return': 'off',
-    'react-hooks/exhaustive-deps': 'off',
     'simple-import-sort/imports': 'warn',
     'simple-import-sort/exports': 'warn',
     'import/first': 'error',
@@ -16,5 +15,6 @@ module.exports = {
     'import/no-duplicates': 'error',
     'no-console': isDev ? 'off' : 'error',
     'no-debugger': isDev ? 'off' : 'error',
+    'react-hooks/exhaustive-deps': 'off',
   },
 }

@@ -763,7 +763,7 @@ const Swap = () => {
     }
     if (!hasSufficientGasBalanceOnCrossChain(route)) {
       return (
-        <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
+        <Tooltip title="The selected route requires a swap on the chain you are transferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
             Insufficient Gas on Destination Chain
           </Button>
@@ -901,7 +901,9 @@ const Swap = () => {
                             max={100}
                             formatter={(value) => `${value}%`}
                             parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                            onChange={setOptionSlippage}
+                            onChange={(value: number | null) => {
+                              setOptionSlippage(value || 3)
+                            }}
                             style={{
                               border: '1px solid rgba(0,0,0,0.25)',
                               borderRadius: 6,
@@ -1038,7 +1040,7 @@ const Swap = () => {
       {selectedRoute && !!selectedRoute.steps.length && (
         <Modal
           className="swapModal"
-          visible={selectedRoute.steps.length > 0}
+          open={selectedRoute.steps.length > 0}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()
