@@ -631,7 +631,7 @@ const SwappingCarbonOffset = ({
         )}
         <Modal
           className="wallet-selection-modal"
-          visible={showWalletConnectChainSwitchModal.show}
+          open={showWalletConnectChainSwitchModal.show}
           onOk={() =>
             setShowWalletConnectChainSwitchModal({
               show: false,
@@ -660,7 +660,7 @@ const SwappingCarbonOffset = ({
         </Modal>
         <Modal
           className="accept-step-update-modal"
-          visible={showAcceptSlippageUpdateModal.show}
+          open={showAcceptSlippageUpdateModal.show}
           onOk={() => {
             if (showAcceptSlippageUpdateModal.promiseResolver) {
               showAcceptSlippageUpdateModal.promiseResolver(true)

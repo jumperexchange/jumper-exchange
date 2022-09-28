@@ -1,42 +1,45 @@
-import './SwapUkraine.css'
+import './SwapV1.css'
 
-import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
 import {
   Button,
   Checkbox,
   Col,
   Collapse,
-  Divider,
   Form,
   InputNumber,
   Modal,
+  Popconfirm,
   Row,
+  Select,
+  Tabs,
   Tooltip,
   Typography,
 } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import Paragraph from 'antd/lib/typography/Paragraph'
 import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
-import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { TwitterTweetEmbed } from 'react-twitter-embed'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { DonateIcon } from '../assets/icons/donateIcon'
-import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
-import { UkraineIcon } from '../assets/icons/ukraineIcon'
-import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
-import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
 import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
-import { useWallet } from '../providers/WalletProvider'
-import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
-import { switchChain } from '../services/metamask'
+import {
+  deleteRoute,
+  isWalletConnectWallet,
+  readActiveRoutes,
+  readHistoricalRoutes,
+  resetForegroundRoute,
+  storeRoute,
+} from '../services/localStorage'
+import { switchChain as switchChainMetaMask } from '../services/metamask'
+import { useStomt } from '../services/stomt'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
@@ -54,6 +57,7 @@ import {
   getChainById,
   getChainByKey,
   isSwapStep,
+  Order,
   Route as RouteType,
   RoutesRequest,
   RoutesResponse,
@@ -61,38 +65,43 @@ import {
   Token,
   TokenAmount,
   TokenAmountList,
-  TokenWithAmounts,
 } from '../types'
+import { RouteList } from './RouteList/Routelist'
 import SwapForm from './SwapForm/SwapForm'
-import { ToSectionUkraine } from './SwapForm/SwapFormToSections/ToSectionUkraine'
 import Swapping from './Swapping'
+import TransactionsTable from './TransactionsTable'
+import { WalletConnectChainSwitchModal } from './WalletConnectChainSwitchModal'
 import ConnectButton from './web3/ConnectButton'
 
+const TOTAL_SLIPPAGE_GUARD_MODAL = new BigNumber(0.9)
+
 const history = createBrowserHistory()
-const DONATION_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
-const MORE_INFO_PAGE_URL =
-  'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
+const { TabPane } = Tabs
+
+const availableOrders = [
+  {
+    key: 'RECOMMENDED',
+    name: 'Recommended',
+  },
+  {
+    key: 'SAFEST',
+    name: 'Safest',
+  },
+  {
+    key: 'FASTEST',
+    name: 'Fastest',
+  },
+  {
+    key: 'CHEAPEST',
+    name: 'Cheapest',
+  },
+]
 
 let currentRouteCallId: string
 
-const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
-  setTimeout(() => {
-    const nodes = element.current?.childNodes
-    if (nodes) {
-      animate(
-        nodes as NodeListOf<Element>,
-        {
-          y: ['50px', '0px'],
-          opacity: [0, 1],
-        },
-        {
-          delay: stagger(0.2),
-          duration: 0.5,
-          easing: 'ease-in-out',
-        },
-      )
-    }
-  }, 0)
+interface TokenWithAmounts extends Token {
+  amount?: BigNumber
+  amountRendered?: string
 }
 
 const parseChain = (passed: string) => {
@@ -127,52 +136,54 @@ const parseToken = (
   return transferTokens[chainKey]?.find((token) => token.address === fromTokenId)
 }
 
-const Swap = () => {
+const SwapV1 = () => {
   useMetatags({
-    title: 'LI.FI - Help Ukraine!',
+    title: 'LI.FI - Swap',
   })
+  useStomt('swap')
   const chainsTokensTools = useChainsTokensTools()
-
-  // chains
-  const [availableChains, setAvailableChains] = useState<Chain[]>(chainsTokensTools.chains)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [unused, setStateUpdate] = useState<number>(0)
+
+  const [availableChains, setAvailableChains] = useState<Chain[]>(chainsTokensTools.chains)
 
   // From
   const [fromChainKey, setFromChainKey] = useState<ChainKey | undefined>()
   const [depositAmount, setDepositAmount] = useState<BigNumber>(new BigNumber(0))
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
-  const [toChainKey] = useState<ChainKey>(ChainKey.POL)
+  const [toChainKey, setToChainKey] = useState<ChainKey | undefined>()
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress] = useState<string | undefined>(
-    findDefaultToken(CoinKey.ETH, ChainId.POL).address,
-  )
-  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens as TokenAmountList)
+  const [toTokenAddress, setToTokenAddress] = useState<string | undefined>()
+  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
   const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
 
   // Options
+  const [optionOrder, setOptionOrder] = useState<Order>('RECOMMENDED' as Order)
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
   const [optionInfiniteApproval, setOptionInfiniteApproval] = useState<boolean>(false)
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>(
     chainsTokensTools.bridges,
   )
-  const [, setAvailableBridges] = useState<string[]>(chainsTokensTools.bridges)
+  const [availableBridges, setAvailableBridges] = useState<string[]>(chainsTokensTools.bridges)
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>(
     chainsTokensTools.exchanges,
   )
-  const [, setAvailableExchanges] = useState<string[]>(chainsTokensTools.exchanges)
+  const [availableExchanges, setAvailableExchanges] = useState<string[]>(
+    chainsTokensTools.exchanges,
+  )
 
   // Routes
   const [routes, setRoutes] = useState<Array<RouteType>>([])
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
   const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
-  const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
+  const [historicalRoutes, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
 
   // Misc
   const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
@@ -182,12 +193,17 @@ const Swap = () => {
     () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
     [tokens, availableChains],
   )
+  const transactionInfoRef = useRef<null | HTMLDivElement>(null)
+  const [activeTransactionInfoTabKey, setActiveTransactionInfoTabKey] = useState<string>()
+
+  const [showWalletConnectChainSwitchModal, setShowWalletConnectChainSwitchModal] = useState<{
+    show: boolean
+    chainId: number
+  }>({ show: false, chainId: 1 })
 
   // Wallet
-  const { account } = useWallet()
-
-  // Elements used for animations
-  const routeCards = useRef<HTMLDivElement | null>(null)
+  const web3 = useWeb3React<Web3Provider>()
+  const { active } = useWeb3React()
 
   useEffect(() => {
     // get new execution status on page load
@@ -195,7 +211,7 @@ const Swap = () => {
       setRestartedOnPageLoad(true)
 
       activeRoutes.map((route) => {
-        if (!account.signer) return
+        if (!web3 || !web3.library) return
         // check if it makes sense to fetch the status of a route:
         // if failed or action required it makes no sense
         const routeFailed = route.steps.some(
@@ -215,11 +231,11 @@ const Swap = () => {
             setHistoricalRoutes(readHistoricalRoutes())
           },
         }
-        LiFi.resumeRoute(account.signer, route, settings)
+        LiFi.resumeRoute(web3.library.getSigner(), route, settings)
         LiFi.moveExecutionToBackground(route)
       })
     }
-  }, [account.signer])
+  }, [web3.library])
 
   useEffect(() => {
     // executed once after page is loaded
@@ -246,12 +262,12 @@ const Swap = () => {
 
   //get tokens
   useEffect(() => {
-    setTokens(chainsTokensTools.tokens as TokenAmountList)
+    setTokens(chainsTokensTools.tokens)
   }, [chainsTokensTools.tokens])
 
   //get tools
   useEffect(() => {
-    setAvailableExchanges(chainsTokensTools.bridges)
+    setAvailableExchanges(chainsTokensTools.exchanges)
     setOptionEnabledExchanges(chainsTokensTools.exchanges)
     setAvailableBridges(chainsTokensTools.bridges)
     setOptionEnabledBridges(chainsTokensTools.bridges)
@@ -260,45 +276,6 @@ const Swap = () => {
   useEffect(() => {
     if (tokensAndChainsSet) {
       setRefreshBalances(true)
-    }
-  }, [availableChains, tokens])
-
-  const getSelectedWithdraw = () => {
-    if (!routes.length) {
-      return {
-        estimate: '0.0',
-      }
-    } else {
-      const route = routes[0]
-      const lastStep = route.steps[route.steps.length - 1]
-      return {
-        estimate: formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount),
-        min: formatTokenAmount(lastStep.action.toToken, lastStep.estimate?.toAmountMin),
-      }
-    }
-  }
-
-  // autoselect from chain based on wallet
-  useEffect(() => {
-    if (!fromChainKey && startParamsDefined) {
-      const walletChainIsSupported = availableChains.some((chain) => chain.id === account.chainId)
-      if (!walletChainIsSupported) return
-      if (account.chainId && !fromChainKey) {
-        const chain = availableChains.find((chain) => chain.id === account.chainId)
-        if (chain) {
-          setFromChainKey(chain.key)
-        }
-      }
-    }
-  }, [account.chainId, fromChainKey, availableChains, startParamsDefined])
-
-  useEffect(() => {
-    if (tokensAndChainsSet) {
-      const startParams = getDefaultParams(history.location.search, availableChains, tokens)
-      setFromChainKey(startParams.depositChain)
-      setDepositAmount(startParams.depositAmount)
-      setFromTokenAddress(startParams.depositToken)
-      setStartParamsDefined(true)
     }
   }, [availableChains, tokens])
 
@@ -422,6 +399,7 @@ const Swap = () => {
     if (params.toToken && typeof params.toToken === 'string' && defaultParams.withdrawChain) {
       try {
         const foundToken = parseToken(params.toToken, defaultParams.withdrawChain, transferTokens)
+
         const inDefault = transferTokens[defaultParams.withdrawChain].find(
           (token) => token.address === foundToken?.address,
         )
@@ -451,9 +429,49 @@ const Swap = () => {
         console.warn(e)
       }
     }
-
     return defaultParams
   }
+
+  const getSelectedWithdraw = () => {
+    if (highlightedIndex === -1) {
+      return {
+        estimate: '0.0',
+      }
+    } else {
+      const selectedRoute = routes[highlightedIndex]
+      const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1]
+      return {
+        estimate: formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount),
+        min: formatTokenAmount(lastStep.action.toToken, lastStep.estimate?.toAmountMin),
+      }
+    }
+  }
+
+  // autoselect from chain based on wallet
+  useEffect(() => {
+    if (!fromChainKey && startParamsDefined) {
+      const walletChainIsSupported = availableChains.some((chain) => chain.id === web3.chainId)
+      if (!walletChainIsSupported) return
+      if (web3.chainId && !fromChainKey) {
+        const chain = availableChains.find((chain) => chain.id === web3.chainId)
+        if (chain) {
+          setFromChainKey(chain.key)
+        }
+      }
+    }
+  }, [web3.chainId, fromChainKey, availableChains, startParamsDefined])
+
+  useEffect(() => {
+    if (tokensAndChainsSet) {
+      const startParams = getDefaultParams(history.location.search, availableChains, tokens)
+      setFromChainKey(startParams.depositChain)
+      setDepositAmount(startParams.depositAmount)
+      setFromTokenAddress(startParams.depositToken)
+      setToChainKey(startParams.withdrawChain)
+      setToTokenAddress(startParams.withdrawToken)
+      setStartParamsDefined(true)
+    }
+  }, [availableChains, tokens])
 
   // update query string
   useEffect(() => {
@@ -465,14 +483,20 @@ const Swap = () => {
         toToken: toTokenAddress,
         fromAmount: depositAmount.gt(0) ? depositAmount.toFixed() : undefined,
       }
-
       const search = QueryString.stringify(params)
       history.push({
-        pathname: '/showcase/ukraine',
+        pathname: '/swap',
         search,
       })
     }
-  }, [fromChainKey, fromTokenAddress, toChainKey, depositAmount, startParamsDefined])
+  }, [
+    fromChainKey,
+    fromTokenAddress,
+    toChainKey,
+    toTokenAddress,
+    depositAmount,
+    startParamsDefined,
+  ])
 
   useEffect(() => {
     if (refreshTokens) {
@@ -489,10 +513,10 @@ const Swap = () => {
   }, [refreshTokens, availableChains])
 
   const updateBalances = useCallback(async () => {
-    if (account.address) {
+    if (web3.account) {
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(([chainKey, tokenList]) => {
-        LiFi.getTokenBalances(account.address!, tokenList).then((portfolio: TokenAmount[]) => {
+        LiFi.getTokenBalances(web3.account!, tokenList).then((portfolio: any) => {
           setBalances((balances) => {
             if (!balances) balances = {}
             return {
@@ -503,20 +527,20 @@ const Swap = () => {
         })
       })
     }
-  }, [account.address, tokens])
+  }, [web3.account, tokens])
 
   useEffect(() => {
-    if (refreshBalances && account.address) {
+    if (refreshBalances && web3.account) {
       setRefreshBalances(false)
       updateBalances()
     }
-  }, [refreshBalances, account.address, updateBalances])
+  }, [refreshBalances, web3.account, updateBalances])
 
   useEffect(() => {
-    if (!account.address) {
+    if (!web3.account) {
       setBalances(undefined) // reset old balances
     }
-  }, [account.address])
+  }, [web3.account])
 
   useEffect(() => {
     // merge tokens and balances
@@ -607,10 +631,12 @@ const Swap = () => {
   useEffect(() => {
     const getTransferRoutes = async () => {
       setRoutes([])
+      setHighlightedIndex(-1)
       setNoRoutesAvailable(false)
 
       if (depositAmount.gt(0) && fromChainKey && fromTokenAddress && toChainKey && toTokenAddress) {
         setRoutesLoading(true)
+        setActiveTransactionInfoTabKey('1')
         const fromToken = findToken(fromChainKey, fromTokenAddress)
         const toToken = findToken(toChainKey, toTokenAddress)
         const request: RoutesRequest = {
@@ -619,9 +645,10 @@ const Swap = () => {
           fromTokenAddress,
           toChainId: toToken.chainId,
           toTokenAddress,
-          fromAddress: account.address || undefined,
-          toAddress: DONATION_WALLET, // TODO: change this to the recipient address
+          fromAddress: web3.account || undefined,
+          toAddress: web3.account || undefined,
           options: {
+            order: optionOrder,
             slippage: optionSlippage / 100,
             bridges: {
               allow: optionEnabledBridges,
@@ -629,7 +656,6 @@ const Swap = () => {
             exchanges: {
               allow: optionEnabledExchanges,
             },
-            allowSwitchChain: false, // This is important for fixed recipients
           },
         }
 
@@ -637,8 +663,6 @@ const Swap = () => {
         try {
           currentRouteCallId = id
           const result = await LiFi.getRoutes(request)
-          // const result = await getRoute(request, web3.library?.getSigner())
-
           setRouteCallResult({ result, id })
         } catch {
           if (id === currentRouteCallId || !currentRouteCallId) {
@@ -656,6 +680,7 @@ const Swap = () => {
     fromTokenAddress,
     toChainKey,
     toTokenAddress,
+    optionOrder,
     optionSlippage,
     optionEnabledBridges,
     optionEnabledExchanges,
@@ -668,28 +693,35 @@ const Swap = () => {
       const { result, id } = routeCallResult
       if (id === currentRouteCallId) {
         setRoutes(result.routes)
-        fadeInAnimation(routeCards)
+        setHighlightedIndex(result.routes.length === 0 ? -1 : 0)
         setNoRoutesAvailable(result.routes.length === 0)
         setRoutesLoading(false)
+        transactionInfoRef.current?.scrollIntoView({ behavior: 'smooth' })
+        setActiveTransactionInfoTabKey('1')
       }
     }
   }, [routeCallResult, currentRouteCallId])
 
-  //TODO: check what is needed here!
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(routes[0]))
+    setSelectedRoute(deepClone(routes[highlightedIndex]))
+  }
 
-    // Reset routes to avoid reexecution with same data
-    setRoutes([])
-    setNoRoutesAvailable(false)
+  const switchChain = async (chainId: number) => {
+    if (!web3.account) {
+      return
+    }
+    if (isWalletConnectWallet(web3.account)) {
+      setShowWalletConnectChainSwitchModal({ show: true, chainId })
+      return
+    }
+    await switchChainMetaMask(chainId)
   }
 
   const submitButton = () => {
-    if (!account.isActive && isWalletDeactivated(account.address)) {
+    if (!active && isWalletDeactivated(web3.account)) {
       return (
         <Button
-          className="btn-ukraine-swap-form"
           disabled={true}
           shape="round"
           type="primary"
@@ -697,14 +729,13 @@ const Swap = () => {
           size={'large'}></Button>
       )
     }
-    if (!account.address) {
-      return <ConnectButton className="btn-ukraine-swap-form" size="large" />
+    if (!web3.account) {
+      return <ConnectButton size={'large'} />
     }
-    if (fromChainKey && account.chainId !== getChainByKey(fromChainKey).id) {
+    if (fromChainKey && web3.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
-          className="btn-ukraine-swap-form"
           shape="round"
           type="primary"
           icon={<SwapOutlined />}
@@ -734,14 +765,14 @@ const Swap = () => {
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnStartChain(routes[0])) {
+    if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Insufficient Gas on Start Chain
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnCrossChain(routes[0])) {
+    if (!hasSufficientGasBalanceOnCrossChain(routes[highlightedIndex])) {
       return (
         <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
@@ -757,58 +788,86 @@ const Swap = () => {
         </Button>
       )
     }
+    const fromAmountUSD = new BigNumber(routes[highlightedIndex]?.fromAmountUSD)
+    const toAmountUSD = new BigNumber(routes[highlightedIndex]?.toAmountUSD)
 
-    return (
-      <Button
-        disabled={!routes}
-        shape="round"
-        className="btn-ukraine-swap-form"
-        type="primary"
-        size={'large'}
-        onClick={() => openModal()}>
-        <span className="ukraine-flag">&#127482;&#127462;</span> Donate
-      </Button>
+    const gasCostUSD = new BigNumber(routes[highlightedIndex]?.gasCostUSD || -1) // gasprices might be to low for correct USD /Cents rounding so might end up being 0.00
+
+    const allValuesAvailable =
+      !fromAmountUSD.isZero() && !toAmountUSD.isZero() && !gasCostUSD.isNegative()
+
+    const totalExpenditure = gasCostUSD.isNegative()
+      ? fromAmountUSD
+      : fromAmountUSD.plus(gasCostUSD)
+    const amountReceivedPercentage = toAmountUSD.dividedBy(totalExpenditure)
+    const receivedAmountTooLow = amountReceivedPercentage.isLessThan(TOTAL_SLIPPAGE_GUARD_MODAL)
+
+    const swapButton = (clickHandler?: Function) => {
+      return (
+        <Button
+          disabled={highlightedIndex === -1}
+          shape="round"
+          type="primary"
+          icon={<SwapOutlined />}
+          size={'large'}
+          onClick={() => clickHandler?.()}>
+          Swap
+        </Button>
+      )
+    }
+    const popoverContent = (
+      <div
+        style={{
+          maxWidth: '100px !important',
+        }}>
+        {allValuesAvailable && receivedAmountTooLow ? (
+          <Typography.Paragraph>
+            The value of the received tokens is significantly lower than the cost required to
+            execute the transaction. Do you still want to proceed?
+          </Typography.Paragraph>
+        ) : !allValuesAvailable && receivedAmountTooLow ? (
+          <Typography.Paragraph>
+            The value of the received tokens is significantly lower than the cost required to
+            execute the transaction. Also, we could not fetch the FIAT price of one or more of the
+            listed values. Do you still want to proceed?
+          </Typography.Paragraph>
+        ) : (
+          <Typography.Paragraph>
+            We could not fetch the FIAT price of one or more of the listed values. Do you still want
+            to proceed?
+          </Typography.Paragraph>
+        )}
+        <Typography.Paragraph>
+          Swapped token value: {!fromAmountUSD.isZero() ? `${fromAmountUSD.toFixed(2)} USD` : '~'}{' '}
+          <br />
+          Gas costs: {!gasCostUSD.isNegative() ? `${gasCostUSD.toFixed(2)} USD` : '~'} <br />
+          Received token value: {!toAmountUSD.isZero() ? `${toAmountUSD.toFixed(2)} USD` : '~'}
+        </Typography.Paragraph>
+      </div>
+    )
+    return receivedAmountTooLow || !allValuesAvailable ? (
+      <Popconfirm onConfirm={() => openModal()} title={popoverContent}>
+        {swapButton()}
+      </Popconfirm>
+    ) : (
+      swapButton(openModal)
     )
   }
 
   return (
     <Content
-      className="site-layout-swap-ukraine"
+      className="site-layout site-layout-swap"
       style={{
         minHeight: 'calc(100vh - 64px)',
         marginTop: '64px',
       }}>
-      <div className="swap-view-ukraine">
-        {/* Swap Form */}
-        <Row className="ukraine-title-row">
-          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
-            <Title level={1}>Cross-chain donation to Ukraine</Title>
-          </Col>
-          <Col
-            className="swap-form-ukraine"
-            xs={24}
-            sm={24}
-            md={24}
-            lg={24}
-            xl={12}
-            style={{
-              minHeight: 'calc(100vh - 64px)',
-            }}>
-            <div
-              className="swap-input"
-              style={{
-                margin: '0 auto',
-                maxWidth: 450,
-                borderRadius: 16,
-                padding: 32,
-              }}>
+      <div className="swap-view">
+        <Row gutter={[16, 96]} style={{ paddingTop: 48 }} justify="space-around">
+          <Col sm={23} lg={23} xl={10} className="swap-form">
+            <div className="swap-input">
               <Row>
-                <Title
-                  className="swap-title"
-                  level={3}
-                  style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                  Stand with <br />
-                  Ukraine
+                <Title className="swap-title" level={4}>
+                  Please Specify Your Transaction
                 </Title>
               </Row>
 
@@ -820,10 +879,10 @@ const Swap = () => {
                   setDepositToken={setFromTokenAddress}
                   depositAmount={depositAmount}
                   setDepositAmount={setDepositAmount}
-                  withdrawChain={ChainKey.DAI}
-                  setWithdrawChain={() => {}}
-                  withdrawToken={findDefaultToken(CoinKey.USDC, ChainId.DAI).address}
-                  setWithdrawToken={() => {}}
+                  withdrawChain={toChainKey}
+                  setWithdrawChain={setToChainKey}
+                  withdrawToken={toTokenAddress}
+                  setWithdrawToken={setToTokenAddress}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
                   estimatedWithdrawAmount={getSelectedWithdraw().estimate}
@@ -832,26 +891,61 @@ const Swap = () => {
                   tokens={tokens}
                   balances={balances}
                   allowSameChains={true}
-                  fixedWithdraw={true}
-                  alternativeToSection={<ToSectionUkraine />}
                 />
                 <span>
-                  {/* Disclaimer */}
-                  <Row justify={'center'} className="beta-disclaimer">
+                  {/* Bridge Prio */}
+                  <Row justify="center" style={{ marginTop: 16 }}>
+                    <Form.Item name="bridgePrioritization" label="Bridge Prioritization">
+                      <Select
+                        placeholder="Recommended"
+                        value={optionOrder}
+                        onChange={(v) => setOptionOrder(v)}
+                        style={{
+                          width: '100%',
+                        }}>
+                        {availableOrders.map((orderOption) => (
+                          <Select.Option
+                            key={orderOption.key}
+                            value={orderOption.key}
+                            data-label={orderOption.name}>
+                            {orderOption.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Row>
+                  {/* Disclaimer
+                  <Row style={{ marginTop }} justify={'center'} className="beta-disclaimer">
                     <Typography.Text type="danger" style={{ textAlign: 'center' }}>
                       Beta product - use at own risk.
                     </Typography.Text>
-                  </Row>
+                  </Row> */}
                   <Row style={{ marginTop: 24 }} justify={'center'}>
                     {submitButton()}
                   </Row>
                   {/* Advanced Options */}
-                  <Row justify={'center'} style={{ marginTop: '12px' }}>
+                  <Row justify={'center'} style={{ marginTop: 16 }}>
                     <Collapse ghost style={{ width: '100%' }}>
-                      <Collapse.Panel
-                        header={`Advanced Options`}
-                        style={{ maxHeight: 390, overflow: 'scroll' }}
-                        key="1">
+                      <Collapse.Panel header={`Advanced Options`} key="1">
+                        Bridge Prioritization
+                        <div>
+                          <Select
+                            placeholder="Select Order"
+                            value={optionOrder}
+                            onChange={(v) => setOptionOrder(v)}
+                            style={{
+                              width: '100%',
+                            }}>
+                            {availableOrders.map((orderOption) => (
+                              <Select.Option
+                                key={orderOption.key}
+                                value={orderOption.key}
+                                data-label={orderOption.name}>
+                                {orderOption.name}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
                         Slippage
                         <div>
                           <InputNumber
@@ -864,8 +958,7 @@ const Swap = () => {
                               setOptionSlippage(value || 3)
                             }}
                             style={{
-                              border: '1px solid rgba(0,0,0,0.25)',
-                              borderRadius: 6,
+                              border: '1px solid #d9d9d9',
                               width: '100%',
                             }}
                           />
@@ -878,95 +971,112 @@ const Swap = () => {
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
+                        Bridges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled bridges"
+                            value={optionEnabledBridges}
+                            onChange={setOptionEnabledBridges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableBridges.map((bridge) => (
+                              <Select.Option key={bridge} value={bridge}>
+                                {bridge}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                        Exchanges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled exchanges"
+                            value={optionEnabledExchanges}
+                            onChange={setOptionEnabledExchanges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableExchanges.map((exchange) => (
+                              <Select.Option key={exchange} value={exchange}>
+                                {exchange}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
                       </Collapse.Panel>
                     </Collapse>
                   </Row>
                 </span>
               </Form>
             </div>
-            <div
-              onClick={() => window.open('https://li.fi', '_blank')}
-              style={{ margin: '32px auto', textAlign: 'center', cursor: 'pointer' }}>
-              <PoweredByLiFi />
-            </div>
           </Col>
-        </Row>
 
-        <Row>
-          <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
-            <Title level={4}>
-              Pooling resources to avoid high transaction fees. This means even{' '}
-              <b>the smallest donations count the most!</b>
-            </Title>
-            <br />
+          <Col sm={23} lg={23} xl={14}>
+            <div ref={transactionInfoRef}>
+              <Tabs
+                style={{ width: '90%' }}
+                defaultActiveKey={activeRoutes.length ? '2' : historicalRoutes.length ? '3' : '1'}
+                activeKey={activeTransactionInfoTabKey}
+                onTabClick={(key: string) => setActiveTransactionInfoTabKey(key)}>
+                <TabPane tab={`Available Routes (${routes.length})`} key="1">
+                  {routesLoading || noRoutesAvailable || routes.length ? (
+                    <RouteList
+                      highlightedIndex={highlightedIndex}
+                      routes={routes}
+                      routesLoading={routesLoading}
+                      noRoutesAvailable={noRoutesAvailable}
+                      setHighlightedIndex={setHighlightedIndex}
+                    />
+                  ) : (
+                    <Row style={{ paddingTop: 48 }}>
+                      <Typography.Title level={4} disabled>
+                        To get available routes, input your desired tokens to swap.
+                      </Typography.Title>
+                    </Row>
+                  )}
+                </TabPane>
 
-            <div className="ukraine-infographic">
-              <Row gutter={[40, 24]} justify="center" align="middle">
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <DonateIcon />
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Choose your donation amount and currency.
-                  </div>
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <SecuredWalletIcon />
+                <TabPane
+                  tab={`Active Transfers (${activeRoutes.length})`}
+                  disabled={!activeRoutes.length}
+                  key="2"
+                  style={{ overflowX: 'scroll' }}>
+                  {!!activeRoutes.length && (
+                    <TransactionsTable
+                      routes={activeRoutes}
+                      selectRoute={(route: RouteType) => setSelectedRoute(route)}
+                      deleteRoute={(route: RouteType) => {
+                        LiFi.stopExecution(route)
+                        deleteRoute(route)
+                        setActiveRoutes(readActiveRoutes())
+                      }}
+                    />
+                  )}
+                </TabPane>
 
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Funds are sent to our multi-sig wallet on Polygon.
-                  </div>
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <UkraineIcon />
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Every 8h we donate all collected funds.
-                  </div>
-                </Col>
-              </Row>
-            </div>
-            <Divider style={{ borderColor: 'black' }} />
-            <Paragraph style={{ marginTop: 64 }}>
-              Hello World 👋 <br />
-              Ukraine is in a very tough situation right now, all of us want to help, but we can
-              only do so much. We all know that Ethereum gas fees make it harder to donate smaller
-              amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
-              chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
-              bridged to Ethereum periodically and sent to the ETH address used by the{' '}
-              <b>Ukraine government</b>.
-            </Paragraph>
-
-            <div className="tweet-wrapper" style={{ marginTop: 64 }}>
-              <TwitterTweetEmbed tweetId="1497594592438497282"></TwitterTweetEmbed>
-            </div>
-
-            <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
-            <Button
-              className="btn-info-ukraine"
-              shape="round"
-              type="primary"
-              size={'large'}
-              onClick={() => {
-                // eslint-disable-next-line security/detect-non-literal-fs-filename
-                window.open(MORE_INFO_PAGE_URL, '_blank')
-              }}>
-              More details <ArrowRightOutlined />
-            </Button>
-
-            <Button
-              className="btn-wallet-ukraine"
-              shape="round"
-              type="primary"
-              size={'large'}
-              onClick={() => {
-                const scanUrl = getChainById(ChainId.POL).metamask.blockExplorerUrls[0]
-                // eslint-disable-next-line security/detect-non-literal-fs-filename
-                window.open(scanUrl + 'address/' + DONATION_WALLET + '#tokentxns', '_blank')
-              }}>
-              Wallet address <ArrowRightOutlined />
-            </Button>
-            <div
-              onClick={() => window.open('https://li.fi', '_blank')}
-              style={{ marginTop: 94, cursor: 'pointer' }}>
-              <LifiTeam></LifiTeam>
+                <TabPane
+                  tab={`Historical Transfers (${historicalRoutes.length})`}
+                  disabled={!historicalRoutes.length}
+                  key="3"
+                  style={{ overflowX: 'scroll' }}>
+                  {!!historicalRoutes.length && (
+                    <TransactionsTable
+                      routes={historicalRoutes}
+                      selectRoute={() => {}}
+                      deleteRoute={(route: RouteType) => {
+                        LiFi.stopExecution(route)
+                        deleteRoute(route)
+                        setHistoricalRoutes(readHistoricalRoutes())
+                      }}
+                      historical={true}
+                    />
+                  )}
+                </TabPane>
+              </Tabs>
             </div>
           </Col>
         </Row>
@@ -977,10 +1087,15 @@ const Swap = () => {
           className="swapModal"
           open={selectedRoute.steps.length > 0}
           onOk={() => {
+            LiFi.moveExecutionToBackground(selectedRoute)
+            resetForegroundRoute()
             setSelectedRoute(undefined)
             updateBalances()
           }}
           onCancel={() => {
+            LiFi.moveExecutionToBackground(selectedRoute)
+            resetForegroundRoute()
+
             setSelectedRoute(undefined)
             updateBalances()
           }}
@@ -988,22 +1103,38 @@ const Swap = () => {
           width={700}
           footer={null}>
           <Swapping
-            fixedRecipient={true}
             route={selectedRoute}
-            settings={{ infiniteApproval: optionInfiniteApproval }}
+            settings={{
+              infiniteApproval: optionInfiniteApproval,
+            }}
             updateRoute={() => {
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
             }}
             onSwapDone={() => {
+              resetForegroundRoute()
               setActiveRoutes(readActiveRoutes())
               setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
             }}></Swapping>
         </Modal>
       )}
+
+      <Modal
+        className="wallet-selection-modal"
+        open={showWalletConnectChainSwitchModal.show}
+        onOk={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
+        onCancel={() => setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })}
+        footer={null}>
+        <WalletConnectChainSwitchModal
+          chainId={showWalletConnectChainSwitchModal.chainId}
+          okHandler={() => {
+            setShowWalletConnectChainSwitchModal({ show: false, chainId: 1 })
+          }}
+        />
+      </Modal>
     </Content>
   )
 }
 
-export default Swap
+export default SwapV1

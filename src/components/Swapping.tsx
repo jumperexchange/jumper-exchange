@@ -578,7 +578,7 @@ const Swapping = ({
 
         <Modal
           className="wallet-selection-modal"
-          visible={showWalletConnectChainSwitchModal.show}
+          open={showWalletConnectChainSwitchModal.show}
           onOk={() =>
             setShowWalletConnectChainSwitchModal({
               show: false,
@@ -608,7 +608,7 @@ const Swapping = ({
 
         <Modal
           className="accept-step-update-modal"
-          visible={showAcceptSlippageUpdateModal.show}
+          open={showAcceptSlippageUpdateModal.show}
           onOk={() => {
             if (showAcceptSlippageUpdateModal.promiseResolver) {
               showAcceptSlippageUpdateModal.promiseResolver(true)

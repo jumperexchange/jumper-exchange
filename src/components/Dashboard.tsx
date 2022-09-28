@@ -769,15 +769,15 @@ const Dashboard = () => {
       <div
         className="site-layout-background"
         style={{
-          minHeight: 'calc(100vh - 64px)',
-          marginTop: 64,
+          minHeight: 'calc(100vh - 104px)',
+          marginTop: 112,
         }}>
         <Table
           columns={columns}
           dataSource={data}
           bordered
           size="middle"
-          scroll={{ x: '1000px', y: 'calc(100vh - 277px)' }}
+          scroll={{ x: '1000px', y: 'calc(100vh - 317px)' }}
           pagination={false}
           summary={() => (
             <Table.Summary fixed>
@@ -831,7 +831,7 @@ const Dashboard = () => {
 
       <Modal
         title="Add Wallet"
-        visible={walletModalVisible}
+        open={walletModalVisible}
         onOk={handleWalletModalAdd}
         onCancel={handleWalletModalClose}
         zIndex={800}
