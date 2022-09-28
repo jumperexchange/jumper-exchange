@@ -14,14 +14,18 @@ import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
 import NotFoundPage from './components/NotFoundPage'
-import Swap from './components/Swap'
+import { Swap } from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
 import SwapCarbonOffsetV2 from './components/SwapCarbonOffsetV2'
 import SwapEtherspotKlimaZap from './components/SwapEtherspotKlimaZap'
+import SwapKlimaStakeV2 from './components/SwapKlimaStakeV2'
 import SwapUkraine from './components/SwapUkraine'
-import { SwapV2 } from './components/SwapV2'
+import SwapV1 from './components/SwapV1'
 import WalletButtons from './components/web3/WalletButtons'
-import { REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE } from './constants/featureFlags'
+import {
+  ENABLE_KLIMA_STAKE_SHOWCASE,
+  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
+} from './constants/featureFlags'
 import { useNavConfig } from './hooks/useNavConfig'
 import { usePageViews } from './hooks/usePageViews'
 import { ChainsTokensToolsProvider } from './providers/chainsTokensToolsProvider'
@@ -33,14 +37,10 @@ function App() {
   const navConfig = useNavConfig()
   const location = useLocation()
   const path = usePageViews()
-  const [adjustNavBarToBgGradient, setAdjustNavBarToBgGradient] = useState(
-    !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
-  )
+  const [adjustNavbar, setAdjustNavbar] = useState(location.pathname.includes('showcase'))
 
   useEffect(() => {
-    setAdjustNavBarToBgGradient(
-      !location.pathname.includes('dashboard') && !location.pathname.includes('showcase'),
-    )
+    setAdjustNavbar(location.pathname.includes('showcase'))
   }, [location])
 
   function swapEmbedView() {
@@ -49,7 +49,7 @@ function App() {
     })
     return (
       <div className="lifiEmbed">
-        <Swap />
+        <SwapV1 />
         <div className="poweredBy">
           <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
             <PoweredByLiFi />
@@ -121,7 +121,7 @@ function App() {
                 width: '100%',
                 padding: 0,
                 top: 0,
-                background: adjustNavBarToBgGradient ? '#F6F3F2' : '#fff',
+                background: adjustNavbar ? 'white' : 'transparent',
               }}>
               <Row className="site-layout-menu">
                 {/* Menu */}
@@ -181,7 +181,7 @@ function App() {
                 <Route path="/" element={<Navigate to="/swap" />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route
-                  path="/swap"
+                  path="/swap/*"
                   element={
                     <div className="lifiWrap swap-page">
                       <Swap />
@@ -197,10 +197,10 @@ function App() {
                   }
                 />
                 <Route
-                  path="/swap-v2/*"
+                  path="/swap-v1"
                   element={
-                    <div className="lifiWrap swap-page-v2">
-                      <SwapV2 />
+                    <div className="lifiWrap swap-page-v1">
+                      <SwapV1 />
                     </div>
                   }
                 />
@@ -241,6 +241,16 @@ function App() {
                         <ToSectionCarbonOffsetProvider>
                           <SwapCarbonOffsetV2 />
                         </ToSectionCarbonOffsetProvider>
+                      </div>
+                    }
+                  />
+                )}
+                {ENABLE_KLIMA_STAKE_SHOWCASE && (
+                  <Route
+                    path="/showcase/klima-stake-v2"
+                    element={
+                      <div className="lifiWrap">
+                        <SwapKlimaStakeV2 />
                       </div>
                     }
                   />

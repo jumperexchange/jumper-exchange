@@ -229,7 +229,7 @@ const Claiming = () => {
   // TODO: switch between claims
 
   return (
-    <div className="site-layout site-layout--claiming">
+    <div className="site-layout--claiming">
       <Content className="claiming">
         {userClaimData.every((claim) => claim.claimingState) ? (
           <>

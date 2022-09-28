@@ -220,7 +220,7 @@ const Swap = () => {
 
       // get provider
       const connector = (window as any).ethereum
-      const provider = await Web3WalletProvider.connect(await connector.getProvider())
+      const provider = await Web3WalletProvider.connect(connector)
 
       // setup sdk for polygon
       const sdk = new Sdk(provider, {
@@ -237,13 +237,13 @@ const Swap = () => {
     }
 
     if (
-      account.isActive &&
+      account.signer &&
       availableChains.find((chain) => chain.id === account.chainId) &&
       (window as any).ethereum
     ) {
       etherspotSDKSetup()
     }
-  }, [account.isActive, account.chainId, availableChains])
+  }, [account.chainId, availableChains, account.signer])
 
   // Check Etherspot Wallet balance
   useEffect(() => {
@@ -1027,7 +1027,9 @@ const Swap = () => {
                             max={100}
                             formatter={(value) => `${value}%`}
                             parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                            onChange={setOptionSlippage}
+                            onChange={(value: number | null) => {
+                              setOptionSlippage(value || 3)
+                            }}
                             style={{
                               border: '1px solid rgba(0,0,0,0.25)',
                               borderRadius: 6,
@@ -1180,7 +1182,7 @@ const Swap = () => {
       {selectedRoute && (
         <Modal
           className="swapModal"
-          visible={!!selectedRoute}
+          open={!!selectedRoute}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()
@@ -1216,7 +1218,7 @@ const Swap = () => {
             setEtherspotWalletBalance(undefined)
             setResidualRoute(undefined)
           }}
-          visible={!!etherspotWalletBalance && !!residualRoute}
+          open={!!etherspotWalletBalance && !!residualRoute}
           okText="Swap, stake and receive sKlima"
           // cancelText="Send USDC to my wallet"
           footer={null}>
