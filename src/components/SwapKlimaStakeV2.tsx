@@ -1,4 +1,4 @@
-import './SwapUkraine.css'
+import './SwapEtherspotKlimaZap.css'
 
 import { ArrowRightOutlined, LoadingOutlined, SwapOutlined, SyncOutlined } from '@ant-design/icons'
 import {
@@ -11,6 +11,7 @@ import {
   InputNumber,
   Modal,
   Row,
+  Select,
   Tooltip,
   Typography,
 } from 'antd'
@@ -20,27 +21,23 @@ import Title from 'antd/lib/typography/Title'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { createBrowserHistory } from 'history'
-import { animate, stagger } from 'motion'
 import QueryString from 'qs'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { TwitterTweetEmbed } from 'react-twitter-embed'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { v4 as uuid } from 'uuid'
 
-import { DonateIcon } from '../assets/icons/donateIcon'
-import { SecuredWalletIcon } from '../assets/icons/securedWalletIcon'
-import { UkraineIcon } from '../assets/icons/ukraineIcon'
 import { LifiTeam } from '../assets/Li.Fi/LiFiTeam'
 import { PoweredByLiFi } from '../assets/Li.Fi/poweredByLiFi'
+import { Etherspot } from '../assets/misc/etherspot'
+import { etherspotSupportedChains, KLIMA_ADDRESS, sKLIMA_ADDRESS } from '../constants'
 import { useMetatags } from '../hooks/useMetatags'
 import LiFi from '../LiFi'
 import { useChainsTokensTools } from '../providers/chainsTokensToolsProvider'
 import { useWallet } from '../providers/WalletProvider'
-import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/localStorage'
+import { getStakeKlimaTransaction } from '../services/etherspotTxService'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
   deepClone,
-  formatTokenAmount,
   formatTokenAmountOnly,
   getBalance,
   isWalletDeactivated,
@@ -50,50 +47,29 @@ import {
   ChainId,
   ChainKey,
   CoinKey,
+  ContractCallQuoteRequest,
   findDefaultToken,
   getChainById,
   getChainByKey,
   isSwapStep,
   Route as RouteType,
-  RoutesRequest,
-  RoutesResponse,
   SwapPageStartParams,
   Token,
   TokenAmount,
   TokenAmountList,
   TokenWithAmounts,
 } from '../types'
+import forest from './../assets/misc/forest.jpg'
 import SwapForm from './SwapForm/SwapForm'
-import { ToSectionUkraine } from './SwapForm/SwapFormToSections/ToSectionUkraine'
+import { FromSectionKlimaStaking } from './SwapForm/SwapFormFromSections/FromSectionKlimaStaking'
+import { ToSectionKlimaStakingV2 } from './SwapForm/SwapFormToSections/ToSectionKlimaStakingV2'
 import Swapping from './Swapping'
 import ConnectButton from './web3/ConnectButton'
 
+const TOKEN_POLYGON_USDC = findDefaultToken(CoinKey.USDC, ChainId.POL)
+
 const history = createBrowserHistory()
-const DONATION_WALLET = '0x0B0ff19ab0ee6265D4184ed810e092D9A89074D9'
-const MORE_INFO_PAGE_URL =
-  'https://lifi.notion.site/More-Information-Ukraine-Donation-9b39682ad76d4a5697684260273c525e'
-
 let currentRouteCallId: string
-
-const fadeInAnimation = (element: React.MutableRefObject<HTMLDivElement | null>) => {
-  setTimeout(() => {
-    const nodes = element.current?.childNodes
-    if (nodes) {
-      animate(
-        nodes as NodeListOf<Element>,
-        {
-          y: ['50px', '0px'],
-          opacity: [0, 1],
-        },
-        {
-          delay: stagger(0.2),
-          duration: 0.5,
-          easing: 'ease-in-out',
-        },
-      )
-    }
-  }, 0)
-}
 
 const parseChain = (passed: string) => {
   // is ChainKey?
@@ -129,7 +105,7 @@ const parseToken = (
 
 const Swap = () => {
   useMetatags({
-    title: 'LI.FI - Help Ukraine!',
+    title: 'LI.FI - Etherspot KLIMA',
   })
   const chainsTokensTools = useChainsTokensTools()
 
@@ -145,14 +121,15 @@ const Swap = () => {
   const [fromTokenAddress, setFromTokenAddress] = useState<string | undefined>()
   const [toChainKey] = useState<ChainKey>(ChainKey.POL)
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(new BigNumber(Infinity))
-  const [toTokenAddress] = useState<string | undefined>(
-    findDefaultToken(CoinKey.ETH, ChainId.POL).address,
-  )
-  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens as TokenAmountList)
+  const [toTokenAddress] = useState<string | undefined>(TOKEN_POLYGON_USDC.address) // TODO: Change This
+  const [tokens, setTokens] = useState<TokenAmountList>(chainsTokensTools.tokens)
   const [refreshTokens, setRefreshTokens] = useState<boolean>(false)
   const [balances, setBalances] = useState<{ [ChainKey: string]: Array<TokenAmount> }>()
   const [refreshBalances, setRefreshBalances] = useState<boolean>(true)
-  const [routeCallResult, setRouteCallResult] = useState<{ result: RoutesResponse; id: string }>()
+  const [routeCallResult, setRouteCallResult] = useState<{
+    result: RouteType
+    id: string
+  }>()
 
   // Options
   const [optionSlippage, setOptionSlippage] = useState<number>(3)
@@ -160,24 +137,25 @@ const Swap = () => {
   const [optionEnabledBridges, setOptionEnabledBridges] = useState<string[] | undefined>(
     chainsTokensTools.bridges,
   )
-  const [, setAvailableBridges] = useState<string[]>(chainsTokensTools.bridges)
+  const [availableBridges, setAvailableBridges] = useState<string[]>(chainsTokensTools.bridges)
   const [optionEnabledExchanges, setOptionEnabledExchanges] = useState<string[] | undefined>(
     chainsTokensTools.exchanges,
   )
-  const [, setAvailableExchanges] = useState<string[]>(chainsTokensTools.exchanges)
+  const [availableExchanges, setAvailableExchanges] = useState<string[]>(
+    chainsTokensTools.exchanges,
+  )
 
   // Routes
-  const [routes, setRoutes] = useState<Array<RouteType>>([])
+  const [route, setRoute] = useState<RouteType>({} as any)
   const [routesLoading, setRoutesLoading] = useState<boolean>(false)
   const [noRoutesAvailable, setNoRoutesAvailable] = useState<boolean>(false)
   const [selectedRoute, setSelectedRoute] = useState<RouteType | undefined>()
-  const [activeRoutes, setActiveRoutes] = useState<Array<RouteType>>(readActiveRoutes())
-  const [, setHistoricalRoutes] = useState<Array<RouteType>>(readHistoricalRoutes())
-
   // Misc
-  const [restartedOnPageLoad, setRestartedOnPageLoad] = useState<boolean>(false)
   const [balancePollingStarted, setBalancePollingStarted] = useState<boolean>(false)
   const [startParamsDefined, setStartParamsDefined] = useState<boolean>(false)
+
+  const [tokenPolygonKLIMA, setTokenPolygonKlima] = useState<Token>()
+  const [tokenPolygonSKLIMA, setTokenPolygonSKLIMA] = useState<Token>()
   const tokensAndChainsSet = useMemo(
     () => availableChains.length !== 0 && Object.keys(tokens).length !== 0,
     [tokens, availableChains],
@@ -185,41 +163,6 @@ const Swap = () => {
 
   // Wallet
   const { account } = useWallet()
-
-  // Elements used for animations
-  const routeCards = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    // get new execution status on page load
-    if (!restartedOnPageLoad) {
-      setRestartedOnPageLoad(true)
-
-      activeRoutes.map((route) => {
-        if (!account.signer) return
-        // check if it makes sense to fetch the status of a route:
-        // if failed or action required it makes no sense
-        const routeFailed = route.steps.some(
-          (step) => step.execution && step.execution.status === 'FAILED',
-        )
-        const actionRequired = route.steps.some(
-          (step) =>
-            step.execution &&
-            step.execution.process.some((process) => process.status === 'ACTION_REQUIRED'),
-        )
-
-        if (routeFailed || actionRequired) return
-        const settings = {
-          updateCallback: (updatedRoute: RouteType) => {
-            storeRoute(updatedRoute)
-            setActiveRoutes(readActiveRoutes())
-            setHistoricalRoutes(readHistoricalRoutes())
-          },
-        }
-        LiFi.resumeRoute(account.signer, route, settings)
-        LiFi.moveExecutionToBackground(route)
-      })
-    }
-  }, [account.signer])
 
   useEffect(() => {
     // executed once after page is loaded
@@ -239,22 +182,37 @@ const Swap = () => {
 
   // get chains
   useEffect(() => {
-    setAvailableChains(chainsTokensTools.chains)
+    const limitedChains = chainsTokensTools.chains.filter((chain) => {
+      return etherspotSupportedChains.includes(chain.id)
+    })
+    setAvailableChains(limitedChains)
 
     // load()
   }, [chainsTokensTools.chains])
 
   //get tokens
   useEffect(() => {
-    setTokens(chainsTokensTools.tokens as TokenAmountList)
+    setTokens(chainsTokensTools.tokens)
+    const loadAdditionalToken = async () => {
+      const klimaToken = await LiFi.getToken(ChainId.POL, KLIMA_ADDRESS)
+      const sKlimaToken = await LiFi.getToken(ChainId.POL, sKLIMA_ADDRESS)!
+      setTokenPolygonKlima(klimaToken)
+      setTokenPolygonSKLIMA(sKlimaToken)
+    }
+    loadAdditionalToken()
   }, [chainsTokensTools.tokens])
 
   //get tools
   useEffect(() => {
-    setAvailableExchanges(chainsTokensTools.bridges)
+    setAvailableExchanges(chainsTokensTools.exchanges)
     setOptionEnabledExchanges(chainsTokensTools.exchanges)
-    setAvailableBridges(chainsTokensTools.bridges)
-    setOptionEnabledBridges(chainsTokensTools.bridges)
+
+    const allowedBridges = ['connext', 'stargate']
+    const filteredBridges = chainsTokensTools.bridges?.filter((bridge) =>
+      allowedBridges.includes(bridge),
+    )
+    setAvailableBridges(filteredBridges)
+    setOptionEnabledBridges(filteredBridges)
   }, [chainsTokensTools.bridges, chainsTokensTools.exchanges])
 
   useEffect(() => {
@@ -262,21 +220,6 @@ const Swap = () => {
       setRefreshBalances(true)
     }
   }, [availableChains, tokens])
-
-  const getSelectedWithdraw = () => {
-    if (!routes.length) {
-      return {
-        estimate: '0.0',
-      }
-    } else {
-      const route = routes[0]
-      const lastStep = route.steps[route.steps.length - 1]
-      return {
-        estimate: formatTokenAmountOnly(lastStep.action.toToken, lastStep.estimate?.toAmount),
-        min: formatTokenAmount(lastStep.action.toToken, lastStep.estimate?.toAmountMin),
-      }
-    }
-  }
 
   // autoselect from chain based on wallet
   useEffect(() => {
@@ -465,10 +408,9 @@ const Swap = () => {
         toToken: toTokenAddress,
         fromAmount: depositAmount.gt(0) ? depositAmount.toFixed() : undefined,
       }
-
       const search = QueryString.stringify(params)
       history.push({
-        pathname: '/showcase/ukraine',
+        pathname: '/showcase/klima-stake-v2',
         search,
       })
     }
@@ -550,7 +492,7 @@ const Swap = () => {
   }
 
   const hasSufficientGasBalanceOnStartChain = (route?: RouteType) => {
-    if (!route) {
+    if (!route?.steps?.length) {
       return true
     }
 
@@ -573,7 +515,7 @@ const Swap = () => {
   }
 
   const hasSufficientGasBalanceOnCrossChain = (route?: RouteType) => {
-    if (!route) {
+    if (!route?.steps?.length) {
       return true
     }
     const lastStep = route.steps[route.steps.length - 1]
@@ -606,41 +548,82 @@ const Swap = () => {
 
   useEffect(() => {
     const getTransferRoutes = async () => {
-      setRoutes([])
+      setRoute({} as any)
       setNoRoutesAvailable(false)
 
-      if (depositAmount.gt(0) && fromChainKey && fromTokenAddress && toChainKey && toTokenAddress) {
+      if (
+        depositAmount.gt(0) &&
+        depositAmount &&
+        fromChainKey &&
+        fromTokenAddress &&
+        account.address &&
+        tokenPolygonKLIMA &&
+        tokenPolygonSKLIMA
+      ) {
         setRoutesLoading(true)
         const fromToken = findToken(fromChainKey, fromTokenAddress)
-        const toToken = findToken(toChainKey, toTokenAddress)
-        const request: RoutesRequest = {
-          fromChainId: fromToken.chainId,
-          fromAmount: new BigNumber(depositAmount).shiftedBy(fromToken.decimals).toFixed(0),
-          fromTokenAddress,
-          toChainId: toToken.chainId,
-          toTokenAddress,
-          fromAddress: account.address || undefined,
-          toAddress: DONATION_WALLET, // TODO: change this to the recipient address
-          options: {
-            slippage: optionSlippage / 100,
-            bridges: {
-              allow: optionEnabledBridges,
-            },
-            exchanges: {
-              allow: optionEnabledExchanges,
-            },
-            allowSwitchChain: false, // This is important for fixed recipients
-          },
+
+        const klimaStakeTx = await getStakeKlimaTransaction(
+          new BigNumber(depositAmount).shiftedBy(tokenPolygonKLIMA.decimals).toFixed(0),
+        )
+        const request: ContractCallQuoteRequest = {
+          //from
+          fromChain: fromToken.chainId,
+          fromToken: fromTokenAddress,
+          fromAddress: account.address,
+          //to
+          toChain: tokenPolygonKLIMA.chainId,
+          toToken: tokenPolygonKLIMA.address,
+          toAmount: new BigNumber(depositAmount).shiftedBy(tokenPolygonKLIMA.decimals).toFixed(0),
+          toContractAddress: klimaStakeTx.to!,
+          toContractCallData: klimaStakeTx.data!,
+          toContractGasLimit: '200000', //'90000',
+          contractOutputsToken: sKLIMA_ADDRESS,
+          //optional
+          integrator: 'lifi-klima-xchain-staking',
+          slippage: optionSlippage / 100,
         }
 
         const id = uuid()
         try {
           currentRouteCallId = id
-          const result = await LiFi.getRoutes(request)
-          // const result = await getRoute(request, web3.library?.getSigner())
+          const result = await LiFi.getContractCallQuote(request)
 
-          setRouteCallResult({ result, id })
-        } catch {
+          result.estimate.toAmount = new BigNumber(depositAmount)
+            .shiftedBy(tokenPolygonSKLIMA.decimals)
+            .toFixed(0)
+          result.estimate.toAmountMin = new BigNumber(depositAmount)
+            .shiftedBy(tokenPolygonSKLIMA.decimals)
+            .toFixed(0)
+
+          result.action.toToken = tokenPolygonSKLIMA
+
+          const route: RouteType = {
+            id: result.id,
+            fromChainId: result.action.fromChainId,
+            fromAmountUSD: result.estimate.fromAmountUSD || '',
+            fromAmount: result.action.fromAmount,
+            fromToken: result.action.fromToken,
+            fromAddress: result.action.fromAddress,
+            toChainId: result.action.toChainId,
+            toAmountUSD: result.estimate.toAmountUSD || '',
+            toAmount: new BigNumber(depositAmount)
+              .shiftedBy(tokenPolygonSKLIMA.decimals)
+              .toFixed(0),
+            toAmountMin: new BigNumber(depositAmount)
+              .shiftedBy(tokenPolygonSKLIMA.decimals)
+              .toFixed(0),
+            toToken: tokenPolygonSKLIMA,
+            toAddress: result.action.toAddress,
+            gasCostUSD: result.estimate.gasCosts?.[0].amountUSD,
+            steps: [result],
+          }
+
+          setRouteCallResult({
+            result: route,
+            id,
+          })
+        } catch (e) {
           if (id === currentRouteCallId || !currentRouteCallId) {
             setNoRoutesAvailable(true)
             setRoutesLoading(false)
@@ -666,22 +649,18 @@ const Swap = () => {
   useEffect(() => {
     if (routeCallResult) {
       const { result, id } = routeCallResult
+
       if (id === currentRouteCallId) {
-        setRoutes(result.routes)
-        fadeInAnimation(routeCards)
-        setNoRoutesAvailable(result.routes.length === 0)
+        setRoute(result)
+        setNoRoutesAvailable(!route)
         setRoutesLoading(false)
       }
     }
   }, [routeCallResult, currentRouteCallId])
 
-  //TODO: check what is needed here!
   const openModal = () => {
     // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(routes[0]))
-
-    // Reset routes to avoid reexecution with same data
-    setRoutes([])
+    setSelectedRoute(deepClone(route))
     setNoRoutesAvailable(false)
   }
 
@@ -689,7 +668,6 @@ const Swap = () => {
     if (!account.isActive && isWalletDeactivated(account.address)) {
       return (
         <Button
-          className="btn-ukraine-swap-form"
           disabled={true}
           shape="round"
           type="primary"
@@ -698,13 +676,12 @@ const Swap = () => {
       )
     }
     if (!account.address) {
-      return <ConnectButton className="btn-ukraine-swap-form" size="large" />
+      return <ConnectButton size="large" />
     }
     if (fromChainKey && account.chainId !== getChainByKey(fromChainKey).id) {
       const fromChain = getChainByKey(fromChainKey)
       return (
         <Button
-          className="btn-ukraine-swap-form"
           shape="round"
           type="primary"
           icon={<SwapOutlined />}
@@ -734,16 +711,16 @@ const Swap = () => {
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnStartChain(routes[0])) {
+    if (!hasSufficientGasBalanceOnStartChain(route)) {
       return (
         <Button disabled={true} shape="round" type="primary" size={'large'}>
           Insufficient Gas on Start Chain
         </Button>
       )
     }
-    if (!hasSufficientGasBalanceOnCrossChain(routes[0])) {
+    if (!hasSufficientGasBalanceOnCrossChain(route)) {
       return (
-        <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
+        <Tooltip title="The selected route requires a swap on the chain you are transferring to. You need to have gas on that chain to pay for the transaction there.">
           <Button disabled={true} shape="round" type="primary" size={'large'}>
             Insufficient Gas on Destination Chain
           </Button>
@@ -758,15 +735,16 @@ const Swap = () => {
       )
     }
 
+    const disableStakeButton = !route || !(depositAmount.toNumber() > 0)
+
     return (
       <Button
-        disabled={!routes}
+        disabled={disableStakeButton}
         shape="round"
-        className="btn-ukraine-swap-form"
         type="primary"
         size={'large'}
         onClick={() => openModal()}>
-        <span className="ukraine-flag">&#127482;&#127462;</span> Donate
+        Stake
       </Button>
     )
   }
@@ -782,10 +760,10 @@ const Swap = () => {
         {/* Swap Form */}
         <Row className="ukraine-title-row">
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column title-row">
-            <Title level={1}>Cross-chain donation to Ukraine</Title>
+            <Title level={1}>Cross-Chain Klima Staking</Title>
           </Col>
           <Col
-            className="swap-form-ukraine"
+            className="swap-form-etherspot"
             xs={24}
             sm={24}
             md={24}
@@ -793,6 +771,7 @@ const Swap = () => {
             xl={12}
             style={{
               minHeight: 'calc(100vh - 64px)',
+              backgroundImage: `url(${forest})`,
             }}>
             <div
               className="swap-input"
@@ -807,8 +786,7 @@ const Swap = () => {
                   className="swap-title"
                   level={3}
                   style={{ marginLeft: '0', fontWeight: 'bold', marginBottom: 16 }}>
-                  Stand with <br />
-                  Ukraine
+                  Cross-chain Stake into sKlima
                 </Title>
               </Row>
 
@@ -820,20 +798,39 @@ const Swap = () => {
                   setDepositToken={setFromTokenAddress}
                   depositAmount={depositAmount}
                   setDepositAmount={setDepositAmount}
-                  withdrawChain={ChainKey.DAI}
+                  withdrawChain={ChainKey.POL}
                   setWithdrawChain={() => {}}
-                  withdrawToken={findDefaultToken(CoinKey.USDC, ChainId.DAI).address}
+                  withdrawToken={TOKEN_POLYGON_USDC.address}
                   setWithdrawToken={() => {}}
                   withdrawAmount={withdrawAmount}
                   setWithdrawAmount={setWithdrawAmount}
-                  estimatedWithdrawAmount={getSelectedWithdraw().estimate}
-                  estimatedMinWithdrawAmount={getSelectedWithdraw().min}
+                  estimatedWithdrawAmount={'0'}
+                  estimatedMinWithdrawAmount={'0'}
                   availableChains={availableChains}
                   tokens={tokens}
                   balances={balances}
                   allowSameChains={true}
-                  fixedWithdraw={true}
-                  alternativeToSection={<ToSectionUkraine />}
+                  // fixedWithdraw={true}
+                  alternativeFromSection={
+                    <FromSectionKlimaStaking
+                      depositChain={fromChainKey}
+                      setDepositChain={setFromChainKey}
+                      depositToken={fromTokenAddress}
+                      setDepositToken={setFromTokenAddress}
+                      depositAmount={depositAmount}
+                      availableChains={availableChains}
+                      tokens={tokens}
+                      balances={balances}
+                      setDepositAmount={setDepositAmount}
+                    />
+                  }
+                  alternativeToSection={
+                    <ToSectionKlimaStakingV2
+                      route={route}
+                      fromToken={route.fromToken}
+                      routesLoading={routesLoading}
+                    />
+                  }
                 />
                 <span>
                   {/* Disclaimer */}
@@ -878,6 +875,42 @@ const Swap = () => {
                             Activate Infinite Approval
                           </Checkbox>
                         </div>
+                        Bridges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled bridges"
+                            value={optionEnabledBridges}
+                            onChange={setOptionEnabledBridges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableBridges.map((bridge) => (
+                              <Select.Option key={bridge} value={bridge}>
+                                {bridge}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                        Exchanges
+                        <div>
+                          <Select
+                            mode="multiple"
+                            placeholder="Select enabled exchanges"
+                            value={optionEnabledExchanges}
+                            onChange={setOptionEnabledExchanges}
+                            style={{
+                              borderRadius: 6,
+                              width: '100%',
+                            }}>
+                            {availableExchanges.map((exchange) => (
+                              <Select.Option key={exchange} value={exchange}>
+                                {exchange}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
                       </Collapse.Panel>
                     </Collapse>
                   </Row>
@@ -885,97 +918,80 @@ const Swap = () => {
               </Form>
             </div>
             <div
-              onClick={() => window.open('https://li.fi', '_blank')}
-              style={{ margin: '32px auto', textAlign: 'center', cursor: 'pointer' }}>
-              <PoweredByLiFi />
+              style={{
+                margin: '32px auto',
+                padding: '14px 20px 10px',
+                textAlign: 'center',
+                background: 'rgba(255, 255, 255, 0.69)',
+                borderRadius: 18,
+                cursor: 'pointer',
+              }}>
+              <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
+                <PoweredByLiFi />
+              </a>
+
+              <span style={{ verticalAlign: 'super', margin: 8 }}>&</span>
+
+              <a href="https://etherspot.io/" target="_blank" rel="nofollow noreferrer">
+                <Etherspot />
+              </a>
             </div>
           </Col>
         </Row>
-
         <Row>
           <Col xs={24} sm={24} md={24} lg={24} xl={12} className="ukraine-content-column">
             <Title level={4}>
-              Pooling resources to avoid high transaction fees. This means even{' '}
-              <b>the smallest donations count the most!</b>
+              LI.FI now supports xChain Contract Calls into the Klima staking contract with only one
+              transaction confirmation.
             </Title>
             <br />
 
-            <div className="ukraine-infographic">
-              <Row gutter={[40, 24]} justify="center" align="middle">
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <DonateIcon />
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Choose your donation amount and currency.
-                  </div>
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <SecuredWalletIcon />
-
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Funds are sent to our multi-sig wallet on Polygon.
-                  </div>
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8} xl={8} style={{ height: 200 }}>
-                  <UkraineIcon />
-                  <div style={{ maxWidth: 200, maxHeight: 200, margin: '0 auto' }}>
-                    Every 8h we donate all collected funds.
-                  </div>
-                </Col>
-              </Row>
-            </div>
             <Divider style={{ borderColor: 'black' }} />
             <Paragraph style={{ marginTop: 64 }}>
-              Hello World 👋 <br />
-              Ukraine is in a very tough situation right now, all of us want to help, but we can
-              only do so much. We all know that Ethereum gas fees make it harder to donate smaller
-              amounts. So, we’ve spun up a simple system using LI.FI protocol to donate from any EVM
-              chain, it will be stored in a Hardware Wallet controlled by LI.FI team and will be
-              bridged to Ethereum periodically and sent to the ETH address used by the{' '}
-              <b>Ukraine government</b>.
+              <h2>What is happening here?</h2>
+              We are combining the power of asset bridging with cross-chain message passing to
+              perform xChain Contract Call staking with one transaction confirmation. We are
+              abstracting steps needed to perform such actions - from{' '}
+              <b>9 steps on 3 different dApps</b>, to just a <b>single step</b> on LI.FI's
+              interface.
+            </Paragraph>
+            <Paragraph style={{ marginTop: 64 }}>
+              <h2>What is happening in the background?</h2>
+              When a cross-chain swap is completed via LI.FI, we combine swap + bridge + destination
+              contract call (xChain Contract Call) within our smart contract:
+              <ol>
+                <li>Swaps USDC to KLIMA. </li>
+                <li>Send xChain Contract Call to staking contract. </li>
+                <li>Stakes KLIMA to receive sKLIMA.</li>
+                <li>Sends sKLIMA back to the keywallet address (e.g. Metamask)</li>
+              </ol>
+              All in a single transaction on the destination chain, with no need to switch RPC
+              networks and no need to have the gas token.
             </Paragraph>
 
-            <div className="tweet-wrapper" style={{ marginTop: 64 }}>
-              <TwitterTweetEmbed tweetId="1497594592438497282"></TwitterTweetEmbed>
-            </div>
-
-            <Paragraph>You can verify our transactions on the blockchain.</Paragraph>
             <Button
               className="btn-info-ukraine"
               shape="round"
               type="primary"
               size={'large'}
               onClick={() => {
-                // eslint-disable-next-line security/detect-non-literal-fs-filename
-                window.open(MORE_INFO_PAGE_URL, '_blank')
+                window.open('https://www.klimadao.finance/', '_blank')
               }}>
-              More details <ArrowRightOutlined />
-            </Button>
-
-            <Button
-              className="btn-wallet-ukraine"
-              shape="round"
-              type="primary"
-              size={'large'}
-              onClick={() => {
-                const scanUrl = getChainById(ChainId.POL).metamask.blockExplorerUrls[0]
-                // eslint-disable-next-line security/detect-non-literal-fs-filename
-                window.open(scanUrl + 'address/' + DONATION_WALLET + '#tokentxns', '_blank')
-              }}>
-              Wallet address <ArrowRightOutlined />
+              KlimaDAO <ArrowRightOutlined />
             </Button>
             <div
               onClick={() => window.open('https://li.fi', '_blank')}
-              style={{ marginTop: 94, cursor: 'pointer' }}>
+              style={{ marginTop: 34, cursor: 'pointer' }}>
               <LifiTeam></LifiTeam>
             </div>
           </Col>
         </Row>
       </div>
 
-      {selectedRoute && !!selectedRoute.steps.length && (
+      {selectedRoute && (
         <Modal
           className="swapModal"
-          open={selectedRoute.steps.length > 0}
+          visible={!!selectedRoute}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()
@@ -985,19 +1001,15 @@ const Swap = () => {
             updateBalances()
           }}
           destroyOnClose={true}
+          maskClosable={false}
           width={700}
           footer={null}>
           <Swapping
-            fixedRecipient={true}
             route={selectedRoute}
             settings={{ infiniteApproval: optionInfiniteApproval }}
-            updateRoute={() => {
-              setActiveRoutes(readActiveRoutes())
-              setHistoricalRoutes(readHistoricalRoutes())
-            }}
+            updateRoute={() => {}}
+            fixedRecipient={true}
             onSwapDone={() => {
-              setActiveRoutes(readActiveRoutes())
-              setHistoricalRoutes(readHistoricalRoutes())
               updateBalances()
             }}></Swapping>
         </Modal>

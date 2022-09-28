@@ -999,7 +999,9 @@ const Swap = () => {
                             max={100}
                             formatter={(value) => `${value}%`}
                             parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                            onChange={setOptionSlippage}
+                            onChange={(value: number | null) => {
+                              setOptionSlippage(value || 3)
+                            }}
                             style={{
                               border: '1px solid rgba(0,0,0,0.25)',
                               borderRadius: 6,
@@ -1083,7 +1085,7 @@ const Swap = () => {
       {selectedRoute && (
         <Modal
           className="modal-klima-embed  swapModal"
-          visible={!!selectedRoute}
+          open={!!selectedRoute}
           onOk={() => {
             setSelectedRoute(undefined)
             updateBalances()
@@ -1120,7 +1122,7 @@ const Swap = () => {
             setEtherspotWalletBalance(undefined)
             setResidualRoute(undefined)
           }}
-          visible={!!etherspotWalletBalance && !!residualRoute}
+          open={!!etherspotWalletBalance && !!residualRoute}
           okText="Swap, stake and receive sKlima"
           // cancelText="Send USDC to my wallet"
           footer={null}>
