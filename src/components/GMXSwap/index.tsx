@@ -863,7 +863,9 @@ const GMXSwap = () => {
                             max={100}
                             formatter={(value) => `${value}%`}
                             parser={(value) => parseFloat(value ? value.replace('%', '') : '')}
-                            onChange={setOptionSlippage}
+                            onChange={(value: number | null) => {
+                              setOptionSlippage(value || 3)
+                            }}
                             style={{
                               border: '1px solid rgba(0,0,0,0.25)',
                               borderRadius: 6,
