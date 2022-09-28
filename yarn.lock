@@ -2127,10 +2127,10 @@
     "@web3-react/walletconnect" "^8.0.35-beta.0"
     react "^18.2.0"
 
-"@lifi/widget@^1.18.3":
-  version "1.18.5"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.18.5.tgz#6721efbed285d3486ecba4c9bd634d772b9da23a"
-  integrity sha512-h8j5+p2ftUYrKaCAU5yfuE7Q7yCnyH2ciZACJTzmE0xMB8zeruG9byKLalbaD5eWJ3FZKILuUqcRqdjoJImVaQ==
+"@lifi/widget@^1.18.7":
+  version "1.18.7"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.18.7.tgz#b000d2ab2e0db34fcfffa65230ef89dabecaf4e5"
+  integrity sha512-RYSQsTFHZ4APjhPmKMW+hyR1Qi3J/f19QQvbVB+fmxDFa0zedpZMoNptGFQ5s/kCht19+R0xmHACbGwAs20Mzw==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"
@@ -2145,7 +2145,7 @@
     "@sentry/integrations" "^7.13.0"
     "@sentry/react" "^7.13.0"
     "@sentry/tracing" "^7.13.0"
-    "@tanstack/react-query" "^4.6.1"
+    "@tanstack/react-query" "^4.7.1"
     "@tanstack/react-virtual" "^3.0.0-beta.18"
     big.js "^6.2.1"
     i18next "^21.9.2"
@@ -2664,7 +2664,7 @@
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.7.1.tgz#e732da7d0a4f31b4caa806099fc599617753d451"
   integrity sha512-BzFI4KdiklxfUUgNiO6E4XsSwaX5NscuIhP7aqWbS8Hqik1KohfvO+SXpftSZHOyzm0+XpycRsip/QEs3Hx3AA==
 
-"@tanstack/react-query@^4.6.1":
+"@tanstack/react-query@^4.7.1":
   version "4.7.1"
   resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.7.1.tgz#ff7d58e113b735c231138f9b9be828e1730923c4"
   integrity sha512-/3PBXuvdlvUbSv5eqgkda4VAN14t+rpDop9LnZmEmIMW8ARrbW7Rt6PYTya33JGaeo6XoztRzEH8TaY5S+neNQ==
