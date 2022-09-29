@@ -10,7 +10,7 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/swap" element={<Swap />} />
+        <Route path="/swap/*" element={<Swap />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>

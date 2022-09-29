@@ -1,16 +1,19 @@
 import { ThemeProvider } from '@emotion/react';
-import styled from '@emotion/styled';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, styled } from '@mui/material';
 import React from 'react';
 import App from '../../App';
 import useTheme from '../../hooks/useTheme';
 // import { darkTheme, lightTheme } from "@transferto/shared/src/theme/index"
+import BG from '../../assets/bg/bg-net.svg';
 
-const AppContainer = styled('div')`
-  background: linear-gradient(180deg, #fefaff 9.96%, #fbebff 100%);
-  height: 100vh;
-  width: 100vw;
-`;
+const AppContainer = styled('div')({
+  background: `linear-gradient(180deg, #fefaff 9.96%, #fbebff 100%)`,
+  backgroundImage: `url(${BG}), linear-gradient(180deg, #fefaff 9.96%, #fbebff 100%) !important`,
+  backgroundSize: 'contain !important',
+  backgroundRepeat: 'no-repeat !important',
+  backgroundPosition: 'bottom !important',
+  minHeight: '100vh',
+});
 
 const AppWrapper = () => {
   const { isDarkMode } = useTheme();

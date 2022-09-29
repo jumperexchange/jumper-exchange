@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "dev": "next dev",
     "build": "next build",
     "pre-push": "yarn build",
     "pre-commit": "echo 'transferto precomit running...",
