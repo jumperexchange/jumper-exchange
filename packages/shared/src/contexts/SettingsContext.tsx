@@ -1,4 +1,5 @@
-import Cookies from "js-cookie";
+import React from 'react';
+import Cookies from 'js-cookie';
 
 import {
   createContext,
@@ -7,20 +8,16 @@ import {
   SetStateAction,
   useEffect,
   useState,
-} from "react";
+} from 'react';
 // utils
 // config
-import {
-  cookiesExpires,
-  cookiesKey,
-  defaultSettings,
-} from "@transferto/shared/src";
+import { cookiesExpires, cookiesKey, defaultSettings } from '../index';
 // @type
 import {
   SettingsContextProps,
   SettingsValueProps,
   ThemeMode,
-} from "../types/settings";
+} from '../types/settings';
 
 // ----------------------------------------------------------------------
 
@@ -46,20 +43,20 @@ type SettingsProviderProps = {
   defaultSettings: SettingsValueProps;
 };
 
-function SettingsProvider({
+const SettingsProvider = ({
   children,
   defaultSettings,
-}: SettingsProviderProps) {
+}: SettingsProviderProps) => {
   const [settings, setSettings] = useSettingCookies(defaultSettings);
 
   const langStorage =
-    typeof window !== "undefined" ? localStorage.getItem("i18nextLng") : "";
+    typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
 
   // Mode
   const onToggleMode = () => {
     setSettings({
       ...settings,
-      themeMode: settings.themeMode === "light" ? "dark" : "light",
+      themeMode: settings.themeMode === 'light' ? 'dark' : 'light',
     });
   };
 
@@ -82,7 +79,7 @@ function SettingsProvider({
 
   const onResetSetting = () => {
     setSettings({
-      themeMode: initialState.themeMode || "light",
+      themeMode: initialState.themeMode || 'light',
     });
   };
 
@@ -104,15 +101,15 @@ function SettingsProvider({
       {children}
     </SettingsContext.Provider>
   );
-}
+};
 
 export { SettingsProvider, SettingsContext };
 
 // ----------------------------------------------------------------------
 
-function useSettingCookies(
+const useSettingCookies = (
   defaultSettings: SettingsValueProps,
-): [SettingsValueProps, Dispatch<SetStateAction<SettingsValueProps>>] {
+): [SettingsValueProps, Dispatch<SetStateAction<SettingsValueProps>>] => {
   const [settings, setSettings] = useState<SettingsValueProps>(defaultSettings);
 
   const onChangeSetting = () => {
@@ -127,4 +124,4 @@ function useSettingCookies(
   }, [settings]);
 
   return [settings, setSettings];
-}
+};

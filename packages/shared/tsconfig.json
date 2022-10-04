@@ -1,8 +1,11 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "preserve"
-  }
+    "jsx": "react",
+    "declaration": true,
+    "declarationDir": "dist/types"
+  },
+  "include": ["src/**/*"]
 }

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
-// import { Link } from '@transferto/shared/src/atoms/link/index';
+import { Link } from '@transferto/shared/dist';
 
 // TODO: @adrian unable to import the svgs. error with loaders
 const Logo = () => (
@@ -57,13 +57,6 @@ const NavbarContainer = styled('div')`
   }
 `;
 
-const NavLinks = styled('a')`
-  color: black;
-  font-size: 1.1rem;
-  cursor: pointer;
-  text-decoration: none;
-`;
-
 const Navbar = () => {
   return (
     <NavbarContainer>
@@ -71,10 +64,10 @@ const Navbar = () => {
         <Logo />
       </div>
       <div className="routes">
-        <NavLinks href="/swap">Swap</NavLinks>
-        <NavLinks href="/dashboard">Dashboard</NavLinks>
-        <NavLinks href="/developers">Developers</NavLinks>
-        <NavLinks href="/support">Support</NavLinks>
+        <Link url="/swap">Swap</Link>
+        <Link url="/dashboard">Dashboard</Link>
+        <Link url="/developers">Developers</Link>
+        <Link url="/support">Support</Link>
       </div>
       <div className="settings">
         <div>"Connect"</div>
