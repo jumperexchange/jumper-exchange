@@ -43,25 +43,6 @@ function App() {
     setAdjustNavbar(location.pathname.includes('showcase'))
   }, [location])
 
-  function swapEmbedView() {
-    setMetatags({
-      title: 'LI.FI - Swap',
-    })
-    return (
-      <div className="lifiEmbed">
-        <SwapV1 />
-        <div className="poweredBy">
-          <a href="https://li.fi/" target="_blank" rel="nofollow noreferrer">
-            <PoweredByLiFi />
-          </a>
-        </div>
-        <div className="wallet-buttons-embed-view">
-          <WalletButtons />
-        </div>
-      </div>
-    )
-  }
-
   function offsetCarbonEmbedView() {
     setMetatags({
       title: 'LI.FI - Offset Carbon',
@@ -106,9 +87,7 @@ function App() {
   return (
     <WalletProvider>
       <ChainsTokensToolsProvider>
-        {path === '/embed' ? (
-          swapEmbedView()
-        ) : path === '/embed/carbon-offset' ? (
+        {path === '/embed/carbon-offset' ? (
           offsetCarbonEmbedView()
         ) : path === '/embed/stake-klima' ? (
           stakeKlimaEmbedView()
