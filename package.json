@@ -11,7 +11,7 @@
   },
   "scripts": {
     "bootstrap": "yarn install; lerna bootstrap;",
-    "start": "lerna run start --parallel",
+    "start": "lerna run start",
     "dev": "lerna run dev --parallel",
     "storybook": "lerna run storybook",
     "prepare": "husky install",

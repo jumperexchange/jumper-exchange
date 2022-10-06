@@ -1,3 +1,5 @@
+@import 'antd/dist/antd.css';
+
 /* Table */
 .dashboard .ant-table-thead {
   white-space: nowrap;
@@ -57,7 +59,6 @@
 .gas .amount_coin {
   padding-top: 2px;
 }
-@import '~antd/dist/antd.css';
 
 .wordmark {
   float: left;

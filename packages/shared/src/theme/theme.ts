@@ -481,7 +481,7 @@ export const lightTheme: Theme = createTheme({
   palette: {
     mode: 'light',
     background: {
-      default: '#fff',
+      default: '#fefaff',
     },
     text: {
       primary: '#000',
@@ -499,7 +499,7 @@ export const lightTheme: Theme = createTheme({
       contrastText: '#000',
     },
     brandSecondary: {
-      light: '#F5B5FF',
+      light: '#fbebff',
       main: '#F5B5FF',
       dark: '#F5B5FF',
       contrastText: '#000',

@@ -14,7 +14,8 @@
     "use-media": "^1.4.0",
     "@types/react": "^18.0.12",
     "react-scripts": "5.0.1",
-    "@transferto/shared": "*"
+    "@transferto/shared": "*",
+    "@transferto/dashboard-vite": "*"
   },
   "eslintConfig": {
     "extends": [
@@ -23,8 +24,8 @@
     ]
   },
   "scripts": {
-    "start": "react-scripts start",
-    "dev": "react-scripts start",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
+    "dev": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

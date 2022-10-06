@@ -1,4 +1,5 @@
 import './Dashboard.css';
+import React from 'react';
 
 import {
   CheckCircleTwoTone,
@@ -822,7 +823,7 @@ const Dashboard = ({ account }: any) => {
   // Add Wallet Modal Handlers
   const resolveEnsName = async (name: string) => {
     const ethereum = new ethers.providers.JsonRpcProvider(
-      process.env.REACT_APP_RPC_URL_MAINNET,
+      'https://eth-mainnet.nodereal.io/v1/a24a7452b1e1459c8216fdd380d0cabd', // process.env.REACT_APP_RPC_URL_MAINNET,
     );
     return ethereum.resolveName(name);
   };
