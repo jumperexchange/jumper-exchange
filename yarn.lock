@@ -2147,10 +2147,10 @@
     "@web3-react/walletconnect" "^8.0.35-beta.0"
     react "^18.2.0"
 
-"@lifi/widget@^1.19.0":
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.19.0.tgz#32788fb2d09b724e359fb0a2e7e746db598b6e57"
-  integrity sha512-VzjwfzOr/IHRXwGOYvOq2SAW/VuutrwkEmHMfByCXct5qyV+jbeviX8d8rwd0kZwbZYt23ohEErdeWzOV+SJig==
+"@lifi/widget@^1.20.0":
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.20.0.tgz#d483607648f70131f0ca6bf32c32a458bd9c4ee3"
+  integrity sha512-7pue2DctrxKQkVt8uHoXZYIoybhSyoUvY+iY7LRoUaRk4TKH8NhB4WMUSjJ5iDEl1awDYCjIEDAHvQ0Q5kUoUg==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"
