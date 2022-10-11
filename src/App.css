@@ -25,6 +25,21 @@
   margin: auto 7px;
 }
 
+.carbon-neutral-btn {
+  position: fixed;
+  bottom: 0px;
+  right: 16px;
+}
+
+@media only screen and (max-width: 499px) {
+  .carbon-neutral-btn {
+    position: fixed;
+    bottom: 0px;
+    right: 16px;
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 480px) {
   .wordmark span {
     display: none;

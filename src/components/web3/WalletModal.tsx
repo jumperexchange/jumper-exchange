@@ -25,7 +25,6 @@ export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
         return
       }
     }
-
     await connect(wallet)
     try {
     } catch (e) {}
