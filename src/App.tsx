@@ -9,6 +9,7 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import DiscordIcon from './assets/icons/discordIcon'
 import { PoweredByLiFi } from './assets/Li.Fi/poweredByLiFi'
+import Carbon_Neutral_Protocol from './assets/misc/Carbon_Neutral_Protocol.png'
 import Claiming from './components/Claiming'
 import Dashboard from './components/Dashboard'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
@@ -283,6 +284,13 @@ function App() {
 
             {/* <Footer></Footer> */}
             {/* <NotificationOverlay /> */}
+            <a
+              className="carbon-neutral-btn"
+              href="https://www.klimadao.finance/infinity"
+              target="_blank"
+              rel="nofollow noreferrer">
+              <img src={Carbon_Neutral_Protocol} width="250" alt="Carbon_Neutral_Protocol" />
+            </a>
           </Layout>
         )}
       </ChainsTokensToolsProvider>
