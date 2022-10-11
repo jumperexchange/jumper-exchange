@@ -64,7 +64,7 @@ export const Swap = () => {
       },
       variant: 'expandable',
     }
-  }, [account.address, account.signer, disconnect])
+  }, [account.address, account.signer, disconnect, usedWallet?.name])
 
   return (
     <>
