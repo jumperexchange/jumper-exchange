@@ -99,6 +99,7 @@ export interface WalletContextProps {
   disconnect(): void
   switchChain(chainId: number): Promise<boolean>
   connect(wallet?: WalletManagementWallet | undefined): Promise<void>
+  usedWallet?: WalletManagementWallet
 }
 
 export interface WalletAccount {

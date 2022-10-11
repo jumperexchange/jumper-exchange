@@ -31,6 +31,7 @@ const initialContext: WalletContextProps = {
   addChain: stub,
   addToken: stub,
   account: {},
+  usedWallet: undefined,
 }
 
 const WalletContext = createContext<WalletContextProps>(initialContext)
@@ -44,17 +45,21 @@ export const WalletProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     signer,
   } = useLiFiWalletManagement()
   const [account, setAccount] = useState<WalletAccount>({})
+  const [usedWallet, setUsedWallet] = useState<Wallet | undefined>()
 
   const connect = useCallback(
     async (wallet?: Wallet) => {
       await walletManagementConnect(wallet)
       const account = await extractAccountFromSigner(signer)
+      setUsedWallet(wallet!)
       setAccount(account)
     },
     [walletManagementConnect],
   )
 
   const disconnect = useCallback(async () => {
+    setUsedWallet(undefined)
+
     await walletManagementDisconnect()
   }, [walletManagementDisconnect])
 
@@ -88,6 +93,7 @@ export const WalletProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       addChain,
       addToken,
       account,
+      usedWallet,
     }),
     [account, addChain, addToken, connect, disconnect, switchChain],
   )

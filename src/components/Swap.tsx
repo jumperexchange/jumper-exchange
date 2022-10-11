@@ -9,6 +9,7 @@ import { useMetatags } from '../hooks/useMetatags'
 import { useWallet } from '../providers/WalletProvider'
 import { addChain, switchChainAndAddToken } from '../services/metamask'
 import { useStomt } from '../services/stomt'
+import { mapWalletReferrer } from '../services/utils'
 import { addToDeactivatedWallets, removeFromActiveWallets } from './web3/DisconnectButton'
 import { WalletModal } from './web3/WalletModal'
 
@@ -16,7 +17,7 @@ export const Swap = () => {
   useMetatags({ title: 'LI.FI - Swap' })
   useStomt('swap')
 
-  const { disconnect, account } = useWallet()
+  const { disconnect, account, usedWallet } = useWallet()
 
   const [showConnectModal, setShowConnectModal] = useState<{
     show: boolean
@@ -25,6 +26,11 @@ export const Swap = () => {
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
+      sdkConfig: {
+        defaultRouteOptions: {
+          referrer: mapWalletReferrer(usedWallet?.name),
+        },
+      },
       walletManagement: {
         signer: account.signer,
         connect: async () => {
@@ -58,7 +64,7 @@ export const Swap = () => {
       },
       variant: 'expandable',
     }
-  }, [account.address, account.signer, disconnect])
+  }, [account.address, account.signer, disconnect, usedWallet?.name])
 
   return (
     <>
