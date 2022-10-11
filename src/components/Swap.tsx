@@ -16,7 +16,7 @@ export const Swap = () => {
   useMetatags({ title: 'LI.FI - Swap' })
   useStomt('swap')
 
-  const { disconnect, account } = useWallet()
+  const { disconnect, account, usedWallet } = useWallet()
 
   const [showConnectModal, setShowConnectModal] = useState<{
     show: boolean
@@ -25,6 +25,11 @@ export const Swap = () => {
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
+      sdkConfig: {
+        defaultRouteOptions: {
+          referrer: usedWallet?.name || 'transferto.xyz',
+        },
+      },
       walletManagement: {
         signer: account.signer,
         connect: async () => {
