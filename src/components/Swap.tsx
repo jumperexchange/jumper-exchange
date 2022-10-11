@@ -9,6 +9,7 @@ import { useMetatags } from '../hooks/useMetatags'
 import { useWallet } from '../providers/WalletProvider'
 import { addChain, switchChainAndAddToken } from '../services/metamask'
 import { useStomt } from '../services/stomt'
+import { mapWalletReferrer } from '../services/utils'
 import { addToDeactivatedWallets, removeFromActiveWallets } from './web3/DisconnectButton'
 import { WalletModal } from './web3/WalletModal'
 
@@ -27,7 +28,7 @@ export const Swap = () => {
     return {
       sdkConfig: {
         defaultRouteOptions: {
-          referrer: usedWallet?.name || 'transferto.xyz',
+          referrer: mapWalletReferrer(usedWallet?.name),
         },
       },
       walletManagement: {
