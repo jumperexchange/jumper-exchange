@@ -5,6 +5,8 @@
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@lifi/sdk": "^1.6.0",
+    "@lifi/wallet-management": "1.1.10",
     "@mui/material": "^5.8.3",
     "i18next": "^21.9.1",
     "react": "^18.2.0",
@@ -14,6 +16,7 @@
     "use-media": "^1.4.0",
     "@types/react": "^18.0.12",
     "react-scripts": "5.0.1",
+    "ethers": "^5.7.1",
     "@transferto/shared": "*",
     "@transferto/dashboard-vite": "*"
   },

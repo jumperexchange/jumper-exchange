@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import { Link } from '@transferto/shared/dist';
+import { Link, WalletManagementButtons } from '@transferto/shared/dist';
+import { useWallet } from '../../providers/WalletProvider';
 
 // TODO: @adrian unable to import the svgs. error with loaders
 const Logo = () => (
@@ -70,7 +71,7 @@ const Navbar = () => {
         <Link url="/support">Support</Link>
       </div>
       <div className="settings">
-        <div>"Connect"</div>
+        <WalletManagementButtons walletManagement={useWallet()} />
         <div>settings</div>
       </div>
     </NavbarContainer>

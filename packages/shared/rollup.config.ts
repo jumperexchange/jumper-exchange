@@ -54,7 +54,17 @@ export default {
       exclude: 'node_modules/**',
       babelHelpers: 'bundled',
     }),
-    commonjs(),
+    commonjs({
+      include: [
+        'node_modules/@lifi/wallet-management/**',
+        'node_modules/@web3-react/core/**',
+      ],
+      namedExports: {
+        initializeConnector: [
+          '../../node_modules/@web3-react/core/dist/index.js',
+        ],
+      },
+    }),
     image(),
   ],
 };

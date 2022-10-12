@@ -1,8 +1,7 @@
 import { styled } from '@mui/material/styles';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
-import Homepage from './pages/Home';
 import Swap from './pages/Swap';
 
 import BG from './assets/bg/bg-net.svg';
@@ -23,7 +22,7 @@ export default function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={<Navigate to="/swap/*" />} />
           <Route path="/swap/*" element={<Swap />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>

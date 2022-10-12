@@ -38,6 +38,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@lifi/wallet-management": "^1.1.10",
     "@mui/material": "^5.8.3",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "11.0.2",

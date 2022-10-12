@@ -724,7 +724,6 @@ const Dashboard = ({ account }: any) => {
   const updateWalletPortfolio = async (wallet: Wallet) => {
     wallet.loading = true;
     setData(buildRows); // set loading state
-
     const portfolio: { [ChainKey: string]: TokenAmount[] } =
       await getTokenBalancesForChainsFromDebank(wallet.address);
 
