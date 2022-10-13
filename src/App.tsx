@@ -284,13 +284,15 @@ function App() {
 
             {/* <Footer></Footer> */}
             {/* <NotificationOverlay /> */}
-            <a
-              className="carbon-neutral-btn"
-              href="https://www.klimadao.finance/infinity"
-              target="_blank"
-              rel="nofollow noreferrer">
-              <img src={Carbon_Neutral_Protocol} width="250" alt="Carbon_Neutral_Protocol" />
-            </a>
+            {!location.pathname.includes('dashboard') && (
+              <a
+                className="carbon-neutral-btn"
+                href="https://www.klimadao.finance/infinity"
+                target="_blank"
+                rel="nofollow noreferrer">
+                <img src={Carbon_Neutral_Protocol} width="250" alt="Carbon_Neutral_Protocol" />
+              </a>
+            )}
           </Layout>
         )}
       </ChainsTokensToolsProvider>
