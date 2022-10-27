@@ -19,10 +19,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
 
@@ -35,8 +35,8 @@ jobs:
       - name: Check linting
         run: yarn eslint . --ext .js,.jsx,.ts,.tsx
 
-      - name: Run unit tests
-        run: yarn test unit --passWithNoTests
+      # - name: Run unit tests
+      #   run: yarn test unit --passWithNoTests
 
       - name: Run integration tests
         run: yarn test int --passWithNoTests
