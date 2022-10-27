@@ -8,12 +8,12 @@ on:
 #   pull_request:
 #     branches: [ "main", "develop" ]
   workflow_dispatch:
-  
-env:  
+
+env:
   REGISTRY: 403372804574.dkr.ecr.us-east-2.amazonaws.com/lifi-docker-repo
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,12 +27,12 @@ jobs:
       - name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch  
+        id: extract_branch
       - name: Set current date as env variable
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -69,22 +69,22 @@ jobs:
       - id: out
         run: echo "::set-output name=docker-tag::${UNIQ_ID}-${{ steps.extract_branch.outputs.branch }}"
  ###########
-  publish-tags:  
+  publish-tags:
     needs: build
     concurrency: charts/lifi-web/values.yaml
     runs-on: ubuntu-latest
-    steps:    
+    steps:
       - name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch  
+        id: extract_branch
       - name: Checkout helm charts
-        uses: actions/checkout@v2
-        with: 
+        uses: actions/checkout@v3
+        with:
           repository: lifinance/lifi-deployment
           ssh-key: ${{ secrets.DEPLOY_SSH }}
           ref: ${{ steps.extract_branch.outputs.branch }}
-      - name: 🏗 Set up yq 
+      - name: 🏗 Set up yq
         run: |
           if [ ! -f "yq" ]; then
             curl -L https://github.com/mikefarah/yq/releases/download/v4.13.4/yq_linux_amd64 -o yq
