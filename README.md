@@ -1,6 +1,6 @@
-# transferto.xyz
+# Jumper.exchange
 
-Lerna Monorepo for all transferto.xyz related things
+Lerna Monorepo for all jumper.exchange related things
 
 ## Basic Usage 
 
