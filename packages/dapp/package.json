@@ -27,8 +27,8 @@
     ]
   },
   "scripts": {
-    "start": "GENERATE_SOURCEMAP=false react-scripts start",
-    "dev": "GENERATE_SOURCEMAP=false react-scripts start",
+    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "dev": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

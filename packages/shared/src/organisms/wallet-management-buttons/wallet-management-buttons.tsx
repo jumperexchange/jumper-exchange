@@ -1,12 +1,14 @@
-import React, { useMemo, useState } from 'react';
-import { WalletIcon } from '../../atoms/icons';
-import { ConnectButton } from '../../atoms/connect-button';
-import { WalletModal } from '../../molecules/wallet-modal/wallet-modal';
 import { supportedWallets } from '@lifi/wallet-management';
+import React, { useMemo, useState } from 'react';
+import { ConnectButton } from '../../atoms/connect-button';
 import { DisconnectButton } from '../../atoms/disconnect-button';
+import { WalletIcon } from '../../atoms/icons';
+import { WalletModal } from '../../molecules/wallet-modal/wallet-modal';
 
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
+  backgroundColor?: string;
+  hoverBackgroundColor?: string;
   walletManagement: () => any;
 }
 
@@ -30,7 +32,13 @@ export const WalletManagementButtons: React.FC<any> = (props) => {
   return (
     <>
       {!account.address ? (
-        <ConnectButton onClick={handleClick}>Connect Wallet</ConnectButton>
+        <ConnectButton
+          onClick={handleClick}
+          backgroundColor={props.backgroundColor}
+          hoverBackgroundColor={props.hoverBackgroundColor}
+        >
+          Connect Wallet
+        </ConnectButton>
       ) : (
         <DisconnectButton onClick={disconnect} endIcon={<WalletIcon />}>
           Disconnect {walletDigest}
