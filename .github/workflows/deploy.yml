@@ -13,6 +13,7 @@ env:
   REGISTRY: 403372804574.dkr.ecr.us-east-2.amazonaws.com/lifi-docker-repo
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
   build:
@@ -24,21 +25,17 @@ jobs:
       packages: write
 
     steps:
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - name: Set current date as env variable
-        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
-
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set current date as env variable
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.REG_ID }}
@@ -48,7 +45,7 @@ jobs:
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -58,43 +55,40 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-           BUILD_ENV=${{steps.extract_branch.outputs.branch == 'main' && ' ' || format(':{0}',steps.extract_branch.outputs.branch) }}
+           BUILD_ENV=${{env.BRANCH_NAME == 'main' && ' ' || format(':{0}',env.BRANCH_NAME) }}
+
       - id: out
-        run: echo "::set-output name=docker-tag::${UNIQ_ID}-${{ steps.extract_branch.outputs.branch }}"
+        run: echo "docker-tag=${{ env.UNIQ_ID }}-${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
  ###########
   publish-tags:
     needs: build
     concurrency: charts/lifi-web/values.yaml
     runs-on: ubuntu-latest
+
     steps:
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
       - name: Checkout helm charts
         uses: actions/checkout@v3
         with:
           repository: lifinance/lifi-deployment
           ssh-key: ${{ secrets.DEPLOY_SSH }}
-          ref: ${{ steps.extract_branch.outputs.branch }}
-      - name: 🏗 Set up yq
-        run: |
-          if [ ! -f "yq" ]; then
-            curl -L https://github.com/mikefarah/yq/releases/download/v4.13.4/yq_linux_amd64 -o yq
-            chmod +x yq
-          fi
+          ref: ${{ env.BRANCH_NAME }}
+  
+      - name: update image ID
+        uses: mikefarah/yq@v4.28.2
+        with:
+          cmd: yq -i e '.image.tag |= "${{needs.build.outputs.docker-tag}}"' charts/lifi-web/${{ env.BRANCH_NAME }}-values.yaml
+
       - name: push image ID
         run: |
-          ./yq -i eval ".image.tag = \"${{needs.build.outputs.docker-tag}}\"" charts/lifi-web/${{ steps.extract_branch.outputs.branch }}-values.yaml
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add charts/lifi-web/${{ steps.extract_branch.outputs.branch }}-values.yaml
+          git add charts/lifi-web/${{ env.BRANCH_NAME }}-values.yaml
           git commit -m "auto build version:${{needs.build.outputs.docker-tag}}"
           git push
