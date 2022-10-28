@@ -16,6 +16,9 @@ export const NavbarManagement = styled('div')({
 });
 
 export const NavbarLinkContainer = styled('div')({
+  position: 'absolute',
+  left: '50%',
+  transform: 'translateX(-50%)',
   backgroundColor: 'white',
   margin: 'auto',
   height: 48,
@@ -36,8 +39,8 @@ export const NavbarContainer = styled('div')`
   background: transparent;
   height: 75px;
   padding: 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
 
   .settings {
   }

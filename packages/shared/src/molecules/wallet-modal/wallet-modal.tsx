@@ -1,19 +1,28 @@
 import { Wallet } from '@lifi/wallet-management';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import EastIcon from '@mui/icons-material/East';
+import { Box, IconButton, Typography } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 import { WalletCard } from '../../atoms/wallet-card';
-import { WalletCardGrid, WalletDialog } from './wallet-modal.styles';
+import {
+  WalletCardsContainer,
+  WalletDialog,
+  WalletDialogBackground,
+  WalletDialogWrapper,
+  WalletSlide,
+} from './wallet-modal.styles';
 
 type WalletModalProps = {
   open: boolean;
   wallets: Wallet[];
   handleClose: Function;
+  setOpen: Function;
   walletManagement: any;
 };
 
 export const WalletModal = ({
   open,
   wallets,
+  setOpen,
   handleClose,
   walletManagement,
 }: WalletModalProps) => {
@@ -43,48 +52,67 @@ export const WalletModal = ({
     setShowWalletIdentityPopover(undefined);
   }, [open]);
 
+  const containerRef = useRef(null);
+
+  const handleChange = () => {
+    setOpen((open) => !open);
+  };
+
   return (
-    <WalletDialog maxWidth={'tablet'} open={open} onClose={() => {}}>
-      <IconButton
-        aria-label="close"
-        onClick={() => {
-          handleClose();
-        }}
-        sx={{
-          position: 'absolute',
-          right: 16,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-          '&:hover': {
-            background: 'transparent',
-          },
-        }}
+    open && (
+      <WalletSlide
+        ref={containerRef}
+        className="slide"
+        direction="left"
+        in={open}
+        container={containerRef.current}
       >
-        X
-      </IconButton>
-      <Box p={4} justifyContent="center" alignItems={'center'}>
-        <Typography variant="h5" align="center">
-          Choose a Wallet
-        </Typography>
-      </Box>
-      <WalletCardGrid
-        alignItems="center"
-        justifyContent="center"
-        alignSelf={'center'}
-        container
-        spacing={4}
-      >
-        {wallets.map((wallet) => {
-          return (
-            <WalletCard
-              onClick={() => login(wallet)}
-              key={wallet.name}
-              src={wallet.icon}
-              title={wallet.name}
-            />
-          );
-        })}
-      </WalletCardGrid>
-    </WalletDialog>
+        <WalletDialogWrapper>
+          <WalletDialogBackground
+            onClick={() => {
+              handleClose();
+            }}
+          />
+          <WalletDialog maxWidth={'tablet'} open={open}>
+            <Box
+              p={4}
+              display="flex"
+              justifyContent="space-between"
+              alignItems={'center'}
+            >
+              <Typography variant="h5" align="center">
+                Choose a Wallet
+              </Typography>
+              <IconButton
+                aria-label="close"
+                onClick={() => {
+                  handleClose();
+                }}
+                sx={{
+                  color: (theme) => theme.palette.grey[500],
+                  '&:hover': {
+                    background: 'transparent',
+                  },
+                }}
+              >
+                <EastIcon />
+              </IconButton>
+            </Box>
+            <WalletCardsContainer>
+              {wallets.map((wallet) => {
+                return (
+                  <WalletCard
+                    onClick={() => login(wallet)}
+                    key={wallet.name}
+                    src={wallet.icon}
+                    title={wallet.name}
+                  />
+                );
+              })}
+            </WalletCardsContainer>
+          </WalletDialog>
+        </WalletDialogWrapper>
+      </WalletSlide>
+    )
   );
 };

@@ -1,9 +1,8 @@
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline, useMediaQuery } from '@mui/material';
-import React from 'react';
 import App from '../../App';
 // import useTheme from '../../hooks/useTheme';
-import { darkTheme, lightTheme } from '@transferto/shared/dist';
+import { darkTheme, lightTheme } from '@transferto/shared';
 import { WalletProvider } from '../../providers/WalletProvider';
 
 const AppWrapper = () => {

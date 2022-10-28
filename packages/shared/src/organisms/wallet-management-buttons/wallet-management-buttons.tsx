@@ -48,6 +48,7 @@ export const WalletManagementButtons: React.FC<any> = (props) => {
       <WalletModal
         open={showModal}
         handleClose={handleClick}
+        setOpen={setShowModal}
         wallets={supportedWallets}
         walletManagement={props.walletManagement}
       />

@@ -16,10 +16,7 @@
   "main": "./dist/dashboard-vite.umd.js",
   "module": "./dist/dashboard-vite.es.js",
   "types": "./dist/index.d.ts",
-  "scripts": {
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
+  "scripts": {},
   "peerDependencies": {
     "react": "16.8.0 || >=17.x",
     "react-dom": "16.8.0 || >=17.x"
