@@ -15,7 +15,9 @@
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "pre-commit": "echo 'Shared precomit running..."
+    "pre-commit": "echo 'Shared precomit running...",
+    "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json",
+    "dev": "tsc -w -p ./tsconfig.json"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
@@ -27,17 +29,20 @@
     "@storybook/manager-webpack5": "^6.5.8",
     "@storybook/react": "^6.5.8",
     "@storybook/testing-library": "^0.0.13",
-    "@types/node": "^17.0.41",
+    "@types/node": "^18.11.7",
     "@types/react": "^18.0.12",
-    "babel-loader": "^8.2.5",
+    "babel-loader": "^9.0.0",
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.7.1"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@lifi/wallet-management": "^1.1.10",
+    "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.8.3",
     "i18next": "^21.9.1",
+    "js-cookie": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^11.18.6",

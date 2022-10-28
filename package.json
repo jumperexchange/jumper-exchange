@@ -4,14 +4,14 @@
   "version": "1.0.0",
   "repository": "https://github.com/lifinance/transferto.xyz",
   "devDependencies": {
-    "@lerna/run": "^5.4.3",
+    "@lerna/run": "^6.0.1",
     "husky": "^8.0.1",
-    "lerna": "^5.1.0",
+    "lerna": "^6.0.1",
     "lint-staged": "^13.0.3"
   },
   "scripts": {
     "bootstrap": "yarn install; lerna bootstrap;",
-    "start": "lerna run start --parallel",
+    "start": "lerna run start",
     "dev": "lerna run dev --parallel",
     "storybook": "lerna run storybook",
     "prepare": "husky install",
