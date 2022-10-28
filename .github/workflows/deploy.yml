@@ -80,7 +80,7 @@ jobs:
       - name: update image ID
         uses: mikefarah/yq@v4.28.2
         with:
-          cmd: yq -i eval ".image.tag = \"${{needs.build.outputs.docker-tag}}\"" charts/lifi-web/${{ env.BRANCH_NAME }}-values.yaml
+          cmd: yq -i e '.image.tag |= "${{needs.build.outputs.docker-tag}}"' charts/lifi-web/${{ env.BRANCH_NAME }}-values.yaml
 
       - name: push image ID
         run: |
