@@ -28,6 +28,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set current date as env variable
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
@@ -62,7 +65,7 @@ jobs:
            BUILD_ENV=${{env.BRANCH_NAME == 'main' && ' ' || format(':{0}',env.BRANCH_NAME) }}
 
       - id: out
-        run: echo "docker-tag=${UNIQ_ID}-${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
+        run: echo "docker-tag=${{ env.UNIQ_ID }}-${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
  ###########
   publish-tags:
     needs: build
