@@ -23,7 +23,7 @@ The setup is based on [create-react-app](https://create-react-app.dev/).
 
 ## Environment Variables
 
-All variable names have to start with `REACT_APP_` to be available within react.
+All variable names have to start with `VITE_` to be available within react.
 
 Use `.env` for default config variabels used on all environments.
 Use `.env.development` and `.env.production` for environment specific configuration.

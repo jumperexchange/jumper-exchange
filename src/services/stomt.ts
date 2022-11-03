@@ -12,7 +12,7 @@ const appIds = {
 
 export const initStomt = (page: StomtPages) => {
   const w = window as any
-  if (!process.env.REACT_APP_STOMT_ENABLED) {
+  if (!import.meta.env.VITE_STOMT_ENABLED) {
     return
   }
   if (w.innerWidth < 560) {

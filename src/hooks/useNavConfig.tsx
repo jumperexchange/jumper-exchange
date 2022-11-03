@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import WalletButtons from '../components/web3/WalletButtons'
 import {
   ENABLE_KLIMA_STAKE_SHOWCASE,
-  REACT_APP_ENABLE_CLAIMING,
-  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
+  VITE_ENABLE_CLAIMING,
+  VITE_ENABLE_OFFSET_CARBON_SHOWCASE,
 } from '../constants/featureFlags'
 import { useIsMobile } from './useIsMobile'
 
@@ -16,7 +16,7 @@ export const useNavConfig = () => {
   const navConfig = useMemo(() => {
     return [
       { label: <Link to="/swap">Swap & Bridge</Link>, key: '/swap' },
-      REACT_APP_ENABLE_CLAIMING
+      VITE_ENABLE_CLAIMING
         ? {
             label: (
               <a href="/claiming" rel="nofollow noreferrer">
@@ -73,7 +73,7 @@ export const useNavConfig = () => {
                     key: '/showcase/carbon-offset',
                     label: <Link to="/showcase/carbon-offset">Cross-Chain Carbon Offsetting</Link>,
                   },
-                  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE
+                  VITE_ENABLE_OFFSET_CARBON_SHOWCASE
                     ? {
                         key: '/showcase/carbon-offset-v2',
                         label: (

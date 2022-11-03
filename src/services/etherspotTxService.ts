@@ -10,7 +10,7 @@ import {
 } from '../constants'
 import KlimaRetirementAggregator from '../constants/abis/KlimaRetirementAggregator.json'
 
-const ETHERSPOT_LIFI_WALLET = process.env.REACT_APP_LIFI_ETHERSPOT_WALLET
+const ETHERSPOT_LIFI_WALLET = import.meta.env.VITE_LIFI_ETHERSPOT_WALLET
 
 export const getSetAllowanceTransaction = async (
   tokenAddress: string,
