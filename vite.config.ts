@@ -8,6 +8,10 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
   server: { port: 3000 },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+  },
   build: {
     rollupOptions: {
       external: ['@web3-react/walletconnect'],
