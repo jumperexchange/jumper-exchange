@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import analytics from './services/analytics'
 import reportWebVitals from './services/reportWebVitals'
 
-analytics.initialize(process.env.REACT_APP_ANALYTICS_ID)
+analytics.initialize(import.meta.env.VITE_ANALYTICS_ID)
 
 const rootElement = document.getElementById('root')
 if (!rootElement) {
@@ -15,7 +15,7 @@ if (!rootElement) {
 }
 const root = createRoot(rootElement)
 
-switch (process.env.REACT_APP_PACKAGE) {
+switch (import.meta.env.VITE_PACKAGE) {
   case 'transferto.xyz':
   default:
     import('./App').then(({ App }) => {
