@@ -1,3 +1,5 @@
+import { vi } from 'vitest'
+
 import {
   readDeactivatedWallets,
   readWallets,
@@ -11,11 +13,11 @@ const SOME_NEWER_DATE = new Date('2021-04-10').getTime()
 const SOME_OLDER_DATE = new Date('2020-04-10').getTime()
 
 afterAll(() => {
-  jest.clearAllMocks()
+  vi.clearAllMocks()
 })
 
 afterEach(() => {
-  jest.restoreAllMocks()
+  vi.restoreAllMocks()
 })
 
 afterEach(() => {
@@ -28,13 +30,13 @@ describe('localStorage', () => {
     const walletString2 = '7890'
     describe('writing wallets', () => {
       it('should correctly store ACTIVE wallets', () => {
-        jest.spyOn(window.localStorage.__proto__, 'setItem')
+        vi.spyOn(window.localStorage.__proto__, 'setItem')
         storeWallets([walletString1])
         expect(localStorage.setItem).toBeCalledWith('wallets', JSON.stringify([walletString1]))
       })
 
       it('should not store duplicate addresses of ACTIVE wallets', () => {
-        jest.spyOn(window.localStorage.__proto__, 'setItem')
+        vi.spyOn(window.localStorage.__proto__, 'setItem')
         const duplicateArray = [walletString1, walletString1, walletString2, walletString2]
         storeWallets(duplicateArray)
         const noDuplicateString = JSON.stringify([walletString1, walletString2])
@@ -42,7 +44,7 @@ describe('localStorage', () => {
       })
 
       it('should correctly store DEACTIVATED wallets', () => {
-        jest.spyOn(window.localStorage.__proto__, 'setItem')
+        vi.spyOn(window.localStorage.__proto__, 'setItem')
         storeDeactivatedWallets([walletString1])
         expect(localStorage.setItem).toBeCalledWith(
           'deactivatedWallets',
@@ -50,7 +52,7 @@ describe('localStorage', () => {
         )
       })
       it('should not store duplicate addresses of DEACTIVATED wallets', () => {
-        jest.spyOn(window.localStorage.__proto__, 'setItem')
+        vi.spyOn(window.localStorage.__proto__, 'setItem')
         const duplicateArray = [walletString1, walletString1, walletString2, walletString2]
         storeDeactivatedWallets(duplicateArray)
         const noDuplicateString = JSON.stringify([walletString1, walletString2])

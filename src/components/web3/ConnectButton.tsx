@@ -43,7 +43,10 @@ function ConnectButton({ style, className, size = 'middle' }: ConnectButtonPropT
     <>
       <Button
         className={className}
-        style={{ ...{ borderRadius: '6px' }, ...style }}
+        style={{
+          ...{ borderRadius: '6px', background: '#3F49FF', borderColor: '#3F49FF' },
+          ...style,
+        }}
         size={size}
         type="primary"
         icon={<WalletOutlined />}

@@ -2,6 +2,7 @@ import './AntOverrides.css'
 import './App.css'
 
 import { GithubOutlined, TwitterOutlined } from '@ant-design/icons'
+import { LiFiWidget } from '@lifi/widget'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
@@ -25,7 +26,7 @@ import SwapV1 from './components/SwapV1'
 import WalletButtons from './components/web3/WalletButtons'
 import {
   ENABLE_KLIMA_STAKE_SHOWCASE,
-  REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE,
+  VITE_ENABLE_OFFSET_CARBON_SHOWCASE,
 } from './constants/featureFlags'
 import { useNavConfig } from './hooks/useNavConfig'
 import { usePageViews } from './hooks/usePageViews'
@@ -84,6 +85,20 @@ function App() {
       </div>
     )
   }
+
+  // function widgetEmbed() {
+  //   setMetatags({
+  //     title: 'LI.FI - Swap',
+  //   })
+  //   const widgetConfig = {
+  //     containerStyle: {
+  //       borderRadius: '16px',
+  //       boxShadow: '0px 8px 32px rgba(0, 0, 0, 0.08)',
+  //     },
+  //   }
+
+  //   return <LiFiWidget config={widgetConfig} />
+  // }
 
   return (
     <WalletProvider>
@@ -213,7 +228,7 @@ function App() {
                   }
                 />
 
-                {REACT_APP_ENABLE_OFFSET_CARBON_SHOWCASE && (
+                {VITE_ENABLE_OFFSET_CARBON_SHOWCASE && (
                   <Route
                     path="/showcase/carbon-offset-v2"
                     element={
@@ -244,7 +259,7 @@ function App() {
                       })
                       initStomt('swap')
                       const transferChains = getTransferChains(
-                        process.env.REACT_APP_LIFI_ENABLED_CHAINS_TESTNET_JSON!,
+                        import.meta.env.VITE_LIFI_ENABLED_CHAINS_TESTNET_JSON!,
                       )
                       return (
                         <div className="lifiWrap">
