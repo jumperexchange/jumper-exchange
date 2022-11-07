@@ -83,7 +83,7 @@
     "sdk:update": "yarn install --force",
     "prepare": "husky install",
     "winBuild": "set 'GENERATE_SOURCEMAP=false' && bash -ac '. .env.development.developBackend; vite'",
-    "test": "vitest watch",
+    "test": "vitest",
     "pre-push": "vitest run"
   },
   "lint-staged": {

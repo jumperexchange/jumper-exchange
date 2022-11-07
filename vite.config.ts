@@ -16,6 +16,7 @@ export default defineConfig({
     rollupOptions: {
       external: ['@web3-react/walletconnect'],
     },
+    outDir: './build',
   },
   css: {
     preprocessorOptions: {
