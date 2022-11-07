@@ -8,6 +8,9 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
   server: { port: 3000 },
+  define: {
+    global: 'globalThis',
+  },
   test: {
     globals: true,
     environment: 'jsdom',
