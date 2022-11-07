@@ -43,6 +43,12 @@
     <meta name="twitter:description" content="%VITE_METADATA_DESCRIPTION%" class="metadata" />
     <meta name="twitter:image" content="%VITE_METADATA_IMAGE_URL%" class="metadata" />
 
+    <script type="module">
+      import { Buffer } from 'buffer'
+      window.global = window
+      window.Buffer = Buffer
+    </script>
+
     <script>
       if ('%NODE_ENV%' !== 'development') {
         var _rollbarConfig = {

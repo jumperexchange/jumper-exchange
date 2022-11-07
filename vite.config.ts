@@ -1,4 +1,4 @@
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import GlobalPolyFill from '@esbuild-plugins/node-globals-polyfill'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import svgrPlugin from 'vite-plugin-svgr'
@@ -8,13 +8,6 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [react(), viteTsconfigPaths(), svgrPlugin()],
   server: { port: 3000 },
-  define: {
-    global: 'globalThis',
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-  },
   build: {
     rollupOptions: {
       external: ['@web3-react/walletconnect'],
@@ -30,17 +23,5 @@ export default defineConfig({
   },
   resolve: {
     alias: [{ find: /^~/, replacement: '' }],
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: 'globalThis',
-      },
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          buffer: true,
-        }),
-      ],
-    },
   },
 })
