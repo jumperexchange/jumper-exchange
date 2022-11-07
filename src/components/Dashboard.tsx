@@ -727,7 +727,7 @@ const Dashboard = () => {
 
   // Add Wallet Modal Handlers
   const resolveEnsName = async (name: string) => {
-    const ethereum = new ethers.providers.JsonRpcProvider(process.env.REACT_APP_RPC_URL_MAINNET)
+    const ethereum = new ethers.providers.JsonRpcProvider(import.meta.env.VITE_RPC_URL_MAINNET)
     return ethereum.resolveName(name)
   }
 

@@ -3,28 +3,28 @@ import { providers } from 'ethers'
 import { ChainId, getChainById } from '../../types'
 
 const customRpc: Record<number, string | undefined> = {
-  [ChainId.ETH]: process.env.REACT_APP_RPC_URL_MAINNET
-    ? process.env.REACT_APP_RPC_URL_MAINNET.split(',')[0]
+  [ChainId.ETH]: import.meta.env.VITE_RPC_URL_MAINNET
+    ? import.meta.env.VITE_RPC_URL_MAINNET.split(',')[0]
     : undefined,
-  [ChainId.POL]: process.env.REACT_APP_RPC_URL_POLYGON,
-  [ChainId.BSC]: process.env.REACT_APP_RPC_URL_BSC,
-  [ChainId.DAI]: process.env.REACT_APP_RPC_URL_XDAI,
-  [ChainId.FTM]: process.env.REACT_APP_RPC_URL_FANTOM,
-  [ChainId.ARB]: process.env.REACT_APP_RPC_URL_ARBITRUM,
-  [ChainId.OPT]: process.env.REACT_APP_RPC_URL_OPTIMISM,
-  [ChainId.MOR]: process.env.REACT_APP_RPC_URL_MOONRIVER,
-  [ChainId.ONE]: process.env.REACT_APP_RPC_URL_ONE,
-  [ChainId.AUR]: process.env.REACT_APP_RPC_URL_AURORA,
+  [ChainId.POL]: import.meta.env.VITE_RPC_URL_POLYGON,
+  [ChainId.BSC]: import.meta.env.VITE_RPC_URL_BSC,
+  [ChainId.DAI]: import.meta.env.VITE_RPC_URL_XDAI,
+  [ChainId.FTM]: import.meta.env.VITE_RPC_URL_FANTOM,
+  [ChainId.ARB]: import.meta.env.VITE_RPC_URL_ARBITRUM,
+  [ChainId.OPT]: import.meta.env.VITE_RPC_URL_OPTIMISM,
+  [ChainId.MOR]: import.meta.env.VITE_RPC_URL_MOONRIVER,
+  [ChainId.ONE]: import.meta.env.VITE_RPC_URL_ONE,
+  [ChainId.AUR]: import.meta.env.VITE_RPC_URL_AURORA,
 
   // Testnet
-  [ChainId.ROP]: process.env.REACT_APP_RPC_URL_ROPSTEN,
-  [ChainId.RIN]: process.env.REACT_APP_RPC_URL_RINKEBY,
-  [ChainId.GOR]: process.env.REACT_APP_RPC_URL_GORLI,
-  [ChainId.KOV]: process.env.REACT_APP_RPC_URL_KOVAN,
-  [ChainId.ARBT]: process.env.REACT_APP_RPC_URL_ARBITRUM_RINKEBY,
-  [ChainId.OPTT]: process.env.REACT_APP_RPC_URL_OPTIMISM_KOVAN,
-  [ChainId.MUM]: process.env.REACT_APP_RPC_URL_POLYGON_MUMBAI,
-  [ChainId.BSCT]: process.env.REACT_APP_RPC_URL_BSC_TESTNET,
+  [ChainId.ROP]: import.meta.env.VITE_RPC_URL_ROPSTEN,
+  [ChainId.RIN]: import.meta.env.VITE_RPC_URL_RINKEBY,
+  [ChainId.GOR]: import.meta.env.VITE_RPC_URL_GORLI,
+  [ChainId.KOV]: import.meta.env.VITE_RPC_URL_KOVAN,
+  [ChainId.ARBT]: import.meta.env.VITE_RPC_URL_ARBITRUM_RINKEBY,
+  [ChainId.OPTT]: import.meta.env.VITE_RPC_URL_OPTIMISM_KOVAN,
+  [ChainId.MUM]: import.meta.env.VITE_RPC_URL_POLYGON_MUMBAI,
+  [ChainId.BSCT]: import.meta.env.VITE_RPC_URL_BSC_TESTNET,
 }
 
 // cached providers
