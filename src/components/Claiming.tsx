@@ -134,7 +134,7 @@ const Claiming = () => {
       success: 'Succesfully Claimed',
       notQualified: '',
       claimPending: 'Transaction Pending',
-      notConnected: 'Please conncect your wallet to check your eligibility',
+      notConnected: 'Please connect your wallet to check your eligibility',
     }
     return cardTitles
   }, [])

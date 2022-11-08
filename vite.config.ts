@@ -13,13 +13,6 @@ export default defineConfig({
     },
     outDir: './build',
   },
-  css: {
-    preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
-      },
-    },
-  },
   resolve: {
     alias: [{ find: /^~/, replacement: '' }],
   },
