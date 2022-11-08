@@ -63,6 +63,8 @@ export const Swap = () => {
         boxShadow: '0px 8px 32px rgba(0, 0, 0, 0.08)',
       },
       variant: 'expandable',
+      disableI18n: true,
+      buildSwapUrl: true,
     }
   }, [account.address, account.signer, disconnect, usedWallet?.name])
 
