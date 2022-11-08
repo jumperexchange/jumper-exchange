@@ -65,6 +65,9 @@ export const Swap = () => {
       variant: 'expandable',
       disableI18n: true,
       buildSwapUrl: true,
+      languages: {
+        default: 'en',
+      },
     }
   }, [account.address, account.signer, disconnect, usedWallet?.name])
 
