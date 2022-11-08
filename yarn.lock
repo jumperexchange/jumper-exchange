@@ -1772,7 +1772,7 @@
   dependencies:
     ethers "^5.6.9"
 
-"@lifi/wallet-management@1.1.12", "@lifi/wallet-management@^1.1.12":
+"@lifi/wallet-management@^1.1.12":
   version "1.1.12"
   resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-1.1.12.tgz#25c4b5998ffbd9947b160025760b6dca14c8ee5d"
   integrity sha512-eOPJ9nbnXI5THujv8YXtpkjjzACSoc0f7KAKYQsyxUYl20gyNzmfczIT1hbVtFl62l2dX5LRpDTc2uTjdf6ZaQ==

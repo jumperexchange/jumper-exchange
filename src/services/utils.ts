@@ -160,6 +160,8 @@ export const mapWalletReferrer = (walletName?: string) => {
     XDEFI: '0x0000000000000000000000000000000000000025',
     OneInch: '0x0000000000000000000000000000000000000026',
     Tokenary: '0x0000000000000000000000000000000000000027',
+    'Tally Ho': '0x0000000000000000000000000000000000000028',
+    'Wallet Connect': '0x0000000000000000000000000000000000000029',
   }
   if (walletName && walletMapping[walletName]) {
     return walletMapping[walletName] || ''
