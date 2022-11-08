@@ -13,13 +13,14 @@ interface WalletModalProps {
 export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] = useState<Wallet>()
   // const { connect, signer } = useLiFiWalletManagement()
-  const { ethereum } = window as any
 
   const { connect } = useWallet()
 
   const login = async (wallet: Wallet) => {
+    const { ethereum } = window as any
+
     if (wallet.checkProviderIdentity) {
-      const checkResult = wallet.checkProviderIdentity(ethereum)
+      const checkResult = wallet.checkProviderIdentity({ provider: ethereum })
       if (!checkResult) {
         setShowWalletIdentityPopover(wallet)
         return
@@ -48,7 +49,6 @@ export const WalletModal = ({ show, onOk, onCancel }: WalletModalProps) => {
         Choose a wallet
       </Typography.Title>
       {supportedWallets.map((wallet) => {
-        // if (ENABLED_WALLETS?.includes(wallet.name)) {
         if (true) {
           return (
             <Popconfirm
