@@ -1263,10 +1263,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@etherspot/contracts@1.9.3", "@etherspot/contracts@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@etherspot/contracts/-/contracts-1.9.3.tgz#5634f8728244bd4d6c755b1abcf59805a3da7338"
-  integrity sha512-gjVLvCgO3978QYfRXaHHx1D2HKuvSxMWW4XtVg36fplIk71N+IiEUiBYIid39gDPLDmPUhvJ6jq/DBQPx7qFFQ==
+"@etherspot/contracts@1.9.4", "@etherspot/contracts@^1.9.4":
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/@etherspot/contracts/-/contracts-1.9.4.tgz#d83453368ec8f1ee449308451d5aa17c1a0107ca"
+  integrity sha512-xLQhOUhoBSD52UEqLtcp4tp4Nd0a/g3iq6s/a5uucRcpCfR1Lrsk4o19oddhyqQ64rUb3YRo5+G47UTYQQnhlA==
 
 "@ethersproject/abi@5.7.0", "@ethersproject/abi@^5.7.0":
   version "5.7.0"
@@ -1772,10 +1772,10 @@
   dependencies:
     ethers "^5.6.9"
 
-"@lifi/wallet-management@^1.1.12":
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-1.1.12.tgz#25c4b5998ffbd9947b160025760b6dca14c8ee5d"
-  integrity sha512-eOPJ9nbnXI5THujv8YXtpkjjzACSoc0f7KAKYQsyxUYl20gyNzmfczIT1hbVtFl62l2dX5LRpDTc2uTjdf6ZaQ==
+"@lifi/wallet-management@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@lifi/wallet-management/-/wallet-management-1.2.0.tgz#79a33f6a74b730674503c358400dd11cfcfcfcd0"
+  integrity sha512-BnppBJLaYNwt8f04DUU/lP71WuskhC95/DdDB46cBW0G6aiKa6++tFGqWQMKA7LzsMGXAJTfTdorCTgb7+njNA==
   dependencies:
     "@ethersproject/experimental" "^5.7.0"
     "@ethersproject/providers" "^5.7.2"
@@ -1790,10 +1790,10 @@
     "@web3-react/types" "^8.0.20-beta.0"
     "@web3-react/url" "^8.0.25-beta.0"
 
-"@lifi/widget@^1.23.0":
-  version "1.23.0"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.23.0.tgz#644ef9548896f195070fff2a734f16cfb9e30772"
-  integrity sha512-34TKqSr6o3HBeYqP5Rdt8BdMXBk+CldaNJ2GB2lmo8zEXSFSWHcfeGFSvi+Ahdpb1mLLjzUza1kHPUnQWHGvOw==
+"@lifi/widget@^1.24.0":
+  version "1.24.0"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.24.0.tgz#860bf1bd9eb264ea7b579774ce34edbc9cc33c9d"
+  integrity sha512-YJYGbVDXb03SJYCq2Fs1Y4B/JqEOG8nrJVqIYLkpSuX2EbKF3k0CyLn6vwyh5JSw/IxgVnnmnh2yN9P2T1gUsw==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
@@ -1801,14 +1801,14 @@
     "@ethersproject/experimental" "^5.7.0"
     "@ethersproject/providers" "^5.7.2"
     "@lifi/sdk" "^1.6.3"
-    "@lifi/wallet-management" "^1.1.12"
+    "@lifi/wallet-management" "^1.2.0"
     "@mui/icons-material" "^5.10.9"
     "@mui/lab" "^5.0.0-alpha.107"
     "@mui/material" "^5.10.13"
-    "@sentry/integrations" "^7.18.0"
-    "@sentry/react" "^7.18.0"
-    "@sentry/tracing" "^7.18.0"
-    "@tanstack/react-query" "^4.14.5"
+    "@sentry/integrations" "^7.19.0"
+    "@sentry/react" "^7.19.0"
+    "@sentry/tracing" "^7.19.0"
+    "@tanstack/react-query" "^4.14.6"
     "@tanstack/react-virtual" "^3.0.0-beta.22"
     big.js "^6.2.1"
     i18next "^22.0.4"
@@ -1818,7 +1818,7 @@
     mitt "^3.0.0"
     react "^18.2.0"
     react-dom "^18.2.0"
-    react-hook-form "^7.39.1"
+    react-hook-form "^7.39.3"
     react-i18next "^12.0.0"
     react-router-dom "^6.4.3"
     react-timer-hook "^3.0.5"
@@ -2089,67 +2089,67 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@sentry/browser@7.18.0":
-  version "7.18.0"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.18.0.tgz#3eae6bb07705ce2a05bff898effc6ece6cc4087b"
-  integrity sha512-dFNJshI5I9F2ff8X9dyN1b8UIx3h+62DOtigo+Vg2RfjplEX+rnzRWfV5QU5YBSH3AbDE3WXHuPWuYTbWg9i9w==
+"@sentry/browser@7.19.0":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.19.0.tgz#ce21544b843d5c4d5dcb9fe9b7ee31c5c4e91f42"
+  integrity sha512-dWi5VjEwiLb4ofata0UCLdTbXLD1uDUebe9rNSBkHZ3fHF4eap4ZJlu3dYePKB0CKZhZrjzbydimMhaMUNdnug==
   dependencies:
-    "@sentry/core" "7.18.0"
-    "@sentry/types" "7.18.0"
-    "@sentry/utils" "7.18.0"
+    "@sentry/core" "7.19.0"
+    "@sentry/types" "7.19.0"
+    "@sentry/utils" "7.19.0"
     tslib "^1.9.3"
 
-"@sentry/core@7.18.0":
-  version "7.18.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.18.0.tgz#9fe4c6f45086c20ad45a6357a33381a500a8b704"
-  integrity sha512-erDEMGM+9Msvz/fQaKlYHD8vXDs/Mv5trZc6rlS/gnlaIPQQ8cALH7UdH2UO0eoCLH3/pEYTsa4Qh8AMz6Y86w==
+"@sentry/core@7.19.0":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.19.0.tgz#74e0eaf4b9f42bb0290f4b3f3b0ea3e272dd693e"
+  integrity sha512-YF9cTBcAnO4R44092BJi5Wa2/EO02xn2ziCtmNgAVTN2LD31a/YVGxGBt/FDr4Y6yeuVehaqijVVvtpSmXrGJw==
   dependencies:
-    "@sentry/types" "7.18.0"
-    "@sentry/utils" "7.18.0"
+    "@sentry/types" "7.19.0"
+    "@sentry/utils" "7.19.0"
     tslib "^1.9.3"
 
-"@sentry/integrations@^7.18.0":
-  version "7.18.0"
-  resolved "https://registry.yarnpkg.com/@sentry/integrations/-/integrations-7.18.0.tgz#6ebaa9973cbfbc8f0c47030293f44f4791b10a8b"
-  integrity sha512-vmJWfybbanfHoy47U8IU50FuEN3GwywP/jFvh7Owll9GuPP9B6spmndZwK+raTisDoDOp3201uC1Bfx0cjl4MQ==
+"@sentry/integrations@^7.19.0":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@sentry/integrations/-/integrations-7.19.0.tgz#570b7ced7ef9de43a6a56f99f324936148adf6b9"
+  integrity sha512-0x5AGU7EBIzOTSqD7TFvD4S5eX6hbqbvb4YCzJt3SIZC3bO4FiBu2t0y+PIZUSsupnqafBIIWsCcGWeKrNHAyA==
   dependencies:
-    "@sentry/types" "7.18.0"
-    "@sentry/utils" "7.18.0"
+    "@sentry/types" "7.19.0"
+    "@sentry/utils" "7.19.0"
     localforage "^1.8.1"
     tslib "^1.9.3"
 
-"@sentry/react@^7.18.0":
-  version "7.18.0"
-  resolved "https://registry.yarnpkg.com/@sentry/react/-/react-7.18.0.tgz#2b032f3f382d1770d77c015cc4a61677b709ff8c"
-  integrity sha512-Cc3roRKtTT/5s7BJmQi2+KdmExWxLwRTpYvGtvDdzARXAnTr2BQUBLe7WZUE/bEnXFCUAc/yHc2Ziddvn2GQ1g==
+"@sentry/react@^7.19.0":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@sentry/react/-/react-7.19.0.tgz#de2599b27023fe24f508b34b00929ff6c19bfb23"
+  integrity sha512-ooF1TwdgkHkUo7u9Bx+kab51gpVNUW7b+5A2krfhk/Fx2eY8z5VilzUzHCRq2jbTE9yJTpfRL3KlEXROs0AUvg==
   dependencies:
-    "@sentry/browser" "7.18.0"
-    "@sentry/types" "7.18.0"
-    "@sentry/utils" "7.18.0"
+    "@sentry/browser" "7.19.0"
+    "@sentry/types" "7.19.0"
+    "@sentry/utils" "7.19.0"
     hoist-non-react-statics "^3.3.2"
     tslib "^1.9.3"
 
-"@sentry/tracing@^7.18.0":
-  version "7.18.0"
-  resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.18.0.tgz#2a3cbe770cb3483a2611dfadc5a669cbbe9e4c64"
-  integrity sha512-1vxCpsAKvrr9yZe8zRE+Wp8RyNjrhUqBUEc2Z69bVHmVtvIygqEiqjrqds+98PZZsqkdC3hVuUJnI9TmqzeG3g==
+"@sentry/tracing@^7.19.0":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.19.0.tgz#d69ecea2c0b53d113c5100fc52d0a0acc5c8a129"
+  integrity sha512-SWY17M3TsgBePaGowUcSqBwaT0TJQzuNexVnLojuU0k6F57L9hubvP9zaoosoCfARXQ/3NypAFWnlJyf570rFQ==
   dependencies:
-    "@sentry/core" "7.18.0"
-    "@sentry/types" "7.18.0"
-    "@sentry/utils" "7.18.0"
+    "@sentry/core" "7.19.0"
+    "@sentry/types" "7.19.0"
+    "@sentry/utils" "7.19.0"
     tslib "^1.9.3"
 
-"@sentry/types@7.18.0":
-  version "7.18.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.18.0.tgz#8b0eacd19cc9bcd1f14ca5dcaf7065ebd3186632"
-  integrity sha512-bOnyoK1S1chPJ+dAeWJo0srxZ9U48WE5dZFtvKeXoog6JNHY3nqAR/P/uxh9djB4bbwQRMdnGk1zm0bxhOOC6w==
+"@sentry/types@7.19.0":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.19.0.tgz#3ebb96670399b637a945fa499fa7436f7b930147"
+  integrity sha512-oGRAT6lfzoKrxO1mvxiSj0XHxWPd6Gd1wpPGuu6iJo03xgWDS+MIlD1h2unqL4N5fAzLjzmbC2D2lUw50Kn2pA==
 
-"@sentry/utils@7.18.0":
-  version "7.18.0"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.18.0.tgz#ede662acf8ac9af9a973d58e277d7afa77721b6c"
-  integrity sha512-nIIIF9FZ2rrw9OFIAfnSEK6TbHLii3ZtahVdcw6Jk9LscL2HMkgdmgroiNfFxhGYNqfWsaxVgMW+IdnkrHsqXQ==
+"@sentry/utils@7.19.0":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.19.0.tgz#0e039fe57056074c3a5e47bd50d9cb4ac9a6e909"
+  integrity sha512-2L6lq+c9Ol2uiRxQDdcgoapmHJp24MhMN0gIkn2alSfMJ+ls6bGXzQHx6JAIdoOiwFQXRZHKL9ecfAc8O+vItA==
   dependencies:
-    "@sentry/types" "7.18.0"
+    "@sentry/types" "7.19.0"
     tslib "^1.9.3"
 
 "@sinclair/typebox@^0.24.1":
@@ -2245,10 +2245,10 @@
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.14.5.tgz#f8c061a9dd4d7a87f9992db4ddda35c479e93c4a"
   integrity sha512-Su1AyrPb6xnm7wXTvpN5tt+B7LViYSh9k04vvuc6+eMVH0HkE9ktZTXibRrTvV83BI1KP5MG7v/k90ne/4zQzw==
 
-"@tanstack/react-query@^4.14.5":
-  version "4.14.5"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.14.5.tgz#e2ff6419ee94426ec5e0eecf9bf77efbeb1a0e4b"
-  integrity sha512-CuWl/SxSB0zHhHaTja8LNhy9Vdk+vk9IkW3Oiq3lo4gPnTguHmbUzfjEA1x3RfvPeHfPMuq/pYMSbV+CX4aDQA==
+"@tanstack/react-query@^4.14.6":
+  version "4.14.6"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.14.6.tgz#c737584b0d042994e1e05fe78b92511506ca218e"
+  integrity sha512-ubx49AeV0SXfbt4mZmb0JlJa1PRXynGm+uorJhM50HVDppt/SjcOUNK5kptEWBRzTjKVS9KhpoMkKKJ/ZzuBFQ==
   dependencies:
     "@tanstack/query-core" "4.14.5"
     use-sync-external-store "^1.2.0"
@@ -5065,13 +5065,13 @@ ethers@^5.6.9, ethers@^5.7.0, ethers@^5.7.1, ethers@^5.7.2:
     "@ethersproject/web" "5.7.1"
     "@ethersproject/wordlists" "5.7.0"
 
-etherspot@^1.38.3:
-  version "1.38.3"
-  resolved "https://registry.yarnpkg.com/etherspot/-/etherspot-1.38.3.tgz#347692818c9169d9b818ec51b9916c52d8f63b1d"
-  integrity sha512-xdpo80RU17ymr/OG2yb5JhWRKY7D2pv4q37TK5BSuD+ZUsZTBXNvJQughpJnCHFHCs8WfOkg89j8DRXVdCuiLg==
+etherspot@^1.40.1:
+  version "1.40.1"
+  resolved "https://registry.yarnpkg.com/etherspot/-/etherspot-1.40.1.tgz#20c66caa5e813f52ad4ca2d4bb9cb4be34ec3b35"
+  integrity sha512-gnfPCGUfcKYYBM/ECFpIAgDy9U95UST9w53GzaTnacbQTnsIfoYu8flIxBgRHdMOZh6ugq29PZsiI3UfEijUhQ==
   dependencies:
     "@apollo/client" "3.4.0"
-    "@etherspot/contracts" "1.9.3"
+    "@etherspot/contracts" "1.9.4"
     "@lifi/sdk" "1.6.0"
     "@nerdwallet/apollo-cache-policies" "1.2.1"
     class-transformer "0.4.0"
@@ -7479,10 +7479,10 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-hook-form@^7.39.1:
-  version "7.39.1"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.39.1.tgz#ded87d4b3f6692d1f9219515f78ca282b6e1ebf7"
-  integrity sha512-MiF9PCILN5KulhSGbnjohMiTOrB47GerDTichMNP0y2cPUu1GTRFqbunOxCE9N1499YTLMV/ne4gFzqCp1rxrQ==
+react-hook-form@^7.39.3:
+  version "7.39.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.39.3.tgz#d5e66dae44187606992ba01f26460cca2565ea58"
+  integrity sha512-H/vwk1vBf+TiXuyW6+hWz+zCujiDO6NqHlN5sPE/a+NGKKGK95XTM65DZz3NmEgs2M20Wka+g4uv4VD367wDBA==
 
 react-i18next@^12.0.0:
   version "12.0.0"
