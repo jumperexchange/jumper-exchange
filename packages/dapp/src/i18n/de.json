@@ -1,0 +1,28 @@
+{
+  "Navbar": {
+    "Swap": "Tausch",
+    "Dashboard": "Dashboard",
+    "ConnectWallet": "Wallet verbinden",
+    "NavbarMenu": {
+      "Theme": "Theme",
+      "Language": "Sprache",
+      "Developers": "Entwickler",
+      "AboutLIFI": "Über LI.FI",
+      "Support": "Hilfe"
+    },
+    "Languages": {
+      "English": "Englisch",
+      "German": "Deutsch"
+    },
+    "Themes": {
+      "Light": "Hell",
+      "Dark": "Dunkel",
+      "Auto": "Auto"
+    },
+    "Developers": {
+      "Github": "GitHub",
+      "Documentation": "Dokumentation",
+      "Showcases": "Beispiele"
+    }
+  }
+}

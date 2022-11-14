@@ -1,5 +1,13 @@
-import { AppBar, Button, Link, LinkProps } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  Link,
+  LinkProps,
+  MenuItem as MUIMenuItem,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
+
+// TODO: Use Colors from Theme instead of hard-coded ones
 
 export const MenuBrand = styled(Link)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -41,9 +49,6 @@ export const NavbarContainer = styled('div')`
   padding: 1.5rem;
   display: flex;
   justify-content: space-between;
-
-  .settings {
-  }
 `;
 
 export interface NavbarLinkType extends Omit<LinkProps, 'active'> {
@@ -53,7 +58,8 @@ export interface NavbarLinkType extends Omit<LinkProps, 'active'> {
 }
 
 export const NavbarLink = styled(Link, {
-  shouldForwardProp: (prop) => true,
+  shouldForwardProp: (prop) =>
+    prop !== 'hoverBackgroundColor' && prop !== 'active',
 })<NavbarLinkType>(({ theme, active, hoverBackgroundColor }) => ({
   backgroundColor: !!active ? '#F3EBFF' : 'transparent',
   borderRadius: 20,
@@ -87,3 +93,59 @@ export const NavbarDropdownButton = styled(Button)({
   height: '48px',
   borderRadius: '100%',
 });
+
+export const MenuHeader = styled(MUIMenuItem)({
+  '& svg': {
+    position: 'absolute',
+  },
+});
+
+export const MenuHeaderText = styled('span')({
+  margin: '8px auto',
+  fontWeight: 700,
+});
+
+export const MenuItem = styled(MUIMenuItem)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  '> .menu-item-label__icon': {
+    marginLeft: '13px',
+  },
+});
+
+export const MenuLinkItem = styled(Link)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: '6px 16px',
+  height: '48px',
+  textDecoration: 'none',
+  color: 'inherit',
+  '> .menu-item-label__icon': {
+    marginLeft: '13px',
+  },
+  '&:hover': {
+    textDecoration: 'none',
+    backgroundColor: '#0000000A',
+  },
+});
+
+export const MenuButton = styled(Button)({
+  height: '48px',
+  width: 'calc( 100% - 2 * 16px )',
+  color: '#31007A',
+  margin: '6px 16px',
+  backgroundColor: '#F3EBFF',
+});
+
+export const MenuItemLabel = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  '& > .menu-item-label__icon': {
+    marginRight: '13px',
+  },
+  '& svg': {
+    marginRight: '13px',
+  },
+});
+
+export const MenuItemText = styled('span')({});

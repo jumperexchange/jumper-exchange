@@ -6,16 +6,19 @@ import {
 } from '@lifi/wallet-management';
 import { LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box, Grid } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useLocales } from '@transferto/shared/src/hooks/use-locales';
+import { DappLanguageSupported } from '@transferto/shared/types';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useWallet } from '../../providers/WalletProvider';
 
 export default function Swap() {
   const { disconnect, account } = useWallet();
-
-  const [showConnectModal, setShowConnectModal] = useState<{
-    show: boolean;
-    promiseResolver?: Function;
-  }>({ show: false });
+  const { translate } = useLocales();
+  const { i18n } = useTranslation();
+  const i18Path = 'Navbar.Swap';
+  const translateText = translate(i18Path);
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
@@ -27,7 +30,7 @@ export default function Swap() {
             (resolve) => (promiseResolver = resolve),
           );
 
-          setShowConnectModal({ show: true, promiseResolver });
+          // setShowConnectModal({ show: true, promiseResolver });
 
           await loginAwaiter;
           if (account.signer) {
@@ -60,7 +63,10 @@ export default function Swap() {
         borderRadius: '16px',
         maxHeight: '770px',
       },
-
+      languages: {
+        default: i18n.language as DappLanguageSupported,
+        allow: ['de', 'en'],
+      },
       // theme: {
       //   palette: {
       //     primary: {
@@ -75,7 +81,7 @@ export default function Swap() {
       //   },
       // },
     };
-  }, []);
+  }, [i18n.language]);
 
   return (
     <Grid

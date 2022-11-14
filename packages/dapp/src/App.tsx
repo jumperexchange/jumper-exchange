@@ -1,30 +1,25 @@
-import { styled } from '@mui/material/styles';
+import { defaultSettings } from '@transferto/shared/src/config';
+import { SettingsProvider } from '@transferto/shared/src/contexts/SettingsContext';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Swap from './pages/Swap';
-
-import BG from './assets/bg/bg-net.svg';
 import BackgroundGradient from './components/BackgroundGradient/BackgroundGradient';
-
-const AppContainer = styled('div')(({ theme }) => ({
-  background: `linear-gradient(180deg, ${theme.palette.background.default} 9.96%, ${theme.palette.brandSecondary.light} 100%)`,
-  backgroundImage: `url(${BG}), linear-gradient(180deg, ${theme.palette.background.default} 9.96%, ${theme.palette.brandSecondary.light} 100%) !important`,
-  backgroundSize: 'contain !important',
-  backgroundRepeat: 'no-repeat !important',
-  backgroundPosition: 'bottom !important',
-  minHeight: '100vh',
-}));
+import { Navbar } from './components/Navbar';
+import Swap from './pages/Swap';
+import { I18NProvider } from './providers/I18nProvider';
 
 export default function App() {
   return (
-    <BackgroundGradient>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Navigate to="/swap/" />} />
-          <Route path="/swap/*" element={<Swap />} />
-        </Routes>
-      </BrowserRouter>
-    </BackgroundGradient>
+    <I18NProvider>
+      <SettingsProvider defaultSettings={defaultSettings}>
+        <BackgroundGradient>
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Navigate to="/swap/" />} />
+              <Route path="/swap/*" element={<Swap />} />
+            </Routes>
+          </BrowserRouter>
+        </BackgroundGradient>
+      </SettingsProvider>
+    </I18NProvider>
   );
 }

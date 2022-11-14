@@ -1,5 +1,7 @@
-import React from 'react';
+import { cookiesKey } from '@transferto/shared/src/config';
 import Cookies from 'js-cookie';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   createContext,
@@ -11,9 +13,11 @@ import {
 } from 'react';
 // utils
 // config
-import { cookiesExpires, cookiesKey, defaultSettings } from '../index';
+import i18next from 'i18next';
+import { cookiesExpires, defaultSettings } from '../index';
 // @type
 import {
+  DappLanguagesSupported,
   SettingsContextProps,
   SettingsValueProps,
   ThemeMode,
@@ -29,6 +33,9 @@ const initialState: SettingsContextProps = {
 
   // Direction
   onChangeDirectionByLang: () => {},
+
+  // Language
+  onChangeLanguage: () => {},
 
   // Reset
   onResetSetting: () => {},
@@ -48,9 +55,8 @@ const SettingsProvider = ({
   defaultSettings,
 }: SettingsProviderProps) => {
   const [settings, setSettings] = useSettingCookies(defaultSettings);
-
-  const langStorage =
-    typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
+  // const langStorage =
+  //   typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
 
   // Mode
   const onToggleMode = () => {
@@ -67,11 +73,19 @@ const SettingsProvider = ({
     });
   };
 
-  // Direction
-
-  const onChangeDirectionByLang = (lang: string) => {
+  // Language
+  const onChangeLanguage = (language: string) => {
     setSettings({
       ...settings,
+      languageMode: language as DappLanguagesSupported,
+    });
+  };
+
+  // Direction
+  const onChangeDirectionByLang = (lang: DappLanguagesSupported) => {
+    setSettings({
+      ...settings,
+      languageMode: lang ? lang : DappLanguagesSupported.en,
     });
   };
 
@@ -80,6 +94,10 @@ const SettingsProvider = ({
   const onResetSetting = () => {
     setSettings({
       themeMode: initialState.themeMode || 'light',
+      languageMode:
+        initialState.languageMode ||
+        (i18next.language as DappLanguagesSupported) ||
+        DappLanguagesSupported.en,
     });
   };
 
@@ -92,6 +110,8 @@ const SettingsProvider = ({
         onToggleMode,
         onChangeMode,
 
+        // Language
+        onChangeLanguage,
         onChangeDirectionByLang,
 
         // Reset
@@ -112,15 +132,28 @@ const useSettingCookies = (
 ): [SettingsValueProps, Dispatch<SetStateAction<SettingsValueProps>>] => {
   const [settings, setSettings] = useState<SettingsValueProps>(defaultSettings);
 
+  const { i18n } = useTranslation();
+
   const onChangeSetting = () => {
-    Cookies.set(cookiesKey.themeMode, settings.themeMode, {
+    Cookies.set(
+      cookiesKey.themeMode
+        ? cookiesKey.themeMode
+        : window.matchMedia('(prefers-color-scheme: light)').matches
+        ? 'light'
+        : 'dark',
+      settings.themeMode,
+      {
+        expires: cookiesExpires,
+      },
+    );
+
+    Cookies.set(cookiesKey.languageMode, i18n.language, {
       expires: cookiesExpires,
     });
   };
 
   useEffect(() => {
     onChangeSetting();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings]);
 
   return [settings, setSettings];

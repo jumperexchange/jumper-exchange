@@ -1,1 +1,2 @@
-export * from './getSettings'
+export * from './deepMerge';
+export * from './getSettings';
