@@ -1,7 +1,10 @@
 {
   "Navbar": {
-    "Swap": "Tausch",
-    "Dashboard": "Dashboard",
+    "Links": {
+      "Swap": "Swap",
+      "Dashboard": "Dashboard",
+      "Refuel": "Gas"
+    },
     "ConnectWallet": "Wallet verbinden",
     "NavbarMenu": {
       "Theme": "Theme",

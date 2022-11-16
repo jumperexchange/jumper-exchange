@@ -3,6 +3,7 @@ import { SettingsProvider } from '@transferto/shared/src/contexts/SettingsContex
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import BackgroundGradient from './components/BackgroundGradient/BackgroundGradient';
 import { Navbar } from './components/Navbar';
+import Refuel from './pages/Refuel';
 import Swap from './pages/Swap';
 import { I18NProvider } from './providers/I18nProvider';
 
@@ -16,6 +17,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/swap/" />} />
               <Route path="/swap/*" element={<Swap />} />
+              <Route path="/gas/*" element={<Refuel />} />
             </Routes>
           </BrowserRouter>
         </BackgroundGradient>

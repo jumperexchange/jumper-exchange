@@ -1,44 +1,53 @@
 import { Swap } from '@transferto/shared/src/atoms/icons';
 import { useLocales } from '@transferto/shared/src/hooks';
 import { useLocation } from 'react-router-dom';
+import { Gas } from '@transferto/shared/src/atoms/icons';
 import {
   NavbarLink,
   NavbarLinkContainer,
   NavbarLinkText,
 } from './Navbar.styled';
 
+const linkMap = {
+  swap: '/swap',
+  dashboard: '/dashboard',
+  refuel: '/gas',
+};
+
 const NavbarLinks = () => {
   const { translate } = useLocales();
   const i18Path = 'Navbar.';
-  const swapUrl = '/swap';
-  const dashboardUrl = '/dashboard'; // --> will be replaced with gas-feature
   const location = useLocation();
 
   return (
     <NavbarLinkContainer className="navbar-container">
       <NavbarLink
         active={
-          (location.pathname.includes(swapUrl) || location.pathname === '/') ??
+          (location.pathname.includes(linkMap.swap) ||
+            location.pathname === '/') ??
           true
         }
-        href={swapUrl}
+        href={linkMap.swap}
         hoverBackgroundColor={'#f5b5ff7a'}
       >
         <>
           <Swap style={{ marginRight: '6px' }} />
           <NavbarLinkText>
-            <>{translate(`${i18Path}Swap`)}</>
+            <>{translate(`${i18Path}Links.Swap`)}</>
           </NavbarLinkText>
         </>
       </NavbarLink>
       <NavbarLink
-        active={location.pathname.includes(dashboardUrl) ?? true}
-        href={dashboardUrl}
+        active={location.pathname.includes(linkMap.refuel) ?? true}
+        href={linkMap.refuel}
         hoverBackgroundColor={'#f5b5ff7a'}
       >
-        <NavbarLinkText>
-          <>{translate(`${i18Path}Dashboard`)}</>
-        </NavbarLinkText>
+        <>
+          <Gas style={{ marginRight: '6px' }} />
+          <NavbarLinkText>
+            <>{translate(`${i18Path}Links.Refuel`)}</>
+          </NavbarLinkText>
+        </>
       </NavbarLink>
     </NavbarLinkContainer>
   );

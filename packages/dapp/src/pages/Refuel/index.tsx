@@ -13,12 +13,13 @@ import { useTranslation } from 'react-i18next';
 
 import { useWallet } from '../../providers/WalletProvider';
 
-export default function Swap() {
+export default function Refuel() {
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
+      variant: 'refuel',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
