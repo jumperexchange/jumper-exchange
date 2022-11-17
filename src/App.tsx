@@ -2,7 +2,6 @@ import './AntOverrides.css'
 import './App.css'
 
 import { GithubOutlined, TwitterOutlined } from '@ant-design/icons'
-import { LiFiWidget } from '@lifi/widget'
 import { Button, Col, Layout, Menu, Row } from 'antd'
 import { Content, Header } from 'antd/lib/layout/layout'
 import { useEffect, useState } from 'react'
