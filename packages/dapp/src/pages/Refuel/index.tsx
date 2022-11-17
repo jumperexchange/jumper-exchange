@@ -1,21 +1,30 @@
 import { Token } from '@lifi/sdk';
 import {
   addChain,
+  supportedWallets,
   switchChain,
   switchChainAndAddToken,
 } from '@lifi/wallet-management';
 import { LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box, Grid } from '@mui/material';
-import { useLocales } from '@transferto/shared/src/hooks/use-locales';
+import { WalletModal } from '@transferto/shared';
 import { DappLanguageSupported } from '@transferto/shared/types';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useWallet } from '../../providers/WalletProvider';
 
+// TODO: pull interface into types
+interface ShowConnectModalProps {
+  show: boolean;
+  promiseResolver?: Promise<any>;
+}
+
 export default function Refuel() {
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
+  const [showConnectModal, setShowConnectModal] =
+    useState<ShowConnectModalProps>({ show: false });
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
@@ -28,7 +37,7 @@ export default function Refuel() {
             (resolve) => (promiseResolver = resolve),
           );
 
-          // setShowConnectModal({ show: true, promiseResolver });
+          setShowConnectModal({ show: true, promiseResolver });
 
           await loginAwaiter;
           if (account.signer) {
@@ -79,7 +88,7 @@ export default function Refuel() {
       //   },
       // },
     };
-  }, [i18n.language]);
+  }, [i18n.language, account.signer]);
 
   return (
     <Grid
@@ -91,6 +100,13 @@ export default function Refuel() {
       <Box sx={{ m: 8 }}>
         <LiFiWidget config={widgetConfig} />
       </Box>
+      <WalletModal
+        open={showConnectModal.show}
+        handleClose={() => setShowConnectModal({ show: false })}
+        setOpen={() => setShowConnectModal({ show: true })}
+        wallets={supportedWallets}
+        walletManagement={useWallet()}
+      />
     </Grid>
   );
 }
