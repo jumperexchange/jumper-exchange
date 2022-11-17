@@ -64,10 +64,12 @@ export const Swap = () => {
       },
       variant: 'expandable',
       disableI18n: true,
-      buildSwapUrl: true,
+      // buildSwapUrl: true,
       languages: {
         default: 'en',
       },
+      appearance: 'light',
+      disableAppearance: true,
     }
   }, [account.address, account.signer, disconnect, usedWallet?.name])
 
