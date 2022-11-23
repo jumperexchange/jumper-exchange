@@ -1,7 +1,7 @@
 import { createTheme, Theme } from '@mui/material/styles';
-import { viewports, bodyStyled, resetStyled } from '../style';
 import React from 'react';
 import Fonts from '../fonts/fonts';
+import { bodyStyled, resetStyled, viewports } from '../style';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -28,19 +28,6 @@ declare module '@mui/material/styles' {
     background?: PaletteOptions['background'];
     text?: PaletteOptions['text'];
   }
-  interface BreakpointOverrides {
-    xs: false; // removes the `xs` breakpoint
-    sm: false;
-    md: false;
-    lg: false;
-    xl: false;
-    mobile: true; // adds the `mobile` breakpoint
-    tablet: true;
-    laptop: true;
-    desktop: true;
-    desktopFullHD: true;
-  }
-
   interface TypographyVariants {
     hero: React.CSSProperties;
     subtitleL: React.CSSProperties;
@@ -207,11 +194,11 @@ const themeBase: Theme = createTheme({
   },
   breakpoints: {
     values: {
-      mobile: 0,
-      tablet: viewports.minTablet,
-      laptop: viewports.minLaptop,
-      desktop: viewports.minDesktop,
-      desktopFullHD: viewports.minDesktopFullHd,
+      xs: 0,
+      sm: viewports.minTablet,
+      md: viewports.minLaptop,
+      lg: viewports.minDesktop,
+      xl: viewports.minDesktopFullHd,
     },
   },
 });
@@ -225,7 +212,7 @@ const themeTypographyPreset: Theme = createTheme({
       fontSize: 50,
       lineHeight: '58px',
       fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
+      [themeBase.breakpoints.up('sm')]: {
         fontSize: 76,
         lineHeight: '84px',
         fontWeight: 400,
@@ -237,7 +224,7 @@ const themeTypographyPreset: Theme = createTheme({
       fontSize: 42,
       lineHeight: '50px',
       fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
+      [themeBase.breakpoints.up('sm')]: {
         fontSize: 68,
         lineHeight: '74px',
         fontWeight: 600,
@@ -248,7 +235,7 @@ const themeTypographyPreset: Theme = createTheme({
       fontSize: 36,
       lineHeight: '44px',
       fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
+      [themeBase.breakpoints.up('sm')]: {
         fontSize: 54,
         lineHeight: '64px',
         fontWeight: 600,
@@ -258,7 +245,7 @@ const themeTypographyPreset: Theme = createTheme({
       fontSize: 32,
       lineHeight: '42px',
       fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
+      [themeBase.breakpoints.up('sm')]: {
         fontSize: 48,
         lineHeight: '70px',
         fontWeight: 400,
@@ -268,7 +255,7 @@ const themeTypographyPreset: Theme = createTheme({
       fontSize: 27,
       lineHeight: '36px',
       fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
+      [themeBase.breakpoints.up('sm')]: {
         fontSize: 32,
         lineHeight: '40px',
         fontWeight: 400,
@@ -278,7 +265,7 @@ const themeTypographyPreset: Theme = createTheme({
       fontSize: 22,
       lineHeight: '30px',
       fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
+      [themeBase.breakpoints.up('sm')]: {
         fontSize: 24,
         lineHeight: '34px',
         fontWeight: 400,
@@ -288,7 +275,7 @@ const themeTypographyPreset: Theme = createTheme({
       fontSize: 20,
       lineHeight: '26px',
       fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
+      [themeBase.breakpoints.up('sm')]: {
         fontSize: 20,
         lineHeight: '28px',
         fontWeight: 400,

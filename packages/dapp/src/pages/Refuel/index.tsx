@@ -7,11 +7,10 @@ import {
 } from '@lifi/wallet-management';
 import { LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box, Grid } from '@mui/material';
-import { WalletModal } from '@transferto/shared';
-import { DappLanguageSupported } from '@transferto/shared/types';
+import { WalletModal } from '@transferto/shared/src/molecules';
+import { DappLanguagesSupported } from '@transferto/shared/types';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { useWallet } from '../../providers/WalletProvider';
 
 // TODO: pull interface into types
@@ -71,7 +70,7 @@ export default function Refuel() {
         maxHeight: '770px',
       },
       languages: {
-        default: i18n.language as DappLanguageSupported,
+        default: i18n.language as DappLanguagesSupported,
         allow: ['de', 'en'],
       },
       // theme: {
@@ -97,7 +96,7 @@ export default function Refuel() {
       justifyContent="center"
       alignItems="center"
     >
-      <Box sx={{ m: 8 }}>
+      <Box sx={{ m: '64px auto' }}>
         <LiFiWidget config={widgetConfig} />
       </Box>
       <WalletModal

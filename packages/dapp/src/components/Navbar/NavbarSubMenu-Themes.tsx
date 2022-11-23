@@ -36,7 +36,7 @@ const NavbarSubMenuLanguages = ({
         {openSubMenu === 'themes' && (
           <Paper
             sx={{
-              width: '288px',
+              width: '100%',
               borderRadius: '12px',
               paddingTop: '16px',
               paddingBottom: '16px',

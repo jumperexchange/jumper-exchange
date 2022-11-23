@@ -31,8 +31,6 @@ const NavbarSubMenuDevelopers = ({
   const settings = useSettings();
   const { i18n } = useTranslation();
 
-  // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
-
   const handleSwitchLanguage = (newLanguage) => {
     i18n.changeLanguage(newLanguage);
     settings.onChangeLanguage(newLanguage);
@@ -44,7 +42,7 @@ const NavbarSubMenuDevelopers = ({
         {openSubMenu === 'devs' && (
           <Paper
             sx={{
-              width: '288px',
+              width: '100%',
               borderRadius: '12px',
               paddingTop: '16px',
               paddingBottom: '16px',

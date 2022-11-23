@@ -22,7 +22,6 @@ const NavbarMenuItemLanguage = ({
   const { translate } = useLocales();
   const i18Path = 'Navbar.';
   const settings = useSettings();
-  // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
   return (
     !!open && (
       <>

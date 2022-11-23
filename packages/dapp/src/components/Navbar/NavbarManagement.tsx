@@ -1,8 +1,10 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { WalletManagementButtons } from '@transferto/shared';
+import { screenSize } from '@transferto/shared/src/style';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useWallet } from '../../providers/WalletProvider';
-import { NavbarMenu } from './index';
+import { NavbarMenuDesktop, NavbarMenuMobile } from './index';
 
 import {
   NavbarDropdownButton,
@@ -15,6 +17,7 @@ const NavbarManagement = () => {
   // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
   const [open, setOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState('none');
+  const isTablet = useMediaQuery(`(${screenSize.minTablet})`);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -22,6 +25,7 @@ const NavbarManagement = () => {
   };
 
   const handleClose = (event: Event | SyntheticEvent) => {
+    event.preventDefault();
     if (
       anchorRef.current &&
       anchorRef.current.contains(event.target as HTMLElement)
@@ -59,14 +63,25 @@ const NavbarManagement = () => {
       >
         <MoreHorizIcon />
       </NavbarDropdownButton>
-      <NavbarMenu
-        handleClose={handleClose}
-        anchorRef={anchorRef}
-        open={open}
-        setOpen={setOpen}
-        openSubMenu={openSubMenu}
-        setOpenSubMenu={setOpenSubMenu}
-      />
+      {!!isTablet ? (
+        <NavbarMenuDesktop
+          handleClose={handleClose}
+          anchorRef={anchorRef}
+          open={open}
+          setOpen={setOpen}
+          openSubMenu={openSubMenu}
+          setOpenSubMenu={setOpenSubMenu}
+        />
+      ) : (
+        <NavbarMenuMobile
+          handleClose={handleClose}
+          anchorRef={anchorRef}
+          open={open}
+          setOpen={setOpen}
+          openSubMenu={openSubMenu}
+          setOpenSubMenu={setOpenSubMenu}
+        />
+      )}
     </NavbarManagementContainer>
   );
 };

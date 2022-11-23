@@ -12,6 +12,7 @@ export const ConnectButtonBase = styled(Button, {
   shouldForwardProp: (prop) =>
     prop !== 'backgroundColor' && prop !== 'hoverBackgroundColor',
 })<any>(({ theme, backgroundColor, hoverBackgroundColor }) => ({
+  display: 'none',
   padding: '12px 16px',
   background: !!backgroundColor
     ? backgroundColor
@@ -24,5 +25,8 @@ export const ConnectButtonBase = styled(Button, {
     backgroundColor: !!hoverBackgroundColor
       ? hoverBackgroundColor
       : theme.palette.brandSecondary.main,
+  },
+  [theme.breakpoints.up('sm')]: {
+    display: 'inline-flex',
   },
 }));

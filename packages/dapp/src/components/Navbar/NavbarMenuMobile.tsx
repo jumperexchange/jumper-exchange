@@ -34,6 +34,7 @@ const NavbarMenu = ({
   setOpenSubMenu,
 }: NavbarMenuProps) => {
   const theme = useTheme();
+  // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -60,6 +61,7 @@ const NavbarMenu = ({
               left: '0 !important',
               top: 'unset !important',
               right: '0 !important',
+              // transform: 'unset !important',
               margin: '0px',
               [theme.breakpoints.up('sm')]: {
                 bottom: 'unset !important',
@@ -74,7 +76,7 @@ const NavbarMenu = ({
           >
             <Paper
               sx={{
-                borderRadius: '12px',
+                borderRadius: '12px 12px 0 0',
                 mt: '10px',
                 padding: openSubMenu == 'none' ? '16px 0' : 0,
                 '& ul': {
@@ -113,13 +115,8 @@ const NavbarMenu = ({
                     openSubMenu={openSubMenu}
                     setOpenSubMenu={setOpenSubMenu}
                   />
-                  <NavbarMenuItemAbout
-                    open={open}
-                    setOpen={setOpen}
-                    openSubMenu={openSubMenu}
-                  />
+                  <NavbarMenuItemAbout open={open} openSubMenu={openSubMenu} />
                   <NavbarMenuItemSupport
-                    setOpen={setOpen}
                     open={open}
                     openSubMenu={openSubMenu}
                   />

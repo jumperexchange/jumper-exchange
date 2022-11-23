@@ -19,22 +19,36 @@ export const MenuBrand = styled(Link)(({ theme }) => ({
   },
 }));
 
+export const NavbarExternalBackground = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  zIndex: 1,
+  backgroundColor: '#000000',
+  opacity: 0.25,
+}));
+
 export const NavbarManagement = styled('div')({
   justifySelf: 'self-end',
 });
 
-export const NavbarLinkContainer = styled('div')({
-  position: 'absolute',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  backgroundColor: 'white',
-  margin: 'auto',
-  height: 48,
-  borderRadius: 24,
-  padding: 4,
-  display: 'flex',
-  width: 390,
-});
+export const NavbarLinkContainer = styled('div')(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.up('md')]: {
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: 'white',
+    margin: 'auto',
+    height: 48,
+    borderRadius: 24,
+    padding: 4,
+    display: 'flex',
+    width: 390,
+  },
+}));
 
 export const NavBar = styled(AppBar)(({ theme }) => ({
   marginTop: 16,
@@ -92,6 +106,9 @@ export const NavbarDropdownButton = styled(Button)({
   minWidth: 'unset',
   height: '48px',
   borderRadius: '100%',
+  '&:hover': {
+    backgroundColor: 'white',
+  },
 });
 
 export const MenuHeader = styled(MUIMenuItem)({
@@ -105,13 +122,16 @@ export const MenuHeaderText = styled('span')({
   fontWeight: 700,
 });
 
-export const MenuItem = styled(MUIMenuItem)({
+export const MenuItem = styled(MUIMenuItem)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   '> .menu-item-label__icon': {
     marginLeft: '13px',
   },
-});
+  [theme.breakpoints.up('sm')]: {
+    height: '48px',
+  },
+}));
 
 export const MenuLinkItem = styled(Link)({
   display: 'flex',
@@ -131,9 +151,8 @@ export const MenuLinkItem = styled(Link)({
 
 export const MenuButton = styled(Button)({
   height: '48px',
-  width: 'calc( 100% - 2 * 16px )',
+  width: '100%',
   color: '#31007A',
-  margin: '6px 16px',
   backgroundColor: '#F3EBFF',
 });
 
