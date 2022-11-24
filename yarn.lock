@@ -1809,10 +1809,10 @@
     "@web3-react/types" "^8.0.20-beta.0"
     "@web3-react/url" "^8.0.25-beta.0"
 
-"@lifi/widget@^1.26.0":
-  version "1.26.0"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.26.0.tgz#c261eaaa09341fda01c694f75d1d1e1f55a85601"
-  integrity sha512-fQAeXD0acx3lT9+gWM6jUg49Avveh+RWrz3FkLuK/dp316lod1XbjPqA4DmYM5RLgmhusd52b8b3YbSBPCG+xQ==
+"@lifi/widget@^1.26.1":
+  version "1.26.1"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.26.1.tgz#2419945861a67167160110bcdd19a0fcad771454"
+  integrity sha512-s1360dQAmsMA5hMmwkQmA9zLO5xdsV/t96/cgFSaMovhq9b/V29P+eLUmRuoEWm6l+7zmgKHFSmhf1DxO14Dyg==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
