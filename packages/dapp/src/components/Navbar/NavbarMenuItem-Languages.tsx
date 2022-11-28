@@ -2,11 +2,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import LanguageIcon from '@mui/icons-material/Language';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
+import { Typography } from '@mui/material';
 import { FlagGermany, FlagUSA } from '@transferto/shared/src/atoms/icons/flags';
-import { useLocales, useSettings } from '@transferto/shared/src/hooks';
+import { useLocales } from '@transferto/shared/src/hooks';
 import { getInitialProps } from 'react-i18next';
-
-import { MenuItem, MenuItemLabel, MenuItemText } from './Navbar.styled';
+import { MenuItem, MenuItemLabel } from './Navbar.styled';
 
 interface NavbarMenuItemProps {
   open: boolean;
@@ -21,47 +21,45 @@ const NavbarMenuItemLanguage = ({
 }: NavbarMenuItemProps) => {
   const { translate } = useLocales();
   const i18Path = 'Navbar.';
-  const settings = useSettings();
-  return (
-    !!open && (
+  // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
+  return !!open && openSubMenu === 'none' ? (
+    <MenuItem
+      sx={{ p: 0 }}
+      onClick={() => {
+        setOpenSubMenu('language');
+      }}
+    >
       <>
-        {openSubMenu == 'none' && (
-          <MenuItem
-            onClick={() => {
-              setOpenSubMenu('language');
-            }}
-          >
-            <>
-              <MenuItemLabel>
-                <>
-                  <LanguageIcon className="menu-item-label__icon" />
-                  <MenuItemText className="menu-item-label__text">
-                    <>{translate(`${i18Path}NavbarMenu.Language`)}</>
-                  </MenuItemText>
-                </>
-              </MenuItemLabel>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <>
-                  {getInitialProps().initialLanguage === 'en' && (
-                    <FlagUSA style={{ marginRight: '8px' }} />
-                  )}
-                  {getInitialProps().initialLanguage === 'de' && (
-                    <FlagGermany style={{ marginRight: '8px' }} />
-                  )}
-                  <ChevronRightIcon />
-                </>
-              </div>
-            </>
-          </MenuItem>
-        )}
+        <MenuItemLabel>
+          <>
+            <LanguageIcon className="menu-item-label__icon" />
+            <Typography
+              className="menu-item-label__text"
+              fontSize={'14px'}
+              fontWeight={500}
+              lineHeight={'20px'}
+            >
+              <>{translate(`${i18Path}NavbarMenu.Language`)}</>
+            </Typography>
+          </>
+        </MenuItemLabel>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {getInitialProps().initialLanguage === 'en' && (
+            <FlagUSA style={{ marginRight: '8px' }} />
+          )}
+          {getInitialProps().initialLanguage === 'de' && (
+            <FlagGermany style={{ marginRight: '8px' }} />
+          )}
+          <ChevronRightIcon />
+        </div>
       </>
-    )
-  );
+    </MenuItem>
+  ) : null;
 };
 
 export default NavbarMenuItemLanguage;

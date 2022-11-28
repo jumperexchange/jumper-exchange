@@ -1,19 +1,15 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Paper from '@mui/material/Paper';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
-import Github from '@transferto/shared/src/atoms/icons/Github';
-import { useLocales, useSettings } from '@transferto/shared/src/hooks';
-import { useTranslation } from 'react-i18next';
-
-import {
-  MenuHeader,
-  MenuHeaderText,
-  MenuItemLabel,
-  MenuLinkItem,
-} from './Navbar.styled';
+import { Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { useLocales } from '@transferto/shared/src/hooks';
+import { useIsDarkMode } from '../../providers/ThemeProvider';
+import { MenuHeader, MenuItemLabel, MenuLinkItem } from './Navbar.styled';
 
 interface NavbarSubMenuProps {
   open: boolean;
@@ -28,13 +24,8 @@ const NavbarSubMenuDevelopers = ({
 }: NavbarSubMenuProps) => {
   const { translate } = useLocales();
   const i18Path = 'Navbar.';
-  const settings = useSettings();
-  const { i18n } = useTranslation();
-
-  const handleSwitchLanguage = (newLanguage) => {
-    i18n.changeLanguage(newLanguage);
-    settings.onChangeLanguage(newLanguage);
-  };
+  const theme = useTheme();
+  const _isDarkMode = useIsDarkMode();
 
   return (
     !!open && (
@@ -42,25 +33,31 @@ const NavbarSubMenuDevelopers = ({
         {openSubMenu === 'devs' && (
           <Paper
             sx={{
-              width: '100%',
+              background: !!_isDarkMode ? '#121212' : theme.palette.grey[100],
               borderRadius: '12px',
-              paddingTop: '16px',
-              paddingBottom: '16px',
+              padding: '12px 24px 24px',
+
               '> ul': {
                 padding: '16px 0',
               },
             }}
           >
             <MenuHeader
+              sx={{ height: '48px' }}
               onClick={() => {
                 setOpenSubMenu('none');
               }}
             >
               <>
-                <ChevronLeftIcon className="menu-header__icon" />
-                <MenuHeaderText>
+                <ArrowBackIcon className="menu-header__icon" />
+                <Typography
+                  fontSize={'14px'}
+                  fontWeight={700}
+                  lineHeight={'20px'}
+                  width={'100%'}
+                >
                   <>{translate(`${i18Path}NavbarMenu.Developers`)}</>
-                </MenuHeaderText>
+                </Typography>
               </>
             </MenuHeader>
             <MenuLinkItem
@@ -70,8 +67,20 @@ const NavbarSubMenuDevelopers = ({
             >
               <MenuItemLabel>
                 <>
-                  <Github />
-                  {translate(`${i18Path}Developers.Github`)}
+                  <GitHubIcon
+                    sx={{
+                      color: !!_isDarkMode
+                        ? theme.palette.grey[100]
+                        : theme.palette.grey[900],
+                    }}
+                  />
+                  <Typography
+                    fontSize={'14px'}
+                    fontWeight={500}
+                    lineHeight={'20px'}
+                  >
+                    <>{translate(`${i18Path}Developers.Github`)}</>
+                  </Typography>
                 </>
               </MenuItemLabel>
             </MenuLinkItem>
@@ -79,7 +88,13 @@ const NavbarSubMenuDevelopers = ({
               <MenuItemLabel>
                 <>
                   <DescriptionOutlinedIcon />
-                  {translate(`${i18Path}Developers.Documentation`)}
+                  <Typography
+                    fontSize={'14px'}
+                    fontWeight={500}
+                    lineHeight={'20px'}
+                  >
+                    <>{translate(`${i18Path}Developers.Documentation`)}</>
+                  </Typography>
                 </>
               </MenuItemLabel>
             </MenuLinkItem>
@@ -87,7 +102,13 @@ const NavbarSubMenuDevelopers = ({
               <MenuItemLabel>
                 <>
                   <SlideshowIcon />
-                  {translate(`${i18Path}Developers.Showcases`)}
+                  <Typography
+                    fontSize={'14px'}
+                    fontWeight={500}
+                    lineHeight={'20px'}
+                  >
+                    <>{translate(`${i18Path}Developers.Showcases`)}</>
+                  </Typography>
                 </>
               </MenuItemLabel>
             </MenuLinkItem>

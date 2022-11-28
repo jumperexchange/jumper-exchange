@@ -1,12 +1,11 @@
 // @mui
 import { deDE, enUS } from '@mui/material/locale';
 import i18next from 'i18next';
-import Cookies from 'js-cookie';
-import { DappLanguagesSupported, SettingsValueProps } from './types/settings';
+import { DappLanguagesSupported } from './types/settings';
 
 export const cookiesExpires = 3;
 
-export const cookiesKey = {
+export const localStorageKey = {
   themeMode: 'themeMode',
   languageMode: 'languageMode',
 };
@@ -37,16 +36,16 @@ const setLanguage = (defaultLang) => {
     return i18next.language;
   } else if (!!localStorage.i18nextLng) {
     return localStorage.i18nextLng;
-  } else if (!!Cookies.get(cookiesKey.languageMode)) {
-    return Cookies.get(cookiesKey.languageMode);
+  } else if (!!localStorage.getItem(localStorageKey.languageMode)) {
+    return localStorage.getItem(localStorageKey.languageMode);
   } else {
     return defaultLang.value;
   }
 };
 
-export const defaultSettings: SettingsValueProps = {
-  themeMode: !!Cookies.get(cookiesKey.themeMode)
-    ? Cookies.get(cookiesKey.themeMode)
-    : 'light',
+export const defaultSettings: any = {
+  themeMode: !!localStorage.getItem(localStorageKey.themeMode)
+    ? localStorage.getItem(localStorageKey.themeMode)
+    : 'auto',
   languageMode: setLanguage(defaultLang),
 };

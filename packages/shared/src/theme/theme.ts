@@ -1,32 +1,23 @@
 import { createTheme, Theme } from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
 import React from 'react';
 import Fonts from '../fonts/fonts';
 import { bodyStyled, resetStyled, viewports } from '../style';
 
 declare module '@mui/material/styles' {
   interface Palette {
-    brandPrimary: Palette['primary'];
-    brandPrimaryTint100: Palette['primary'];
-    brandSecondary: Palette['primary'];
-    brandTertiary: Palette['primary'];
-    grey: Palette['grey'];
-    systemSuccess: Palette['primary'];
-    systemWarning: Palette['primary'];
-    systemError: Palette['primary'];
-    background: Palette['background'];
-    text: Palette['text'];
+    tertiary: Palette['primary'];
+    accent1: Palette['primary'];
+    accent2: Palette['primary'];
+    white: Palette['primary'];
+    black: Palette['primary'];
   }
   interface PaletteOptions {
-    brandPrimary?: PaletteOptions['primary'];
-    brandPrimaryTint100?: PaletteOptions['primary'];
-    brandSecondary?: PaletteOptions['primary'];
-    brandTertiary?: PaletteOptions['primary'];
-    grey?: PaletteOptions['grey'];
-    systemSuccess?: PaletteOptions['primary'];
-    systemWarning?: PaletteOptions['primary'];
-    systemError?: PaletteOptions['primary'];
-    background?: PaletteOptions['background'];
-    text?: PaletteOptions['text'];
+    tertiary?: PaletteOptions['primary'];
+    accent1?: PaletteOptions['primary'];
+    accent2?: PaletteOptions['primary'];
+    white?: PaletteOptions['primary'];
+    black?: PaletteOptions['primary'];
   }
   interface TypographyVariants {
     hero: React.CSSProperties;
@@ -93,21 +84,11 @@ declare module '@mui/material/styles' {
 }
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
-    brandPrimary: true;
-    brandPrimaryTint100: true;
-    brandSecondary: true;
-    brandTertiary: true;
-    grey: true;
-    systemSuccess: true;
-    systemWarning: true;
-    systemError: true;
-    inherit: false;
-    primary: false;
-    secondary: false;
-    success: false;
-    error: false;
-    info: false;
-    warning: false;
+    tertiary: true;
+    accent1: true;
+    accent2: true;
+    white: true;
+    black: true;
   }
 }
 declare module '@mui/material/Typography' {
@@ -457,146 +438,192 @@ const themeTypographyPreset: Theme = createTheme({
   },
 });
 
-const themePreset: Theme = createTheme({
-  ...themeBase,
-  ...themeTypographyPreset,
-});
+const themePreset: Theme = createTheme(
+  deepmerge(themeBase, themeTypographyPreset),
+);
 
-export const lightTheme: Theme = createTheme({
-  ...themePreset,
-  spacing: 4,
-  palette: {
-    mode: 'light',
-    background: {
-      default: '#fefaff',
+export const lightTheme: Theme = createTheme(
+  deepmerge(themePreset, {
+    spacing: 4,
+    palette: {
+      mode: 'light',
+      background: {
+        default:
+          'linear-gradient(180deg, #F9F5FF 0%, #F3EBFF 49.48%, #F9F5FF 99.48%)',
+      },
+      text: {
+        primary: '#000',
+      },
+      accent1: {
+        light: '#31007A',
+        main: '#31007A',
+        dark: '#31007A',
+        contrastText: '#fff',
+      },
+      accent2: {
+        light: '#8700B8',
+        main: '#8700B8',
+        dark: '#8700B8',
+        contrastText: '#fff',
+      },
+      primary: {
+        light: '#31007A',
+        main: '#31007A',
+        dark: '#31007A',
+        contrastText: '#fff',
+      },
+      secondary: {
+        light: '#eee6f5',
+        main: '#eee6f5',
+        dark: '#eee6f5',
+        contrastText: '#fff',
+      },
+      tertiary: {
+        light: '#f5e7fa',
+        main: '#f5e7fa',
+        dark: '#f5e7fa',
+        contrastText: '#fff',
+      },
+      grey: {
+        100: '#FFFFFF',
+        200: '#F6F5FA',
+        300: '#ECEBF0',
+        400: '#DDDCE0',
+        500: '#C9C8CC',
+        600: '#8A8D8F',
+        700: '#70767A',
+        800: '#4B4F52',
+        900: '#000000',
+      },
+      success: {
+        main: '#0AA65B',
+        light: '#0AA65B',
+        dark: '#0AA65B',
+      },
+      warning: {
+        main: '#FFE668',
+        light: '#FFE668',
+        dark: '#FFE668',
+      },
+      error: {
+        main: '#E5452F',
+        light: '#E5452F',
+        dark: '#E5452F',
+      },
+      info: {
+        main: '#297EFF',
+        light: '#297EFF',
+        dark: '#297EFF',
+      },
+      white: {
+        main: '#FFFFFF',
+        light: '#FFFFFF',
+        dark: '#FFFFFF',
+      },
+      black: {
+        main: '#000000',
+        light: '#000000',
+        dark: '#000000',
+      },
     },
-    text: {
-      primary: '#000',
-    },
-    brandPrimary: {
-      main: '##3F49E1',
-      light: '##3F49E1',
-      dark: '#3F49E1',
-      contrastText: '#fff',
-    },
-    brandPrimaryTint100: {
-      light: '#ACBEFF',
-      main: '#7C83EB',
-      dark: '#7C83EB',
-      contrastText: '#000',
-    },
-    brandSecondary: {
-      light: '#fbebff',
-      main: '#F5B5FF',
-      dark: '#F5B5FF',
-      contrastText: '#000',
-    },
-    brandTertiary: {
-      light: '#F6F3F2',
-      main: '#F6F3F2',
-      dark: '#F6F3F2',
-      contrastText: '#000',
-    },
-    grey: {
-      100: '#FFFFFF',
-      200: '#D9DADD',
-      300: '#B3B5BB',
-      400: '#838690',
-      500: '#61646D',
-      600: '#414348',
-      700: '#303135',
-      800: '#1C1D20',
-      900: '#000000',
-    },
-    systemSuccess: {
-      main: '#0AA65B',
-      light: '#0AA65B',
-      dark: '#0AA65B',
-    },
-    systemWarning: {
-      main: '#FFE668',
-      light: '#FFE668',
-      dark: '#FFE668',
-    },
-    systemError: {
-      main: '#E5452F',
-      light: '#E5452F',
-      dark: '#E5452F',
-    },
-  },
 
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: `${resetStyled} ${bodyStyled} ${Fonts}`,
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: `${resetStyled} ${bodyStyled} ${Fonts}`,
+      },
     },
-  },
-});
+  }),
+);
 
-export const darkTheme: Theme = createTheme({
-  ...themePreset,
-  spacing: 4,
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#000',
+export const darkTheme: Theme = createTheme(
+  deepmerge(themePreset, {
+    spacing: 4,
+    palette: {
+      mode: 'dark',
+      background: {
+        default:
+          'linear-gradient(180deg, #000000 0%, #0C001F 49.48%, #000000 99.48%)', //'#241D52',
+      },
+      text: {
+        primary: '#fff',
+      },
+      accent1: {
+        light: '#653BA3',
+        main: '#653BA3',
+        dark: '#653BA3',
+        contrastText: '#fff',
+      },
+      accent2: {
+        light: '#B24DD6',
+        main: '#B24DD6',
+        dark: '#B24DD6',
+        contrastText: '#fff',
+      },
+      primary: {
+        light: '#31007A',
+        main: '#31007A',
+        dark: '#31007A',
+        contrastText: '#fff',
+      },
+      secondary: {
+        light: '#eee6f5',
+        main: '#eee6f5',
+        dark: '#eee6f5',
+        contrastText: '#fff',
+      },
+      tertiary: {
+        light: '#f5e7fa',
+        main: '#f5e7fa',
+        dark: '#f5e7fa',
+        contrastText: '#fff',
+      },
+      grey: {
+        100: '#FFFFFF',
+        200: '#F6F5FA',
+        300: '#ECEBF0',
+        400: '#DDDCE0',
+        500: '#C9C8CC',
+        600: '#8A8D8F',
+        700: '#70767A',
+        800: '#4B4F52',
+        900: '#000000',
+      },
+      success: {
+        main: '#0AA65B',
+        light: '#0AA65B',
+        dark: '#0AA65B',
+      },
+      warning: {
+        main: '#FFE668',
+        light: '#FFE668',
+        dark: '#FFE668',
+      },
+      error: {
+        main: '#E5452F',
+        light: '#E5452F',
+        dark: '#E5452F',
+      },
+      info: {
+        main: '#297EFF',
+        light: '#297EFF',
+        dark: '#297EFF',
+      },
+      white: {
+        main: '#FFFFFF',
+        light: '#FFFFFF',
+        dark: '#FFFFFF',
+      },
+      black: {
+        main: '#000000',
+        light: '#000000',
+        dark: '#000000',
+      },
     },
-    text: {
-      primary: '#fff',
-    },
-    brandPrimary: {
-      light: '#13F287',
-      main: '#13F287',
-      dark: '#13F287',
-    },
-    brandPrimaryTint100: {
-      light: '#93FFCB',
-      main: '#93FFCB',
-      dark: '#93FFCB',
-      contrastText: '#fff',
-    },
-    brandSecondary: {
-      light: '#FF6C3E',
-      main: '#FF6C3E',
-      dark: '#FF6C3E',
-      contrastText: '#000',
-    },
-    brandTertiary: {
-      light: '#633DFF',
-      main: '#633DFF',
-      dark: '#633DFF',
-      contrastText: '#000',
-    },
-    grey: {
-      100: '#FFFFFF',
-      200: '#D9DADD',
-      300: '#B3B5BB',
-      400: '#838690',
-      500: '#61646D',
-      600: '#414348',
-      700: '#303135',
-      800: '#1C1D20',
-      900: '#000000',
-    },
-    systemSuccess: {
-      main: '#02C55B',
-      light: '#02C55B',
-      dark: '#02C55B',
-    },
-    systemWarning: {
-      main: '#FFF95F',
-      light: '#FFF95F',
-      dark: '#FFF95F',
-    },
-    systemError: {
-      main: '#E4294B',
-      light: '#E4294B',
-      dark: '#E4294B',
-    },
-  },
 
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: `${resetStyled} ${bodyStyled} ${Fonts}`,
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: `${resetStyled} ${bodyStyled} ${Fonts}`,
+      },
     },
-  },
-});
+  }),
+);

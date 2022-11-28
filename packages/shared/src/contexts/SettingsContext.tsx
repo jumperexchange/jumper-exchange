@@ -1,5 +1,4 @@
-import { cookiesKey } from '@transferto/shared/src/config';
-import Cookies from 'js-cookie';
+import { localStorageKey } from '@transferto/shared/src/config';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,13 +13,13 @@ import {
 // utils
 // config
 import i18next from 'i18next';
-import { cookiesExpires, defaultSettings } from '../index';
+import { defaultSettings } from '../index';
 // @type
 import {
   DappLanguagesSupported,
   SettingsContextProps,
   SettingsValueProps,
-  ThemeMode,
+  ThemeModesSupported,
 } from '../types/settings';
 
 // ----------------------------------------------------------------------
@@ -55,9 +54,6 @@ const SettingsProvider = ({
   defaultSettings,
 }: SettingsProviderProps) => {
   const [settings, setSettings] = useSettingCookies(defaultSettings);
-  // const langStorage =
-  //   typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
-
   // Mode
   const onToggleMode = () => {
     setSettings({
@@ -66,10 +62,10 @@ const SettingsProvider = ({
     });
   };
 
-  const onChangeMode = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeMode = (mode: ThemeModesSupported) => {
     setSettings({
       ...settings,
-      themeMode: (event.target as HTMLInputElement).value as ThemeMode,
+      themeMode: mode as ThemeModesSupported,
     });
   };
 
@@ -93,7 +89,7 @@ const SettingsProvider = ({
 
   const onResetSetting = () => {
     setSettings({
-      themeMode: initialState.themeMode || 'light',
+      themeMode: !!initialState.themeMode ? initialState.themeMode : 'auto',
       languageMode:
         initialState.languageMode ||
         (i18next.language as DappLanguagesSupported) ||
@@ -135,21 +131,11 @@ const useSettingCookies = (
   const { i18n } = useTranslation();
 
   const onChangeSetting = () => {
-    Cookies.set(
-      cookiesKey.themeMode
-        ? cookiesKey.themeMode
-        : window.matchMedia('(prefers-color-scheme: light)').matches
-        ? 'light'
-        : 'dark',
-      settings.themeMode,
-      {
-        expires: cookiesExpires,
-      },
+    localStorage.setItem(
+      localStorageKey.themeMode,
+      !!settings.themeMode ? settings.themeMode : 'auto',
     );
-
-    Cookies.set(cookiesKey.languageMode, i18n.language, {
-      expires: cookiesExpires,
-    });
+    localStorage.setItem(localStorageKey.languageMode, i18n.language);
   };
 
   useEffect(() => {

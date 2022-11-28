@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { useTheme } from '@mui/material/styles';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { useIsDarkMode } from '../../providers/ThemeProvider';
 import {
   NavbarMenuItemAbout,
   NavbarMenuItemDevelopers,
@@ -25,7 +26,7 @@ interface NavbarMenuProps {
   open: boolean;
 }
 
-const NavbarMenu = ({
+const NavbarMenuMobile = ({
   handleClose,
   open,
   setOpen,
@@ -34,7 +35,7 @@ const NavbarMenu = ({
   setOpenSubMenu,
 }: NavbarMenuProps) => {
   const theme = useTheme();
-  // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
+  const isDarkMode = useIsDarkMode();
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -61,7 +62,6 @@ const NavbarMenu = ({
               left: '0 !important',
               top: 'unset !important',
               right: '0 !important',
-              // transform: 'unset !important',
               margin: '0px',
               [theme.breakpoints.up('sm')]: {
                 bottom: 'unset !important',
@@ -76,9 +76,10 @@ const NavbarMenu = ({
           >
             <Paper
               sx={{
+                background: isDarkMode ? '#121212' : '#fff',
                 borderRadius: '12px 12px 0 0',
+                padding: openSubMenu === 'none' ? '24px' : 0,
                 mt: '10px',
-                padding: openSubMenu == 'none' ? '16px 0' : 0,
                 '& ul': {
                   padding: 0,
                 },
@@ -115,8 +116,13 @@ const NavbarMenu = ({
                     openSubMenu={openSubMenu}
                     setOpenSubMenu={setOpenSubMenu}
                   />
-                  <NavbarMenuItemAbout open={open} openSubMenu={openSubMenu} />
+                  <NavbarMenuItemAbout
+                    open={open}
+                    setOpen={setOpen}
+                    openSubMenu={openSubMenu}
+                  />
                   <NavbarMenuItemSupport
+                    setOpen={setOpen}
                     open={open}
                     openSubMenu={openSubMenu}
                   />
@@ -145,4 +151,4 @@ const NavbarMenu = ({
   );
 };
 
-export default NavbarMenu;
+export default NavbarMenuMobile;

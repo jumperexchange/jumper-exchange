@@ -7,10 +7,12 @@ import {
 } from '@lifi/wallet-management';
 import { LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box, Grid } from '@mui/material';
+import { useSettings } from '@transferto/shared/src/hooks';
 import { WalletModal } from '@transferto/shared/src/molecules';
 import { DappLanguagesSupported } from '@transferto/shared/types';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useIsDarkMode as isDarkModeFunc } from '../../providers/ThemeProvider';
 import { useWallet } from '../../providers/WalletProvider';
 
 // TODO: pull interface into types
@@ -22,6 +24,8 @@ interface ShowConnectModalProps {
 export default function Refuel() {
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
+  const settings = useSettings();
+  const isDarkMode = isDarkModeFunc();
   const [showConnectModal, setShowConnectModal] =
     useState<ShowConnectModalProps>({ show: false });
 
@@ -73,13 +77,14 @@ export default function Refuel() {
         default: i18n.language as DappLanguagesSupported,
         allow: ['de', 'en'],
       },
+      appearance: !!isDarkMode ? 'dark' : 'light',
       // theme: {
       //   palette: {
       //     primary: {
-      //       main: theme.palette.brandPrimary.dark,
+      //       main: theme.palette.primary.dark,
       //     },
       //     secondary: {
-      //       main: theme.palette.brandSecondary.main,
+      //       main: theme.palette.secondary.main,
       //     },
       //     background: {
       //       default: theme.palette.background.default,
@@ -87,7 +92,7 @@ export default function Refuel() {
       //   },
       // },
     };
-  }, [i18n.language, account.signer]);
+  }, [i18n.language, isDarkMode, account.signer, disconnect]);
 
   return (
     <Grid

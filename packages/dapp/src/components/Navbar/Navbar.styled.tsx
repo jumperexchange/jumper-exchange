@@ -1,6 +1,7 @@
 import {
   AppBar,
   Button,
+  ButtonProps,
   Link,
   LinkProps,
   MenuItem as MUIMenuItem,
@@ -15,7 +16,7 @@ export const MenuBrand = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   position: 'absolute',
   '&:hover': {
-    color: theme.palette.brandPrimary.main,
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -40,11 +41,11 @@ export const NavbarLinkContainer = styled('div')(({ theme }) => ({
     position: 'absolute',
     left: '50%',
     transform: 'translateX(-50%)',
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.mode === 'dark' ? '#231a31' : '#0000000A',
     margin: 'auto',
     height: 48,
     borderRadius: 24,
-    padding: 4,
+    padding: 1,
     display: 'flex',
     width: 390,
   },
@@ -57,13 +58,13 @@ export const NavBar = styled(AppBar)(({ theme }) => ({
   // color: theme.palette.text.primary,
 }));
 
-export const NavbarContainer = styled('div')`
-  background: transparent;
-  height: 75px;
-  padding: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-`;
+export const NavbarContainer = styled('div')(({ theme }) => ({
+  background: 'transparent',
+  height: '75px',
+  padding: theme.spacing(6),
+  display: 'flex',
+  justifyContent: 'space-between',
+}));
 
 export interface NavbarLinkType extends Omit<LinkProps, 'active'> {
   active?: boolean;
@@ -71,56 +72,69 @@ export interface NavbarLinkType extends Omit<LinkProps, 'active'> {
   // theme?: ITheme;
 }
 
+export interface ButtonType extends Omit<ButtonProps, 'mainCol'> {
+  mainCol?: string;
+}
+
 export const NavbarLink = styled(Link, {
   shouldForwardProp: (prop) =>
     prop !== 'hoverBackgroundColor' && prop !== 'active',
 })<NavbarLinkType>(({ theme, active, hoverBackgroundColor }) => ({
-  backgroundColor: !!active ? '#F3EBFF' : 'transparent',
+  backgroundColor: !active
+    ? 'transparent'
+    : theme.palette.mode === 'dark'
+    ? '#352b42'
+    : theme.palette.grey[100],
   borderRadius: 20,
   width: '50%',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  margin: 4,
   fontFamily: 'Inter',
   fontStyle: 'normal',
   fontWeight: '700',
   fontSize: '14px',
   lineHeight: '20px',
-  color: 'black',
+  color:
+    theme.palette.mode === 'dark'
+      ? theme.palette.grey[100]
+      : theme.palette.grey[900],
   textDecoration: 'none',
   '&:hover': {
     backgroundColor: !!hoverBackgroundColor
       ? hoverBackgroundColor
-      : theme.palette.brandSecondary.main,
+      : theme.palette.secondary.main,
   },
 }));
 
-export const NavbarLinkText = styled('span')({});
-
-export const NavbarDropdownButton = styled(Button)({
-  backgroundColor: 'white',
+export const NavbarDropdownButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'mainCol',
+})<ButtonType>(({ theme, mainCol }) => ({
   justifyContent: 'center',
-  color: '#000000',
+  color: !!mainCol ? mainCol : '#31007A',
   width: '48px',
-  marginLeft: '8px',
+  marginLeft: theme.spacing(2),
   minWidth: 'unset',
   height: '48px',
-  borderRadius: '100%',
-  '&:hover': {
-    backgroundColor: 'white',
-  },
-});
+}));
 
-export const MenuHeader = styled(MUIMenuItem)({
+export const NavbarLinkText = styled('span')({});
+// borderRadius: '100%',
+// '&:hover': {
+//   backgroundColor: 'white',
+// },
+
+export const MenuHeader = styled(MUIMenuItem)(({ theme }) => ({
+  padding: '0',
+  textAlign: 'center',
+  margin: '0 auto', //`${theme.spacing(2)} auto`,
   '& svg': {
     position: 'absolute',
   },
-});
+}));
 
-export const MenuHeaderText = styled('span')({
-  margin: '8px auto',
-  fontWeight: 700,
-});
+export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
 export const MenuItem = styled(MUIMenuItem)(({ theme }) => ({
   display: 'flex',
@@ -133,10 +147,10 @@ export const MenuItem = styled(MUIMenuItem)(({ theme }) => ({
   },
 }));
 
-export const MenuLinkItem = styled(Link)({
+export const MenuLinkItem = styled(Link)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  padding: '6px 16px',
+  padding: `6px 0`,
   height: '48px',
   textDecoration: 'none',
   color: 'inherit',
@@ -147,14 +161,15 @@ export const MenuLinkItem = styled(Link)({
     textDecoration: 'none',
     backgroundColor: '#0000000A',
   },
-});
+}));
 
-export const MenuButton = styled(Button)({
+export const MenuButton = styled(Button)(({ theme }) => ({
   height: '48px',
   width: '100%',
-  color: '#31007A',
+  borderRadius: '24px',
+  color: theme.palette.primary.main,
   backgroundColor: '#F3EBFF',
-});
+}));
 
 export const MenuItemLabel = styled('div')({
   display: 'flex',

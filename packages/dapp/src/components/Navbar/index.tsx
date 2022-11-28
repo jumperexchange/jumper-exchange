@@ -1,7 +1,6 @@
 export { default as Navbar } from './Navbar';
 export { default as NavbarLinks } from './NavbarLinks';
 export { default as NavbarManagement } from './NavbarManagement';
-export { default as NavbarMenu } from './NavbarMenu';
 export { default as NavbarMenuDesktop } from './NavbarMenuDesktop';
 export { default as NavbarMenuItemAbout } from './NavbarMenuItem-About';
 export { default as NavbarMenuItemDevelopers } from './NavbarMenuItem-Developers';

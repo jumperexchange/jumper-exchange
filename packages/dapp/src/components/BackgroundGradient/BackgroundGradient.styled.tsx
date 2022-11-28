@@ -4,8 +4,7 @@ export const BackgroundGradientContainer = styled('div')(({ theme }) => ({
   position: 'absolute',
   overflow: 'hidden',
   pointerEvents: 'none',
-  background:
-    'linear-gradient(180deg, #F9F5FF 0%, #F3EBFF 49.48%, #F9F5FF 99.48%)',
+  background: `${theme.palette.background.default}`,
   height: '100vh',
   width: '100vw',
   left: 0,

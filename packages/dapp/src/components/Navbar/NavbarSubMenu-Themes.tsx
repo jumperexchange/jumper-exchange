@@ -1,4 +1,4 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Paper from '@mui/material/Paper';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
@@ -6,14 +6,11 @@ import BrightnessAutoOutlinedIcon from '@mui/icons-material/BrightnessAutoOutlin
 import CheckIcon from '@mui/icons-material/Check';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
+import { Typography } from '@mui/material';
 import { useLocales, useSettings } from '@transferto/shared/src/hooks';
+import { useIsDarkMode } from '../../providers/ThemeProvider';
 
-import {
-  MenuHeader,
-  MenuHeaderText,
-  MenuItem,
-  MenuItemLabel,
-} from './Navbar.styled';
+import { MenuHeader, MenuItem, MenuItemLabel } from './Navbar.styled';
 
 interface NavbarSubMenuProps {
   open: boolean;
@@ -29,6 +26,10 @@ const NavbarSubMenuLanguages = ({
   const { translate } = useLocales();
   const i18Path = 'Navbar.';
   const settings = useSettings();
+  const _isDarkMode = useIsDarkMode();
+  const handleSwitchMode = (mode) => {
+    settings.onChangeMode(mode);
+  };
 
   return (
     !!open && (
@@ -36,39 +37,45 @@ const NavbarSubMenuLanguages = ({
         {openSubMenu === 'themes' && (
           <Paper
             sx={{
-              width: '100%',
+              background: !!_isDarkMode ? '#121212' : '#fff',
               borderRadius: '12px',
-              paddingTop: '16px',
-              paddingBottom: '16px',
+              padding: '12px 24px 24px',
               '> ul': {
                 padding: '16px 0',
               },
             }}
           >
             <MenuHeader
+              sx={{ height: '48px' }}
               onClick={() => {
                 setOpenSubMenu('none');
               }}
             >
               <>
-                <ChevronLeftIcon className="menu-header__icon" />
-                <MenuHeaderText>
+                <ArrowBackIcon className="menu-header__icon" />
+                <Typography
+                  fontSize={'14px'}
+                  fontWeight={700}
+                  lineHeight={'20px'}
+                  width={'100%'}
+                >
                   <>{translate(`${i18Path}NavbarMenu.Theme`)}</>
-                </MenuHeaderText>
+                </Typography>
               </>
             </MenuHeader>
             <MenuItem
-              value={'en'}
               onClick={() => {
-                console.log('set to light mode');
+                handleSwitchMode('light');
               }}
-              sx={{ justifyContent: 'space-between' }}
+              sx={{ justifyContent: 'space-between', p: 0 }}
             >
               <>
                 <MenuItemLabel>
                   <>
                     <LightModeIcon />
-                    {translate(`${i18Path}Themes.Light`)}
+                    <Typography fontSize={'14px'} lineHeight={'20px'}>
+                      <>{translate(`${i18Path}Themes.Light`)}</>
+                    </Typography>
                   </>
                 </MenuItemLabel>
                 {settings.themeMode === 'light' && <CheckIcon />}
@@ -76,15 +83,17 @@ const NavbarSubMenuLanguages = ({
             </MenuItem>
             <MenuItem
               onClick={() => {
-                console.log('set to dark mode');
+                handleSwitchMode('dark');
               }}
-              sx={{ justifyContent: 'space-between' }}
+              sx={{ justifyContent: 'space-between', p: 0 }}
             >
               <>
                 <MenuItemLabel>
                   <>
                     <NightlightOutlinedIcon />
-                    {translate(`${i18Path}Themes.Dark`)}
+                    <Typography fontSize={'14px'} lineHeight={'20px'}>
+                      <>{translate(`${i18Path}Themes.Dark`)}</>
+                    </Typography>
                   </>
                 </MenuItemLabel>
                 {settings.themeMode === 'dark' && <CheckIcon />}
@@ -92,17 +101,19 @@ const NavbarSubMenuLanguages = ({
             </MenuItem>
             <MenuItem
               onClick={() => {
-                console.log('set to auto mode');
+                handleSwitchMode('auto');
               }}
-              sx={{ justifyContent: 'space-between' }}
+              sx={{ justifyContent: 'space-between', p: 0 }}
             >
               <MenuItemLabel>
                 <>
                   <BrightnessAutoOutlinedIcon />
-                  {translate(`${i18Path}Themes.Auto`)}
+                  <Typography fontSize={'14px'} lineHeight={'20px'}>
+                    <>{translate(`${i18Path}Themes.Auto`)}</>
+                  </Typography>
                 </>
               </MenuItemLabel>
-              {settings.themeMode === 'dark' && <CheckIcon />}
+              {settings.themeMode === 'auto' && <CheckIcon />}
             </MenuItem>
           </Paper>
         )}

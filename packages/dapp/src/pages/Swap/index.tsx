@@ -11,7 +11,7 @@ import { WalletModal } from '@transferto/shared/src/molecules';
 import { DappLanguagesSupported } from '@transferto/shared/types';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { useIsDarkMode } from '../../providers/ThemeProvider';
 import { useWallet } from '../../providers/WalletProvider';
 interface ShowConnectModalProps {
   show: boolean;
@@ -20,6 +20,8 @@ interface ShowConnectModalProps {
 export default function Swap() {
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
+  const isDarkMode = useIsDarkMode();
+
   const [showConnectModal, setShowConnectModal] =
     useState<ShowConnectModalProps>({ show: false });
 
@@ -60,7 +62,6 @@ export default function Swap() {
           return addChain(chainId);
         },
       },
-
       containerStyle: {
         border: `1px solid rgb(234, 234, 234)`,
         borderRadius: '16px',
@@ -70,21 +71,22 @@ export default function Swap() {
         default: i18n.language as DappLanguagesSupported,
         allow: ['de', 'en'],
       },
+      appearance: !!isDarkMode ? 'dark' : 'light',
       // theme: {
       //   palette: {
       //     primary: {
-      //       main: theme.palette.brandPrimary.dark,
+      //       main: '#1f8ebe', //blue // theme.palette.brandPrimary.dark,
       //     },
       //     secondary: {
-      //       main: theme.palette.brandSecondary.main,
+      //       main: '#ffc36a', //brown //theme.palette.brandSecondary.main,
       //     },
       //     background: {
-      //       default: theme.palette.background.default,
+      //       default: '#eeeee4', //theme.palette.background.default,
       //     },
       //   },
       // },
     };
-  }, [i18n.language, account.signer]);
+  }, [i18n.language, isDarkMode, account.signer, disconnect]);
 
   return (
     <Grid

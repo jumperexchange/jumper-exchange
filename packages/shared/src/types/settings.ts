@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-export type ThemeMode = 'light' | 'dark';
+export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export enum DappLanguagesSupported {
   // Todo: Check Typing, does it fit here?
   // It´s meant for dapp, but is placed in shared folder, can I pass those types?
@@ -8,20 +8,18 @@ export enum DappLanguagesSupported {
   de = 'de',
 }
 
-export type DappLanguageSupported = 'de' | 'en';
-
 export type SettingsValueProps = {
-  themeMode: ThemeMode;
+  themeMode: ThemeModesSupported;
   languageMode: DappLanguagesSupported; // Todo: Same here, languages supported depends on app
 };
 
 export type SettingsContextProps = {
-  themeMode?: ThemeMode;
+  themeMode?: ThemeModesSupported;
   languageMode?: DappLanguagesSupported; // Todo: Same here, languages supported depends on app
 
   // Mode
   onToggleMode: VoidFunction;
-  onChangeMode: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeMode: (mode: ThemeModesSupported) => void;
 
   // Language
   onChangeLanguage: (language: string) => void; // Todo: Check Typing, language: DappLanguagesSupported

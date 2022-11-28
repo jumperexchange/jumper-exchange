@@ -2,9 +2,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
+import { Typography } from '@mui/material';
 import { useLocales } from '@transferto/shared/src/hooks';
-
-import { MenuItem, MenuItemLabel, MenuItemText } from './Navbar.styled';
+import { MenuItem, MenuItemLabel } from './Navbar.styled';
 
 interface NavbarMenuItemProps {
   open: boolean;
@@ -24,8 +24,9 @@ const NavbarMenuItemDevelopers = ({
   return (
     !!open && (
       <>
-        {openSubMenu == 'none' && (
+        {openSubMenu === 'none' && (
           <MenuItem
+            sx={{ p: 0 }}
             onClick={() => {
               setOpenSubMenu('devs');
             }}
@@ -34,9 +35,14 @@ const NavbarMenuItemDevelopers = ({
               <MenuItemLabel>
                 <>
                   <DeveloperModeIcon className="menu-item-label__icon" />
-                  <MenuItemText className="menu-item-label__text">
+                  <Typography
+                    className="menu-item-label__text"
+                    fontSize={'14px'}
+                    fontWeight={500}
+                    lineHeight={'20px'}
+                  >
                     <>{translate(`${i18Path}NavbarMenu.Developers`)}</>
-                  </MenuItemText>
+                  </Typography>
                 </>
               </MenuItemLabel>
               <ChevronRightIcon />

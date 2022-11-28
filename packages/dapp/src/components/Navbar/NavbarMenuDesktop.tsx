@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { useTheme } from '@mui/material/styles';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { useIsDarkMode } from '../../providers/ThemeProvider';
 import {
   NavbarMenuItemAbout,
   NavbarMenuItemDevelopers,
@@ -34,6 +35,7 @@ const NavbarMenuDesktop = ({
   setOpenSubMenu,
 }: NavbarMenuProps) => {
   const theme = useTheme();
+  const isDarkMode = useIsDarkMode();
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -75,14 +77,15 @@ const NavbarMenuDesktop = ({
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin: 'bottom',
+                transformOrigin: 'right top',
               }}
             >
               <Paper
                 sx={{
                   borderRadius: '12px',
+                  background: isDarkMode ? '#121212' : '#fff',
                   mt: '10px',
-                  padding: openSubMenu == 'none' ? '16px 0' : 0,
+                  padding: openSubMenu === 'none' ? '24px' : 0,
                   '& ul': {
                     padding: 0,
                   },

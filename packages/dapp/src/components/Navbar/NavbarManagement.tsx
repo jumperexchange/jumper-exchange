@@ -1,8 +1,10 @@
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { WalletManagementButtons } from '@transferto/shared';
 import { screenSize } from '@transferto/shared/src/style';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { useIsDarkMode } from '../../providers/ThemeProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import { NavbarMenuDesktop, NavbarMenuMobile } from './index';
 
@@ -17,12 +19,13 @@ const NavbarManagement = () => {
   // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
   const [open, setOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState('none');
+  const theme = useTheme();
   const isTablet = useMediaQuery(`(${screenSize.minTablet})`);
-
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
     setOpenSubMenu('none');
   };
+  console.log('THEME:', theme.palette.accent1);
 
   const handleClose = (event: Event | SyntheticEvent) => {
     event.preventDefault();
@@ -49,7 +52,7 @@ const NavbarManagement = () => {
   return (
     <NavbarManagementContainer className="settings">
       <WalletManagementButtons
-        backgroundColor={'#31007A'}
+        backgroundColor={theme.palette.accent1.main}
         hoverBackgroundColor={'#31007a8c'}
         walletManagement={useWallet()}
       />
@@ -60,8 +63,9 @@ const NavbarManagement = () => {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
+        mainCol={!!useIsDarkMode() ? '#653BA3' : '#31007A'}
       >
-        <MoreHorizIcon />
+        <MenuIcon sx={{ fontSize: '32px' }} />
       </NavbarDropdownButton>
       {!!isTablet ? (
         <NavbarMenuDesktop
