@@ -15,8 +15,8 @@ jobs:
 
       - name: Install and Build 🔧 # This project is built using yarn and outputs the result to the 'dist' folder.
         run: |
-          node --max_old_space_size=8192
           yarn
+          node --max_old_space_size=8192 ./node_modules/vite/bin/vite.js
           yarn build
 
       - name: Deploy 🚀
