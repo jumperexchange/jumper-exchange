@@ -19,13 +19,11 @@ const NavbarMenuItemAbout = ({
   const { translate } = useLocales();
   const i18Path = 'Navbar.';
 
-  // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
   return (
     !!open && (
       <>
         {openSubMenu === 'none' && (
           <MenuItem
-            sx={{ p: 0 }}
             onClick={() => {
               openInNewTab('https://li.fi');
               setOpen(false);
@@ -39,6 +37,7 @@ const NavbarMenuItemAbout = ({
                   fontSize={'14px'}
                   fontWeight={500}
                   lineHeight={'20px'}
+                  ml={'12px'}
                 >
                   <>{translate(`${i18Path}NavbarMenu.AboutLIFI`)}</>
                 </Typography>

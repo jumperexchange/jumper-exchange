@@ -22,7 +22,6 @@ const NavbarMenuItemThemes = ({
 
   return !!open && openSubMenu === 'none' ? (
     <MenuItem
-      sx={{ p: 0 }}
       onClick={() => {
         setOpenSubMenu('themes');
       }}
@@ -36,6 +35,7 @@ const NavbarMenuItemThemes = ({
               fontSize={'14px'}
               fontWeight={500}
               lineHeight={'20px'}
+              ml={'12px'}
             >
               <>{translate(`${i18Path}NavbarMenu.Theme`)}</>{' '}
             </Typography>

@@ -2,14 +2,16 @@ import Paper from '@mui/material/Paper';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { IconButton, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+
 import CheckIcon from '@mui/icons-material/Check';
-import { Typography } from '@mui/material';
 import { FlagGermany, FlagUSA } from '@transferto/shared/src/atoms/icons/flags';
 import { useLocales, useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
 
-import { MenuHeader, MenuItem, MenuItemLabel } from './Navbar.styled';
+import { MenuHeaderAppBar, MenuItem, MenuItemLabel } from './Navbar.styled';
 
 interface NavbarSubMenuProps {
   open: boolean;
@@ -27,6 +29,8 @@ const NavbarSubMenuLanguages = ({
   const settings = useSettings();
   const { i18n } = useTranslation();
   const _isDarkMode = useIsDarkMode();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleSwitchLanguage = (newLanguage) => {
     i18n.changeLanguage(newLanguage);
@@ -40,34 +44,44 @@ const NavbarSubMenuLanguages = ({
           <Paper
             sx={{
               background: !!_isDarkMode ? '#121212' : '#fff',
-              borderRadius: '12px',
-              padding: '12px 24px 24px',
+              borderRadius: isMobile ? '0' : '12px',
 
               '> ul': {
                 padding: '16px 0',
               },
+              paddingBottom: '12px',
             }}
           >
-            <MenuHeader
-              sx={{ height: '48px' }}
-              onClick={() => {
-                setOpenSubMenu('none');
-              }}
-            >
-              <>
-                <ArrowBackIcon className="menu-header__icon" />
-                <Typography
-                  fontSize={'14px'}
-                  fontWeight={700}
-                  lineHeight={'20px'}
-                  width={'100%'}
-                >
-                  <>{translate(`${i18Path}NavbarMenu.Language`)}</>
-                </Typography>
-              </>
-            </MenuHeader>
+            <MenuHeaderAppBar elevation={0}>
+              <IconButton
+                size="medium"
+                aria-label="settings"
+                edge="start"
+                className="menu-header__icon"
+                sx={{
+                  color: theme.palette.text.primary,
+                  position: 'absolute',
+                  marginLeft: '6px',
+                }}
+                onClick={() => {
+                  setOpenSubMenu('none');
+                }}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+              <Typography
+                fontSize={'14px'}
+                lineHeight={'20px'}
+                width={'100%'}
+                align={'center'}
+                fontWeight="700"
+                flex={1}
+                noWrap
+              >
+                <>{translate(`${i18Path}NavbarMenu.Language`)}</>
+              </Typography>
+            </MenuHeaderAppBar>
             <MenuItem
-              sx={{ p: 0 }}
               value={'en'}
               onClick={() => {
                 handleSwitchLanguage('en');
@@ -76,7 +90,7 @@ const NavbarSubMenuLanguages = ({
               <MenuItemLabel>
                 <>
                   <FlagUSA />
-                  <Typography fontSize={'14px'} lineHeight={'20px'}>
+                  <Typography fontSize={'14px'} lineHeight={'20px'} ml={'12px'}>
                     <>{translate(`${i18Path}Languages.English`)}</>
                   </Typography>
                 </>
@@ -84,7 +98,6 @@ const NavbarSubMenuLanguages = ({
               {settings.languageMode === 'en' && <CheckIcon />}
             </MenuItem>
             <MenuItem
-              sx={{ p: 0 }}
               value={'de'}
               onClick={() => {
                 handleSwitchLanguage('de');
@@ -93,7 +106,7 @@ const NavbarSubMenuLanguages = ({
               <MenuItemLabel>
                 <>
                   <FlagGermany />
-                  <Typography fontSize={'14px'} lineHeight={'20px'}>
+                  <Typography fontSize={'14px'} lineHeight={'20px'} ml={'12px'}>
                     <>{translate(`${i18Path}Languages.German`)}</>
                   </Typography>
                 </>

@@ -20,13 +20,11 @@ const NavbarMenuItemDevelopers = ({
   const { translate } = useLocales();
   const i18Path = 'Navbar.';
 
-  // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
   return (
     !!open && (
       <>
         {openSubMenu === 'none' && (
           <MenuItem
-            sx={{ p: 0 }}
             onClick={() => {
               setOpenSubMenu('devs');
             }}
@@ -40,6 +38,7 @@ const NavbarMenuItemDevelopers = ({
                     fontSize={'14px'}
                     fontWeight={500}
                     lineHeight={'20px'}
+                    ml={'12px'}
                   >
                     <>{translate(`${i18Path}NavbarMenu.Developers`)}</>
                   </Typography>

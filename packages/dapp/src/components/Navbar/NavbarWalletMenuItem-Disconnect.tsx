@@ -1,39 +1,36 @@
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Typography } from '@mui/material';
-import Discord from '@transferto/shared/src/atoms/icons/Discord';
-import { useLocales } from '@transferto/shared/src/hooks';
-import { openInNewTab } from '@transferto/shared/src/utils/';
+import { useLocales, useSettings } from '@transferto/shared/src/hooks';
 import { Dispatch, SetStateAction } from 'react';
 import { MenuButton, MenuItem } from './Navbar.styled';
+
 interface NavbarMenuItemProps {
   open: boolean;
   openSubMenu: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  disconnect: any;
 }
 
-const NavbarMenuItemSupport = ({
+const NavbarWalletMenuItemDisconnect = ({
   open,
   openSubMenu,
   setOpen,
+  disconnect,
 }: NavbarMenuItemProps) => {
   const { translate } = useLocales();
-  const i18Path = 'Navbar.';
+  const i18Path = 'Navbar.WalletMenu.';
+  const settings = useSettings();
 
   return !!open && openSubMenu === 'none' ? (
     <MenuItem
-      sx={{
-        p: '0 24px',
-        mt: 2,
-      }}
+      sx={{ p: '0 24px', mt: 2 }}
       onClick={() => {
-        openInNewTab('https://discord.gg/lifi');
+        disconnect();
         setOpen(false);
+        settings.onWalletDisconnect();
       }}
     >
-      <MenuButton
-        sx={{
-          textTransform: 'none',
-        }}
-      >
+      <MenuButton sx={{ textTransform: 'none' }}>
         <>
           <Typography
             fontSize={'14px'}
@@ -41,10 +38,10 @@ const NavbarMenuItemSupport = ({
             lineHeight={'20px'}
             component={'span'}
           >
-            <>{translate(`${i18Path}NavbarMenu.Support`)}</>
+            <>{translate(`${i18Path}Disconnect`)}</>
           </Typography>
-          <Discord
-            style={{
+          <PowerSettingsNewIcon
+            sx={{
               marginLeft: '9.5px',
             }}
           />
@@ -54,4 +51,4 @@ const NavbarMenuItemSupport = ({
   ) : null;
 };
 
-export default NavbarMenuItemSupport;
+export default NavbarWalletMenuItemDisconnect;

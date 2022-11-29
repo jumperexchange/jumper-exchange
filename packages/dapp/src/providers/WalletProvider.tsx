@@ -25,7 +25,7 @@ const stub = (): never => {
   throw new Error('You forgot to wrap your component in <WalletProvider>.');
 };
 
-const initialContext: WalletContextProps = {
+export const initialContext: WalletContextProps = {
   connect: stub,
   disconnect: stub,
   switchChain: stub,
@@ -48,17 +48,20 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     signer,
   } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
+  const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
 
   const connect = useCallback(
     async (wallet?: Wallet) => {
       await walletManagementConnect(wallet);
       const account = await extractAccountFromSigner(signer);
+      setUsedWallet(wallet!);
       setAccount(account);
     },
     [walletManagementConnect],
   );
 
   const disconnect = useCallback(async () => {
+    setUsedWallet(undefined);
     await walletManagementDisconnect();
   }, [walletManagementDisconnect]);
 
@@ -92,6 +95,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       addChain,
       addToken,
       account,
+      usedWallet,
     }),
     [account, addChain, addToken, connect, disconnect, switchChain],
   );

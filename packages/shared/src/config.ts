@@ -6,6 +6,7 @@ import { DappLanguagesSupported } from './types/settings';
 export const cookiesExpires = 3;
 
 export const localStorageKey = {
+  activeWalletName: 'activeWalletName',
   themeMode: 'themeMode',
   languageMode: 'languageMode',
 };
@@ -48,4 +49,7 @@ export const defaultSettings: any = {
     ? localStorage.getItem(localStorageKey.themeMode)
     : 'auto',
   languageMode: setLanguage(defaultLang),
+  activeWalletName: !!localStorage.getItem(localStorageKey.activeWalletName)
+    ? localStorage.getItem(localStorageKey.activeWalletName)
+    : false,
 };

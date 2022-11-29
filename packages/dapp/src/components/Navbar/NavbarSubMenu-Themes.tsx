@@ -6,11 +6,11 @@ import BrightnessAutoOutlinedIcon from '@mui/icons-material/BrightnessAutoOutlin
 import CheckIcon from '@mui/icons-material/Check';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
-import { Typography } from '@mui/material';
+import { IconButton, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useLocales, useSettings } from '@transferto/shared/src/hooks';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
-
-import { MenuHeader, MenuItem, MenuItemLabel } from './Navbar.styled';
+import { MenuHeaderAppBar, MenuItem, MenuItemLabel } from './Navbar.styled';
 
 interface NavbarSubMenuProps {
   open: boolean;
@@ -30,6 +30,8 @@ const NavbarSubMenuLanguages = ({
   const handleSwitchMode = (mode) => {
     settings.onChangeMode(mode);
   };
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     !!open && (
@@ -37,43 +39,58 @@ const NavbarSubMenuLanguages = ({
         {openSubMenu === 'themes' && (
           <Paper
             sx={{
+              paddingBottom: '12px',
               background: !!_isDarkMode ? '#121212' : '#fff',
-              borderRadius: '12px',
-              padding: '12px 24px 24px',
+              borderRadius: isMobile ? '0' : '12px',
               '> ul': {
                 padding: '16px 0',
               },
             }}
           >
-            <MenuHeader
-              sx={{ height: '48px' }}
-              onClick={() => {
-                setOpenSubMenu('none');
-              }}
-            >
-              <>
-                <ArrowBackIcon className="menu-header__icon" />
-                <Typography
-                  fontSize={'14px'}
-                  fontWeight={700}
-                  lineHeight={'20px'}
-                  width={'100%'}
-                >
-                  <>{translate(`${i18Path}NavbarMenu.Theme`)}</>
-                </Typography>
-              </>
-            </MenuHeader>
+            <MenuHeaderAppBar elevation={0}>
+              <IconButton
+                size="medium"
+                aria-label="settings"
+                edge="start"
+                className="menu-header__icon"
+                sx={{
+                  color: theme.palette.text.primary,
+                  position: 'absolute',
+                  marginLeft: '6px',
+                }}
+                onClick={() => {
+                  setOpenSubMenu('none');
+                }}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+              <Typography
+                fontSize={'14px'}
+                lineHeight={'20px'}
+                width={'100%'}
+                align={'center'}
+                fontWeight="700"
+                flex={1}
+                noWrap
+              >
+                <>{translate(`${i18Path}NavbarMenu.Theme`)}</>
+              </Typography>
+            </MenuHeaderAppBar>
             <MenuItem
+              sx={{ p: '0 24px', justifyContent: 'space-between' }}
               onClick={() => {
                 handleSwitchMode('light');
               }}
-              sx={{ justifyContent: 'space-between', p: 0 }}
             >
               <>
                 <MenuItemLabel>
                   <>
                     <LightModeIcon />
-                    <Typography fontSize={'14px'} lineHeight={'20px'}>
+                    <Typography
+                      fontSize={'14px'}
+                      lineHeight={'20px'}
+                      ml={'12px'}
+                    >
                       <>{translate(`${i18Path}Themes.Light`)}</>
                     </Typography>
                   </>
@@ -85,13 +102,17 @@ const NavbarSubMenuLanguages = ({
               onClick={() => {
                 handleSwitchMode('dark');
               }}
-              sx={{ justifyContent: 'space-between', p: 0 }}
+              sx={{ p: '0 24px', justifyContent: 'space-between' }}
             >
               <>
                 <MenuItemLabel>
                   <>
                     <NightlightOutlinedIcon />
-                    <Typography fontSize={'14px'} lineHeight={'20px'}>
+                    <Typography
+                      fontSize={'14px'}
+                      lineHeight={'20px'}
+                      ml={'12px'}
+                    >
                       <>{translate(`${i18Path}Themes.Dark`)}</>
                     </Typography>
                   </>
@@ -103,12 +124,12 @@ const NavbarSubMenuLanguages = ({
               onClick={() => {
                 handleSwitchMode('auto');
               }}
-              sx={{ justifyContent: 'space-between', p: 0 }}
+              sx={{ p: '0 24px', justifyContent: 'space-between' }}
             >
               <MenuItemLabel>
                 <>
                   <BrightnessAutoOutlinedIcon />
-                  <Typography fontSize={'14px'} lineHeight={'20px'}>
+                  <Typography fontSize={'14px'} lineHeight={'20px'} ml={'12px'}>
                     <>{translate(`${i18Path}Themes.Auto`)}</>
                   </Typography>
                 </>

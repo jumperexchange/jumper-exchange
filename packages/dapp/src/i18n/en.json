@@ -5,7 +5,6 @@
       "Dashboard": "Dashboard",
       "Refuel": "Gas"
     },
-
     "ConnectWallet": "Connect Wallet",
     "NavbarMenu": {
       "Theme": "Theme",
@@ -13,6 +12,11 @@
       "Developers": "Developers",
       "AboutLIFI": "About LI.FI",
       "Support": "Support"
+    },
+    "WalletMenu": {
+      "Disconnect": "Disconnect",
+      "Chains": "Chains",
+      "SwitchChain": "Switch Chain"
     },
     "Languages": {
       "English": "English",

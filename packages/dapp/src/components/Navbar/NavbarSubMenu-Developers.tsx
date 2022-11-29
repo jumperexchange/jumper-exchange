@@ -5,11 +5,11 @@ import { Dispatch, SetStateAction } from 'react';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
-import { Typography } from '@mui/material';
+import { IconButton, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useLocales } from '@transferto/shared/src/hooks';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
-import { MenuHeader, MenuItemLabel, MenuLinkItem } from './Navbar.styled';
+import { MenuHeaderAppBar, MenuItemLabel, MenuLinkItem } from './Navbar.styled';
 
 interface NavbarSubMenuProps {
   open: boolean;
@@ -26,6 +26,7 @@ const NavbarSubMenuDevelopers = ({
   const i18Path = 'Navbar.';
   const theme = useTheme();
   const _isDarkMode = useIsDarkMode();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     !!open && (
@@ -34,32 +35,42 @@ const NavbarSubMenuDevelopers = ({
           <Paper
             sx={{
               background: !!_isDarkMode ? '#121212' : theme.palette.grey[100],
-              borderRadius: '12px',
-              padding: '12px 24px 24px',
-
+              borderRadius: isMobile ? '0' : '12px',
               '> ul': {
                 padding: '16px 0',
               },
+              paddingBottom: '12px',
             }}
           >
-            <MenuHeader
-              sx={{ height: '48px' }}
-              onClick={() => {
-                setOpenSubMenu('none');
-              }}
-            >
-              <>
-                <ArrowBackIcon className="menu-header__icon" />
-                <Typography
-                  fontSize={'14px'}
-                  fontWeight={700}
-                  lineHeight={'20px'}
-                  width={'100%'}
-                >
-                  <>{translate(`${i18Path}NavbarMenu.Developers`)}</>
-                </Typography>
-              </>
-            </MenuHeader>
+            <MenuHeaderAppBar elevation={0}>
+              <IconButton
+                size="medium"
+                aria-label="settings"
+                edge="start"
+                className="menu-header__icon"
+                sx={{
+                  color: theme.palette.text.primary,
+                  position: 'absolute',
+                  marginLeft: '6px',
+                }}
+                onClick={() => {
+                  setOpenSubMenu('none');
+                }}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+              <Typography
+                fontSize={'14px'}
+                lineHeight={'20px'}
+                width={'100%'}
+                align={'center'}
+                fontWeight="700"
+                flex={1}
+                noWrap
+              >
+                <>{translate(`${i18Path}NavbarMenu.Developers`)}</>
+              </Typography>
+            </MenuHeaderAppBar>
             <MenuLinkItem
               href={'https://github.com/lifinance/'}
               target="_blank"
@@ -78,6 +89,7 @@ const NavbarSubMenuDevelopers = ({
                     fontSize={'14px'}
                     fontWeight={500}
                     lineHeight={'20px'}
+                    ml={'12px'}
                   >
                     <>{translate(`${i18Path}Developers.Github`)}</>
                   </Typography>
@@ -92,6 +104,7 @@ const NavbarSubMenuDevelopers = ({
                     fontSize={'14px'}
                     fontWeight={500}
                     lineHeight={'20px'}
+                    ml={'12px'}
                   >
                     <>{translate(`${i18Path}Developers.Documentation`)}</>
                   </Typography>
@@ -106,6 +119,7 @@ const NavbarSubMenuDevelopers = ({
                     fontSize={'14px'}
                     fontWeight={500}
                     lineHeight={'20px'}
+                    ml={'12px'}
                   >
                     <>{translate(`${i18Path}Developers.Showcases`)}</>
                   </Typography>

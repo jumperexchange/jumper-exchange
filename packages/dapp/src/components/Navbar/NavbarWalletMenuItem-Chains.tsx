@@ -1,26 +1,27 @@
+import { ExtendedChain } from '@lifi/types';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import LanguageIcon from '@mui/icons-material/Language';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
-import { Typography } from '@mui/material';
-import { FlagGermany, FlagUSA } from '@transferto/shared/src/atoms/icons/flags';
+import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
+import { Avatar, Typography } from '@mui/material';
 import { useLocales } from '@transferto/shared/src/hooks';
-import { getInitialProps } from 'react-i18next';
 import { MenuItem, MenuItemLabel } from './Navbar.styled';
-
 interface NavbarMenuItemProps {
   open: boolean;
+  activeChain: ExtendedChain;
   openSubMenu: string;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
+  walletManagement: any;
 }
 
-const NavbarMenuItemLanguage = ({
+const NavbarWalletMenuItemChains = ({
   open,
   openSubMenu,
+  activeChain,
   setOpenSubMenu,
 }: NavbarMenuItemProps) => {
   const { translate } = useLocales();
-  const i18Path = 'Navbar.';
+  const i18Path = 'Navbar.WalletMenu.';
 
   return !!open && openSubMenu === 'none' ? (
     <MenuItem
@@ -31,7 +32,19 @@ const NavbarMenuItemLanguage = ({
       <>
         <MenuItemLabel>
           <>
-            <LanguageIcon className="menu-item-label__icon" />
+            {!!activeChain?.logoURI ? (
+              <Avatar
+                className="menu-item-label__icon"
+                src={!!activeChain ? activeChain.logoURI : 'empty'}
+                alt={`${!!activeChain?.name ? activeChain.name : ''}chain-logo`}
+                sx={{ height: '32px', width: '32px' }}
+              />
+            ) : (
+              <ChangeCircleOutlinedIcon
+                sx={{ height: '32px', width: '32px' }}
+              />
+            )}
+
             <Typography
               className="menu-item-label__text"
               fontSize={'14px'}
@@ -39,7 +52,11 @@ const NavbarMenuItemLanguage = ({
               lineHeight={'20px'}
               ml={'12px'}
             >
-              <>{translate(`${i18Path}NavbarMenu.Language`)}</>
+              <>
+                {!!activeChain?.name
+                  ? activeChain?.name
+                  : translate(`${i18Path}SwitchChain`)}
+              </>
             </Typography>
           </>
         </MenuItemLabel>
@@ -49,12 +66,6 @@ const NavbarMenuItemLanguage = ({
             alignItems: 'center',
           }}
         >
-          {getInitialProps().initialLanguage === 'en' && (
-            <FlagUSA style={{ marginRight: '8px' }} />
-          )}
-          {getInitialProps().initialLanguage === 'de' && (
-            <FlagGermany style={{ marginRight: '8px' }} />
-          )}
           <ChevronRightIcon />
         </div>
       </>
@@ -62,4 +73,4 @@ const NavbarMenuItemLanguage = ({
   ) : null;
 };
 
-export default NavbarMenuItemLanguage;
+export default NavbarWalletMenuItemChains;

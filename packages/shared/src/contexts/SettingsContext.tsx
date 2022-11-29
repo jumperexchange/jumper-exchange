@@ -20,12 +20,17 @@ import {
   SettingsContextProps,
   SettingsValueProps,
   ThemeModesSupported,
+  WalletConnected,
 } from '../types/settings';
 
 // ----------------------------------------------------------------------
 
 const initialState: SettingsContextProps = {
   ...defaultSettings,
+  // Wallet
+  onWalletConnect: () => {},
+  onWalletDisconnect: () => {},
+
   // Mode
   onToggleMode: () => {},
   onChangeMode: () => {},
@@ -53,7 +58,24 @@ const SettingsProvider = ({
   children,
   defaultSettings,
 }: SettingsProviderProps) => {
-  const [settings, setSettings] = useSettingCookies(defaultSettings);
+  const [settings, setSettings] = useSettingLocalStorage(defaultSettings);
+
+  // Wallet
+  const onWalletConnect = (activeWalletName: string) => {
+    setSettings({
+      ...settings,
+      activeWalletName: activeWalletName as WalletConnected,
+      // settings.activeWalletName === 'none' ? 'none' : activeWalletName,
+    });
+  };
+
+  const onWalletDisconnect = () => {
+    setSettings({
+      ...settings,
+      activeWalletName: 'none',
+    });
+  };
+
   // Mode
   const onToggleMode = () => {
     setSettings({
@@ -89,6 +111,9 @@ const SettingsProvider = ({
 
   const onResetSetting = () => {
     setSettings({
+      activeWalletName: !!initialState.activeWalletName
+        ? initialState.activeWalletName
+        : 'none',
       themeMode: !!initialState.themeMode ? initialState.themeMode : 'auto',
       languageMode:
         initialState.languageMode ||
@@ -101,6 +126,10 @@ const SettingsProvider = ({
     <SettingsContext.Provider
       value={{
         ...settings,
+
+        // Wallet
+        onWalletConnect,
+        onWalletDisconnect,
 
         // Mode
         onToggleMode,
@@ -123,7 +152,7 @@ export { SettingsProvider, SettingsContext };
 
 // ----------------------------------------------------------------------
 
-const useSettingCookies = (
+const useSettingLocalStorage = (
   defaultSettings: SettingsValueProps,
 ): [SettingsValueProps, Dispatch<SetStateAction<SettingsValueProps>>] => {
   const [settings, setSettings] = useState<SettingsValueProps>(defaultSettings);
@@ -131,6 +160,10 @@ const useSettingCookies = (
   const { i18n } = useTranslation();
 
   const onChangeSetting = () => {
+    localStorage.setItem(
+      localStorageKey.activeWalletName,
+      !!settings.activeWalletName ? settings.activeWalletName : 'none',
+    );
     localStorage.setItem(
       localStorageKey.themeMode,
       !!settings.themeMode ? settings.themeMode : 'auto',

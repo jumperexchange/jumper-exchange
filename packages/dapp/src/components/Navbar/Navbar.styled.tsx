@@ -1,5 +1,6 @@
+import { AppBar } from '@mui/material';
+
 import {
-  AppBar,
   Button,
   ButtonProps,
   Link,
@@ -125,10 +126,12 @@ export const NavbarLinkText = styled('span')({});
 //   backgroundColor: 'white',
 // },
 
-export const MenuHeader = styled(MUIMenuItem)(({ theme }) => ({
+export const MenuHeader = styled('div')(({ theme }) => ({
   padding: '0',
   textAlign: 'center',
-  margin: '0 auto', //`${theme.spacing(2)} auto`,
+  display: 'flex',
+  alignItems: 'center',
+  margin: '0 auto',
   '& svg': {
     position: 'absolute',
   },
@@ -138,6 +141,7 @@ export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
 export const MenuItem = styled(MUIMenuItem)(({ theme }) => ({
   display: 'flex',
+  padding: `0 24px`,
   justifyContent: 'space-between',
   '> .menu-item-label__icon': {
     marginLeft: '13px',
@@ -150,7 +154,7 @@ export const MenuItem = styled(MUIMenuItem)(({ theme }) => ({
 export const MenuLinkItem = styled(Link)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  padding: `6px 0`,
+  padding: `0 24px`,
   height: '48px',
   textDecoration: 'none',
   color: 'inherit',
@@ -174,12 +178,21 @@ export const MenuButton = styled(Button)(({ theme }) => ({
 export const MenuItemLabel = styled('div')({
   display: 'flex',
   alignItems: 'center',
-  '& > .menu-item-label__icon': {
-    marginRight: '13px',
-  },
-  '& svg': {
-    marginRight: '13px',
-  },
+  // '& svg, .menu-item-label__icon': {
+  //   marginRight: '13px',
+  // },
 });
 
 export const MenuItemText = styled('span')({});
+
+export const MenuHeaderAppBar = styled(AppBar, {
+  shouldForwardProp: (prop) => prop !== 'pt',
+})<{ pt?: number }>(({ theme }) => ({
+  backgroundColor: 'transparent',
+  color: theme.palette.text.primary,
+  flexDirection: 'row',
+  alignItems: 'center',
+  position: 'relative',
+  minHeight: 48,
+  padding: theme.spacing(0, 3, 0, 3),
+}));

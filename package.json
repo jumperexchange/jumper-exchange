@@ -13,6 +13,7 @@
     "bootstrap": "yarn install; lerna bootstrap;",
     "start": "lerna run start",
     "dev": "lerna run dev --parallel",
+    "build": "lerna run build --parallel",
     "storybook": "lerna run storybook",
     "prepare": "husky install",
     "pre-push": "lerna run pre-push",
