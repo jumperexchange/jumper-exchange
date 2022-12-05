@@ -29,10 +29,7 @@ export const useNavConfig = () => {
       { label: <Link to="/dashboard">Dashboard</Link>, key: '/dashboard' },
       {
         label: (
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSe9fDY1zCV3vnaubD0740GHzUYcfZoiz2KK_5TIME-rnIA3sg/viewform"
-            target="_blank"
-            rel="nofollow noreferrer">
+          <a href="https://docs.li.fi/" target="_blank" rel="nofollow noreferrer">
             Developers
           </a>
         ),
