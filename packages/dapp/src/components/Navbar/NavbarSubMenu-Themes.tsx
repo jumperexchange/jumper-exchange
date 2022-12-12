@@ -8,9 +8,10 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { IconButton, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useLocales, useSettings } from '@transferto/shared/src/hooks';
+import { useSettings } from '@transferto/shared/src';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
 import { MenuHeaderAppBar, MenuItem, MenuItemLabel } from './Navbar.styled';
+import { useTranslation } from 'react-i18next';
 
 interface NavbarSubMenuProps {
   open: boolean;
@@ -23,7 +24,7 @@ const NavbarSubMenuLanguages = ({
   openSubMenu,
   setOpenSubMenu,
 }: NavbarSubMenuProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
   const settings = useSettings();
   const _isDarkMode = useIsDarkMode();

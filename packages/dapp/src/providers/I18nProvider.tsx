@@ -1,4 +1,4 @@
-import { defaultLang } from '@transferto/shared/src/config';
+import { defaultLang } from '@transferto/shared/src';
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';
@@ -36,11 +36,15 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       ],
     };
 
-    i18n.use(initReactI18next).use(LanguageDetector).init({
-      detection: DETECTION_OPTIONS,
-      resources,
-      fallbackLng: defaultLang.value,
-    });
+    i18n
+      .use(initReactI18next)
+      .use(LanguageDetector)
+      .init({
+        detection: DETECTION_OPTIONS,
+        resources,
+        fallbackLng: defaultLang.value,
+        react: { useSuspense: false },
+      });
 
     return i18n;
   }, []);

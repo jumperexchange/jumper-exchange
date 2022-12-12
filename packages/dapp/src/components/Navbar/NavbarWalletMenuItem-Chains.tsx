@@ -4,8 +4,8 @@ import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar, Typography } from '@mui/material';
-import { useLocales } from '@transferto/shared/src/hooks';
 import { MenuItem, MenuItemLabel } from './Navbar.styled';
+import { useTranslation } from 'react-i18next';
 interface NavbarMenuItemProps {
   open: boolean;
   activeChain: ExtendedChain;
@@ -20,7 +20,7 @@ const NavbarWalletMenuItemChains = ({
   activeChain,
   setOpenSubMenu,
 }: NavbarMenuItemProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.WalletMenu.';
 
   return !!open && openSubMenu === 'none' ? (

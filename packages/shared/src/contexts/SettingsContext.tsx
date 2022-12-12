@@ -1,6 +1,6 @@
 import { localStorageKey } from '@transferto/shared/src/config';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation, i18n } from 'react-i18next';
 
 import {
   createContext,
@@ -157,8 +157,6 @@ const useSettingLocalStorage = (
 ): [SettingsValueProps, Dispatch<SetStateAction<SettingsValueProps>>] => {
   const [settings, setSettings] = useState<SettingsValueProps>(defaultSettings);
 
-  const { i18n } = useTranslation();
-
   const onChangeSetting = () => {
     localStorage.setItem(
       localStorageKey.activeWalletName,
@@ -168,7 +166,7 @@ const useSettingLocalStorage = (
       localStorageKey.themeMode,
       !!settings.themeMode ? settings.themeMode : 'auto',
     );
-    localStorage.setItem(localStorageKey.languageMode, i18n.language);
+    localStorage.setItem(localStorageKey.languageMode, settings.languageMode);
   };
 
   useEffect(() => {

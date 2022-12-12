@@ -1,9 +1,9 @@
 // import {default as NavbarLinks} from './NavbarLinks'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Typography } from '@mui/material';
-import { useLocales } from '@transferto/shared/src/hooks';
-import { openInNewTab } from '@transferto/shared/src/utils/';
+import { openInNewTab } from '@transferto/shared/src';
 import { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuItem, MenuItemLabel } from './Navbar.styled';
 interface NavbarMenuItemProps {
   open: boolean;
@@ -16,7 +16,7 @@ const NavbarMenuItemAbout = ({
   openSubMenu,
   setOpen,
 }: NavbarMenuItemProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
 
   return (

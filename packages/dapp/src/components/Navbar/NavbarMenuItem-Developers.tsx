@@ -3,8 +3,9 @@ import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import { Typography } from '@mui/material';
-import { useLocales } from '@transferto/shared/src/hooks';
+import { useLocales } from '@transferto/shared/src';
 import { MenuItem, MenuItemLabel } from './Navbar.styled';
+import { useTranslation } from 'react-i18next';
 
 interface NavbarMenuItemProps {
   open: boolean;
@@ -17,7 +18,7 @@ const NavbarMenuItemDevelopers = ({
   openSubMenu,
   setOpenSubMenu,
 }: NavbarMenuItemProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
 
   return (

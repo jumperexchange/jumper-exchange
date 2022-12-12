@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { Typography } from '@mui/material';
-import { useLocales } from '@transferto/shared/src/hooks';
 import { MenuItem, MenuItemLabel } from './Navbar.styled';
+import { useTranslation } from 'react-i18next';
 
 interface NavbarMenuItemProps {
   open: boolean;
@@ -17,7 +17,7 @@ const NavbarMenuItemThemes = ({
   openSubMenu,
   setOpenSubMenu,
 }: NavbarMenuItemProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
 
   return !!open && openSubMenu === 'none' ? (

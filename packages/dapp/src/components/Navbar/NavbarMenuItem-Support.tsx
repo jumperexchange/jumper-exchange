@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material';
-import Discord from '@transferto/shared/src/atoms/icons/Discord';
-import { useLocales } from '@transferto/shared/src/hooks';
-import { openInNewTab } from '@transferto/shared/src/utils/';
+import { Discord } from '@transferto/shared/src';
+import { openInNewTab } from '@transferto/shared/src';
 import { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuButton, MenuItem } from './Navbar.styled';
 interface NavbarMenuItemProps {
   open: boolean;
@@ -15,7 +15,7 @@ const NavbarMenuItemSupport = ({
   openSubMenu,
   setOpen,
 }: NavbarMenuItemProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
 
   return !!open && openSubMenu === 'none' ? (

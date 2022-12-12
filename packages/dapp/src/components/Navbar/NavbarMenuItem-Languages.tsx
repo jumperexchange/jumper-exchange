@@ -3,9 +3,9 @@ import LanguageIcon from '@mui/icons-material/Language';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarLinks} from './NavbarLinks'
 import { Typography } from '@mui/material';
-import { FlagGermany, FlagUSA } from '@transferto/shared/src/atoms/icons/flags';
-import { useLocales } from '@transferto/shared/src/hooks';
-import { getInitialProps } from 'react-i18next';
+import { FlagGermany, FlagUSA } from '@transferto/shared/src';
+import { useLocales } from '@transferto/shared/src';
+import { getInitialProps, useTranslation } from 'react-i18next';
 import { MenuItem, MenuItemLabel } from './Navbar.styled';
 
 interface NavbarMenuItemProps {
@@ -19,7 +19,7 @@ const NavbarMenuItemLanguage = ({
   openSubMenu,
   setOpenSubMenu,
 }: NavbarMenuItemProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
 
   return !!open && openSubMenu === 'none' ? (

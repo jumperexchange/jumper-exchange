@@ -7,9 +7,9 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
 import { IconButton, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useLocales } from '@transferto/shared/src/hooks';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
 import { MenuHeaderAppBar, MenuItemLabel, MenuLinkItem } from './Navbar.styled';
+import { useTranslation } from 'react-i18next';
 
 interface NavbarSubMenuProps {
   open: boolean;
@@ -22,7 +22,7 @@ const NavbarSubMenuDevelopers = ({
   openSubMenu,
   setOpenSubMenu,
 }: NavbarSubMenuProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
   const theme = useTheme();
   const _isDarkMode = useIsDarkMode();

@@ -6,8 +6,8 @@ import { IconButton, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import CheckIcon from '@mui/icons-material/Check';
-import { FlagGermany, FlagUSA } from '@transferto/shared/src/atoms/icons/flags';
-import { useLocales, useSettings } from '@transferto/shared/src/hooks';
+import { FlagGermany, FlagUSA } from '@transferto/shared/src';
+import { useSettings } from '@transferto/shared/src';
 import { useTranslation } from 'react-i18next';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
 
@@ -24,7 +24,7 @@ const NavbarSubMenuLanguages = ({
   openSubMenu,
   setOpenSubMenu,
 }: NavbarSubMenuProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
   const settings = useSettings();
   const { i18n } = useTranslation();

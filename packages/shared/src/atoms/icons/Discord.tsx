@@ -1,5 +1,5 @@
 import * as React from 'react';
-const Discord = (props) => (
+export const Discord = (props) => (
   <svg
     width={25}
     height={24}
@@ -14,4 +14,3 @@ const Discord = (props) => (
     />
   </svg>
 );
-export default Discord;

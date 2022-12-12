@@ -7,7 +7,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Avatar, IconButton, Typography, useMediaQuery } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
-import { useLocales, useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
 import { MenuHeaderAppBar, MenuItem, MenuItemLabel } from './Navbar.styled';
@@ -31,7 +30,7 @@ const NavbarWalletSubMenuChains = ({
   chainInfos,
   isSuccess,
 }: NavbarSubMenuProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.WalletMenu.';
   const { switchChain } = walletManagement;
   const _isDarkMode = useIsDarkMode();

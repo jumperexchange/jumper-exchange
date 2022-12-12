@@ -1,7 +1,8 @@
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Typography } from '@mui/material';
-import { useLocales, useSettings } from '@transferto/shared/src/hooks';
+import { useSettings } from '@transferto/shared/src';
 import { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MenuButton, MenuItem } from './Navbar.styled';
 
 interface NavbarMenuItemProps {
@@ -17,7 +18,7 @@ const NavbarWalletMenuItemDisconnect = ({
   setOpen,
   disconnect,
 }: NavbarMenuItemProps) => {
-  const { translate } = useLocales();
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.WalletMenu.';
   const settings = useSettings();
 

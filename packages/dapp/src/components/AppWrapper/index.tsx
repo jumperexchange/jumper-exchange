@@ -1,6 +1,6 @@
 import { CssBaseline } from '@mui/material';
-import { defaultSettings } from '@transferto/shared/src/config';
-import { SettingsProvider } from '@transferto/shared/src/contexts/SettingsContext';
+import { defaultSettings } from '@transferto/shared/src';
+import { SettingsProvider } from '@transferto/shared/src';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import App from '../../App';
 import { I18NProvider } from '../../providers/I18nProvider';

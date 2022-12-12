@@ -1,9 +1,10 @@
 import EvStationIcon from '@mui/icons-material/EvStation';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material/styles';
-import { useLocales } from '@transferto/shared/src/hooks';
+import { useLocales } from '@transferto/shared/src';
 import { useLocation } from 'react-router-dom';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
+import { useTranslation } from 'react-i18next';
 
 import {
   NavbarLink,
@@ -11,14 +12,15 @@ import {
   NavbarLinkText,
 } from './Navbar.styled';
 const linkMap = {
-  swap: '/swap',
-  dashboard: '/dashboard',
-  refuel: '/gas',
+  swap: '/transferto.xyz/swap',
+  dashboard: '/transferto.xyz/dashboard',
+  refuel: '/transferto.xyz/gas',
 };
 
 const NavbarLinks = () => {
   const theme = useTheme();
-  const { translate } = useLocales();
+  // const { translate } =   const { t: translate } = useTranslation();;
+  const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
   const location = useLocation();
   const isDarkMode = useIsDarkMode();
