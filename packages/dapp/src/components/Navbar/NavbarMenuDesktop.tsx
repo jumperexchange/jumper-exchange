@@ -1,41 +1,44 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { IconButton, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
-import MenuList from '@mui/material/MenuList';
-import Paper from '@mui/material/Paper';
-import Popper from '@mui/material/Popper';
 import { useTheme } from '@mui/material/styles';
+import { useSettings } from '@transferto/shared/src/hooks';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
-import { useIsDarkMode } from '../../providers/ThemeProvider';
 import {
-  NavbarMenuItemAbout,
-  NavbarMenuItemDevelopers,
-  NavbarMenuItemLanguage,
-  NavbarMenuItemSupport,
-  NavbarMenuItemThemes,
-  NavbarSubMenuDevelopers,
-  NavbarSubMenuLanguages,
-  NavbarSubMenuThemes,
-} from './index';
-import { NavbarExternalBackground } from './Navbar.styled';
+  MenuHeaderAppBar,
+  MenuHeaderAppWrapper,
+  NavbarExternalBackground,
+  NavbarMenuList,
+  NavbarPaper,
+  NavbarPopper,
+} from './Navbar.styled';
 interface NavbarMenuProps {
   openSubMenu: string;
   anchorRef: any; // TODO: Replace this any with the correct type
-  setOpenSubMenu: Dispatch<SetStateAction<string>>;
+  label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  stickyLabel?: boolean;
+  scrollableMainLayer?: boolean;
   open: boolean;
+  children: any;
 }
 
 const NavbarMenuDesktop = ({
-  handleClose,
-  open,
-  setOpen,
-  anchorRef,
   openSubMenu,
-  setOpenSubMenu,
+  anchorRef,
+  setOpen,
+  handleClose,
+  stickyLabel,
+  scrollableMainLayer,
+  label,
+  open,
+  children,
 }: NavbarMenuProps) => {
   const theme = useTheme();
-  const isDarkMode = useIsDarkMode();
+  const isDarkMode = theme.palette.mode === 'dark';
+  const settings = useSettings();
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -50,109 +53,86 @@ const NavbarMenuDesktop = ({
     !!open && (
       <>
         <NavbarExternalBackground />
-        <Popper
+        <NavbarPopper
           open={open}
           anchorEl={anchorRef.current}
           role={undefined}
+          // stickyLabel={stickyLabel}
           placement="bottom-start"
-          sx={{
-            zIndex: 2,
-            bottom: '0 !important',
-            left: '0 !important',
-            top: 'unset !important',
-            right: '0 !important',
-            margin: '0px',
-            [theme.breakpoints.up('sm')]: {
-              bottom: 'unset !important',
-              left: 'unset !important',
-              top: 'unset !important',
-              right: '1.5rem !important',
-              transform: 'unset !important',
-            },
-          }}
           transition
           disablePortal
         >
-          {({ TransitionProps, placement }) => (
+          {({ TransitionProps }) => (
             <Grow
               {...TransitionProps}
               style={{
                 transformOrigin: 'right top',
               }}
             >
-              <Paper
-                sx={{
-                  borderRadius: '12px',
-                  background: isDarkMode ? '#121212' : '#fff',
-                  p: openSubMenu === 'none' ? '12px 0 24px' : '12px 0 0',
-                  mt: theme.spacing(3),
-                  '& ul': {
-                    padding: 0,
-                  },
-                  width: '100%',
-                  transformOrigin: 'bottom',
-                  transition:
-                    'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-
-                  [theme.breakpoints.up('sm')]: {
-                    width: '288px',
-                  },
-                }}
+              <NavbarPaper
+                isDarkMode={isDarkMode}
+                scrollableMainLayer={scrollableMainLayer}
+                openSubMenu={openSubMenu !== 'none'}
+                // stickyLabel={stickyLabel}
+                isScrollable={true}
               >
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList
+                <ClickAwayListener
+                  onClickAway={(event) => {
+                    handleClose(event);
+                    settings.onCloseAllNavbarMenus();
+                  }}
+                >
+                  <NavbarMenuList
                     autoFocusItem={open}
                     id="composition-menu"
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
+                    isScrollable={!!label}
+                    component={openSubMenu === 'none' ? 'ul' : 'div'}
                   >
-                    <NavbarMenuItemLanguage
-                      open={open}
-                      openSubMenu={openSubMenu}
-                      setOpenSubMenu={setOpenSubMenu}
-                    />
-
-                    <NavbarMenuItemThemes
-                      open={open}
-                      openSubMenu={openSubMenu}
-                      setOpenSubMenu={setOpenSubMenu}
-                    />
-                    <NavbarMenuItemDevelopers
-                      open={open}
-                      openSubMenu={openSubMenu}
-                      setOpenSubMenu={setOpenSubMenu}
-                    />
-                    <NavbarMenuItemAbout
-                      open={open}
-                      openSubMenu={openSubMenu}
-                      setOpen={setOpen}
-                    />
-                    <NavbarMenuItemSupport
-                      open={open}
-                      openSubMenu={openSubMenu}
-                      setOpen={setOpen}
-                    />
-                    <NavbarSubMenuThemes
-                      open={open}
-                      openSubMenu={openSubMenu}
-                      setOpenSubMenu={setOpenSubMenu}
-                    />
-                    <NavbarSubMenuLanguages
-                      open={open}
-                      openSubMenu={openSubMenu}
-                      setOpenSubMenu={setOpenSubMenu}
-                    />
-                    <NavbarSubMenuDevelopers
-                      open={open}
-                      openSubMenu={openSubMenu}
-                      setOpenSubMenu={setOpenSubMenu}
-                    />
-                  </MenuList>
+                    {!!label ? (
+                      <MenuHeaderAppWrapper>
+                        <MenuHeaderAppBar
+                          component="div"
+                          elevation={0}
+                          scrollableMainLayer={scrollableMainLayer}
+                          stickyLabel={stickyLabel}
+                        >
+                          <IconButton
+                            size="medium"
+                            aria-label="settings"
+                            edge="start"
+                            sx={{
+                              color: theme.palette.text.primary,
+                              position: 'absolute',
+                            }}
+                            onClick={() => {
+                              settings.onOpenNavbarWalletMenu(
+                                !settings.openNavbarWalletMenu,
+                              );
+                            }}
+                          >
+                            <ArrowBackIcon />
+                          </IconButton>
+                          <Typography
+                            variant={'lifiBodyMediumStrong'}
+                            width={'100%'}
+                            align={'center'}
+                            flex={1}
+                            noWrap
+                          >
+                            {label}
+                          </Typography>
+                        </MenuHeaderAppBar>
+                      </MenuHeaderAppWrapper>
+                    ) : null}
+                    {children}
+                  </NavbarMenuList>
                 </ClickAwayListener>
-              </Paper>
+              </NavbarPaper>
             </Grow>
           )}
-        </Popper>
+        </NavbarPopper>
       </>
     )
   );

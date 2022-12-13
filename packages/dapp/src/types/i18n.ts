@@ -10,16 +10,14 @@ export type LanguageKey = keyof typeof languages;
 
 export type LanguageResources =
   | {
-      [language in LanguageKey]?: PartialResource<
-        typeof languages.translationEN
-      >;
+      [language in LanguageKey]?: PartialResource<typeof languages.en>;
     }
   | {
-      [language: string]: PartialResource<typeof languages.translationEN>;
+      [language: string]: PartialResource<typeof languages.en>;
     };
 
 export type LanguageTranslationResource = {
-  [namespace in 'translation']: PartialResource<typeof languages.translationEN>;
+  [namespace in 'translation']: PartialResource<typeof languages.en>;
 };
 
 export type LanguageTranslationResources = {

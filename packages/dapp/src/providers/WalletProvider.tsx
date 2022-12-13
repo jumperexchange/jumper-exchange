@@ -53,6 +53,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const connect = useCallback(
     async (wallet?: Wallet) => {
       await walletManagementConnect(wallet);
+
       const account = await extractAccountFromSigner(signer);
       setUsedWallet(wallet!);
       setAccount(account);
