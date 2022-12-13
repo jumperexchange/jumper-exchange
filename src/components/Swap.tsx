@@ -2,7 +2,7 @@ import './Swap.css'
 
 import { Token } from '@lifi/sdk'
 import { switchChain } from '@lifi/wallet-management'
-import { LiFiWidget, WidgetConfig } from '@lifi/widget'
+import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget'
 import { useMemo, useState } from 'react'
 
 import { useMetatags } from '../hooks/useMetatags'
@@ -24,7 +24,7 @@ export const Swap = () => {
     promiseResolver?: Function
   }>({ show: false })
 
-  const widgetConfig: WidgetConfig = useMemo(() => {
+  const widgetConfig = useMemo((): WidgetConfig => {
     return {
       sdkConfig: {
         defaultRouteOptions: {
@@ -69,7 +69,7 @@ export const Swap = () => {
         default: 'en',
       },
       appearance: 'light',
-      disableAppearance: true,
+      hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
     }
   }, [account.address, account.signer, disconnect, usedWallet?.name])
 
