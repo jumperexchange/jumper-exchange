@@ -181,7 +181,7 @@ export const MenuHeader = styled('div')(({}) => ({
 
 export const NavbarTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<TabsProps>(({ theme }) => ({
+})<TabsProps & { isDarkMode?: boolean }>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   '.MuiTabs-flexContainer': {
@@ -240,6 +240,7 @@ export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 export interface MUIMenuItemProps extends Omit<MenuItemProps, 'showButton'> {
   showButton?: boolean;
   component?: string;
+  stickyLabel?: boolean;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
@@ -269,6 +270,7 @@ export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
   scrollableMainLayer?: boolean;
   isScrollable?: boolean;
   component?: string;
+  stickyLabel?: boolean;
 }
 
 export const NavbarPaper = styled(Paper, {
@@ -388,6 +390,8 @@ export const MenuHeaderAppWrapper = styled(ListItem, {
 
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
   component?: string;
+  stickyLabel?: boolean;
+  scrollableMainLayer?: boolean;
 }
 
 export const MenuHeaderAppBar = styled(AppBar, {
