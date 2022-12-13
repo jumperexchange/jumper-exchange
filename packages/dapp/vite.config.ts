@@ -1,3 +1,4 @@
+import { basename } from './../../node_modules/vite-tsconfig-paths/src/path';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import react from '@vitejs/plugin-react';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
@@ -14,7 +15,11 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      plugins: [nodePolyfills({ include: null }) as any],
+      plugins: [
+        nodePolyfills({
+          include: null,
+        }),
+      ],
     },
     sourcemap: false,
   },
