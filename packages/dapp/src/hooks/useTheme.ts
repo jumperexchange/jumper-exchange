@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useEffect, useState } from 'react';
 
 enum Theme {
   Dark = 'dark',

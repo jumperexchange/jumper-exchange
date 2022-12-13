@@ -1,5 +1,6 @@
+import { localStorageKey } from '@transferto/shared/src/config';
 import React from 'react';
-import Cookies from 'js-cookie';
+// import { useTranslation, i18n } from 'react-i18next';
 
 import {
   createContext,
@@ -11,24 +12,55 @@ import {
 } from 'react';
 // utils
 // config
-import { cookiesExpires, cookiesKey, defaultSettings } from '../index';
+import i18next from 'i18next';
+import { defaultSettings } from '../index';
 // @type
 import {
+  DappLanguagesSupported,
   SettingsContextProps,
   SettingsValueProps,
-  ThemeMode,
+  ThemeModesSupported,
+  WalletConnected,
 } from '../types/settings';
 
 // ----------------------------------------------------------------------
 
 const initialState: SettingsContextProps = {
   ...defaultSettings,
+  // Wallet
+  onWalletConnect: () => {},
+  onWalletDisconnect: () => {},
+
   // Mode
   onToggleMode: () => {},
   onChangeMode: () => {},
 
+  // Tabs
+  onChangeTab: () => {},
+
+  // CopyClipboard
+  onCopyToClipboard: () => {},
+
+  // Close ALL Navbar Menus
+  onCloseAllNavbarMenus: () => {},
+
+  // Toggle Navbar Main Menu
+  onOpenNavbarMainMenu: () => {},
+
+  // Toggle Navbar Wallet Menu
+  onOpenNavbarWalletMenu: () => {},
+
+  // Toggle Navbar Connected Menu
+  onOpenNavbarConnectedMenu: () => {},
+
+  // Toggle Navbar Sub Menu
+  onOpenNavbarSubMenu: () => {},
+
   // Direction
   onChangeDirectionByLang: () => {},
+
+  // Language
+  onChangeLanguage: () => {},
 
   // Reset
   onResetSetting: () => {},
@@ -47,10 +79,80 @@ const SettingsProvider = ({
   children,
   defaultSettings,
 }: SettingsProviderProps) => {
-  const [settings, setSettings] = useSettingCookies(defaultSettings);
+  const [settings, setSettings] = useSettingLocalStorage(defaultSettings);
 
-  const langStorage =
-    typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
+  // Tabs
+  const onChangeTab = (tab: number) => {
+    setSettings({ ...settings, activeTab: !!tab ? tab : 0 });
+  };
+
+  // CopyToClipboard
+  const onCopyToClipboard = (copied: boolean) => {
+    setSettings({
+      ...settings,
+      copiedToClipboard: copied as boolean,
+    });
+  };
+
+  // Close ALL Navbar Menus
+  const onCloseAllNavbarMenus = () => {
+    setSettings({
+      ...settings,
+      openMainNavbarMenu: false,
+      openNavbarWalletMenu: false,
+      openNavbarConnectedMenu: false,
+      openNavbarSubMenu: 'none',
+      copiedToClipboard: false,
+    });
+  };
+
+  // Toggle Navbar Main Menu
+  const onOpenNavbarMainMenu = (open: boolean) => {
+    setSettings({
+      ...settings,
+      openMainNavbarMenu: open as boolean,
+    });
+  };
+
+  // Toggle Navbar Wallet Menu
+  const onOpenNavbarWalletMenu = (open: boolean) => {
+    setSettings({
+      ...settings,
+      openNavbarWalletMenu: open as boolean,
+    });
+  };
+
+  // Toggle Navbar Connected Menu
+  const onOpenNavbarConnectedMenu = (open: boolean) => {
+    setSettings({
+      ...settings,
+      openNavbarConnectedMenu: open as boolean,
+    });
+  };
+
+  // Toggle Navbar Sub Menu
+  const onOpenNavbarSubMenu = (subMenu: string) => {
+    setSettings({
+      ...settings,
+      openNavbarSubMenu: subMenu as string,
+    });
+  };
+
+  // Wallet
+  const onWalletConnect = (activeWalletName: string) => {
+    setSettings({
+      ...settings,
+      activeWalletName: activeWalletName as WalletConnected,
+    });
+  };
+
+  const onWalletDisconnect = () => {
+    setSettings({
+      ...settings,
+      activeWalletName: 'none',
+      openNavbarConnectedMenu: false,
+    });
+  };
 
   // Mode
   const onToggleMode = () => {
@@ -60,26 +162,56 @@ const SettingsProvider = ({
     });
   };
 
-  const onChangeMode = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeMode = (mode: ThemeModesSupported) => {
     setSettings({
       ...settings,
-      themeMode: (event.target as HTMLInputElement).value as ThemeMode,
+      themeMode: mode as ThemeModesSupported,
+    });
+  };
+
+  // Language
+  const onChangeLanguage = (language: string) => {
+    setSettings({
+      ...settings,
+      languageMode: language as DappLanguagesSupported,
     });
   };
 
   // Direction
-
-  const onChangeDirectionByLang = (lang: string) => {
+  const onChangeDirectionByLang = (lang: DappLanguagesSupported) => {
     setSettings({
       ...settings,
+      languageMode: lang ? lang : DappLanguagesSupported.en,
     });
   };
 
   // Reset
-
   const onResetSetting = () => {
     setSettings({
-      themeMode: initialState.themeMode || 'light',
+      activeWalletName: !!initialState.activeWalletName
+        ? initialState.activeWalletName
+        : 'none',
+      themeMode: !!initialState.themeMode ? initialState.themeMode : 'auto',
+      languageMode:
+        initialState.languageMode ||
+        (i18next.language as DappLanguagesSupported) ||
+        DappLanguagesSupported.en,
+      activeTab: !!initialState.activeTab ? initialState.activeTab : 0,
+      copiedToClipboard: !!initialState.copiedToClipboard
+        ? initialState.copiedToClipboard
+        : false,
+      openMainNavbarMenu: !!initialState.openMainNavbarMenu
+        ? initialState.openMainNavbarMenu
+        : false,
+      openNavbarWalletMenu: !!initialState.openNavbarWalletMenu
+        ? initialState.openNavbarWalletMenu
+        : false,
+      openNavbarConnectedMenu: !!initialState.openNavbarConnectedMenu
+        ? initialState.openNavbarConnectedMenu
+        : false,
+      openNavbarSubMenu: !!initialState.openNavbarSubMenu
+        ? initialState.openNavbarSubMenu
+        : 'none',
     });
   };
 
@@ -88,10 +220,37 @@ const SettingsProvider = ({
       value={{
         ...settings,
 
+        // Tabs
+        onChangeTab,
+
+        // CopyToClipboard
+        onCopyToClipboard,
+
+        // Close ALL Navbar Menus
+        onCloseAllNavbarMenus,
+
+        // Toggle Navbar Main Menu
+        onOpenNavbarMainMenu,
+
+        // Toggle Navbar Wallet Menu
+        onOpenNavbarWalletMenu,
+
+        // Toggle Navbar Connected Menu
+        onOpenNavbarConnectedMenu,
+
+        // Toggle Navbar Sub Menu
+        onOpenNavbarSubMenu,
+
+        // Wallet
+        onWalletConnect,
+        onWalletDisconnect,
+
         // Mode
         onToggleMode,
         onChangeMode,
 
+        // Language
+        onChangeLanguage,
         onChangeDirectionByLang,
 
         // Reset
@@ -103,25 +262,30 @@ const SettingsProvider = ({
   );
 };
 
-export { SettingsProvider, SettingsContext };
-
 // ----------------------------------------------------------------------
 
-const useSettingCookies = (
+const useSettingLocalStorage = (
   defaultSettings: SettingsValueProps,
 ): [SettingsValueProps, Dispatch<SetStateAction<SettingsValueProps>>] => {
   const [settings, setSettings] = useState<SettingsValueProps>(defaultSettings);
 
   const onChangeSetting = () => {
-    Cookies.set(cookiesKey.themeMode, settings.themeMode, {
-      expires: cookiesExpires,
-    });
+    localStorage.setItem(
+      localStorageKey.activeWalletName,
+      !!settings.activeWalletName ? settings.activeWalletName : 'none',
+    );
+    localStorage.setItem(
+      localStorageKey.themeMode,
+      !!settings.themeMode ? settings.themeMode : 'auto',
+    );
+    localStorage.setItem(localStorageKey.languageMode, settings.languageMode);
   };
 
   useEffect(() => {
     onChangeSetting();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings]);
 
   return [settings, setSettings];
 };
+
+export { SettingsProvider, SettingsContext };

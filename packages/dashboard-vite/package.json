@@ -22,17 +22,17 @@
     "react-dom": "16.8.0 || >=17.x"
   },
   "dependencies": {
-    "antd": "^4.23.1",
+    "antd": "^4.24.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^2.1.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.1.0",
-    "vite-plugin-dts": "^1.6.4",
+    "typescript": "^4.9.3",
+    "vite": "^3.2.4",
+    "vite-plugin-dts": "^1.7.1",
     "vite-tsconfig-paths": "^3.5.1"
   }
 }

@@ -1,15 +1,14 @@
 // @mui
 import { deDE, enUS } from '@mui/material/locale';
-import { SettingsValueProps } from './types/settings';
+import i18next from 'i18next';
+import { DappLanguagesSupported } from './types/settings';
 
 export const cookiesExpires = 3;
 
-export const cookiesKey = {
+export const localStorageKey = {
+  activeWalletName: 'activeWalletName',
   themeMode: 'themeMode',
-};
-
-export const defaultSettings: SettingsValueProps = {
-  themeMode: 'light',
+  languageMode: 'languageMode',
 };
 
 // MULTI LANGUAGES
@@ -19,16 +18,43 @@ export const defaultSettings: SettingsValueProps = {
 export const allLangs = [
   {
     label: 'English',
-    value: 'en',
+    value: 'en' as DappLanguagesSupported,
     systemValue: enUS,
     // icon: "/assets/icons/flags/ic_flag_en.svg",
   },
   {
     label: 'Deutsch',
-    value: 'de',
+    value: 'de' as DappLanguagesSupported,
     systemValue: deDE,
     // icon: "/assets/icons/flags/ic_flag_de.svg",
   },
 ];
 
 export const defaultLang = allLangs[0]; // English
+
+const setLanguage = (defaultLang) => {
+  if (!!i18next.language) {
+    return i18next.language;
+  } else if (!!localStorage.i18nextLng) {
+    return localStorage.i18nextLng;
+  } else if (!!localStorage.getItem(localStorageKey.languageMode)) {
+    return localStorage.getItem(localStorageKey.languageMode);
+  } else {
+    return defaultLang.value;
+  }
+};
+
+export const defaultSettings: any = {
+  themeMode: !!localStorage.getItem(localStorageKey.themeMode)
+    ? localStorage.getItem(localStorageKey.themeMode)
+    : 'auto',
+  languageMode: setLanguage(defaultLang),
+  activeWalletName: !!localStorage.getItem(localStorageKey.activeWalletName)
+    ? localStorage.getItem(localStorageKey.activeWalletName)
+    : false,
+  activeTab: 0,
+  openMainNavbarMenu: false,
+  openNavbarWalletMenu: false,
+  openNavbarConnectedMenu: false,
+  openNavbarSubMenu: 'none',
+};

@@ -1,22 +1,32 @@
-import { ThemeProvider } from '@emotion/react';
-import { CssBaseline, useMediaQuery } from '@mui/material';
+import { CssBaseline } from '@mui/material';
+import { defaultSettings } from '@transferto/shared/src';
+import { SettingsProvider } from '@transferto/shared/src';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import App from '../../App';
-// import useTheme from '../../hooks/useTheme';
-import { darkTheme, lightTheme } from '@transferto/shared';
+import { ChainInfosProvider } from '../../providers/ChainInfosProvider';
+import { I18NProvider } from '../../providers/I18nProvider';
+import { ThemeProvider } from '../../providers/ThemeProvider';
 import { WalletProvider } from '../../providers/WalletProvider';
 
-const AppWrapper = () => {
-  // const { isDarkMode } = useTheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+const queryClient = new QueryClient();
 
+const AppWrapper = () => {
   return (
-    <ThemeProvider theme={prefersDarkMode ? darkTheme : lightTheme}>
-      <WalletProvider>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <App />
-      </WalletProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChainInfosProvider>
+        <I18NProvider>
+          <SettingsProvider defaultSettings={defaultSettings}>
+            <ThemeProvider>
+              <WalletProvider>
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <App />
+              </WalletProvider>
+            </ThemeProvider>
+          </SettingsProvider>
+        </I18NProvider>
+      </ChainInfosProvider>
+    </QueryClientProvider>
   );
 };
 

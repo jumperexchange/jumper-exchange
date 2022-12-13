@@ -1,8 +1,10 @@
 import { Wallet } from '@lifi/wallet-management';
 import EastIcon from '@mui/icons-material/East';
 import { Box, IconButton, Typography } from '@mui/material';
+import { useSettings } from '@transferto/shared/src/hooks';
 import React, { useEffect, useRef, useState } from 'react';
 import { WalletCard } from '../../atoms/wallet-card';
+
 import {
   WalletCardsContainer,
   WalletDialog,
@@ -30,6 +32,7 @@ export const WalletModal = ({
     useState<Wallet>();
   // const { connect, signer } = useLiFiWalletManagement()
   const { ethereum } = window as any;
+  const settings = useSettings();
 
   const { connect } = walletManagement;
 
@@ -42,6 +45,7 @@ export const WalletModal = ({
       }
     }
     await connect(wallet);
+    settings.onWalletConnect(wallet.name);
     try {
     } catch (e) {}
 

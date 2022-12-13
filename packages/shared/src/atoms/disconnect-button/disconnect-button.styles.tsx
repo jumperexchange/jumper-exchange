@@ -1,11 +1,41 @@
 import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export const DisconnectButtonBase = styled(Button)(({ theme }) => ({
-  padding: '12px 16px',
-  background: theme.palette.brandSecondary.main, //#D63CA3
-  borderRadius: '28px',
-  color: 'white',
-  width: '190px',
-  textTransform: 'none',
-}));
+interface DisconnectButtonBaseProps extends Omit<any, 'backgroundColor'> {
+  //ButtonProps
+  backgroundColor?: string;
+  hoverBackgroundColor?: string;
+  color?: string;
+}
+
+export const DisconnectButtonBase = styled(Button, {
+  shouldForwardProp: (prop) =>
+    prop !== 'backgroundColor' &&
+    prop !== 'hoverBackgroundColor' &&
+    prop !== 'color',
+})<DisconnectButtonBaseProps>(
+  ({ theme, backgroundColor, hoverBackgroundColor, color }) => ({
+    padding: '8px',
+    paddingRight: '16px',
+    color: !!color ? color : theme.palette.black.main,
+    height: '48px',
+    background: backgroundColor ? backgroundColor : theme.palette.white.main,
+    borderRadius: '28px',
+    textTransform: 'none',
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    '&:hover': {
+      background: hoverBackgroundColor
+        ? hoverBackgroundColor
+        : theme.palette.mode === 'light'
+        ? theme.palette.grey[300]
+        : theme.palette.grey[500],
+    },
+    [theme.breakpoints.up('sm')]: {
+      position: 'relative',
+      left: 'unset',
+      transform: 'unset',
+    },
+  }),
+);

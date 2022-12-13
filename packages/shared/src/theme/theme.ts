@@ -1,615 +1,540 @@
 import { createTheme, Theme } from '@mui/material/styles';
-import { viewports, bodyStyled, resetStyled } from '../style';
+import { deepmerge } from '@mui/utils';
 import React from 'react';
-import Fonts from '../fonts/fonts';
+import { bodyStyled, resetStyled, viewports } from '../style';
 
 declare module '@mui/material/styles' {
   interface Palette {
-    brandPrimary: Palette['primary'];
-    brandPrimaryTint100: Palette['primary'];
-    brandSecondary: Palette['primary'];
-    brandTertiary: Palette['primary'];
-    grey: Palette['grey'];
-    systemSuccess: Palette['primary'];
-    systemWarning: Palette['primary'];
-    systemError: Palette['primary'];
-    background: Palette['background'];
-    text: Palette['text'];
+    tertiary: Palette['primary'];
+    white: Palette['primary'];
+    black: Palette['primary'];
+    accent1: Palette['primary'];
+    accent2: Palette['primary'];
+    alphaDark100: Palette['primary'];
+    alphaDark200: Palette['primary'];
+    alphaDark300: Palette['primary'];
+    alphaDark400: Palette['primary'];
+    alphaDark500: Palette['primary'];
+    alphaDark600: Palette['primary'];
+    alphaDark700: Palette['primary'];
+    alphaDark800: Palette['primary'];
+    alphaLight100: Palette['primary'];
+    alphaLight200: Palette['primary'];
+    alphaLight300: Palette['primary'];
+    alphaLight400: Palette['primary'];
+    alphaLight500: Palette['primary'];
+    alphaLight600: Palette['primary'];
+    alphaLight700: Palette['primary'];
+    alphaLight800: Palette['primary'];
   }
   interface PaletteOptions {
-    brandPrimary?: PaletteOptions['primary'];
-    brandPrimaryTint100?: PaletteOptions['primary'];
-    brandSecondary?: PaletteOptions['primary'];
-    brandTertiary?: PaletteOptions['primary'];
-    grey?: PaletteOptions['grey'];
-    systemSuccess?: PaletteOptions['primary'];
-    systemWarning?: PaletteOptions['primary'];
-    systemError?: PaletteOptions['primary'];
-    background?: PaletteOptions['background'];
-    text?: PaletteOptions['text'];
+    tertiary?: PaletteOptions['primary'];
+    white?: PaletteOptions['primary'];
+    black?: PaletteOptions['primary'];
+    accent1?: PaletteOptions['primary'];
+    accent2?: PaletteOptions['primary'];
+    bg?: PaletteOptions['primary'];
+    alphaDark100?: PaletteOptions['primary'];
+    alphaDark200?: PaletteOptions['primary'];
+    alphaDark300?: PaletteOptions['primary'];
+    alphaDark400?: PaletteOptions['primary'];
+    alphaDark500?: PaletteOptions['primary'];
+    alphaDark600?: PaletteOptions['primary'];
+    alphaDark700?: PaletteOptions['primary'];
+    alphaDark800?: PaletteOptions['primary'];
+    alphaLight100?: PaletteOptions['primary'];
+    alphaLight200?: PaletteOptions['primary'];
+    alphaLight300?: PaletteOptions['primary'];
+    alphaLight400?: PaletteOptions['primary'];
+    alphaLight500?: PaletteOptions['primary'];
+    alphaLight600?: PaletteOptions['primary'];
+    alphaLight700?: PaletteOptions['primary'];
+    alphaLight800?: PaletteOptions['primary'];
   }
-  interface BreakpointOverrides {
-    xs: false; // removes the `xs` breakpoint
-    sm: false;
-    md: false;
-    lg: false;
-    xl: false;
-    mobile: true; // adds the `mobile` breakpoint
-    tablet: true;
-    laptop: true;
-    desktop: true;
-    desktopFullHD: true;
-  }
-
   interface TypographyVariants {
-    hero: React.CSSProperties;
-    subtitleL: React.CSSProperties;
-    subtitleM: React.CSSProperties;
-    subtitleS: React.CSSProperties;
-    buttonL: React.CSSProperties;
-    buttonM: React.CSSProperties;
-    captionM: React.CSSProperties;
-    captionS: React.CSSProperties;
-    bodyRegularL: React.CSSProperties;
-    bodyRegularM: React.CSSProperties;
-    bodyRegularS: React.CSSProperties;
-    bodyRegularXS: React.CSSProperties;
-    bodyRegularXXS: React.CSSProperties;
-    bodyMediumL: React.CSSProperties;
-    bodyMediumM: React.CSSProperties;
-    bodyMediumS: React.CSSProperties;
-    bodyMediumXS: React.CSSProperties;
-    bodyMediumXXS: React.CSSProperties;
-    bodyBoldL: React.CSSProperties;
-    bodyBoldM: React.CSSProperties;
-    bodyBoldS: React.CSSProperties;
-    bodyBoldXS: React.CSSProperties;
-    bodyBoldXXS: React.CSSProperties;
-    bodyLinkL: React.CSSProperties;
-    bodyLinkM: React.CSSProperties;
-    bodyLinkS: React.CSSProperties;
-    bodyLinkXS: React.CSSProperties;
-    bodyLinkXXS: React.CSSProperties;
+    lifiHeaderDisplay: React.CSSProperties;
+    lifiHeaderXLarge: React.CSSProperties;
+    lifiHeaderLarge: React.CSSProperties;
+    lifiHeaderMedium: React.CSSProperties;
+    lifiHeaderSmall: React.CSSProperties;
+    lifiHeaderXSmall: React.CSSProperties;
+    lifiBodyXLargeStrong: React.CSSProperties;
+    lifiBodyXLarge: React.CSSProperties;
+    lifiBodyLargeStrong: React.CSSProperties;
+    lifiBodyLarge: React.CSSProperties;
+    lifiBodyMediumStrong: React.CSSProperties;
+    lifiBodyMedium: React.CSSProperties;
+    lifiBodySmallStrong: React.CSSProperties;
+    lifiBodySmall: React.CSSProperties;
+    lifiBodyXSmallStrong: React.CSSProperties;
+    lifiBodyXSmall: React.CSSProperties;
+    lifiMono5: React.CSSProperties;
+    lifiMono4: React.CSSProperties;
+    lifiMono3: React.CSSProperties;
+    lifiMono2: React.CSSProperties;
+    lifiMono1: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
-    hero?: React.CSSProperties;
-    subtitleL?: React.CSSProperties;
-    subtitleM?: React.CSSProperties;
-    subtitleS?: React.CSSProperties;
-    buttonL?: React.CSSProperties;
-    buttonM?: React.CSSProperties;
-    captionM?: React.CSSProperties;
-    captionS?: React.CSSProperties;
-    bodyRegularL?: React.CSSProperties;
-    bodyRegularM?: React.CSSProperties;
-    bodyRegularS?: React.CSSProperties;
-    bodyRegularXS?: React.CSSProperties;
-    bodyRegularXXS?: React.CSSProperties;
-    bodyMediumL?: React.CSSProperties;
-    bodyMediumM?: React.CSSProperties;
-    bodyMediumS?: React.CSSProperties;
-    bodyMediumXS?: React.CSSProperties;
-    bodyMediumXXS?: React.CSSProperties;
-    bodyBoldL?: React.CSSProperties;
-    bodyBoldM?: React.CSSProperties;
-    bodyBoldS?: React.CSSProperties;
-    bodyBoldXS?: React.CSSProperties;
-    bodyBoldXXS?: React.CSSProperties;
-    bodyLinkL?: React.CSSProperties;
-    bodyLinkM?: React.CSSProperties;
-    bodyLinkS?: React.CSSProperties;
-    bodyLinkXS?: React.CSSProperties;
-    bodyLinkXXS?: React.CSSProperties;
+    lifiHeaderDisplay?: React.CSSProperties;
+    lifiHeaderXLarge?: React.CSSProperties;
+    lifiHeaderLarge?: React.CSSProperties;
+    lifiHeaderMedium?: React.CSSProperties;
+    lifiHeaderSmall?: React.CSSProperties;
+    lifiHeaderXSmall?: React.CSSProperties;
+    lifiBodyXLargeStrong?: React.CSSProperties;
+    lifiBodyXLarge: React.CSSProperties;
+    lifiBodyLargeStrong: React.CSSProperties;
+    lifiBodyLarge: React.CSSProperties;
+    lifiBodyMediumStrong: React.CSSProperties;
+    lifiBodyMedium: React.CSSProperties;
+    lifiBodySmallStrong: React.CSSProperties;
+    lifiBodySmall: React.CSSProperties;
+    lifiBodyXSmallStrong: React.CSSProperties;
+    lifiBodyXSmall: React.CSSProperties;
+    lifiMono5: React.CSSProperties;
+    lifiMono4: React.CSSProperties;
+    lifiMono3: React.CSSProperties;
+    lifiMono2: React.CSSProperties;
+    lifiMono1: React.CSSProperties;
   }
 }
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
-    brandPrimary: true;
-    brandPrimaryTint100: true;
-    brandSecondary: true;
-    brandTertiary: true;
-    grey: true;
-    systemSuccess: true;
-    systemWarning: true;
-    systemError: true;
-    inherit: false;
-    primary: false;
-    secondary: false;
-    success: false;
-    error: false;
-    info: false;
-    warning: false;
+    tertiary: true;
+    white: true;
+    black: true;
+    accent1: true;
+    accent2: true;
+    bg: true;
+    alphaDark100: true;
+    alphaDark200: true;
+    alphaDark300: true;
+    alphaDark400: true;
+    alphaDark500: true;
+    alphaDark600: true;
+    alphaDark700: true;
+    alphaDark800: true;
+    alphaLight100: true;
+    alphaLight200: true;
+    alphaLight300: true;
+    alphaLight400: true;
+    alphaLight500: true;
+    alphaLight600: true;
+    alphaLight700: true;
+    alphaLight800: true;
   }
 }
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
-    hero: true;
-    subtitleL: true;
-    subtitleM: true;
-    subtitleS: true;
-    buttonL: true;
-    buttonM: true;
-    captionM: true;
-    captionS: true;
-    bodyRegularL: true;
-    bodyRegularM: true;
-    bodyRegularS: true;
-    bodyRegularXS: true;
-    bodyRegularXXS: true;
-    bodyMediumL: true;
-    bodyMediumM: true;
-    bodyMediumS: true;
-    bodyMediumXS: true;
-    bodyMediumXXS: true;
-    bodyBoldL: true;
-    bodyBoldM: true;
-    bodyBoldS: true;
-    bodyBoldXS: true;
-    bodyBoldXXS: true;
-    bodyLinkL: true;
-    bodyLinkM: true;
-    bodyLinkS: true;
-    bodyLinkXS: true;
-    bodyLinkXXS: true;
-    subtitle1: false;
-    subtitle2: false;
-    body1: false;
-    body2: false;
-    button: false;
-    caption: false;
+    lifiHeaderDisplay: true;
+    lifiHeaderXLarge: true;
+    lifiHeaderLarge: true;
+    lifiHeaderMedium: true;
+    lifiHeaderSmall: true;
+    lifiHeaderXSmall: true;
+    lifiBodyXLargeStrong: true;
+    lifiBodyXLarge: true;
+    lifiBodyLargeStrong: true;
+    lifiBodyLarge: true;
+    lifiBodyMediumStrong: true;
+    lifiBodyMedium: true;
+    lifiBodySmallStrong: true;
+    lifiBodySmall: true;
+    lifiBodyXSmallStrong: true;
+    lifiBodyXSmall: true;
+    lifiMono5: true;
+    lifiMono4: true;
+    lifiMono3: true;
+    lifiMono2: true;
+    lifiMono1: true;
   }
 }
 
 const themeBase: Theme = createTheme({
   components: {
+    MuiCssBaseline: {
+      styleOverrides: `${resetStyled} ${bodyStyled}`,
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {
-          hero: 'div',
-          h1: 'h2',
-          h2: 'h2',
-          h3: 'h3',
-          h4: 'h4',
-          h5: 'h5',
-          h6: 'h6',
-          subtitleL: 'div',
-          subtitleM: 'div',
-          subtitleS: 'div',
-          buttonL: 'button',
-          buttonM: 'button',
-          captionM: 'p',
-          captionS: 'p',
-          bodyRegularL: 'p',
-          bodyRegularM: 'p',
-          bodyRegularS: 'p',
-          bodyRegularXS: 'p',
-          bodyRegularXXS: 'p',
-          bodyMediumL: 'p',
-          bodyMediumM: 'p',
-          bodyMediumS: 'p',
-          bodyMediumXS: 'p',
-          bodyMediumXXS: 'p',
-          bodyBoldL: 'p',
-          bodyBoldM: 'p',
-          bodyBoldS: 'p',
-          bodyBoldXS: 'p',
-          bodyBoldXXS: 'p',
-          bodyLinkL: 'a',
-          bodyLinkM: 'a',
-          bodyLinkS: 'a',
-          bodyLinkXS: 'a',
-          bodyLinkXXS: 'a',
+          lifiHeaderDisplay: 'p',
+          lifiHeaderXLarge: 'p',
+          lifiHeaderLarge: 'p',
+          lifiHeaderMedium: 'p',
+          lifiHeaderSmall: 'p',
+          lifiHeaderXSmall: 'p',
+          lifiBodyXLargeStrong: 'p',
+          lifiBodyXLarge: 'p',
+          lifiBodyLargeStrong: 'p',
+          lifiBodyLarge: 'p',
+          lifiBodyMediumStrong: 'p',
+          lifiBodyMedium: 'p',
+          lifiBodySmallStrong: 'p',
+          lifiBodySmall: 'p',
+          lifiBodyXSmallStrong: 'p',
+          lifiBodyXSmall: 'p',
+          lifiMono5: 'p',
+          lifiMono4: 'p',
+          lifiMono3: 'p',
+          lifiMono2: 'p',
+          lifiMono1: 'p',
         },
       },
     },
   },
-  breakpoints: {
-    values: {
-      mobile: 0,
-      tablet: viewports.minTablet,
-      laptop: viewports.minLaptop,
-      desktop: viewports.minDesktop,
-      desktopFullHD: viewports.minDesktopFullHd,
-    },
-  },
-});
-
-const themeTypographyPreset: Theme = createTheme({
-  ...themeBase,
-  typography: {
-    fontFamily: ['"Inter"', 'Arial', 'sans-serif'].join(','),
-    hero: {
-      fontFamily: 'GalanoGrotesque, Arial',
-      fontSize: 50,
-      lineHeight: '58px',
-      fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
-        fontSize: 76,
-        lineHeight: '84px',
-        fontWeight: 400,
-        letterSpacing: -1,
-      },
-    },
-    h1: {
-      fontFamily: 'GalanoGrotesque, serif',
-      fontSize: 42,
-      lineHeight: '50px',
-      fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
-        fontSize: 68,
-        lineHeight: '74px',
-        fontWeight: 600,
-      },
-    },
-    h2: {
-      fontFamily: 'Inter, monospace',
-      fontSize: 36,
-      lineHeight: '44px',
-      fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
-        fontSize: 54,
-        lineHeight: '64px',
-        fontWeight: 600,
-      },
-    },
-    h3: {
-      fontSize: 32,
-      lineHeight: '42px',
-      fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
-        fontSize: 48,
-        lineHeight: '70px',
-        fontWeight: 400,
-      },
-    },
-    h4: {
-      fontSize: 27,
-      lineHeight: '36px',
-      fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
-        fontSize: 32,
-        lineHeight: '40px',
-        fontWeight: 400,
-      },
-    },
-    h5: {
-      fontSize: 22,
-      lineHeight: '30px',
-      fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
-        fontSize: 24,
-        lineHeight: '34px',
-        fontWeight: 400,
-      },
-    },
-    h6: {
-      fontSize: 20,
-      lineHeight: '26px',
-      fontWeight: 700,
-      [themeBase.breakpoints.up('tablet')]: {
-        fontSize: 20,
-        lineHeight: '28px',
-        fontWeight: 400,
-      },
-    },
-    subtitleL: {
-      fontFamily: 'Inter',
-      fontSize: 22,
-      lineHeight: '42px',
-      fontWeight: 300,
-      letterSpacing: 0.4,
-    },
-    subtitleM: {
-      fontSize: 20,
-      lineHeight: '36px',
-      fontWeight: 400,
-      letterSpacing: 0.6,
-    },
-    subtitleS: {
-      fontSize: 18,
-      lineHeight: '34px',
-      fontWeight: 300,
-      letterSpacing: 0.2,
-    },
-    buttonM: {
-      fontFamily: 'Inter',
-      fontSize: 15,
-      lineHeight: '20px',
-      fontWeight: 500,
-    },
-    buttonL: {
-      fontFamily: 'Inter',
-      fontSize: 16,
-      lineHeight: '20px',
-      fontWeight: 500,
-    },
-    captionM: {
-      fontFamily: 'Roboto Mono',
-      fontSize: 14,
-      lineHeight: '16px',
-      fontWeight: 400,
-    },
-    captionS: {
-      fontFamily: 'Roboto Mono',
-      fontSize: 12,
-      lineHeight: '16px',
-      fontWeight: 400,
-    },
-    bodyRegularL: {
-      fontFamily: 'Inter',
-      fontSize: 17,
-      lineHeight: '28px',
-      fontWeight: 400,
-    },
-    bodyRegularM: {
-      fontFamily: 'Inter',
-      fontSize: 16,
-      lineHeight: '28px',
-      fontWeight: 400,
-      letterSpacing: 0.2,
-    },
-    bodyRegularS: {
-      fontFamily: 'Inter',
-      fontSize: 14,
-      lineHeight: '22px',
-      fontWeight: 400,
-      letterSpacing: 0.2,
-    },
-    bodyRegularXS: {
-      fontFamily: 'Inter',
-      fontSize: 13,
-      lineHeight: '20px',
-      fontWeight: 400,
-      letterSpacing: -0.1,
-    },
-    bodyRegularXXS: {
-      fontFamily: 'Inter',
-      fontSize: 12,
-      lineHeight: '16px',
-      fontWeight: 400,
-      letterSpacing: -0.1,
-    },
-    bodyMediumL: {
-      fontFamily: 'Inter',
-      fontSize: 17,
-      lineHeight: '28px',
-      fontWeight: 500,
-    },
-    bodyMediumM: {
-      fontFamily: 'Inter',
-      fontSize: 16,
-      lineHeight: '28px',
-      fontWeight: 500,
-      letterSpacing: 0.2,
-    },
-    bodyMediumS: {
-      fontFamily: 'Inter',
-      fontSize: 14,
-      lineHeight: '22px',
-      fontWeight: 500,
-    },
-    bodyMediumXS: {
-      fontFamily: 'Inter',
-      fontSize: 13,
-      lineHeight: '20px',
-      fontWeight: 500,
-      letterSpacing: -0.1,
-    },
-    bodyMediumXXS: {
-      fontFamily: 'Inter',
-      fontSize: 12,
-      lineHeight: '16px',
-      fontWeight: 500,
-      letterSpacing: -0.1,
-    },
-    bodyBoldL: {
-      fontFamily: 'Inter',
-      fontSize: 17,
-      lineHeight: '28px',
-      fontWeight: 700,
-    },
-    bodyBoldM: {
-      fontFamily: 'Inter',
-      fontSize: 16,
-      lineHeight: '28px',
-      fontWeight: 700,
-      letterSpacing: 0.2,
-    },
-    bodyBoldS: {
-      fontFamily: 'Inter',
-      fontSize: 14,
-      lineHeight: '22px',
-      fontWeight: 700,
-    },
-    bodyBoldXS: {
-      fontFamily: 'Inter',
-      fontSize: 13,
-      lineHeight: '20px',
-      fontWeight: 700,
-    },
-    bodyBoldXXS: {
-      fontFamily: 'Inter',
-      fontSize: 12,
-      lineHeight: '16px',
-      fontWeight: 700,
-    },
-    bodyLinkL: {
-      fontFamily: 'Inter',
-      fontSize: 17,
-      lineHeight: '28px',
-      fontWeight: 400,
-    },
-    bodyLinkM: {
-      fontFamily: 'Inter',
-      fontSize: 16,
-      lineHeight: '28px',
-      fontWeight: 400,
-    },
-    bodyLinkS: {
-      fontFamily: 'Inter',
-      fontSize: 14,
-      lineHeight: '22px',
-      fontWeight: 400,
-    },
-    bodyLinkXS: {
-      fontFamily: 'Inter',
-      fontSize: 13,
-      lineHeight: '20px',
-      fontWeight: 400,
-      letterSpacing: -0.1,
-    },
-    bodyLinkXXS: {
-      fontFamily: 'Inter',
-      fontSize: 12,
-      lineHeight: '16px',
-      fontWeight: 400,
-      letterSpacing: -0.1,
-    },
-  },
-});
-
-const themePreset: Theme = createTheme({
-  ...themeBase,
-  ...themeTypographyPreset,
-});
-
-export const lightTheme: Theme = createTheme({
-  ...themePreset,
   spacing: 4,
   palette: {
-    mode: 'light',
-    background: {
-      default: '#fefaff',
+    primary: {
+      light: '#31007A',
+      main: '#31007A',
+      dark: '#31007A',
+      // contrastText: '#fff',
     },
-    text: {
-      primary: '#000',
+    secondary: {
+      light: 'rgba(49, 0, 122, 0.08)',
+      main: 'rgba(49, 0, 122, 0.08)',
+      dark: 'rgba(49, 0, 122, 0.08)',
+      // contrastText: '#fff',
     },
-    brandPrimary: {
-      main: '##3F49E1',
-      light: '##3F49E1',
-      dark: '#3F49E1',
-      contrastText: '#fff',
-    },
-    brandPrimaryTint100: {
-      light: '#ACBEFF',
-      main: '#7C83EB',
-      dark: '#7C83EB',
-      contrastText: '#000',
-    },
-    brandSecondary: {
-      light: '#fbebff',
-      main: '#F5B5FF',
-      dark: '#F5B5FF',
-      contrastText: '#000',
-    },
-    brandTertiary: {
-      light: '#F6F3F2',
-      main: '#F6F3F2',
-      dark: '#F6F3F2',
-      contrastText: '#000',
+    tertiary: {
+      light: 'rgba(135, 0, 184, 0.08)',
+      main: 'rgba(135, 0, 184, 0.08)',
+      dark: 'rgba(135, 0, 184, 0.08)',
+      // contrastText: '#fff',
     },
     grey: {
-      100: '#FFFFFF',
-      200: '#D9DADD',
-      300: '#B3B5BB',
-      400: '#838690',
-      500: '#61646D',
-      600: '#414348',
-      700: '#303135',
-      800: '#1C1D20',
+      100: '#F6F5FA',
+      200: '#ECEBF0',
+      300: '#DDDCE0',
+      400: '#C9C8CC',
+      500: '#9DA1A3',
+      600: '#8A8D8F',
+      700: '#70767A',
+      800: '#4B4F52',
       900: '#000000',
     },
-    systemSuccess: {
+    success: {
       main: '#0AA65B',
       light: '#0AA65B',
       dark: '#0AA65B',
     },
-    systemWarning: {
-      main: '#FFE668',
-      light: '#FFE668',
-      dark: '#FFE668',
-    },
-    systemError: {
+    error: {
       main: '#E5452F',
       light: '#E5452F',
       dark: '#E5452F',
     },
+    warning: {
+      main: '#FFE668',
+      light: '#FFE668',
+      dark: '#FFE668',
+    },
+    info: {
+      main: '#297EFF',
+      light: '#297EFF',
+      dark: '#297EFF',
+    },
+    white: {
+      main: '#FFFFFF',
+      light: '#FFFFFF',
+      dark: '#FFFFFF',
+    },
+    black: {
+      main: '#000000',
+      light: '#000000',
+      dark: '#000000',
+    },
+    alphaDark100: {
+      main: 'rgba(0, 0, 0, 0.04)',
+    },
+    alphaDark200: {
+      main: 'rgba(0, 0, 0, 0.08)',
+    },
+    alphaDark300: {
+      main: 'rgba(0, 0, 0, 0.12)',
+    },
+    alphaDark400: {
+      main: 'rgba(0, 0, 0, 0.16)',
+    },
+    alphaDark500: {
+      main: 'rgba(0, 0, 0, 0.24)',
+    },
+    alphaDark600: {
+      main: 'rgba(0, 0, 0, 0.32)',
+    },
+    alphaDark700: {
+      main: 'rgba(0, 0, 0, 0.48)',
+    },
+    alphaDark800: {
+      main: 'rgba(0, 0, 0, 0.64)',
+    },
+    alphaLight100: {
+      main: 'rgba(255, 255, 255, 0.04)',
+    },
+    alphaLight200: {
+      main: 'rgba(255, 255, 255, 0.08)',
+    },
+    alphaLight300: {
+      main: 'rgba(255, 255, 255, 0.12)',
+    },
+    alphaLight400: {
+      main: 'rgba(255, 255, 255, 0.16)',
+    },
+    alphaLight500: {
+      main: 'rgba(255, 255, 255, 0.24)',
+    },
+    alphaLight600: {
+      main: 'rgba(255, 255, 255, 0.32)',
+    },
+    alphaLight700: {
+      main: 'rgba(255, 255, 255, 0.48)',
+    },
+    alphaLight800: {
+      main: 'rgba(255, 255, 255, 0.64)',
+    },
   },
-
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: `${resetStyled} ${bodyStyled} ${Fonts}`,
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: viewports.minTablet,
+      md: viewports.minLaptop,
+      lg: viewports.minDesktop,
+      xl: viewports.minDesktopFullHd,
     },
   },
 });
 
-export const darkTheme: Theme = createTheme({
-  ...themePreset,
-  spacing: 4,
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#000',
-    },
-    text: {
-      primary: '#fff',
-    },
-    brandPrimary: {
-      light: '#13F287',
-      main: '#13F287',
-      dark: '#13F287',
-    },
-    brandPrimaryTint100: {
-      light: '#93FFCB',
-      main: '#93FFCB',
-      dark: '#93FFCB',
-      contrastText: '#fff',
-    },
-    brandSecondary: {
-      light: '#FF6C3E',
-      main: '#FF6C3E',
-      dark: '#FF6C3E',
-      contrastText: '#000',
-    },
-    brandTertiary: {
-      light: '#633DFF',
-      main: '#633DFF',
-      dark: '#633DFF',
-      contrastText: '#000',
-    },
-    grey: {
-      100: '#FFFFFF',
-      200: '#D9DADD',
-      300: '#B3B5BB',
-      400: '#838690',
-      500: '#61646D',
-      600: '#414348',
-      700: '#303135',
-      800: '#1C1D20',
-      900: '#000000',
-    },
-    systemSuccess: {
-      main: '#02C55B',
-      light: '#02C55B',
-      dark: '#02C55B',
-    },
-    systemWarning: {
-      main: '#FFF95F',
-      light: '#FFF95F',
-      dark: '#FFF95F',
-    },
-    systemError: {
-      main: '#E4294B',
-      light: '#E4294B',
-      dark: '#E4294B',
-    },
-  },
+// in a seperate 'createTheme' to allow listening to breakpoints set above
+const themeTypographyPreset: Theme = createTheme({
+  ...themeBase,
+  typography: {
+    fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+    lifiHeaderDisplay: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontSize: 96,
+      lineHeight: '128px',
+      fontWeight: 700,
 
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: `${resetStyled} ${bodyStyled} ${Fonts}`,
+      // example to make it responsive:
+      // [themeBase.breakpoints.up('sm')]: {
+      //   fontSize: 120,
+      //   lineHeight: '140px',
+      //   fontWeight: 700,
+      //   letterSpacing: -1,
+      // },
+    },
+    lifiHeaderXLarge: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '64px',
+      lineHeight: '96px',
+    },
+    lifiHeaderLarge: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '48px',
+      lineHeight: '64px',
+    },
+    lifiHeaderMedium: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '32px',
+      lineHeight: '40px',
+    },
+    lifiHeaderSmall: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '18px',
+      lineHeight: '24px',
+    },
+    lifiHeaderXSmall: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '14px',
+      lineHeight: '20px',
+    },
+    lifiBodyXLargeStrong: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 800,
+      fontSize: '24px',
+      lineHeight: '32px',
+    },
+    lifiBodyXLarge: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 400,
+      fontSize: '24px',
+      lineHeight: '32px',
+    },
+    lifiBodyLargeStrong: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '18px',
+      lineHeight: '24px',
+    },
+    lifiBodyLarge: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '18px',
+      lineHeight: '24px',
+    },
+    lifiBodyMediumStrong: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '16px',
+      lineHeight: '20px',
+    },
+    lifiBodyMedium: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '16px',
+      lineHeight: '20px',
+    },
+    lifiBodySmallStrong: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '14px',
+      lineHeight: '20px',
+    },
+    lifiBodySmall: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 400,
+      fontSize: '14px',
+      lineHeight: '20px',
+    },
+    lifiBodyXSmallStrong: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '12px',
+      lineHeight: '16px',
+    },
+    lifiBodyXSmall: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '12px',
+      lineHeight: '16px',
+    },
+    lifiMono5: {
+      fontFamily: 'Roboto Mono',
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '16px',
+      lineHeight: '21px',
+    },
+    lifiMono4: {
+      fontFamily: 'Roboto Mono',
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '14px',
+      lineHeight: '18px',
+    },
+    lifiMono3: {
+      fontFamily: 'Roboto Mono',
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '12px',
+      lineHeight: '16px',
+    },
+    lifiMono2: {
+      fontFamily: 'Roboto Mono',
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '10px',
+      lineHeight: '13px',
+    },
+    lifiMono1: {
+      fontFamily: 'Roboto Mono',
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '8px',
+      lineHeight: '11px',
     },
   },
 });
+
+const themePreset: Theme = createTheme(
+  deepmerge(themeBase, themeTypographyPreset),
+);
+
+export const lightTheme: Theme = createTheme(
+  deepmerge(themePreset, {
+    palette: {
+      mode: 'light',
+      background: {
+        default:
+          'linear-gradient(180deg, #F9F5FF 0%, #F3EBFF 49.48%, #F9F5FF 99.48%)',
+      },
+      text: {
+        primary: '#000',
+      },
+      bg: {
+        light: '#F3EBFF',
+        main: '#F3EBFF',
+        dark: '#F3EBFF',
+        // contrastText: '#fff',
+      },
+      accent1: {
+        light: '#31007A',
+        main: '#31007A',
+        dark: '#31007A',
+        // contrastText: '#fff',
+      },
+      accent2: {
+        light: '#8700B8',
+        main: '#8700B8',
+        dark: '#8700B8',
+        // contrastText: '#fff',
+      },
+    },
+  }),
+);
+
+export const darkTheme: Theme = createTheme(
+  deepmerge(themePreset, {
+    palette: {
+      mode: 'dark',
+      background: {
+        default:
+          'linear-gradient(180deg, #000000 0%, #0C001F 49.48%, #000000 99.48%)', //'#241D52',
+      },
+      text: {
+        primary: '#fff',
+      },
+      bg: {
+        light: '#0E0B1F',
+        main: '#030014',
+        dark: '#030014',
+        // contrastText: '#fff',
+      },
+      accent1: {
+        light: '#835FB8',
+        main: '#835FB8',
+        dark: '#835FB8',
+        // contrastText: '#fff',
+      },
+      accent2: {
+        light: '#D35CFF',
+        main: '#D35CFF',
+        dark: '#D35CFF',
+        // contrastText: '#fff',
+      },
+    },
+  }),
+);

@@ -1,57 +1,91 @@
-import { supportedWallets } from '@lifi/wallet-management';
-import React, { useMemo, useState } from 'react';
+import { ExtendedChain } from '@lifi/types';
+import { Avatar, Typography } from '@mui/material';
+import { useSettings } from '@transferto/shared/src/hooks';
+import React, { useMemo } from 'react';
 import { ConnectButton } from '../../atoms/connect-button';
 import { DisconnectButton } from '../../atoms/disconnect-button';
-import { WalletIcon } from '../../atoms/icons';
-import { WalletModal } from '../../molecules/wallet-modal/wallet-modal';
 
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
   backgroundColor?: string;
+  setOpenNavbarSubmenu?: (subMenu: string) => void;
+  color?: string;
+  connectButtonLabel?: string;
+  activeChain?: ExtendedChain;
   hoverBackgroundColor?: string;
-  walletManagement: () => any;
+  isSuccess: boolean;
+  walletManagement: any;
 }
 
-export const WalletManagementButtons: React.FC<any> = (props) => {
-  const { account, disconnect } = props.walletManagement;
+export const walletDigest = (account) => {
+  if (!!account.address) {
+    return `${account.address.substr(0, 5)}...${account.address.substr(-4)}`;
+  } else {
+    return 'None';
+  }
+};
 
-  const [showModal, setShowModal] = useState(false);
+export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
+  props,
+) => {
+  const { account } = props.walletManagement;
+  const settings = useSettings();
+  const _walletDigest = useMemo(() => {
+    return walletDigest(account);
+  }, [account]);
 
-  const walletDigest = useMemo(() => {
-    if (account.address) {
-      return `${account.address.substr(0, 4)}...`;
-    } else {
-      return '';
-    }
-  }, [account.address]);
+  const handleWalletPicker = () => {
+    settings.onOpenNavbarWalletMenu(
+      !!settings.openNavbarWalletMenu ? false : true,
+    );
+  };
 
-  const handleClick = () => {
-    setShowModal((oldState) => !oldState);
+  const handleWalletMenuClick = () => {
+    props.setOpenNavbarSubmenu(
+      !!settings.openNavbarConnectedMenu ? 'none' : 'wallets',
+    );
+    settings.onOpenNavbarConnectedMenu(!settings.openNavbarConnectedMenu);
   };
 
   return (
     <>
       {!account.address ? (
-        <ConnectButton
-          onClick={handleClick}
+        <>
+          <ConnectButton
+            onClick={handleWalletPicker}
+            backgroundColor={props.backgroundColor}
+            hoverBackgroundColor={props.hoverBackgroundColor}
+            color={props.color}
+          >
+            {!!props.connectButtonLabel
+              ? props.connectButtonLabel
+              : 'Connect Wallet'}
+          </ConnectButton>
+        </>
+      ) : (
+        <DisconnectButton
+          onClick={handleWalletMenuClick}
           backgroundColor={props.backgroundColor}
           hoverBackgroundColor={props.hoverBackgroundColor}
+          color={!account.isActive ? 'white' : props.color}
         >
-          Connect Wallet
-        </ConnectButton>
-      ) : (
-        <DisconnectButton onClick={disconnect} endIcon={<WalletIcon />}>
-          Disconnect {walletDigest}
+          {!!props.isSuccess ? (
+            <Avatar
+              className="menu-item-label__icon"
+              src={!!props.activeChain ? props.activeChain.logoURI : 'empty'}
+              alt={`${
+                !!props?.activeChain?.name ? props.activeChain.name : ''
+              }chain-logo`}
+              sx={{ height: '32px', width: '32px', mr: '12px' }}
+            />
+          ) : (
+            <></>
+          )}
+          <Typography variant={'lifiBodyMediumStrong'} width={'100%'}>
+            <>{_walletDigest}</>
+          </Typography>
         </DisconnectButton>
       )}
-
-      <WalletModal
-        open={showModal}
-        handleClose={handleClick}
-        setOpen={setShowModal}
-        wallets={supportedWallets}
-        walletManagement={props.walletManagement}
-      />
     </>
   );
 };
