@@ -7,5 +7,9 @@
     "declaration": true,
     "declarationDir": "dist/types"
   },
-  "include": ["src/**/*"]
+  "include": [
+    "../dapp/src/providers/WalletProvider.tsx",
+    "src/**/*",
+    "../dapp/src/types/i18n.ts"
+  ]
 }

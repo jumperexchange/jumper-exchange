@@ -1,11 +1,20 @@
 import { styled } from '@mui/material/styles';
+export interface BackgroundGradientContainerProps
+  extends Omit<HTMLDivElement, 'isDarkMode' | 'children'> {
+  children?: JSX.Element | JSX.Element[] | React.ReactNode;
+}
+export interface BackgroundGradientProps
+  extends Omit<HTMLSpanElement, 'isDarkMode' | 'children' | 'className'> {
+  isDarkMode?: boolean;
+  children?: JSX.Element | JSX.Element[] | React.ReactNode;
+  className?: string;
+}
 
-export const BackgroundGradientContainer = styled('div')(({ theme }) => ({
+export const BackgroundGradientContainer = styled('div')<any>(({ theme }) => ({
   position: 'absolute',
   overflow: 'hidden',
   pointerEvents: 'none',
-  background:
-    'linear-gradient(180deg, #F9F5FF 0%, #F3EBFF 49.48%, #F9F5FF 99.48%)',
+  background: theme.palette.background.default,
   height: '100vh',
   width: '100vw',
   left: 0,
@@ -17,40 +26,43 @@ export const BackgroundGradientContainer = styled('div')(({ theme }) => ({
   },
 }));
 
-export const BackgroundGradient = styled('span')(({ theme }) => ({
+export const BackgroundGradient = styled('span')<any>(({ theme }) => ({
   content: '""',
   position: 'absolute',
   width: '100vh',
   height: '100vh',
-  opacity: '0.08',
+  opacity: '0.12',
 }));
 
-export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
-  ({ theme }) => ({
-    transform: 'translate(-50%,50%) scale(1.5)',
-    left: 0,
-    bottom: 0,
-    background:
-      'radial-gradient(50% 50% at 50% 50%, #1969FF 0%, rgba(255, 255, 255, 0) 100%)',
-  }),
-);
+export const BackgroundGradientBottomLeft = styled(BackgroundGradient, {
+  shouldForwardProp: (prop) => prop !== 'isDarkMode',
+})<BackgroundGradientProps>(({ theme, isDarkMode }) => ({
+  transform: 'translate(-50%,50%) scale(1.5)',
+  left: 0,
+  opacity: isDarkMode ? '0.24' : '0.12',
+  bottom: 0,
+  background:
+    'radial-gradient(50% 50% at 50% 50%, #1969FF 0%, rgba(255, 255, 255, 0) 100%)',
+}));
 
-export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
-  ({ theme }) => ({
-    transform: 'translate(50%,50%) scale(1.5)',
-    right: 0,
-    bottom: 0,
-    background:
-      'radial-gradient(50% 50% at 50% 50%, #E1147B 0%, rgba(255, 255, 255, 0) 100%)',
-  }),
-);
+export const BackgroundGradientBottomRight = styled(BackgroundGradient, {
+  shouldForwardProp: (prop) => prop !== 'isDarkMode',
+})<BackgroundGradientProps>(({ theme, isDarkMode }) => ({
+  transform: 'translate(50%,50%) scale(1.5)',
+  right: 0,
+  bottom: 0,
+  opacity: isDarkMode ? '0.24' : '0.12',
+  background:
+    'radial-gradient(50% 50% at 50% 50%, #E1147B 0%, rgba(255, 255, 255, 0) 100%)',
+}));
 
-export const BackgroundGradientTopCenter = styled(BackgroundGradient)(
-  ({ theme }) => ({
-    transform: 'translate(-50%,-50%) scale(1.5)',
-    top: 0,
-    left: '50%',
-    background:
-      'radial-gradient(50% 50% at 50% 50%, #9747FF 0%, rgba(255, 255, 255, 0) 100%)',
-  }),
-);
+export const BackgroundGradientTopCenter = styled(BackgroundGradient, {
+  shouldForwardProp: (prop) => prop !== 'isDarkMode',
+})<BackgroundGradientProps>(({ theme, isDarkMode }) => ({
+  transform: 'translate(-50%,-50%) scale(1.5)',
+  top: 0,
+  left: '50%',
+  opacity: isDarkMode ? '0.24' : '0.08',
+  background:
+    'radial-gradient(50% 50% at 50% 50%, #9747FF 0%, rgba(255, 255, 255, 0) 100%)',
+}));

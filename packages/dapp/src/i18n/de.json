@@ -1,0 +1,41 @@
+{
+  "Navbar": {
+    "Links": {
+      "Swap": "Swap",
+      "Dashboard": "Dashboard",
+      "Refuel": "Gas"
+    },
+    "ConnectWallet": "Wallet verbinden",
+    "ChooseWallet": "Wallet auswählen",
+    "NavbarMenu": {
+      "Theme": "Theme",
+      "Language": "Sprache",
+      "Developers": "Entwickler",
+      "AboutLIFI": "Über LI.FI",
+      "Support": "Hilfe"
+    },
+    "WalletMenu": {
+      "Disconnect": "Abmelden",
+      "Chains": "Netzwerk",
+      "SwitchChain": "Netzwerk wählen"
+    },
+    "Languages": {
+      "en": "Englisch",
+      "ch": "Chinesisch",
+      "fr": "Französisch",
+      "de": "Deutsch",
+      "it": "Italienisch",
+      "jp": "Japanisch"
+    },
+    "Themes": {
+      "Light": "Hell",
+      "Dark": "Dunkel",
+      "Auto": "Auto"
+    },
+    "Developers": {
+      "Github": "GitHub",
+      "Documentation": "Dokumentation",
+      "Showcases": "Beispiele"
+    }
+  }
+}

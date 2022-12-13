@@ -7,24 +7,25 @@ import {
   Wallet,
 } from '@lifi/wallet-management';
 import { Signer } from 'ethers';
-import {
+import React, {
   createContext,
-  FC,
   PropsWithChildren,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react';
 
-import type { WalletAccount, WalletContextProps } from '../types';
+import {
+  WalletAccount,
+  WalletContextProps,
+} from '@transferto/shared/src/types/wallet';
 
 const stub = (): never => {
   throw new Error('You forgot to wrap your component in <WalletProvider>.');
 };
 
-const initialContext: WalletContextProps = {
+export const initialContext: WalletContextProps = {
   connect: stub,
   disconnect: stub,
   switchChain: stub,
@@ -35,26 +36,33 @@ const initialContext: WalletContextProps = {
 
 const WalletContext = createContext<WalletContextProps>(initialContext);
 
-export const useWallet = (): WalletContextProps => useContext(WalletContext);
+export const useWallet = (): WalletContextProps =>
+  React.useContext(WalletContext);
 
-export const WalletProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
+export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
+  children,
+}) => {
   const {
     connect: walletManagementConnect,
     disconnect: walletManagementDisconnect,
     signer,
   } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
+  const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
 
   const connect = useCallback(
     async (wallet?: Wallet) => {
       await walletManagementConnect(wallet);
+
       const account = await extractAccountFromSigner(signer);
+      setUsedWallet(wallet!);
       setAccount(account);
     },
     [walletManagementConnect],
   );
 
   const disconnect = useCallback(async () => {
+    setUsedWallet(undefined);
     await walletManagementDisconnect();
   }, [walletManagementDisconnect]);
 
@@ -88,6 +96,7 @@ export const WalletProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
       addChain,
       addToken,
       account,
+      usedWallet,
     }),
     [account, addChain, addToken, connect, disconnect, switchChain],
   );

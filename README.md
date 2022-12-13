@@ -1,27 +1,27 @@
-# transferto.xyz
+# Jumper.exchange
 
-Lerna Monorepo for all transferto.xyz related things
+Lerna Monorepo for all jumper.exchange related things
 
 ## Basic Usage 
 
-In the root directory run the following commands to get started
+In the root directory run the following commands to get started:
 ```
 yarn bootstrap
 ```
 to install all dependencies, and
 
 ```
-yarn start
+yarn dev
 ```
 
-to start the transferto page.
+to start the development vite server and to start building packages in watch mode.
 
 
 ## Project Structure
 
-### packages/transferto/
+### packages/dapp/
 
-This is the transferto page that gets deployed to `develop.transferto.xyz`, `staging.transferto.xyz` and `transferto.xyz`. This is a next.js app
+This is the jumper.exchange page that gets deployed to `develop.jumper.exchange`, `staging.jumper.exchange` and `jumper.exchange`. This is a vite.js app
 
 ### packages/shared/
 
