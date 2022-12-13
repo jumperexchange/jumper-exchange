@@ -10,9 +10,9 @@ export default function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/swap/*" element={<Swap />} />
-          <Route path="/gas/*" element={<Refuel />} />
-          <Route path="/*" element={<Navigate to="/swap/" />} />
+          <Route path="/transferto.xyz/swap/*" element={<Swap />} />
+          <Route path="/transferto.xyz/gas/*" element={<Refuel />} />
+          <Route path="/*" element={<Navigate to="/transferto.xyz/swap/" />} />
         </Routes>
       </BrowserRouter>
     </BackgroundGradient>
