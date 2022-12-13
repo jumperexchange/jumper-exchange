@@ -1,13 +1,15 @@
-import { Chain } from '@lifi/types';
+import { Chain, ChainsResponse } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { WalletManagementButtons } from '@transferto/shared';
-import { useSettings } from '@transferto/shared/src/hooks';
-import { SyntheticEvent, useEffect, useMemo, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useChainInfos } from '../../providers/ChainInfosProvider';
+import { useChainInfo, useSettings } from '@transferto/shared/src/hooks';
+
+import { screenSize } from '@transferto/shared/src/style';
+import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useIsDarkMode } from '../../providers/ThemeProvider';
 import { useWallet } from '../../providers/WalletProvider';
-import { ConnectedMenu, MainMenu, WalletMenu } from './index';
+import { NavbarMenuDesktop, NavbarMenuMobile, NavbarWalletMenu } from './index';
 import {
   NavbarDropdownButton,
   NavbarManagement as NavbarManagementContainer,
@@ -15,12 +17,22 @@ import {
 
 const NavbarManagement = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
-  const settings = useSettings();
-  const theme = useTheme();
-  const { t: translate } = useTranslation();
-  const i18Path = 'Navbar.';
 
-  const isDarkMode = theme.palette.mode === 'dark';
+  // Dropdown-Menu - Source: https://mui.com/material-ui/react-menu/
+  const [open, setOpen] = useState(false);
+  const [openSubMenu, setOpenSubMenu] = useState('none');
+  const [openWalletMenu, setOpenWalletMenu] = useState(false);
+  const [openWalletSubMenu, setOpenWalletSubMenu] = useState('none');
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.up('sm'));
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+    setOpenSubMenu('none');
+    setOpenWalletMenu(false);
+    setOpenWalletSubMenu('none');
+  };
+  const settings = useSettings();
+
   const walletManagement = useWallet();
   const { account } = useWallet();
   const handleClose = (event: Event | SyntheticEvent) => {
@@ -31,85 +43,94 @@ const NavbarManagement = () => {
     ) {
       return;
     }
-    settings.onCopyToClipboard(false);
+    setOpenSubMenu('none');
+    setOpen(false);
+    setOpenWalletSubMenu('none');
+    setOpenWalletMenu(false);
   };
 
   !account.isActive ?? settings.onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = useRef(settings.openMainNavbarMenu);
+  const prevOpen = useRef(open);
   useEffect(() => {
-    if (prevOpen.current === true && settings.openMainNavbarMenu === false) {
+    if (prevOpen.current === true && open === false) {
       anchorRef.current!.focus();
     }
 
-    prevOpen.current = settings.openMainNavbarMenu;
-  }, [settings.openMainNavbarMenu]);
+    prevOpen.current = open;
+  }, [open]);
 
-  const { chains, isSuccess } = useChainInfos();
+  const { data: chainStats, isSuccess } = useChainInfo();
+  const chainInfos: ChainsResponse = useMemo(
+    () => (!!chainStats ? chainStats : null),
+    [chainStats],
+  );
 
   const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    () =>
+      chainInfos?.chains.find(
+        (chainEl: Chain) => chainEl.id === account.chainId,
+      ),
+    [chainInfos, account.chainId],
   );
 
   return (
     <NavbarManagementContainer className="settings">
       <WalletManagementButtons
         walletManagement={walletManagement}
-        color={
-          !!account.isActive && !isDarkMode ? theme.palette.black.main : 'white'
-        }
-        backgroundColor={
-          !account.isActive
-            ? theme.palette.accent1.main
-            : !!isDarkMode
-            ? 'rgba(255, 255, 255, 0.12);'
-            : 'white'
-        }
+        backgroundColor={theme.palette.accent1.main}
         hoverBackgroundColor={'#31007a8c'}
-        setOpenNavbarSubmenu={settings.onOpenNavbarSubMenu}
         activeChain={activeChain}
-        connectButtonLabel={`${translate(`${i18Path}ConnectWallet`)}`}
         isSuccess={isSuccess}
+        openWalletMenu={openWalletMenu}
+        setOpenWalletMenu={setOpenWalletMenu}
+        openWalletSubMenu={openWalletSubMenu}
+        setOpenWalletSubMenu={setOpenWalletSubMenu}
       />
       <NavbarDropdownButton
         ref={anchorRef}
         id="composition-button"
-        aria-controls={
-          settings.openMainNavbarMenu ? 'composition-menu' : undefined
-        }
-        aria-expanded={settings.openMainNavbarMenu ? 'true' : undefined}
+        aria-controls={open ? 'composition-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={() => {
-          settings.onOpenNavbarSubMenu('none');
-          settings.onOpenNavbarWalletMenu(false);
-          settings.onOpenNavbarMainMenu(!settings.openMainNavbarMenu);
-        }}
-        mainCol={!!isDarkMode ? '#653BA3' : theme.palette.primary.main}
+        onClick={handleToggle}
+        mainCol={!!useIsDarkMode() ? '#653BA3' : '#31007A'}
       >
-        <MenuIcon
-          sx={{
-            fontSize: '32px',
-            color: !!isDarkMode ? theme.palette.white.main : 'inherit',
-          }}
-        />
+        <MenuIcon sx={{ fontSize: '32px' }} />
       </NavbarDropdownButton>
+      {!!isTablet ? (
+        <NavbarMenuDesktop
+          handleClose={handleClose}
+          anchorRef={anchorRef}
+          open={open}
+          setOpen={setOpen}
+          openSubMenu={openSubMenu}
+          setOpenSubMenu={setOpenSubMenu}
+        />
+      ) : (
+        <NavbarMenuMobile
+          handleClose={handleClose}
+          anchorRef={anchorRef}
+          open={open}
+          setOpen={setOpen}
+          openSubMenu={openSubMenu}
+          setOpenSubMenu={setOpenSubMenu}
+        />
+      )}
 
-      <MainMenu handleClose={handleClose} anchorRef={anchorRef} />
-
-      {/* <WalletMenuWrapper
-        anchorRef={anchorRef}
-        supportedWallets={supportedWallets}
-        handleClose={handleClose}
-      /> */}
-
-      <WalletMenu handleClose={handleClose} anchorRef={anchorRef} />
-
-      <ConnectedMenu
+      <NavbarWalletMenu
+        isTablet={isTablet}
+        activeChain={activeChain}
+        chainInfos={chainInfos}
         isSuccess={isSuccess}
         handleClose={handleClose}
         anchorRef={anchorRef}
+        open={openWalletMenu}
+        walletManagement={useWallet()}
+        setOpen={setOpenWalletMenu}
+        openSubMenu={openWalletSubMenu}
+        setOpenSubMenu={setOpenWalletSubMenu}
       />
     </NavbarManagementContainer>
   );

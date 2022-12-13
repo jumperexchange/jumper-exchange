@@ -3,16 +3,16 @@ import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { de, en } from '../i18n';
+import { translationDE, translationEN } from '../i18n';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const i18n = useMemo(() => {
     let resources = {
       en: {
-        translation: en,
+        translation: translationEN,
       },
       de: {
-        translation: de,
+        translation: translationDE,
       },
     };
 

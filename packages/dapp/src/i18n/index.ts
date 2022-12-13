@@ -1,7 +1,4 @@
-import de from './de.json';
-import en from './en.json';
-import fr from './fr.json';
-import it from './it.json';
-import zh from './zh.json';
+import translationDE from './de.json';
+import translationEN from './en.json';
 
-export { de, en, zh, it, fr };
+export { translationDE, translationEN };

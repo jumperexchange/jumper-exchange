@@ -52,9 +52,4 @@ export const defaultSettings: any = {
   activeWalletName: !!localStorage.getItem(localStorageKey.activeWalletName)
     ? localStorage.getItem(localStorageKey.activeWalletName)
     : false,
-  activeTab: 0,
-  openMainNavbarMenu: false,
-  openNavbarWalletMenu: false,
-  openNavbarConnectedMenu: false,
-  openNavbarSubMenu: 'none',
 };

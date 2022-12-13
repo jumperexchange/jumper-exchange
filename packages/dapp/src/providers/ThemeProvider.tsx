@@ -4,7 +4,7 @@ import { darkTheme, lightTheme } from '@transferto/shared';
 import { useSettings } from '@transferto/shared/src/hooks';
 import React, { PropsWithChildren, useMemo } from 'react';
 
-export const useDetectDarkModePreference = () => {
+export const useIsDarkMode = () => {
   const settings = useSettings();
   const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
   if (!settings.themeMode || settings.themeMode === 'auto') {
@@ -19,7 +19,7 @@ export const useDetectDarkModePreference = () => {
 export const ThemeProvider: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const isDarkMode = useDetectDarkModePreference();
+  const isDarkMode = useIsDarkMode();
 
   const activeTheme = useMemo(() => {
     return !!isDarkMode ? darkTheme : lightTheme;

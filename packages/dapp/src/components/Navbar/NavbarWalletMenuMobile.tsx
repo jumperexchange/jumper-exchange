@@ -1,49 +1,51 @@
+import { ChainsResponse, ExtendedChain } from '@lifi/types';
 import { Slide } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { useTheme } from '@mui/material/styles';
-import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { WalletContextProps } from '@transferto/shared/src/types/wallet';
+import { Dispatch, SetStateAction } from 'react';
 import { useIsDarkMode } from '../../providers/ThemeProvider';
+
 import {
-  NavbarMenuItemAbout,
-  NavbarMenuItemDevelopers,
-  NavbarMenuItemLanguage,
-  NavbarMenuItemSupport,
-  NavbarMenuItemThemes,
-  NavbarSubMenuDevelopers,
-  NavbarSubMenuLanguages,
-  NavbarSubMenuThemes,
+  NavbarWalletMenuItemActiveWallet,
+  NavbarWalletMenuItemChains,
+  NavbarWalletMenuItemDisconnect,
+  NavbarWalletSubMenuChains,
 } from './index';
 import { NavbarExternalBackground } from './Navbar.styled';
 interface NavbarMenuProps {
   openSubMenu: string;
   anchorRef: any; // TODO: Replace this any with the correct type
+  chainInfos: ChainsResponse;
+  activeChain: ExtendedChain;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  isSuccess: boolean;
   open: boolean;
+  walletManagement: WalletContextProps;
+  handleListKeyDown: any;
 }
 
-const NavbarMenuMobile = ({
+const NavbarWalletMenuMobile = ({
   handleClose,
   open,
+  activeChain,
   setOpen,
   anchorRef,
+  chainInfos,
+  isSuccess,
   openSubMenu,
   setOpenSubMenu,
+  walletManagement,
+  handleListKeyDown,
 }: NavbarMenuProps) => {
   const theme = useTheme();
+  const { disconnect } = walletManagement;
   const isDarkMode = useIsDarkMode();
-  function handleListKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    } else if (event.key === 'Escape') {
-      setOpen(false);
-    }
-  }
 
   return (
     !!open && (
@@ -62,6 +64,7 @@ const NavbarMenuMobile = ({
               left: '0 !important',
               top: 'unset !important',
               right: '0 !important',
+              // transform: 'unset !important',
               margin: '0px',
               [theme.breakpoints.up('sm')]: {
                 bottom: 'unset !important',
@@ -98,45 +101,33 @@ const NavbarMenuMobile = ({
                   id="composition-menu"
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
+                  sx={{ pt: openSubMenu === 'none' ? 0 : '48px !important' }}
                 >
-                  <NavbarMenuItemLanguage
+                  <NavbarWalletMenuItemChains
                     open={open}
+                    activeChain={activeChain}
                     openSubMenu={openSubMenu}
                     setOpenSubMenu={setOpenSubMenu}
+                    walletManagement={walletManagement}
                   />
-
-                  <NavbarMenuItemThemes
-                    open={open}
-                    openSubMenu={openSubMenu}
-                    setOpenSubMenu={setOpenSubMenu}
-                  />
-                  <NavbarMenuItemDevelopers
-                    open={open}
-                    openSubMenu={openSubMenu}
-                    setOpenSubMenu={setOpenSubMenu}
-                  />
-                  <NavbarMenuItemAbout
+                  <NavbarWalletMenuItemActiveWallet
                     open={open}
                     setOpen={setOpen}
                     openSubMenu={openSubMenu}
+                    walletManagement={walletManagement}
                   />
-                  <NavbarMenuItemSupport
+                  <NavbarWalletMenuItemDisconnect
+                    open={open}
+                    openSubMenu={openSubMenu}
                     setOpen={setOpen}
-                    open={open}
-                    openSubMenu={openSubMenu}
+                    disconnect={disconnect}
                   />
-                  <NavbarSubMenuThemes
+                  <NavbarWalletSubMenuChains
                     open={open}
-                    openSubMenu={openSubMenu}
-                    setOpenSubMenu={setOpenSubMenu}
-                  />
-                  <NavbarSubMenuLanguages
-                    open={open}
-                    openSubMenu={openSubMenu}
-                    setOpenSubMenu={setOpenSubMenu}
-                  />
-                  <NavbarSubMenuDevelopers
-                    open={open}
+                    activeChain={activeChain}
+                    walletManagement={walletManagement}
+                    chainInfos={chainInfos}
+                    isSuccess={isSuccess}
                     openSubMenu={openSubMenu}
                     setOpenSubMenu={setOpenSubMenu}
                   />
@@ -150,4 +141,4 @@ const NavbarMenuMobile = ({
   );
 };
 
-export default NavbarMenuMobile;
+export default NavbarWalletMenuMobile;

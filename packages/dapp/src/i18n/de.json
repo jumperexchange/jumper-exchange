@@ -6,7 +6,6 @@
       "Refuel": "Gas"
     },
     "ConnectWallet": "Wallet verbinden",
-    "ChooseWallet": "Wallet auswählen",
     "NavbarMenu": {
       "Theme": "Theme",
       "Language": "Sprache",
@@ -20,12 +19,8 @@
       "SwitchChain": "Netzwerk wählen"
     },
     "Languages": {
-      "en": "Englisch",
-      "ch": "Chinesisch",
-      "fr": "Französisch",
-      "de": "Deutsch",
-      "it": "Italienisch",
-      "jp": "Japanisch"
+      "English": "Englisch",
+      "German": "Deutsch"
     },
     "Themes": {
       "Light": "Hell",

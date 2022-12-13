@@ -34,5 +34,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "../shared/src/providers/WalletProvider.tsx"
   ]
 }
