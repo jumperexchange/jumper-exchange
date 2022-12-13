@@ -14,6 +14,35 @@ export interface TokenAmountList {
   [ChainKey: string]: Array<TokenWithAmounts>;
 }
 
+export interface ShowConnectModalProps {
+  show: boolean;
+  promiseResolver?: Promise<any>;
+}
+
+export interface MenuItem {
+  label: string;
+  destination: string;
+}
+
+export interface MenuListItem {
+  label: string;
+  triggerSubMenu?: string;
+  listIcon: JSX.Element | string;
+  extraIcon?: JSX.Element;
+  checkIcon?: boolean;
+  url?: string;
+  onClick?: any; //(mode?: string) => void;
+  showButton?: boolean;
+}
+
+export type TWallet = {
+  name: string;
+  icon: string;
+};
+export type TWallets = {
+  [key: string]: TWallet;
+};
+
 export interface SwapPageStartParams {
   depositChain?: ChainKey;
   depositToken?: string;

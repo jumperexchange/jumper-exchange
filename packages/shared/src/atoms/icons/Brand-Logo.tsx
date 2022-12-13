@@ -6,14 +6,14 @@ import { useMemo } from 'react';
 const JumperLogo = ({ theme }) => {
   const mainCol = useMemo(
     () =>
-      !!theme.palette.accent1.main ? theme.palette.accent1.main : '#31007A',
-    [theme],
+      theme.palette.mode === 'light' ? theme.palette.accent1.main : '#fff',
+    [theme.palette.mode],
   );
 
   const subCol = useMemo(
     () =>
-      !!theme.palette.accent2.main ? theme.palette.accent2.main : '#8700B8',
-    [theme],
+      theme.palette.mode === 'light' ? theme.palette.accent2.main : '#D35CFF',
+    [theme.palette.mode],
   );
 
   return (
@@ -79,14 +79,14 @@ const JumperLogo = ({ theme }) => {
 const JumperIcon = ({ theme }) => {
   const mainCol = useMemo(
     () =>
-      !!theme.palette.accent1.main ? theme.palette.accent1.main : '#31007A',
-    [theme],
+      theme.palette.mode === 'light' ? theme.palette.accent1.main : '#fff',
+    [theme.palette.mode],
   );
 
   const subCol = useMemo(
     () =>
-      !!theme.palette.accent2.main ? theme.palette.accent2.main : '#8700B8',
-    [theme],
+      theme.palette.mode === 'light' ? theme.palette.accent2.main : '#D35CFF',
+    [theme.palette.mode],
   );
 
   return (
