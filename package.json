@@ -7,9 +7,9 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "@etherspot/contracts": "^1.9.51",
-    "@lifi/sdk": "^1.7.1",
+    "@lifi/sdk": "^1.7.2",
     "@lifi/wallet-management": "^1.2.2",
-    "@lifi/widget": "^1.27.0",
+    "@lifi/widget": "^1.27.1",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/network-connector": "^6.1.9",
