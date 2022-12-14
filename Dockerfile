@@ -2,6 +2,9 @@ FROM node:18.12.1-alpine3.16 as builder
 
 WORKDIR /app
 
+RUN corepack enable
+RUN corepack prepare yarn@stable --activate
+
 COPY package.json yarn.lock tsconfig.base.json lerna.json ./
 COPY packages/ ./packages
 
