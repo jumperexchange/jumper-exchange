@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY package.json yarn.lock tsconfig.base.json lerna.json ./
 COPY packages/ ./packages
-COPY .yarn/ ./.yarn
 
 RUN yarn install
 RUN yarn build
