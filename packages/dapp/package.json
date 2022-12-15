@@ -7,7 +7,7 @@
     "@emotion/styled": "^11.8.1",
     "@lifi/sdk": "^1.6.4",
     "@lifi/wallet-management": "1.2.1",
-    "@lifi/widget": "^1.25.0",
+    "@lifi/widget": "^1.27.1",
     "@mui/icons-material": "^5.10.14",
     "@mui/material": "^5.10.14",
     "@transferto/dashboard-vite": "*",

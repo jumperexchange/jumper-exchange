@@ -4,10 +4,14 @@ import {
   switchChain,
   switchChainAndAddToken,
 } from '@lifi/wallet-management';
-import { WidgetVariant } from '@lifi/widget';
 import { useSearchParams } from 'react-router-dom';
 
-import { LiFiWidget, WidgetConfig } from '@lifi/widget';
+import {
+  HiddenUI,
+  LiFiWidget,
+  WidgetConfig,
+  WidgetVariant,
+} from '@lifi/widget';
 import { Box, Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
@@ -112,6 +116,7 @@ export default function Widget({ starterVariant }) {
         allow: ['de', 'en'],
       },
       appearance: !!isDarkMode ? 'dark' : 'light',
+      hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
         palette: {
           primary: {
