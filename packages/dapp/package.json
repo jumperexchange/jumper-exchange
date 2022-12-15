@@ -10,7 +10,6 @@
     "@lifi/widget": "^1.27.1",
     "@mui/icons-material": "^5.10.14",
     "@mui/material": "^5.10.14",
-    "@transferto/dashboard-vite": "*",
     "@transferto/shared": "*",
     "@types/react": "^18.0.25",
     "axios": "^1.2.0",
