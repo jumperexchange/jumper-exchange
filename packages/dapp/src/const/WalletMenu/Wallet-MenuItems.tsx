@@ -2,6 +2,7 @@ import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useMemo, useState } from 'react';
+import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import { MenuListItem } from '../../types';
 
@@ -11,8 +12,9 @@ const WalletMenuItems = () => {
   const { connect } = useWallet();
   const { ethereum } = window as any;
   const settings = useSettings();
+  const menu = useMenu();
   const login = async (wallet: Wallet) => {
-    settings.onCloseAllNavbarMenus();
+    menu.onCloseAllNavbarMenus();
 
     if (wallet.checkProviderIdentity) {
       const checkResult = wallet.checkProviderIdentity(ethereum);
@@ -23,7 +25,7 @@ const WalletMenuItems = () => {
     }
     await connect(wallet);
     settings.onWalletConnect(wallet.name);
-    settings.onOpenNavbarWalletMenu(false);
+    menu.onOpenNavbarWalletMenu(false);
     try {
     } catch (e) {}
   };
@@ -48,7 +50,7 @@ const WalletMenuItems = () => {
       });
     });
     return _output;
-  }, [settings.openNavbarWalletMenu]);
+  }, [menu.openNavbarWalletMenu]);
 
   return _WalletMenuItems;
 };

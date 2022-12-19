@@ -20,6 +20,7 @@ import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
+import { useMenu } from './MenuProvider';
 
 const stub = (): never => {
   throw new Error('You forgot to wrap your component in <WalletProvider>.');
@@ -49,11 +50,10 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
-
+  const menu = useMenu();
   const connect = useCallback(
     async (wallet?: Wallet) => {
       await walletManagementConnect(wallet);
-
       const account = await extractAccountFromSigner(signer);
       setUsedWallet(wallet!);
       setAccount(account);
@@ -64,6 +64,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const disconnect = useCallback(async () => {
     setUsedWallet(undefined);
     await walletManagementDisconnect();
+    menu.onCloseAllNavbarMenus();
   }, [walletManagementDisconnect]);
 
   // only for injected wallets

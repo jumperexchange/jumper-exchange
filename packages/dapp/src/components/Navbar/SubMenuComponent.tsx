@@ -98,7 +98,10 @@ const SubMenuComponent = ({
                     <MenuItemLabel>
                       <>
                         {el.listIcon}
-                        <Typography variant={'lifiBodyMedium'} ml={'12px'}>
+                        <Typography
+                          variant={'lifiBodyMedium'}
+                          ml={!!el.listIcon ? '12px' : 'inherit'}
+                        >
                           <>{el.label}</>
                         </Typography>
                       </>
@@ -115,7 +118,10 @@ const SubMenuComponent = ({
                     <MenuItemLabel>
                       <>
                         {el.listIcon}
-                        <Typography variant={'lifiBodyMedium'} ml={'12px'}>
+                        <Typography
+                          variant={'lifiBodyMedium'}
+                          ml={!!el.listIcon ? '12px' : 'inherit'}
+                        >
                           <>{el.label}</>
                         </Typography>
                       </>

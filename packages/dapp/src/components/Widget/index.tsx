@@ -17,6 +17,7 @@ import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import { LanguageKey } from '../../types/i18n';
 
@@ -27,6 +28,7 @@ interface ShowConnectModalProps {
 export default function Widget({ starterVariant }) {
   const theme = useTheme();
   const settings = useSettings();
+  const menu = useMenu();
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
@@ -69,8 +71,8 @@ export default function Widget({ starterVariant }) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          settings.onOpenNavbarWalletMenu(
-            !!settings.openNavbarWalletMenu ? false : true,
+          menu.onOpenNavbarWalletMenu(
+            !!menu.openNavbarWalletMenu ? false : true,
           );
 
           let promiseResolver;

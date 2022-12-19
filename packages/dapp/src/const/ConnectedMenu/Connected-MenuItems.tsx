@@ -11,6 +11,7 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
+import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import { MenuListItem, TWallets } from '../../types';
 
@@ -18,6 +19,7 @@ const ConnectedMenuItems = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'Navbar.WalletMenu.';
   const settings = useSettings();
+  const menu = useMenu();
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
 
@@ -73,9 +75,9 @@ const ConnectedMenuItems = () => {
       ),
       onClick: () => {
         navigator?.clipboard?.writeText(account.address);
-        settings.onCopyToClipboard(true);
+        menu.onCopyToClipboard(true);
       },
-      extraIcon: !!settings.copiedToClipboard ? (
+      extraIcon: !!menu.copiedToClipboard ? (
         <CheckIcon sx={{ color: theme.palette.success.main }} />
       ) : (
         <ContentCopyIcon />

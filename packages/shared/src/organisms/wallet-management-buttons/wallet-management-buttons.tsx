@@ -4,12 +4,13 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import React, { useMemo } from 'react';
 import { ConnectButton } from '../../atoms/connect-button';
 import { DisconnectButton } from '../../atoms/disconnect-button';
-
+import { MenuContextProps } from '../../types';
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
   backgroundColor?: string;
   setOpenNavbarSubmenu?: (subMenu: string) => void;
   color?: string;
+  menu: MenuContextProps;
   connectButtonLabel?: string;
   activeChain?: ExtendedChain;
   hoverBackgroundColor?: string;
@@ -35,16 +36,13 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   }, [account]);
 
   const handleWalletPicker = () => {
-    settings.onOpenNavbarWalletMenu(
-      !!settings.openNavbarWalletMenu ? false : true,
+    props.menu.onOpenNavbarWalletMenu(
+      !!props.menu.openNavbarWalletMenu ? false : true,
     );
   };
 
   const handleWalletMenuClick = () => {
-    props.setOpenNavbarSubmenu(
-      !!settings.openNavbarConnectedMenu ? 'none' : 'wallets',
-    );
-    settings.onOpenNavbarConnectedMenu(!settings.openNavbarConnectedMenu);
+    props.menu.onOpenNavbarConnectedMenu(!props.menu.openNavbarConnectedMenu);
   };
 
   return (

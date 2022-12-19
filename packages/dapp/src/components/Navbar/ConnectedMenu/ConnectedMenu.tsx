@@ -1,6 +1,7 @@
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
 import { ConnectedMenuItems, ConnectedSubMenuChains } from '../../../const';
+import { useMenu } from '../../../providers/MenuProvider';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../index';
 
 interface NavbarMenuProps {
@@ -12,17 +13,18 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
   const i18Path = 'Navbar.WalletMenu.';
   const { t: translate } = useTranslation();
   const settings = useSettings();
+  const menu = useMenu();
   const _connectedMenuItems = ConnectedMenuItems();
   const _connectedSubMenuChains = ConnectedSubMenuChains();
 
-  return !!settings.onOpenNavbarConnectedMenu ? (
+  return !!menu.openNavbarConnectedMenu ? ( //todo, ON ???
     <NavbarMenu
       handleClose={handleClose}
       anchorRef={anchorRef}
-      open={settings.openNavbarConnectedMenu}
-      stickyLabel={settings.openNavbarSubMenu === 'chains'}
-      setOpen={settings.onOpenNavbarConnectedMenu}
-      openSubMenu={settings.openNavbarSubMenu}
+      open={menu.openNavbarConnectedMenu}
+      stickyLabel={menu.openNavbarSubMenu === 'chains'}
+      setOpen={menu.onOpenNavbarConnectedMenu}
+      openSubMenu={menu.openNavbarSubMenu}
     >
       {_connectedMenuItems.map((el, index) => (
         <MenuItemComponent
@@ -33,9 +35,9 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
           showButton={el.showButton}
           extraIcon={el.extraIcon}
           onClick={el.onClick}
-          open={settings.openNavbarConnectedMenu}
-          openSubMenu={settings.openNavbarSubMenu}
-          setOpenSubMenu={settings.onOpenNavbarSubMenu}
+          open={menu.openNavbarConnectedMenu}
+          openSubMenu={menu.openNavbarSubMenu}
+          setOpenSubMenu={menu.onOpenNavbarSubMenu}
         />
       ))}
 
@@ -44,9 +46,9 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
         isSubMenu={true}
         stickyLabel={true}
         triggerSubMenu={'chains'}
-        open={settings.openNavbarConnectedMenu}
-        openSubMenu={settings.openNavbarSubMenu}
-        setOpenSubMenu={settings.onOpenNavbarSubMenu}
+        open={menu.openNavbarConnectedMenu}
+        openSubMenu={menu.openNavbarSubMenu}
+        setOpenSubMenu={menu.onOpenNavbarSubMenu}
         subMenuList={_connectedSubMenuChains}
       />
     </NavbarMenu>

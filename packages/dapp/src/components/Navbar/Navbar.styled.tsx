@@ -401,7 +401,7 @@ export const MenuHeaderAppBar = styled(AppBar, {
   backgroundColor: 'transparent',
   zIndex: 1,
   position: 'fixed',
-  width: 'calc(288px - 12px )',
+  width: '100%',
   height: '60px',
   top: 'initial',
   left: 'initial',

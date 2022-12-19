@@ -2,7 +2,8 @@ import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LanguageIcon from '@mui/icons-material/Language';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import { Discord, LanguageFlags } from '@transferto/shared/src/atoms/icons';
+import { Typography } from '@mui/material';
+import { Discord } from '@transferto/shared/src/atoms/icons';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useMemo } from 'react';
@@ -13,7 +14,6 @@ const MainMenuItems = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
   const settings = useSettings();
-  const _languageFlags = LanguageFlags();
   const activeLanguage = useMemo(
     () => getInitialProps().initialLanguage,
     [getInitialProps().initialLanguage],
@@ -24,7 +24,11 @@ const MainMenuItems = () => {
       label: `${translate(`${i18Path}NavbarMenu.Language`)}`,
       listIcon: <LanguageIcon />,
       checkIcon: settings.themeMode === 'light',
-      extraIcon: _languageFlags['de'],
+      extraIcon: (
+        <Typography variant="lifiBodyMedium" textTransform={'uppercase'}>
+          {activeLanguage}
+        </Typography>
+      ),
       triggerSubMenu: 'language',
     },
     {

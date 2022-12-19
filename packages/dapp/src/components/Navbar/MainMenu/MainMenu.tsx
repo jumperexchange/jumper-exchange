@@ -9,6 +9,7 @@ import {
   MainSubMenuLanguage,
   MainSubMenuTheme,
 } from '../../../const';
+import { useMenu } from '../../../providers/MenuProvider';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../index';
 
 interface MainMenuProps {
@@ -19,14 +20,15 @@ interface MainMenuProps {
 const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
   const theme = useTheme();
   const settings = useSettings();
+  const menu = useMenu();
   const i18Path = 'Navbar.';
   const { t: translate } = useTranslation();
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault();
-      settings.onOpenNavbarMainMenu(false);
+      menu.onOpenNavbarMainMenu(false);
     } else if (event.key === 'Escape') {
-      settings.onOpenNavbarMainMenu(false);
+      menu.onOpenNavbarMainMenu(false);
     }
   }
 
@@ -39,9 +41,9 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
     <NavbarMenu
       handleClose={handleClose}
       anchorRef={anchorRef}
-      open={settings.openMainNavbarMenu}
-      setOpen={settings.onOpenNavbarMainMenu}
-      openSubMenu={settings.openNavbarSubMenu}
+      open={menu.openMainNavbarMenu}
+      setOpen={menu.onOpenNavbarMainMenu}
+      openSubMenu={menu.openNavbarSubMenu}
     >
       {_MainMenuItems.map((el, index) => (
         <MenuItemComponent
@@ -52,9 +54,9 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
           showButton={el.showButton}
           extraIcon={el.extraIcon}
           onClick={el.onClick}
-          open={settings.openMainNavbarMenu}
-          openSubMenu={settings.openNavbarSubMenu}
-          setOpenSubMenu={settings.onOpenNavbarSubMenu}
+          open={menu.openMainNavbarMenu}
+          openSubMenu={menu.openNavbarSubMenu}
+          setOpenSubMenu={menu.onOpenNavbarSubMenu}
         />
       ))}
       <SubMenuComponent
@@ -62,9 +64,9 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         label={`${translate(`${i18Path}NavbarMenu.Theme`)}`}
         triggerSubMenu={'themes'}
         stickyLabel={true}
-        open={settings.openMainNavbarMenu}
-        openSubMenu={settings.openNavbarSubMenu}
-        setOpenSubMenu={settings.onOpenNavbarSubMenu}
+        open={menu.openMainNavbarMenu}
+        openSubMenu={menu.openNavbarSubMenu}
+        setOpenSubMenu={menu.onOpenNavbarSubMenu}
         subMenuList={_mainSubMenuTheme}
       />
 
@@ -73,9 +75,9 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         label={`${translate(`${i18Path}NavbarMenu.Language`)}`}
         triggerSubMenu={'language'}
         stickyLabel={true}
-        open={settings.openMainNavbarMenu}
-        openSubMenu={settings.openNavbarSubMenu}
-        setOpenSubMenu={settings.onOpenNavbarSubMenu}
+        open={menu.openMainNavbarMenu}
+        openSubMenu={menu.openNavbarSubMenu}
+        setOpenSubMenu={menu.onOpenNavbarSubMenu}
         subMenuList={_mainSubMenuLanguage}
       />
 
@@ -84,9 +86,9 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         label={`${translate(`${i18Path}NavbarMenu.Developers`)}`}
         triggerSubMenu={'devs'}
         stickyLabel={true}
-        open={settings.openMainNavbarMenu}
-        openSubMenu={settings.openNavbarSubMenu}
-        setOpenSubMenu={settings.onOpenNavbarSubMenu}
+        open={menu.openMainNavbarMenu}
+        openSubMenu={menu.openNavbarSubMenu}
+        setOpenSubMenu={menu.onOpenNavbarSubMenu}
         subMenuList={_mainSubMenuDevelopers}
       />
     </NavbarMenu>

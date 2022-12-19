@@ -21,7 +21,7 @@ const SubMenuLanguage = () => {
   Object.values(DappLanguagesSupported).map((lan) =>
     _SubMenuLanguage.push({
       label: translate(`${i18Path}Languages.${lan}`),
-      listIcon: languageFlags[lan],
+      // listIcon: languageFlags[lan],
       checkIcon: settings.languageMode === lan,
       onClick: () => handleSwitchLanguage(lan),
     }),

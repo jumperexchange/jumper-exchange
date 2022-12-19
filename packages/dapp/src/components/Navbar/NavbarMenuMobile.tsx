@@ -4,6 +4,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { useMenu } from '../../providers/MenuProvider';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -39,6 +40,7 @@ const NavbarMenuMobile = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const settings = useSettings();
+  const menu = useMenu();
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -71,7 +73,7 @@ const NavbarMenuMobile = ({
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
-                  settings.onCloseAllNavbarMenus();
+                  menu.onCloseAllNavbarMenus();
                 }}
               >
                 <NavbarMenuList
@@ -99,8 +101,8 @@ const NavbarMenuMobile = ({
                             position: 'absolute',
                           }}
                           onClick={() => {
-                            settings.onOpenNavbarWalletMenu(
-                              !settings.openNavbarWalletMenu,
+                            menu.onOpenNavbarWalletMenu(
+                              !menu.openNavbarWalletMenu,
                             );
                           }}
                         >

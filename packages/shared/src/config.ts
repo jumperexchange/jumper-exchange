@@ -1,5 +1,5 @@
 // @mui
-import { deDE, enUS } from '@mui/material/locale';
+import { deDE, enUS, frFR, itIT, zhCN } from '@mui/material/locale';
 import i18next from 'i18next';
 import { DappLanguagesSupported } from './types/settings';
 
@@ -20,13 +20,26 @@ export const allLangs = [
     label: 'English',
     value: 'en' as DappLanguagesSupported,
     systemValue: enUS,
-    // icon: "/assets/icons/flags/ic_flag_en.svg",
   },
   {
     label: 'Deutsch',
     value: 'de' as DappLanguagesSupported,
     systemValue: deDE,
-    // icon: "/assets/icons/flags/ic_flag_de.svg",
+  },
+  {
+    label: 'Italian',
+    value: 'it' as DappLanguagesSupported,
+    systemValue: itIT,
+  },
+  {
+    label: 'Chinese',
+    value: 'zh' as DappLanguagesSupported,
+    systemValue: zhCN,
+  },
+  {
+    label: 'French',
+    value: 'fr' as DappLanguagesSupported,
+    systemValue: frFR,
   },
 ];
 
@@ -45,6 +58,7 @@ const setLanguage = (defaultLang) => {
 };
 
 export const defaultSettings: any = {
+  activeTab: 0,
   themeMode: !!localStorage.getItem(localStorageKey.themeMode)
     ? localStorage.getItem(localStorageKey.themeMode)
     : 'auto',
@@ -52,7 +66,10 @@ export const defaultSettings: any = {
   activeWalletName: !!localStorage.getItem(localStorageKey.activeWalletName)
     ? localStorage.getItem(localStorageKey.activeWalletName)
     : false,
-  activeTab: 0,
+};
+
+export const defaultMenu: any = {
+  copiedToClipboard: false,
   openMainNavbarMenu: false,
   openNavbarWalletMenu: false,
   openNavbarConnectedMenu: false,

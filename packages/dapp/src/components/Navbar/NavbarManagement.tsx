@@ -6,6 +6,7 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { SyntheticEvent, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
+import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import { ConnectedMenu, MainMenu, WalletMenu } from './index';
 import {
@@ -17,6 +18,7 @@ const NavbarManagement = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
   const settings = useSettings();
   const theme = useTheme();
+  const menu = useMenu();
   const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
 
@@ -31,20 +33,20 @@ const NavbarManagement = () => {
     ) {
       return;
     }
-    settings.onCopyToClipboard(false);
+    menu.onCopyToClipboard(false);
   };
 
   !account.isActive ?? settings.onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = useRef(settings.openMainNavbarMenu);
+  const prevOpen = useRef(menu.openMainNavbarMenu);
   useEffect(() => {
-    if (prevOpen.current === true && settings.openMainNavbarMenu === false) {
+    if (prevOpen.current === true && menu.openMainNavbarMenu === false) {
       anchorRef.current!.focus();
     }
 
-    prevOpen.current = settings.openMainNavbarMenu;
-  }, [settings.openMainNavbarMenu]);
+    prevOpen.current = menu.openMainNavbarMenu;
+  }, [menu.openMainNavbarMenu]);
 
   const { chains, isSuccess } = useChainInfos();
 
@@ -57,6 +59,7 @@ const NavbarManagement = () => {
     <NavbarManagementContainer className="settings">
       <WalletManagementButtons
         walletManagement={walletManagement}
+        menu={menu}
         color={
           !!account.isActive && !isDarkMode ? theme.palette.black.main : 'white'
         }
@@ -68,7 +71,7 @@ const NavbarManagement = () => {
             : 'white'
         }
         hoverBackgroundColor={'#31007a8c'}
-        setOpenNavbarSubmenu={settings.onOpenNavbarSubMenu}
+        setOpenNavbarSubmenu={menu.onOpenNavbarSubMenu}
         activeChain={activeChain}
         connectButtonLabel={`${translate(`${i18Path}ConnectWallet`)}`}
         isSuccess={isSuccess}
@@ -76,15 +79,13 @@ const NavbarManagement = () => {
       <NavbarDropdownButton
         ref={anchorRef}
         id="composition-button"
-        aria-controls={
-          settings.openMainNavbarMenu ? 'composition-menu' : undefined
-        }
-        aria-expanded={settings.openMainNavbarMenu ? 'true' : undefined}
+        aria-controls={menu.openMainNavbarMenu ? 'composition-menu' : undefined}
+        aria-expanded={menu.openMainNavbarMenu ? 'true' : undefined}
         aria-haspopup="true"
         onClick={() => {
-          settings.onOpenNavbarSubMenu('none');
-          settings.onOpenNavbarWalletMenu(false);
-          settings.onOpenNavbarMainMenu(!settings.openMainNavbarMenu);
+          menu.onOpenNavbarSubMenu('none');
+          menu.onOpenNavbarWalletMenu(false);
+          menu.onOpenNavbarMainMenu(!menu.openMainNavbarMenu);
         }}
         mainCol={!!isDarkMode ? '#653BA3' : theme.palette.primary.main}
       >

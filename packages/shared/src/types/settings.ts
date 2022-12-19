@@ -4,7 +4,7 @@ export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
 export enum DappLanguagesSupported {
   en = 'en',
-  ch = 'ch',
+  zh = 'zh',
   fr = 'fr',
   de = 'de',
   it = 'it',
@@ -15,11 +15,6 @@ export type SettingsValueProps = {
   languageMode: DappLanguagesSupported;
   activeWalletName: WalletConnected;
   activeTab: number;
-  copiedToClipboard: boolean;
-  openMainNavbarMenu: boolean;
-  openNavbarWalletMenu: boolean;
-  openNavbarConnectedMenu: boolean;
-  openNavbarSubMenu: string;
 };
 
 export type SettingsContextProps = {
@@ -27,39 +22,15 @@ export type SettingsContextProps = {
   languageMode?: DappLanguagesSupported;
   activeTab?: number;
   activeWalletName?: WalletConnected;
-  copiedToClipboard?: boolean;
-  openMainNavbarMenu?: boolean;
-  openNavbarWalletMenu?: boolean;
-  openNavbarConnectedMenu?: boolean;
-  openNavbarSubMenu?: string;
 
   // Wallet
   onWalletConnect: (activeWalletName: string) => void;
   onWalletDisconnect: VoidFunction;
 
-  // ClipBoard
-  onCopyToClipboard: (copied: boolean) => void;
-
-  // Close ALL Navbar Menus
-  onCloseAllNavbarMenus: () => void;
-
-  // Toggle Navbar Main Menu
-  onOpenNavbarMainMenu: (open: boolean) => void;
-
-  // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: (open: boolean) => void;
-
-  // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: (open: boolean) => void;
-
-  // Toggle Navbar Sub Menu
-  onOpenNavbarSubMenu: (subMenu: string) => void;
-
   // Tabs
   onChangeTab: (tab: number) => void;
 
   // Mode
-  onToggleMode: VoidFunction;
   onChangeMode: (mode: ThemeModesSupported) => void;
 
   // Language

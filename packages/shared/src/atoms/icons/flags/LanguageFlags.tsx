@@ -11,7 +11,7 @@ import React from 'react';
 const LanguageFlags = () => {
   const _LanguageFlags = {
     en: <FlagUSA />,
-    ch: <FlagChina />,
+    zh: <FlagChina />,
     fr: <FlagFrance />,
     de: <FlagGermany />,
     it: <FlagItaly />,

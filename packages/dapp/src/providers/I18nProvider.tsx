@@ -3,7 +3,7 @@ import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { de, en } from '../i18n';
+import { de, en, fr, it, zh } from '../i18n';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const i18n = useMemo(() => {
@@ -14,11 +14,20 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       de: {
         translation: de,
       },
+      it: {
+        translation: it,
+      },
+      zh: {
+        translation: zh,
+      },
+      fr: {
+        translation: fr,
+      },
     };
 
     let i18n = i18next.createInstance({
       fallbackLng: defaultLang.value,
-      supportedLngs: ['de', 'en'],
+      supportedLngs: ['de', 'en', 'it', 'zh', 'fr'],
       lowerCaseLng: true,
       interpolation: {
         escapeValue: false,
@@ -27,13 +36,7 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     });
 
     const DETECTION_OPTIONS = {
-      order: [
-        'navigator',
-        'querystring',
-        'localStorage',
-        'cookie',
-        'sessionStorage',
-      ],
+      order: ['localStorage', 'cookie', 'sessionStorage'],
     };
 
     i18n

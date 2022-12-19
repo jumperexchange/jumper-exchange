@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
 import { WalletMenuItems } from '../../../const';
+import { useMenu } from '../../../providers/MenuProvider';
 import { MenuItemComponent, NavbarMenu } from '../index';
 
 interface NavbarMenuProps {
@@ -17,6 +18,7 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
   const { t: translate } = useTranslation();
   const theme = useTheme();
   const settings = useSettings();
+  const menu = useMenu();
   const _walletMenuItems = WalletMenuItems();
 
   return (
@@ -25,9 +27,9 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
       label={`${translate(`${i18Path}ChooseWallet`)}`}
       anchorRef={anchorRef}
       scrollableMainLayer={true}
-      open={settings.openNavbarWalletMenu}
-      setOpen={settings.onOpenNavbarWalletMenu}
-      openSubMenu={settings.openNavbarSubMenu}
+      open={menu.openNavbarWalletMenu}
+      setOpen={menu.onOpenNavbarWalletMenu}
+      openSubMenu={menu.openNavbarSubMenu}
     >
       {!!_walletMenuItems.length ? (
         _walletMenuItems.map((el, index) => (
@@ -40,9 +42,9 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
             showButton={el.showButton}
             extraIcon={el.extraIcon}
             onClick={el.onClick}
-            open={!!open ? open : settings.openNavbarWalletMenu}
-            openSubMenu={settings.openNavbarSubMenu}
-            setOpenSubMenu={settings.onOpenNavbarSubMenu}
+            open={!!open ? open : menu.openNavbarWalletMenu}
+            openSubMenu={menu.openNavbarSubMenu}
+            setOpenSubMenu={menu.onOpenNavbarSubMenu}
           />
         ))
       ) : (
