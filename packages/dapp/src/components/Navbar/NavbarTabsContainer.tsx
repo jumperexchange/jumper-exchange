@@ -1,14 +1,10 @@
 import EvStationIcon from '@mui/icons-material/EvStation';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { Box, useMediaQuery } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
-import {
-  NavbarTab,
-  NavbarTabs,
-  NavbarTabsContainer as NavbarTabsWrapper,
-} from './Navbar.styled';
+import { NavbarTab, NavbarTabs } from './Navbar.styled';
 const linkMap = {
   swap: '/swap',
   dashboard: '/dashboard',
@@ -35,55 +31,44 @@ const NavbarTabsContainer = () => {
   };
 
   return (
-    <NavbarTabsWrapper>
-      <Box
-        sx={{
-          borderColor: 'divider',
-          width: '100%',
-          height: '48px',
-          borderBottom: 'unset',
-        }}
-      >
-        <NavbarTabs
-          value={!!isMobile ? false : settings.activeTab}
-          onChange={handleChange}
-          isDarkMode={isDarkMode}
-          aria-label="basic tabs example"
-          indicatorColor="primary"
-        >
-          <NavbarTab
-            icon={
-              <SwapHorizIcon
-                sx={{
-                  marginRight: '6px',
-                  marginBottom: '0px !important',
-                  color: !!isDarkMode
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
-                }}
-              />
-            }
-            label={`${translate(`${i18Path}Links.Swap`)}`}
-            {...a11yProps(0)}
+    <NavbarTabs
+      value={!!isMobile ? false : settings.activeTab}
+      onChange={handleChange}
+      isDarkMode={isDarkMode}
+      aria-label="tabs"
+      indicatorColor="primary"
+    >
+      <NavbarTab
+        icon={
+          <SwapHorizIcon
+            sx={{
+              marginRight: '6px',
+              marginBottom: '0px !important',
+              color: !!isDarkMode
+                ? theme.palette.white.main
+                : theme.palette.black.main,
+            }}
           />
-          <NavbarTab
-            label={`${translate(`${i18Path}Links.Refuel`)}`}
-            icon={
-              <EvStationIcon
-                sx={{
-                  marginRight: '6px',
-                  marginBottom: '0px !important',
-                  color: !!isDarkMode
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
-                }}
-              />
-            }
-            {...a11yProps(1)}
+        }
+        label={`${translate(`${i18Path}Links.Swap`)}`}
+        {...a11yProps(0)}
+      />
+      <NavbarTab
+        label={`${translate(`${i18Path}Links.Refuel`)}`}
+        icon={
+          <EvStationIcon
+            sx={{
+              marginRight: '6px',
+              marginBottom: '0px !important',
+              color: !!isDarkMode
+                ? theme.palette.white.main
+                : theme.palette.black.main,
+            }}
           />
-        </NavbarTabs>
-      </Box>
-    </NavbarTabsWrapper>
+        }
+        {...a11yProps(1)}
+      />
+    </NavbarTabs>
   );
 };
 

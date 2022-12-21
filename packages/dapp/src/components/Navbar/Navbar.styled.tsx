@@ -52,22 +52,6 @@ export const NavbarManagement = styled('div')({
   justifySelf: 'self-end',
 });
 
-export const NavbarTabsContainer = styled('div')(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.up('md')]: {
-    position: 'absolute',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    backgroundColor: theme.palette.mode === 'dark' ? '#231a31' : '#0000000A',
-    margin: 'auto',
-    height: 48,
-    borderRadius: 24,
-    padding: 1,
-    display: 'flex',
-    width: 390,
-  },
-}));
-
 export const NavBar = styled(AppBar)(({ theme }) => ({
   marginTop: theme.spacing(4),
   background: 'transparent',
@@ -76,47 +60,11 @@ export const NavBar = styled(AppBar)(({ theme }) => ({
 
 export const NavbarContainer = styled('div')(({ theme }) => ({
   background: 'transparent',
-  height: '75px',
+  height: '80px',
   padding: theme.spacing(6),
   display: 'flex',
-  justifyContent: 'space-between',
-}));
-
-export interface NavbarLinkProps extends Omit<LinkProps, 'active'> {
-  active?: boolean;
-  hoverBackgroundColor?: string;
-}
-
-export const NavbarLink = styled(Link, {
-  shouldForwardProp: (prop) =>
-    prop !== 'hoverBackgroundColor' && prop !== 'active',
-})<NavbarLinkProps>(({ theme, active, hoverBackgroundColor }) => ({
-  backgroundColor: !active
-    ? 'transparent'
-    : theme.palette.mode === 'dark'
-    ? '#352b42'
-    : theme.palette.white.main,
-  borderRadius: 20,
-  width: '50%',
-  display: 'flex',
-  justifyContent: 'center',
   alignItems: 'center',
-  margin: theme.spacing(1),
-  fontFamily: 'Inter',
-  fontStyle: 'normal',
-  fontWeight: '700',
-  fontSize: '14px',
-  lineHeight: '20px',
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.white.main
-      : theme.palette.black.main,
-  textDecoration: 'none',
-  '&:hover': {
-    backgroundColor: !!hoverBackgroundColor
-      ? hoverBackgroundColor
-      : theme.palette.accent2.main,
-  },
+  justifyContent: 'space-between',
 }));
 
 export interface NavbarDropDownButtonProps
@@ -182,20 +130,41 @@ export const MenuHeader = styled('div')(({}) => ({
 export const NavbarTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+  display: 'none',
+  [theme.breakpoints.up('md')]: {
+    position: 'absolute',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? theme.palette.alphaLight100.main
+        : '#0000000A',
+    margin: 'auto',
+    // height: 56,
+    borderRadius: 24,
+    padding: 1,
+    display: 'flex',
+    width: 390,
+    alignItems: 'center',
+  },
+  div: {
+    height: '56px',
+  },
   '.MuiTabs-flexContainer': {
     alignItems: 'center',
   },
   '.MuiTabs-indicator': {
-    height: '40px',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    height: '48px',
     backgroundColor:
       theme.palette.mode === 'dark'
-        ? 'rgba(255, 255, 255, 0.2) !important'
-        : 'white !important',
+        ? theme.palette.alphaLight300.main
+        : theme.palette.white.main,
     zIndex: '-1',
     marginBottom: theme.spacing(1),
-    borderRadius: '20px',
+    borderRadius: '24px',
   },
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
@@ -209,7 +178,7 @@ export const NavbarTab = styled(Tab, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabProps>(({ theme }) => ({
   textTransform: 'initial',
-  borderRadius: 20,
+  borderRadius: 24,
   width: 'calc( 50% - 8px )',
   display: 'flex',
   flexDirection: 'row',
@@ -220,9 +189,8 @@ export const NavbarTab = styled(Tab, {
   fontWeight: '700',
   fontSize: '16px',
   lineHeight: '20px',
-  margin: theme.spacing(1),
-  marginTop: '2px',
-  height: '40px',
+  margin: '6px 4px',
+  height: '48px',
   minHeight: 'unset',
   color:
     theme.palette.mode === 'dark'
@@ -302,7 +270,7 @@ export const NavbarPaper = styled(Paper, {
       : '0px 8px 32px rgba(0, 0, 0, 0.08)',
     borderRadius: '12px 12px 0 0',
     marginBottom: 0,
-    maxHeight: 'calc( 100vh - 146px )',
+    maxHeight: 'calc( 100vh - 80px )',
     overflowY: !!isScrollable ? 'auto' : 'inherit',
     overflowX: 'hidden',
 
@@ -346,12 +314,23 @@ export const MenuLinkItem = styled(Link, {
   },
 }));
 
-export const MenuButton = styled(Button)(({ theme }) => ({
+export interface MenuButtonProps extends Omit<ButtonProps, 'component'> {
+  textColor?: string;
+  bgColor?: string;
+}
+
+export const MenuButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'textColor' && prop !== 'bgColor',
+})<MenuButtonProps>(({ theme, textColor, bgColor }) => ({
   height: '48px',
   width: '100%',
   borderRadius: '24px',
-  color: theme.palette.accent1.main,
-  backgroundColor: '#F3EBFF',
+  color: !!textColor ? textColor : theme.palette.white.main,
+  backgroundColor: !!bgColor
+    ? bgColor
+    : theme.palette.mode === 'dark'
+    ? '#653BA3'
+    : theme.palette.accent1.main,
 }));
 
 export const MenuItemLabel = styled('div')({

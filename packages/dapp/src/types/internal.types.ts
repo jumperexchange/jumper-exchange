@@ -29,6 +29,8 @@ export interface MenuListItem {
   listIcon: JSX.Element | string;
   extraIcon?: JSX.Element;
   checkIcon?: boolean;
+  textColor?: string;
+  bgColor?: string;
   url?: string;
   onClick?: any; //(mode?: string) => void;
   showButton?: boolean;

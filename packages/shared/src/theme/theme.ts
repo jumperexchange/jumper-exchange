@@ -519,7 +519,7 @@ export const darkTheme: Theme = createTheme(
       },
       bg: {
         light: '#0E0B1F',
-        main: '#030014',
+        main: '#030014', //#030014;
         dark: '#030014',
         // contrastText: '#fff',
       },

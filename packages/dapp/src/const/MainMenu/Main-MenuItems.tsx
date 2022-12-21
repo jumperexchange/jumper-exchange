@@ -3,6 +3,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LanguageIcon from '@mui/icons-material/Language';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { Discord } from '@transferto/shared/src/atoms/icons';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
@@ -14,12 +15,19 @@ const MainMenuItems = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'Navbar.';
   const settings = useSettings();
+  const theme = useTheme();
   const activeLanguage = useMemo(
     () => getInitialProps().initialLanguage,
     [getInitialProps().initialLanguage],
   );
 
   const _MainMenuItems: MenuListItem[] = [
+    {
+      label: `${translate(`${i18Path}NavbarMenu.Theme`)}`,
+      listIcon: <LightModeOutlinedIcon />,
+      url: 'https://github.com/lifinance/',
+      triggerSubMenu: 'themes',
+    },
     {
       label: `${translate(`${i18Path}NavbarMenu.Language`)}`,
       listIcon: <LanguageIcon />,
@@ -30,12 +38,6 @@ const MainMenuItems = () => {
         </Typography>
       ),
       triggerSubMenu: 'language',
-    },
-    {
-      label: `${translate(`${i18Path}NavbarMenu.Theme`)}`,
-      listIcon: <LightModeOutlinedIcon />,
-      url: 'https://github.com/lifinance/',
-      triggerSubMenu: 'themes',
     },
     {
       label: `${translate(`${i18Path}NavbarMenu.Developers`)}`,
@@ -51,7 +53,7 @@ const MainMenuItems = () => {
     },
     {
       label: `${translate(`${i18Path}NavbarMenu.Support`)}`,
-      listIcon: <Discord style={{ marginLeft: '9.5px' }} />,
+      listIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         openInNewTab('https://discord.gg/lifi');
       },

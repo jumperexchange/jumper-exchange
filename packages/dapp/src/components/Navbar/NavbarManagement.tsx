@@ -61,14 +61,16 @@ const NavbarManagement = () => {
         walletManagement={walletManagement}
         menu={menu}
         color={
-          !!account.isActive && !isDarkMode ? theme.palette.black.main : 'white'
+          !!account.isActive && !isDarkMode
+            ? theme.palette.black.main
+            : theme.palette.white.main
         }
         backgroundColor={
           !account.isActive
             ? theme.palette.accent1.main
             : !!isDarkMode
-            ? 'rgba(255, 255, 255, 0.12);'
-            : 'white'
+            ? theme.palette.alphaLight300.main
+            : theme.palette.white.main
         }
         hoverBackgroundColor={'#31007a8c'}
         setOpenNavbarSubmenu={menu.onOpenNavbarSubMenu}

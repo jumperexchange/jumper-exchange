@@ -11,6 +11,8 @@ interface MenuItemProps {
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   label: string;
   extraIcon?: JSX.Element;
+  textColor?: string;
+  bgColor?: string;
   onClick: any;
   stickyLabel?: boolean;
   triggerSubMenu: string;
@@ -22,6 +24,8 @@ const MenuItemComponent = ({
   open,
   openSubMenu,
   setOpenSubMenu,
+  textColor,
+  bgColor,
   showButton,
   extraIcon,
   onClick,
@@ -45,15 +49,21 @@ const MenuItemComponent = ({
       <>
         {showButton ? (
           <MenuButton
+            textColor={textColor}
+            bgColor={bgColor}
             sx={{
               textTransform: 'none',
             }}
           >
             <>
-              <Typography variant={'lifiBodyMediumStrong'} component={'span'}>
+              {listIcon}
+              <Typography
+                variant={'lifiBodyMediumStrong'}
+                component={'span'}
+                ml={!!listIcon ? '9.5px' : 'inherit'}
+              >
                 <>{label}</>
               </Typography>
-              {listIcon}
             </>
           </MenuButton>
         ) : (

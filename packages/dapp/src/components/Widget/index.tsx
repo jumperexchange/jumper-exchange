@@ -108,7 +108,7 @@ export default function Widget({ starterVariant }) {
         },
       },
       containerStyle: {
-        borderRadius: '16px',
+        borderRadius: '12px',
         boxShadow: !!isDarkMode
           ? '0px 8px 32px rgba(255, 255, 255, 0.08)'
           : '0px 8px 32px rgba(0, 0, 0, 0.08)',
@@ -120,6 +120,10 @@ export default function Widget({ starterVariant }) {
       appearance: !!isDarkMode ? 'dark' : 'light',
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
+        shape: {
+          borderRadius: '12px',
+          borderRadiusSecondary: '24px',
+        },
         palette: {
           primary: {
             main: theme.palette.accent1.main,
@@ -149,7 +153,23 @@ export default function Widget({ starterVariant }) {
       justifyContent="center"
       alignItems="center"
     >
-      <Box sx={{ m: '64px auto' }}>
+      <Box
+        sx={{
+          marginTop: theme.spacing(8),
+          // make widget scrollable on screens smaller than:
+          // 80px (navbar height)
+          // + 32px (margin-top of widget)
+          // + 680px (height of widget)
+          [`@media (max-height: ${80 + 32 + 680}px)`]: {
+            overflowY: 'auto',
+            height: 'calc( 100vh - 80px - 32px)',
+            marginTop: '18px',
+          },
+          '> div': {
+            marginTop: '32px',
+          },
+        }}
+      >
         <LiFiWidget config={widgetConfig} />
       </Box>
     </Grid>

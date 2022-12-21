@@ -20,7 +20,7 @@ export const ConnectButtonBase = styled(Button, {
       ? backgroundColor
       : theme.palette.accent2.main, //#D63CA3
     borderRadius: '28px',
-    color: !!color ? color : 'white',
+    color: !!color ? color : theme.palette.white.main,
     width: '190px',
     textTransform: 'none',
     '&:hover': {
