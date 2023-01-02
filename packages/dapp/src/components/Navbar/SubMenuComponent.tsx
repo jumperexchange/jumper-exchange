@@ -20,10 +20,11 @@ interface NavbarSubMenuProps {
   openSubMenu: string;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   isSubMenu: boolean;
+  bgColor?: string;
   label: string;
   listIcon?: JSX.Element;
   checkIcon?: boolean;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   url?: string;
   subMenuList: MenuListItem[];
   triggerSubMenu: string;
@@ -34,7 +35,8 @@ const SubMenuComponent = ({
   openSubMenu,
   setOpenSubMenu,
   isSubMenu,
-  stickyLabel,
+  bgColor,
+  isScrollable,
   label,
   triggerSubMenu,
   subMenuList,
@@ -48,15 +50,16 @@ const SubMenuComponent = ({
         {openSubMenu === triggerSubMenu && (
           <NavbarPaper
             component="ul"
+            bgColor={bgColor}
             isSubMenu={isSubMenu}
-            stickyLabel={stickyLabel}
+            isScrollable={isScrollable}
             isDarkMode={isDarkMode}
           >
             <MenuHeaderAppWrapper>
               <MenuHeaderAppBar
                 component="div"
                 elevation={0}
-                stickyLabel={!!label}
+                isScrollable={!!label || isScrollable}
               >
                 <>
                   <IconButton
@@ -109,7 +112,7 @@ const SubMenuComponent = ({
                   </MenuLinkItem>
                 ) : (
                   <MenuItem
-                    stickyLabel={stickyLabel}
+                    isScrollable={isScrollable}
                     onClick={() => {
                       el.onClick();
                     }}

@@ -17,9 +17,10 @@ import {
 interface NavbarMenuProps {
   openSubMenu: string;
   anchorRef: any; // TODO: Replace this any with the correct type
+  bgColor: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   scrollableMainLayer?: boolean;
   label?: string;
   open: boolean;
@@ -27,9 +28,10 @@ interface NavbarMenuProps {
 }
 
 const NavbarMenuMobile = ({
-  stickyLabel,
+  isScrollable,
   handleClose,
   open,
+  bgColor,
   setOpen,
   anchorRef,
   scrollableMainLayer,
@@ -67,7 +69,8 @@ const NavbarMenuMobile = ({
             <NavbarPaper
               isDarkMode={isDarkMode}
               openSubMenu={openSubMenu !== 'none'}
-              isScrollable={true}
+              bgColor={bgColor}
+              isScrollable={!!label}
               scrollableMainLayer={scrollableMainLayer}
             >
               <ClickAwayListener
@@ -81,7 +84,6 @@ const NavbarMenuMobile = ({
                   id="composition-menu"
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
-                  isScrollable={true}
                   component={openSubMenu === 'none' ? 'ul' : 'div'}
                 >
                   {!!label ? (
@@ -90,7 +92,7 @@ const NavbarMenuMobile = ({
                         component="div"
                         elevation={0}
                         scrollableMainLayer={scrollableMainLayer}
-                        stickyLabel={stickyLabel}
+                        isScrollable={isScrollable}
                       >
                         <IconButton
                           size="medium"

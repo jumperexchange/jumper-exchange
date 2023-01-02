@@ -26,6 +26,8 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
       handleClose={handleClose}
       label={`${translate(`${i18Path}ChooseWallet`)}`}
       anchorRef={anchorRef}
+      bgColor={theme.palette.surface2.main}
+      isScrollable={true}
       scrollableMainLayer={true}
       open={menu.openNavbarWalletMenu}
       setOpen={menu.onOpenNavbarWalletMenu}
@@ -37,7 +39,8 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
             key={`${el.label}-${index}`}
             label={el.label}
             listIcon={el.listIcon}
-            stickyLabel={true}
+            isScrollable={true}
+            bgColor={theme.palette.surface2.main}
             triggerSubMenu={'wallets'}
             showButton={el.showButton}
             extraIcon={el.extraIcon}

@@ -86,15 +86,15 @@ export const NavbarDropdownButton = styled(Button, {
   color: !!mainCol ? mainCol : theme.palette.primary.main,
   width: '48px',
   borderRadius: '50%',
-  marginLeft: theme.spacing(2),
+  marginLeft: theme.spacing(3),
   minWidth: 'unset',
   height: '48px',
 }));
 
-export interface NavbarPopperProps extends Omit<PopperProps, 'stickyLabel'> {}
+export interface NavbarPopperProps extends Omit<PopperProps, 'isScrollable'> {}
 
 export const NavbarPopper = styled(Popper, {
-  shouldForwardProp: (prop) => prop !== 'stickyLabel',
+  shouldForwardProp: (prop) => prop !== 'isScrollable',
 })<NavbarPopperProps>(({ theme }) => ({
   zIndex: 2,
   bottom: '0 !important',
@@ -110,14 +110,11 @@ export const NavbarPopper = styled(Popper, {
   },
 }));
 export interface NavbarMenuListProps
-  extends Omit<MenuListProps, 'stickyLabel'> {
+  extends Omit<MenuListProps, 'isScrollable'> {
   component?: string; //TODO: valid typescript HTML elements as string
-  isScrollable?: boolean;
 }
 
-export const NavbarMenuList = styled(MenuList, {
-  shouldForwardProp: (prop) => prop !== 'isScrollable',
-})<NavbarMenuListProps>(({}) => ({
+export const NavbarMenuList = styled(MenuList)<NavbarMenuListProps>(({}) => ({
   padding: 0,
 }));
 
@@ -217,16 +214,17 @@ export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 export interface MUIMenuItemProps extends Omit<MenuItemProps, 'showButton'> {
   showButton?: boolean;
   component?: string;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'stickyLabel',
+  shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'isScrollable',
 })<MUIMenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
   padding: `0 ${theme.spacing(6)}`,
+  backgroundColor: 'inherit',
   justifyContent: 'space-between',
-  marginTop: showButton && theme.spacing(4),
+  marginTop: showButton && theme.spacing(2),
 
   '&:hover': {
     backgroundColor: showButton && 'transparent',
@@ -244,10 +242,10 @@ export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
   isDarkMode?: boolean;
   openSubMenu?: boolean;
   isSubMenu?: boolean;
+  bgColor?: string;
   scrollableMainLayer?: boolean;
-  isScrollable?: boolean;
   component?: string;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
 }
 
 export const NavbarPaper = styled(Paper, {
@@ -255,24 +253,24 @@ export const NavbarPaper = styled(Paper, {
     prop !== 'isDarkMode' &&
     prop !== 'openSubMenu' &&
     prop !== 'isSubMenu' &&
-    prop !== 'stickyLabel' &&
-    prop !== 'scrollableMainLayer' &&
-    prop !== 'isScrollable',
+    prop !== 'isScrollable' &&
+    prop !== 'bgColor' &&
+    prop !== 'scrollableMainLayer',
 })<NavbarPaperProps>(
   ({
     theme,
+    bgColor,
     isDarkMode,
     openSubMenu,
-    scrollableMainLayer,
     isScrollable,
+    scrollableMainLayer,
     isSubMenu,
   }) => ({
-    background: !!isDarkMode ? '#121212' : '#fff',
-    padding: openSubMenu
-      ? 0
-      : scrollableMainLayer
-      ? 0
-      : `${theme.spacing(3, 0, 6)} !important`,
+    background: !!bgColor ? bgColor : theme.palette.surface1.main,
+    padding:
+      openSubMenu || scrollableMainLayer
+        ? 0
+        : `${theme.spacing(3, 0)} !important`,
     marginTop: !!isSubMenu ? 0 : `${theme.spacing(3)} !important`, // TODO: use transform instead for offset?
     boxShadow: !!isDarkMode
       ? '0px 8px 32px rgba(255, 255, 255, 0.08)'
@@ -285,7 +283,7 @@ export const NavbarPaper = styled(Paper, {
 
     ul: {
       marginTop: 0,
-      padding: `${theme.spacing(3, 0, 3)} !important`,
+      padding: `${theme.spacing(0, 0, 3)} !important`,
     },
 
     width: '100%',
@@ -306,7 +304,7 @@ export interface MenuLinkItemProps extends Omit<LinkProps, 'component'> {
 }
 
 export const MenuLinkItem = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'component' && prop !== 'stickyLabel',
+  shouldForwardProp: (prop) => prop !== 'component' && prop !== 'isScrollable',
 })<MenuLinkItemProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
@@ -335,11 +333,14 @@ export const MenuButton = styled(Button, {
   width: '100%',
   borderRadius: '24px',
   color: !!textColor ? textColor : theme.palette.white.main,
-  backgroundColor: !!bgColor
+  backgroundColor: bgColor
     ? bgColor
     : theme.palette.mode === 'dark'
     ? '#653BA3'
     : theme.palette.accent1.main,
+  '&:hover': {
+    backgroundColor: theme.palette.accent2.main,
+  },
 }));
 
 export const MenuItemLabel = styled('div')({
@@ -350,47 +351,45 @@ export const MenuItemLabel = styled('div')({
 export const MenuItemText = styled('span')({});
 
 export interface MenuHeaderAppWrapperProps
-  extends Omit<ListItemProps, 'stickyLabel'> {
+  extends Omit<ListItemProps, 'isScrollable'> {
   component?: string;
-  stickyLabel?: boolean;
+  bgColor?: string;
+  isScrollable?: boolean;
   scrollableMainLayer?: boolean;
 }
 
 export const MenuHeaderAppWrapper = styled(ListItem, {
   shouldForwardProp: (prop) =>
-    prop !== 'stickyLabel' && prop !== 'scrollableMainLayer',
-})<MenuHeaderAppWrapperProps>(
-  ({ theme, scrollableMainLayer, stickyLabel }) => ({
-    padding: 0,
-    position: 'sticky',
-    top: 0,
-    backgroundColor:
-      theme.palette.mode === 'dark' ? '#121212' : 'rgba(255, 255, 255, 0.84)', // todo: use rgba for dark color as well
-
-    backdropFilter: 'blur(12px)',
-    zIndex: 1,
-    overflow: 'hidden',
-    marginTop:
-      !!scrollableMainLayer || !!stickyLabel ? '-60px !important' : 'inherit',
-    height: '60px',
-  }),
-);
+    prop !== 'isScrollable' &&
+    prop !== 'scrollableMainLayer' &&
+    prop !== 'bgColor',
+})<MenuHeaderAppWrapperProps>(({ bgColor }) => ({
+  padding: 0,
+  position: 'sticky',
+  top: 0,
+  alignItems: 'center',
+  backgroundColor: bgColor ? bgColor : 'transparent', //theme.palette.surface1.main
+  backdropFilter: 'blur(12px)',
+  zIndex: 1,
+  overflow: 'hidden',
+  marginTop: 'inherit',
+  height: '72px',
+}));
 
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
   component?: string;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   scrollableMainLayer?: boolean;
 }
 
 export const MenuHeaderAppBar = styled(AppBar, {
   shouldForwardProp: (prop) =>
-    prop !== 'stickyLabel' && prop !== 'scrollableMainLayer',
+    prop !== 'isScrollable' && prop !== 'scrollableMainLayer',
 })<MenuHeaderAppBarProps>(({ theme }) => ({
-  backgroundColor: 'transparent',
+  backgroundColor: 'transparent !important',
   zIndex: 1,
   position: 'fixed',
   width: '100%',
-  height: '60px',
   top: 'initial',
   left: 'initial',
   right: 'initial',

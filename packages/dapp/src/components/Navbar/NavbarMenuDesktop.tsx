@@ -17,10 +17,11 @@ import {
 interface NavbarMenuProps {
   openSubMenu: string;
   anchorRef: any; // TODO: Replace this any with the correct type
+  bgColor: string;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   scrollableMainLayer?: boolean;
   open: boolean;
   children: any;
@@ -30,8 +31,9 @@ const NavbarMenuDesktop = ({
   openSubMenu,
   anchorRef,
   setOpen,
+  bgColor,
   handleClose,
-  stickyLabel,
+  isScrollable,
   scrollableMainLayer,
   label,
   open,
@@ -59,7 +61,7 @@ const NavbarMenuDesktop = ({
           open={open}
           anchorEl={anchorRef.current}
           role={undefined}
-          // stickyLabel={stickyLabel}
+          // isScrollable={isScrollable}
           placement="bottom-start"
           transition
           disablePortal
@@ -75,8 +77,8 @@ const NavbarMenuDesktop = ({
                 isDarkMode={isDarkMode}
                 scrollableMainLayer={scrollableMainLayer}
                 openSubMenu={openSubMenu !== 'none'}
-                // stickyLabel={stickyLabel}
-                isScrollable={true}
+                bgColor={bgColor}
+                isScrollable={!!label || isScrollable}
               >
                 <ClickAwayListener
                   onClickAway={(event) => {
@@ -89,7 +91,6 @@ const NavbarMenuDesktop = ({
                     id="composition-menu"
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
-                    isScrollable={!!label}
                     component={openSubMenu === 'none' ? 'ul' : 'div'}
                   >
                     {!!label ? (
@@ -98,7 +99,7 @@ const NavbarMenuDesktop = ({
                           component="div"
                           elevation={0}
                           scrollableMainLayer={scrollableMainLayer}
-                          stickyLabel={stickyLabel}
+                          isScrollable={isScrollable}
                         >
                           <IconButton
                             size="medium"

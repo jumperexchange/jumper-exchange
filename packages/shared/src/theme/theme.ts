@@ -9,7 +9,15 @@ declare module '@mui/material/styles' {
     white: Palette['primary'];
     black: Palette['primary'];
     accent1: Palette['primary'];
+    accent1Alt: Palette['primary'];
     accent2: Palette['primary'];
+    surface1: Palette['primary'];
+    surface2: Palette['primary'];
+    surface3: Palette['primary'];
+    templateBg: Palette['primary'];
+    templateOutline: Palette['primary'];
+    dataBg: Palette['primary'];
+    dataOutline: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -32,7 +40,15 @@ declare module '@mui/material/styles' {
     white?: PaletteOptions['primary'];
     black?: PaletteOptions['primary'];
     accent1?: PaletteOptions['primary'];
+    accent1Alt?: PaletteOptions['primary'];
     accent2?: PaletteOptions['primary'];
+    surface1?: PaletteOptions['primary'];
+    surface2?: PaletteOptions['primary'];
+    surface3?: PaletteOptions['primary'];
+    templateBg?: Palette['primary'];
+    templateOutline?: Palette['primary'];
+    dataBg?: Palette['primary'];
+    dataOutline?: Palette['primary'];
     bg?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
@@ -106,7 +122,15 @@ declare module '@mui/material/Button' {
     white: true;
     black: true;
     accent1: true;
+    accent1Alt: true;
     accent2: true;
+    surface1: true;
+    surface2: true;
+    surface3: true;
+    templateBg: true;
+    templateOutline: true;
+    dataBg: true;
+    dataOutline: true;
     bg: true;
     alphaDark100: true;
     alphaDark200: true;
@@ -187,24 +211,6 @@ const themeBase: Theme = createTheme({
   },
   spacing: 4,
   palette: {
-    primary: {
-      light: '#31007A',
-      main: '#31007A',
-      dark: '#31007A',
-      // contrastText: '#fff',
-    },
-    secondary: {
-      light: 'rgba(49, 0, 122, 0.08)',
-      main: 'rgba(49, 0, 122, 0.08)',
-      dark: 'rgba(49, 0, 122, 0.08)',
-      // contrastText: '#fff',
-    },
-    tertiary: {
-      light: 'rgba(135, 0, 184, 0.08)',
-      main: 'rgba(135, 0, 184, 0.08)',
-      dark: 'rgba(135, 0, 184, 0.08)',
-      // contrastText: '#fff',
-    },
     grey: {
       100: '#F6F5FA',
       200: '#ECEBF0',
@@ -490,6 +496,24 @@ export const lightTheme: Theme = createTheme(
         dark: '#F3EBFF',
         // contrastText: '#fff',
       },
+      primary: {
+        light: '#31007A',
+        main: '#31007A',
+        dark: '#31007A',
+        // contrastText: '#fff',
+      },
+      secondary: {
+        light: '#E9E1F5',
+        main: '#E9E1F5',
+        dark: '#E9E1F5',
+        // contrastText: '#fff',
+      },
+      tertiary: {
+        light: '#FCEBFF',
+        main: '#FCEBFF',
+        dark: '#FCEBFF',
+        // contrastText: '#fff',
+      },
       accent1: {
         light: '#31007A',
         main: '#31007A',
@@ -501,6 +525,41 @@ export const lightTheme: Theme = createTheme(
         main: '#8700B8',
         dark: '#8700B8',
         // contrastText: '#fff',
+      },
+      surface1: {
+        light: '#FCFAFF',
+        main: '#FCFAFF',
+        dark: '#FCFAFF',
+      },
+      surface2: {
+        light: '#FFFFFF',
+        main: '#FFFFFF',
+        dark: '#FFFFFF',
+      },
+      surface3: {
+        light: '#E5E1EB',
+        main: '#E5E1EB',
+        dark: '#E5E1EB',
+      },
+      templateBg: {
+        light: '#FEF5FF',
+        main: '#FEF5FF',
+        dark: '#FEF5FF',
+      },
+      templateOutline: {
+        light: '#C95CFF',
+        main: '#C95CFF',
+        dark: '#C95CFF',
+      },
+      dataBg: {
+        light: '#F5F6FF',
+        main: '#F5F6FF',
+        dark: '#F5F6FF',
+      },
+      dataOutline: {
+        light: '#7B61FF',
+        main: '#7B61FF',
+        dark: '#7B61FF',
       },
     },
   }),
@@ -523,10 +582,34 @@ export const darkTheme: Theme = createTheme(
         dark: '#030014',
         // contrastText: '#fff',
       },
+      primary: {
+        light: '#653BA3',
+        main: '#653BA3',
+        dark: '#653BA3',
+        // contrastText: '#fff',
+      },
+      secondary: {
+        light: '#321D52',
+        main: '#321D52',
+        dark: '#321D52',
+        // contrastText: '#fff',
+      },
+      tertiary: {
+        light: '#33163D',
+        main: '#33163D',
+        dark: '#33163D',
+        // contrastText: '#fff',
+      },
       accent1: {
-        light: '#835FB8',
-        main: '#835FB8',
-        dark: '#835FB8',
+        light: '#653BA3',
+        main: '#653BA3',
+        dark: '#653BA3',
+        // contrastText: '#fff',
+      },
+      accent1Alt: {
+        light: '#BEA0EB',
+        main: '#BEA0EB',
+        dark: '#BEA0EB',
         // contrastText: '#fff',
       },
       accent2: {
@@ -534,6 +617,41 @@ export const darkTheme: Theme = createTheme(
         main: '#D35CFF',
         dark: '#D35CFF',
         // contrastText: '#fff',
+      },
+      surface1: {
+        light: '#120F29',
+        main: '#120F29',
+        dark: '#120F29',
+      },
+      surface2: {
+        light: '#24203D',
+        main: '#24203D',
+        dark: '#24203D',
+      },
+      surface3: {
+        light: '#302B52',
+        main: '#302B52',
+        dark: '#302B52',
+      },
+      templateBg: {
+        light: '#401946',
+        main: '#401946',
+        dark: '#401946',
+      },
+      templateOutline: {
+        light: '#D47BEB',
+        main: '#D47BEB',
+        dark: '#D47BEB',
+      },
+      dataBg: {
+        light: '#28203D',
+        main: '#28203D',
+        dark: '#28203D',
+      },
+      dataOutline: {
+        light: '#B8ADFF',
+        main: '#B8ADFF',
+        dark: '#B8ADFF',
       },
     },
   }),

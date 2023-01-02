@@ -63,7 +63,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         isSubMenu={true}
         label={`${translate(`${i18Path}NavbarMenu.Theme`)}`}
         triggerSubMenu={'themes'}
-        stickyLabel={true}
+        isScrollable={true}
         open={menu.openMainNavbarMenu}
         openSubMenu={menu.openNavbarSubMenu}
         setOpenSubMenu={menu.onOpenNavbarSubMenu}
@@ -74,7 +74,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         isSubMenu={true}
         label={`${translate(`${i18Path}NavbarMenu.Language`)}`}
         triggerSubMenu={'language'}
-        stickyLabel={true}
+        isScrollable={true}
         open={menu.openMainNavbarMenu}
         openSubMenu={menu.openNavbarSubMenu}
         setOpenSubMenu={menu.onOpenNavbarSubMenu}
@@ -85,7 +85,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         isSubMenu={true}
         label={`${translate(`${i18Path}NavbarMenu.Developers`)}`}
         triggerSubMenu={'devs'}
-        stickyLabel={true}
+        isScrollable={true}
         open={menu.openMainNavbarMenu}
         openSubMenu={menu.openNavbarSubMenu}
         setOpenSubMenu={menu.onOpenNavbarSubMenu}

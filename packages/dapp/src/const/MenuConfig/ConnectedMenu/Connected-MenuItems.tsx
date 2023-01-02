@@ -91,7 +91,10 @@ const ConnectedMenuItems = () => {
         theme.palette.mode === 'dark'
           ? theme.palette.white.main
           : theme.palette.primary.main,
-      bgColor: theme.palette.mode === 'dark' ? '#653BA3' : '#E9E1F5',
+      bgColor:
+        theme.palette.mode === 'dark'
+          ? theme.palette.primary.main
+          : theme.palette.secondary.main,
       onClick: () => {
         disconnect();
         settings.onWalletDisconnect();

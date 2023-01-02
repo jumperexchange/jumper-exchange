@@ -1,3 +1,4 @@
+import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
 import { ConnectedMenuItems, ConnectedSubMenuChains } from '../../../const';
@@ -13,6 +14,7 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
   const i18Path = 'Navbar.WalletMenu.';
   const { t: translate } = useTranslation();
   const settings = useSettings();
+  const theme = useTheme();
   const menu = useMenu();
   const _connectedMenuItems = ConnectedMenuItems();
   const _connectedSubMenuChains = ConnectedSubMenuChains();
@@ -21,8 +23,9 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
     <NavbarMenu
       handleClose={handleClose}
       anchorRef={anchorRef}
+      bgColor={theme.palette.surface2.main}
       open={menu.openNavbarConnectedMenu}
-      stickyLabel={menu.openNavbarSubMenu === 'chains'}
+      isScrollable={menu.openNavbarSubMenu === 'chains'}
       setOpen={menu.onOpenNavbarConnectedMenu}
       openSubMenu={menu.openNavbarSubMenu}
     >
@@ -46,7 +49,8 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
       <SubMenuComponent
         label={`${translate(`${i18Path}Chains`)}`}
         isSubMenu={true}
-        stickyLabel={true}
+        isScrollable={true}
+        bgColor={theme.palette.surface2.main}
         triggerSubMenu={'chains'}
         open={menu.openNavbarConnectedMenu}
         openSubMenu={menu.openNavbarSubMenu}

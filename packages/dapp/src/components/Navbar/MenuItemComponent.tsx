@@ -14,7 +14,7 @@ interface MenuItemProps {
   textColor?: string;
   bgColor?: string;
   onClick: any;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   triggerSubMenu: string;
   listIcon: JSX.Element | string;
   checkIcon?: boolean;
@@ -29,7 +29,7 @@ const MenuItemComponent = ({
   showButton,
   extraIcon,
   onClick,
-  stickyLabel,
+  isScrollable,
   label,
   triggerSubMenu,
   listIcon,
@@ -40,7 +40,7 @@ const MenuItemComponent = ({
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
-      stickyLabel={stickyLabel}
+      isScrollable={isScrollable}
       onClick={() => {
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
         !!onClick && onClick();

@@ -91,6 +91,10 @@ function widgetConfigComponent({ starterVariant }) {
           borderRadiusSecondary: 24,
         },
         palette: {
+          background: {
+            paper: theme.palette.surface2.main,
+            default: theme.palette.surface1.main,
+          },
           primary: {
             main: theme.palette.accent1.main,
           },

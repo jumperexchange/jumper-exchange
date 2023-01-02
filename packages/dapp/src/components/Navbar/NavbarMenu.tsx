@@ -7,21 +7,23 @@ interface NavbarMenuProps {
   openSubMenu?: string;
   anchorRef: any; // TODO: Replace this any with the correct type
   label?: string;
+  bgColor?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
   scrollableMainLayer?: boolean;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   children: any;
 }
 
 const NavbarMenu = ({
   handleClose,
   open,
-  stickyLabel,
+  isScrollable,
   scrollableMainLayer,
   setOpen,
   label,
+  bgColor,
   anchorRef,
   openSubMenu,
   children,
@@ -44,12 +46,13 @@ const NavbarMenu = ({
       <NavbarMenuMobile
         handleClose={handleClose}
         anchorRef={anchorRef}
+        bgColor={bgColor}
         label={label}
         open={open}
         scrollableMainLayer={scrollableMainLayer}
         setOpen={setOpen}
         openSubMenu={openSubMenu}
-        stickyLabel={stickyLabel}
+        isScrollable={isScrollable}
       >
         {children}
       </NavbarMenuMobile>
@@ -57,12 +60,13 @@ const NavbarMenu = ({
       <NavbarMenuDesktop
         handleClose={handleClose}
         anchorRef={anchorRef}
+        bgColor={bgColor}
         label={label}
         open={open}
         scrollableMainLayer={scrollableMainLayer}
         setOpen={setOpen}
         openSubMenu={openSubMenu}
-        stickyLabel={stickyLabel}
+        isScrollable={isScrollable}
       >
         {children}
       </NavbarMenuDesktop>

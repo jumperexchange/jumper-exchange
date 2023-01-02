@@ -9,7 +9,12 @@ const Navbar = () => {
   const { account } = useWallet();
   return (
     <NavbarContainer>
-      <MUILink href="/" sx={{ height: '48px' }}>
+      <MUILink
+        href="/"
+        sx={{ height: '48px' }}
+        alignItems={'center'}
+        display={'flex'}
+      >
         <BrandLogo connected={!!account.address} theme={theme} />
       </MUILink>
       <NavbarTabsContainer />
