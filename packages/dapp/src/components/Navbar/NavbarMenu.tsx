@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { NavbarMenuDesktop, NavbarMenuMobile } from './index';
 
 interface NavbarMenuProps {
@@ -31,14 +31,6 @@ const NavbarMenu = ({
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  function handleListKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    } else if (event.key === 'Escape') {
-      setOpen(false);
-    }
-  }
 
   return (
     !!open &&

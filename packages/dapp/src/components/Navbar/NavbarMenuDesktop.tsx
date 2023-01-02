@@ -3,7 +3,6 @@ import { IconButton, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { useMenu } from '../../providers/MenuProvider';
 import {
@@ -41,7 +40,6 @@ const NavbarMenuDesktop = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const settings = useSettings();
   const menu = useMenu();
 
   function handleListKeyDown(event: KeyboardEvent) {

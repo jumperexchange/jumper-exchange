@@ -15,7 +15,7 @@ const ConnectedSubMenuChains = () => {
 
   const _ConnectedSubMenuChains: MenuListItem[] = [];
 
-  chains.map((el, index) => {
+  chains.map((el) => {
     _ConnectedSubMenuChains.push({
       label: `${el.name}`,
       onClick: () => {

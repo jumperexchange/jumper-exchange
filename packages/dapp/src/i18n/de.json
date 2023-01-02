@@ -9,7 +9,6 @@
     "ChooseWallet": "Wallet auswählen",
     "NavbarMenu": {
       "Theme": "Theme",
-      "Language": "Sprache",
       "Developers": "Entwickler",
       "AboutLIFI": "Über LI.FI",
       "Support": "Hilfe"
@@ -19,13 +18,9 @@
       "Chains": "Netzwerk",
       "SwitchChain": "Netzwerk wählen"
     },
-    "Languages": {
-      "en": "Englisch",
-      "zh": "Chinesisch",
-      "fr": "Französisch",
-      "de": "Deutsch",
-      "it": "Italienisch",
-      "jp": "Japanisch"
+    "Language": {
+      "key": "Sprache",
+      "value": "Deutsch"
     },
     "Themes": {
       "Light": "Hell",

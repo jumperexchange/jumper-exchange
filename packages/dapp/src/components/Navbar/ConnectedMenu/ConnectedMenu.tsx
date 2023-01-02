@@ -1,5 +1,4 @@
 import { useTheme } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
 import { ConnectedMenuItems, ConnectedSubMenuChains } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
@@ -13,7 +12,6 @@ interface NavbarMenuProps {
 const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
   const i18Path = 'Navbar.WalletMenu.';
   const { t: translate } = useTranslation();
-  const settings = useSettings();
   const theme = useTheme();
   const menu = useMenu();
   const _connectedMenuItems = ConnectedMenuItems();

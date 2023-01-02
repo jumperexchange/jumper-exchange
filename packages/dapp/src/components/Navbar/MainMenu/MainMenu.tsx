@@ -1,6 +1,3 @@
-import { useTheme } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
-import { KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -18,20 +15,9 @@ interface MainMenuProps {
 }
 
 const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
-  const theme = useTheme();
-  const settings = useSettings();
   const menu = useMenu();
   const i18Path = 'Navbar.';
   const { t: translate } = useTranslation();
-  function handleListKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      menu.onOpenNavbarMainMenu(false);
-    } else if (event.key === 'Escape') {
-      menu.onOpenNavbarMainMenu(false);
-    }
-  }
-
   const _MainMenuItems = MainMenuItems();
   const _mainSubMenuTheme = MainSubMenuTheme();
   const _mainSubMenuDevelopers = MainSubMenuDevelopers();
@@ -72,7 +58,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
 
       <SubMenuComponent
         isSubMenu={true}
-        label={`${translate(`${i18Path}NavbarMenu.Language`)}`}
+        label={`${translate(`${i18Path}Language.key`)}`}
         triggerSubMenu={'language'}
         isScrollable={true}
         open={menu.openMainNavbarMenu}

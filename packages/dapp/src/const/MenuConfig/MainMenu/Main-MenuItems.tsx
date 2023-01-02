@@ -29,7 +29,7 @@ const MainMenuItems = () => {
       triggerSubMenu: 'themes',
     },
     {
-      label: `${translate(`${i18Path}NavbarMenu.Language`)}`,
+      label: `${translate(`${i18Path}Language.key`)}`,
       listIcon: <LanguageIcon />,
       checkIcon: settings.themeMode === 'light',
       extraIcon: (
