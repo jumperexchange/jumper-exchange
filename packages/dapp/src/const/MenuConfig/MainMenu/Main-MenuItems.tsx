@@ -9,7 +9,7 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useMemo } from 'react';
 import { getInitialProps, useTranslation } from 'react-i18next';
-import { MenuListItem } from '../../types';
+import { MenuListItem } from '../../../types';
 
 const MainMenuItems = () => {
   const { t: translate } = useTranslation();

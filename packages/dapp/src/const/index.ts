@@ -1,3 +1,4 @@
-export * from './ConnectedMenu';
-export * from './MainMenu';
-export * from './WalletMenu';
+export * from './linkMap';
+export * from './MenuConfig/ConnectedMenu';
+export * from './MenuConfig/MainMenu';
+export * from './MenuConfig/WalletMenu';

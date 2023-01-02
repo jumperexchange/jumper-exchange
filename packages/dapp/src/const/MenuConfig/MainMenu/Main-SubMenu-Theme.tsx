@@ -4,7 +4,7 @@ import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
-import { MenuListItem } from '../../types';
+import { MenuListItem } from '../../../types';
 
 const MainSubMenuTheme = () => {
   const { t: translate } = useTranslation();

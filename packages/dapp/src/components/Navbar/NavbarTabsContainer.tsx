@@ -5,11 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
 import { NavbarTab, NavbarTabs } from './Navbar.styled';
-const linkMap = {
-  swap: '/swap',
-  dashboard: '/dashboard',
-  refuel: '/gas',
-};
 
 function a11yProps(index: number) {
   return {

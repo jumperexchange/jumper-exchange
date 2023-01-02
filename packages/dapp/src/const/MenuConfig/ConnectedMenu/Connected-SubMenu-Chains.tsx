@@ -1,9 +1,9 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
 import { useMemo } from 'react';
-import { useChainInfos } from '../../providers/ChainInfosProvider';
-import { useWallet } from '../../providers/WalletProvider';
-import { MenuListItem } from '../../types';
+import { useChainInfos } from '../../../providers/ChainInfosProvider';
+import { useWallet } from '../../../providers/WalletProvider';
+import { MenuListItem } from '../../../types';
 
 const ConnectedSubMenuChains = () => {
   const { account, usedWallet, disconnect, switchChain } = useWallet();

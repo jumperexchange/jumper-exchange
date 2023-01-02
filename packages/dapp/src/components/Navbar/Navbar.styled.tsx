@@ -59,6 +59,13 @@ export const NavBar = styled(AppBar)(({ theme }) => ({
 }));
 
 export const NavbarContainer = styled('div')(({ theme }) => ({
+  // [`@media (max-height: ${80 + 32 + 680}px)`]: {
+  //   position: 'absolute',
+  //   width: '100%',
+  //   zIndex: 1,
+  //   backdropFilter: 'blur(12px)',
+  // },
+  position: 'initial',
   background: 'transparent',
   height: '80px',
   padding: theme.spacing(6),
@@ -130,6 +137,7 @@ export const MenuHeader = styled('div')(({}) => ({
 export const NavbarTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
+  // visibility: 'hidden',
   display: 'none',
   [theme.breakpoints.up('md')]: {
     position: 'absolute',
@@ -144,6 +152,7 @@ export const NavbarTabs = styled(Tabs, {
     borderRadius: 24,
     padding: 1,
     display: 'flex',
+    // visibility: 'visible',
     width: 390,
     alignItems: 'center',
   },

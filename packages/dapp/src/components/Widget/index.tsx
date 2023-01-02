@@ -4,70 +4,38 @@ import {
   switchChain,
   switchChainAndAddToken,
 } from '@lifi/wallet-management';
-import { useSearchParams } from 'react-router-dom';
-
 import {
   HiddenUI,
   LiFiWidget,
   WidgetConfig,
   WidgetVariant,
 } from '@lifi/widget';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
+import { LinkMap } from '../../types/';
 import { LanguageKey } from '../../types/i18n';
+import { WidgetContainer } from './Widget.styled';
 
 interface ShowConnectModalProps {
   show: boolean;
   promiseResolver?: Promise<any>;
 }
-export default function Widget({ starterVariant }) {
-  const theme = useTheme();
-  const settings = useSettings();
+
+function widgetConfigComponent({ starterVariant }) {
   const menu = useMenu();
+  const theme = useTheme();
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
-  const [starterVariantUsed, setStarterVariantUsed] = useState(false);
-  const [_starterVariant, setStarterVariant] =
-    useState<WidgetVariant>('expandable');
-  const [showConnectModal, setShowConnectModal] =
-    useState<ShowConnectModalProps>({ show: false });
-  const anchorRef = useRef<HTMLButtonElement>(null);
-  const [searchParamsByRouter, setSearchParamsByRouter] = useSearchParams();
-
-  const getActiveWidget = () => {
-    if (!starterVariantUsed) {
-      starterVariant === 'expandable'
-        ? settings.onChangeTab(0)
-        : settings.onChangeTab(1);
-      setStarterVariant(starterVariant);
-      setStarterVariantUsed(true);
-    } else {
-      if (settings.activeTab === 0) {
-        setStarterVariant('expandable');
-      } else if (settings.activeTab === 1) {
-        setStarterVariant('refuel');
-      }
-    }
-    return _starterVariant;
-  };
-
-  useEffect(() => {
-    getActiveWidget();
-  }, []);
-
-  useEffect(() => {
-    getActiveWidget();
-  }, [settings.activeTab]);
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
-      variant: _starterVariant,
+      variant: starterVariant,
       walletManagement: {
         signer: account.signer,
         connect: async () => {
@@ -79,8 +47,6 @@ export default function Widget({ starterVariant }) {
           const loginAwaiter = new Promise<void>(
             (resolve) => (promiseResolver = resolve),
           );
-
-          setShowConnectModal({ show: true, promiseResolver });
 
           await loginAwaiter;
           if (account.signer) {
@@ -121,8 +87,8 @@ export default function Widget({ starterVariant }) {
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
         shape: {
-          borderRadius: '12px',
-          borderRadiusSecondary: '24px',
+          borderRadius: 12,
+          borderRadiusSecondary: 24,
         },
         palette: {
           primary: {
@@ -142,10 +108,64 @@ export default function Widget({ starterVariant }) {
     isDarkMode,
     account.signer,
     disconnect,
-    _starterVariant,
     theme.palette.mode,
   ]);
 
+  return widgetConfig;
+}
+
+export function Widget({ starterVariant }) {
+  const widgetConfig = widgetConfigComponent(
+    (starterVariant = { starterVariant }),
+  );
+
+  return <LiFiWidget config={widgetConfig} />;
+}
+
+export function DualWidget() {
+  const settings = useSettings();
+  const [starterVariantUsed, setStarterVariantUsed] = useState(false);
+  const [_starterVariant, setStarterVariant] =
+    useState<WidgetVariant>('expandable');
+
+  const handleIsActiveUrl = useCallback(
+    (activeUrl: string) =>
+      Object.values(LinkMap).filter((el) => el.includes(activeUrl)) &&
+      window.location.pathname.slice(1, 1 + activeUrl.length) === activeUrl,
+    [],
+  );
+
+  const starterVariant = useMemo(() => {
+    if (handleIsActiveUrl('swap')) {
+      return 'expandable';
+    } else if (handleIsActiveUrl('gas') || handleIsActiveUrl('refuel')) {
+      return 'refuel';
+    }
+  }, [window.location.pathname]);
+
+  const getActiveWidget = () => {
+    if (!starterVariantUsed) {
+      starterVariant === 'expandable'
+        ? settings.onChangeTab(0)
+        : settings.onChangeTab(1);
+      setStarterVariant(starterVariant);
+      setStarterVariantUsed(true);
+    } else {
+      if (settings.activeTab === 0) {
+        setStarterVariant('expandable');
+      } else if (settings.activeTab === 1) {
+        setStarterVariant('refuel');
+      }
+    }
+  };
+
+  useEffect(() => {
+    getActiveWidget();
+  }, [starterVariant]);
+
+  useEffect(() => {
+    getActiveWidget();
+  }, [settings.activeTab]);
   return (
     <Grid
       container
@@ -153,25 +173,12 @@ export default function Widget({ starterVariant }) {
       justifyContent="center"
       alignItems="center"
     >
-      <Box
-        sx={{
-          marginTop: theme.spacing(8),
-          // make widget scrollable on screens smaller than:
-          // 80px (navbar height)
-          // + 32px (margin-top of widget)
-          // + 680px (height of widget)
-          [`@media (max-height: ${80 + 32 + 680}px)`]: {
-            overflowY: 'auto',
-            height: 'calc( 100vh - 80px - 32px)',
-            marginTop: '18px',
-          },
-          '> div': {
-            marginTop: '32px',
-          },
-        }}
-      >
-        <LiFiWidget config={widgetConfig} />
-      </Box>
+      <WidgetContainer isActive={_starterVariant === 'expandable'}>
+        <Widget starterVariant={'expandable'} />
+      </WidgetContainer>
+      <WidgetContainer isActive={_starterVariant === 'refuel'}>
+        <Widget starterVariant={'refuel'} />
+      </WidgetContainer>
     </Grid>
   );
 }

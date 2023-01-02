@@ -1,5 +1,5 @@
-import { default as Widget } from '../../components/Widget';
+import { DualWidget } from '../../components/Widget';
 
 export default function Refuel() {
-  return <Widget starterVariant="refuel" />;
+  return <DualWidget />;
 }
