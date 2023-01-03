@@ -4,6 +4,8 @@ name: s3-depl
 on:
   push:
     branches: [ "main", "develop", "staging" ]
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}    
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
