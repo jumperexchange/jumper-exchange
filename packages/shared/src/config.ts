@@ -1,5 +1,5 @@
 // @mui
-import { deDE, enUS, frFR, itIT, zhCN } from '@mui/material/locale';
+import { deDE, enUS } from '@mui/material/locale';
 import i18next from 'i18next';
 import { DappLanguagesSupported } from './types/settings';
 
@@ -25,21 +25,6 @@ export const allLangs = [
     label: 'Deutsch',
     value: 'de' as DappLanguagesSupported,
     systemValue: deDE,
-  },
-  {
-    label: 'Italian',
-    value: 'it' as DappLanguagesSupported,
-    systemValue: itIT,
-  },
-  {
-    label: 'Chinese',
-    value: 'zh' as DappLanguagesSupported,
-    systemValue: zhCN,
-  },
-  {
-    label: 'French',
-    value: 'fr' as DappLanguagesSupported,
-    systemValue: frFR,
   },
 ];
 

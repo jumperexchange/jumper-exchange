@@ -1,36 +1,36 @@
 {
-  "Navbar": {
-    "Links": {
-      "Swap": "Swap",
-      "Dashboard": "Dashboard",
-      "Refuel": "Gas"
+  "navbar": {
+    "links": {
+      "swap": "Swap",
+      "dashboard": "Dashboard",
+      "refuel": "Gas"
     },
-    "ConnectWallet": "Connect Wallet",
-    "ChooseWallet": "Choose Wallet",
-    "NavbarMenu": {
-      "Theme": "Theme",
-      "Developers": "Developers",
-      "AboutLIFI": "About LI.FI",
-      "Support": "Support"
+    "connectWallet": "Connect Wallet",
+    "chooseWallet": "Choose Wallet",
+    "navbarMenu": {
+      "theme": "Theme",
+      "developers": "Developers",
+      "aboutLIFI": "About LI.FI",
+      "support": "Support"
     },
-    "WalletMenu": {
-      "Disconnect": "Disconnect",
-      "Chains": "Chains",
-      "SwitchChain": "Switch Chain"
+    "walletMenu": {
+      "disconnect": "Disconnect",
+      "chains": "Chains",
+      "switchChain": "Switch Chain"
     },
-    "Language": {
+    "language": {
       "key": "Language",
       "value": "English"
     },
-    "Themes": {
-      "Light": "Light",
-      "Dark": "Dark",
-      "Auto": "Auto"
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "auto": "Auto"
     },
-    "Developers": {
-      "Github": "GitHub",
-      "Documentation": "Documentation",
-      "Showcases": "Showcases"
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Documentation",
+      "showcases": "Showcases"
     }
   }
 }

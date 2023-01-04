@@ -13,7 +13,7 @@ interface NavbarMenuProps {
 }
 
 const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
-  const i18Path = 'Navbar.';
+  const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
   const theme = useTheme();
   const menu = useMenu();
@@ -22,7 +22,7 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
   return (
     <NavbarMenu
       handleClose={handleClose}
-      label={`${translate(`${i18Path}ChooseWallet`)}`}
+      label={`${translate(`${i18Path}chooseWallet`)}`}
       anchorRef={anchorRef}
       bgColor={theme.palette.surface2.main}
       isScrollable={true}

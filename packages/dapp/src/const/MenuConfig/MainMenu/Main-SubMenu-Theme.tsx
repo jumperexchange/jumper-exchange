@@ -8,7 +8,7 @@ import { MenuListItem } from '../../../types';
 
 const MainSubMenuTheme = () => {
   const { t: translate } = useTranslation();
-  const i18Path = 'Navbar.';
+  const i18Path = 'navbar.';
   const settings = useSettings();
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
@@ -17,19 +17,19 @@ const MainSubMenuTheme = () => {
 
   const _MainSubMenuTheme: MenuListItem[] = [
     {
-      label: `${translate(`${i18Path}Themes.Light`)}`,
+      label: `${translate(`${i18Path}themes.light`)}`,
       listIcon: <LightModeIcon />,
       checkIcon: settings.themeMode === 'light',
       onClick: () => handleSwitchMode('light'),
     },
     {
-      label: `${translate(`${i18Path}Themes.Dark`)}`,
+      label: `${translate(`${i18Path}themes.dark`)}`,
       listIcon: <NightlightOutlinedIcon />,
       checkIcon: settings.themeMode === 'dark',
       onClick: () => handleSwitchMode('dark'),
     },
     {
-      label: `${translate(`${i18Path}Themes.Auto`)}`,
+      label: `${translate(`${i18Path}themes.auto`)}`,
       listIcon: <BrightnessAutoOutlinedIcon />,
       checkIcon: settings.themeMode === 'auto',
       onClick: () => handleSwitchMode('auto'),

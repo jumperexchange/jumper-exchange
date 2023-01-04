@@ -15,7 +15,7 @@ const SubMenuLanguage = () => {
 
   Object.values(DappLanguagesSupported).map((lan) =>
     _SubMenuLanguage.push({
-      label: i18n.store.data[lan].translation['Navbar']['Language']['value'],
+      label: i18n.store.data[lan].translation['navbar']['language']['value'],
       checkIcon: settings.languageMode === lan,
       onClick: () => handleSwitchLanguage(lan),
     }),

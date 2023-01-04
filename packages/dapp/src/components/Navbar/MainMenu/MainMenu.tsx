@@ -17,7 +17,7 @@ interface MainMenuProps {
 
 const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
   const menu = useMenu();
-  const i18Path = 'Navbar.';
+  const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
   const _MainMenuItems = MainMenuItems();
   const _mainSubMenuTheme = MainSubMenuTheme();
@@ -49,7 +49,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         ))}
         <SubMenuComponent
           isSubMenu={true}
-          label={`${translate(`${i18Path}NavbarMenu.Theme`)}`}
+          label={`${translate(`${i18Path}navbarMenu.theme`)}`}
           triggerSubMenu={'themes'}
           isScrollable={true}
           open={menu.openMainNavbarMenu}
@@ -60,7 +60,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
 
         <SubMenuComponent
           isSubMenu={true}
-          label={`${translate(`${i18Path}Language.key`)}`}
+          label={`${translate(`${i18Path}language.key`)}`}
           triggerSubMenu={'language'}
           isScrollable={true}
           open={menu.openMainNavbarMenu}
@@ -71,7 +71,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
 
         <SubMenuComponent
           isSubMenu={true}
-          label={`${translate(`${i18Path}NavbarMenu.Developers`)}`}
+          label={`${translate(`${i18Path}navbarMenu.developers`)}`}
           triggerSubMenu={'devs'}
           isScrollable={true}
           open={menu.openMainNavbarMenu}

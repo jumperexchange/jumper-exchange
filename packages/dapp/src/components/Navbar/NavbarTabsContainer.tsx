@@ -18,7 +18,7 @@ function a11yProps(index: number) {
 const NavbarTabsContainer = () => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
-  const i18Path = 'Navbar.';
+  const i18Path = 'navbar.';
   const settings = useSettings();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -56,7 +56,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={`${translate(`${i18Path}Links.Swap`)}`}
+        label={`${translate(`${i18Path}links.swap`)}`}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -69,7 +69,7 @@ const NavbarTabsContainer = () => {
           hotjar.initialized() &&
             hotjar.stateChange('navigation__switch-tab__gas');
         }}
-        label={`${translate(`${i18Path}Links.Refuel`)}`}
+        label={`${translate(`${i18Path}links.refuel`)}`}
         icon={
           <EvStationIcon
             sx={{

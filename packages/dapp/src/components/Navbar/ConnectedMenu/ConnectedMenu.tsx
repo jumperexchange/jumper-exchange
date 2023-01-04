@@ -10,7 +10,7 @@ interface NavbarMenuProps {
   isSuccess: boolean;
 }
 const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
-  const i18Path = 'Navbar.WalletMenu.';
+  const i18Path = 'navbar.walletMenu.';
   const { t: translate } = useTranslation();
   const theme = useTheme();
   const menu = useMenu();
@@ -45,7 +45,7 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
       ))}
 
       <SubMenuComponent
-        label={`${translate(`${i18Path}Chains`)}`}
+        label={`${translate(`${i18Path}chains`)}`}
         isSubMenu={true}
         isScrollable={true}
         bgColor={theme.palette.surface2.main}

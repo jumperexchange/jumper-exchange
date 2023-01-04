@@ -14,7 +14,7 @@ import { MenuListItem } from '../../../types';
 
 const MainMenuItems = () => {
   const { t: translate } = useTranslation();
-  const i18Path = 'Navbar.';
+  const i18Path = 'navbar.';
   const settings = useSettings();
   const theme = useTheme();
   const activeLanguage = useMemo(
@@ -25,13 +25,13 @@ const MainMenuItems = () => {
 
   const _MainMenuItems: MenuListItem[] = [
     {
-      label: `${translate(`${i18Path}NavbarMenu.Theme`)}`,
+      label: `${translate(`${i18Path}navbarMenu.theme`)}`,
       listIcon: <LightModeOutlinedIcon />,
       url: 'https://github.com/lifinance/',
       triggerSubMenu: 'themes',
     },
     {
-      label: `${translate(`${i18Path}Language.key`)}`,
+      label: `${translate(`${i18Path}language.key`)}`,
       listIcon: <LanguageIcon />,
       checkIcon: settings.themeMode === 'light',
       extraIcon: (
@@ -42,19 +42,19 @@ const MainMenuItems = () => {
       triggerSubMenu: 'language',
     },
     {
-      label: `${translate(`${i18Path}NavbarMenu.Developers`)}`,
+      label: `${translate(`${i18Path}navbarMenu.developers`)}`,
       listIcon: <DeveloperModeIcon />,
       triggerSubMenu: 'devs',
     },
     {
-      label: `${translate(`${i18Path}NavbarMenu.AboutLIFI`)}`,
+      label: `${translate(`${i18Path}navbarMenu.aboutLIFI`)}`,
       listIcon: <InfoOutlinedIcon />,
       onClick: () => {
         openInNewTab('https://li.fi');
       },
     },
     {
-      label: `${translate(`${i18Path}NavbarMenu.Support`)}`,
+      label: `${translate(`${i18Path}navbarMenu.support`)}`,
       listIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         menu.toggleSupportModal(true);

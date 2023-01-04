@@ -8,13 +8,13 @@ import { MenuListItem } from '../../../types';
 
 const MainSubMenuDevelopers = () => {
   const { t: translate } = useTranslation();
-  const i18Path = 'Navbar.';
+  const i18Path = 'navbar.';
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
   const _MainSubMenuDevelopers: MenuListItem[] = [
     {
-      label: `${translate(`${i18Path}Developers.Github`)}`,
+      label: `${translate(`${i18Path}developers.github`)}`,
       listIcon: (
         <GitHubIcon
           sx={{
@@ -29,14 +29,14 @@ const MainSubMenuDevelopers = () => {
       },
     },
     {
-      label: `${translate(`${i18Path}Developers.Documentation`)}`,
+      label: `${translate(`${i18Path}developers.documentation`)}`,
       listIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
         openInNewTab('https://docs.li.fi/');
       },
     },
     {
-      label: `${translate(`${i18Path}Developers.Showcases`)}`,
+      label: `${translate(`${i18Path}developers.showcases`)}`,
       listIcon: <SlideshowIcon />,
       onClick: () => {
         openInNewTab('#');

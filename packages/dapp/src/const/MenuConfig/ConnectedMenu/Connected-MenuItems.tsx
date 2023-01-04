@@ -17,7 +17,7 @@ import { MenuListItem, TWallets } from '../../../types';
 
 const ConnectedMenuItems = () => {
   const { t: translate } = useTranslation();
-  const i18Path = 'Navbar.WalletMenu.';
+  const i18Path = 'navbar.walletMenu.';
   const settings = useSettings();
   const menu = useMenu();
   const theme = useTheme();
@@ -49,7 +49,7 @@ const ConnectedMenuItems = () => {
     {
       label: !!activeChain?.name
         ? `${activeChain?.name}`
-        : `${translate(`${i18Path}SwitchChain`)}`,
+        : `${translate(`${i18Path}switchChain`)}`,
       listIcon: !!activeChain?.logoURI ? (
         <Avatar
           src={!!activeChain ? activeChain.logoURI : 'empty'}
@@ -84,7 +84,7 @@ const ConnectedMenuItems = () => {
       ),
     },
     {
-      label: `${translate(`${i18Path}Disconnect`)}`,
+      label: `${translate(`${i18Path}disconnect`)}`,
       listIcon: <PowerSettingsNewIcon />,
       showButton: true,
       textColor:

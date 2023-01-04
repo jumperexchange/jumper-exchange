@@ -4,10 +4,7 @@ export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
 export enum DappLanguagesSupported {
   en = 'en',
-  zh = 'zh',
-  fr = 'fr',
   de = 'de',
-  it = 'it',
 }
 
 export type SettingsValueProps = {

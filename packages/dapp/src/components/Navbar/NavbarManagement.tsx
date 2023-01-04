@@ -20,7 +20,7 @@ const NavbarManagement = () => {
   const theme = useTheme();
   const menu = useMenu();
   const { t: translate } = useTranslation();
-  const i18Path = 'Navbar.';
+  const i18Path = 'navbar.';
 
   const isDarkMode = theme.palette.mode === 'dark';
   const walletManagement = useWallet();
@@ -75,7 +75,7 @@ const NavbarManagement = () => {
         hoverBackgroundColor={'#31007a8c'}
         setOpenNavbarSubmenu={menu.onOpenNavbarSubMenu}
         activeChain={activeChain}
-        connectButtonLabel={`${translate(`${i18Path}ConnectWallet`)}`}
+        connectButtonLabel={`${translate(`${i18Path}connectWallet`)}`}
         isSuccess={isSuccess}
       />
       <NavbarDropdownButton
