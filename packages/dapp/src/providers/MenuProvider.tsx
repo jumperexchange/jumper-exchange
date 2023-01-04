@@ -28,6 +28,9 @@ const initialState: MenuContextProps = {
 
   // Toggle Navbar Sub Menu
   onOpenNavbarSubMenu: () => {},
+
+  // Toggle support modal
+  toggleSupportModal: () => {},
 };
 
 const MenuContext = createContext(initialState);
@@ -95,6 +98,14 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
     }));
   };
 
+  // Toggle support modal
+  const toggleSupportModal = (open: boolean) => {
+    setMenu((oldSettings) => ({
+      ...oldSettings,
+      openSupportModal: open,
+    }));
+  };
+
   return (
     <MenuContext.Provider
       value={{
@@ -117,6 +128,9 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
 
         // Toggle Navbar Sub Menu
         onOpenNavbarSubMenu,
+
+        // Toggle support modal
+        toggleSupportModal,
       }}
     >
       {children}

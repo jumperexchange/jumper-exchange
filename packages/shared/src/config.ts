@@ -74,4 +74,5 @@ export const defaultMenu: any = {
   openNavbarWalletMenu: false,
   openNavbarConnectedMenu: false,
   openNavbarSubMenu: 'none',
+  openSupportModal: false,
 };

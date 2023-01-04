@@ -6,6 +6,7 @@ export type MenuValueProps = {
   openNavbarWalletMenu: boolean;
   openNavbarConnectedMenu: boolean;
   openNavbarSubMenu: string;
+  openSupportModal: boolean;
 };
 
 export type MenuContextProps = {
@@ -14,6 +15,7 @@ export type MenuContextProps = {
   openNavbarWalletMenu?: boolean;
   openNavbarConnectedMenu?: boolean;
   openNavbarSubMenu?: string;
+  openSupportModal?: boolean;
 
   // ClipBoard
   onCopyToClipboard: (copied: boolean) => void;
@@ -32,4 +34,7 @@ export type MenuContextProps = {
 
   // Toggle Navbar Sub Menu
   onOpenNavbarSubMenu: (subMenu: string) => void;
+
+  // Toggle support modal
+  toggleSupportModal: (open: boolean) => {};
 };

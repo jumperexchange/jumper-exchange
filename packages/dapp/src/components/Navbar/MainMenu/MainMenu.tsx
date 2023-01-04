@@ -7,6 +7,7 @@ import {
   MainSubMenuTheme,
 } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
+import { SupportModal } from '../../SupportModal';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../index';
 
 interface MainMenuProps {
@@ -24,60 +25,63 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
   const _mainSubMenuLanguage = MainSubMenuLanguage();
 
   return (
-    <NavbarMenu
-      handleClose={handleClose}
-      anchorRef={anchorRef}
-      open={menu.openMainNavbarMenu}
-      setOpen={menu.onOpenNavbarMainMenu}
-      openSubMenu={menu.openNavbarSubMenu}
-    >
-      {_MainMenuItems.map((el, index) => (
-        <MenuItemComponent
-          key={`${el.label}-${index}`}
-          label={el.label}
-          listIcon={el.listIcon}
-          triggerSubMenu={el.triggerSubMenu}
-          showButton={el.showButton}
-          extraIcon={el.extraIcon}
-          onClick={el.onClick}
+    <>
+      <NavbarMenu
+        handleClose={handleClose}
+        anchorRef={anchorRef}
+        open={menu.openMainNavbarMenu}
+        setOpen={menu.onOpenNavbarMainMenu}
+        openSubMenu={menu.openNavbarSubMenu}
+      >
+        {_MainMenuItems.map((el, index) => (
+          <MenuItemComponent
+            key={`${el.label}-${index}`}
+            label={el.label}
+            listIcon={el.listIcon}
+            triggerSubMenu={el.triggerSubMenu}
+            showButton={el.showButton}
+            extraIcon={el.extraIcon}
+            onClick={el.onClick}
+            open={menu.openMainNavbarMenu}
+            openSubMenu={menu.openNavbarSubMenu}
+            setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          />
+        ))}
+        <SubMenuComponent
+          isSubMenu={true}
+          label={`${translate(`${i18Path}NavbarMenu.Theme`)}`}
+          triggerSubMenu={'themes'}
+          isScrollable={true}
           open={menu.openMainNavbarMenu}
           openSubMenu={menu.openNavbarSubMenu}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          subMenuList={_mainSubMenuTheme}
         />
-      ))}
-      <SubMenuComponent
-        isSubMenu={true}
-        label={`${translate(`${i18Path}NavbarMenu.Theme`)}`}
-        triggerSubMenu={'themes'}
-        isScrollable={true}
-        open={menu.openMainNavbarMenu}
-        openSubMenu={menu.openNavbarSubMenu}
-        setOpenSubMenu={menu.onOpenNavbarSubMenu}
-        subMenuList={_mainSubMenuTheme}
-      />
 
-      <SubMenuComponent
-        isSubMenu={true}
-        label={`${translate(`${i18Path}Language.key`)}`}
-        triggerSubMenu={'language'}
-        isScrollable={true}
-        open={menu.openMainNavbarMenu}
-        openSubMenu={menu.openNavbarSubMenu}
-        setOpenSubMenu={menu.onOpenNavbarSubMenu}
-        subMenuList={_mainSubMenuLanguage}
-      />
+        <SubMenuComponent
+          isSubMenu={true}
+          label={`${translate(`${i18Path}Language.key`)}`}
+          triggerSubMenu={'language'}
+          isScrollable={true}
+          open={menu.openMainNavbarMenu}
+          openSubMenu={menu.openNavbarSubMenu}
+          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          subMenuList={_mainSubMenuLanguage}
+        />
 
-      <SubMenuComponent
-        isSubMenu={true}
-        label={`${translate(`${i18Path}NavbarMenu.Developers`)}`}
-        triggerSubMenu={'devs'}
-        isScrollable={true}
-        open={menu.openMainNavbarMenu}
-        openSubMenu={menu.openNavbarSubMenu}
-        setOpenSubMenu={menu.onOpenNavbarSubMenu}
-        subMenuList={_mainSubMenuDevelopers}
-      />
-    </NavbarMenu>
+        <SubMenuComponent
+          isSubMenu={true}
+          label={`${translate(`${i18Path}NavbarMenu.Developers`)}`}
+          triggerSubMenu={'devs'}
+          isScrollable={true}
+          open={menu.openMainNavbarMenu}
+          openSubMenu={menu.openNavbarSubMenu}
+          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          subMenuList={_mainSubMenuDevelopers}
+        />
+      </NavbarMenu>
+      <SupportModal />
+    </>
   );
 };
 

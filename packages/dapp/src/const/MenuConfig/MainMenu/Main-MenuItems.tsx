@@ -9,6 +9,7 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useMemo } from 'react';
 import { getInitialProps, useTranslation } from 'react-i18next';
+import { useMenu } from '../../../providers/MenuProvider';
 import { MenuListItem } from '../../../types';
 
 const MainMenuItems = () => {
@@ -20,6 +21,7 @@ const MainMenuItems = () => {
     () => getInitialProps().initialLanguage,
     [getInitialProps().initialLanguage],
   );
+  const menu = useMenu();
 
   const _MainMenuItems: MenuListItem[] = [
     {
@@ -55,7 +57,7 @@ const MainMenuItems = () => {
       label: `${translate(`${i18Path}NavbarMenu.Support`)}`,
       listIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
-        openInNewTab('https://discord.gg/lifi');
+        menu.toggleSupportModal(true);
       },
       showButton: true,
     },
