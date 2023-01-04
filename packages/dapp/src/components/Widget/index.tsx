@@ -18,6 +18,7 @@ import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
+import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
 import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
@@ -59,6 +60,11 @@ function widgetConfigComponent({ starterVariant }) {
               chainId: account.chainId,
               // Other relevant user information
             });
+            hotjar.initialized() &&
+              hotjar.identify('USER_ID', {
+                address: account.address,
+                chainId: account.chainId,
+              });
             gaEventTrack({
               category: 'walletInteraction',
               action: 'connect',
@@ -223,6 +229,7 @@ export function DualWidget() {
     const onRouteExecutionStarted = async (route: Route) => {
       // console.log('onRouteExecutionStarted fired.', route);
       if (!!route?.id) {
+        hotjar.initialized() && hotjar.event('onRouteExecutionStarted');
         gaEventTrack({
           category: 'widgetEvent',
           action: 'onRouteExecutionStarted',
@@ -241,6 +248,7 @@ export function DualWidget() {
           //   transactionLink: update.process.txLink,
           // });
           setLastTxHas(update.process.txHash);
+          hotjar.initialized() && hotjar.event('onRouteExecutionUpdated');
           gaEventTrack({
             category: 'widgetEvent',
             action: 'onRouteExecutionUpdated',
@@ -252,6 +260,7 @@ export function DualWidget() {
     const onRouteExecutionCompleted = async (route: Route) => {
       // console.log('onRouteExecutionCompleted fired.', route);
       if (!!route?.id) {
+        hotjar.initialized() && hotjar.event('onRouteExecutionCompleted');
         gaEventTrack({
           category: 'widgetEvent',
           action: 'onRouteExecutionCompleted',
@@ -261,6 +270,7 @@ export function DualWidget() {
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
       // console.log('onRouteExecutionFailed fired.', update);
+      hotjar.initialized() && hotjar.event('onRouteExecutionFailed');
       gaEventTrack({
         category: 'widgetEvent',
         action: 'onRouteExecutionFailed',

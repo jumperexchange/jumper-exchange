@@ -1,6 +1,7 @@
 import { CssBaseline } from '@mui/material';
 import { defaultSettings, SettingsProvider } from '@transferto/shared/src';
 import ReactGA from 'react-ga';
+import { hotjar } from 'react-hotjar';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import App from '../../App';
 import { ChainInfosProvider } from '../../providers/ChainInfosProvider';
@@ -14,6 +15,10 @@ const queryClient = new QueryClient();
 const AppWrapper = () => {
   ReactGA.initialize(
     (import.meta as any).env.VITE_GOOGLE_ANALYTICS_TRACKING_ID,
+  );
+  hotjar.initialize(
+    (import.meta as any).env.VITE_HOTJAR_ID,
+    (import.meta as any).env.VITE_HOTJAR_SNIPPET_VERSION,
   );
 
   return (

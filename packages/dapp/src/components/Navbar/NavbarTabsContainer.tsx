@@ -3,6 +3,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
+import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
 import { gaEventTrack } from '../../utils/google-analytics';
 import { NavbarTab, NavbarTabs } from './Navbar.styled';
@@ -41,6 +42,8 @@ const NavbarTabsContainer = () => {
             action: 'switch tab',
             label: 'swap',
           });
+          hotjar.initialized() &&
+            hotjar.stateChange('navigation__switch-tab__swap');
         }}
         icon={
           <SwapHorizIcon
@@ -63,6 +66,8 @@ const NavbarTabsContainer = () => {
             action: 'switch tab',
             label: 'gas',
           });
+          hotjar.initialized() &&
+            hotjar.stateChange('navigation__switch-tab__gas');
         }}
         label={`${translate(`${i18Path}Links.Refuel`)}`}
         icon={
