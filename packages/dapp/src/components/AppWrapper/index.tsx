@@ -1,5 +1,6 @@
 import { CssBaseline } from '@mui/material';
 import { defaultSettings, SettingsProvider } from '@transferto/shared/src';
+import ReactGA from 'react-ga';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import App from '../../App';
 import { ChainInfosProvider } from '../../providers/ChainInfosProvider';
@@ -11,6 +12,10 @@ import { WalletProvider } from '../../providers/WalletProvider';
 const queryClient = new QueryClient();
 
 const AppWrapper = () => {
+  ReactGA.initialize(
+    (import.meta as any).env.VITE_GOOGLE_ANALYTICS_TRACKING_ID,
+  );
+
   return (
     <QueryClientProvider client={queryClient}>
       <ChainInfosProvider>

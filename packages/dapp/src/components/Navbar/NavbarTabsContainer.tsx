@@ -4,6 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
+import { gaEventTrack } from '../../utils/google-analytics';
 import { NavbarTab, NavbarTabs } from './Navbar.styled';
 
 function a11yProps(index: number) {
@@ -34,6 +35,13 @@ const NavbarTabsContainer = () => {
       indicatorColor="primary"
     >
       <NavbarTab
+        onClick={() => {
+          gaEventTrack({
+            category: 'navigation',
+            action: 'switch tab',
+            label: 'swap',
+          });
+        }}
         icon={
           <SwapHorizIcon
             sx={{
@@ -49,6 +57,13 @@ const NavbarTabsContainer = () => {
         {...a11yProps(0)}
       />
       <NavbarTab
+        onClick={() => {
+          gaEventTrack({
+            category: 'navigation',
+            action: 'switch tab',
+            label: 'gas',
+          });
+        }}
         label={`${translate(`${i18Path}Links.Refuel`)}`}
         icon={
           <EvStationIcon
