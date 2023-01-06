@@ -1,4 +1,4 @@
-import EvStationIcon from '@mui/icons-material/EvStation';
+import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -71,7 +71,7 @@ const NavbarTabsContainer = () => {
         }}
         label={`${translate(`${i18Path}links.refuel`)}`}
         icon={
-          <EvStationIcon
+          <EvStationOutlinedIcon
             sx={{
               marginRight: '6px',
               marginBottom: '0px !important',
