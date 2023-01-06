@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "repository": "https://github.com/lifinance/transferto.xyz",
   "devDependencies": {
-    "@lerna/run": "^6.0.1",
-    "husky": "^8.0.1",
-    "lerna": "^6.0.1",
+    "@lerna/run": "^6.4.0",
+    "husky": "^8.0.3",
+    "lerna": "^6.4.0",
     "lint-staged": "^13.0.3"
   },
   "scripts": {
