@@ -1,7 +1,7 @@
 {
   "navbar": {
     "links": {
-      "swap": "Swap",
+      "swap": "Своп",
       "dashboard": "Dashboard",
       "refuel": "Gas"
     },
@@ -19,8 +19,8 @@
       "switchChain": "Switch Chain"
     },
     "language": {
-      "key": "Language",
-      "value": "English"
+      "key": "Мова",
+      "value": "Українська"
     },
     "themes": {
       "light": "Light",
