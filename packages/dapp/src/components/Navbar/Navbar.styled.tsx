@@ -146,7 +146,7 @@ export const NavbarTabs = styled(Tabs, {
         : '#0000000A',
     margin: 'auto',
     // height: 56,
-    borderRadius: 24,
+    borderRadius: 32,
     padding: 1,
     display: 'flex',
     // visibility: 'visible',
@@ -184,7 +184,7 @@ export const NavbarTab = styled(Tab, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabProps>(({ theme }) => ({
   textTransform: 'initial',
-  borderRadius: 24,
+  borderRadius: 32,
   width: 'calc( 50% - 8px )',
   display: 'flex',
   flexDirection: 'row',
