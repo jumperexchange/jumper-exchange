@@ -18,7 +18,7 @@ import {
   Tab,
   TabProps,
   Tabs,
-  TabsProps,
+  TabsProps
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -96,7 +96,7 @@ export interface NavbarPopperProps extends Omit<PopperProps, 'isScrollable'> {}
 export const NavbarPopper = styled(Popper, {
   shouldForwardProp: (prop) => prop !== 'isScrollable',
 })<NavbarPopperProps>(({ theme }) => ({
-  zIndex: 2,
+  zIndex: 1300,
   bottom: '0 !important',
   left: '0 !important',
   top: 'unset !important',
