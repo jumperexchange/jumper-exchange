@@ -2,7 +2,7 @@ import { Route, Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
-  switchChainAndAddToken,
+  switchChainAndAddToken
 } from '@lifi/wallet-management';
 import {
   HiddenUI,
@@ -11,7 +11,7 @@ import {
   useWidgetEvents,
   WidgetConfig,
   WidgetEvent,
-  WidgetVariant,
+  WidgetVariant
 } from '@lifi/widget';
 import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -290,12 +290,7 @@ export function DualWidget() {
   }, [widgetEvents]);
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Grid justifyContent="center" alignItems="center" container>
       <WidgetContainer isActive={_starterVariant === 'expandable'}>
         <Widget starterVariant={'expandable'} />
       </WidgetContainer>

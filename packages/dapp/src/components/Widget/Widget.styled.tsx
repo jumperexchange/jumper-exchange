@@ -12,6 +12,7 @@ export const WidgetContainer = styled(Box, {
   // visibility: isActive ? 'visible' : 'hidden',
   marginTop: theme.spacing(4),
   paddingTop: theme.spacing(4),
+  flex: '1 1 0%',
   // make widget scrollable on screens smaller than:
   // 80px (navbar height)
   // + 32px (margin-top of widget)
