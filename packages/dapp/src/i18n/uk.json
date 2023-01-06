@@ -2,35 +2,35 @@
   "navbar": {
     "links": {
       "swap": "Своп",
-      "dashboard": "Dashboard",
-      "refuel": "Gas"
+      "dashboard": "Дешборд",
+      "refuel": "Газ"
     },
-    "connectWallet": "Connect Wallet",
-    "chooseWallet": "Choose Wallet",
+    "connectWallet": "Під'єднати гаманець",
+    "chooseWallet": "Оберіть гаманець",
     "navbarMenu": {
-      "theme": "Theme",
-      "developers": "Developers",
-      "aboutLIFI": "About LI.FI",
-      "support": "Support"
+      "theme": "Тема",
+      "developers": "Розробникам",
+      "aboutLIFI": "Про LI.FI",
+      "support": "Підтримка"
     },
     "walletMenu": {
-      "disconnect": "Disconnect",
-      "chains": "Chains",
-      "switchChain": "Switch Chain"
+      "disconnect": "Від'єднатись",
+      "chains": "Чейни",
+      "switchChain": "Перемикнути чейн"
     },
     "language": {
       "key": "Мова",
       "value": "Українська"
     },
     "themes": {
-      "light": "Light",
-      "dark": "Dark",
-      "auto": "Auto"
+      "light": "Світла",
+      "dark": "Темна",
+      "auto": "Авто"
     },
     "developers": {
       "github": "GitHub",
-      "documentation": "Documentation",
-      "showcases": "Showcases"
+      "documentation": "Документація",
+      "showcases": "Приклади"
     }
   }
 }
