@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "main", "develop", "staging" ]
 env:
-  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}    
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -26,4 +26,4 @@ jobs:
       - name: Build React App
         run: yarn install && yarn build:lifinance${{env.BRANCH_NAME == 'main' && ' ' || format(':{0}',env.BRANCH_NAME) }}
       - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./build/ s3://${{env.BRANCH_NAME == 'main' && '' || format('{0}.',env.BRANCH_NAME) }}transferto.xyz --delete
+        run: aws s3 sync ./build/ ${{env.BRANCH_NAME == 'main' && 's3://' || format('s3://{0}.',env.BRANCH_NAME) }}transferto.xyz --delete
