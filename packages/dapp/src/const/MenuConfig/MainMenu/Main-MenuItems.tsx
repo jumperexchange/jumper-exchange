@@ -1,14 +1,15 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LanguageIcon from '@mui/icons-material/Language';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
+import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Discord } from '@transferto/shared/src/atoms/icons';
+import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useMemo } from 'react';
 import { getInitialProps, useTranslation } from 'react-i18next';
+import { SubMenuKeys } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
 import { MenuListItem } from '../../../types';
 
@@ -26,9 +27,14 @@ const MainMenuItems = () => {
   const _MainMenuItems: MenuListItem[] = [
     {
       label: `${translate(`${i18Path}navbarMenu.theme`)}`,
-      listIcon: <LightModeOutlinedIcon />,
+      listIcon:
+        settings.themeMode === 'light' ? (
+          <LightModeOutlinedIcon />
+        ) : (
+          <NightlightOutlinedIcon />
+        ),
       url: 'https://github.com/lifinance/',
-      triggerSubMenu: 'themes',
+      triggerSubMenu: SubMenuKeys.themes,
     },
     {
       label: `${translate(`${i18Path}language.key`)}`,
@@ -39,16 +45,25 @@ const MainMenuItems = () => {
           {activeLanguage}
         </Typography>
       ),
-      triggerSubMenu: 'language',
+      triggerSubMenu: SubMenuKeys.language,
     },
     {
       label: `${translate(`${i18Path}navbarMenu.developers`)}`,
       listIcon: <DeveloperModeIcon />,
-      triggerSubMenu: 'devs',
+      triggerSubMenu: SubMenuKeys.devs,
     },
     {
       label: `${translate(`${i18Path}navbarMenu.aboutLIFI`)}`,
-      listIcon: <InfoOutlinedIcon />,
+      listIcon: (
+        <LifiSmallLogo
+          color={
+            theme.palette.mode === 'dark'
+              ? theme.palette.white.main
+              : theme.palette.black.main
+          }
+        />
+      ),
+      showMoreIcon: false,
       onClick: () => {
         openInNewTab('https://li.fi');
       },

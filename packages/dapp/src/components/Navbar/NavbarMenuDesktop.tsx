@@ -4,6 +4,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { SubMenuKeys } from '../../const/';
 import { useMenu } from '../../providers/MenuProvider';
 import {
   MenuHeaderAppBar,
@@ -14,9 +15,10 @@ import {
   NavbarPopper,
 } from './Navbar.styled';
 interface NavbarMenuProps {
-  openSubMenu: string;
+  isOpenSubMenu: boolean;
   anchorRef: any; // TODO: Replace this any with the correct type
   bgColor: string;
+  hideBackArrow: boolean;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -27,11 +29,12 @@ interface NavbarMenuProps {
 }
 
 const NavbarMenuDesktop = ({
-  openSubMenu,
+  isOpenSubMenu,
   anchorRef,
   setOpen,
   bgColor,
   handleClose,
+  hideBackArrow,
   isScrollable,
   scrollableMainLayer,
   label,
@@ -74,7 +77,8 @@ const NavbarMenuDesktop = ({
               <NavbarPaper
                 isDarkMode={isDarkMode}
                 scrollableMainLayer={scrollableMainLayer}
-                openSubMenu={openSubMenu !== 'none'}
+                isOpenSubMenu={isOpenSubMenu}
+                openSubMenu={menu.openNavbarSubMenu}
                 bgColor={bgColor}
                 isScrollable={!!label || isScrollable}
               >
@@ -89,7 +93,17 @@ const NavbarMenuDesktop = ({
                     id="composition-menu"
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
-                    component={openSubMenu === 'none' ? 'ul' : 'div'}
+                    className={
+                      isOpenSubMenu
+                        ? 'navbar-menu-list open'
+                        : 'navbar-menu-list'
+                    }
+                    component={
+                      !!isOpenSubMenu &&
+                      menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                        ? 'div'
+                        : 'ul'
+                    }
                   >
                     {!!label ? (
                       <MenuHeaderAppWrapper>
@@ -99,22 +113,24 @@ const NavbarMenuDesktop = ({
                           scrollableMainLayer={scrollableMainLayer}
                           isScrollable={isScrollable}
                         >
-                          <IconButton
-                            size="medium"
-                            aria-label="settings"
-                            edge="start"
-                            sx={{
-                              color: theme.palette.text.primary,
-                              position: 'absolute',
-                            }}
-                            onClick={() => {
-                              menu.onOpenNavbarWalletMenu(
-                                !menu.openNavbarWalletMenu,
-                              );
-                            }}
-                          >
-                            <ArrowBackIcon />
-                          </IconButton>
+                          {!hideBackArrow && (
+                            <IconButton
+                              size="medium"
+                              aria-label="settings"
+                              edge="start"
+                              sx={{
+                                color: theme.palette.text.primary,
+                                position: 'absolute',
+                              }}
+                              onClick={() => {
+                                menu.onOpenNavbarWalletMenu(
+                                  !menu.openNavbarWalletMenu,
+                                );
+                              }}
+                            >
+                              <ArrowBackIcon />
+                            </IconButton>
+                          )}
                           <Typography
                             variant={'lifiBodyMediumStrong'}
                             width={'100%'}
