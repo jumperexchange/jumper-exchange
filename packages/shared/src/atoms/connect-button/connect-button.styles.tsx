@@ -9,7 +9,10 @@ interface ConnectButtonBaseProps extends Omit<any, 'backgroundColor'> {
 
 export const ConnectButtonBase = styled(ButtonStyled, {
   shouldForwardProp: (prop) =>
-    prop !== 'bgColor' && prop !== 'hoverBackgroundColor' && prop !== 'color',
+    prop !== 'backgroundColor' &&
+    prop !== 'bgColor' &&
+    prop !== 'hoverBackgroundColor' &&
+    prop !== 'color',
 })<ConnectButtonBaseProps>(({ theme }) => ({
   display: 'none',
   width: '190px',
