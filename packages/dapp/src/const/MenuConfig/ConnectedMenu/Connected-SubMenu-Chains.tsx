@@ -25,7 +25,7 @@ const ConnectedSubMenuChains = () => {
         <Avatar
           src={el.logoURI}
           alt={`${el.name}-chain-logo`}
-          sx={{ height: '24px', width: '24px' }}
+          sx={{ height: '32px', width: '32px' }}
         />
       ),
       checkIcon: el.id === activeChain?.id,

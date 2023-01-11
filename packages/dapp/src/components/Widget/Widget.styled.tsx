@@ -12,6 +12,7 @@ export const WidgetContainer = styled(Box, {
   // visibility: isActive ? 'visible' : 'hidden',
   marginTop: theme.spacing(4),
   paddingTop: theme.spacing(4),
+  height: 'calc( 100vh - 64px - 16px )',
   flex: '1 1 0%',
   // make widget scrollable on screens smaller than:
   // 80px (navbar height)
@@ -19,8 +20,16 @@ export const WidgetContainer = styled(Box, {
   // + 680px (height of widget)
   [`@media (max-height: ${80 + 18 + 680}px)`]: {
     overflowY: 'auto',
-    height: 'calc( 100vh - 80px - 18px)',
+    height: 'calc( 100vh - 72px - 16px)',
     width: '100vw',
     '> div': {},
+    [theme.breakpoints.up('md')]: {
+      height: 'calc( 100vh - 80px - 16px )',
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(2),
+      marginTop: theme.spacing(2),
+      height: 'calc( 100vh - 64px - 8px )',
+    },
   },
 }));

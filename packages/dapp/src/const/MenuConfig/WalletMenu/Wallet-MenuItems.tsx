@@ -41,9 +41,10 @@ const WalletMenuItems = () => {
           <Avatar
             src={wallet.icon}
             alt={`${wallet.name}-wallet-logo`}
-            sx={{ height: '24px', width: '24px' }}
+            sx={{ height: '32px', width: '32px' }}
           />
         ),
+        showMoreIcon: false,
         onClick: () => {
           login(wallet);
         },

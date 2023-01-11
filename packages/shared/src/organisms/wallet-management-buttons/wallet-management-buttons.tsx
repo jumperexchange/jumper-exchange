@@ -1,7 +1,7 @@
 import { ExtendedChain } from '@lifi/types';
 import { Avatar, Typography } from '@mui/material';
 import { useSettings } from '@transferto/shared/src/hooks';
-import React, { useMemo } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import { ConnectButton } from '../../atoms/connect-button';
 import { DisconnectButton } from '../../atoms/disconnect-button';
 import { MenuContextProps } from '../../types';
@@ -11,7 +11,7 @@ interface WalletManagementButtonsProps {
   setOpenNavbarSubmenu?: (subMenu: string) => void;
   color?: string;
   menu: MenuContextProps;
-  connectButtonLabel?: string;
+  connectButtonLabel?: ReactElement<any, any>;
   activeChain?: ExtendedChain;
   hoverBackgroundColor?: string;
   isSuccess: boolean;
@@ -36,9 +36,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   }, [account]);
 
   const handleWalletPicker = () => {
-    props.menu.onOpenNavbarWalletMenu(
-      !!props.menu.openNavbarWalletMenu ? false : true,
-    );
+    props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
   };
 
   const handleWalletMenuClick = () => {

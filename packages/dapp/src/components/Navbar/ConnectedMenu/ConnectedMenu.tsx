@@ -1,9 +1,12 @@
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { ConnectedMenuItems, ConnectedSubMenuChains } from '../../../const';
+import {
+  ConnectedMenuItems,
+  ConnectedSubMenuChains,
+  SubMenuKeys,
+} from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../index';
-
 interface NavbarMenuProps {
   anchorRef: any; // TODO: Replace this any with the correct type
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -21,11 +24,10 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
     <NavbarMenu
       handleClose={handleClose}
       anchorRef={anchorRef}
-      bgColor={theme.palette.surface2.main}
       open={menu.openNavbarConnectedMenu}
-      isScrollable={menu.openNavbarSubMenu === 'chains'}
+      isScrollable={menu.openNavbarSubMenu === SubMenuKeys.chains}
       setOpen={menu.onOpenNavbarConnectedMenu}
-      openSubMenu={menu.openNavbarSubMenu}
+      isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
     >
       {_connectedMenuItems.map((el, index) => (
         <MenuItemComponent
@@ -33,13 +35,14 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
           label={el.label}
           listIcon={el.listIcon}
           textColor={el.textColor}
+          showMoreIcon={el.showMoreIcon}
           bgColor={el.bgColor}
           triggerSubMenu={el.triggerSubMenu}
           showButton={el.showButton}
           extraIcon={el.extraIcon}
           onClick={el.onClick}
           open={menu.openNavbarConnectedMenu}
-          openSubMenu={menu.openNavbarSubMenu}
+          isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
         />
       ))}
@@ -48,10 +51,9 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
         label={`${translate(`${i18Path}chains`)}`}
         isSubMenu={true}
         isScrollable={true}
-        bgColor={theme.palette.surface2.main}
-        triggerSubMenu={'chains'}
+        triggerSubMenu={SubMenuKeys.chains}
         open={menu.openNavbarConnectedMenu}
-        openSubMenu={menu.openNavbarSubMenu}
+        isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
         setOpenSubMenu={menu.onOpenNavbarSubMenu}
         subMenuList={_connectedSubMenuChains}
       />
