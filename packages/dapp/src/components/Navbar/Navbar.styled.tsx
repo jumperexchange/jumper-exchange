@@ -18,10 +18,11 @@ import {
   Tab,
   TabProps,
   Tabs,
-  TabsProps,
+  TabsProps
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from '@transferto/shared/src/utils';
+
+// TODO: Use Colors from Theme instead of hard-coded ones
 
 export const MenuBrand = styled(Link)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -41,7 +42,7 @@ export const NavbarExternalBackground = styled('div')(({ theme }) => ({
   bottom: 0,
   zIndex: 1,
   backgroundColor: '#000000',
-  opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
+  opacity: 0.25,
   [theme.breakpoints.up('sm')]: {
     backgroundColor: 'transparent',
   },
@@ -58,35 +59,31 @@ export const NavBar = styled(AppBar)(({ theme }) => ({
 }));
 
 export const NavbarContainer = styled('div')(({ theme }) => ({
+  // [`@media (max-height: ${80 + 32 + 680}px)`]: {
+  //   position: 'absolute',
+  //   width: '100%',
+  //   zIndex: 1,
+  //   backdropFilter: 'blur(12px)',
+  // },
   position: 'initial',
   background: 'transparent',
-  height: '72px',
+  height: '80px',
+  padding: theme.spacing(6),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: theme.spacing(4, 6),
-  [theme.breakpoints.down('sm')]: {
-    height: '64px',
-    padding: theme.spacing(2, 4),
-  },
-  [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(6),
-    height: '80px',
-  },
 }));
 
 export interface NavbarDropDownButtonProps
-  extends Omit<ButtonProps, 'mainCol'> {}
+  extends Omit<ButtonProps, 'mainCol'> {
+  mainCol?: string;
+}
 
-export const NavbarDropdownButton = styled(
-  Button,
-  {},
-)<NavbarDropDownButtonProps>(({ theme }) => ({
+export const NavbarDropdownButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'mainCol',
+})<NavbarDropDownButtonProps>(({ theme, mainCol }) => ({
   justifyContent: 'center',
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.accent1Alt.main
-      : theme.palette.primary.main,
+  color: !!mainCol ? mainCol : theme.palette.primary.main,
   width: '48px',
   borderRadius: '50%',
   marginLeft: theme.spacing(3),
@@ -139,7 +136,7 @@ export const NavbarTabs = styled(Tabs, {
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
   // visibility: 'hidden',
   display: 'none',
-  [theme.breakpoints.up('lg')]: {
+  [theme.breakpoints.up('md')]: {
     position: 'absolute',
     left: '50%',
     transform: 'translateX(-50%)',
@@ -149,7 +146,7 @@ export const NavbarTabs = styled(Tabs, {
         : '#0000000A',
     margin: 'auto',
     // height: 56,
-    borderRadius: 28,
+    borderRadius: 32,
     padding: 1,
     display: 'flex',
     // visibility: 'visible',
@@ -187,9 +184,8 @@ export const NavbarTab = styled(Tab, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabProps>(({ theme }) => ({
   textTransform: 'initial',
-  borderRadius: 24,
+  borderRadius: 32,
   width: 'calc( 50% - 8px )',
-  letterSpacing: 0,
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'center',
@@ -211,9 +207,6 @@ export const NavbarTab = styled(Tab, {
     color: 'inherit',
     backgroundColor: 'transparent',
   },
-  ':hover': {
-    backgroundColor: getContrastAlphaColor(theme, '4%'),
-  },
 }));
 
 export const MenuHeaderText = styled('span')(({ theme }) => ({}));
@@ -228,16 +221,13 @@ export const MenuItem = styled(MUIMenuItem, {
   shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'isScrollable',
 })<MUIMenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
-  padding: `0 ${theme.spacing(3)}`,
+  padding: `0 ${theme.spacing(6)}`,
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
   marginTop: showButton && theme.spacing(2),
 
   '&:hover': {
-    backgroundColor: showButton
-      ? 'transparent'
-      : getContrastAlphaColor(theme, '4%'),
-    borderRadius: '12px',
+    backgroundColor: showButton && 'transparent',
   },
 
   '> .menu-item-label__icon': {
@@ -250,8 +240,7 @@ export const MenuItem = styled(MUIMenuItem, {
 
 export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
   isDarkMode?: boolean;
-  isOpenSubMenu?: boolean;
-  openSubMenu?: string;
+  openSubMenu?: boolean;
   isSubMenu?: boolean;
   bgColor?: string;
   scrollableMainLayer?: boolean;
@@ -262,7 +251,6 @@ export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
 export const NavbarPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'isDarkMode' &&
-    prop !== 'isOpenSubMenu' &&
     prop !== 'openSubMenu' &&
     prop !== 'isSubMenu' &&
     prop !== 'isScrollable' &&
@@ -273,15 +261,17 @@ export const NavbarPaper = styled(Paper, {
     theme,
     bgColor,
     isDarkMode,
-    isOpenSubMenu,
-    isScrollable,
     openSubMenu,
+    isScrollable,
     scrollableMainLayer,
     isSubMenu,
   }) => ({
     background: !!bgColor ? bgColor : theme.palette.surface1.main,
-    padding: 0,
-    marginTop: !!isSubMenu ? 0 : `${theme.spacing(3)} !important`,
+    padding:
+      openSubMenu || scrollableMainLayer
+        ? 0
+        : `${theme.spacing(3, 0)} !important`,
+    marginTop: !!isSubMenu ? 0 : `${theme.spacing(3)} !important`, // TODO: use transform instead for offset?
     boxShadow: !!isDarkMode
       ? '0px 8px 32px rgba(255, 255, 255, 0.08)'
       : '0px 8px 32px rgba(0, 0, 0, 0.08)',
@@ -291,17 +281,11 @@ export const NavbarPaper = styled(Paper, {
     overflowY: !!isScrollable ? 'auto' : 'inherit',
     overflowX: 'hidden',
 
-    '> .navbar-menu-list': {
+    ul: {
       marginTop: 0,
-      padding: !!isOpenSubMenu
-        ? openSubMenu === 'wallets'
-          ? `${theme.spacing(0, 3, 3)} !important`
-          : `${theme.spacing(0)} !important`
-        : `${theme.spacing(3)} !important`,
+      padding: `${theme.spacing(0, 0, 3)} !important`,
     },
-    '> .navbar-menu-list.open > ul': {
-      padding: `${theme.spacing(0, 3, 3)} !important`,
-    },
+
     width: '100%',
     transformOrigin: 'bottom',
     transition:
@@ -331,10 +315,32 @@ export const MenuLinkItem = styled(Link, {
   '> .menu-item-label__icon': {
     marginLeft: '13px',
   },
-  // '&:hover': {
-  //   textDecoration: 'none',
-  //   backgroundColor: '#0000000A',
-  // },
+  '&:hover': {
+    textDecoration: 'none',
+    backgroundColor: '#0000000A',
+  },
+}));
+
+export interface MenuButtonProps extends Omit<ButtonProps, 'component'> {
+  textColor?: string;
+  bgColor?: string;
+}
+
+export const MenuButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'textColor' && prop !== 'bgColor',
+})<MenuButtonProps>(({ theme, textColor, bgColor }) => ({
+  height: '48px',
+  width: '100%',
+  borderRadius: '24px',
+  color: !!textColor ? textColor : theme.palette.white.main,
+  backgroundColor: bgColor
+    ? bgColor
+    : theme.palette.mode === 'dark'
+    ? '#653BA3'
+    : theme.palette.accent1.main,
+  '&:hover': {
+    backgroundColor: theme.palette.accent2.main,
+  },
 }));
 
 export const MenuItemLabel = styled('div')({
@@ -358,6 +364,7 @@ export const MenuHeaderAppWrapper = styled(ListItem, {
     prop !== 'scrollableMainLayer' &&
     prop !== 'bgColor',
 })<MenuHeaderAppWrapperProps>(({ bgColor }) => ({
+  padding: 0,
   position: 'sticky',
   top: 0,
   alignItems: 'center',
@@ -365,11 +372,8 @@ export const MenuHeaderAppWrapper = styled(ListItem, {
   backdropFilter: 'blur(12px)',
   zIndex: 1,
   overflow: 'hidden',
-  margin: '0 -12px',
-  padding: '0 12px',
-  width: 'calc( 100% + 12px * 2 )',
   marginTop: 'inherit',
-  height: '64px',
+  height: '72px',
 }));
 
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
@@ -385,12 +389,12 @@ export const MenuHeaderAppBar = styled(AppBar, {
   backgroundColor: 'transparent !important',
   zIndex: 1,
   position: 'fixed',
-  width: 'calc( 100% - 24px )',
+  width: '100%',
   top: 'initial',
   left: 'initial',
   right: 'initial',
   backdropFilter: 'blur(12px)',
-  padding: theme.spacing(0, 3, 0, 3),
+  padding: theme.spacing(0, 6, 0, 6),
   color: theme.palette.text.primary,
   flexDirection: 'row',
   alignItems: 'center',

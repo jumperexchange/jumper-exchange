@@ -1,8 +1,8 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 // config
 import { defaultMenu } from '@transferto/shared/src/';
-import { SubMenuKeys } from '../const';
+
 // @type
 import { MenuContextProps } from '@transferto/shared/src/types';
 
@@ -60,7 +60,7 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
       openMainNavbarMenu: false,
       openNavbarWalletMenu: false,
       openNavbarConnectedMenu: false,
-      openNavbarSubMenu: SubMenuKeys.none,
+      openNavbarSubMenu: 'none',
       copiedToClipboard: false,
     }));
   };
@@ -77,9 +77,7 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   const onOpenNavbarWalletMenu = (open: boolean) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openNavbarSubMenu: open
-        ? SubMenuKeys.wallets
-        : (SubMenuKeys.none as string),
+      onOpenNavbarSubMenu: open ? 'wallet' : ('none' as string),
       openNavbarWalletMenu: open as boolean,
     }));
   };
@@ -104,7 +102,6 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   const toggleSupportModal = (open: boolean) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openMainNavbarMenu: false,
       openSupportModal: open,
     }));
   };

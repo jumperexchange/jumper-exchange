@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys, WalletMenuItems } from '../../../const';
+import { WalletMenuItems } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
 import { MenuItemComponent, NavbarMenu } from '../index';
 
@@ -18,17 +18,18 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
   const theme = useTheme();
   const menu = useMenu();
   const _walletMenuItems = WalletMenuItems();
+
   return (
     <NavbarMenu
       handleClose={handleClose}
       label={`${translate(`${i18Path}chooseWallet`)}`}
-      hideBackArrow={true}
       anchorRef={anchorRef}
+      bgColor={theme.palette.surface2.main}
       isScrollable={true}
       scrollableMainLayer={true}
       open={menu.openNavbarWalletMenu}
       setOpen={menu.onOpenNavbarWalletMenu}
-      isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.wallets}
+      openSubMenu={menu.openNavbarSubMenu}
     >
       {!!_walletMenuItems.length ? (
         _walletMenuItems.map((el, index) => (
@@ -37,16 +38,13 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
             label={el.label}
             listIcon={el.listIcon}
             isScrollable={true}
-            triggerSubMenu={SubMenuKeys.wallets}
+            bgColor={theme.palette.surface2.main}
+            triggerSubMenu={'wallets'}
             showButton={el.showButton}
-            showMoreIcon={el.showMoreIcon}
             extraIcon={el.extraIcon}
             onClick={el.onClick}
             open={!!open ? open : menu.openNavbarWalletMenu}
-            isOpenSubMenu={
-              menu.openNavbarSubMenu === SubMenuKeys.wallets ||
-              menu.openNavbarSubMenu !== SubMenuKeys.none
-            }
+            openSubMenu={menu.openNavbarSubMenu}
             setOpenSubMenu={menu.onOpenNavbarSubMenu}
           />
         ))

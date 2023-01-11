@@ -1,7 +1,7 @@
 import { createTheme, Theme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import React from 'react';
-import { bodyStyled, resetStyled } from '../style';
+import { bodyStyled, resetStyled, viewports } from '../style';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -301,15 +301,15 @@ const themeBase: Theme = createTheme({
       main: 'rgba(255, 255, 255, 0.64)',
     },
   },
-  // breakpoints: {
-  //   values: {
-  //     xs: 0,
-  //     sm: viewports.minTablet,
-  //     md: viewports.minLaptop,
-  //     lg: viewports.minDesktop,
-  //     xl: viewports.minDesktopFullHd,
-  //   },
-  // },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: viewports.minTablet,
+      md: viewports.minLaptop,
+      lg: viewports.minDesktop,
+      xl: viewports.minDesktopFullHd,
+    },
+  },
 });
 
 // in a seperate 'createTheme' to allow listening to breakpoints set above
@@ -338,7 +338,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '64px',
       lineHeight: '96px',
-      letterSpacing: 0,
     },
     lifiHeaderLarge: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -346,7 +345,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '48px',
       lineHeight: '64px',
-      letterSpacing: 0,
     },
     lifiHeaderMedium: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -354,7 +352,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '32px',
       lineHeight: '40px',
-      letterSpacing: 0,
     },
     lifiHeaderSmall: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -362,7 +359,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '18px',
       lineHeight: '24px',
-      letterSpacing: 0,
     },
     lifiHeaderXSmall: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -370,7 +366,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '14px',
       lineHeight: '20px',
-      letterSpacing: 0,
     },
     lifiBodyXLargeStrong: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -378,7 +373,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 800,
       fontSize: '24px',
       lineHeight: '32px',
-      letterSpacing: 0,
     },
     lifiBodyXLarge: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -386,7 +380,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 400,
       fontSize: '24px',
       lineHeight: '32px',
-      letterSpacing: 0,
     },
     lifiBodyLargeStrong: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -394,7 +387,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '18px',
       lineHeight: '24px',
-      letterSpacing: 0,
     },
     lifiBodyLarge: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -402,7 +394,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 500,
       fontSize: '18px',
       lineHeight: '24px',
-      letterSpacing: 0,
     },
     lifiBodyMediumStrong: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -410,7 +401,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '16px',
       lineHeight: '20px',
-      letterSpacing: 0,
     },
     lifiBodyMedium: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -418,7 +408,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 500,
       fontSize: '16px',
       lineHeight: '20px',
-      letterSpacing: 0,
     },
     lifiBodySmallStrong: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -426,7 +415,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '14px',
       lineHeight: '20px',
-      letterSpacing: 0,
     },
     lifiBodySmall: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -434,7 +422,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 400,
       fontSize: '14px',
       lineHeight: '20px',
-      letterSpacing: 0,
     },
     lifiBodyXSmallStrong: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -442,7 +429,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 700,
       fontSize: '12px',
       lineHeight: '16px',
-      letterSpacing: 0,
     },
     lifiBodyXSmall: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
@@ -450,7 +436,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 500,
       fontSize: '12px',
       lineHeight: '16px',
-      letterSpacing: 0,
     },
     lifiMono5: {
       fontFamily: 'Roboto Mono',
@@ -458,7 +443,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 500,
       fontSize: '16px',
       lineHeight: '21px',
-      letterSpacing: 0,
     },
     lifiMono4: {
       fontFamily: 'Roboto Mono',
@@ -466,7 +450,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 500,
       fontSize: '14px',
       lineHeight: '18px',
-      letterSpacing: 0,
     },
     lifiMono3: {
       fontFamily: 'Roboto Mono',
@@ -474,7 +457,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 500,
       fontSize: '12px',
       lineHeight: '16px',
-      letterSpacing: 0,
     },
     lifiMono2: {
       fontFamily: 'Roboto Mono',
@@ -482,7 +464,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 500,
       fontSize: '10px',
       lineHeight: '13px',
-      letterSpacing: 0,
     },
     lifiMono1: {
       fontFamily: 'Roboto Mono',
@@ -490,7 +471,6 @@ const themeTypographyPreset: Theme = createTheme({
       fontWeight: 500,
       fontSize: '8px',
       lineHeight: '11px',
-      letterSpacing: 0,
     },
   },
 });

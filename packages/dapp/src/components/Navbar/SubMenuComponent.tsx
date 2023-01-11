@@ -5,8 +5,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Box, IconButton, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
-import { SubMenuKeys } from '../../const';
-import { useMenu } from '../../providers/MenuProvider';
 import { MenuListItem } from '../../types';
 import {
   MenuHeaderAppBar,
@@ -19,7 +17,7 @@ import {
 
 interface NavbarSubMenuProps {
   open: boolean;
-  isOpenSubMenu: boolean;
+  openSubMenu: string;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   isSubMenu: boolean;
   bgColor?: string;
@@ -34,7 +32,7 @@ interface NavbarSubMenuProps {
 
 const SubMenuComponent = ({
   open,
-  isOpenSubMenu,
+  openSubMenu,
   setOpenSubMenu,
   isSubMenu,
   bgColor,
@@ -45,18 +43,15 @@ const SubMenuComponent = ({
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
 
   return (
     !!open && (
       <>
-        {menu.openNavbarSubMenu === triggerSubMenu && (
+        {openSubMenu === triggerSubMenu && (
           <NavbarPaper
-            component={'ul'}
+            component="ul"
             bgColor={bgColor}
             isSubMenu={isSubMenu}
-            openSubMenu={menu.openNavbarSubMenu}
-            isOpenSubMenu={isOpenSubMenu}
             isScrollable={isScrollable}
             isDarkMode={isDarkMode}
           >
@@ -76,7 +71,7 @@ const SubMenuComponent = ({
                       position: 'absolute',
                     }}
                     onClick={() => {
-                      setOpenSubMenu(SubMenuKeys.none);
+                      setOpenSubMenu('none');
                     }}
                   >
                     <ArrowBackIcon />

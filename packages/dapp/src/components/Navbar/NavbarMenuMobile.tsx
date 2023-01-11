@@ -14,10 +14,9 @@ import {
 } from './Navbar.styled';
 
 interface NavbarMenuProps {
-  isOpenSubMenu: boolean;
+  openSubMenu: string;
   anchorRef: any; // TODO: Replace this any with the correct type
   bgColor: string;
-  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   isScrollable?: boolean;
@@ -32,12 +31,11 @@ const NavbarMenuMobile = ({
   handleClose,
   open,
   bgColor,
-  hideBackArrow,
   setOpen,
   anchorRef,
   scrollableMainLayer,
   label,
-  isOpenSubMenu,
+  openSubMenu,
   children,
 }: NavbarMenuProps) => {
   const theme = useTheme();
@@ -68,10 +66,9 @@ const NavbarMenuMobile = ({
           >
             <NavbarPaper
               isDarkMode={isDarkMode}
-              isOpenSubMenu={isOpenSubMenu}
-              openSubMenu={menu.openNavbarSubMenu}
+              openSubMenu={openSubMenu !== 'none'}
               bgColor={bgColor}
-              isScrollable={!!label || isScrollable}
+              isScrollable={!!label}
               scrollableMainLayer={scrollableMainLayer}
             >
               <ClickAwayListener
@@ -85,10 +82,7 @@ const NavbarMenuMobile = ({
                   id="composition-menu"
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
-                  className={
-                    isOpenSubMenu ? 'navbar-menu-list open' : 'navbar-menu-list'
-                  }
-                  component={!!isOpenSubMenu ? 'div' : 'ul'}
+                  component={openSubMenu === 'none' ? 'ul' : 'div'}
                 >
                   {!!label ? (
                     <MenuHeaderAppWrapper>
@@ -98,24 +92,22 @@ const NavbarMenuMobile = ({
                         scrollableMainLayer={scrollableMainLayer}
                         isScrollable={isScrollable}
                       >
-                        {!hideBackArrow && (
-                          <IconButton
-                            size="medium"
-                            aria-label="settings"
-                            edge="start"
-                            sx={{
-                              color: theme.palette.text.primary,
-                              position: 'absolute',
-                            }}
-                            onClick={() => {
-                              menu.onOpenNavbarWalletMenu(
-                                !menu.openNavbarWalletMenu,
-                              );
-                            }}
-                          >
-                            <ArrowBackIcon />
-                          </IconButton>
-                        )}
+                        <IconButton
+                          size="medium"
+                          aria-label="settings"
+                          edge="start"
+                          sx={{
+                            color: theme.palette.text.primary,
+                            position: 'absolute',
+                          }}
+                          onClick={() => {
+                            menu.onOpenNavbarWalletMenu(
+                              !menu.openNavbarWalletMenu,
+                            );
+                          }}
+                        >
+                          <ArrowBackIcon />
+                        </IconButton>
                         <Typography
                           variant={'lifiBodyMediumStrong'}
                           width={'100%'}

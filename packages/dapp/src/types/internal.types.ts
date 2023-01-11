@@ -28,7 +28,6 @@ export interface MenuListItem {
   triggerSubMenu?: string;
   listIcon: JSX.Element | string;
   extraIcon?: JSX.Element;
-  showMoreIcon?: boolean;
   checkIcon?: boolean;
   textColor?: string;
   bgColor?: string;

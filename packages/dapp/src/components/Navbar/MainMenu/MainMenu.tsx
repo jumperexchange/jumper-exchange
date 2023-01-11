@@ -5,11 +5,11 @@ import {
   MainSubMenuDevelopers,
   MainSubMenuLanguage,
   MainSubMenuTheme,
-  SubMenuKeys,
 } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
 import { SupportModal } from '../../SupportModal';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../index';
+
 interface MainMenuProps {
   anchorRef: any; // TODO: Replace this any with the correct type
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -31,7 +31,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         anchorRef={anchorRef}
         open={menu.openMainNavbarMenu}
         setOpen={menu.onOpenNavbarMainMenu}
-        isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
+        openSubMenu={menu.openNavbarSubMenu}
       >
         {_MainMenuItems.map((el, index) => (
           <MenuItemComponent
@@ -40,21 +40,20 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
             listIcon={el.listIcon}
             triggerSubMenu={el.triggerSubMenu}
             showButton={el.showButton}
-            showMoreIcon={el.showMoreIcon}
             extraIcon={el.extraIcon}
             onClick={el.onClick}
             open={menu.openMainNavbarMenu}
-            isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.none}
+            openSubMenu={menu.openNavbarSubMenu}
             setOpenSubMenu={menu.onOpenNavbarSubMenu}
           />
         ))}
         <SubMenuComponent
           isSubMenu={true}
           label={`${translate(`${i18Path}navbarMenu.theme`)}`}
-          triggerSubMenu={SubMenuKeys.themes}
+          triggerSubMenu={'themes'}
           isScrollable={true}
           open={menu.openMainNavbarMenu}
-          isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
+          openSubMenu={menu.openNavbarSubMenu}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
           subMenuList={_mainSubMenuTheme}
         />
@@ -62,10 +61,10 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         <SubMenuComponent
           isSubMenu={true}
           label={`${translate(`${i18Path}language.key`)}`}
-          triggerSubMenu={SubMenuKeys.language}
+          triggerSubMenu={'language'}
           isScrollable={true}
           open={menu.openMainNavbarMenu}
-          isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
+          openSubMenu={menu.openNavbarSubMenu}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
           subMenuList={_mainSubMenuLanguage}
         />
@@ -73,10 +72,10 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         <SubMenuComponent
           isSubMenu={true}
           label={`${translate(`${i18Path}navbarMenu.developers`)}`}
-          triggerSubMenu={SubMenuKeys.devs}
+          triggerSubMenu={'devs'}
           isScrollable={true}
           open={menu.openMainNavbarMenu}
-          isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
+          openSubMenu={menu.openNavbarSubMenu}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
           subMenuList={_mainSubMenuDevelopers}
         />

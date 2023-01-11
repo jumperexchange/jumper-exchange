@@ -1,6 +1,11 @@
 import React from 'react';
+import { WalletIcon } from '../icons';
 import { ConnectButtonBase } from './connect-button.styles';
 
 export const ConnectButton = (props) => {
-  return <ConnectButtonBase {...props}>{props.children}</ConnectButtonBase>;
+  return (
+    <ConnectButtonBase {...props} endIcon={<WalletIcon />}>
+      {props.children}
+    </ConnectButtonBase>
+  );
 };

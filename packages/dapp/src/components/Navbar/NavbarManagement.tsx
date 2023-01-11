@@ -1,12 +1,10 @@
 import { Chain } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { WalletManagementButtons } from '@transferto/shared';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { SyntheticEvent, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys } from '../../const';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
@@ -74,22 +72,10 @@ const NavbarManagement = () => {
             ? theme.palette.alphaLight300.main
             : theme.palette.white.main
         }
+        hoverBackgroundColor={'#31007a8c'}
         setOpenNavbarSubmenu={menu.onOpenNavbarSubMenu}
         activeChain={activeChain}
-        connectButtonLabel={
-          <Typography
-            variant={'lifiBodyMediumStrong'}
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: '2',
-              WebkitBoxOrient: 'vertical',
-            }}
-          >
-            {translate(`${i18Path}connectWallet`)}
-          </Typography>
-        }
+        connectButtonLabel={`${translate(`${i18Path}connectWallet`)}`}
         isSuccess={isSuccess}
       />
       <NavbarDropdownButton
@@ -99,15 +85,16 @@ const NavbarManagement = () => {
         aria-expanded={menu.openMainNavbarMenu ? 'true' : undefined}
         aria-haspopup="true"
         onClick={() => {
-          menu.onOpenNavbarSubMenu(SubMenuKeys.none);
+          menu.onOpenNavbarSubMenu('none');
           menu.onOpenNavbarWalletMenu(false);
           menu.onOpenNavbarMainMenu(!menu.openMainNavbarMenu);
         }}
+        mainCol={!!isDarkMode ? '#653BA3' : theme.palette.primary.main}
       >
         <MenuIcon
           sx={{
             fontSize: '32px',
-            color: 'inherit',
+            color: !!isDarkMode ? theme.palette.white.main : 'inherit',
           }}
         />
       </NavbarDropdownButton>

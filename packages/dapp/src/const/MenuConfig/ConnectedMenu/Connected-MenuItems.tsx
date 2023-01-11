@@ -10,7 +10,6 @@ import { walletDigest } from '@transferto/shared';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys } from '../../../const';
 import { useChainInfos } from '../../../providers/ChainInfosProvider';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
@@ -60,7 +59,7 @@ const ConnectedMenuItems = () => {
       ) : (
         <ChangeCircleOutlinedIcon sx={{ height: '32px', width: '32px' }} />
       ),
-      triggerSubMenu: SubMenuKeys.chains,
+      triggerSubMenu: 'chains',
     },
     {
       label: `${_walletDigest}`,
@@ -78,7 +77,6 @@ const ConnectedMenuItems = () => {
         navigator?.clipboard?.writeText(account.address);
         menu.onCopyToClipboard(true);
       },
-      showMoreIcon: false,
       extraIcon: !!menu.copiedToClipboard ? (
         <CheckIcon sx={{ color: theme.palette.success.main }} />
       ) : (
