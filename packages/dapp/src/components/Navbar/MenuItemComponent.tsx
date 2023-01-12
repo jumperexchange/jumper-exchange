@@ -12,13 +12,13 @@ interface MenuItemProps {
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   showMoreIcon?: boolean;
   label: string;
-  extraIcon?: JSX.Element;
   textColor?: string;
   bgColor?: string;
   onClick: any;
   isScrollable?: boolean;
   triggerSubMenu: string;
-  listIcon: JSX.Element | string;
+  prefixIcon?: JSX.Element | string;
+  suffixIcon?: JSX.Element | string;
   checkIcon?: boolean;
 }
 
@@ -29,13 +29,13 @@ const MenuItemComponent = ({
   textColor,
   bgColor,
   showButton,
-  extraIcon,
   showMoreIcon = true,
   onClick,
   isScrollable,
   label,
   triggerSubMenu,
-  listIcon,
+  prefixIcon,
+  suffixIcon,
 }: MenuItemProps) => {
   const theme = useTheme();
 
@@ -59,21 +59,23 @@ const MenuItemComponent = ({
             }}
           >
             <>
-              {listIcon}
+              {prefixIcon}
               <Typography
                 variant={'lifiBodyMediumStrong'}
                 component={'span'}
-                ml={!!listIcon ? '9.5px' : 'inherit'}
+                ml={!!prefixIcon ? '9.5px' : 'inherit'}
+                mr={!!prefixIcon ? '9.5px' : 'inherit'}
               >
                 <>{label}</>
               </Typography>
+              {suffixIcon}
             </>
           </Button>
         ) : (
           <>
             <MenuItemLabel>
               <>
-                {listIcon}
+                {prefixIcon}
                 <Typography variant={'lifiBodyMedium'} ml={'12px'}>
                   <>{label}</>
                 </Typography>
@@ -85,7 +87,7 @@ const MenuItemComponent = ({
                 alignItems: 'center',
               }}
             >
-              {extraIcon}
+              {suffixIcon}
               {showMoreIcon && (
                 <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
               )}

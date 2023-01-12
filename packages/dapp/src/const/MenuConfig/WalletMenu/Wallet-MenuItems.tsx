@@ -37,7 +37,7 @@ const WalletMenuItems = () => {
     _supportedWallets.map((wallet, index) => {
       _output.push({
         label: wallet.name,
-        listIcon: (
+        prefixIcon: (
           <Avatar
             src={wallet.icon}
             alt={`${wallet.name}-wallet-logo`}

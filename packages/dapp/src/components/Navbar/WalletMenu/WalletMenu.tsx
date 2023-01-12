@@ -35,12 +35,11 @@ const WalletMenu = ({ handleClose, anchorRef, open }: NavbarMenuProps) => {
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
-            listIcon={el.listIcon}
             isScrollable={true}
             triggerSubMenu={SubMenuKeys.wallets}
             showButton={el.showButton}
             showMoreIcon={el.showMoreIcon}
-            extraIcon={el.extraIcon}
+            prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={!!open ? open : menu.openNavbarWalletMenu}
             isOpenSubMenu={

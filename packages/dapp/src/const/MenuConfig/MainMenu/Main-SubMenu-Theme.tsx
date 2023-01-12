@@ -21,7 +21,7 @@ const MainSubMenuTheme = () => {
   const _MainSubMenuTheme: MenuListItem[] = [
     {
       label: `${translate(`${i18Path}themes.light`)}`,
-      listIcon:
+      prefixIcon:
         settings.themeMode === 'light' ? (
           <LightModeIcon />
         ) : (
@@ -32,7 +32,7 @@ const MainSubMenuTheme = () => {
     },
     {
       label: `${translate(`${i18Path}themes.dark`)}`,
-      listIcon:
+      prefixIcon:
         settings.themeMode === 'dark' ? (
           <NightlightIcon />
         ) : (
@@ -43,7 +43,7 @@ const MainSubMenuTheme = () => {
     },
     {
       label: `${translate(`${i18Path}themes.auto`)}`,
-      listIcon:
+      prefixIcon:
         settings.themeMode === 'auto' ? (
           <BrightnessAutoIcon />
         ) : (

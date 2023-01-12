@@ -21,7 +21,7 @@ const ConnectedSubMenuChains = () => {
       onClick: () => {
         switchChain(el.id);
       },
-      listIcon: (
+      prefixIcon: (
         <Avatar
           src={el.logoURI}
           alt={`${el.name}-chain-logo`}

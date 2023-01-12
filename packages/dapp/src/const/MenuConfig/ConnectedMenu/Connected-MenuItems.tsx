@@ -51,7 +51,7 @@ const ConnectedMenuItems = () => {
       label: !!activeChain?.name
         ? `${activeChain?.name}`
         : `${translate(`${i18Path}switchChain`)}`,
-      listIcon: !!activeChain?.logoURI ? (
+      prefixIcon: !!activeChain?.logoURI ? (
         <Avatar
           src={!!activeChain ? activeChain.logoURI : 'empty'}
           alt={`${!!activeChain?.name ? activeChain.name : ''}chain-logo`}
@@ -64,7 +64,7 @@ const ConnectedMenuItems = () => {
     },
     {
       label: `${_walletDigest}`,
-      listIcon: (
+      prefixIcon: (
         <Avatar
           src={walletIcon}
           // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
@@ -79,7 +79,7 @@ const ConnectedMenuItems = () => {
         menu.onCopyToClipboard(true);
       },
       showMoreIcon: false,
-      extraIcon: !!menu.copiedToClipboard ? (
+      suffixIcon: !!menu.copiedToClipboard ? (
         <CheckIcon sx={{ color: theme.palette.success.main }} />
       ) : (
         <ContentCopyIcon />
@@ -87,7 +87,7 @@ const ConnectedMenuItems = () => {
     },
     {
       label: `${translate(`${i18Path}disconnect`)}`,
-      listIcon: <PowerSettingsNewIcon />,
+      prefixIcon: <PowerSettingsNewIcon />,
       showButton: true,
       textColor:
         theme.palette.mode === 'dark'

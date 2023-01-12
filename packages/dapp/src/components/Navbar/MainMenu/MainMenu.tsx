@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
-
 import {
   MainMenuItems,
   MainSubMenuDevelopers,
   MainSubMenuLanguage,
+  MainSubMenuShowcases,
   MainSubMenuTheme,
   SubMenuKeys,
 } from '../../../const';
@@ -23,6 +23,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
   const _mainSubMenuTheme = MainSubMenuTheme();
   const _mainSubMenuDevelopers = MainSubMenuDevelopers();
   const _mainSubMenuLanguage = MainSubMenuLanguage();
+  const _mainSubMenuShowcases = MainSubMenuShowcases();
 
   return (
     <>
@@ -37,11 +38,11 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
-            listIcon={el.listIcon}
+            prefixIcon={el.prefixIcon}
             triggerSubMenu={el.triggerSubMenu}
             showButton={el.showButton}
             showMoreIcon={el.showMoreIcon}
-            extraIcon={el.extraIcon}
+            suffixIcon={el.suffixIcon}
             onClick={el.onClick}
             open={menu.openMainNavbarMenu}
             isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.none}
@@ -79,6 +80,17 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
           subMenuList={_mainSubMenuDevelopers}
+        />
+
+        <SubMenuComponent
+          isSubMenu={true}
+          label={`${translate(`${i18Path}developers.showcases`)}`}
+          triggerSubMenu={'showcases'}
+          isScrollable={true}
+          open={menu.openMainNavbarMenu}
+          isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
+          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          subMenuList={_mainSubMenuShowcases}
         />
       </NavbarMenu>
       <SupportModal />

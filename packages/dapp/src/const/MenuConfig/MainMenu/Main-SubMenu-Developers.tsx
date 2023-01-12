@@ -15,7 +15,7 @@ const MainSubMenuDevelopers = () => {
   const _MainSubMenuDevelopers: MenuListItem[] = [
     {
       label: `${translate(`${i18Path}developers.github`)}`,
-      listIcon: (
+      prefixIcon: (
         <GitHubIcon
           sx={{
             color: !!isDarkMode
@@ -30,17 +30,16 @@ const MainSubMenuDevelopers = () => {
     },
     {
       label: `${translate(`${i18Path}developers.documentation`)}`,
-      listIcon: <DescriptionOutlinedIcon />,
+      prefixIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
         openInNewTab('https://docs.li.fi/');
       },
     },
     {
       label: `${translate(`${i18Path}developers.showcases`)}`,
-      listIcon: <SlideshowIcon />,
-      onClick: () => {
-        openInNewTab('#');
-      },
+      prefixIcon: <SlideshowIcon />,
+      showMoreIcon: true,
+      triggerSubMenu: 'showcases',
     },
   ];
 

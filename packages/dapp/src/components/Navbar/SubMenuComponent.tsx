@@ -1,4 +1,5 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarTabsContainer} from './NavbarTabsContainer'
 import CheckIcon from '@mui/icons-material/Check';
@@ -24,7 +25,8 @@ interface NavbarSubMenuProps {
   isSubMenu: boolean;
   bgColor?: string;
   label: string;
-  listIcon?: JSX.Element;
+  suffixIcon?: JSX.Element | string;
+  prefixIcon?: JSX.Element | string;
   checkIcon?: boolean;
   isScrollable?: boolean;
   url?: string;
@@ -98,20 +100,23 @@ const SubMenuComponent = ({
                 !!el.url ? (
                   <MenuLinkItem
                     onClick={() => {
-                      el.onClick();
+                      !!el.triggerSubMenu && setOpenSubMenu(el.triggerSubMenu);
+                      !!el.onClick && el.onClick();
                     }}
                     component="li"
                     key={`${el.label}-${index}`}
                   >
                     <MenuItemLabel>
                       <>
-                        {el.listIcon}
+                        {el.prefixIcon}
                         <Typography
                           variant={'lifiBodyMedium'}
-                          ml={!!el.listIcon ? '12px' : 'inherit'}
+                          ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                          mr={!!el.suffixIcon ? '12px' : 'inherit'}
                         >
                           <>{el.label}</>
                         </Typography>
+                        {el.suffixIcon}
                       </>
                     </MenuItemLabel>
                   </MenuLinkItem>
@@ -119,22 +124,27 @@ const SubMenuComponent = ({
                   <MenuItem
                     isScrollable={isScrollable}
                     onClick={() => {
-                      el.onClick();
+                      !!el.triggerSubMenu && setOpenSubMenu(el.triggerSubMenu);
+                      !!el.onClick && el.onClick();
                     }}
                     key={`${el.label}-${index}`}
                   >
                     <MenuItemLabel>
                       <>
-                        {el.listIcon}
+                        {el.prefixIcon}
                         <Typography
                           variant={'lifiBodyMedium'}
-                          ml={!!el.listIcon ? '12px' : 'inherit'}
+                          ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                          mr={!!el.suffixIcon ? '12px' : 'inherit'}
                         >
                           <>{el.label}</>
                         </Typography>
                       </>
                     </MenuItemLabel>
                     {el.checkIcon && <CheckIcon />}
+                    {el.showMoreIcon && (
+                      <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+                    )}
                   </MenuItem>
                 ),
               )

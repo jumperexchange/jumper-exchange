@@ -27,7 +27,7 @@ const MainMenuItems = () => {
   const _MainMenuItems: MenuListItem[] = [
     {
       label: `${translate(`${i18Path}navbarMenu.theme`)}`,
-      listIcon:
+      prefixIcon:
         settings.themeMode === 'light' ? (
           <LightModeOutlinedIcon />
         ) : (
@@ -38,9 +38,9 @@ const MainMenuItems = () => {
     },
     {
       label: `${translate(`${i18Path}language.key`)}`,
-      listIcon: <LanguageIcon />,
+      prefixIcon: <LanguageIcon />,
       checkIcon: settings.themeMode === 'light',
-      extraIcon: (
+      suffixIcon: (
         <Typography variant="lifiBodyMedium" textTransform={'uppercase'}>
           {activeLanguage}
         </Typography>
@@ -49,12 +49,12 @@ const MainMenuItems = () => {
     },
     {
       label: `${translate(`${i18Path}navbarMenu.developers`)}`,
-      listIcon: <DeveloperModeIcon />,
+      prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: SubMenuKeys.devs,
     },
     {
       label: `${translate(`${i18Path}navbarMenu.aboutLIFI`)}`,
-      listIcon: (
+      prefixIcon: (
         <LifiSmallLogo
           color={
             theme.palette.mode === 'dark'
@@ -70,7 +70,7 @@ const MainMenuItems = () => {
     },
     {
       label: `${translate(`${i18Path}navbarMenu.support`)}`,
-      listIcon: <Discord color={theme.palette.white.main} />,
+      prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         menu.toggleSupportModal(true);
       },

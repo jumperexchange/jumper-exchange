@@ -33,13 +33,13 @@ const ConnectedMenu = ({ handleClose, anchorRef }: NavbarMenuProps) => {
         <MenuItemComponent
           key={`${el.label}-${index}`}
           label={el.label}
-          listIcon={el.listIcon}
+          prefixIcon={el.prefixIcon}
           textColor={el.textColor}
           showMoreIcon={el.showMoreIcon}
           bgColor={el.bgColor}
           triggerSubMenu={el.triggerSubMenu}
           showButton={el.showButton}
-          extraIcon={el.extraIcon}
+          suffixIcon={el.suffixIcon}
           onClick={el.onClick}
           open={menu.openNavbarConnectedMenu}
           isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.none}
