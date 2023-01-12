@@ -1,4 +1,4 @@
-import { Route, Token } from '@lifi/sdk';
+import { Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
@@ -6,12 +6,7 @@ import {
 } from '@lifi/wallet-management';
 import {
   HiddenUI,
-  LiFiWidget,
-  RouteExecutionUpdate,
-  useWidgetEvents,
-  WidgetConfig,
-  WidgetEvent,
-  WidgetVariant
+  LiFiWidget, WidgetConfig, WidgetVariant
 } from '@lifi/widget';
 import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -26,6 +21,7 @@ import { LinkMap } from '../../types/';
 import { LanguageKey } from '../../types/i18n';
 import { gaEventTrack } from '../../utils/google-analytics';
 import { WidgetContainer } from './Widget.styled';
+import { WidgetEvents } from './WidgetEvents';
 
 interface ShowConnectModalProps {
   show: boolean;
@@ -178,7 +174,6 @@ export function DualWidget() {
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');
-  const [lastTxHash, setLastTxHas] = useState<string>();
   const handleIsActiveUrl = useCallback(
     (activeUrl: string) =>
       Object.values(LinkMap).filter((el) => {
@@ -223,72 +218,6 @@ export function DualWidget() {
     getActiveWidget();
   }, [settings.activeTab]);
 
-  const widgetEvents = useWidgetEvents();
-
-  useEffect(() => {
-    const onRouteExecutionStarted = async (route: Route) => {
-      // console.log('onRouteExecutionStarted fired.', route);
-      if (!!route?.id) {
-        hotjar.initialized() && hotjar.event('onRouteExecutionStarted');
-        gaEventTrack({
-          category: 'widgetEvent',
-          action: 'onRouteExecutionStarted',
-          label: `${route.id}`,
-        });
-      }
-    };
-    const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
-      // console.log('onRouteExecutionUpdated fired.', update);
-      if (!!update?.process && !!update.route) {
-        if (update.process.txHash !== lastTxHash) {
-          // console.log({
-          //   fromChainId: update.route.fromChainId,
-          //   transactionHash: update.process.txHash,
-          //   routeId: update.route.id,
-          //   transactionLink: update.process.txLink,
-          // });
-          setLastTxHas(update.process.txHash);
-          hotjar.initialized() && hotjar.event('onRouteExecutionUpdated');
-          gaEventTrack({
-            category: 'widgetEvent',
-            action: 'onRouteExecutionUpdated',
-            label: `${update?.process?.txHash}`,
-          });
-        }
-      }
-    };
-    const onRouteExecutionCompleted = async (route: Route) => {
-      // console.log('onRouteExecutionCompleted fired.', route);
-      if (!!route?.id) {
-        hotjar.initialized() && hotjar.event('onRouteExecutionCompleted');
-        gaEventTrack({
-          category: 'widgetEvent',
-          action: 'onRouteExecutionCompleted',
-          label: `${route.id}`,
-        });
-      }
-    };
-    const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
-      // console.log('onRouteExecutionFailed fired.', update);
-      hotjar.initialized() && hotjar.event('onRouteExecutionFailed');
-      gaEventTrack({
-        category: 'widgetEvent',
-        action: 'onRouteExecutionFailed',
-        label: `${update?.route?.id}`,
-      });
-    };
-
-    widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
-    widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionCompleted,
-      onRouteExecutionCompleted,
-    );
-    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
-
-    return () => widgetEvents.all.clear();
-  }, [widgetEvents]);
-
   return (
     <Grid justifyContent="center" alignItems="center" container>
       <WidgetContainer isActive={_starterVariant === 'expandable'}>
@@ -297,6 +226,7 @@ export function DualWidget() {
       <WidgetContainer isActive={_starterVariant === 'refuel'}>
         <Widget starterVariant={'refuel'} />
       </WidgetContainer>
+      <WidgetEvents />
     </Grid>
   );
 }
