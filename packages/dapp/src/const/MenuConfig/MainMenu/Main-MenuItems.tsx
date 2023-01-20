@@ -11,6 +11,7 @@ import { useMemo } from 'react';
 import { getInitialProps, useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
+import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
 import { MenuListItem } from '../../../types';
 
 const MainMenuItems = () => {
@@ -18,6 +19,7 @@ const MainMenuItems = () => {
   const i18Path = 'navbar.';
   const settings = useSettings();
   const theme = useTheme();
+  const isDarkMode = useDetectDarkModePreference();
   const activeLanguage = useMemo(
     () => getInitialProps().initialLanguage,
     [getInitialProps().initialLanguage],
@@ -27,12 +29,11 @@ const MainMenuItems = () => {
   const _MainMenuItems: MenuListItem[] = [
     {
       label: `${translate(`${i18Path}navbarMenu.theme`)}`,
-      prefixIcon:
-        settings.themeMode === 'light' ? (
-          <LightModeOutlinedIcon />
-        ) : (
-          <NightlightOutlinedIcon />
-        ),
+      prefixIcon: isDarkMode ? (
+        <NightlightOutlinedIcon />
+      ) : (
+        <LightModeOutlinedIcon />
+      ),
       url: 'https://github.com/lifinance/',
       triggerSubMenu: SubMenuKeys.themes,
     },
