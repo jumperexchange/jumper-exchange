@@ -149,6 +149,7 @@ function widgetConfigComponent({ starterVariant }) {
           // },
         },
       },
+      localStorageKeyPrefix: `jumper-${starterVariant}`
     };
   }, [
     i18n.language,
