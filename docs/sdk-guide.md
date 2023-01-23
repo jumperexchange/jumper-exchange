@@ -49,9 +49,9 @@ success Removed linked package "@lifi/sdk".
 
 ## Merge request guide when have changes in @lifi/sdk
 
-1. Develop sdk changes locally, as descibed above
+1. Develop sdk changes locally, as described above
 1. Create branch in @lifi/sdk (e.g. `LF-91-new-step-sdk`)
-1. Link the PR in the `package.json` file of the fronend, so the CI can use the updated sdk:
+1. Link the PR in the `package.json` file of the frontend, so the CI can use the updated sdk:
     ```
     "@lifi/sdk": "github:lifinance/sdk#LF-91-new-step-sdk"
     ```
