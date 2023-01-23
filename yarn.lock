@@ -2810,10 +2810,10 @@
     "@web3-react/url" "^8.0.25-beta.0"
     react "^18.2.0"
 
-"@lifi/widget@^1.29.1":
-  version "1.29.1"
-  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.29.1.tgz#ed0a3173c7f5b1afdb96626f097c75102f1fec96"
-  integrity sha512-B2ik0gClxh8dkCpAQhYOiUgAoTWDaKJ+87LYxBYueZbS/xtPgexrISf8EPomg15/+6h3Po+iaZMZEQXhz2SL3Q==
+"@lifi/widget@^1.29.2":
+  version "1.29.2"
+  resolved "https://registry.yarnpkg.com/@lifi/widget/-/widget-1.29.2.tgz#b95e1d823097b7d95f80a7e7f27090b5ae1ab38e"
+  integrity sha512-2OXUJZGO8q+pBu77OGN1gTODYe+z9eI27V0LD6kKnup0mq2Y1tS1ufjmp0U+Kg4sz6oBxpljSKfz/emSeCG5mA==
   dependencies:
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
