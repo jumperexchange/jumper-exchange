@@ -40,7 +40,7 @@
     "@emotion/styled": "^11.8.1",
     "@lifi/wallet-management": "^1.2.4",
     "@mui/icons-material": "^5.11.0",
-    "@mui/material": "^5.11.3",
+    "@mui/material": "^5.11.6",
     "i18next": "^22.4.8",
     "js-cookie": "^3.0.1",
     "react": "^18.2.0",
