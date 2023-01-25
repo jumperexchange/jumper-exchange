@@ -20,7 +20,7 @@ const NavbarTabsContainer = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const settings = useSettings();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -29,7 +29,7 @@ const NavbarTabsContainer = () => {
 
   return (
     <NavbarTabs
-      value={!!isMobile ? false : settings.activeTab}
+      value={!!isDesktop ? settings.activeTab : false}
       onChange={handleChange}
       isDarkMode={isDarkMode}
       aria-label="tabs"

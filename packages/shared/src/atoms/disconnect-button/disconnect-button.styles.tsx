@@ -32,7 +32,7 @@ export const DisconnectButtonBase = styled(Button, {
         ? theme.palette.grey[300]
         : theme.palette.grey[500],
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       position: 'relative',
       left: 'unset',
       transform: 'unset',

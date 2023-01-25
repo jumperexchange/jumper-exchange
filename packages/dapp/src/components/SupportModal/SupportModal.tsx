@@ -14,12 +14,11 @@ export const SupportModal = () => {
       <Box
         sx={{
           position: 'absolute' as 'absolute',
-          top: '72px',
+          top: '64px',
           left: '50%',
           transform: 'translateX(-50%)',
           width: '25%',
-          [theme.breakpoints.down('sm')]: { top: '64px' },
-          [theme.breakpoints.down('md')]: { width: '100%' },
+          [theme.breakpoints.up('sm')]: { top: '72px', width: '100%' },
           [theme.breakpoints.up('md')]: {
             width: '50%',
             top: '50%',
@@ -34,7 +33,7 @@ export const SupportModal = () => {
           style={{
             width: '100%',
             height: 'calc( 100vh - 64px )',
-            [theme.breakpoints.down('md')]: { height: 'calc( 100vh - 64px )' },
+            [theme.breakpoints.up('sm')]: { height: 'calc( 100vh - 64px )' },
             [theme.breakpoints.up('md')]: {
               height: '500px',
             },

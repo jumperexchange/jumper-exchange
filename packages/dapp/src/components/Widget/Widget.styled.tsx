@@ -9,10 +9,9 @@ export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<WidgetContainerProps>(({ theme, isActive }) => ({
   display: isActive ? 'inherit' : 'none',
-  // visibility: isActive ? 'visible' : 'hidden',
-  marginTop: theme.spacing(4),
-  paddingTop: theme.spacing(4),
-  height: 'calc( 100vh - 64px - 16px )',
+  paddingTop: theme.spacing(2),
+  marginTop: theme.spacing(2),
+  height: 'calc( 100vh - 64px - 8px )',
   flex: '1 1 0%',
   // make widget scrollable on screens smaller than:
   // 80px (navbar height)
@@ -23,13 +22,13 @@ export const WidgetContainer = styled(Box, {
     height: 'calc( 100vh - 72px - 16px)',
     width: '100vw',
     '> div': {},
+    [theme.breakpoints.up('sm')]: {
+      marginTop: theme.spacing(4),
+      paddingTop: theme.spacing(4),
+      height: 'calc( 100vh - 64px - 16px )',
+    },
     [theme.breakpoints.up('md')]: {
       height: 'calc( 100vh - 80px - 16px )',
-    },
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: theme.spacing(2),
-      marginTop: theme.spacing(2),
-      height: 'calc( 100vh - 64px - 8px )',
     },
   },
 }));

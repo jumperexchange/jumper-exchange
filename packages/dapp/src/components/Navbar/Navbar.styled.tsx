@@ -60,14 +60,14 @@ export const NavBar = styled(AppBar)(({ theme }) => ({
 export const NavbarContainer = styled('div')(({ theme }) => ({
   position: 'initial',
   background: 'transparent',
-  height: '72px',
   display: 'flex',
   alignItems: 'center',
+  height: '64px',
+  padding: theme.spacing(2, 4),
   justifyContent: 'space-between',
-  padding: theme.spacing(4, 6),
-  [theme.breakpoints.down('sm')]: {
-    height: '64px',
-    padding: theme.spacing(2, 4),
+  [theme.breakpoints.up('sm')]: {
+    height: '72px',
+    padding: theme.spacing(4, 6),
   },
   [theme.breakpoints.up('md')]: {
     padding: theme.spacing(6),
@@ -139,7 +139,7 @@ export const NavbarTabs = styled(Tabs, {
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
   // visibility: 'hidden',
   display: 'none',
-  [theme.breakpoints.up('lg')]: {
+  [theme.breakpoints.up('md')]: {
     position: 'absolute',
     left: '50%',
     transform: 'translateX(-50%)',

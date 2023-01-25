@@ -32,25 +32,10 @@ const NavbarMenu = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   return (
     !!open &&
-    (!!isMobile ? (
-      <NavbarMenuMobile
-        handleClose={handleClose}
-        anchorRef={anchorRef}
-        bgColor={bgColor}
-        hideBackArrow={hideBackArrow}
-        label={label}
-        open={open}
-        scrollableMainLayer={scrollableMainLayer}
-        setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu}
-        isScrollable={isScrollable}
-      >
-        {children}
-      </NavbarMenuMobile>
-    ) : (
+    (!!isDesktop ? (
       <NavbarMenuDesktop
         handleClose={handleClose}
         anchorRef={anchorRef}
@@ -65,6 +50,21 @@ const NavbarMenu = ({
       >
         {children}
       </NavbarMenuDesktop>
+    ) : (
+      <NavbarMenuMobile
+        handleClose={handleClose}
+        anchorRef={anchorRef}
+        bgColor={bgColor}
+        hideBackArrow={hideBackArrow}
+        label={label}
+        open={open}
+        scrollableMainLayer={scrollableMainLayer}
+        setOpen={setOpen}
+        isOpenSubMenu={isOpenSubMenu}
+        isScrollable={isScrollable}
+      >
+        {children}
+      </NavbarMenuMobile>
     ))
   );
 };
