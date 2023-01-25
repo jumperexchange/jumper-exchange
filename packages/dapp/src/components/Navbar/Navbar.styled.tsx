@@ -228,7 +228,7 @@ export const MenuItem = styled(MUIMenuItem, {
   shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'isScrollable',
 })<MUIMenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
-  padding: `0 ${theme.spacing(3)}`,
+  padding: showButton ? theme.spacing(0, 3, 3) : theme.spacing(0, 3),
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
   marginTop: showButton && theme.spacing(2),
@@ -244,7 +244,7 @@ export const MenuItem = styled(MUIMenuItem, {
     marginLeft: '13px',
   },
   [theme.breakpoints.up('sm')]: {
-    height: '48px',
+    height: showButton ? 'auto' : '48px',
   },
 }));
 
