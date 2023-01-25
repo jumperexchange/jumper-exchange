@@ -232,12 +232,23 @@ export const MenuItem = styled(MUIMenuItem, {
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
   marginTop: showButton && theme.spacing(2),
+  borderRadius: '12px',
 
   '&:hover': {
     backgroundColor: showButton
       ? 'transparent'
       : getContrastAlphaColor(theme, '4%'),
-    borderRadius: '12px',
+  },
+
+  '&& .MuiTouchRipple-child': {
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[900]
+        : getContrastAlphaColor(theme, '8%'),
+  },
+
+  '&& .MuiTouchRipple-rippleVisible': {
+    backgroundColor: getContrastAlphaColor(theme, '8%'),
   },
 
   '> .menu-item-label__icon': {
