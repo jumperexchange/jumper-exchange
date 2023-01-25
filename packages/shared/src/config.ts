@@ -1,7 +1,5 @@
 // @mui
-import { deDE, enUS } from '@mui/material/locale';
 import i18next from 'i18next';
-import { DappLanguagesSupported } from './types/settings';
 
 export const cookiesExpires = 3;
 
@@ -15,20 +13,7 @@ export const localStorageKey = {
 // Please remove `localStorage` when you change settings.
 // ----------------------------------------------------------------------
 
-export const allLangs = [
-  {
-    label: 'English',
-    value: 'en' as DappLanguagesSupported,
-    systemValue: enUS,
-  },
-  {
-    label: 'Deutsch',
-    value: 'de' as DappLanguagesSupported,
-    systemValue: deDE,
-  },
-];
-
-export const defaultLang = allLangs[0]; // English
+export const defaultLang = 'en'; // English
 
 const setLanguage = (defaultLang) => {
   if (!!i18next.language) {
@@ -38,7 +23,7 @@ const setLanguage = (defaultLang) => {
   } else if (!!localStorage.getItem(localStorageKey.languageMode)) {
     return localStorage.getItem(localStorageKey.languageMode);
   } else {
-    return defaultLang.value;
+    return defaultLang;
   }
 };
 

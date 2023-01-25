@@ -124,7 +124,7 @@ function widgetConfigComponent({ starterVariant }) {
       },
       languages: {
         default: i18n.language as LanguageKey,
-        allow: ['de', 'en'],
+        allow: i18n.languages as LanguageKey[],
       },
       appearance: !!isDarkMode ? 'dark' : 'light',
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
