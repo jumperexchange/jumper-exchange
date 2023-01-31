@@ -510,6 +510,9 @@ export const lightTheme: Theme = createTheme(
       text: {
         primary: '#000',
       },
+      grey: {
+        300: '#E5E1EB'
+      },
       bg: {
         light: '#F3EBFF',
         main: '#F3EBFF',
@@ -595,6 +598,9 @@ export const darkTheme: Theme = createTheme(
       },
       text: {
         primary: '#fff',
+      },
+      grey: {
+        800: '#302B52'
       },
       bg: {
         light: '#0E0B1F',

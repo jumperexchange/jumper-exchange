@@ -141,6 +141,10 @@ function widgetConfigComponent({ starterVariant }) {
           primary: {
             main: theme.palette.accent1.main,
           },
+          grey: {
+            300: theme.palette.grey[300],
+            800: theme.palette.grey[800]
+          }
           // secondary: {
           //   main: '#ffc36a', //brown //theme.palette.brandSecondary.main,
           // },
