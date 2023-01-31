@@ -2,11 +2,13 @@ import { Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
-  switchChainAndAddToken
+  switchChainAndAddToken,
 } from '@lifi/wallet-management';
 import {
   HiddenUI,
-  LiFiWidget, WidgetConfig, WidgetVariant
+  LiFiWidget,
+  WidgetConfig,
+  WidgetVariant,
 } from '@lifi/widget';
 import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -118,9 +120,9 @@ function widgetConfigComponent({ starterVariant }) {
       },
       containerStyle: {
         borderRadius: '12px',
-        boxShadow: !!isDarkMode
-          ? '0px 8px 32px rgba(255, 255, 255, 0.08)'
-          : '0px 8px 32px rgba(0, 0, 0, 0.08)',
+        boxShadow: !isDarkMode
+          ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+          : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       },
       languages: {
         default: i18n.language as LanguageKey,
