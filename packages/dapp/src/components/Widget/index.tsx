@@ -13,7 +13,7 @@ import {
 import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
@@ -155,7 +155,7 @@ function widgetConfigComponent({ starterVariant }) {
           // },
         },
       },
-      localStorageKeyPrefix: `jumper-${starterVariant}`
+      localStorageKeyPrefix: `jumper-${starterVariant}`,
     };
   }, [
     i18n.language,
@@ -172,7 +172,6 @@ export function Widget({ starterVariant }) {
   const widgetConfig = widgetConfigComponent(
     (starterVariant = { starterVariant }),
   );
-
   return <LiFiWidget config={widgetConfig} />;
 }
 
@@ -181,29 +180,33 @@ export function DualWidget() {
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');
-  const handleIsActiveUrl = useCallback(
-    (activeUrl: string) =>
-      Object.values(LinkMap).filter((el) => {
-        if (el.includes(activeUrl)) {
-          let url = window.location.pathname.slice(1, 1 + activeUrl.length);
-          ReactGA.send({ hitType: 'pageview', page: `/${url}` });
-          return url === activeUrl;
-        }
-      }),
-    [],
-  );
+  // const handleIsActiveUrl = useCallback(
+  //   (activeUrl: string) =>
+  //     {}
+  //   [],
+  // );
 
   const starterVariant = useMemo(() => {
-    if (handleIsActiveUrl('swap')) {
-      return 'expandable';
-    } else if (handleIsActiveUrl('gas') || handleIsActiveUrl('refuel')) {
-      return 'refuel';
+    const activeUrl = Object.values(LinkMap).filter((el) =>
+      window.location.pathname.includes(el),
+    );
+    if (activeUrl.length) {
+      let url = window.location.pathname.slice(1, 1 + activeUrl[0].length);
+      ReactGA.send({ hitType: 'pageview', page: `/${url}` });
+    }
+
+    switch (activeUrl[0]) {
+      case 'gas':
+      case 'refuel':
+        return 'refuel';
+      default:
+        return 'expandable';
     }
   }, [window.location.pathname]);
 
   const getActiveWidget = () => {
     if (!starterVariantUsed) {
-      starterVariant === 'expandable'
+      starterVariant.includes('expandable')
         ? settings.onChangeTab(0)
         : settings.onChangeTab(1);
       setStarterVariant(starterVariant);
