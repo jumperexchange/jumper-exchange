@@ -29,18 +29,6 @@ export default defineConfig({
         NodeGlobalsPolyfillPlugin({
           buffer: true,
         }),
-        // TODO: remove once fixed
-        // https://github.com/remorses/esbuild-plugins/issues/24
-        // https://github.com/evanw/esbuild/issues/2762
-        {
-          name: 'fix-node-globals-polyfill',
-          setup(build) {
-            build.onResolve(
-              { filter: /_virtual-process-polyfill_|_buffer.js\.js/ },
-              ({ path }) => ({ path }),
-            );
-          },
-        },
       ],
     },
   },
