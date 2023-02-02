@@ -9,6 +9,7 @@ import { I18NProvider } from '../../providers/I18nProvider';
 import { MenuProvider } from '../../providers/MenuProvider';
 import { ThemeProvider } from '../../providers/ThemeProvider';
 import { WalletProvider } from '../../providers/WalletProvider';
+import { HistoryMigration } from '../HistoryMigration';
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const AppWrapper = () => {
           </SettingsProvider>
         </I18NProvider>
       </ChainInfosProvider>
+      <HistoryMigration />
     </QueryClientProvider>
   );
 };
