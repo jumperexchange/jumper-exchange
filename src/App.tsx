@@ -15,6 +15,7 @@ import Dashboard from './components/Dashboard'
 import { DiscordPopup } from './components/DiscordPopup'
 import SwapCarbonOffsetEmbed from './components/EmbedViews/SwapCarbonOffsetEmbed'
 import SwapEtherspotKlimaZapEmbed from './components/EmbedViews/SwapEtherspotKlimaZapEmbed'
+import HistoryMigration from './components/HistoryMigration'
 import NotFoundPage from './components/NotFoundPage'
 import { Swap } from './components/Swap'
 import SwapCarbonOffset from './components/SwapCarbonOffset'
@@ -272,6 +273,7 @@ function App() {
                       )
                     }}
                   /> */}
+                <Route path="/history-migration" element={<HistoryMigration />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Content>
