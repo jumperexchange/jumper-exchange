@@ -4,9 +4,10 @@ import { DualWidget } from './components/Widget';
 
 export default function App() {
   return (
-    <BackgroundGradient>
+    <>
+      <BackgroundGradient />
       <Navbar />
       <DualWidget />
-    </BackgroundGradient>
+    </>
   );
 }

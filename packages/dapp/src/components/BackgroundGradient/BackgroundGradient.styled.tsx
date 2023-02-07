@@ -21,9 +21,7 @@ export const BackgroundGradientContainer = styled('div')<any>(({ theme }) => ({
   bottom: 0,
   right: 0,
   top: 0,
-  '*:not(.background-gradient)': {
-    pointerEvents: 'all',
-  },
+  zIndex: -1,
 }));
 
 export const BackgroundGradient = styled('span')<any>(({ theme }) => ({
