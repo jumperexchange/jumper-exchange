@@ -1,7 +1,5 @@
 import { ChainId } from '@lifi/sdk'
 
-import { deepClone } from '../services/utils'
-
 const load = (value?: string) => {
   return value ? value.split(',') : []
 }
@@ -30,12 +28,12 @@ const customRpc: Record<number, (string | undefined)[]> = {
 }
 
 export const getRpcs = (): Record<number, string[]> => {
-  const rpcs = deepClone(customRpc)
+  const rpcs = structuredClone(customRpc)
   Object.keys(rpcs).forEach((key) => {
     if (!rpcs[key] || !rpcs[key].length || !rpcs[key][0]) {
       delete rpcs[key]
     }
   })
 
-  return rpcs
+  return rpcs as Record<number, string[]>
 }

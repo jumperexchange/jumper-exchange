@@ -40,10 +40,6 @@ export const formatTokenAmountOnly = (token: Token, amount: string | BigNumber |
   return floated.toFixed(decimalPlaces + 1, 1)
 }
 
-export const deepClone = (src: any) => {
-  return JSON.parse(JSON.stringify(src))
-}
-
 export const sleep = (mills: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, mills)

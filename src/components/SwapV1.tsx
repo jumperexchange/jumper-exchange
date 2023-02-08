@@ -42,7 +42,6 @@ import { switchChain as switchChainMetaMask } from '../services/metamask'
 import { useStomt } from '../services/stomt'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
-  deepClone,
   formatTokenAmount,
   formatTokenAmountOnly,
   getBalance,
@@ -703,8 +702,8 @@ const SwapV1 = () => {
   }, [routeCallResult, currentRouteCallId])
 
   const openModal = () => {
-    // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(routes[highlightedIndex]))
+    // structuredClone to open new modal without execution info of previous transfer using same route card
+    setSelectedRoute(structuredClone(routes[highlightedIndex]))
   }
 
   const switchChain = async (chainId: number) => {
