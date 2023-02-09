@@ -25,12 +25,7 @@ import { gaEventTrack } from '../../utils/google-analytics';
 import { WidgetContainer } from './Widget.styled';
 import { WidgetEvents } from './WidgetEvents';
 
-interface ShowConnectModalProps {
-  show: boolean;
-  promiseResolver?: Promise<any>;
-}
-
-function widgetConfigComponent({ starterVariant }) {
+export function Widget({ starterVariant }) {
   const menu = useMenu();
   const theme = useTheme();
   const { disconnect, account } = useWallet();
@@ -145,14 +140,8 @@ function widgetConfigComponent({ starterVariant }) {
           },
           grey: {
             300: theme.palette.grey[300],
-            800: theme.palette.grey[800]
-          }
-          // secondary: {
-          //   main: '#ffc36a', //brown //theme.palette.brandSecondary.main,
-          // },
-          // background: {
-          //   default: '#eeeee4', //theme.palette.background.default,
-          // },
+            800: theme.palette.grey[800],
+          },
         },
       },
       localStorageKeyPrefix: `jumper-${starterVariant}`,
@@ -165,13 +154,6 @@ function widgetConfigComponent({ starterVariant }) {
     theme.palette.mode,
   ]);
 
-  return widgetConfig;
-}
-
-export function Widget({ starterVariant }) {
-  const widgetConfig = widgetConfigComponent(
-    (starterVariant = { starterVariant }),
-  );
   return <LiFiWidget config={widgetConfig} />;
 }
 
@@ -180,11 +162,6 @@ export function DualWidget() {
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');
-  // const handleIsActiveUrl = useCallback(
-  //   (activeUrl: string) =>
-  //     {}
-  //   [],
-  // );
 
   const starterVariant = useMemo(() => {
     const activeUrl = Object.values(LinkMap).filter((el) =>

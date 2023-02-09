@@ -12,9 +12,8 @@ import { getInitialProps, useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
-import { MenuListItem } from '../../../types';
 
-const MainMenuItems = () => {
+export const useMainMenuItems = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const settings = useSettings();
@@ -26,7 +25,7 @@ const MainMenuItems = () => {
   );
   const menu = useMenu();
 
-  const _MainMenuItems: MenuListItem[] = [
+  return [
     {
       label: `${translate(`${i18Path}navbarMenu.theme`)}`,
       prefixIcon: isDarkMode ? (
@@ -78,8 +77,4 @@ const MainMenuItems = () => {
       showButton: true,
     },
   ];
-
-  return _MainMenuItems;
 };
-
-export default MainMenuItems;

@@ -1,7 +1,7 @@
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
 
-const SubMenuLanguage = () => {
+export const useMainSubMenuLanguage = () => {
   const { i18n } = useTranslation();
   const settings = useSettings();
 
@@ -20,5 +20,3 @@ const SubMenuLanguage = () => {
 
   return languages;
 };
-
-export default SubMenuLanguage;

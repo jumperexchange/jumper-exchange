@@ -1,5 +1,5 @@
-export { default as MainMenuItems } from './Main-MenuItems';
-export { default as MainSubMenuDevelopers } from './Main-SubMenu-Developers';
-export { default as MainSubMenuLanguage } from './Main-SubMenu-Language';
-export { default as MainSubMenuShowcases } from './Main-SubMenu-Showcases';
-export { default as MainSubMenuTheme } from './Main-SubMenu-Theme';
+export { useMainMenuItems } from './Main-MenuItems';
+export { useMainSubMenuDevelopers } from './Main-SubMenu-Developers';
+export { useMainSubMenuLanguage } from './Main-SubMenu-Language';
+export { useMainSubMenuShowcases } from './Main-SubMenu-Showcases';
+export { useMainSubMenuTheme } from './Main-SubMenu-Theme';

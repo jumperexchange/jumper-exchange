@@ -1,15 +1,11 @@
-import { useTheme } from '@mui/material/styles';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { MenuListItem } from '../../../types';
 
-const MainSubMenuShowcases = () => {
+export const useMainSubMenuShowcases = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
 
-  const _MainSubMenuShowcases: MenuListItem[] = [
+  return [
     {
       label: `${translate(`${i18Path}showcases.ukraineDonation`)}`,
       onClick: () => {
@@ -29,8 +25,4 @@ const MainSubMenuShowcases = () => {
       },
     },
   ];
-
-  return _MainSubMenuShowcases;
 };
-
-export default MainSubMenuShowcases;
