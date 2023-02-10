@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import {
-  MainMenuItems,
-  MainSubMenuDevelopers,
-  MainSubMenuLanguage,
-  MainSubMenuShowcases,
-  MainSubMenuTheme,
   SubMenuKeys,
+  useMainMenuItems,
+  useMainSubMenuDevelopers,
+  useMainSubMenuLanguage,
+  useMainSubMenuShowcases,
+  useMainSubMenuTheme,
 } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
 import { SupportModal } from '../../SupportModal';
@@ -19,11 +19,11 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
   const menu = useMenu();
   const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
-  const _MainMenuItems = MainMenuItems();
-  const _mainSubMenuTheme = MainSubMenuTheme();
-  const _mainSubMenuDevelopers = MainSubMenuDevelopers();
-  const _mainSubMenuLanguage = MainSubMenuLanguage();
-  const _mainSubMenuShowcases = MainSubMenuShowcases();
+  const mainMenuItems = useMainMenuItems();
+  const mainSubMenuTheme = useMainSubMenuTheme();
+  const mainSubMenuDevelopers = useMainSubMenuDevelopers();
+  const mainSubMenuLanguage = useMainSubMenuLanguage();
+  const mainSubMenuShowcases = useMainSubMenuShowcases();
 
   return (
     <>
@@ -34,7 +34,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
         setOpen={menu.onOpenNavbarMainMenu}
         isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
       >
-        {_MainMenuItems.map((el, index) => (
+        {mainMenuItems.map((el, index) => (
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
@@ -57,7 +57,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
-          subMenuList={_mainSubMenuTheme}
+          subMenuList={mainSubMenuTheme}
         />
 
         <SubMenuComponent
@@ -68,7 +68,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
-          subMenuList={_mainSubMenuLanguage}
+          subMenuList={mainSubMenuLanguage}
         />
 
         <SubMenuComponent
@@ -79,7 +79,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
-          subMenuList={_mainSubMenuDevelopers}
+          subMenuList={mainSubMenuDevelopers}
         />
 
         <SubMenuComponent
@@ -90,7 +90,7 @@ const MainMenu = ({ handleClose, anchorRef }: MainMenuProps) => {
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
-          subMenuList={_mainSubMenuShowcases}
+          subMenuList={mainSubMenuShowcases}
         />
       </NavbarMenu>
       <SupportModal />

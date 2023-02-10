@@ -7,9 +7,8 @@ import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
-import { MenuListItem } from '../../../types';
 
-const MainSubMenuTheme = () => {
+export const useMainSubMenuTheme = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const settings = useSettings();
@@ -18,7 +17,7 @@ const MainSubMenuTheme = () => {
     settings.onChangeMode(mode);
   };
 
-  const _MainSubMenuTheme: MenuListItem[] = [
+  return [
     {
       label: `${translate(`${i18Path}themes.light`)}`,
       prefixIcon:
@@ -53,8 +52,4 @@ const MainSubMenuTheme = () => {
       onClick: () => handleSwitchMode('auto'),
     },
   ];
-
-  return _MainSubMenuTheme;
 };
-
-export default MainSubMenuTheme;

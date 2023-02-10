@@ -18,7 +18,7 @@ import {
   Tab,
   TabProps,
   Tabs,
-  TabsProps,
+  TabsProps
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
@@ -293,9 +293,9 @@ export const NavbarPaper = styled(Paper, {
     background: !!bgColor ? bgColor : theme.palette.surface1.main,
     padding: 0,
     marginTop: !!isSubMenu ? 0 : `${theme.spacing(3)} !important`,
-    boxShadow: !!isDarkMode
-      ? '0px 8px 32px rgba(255, 255, 255, 0.08)'
-      : '0px 8px 32px rgba(0, 0, 0, 0.08)',
+    boxShadow: !isDarkMode
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
     borderRadius: '12px 12px 0 0',
     marginBottom: 0,
     maxHeight: 'calc( 100vh - 80px )',

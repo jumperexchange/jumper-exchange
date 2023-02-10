@@ -1,7 +1,8 @@
 import { Route } from '@lifi/sdk';
 import {
   RouteExecutionUpdate,
-  useWidgetEvents, WidgetEvent
+  useWidgetEvents,
+  WidgetEvent,
 } from '@lifi/widget';
 import { useEffect, useState } from 'react';
 import { hotjar } from 'react-hotjar';

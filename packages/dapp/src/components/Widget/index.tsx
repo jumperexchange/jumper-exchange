@@ -2,16 +2,18 @@ import { Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
-  switchChainAndAddToken
+  switchChainAndAddToken,
 } from '@lifi/wallet-management';
 import {
   HiddenUI,
-  LiFiWidget, WidgetConfig, WidgetVariant
+  LiFiWidget,
+  WidgetConfig,
+  WidgetVariant,
 } from '@lifi/widget';
 import { Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga';
 import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
@@ -23,12 +25,7 @@ import { gaEventTrack } from '../../utils/google-analytics';
 import { WidgetContainer } from './Widget.styled';
 import { WidgetEvents } from './WidgetEvents';
 
-interface ShowConnectModalProps {
-  show: boolean;
-  promiseResolver?: Promise<any>;
-}
-
-function widgetConfigComponent({ starterVariant }) {
+export function Widget({ starterVariant }) {
   const menu = useMenu();
   const theme = useTheme();
   const { disconnect, account } = useWallet();
@@ -118,9 +115,9 @@ function widgetConfigComponent({ starterVariant }) {
       },
       containerStyle: {
         borderRadius: '12px',
-        boxShadow: !!isDarkMode
-          ? '0px 8px 32px rgba(255, 255, 255, 0.08)'
-          : '0px 8px 32px rgba(0, 0, 0, 0.08)',
+        boxShadow: !isDarkMode
+          ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+          : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -143,17 +140,11 @@ function widgetConfigComponent({ starterVariant }) {
           },
           grey: {
             300: theme.palette.grey[300],
-            800: theme.palette.grey[800]
-          }
-          // secondary: {
-          //   main: '#ffc36a', //brown //theme.palette.brandSecondary.main,
-          // },
-          // background: {
-          //   default: '#eeeee4', //theme.palette.background.default,
-          // },
+            800: theme.palette.grey[800],
+          },
         },
       },
-      localStorageKeyPrefix: `jumper-${starterVariant}`
+      localStorageKeyPrefix: `jumper-${starterVariant}`,
     };
   }, [
     i18n.language,
@@ -163,14 +154,6 @@ function widgetConfigComponent({ starterVariant }) {
     theme.palette.mode,
   ]);
 
-  return widgetConfig;
-}
-
-export function Widget({ starterVariant }) {
-  const widgetConfig = widgetConfigComponent(
-    (starterVariant = { starterVariant }),
-  );
-
   return <LiFiWidget config={widgetConfig} />;
 }
 
@@ -179,29 +162,28 @@ export function DualWidget() {
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');
-  const handleIsActiveUrl = useCallback(
-    (activeUrl: string) =>
-      Object.values(LinkMap).filter((el) => {
-        if (el.includes(activeUrl)) {
-          let url = window.location.pathname.slice(1, 1 + activeUrl.length);
-          ReactGA.send({ hitType: 'pageview', page: `/${url}` });
-          return url === activeUrl;
-        }
-      }),
-    [],
-  );
 
   const starterVariant = useMemo(() => {
-    if (handleIsActiveUrl('swap')) {
-      return 'expandable';
-    } else if (handleIsActiveUrl('gas') || handleIsActiveUrl('refuel')) {
-      return 'refuel';
+    const activeUrl = Object.values(LinkMap).filter((el) =>
+      window.location.pathname.includes(el),
+    );
+    if (activeUrl.length) {
+      let url = window.location.pathname.slice(1, 1 + activeUrl[0].length);
+      ReactGA.send({ hitType: 'pageview', page: `/${url}` });
+    }
+
+    switch (activeUrl[0]) {
+      case 'gas':
+      case 'refuel':
+        return 'refuel';
+      default:
+        return 'expandable';
     }
   }, [window.location.pathname]);
 
   const getActiveWidget = () => {
     if (!starterVariantUsed) {
-      starterVariant === 'expandable'
+      starterVariant.includes('expandable')
         ? settings.onChangeTab(0)
         : settings.onChangeTab(1);
       setStarterVariant(starterVariant);
