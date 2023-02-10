@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "version": "1.0.0",
-  "repository": "https://github.com/lifinance/transferto.xyz",
+  "repository": "https://github.com/lifinance/jumper.exchange",
   "devDependencies": {
     "@lerna/run": "^6.4.1",
     "husky": "^8.0.3",
