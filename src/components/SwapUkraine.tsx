@@ -39,7 +39,6 @@ import { readActiveRoutes, readHistoricalRoutes, storeRoute } from '../services/
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
-  deepClone,
   formatTokenAmount,
   formatTokenAmountOnly,
   getBalance,
@@ -677,8 +676,8 @@ const Swap = () => {
 
   //TODO: check what is needed here!
   const openModal = () => {
-    // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(routes[0]))
+    // structuredClone to open new modal without execution info of previous transfer using same route card
+    setSelectedRoute(structuredClone(routes[0]))
 
     // Reset routes to avoid reexecution with same data
     setRoutes([])

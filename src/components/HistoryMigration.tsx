@@ -6,11 +6,9 @@ function HistoryMigration() {
     if (!data) {
       return
     }
-    const targetOrigin =
-      origin.split('.').length === 3
-        ? `${origin.substring(0, origin.indexOf('.'))}.jumper.exchange`
-        : 'https://jumper.exchange'
-    window.parent.postMessage(data, targetOrigin)
+    window.parent.postMessage(data, 'https://jumper.exchange')
+    window.parent.postMessage(data, 'https://allowlist.jumper.exchange')
+    window.parent.postMessage(data, 'https://onboardto.xyz')
   }, [])
   return null
 }

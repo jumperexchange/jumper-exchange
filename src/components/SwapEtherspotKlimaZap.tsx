@@ -42,7 +42,6 @@ import { switchChain } from '../services/metamask'
 import getRoute, { ExtendedTransactionRequest } from '../services/routingService'
 import { loadTokenListAsTokens } from '../services/tokenListService'
 import {
-  deepClone,
   formatTokenAmountOnly,
   getBalance,
   isLiFiRoute,
@@ -844,8 +843,8 @@ const Swap = () => {
   }
 
   const openModal = () => {
-    // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(route))
+    // structuredClone to open new modal without execution info of previous transfer using same route card
+    setSelectedRoute(structuredClone(route))
     setNoRoutesAvailable(false)
   }
 

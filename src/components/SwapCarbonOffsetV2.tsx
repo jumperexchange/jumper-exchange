@@ -42,12 +42,7 @@ import {
 import { readActiveRoutes, readHistoricalRoutes } from '../services/localStorage'
 import { switchChain } from '../services/metamask'
 import { loadTokenListAsTokens } from '../services/tokenListService'
-import {
-  deepClone,
-  formatTokenAmountOnly,
-  getBalance,
-  isWalletDeactivated,
-} from '../services/utils'
+import { formatTokenAmountOnly, getBalance, isWalletDeactivated } from '../services/utils'
 import {
   Chain,
   ChainId,
@@ -701,8 +696,8 @@ const Swap = () => {
   }, [routeCallResult, currentRouteCallId])
 
   const openModal = () => {
-    // deepClone to open new modal without execution info of previous transfer using same route card
-    setSelectedRoute(deepClone(route))
+    // structuredClone to open new modal without execution info of previous transfer using same route card
+    setSelectedRoute(structuredClone(route))
     setHighlightedIndex(-1)
     setNoRoutesAvailable(false)
   }
