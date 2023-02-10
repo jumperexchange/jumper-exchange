@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 
 export function HistoryMigration() {
-  const targetOrigin =
-        origin.split('.').length === 3
-          ? `${origin.substring(0, origin.indexOf('.'))}.transferto.xyz`
-          : 'https://transferto.xyz';
+  const targetOrigin = 'https://transferto.xyz';
   useEffect(() => {
     const handler = (event) => {
       if (event.origin === targetOrigin) {
