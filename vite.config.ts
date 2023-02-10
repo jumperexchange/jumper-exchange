@@ -12,6 +12,9 @@ export default defineConfig({
       external: ['@web3-react/walletconnect'],
     },
     outDir: './build',
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
   },
   resolve: {
     alias: [{ find: /^~/, replacement: '' }],
