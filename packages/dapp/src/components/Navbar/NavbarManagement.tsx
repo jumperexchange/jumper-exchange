@@ -4,17 +4,16 @@ import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { WalletManagementButtons } from '@transferto/shared';
 import { useSettings } from '@transferto/shared/src/hooks';
-import { SyntheticEvent, useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../const';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
-import { ConnectedMenu, MainMenu, WalletMenu } from './index';
 import {
   NavbarDropdownButton,
   NavbarManagement as NavbarManagementContainer,
-} from './Navbar.styled';
+} from './Navbar.style';
 
 const NavbarManagement = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -23,20 +22,8 @@ const NavbarManagement = () => {
   const menu = useMenu();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
-
-  const isDarkMode = theme.palette.mode === 'dark';
   const walletManagement = useWallet();
   const { account } = useWallet();
-  const handleClose = (event: Event | SyntheticEvent) => {
-    event.preventDefault();
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-    menu.onCopyToClipboard(false);
-  };
 
   !account.isActive ?? settings.onWalletDisconnect();
 
@@ -50,6 +37,10 @@ const NavbarManagement = () => {
     prevOpen.current = menu.openMainNavbarMenu;
   }, [menu.openMainNavbarMenu]);
 
+  useEffect(() => {
+    menu.onMenuInit(anchorRef);
+  }, []);
+
   const { chains, isSuccess } = useChainInfos();
 
   const activeChain = useMemo(
@@ -62,18 +53,6 @@ const NavbarManagement = () => {
       <WalletManagementButtons
         walletManagement={walletManagement}
         menu={menu}
-        color={
-          !!account.isActive && !isDarkMode
-            ? theme.palette.black.main
-            : theme.palette.white.main
-        }
-        backgroundColor={
-          !account.isActive
-            ? theme.palette.accent1.main
-            : !!isDarkMode
-            ? theme.palette.alphaLight300.main
-            : theme.palette.white.main
-        }
         setOpenNavbarSubmenu={menu.onOpenNavbarSubMenu}
         activeChain={activeChain}
         connectButtonLabel={
@@ -111,22 +90,6 @@ const NavbarManagement = () => {
           }}
         />
       </NavbarDropdownButton>
-
-      <MainMenu handleClose={handleClose} anchorRef={anchorRef} />
-
-      {/* <WalletMenuWrapper
-        anchorRef={anchorRef}
-        supportedWallets={supportedWallets}
-        handleClose={handleClose}
-      /> */}
-
-      <WalletMenu handleClose={handleClose} anchorRef={anchorRef} />
-
-      <ConnectedMenu
-        isSuccess={isSuccess}
-        handleClose={handleClose}
-        anchorRef={anchorRef}
-      />
     </NavbarManagementContainer>
   );
 };

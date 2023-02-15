@@ -1,6 +1,7 @@
-import { Box, Modal, useTheme } from '@mui/material';
+import { Modal, useTheme } from '@mui/material';
 import WidgetBot from '@widgetbot/react-embed';
 import { useMenu } from '../../providers/MenuProvider';
+import { SupportModalContainer } from './SupportModal.style';
 
 export const SupportModal = () => {
   const menu = useMenu();
@@ -11,21 +12,7 @@ export const SupportModal = () => {
       open={menu.openSupportModal}
       onClose={() => menu.toggleSupportModal(false)}
     >
-      <Box
-        sx={{
-          position: 'absolute' as 'absolute',
-          top: '64px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '25%',
-          [theme.breakpoints.up('sm')]: { top: '72px', width: '100%' },
-          [theme.breakpoints.up('md')]: {
-            width: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-          },
-        }}
-      >
+      <SupportModalContainer>
         <WidgetBot
           server="849912621360218112" // LI.FI / TransferTo.xyz
           channel="1048071264352337951" // #🩹︱web-support
@@ -33,13 +20,13 @@ export const SupportModal = () => {
           style={{
             width: '100%',
             height: 'calc( 100vh - 64px )',
-            [theme.breakpoints.up('sm')]: { height: 'calc( 100vh - 64px )' },
+            [theme.breakpoints.up('sm')]: { height: 'calc( 100vh - 72px )' },
             [theme.breakpoints.up('md')]: {
               height: '500px',
             },
           }}
         />
-      </Box>
+      </SupportModalContainer>
     </Modal>
   );
 };

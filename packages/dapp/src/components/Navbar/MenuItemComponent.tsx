@@ -1,9 +1,9 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Button } from '@transferto/shared/src/atoms/button';
+import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary';
 import { Dispatch, SetStateAction } from 'react';
-import { MenuItem, MenuItemLabel } from './Navbar.styled';
+import { MenuItem, MenuItemLabel } from './Navbar.style';
 
 interface MenuItemProps {
   open: boolean;
@@ -39,7 +39,7 @@ const MenuItemComponent = ({
 }: MenuItemProps) => {
   const theme = useTheme();
 
-  return !!open && isOpenSubMenu ? (
+  return !!open && !isOpenSubMenu ? (
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
@@ -51,13 +51,7 @@ const MenuItemComponent = ({
     >
       <>
         {showButton ? (
-          <Button
-            textColor={textColor}
-            bgColor={bgColor}
-            sx={{
-              textTransform: 'none',
-            }}
-          >
+          <ButtonPrimary textColor={textColor} bgColor={bgColor} fullWidth>
             <>
               {prefixIcon}
               <Typography
@@ -70,7 +64,7 @@ const MenuItemComponent = ({
               </Typography>
               {suffixIcon}
             </>
-          </Button>
+          </ButtonPrimary>
         ) : (
           <>
             <MenuItemLabel>

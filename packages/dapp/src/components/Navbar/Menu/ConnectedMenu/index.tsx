@@ -1,0 +1,1 @@
+export { ConnectedMenu } from './ConnectedMenu';

@@ -1,6 +1,9 @@
 // ----------------------------------------------------------------------
 
+import { MutableRefObject } from 'react';
+
 export type MenuValueProps = {
+  anchorEl: any;
   copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
   openNavbarWalletMenu: boolean;
@@ -10,6 +13,7 @@ export type MenuValueProps = {
 };
 
 export type MenuContextProps = {
+  anchorRef?: any;
   copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
   openNavbarWalletMenu?: boolean;
@@ -19,6 +23,11 @@ export type MenuContextProps = {
 
   // ClipBoard
   onCopyToClipboard: (copied: boolean) => void;
+
+  // On Iniitialization
+  onMenuInit: (
+    anchorEl: JSX.Element | MutableRefObject<HTMLButtonElement>,
+  ) => void;
 
   // Close ALL Navbar Menus
   onCloseAllNavbarMenus: () => void;
@@ -36,5 +45,5 @@ export type MenuContextProps = {
   onOpenNavbarSubMenu: (subMenu: string) => void;
 
   // Toggle support modal
-  toggleSupportModal: (open: boolean) => {};
+  toggleSupportModal: (open: boolean) => void;
 };

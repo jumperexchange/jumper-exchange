@@ -1,0 +1,97 @@
+import { ExtendedChain } from '@lifi/types';
+import { Avatar, Typography, useTheme } from '@mui/material';
+import React, { ReactElement } from 'react';
+import { ButtonPrimary } from '../../atoms/ButtonPrimary';
+import { ButtonSecondary } from '../../atoms/ButtonSecondary';
+import { MenuContextProps } from '../../types';
+import { walletDigest } from '../../utils/walletDigest';
+interface WalletManagementButtonsProps {
+  children?: React.ReactNode;
+  backgroundColor?: string;
+  setOpenNavbarSubmenu?: (subMenu: string) => void;
+  color?: string;
+  walletConnected?: boolean;
+  menu: MenuContextProps;
+  connectButtonLabel?: ReactElement<any, any>;
+  activeChain?: ExtendedChain;
+  hoverBackgroundColor?: string;
+  isSuccess: boolean;
+  walletManagement: any;
+}
+
+export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
+  props,
+) => {
+  const { account } = props.walletManagement;
+  const _walletDigest = walletDigest(account);
+  const theme = useTheme();
+
+  const handleWalletPicker = () => {
+    props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
+  };
+
+  const handleWalletMenuClick = () => {
+    props.menu.onOpenNavbarConnectedMenu(!props.menu.openNavbarConnectedMenu);
+  };
+
+  return (
+    <>
+      {!account.address ? (
+        // Connect-Button -->
+        <>
+          <ButtonPrimary
+            onClick={handleWalletPicker}
+            sx={(theme) => ({
+              display: 'none',
+              [theme.breakpoints.up('sm')]: {
+                width: '169px',
+                display: 'inline-flex !important',
+              },
+            })}
+          >
+            {!!props.connectButtonLabel
+              ? props.connectButtonLabel
+              : 'Connect Wallet'}
+          </ButtonPrimary>
+        </>
+      ) : (
+        // WalletMenu-Button -->
+        <ButtonSecondary
+          sx={{
+            width: '180px',
+            paddingRight: '16px',
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            [`@media (max-height: ${80 + 18 + 680}px)`]: {
+              paddingLeft: '8px',
+            },
+            [theme.breakpoints.up('md')]: {
+              position: 'relative',
+              left: 'unset',
+              display: 'inherit',
+              transform: 'unset',
+            },
+          }}
+          onClick={handleWalletMenuClick}
+        >
+          {!!props.isSuccess ? (
+            <Avatar
+              className="menu-item-label__icon"
+              src={!!props.activeChain ? props.activeChain.logoURI : 'empty'}
+              alt={`${
+                !!props?.activeChain?.name ? props.activeChain.name : ''
+              }chain-logo`}
+              sx={{ height: '32px', width: '32px', mr: '12px' }}
+            />
+          ) : (
+            <></>
+          )}
+          <Typography variant={'lifiBodyMediumStrong'} width={'100%'}>
+            <>{_walletDigest}</>
+          </Typography>
+        </ButtonSecondary>
+      )}
+    </>
+  );
+};

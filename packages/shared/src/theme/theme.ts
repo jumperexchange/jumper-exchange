@@ -1,7 +1,7 @@
 import { createTheme, Theme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import React from 'react';
-import { bodyStyled, resetStyled } from '../style';
+import { resetStyle } from '../style';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -18,6 +18,7 @@ declare module '@mui/material/styles' {
     templateOutline: Palette['primary'];
     dataBg: Palette['primary'];
     dataOutline: Palette['primary'];
+    bg: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -179,7 +180,7 @@ declare module '@mui/material/Typography' {
 const themeBase: Theme = createTheme({
   components: {
     MuiCssBaseline: {
-      styleOverrides: `${resetStyled} ${bodyStyled}`,
+      styleOverrides: `${resetStyle}`,
     },
     MuiTypography: {
       defaultProps: {
@@ -301,15 +302,6 @@ const themeBase: Theme = createTheme({
       main: 'rgba(255, 255, 255, 0.64)',
     },
   },
-  // breakpoints: {
-  //   values: {
-  //     xs: 0,
-  //     sm: viewports.minTablet,
-  //     md: viewports.minLaptop,
-  //     lg: viewports.minDesktop,
-  //     xl: viewports.minDesktopFullHd,
-  //   },
-  // },
 });
 
 // in a seperate 'createTheme' to allow listening to breakpoints set above
@@ -511,7 +503,7 @@ export const lightTheme: Theme = createTheme(
         primary: '#000',
       },
       grey: {
-        300: '#E5E1EB'
+        300: '#E5E1EB',
       },
       bg: {
         light: '#F3EBFF',
@@ -600,7 +592,7 @@ export const darkTheme: Theme = createTheme(
         primary: '#fff',
       },
       grey: {
-        800: '#302B52'
+        800: '#302B52',
       },
       bg: {
         light: '#0E0B1F',

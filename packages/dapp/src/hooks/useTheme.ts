@@ -8,7 +8,7 @@ enum Theme {
 }
 const LOCALSTROAGE_THEME = 'theme';
 
-const useTheme = () => {
+export const useTheme = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -43,5 +43,3 @@ const useTheme = () => {
 
   return { isDarkMode, updateThemePreference };
 };
-
-export default useTheme;

@@ -1,13 +1,14 @@
-import BackgroundGradient from './components/BackgroundGradient/BackgroundGradient';
+import { AppProvider } from './AppProvider';
+import { DualWidget } from './components/DualWidget';
 import { Navbar } from './components/Navbar';
-import { DualWidget } from './components/Widget';
+import { Menus } from './components/Navbar/Menu/Menus';
 
 export default function App() {
   return (
-    <>
-      <BackgroundGradient />
+    <AppProvider>
       <Navbar />
+      <Menus />
       <DualWidget />
-    </>
+    </AppProvider>
   );
 }

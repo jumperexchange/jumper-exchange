@@ -6,7 +6,7 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
 import { gaEventTrack } from '../../utils/google-analytics';
-import { NavbarTab, NavbarTabs } from './Navbar.styled';
+import { NavbarTab, NavbarTabs } from './Navbar.style';
 
 function a11yProps(index: number) {
   return {

@@ -105,7 +105,9 @@ const SettingsProvider = ({
       activeWalletName: !!initialState.activeWalletName
         ? initialState.activeWalletName
         : 'none',
-      themeMode: !!initialState.themeMode ? initialState.themeMode : 'auto',
+      themeMode: !!initialState.themeMode
+        ? initialState.themeMode
+        : ('auto' as ThemeModesSupported),
       languageMode:
         initialState.languageMode ||
         (i18next.language as LanguageKey) ||

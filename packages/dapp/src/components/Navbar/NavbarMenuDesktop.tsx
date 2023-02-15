@@ -13,30 +13,26 @@ import {
   NavbarMenuList,
   NavbarPaper,
   NavbarPopper,
-} from './Navbar.styled';
+} from './Navbar.style';
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  anchorRef: any; // TODO: Replace this any with the correct type
   bgColor: string;
   hideBackArrow: boolean;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   isScrollable?: boolean;
-  scrollableMainLayer?: boolean;
   open: boolean;
   children: any;
 }
 
 const NavbarMenuDesktop = ({
   isOpenSubMenu,
-  anchorRef,
   setOpen,
   bgColor,
   handleClose,
   hideBackArrow,
   isScrollable,
-  scrollableMainLayer,
   label,
   open,
   children,
@@ -60,9 +56,8 @@ const NavbarMenuDesktop = ({
         <NavbarExternalBackground />
         <NavbarPopper
           open={open}
-          anchorEl={anchorRef.current}
+          anchorEl={menu?.anchorRef?.current}
           role={undefined}
-          // isScrollable={isScrollable}
           placement="bottom-start"
           transition
           disablePortal
@@ -76,7 +71,6 @@ const NavbarMenuDesktop = ({
             >
               <NavbarPaper
                 isDarkMode={isDarkMode}
-                scrollableMainLayer={scrollableMainLayer}
                 isOpenSubMenu={isOpenSubMenu}
                 openSubMenu={menu.openNavbarSubMenu}
                 bgColor={bgColor}
@@ -110,7 +104,6 @@ const NavbarMenuDesktop = ({
                         <MenuHeaderAppBar
                           component="div"
                           elevation={0}
-                          scrollableMainLayer={scrollableMainLayer}
                           isScrollable={isScrollable}
                         >
                           {!hideBackArrow && (

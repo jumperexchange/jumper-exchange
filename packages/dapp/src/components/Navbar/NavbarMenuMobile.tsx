@@ -11,17 +11,15 @@ import {
   NavbarMenuList,
   NavbarPaper,
   NavbarPopper,
-} from './Navbar.styled';
+} from './Navbar.style';
 
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  anchorRef: any; // TODO: Replace this any with the correct type
   bgColor: string;
   hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   isScrollable?: boolean;
-  scrollableMainLayer?: boolean;
   label?: string;
   open: boolean;
   children: any;
@@ -34,8 +32,6 @@ const NavbarMenuMobile = ({
   bgColor,
   hideBackArrow,
   setOpen,
-  anchorRef,
-  scrollableMainLayer,
   label,
   isOpenSubMenu,
   children,
@@ -60,7 +56,7 @@ const NavbarMenuMobile = ({
         <Slide direction="up" in={open} mountOnEnter unmountOnExit>
           <NavbarPopper
             open={open}
-            anchorEl={anchorRef.current}
+            anchorEl={menu.anchorRef.current}
             role={undefined}
             placement="bottom-start"
             transition
@@ -72,7 +68,6 @@ const NavbarMenuMobile = ({
               openSubMenu={menu.openNavbarSubMenu}
               bgColor={bgColor}
               isScrollable={!!label || isScrollable}
-              scrollableMainLayer={scrollableMainLayer}
             >
               <ClickAwayListener
                 onClickAway={(event) => {
@@ -95,7 +90,6 @@ const NavbarMenuMobile = ({
                       <MenuHeaderAppBar
                         component="div"
                         elevation={0}
-                        scrollableMainLayer={scrollableMainLayer}
                         isScrollable={isScrollable}
                       >
                         {!hideBackArrow && (

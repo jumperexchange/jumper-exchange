@@ -17,6 +17,9 @@ const initialState: MenuContextProps = {
   // Close ALL Navbar Menus
   onCloseAllNavbarMenus: () => {},
 
+  // On Initialization of Menu
+  onMenuInit: () => {},
+
   // Toggle Navbar Main Menu
   onOpenNavbarMainMenu: () => {},
 
@@ -62,6 +65,14 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
       openNavbarConnectedMenu: false,
       openNavbarSubMenu: SubMenuKeys.none,
       copiedToClipboard: false,
+    }));
+  };
+
+  // Set AnchorElement on Initialization of Navbar
+  const onMenuInit = (anchorRef: JSX.Element) => {
+    setMenu((oldSettings) => ({
+      ...oldSettings,
+      anchorRef: anchorRef,
     }));
   };
 
@@ -119,6 +130,9 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
 
         // Close ALL Navbar Menus
         onCloseAllNavbarMenus,
+
+        // On Initialization of Menu
+        onMenuInit,
 
         // Toggle Navbar Main Menu
         onOpenNavbarMainMenu,
