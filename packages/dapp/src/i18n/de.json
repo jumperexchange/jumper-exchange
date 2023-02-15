@@ -1,7 +1,7 @@
 {
   "navbar": {
     "links": {
-      "swap": "Swap",
+      "swap": "Tausch",
       "dashboard": "Dashboard",
       "refuel": "Gas"
     },
@@ -31,6 +31,11 @@
       "github": "GitHub",
       "documentation": "Dokumentation",
       "showcases": "Beispiele"
+    },
+    "showcases": {
+      "ukraineDonation": "Unterstütze die Ukraine 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Cross Chain Carbon Offset"
     }
   }
 }
