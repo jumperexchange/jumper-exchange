@@ -7,7 +7,7 @@ import { defaultLang } from '../config';
 
 export const useLocales = () => {
   const { i18n, t: translate } = useTranslation();
-  const { onChangeDirectionByLang, onChangeLanguage } = useSettings();
+  const { onChangeLanguage } = useSettings();
 
   const langStorage =
     typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
@@ -16,7 +16,6 @@ export const useLocales = () => {
 
   const handleChangeLanguage = (newlang: string) => {
     i18n.changeLanguage(newlang);
-    onChangeDirectionByLang(newlang);
   };
 
   return {

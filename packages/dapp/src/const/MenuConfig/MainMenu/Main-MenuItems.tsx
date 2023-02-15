@@ -7,22 +7,17 @@ import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
-import { useMemo } from 'react';
-import { getInitialProps, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
 
 export const useMainMenuItems = () => {
-  const { t: translate } = useTranslation();
+  const { t: translate, i18n } = useTranslation();
   const i18Path = 'navbar.';
   const settings = useSettings();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
-  const activeLanguage = useMemo(
-    () => getInitialProps().initialLanguage,
-    [getInitialProps().initialLanguage],
-  );
   const menu = useMenu();
 
   return [
@@ -42,7 +37,7 @@ export const useMainMenuItems = () => {
       checkIcon: settings.themeMode === 'light',
       suffixIcon: (
         <Typography variant="lifiBodyMedium" textTransform={'uppercase'}>
-          {activeLanguage}
+          {i18n.resolvedLanguage}
         </Typography>
       ),
       triggerSubMenu: SubMenuKeys.language,

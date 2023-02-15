@@ -1,22 +1,20 @@
 // ----------------------------------------------------------------------
 
+import { LanguageKey } from '../../../dapp/src/types';
+
 export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
-export enum DappLanguagesSupported {
-  en = 'en',
-  de = 'de',
-}
 
 export type SettingsValueProps = {
   themeMode: ThemeModesSupported;
-  languageMode: DappLanguagesSupported;
+  languageMode: LanguageKey;
   activeWalletName: WalletConnected;
   activeTab: number;
 };
 
 export type SettingsContextProps = {
   themeMode?: ThemeModesSupported;
-  languageMode?: DappLanguagesSupported;
+  languageMode?: LanguageKey;
   activeTab?: number;
   activeWalletName?: WalletConnected;
 
@@ -31,10 +29,7 @@ export type SettingsContextProps = {
   onChangeMode: (mode: ThemeModesSupported) => void;
 
   // Language
-  onChangeLanguage: (language: string) => void; // Todo: Check Typing, language: DappLanguagesSupported
-
-  // Direction
-  onChangeDirectionByLang: (lang: string) => void;
+  onChangeLanguage: (language: LanguageKey) => void;
 
   // Reset
   onResetSetting: VoidFunction;

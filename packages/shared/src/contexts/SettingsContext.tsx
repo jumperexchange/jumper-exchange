@@ -15,8 +15,9 @@ import {
 import i18next from 'i18next';
 import { defaultSettings } from '../index';
 // @type
+import { LanguageKey } from '../../../dapp/src/types';
+import { defaultLang } from '../config';
 import {
-  DappLanguagesSupported,
   SettingsContextProps,
   SettingsValueProps,
   ThemeModesSupported,
@@ -36,9 +37,6 @@ const initialState: SettingsContextProps = {
 
   // Tabs
   onChangeTab: () => {},
-
-  // Direction
-  onChangeDirectionByLang: () => {},
 
   // Language
   onChangeLanguage: () => {},
@@ -94,18 +92,10 @@ const SettingsProvider = ({
   };
 
   // Language
-  const onChangeLanguage = (language: string) => {
+  const onChangeLanguage = (language: LanguageKey) => {
     setSettings((oldSettings) => ({
       ...oldSettings,
-      languageMode: language as DappLanguagesSupported,
-    }));
-  };
-
-  // Direction
-  const onChangeDirectionByLang = (lang: DappLanguagesSupported) => {
-    setSettings((oldSettings) => ({
-      ...oldSettings,
-      languageMode: lang ? lang : DappLanguagesSupported.en,
+      languageMode: language as LanguageKey,
     }));
   };
 
@@ -118,8 +108,8 @@ const SettingsProvider = ({
       themeMode: !!initialState.themeMode ? initialState.themeMode : 'auto',
       languageMode:
         initialState.languageMode ||
-        (i18next.language as DappLanguagesSupported) ||
-        DappLanguagesSupported.en,
+        (i18next.language as LanguageKey) ||
+        defaultLang,
       activeTab: !!initialState.activeTab ? initialState.activeTab : 0,
     }));
   };
@@ -141,7 +131,6 @@ const SettingsProvider = ({
 
         // Language
         onChangeLanguage,
-        onChangeDirectionByLang,
 
         // Reset
         onResetSetting,
