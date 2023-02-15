@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "repository": "https://github.com/lifinance/jumper.exchange",
   "devDependencies": {
-    "@lerna/run": "^6.4.1",
+    "@lerna/run": "^6.5.1",
     "husky": "^8.0.3",
-    "lerna": "^6.4.1",
-    "lint-staged": "^13.1.1"
+    "lerna": "^6.5.1",
+    "lint-staged": "^13.1.2"
   },
   "scripts": {
     "bootstrap": "yarn install; lerna bootstrap;",
