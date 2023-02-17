@@ -66,22 +66,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Helm charts
-      uses: actions/checkout@v3
-      with:
-        repository: lifinance/lifi-deployment
-        token: ${{ secrets.ACCESS_TOKEN }}
-        ref: ${{ env.BRANCH_NAME }}
+      - name: Checkout Helm charts
+        uses: actions/checkout@v3
+        with:
+          repository: lifinance/lifi-deployment
+          token: ${{ secrets.ACCESS_TOKEN }}
+          ref: ${{ env.BRANCH_NAME }}
 
-    - name: Update image tag
-      uses: mikefarah/yq@v4.27.2
-      with:
-        cmd: yq -i e '.image.tag |= "${{needs.build.outputs.docker-tag}}"' charts/jumper-exchange/values-${{ env.BRANCH_NAME }}.yaml
+      - name: Update image tag
+        uses: mikefarah/yq@v4.27.2
+        with:
+          cmd: yq -i e '.image.tag |= "${{needs.build.outputs.docker-tag}}"' charts/jumper-exchange/values-${{ env.BRANCH_NAME }}.yaml
 
-    - name: Push image ID
-      run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add charts/jumper-exchange/values-${{ env.BRANCH_NAME }}.yaml
-        git commit -m "build: ${{needs.build.outputs.docker-tag}}"
-        git push
+      - name: Push image ID
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add charts/jumper-exchange/values-${{ env.BRANCH_NAME }}.yaml
+          git commit -m "build: ${{needs.build.outputs.docker-tag}}"
+          git push

@@ -32,7 +32,7 @@ export function HistoryMigration() {
                 'jumper-expandable-widget-routes',
                 JSON.stringify(newData),
               );
-              location.reload();
+              window.location.reload();
             }
           }
         } catch (error) {
@@ -48,6 +48,7 @@ export function HistoryMigration() {
   }, []);
   return (
     <iframe
+      title="history-migration"
       src={`${targetOrigin}/history-migration`}
       width={0}
       height={0}

@@ -1,6 +1,6 @@
-import { Token } from '@lifi/sdk';
-import { Wallet } from '@lifi/wallet-management';
-import { Signer } from 'ethers';
+import type { Token } from '@lifi/sdk';
+import type { Wallet } from '@lifi/wallet-management';
+import type { Signer } from 'ethers';
 
 export interface WalletContextProps {
   account: WalletAccount;

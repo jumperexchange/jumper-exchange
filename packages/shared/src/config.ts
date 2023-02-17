@@ -1,6 +1,6 @@
 // @mui
-import { LanguageKey } from '../../dapp/src/types';
-import { ThemeModesSupported } from './types';
+import type { LanguageKey } from '../../dapp/src/types';
+import type { ThemeModesSupported } from './types';
 
 export const cookiesExpires = 3;
 

@@ -1,6 +1,7 @@
-import { createTheme, Theme } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
-import React from 'react';
+import type React from 'react';
 import { resetStyle } from '../style';
 
 declare module '@mui/material/styles' {

@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-import { MutableRefObject } from 'react';
+import type { MutableRefObject } from 'react';
 
 export type MenuValueProps = {
   anchorEl: any;

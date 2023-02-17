@@ -7,7 +7,7 @@ import * as supportedLanguages from '../i18n';
 import {
   LanguageKey,
   LanguageResources,
-  LanguageTranslationResources
+  LanguageTranslationResources,
 } from '../types';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {

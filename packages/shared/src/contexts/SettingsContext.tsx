@@ -2,22 +2,16 @@ import { localStorageKey } from '@transferto/shared/src/config';
 import React from 'react';
 // import { useTranslation, i18n } from 'react-i18next';
 
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import { createContext, useEffect, useState } from 'react';
 // utils
 // config
 import i18next from 'i18next';
 import { defaultSettings } from '../index';
 // @type
-import { LanguageKey } from '../../../dapp/src/types';
+import type { LanguageKey } from '../../../dapp/src/types';
 import { defaultLang } from '../config';
-import {
+import type {
   SettingsContextProps,
   SettingsValueProps,
   ThemeModesSupported,

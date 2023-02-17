@@ -5,12 +5,4 @@ import it from './it.json';
 import uk from './uk.json';
 import zh from './zh.json';
 
-export {
-  de,
-  en,
-  es,
-  it,
-  uk,
-  zh
-};
-
+export { de, en, es, it, uk, zh };

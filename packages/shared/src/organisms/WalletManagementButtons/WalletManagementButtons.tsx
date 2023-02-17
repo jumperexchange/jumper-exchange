@@ -1,9 +1,10 @@
-import { ExtendedChain } from '@lifi/types';
+import type { ExtendedChain } from '@lifi/types';
 import { Avatar, Typography, useTheme } from '@mui/material';
-import React, { ReactElement } from 'react';
+import type { ReactElement } from 'react';
+import React from 'react';
 import { ButtonPrimary } from '../../atoms/ButtonPrimary';
 import { ButtonSecondary } from '../../atoms/ButtonSecondary';
-import { MenuContextProps } from '../../types';
+import type { MenuContextProps } from '../../types';
 import { walletDigest } from '../../utils/walletDigest';
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
