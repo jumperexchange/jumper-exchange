@@ -89,14 +89,6 @@ const ConnectedMenuItems = () => {
       label: `${translate(`${i18Path}disconnect`)}`,
       prefixIcon: <PowerSettingsNewIcon />,
       showButton: true,
-      textColor:
-        theme.palette.mode === 'dark'
-          ? theme.palette.white.main
-          : theme.palette.primary.main,
-      bgColor:
-        theme.palette.mode === 'dark'
-          ? theme.palette.primary.main
-          : theme.palette.secondary.main,
       onClick: () => {
         disconnect();
         settings.onWalletDisconnect();

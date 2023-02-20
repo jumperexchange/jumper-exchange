@@ -30,8 +30,6 @@ export interface MenuListItem {
   suffixIcon?: JSX.Element | string;
   showMoreIcon?: boolean;
   checkIcon?: boolean;
-  textColor?: string;
-  bgColor?: string;
   url?: string;
   onClick?: any; //(mode?: string) => void;
   showButton?: boolean;

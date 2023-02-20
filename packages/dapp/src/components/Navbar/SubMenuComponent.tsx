@@ -3,13 +3,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarTabsContainer} from './NavbarTabsContainer'
 import CheckIcon from '@mui/icons-material/Check';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { SubMenuKeys } from '../../const';
 import { useMenu } from '../../providers/MenuProvider';
 import { MenuListItem } from '../../types';
 import {
+  BackArrowButton,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuItem,
@@ -23,7 +24,6 @@ interface NavbarSubMenuProps {
   isOpenSubMenu: boolean;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   isSubMenu: boolean;
-  bgColor?: string;
   label: string;
   suffixIcon?: JSX.Element | string;
   prefixIcon?: JSX.Element | string;
@@ -39,7 +39,6 @@ const SubMenuComponent = ({
   isOpenSubMenu,
   setOpenSubMenu,
   isSubMenu,
-  bgColor,
   isScrollable,
   label,
   triggerSubMenu,
@@ -55,7 +54,6 @@ const SubMenuComponent = ({
         {menu.openNavbarSubMenu === triggerSubMenu && (
           <NavbarPaper
             component={'ul'}
-            bgColor={bgColor}
             isSubMenu={isSubMenu}
             openSubMenu={menu.openNavbarSubMenu}
             isOpenSubMenu={isOpenSubMenu}
@@ -69,7 +67,7 @@ const SubMenuComponent = ({
                 isScrollable={!!label || isScrollable}
               >
                 <>
-                  <IconButton
+                  <BackArrowButton
                     size="medium"
                     aria-label="settings"
                     edge="start"
@@ -82,7 +80,7 @@ const SubMenuComponent = ({
                     }}
                   >
                     <ArrowBackIcon />
-                  </IconButton>
+                  </BackArrowButton>
                   <Typography
                     variant={'lifiBodyMediumStrong'}
                     width={'100%'}

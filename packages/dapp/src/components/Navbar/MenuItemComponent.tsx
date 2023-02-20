@@ -12,8 +12,6 @@ interface MenuItemProps {
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   showMoreIcon?: boolean;
   label: string;
-  textColor?: string;
-  bgColor?: string;
   onClick: any;
   isScrollable?: boolean;
   triggerSubMenu: string;
@@ -26,8 +24,6 @@ const MenuItemComponent = ({
   open,
   isOpenSubMenu,
   setOpenSubMenu,
-  textColor,
-  bgColor,
   showButton,
   showMoreIcon = true,
   onClick,
@@ -51,7 +47,7 @@ const MenuItemComponent = ({
     >
       <>
         {showButton ? (
-          <ButtonPrimary textColor={textColor} bgColor={bgColor} fullWidth>
+          <ButtonPrimary fullWidth>
             <>
               {prefixIcon}
               <Typography

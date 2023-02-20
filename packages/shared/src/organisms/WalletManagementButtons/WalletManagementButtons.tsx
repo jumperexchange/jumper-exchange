@@ -15,7 +15,6 @@ interface WalletManagementButtonsProps {
   menu: MenuContextProps;
   connectButtonLabel?: ReactElement<any, any>;
   activeChain?: ExtendedChain;
-  hoverBackgroundColor?: string;
   isSuccess: boolean;
   walletManagement: any;
 }

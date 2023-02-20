@@ -1,5 +1,5 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { IconButton, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
@@ -7,6 +7,7 @@ import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { SubMenuKeys } from '../../const/';
 import { useMenu } from '../../providers/MenuProvider';
 import {
+  BackArrowButton,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   NavbarExternalBackground,
@@ -16,7 +17,6 @@ import {
 } from './Navbar.style';
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  bgColor: string;
   hideBackArrow: boolean;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -29,7 +29,6 @@ interface NavbarMenuProps {
 const NavbarMenuDesktop = ({
   isOpenSubMenu,
   setOpen,
-  bgColor,
   handleClose,
   hideBackArrow,
   isScrollable,
@@ -73,7 +72,6 @@ const NavbarMenuDesktop = ({
                 isDarkMode={isDarkMode}
                 isOpenSubMenu={isOpenSubMenu}
                 openSubMenu={menu.openNavbarSubMenu}
-                bgColor={bgColor}
                 isScrollable={!!label || isScrollable}
               >
                 <ClickAwayListener
@@ -107,14 +105,11 @@ const NavbarMenuDesktop = ({
                           isScrollable={isScrollable}
                         >
                           {!hideBackArrow && (
-                            <IconButton
+                            <BackArrowButton
                               size="medium"
                               aria-label="settings"
                               edge="start"
-                              sx={{
-                                color: theme.palette.text.primary,
-                                position: 'absolute',
-                              }}
+                              sx={{}}
                               onClick={() => {
                                 menu.onOpenNavbarWalletMenu(
                                   !menu.openNavbarWalletMenu,
@@ -122,7 +117,7 @@ const NavbarMenuDesktop = ({
                               }}
                             >
                               <ArrowBackIcon />
-                            </IconButton>
+                            </BackArrowButton>
                           )}
                           <Typography
                             variant={'lifiBodyMediumStrong'}

@@ -29,9 +29,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           key={`${el.label}-${index}`}
           label={el.label}
           prefixIcon={el.prefixIcon}
-          textColor={el.textColor}
           showMoreIcon={el.showMoreIcon}
-          bgColor={el.bgColor}
           triggerSubMenu={el.triggerSubMenu}
           showButton={el.showButton}
           suffixIcon={el.suffixIcon}

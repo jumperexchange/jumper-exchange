@@ -1,10 +1,11 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { IconButton, Slide, Typography } from '@mui/material';
+import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { useMenu } from '../../providers/MenuProvider';
 import {
+  BackArrowButton,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   NavbarExternalBackground,
@@ -15,7 +16,6 @@ import {
 
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  bgColor: string;
   hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -29,7 +29,6 @@ const NavbarMenuMobile = ({
   isScrollable,
   handleClose,
   open,
-  bgColor,
   hideBackArrow,
   setOpen,
   label,
@@ -66,7 +65,6 @@ const NavbarMenuMobile = ({
               isDarkMode={isDarkMode}
               isOpenSubMenu={isOpenSubMenu}
               openSubMenu={menu.openNavbarSubMenu}
-              bgColor={bgColor}
               isScrollable={!!label || isScrollable}
             >
               <ClickAwayListener
@@ -93,7 +91,7 @@ const NavbarMenuMobile = ({
                         isScrollable={isScrollable}
                       >
                         {!hideBackArrow && (
-                          <IconButton
+                          <BackArrowButton
                             size="medium"
                             aria-label="settings"
                             edge="start"
@@ -108,7 +106,7 @@ const NavbarMenuMobile = ({
                             }}
                           >
                             <ArrowBackIcon />
-                          </IconButton>
+                          </BackArrowButton>
                         )}
                         <Typography
                           variant={'lifiBodyMediumStrong'}

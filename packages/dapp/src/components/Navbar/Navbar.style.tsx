@@ -2,8 +2,8 @@ import {
   AppBar,
   AppBarProps,
   Box,
-  Button,
   ButtonProps,
+  IconButton,
   Link,
   LinkProps,
   ListItem,
@@ -21,6 +21,9 @@ import {
   Tabs,
   TabsProps,
 } from '@mui/material';
+
+import { ButtonSecondary } from '@transferto/shared/src/atoms/ButtonSecondary';
+
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
@@ -110,24 +113,30 @@ export const NavbarContainer = styled(AppBar, {
   },
 }));
 
-export interface NavbarDropDownButtonProps
-  extends Omit<ButtonProps, 'mainCol'> {}
-
-export const NavbarDropdownButton = styled(
-  Button,
-  {},
-)<NavbarDropDownButtonProps>(({ theme }) => ({
-  justifyContent: 'center',
-  color:
-    theme.palette.mode === 'dark'
-      ? theme.palette.accent1Alt.main
-      : theme.palette.primary.main,
-  width: '48px',
-  borderRadius: '50%',
-  marginLeft: theme.spacing(3),
-  minWidth: 'unset',
-  height: '48px',
-}));
+export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
+  ({ theme }) => ({
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    color:
+      theme.palette.mode === 'dark'
+        ? theme.palette.accent1Alt.main
+        : theme.palette.primary.main,
+    width: '48px',
+    borderRadius: '50%',
+    marginLeft: theme.spacing(3),
+    minWidth: 'unset',
+    height: '48px',
+    ':hover:before': {
+      backgroundColor:
+        theme.palette.mode === 'dark'
+          ? getContrastAlphaColor(theme, '12%')
+          : theme.palette.alphaDark100.main,
+    },
+    ':hover': {
+      backgroundColor: 'transparent',
+    },
+  }),
+);
 
 export interface NavbarPopperProps extends Omit<PopperProps, 'isScrollable'> {}
 
@@ -169,6 +178,14 @@ export const MenuHeader = styled('div')(({}) => ({
   },
 }));
 
+export const BackArrowButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.text.primary,
+  position: 'absolute',
+  '&:hover': {
+    backgroundColor: getContrastAlphaColor(theme, '4%'),
+  },
+}));
+
 export const NavbarTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
@@ -197,14 +214,13 @@ export const NavbarTabs = styled(Tabs, {
   '.MuiTabs-indicator': {
     position: 'absolute',
     top: '50%',
-    transform: 'translateY(-50%)',
+    transform: 'translateY(-50%) scaleY(0.98)',
     height: '48px',
     backgroundColor:
       theme.palette.mode === 'dark'
         ? theme.palette.alphaLight300.main
         : theme.palette.white.main,
     zIndex: '-1',
-    marginBottom: theme.spacing(1),
     borderRadius: '24px',
   },
   '> .MuiTabs-root': {
@@ -246,6 +262,7 @@ export const NavbarTab = styled(Tab, {
         : theme.palette.black.main,
     backgroundColor: 'transparent',
   },
+
   ':hover': {
     backgroundColor: getContrastAlphaColor(theme, '4%'),
   },
@@ -275,17 +292,6 @@ export const MenuItem = styled(MUIMenuItem, {
       : getContrastAlphaColor(theme, '4%'),
   },
 
-  '&& .MuiTouchRipple-child': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[900]
-        : getContrastAlphaColor(theme, '8%'),
-  },
-
-  '&& .MuiTouchRipple-rippleVisible': {
-    backgroundColor: getContrastAlphaColor(theme, '8%'),
-  },
-
   '> .menu-item-label__icon': {
     marginLeft: '13px',
   },
@@ -299,7 +305,6 @@ export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
   isOpenSubMenu?: boolean;
   openSubMenu?: string;
   isSubMenu?: boolean;
-  bgColor?: string;
   component?: string;
   isScrollable?: boolean;
 }
@@ -310,19 +315,10 @@ export const NavbarPaper = styled(Paper, {
     prop !== 'isOpenSubMenu' &&
     prop !== 'openSubMenu' &&
     prop !== 'isSubMenu' &&
-    prop !== 'isScrollable' &&
-    prop !== 'bgColor',
+    prop !== 'isScrollable',
 })<NavbarPaperProps>(
-  ({
-    theme,
-    bgColor,
-    isDarkMode,
-    isOpenSubMenu,
-    isScrollable,
-    openSubMenu,
-    isSubMenu,
-  }) => ({
-    background: !!bgColor ? bgColor : theme.palette.surface1.main,
+  ({ theme, isDarkMode, isOpenSubMenu, isScrollable, openSubMenu }) => ({
+    background: theme.palette.surface1.main,
     padding: 0,
     marginTop: 0,
     boxShadow: !isDarkMode
@@ -393,17 +389,16 @@ export const MenuItemText = styled('span')({});
 export interface MenuHeaderAppWrapperProps
   extends Omit<ListItemProps, 'isScrollable'> {
   component?: string;
-  bgColor?: string;
   isScrollable?: boolean;
 }
 
 export const MenuHeaderAppWrapper = styled(ListItem, {
-  shouldForwardProp: (prop) => prop !== 'isScrollable' && prop !== 'bgColor',
-})<MenuHeaderAppWrapperProps>(({ bgColor }) => ({
+  shouldForwardProp: (prop) => prop !== 'isScrollable',
+})<MenuHeaderAppWrapperProps>({
   position: 'sticky',
   top: 0,
   alignItems: 'center',
-  backgroundColor: bgColor ? bgColor : 'transparent',
+  backgroundColor: 'transparent',
   backdropFilter: 'blur(12px)',
   zIndex: 1,
   overflow: 'hidden',
@@ -411,7 +406,7 @@ export const MenuHeaderAppWrapper = styled(ListItem, {
   padding: '0 12px',
   marginTop: 'inherit',
   height: '64px',
-}));
+});
 
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
   component?: string;
