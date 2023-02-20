@@ -1,3 +1,4 @@
+import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { Token } from '@lifi/sdk';
 import {
   addChain as walletAddChain,
@@ -51,12 +52,17 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
   const menu = useMenu();
+  const arcx = useArcxAnalytics();
   const connect = useCallback(
     async (wallet?: Wallet) => {
       await walletManagementConnect(wallet);
       const account = await extractAccountFromSigner(signer);
       setUsedWallet(wallet!);
       setAccount(account);
+      await arcx?.connectWallet({
+        account: account.address,
+        chain: account.chainId,
+      });
     },
     [walletManagementConnect],
   );
@@ -71,6 +77,16 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const switchChain = useCallback(async (chainId: number) => {
     return walletSwitchChain(chainId);
   }, []);
+
+  useEffect(() => {
+    const arcxConnectWallet = async () => {
+      await arcx?.connectWallet({
+        account: account.address,
+        chain: account.chainId,
+      });
+    };
+    arcxConnectWallet();
+  }, [account.chainId]);
 
   const addChain = useCallback(async (chainId: number) => {
     return walletAddChain(chainId);
