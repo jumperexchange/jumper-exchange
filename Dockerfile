@@ -4,10 +4,8 @@ WORKDIR /app
 
 RUN apk add --no-cache libc6-compat git openssh
 
-RUN corepack enable
-RUN corepack prepare yarn@stable --activate
-
-COPY package.json yarn.lock tsconfig.base.json lerna.json ./
+COPY package.json yarn.lock tsconfig.base.json lerna.json .yarnrc.yml ./
+COPY .yarn/ ./.yarn
 COPY packages/ ./packages
 
 RUN yarn install
