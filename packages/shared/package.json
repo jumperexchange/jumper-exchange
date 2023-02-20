@@ -16,7 +16,7 @@
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "pre-commit": "echo 'Shared precomit running...",
+    "pre-commit": "echo 'No pre-commits defined in: shared'",
     "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json",
     "dev": "tsc -w -p ./tsconfig.json"
   },

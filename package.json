@@ -28,7 +28,7 @@
     "storybook": "lerna run storybook",
     "prepare": "husky install",
     "pre-push": "lerna run pre-push",
-    "pre-commit": "lerna run pre-commit"
+    "pre-commit": "yarn lint-staged && lerna run pre-commit"
   },
   "workspaces": [
     "packages/*"
