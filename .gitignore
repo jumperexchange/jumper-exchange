@@ -39,5 +39,5 @@ yarn-error.log*
 # !.yarn/cache
 .pnp.*
 
-.tsbuildinfo
+tsconfig.tsbuildinfo
 lerna-debug.log
