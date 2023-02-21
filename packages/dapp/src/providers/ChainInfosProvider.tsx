@@ -26,9 +26,10 @@ export const ChainInfosProvider: React.FC<PropsWithChildren<{}>> = ({
   const { data, isSuccess } = useQuery(
     ['chainStats'],
     async () => {
+      const apiUrl = (import.meta as any).env.VITE_LIFI_API_URL;
       const result = await axios({
         method: 'GET',
-        url: 'https://li.quest/v1/chains',
+        url: `${apiUrl}chains`,
       });
       return result.data;
     },

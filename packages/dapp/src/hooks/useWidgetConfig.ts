@@ -135,6 +135,9 @@ export function useWidgetConfig({ starterVariant }) {
         },
       },
       localStorageKeyPrefix: `jumper-${starterVariant}`,
+      sdkConfig: {
+        apiUrl: (import.meta as any).env.VITE_LIFI_API_URL,
+      },
     };
   }, [
     i18n.language,
