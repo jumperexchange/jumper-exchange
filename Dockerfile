@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN apk add --no-cache libc6-compat git openssh
 
-COPY package.json yarn.lock tsconfig.base.json lerna.json .yarnrc.yml ./
+COPY package.json yarn.lock tsconfig.json lerna.json .yarnrc.yml ./
 COPY .yarn/ ./.yarn
 COPY packages/ ./packages
 
