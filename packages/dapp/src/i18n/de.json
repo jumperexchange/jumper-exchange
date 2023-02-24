@@ -1,7 +1,7 @@
 {
   "navbar": {
     "links": {
-      "swap": "Tausch",
+      "swap": "Swap",
       "dashboard": "Dashboard",
       "refuel": "Gas"
     },
