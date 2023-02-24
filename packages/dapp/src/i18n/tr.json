@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "links": {
+      "swap": "Takas et",
+      "dashboard": "Kontrol Paneli",
+      "refuel": "Gaz"
+    },
+    "connectWallet": "Cüzdanı Bağla",
+    "chooseWallet": "Cüzdan Seçin",
+    "navbarMenu": {
+      "theme": "Tema",
+      "developers": "Geliştiriciler",
+      "aboutLIFI": "LI.FI Hakkında",
+      "support": "Destek"
+    },
+    "walletMenu": {
+      "disconnect": "Bağlantıyı Kes",
+      "chains": "Zincirler",
+      "switchChain": "Ağ değiştir"
+    },
+    "language": {
+      "key": "Dil",
+      "value": "Türkçe"
+    },
+    "themes": {
+      "light": "Açık",
+      "dark": "Koyu",
+      "auto": "Otomatik"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Dökümantasyon",
+      "showcases": "Vitrinler"
+    },
+    "showcases": {
+      "ukraineDonation": "Ukrayna'ya destek ol 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Zincirler Arası Karbon Dengesi"
+    }
+  }
+}
