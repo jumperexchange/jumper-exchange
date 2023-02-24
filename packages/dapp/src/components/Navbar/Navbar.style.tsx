@@ -19,7 +19,7 @@ import {
   Tab,
   TabProps,
   Tabs,
-  TabsProps,
+  TabsProps
 } from '@mui/material';
 
 import { ButtonSecondary } from '@transferto/shared/src/atoms/ButtonSecondary';
@@ -161,13 +161,13 @@ export interface NavbarMenuListProps
   component?: string;
 }
 
-export const NavbarMenuList = styled(MenuList)<NavbarMenuListProps>(({}) => ({
+export const NavbarMenuList = styled(MenuList)<NavbarMenuListProps>(() => ({
   padding: 0,
 }));
 
 export const NavbarLinkText = styled('span')({});
 
-export const MenuHeader = styled('div')(({}) => ({
+export const MenuHeader = styled('div')(() => ({
   padding: '0',
   textAlign: 'center',
   display: 'flex',

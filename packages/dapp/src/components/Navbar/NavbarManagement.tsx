@@ -1,8 +1,7 @@
 import { Chain } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { WalletManagementButtons } from '@transferto/shared';
+import { WalletManagementButtons } from '@transferto/shared/src';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,13 +11,12 @@ import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   NavbarDropdownButton,
-  NavbarManagement as NavbarManagementContainer,
+  NavbarManagement as NavbarManagementContainer
 } from './Navbar.style';
 
 const NavbarManagement = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
   const settings = useSettings();
-  const theme = useTheme();
   const menu = useMenu();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
@@ -39,13 +37,13 @@ const NavbarManagement = () => {
 
   useEffect(() => {
     menu.onMenuInit(anchorRef);
-  }, []);
+  }, [menu]);
 
   const { chains, isSuccess } = useChainInfos();
 
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    [chains, account.chainId],
   );
 
   return (

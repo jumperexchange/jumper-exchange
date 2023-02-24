@@ -1,6 +1,6 @@
 import { version } from '@lifi/widget';
 import { CaptureConsole, HttpClient } from '@sentry/integrations';
-import Sentry from '@sentry/react';
+import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 
 export const initSentry = () => {
