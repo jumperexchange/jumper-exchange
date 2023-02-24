@@ -19,12 +19,10 @@ const queryClient = new QueryClient();
 
 export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   useEffect(() => {
-    ReactGA.initialize(
-      (import.meta as any).env.VITE_GOOGLE_ANALYTICS_TRACKING_ID,
-    );
+    ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_TRACKING_ID);
     hotjar.initialize(
-      (import.meta as any).env.VITE_HOTJAR_ID,
-      (import.meta as any).env.VITE_HOTJAR_SNIPPET_VERSION,
+      import.meta.env.VITE_HOTJAR_ID,
+      import.meta.env.VITE_HOTJAR_SNIPPET_VERSION,
     );
   }, []);
 
@@ -36,7 +34,7 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             <MenuProvider>
               <ThemeProvider>
                 <ArcxAnalyticsProvider
-                  apiKey={`${(import.meta as any).env.VITE_ARCX_API_KEY}`}
+                  apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
                 >
                   <WalletProvider>
                     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
