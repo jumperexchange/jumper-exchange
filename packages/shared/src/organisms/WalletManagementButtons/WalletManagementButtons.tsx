@@ -1,4 +1,5 @@
 import type { ExtendedChain } from '@lifi/types';
+import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
 import React from 'react';
@@ -43,7 +44,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
             onClick={handleWalletPicker}
             sx={(theme) => ({
               display: 'none',
-              [theme.breakpoints.up('sm')]: {
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
                 width: '169px',
                 display: 'inline-flex !important',
               },
@@ -66,7 +67,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
             [`@media (max-height: ${80 + 18 + 680}px)`]: {
               paddingLeft: '8px',
             },
-            [theme.breakpoints.up('md')]: {
+            [theme.breakpoints.up('md' as Breakpoint)]: {
               position: 'relative',
               left: 'unset',
               display: 'inherit',

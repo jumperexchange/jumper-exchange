@@ -1,7 +1,7 @@
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +20,7 @@ const NavbarTabsContainer = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const settings = useSettings();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
 
   const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

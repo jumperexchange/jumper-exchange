@@ -1,4 +1,4 @@
-import { Modal, useTheme } from '@mui/material';
+import { Breakpoint, Modal, useTheme } from '@mui/material';
 import WidgetBot from '@widgetbot/react-embed';
 import { useMenu } from '../../providers/MenuProvider';
 import { SupportModalContainer } from './SupportModal.style';
@@ -20,8 +20,10 @@ export const SupportModal = () => {
           style={{
             width: '100%',
             height: 'calc( 100vh - 64px )',
-            [theme.breakpoints.up('sm')]: { height: 'calc( 100vh - 72px )' },
-            [theme.breakpoints.up('md')]: {
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              height: 'calc( 100vh - 72px )',
+            },
+            [theme.breakpoints.up('md' as Breakpoint)]: {
               height: '500px',
             },
           }}

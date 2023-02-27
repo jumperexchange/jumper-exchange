@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material/styles';
+import { Breakpoint, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Dispatch, SetStateAction } from 'react';
 import { NavbarMenuDesktop, NavbarMenuMobile } from './index';
@@ -26,7 +26,7 @@ const NavbarMenu = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
 
-  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
   return (
     !!open &&
     (!!isDesktop ? (

@@ -19,12 +19,12 @@ import {
   Tab,
   TabProps,
   Tabs,
-  TabsProps
+  TabsProps,
 } from '@mui/material';
 
 import { ButtonSecondary } from '@transferto/shared/src/atoms/ButtonSecondary';
 
-import { styled } from '@mui/material/styles';
+import { Breakpoint, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
@@ -42,7 +42,7 @@ export const NavbarExternalBackground = styled('div')(({ theme }) => ({
   zIndex: 1,
   backgroundColor: '#000000',
   opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
     backgroundColor: 'transparent',
   },
 }));
@@ -98,11 +98,11 @@ export const NavbarContainer = styled(AppBar, {
   height: '64px',
   padding: theme.spacing(2, 4),
   zIndex: 1300,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
     height: '72px',
     padding: theme.spacing(4, 6),
   },
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints.up('md' as Breakpoint)]: {
     padding: theme.spacing(6),
     height: '80px',
   },
@@ -148,7 +148,7 @@ export const NavbarPopper = styled(Popper, {
   left: '0 !important',
   top: 'unset !important',
   right: '0 !important',
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
     bottom: 'unset !important',
     left: 'unset !important',
     top: 'unset !important',
@@ -190,7 +190,7 @@ export const NavbarTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
   display: 'none',
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints.up('md' as Breakpoint)]: {
     position: 'absolute',
     left: '50%',
     transform: 'translateX(-50%)',
@@ -295,7 +295,7 @@ export const MenuItem = styled(MUIMenuItem, {
   '> .menu-item-label__icon': {
     marginLeft: '13px',
   },
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
     height: showButton ? 'auto' : '48px',
   },
 }));
@@ -346,7 +346,7 @@ export const NavbarPaper = styled(Paper, {
     transition:
       'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
       transformOrigin: 'inherit',
       maxHeight: 'calc( 100vh - 72px - 12px )',
 
@@ -355,7 +355,7 @@ export const NavbarPaper = styled(Paper, {
       marginTop: '-2px',
     },
 
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('md' as Breakpoint)]: {
       maxHeight: 'calc( 100vh - 80px - 12px )',
     },
   }),

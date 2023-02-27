@@ -1,5 +1,5 @@
+import type { Breakpoint } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import * as React from 'react';
 
 const JumperLogo = ({ theme }) => {
   const mainCol =
@@ -81,7 +81,7 @@ const JumperIcon = ({ theme }) => {
 };
 
 export const BrandLogo = ({ isConnected, theme }) => {
-  const isTablet = useMediaQuery(theme.breakpoints.up('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
   return !isTablet || (!isTablet && isConnected) ? (
     <JumperIcon theme={theme} />
