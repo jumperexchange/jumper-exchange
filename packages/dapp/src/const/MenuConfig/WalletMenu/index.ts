@@ -1,1 +1,1 @@
-export { default as WalletMenuItems } from './Wallet-MenuItems';
+export { useWalletMenuItems } from './Wallet-MenuItems';

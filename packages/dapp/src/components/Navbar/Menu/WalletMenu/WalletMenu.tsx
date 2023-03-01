@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys, WalletMenuItems } from '../../../../const';
+import { SubMenuKeys, useWalletMenuItems } from '../../../../const';
 import { useMenu } from '../../../../providers/MenuProvider';
 import { MenuItemComponent, NavbarMenu } from '../../index';
 
@@ -16,7 +16,7 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const { t: translate } = useTranslation();
   const theme = useTheme();
   const menu = useMenu();
-  const _walletMenuItems = WalletMenuItems();
+  const _walletMenuItems = useWalletMenuItems();
   return (
     <NavbarMenu
       handleClose={handleClose}
