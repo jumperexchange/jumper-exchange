@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "links": {
+      "swap": "Swap",
+      "dashboard": "Panel",
+      "refuel": "Gas"
+    },
+    "connectWallet": "Conectar Billetera",
+    "chooseWallet": "Seleccionar Billetera",
+    "navbarMenu": {
+      "theme": "Tema",
+      "developers": "Desarrolladores",
+      "aboutLIFI": "Acerca de LI.FI",
+      "support": "Soporte"
+    },
+    "walletMenu": {
+      "disconnect": "Desconectar",
+      "chains": "Cadenas",
+      "switchChain": "Cambiar de Cadena"
+    },
+    "language": {
+      "key": "Idioma",
+      "value": "Español"
+    },
+    "themes": {
+      "light": "Luz",
+      "dark": "Oscuro",
+      "auto": "Auto"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Documentación",
+      "showcases": "Usos"
+    },
+    "showcases": {
+      "ukraineDonation": "Apoya a Ucrania 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Cross Chain Carbon Offset"
+    }
+  }
+}

@@ -1,0 +1,1 @@
+export { useWidgetConfig } from './useWidgetConfig';

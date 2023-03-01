@@ -1,0 +1,87 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - develop
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      docker-tag: ${{ steps.out.outputs.docker-tag }}
+
+    steps:
+      - name: Set current date as env variable
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: arn:aws:iam::403372804574:role/github-actions
+          role-session-name: github-actions-role-session
+          aws-region: us-east-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Extract docker metadata
+        id: metadata
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+
+      - name: Build, tag, and push image to Amazon ECR
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+
+      - id: out
+        run: echo "docker-tag=${UNIQ_ID}-${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
+
+  publish-tags:
+    name: Publish Image Tag
+    needs: build
+    concurrency: charts/jumper-exchange/values.yaml
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Helm charts
+        uses: actions/checkout@v3
+        with:
+          repository: lifinance/lifi-deployment
+          token: ${{ secrets.ACCESS_TOKEN }}
+          ref: ${{ env.BRANCH_NAME }}
+
+      - name: Update image tag
+        uses: mikefarah/yq@v4.27.2
+        with:
+          cmd: yq -i e '.image.tag |= "${{needs.build.outputs.docker-tag}}"' charts/jumper-exchange/values-${{ env.BRANCH_NAME }}.yaml
+
+      - name: Push image ID
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add charts/jumper-exchange/values-${{ env.BRANCH_NAME }}.yaml
+          git commit -m "build: ${{needs.build.outputs.docker-tag}}"
+          git push

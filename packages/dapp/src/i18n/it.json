@@ -1,41 +1,41 @@
 {
-  "Navbar": {
-    "Links": {
-      "Swap": "Swap",
-      "Dashboard": "Dashboard",
-      "Refuel": "Gas"
+  "navbar": {
+    "links": {
+      "swap": "Scambio",
+      "dashboard": "Dashboard",
+      "refuel": "Gas"
     },
-    "ConnectWallet": "Connect Wallet",
-    "ChooseWallet": "Choose Wallet",
-    "NavbarMenu": {
-      "Theme": "Theme",
-      "Language": "Language",
-      "Developers": "Developers",
-      "AboutLIFI": "About LI.FI",
-      "Support": "Support"
+    "connectWallet": "Collega il portafoglio",
+    "chooseWallet": "Scegli il portafoglio",
+    "navbarMenu": {
+      "theme": "Tema",
+      "developers": "Sviluppatori",
+      "aboutLIFI": "Info su LI.FI",
+      "support": "Assistenza"
     },
-    "WalletMenu": {
-      "Disconnect": "Disconnect",
-      "Chains": "Chains",
-      "SwitchChain": "Switch Chain"
+    "walletMenu": {
+      "disconnect": "Disconnetti",
+      "chains": "Chains",
+      "switchChain": "Cambia Chain"
     },
-    "Languages": {
-      "en": "English",
-      "ch": "Chinese",
-      "fr": "French",
-      "de": "German",
-      "it": "Italian",
-      "jp": "Japanese"
+    "language": {
+      "key": "Lingua",
+      "value": "Italiano"
     },
-    "Themes": {
-      "Light": "Light",
-      "Dark": "Dark",
-      "Auto": "Auto"
+    "themes": {
+      "light": "Chiaro",
+      "dark": "Scuro",
+      "auto": "Automatico"
     },
-    "Developers": {
-      "Github": "GitHub",
-      "Documentation": "Documentation",
-      "Showcases": "Showcases"
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Documentazione",
+      "showcases": "In primo piano"
+    },
+    "showcases": {
+      "ukraineDonation": "Sostieni l'Ucraina 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Compenso Emissioni CO2 Cross Chain"
     }
   }
 }

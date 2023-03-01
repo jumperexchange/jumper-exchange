@@ -1,5 +1,5 @@
-import { default as Widget } from '../../components/Widget';
+import { DualWidget } from '../../components/DualWidget';
 
 export default function Swap() {
-  return <Widget starterVariant="expandable" />;
+  return <DualWidget />;
 }

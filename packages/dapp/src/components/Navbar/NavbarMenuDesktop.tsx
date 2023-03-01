@@ -1,44 +1,44 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { IconButton, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { SubMenuKeys } from '../../const/';
+import { useMenu } from '../../providers/MenuProvider';
 import {
+  BackArrowButton,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   NavbarExternalBackground,
   NavbarMenuList,
   NavbarPaper,
   NavbarPopper,
-} from './Navbar.styled';
+} from './Navbar.style';
 interface NavbarMenuProps {
-  openSubMenu: string;
-  anchorRef: any; // TODO: Replace this any with the correct type
+  isOpenSubMenu: boolean;
+  hideBackArrow: boolean;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  stickyLabel?: boolean;
-  scrollableMainLayer?: boolean;
+  isScrollable?: boolean;
   open: boolean;
   children: any;
 }
 
 const NavbarMenuDesktop = ({
-  openSubMenu,
-  anchorRef,
+  isOpenSubMenu,
   setOpen,
   handleClose,
-  stickyLabel,
-  scrollableMainLayer,
+  hideBackArrow,
+  isScrollable,
   label,
   open,
   children,
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const settings = useSettings();
+  const menu = useMenu();
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -55,9 +55,8 @@ const NavbarMenuDesktop = ({
         <NavbarExternalBackground />
         <NavbarPopper
           open={open}
-          anchorEl={anchorRef.current}
+          anchorEl={menu?.anchorRef?.current}
           role={undefined}
-          // stickyLabel={stickyLabel}
           placement="bottom-start"
           transition
           disablePortal
@@ -71,15 +70,14 @@ const NavbarMenuDesktop = ({
             >
               <NavbarPaper
                 isDarkMode={isDarkMode}
-                scrollableMainLayer={scrollableMainLayer}
-                openSubMenu={openSubMenu !== 'none'}
-                // stickyLabel={stickyLabel}
-                isScrollable={true}
+                isOpenSubMenu={isOpenSubMenu}
+                openSubMenu={menu.openNavbarSubMenu}
+                isScrollable={!!label || isScrollable}
               >
                 <ClickAwayListener
                   onClickAway={(event) => {
                     handleClose(event);
-                    settings.onCloseAllNavbarMenus();
+                    menu.onCloseAllNavbarMenus();
                   }}
                 >
                   <NavbarMenuList
@@ -87,33 +85,40 @@ const NavbarMenuDesktop = ({
                     id="composition-menu"
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
-                    isScrollable={!!label}
-                    component={openSubMenu === 'none' ? 'ul' : 'div'}
+                    className={
+                      isOpenSubMenu
+                        ? 'navbar-menu-list open'
+                        : 'navbar-menu-list'
+                    }
+                    component={
+                      !!isOpenSubMenu &&
+                      menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                        ? 'div'
+                        : 'ul'
+                    }
                   >
                     {!!label ? (
                       <MenuHeaderAppWrapper>
                         <MenuHeaderAppBar
                           component="div"
                           elevation={0}
-                          scrollableMainLayer={scrollableMainLayer}
-                          stickyLabel={stickyLabel}
+                          isScrollable={isScrollable}
                         >
-                          <IconButton
-                            size="medium"
-                            aria-label="settings"
-                            edge="start"
-                            sx={{
-                              color: theme.palette.text.primary,
-                              position: 'absolute',
-                            }}
-                            onClick={() => {
-                              settings.onOpenNavbarWalletMenu(
-                                !settings.openNavbarWalletMenu,
-                              );
-                            }}
-                          >
-                            <ArrowBackIcon />
-                          </IconButton>
+                          {!hideBackArrow && (
+                            <BackArrowButton
+                              size="medium"
+                              aria-label="settings"
+                              edge="start"
+                              sx={{}}
+                              onClick={() => {
+                                menu.onOpenNavbarWalletMenu(
+                                  !menu.openNavbarWalletMenu,
+                                );
+                              }}
+                            >
+                              <ArrowBackIcon />
+                            </BackArrowButton>
+                          )}
                           <Typography
                             variant={'lifiBodyMediumStrong'}
                             width={'100%'}

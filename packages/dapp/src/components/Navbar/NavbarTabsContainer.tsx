@@ -1,19 +1,12 @@
-import EvStationIcon from '@mui/icons-material/EvStation';
+import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { Box, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
+import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
+import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
-import {
-  NavbarTab,
-  NavbarTabs,
-  NavbarTabsContainer as NavbarTabsWrapper,
-} from './Navbar.styled';
-const linkMap = {
-  swap: '/swap',
-  dashboard: '/dashboard',
-  refuel: '/gas',
-};
+import { gaEventTrack } from '../../utils/google-analytics';
+import { NavbarTab, NavbarTabs } from './Navbar.style';
 
 function a11yProps(index: number) {
   return {
@@ -25,9 +18,9 @@ function a11yProps(index: number) {
 const NavbarTabsContainer = () => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
-  const i18Path = 'Navbar.';
+  const i18Path = 'navbar.';
   const settings = useSettings();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
 
   const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -35,55 +28,62 @@ const NavbarTabsContainer = () => {
   };
 
   return (
-    <NavbarTabsWrapper>
-      <Box
-        sx={{
-          borderColor: 'divider',
-          width: '100%',
-          height: '48px',
-          borderBottom: 'unset',
+    <NavbarTabs
+      value={!!isDesktop ? settings.activeTab : false}
+      onChange={handleChange}
+      isDarkMode={isDarkMode}
+      aria-label="tabs"
+      indicatorColor="primary"
+    >
+      <NavbarTab
+        onClick={() => {
+          gaEventTrack({
+            category: 'navigation',
+            action: 'switch tab',
+            label: 'swap',
+          });
+          hotjar.initialized() &&
+            hotjar.stateChange('navigation__switch-tab__swap');
         }}
-      >
-        <NavbarTabs
-          value={!!isMobile ? false : settings.activeTab}
-          onChange={handleChange}
-          isDarkMode={isDarkMode}
-          aria-label="basic tabs example"
-          indicatorColor="primary"
-        >
-          <NavbarTab
-            icon={
-              <SwapHorizIcon
-                sx={{
-                  marginRight: '6px',
-                  marginBottom: '0px !important',
-                  color: !!isDarkMode
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
-                }}
-              />
-            }
-            label={`${translate(`${i18Path}Links.Swap`)}`}
-            {...a11yProps(0)}
+        icon={
+          <SwapHorizIcon
+            sx={{
+              marginRight: '6px',
+              marginBottom: '0px !important',
+              color: !!isDarkMode
+                ? theme.palette.white.main
+                : theme.palette.black.main,
+            }}
           />
-          <NavbarTab
-            label={`${translate(`${i18Path}Links.Refuel`)}`}
-            icon={
-              <EvStationIcon
-                sx={{
-                  marginRight: '6px',
-                  marginBottom: '0px !important',
-                  color: !!isDarkMode
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
-                }}
-              />
-            }
-            {...a11yProps(1)}
+        }
+        label={`${translate(`${i18Path}links.swap`)}`}
+        {...a11yProps(0)}
+      />
+      <NavbarTab
+        onClick={() => {
+          gaEventTrack({
+            category: 'navigation',
+            action: 'switch tab',
+            label: 'gas',
+          });
+          hotjar.initialized() &&
+            hotjar.stateChange('navigation__switch-tab__gas');
+        }}
+        label={`${translate(`${i18Path}links.refuel`)}`}
+        icon={
+          <EvStationOutlinedIcon
+            sx={{
+              marginRight: '6px',
+              marginBottom: '0px !important',
+              color: !!isDarkMode
+                ? theme.palette.white.main
+                : theme.palette.black.main,
+            }}
           />
-        </NavbarTabs>
-      </Box>
-    </NavbarTabsWrapper>
+        }
+        {...a11yProps(1)}
+      />
+    </NavbarTabs>
   );
 };
 

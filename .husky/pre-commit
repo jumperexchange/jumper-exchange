@@ -1,9 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo "This is a Pre-Commit message as a placeholder for sripts/tests/hooks..."
-# exit 1
+echo "Executing pre-commit scripts"
 
-# yarn pre-commit
-yarn lint-staged;
-yarn lerna run --concurrency 1 --stream precommit --since HEAD --exclude-dependents
+yarn pre-commit

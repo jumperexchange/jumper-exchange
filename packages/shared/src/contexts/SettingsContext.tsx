@@ -2,21 +2,16 @@ import { localStorageKey } from '@transferto/shared/src/config';
 import React from 'react';
 // import { useTranslation, i18n } from 'react-i18next';
 
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import { createContext, useEffect, useState } from 'react';
 // utils
 // config
 import i18next from 'i18next';
 import { defaultSettings } from '../index';
 // @type
-import {
-  DappLanguagesSupported,
+import type { LanguageKey } from '../../../dapp/src/types';
+import { defaultLang } from '../config';
+import type {
   SettingsContextProps,
   SettingsValueProps,
   ThemeModesSupported,
@@ -32,32 +27,10 @@ const initialState: SettingsContextProps = {
   onWalletDisconnect: () => {},
 
   // Mode
-  onToggleMode: () => {},
   onChangeMode: () => {},
 
   // Tabs
   onChangeTab: () => {},
-
-  // CopyClipboard
-  onCopyToClipboard: () => {},
-
-  // Close ALL Navbar Menus
-  onCloseAllNavbarMenus: () => {},
-
-  // Toggle Navbar Main Menu
-  onOpenNavbarMainMenu: () => {},
-
-  // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: () => {},
-
-  // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: () => {},
-
-  // Toggle Navbar Sub Menu
-  onOpenNavbarSubMenu: () => {},
-
-  // Direction
-  onChangeDirectionByLang: () => {},
 
   // Language
   onChangeLanguage: () => {},
@@ -83,136 +56,58 @@ const SettingsProvider = ({
 
   // Tabs
   const onChangeTab = (tab: number) => {
-    setSettings({ ...settings, activeTab: !!tab ? tab : 0 });
-  };
-
-  // CopyToClipboard
-  const onCopyToClipboard = (copied: boolean) => {
-    setSettings({
-      ...settings,
-      copiedToClipboard: copied as boolean,
-    });
-  };
-
-  // Close ALL Navbar Menus
-  const onCloseAllNavbarMenus = () => {
-    setSettings({
-      ...settings,
-      openMainNavbarMenu: false,
-      openNavbarWalletMenu: false,
-      openNavbarConnectedMenu: false,
-      openNavbarSubMenu: 'none',
-      copiedToClipboard: false,
-    });
-  };
-
-  // Toggle Navbar Main Menu
-  const onOpenNavbarMainMenu = (open: boolean) => {
-    setSettings({
-      ...settings,
-      openMainNavbarMenu: open as boolean,
-    });
-  };
-
-  // Toggle Navbar Wallet Menu
-  const onOpenNavbarWalletMenu = (open: boolean) => {
-    setSettings({
-      ...settings,
-      openNavbarWalletMenu: open as boolean,
-    });
-  };
-
-  // Toggle Navbar Connected Menu
-  const onOpenNavbarConnectedMenu = (open: boolean) => {
-    setSettings({
-      ...settings,
-      openNavbarConnectedMenu: open as boolean,
-    });
-  };
-
-  // Toggle Navbar Sub Menu
-  const onOpenNavbarSubMenu = (subMenu: string) => {
-    setSettings({
-      ...settings,
-      openNavbarSubMenu: subMenu as string,
-    });
+    setSettings((oldSettings) => ({
+      ...oldSettings,
+      activeTab: !!tab ? tab : 0,
+    }));
   };
 
   // Wallet
   const onWalletConnect = (activeWalletName: string) => {
-    setSettings({
-      ...settings,
+    setSettings((oldSettings) => ({
+      ...oldSettings,
       activeWalletName: activeWalletName as WalletConnected,
-    });
+    }));
   };
 
   const onWalletDisconnect = () => {
-    setSettings({
-      ...settings,
+    setSettings((oldSettings) => ({
+      ...oldSettings,
       activeWalletName: 'none',
-      openNavbarConnectedMenu: false,
-    });
+    }));
   };
 
   // Mode
-  const onToggleMode = () => {
-    setSettings({
-      ...settings,
-      themeMode: settings.themeMode === 'light' ? 'dark' : 'light',
-    });
-  };
-
   const onChangeMode = (mode: ThemeModesSupported) => {
-    setSettings({
-      ...settings,
+    setSettings((oldSettings) => ({
+      ...oldSettings,
       themeMode: mode as ThemeModesSupported,
-    });
+    }));
   };
 
   // Language
-  const onChangeLanguage = (language: string) => {
-    setSettings({
-      ...settings,
-      languageMode: language as DappLanguagesSupported,
-    });
-  };
-
-  // Direction
-  const onChangeDirectionByLang = (lang: DappLanguagesSupported) => {
-    setSettings({
-      ...settings,
-      languageMode: lang ? lang : DappLanguagesSupported.en,
-    });
+  const onChangeLanguage = (language: LanguageKey) => {
+    setSettings((oldSettings) => ({
+      ...oldSettings,
+      languageMode: language as LanguageKey,
+    }));
   };
 
   // Reset
   const onResetSetting = () => {
-    setSettings({
+    setSettings(() => ({
       activeWalletName: !!initialState.activeWalletName
         ? initialState.activeWalletName
         : 'none',
-      themeMode: !!initialState.themeMode ? initialState.themeMode : 'auto',
+      themeMode: !!initialState.themeMode
+        ? initialState.themeMode
+        : ('auto' as ThemeModesSupported),
       languageMode:
         initialState.languageMode ||
-        (i18next.language as DappLanguagesSupported) ||
-        DappLanguagesSupported.en,
+        (i18next.language as LanguageKey) ||
+        defaultLang,
       activeTab: !!initialState.activeTab ? initialState.activeTab : 0,
-      copiedToClipboard: !!initialState.copiedToClipboard
-        ? initialState.copiedToClipboard
-        : false,
-      openMainNavbarMenu: !!initialState.openMainNavbarMenu
-        ? initialState.openMainNavbarMenu
-        : false,
-      openNavbarWalletMenu: !!initialState.openNavbarWalletMenu
-        ? initialState.openNavbarWalletMenu
-        : false,
-      openNavbarConnectedMenu: !!initialState.openNavbarConnectedMenu
-        ? initialState.openNavbarConnectedMenu
-        : false,
-      openNavbarSubMenu: !!initialState.openNavbarSubMenu
-        ? initialState.openNavbarSubMenu
-        : 'none',
-    });
+    }));
   };
 
   return (
@@ -223,35 +118,15 @@ const SettingsProvider = ({
         // Tabs
         onChangeTab,
 
-        // CopyToClipboard
-        onCopyToClipboard,
-
-        // Close ALL Navbar Menus
-        onCloseAllNavbarMenus,
-
-        // Toggle Navbar Main Menu
-        onOpenNavbarMainMenu,
-
-        // Toggle Navbar Wallet Menu
-        onOpenNavbarWalletMenu,
-
-        // Toggle Navbar Connected Menu
-        onOpenNavbarConnectedMenu,
-
-        // Toggle Navbar Sub Menu
-        onOpenNavbarSubMenu,
-
         // Wallet
         onWalletConnect,
         onWalletDisconnect,
 
         // Mode
-        onToggleMode,
         onChangeMode,
 
         // Language
         onChangeLanguage,
-        onChangeDirectionByLang,
 
         // Reset
         onResetSetting,

@@ -6,7 +6,6 @@ import {
   TokenWithAmounts,
 } from '@lifi/sdk';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
-import { TableColumnType } from 'antd';
 import BigNumber from 'bignumber.js';
 import { Signer } from 'ethers';
 
@@ -27,8 +26,9 @@ export interface MenuItem {
 export interface MenuListItem {
   label: string;
   triggerSubMenu?: string;
-  listIcon: JSX.Element | string;
-  extraIcon?: JSX.Element;
+  prefixIcon?: JSX.Element | string;
+  suffixIcon?: JSX.Element | string;
+  showMoreIcon?: boolean;
   checkIcon?: boolean;
   url?: string;
   onClick?: any; //(mode?: string) => void;
@@ -69,10 +69,6 @@ export function chainKeysToObject(val: any) {
     result[key.toLowerCase()] = JSON.parse(JSON.stringify(val));
   }
   return result;
-}
-
-export interface ColomnType extends TableColumnType<DataType> {
-  children?: Array<ColomnType>;
 }
 
 export interface Wallet {

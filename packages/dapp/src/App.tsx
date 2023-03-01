@@ -1,20 +1,14 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import BackgroundGradient from './components/BackgroundGradient/BackgroundGradient';
+import { AppProvider } from './AppProvider';
+import { DualWidget } from './components/DualWidget';
 import { Navbar } from './components/Navbar';
-import Refuel from './pages/Refuel';
-import Swap from './pages/Swap';
+import { Menus } from './components/Navbar/Menu/Menus';
 
 export default function App() {
   return (
-    <BackgroundGradient>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/swap/*" element={<Swap />} />
-          <Route path="/gas/*" element={<Refuel />} />
-          <Route path="/" element={<Navigate to="/swap/" />} />
-        </Routes>
-      </BrowserRouter>
-    </BackgroundGradient>
+    <AppProvider>
+      <Navbar />
+      <Menus />
+      <DualWidget />
+    </AppProvider>
   );
 }

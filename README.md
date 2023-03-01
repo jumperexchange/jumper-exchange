@@ -2,12 +2,14 @@
 
 Lerna Monorepo for all jumper.exchange related things
 
-## Basic Usage 
+## Basic Usage
 
 In the root directory run the following commands to get started:
+
 ```
 yarn bootstrap
 ```
+
 to install all dependencies, and
 
 ```
@@ -15,7 +17,6 @@ yarn dev
 ```
 
 to start the development vite server and to start building packages in watch mode.
-
 
 ## Project Structure
 

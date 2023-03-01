@@ -1,29 +1,34 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Dispatch, SetStateAction } from 'react';
 // import {default as NavbarTabsContainer} from './NavbarTabsContainer'
 import CheckIcon from '@mui/icons-material/Check';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
+import { SubMenuKeys } from '../../const';
+import { useMenu } from '../../providers/MenuProvider';
 import { MenuListItem } from '../../types';
 import {
+  BackArrowButton,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuItem,
   MenuItemLabel,
   MenuLinkItem,
   NavbarPaper,
-} from './Navbar.styled';
+} from './Navbar.style';
 
 interface NavbarSubMenuProps {
   open: boolean;
-  openSubMenu: string;
+  isOpenSubMenu: boolean;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   isSubMenu: boolean;
   label: string;
-  listIcon?: JSX.Element;
+  suffixIcon?: JSX.Element | string;
+  prefixIcon?: JSX.Element | string;
   checkIcon?: boolean;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   url?: string;
   subMenuList: MenuListItem[];
   triggerSubMenu: string;
@@ -31,35 +36,38 @@ interface NavbarSubMenuProps {
 
 const SubMenuComponent = ({
   open,
-  openSubMenu,
+  isOpenSubMenu,
   setOpenSubMenu,
   isSubMenu,
-  stickyLabel,
+  isScrollable,
   label,
   triggerSubMenu,
   subMenuList,
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const menu = useMenu();
 
   return (
     !!open && (
       <>
-        {openSubMenu === triggerSubMenu && (
+        {menu.openNavbarSubMenu === triggerSubMenu && (
           <NavbarPaper
-            component="ul"
+            component={'ul'}
             isSubMenu={isSubMenu}
-            stickyLabel={stickyLabel}
+            openSubMenu={menu.openNavbarSubMenu}
+            isOpenSubMenu={isOpenSubMenu}
+            isScrollable={isScrollable}
             isDarkMode={isDarkMode}
           >
             <MenuHeaderAppWrapper>
               <MenuHeaderAppBar
                 component="div"
                 elevation={0}
-                stickyLabel={!!label}
+                isScrollable={!!label || isScrollable}
               >
                 <>
-                  <IconButton
+                  <BackArrowButton
                     size="medium"
                     aria-label="settings"
                     edge="start"
@@ -68,11 +76,11 @@ const SubMenuComponent = ({
                       position: 'absolute',
                     }}
                     onClick={() => {
-                      setOpenSubMenu('none');
+                      setOpenSubMenu(SubMenuKeys.none);
                     }}
                   >
                     <ArrowBackIcon />
-                  </IconButton>
+                  </BackArrowButton>
                   <Typography
                     variant={'lifiBodyMediumStrong'}
                     width={'100%'}
@@ -90,37 +98,51 @@ const SubMenuComponent = ({
                 !!el.url ? (
                   <MenuLinkItem
                     onClick={() => {
-                      el.onClick();
+                      !!el.triggerSubMenu && setOpenSubMenu(el.triggerSubMenu);
+                      !!el.onClick && el.onClick();
                     }}
                     component="li"
                     key={`${el.label}-${index}`}
                   >
                     <MenuItemLabel>
                       <>
-                        {el.listIcon}
-                        <Typography variant={'lifiBodyMedium'} ml={'12px'}>
+                        {el.prefixIcon}
+                        <Typography
+                          variant={'lifiBodyMedium'}
+                          ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                          mr={!!el.suffixIcon ? '12px' : 'inherit'}
+                        >
                           <>{el.label}</>
                         </Typography>
+                        {el.suffixIcon}
                       </>
                     </MenuItemLabel>
                   </MenuLinkItem>
                 ) : (
                   <MenuItem
-                    stickyLabel={stickyLabel}
+                    isScrollable={isScrollable}
                     onClick={() => {
-                      el.onClick();
+                      !!el.triggerSubMenu && setOpenSubMenu(el.triggerSubMenu);
+                      !!el.onClick && el.onClick();
                     }}
                     key={`${el.label}-${index}`}
                   >
                     <MenuItemLabel>
                       <>
-                        {el.listIcon}
-                        <Typography variant={'lifiBodyMedium'} ml={'12px'}>
+                        {el.prefixIcon}
+                        <Typography
+                          variant={'lifiBodyMedium'}
+                          ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                          mr={!!el.suffixIcon ? '12px' : 'inherit'}
+                        >
                           <>{el.label}</>
                         </Typography>
                       </>
                     </MenuItemLabel>
                     {el.checkIcon && <CheckIcon />}
+                    {el.showMoreIcon && (
+                      <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+                    )}
                   </MenuItem>
                 ),
               )

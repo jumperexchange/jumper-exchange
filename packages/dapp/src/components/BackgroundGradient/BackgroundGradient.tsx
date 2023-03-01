@@ -4,31 +4,30 @@ import {
   BackgroundGradientBottomRight,
   BackgroundGradientContainer,
   BackgroundGradientTopCenter,
-} from './BackgroundGradient.styled';
+} from './BackgroundGradient.style';
 
-const BackgroundGradient = ({ children }) => {
+export const BackgroundGradient = () => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
   return (
     <BackgroundGradientContainer className="background-gradient background-gradient--main">
-      <>
-        <BackgroundGradientBottomLeft
-          isDarkMode={isDarkMode}
-          className="background-gradient background-gradient--bottom-left"
-        />
-        <BackgroundGradientBottomRight
-          isDarkMode={isDarkMode}
-          className="background-gradient background-gradient--bottom-right"
-        />
-        <BackgroundGradientTopCenter
-          isDarkMode={isDarkMode}
-          className="background-gradient background-gradient--top-center"
-        />
-        {children}
-      </>
+      {/* <BackgroundGradients
+        isDarkMode={isDarkMode}
+        className="background-gradients"
+      /> */}
+      <BackgroundGradientBottomLeft
+        isDarkMode={isDarkMode}
+        className="background-gradient background-gradient--bottom-left"
+      />
+      <BackgroundGradientBottomRight
+        isDarkMode={isDarkMode}
+        className="background-gradient background-gradient--bottom-right"
+      />
+      <BackgroundGradientTopCenter
+        isDarkMode={isDarkMode}
+        className="background-gradient background-gradient--top-center"
+      />
     </BackgroundGradientContainer>
   );
 };
-
-export default BackgroundGradient;

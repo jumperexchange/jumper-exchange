@@ -1,0 +1,1 @@
+export { WalletMenu } from './WalletMenu';

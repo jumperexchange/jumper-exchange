@@ -1,7 +1,6 @@
 // @mui
-import { deDE, enUS } from '@mui/material/locale';
-import i18next from 'i18next';
-import { DappLanguagesSupported } from './types/settings';
+import type { LanguageKey } from '../../dapp/src/types';
+import type { ThemeModesSupported } from './types';
 
 export const cookiesExpires = 3;
 
@@ -15,46 +14,50 @@ export const localStorageKey = {
 // Please remove `localStorage` when you change settings.
 // ----------------------------------------------------------------------
 
-export const allLangs = [
-  {
-    label: 'English',
-    value: 'en' as DappLanguagesSupported,
-    systemValue: enUS,
-    // icon: "/assets/icons/flags/ic_flag_en.svg",
-  },
-  {
-    label: 'Deutsch',
-    value: 'de' as DappLanguagesSupported,
-    systemValue: deDE,
-    // icon: "/assets/icons/flags/ic_flag_de.svg",
-  },
-];
+export const defaultLang = 'en'; // English
 
-export const defaultLang = allLangs[0]; // English
-
-const setLanguage = (defaultLang) => {
-  if (!!i18next.language) {
-    return i18next.language;
-  } else if (!!localStorage.i18nextLng) {
-    return localStorage.i18nextLng;
-  } else if (!!localStorage.getItem(localStorageKey.languageMode)) {
+const setLanguage = () => {
+  if (!!localStorage.getItem(localStorageKey.languageMode)) {
     return localStorage.getItem(localStorageKey.languageMode);
   } else {
-    return defaultLang.value;
+    return '';
   }
 };
 
-export const defaultSettings: any = {
-  themeMode: !!localStorage.getItem(localStorageKey.themeMode)
-    ? localStorage.getItem(localStorageKey.themeMode)
-    : 'auto',
-  languageMode: setLanguage(defaultLang),
-  activeWalletName: !!localStorage.getItem(localStorageKey.activeWalletName)
-    ? localStorage.getItem(localStorageKey.activeWalletName)
-    : false,
+interface DefaultSettingsType {
+  activeTab: number;
+  themeMode: ThemeModesSupported;
+  languageMode: LanguageKey;
+  activeWalletName: string;
+}
+
+export const defaultSettings: DefaultSettingsType = {
   activeTab: 0,
+  themeMode: !!localStorage.getItem(localStorageKey.themeMode)
+    ? (localStorage.getItem(localStorageKey.themeMode) as ThemeModesSupported)
+    : 'auto',
+  languageMode: setLanguage() as LanguageKey,
+  activeWalletName: !!localStorage.getItem(localStorageKey.activeWalletName)
+    ? (localStorage.getItem(localStorageKey.activeWalletName) as string)
+    : '',
+};
+
+interface defaultMenuType {
+  copiedToClipboard: boolean;
+  openMainNavbarMenu: boolean;
+  openNavbarWalletMenu: boolean;
+  openNavbarConnectedMenu: boolean;
+  openNavbarSubMenu: string;
+  openSupportModal: boolean;
+  anchorEl: null | JSX.Element;
+}
+
+export const defaultMenu: defaultMenuType = {
+  copiedToClipboard: false,
   openMainNavbarMenu: false,
   openNavbarWalletMenu: false,
   openNavbarConnectedMenu: false,
   openNavbarSubMenu: 'none',
+  openSupportModal: false,
+  anchorEl: null,
 };

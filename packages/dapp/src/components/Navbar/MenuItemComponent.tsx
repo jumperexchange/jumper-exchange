@@ -1,42 +1,45 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary';
 import { Dispatch, SetStateAction } from 'react';
-import { MenuButton, MenuItem, MenuItemLabel } from './Navbar.styled';
+import { MenuItem, MenuItemLabel } from './Navbar.style';
 
 interface MenuItemProps {
   open: boolean;
-  openSubMenu: string;
+  isOpenSubMenu: boolean;
   showButton: boolean;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
+  showMoreIcon?: boolean;
   label: string;
-  extraIcon?: JSX.Element;
   onClick: any;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   triggerSubMenu: string;
-  listIcon: JSX.Element | string;
+  prefixIcon?: JSX.Element | string;
+  suffixIcon?: JSX.Element | string;
   checkIcon?: boolean;
 }
 
 const MenuItemComponent = ({
   open,
-  openSubMenu,
+  isOpenSubMenu,
   setOpenSubMenu,
   showButton,
-  extraIcon,
+  showMoreIcon = true,
   onClick,
-  stickyLabel,
+  isScrollable,
   label,
   triggerSubMenu,
-  listIcon,
+  prefixIcon,
+  suffixIcon,
 }: MenuItemProps) => {
   const theme = useTheme();
 
-  return !!open && openSubMenu === 'none' ? (
+  return !!open && !isOpenSubMenu ? (
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
-      stickyLabel={stickyLabel}
+      isScrollable={isScrollable}
       onClick={() => {
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
         !!onClick && onClick();
@@ -44,23 +47,25 @@ const MenuItemComponent = ({
     >
       <>
         {showButton ? (
-          <MenuButton
-            sx={{
-              textTransform: 'none',
-            }}
-          >
+          <ButtonPrimary fullWidth>
             <>
-              <Typography variant={'lifiBodyMediumStrong'} component={'span'}>
+              {prefixIcon}
+              <Typography
+                variant={'lifiBodyMediumStrong'}
+                component={'span'}
+                ml={!!prefixIcon ? '9.5px' : 'inherit'}
+                mr={!!prefixIcon ? '9.5px' : 'inherit'}
+              >
                 <>{label}</>
               </Typography>
-              {listIcon}
+              {suffixIcon}
             </>
-          </MenuButton>
+          </ButtonPrimary>
         ) : (
           <>
             <MenuItemLabel>
               <>
-                {listIcon}
+                {prefixIcon}
                 <Typography variant={'lifiBodyMedium'} ml={'12px'}>
                   <>{label}</>
                 </Typography>
@@ -72,8 +77,10 @@ const MenuItemComponent = ({
                 alignItems: 'center',
               }}
             >
-              {extraIcon}
-              <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+              {suffixIcon}
+              {showMoreIcon && (
+                <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+              )}
             </div>
           </>
         )}

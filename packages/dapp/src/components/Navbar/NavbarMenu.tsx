@@ -1,71 +1,58 @@
-import { useTheme } from '@mui/material/styles';
+import { Breakpoint, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { NavbarMenuDesktop, NavbarMenuMobile } from './index';
 
 interface NavbarMenuProps {
-  openSubMenu?: string;
-  anchorRef: any; // TODO: Replace this any with the correct type
+  isOpenSubMenu?: boolean;
   label?: string;
+  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
-  scrollableMainLayer?: boolean;
-  stickyLabel?: boolean;
+  isScrollable?: boolean;
   children: any;
 }
 
 const NavbarMenu = ({
   handleClose,
   open,
-  stickyLabel,
-  scrollableMainLayer,
+  isScrollable,
+  hideBackArrow,
   setOpen,
   label,
-  anchorRef,
-  openSubMenu,
+  isOpenSubMenu,
   children,
 }: NavbarMenuProps) => {
   const theme = useTheme();
 
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  function handleListKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    } else if (event.key === 'Escape') {
-      setOpen(false);
-    }
-  }
-
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
   return (
     !!open &&
-    (!!isMobile ? (
-      <NavbarMenuMobile
-        handleClose={handleClose}
-        anchorRef={anchorRef}
-        label={label}
-        open={open}
-        scrollableMainLayer={scrollableMainLayer}
-        setOpen={setOpen}
-        openSubMenu={openSubMenu}
-        stickyLabel={stickyLabel}
-      >
-        {children}
-      </NavbarMenuMobile>
-    ) : (
+    (!!isDesktop ? (
       <NavbarMenuDesktop
         handleClose={handleClose}
-        anchorRef={anchorRef}
+        hideBackArrow={hideBackArrow}
         label={label}
         open={open}
-        scrollableMainLayer={scrollableMainLayer}
         setOpen={setOpen}
-        openSubMenu={openSubMenu}
-        stickyLabel={stickyLabel}
+        isOpenSubMenu={isOpenSubMenu}
+        isScrollable={isScrollable}
       >
         {children}
       </NavbarMenuDesktop>
+    ) : (
+      <NavbarMenuMobile
+        handleClose={handleClose}
+        hideBackArrow={hideBackArrow}
+        label={label}
+        open={open}
+        setOpen={setOpen}
+        isOpenSubMenu={isOpenSubMenu}
+        isScrollable={isScrollable}
+      >
+        {children}
+      </NavbarMenuMobile>
     ))
   );
 };
