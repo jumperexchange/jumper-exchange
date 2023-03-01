@@ -1,5 +1,5 @@
 
-name: s3-depl
+name: s3-deployment
 
 on:
   push:
@@ -13,16 +13,21 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v3
+
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          aws-access-key-id: ${{ secrets.REG_ID }}
-          aws-secret-access-key: ${{ secrets.REG_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: arn:aws:iam::403372804574:role/github-actions
+          role-session-name: github-actions-role-session
+          aws-region: us-east-2
+
       - name: Build React App
         run: yarn install && yarn build:lifinance${{env.BRANCH_NAME == 'main' && ' ' || format(':{0}',env.BRANCH_NAME) }}
       - name: Deploy app build to S3 bucket
