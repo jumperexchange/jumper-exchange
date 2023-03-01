@@ -53,7 +53,7 @@ export const useWalletMenuItems = () => {
       });
     });
     return _output;
-  }, [login]);
+  }, []);
 
   return _WalletMenuItems;
 };
