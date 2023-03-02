@@ -1,2 +1,2 @@
-export * from './use-locales';
-export { useSettings } from './use-settings';
+export * from './use-settings';
+export * from './use-translation';

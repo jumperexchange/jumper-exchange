@@ -1,4 +1,3 @@
-import * as React from 'react';
 export const Discord = (props) => (
   <svg
     width={25}

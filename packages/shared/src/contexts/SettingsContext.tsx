@@ -1,5 +1,4 @@
 import { localStorageKey } from '@transferto/shared/src/config';
-import React from 'react';
 // import { useTranslation, i18n } from 'react-i18next';
 
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
