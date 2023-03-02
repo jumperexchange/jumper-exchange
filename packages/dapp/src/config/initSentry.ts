@@ -24,7 +24,7 @@ export const initSentry = () => {
     ],
     sampleRate: 0.25,
     tracesSampleRate: 0.1,
-    replaysSessionSampleRate: 0.05,
+    replaysSessionSampleRate: 0,
     replaysOnErrorSampleRate: 0.25,
     release: version,
     environment: import.meta.env.MODE,
