@@ -35,4 +35,17 @@ jobs:
         run: yarn install && yarn build:${{env.BRANCH_NAME == 'main' && 'production' || env.BRANCH_NAME }}
 
       - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./packages/dapp/dist/ ${{env.BRANCH_NAME == 'main' && 's3://' || format('s3://{0}.',env.BRANCH_NAME) }}jumper.exchange --delete
+        run: aws s3 sync ./packages/dapp/dist/ ${{ env.BRANCH_NAME == 'main' && 's3://' || format('s3://{0}.',env.BRANCH_NAME) }}jumper.exchange --delete
+
+      - name: Purge Cache
+        run: |
+          curl --request POST \
+            --url https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE }}/purge_cache \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer ${{ secrets.CF_TOKEN }}' \
+            --data '{
+            "files": [
+              "${{ env.BRANCH_NAME == 'main' && 'https://' || format('https://{0}.',env.BRANCH_NAME) }}jumper.exchange",
+              "${{ env.BRANCH_NAME == 'main' && 'https://www.' || format('https://www.{0}.',env.BRANCH_NAME) }}jumper.exchange"
+            ]
+          }'
