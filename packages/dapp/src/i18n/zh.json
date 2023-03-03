@@ -9,9 +9,9 @@
     "chooseWallet": "选择钱包",
     "navbarMenu": {
       "theme": "主题",
-      "developers": "开发人员",
+      "developers": "开发者",
       "aboutLIFI": "关于 LI.FI",
-      "support": "支持"
+      "support": "技术支持"
     },
     "walletMenu": {
       "disconnect": "断开连接",
