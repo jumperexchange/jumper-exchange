@@ -11,7 +11,7 @@ import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   NavbarDropdownButton,
-  NavbarManagement as NavbarManagementContainer
+  NavbarManagement as NavbarManagementContainer,
 } from './Navbar.style';
 
 const NavbarManagement = () => {
@@ -37,7 +37,10 @@ const NavbarManagement = () => {
 
   useEffect(() => {
     menu.onMenuInit(anchorRef);
-  }, [menu]);
+    // We want to run this once to avoid infinite re-render
+    // FIXME: We need to fix how we manage menu state to avoid re-rendering of the whole app when we open the menu
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { chains, isSuccess } = useChainInfos();
 
