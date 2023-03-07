@@ -53,12 +53,13 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:staging": "vite --mode staging",
+    "dev:production": "vite --mode production",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "build-env": "bash -ac '. .env.${VITE_ENV}; tsc && vite build'",
-    "build:staging": "VITE_ENV=staging npm run build-env",
-    "build:develop": "VITE_ENV=development npm run build-env",
-    "build:production": "VITE_ENV=production npm run build-env"
+    "build:develop": "tsc && vite build --mode development",
+    "build:staging": "tsc && vite build --mode staging",
+    "build:production": "tsc && vite build --mode production"
   },
   "browserslist": {
     "production": [
