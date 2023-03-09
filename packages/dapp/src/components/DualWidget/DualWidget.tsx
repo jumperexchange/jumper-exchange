@@ -46,11 +46,7 @@ export function DualWidget() {
 
   useEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant]);
-
-  useEffect(() => {
-    getActiveWidget();
-  }, [getActiveWidget, settings.activeTab]);
+  }, [getActiveWidget, starterVariant, settings.activeTab]);
 
   return (
     <Grid
