@@ -22,6 +22,16 @@ export function useWidgetConfig({ starterVariant }) {
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
 
+  // load environment config
+  const env = import.meta.env;
+  const apiUrl = env.VITE_LIFI_API_URL;
+  let rpcs = {};
+  try {
+    rpcs = JSON.parse(env.VITE_CUSTOM_RPCS);
+  } catch (e) {
+    console.error('Parsing custom rpcs failed', e);
+  }
+
   const widgetConfig: WidgetConfig = useMemo(() => {
     return {
       variant: starterVariant ? starterVariant : 'expandable',
@@ -136,7 +146,8 @@ export function useWidgetConfig({ starterVariant }) {
       },
       localStorageKeyPrefix: `jumper-${starterVariant}`,
       sdkConfig: {
-        apiUrl: (import.meta as any).env.VITE_LIFI_API_URL,
+        apiUrl,
+        rpcs,
       },
     };
   }, [
