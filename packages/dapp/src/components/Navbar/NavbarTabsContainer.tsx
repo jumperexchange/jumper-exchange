@@ -37,6 +37,7 @@ const NavbarTabsContainer = () => {
     >
       <NavbarTab
         onClick={() => {
+          window.history.replaceState(null, document.title, '/swap');
           gaEventTrack({
             category: 'navigation',
             action: 'switch tab',
@@ -61,6 +62,7 @@ const NavbarTabsContainer = () => {
       />
       <NavbarTab
         onClick={() => {
+          window.history.replaceState(null, document.title, '/gas');
           gaEventTrack({
             category: 'navigation',
             action: 'switch tab',

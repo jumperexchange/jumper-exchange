@@ -13,27 +13,22 @@ export function DualWidget() {
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');
-  const handleIsActiveUrl = useCallback(
-    (activeUrl: string) =>
-      Object.values(LinkMap).filter((el) => {
-        if (el.includes(activeUrl)) {
-          let url = window.location.pathname.slice(1, 1 + activeUrl.length);
-          ReactGA.send({ hitType: 'pageview', page: `/${url}` });
-          return url === activeUrl;
-        }
-      }),
-    [],
-  );
 
   const starterVariant = useMemo(() => {
-    if (handleIsActiveUrl('swap')) {
+    let url = window.location.pathname.slice(1);
+    if (!!url && !!LinkMap[url] && url === LinkMap[url]) {
+      ReactGA.send({ hitType: 'pageview', page: `/${url}` });
+      if (url === LinkMap.swap) {
+        return 'expandable';
+      } else if (url === LinkMap.gas || url === LinkMap.refuel) {
+        return 'refuel';
+      }
+    } else {
       return 'expandable';
-    } else if (handleIsActiveUrl('gas') || handleIsActiveUrl('refuel')) {
-      return 'refuel';
     }
-  }, [window.location.pathname]);
+  }, []);
 
-  const getActiveWidget = () => {
+  const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
       starterVariant === 'expandable'
         ? settings.onChangeTab(0)
@@ -47,15 +42,15 @@ export function DualWidget() {
         setStarterVariant('refuel');
       }
     }
-  };
+  }, [settings, starterVariant, starterVariantUsed]);
 
   useEffect(() => {
     getActiveWidget();
-  }, [starterVariant]);
+  }, [getActiveWidget, starterVariant]);
 
   useEffect(() => {
     getActiveWidget();
-  }, [settings.activeTab]);
+  }, [getActiveWidget, settings.activeTab]);
 
   return (
     <Grid
