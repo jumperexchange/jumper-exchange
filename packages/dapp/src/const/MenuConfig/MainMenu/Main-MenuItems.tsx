@@ -2,6 +2,7 @@ import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
@@ -48,6 +49,30 @@ export const useMainMenuItems = () => {
       label: `${translate(`${i18Path}navbarMenu.developers`)}`,
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: SubMenuKeys.devs,
+    },
+    {
+      label: `Twitter`,
+      prefixIcon: <TwitterIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        openInNewTab('https://twitter.com/JumperExchange');
+      },
+    },
+    {
+      label: `Discord`,
+      prefixIcon: (
+        <Discord
+          color={
+            theme.palette.mode === 'dark'
+              ? theme.palette.white.main
+              : theme.palette.black.main
+          }
+        />
+      ),
+      showMoreIcon: false,
+      onClick: () => {
+        openInNewTab('https://discord.gg/lifi');
+      },
     },
     {
       label: `${translate(`${i18Path}navbarMenu.aboutLIFI`)}`,
