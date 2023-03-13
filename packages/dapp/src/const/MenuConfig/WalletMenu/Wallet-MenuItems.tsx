@@ -2,6 +2,7 @@ import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useMemo, useState } from 'react';
+import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
@@ -10,6 +11,7 @@ export const useWalletMenuItems = () => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
     useState<Wallet>();
   const { connect } = useWallet();
+  const { trackEvent } = useUserTracking();
   const { ethereum } = window as any;
   const settings = useSettings();
   const menu = useMenu();
@@ -49,6 +51,12 @@ export const useWalletMenuItems = () => {
         showMoreIcon: false,
         onClick: () => {
           login(wallet);
+          trackEvent({
+            category: 'wallet',
+            action: 'choose-wallet',
+            label: `${wallet}`,
+            data: { usedWallet: wallet },
+          });
         },
       });
     });

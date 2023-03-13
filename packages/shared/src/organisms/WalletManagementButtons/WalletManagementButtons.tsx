@@ -3,6 +3,7 @@ import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
 import React from 'react';
+import { useUserTracking } from '../../../../dapp/src/hooks/useUserTracking/useUserTracking';
 import { ButtonPrimary } from '../../atoms/ButtonPrimary';
 import { ButtonSecondary } from '../../atoms/ButtonSecondary';
 import type { MenuContextProps } from '../../types';
@@ -26,12 +27,14 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const { account } = props.walletManagement;
   const _walletDigest = walletDigest(account);
   const theme = useTheme();
-
+  const { trackEvent } = useUserTracking();
   const handleWalletPicker = () => {
     props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
   };
 
   const handleWalletMenuClick = () => {
+    !props.menu.openNavbarConnectedMenu &&
+      trackEvent({ category: 'menu', action: 'open-connected-menu' });
     props.menu.onOpenNavbarConnectedMenu(!props.menu.openNavbarConnectedMenu);
   };
 

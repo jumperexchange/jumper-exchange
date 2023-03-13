@@ -1,10 +1,9 @@
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { CssBaseline } from '@mui/material';
 import { defaultSettings, SettingsProvider } from '@transferto/shared/src';
-import { useEffect } from 'react';
-import ReactGA from 'react-ga';
-import { hotjar } from 'react-hotjar';
+import type { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { BackgroundGradient } from './components/BackgroundGradient';
 import { HistoryMigration } from './components/HistoryMigration';
 import { ChainInfosProvider } from './providers/ChainInfosProvider';
 import { I18NProvider } from './providers/I18nProvider';
@@ -12,20 +11,9 @@ import { MenuProvider } from './providers/MenuProvider';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { WalletProvider } from './providers/WalletProvider';
 
-import type { PropsWithChildren } from 'react';
-import { BackgroundGradient } from './components/BackgroundGradient';
-
 const queryClient = new QueryClient();
 
 export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  useEffect(() => {
-    ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_TRACKING_ID);
-    hotjar.initialize(
-      import.meta.env.VITE_HOTJAR_ID,
-      import.meta.env.VITE_HOTJAR_SNIPPET_VERSION,
-    );
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <ChainInfosProvider>

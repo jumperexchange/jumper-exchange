@@ -1,25 +1,26 @@
-import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { Route } from '@lifi/sdk';
+import { useUserTracking } from '../../hooks';
+
 import {
   RouteExecutionUpdate,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
 import { useEffect, useRef } from 'react';
-import { hotjar } from 'react-hotjar';
-import { gaEventTrack } from '../../utils/google-analytics';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
-  const arcx = useArcxAnalytics();
+  const { trackEvent, trackTransaction } = useUserTracking();
+
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: Route) => {
       if (!!route?.id) {
-        await arcx?.event(
-          'onRouteExecutionStarted', // required(string) - the name of the event (eg. "clicked-tab")
-          {
+        trackEvent({
+          category: 'widget-event',
+          action: 'onRouteExecutionStarted',
+          data: {
             routeId: route.id,
             steps: route.steps,
             fromToken: route.fromToken,
@@ -28,13 +29,7 @@ export function WidgetEvents() {
             toChainId: route.toChainId,
             fromAmount: route.fromAmount,
             toAmount: route.toAmount,
-          }, // optional(object) - additional information about the event
-        );
-        hotjar.initialized() && hotjar.event('onRouteExecutionStarted');
-        gaEventTrack({
-          category: 'widgetEvent',
-          action: 'onRouteExecutionStarted',
-          label: `${route.id}`,
+          },
         });
       }
     };
@@ -42,56 +37,56 @@ export function WidgetEvents() {
       if (!!update?.process && !!update.route) {
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
-          await arcx?.transaction({
-            chain: update.route.fromChainId, // required(string) - chain ID that the transaction is taking place on
-            transactionHash: update.process.txHash, // required(string) - hash of the transaction
-            metadata: {
+          trackTransaction({
+            chain: update.route.fromChainId,
+            transactionHash: update.process.txHash,
+            category: 'widget-event',
+            action: 'onRouteExecutionUpdated',
+            data: {
               routeId: `${update.route.id}`,
               transactionLink: update.process.txLink,
               steps: update.route.steps,
               status: update.process.status,
-            }, // optional(object) - additional information about the transaction
-          });
-          hotjar.initialized() && hotjar.event('onRouteExecutionUpdated');
-          gaEventTrack({
-            category: 'widgetEvent',
-            action: 'onRouteExecutionUpdated',
-            label: `${update?.process?.txHash}`,
+              nonInteraction: true,
+            },
           });
         }
       }
     };
     const onRouteExecutionCompleted = async (route: Route) => {
       if (!!route?.id) {
-        await arcx?.event(
-          'onRouteExecutionCompleted', // required(string) - the name of the event (eg. "clicked-tab")
-          { steps: route.steps }, // optional(object) - additional information about the event
-        );
-        hotjar.initialized() && hotjar.event('onRouteExecutionCompleted');
-        gaEventTrack({
-          category: 'widgetEvent',
+        trackEvent({
+          category: 'widget-event',
           action: 'onRouteExecutionCompleted',
-          label: `${route.id}`,
+          data: {
+            routeId: route.id,
+            steps: route.steps,
+            fromChainId: route.fromChainId,
+            fromAmountUSD: route.fromAmountUSD,
+            fromAmount: route.fromAmount,
+            fromToken: route.fromToken,
+            fromAddress: route.fromAddress,
+            toChainId: route.toChainId,
+            toAmountUSD: route.toAmountUSD,
+            toAmount: route.toAmount,
+            toAmountMin: route.toAmountMin,
+            toToken: route.toToken,
+          },
         });
       }
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
-      await arcx?.event(
-        'onRouteExecutionFailed', // required(string) - the name of the event (eg. "clicked-tab")
-        {
+      trackEvent({
+        category: 'widget-event',
+        action: 'onRouteExecutionFailed',
+        data: {
           routeId: update?.route?.id,
           transactionHash: update.process.txHash,
           status: update.process.status,
           message: update.process.message,
           error: update.process.error,
           steps: update.route.steps,
-        }, // optional(object) - additional information about the event
-      );
-      hotjar.initialized() && hotjar.event('onRouteExecutionFailed');
-      gaEventTrack({
-        category: 'widgetEvent',
-        action: 'onRouteExecutionFailed',
-        label: `${update?.route?.id}`,
+        },
       });
     };
 
@@ -104,7 +99,7 @@ export function WidgetEvents() {
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
 
     return () => widgetEvents.all.clear();
-  }, [widgetEvents]);
+  }, [trackEvent, trackTransaction, widgetEvents]);
 
   return null;
 }

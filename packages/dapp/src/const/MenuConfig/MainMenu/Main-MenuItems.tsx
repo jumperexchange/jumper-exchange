@@ -9,6 +9,7 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
+import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
 
@@ -16,6 +17,7 @@ export const useMainMenuItems = () => {
   const { t: translate, i18n } = useTranslation();
   const i18Path = 'navbar.';
   const settings = useSettings();
+  const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
   const menu = useMenu();
@@ -60,6 +62,12 @@ export const useMainMenuItems = () => {
       ),
       showMoreIcon: false,
       onClick: () => {
+        trackPageload({
+          source: 'menu',
+          destination: 'lifi-website',
+          url: 'https://li.fi',
+          pageload: true,
+        });
         openInNewTab('https://li.fi');
       },
     },
@@ -67,6 +75,10 @@ export const useMainMenuItems = () => {
       label: `${translate(`${i18Path}navbarMenu.support`)}`,
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
+        trackEvent({
+          category: 'menu',
+          action: 'open-support-modal',
+        });
         menu.toggleSupportModal(true);
       },
       showButton: true,

@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary';
 import { Dispatch, SetStateAction } from 'react';
+import { useUserTracking } from '../../hooks/useUserTracking/useUserTracking';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 
 interface MenuItemProps {
@@ -34,6 +35,7 @@ const MenuItemComponent = ({
   suffixIcon,
 }: MenuItemProps) => {
   const theme = useTheme();
+  const { trackEvent } = useUserTracking();
 
   return !!open && !isOpenSubMenu ? (
     <MenuItem
@@ -42,6 +44,13 @@ const MenuItemComponent = ({
       isScrollable={isScrollable}
       onClick={() => {
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
+        !!triggerSubMenu &&
+          trackEvent({
+            category: 'menu',
+            action: 'open-submenu',
+            label: triggerSubMenu,
+            data: { subMenu: triggerSubMenu },
+          });
         !!onClick && onClick();
       }}
     >

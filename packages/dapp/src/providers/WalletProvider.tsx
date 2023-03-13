@@ -1,4 +1,3 @@
-import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { Token } from '@lifi/sdk';
 import {
   addChain as walletAddChain,
@@ -21,6 +20,7 @@ import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
+import { useUserTracking } from '../hooks';
 import { useMenu } from './MenuProvider';
 
 const stub = (): never => {
@@ -52,41 +52,31 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
   const menu = useMenu();
-  const arcx = useArcxAnalytics();
+  const { trackConnectWallet } = useUserTracking();
   const connect = useCallback(
     async (wallet?: Wallet) => {
       await walletManagementConnect(wallet);
       const account = await extractAccountFromSigner(signer);
       setUsedWallet(wallet!);
       setAccount(account);
-      await arcx?.connectWallet({
-        account: account.address,
-        chain: account.chainId,
-      });
     },
-    [walletManagementConnect],
+    [signer, walletManagementConnect],
   );
 
   const disconnect = useCallback(async () => {
     setUsedWallet(undefined);
     await walletManagementDisconnect();
     menu.onCloseAllNavbarMenus();
-  }, [walletManagementDisconnect]);
+    trackConnectWallet({
+      account: account,
+      disconnect: true,
+    });
+  }, [account, menu, trackConnectWallet, walletManagementDisconnect]);
 
   // only for injected wallets
   const switchChain = useCallback(async (chainId: number) => {
     return walletSwitchChain(chainId);
   }, []);
-
-  useEffect(() => {
-    const arcxConnectWallet = async () => {
-      await arcx?.connectWallet({
-        account: account.address,
-        chain: account.chainId,
-      });
-    };
-    arcxConnectWallet();
-  }, [account.chainId]);
 
   const addChain = useCallback(async (chainId: number) => {
     return walletAddChain(chainId);
@@ -101,9 +91,18 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     const updateAccount = async () => {
       const account = await extractAccountFromSigner(signer);
       setAccount(account);
+      account.address &&
+        trackConnectWallet({
+          account: account,
+          disconnect: false,
+          data: {
+            account: account.address,
+            chain: account.chainId,
+          },
+        });
     };
     updateAccount();
-  }, [signer]);
+  }, [signer, trackConnectWallet]);
 
   const value = useMemo(
     () => ({
@@ -115,7 +114,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       account,
       usedWallet,
     }),
-    [account, addChain, addToken, connect, disconnect, switchChain],
+    [account, addChain, addToken, connect, disconnect, switchChain, usedWallet],
   );
 
   return (

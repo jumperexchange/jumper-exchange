@@ -1,9 +1,6 @@
 import { localStorageKey } from '@transferto/shared/src/config';
-// import { useTranslation, i18n } from 'react-i18next';
-
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
-import { createContext, useEffect, useState } from 'react';
-// utils
+import { createContext, useCallback, useEffect, useState } from 'react';
 // config
 import i18next from 'i18next';
 import { defaultSettings } from '../index';
@@ -143,21 +140,19 @@ const useSettingLocalStorage = (
 ): [SettingsValueProps, Dispatch<SetStateAction<SettingsValueProps>>] => {
   const [settings, setSettings] = useState<SettingsValueProps>(defaultSettings);
 
-  const onChangeSetting = () => {
-    localStorage.setItem(
-      localStorageKey.activeWalletName,
-      !!settings.activeWalletName ? settings.activeWalletName : 'none',
-    );
-    localStorage.setItem(
-      localStorageKey.themeMode,
-      !!settings.themeMode ? settings.themeMode : 'auto',
-    );
+  const onChangeSetting = useCallback(async () => {
+    const activeWalletName = !!settings.activeWalletName
+      ? settings.activeWalletName
+      : 'none';
+    localStorage.setItem(localStorageKey.activeWalletName, activeWalletName);
+    const themeMode = !!settings.themeMode ? settings.themeMode : 'auto';
+    localStorage.setItem(localStorageKey.themeMode, themeMode);
     localStorage.setItem(localStorageKey.languageMode, settings.languageMode);
-  };
+  }, [settings.activeWalletName, settings.languageMode, settings.themeMode]);
 
   useEffect(() => {
     onChangeSetting();
-  }, [settings]);
+  }, [onChangeSetting, settings]);
 
   return [settings, setSettings];
 };

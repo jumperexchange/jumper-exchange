@@ -3,11 +3,9 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
-import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
-import { gaEventTrack } from '../../utils/google-analytics';
+import { useUserTracking } from '../../hooks';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
-
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -21,7 +19,7 @@ const NavbarTabsContainer = () => {
   const i18Path = 'navbar.';
   const settings = useSettings();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
-
+  const { trackEvent } = useUserTracking();
   const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     settings.onChangeTab(newValue);
@@ -38,13 +36,12 @@ const NavbarTabsContainer = () => {
       <NavbarTab
         onClick={() => {
           window.history.replaceState(null, document.title, '/swap');
-          gaEventTrack({
+          trackEvent({
             category: 'navigation',
-            action: 'switch tab',
+            action: 'switch-tab',
             label: 'swap',
+            data: { tab: 'swap' },
           });
-          hotjar.initialized() &&
-            hotjar.stateChange('navigation__switch-tab__swap');
         }}
         icon={
           <SwapHorizIcon
@@ -63,13 +60,12 @@ const NavbarTabsContainer = () => {
       <NavbarTab
         onClick={() => {
           window.history.replaceState(null, document.title, '/gas');
-          gaEventTrack({
+          trackEvent({
             category: 'navigation',
-            action: 'switch tab',
+            action: 'switch-tab',
             label: 'gas',
+            data: { tab: 'gas' },
           });
-          hotjar.initialized() &&
-            hotjar.stateChange('navigation__switch-tab__gas');
         }}
         label={`${translate(`${i18Path}links.refuel`)}`}
         icon={

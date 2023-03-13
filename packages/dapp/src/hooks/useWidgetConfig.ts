@@ -7,13 +7,11 @@ import {
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
-import ReactGA from 'react-ga';
-import { hotjar } from 'react-hotjar';
 import { useTranslation } from 'react-i18next';
 import { useMenu } from '../providers/MenuProvider';
 import { useWallet } from '../providers/WalletProvider';
 import { LanguageKey } from '../types/i18n';
-import { gaEventTrack } from '../utils/google-analytics';
+import { useUserTracking } from './useUserTracking/useUserTracking';
 
 export function useWidgetConfig({ starterVariant }) {
   const menu = useMenu();
@@ -21,6 +19,7 @@ export function useWidgetConfig({ starterVariant }) {
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
+  const { trackEvent, trackAttribute } = useUserTracking();
 
   // load environment config
   const env = import.meta.env;
@@ -41,56 +40,37 @@ export function useWidgetConfig({ starterVariant }) {
           menu.onOpenNavbarWalletMenu(
             !!menu.openNavbarWalletMenu ? false : true,
           );
-          let promiseResolver;
+          let promiseResolver: (value: void | PromiseLike<void>) => void;
           const loginAwaiter = new Promise<void>(
             (resolve) => (promiseResolver = resolve),
           );
 
           await loginAwaiter;
           if (account.signer) {
-            ReactGA.set({
-              username: account.address,
-              chainId: account.chainId,
-              // Other relevant user information
-            });
-            hotjar.initialized() &&
-              hotjar.identify('USER_ID', {
-                address: account.address,
-                chainId: account.chainId,
-              });
-            gaEventTrack({
-              category: 'walletInteraction',
-              action: 'connect',
-              label: account.address, // optional
-              value: account.chainId, // optional, must be a number
-              nonInteraction: false, // optional, true/false
-              // transport: "xhr", // optional, beacon/xhr/image
-            });
             return account.signer!;
           } else {
             throw Error('No signer object after login');
           }
         },
         disconnect: async () => {
-          gaEventTrack({
-            category: 'walletInteraction',
+          trackEvent({
+            category: 'wallet',
             action: 'disconnect',
-            label: account?.address, // optional
-            value: account?.chainId, // optional, must be a number
-            nonInteraction: false, // optional, true/false
-            // transport: "xhr", // optional, beacon/xhr/image
+            label: 'widget',
+            data: { source: 'widget' },
           });
           disconnect();
         },
         switchChain: async (reqChainId: number) => {
           await switchChain(reqChainId);
           if (account.signer) {
-            gaEventTrack({
-              category: 'walletInteraction',
-              action: 'switchChain',
-              label: account.address, // optional
-              value: reqChainId, // optional, must be a number
-              nonInteraction: false, // optional, true/false
+            trackEvent({
+              category: 'wallet',
+              action: 'switch-chain',
+              label: `${reqChainId}`,
+              data: {
+                switchChain: reqChainId,
+              },
               // transport: "xhr", // optional, beacon/xhr/image
             });
             return account.signer!;
@@ -99,17 +79,27 @@ export function useWidgetConfig({ starterVariant }) {
           }
         },
         addToken: async (token: Token, chainId: number) => {
-          gaEventTrack({
-            category: 'walletInteraction',
-            action: 'addToken',
-            label: account?.address, // optional
-            value: chainId, // optional, must be a number
-            nonInteraction: false, // optional, true/false
-            // transport: "xhr", // optional, beacon/xhr/image
+          trackEvent({
+            category: 'wallet',
+            action: 'add-token',
+            label: `${token}`,
+            data: {
+              tokenAdded: `${token}`,
+              tokenAddChainId: chainId,
+            },
           });
           await switchChainAndAddToken(chainId, token);
         },
         addChain: async (chainId: number) => {
+          trackEvent({
+            category: 'wallet',
+            action: 'add-chain',
+            label: `${chainId}`,
+            data: {
+              chainIdAdded: `${chainId}`,
+            },
+            // transport: "xhr", // optional, beacon/xhr/image
+          });
           return addChain(chainId);
         },
       },
@@ -151,11 +141,21 @@ export function useWidgetConfig({ starterVariant }) {
       },
     };
   }, [
-    i18n.language,
-    isDarkMode,
+    starterVariant,
     account.signer,
+    account.address,
+    account.chainId,
+    isDarkMode,
+    i18n.language,
+    i18n.languages,
+    theme.palette.surface2.main,
+    theme.palette.surface1.main,
+    theme.palette.accent1.main,
+    theme.palette.grey,
+    menu,
+    trackAttribute,
+    trackEvent,
     disconnect,
-    theme.palette.mode,
   ]);
 
   return widgetConfig;

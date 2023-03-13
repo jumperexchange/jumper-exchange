@@ -2,7 +2,7 @@ import { WidgetVariant } from '@lifi/widget';
 import { Grid } from '@mui/material';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import { LinkMap } from '../../types/';
 import { Widget } from '../Widget';
 import { WidgetContainer } from './DualWidget.style';
