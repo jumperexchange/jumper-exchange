@@ -2,6 +2,7 @@ import { Chain } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { WalletManagementButtons } from '@transferto/shared/src';
+import { ThemeSwitch } from '@transferto/shared/src/atoms/ThemeSwitch';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -72,6 +73,7 @@ const NavbarManagement = () => {
         }
         isSuccess={isSuccess}
       />
+      <ThemeSwitch />
       <NavbarDropdownButton
         ref={anchorRef}
         id="composition-button"
