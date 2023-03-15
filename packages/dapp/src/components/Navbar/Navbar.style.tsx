@@ -292,9 +292,6 @@ export const MenuItem = styled(MUIMenuItem, {
       : getContrastAlphaColor(theme, '4%'),
   },
 
-  '> .menu-item-label__icon': {
-    marginLeft: '13px',
-  },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     height: showButton ? 'auto' : '48px',
   },
@@ -374,15 +371,23 @@ export const MenuLinkItem = styled(Link, {
   height: '48px',
   textDecoration: 'none',
   color: 'inherit',
-  '> .menu-item-label__icon': {
-    marginLeft: '13px',
-  },
 }));
 
-export const MenuItemLabel = styled('div')({
+export interface MenuItemLabelProps
+  extends Omit<ListItemProps, 'isScrollable'> {
+  variant?: 'xs' | 'md' | 'lg';
+}
+
+export const MenuItemLabel = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'variant',
+})<MenuItemLabelProps>(({ variant, theme }) => ({
   display: 'flex',
   alignItems: 'center',
-});
+  maxWidth: variant === 'xs' ? '198px' : variant === 'md' ? '232px' : '260px',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxWidth: variant === 'xs' ? '168px' : variant === 'md' ? '194px' : '244px',
+  },
+}));
 
 export const MenuItemText = styled('span')({});
 

@@ -39,7 +39,15 @@ export const useMainMenuItems = () => {
       prefixIcon: <LanguageIcon />,
       checkIcon: settings.themeMode === 'light',
       suffixIcon: (
-        <Typography variant="lifiBodyMedium" textTransform={'uppercase'}>
+        <Typography
+          variant="lifiBodyMedium"
+          textTransform={'uppercase'}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: '38px',
+          }}
+        >
           {i18n.resolvedLanguage}
         </Typography>
       ),
@@ -78,6 +86,7 @@ export const useMainMenuItems = () => {
       label: `${translate(`${i18Path}navbarMenu.aboutLIFI`)}`,
       prefixIcon: (
         <LifiSmallLogo
+          style={{ flexShrink: 0 }}
           color={
             theme.palette.mode === 'dark'
               ? theme.palette.white.main

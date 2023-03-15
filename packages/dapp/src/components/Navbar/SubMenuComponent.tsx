@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useTheme } from '@mui/material/styles';
+import { Breakpoint, useTheme } from '@mui/material/styles';
 import { SubMenuKeys } from '../../const';
 import { useMenu } from '../../providers/MenuProvider';
 import { MenuListItem } from '../../types';
@@ -104,15 +104,28 @@ const SubMenuComponent = ({
                     component="li"
                     key={`${el.label}-${index}`}
                   >
-                    <MenuItemLabel>
+                    <MenuItemLabel
+                      variant={
+                        !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
+                          ? 'lg'
+                          : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
+                          ? 'xs'
+                          : 'md'
+                      }
+                    >
                       <>
                         {el.prefixIcon}
                         <Typography
+                          sx={{
+                            maxWidth: 'inherit',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
                           variant={'lifiBodyMedium'}
                           ml={!!el.prefixIcon ? '12px' : 'inherit'}
                           mr={!!el.suffixIcon ? '12px' : 'inherit'}
                         >
-                          <>{el.label}</>
+                          {el.label}
                         </Typography>
                         {el.suffixIcon}
                       </>
@@ -127,15 +140,30 @@ const SubMenuComponent = ({
                     }}
                     key={`${el.label}-${index}`}
                   >
-                    <MenuItemLabel>
+                    <MenuItemLabel
+                      variant={
+                        !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
+                          ? 'lg'
+                          : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
+                          ? 'xs'
+                          : 'md'
+                      }
+                    >
                       <>
                         {el.prefixIcon}
                         <Typography
                           variant={'lifiBodyMedium'}
                           ml={!!el.prefixIcon ? '12px' : 'inherit'}
-                          mr={!!el.suffixIcon ? '12px' : 'inherit'}
+                          sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            maxWidth: 'inherit',
+                            [theme.breakpoints.up('sm' as Breakpoint)]: {
+                              maxWidth: el.prefixIcon ? '188px' : 'inherit',
+                            },
+                          }}
                         >
-                          <>{el.label}</>
+                          {el.label}
                         </Typography>
                       </>
                     </MenuItemLabel>

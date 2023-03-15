@@ -81,12 +81,11 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
         >
           {!!props.isSuccess ? (
             <Avatar
-              className="menu-item-label__icon"
               src={!!props.activeChain ? props.activeChain.logoURI : 'empty'}
               alt={`${
                 !!props?.activeChain?.name ? props.activeChain.name : ''
               }chain-logo`}
-              sx={{ height: '32px', width: '32px', mr: '12px' }}
+              sx={{ height: '32px', width: '32px', mr: theme.spacing(3) }}
             />
           ) : (
             <></>
