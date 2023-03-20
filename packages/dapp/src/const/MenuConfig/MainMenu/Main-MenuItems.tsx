@@ -64,6 +64,12 @@ export const useMainMenuItems = () => {
       showMoreIcon: false,
       onClick: () => {
         openInNewTab('https://twitter.com/JumperExchange');
+        trackPageload({
+          source: 'menu',
+          destination: 'twitter-JumperExchange',
+          url: 'https://twitter.com/JumperExchange',
+          pageload: true,
+        });
       },
     },
     {
@@ -80,6 +86,12 @@ export const useMainMenuItems = () => {
       showMoreIcon: false,
       onClick: () => {
         openInNewTab('https://discord.gg/lifi');
+        trackPageload({
+          source: 'menu',
+          destination: 'discord-lifi',
+          url: 'https://discord.gg/lifi',
+          pageload: true,
+        });
       },
     },
     {
