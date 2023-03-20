@@ -55,7 +55,7 @@ export const useWalletMenuItems = () => {
             category: 'wallet',
             action: 'choose-wallet',
             label: `${wallet}`,
-            data: { usedWallet: wallet },
+            data: { usedWallet: wallet.name },
           });
         },
       });
