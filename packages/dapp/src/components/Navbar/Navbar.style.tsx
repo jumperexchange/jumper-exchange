@@ -1,9 +1,7 @@
 import {
   AppBar,
   AppBarProps,
-  Box,
   ButtonProps,
-  IconButton,
   Link,
   LinkProps,
   ListItem,
@@ -20,11 +18,12 @@ import {
   TabProps,
   Tabs,
   TabsProps,
+  Typography,
 } from '@mui/material';
 
 import { ButtonSecondary } from '@transferto/shared/src/atoms/ButtonSecondary';
 
-import { Breakpoint, styled } from '@mui/material/styles';
+import { alpha, Breakpoint, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
@@ -34,12 +33,12 @@ export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
 }));
 
 export const NavbarExternalBackground = styled('div')(({ theme }) => ({
-  position: 'absolute',
+  position: 'fixed',
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
-  zIndex: 1,
+  zIndex: 1300,
   backgroundColor: '#000000',
   opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -58,60 +57,31 @@ export const NavBar = styled(AppBar)(({ theme }) => ({
   boxShadow: 'none',
 }));
 
-export const HeaderAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.primary,
-  flexDirection: 'row',
-  alignItems: 'center',
-  position: 'relative',
-  minHeight: 40,
-  padding: theme.spacing(0, 3, 0, 3),
-  ':first-of-type': {
-    paddingTop: theme.spacing(1.5),
-    paddingBottom: theme.spacing(0.5),
-  },
-}));
-
-export const Container = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'sticky',
-})<{ sticky?: boolean }>(({ theme, sticky }) => ({
-  backgroundColor: theme.palette.background.default,
-  position: sticky ? 'sticky' : 'relative',
-  display: 'flex',
-  justifyContent: 'space-between',
-  top: 0,
-  zIndex: 1400,
-}));
-
-export const NavbarContainer = styled(AppBar, {
-  shouldForwardProp: (prop) => prop !== 'sticky',
-})<{ sticky?: boolean }>(({ theme, sticky }) => ({
-  backgroundColor: theme.palette.background.default,
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  position: sticky ? 'sticky' : 'relative',
-  top: 0,
-  boxShadow: 'unset',
-  background: 'transparent',
-  alignItems: 'center',
-  height: '64px',
-  padding: theme.spacing(2, 4),
-  zIndex: 1300,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: '72px',
-    padding: theme.spacing(4, 6),
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(6),
-    height: '80px',
-  },
-  [`@media (max-height: ${80 + 18 + 680}px)`]: {
-    paddingRight: theme.spacing(2),
-    width: 'calc( 100% - 16px )',
+export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
+  ({ theme }) => ({
+    backgroundColor: theme.palette.background.default,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: 'sticky',
+    top: 0,
     backdropFilter: 'blur(12px)',
-  },
-}));
+    boxShadow: 'unset',
+    background: 'transparent',
+    alignItems: 'center',
+    height: '64px',
+    padding: theme.spacing(2, 4),
+    zIndex: 1300,
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      height: '72px',
+      padding: theme.spacing(4, 6),
+    },
+    [theme.breakpoints.up('md' as Breakpoint)]: {
+      padding: theme.spacing(6),
+      height: '80px',
+    },
+  }),
+);
 
 export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
   ({ theme }) => ({
@@ -173,16 +143,21 @@ export const MenuHeader = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   margin: '0 auto',
-  '& svg': {
-    position: 'absolute',
-  },
 }));
 
-export const BackArrowButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  position: 'absolute',
-  '&:hover': {
-    backgroundColor: getContrastAlphaColor(theme, '4%'),
+export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
+  ...theme.typography.lifiBodyMediumStrong,
+  width: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  justifyContent: 'center',
+  display: 'flex',
+  marginRight: '38px',
+  flexWrap: 'nowrap',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxWidth: '174px',
+    marginRight: '0px',
+    marginLeft: '6px',
   },
 }));
 
@@ -325,7 +300,7 @@ export const NavbarPaper = styled(Paper, {
     marginBottom: 0,
     maxHeight: 'calc( 100vh - 64px - 12px )', // viewHeight - navbarHeight - offset
     overflowY: !!isScrollable ? 'auto' : 'inherit',
-    overflowX: 'hidden',
+    overflowX: 'inherit',
 
     '> .navbar-menu-list': {
       marginTop: 0,
@@ -391,28 +366,27 @@ export const MenuItemLabel = styled('div', {
 
 export const MenuItemText = styled('span')({});
 
-export interface MenuHeaderAppWrapperProps
-  extends Omit<ListItemProps, 'isScrollable'> {
-  component?: string;
-  isScrollable?: boolean;
-}
-
-export const MenuHeaderAppWrapper = styled(ListItem, {
-  shouldForwardProp: (prop) => prop !== 'isScrollable',
-})<MenuHeaderAppWrapperProps>({
-  position: 'sticky',
-  top: 0,
-  alignItems: 'center',
-  backgroundColor: 'transparent',
-  backdropFilter: 'blur(12px)',
-  zIndex: 1,
-  overflow: 'hidden',
-  margin: '0 -12px',
-  padding: '0 12px',
-  marginTop: 'inherit',
-  height: '64px',
-});
-
+export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
+  ({ theme }) => ({
+    position: 'sticky',
+    top: 0,
+    alignItems: 'center',
+    backgroundColor: alpha(theme.palette.surface1.main, 0.84),
+    backdropFilter: 'blur(12px)',
+    zIndex: 1400,
+    overflow: 'hidden',
+    margin: theme.spacing(0, -3),
+    width: 'calc( 100% + 24px )',
+    marginTop: '0px',
+    height: '64px',
+    padding: '0px',
+    borderTopLeftRadius: '24px',
+    borderTopRightRadius: '24px',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      paddingLeft: '0px',
+    },
+  }),
+);
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
   component?: string;
   isScrollable?: boolean;
@@ -421,8 +395,8 @@ export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
 export const MenuHeaderAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'isScrollable',
 })<MenuHeaderAppBarProps>(({ theme }) => ({
-  backgroundColor: 'transparent !important',
-  zIndex: 1,
+  backgroundColor: 'transparent',
+  zIndex: 1500,
   position: 'fixed',
   top: 'initial',
   left: 'initial',
@@ -430,6 +404,13 @@ export const MenuHeaderAppBar = styled(AppBar, {
   padding: theme.spacing(0, 3, 0, 3),
   color: theme.palette.text.primary,
   flexDirection: 'row',
+  justifyContent: 'space-between',
   alignItems: 'center',
   minHeight: 48,
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    padding: theme.spacing(0, 3),
+    position: 'relative',
+    justifyContent: 'flex-start',
+  },
 }));

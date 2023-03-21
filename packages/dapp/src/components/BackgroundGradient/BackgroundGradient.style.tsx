@@ -24,7 +24,7 @@ export interface BackgroundGradientProps
 // }));
 
 export const BackgroundGradientContainer = styled('div')<any>(({ theme }) => ({
-  position: 'absolute',
+  position: 'fixed',
   overflow: 'hidden',
   pointerEvents: 'none',
   background: theme.palette.bg.main,

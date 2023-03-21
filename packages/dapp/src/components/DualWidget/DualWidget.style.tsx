@@ -9,16 +9,11 @@ export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<WidgetContainerProps>(({ theme, isActive }) => ({
   display: isActive ? 'inherit' : 'none',
-  paddingTop: theme.spacing(18),
-  flex: '1 1 0%',
-  width: '100vw',
+  paddingTop: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    paddingTop: theme.spacing(20),
+    paddingTop: theme.spacing(2),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    paddingTop: theme.spacing(26),
-  },
-  [`@media (max-height: ${80 + 18 + 680}px)`]: {
-    overflowY: 'auto',
+    paddingTop: theme.spacing(7),
   },
 }));

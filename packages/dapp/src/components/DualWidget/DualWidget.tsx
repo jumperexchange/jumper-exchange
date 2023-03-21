@@ -54,12 +54,9 @@ export function DualWidget() {
       alignItems="center"
       container
       sx={{
-        position: 'absolute',
         top: 0,
-        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        // marginTop: '64px',
         overflowX: 'hidden',
       }}
     >

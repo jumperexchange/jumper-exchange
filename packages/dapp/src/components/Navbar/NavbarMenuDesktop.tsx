@@ -1,13 +1,12 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
+import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { SubMenuKeys } from '../../const/';
 import { useMenu } from '../../providers/MenuProvider';
 import {
-  BackArrowButton,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   NavbarExternalBackground,
@@ -58,6 +57,7 @@ const NavbarMenuDesktop = ({
           anchorEl={menu?.anchorRef?.current}
           role={undefined}
           placement="bottom-start"
+          popperOptions={{ strategy: 'fixed' }}
           transition
           disablePortal
         >
@@ -105,19 +105,13 @@ const NavbarMenuDesktop = ({
                           isScrollable={isScrollable}
                         >
                           {!hideBackArrow && (
-                            <BackArrowButton
-                              size="medium"
-                              aria-label="settings"
-                              edge="start"
-                              sx={{}}
+                            <ButtonBackArrow
                               onClick={() => {
                                 menu.onOpenNavbarWalletMenu(
                                   !menu.openNavbarWalletMenu,
                                 );
                               }}
-                            >
-                              <ArrowBackIcon />
-                            </BackArrowButton>
+                            />
                           )}
                           <Typography
                             variant={'lifiBodyMediumStrong'}

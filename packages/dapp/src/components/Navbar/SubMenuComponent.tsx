@@ -1,18 +1,17 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Dispatch, SetStateAction } from 'react';
-// import {default as NavbarTabsContainer} from './NavbarTabsContainer'
 import CheckIcon from '@mui/icons-material/Check';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
+import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
+import { Dispatch, SetStateAction } from 'react';
 import { SubMenuKeys } from '../../const';
 import { useMenu } from '../../providers/MenuProvider';
 import { MenuListItem } from '../../types';
 import {
-  BackArrowButton,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
+  MenuHeaderLabel,
   MenuItem,
   MenuItemLabel,
   MenuLinkItem,
@@ -67,29 +66,13 @@ const SubMenuComponent = ({
                 isScrollable={!!label || isScrollable}
               >
                 <>
-                  <BackArrowButton
-                    size="medium"
-                    aria-label="settings"
-                    edge="start"
-                    sx={{
-                      color: theme.palette.text.primary,
-                      position: 'absolute',
-                    }}
+                  <ButtonBackArrow
+                    style={{ marginLeft: '0px' }}
                     onClick={() => {
                       setOpenSubMenu(SubMenuKeys.none);
                     }}
-                  >
-                    <ArrowBackIcon />
-                  </BackArrowButton>
-                  <Typography
-                    variant={'lifiBodyMediumStrong'}
-                    width={'100%'}
-                    align={'center'}
-                    flex={1}
-                    noWrap
-                  >
-                    <>{label}</>
-                  </Typography>
+                  />
+                  <MenuHeaderLabel>{label}</MenuHeaderLabel>
                 </>
               </MenuHeaderAppBar>
             </MenuHeaderAppWrapper>

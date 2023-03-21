@@ -67,9 +67,6 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
             position: 'absolute',
             left: '50%',
             transform: 'translateX(-50%)',
-            [`@media (max-height: ${80 + 18 + 680}px)`]: {
-              paddingLeft: '8px',
-            },
             [theme.breakpoints.up('md' as Breakpoint)]: {
               position: 'relative',
               left: 'unset',

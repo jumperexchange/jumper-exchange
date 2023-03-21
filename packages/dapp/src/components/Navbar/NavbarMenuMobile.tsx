@@ -1,11 +1,11 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { ButtonBackArrow } from '../../../../shared/src/atoms/ButtonArrowBack/ButtonArrowBack';
+import { SubMenuKeys } from '../../const';
 import { useMenu } from '../../providers/MenuProvider';
 import {
-  BackArrowButton,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   NavbarExternalBackground,
@@ -81,7 +81,12 @@ const NavbarMenuMobile = ({
                   className={
                     isOpenSubMenu ? 'navbar-menu-list open' : 'navbar-menu-list'
                   }
-                  component={!!isOpenSubMenu ? 'div' : 'ul'}
+                  component={
+                    !!isOpenSubMenu &&
+                    menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                      ? 'div'
+                      : 'ul'
+                  }
                 >
                   {!!label ? (
                     <MenuHeaderAppWrapper>
@@ -91,22 +96,13 @@ const NavbarMenuMobile = ({
                         isScrollable={isScrollable}
                       >
                         {!hideBackArrow && (
-                          <BackArrowButton
-                            size="medium"
-                            aria-label="settings"
-                            edge="start"
-                            sx={{
-                              color: theme.palette.text.primary,
-                              position: 'absolute',
-                            }}
+                          <ButtonBackArrow
                             onClick={() => {
                               menu.onOpenNavbarWalletMenu(
                                 !menu.openNavbarWalletMenu,
                               );
                             }}
-                          >
-                            <ArrowBackIcon />
-                          </BackArrowButton>
+                          />
                         )}
                         <Typography
                           variant={'lifiBodyMediumStrong'}
