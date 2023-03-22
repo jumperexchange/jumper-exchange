@@ -1,0 +1,53 @@
+{
+  "name": "@transferto/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./index.d.ts",
+  "scripts": {
+    "clean": "rimraf --no-glob ./tsconfig.tsbuildinfo",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit",
+    "test": "run-s 'test:*'",
+    "test:unit": "echo \"No tests yet\"",
+    "fix:staged-files": "lint-staged --allow-empty",
+    "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "pre-commit": "echo 'No pre-commits defined in: shared'",
+    "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json",
+    "dev": "tsc -w -p ./tsconfig.json"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
+    "@types/node": "^18.14.6",
+    "@types/react": "^18.0.28",
+    "babel-loader": "^9.1.2",
+    "eslint-config-prettier": "^8.7.0",
+    "prettier": "^2.8.4"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@lifi/wallet-management": "^1.2.9",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.11",
+    "i18next": "^22.4.10",
+    "js-cookie": "^3.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^12.2.0",
+    "typescript": "^4.9.5",
+    "use-media": "^1.4.0"
+  }
+}

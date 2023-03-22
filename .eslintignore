@@ -1,3 +1,4 @@
-build
-public/widget.js
-public/widget.css
+**/node_modules/**
+**/dist/**
+**/build/**
+**/*.d.ts

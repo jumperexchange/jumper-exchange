@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "links": {
+      "swap": "Своп",
+      "dashboard": "Дешборд",
+      "refuel": "Газ"
+    },
+    "connectWallet": "Під'єднати гаманець",
+    "chooseWallet": "Оберіть гаманець",
+    "navbarMenu": {
+      "theme": "Тема",
+      "developers": "Розробникам",
+      "aboutLIFI": "Про LI.FI",
+      "support": "Підтримка"
+    },
+    "walletMenu": {
+      "disconnect": "Від'єднатись",
+      "chains": "Чейни",
+      "switchChain": "Перемикнути чейн"
+    },
+    "language": {
+      "key": "Мова",
+      "value": "Українська"
+    },
+    "themes": {
+      "light": "Світла",
+      "dark": "Темна",
+      "auto": "Авто"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Документація",
+      "showcases": "Приклади"
+    },
+    "showcases": {
+      "ukraineDonation": "Підтримати Україну 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Cross Chain Carbon Offset"
+    }
+  }
+}

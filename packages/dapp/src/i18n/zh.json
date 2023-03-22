@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "links": {
+      "swap": "兑换",
+      "dashboard": "面板",
+      "refuel": "兑换燃料费"
+    },
+    "connectWallet": "连接钱包",
+    "chooseWallet": "选择钱包",
+    "navbarMenu": {
+      "theme": "主题",
+      "developers": "开发者",
+      "aboutLIFI": "关于 LI.FI",
+      "support": "技术支持"
+    },
+    "walletMenu": {
+      "disconnect": "断开连接",
+      "chains": "网络",
+      "switchChain": "切换网络"
+    },
+    "language": {
+      "key": "语言",
+      "value": "中文"
+    },
+    "themes": {
+      "light": "浅色主题",
+      "dark": "深色主题",
+      "auto": "自动切换"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "文档",
+      "showcases": "案例"
+    },
+    "showcases": {
+      "ukraineDonation": "支持乌克兰🇺🇦",
+      "klimaStaking": "跨链质押Klima",
+      "carbonOffset": "跨链碳补偿"
+    }
+  }
+}
