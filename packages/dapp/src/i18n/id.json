@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "links": {
+      "swap": "Swap",
+      "dashboard": "Dasbor",
+      "refuel": "Gas"
+    },
+    "connectWallet": "Hubungkan Dompet",
+    "chooseWallet": "Pilih Dompet",
+    "navbarMenu": {
+      "theme": "Tema",
+      "developers": "Para Pengembang",
+      "aboutLIFI": "Tentang LI.FI",
+      "support": "Bantuan"
+    },
+    "walletMenu": {
+      "disconnect": "Tidak terkoneksi",
+      "chains": "Jaringan",
+      "switchChain": "Pindah Jaringan"
+    },
+    "language": {
+      "key": "Bahasa",
+      "value": "Indonesian"
+    },
+    "themes": {
+      "light": "Terang",
+      "dark": "Gelap",
+      "auto": "Otomatis"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Dokumentasi",
+      "showcases": "Showcase"
+    },
+    "showcases": {
+      "ukraineDonation": "Dukung Ukraina 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Cross Chain Carbon Offset"
+    }
+  }
+}

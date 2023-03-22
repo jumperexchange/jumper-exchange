@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "links": {
+      "swap": "스왑",
+      "dashboard": "대시보드",
+      "refuel": "가스"
+    },
+    "connectWallet": "지갑 연결",
+    "chooseWallet": "지갑 선택",
+    "navbarMenu": {
+      "theme": "테마",
+      "developers": "개발자",
+      "aboutLIFI": "Li.Fi에 관하여",
+      "support": "지원"
+    },
+    "walletMenu": {
+      "disconnect": "연결 해제",
+      "chains": "체인",
+      "switchChain": "체인 변경"
+    },
+    "language": {
+      "key": "언어",
+      "value": "한국어"
+    },
+    "themes": {
+      "light": "밝게",
+      "dark": "어둡게",
+      "auto": "자동"
+    },
+    "developers": {
+      "github": "깃허브",
+      "documentation": "문서",
+      "showcases": "쇼케이스"
+    },
+    "showcases": {
+      "ukraineDonation": "우크라이나 후원 🇺🇦",
+      "klimaStaking": "크로스 체인 Klima 스테이킹",
+      "carbonOffset": "크로스 체인 Carbon 오프셋"
+    }
+  }
+}

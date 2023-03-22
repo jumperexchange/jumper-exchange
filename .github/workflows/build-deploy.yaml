@@ -1,0 +1,51 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - develop
+      - staging
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: arn:aws:iam::403372804574:role/github-actions
+          role-session-name: github-actions-role-session
+          aws-region: us-east-2
+
+      - name: Build App
+        run: yarn install && yarn build:${{env.BRANCH_NAME == 'main' && 'production' || env.BRANCH_NAME }}
+
+      - name: Deploy app build to S3 bucket
+        run: aws s3 sync ./packages/dapp/dist/ ${{ env.BRANCH_NAME == 'main' && 's3://' || format('s3://{0}.',env.BRANCH_NAME) }}jumper.exchange --delete
+
+      - name: Purge Cache
+        run: |
+          curl --request POST \
+            --url https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE }}/purge_cache \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer ${{ secrets.CF_TOKEN }}' \
+            --data '{
+            "files": [
+              "${{ env.BRANCH_NAME == 'main' && 'https://' || format('https://{0}.',env.BRANCH_NAME) }}jumper.exchange",
+              "${{ env.BRANCH_NAME == 'main' && 'https://www.' || format('https://www.{0}.',env.BRANCH_NAME) }}jumper.exchange"
+            ]
+          }'

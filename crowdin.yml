@@ -1,0 +1,6 @@
+pull_request_title: "chore: new Crowdin updates"
+commit_message: "chore: new translations %original_file_name% (%language%)"
+append_commit_message: false
+files:
+  - source: /packages/dapp/src/i18n/en.json
+    translation: /packages/dapp/src/i18n/%two_letters_code%.%file_extension%
