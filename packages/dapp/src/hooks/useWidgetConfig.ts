@@ -2,7 +2,7 @@ import { Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
-  switchChainAndAddToken,
+  switchChainAndAddToken
 } from '@lifi/wallet-management';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
@@ -21,17 +21,15 @@ export function useWidgetConfig({ starterVariant }) {
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent, trackAttribute } = useUserTracking();
 
-  // load environment config
-  const env = import.meta.env;
-  const apiUrl = env.VITE_LIFI_API_URL;
-  let rpcs = {};
-  try {
-    rpcs = JSON.parse(env.VITE_CUSTOM_RPCS);
-  } catch (e) {
-    console.error('Parsing custom rpcs failed', e);
-  }
-
   const widgetConfig: WidgetConfig = useMemo(() => {
+    let rpcs = {};
+    try {
+      rpcs = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
+    } catch (e) {
+      if (import.meta.env.DEV) {
+        console.warn('Parsing custom rpcs failed', e);
+      }
+    }
     return {
       variant: starterVariant ? starterVariant : 'expandable',
       walletManagement: {
@@ -136,15 +134,13 @@ export function useWidgetConfig({ starterVariant }) {
       },
       localStorageKeyPrefix: `jumper-${starterVariant}`,
       sdkConfig: {
-        apiUrl,
+        apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
       },
     };
   }, [
     starterVariant,
     account.signer,
-    account.address,
-    account.chainId,
     isDarkMode,
     i18n.language,
     i18n.languages,
@@ -153,7 +149,6 @@ export function useWidgetConfig({ starterVariant }) {
     theme.palette.accent1.main,
     theme.palette.grey,
     menu,
-    trackAttribute,
     trackEvent,
     disconnect,
   ]);
