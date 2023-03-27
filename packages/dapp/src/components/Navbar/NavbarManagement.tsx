@@ -1,9 +1,12 @@
 import { Chain } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
-import { WalletManagementButtons } from '@transferto/shared/src';
+import {
+  SettingsContextProps,
+  WalletManagementButtons,
+} from '@transferto/shared/src';
 import { ThemeSwitch } from '@transferto/shared/src/atoms/ThemeSwitch';
-import { useSettings } from '@transferto/shared/src/hooks';
+import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../const';
@@ -17,14 +20,16 @@ import {
 
 const NavbarManagement = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
-  const settings = useSettings();
+  const onWalletDisconnect = useSettingsStore(
+    (state: SettingsContextProps) => state.onWalletDisconnect,
+  );
   const menu = useMenu();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const walletManagement = useWallet();
   const { account } = useWallet();
 
-  !account.isActive ?? settings.onWalletDisconnect();
+  !account.isActive ?? onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = useRef(menu.openMainNavbarMenu);

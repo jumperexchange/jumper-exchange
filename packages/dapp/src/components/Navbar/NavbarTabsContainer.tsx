@@ -2,7 +2,8 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
+import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
+import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
@@ -17,17 +18,23 @@ const NavbarTabsContainer = () => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
-  const settings = useSettings();
+  const activeTab = useSettingsStore(
+    (state: SettingsContextProps) => state.activeTab,
+  );
+  const onChangeTab = useSettingsStore(
+    (state: SettingsContextProps) => state.onChangeTab,
+  );
+
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
   const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    settings.onChangeTab(newValue);
+    onChangeTab(newValue);
   };
 
   return (
     <NavbarTabs
-      value={!!isDesktop ? settings.activeTab : false}
+      value={!!isDesktop ? activeTab : false}
       onChange={handleChange}
       isDarkMode={isDarkMode}
       aria-label="tabs"

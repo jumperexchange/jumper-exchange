@@ -1,6 +1,7 @@
 import { WidgetVariant } from '@lifi/widget';
 import { Grid } from '@mui/material';
-import { useSettings } from '@transferto/shared/src/hooks';
+import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
+import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga4';
 import { LinkMap } from '../../types/';
@@ -9,7 +10,13 @@ import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
 export function DualWidget() {
-  const settings = useSettings();
+  const activeTab = useSettingsStore(
+    (state: SettingsContextProps) => state.activeTab,
+  );
+  const onChangeTab = useSettingsStore(
+    (state: SettingsContextProps) => state.onChangeTab,
+  );
+
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');
@@ -30,23 +37,21 @@ export function DualWidget() {
 
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
-      starterVariant === 'expandable'
-        ? settings.onChangeTab(0)
-        : settings.onChangeTab(1);
+      starterVariant === 'expandable' ? onChangeTab(0) : onChangeTab(1);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
-      if (settings.activeTab === 0) {
+      if (activeTab === 0) {
         setStarterVariant('expandable');
-      } else if (settings.activeTab === 1) {
+      } else if (activeTab === 1) {
         setStarterVariant('refuel');
       }
     }
-  }, [settings, starterVariant, starterVariantUsed]);
+  }, [activeTab, onChangeTab, starterVariant, starterVariantUsed]);
 
   useEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant, settings.activeTab]);
+  }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
     <Grid

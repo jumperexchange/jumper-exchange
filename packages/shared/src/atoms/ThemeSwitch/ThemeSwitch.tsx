@@ -2,20 +2,26 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import Tooltip from '@mui/material/Tooltip';
+import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../../../dapp/src/hooks';
 import { useDetectDarkModePreference } from '../../../../dapp/src/providers/ThemeProvider';
-import { useSettings } from '../../hooks';
+import type { SettingsContextProps } from '../../types/settings';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
-  const settings = useSettings();
+  const themeMode = useSettingsStore(
+    (state: SettingsContextProps) => state.themeMode,
+  );
+  const onChangeMode = useSettingsStore(
+    (state: SettingsContextProps) => state.onChangeMode,
+  );
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const { trackEvent } = useUserTracking();
 
   const handleThemeSwitch = () => {
-    settings.onChangeMode(isDarkMode ? 'light' : 'dark');
+    onChangeMode(isDarkMode ? 'light' : 'dark');
     trackEvent({
       category: 'theme-switch',
       action: `click-theme-switch`,
@@ -27,9 +33,9 @@ export const ThemeSwitch = () => {
   return (
     <Tooltip
       title={
-        settings.themeMode === 'light'
+        themeMode === 'light'
           ? translate(`${i18Path}themes.light`)
-          : settings.themeMode === 'dark'
+          : themeMode === 'dark'
           ? translate(`${i18Path}themes.dark`)
           : translate(`${i18Path}themes.auto`)
       }
@@ -39,9 +45,9 @@ export const ThemeSwitch = () => {
           handleThemeSwitch();
         }}
       >
-        {settings.themeMode === 'light' ? (
+        {themeMode === 'light' ? (
           <LightModeIcon />
-        ) : settings.themeMode === 'dark' ? (
+        ) : themeMode === 'dark' ? (
           <NightlightIcon />
         ) : (
           <BrightnessAutoIcon />

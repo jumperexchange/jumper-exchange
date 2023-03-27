@@ -1,15 +1,19 @@
 import { useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
+import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { darkTheme, lightTheme } from '@transferto/shared/src/theme';
+import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import React, { PropsWithChildren, useMemo } from 'react';
 
 export const useDetectDarkModePreference = () => {
-  const settings = useSettings();
+  const themeMode = useSettingsStore(
+    (state: SettingsContextProps) => state.themeMode,
+  );
+
   const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
-  if (!settings.themeMode || settings.themeMode === 'auto') {
+  if (!themeMode || themeMode === 'auto') {
     return !!isDarkModeHook ? true : false;
-  } else if (settings.themeMode === 'dark') {
+  } else if (themeMode === 'dark') {
     return true;
   } else {
     return false;

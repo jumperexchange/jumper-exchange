@@ -4,8 +4,11 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
-import { useSettings } from '@transferto/shared/src/hooks';
-import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
+import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
+import {
+  SettingsContextProps,
+  ThemeModesSupported,
+} from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 
@@ -13,10 +16,15 @@ export const useMainSubMenuTheme = () => {
   const { t: translate } = useTranslation();
   const { trackEvent } = useUserTracking();
   const i18Path = 'navbar.';
-  const settings = useSettings();
+  const themeMode = useSettingsStore(
+    (state: SettingsContextProps) => state.themeMode,
+  );
+  const onChangeMode = useSettingsStore(
+    (state: SettingsContextProps) => state.onChangeMode,
+  );
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
-    settings.onChangeMode(mode);
+    onChangeMode(mode);
     trackEvent({
       category: 'menu',
       action: `switch-theme-mode`,
@@ -29,34 +37,26 @@ export const useMainSubMenuTheme = () => {
     {
       label: `${translate(`${i18Path}themes.light`)}`,
       prefixIcon:
-        settings.themeMode === 'light' ? (
-          <LightModeIcon />
-        ) : (
-          <LightModeOutlinedIcon />
-        ),
-      checkIcon: settings.themeMode === 'light',
+        themeMode === 'light' ? <LightModeIcon /> : <LightModeOutlinedIcon />,
+      checkIcon: themeMode === 'light',
       onClick: () => handleSwitchMode('light'),
     },
     {
       label: `${translate(`${i18Path}themes.dark`)}`,
       prefixIcon:
-        settings.themeMode === 'dark' ? (
-          <NightlightIcon />
-        ) : (
-          <NightlightOutlinedIcon />
-        ),
-      checkIcon: settings.themeMode === 'dark',
+        themeMode === 'dark' ? <NightlightIcon /> : <NightlightOutlinedIcon />,
+      checkIcon: themeMode === 'dark',
       onClick: () => handleSwitchMode('dark'),
     },
     {
       label: `${translate(`${i18Path}themes.auto`)}`,
       prefixIcon:
-        settings.themeMode === 'auto' ? (
+        themeMode === 'auto' ? (
           <BrightnessAutoIcon />
         ) : (
           <BrightnessAutoOutlinedIcon />
         ),
-      checkIcon: settings.themeMode === 'auto',
+      checkIcon: themeMode === 'auto',
       onClick: () => handleSwitchMode('auto'),
     },
   ];

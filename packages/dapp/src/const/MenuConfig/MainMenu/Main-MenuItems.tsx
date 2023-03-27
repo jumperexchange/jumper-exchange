@@ -6,7 +6,8 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
-import { useSettings } from '@transferto/shared/src/hooks';
+import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
+import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
@@ -17,7 +18,10 @@ import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
 export const useMainMenuItems = () => {
   const { t: translate, i18n } = useTranslation();
   const i18Path = 'navbar.';
-  const settings = useSettings();
+  const themeMode = useSettingsStore(
+    (state: SettingsContextProps) => state.themeMode,
+  );
+
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
@@ -37,7 +41,7 @@ export const useMainMenuItems = () => {
     {
       label: `${translate(`${i18Path}language.key`)}`,
       prefixIcon: <LanguageIcon />,
-      checkIcon: settings.themeMode === 'light',
+      checkIcon: themeMode === 'light',
       suffixIcon: (
         <Typography
           variant="lifiBodyMedium"

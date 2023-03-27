@@ -6,7 +6,8 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
+import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
+import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { walletDigest } from '@transferto/shared/src/utils/walletDigest';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +20,9 @@ import { MenuListItem, TWallets } from '../../../types';
 const ConnectedMenuItems = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.walletMenu.';
-  const settings = useSettings();
+  const onWalletDisconnect = useSettingsStore(
+    (state: SettingsContextProps) => state.onWalletDisconnect,
+  );
   const menu = useMenu();
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
@@ -91,7 +94,7 @@ const ConnectedMenuItems = () => {
       showButton: true,
       onClick: () => {
         disconnect();
-        settings.onWalletDisconnect();
+        onWalletDisconnect();
       },
     },
   ];

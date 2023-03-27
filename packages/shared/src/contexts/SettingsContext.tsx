@@ -1,6 +1,8 @@
 import { localStorageKey } from '@transferto/shared/src/config';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
+import { create } from 'zustand';
+
 // config
 import i18next from 'i18next';
 import { defaultSettings } from '../index';
@@ -158,3 +160,61 @@ const useSettingLocalStorage = (
 };
 
 export { SettingsProvider, SettingsContext };
+
+/*--  Use Zustand  --*/
+
+export const useSettingsStore = create((set) => ({
+  ...defaultSettings,
+  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
+
+  removeAllBears: () => set({ bears: 0 }),
+
+  // Tabs
+  onChangeTab: (tab: number) =>
+    set({
+      activeTab: !!tab ? tab : 0,
+    }),
+  // Wallet
+  onWalletConnect: (activeWalletName: string) => {
+    set({
+      activeWalletName: activeWalletName as WalletConnected,
+    });
+  },
+
+  onWalletDisconnect: () => {
+    set({
+      activeWalletName: 'none',
+    });
+  },
+
+  // Mode
+  onChangeMode: (mode: ThemeModesSupported) => {
+    set({
+      themeMode: mode as ThemeModesSupported,
+    });
+  },
+
+  // Language
+  onChangeLanguage: (language: LanguageKey) => {
+    set({
+      languageMode: language as LanguageKey,
+    });
+  },
+
+  // Reset
+  onResetSetting: () => {
+    set({
+      activeWalletName: !!initialState.activeWalletName
+        ? initialState.activeWalletName
+        : 'none',
+      themeMode: !!initialState.themeMode
+        ? initialState.themeMode
+        : ('auto' as ThemeModesSupported),
+      languageMode:
+        initialState.languageMode ||
+        (i18next.language as LanguageKey) ||
+        defaultLang,
+      activeTab: !!initialState.activeTab ? initialState.activeTab : 0,
+    });
+  },
+}));
