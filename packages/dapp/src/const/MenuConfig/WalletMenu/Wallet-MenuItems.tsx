@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
-import { useSettingsStore } from '../../../stores/settings/SettingsContext';
+import { useSettingsStore } from '../../../stores/settings/SettingsStore';
 import { MenuListItem } from '../../../types';
 
 export const useWalletMenuItems = () => {

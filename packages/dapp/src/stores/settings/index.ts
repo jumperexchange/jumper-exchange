@@ -1,2 +1,2 @@
-export * from './SettingsContext';
+export * from './SettingsStore';
 export * from './types';
