@@ -40,9 +40,6 @@ export const useSettingsStore = create(
   persist(
     (set) => ({
       ...defaultSettings,
-      increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-
-      removeAllBears: () => set({ bears: 0 }),
 
       // Tabs
       onChangeTab: (tab: number) =>
@@ -95,7 +92,7 @@ export const useSettingsStore = create(
       },
     }),
     {
-      name: 'settings-storage', // name of the item in the storage (must be unique)
+      name: 'jumper-store', // name of the item in the storage (must be unique)
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ),
