@@ -5,14 +5,14 @@ import {
   SettingsContextProps,
   WalletManagementButtons,
 } from '@transferto/shared/src';
-import { ThemeSwitch } from '@transferto/shared/src/atoms/ThemeSwitch';
-import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../const';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
+import { useSettingsStore } from '../../stores';
+import { ThemeSwitch } from '../ThemeSwitch';
 import {
   NavbarDropdownButton,
   NavbarManagement as NavbarManagementContainer,

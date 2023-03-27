@@ -4,13 +4,13 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
-import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import {
   SettingsContextProps,
   ThemeModesSupported,
 } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
+import { useSettingsStore } from '../../../stores';
 
 export const useMainSubMenuTheme = () => {
   const { t: translate } = useTranslation();

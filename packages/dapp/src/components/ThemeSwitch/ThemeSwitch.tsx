@@ -2,11 +2,11 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import Tooltip from '@mui/material/Tooltip';
-import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
+import type { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
-import { useUserTracking } from '../../../../dapp/src/hooks';
-import { useDetectDarkModePreference } from '../../../../dapp/src/providers/ThemeProvider';
-import type { SettingsContextProps } from '../../types/settings';
+import { useUserTracking } from '../../hooks';
+import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
+import { useSettingsStore } from '../../stores';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();

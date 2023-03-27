@@ -1,9 +1,9 @@
 import { WidgetVariant } from '@lifi/widget';
 import { Grid } from '@mui/material';
-import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga4';
+import { useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types/';
 import { Widget } from '../Widget';
 import { WidgetContainer } from './DualWidget.style';

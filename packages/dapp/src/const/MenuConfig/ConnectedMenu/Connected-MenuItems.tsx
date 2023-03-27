@@ -6,7 +6,6 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { walletDigest } from '@transferto/shared/src/utils/walletDigest';
 import { useMemo } from 'react';
@@ -15,6 +14,7 @@ import { SubMenuKeys } from '../../../const';
 import { useChainInfos } from '../../../providers/ChainInfosProvider';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
+import { useSettingsStore } from '../../../stores';
 import { MenuListItem, TWallets } from '../../../types';
 
 const ConnectedMenuItems = () => {

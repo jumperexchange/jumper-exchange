@@ -1,11 +1,11 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
-import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useCallback, useMemo, useState } from 'react';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
+import { useSettingsStore } from '../../../stores/settings/SettingsContext';
 import { MenuListItem } from '../../../types';
 
 export const useWalletMenuItems = () => {

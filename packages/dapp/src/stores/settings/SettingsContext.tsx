@@ -4,17 +4,17 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 import { create } from 'zustand';
 
 // config
+import { defaultSettings } from '@transferto/shared/src';
 import i18next from 'i18next';
-import { defaultSettings } from '../index';
 // @type
-import type { LanguageKey } from '../../../dapp/src/types';
-import { defaultLang } from '../config';
+import { defaultLang } from '@transferto/shared/src/config';
 import type {
   SettingsContextProps,
   SettingsValueProps,
   ThemeModesSupported,
   WalletConnected,
-} from '../types/settings';
+} from '@transferto/shared/src/types/settings';
+import type { LanguageKey } from '../../types';
 
 // ----------------------------------------------------------------------
 

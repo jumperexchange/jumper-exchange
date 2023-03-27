@@ -2,10 +2,10 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
+import { useSettingsStore } from '../../stores';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
   return {
@@ -18,9 +18,7 @@ const NavbarTabsContainer = () => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
-  const activeTab = useSettingsStore(
-    (state: SettingsContextProps) => state.activeTab,
-  );
+  const activeTab = useSettingsStore((state: any) => state.activeTab);
   const onChangeTab = useSettingsStore(
     (state: SettingsContextProps) => state.onChangeTab,
   );

@@ -1,7 +1,7 @@
-import { useSettingsStore } from '@transferto/shared/src/contexts/SettingsContext';
 import { SettingsContextProps } from '@transferto/shared/src/types';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../../hooks';
+import { useSettingsStore } from '../../../stores';
 
 export const useMainSubMenuLanguage = () => {
   const { i18n } = useTranslation();

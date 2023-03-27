@@ -1,6 +1,6 @@
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { CssBaseline } from '@mui/material';
-import { defaultSettings, SettingsProvider } from '@transferto/shared/src';
+import { defaultSettings } from '@transferto/shared/src';
 import type { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BackgroundGradient } from './components/BackgroundGradient';
@@ -10,6 +10,7 @@ import { I18NProvider } from './providers/I18nProvider';
 import { MenuProvider } from './providers/MenuProvider';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { WalletProvider } from './providers/WalletProvider';
+import { SettingsProvider } from './stores/settings';
 
 const queryClient = new QueryClient();
 
