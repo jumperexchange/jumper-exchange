@@ -143,6 +143,7 @@ export function useWidgetConfig({ starterVariant }) {
         rpcs,
         maxPriceImpact: 0.4,
       },
+      insurance: true,
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR
     };
   }, [
