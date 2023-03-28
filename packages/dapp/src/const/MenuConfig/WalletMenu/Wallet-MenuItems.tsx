@@ -54,6 +54,7 @@ export const useWalletMenuItems = () => {
       onCloseAllNavbarMenus,
       onOpenNavbarWalletMenu,
       onWalletConnect,
+      tally,
     ],
   );
 
