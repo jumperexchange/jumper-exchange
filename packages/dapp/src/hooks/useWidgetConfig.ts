@@ -2,22 +2,29 @@ import { Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
-  switchChainAndAddToken
+  switchChainAndAddToken,
 } from '@lifi/wallet-management';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
+import { MenuContextProps } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMenu } from '../providers/MenuProvider';
 import { useWallet } from '../providers/WalletProvider';
+import { useMenuStore } from '../stores/menu';
 import { LanguageKey } from '../types/i18n';
 import { useUserTracking } from './useUserTracking/useUserTracking';
 
 export function useWidgetConfig({ starterVariant }) {
-  const menu = useMenu();
   const theme = useTheme();
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
+  const onOpenNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarWalletMenu,
+  );
+  const openNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarWalletMenu,
+  );
+
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent, trackAttribute } = useUserTracking();
 
@@ -35,9 +42,7 @@ export function useWidgetConfig({ starterVariant }) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          menu.onOpenNavbarWalletMenu(
-            !!menu.openNavbarWalletMenu ? false : true,
-          );
+          onOpenNavbarWalletMenu(!!openNavbarWalletMenu ? false : true);
           let promiseResolver: (value: void | PromiseLike<void>) => void;
           const loginAwaiter = new Promise<void>(
             (resolve) => (promiseResolver = resolve),
@@ -138,6 +143,7 @@ export function useWidgetConfig({ starterVariant }) {
         rpcs,
       },
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     starterVariant,
     account.signer,
@@ -148,8 +154,6 @@ export function useWidgetConfig({ starterVariant }) {
     theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    menu,
-    trackEvent,
     disconnect,
   ]);
 

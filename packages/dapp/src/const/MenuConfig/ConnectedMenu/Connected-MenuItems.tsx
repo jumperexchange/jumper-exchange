@@ -6,24 +6,25 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { walletDigest } from '@transferto/shared/src/utils/walletDigest';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MenuContextProps } from '../../../../../shared/src/types/menu';
 import { SubMenuKeys } from '../../../const';
 import { useChainInfos } from '../../../providers/ChainInfosProvider';
-import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
-import { useSettingsStore } from '../../../stores';
+import { useMenuStore } from '../../../stores/menu';
 import { MenuListItem, TWallets } from '../../../types';
 
 const ConnectedMenuItems = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.walletMenu.';
-  const onWalletDisconnect = useSettingsStore(
-    (state: SettingsContextProps) => state.onWalletDisconnect,
+  const copiedToClipboard = useMenuStore(
+    (state: MenuContextProps) => state.copiedToClipboard,
   );
-  const menu = useMenu();
+  const onCopyToClipboard = useMenuStore(
+    (state: MenuContextProps) => state.onCopyToClipboard,
+  );
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
 
@@ -34,7 +35,7 @@ const ConnectedMenuItems = () => {
   const { chains, isSuccess } = useChainInfos();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    [chains, account.chainId],
   );
 
   const walletSource: TWallets = wallets;
@@ -47,7 +48,7 @@ const ConnectedMenuItems = () => {
       );
       return walletSource[walletKey]?.icon || '';
     }
-  }, [account]);
+  }, [usedWallet, walletSource]);
 
   const _ConnectedMenuItems: MenuListItem[] = [
     {
@@ -79,10 +80,10 @@ const ConnectedMenuItems = () => {
       ),
       onClick: () => {
         navigator?.clipboard?.writeText(account.address);
-        menu.onCopyToClipboard(true);
+        onCopyToClipboard(true);
       },
       showMoreIcon: false,
-      suffixIcon: !!menu.copiedToClipboard ? (
+      suffixIcon: !!copiedToClipboard ? (
         <CheckIcon sx={{ color: theme.palette.success.main }} />
       ) : (
         <ContentCopyIcon />

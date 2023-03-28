@@ -1,10 +1,11 @@
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
+import { MenuContextProps } from '@transferto/shared/src/types';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { ButtonBackArrow } from '../../../../shared/src/atoms/ButtonArrowBack/ButtonArrowBack';
 import { SubMenuKeys } from '../../const';
-import { useMenu } from '../../providers/MenuProvider';
+import { useMenuStore } from '../../stores/menu';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -37,7 +38,20 @@ const NavbarMenuMobile = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+
+  const openNavbarSubMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarSubMenu,
+  );
+  const anchorRef = useMenuStore((state: MenuContextProps) => state.anchorRef);
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state: MenuContextProps) => state.onCloseAllNavbarMenus,
+  );
+  const onOpenNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarWalletMenu,
+  );
+  const openNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarWalletMenu,
+  );
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -55,7 +69,7 @@ const NavbarMenuMobile = ({
         <Slide direction="up" in={open} mountOnEnter unmountOnExit>
           <NavbarPopper
             open={open}
-            anchorEl={menu.anchorRef.current}
+            anchorEl={anchorRef.current}
             role={undefined}
             placement="bottom-start"
             transition
@@ -64,13 +78,13 @@ const NavbarMenuMobile = ({
             <NavbarPaper
               isDarkMode={isDarkMode}
               isOpenSubMenu={isOpenSubMenu}
-              openSubMenu={menu.openNavbarSubMenu}
+              openSubMenu={openNavbarSubMenu}
               isScrollable={!!label || isScrollable}
             >
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
-                  menu.onCloseAllNavbarMenus();
+                  onCloseAllNavbarMenus();
                 }}
               >
                 <NavbarMenuList
@@ -82,8 +96,7 @@ const NavbarMenuMobile = ({
                     isOpenSubMenu ? 'navbar-menu-list open' : 'navbar-menu-list'
                   }
                   component={
-                    !!isOpenSubMenu &&
-                    menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                    !!isOpenSubMenu && openNavbarSubMenu !== SubMenuKeys.wallets
                       ? 'div'
                       : 'ul'
                   }
@@ -98,9 +111,7 @@ const NavbarMenuMobile = ({
                         {!hideBackArrow && (
                           <ButtonBackArrow
                             onClick={() => {
-                              menu.onOpenNavbarWalletMenu(
-                                !menu.openNavbarWalletMenu,
-                              );
+                              onOpenNavbarWalletMenu(!openNavbarWalletMenu);
                             }}
                           />
                         )}

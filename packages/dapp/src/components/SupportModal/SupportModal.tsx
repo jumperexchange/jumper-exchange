@@ -1,17 +1,20 @@
 import { Breakpoint, Modal, useTheme } from '@mui/material';
+import { MenuContextProps } from '@transferto/shared/src/types';
 import WidgetBot from '@widgetbot/react-embed';
-import { useMenu } from '../../providers/MenuProvider';
+import { useMenuStore } from '../../stores/menu';
 import { SupportModalContainer } from './SupportModal.style';
 
 export const SupportModal = () => {
-  const menu = useMenu();
   const theme = useTheme();
+  const openSupportModal = useMenuStore(
+    (state: MenuContextProps) => state.openSupportModal,
+  );
+  const toggleSupportModal = useMenuStore(
+    (state: MenuContextProps) => state.toggleSupportModal,
+  );
 
   return (
-    <Modal
-      open={menu.openSupportModal}
-      onClose={() => menu.toggleSupportModal(false)}
-    >
+    <Modal open={openSupportModal} onClose={() => toggleSupportModal(false)}>
       <SupportModalContainer>
         <WidgetBot
           server="849912621360218112" // LI.FI / TransferTo.xyz

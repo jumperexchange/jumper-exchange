@@ -1,10 +1,11 @@
+import { MenuContextProps } from '@transferto/shared/src/types/menu';
 import { useTranslation } from 'react-i18next';
 import {
   ConnectedMenuItems,
   ConnectedSubMenuChains,
   SubMenuKeys,
 } from '../../../../const';
-import { useMenu } from '../../../../providers/MenuProvider';
+import { useMenuStore } from '../../../../stores/menu';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -12,17 +13,30 @@ interface NavbarMenuProps {
 export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const i18Path = 'navbar.walletMenu.';
   const { t: translate } = useTranslation();
-  const menu = useMenu();
+
+  const openNavbarConnectedMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarConnectedMenu,
+  );
+  const onOpenNavbarConnectedMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarConnectedMenu,
+  );
+  const openNavbarSubMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarSubMenu,
+  );
+  const onOpenNavbarSubMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarSubMenu,
+  );
+
   const _connectedMenuItems = ConnectedMenuItems();
   const _connectedSubMenuChains = ConnectedSubMenuChains();
 
-  return !!menu.openNavbarConnectedMenu ? ( //todo, ON ???
+  return !!openNavbarConnectedMenu ? ( //todo, ON ???
     <NavbarMenu
       handleClose={handleClose}
-      open={menu.openNavbarConnectedMenu}
-      isScrollable={menu.openNavbarSubMenu === SubMenuKeys.chains}
-      setOpen={menu.onOpenNavbarConnectedMenu}
-      isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
+      open={openNavbarConnectedMenu}
+      isScrollable={openNavbarSubMenu === SubMenuKeys.chains}
+      setOpen={onOpenNavbarConnectedMenu}
+      isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
     >
       {_connectedMenuItems.map((el, index) => (
         <MenuItemComponent
@@ -34,9 +48,9 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           showButton={el.showButton}
           suffixIcon={el.suffixIcon}
           onClick={el.onClick}
-          open={menu.openNavbarConnectedMenu}
-          isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          open={openNavbarConnectedMenu}
+          isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
+          setOpenSubMenu={onOpenNavbarSubMenu}
         />
       ))}
 
@@ -45,9 +59,9 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
         isSubMenu={true}
         isScrollable={true}
         triggerSubMenu={SubMenuKeys.chains}
-        open={menu.openNavbarConnectedMenu}
-        isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-        setOpenSubMenu={menu.onOpenNavbarSubMenu}
+        open={openNavbarConnectedMenu}
+        isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
+        setOpenSubMenu={onOpenNavbarSubMenu}
         subMenuList={_connectedSubMenuChains}
       />
     </NavbarMenu>

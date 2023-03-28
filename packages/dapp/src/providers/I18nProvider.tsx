@@ -1,4 +1,4 @@
-import { SettingsContextProps } from '@transferto/shared/types';
+import { SettingsContextProps } from '@transferto/shared/src/types';
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';

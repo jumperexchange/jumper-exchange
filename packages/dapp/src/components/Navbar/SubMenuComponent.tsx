@@ -5,8 +5,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { Dispatch, SetStateAction } from 'react';
+import { MenuContextProps } from '../../../../shared/src/types/menu';
 import { SubMenuKeys } from '../../const';
-import { useMenu } from '../../providers/MenuProvider';
+import { useMenuStore } from '../../stores/menu';
 import { MenuListItem } from '../../types';
 import {
   MenuHeaderAppBar,
@@ -45,16 +46,19 @@ const SubMenuComponent = ({
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+
+  const openNavbarSubMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarSubMenu,
+  );
 
   return (
     !!open && (
       <>
-        {menu.openNavbarSubMenu === triggerSubMenu && (
+        {openNavbarSubMenu === triggerSubMenu && (
           <NavbarPaper
             component={'ul'}
             isSubMenu={isSubMenu}
-            openSubMenu={menu.openNavbarSubMenu}
+            openSubMenu={openNavbarSubMenu}
             isOpenSubMenu={isOpenSubMenu}
             isScrollable={isScrollable}
             isDarkMode={isDarkMode}

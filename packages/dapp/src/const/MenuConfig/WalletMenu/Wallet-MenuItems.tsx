@@ -1,10 +1,11 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
+import { MenuContextProps } from '@transferto/shared/src/types';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useCallback, useMemo, useState } from 'react';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
+import { useMenuStore } from '../../../stores/menu';
 import { useSettingsStore } from '../../../stores/settings/SettingsStore';
 import { MenuListItem } from '../../../types';
 
@@ -17,11 +18,16 @@ export const useWalletMenuItems = () => {
   const onWalletConnect = useSettingsStore(
     (state: SettingsContextProps) => state.onWalletConnect,
   );
-  const menu = useMenu();
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state: MenuContextProps) => state.onCloseAllNavbarMenus,
+  );
+  const onOpenNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarWalletMenu,
+  );
 
   const login = useCallback(
     async (wallet: Wallet) => {
-      menu.onCloseAllNavbarMenus();
+      onCloseAllNavbarMenus();
 
       if (wallet.checkProviderIdentity) {
         const checkResult = wallet.checkProviderIdentity(ethereum);
@@ -32,11 +38,17 @@ export const useWalletMenuItems = () => {
       }
       await connect(wallet);
       onWalletConnect(wallet.name);
-      menu.onOpenNavbarWalletMenu(false);
+      onOpenNavbarWalletMenu(false);
       try {
       } catch (e) {}
     },
-    [connect, ethereum, menu, onWalletConnect],
+    [
+      connect,
+      ethereum,
+      onCloseAllNavbarMenus,
+      onOpenNavbarWalletMenu,
+      onWalletConnect,
+    ],
   );
 
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {

@@ -26,7 +26,7 @@ export type MenuContextProps = {
 
   // On Iniitialization
   onMenuInit: (
-    anchorEl: JSX.Element | MutableRefObject<HTMLButtonElement>,
+    anchorEl: JSX.Element | Element | MutableRefObject<HTMLButtonElement>,
   ) => void;
 
   // Close ALL Navbar Menus

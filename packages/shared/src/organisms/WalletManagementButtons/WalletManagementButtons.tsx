@@ -6,15 +6,21 @@ import React from 'react';
 import { useUserTracking } from '../../../../dapp/src/hooks/useUserTracking/useUserTracking';
 import { ButtonPrimary } from '../../atoms/ButtonPrimary';
 import { ButtonSecondary } from '../../atoms/ButtonSecondary';
-import type { MenuContextProps } from '../../types';
 import { walletDigest } from '../../utils/walletDigest';
+
+interface ToggleMenuHandlersProps {
+  openNavbarWalletMenu: boolean;
+  onOpenNavbarWalletMenu: (open: boolean) => void;
+  openNavbarConnectedMenu: boolean;
+  onOpenNavbarConnectedMenu: (open: boolean) => void;
+}
+
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
   backgroundColor?: string;
-  setOpenNavbarSubmenu?: (subMenu: string) => void;
   color?: string;
+  toggleMenuHandlers: ToggleMenuHandlersProps;
   walletConnected?: boolean;
-  menu: MenuContextProps;
   connectButtonLabel?: ReactElement<any, any>;
   activeChain?: ExtendedChain;
   isSuccess: boolean;
@@ -29,13 +35,17 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const handleWalletPicker = () => {
-    props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
+    props.toggleMenuHandlers.onOpenNavbarWalletMenu(
+      !props.toggleMenuHandlers.openNavbarWalletMenu,
+    );
   };
 
   const handleWalletMenuClick = () => {
-    !props.menu.openNavbarConnectedMenu &&
+    !props.toggleMenuHandlers.openNavbarConnectedMenu &&
       trackEvent({ category: 'menu', action: 'open-connected-menu' });
-    props.menu.onOpenNavbarConnectedMenu(!props.menu.openNavbarConnectedMenu);
+    props.toggleMenuHandlers.onOpenNavbarConnectedMenu(
+      !props.toggleMenuHandlers.openNavbarConnectedMenu,
+    );
   };
 
   return (

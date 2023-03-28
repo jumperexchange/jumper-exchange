@@ -1,9 +1,10 @@
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
+import { MenuContextProps } from '@transferto/shared/src/types/menu';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys, useWalletMenuItems } from '../../../../const';
-import { useMenu } from '../../../../providers/MenuProvider';
+import { useMenuStore } from '../../../../stores/menu';
 import { MenuItemComponent, NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
@@ -15,7 +16,19 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
   const theme = useTheme();
-  const menu = useMenu();
+  const openNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarWalletMenu,
+  );
+  const onOpenNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarWalletMenu,
+  );
+  const openNavbarSubMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarSubMenu,
+  );
+  const onOpenNavbarSubMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarSubMenu,
+  );
+
   const _walletMenuItems = useWalletMenuItems();
   return (
     <NavbarMenu
@@ -23,9 +36,9 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
       label={`${translate(`${i18Path}chooseWallet`)}`}
       hideBackArrow={true}
       isScrollable={true}
-      open={menu.openNavbarWalletMenu}
-      setOpen={menu.onOpenNavbarWalletMenu}
-      isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.wallets}
+      open={openNavbarWalletMenu}
+      setOpen={onOpenNavbarWalletMenu}
+      isOpenSubMenu={openNavbarSubMenu === SubMenuKeys.wallets}
     >
       {!!_walletMenuItems.length ? (
         _walletMenuItems.map((el, index) => (
@@ -38,9 +51,9 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
             showMoreIcon={el.showMoreIcon}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
-            open={!!open ? open : menu.openNavbarWalletMenu}
-            isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.wallets}
-            setOpenSubMenu={menu.onOpenNavbarSubMenu}
+            open={!!open ? open : openNavbarWalletMenu}
+            isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.wallets}
+            setOpenSubMenu={onOpenNavbarSubMenu}
           />
         ))
       ) : (

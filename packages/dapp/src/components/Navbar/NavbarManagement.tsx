@@ -2,16 +2,16 @@ import { Chain } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import {
+  MenuContextProps,
   SettingsContextProps,
   WalletManagementButtons,
 } from '@transferto/shared/src';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys } from '../../const';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
-import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import { useSettingsStore } from '../../stores';
+import { useMenuStore } from '../../stores/menu';
 import { ThemeSwitch } from '../ThemeSwitch';
 import {
   NavbarDropdownButton,
@@ -19,11 +19,30 @@ import {
 } from './Navbar.style';
 
 const NavbarManagement = () => {
-  const anchorRef = useRef<HTMLButtonElement>(null);
+  const anchorRef = useRef<any>(null);
   const onWalletDisconnect = useSettingsStore(
     (state: SettingsContextProps) => state.onWalletDisconnect,
   );
-  const menu = useMenu();
+
+  const onOpenNavbarMainMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarMainMenu,
+  );
+
+  const openMainNavbarMenu = useMenuStore(
+    (state: MenuContextProps) => state.openMainNavbarMenu,
+  );
+
+  const toggleMenuHandlers = useMenuStore((state: MenuContextProps) => ({
+    openNavbarWalletMenu: state.openNavbarWalletMenu,
+    onOpenNavbarWalletMenu: state.onOpenNavbarWalletMenu,
+    openNavbarConnectedMenu: state.openNavbarConnectedMenu,
+    onOpenNavbarConnectedMenu: state.onOpenNavbarConnectedMenu,
+  }));
+
+  const onMenuInit = useMenuStore(
+    (state: MenuContextProps) => state.onMenuInit,
+  );
+
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const walletManagement = useWallet();
@@ -32,17 +51,17 @@ const NavbarManagement = () => {
   !account.isActive ?? onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = useRef(menu.openMainNavbarMenu);
+  const prevOpen = useRef(openMainNavbarMenu);
   useEffect(() => {
-    if (prevOpen.current === true && menu.openMainNavbarMenu === false) {
-      anchorRef.current!.focus();
+    if (prevOpen.current === true && openMainNavbarMenu === false) {
+      anchorRef!.current.focus();
     }
 
-    prevOpen.current = menu.openMainNavbarMenu;
-  }, [menu.openMainNavbarMenu]);
+    prevOpen.current = openMainNavbarMenu;
+  }, [openMainNavbarMenu]);
 
-  useEffect(() => {
-    menu.onMenuInit(anchorRef);
+  useLayoutEffect(() => {
+    onMenuInit(anchorRef.current);
     // We want to run this once to avoid infinite re-render
     // FIXME: We need to fix how we manage menu state to avoid re-rendering of the whole app when we open the menu
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,12 +74,15 @@ const NavbarManagement = () => {
     [chains, account.chainId],
   );
 
+  const handleOnOpenNavbarMainMenu = () => {
+    onOpenNavbarMainMenu(!openMainNavbarMenu);
+  };
+
   return (
     <NavbarManagementContainer className="settings">
       <WalletManagementButtons
         walletManagement={walletManagement}
-        menu={menu}
-        setOpenNavbarSubmenu={menu.onOpenNavbarSubMenu}
+        toggleMenuHandlers={toggleMenuHandlers}
         activeChain={activeChain}
         connectButtonLabel={
           <Typography
@@ -82,14 +104,10 @@ const NavbarManagement = () => {
       <NavbarDropdownButton
         ref={anchorRef}
         id="composition-button"
-        aria-controls={menu.openMainNavbarMenu ? 'composition-menu' : undefined}
-        aria-expanded={menu.openMainNavbarMenu ? 'true' : undefined}
+        aria-controls={openMainNavbarMenu ? 'composition-menu' : undefined}
+        aria-expanded={openMainNavbarMenu ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={() => {
-          menu.onOpenNavbarSubMenu(SubMenuKeys.none);
-          menu.onOpenNavbarWalletMenu(false);
-          menu.onOpenNavbarMainMenu(!menu.openMainNavbarMenu);
-        }}
+        onClick={handleOnOpenNavbarMainMenu}
       >
         <MenuIcon
           sx={{

@@ -3,9 +3,10 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
+import { MenuContextProps } from '@transferto/shared/src/types';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { SubMenuKeys } from '../../const/';
-import { useMenu } from '../../providers/MenuProvider';
+import { useMenuStore } from '../../stores/menu';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -37,7 +38,23 @@ const NavbarMenuDesktop = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+
+  const openNavbarSubMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarSubMenu,
+  );
+
+  const anchorRef = useMenuStore((state: MenuContextProps) => state.anchorRef);
+
+  const openNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.openNavbarWalletMenu,
+  );
+  const onOpenNavbarWalletMenu = useMenuStore(
+    (state: MenuContextProps) => state.onOpenNavbarWalletMenu,
+  );
+
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state: MenuContextProps) => state.onCloseAllNavbarMenus,
+  );
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -54,7 +71,7 @@ const NavbarMenuDesktop = ({
         <NavbarExternalBackground />
         <NavbarPopper
           open={open}
-          anchorEl={menu?.anchorRef?.current}
+          anchorEl={anchorRef}
           role={undefined}
           placement="bottom-start"
           popperOptions={{ strategy: 'fixed' }}
@@ -71,13 +88,13 @@ const NavbarMenuDesktop = ({
               <NavbarPaper
                 isDarkMode={isDarkMode}
                 isOpenSubMenu={isOpenSubMenu}
-                openSubMenu={menu.openNavbarSubMenu}
+                openSubMenu={openNavbarSubMenu}
                 isScrollable={!!label || isScrollable}
               >
                 <ClickAwayListener
                   onClickAway={(event) => {
                     handleClose(event);
-                    menu.onCloseAllNavbarMenus();
+                    onCloseAllNavbarMenus();
                   }}
                 >
                   <NavbarMenuList
@@ -92,7 +109,7 @@ const NavbarMenuDesktop = ({
                     }
                     component={
                       !!isOpenSubMenu &&
-                      menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                      openNavbarSubMenu !== SubMenuKeys.wallets
                         ? 'div'
                         : 'ul'
                     }
@@ -107,9 +124,7 @@ const NavbarMenuDesktop = ({
                           {!hideBackArrow && (
                             <ButtonBackArrow
                               onClick={() => {
-                                menu.onOpenNavbarWalletMenu(
-                                  !menu.openNavbarWalletMenu,
-                                );
+                                onOpenNavbarWalletMenu(!openNavbarWalletMenu);
                               }}
                             />
                           )}

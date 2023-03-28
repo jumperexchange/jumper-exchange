@@ -6,14 +6,15 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
+import { MenuContextProps } from '@transferto/shared/src/types';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useMenu } from '../../../providers/MenuProvider';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
 import { useSettingsStore } from '../../../stores';
+import { useMenuStore } from '../../../stores/menu';
 
 export const useMainMenuItems = () => {
   const { t: translate, i18n } = useTranslation();
@@ -25,7 +26,9 @@ export const useMainMenuItems = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
-  const menu = useMenu();
+  const toggleSupportModal = useMenuStore(
+    (state: MenuContextProps) => state.toggleSupportModal,
+  );
 
   return [
     {
@@ -129,7 +132,7 @@ export const useMainMenuItems = () => {
           category: 'menu',
           action: 'open-support-modal',
         });
-        menu.toggleSupportModal(true);
+        toggleSupportModal(true);
       },
       showButton: true,
     },

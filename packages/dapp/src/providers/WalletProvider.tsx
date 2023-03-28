@@ -16,12 +16,13 @@ import React, {
   useState,
 } from 'react';
 
+import { MenuContextProps } from '@transferto/shared/src/types';
 import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
 import { useUserTracking } from '../hooks';
-import { useMenu } from './MenuProvider';
+import { useMenuStore } from '../stores/menu';
 
 const stub = (): never => {
   throw new Error('You forgot to wrap your component in <WalletProvider>.');
@@ -51,7 +52,9 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
-  const menu = useMenu();
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state: MenuContextProps) => state.onCloseAllNavbarMenus,
+  );
   const { trackConnectWallet } = useUserTracking();
   const connect = useCallback(
     async (wallet?: Wallet) => {
@@ -66,12 +69,13 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const disconnect = useCallback(async () => {
     setUsedWallet(undefined);
     await walletManagementDisconnect();
-    menu.onCloseAllNavbarMenus();
+    onCloseAllNavbarMenus();
     trackConnectWallet({
       account: account,
       disconnect: true,
     });
-  }, [account, menu, trackConnectWallet, walletManagementDisconnect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, trackConnectWallet, walletManagementDisconnect]);
 
   // only for injected wallets
   const switchChain = useCallback(async (chainId: number) => {
