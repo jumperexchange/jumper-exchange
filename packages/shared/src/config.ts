@@ -1,4 +1,5 @@
 // @mui
+import { SubMenuKeys } from '../../dapp/src/const';
 import type { LanguageKey } from '../../dapp/src/types';
 import type { ThemeModesSupported } from './types';
 
@@ -57,7 +58,7 @@ export const defaultMenu: defaultMenuType = {
   openMainNavbarMenu: false,
   openNavbarWalletMenu: false,
   openNavbarConnectedMenu: false,
-  openNavbarSubMenu: 'none',
+  openNavbarSubMenu: SubMenuKeys.none,
   openSupportModal: false,
   anchorEl: null,
 };

@@ -55,7 +55,7 @@ export const useMenuStore = create((set) => ({
       openMainNavbarMenu: false,
       openNavbarWalletMenu: false,
       openNavbarConnectedMenu: false,
-      openNavbarSubMenu: 'none',
+      openNavbarSubMenu: SubMenuKeys.none,
       openSupportModal: false,
     });
   },
