@@ -141,7 +141,9 @@ export function useWidgetConfig({ starterVariant }) {
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
+        maxPriceImpact: 0.4,
       },
+      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR
     };
   }, [
     starterVariant,
