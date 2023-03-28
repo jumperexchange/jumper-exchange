@@ -14,7 +14,7 @@ export const useWalletMenuItems = () => {
     useState<Wallet>();
   const { connect } = useWallet();
   const { trackEvent } = useUserTracking();
-  const { ethereum } = window as any;
+  const { ethereum, tally } = window as any;
   const onWalletConnect = useSettingsStore(
     (state: SettingsContextProps) => state.onWalletConnect,
   );
@@ -30,7 +30,13 @@ export const useWalletMenuItems = () => {
       onCloseAllNavbarMenus();
 
       if (wallet.checkProviderIdentity) {
-        const checkResult = wallet.checkProviderIdentity(ethereum);
+        let checkResult;
+        if (wallet.name === 'Taho') {
+          checkResult = wallet.checkProviderIdentity({ provider: tally });
+        } else {
+          checkResult = wallet.checkProviderIdentity({ provider: ethereum });
+        }
+
         if (!checkResult) {
           setShowWalletIdentityPopover(wallet);
           return;
@@ -54,6 +60,10 @@ export const useWalletMenuItems = () => {
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
     const _output = [];
     supportedWallets.forEach((wallet, index) => {
+      // TODO: overwrite taho name ; REMOVE AfTER WALLET MANAGEMENT v2
+      if (wallet.name === 'Tally Ho') {
+        wallet.name = 'Taho';
+      }
       _output.push({
         label: wallet.name,
         prefixIcon: (
