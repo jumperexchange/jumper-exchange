@@ -34,7 +34,6 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
     <NavbarMenu
       handleClose={handleClose}
       label={`${translate(`${i18Path}chooseWallet`)}`}
-      hideBackArrow={true}
       isScrollable={true}
       open={openNavbarWalletMenu}
       setOpen={onOpenNavbarWalletMenu}

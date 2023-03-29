@@ -6,7 +6,6 @@ import { NavbarMenuDesktop, NavbarMenuMobile } from './index';
 interface NavbarMenuProps {
   isOpenSubMenu?: boolean;
   label?: string;
-  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
@@ -18,7 +17,6 @@ const NavbarMenu = ({
   handleClose,
   open,
   isScrollable,
-  hideBackArrow,
   setOpen,
   label,
   isOpenSubMenu,
@@ -32,7 +30,6 @@ const NavbarMenu = ({
     (!!isDesktop ? (
       <NavbarMenuDesktop
         handleClose={handleClose}
-        hideBackArrow={hideBackArrow}
         label={label}
         open={open}
         setOpen={setOpen}
@@ -44,7 +41,6 @@ const NavbarMenu = ({
     ) : (
       <NavbarMenuMobile
         handleClose={handleClose}
-        hideBackArrow={hideBackArrow}
         label={label}
         open={open}
         setOpen={setOpen}

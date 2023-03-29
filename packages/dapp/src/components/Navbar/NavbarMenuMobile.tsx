@@ -3,7 +3,6 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
 import { MenuContextProps } from '@transferto/shared/src/types';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
-import { ButtonBackArrow } from '../../../../shared/src/atoms/ButtonArrowBack/ButtonArrowBack';
 import { SubMenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import {
@@ -17,7 +16,6 @@ import {
 
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   isScrollable?: boolean;
@@ -30,7 +28,6 @@ const NavbarMenuMobile = ({
   isScrollable,
   handleClose,
   open,
-  hideBackArrow,
   setOpen,
   label,
   isOpenSubMenu,
@@ -45,12 +42,6 @@ const NavbarMenuMobile = ({
   const anchorRef = useMenuStore((state: MenuContextProps) => state.anchorRef);
   const onCloseAllNavbarMenus = useMenuStore(
     (state: MenuContextProps) => state.onCloseAllNavbarMenus,
-  );
-  const onOpenNavbarWalletMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarWalletMenu,
-  );
-  const openNavbarWalletMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarWalletMenu,
   );
 
   function handleListKeyDown(event: KeyboardEvent) {
@@ -108,13 +99,6 @@ const NavbarMenuMobile = ({
                         elevation={0}
                         isScrollable={isScrollable}
                       >
-                        {!hideBackArrow && (
-                          <ButtonBackArrow
-                            onClick={() => {
-                              onOpenNavbarWalletMenu(!openNavbarWalletMenu);
-                            }}
-                          />
-                        )}
                         <Typography
                           variant={'lifiBodyMediumStrong'}
                           width={'100%'}

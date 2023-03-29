@@ -2,7 +2,6 @@ import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
-import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { MenuContextProps } from '@transferto/shared/src/types';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { SubMenuKeys } from '../../const/';
@@ -17,7 +16,6 @@ import {
 } from './Navbar.style';
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  hideBackArrow: boolean;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -30,7 +28,6 @@ const NavbarMenuDesktop = ({
   isOpenSubMenu,
   setOpen,
   handleClose,
-  hideBackArrow,
   isScrollable,
   label,
   open,
@@ -44,14 +41,6 @@ const NavbarMenuDesktop = ({
   );
 
   const anchorRef = useMenuStore((state: MenuContextProps) => state.anchorRef);
-
-  const openNavbarWalletMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarWalletMenu,
-  );
-  const onOpenNavbarWalletMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarWalletMenu,
-  );
-
   const onCloseAllNavbarMenus = useMenuStore(
     (state: MenuContextProps) => state.onCloseAllNavbarMenus,
   );
@@ -121,13 +110,6 @@ const NavbarMenuDesktop = ({
                           elevation={0}
                           isScrollable={isScrollable}
                         >
-                          {!hideBackArrow && (
-                            <ButtonBackArrow
-                              onClick={() => {
-                                onOpenNavbarWalletMenu(!openNavbarWalletMenu);
-                              }}
-                            />
-                          )}
                           <Typography
                             variant={'lifiBodyMediumStrong'}
                             width={'100%'}
