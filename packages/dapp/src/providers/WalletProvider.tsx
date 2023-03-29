@@ -21,7 +21,6 @@ import {
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
 import { useUserTracking } from '../hooks';
-import { useMenu } from './MenuProvider';
 
 const stub = (): never => {
   throw new Error('You forgot to wrap your component in <WalletProvider>.');
@@ -51,7 +50,6 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
-  const menu = useMenu();
   const { trackConnectWallet } = useUserTracking();
   const connect = useCallback(
     async (wallet?: Wallet) => {
@@ -66,12 +64,11 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const disconnect = useCallback(async () => {
     setUsedWallet(undefined);
     await walletManagementDisconnect();
-    menu.onCloseAllNavbarMenus();
     trackConnectWallet({
       account: account,
       disconnect: true,
     });
-  }, [account, menu, trackConnectWallet, walletManagementDisconnect]);
+  }, [account, trackConnectWallet, walletManagementDisconnect]);
 
   // only for injected wallets
   const switchChain = useCallback(async (chainId: number) => {

@@ -44,7 +44,7 @@ const ConnectedMenuItems = () => {
       );
       return walletSource[walletKey]?.icon || '';
     }
-  }, [account]);
+  }, [usedWallet, walletSource]);
 
   const _ConnectedMenuItems: MenuListItem[] = [
     {
@@ -92,6 +92,7 @@ const ConnectedMenuItems = () => {
       onClick: () => {
         disconnect();
         settings.onWalletDisconnect();
+        menu.onCloseAllNavbarMenus();
       },
     },
   ];
