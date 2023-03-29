@@ -6,7 +6,6 @@ import { BackgroundGradient } from './components/BackgroundGradient';
 import { HistoryMigration } from './components/HistoryMigration';
 import { ChainInfosProvider } from './providers/ChainInfosProvider';
 import { I18NProvider } from './providers/I18nProvider';
-import { MenuProvider } from './providers/MenuProvider';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { WalletProvider } from './providers/WalletProvider';
 
@@ -17,20 +16,18 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     <QueryClientProvider client={queryClient}>
       <ChainInfosProvider>
         <I18NProvider>
-          <MenuProvider>
-            <ThemeProvider>
-              <ArcxAnalyticsProvider
-                apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
-              >
-                <WalletProvider>
-                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                  <CssBaseline />
-                  <BackgroundGradient />
-                  {children}
-                </WalletProvider>
-              </ArcxAnalyticsProvider>
-            </ThemeProvider>
-          </MenuProvider>
+          <ThemeProvider>
+            <ArcxAnalyticsProvider
+              apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
+            >
+              <WalletProvider>
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <BackgroundGradient />
+                {children}
+              </WalletProvider>
+            </ArcxAnalyticsProvider>
+          </ThemeProvider>
         </I18NProvider>
       </ChainInfosProvider>
       <HistoryMigration />

@@ -1,43 +1,31 @@
 import { create } from 'zustand';
 
 // config
-import { defaultMenu } from '@transferto/shared/src';
 // @type
-import type { MenuContextProps } from '@transferto/shared/src/types/Menu';
 import { SubMenuKeys } from '../../const';
 
 // ----------------------------------------------------------------------
 
-const initialState: MenuContextProps = {
-  ...defaultMenu,
+interface defaultMenuType {
+  copiedToClipboard: boolean;
+  openMainNavbarMenu: boolean;
+  openNavbarWalletMenu: boolean;
+  openNavbarConnectedMenu: boolean;
+  openNavbarSubMenu: string;
+  openSupportModal: boolean;
+  anchorEl: null | JSX.Element;
+}
 
-  // CopyClipboard
-  onCopyToClipboard: () => {},
-
-  // Close ALL Navbar Menus
-  onCloseAllNavbarMenus: () => {},
-
-  // On Initialization of Menu
-  onMenuInit: () => {},
-
-  // Toggle Navbar Main Menu
-  onOpenNavbarMainMenu: () => {},
-
-  // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: () => {},
-
-  // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: () => {},
-
-  // Toggle Navbar Sub Menu
-  onOpenNavbarSubMenu: () => {},
-
-  // Toggle support modal
-  toggleSupportModal: () => {},
+export const defaultMenu: defaultMenuType = {
+  copiedToClipboard: false,
+  openMainNavbarMenu: false,
+  openNavbarWalletMenu: false,
+  openNavbarConnectedMenu: false,
+  openNavbarSubMenu: SubMenuKeys.none,
+  openSupportModal: false,
+  anchorEl: null,
 };
-
 /*--  Use Zustand  --*/
-
 export const useMenuStore = create((set) => ({
   ...defaultMenu,
 

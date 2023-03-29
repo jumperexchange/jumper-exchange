@@ -1,5 +1,4 @@
 // @mui
-import { SubMenuKeys } from '../../dapp/src/const';
 import type { LanguageKey } from '../../dapp/src/types';
 import type { ThemeModesSupported } from './types';
 
@@ -41,24 +40,4 @@ export const defaultSettings: DefaultSettingsType = {
   activeWalletName: !!localStorage.getItem(localStorageKey.activeWalletName)
     ? (localStorage.getItem(localStorageKey.activeWalletName) as string)
     : '',
-};
-
-interface defaultMenuType {
-  copiedToClipboard: boolean;
-  openMainNavbarMenu: boolean;
-  openNavbarWalletMenu: boolean;
-  openNavbarConnectedMenu: boolean;
-  openNavbarSubMenu: string;
-  openSupportModal: boolean;
-  anchorEl: null | JSX.Element;
-}
-
-export const defaultMenu: defaultMenuType = {
-  copiedToClipboard: false,
-  openMainNavbarMenu: false,
-  openNavbarWalletMenu: false,
-  openNavbarConnectedMenu: false,
-  openNavbarSubMenu: SubMenuKeys.none,
-  openSupportModal: false,
-  anchorEl: null,
 };
