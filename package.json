@@ -35,7 +35,6 @@
   ],
   "packageManager": "yarn@3.5.0",
   "dependencies": {
-    "immer": "^9.0.21",
     "zustand": "^4.3.6"
   }
 }
