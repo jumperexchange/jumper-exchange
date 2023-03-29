@@ -2,7 +2,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary';
-import { Dispatch, SetStateAction } from 'react';
 import { useUserTracking } from '../../hooks/useUserTracking/useUserTracking';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 
@@ -10,7 +9,7 @@ interface MenuItemProps {
   open: boolean;
   isOpenSubMenu: boolean;
   showButton: boolean;
-  setOpenSubMenu: Dispatch<SetStateAction<string>>;
+  setOpenSubMenu: (subMenu: string) => void;
   showMoreIcon?: boolean;
   label: string;
   onClick: any;

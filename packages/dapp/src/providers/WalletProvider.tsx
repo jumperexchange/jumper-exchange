@@ -50,6 +50,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
+
   const { trackConnectWallet } = useUserTracking();
   const connect = useCallback(
     async (wallet?: Wallet) => {

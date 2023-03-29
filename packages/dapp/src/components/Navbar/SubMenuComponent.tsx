@@ -6,7 +6,7 @@ import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { Dispatch, SetStateAction } from 'react';
 import { SubMenuKeys } from '../../const';
-import { useMenu } from '../../providers/MenuProvider';
+import { useMenu } from '../../hooks';
 import { MenuListItem } from '../../types';
 import {
   MenuHeaderAppBar,
@@ -45,7 +45,7 @@ const SubMenuComponent = ({
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+  const { menu } = useMenu();
 
   return (
     !!open && (

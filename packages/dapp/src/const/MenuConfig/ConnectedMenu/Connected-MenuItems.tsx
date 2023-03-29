@@ -11,8 +11,8 @@ import { walletDigest } from '@transferto/shared/src/utils/walletDigest';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
+import { useMenu } from '../../../hooks';
 import { useChainInfos } from '../../../providers/ChainInfosProvider';
-import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem, TWallets } from '../../../types';
 
@@ -20,7 +20,8 @@ const ConnectedMenuItems = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.walletMenu.';
   const settings = useSettings();
-  const menu = useMenu();
+  const { menu, onCopyToClipboard, onCloseAllNavbarMenus } = useMenu();
+
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
 
@@ -31,7 +32,7 @@ const ConnectedMenuItems = () => {
   const { chains, isSuccess } = useChainInfos();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    [chains, account.chainId],
   );
 
   const walletSource: TWallets = wallets;
@@ -76,7 +77,7 @@ const ConnectedMenuItems = () => {
       ),
       onClick: () => {
         navigator?.clipboard?.writeText(account.address);
-        menu.onCopyToClipboard(true);
+        onCopyToClipboard(true);
       },
       showMoreIcon: false,
       suffixIcon: !!menu.copiedToClipboard ? (
@@ -91,8 +92,8 @@ const ConnectedMenuItems = () => {
       showButton: true,
       onClick: () => {
         disconnect();
+        onCloseAllNavbarMenus();
         settings.onWalletDisconnect();
-        menu.onCloseAllNavbarMenus();
       },
     },
   ];

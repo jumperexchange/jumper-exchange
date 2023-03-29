@@ -2,9 +2,8 @@ import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
-import { ButtonBackArrow } from '../../../../shared/src/atoms/ButtonArrowBack/ButtonArrowBack';
 import { SubMenuKeys } from '../../const';
-import { useMenu } from '../../providers/MenuProvider';
+import { useMenu } from '../../hooks';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -17,7 +16,6 @@ import {
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
   hideBackArrow?: boolean;
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   isScrollable?: boolean;
   label?: string;
@@ -27,7 +25,6 @@ interface NavbarMenuProps {
 
 const NavbarMenuMobile = ({
   isScrollable,
-  handleClose,
   open,
   hideBackArrow,
   setOpen,
@@ -37,7 +34,7 @@ const NavbarMenuMobile = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+  const { menu, onCloseAllNavbarMenus, onOpenNavbarWalletMenu } = useMenu();
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -55,7 +52,7 @@ const NavbarMenuMobile = ({
         <Slide direction="up" in={open} mountOnEnter unmountOnExit>
           <NavbarPopper
             open={open}
-            anchorEl={menu.anchorRef.current}
+            anchorEl={menu?.anchorRef}
             role={undefined}
             placement="bottom-start"
             transition
@@ -69,8 +66,8 @@ const NavbarMenuMobile = ({
             >
               <ClickAwayListener
                 onClickAway={(event) => {
-                  handleClose(event);
-                  menu.onCloseAllNavbarMenus();
+                  event.preventDefault();
+                  onCloseAllNavbarMenus();
                 }}
               >
                 <NavbarMenuList
@@ -95,15 +92,6 @@ const NavbarMenuMobile = ({
                         elevation={0}
                         isScrollable={isScrollable}
                       >
-                        {!hideBackArrow && (
-                          <ButtonBackArrow
-                            onClick={() => {
-                              menu.onOpenNavbarWalletMenu(
-                                !menu.openNavbarWalletMenu,
-                              );
-                            }}
-                          />
-                        )}
                         <Typography
                           variant={'lifiBodyMediumStrong'}
                           width={'100%'}

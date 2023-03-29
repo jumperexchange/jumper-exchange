@@ -51,46 +51,58 @@ const SettingsProvider = ({
   const [settings, setSettings] = useSettingLocalStorage(defaultSettings);
 
   // Tabs
-  const onChangeTab = (tab: number) => {
-    setSettings((oldSettings) => ({
-      ...oldSettings,
-      activeTab: !!tab ? tab : 0,
-    }));
-  };
+  const onChangeTab = useCallback(
+    (tab: number) => {
+      setSettings((oldSettings) => ({
+        ...oldSettings,
+        activeTab: !!tab ? tab : 0,
+      }));
+    },
+    [setSettings],
+  );
 
   // Wallet
-  const onWalletConnect = (activeWalletName: string) => {
-    setSettings((oldSettings) => ({
-      ...oldSettings,
-      activeWalletName: activeWalletName as WalletConnected,
-    }));
-  };
+  const onWalletConnect = useCallback(
+    (activeWalletName: string) => {
+      setSettings((oldSettings) => ({
+        ...oldSettings,
+        activeWalletName: activeWalletName as WalletConnected,
+      }));
+    },
+    [setSettings],
+  );
 
-  const onWalletDisconnect = () => {
+  const onWalletDisconnect = useCallback(() => {
     setSettings((oldSettings) => ({
       ...oldSettings,
       activeWalletName: 'none',
     }));
-  };
+  }, [setSettings]);
 
   // Mode
-  const onChangeMode = (mode: ThemeModesSupported) => {
-    setSettings((oldSettings) => ({
-      ...oldSettings,
-      themeMode: mode as ThemeModesSupported,
-    }));
-  };
+  const onChangeMode = useCallback(
+    (mode: ThemeModesSupported) => {
+      setSettings((oldSettings) => ({
+        ...oldSettings,
+        themeMode: mode as ThemeModesSupported,
+      }));
+    },
+    [setSettings],
+  );
 
   // Language
-  const onChangeLanguage = (language: LanguageKey) => {
-    setSettings((oldSettings) => ({
-      ...oldSettings,
-      languageMode: language as LanguageKey,
-    }));
-  };
+  const onChangeLanguage = useCallback(
+    (language: LanguageKey) => {
+      setSettings((oldSettings) => ({
+        ...oldSettings,
+        languageMode: language as LanguageKey,
+      }));
+    },
+    [setSettings],
+  );
 
   // Reset
-  const onResetSetting = () => {
+  const onResetSetting = useCallback(() => {
     setSettings(() => ({
       activeWalletName: !!initialState.activeWalletName
         ? initialState.activeWalletName
@@ -104,7 +116,7 @@ const SettingsProvider = ({
         defaultLang,
       activeTab: !!initialState.activeTab ? initialState.activeTab : 0,
     }));
-  };
+  }, [setSettings]);
 
   return (
     <SettingsContext.Provider

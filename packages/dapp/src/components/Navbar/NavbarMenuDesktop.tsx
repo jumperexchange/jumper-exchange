@@ -2,10 +2,9 @@ import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
-import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { SubMenuKeys } from '../../const/';
-import { useMenu } from '../../providers/MenuProvider';
+import { useCloseMenu, useMenu } from '../../hooks';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -18,7 +17,6 @@ interface NavbarMenuProps {
   isOpenSubMenu: boolean;
   hideBackArrow: boolean;
   label?: string;
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   isScrollable?: boolean;
   open: boolean;
@@ -28,7 +26,6 @@ interface NavbarMenuProps {
 const NavbarMenuDesktop = ({
   isOpenSubMenu,
   setOpen,
-  handleClose,
   hideBackArrow,
   isScrollable,
   label,
@@ -37,7 +34,8 @@ const NavbarMenuDesktop = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+  const { menu, onCloseAllNavbarMenus, onOpenNavbarWalletMenu } = useMenu();
+  const { onHandleClose } = useCloseMenu();
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -54,7 +52,7 @@ const NavbarMenuDesktop = ({
         <NavbarExternalBackground />
         <NavbarPopper
           open={open}
-          anchorEl={menu?.anchorRef?.current}
+          anchorEl={menu?.anchorRef}
           role={undefined}
           placement="bottom-start"
           popperOptions={{ strategy: 'fixed' }}
@@ -76,8 +74,9 @@ const NavbarMenuDesktop = ({
               >
                 <ClickAwayListener
                   onClickAway={(event) => {
-                    handleClose(event);
-                    menu.onCloseAllNavbarMenus();
+                    event.preventDefault();
+                    onHandleClose(event);
+                    onCloseAllNavbarMenus();
                   }}
                 >
                   <NavbarMenuList
@@ -104,15 +103,6 @@ const NavbarMenuDesktop = ({
                           elevation={0}
                           isScrollable={isScrollable}
                         >
-                          {!hideBackArrow && (
-                            <ButtonBackArrow
-                              onClick={() => {
-                                menu.onOpenNavbarWalletMenu(
-                                  !menu.openNavbarWalletMenu,
-                                );
-                              }}
-                            />
-                          )}
                           <Typography
                             variant={'lifiBodyMediumStrong'}
                             width={'100%'}

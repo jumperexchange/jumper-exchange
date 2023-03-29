@@ -4,24 +4,21 @@ import {
   ConnectedSubMenuChains,
   SubMenuKeys,
 } from '../../../../const';
-import { useMenu } from '../../../../providers/MenuProvider';
+import { useMenu } from '../../../../hooks';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
-interface NavbarMenuProps {
-  handleClose: (event: MouseEvent | TouchEvent) => void;
-}
-export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
+
+export const ConnectedMenu = () => {
   const i18Path = 'navbar.walletMenu.';
   const { t: translate } = useTranslation();
-  const menu = useMenu();
+  const { menu, onOpenNavbarSubMenu, onOpenNavbarConnectedMenu } = useMenu();
   const _connectedMenuItems = ConnectedMenuItems();
   const _connectedSubMenuChains = ConnectedSubMenuChains();
 
   return !!menu.openNavbarConnectedMenu ? ( //todo, ON ???
     <NavbarMenu
-      handleClose={handleClose}
       open={menu.openNavbarConnectedMenu}
       isScrollable={menu.openNavbarSubMenu === SubMenuKeys.chains}
-      setOpen={menu.onOpenNavbarConnectedMenu}
+      setOpen={onOpenNavbarConnectedMenu}
       isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
     >
       {_connectedMenuItems.map((el, index) => (
@@ -36,7 +33,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           onClick={el.onClick}
           open={menu.openNavbarConnectedMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          setOpenSubMenu={onOpenNavbarSubMenu}
         />
       ))}
 
@@ -47,7 +44,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
         triggerSubMenu={SubMenuKeys.chains}
         open={menu.openNavbarConnectedMenu}
         isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-        setOpenSubMenu={menu.onOpenNavbarSubMenu}
+        setOpenSubMenu={onOpenNavbarSubMenu}
         subMenuList={_connectedSubMenuChains}
       />
     </NavbarMenu>

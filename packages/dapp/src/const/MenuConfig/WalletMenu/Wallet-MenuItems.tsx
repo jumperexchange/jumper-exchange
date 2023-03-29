@@ -2,8 +2,8 @@ import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useMemo, useState } from 'react';
+import { useMenu } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
 
@@ -14,11 +14,11 @@ export const useWalletMenuItems = () => {
   const { trackEvent } = useUserTracking();
   const { ethereum, tally } = window as any;
   const settings = useSettings();
-  const menu = useMenu();
+  const { onCloseAllNavbarMenus, onOpenNavbarWalletMenu } = useMenu();
 
   const login = useCallback(
     async (wallet: Wallet) => {
-      menu.onCloseAllNavbarMenus();
+      onCloseAllNavbarMenus();
 
       if (wallet.checkProviderIdentity) {
         let checkResult;
@@ -35,11 +35,18 @@ export const useWalletMenuItems = () => {
       }
       await connect(wallet);
       settings.onWalletConnect(wallet.name);
-      menu.onOpenNavbarWalletMenu(false);
+      onOpenNavbarWalletMenu(false);
       try {
       } catch (e) {}
     },
-    [connect, ethereum, menu, settings],
+    [
+      connect,
+      ethereum,
+      onCloseAllNavbarMenus,
+      onOpenNavbarWalletMenu,
+      settings,
+      tally,
+    ],
   );
 
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
@@ -71,7 +78,7 @@ export const useWalletMenuItems = () => {
       });
     });
     return _output;
-  }, []);
+  }, [login, trackEvent]);
 
   return _WalletMenuItems;
 };

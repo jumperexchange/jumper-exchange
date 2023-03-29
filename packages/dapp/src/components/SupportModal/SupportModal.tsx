@@ -1,16 +1,17 @@
 import { Breakpoint, Modal, useTheme } from '@mui/material';
 import WidgetBot from '@widgetbot/react-embed';
-import { useMenu } from '../../providers/MenuProvider';
+import { useMenu } from '../../hooks';
 import { SupportModalContainer } from './SupportModal.style';
 
 export const SupportModal = () => {
-  const menu = useMenu();
+  const { menu, toggleSupportModal } = useMenu();
+
   const theme = useTheme();
 
   return (
     <Modal
       open={menu.openSupportModal}
-      onClose={() => menu.toggleSupportModal(false)}
+      onClose={() => toggleSupportModal(false)}
     >
       <SupportModalContainer>
         <WidgetBot

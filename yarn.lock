@@ -5323,6 +5323,7 @@ __metadata:
     react-i18next: ^12.2.0
     react-query: ^3.39.3
     react-router-dom: ^6.8.2
+    react-tracked: ^1.7.11
     rollup-plugin-polyfill-node: ^0.12.0
     typescript: ^4.9.5
     use-media: ^1.4.0
@@ -18028,6 +18029,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-compare@npm:2.4.0":
+  version: 2.4.0
+  resolution: "proxy-compare@npm:2.4.0"
+  checksum: ff8952db96980ad7123a1368aa6fed6b1eb390c22758152805bb5e1d4511fb50e798c19deb93feaa3b22f103a758c38d265ae34e4769d4e1748ee59795dfa6b2
+  languageName: node
+  linkType: hard
+
 "proxy-from-env@npm:^1.1.0":
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
@@ -18469,6 +18477,26 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 4464f10c21df41ae0c97ebadcc52bffcef9177f3d298b5726f041f509c05f985898cafdea766f9cc0f4d64a7a0c711e9c78256fba5992ee8826d8efd18f363ed
+  languageName: node
+  linkType: hard
+
+"react-tracked@npm:^1.7.11":
+  version: 1.7.11
+  resolution: "react-tracked@npm:1.7.11"
+  dependencies:
+    proxy-compare: 2.4.0
+    use-context-selector: 1.4.1
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: "*"
+    react-native: "*"
+    scheduler: ">=0.19.0"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: a1787bbc908414db9aa65152ebaf2c354ebec82baecbfca9a68dd6b284a1399180ce5436f2eff8e229b9cacbf4b92096b8b6cfeafc6634691ead22119580b07c
   languageName: node
   linkType: hard
 
@@ -21469,6 +21497,23 @@ __metadata:
     punycode: 1.3.2
     querystring: 0.2.0
   checksum: 50d100d3dd2d98b9fe3ada48cadb0b08aa6be6d3ac64112b867b56b19be4bfcba03c2a9a0d7922bfd7ac17d4834e88537749fe182430dfd9b68e520175900d90
+  languageName: node
+  linkType: hard
+
+"use-context-selector@npm:1.4.1":
+  version: 1.4.1
+  resolution: "use-context-selector@npm:1.4.1"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: "*"
+    react-native: "*"
+    scheduler: ">=0.19.0"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 5af8f292c5706c43edda5b7e6e007be8f6732d9600b829acb2c8ff977e57e5b77d937c3cf810c6ee5dee950f68befb61d0d506092a51988fcc81aeb7a1ebabf8
   languageName: node
   linkType: hard
 

@@ -1,9 +1,9 @@
 import type { ExtendedChain } from '@lifi/types';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
 import type { ReactElement } from 'react';
-import React from 'react';
-import { useUserTracking } from '../../../../dapp/src/hooks/useUserTracking/useUserTracking';
+import React, { useCallback } from 'react';
 import { ButtonPrimary } from '../../atoms/ButtonPrimary';
 import { ButtonSecondary } from '../../atoms/ButtonSecondary';
 import type { MenuContextProps } from '../../types';
@@ -13,6 +13,9 @@ interface WalletManagementButtonsProps {
   backgroundColor?: string;
   setOpenNavbarSubmenu?: (subMenu: string) => void;
   color?: string;
+  onCloseAllNavbarMenus: () => void;
+  onOpenNavbarWalletMenu: (open: boolean) => void;
+  onOpenNavbarConnectedMenu: (open: boolean) => void;
   walletConnected?: boolean;
   menu: MenuContextProps;
   connectButtonLabel?: ReactElement<any, any>;
@@ -28,15 +31,16 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const _walletDigest = walletDigest(account);
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const handleWalletPicker = () => {
-    props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
-  };
 
-  const handleWalletMenuClick = () => {
+  const handleWalletPicker = useCallback(() => {
+    props.onOpenNavbarWalletMenu(true);
+  }, [props]);
+
+  const handleWalletMenuClick = useCallback(() => {
+    props.onOpenNavbarConnectedMenu(true);
     !props.menu.openNavbarConnectedMenu &&
       trackEvent({ category: 'menu', action: 'open-connected-menu' });
-    props.menu.onOpenNavbarConnectedMenu(!props.menu.openNavbarConnectedMenu);
-  };
+  }, [props, trackEvent]);
 
   return (
     <>
@@ -44,7 +48,9 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
         // Connect-Button -->
         <>
           <ButtonPrimary
-            onClick={handleWalletPicker}
+            onClick={() => {
+              handleWalletPicker();
+            }}
             sx={(theme) => ({
               display: 'none',
               [theme.breakpoints.up('sm' as Breakpoint)]: {

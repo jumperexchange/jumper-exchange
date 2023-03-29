@@ -10,8 +10,8 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
+import { useMenu } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useMenu } from '../../../providers/MenuProvider';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
 
 export const useMainMenuItems = () => {
@@ -21,7 +21,7 @@ export const useMainMenuItems = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
-  const menu = useMenu();
+  const { toggleSupportModal } = useMenu();
 
   return [
     {
@@ -125,7 +125,7 @@ export const useMainMenuItems = () => {
           category: 'menu',
           action: 'open-support-modal',
         });
-        menu.toggleSupportModal(true);
+        toggleSupportModal(true);
       },
       showButton: true,
     },

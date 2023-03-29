@@ -6,9 +6,8 @@ import { ThemeSwitch } from '@transferto/shared/src/atoms/ThemeSwitch';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys } from '../../const';
+import { useMenu } from '../../hooks';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
-import { useMenu } from '../../providers/MenuProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   NavbarDropdownButton,
@@ -16,9 +15,18 @@ import {
 } from './Navbar.style';
 
 const NavbarManagement = () => {
-  const anchorRef = useRef<HTMLButtonElement>(null);
+  const anchorRef = useRef<any>(null);
   const settings = useSettings();
-  const menu = useMenu();
+  const {
+    menu,
+    onOpenNavbarMainMenu,
+    onOpenNavbarSubMenu,
+    onCloseAllNavbarMenus,
+    onOpenNavbarConnectedMenu,
+    onOpenNavbarWalletMenu,
+    onMenuInit,
+  } = useMenu();
+
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const walletManagement = useWallet();
@@ -26,20 +34,10 @@ const NavbarManagement = () => {
 
   !account.isActive ?? settings.onWalletDisconnect();
 
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = useRef(menu.openMainNavbarMenu);
   useEffect(() => {
-    if (prevOpen.current === true && menu.openMainNavbarMenu === false) {
-      anchorRef.current!.focus();
-    }
-
-    prevOpen.current = menu.openMainNavbarMenu;
-  }, [menu.openMainNavbarMenu]);
-
-  useEffect(() => {
-    menu.onMenuInit(anchorRef);
     // We want to run this once to avoid infinite re-render
     // FIXME: We need to fix how we manage menu state to avoid re-rendering of the whole app when we open the menu
+    onMenuInit(anchorRef?.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -54,8 +52,11 @@ const NavbarManagement = () => {
     <NavbarManagementContainer className="settings">
       <WalletManagementButtons
         walletManagement={walletManagement}
+        onCloseAllNavbarMenus={onCloseAllNavbarMenus}
         menu={menu}
-        setOpenNavbarSubmenu={menu.onOpenNavbarSubMenu}
+        onOpenNavbarWalletMenu={onOpenNavbarWalletMenu}
+        onOpenNavbarConnectedMenu={onOpenNavbarConnectedMenu}
+        setOpenNavbarSubmenu={onOpenNavbarSubMenu}
         activeChain={activeChain}
         connectButtonLabel={
           <Typography
@@ -81,9 +82,7 @@ const NavbarManagement = () => {
         aria-expanded={menu.openMainNavbarMenu ? 'true' : undefined}
         aria-haspopup="true"
         onClick={() => {
-          menu.onOpenNavbarSubMenu(SubMenuKeys.none);
-          menu.onOpenNavbarWalletMenu(false);
-          menu.onOpenNavbarMainMenu(!menu.openMainNavbarMenu);
+          onOpenNavbarMainMenu(!menu.openMainNavbarMenu);
         }}
       >
         <MenuIcon

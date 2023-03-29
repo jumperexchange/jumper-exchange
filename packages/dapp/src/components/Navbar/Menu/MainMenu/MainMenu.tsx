@@ -7,15 +7,13 @@ import {
   useMainSubMenuShowcases,
   useMainSubMenuTheme,
 } from '../../../../const';
-import { useMenu } from '../../../../providers/MenuProvider';
+import { useMenu } from '../../../../hooks';
 import { SupportModal } from '../../../SupportModal';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
-interface MainMenuProps {
-  handleClose: (event: MouseEvent | TouchEvent) => void;
-}
 
-export const MainMenu = ({ handleClose }: MainMenuProps) => {
-  const menu = useMenu();
+export const MainMenu = () => {
+  const { menu, onOpenNavbarMainMenu, onOpenNavbarSubMenu } = useMenu();
+
   const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
   const mainMenuItems = useMainMenuItems();
@@ -27,9 +25,8 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
   return (
     <>
       <NavbarMenu
-        handleClose={handleClose}
         open={menu.openMainNavbarMenu}
-        setOpen={menu.onOpenNavbarMainMenu}
+        setOpen={onOpenNavbarMainMenu}
         isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
       >
         {mainMenuItems.map((el, index) => (
@@ -44,7 +41,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             onClick={el.onClick}
             open={menu.openMainNavbarMenu}
             isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-            setOpenSubMenu={menu.onOpenNavbarSubMenu}
+            setOpenSubMenu={onOpenNavbarSubMenu}
           />
         ))}
         <SubMenuComponent
@@ -54,7 +51,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           isScrollable={true}
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          setOpenSubMenu={onOpenNavbarSubMenu}
           subMenuList={mainSubMenuTheme}
         />
 
@@ -65,7 +62,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           isScrollable={true}
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          setOpenSubMenu={onOpenNavbarSubMenu}
           subMenuList={mainSubMenuLanguage}
         />
 
@@ -76,7 +73,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           isScrollable={true}
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          setOpenSubMenu={onOpenNavbarSubMenu}
           subMenuList={mainSubMenuDevelopers}
         />
 
@@ -87,7 +84,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           isScrollable={true}
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={menu.onOpenNavbarSubMenu}
+          setOpenSubMenu={onOpenNavbarSubMenu}
           subMenuList={mainSubMenuShowcases}
         />
       </NavbarMenu>

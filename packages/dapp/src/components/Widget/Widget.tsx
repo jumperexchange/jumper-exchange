@@ -26,7 +26,9 @@ export function Widget({ starterVariant }) {
   try {
     rpcs = JSON.parse(env.VITE_CUSTOM_RPCS);
   } catch (e) {
-    console.error('Parsing custom rpcs failed', e);
+    if (env.DEV) {
+      console.warn('Parsing custom rpcs failed', e);
+    }
   }
 
   const widgetConfig: WidgetConfig = useMemo(() => {

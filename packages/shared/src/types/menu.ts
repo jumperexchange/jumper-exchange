@@ -1,19 +1,7 @@
-// ----------------------------------------------------------------------
-
-import type { MutableRefObject } from 'react';
-
-export type MenuValueProps = {
-  anchorEl: any;
-  copiedToClipboard: boolean;
-  openMainNavbarMenu: boolean;
-  openNavbarWalletMenu: boolean;
-  openNavbarConnectedMenu: boolean;
-  openNavbarSubMenu: string;
-  openSupportModal: boolean;
-};
+import type { MutableRefObject, ReactElement } from 'react';
 
 export type MenuContextProps = {
-  anchorRef?: any;
+  anchorRef?: null | HTMLElement;
   copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
   openNavbarWalletMenu?: boolean;
@@ -26,7 +14,10 @@ export type MenuContextProps = {
 
   // On Iniitialization
   onMenuInit: (
-    anchorEl: JSX.Element | MutableRefObject<HTMLButtonElement>,
+    anchorEl:
+      | JSX.Element
+      | MutableRefObject<HTMLButtonElement>
+      | ReactElement<any, any>,
   ) => void;
 
   // Close ALL Navbar Menus
