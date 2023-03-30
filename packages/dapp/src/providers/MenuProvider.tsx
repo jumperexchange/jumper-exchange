@@ -81,6 +81,10 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
       openMainNavbarMenu: open as boolean,
+      openNavbarWalletMenu: false,
+      openNavbarConnectedMenu: false,
+      openNavbarSubMenu: SubMenuKeys.none,
+      copiedToClipboard: false,
     }));
   };
 
@@ -92,6 +96,9 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
         ? SubMenuKeys.wallets
         : (SubMenuKeys.none as string),
       openNavbarWalletMenu: open as boolean,
+      openMainNavbarMenu: false,
+      openNavbarConnectedMenu: false,
+      copiedToClipboard: false,
     }));
   };
 
@@ -100,6 +107,10 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
       openNavbarConnectedMenu: open as boolean,
+      openMainNavbarMenu: false,
+      openNavbarWalletMenu: false,
+      openNavbarSubMenu: SubMenuKeys.none,
+      copiedToClipboard: false,
     }));
   };
 
