@@ -16,8 +16,7 @@
     ]
   },
   "include": [
-    "../dapp/src/providers/WalletProvider.tsx",
     "src/**/*",
-    "../dapp/src/types/i18n.ts"
+    "../dapp/src/config/config.ts",
   ]
 }

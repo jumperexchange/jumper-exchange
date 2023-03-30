@@ -4,19 +4,19 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
+import { useSettings } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 
 export const useMainSubMenuTheme = () => {
   const { t: translate } = useTranslation();
   const { trackEvent } = useUserTracking();
   const i18Path = 'navbar.';
-  const settings = useSettings();
+  const { settings, onChangeMode } = useSettings();
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
-    settings.onChangeMode(mode);
+    onChangeMode(mode);
     trackEvent({
       category: 'menu',
       action: `switch-theme-mode`,

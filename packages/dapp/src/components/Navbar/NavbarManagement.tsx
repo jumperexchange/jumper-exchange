@@ -3,10 +3,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { WalletManagementButtons } from '@transferto/shared/src';
 import { ThemeSwitch } from '@transferto/shared/src/atoms/ThemeSwitch';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMenu } from '../../hooks';
+import { useMenu, useSettings } from '../../hooks';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import {
@@ -16,7 +15,7 @@ import {
 
 const NavbarManagement = () => {
   const anchorRef = useRef<any>(null);
-  const settings = useSettings();
+  const { onWalletDisconnect } = useSettings();
   const {
     menu,
     onOpenNavbarMainMenu,
@@ -32,7 +31,7 @@ const NavbarManagement = () => {
   const walletManagement = useWallet();
   const { account } = useWallet();
 
-  !account.isActive ?? settings.onWalletDisconnect();
+  !account.isActive ?? onWalletDisconnect();
 
   useEffect(() => {
     // We want to run this once to avoid infinite re-render

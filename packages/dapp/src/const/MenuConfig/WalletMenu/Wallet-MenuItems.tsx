@@ -1,8 +1,7 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useMemo, useState } from 'react';
-import { useMenu } from '../../../hooks';
+import { useMenu, useSettings } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
@@ -13,7 +12,7 @@ export const useWalletMenuItems = () => {
   const { connect } = useWallet();
   const { trackEvent } = useUserTracking();
   const { ethereum, tally } = window as any;
-  const settings = useSettings();
+  const { onWalletConnect } = useSettings();
   const { onCloseAllNavbarMenus, onOpenNavbarWalletMenu } = useMenu();
 
   const login = useCallback(
@@ -34,7 +33,7 @@ export const useWalletMenuItems = () => {
         }
       }
       await connect(wallet);
-      settings.onWalletConnect(wallet.name);
+      onWalletConnect(wallet.name);
       onOpenNavbarWalletMenu(false);
       try {
       } catch (e) {}
@@ -44,7 +43,7 @@ export const useWalletMenuItems = () => {
       ethereum,
       onCloseAllNavbarMenus,
       onOpenNavbarWalletMenu,
-      settings,
+      onWalletConnect,
       tally,
     ],
   );

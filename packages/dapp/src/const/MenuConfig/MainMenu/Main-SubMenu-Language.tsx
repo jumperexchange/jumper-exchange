@@ -1,14 +1,13 @@
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
-import { useUserTracking } from '../../../hooks';
+import { useSettings, useUserTracking } from '../../../hooks';
 
 export const useMainSubMenuLanguage = () => {
   const { i18n } = useTranslation();
-  const settings = useSettings();
+  const { settings, onChangeLanguage } = useSettings();
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage) => {
     i18n.changeLanguage(newLanguage);
-    settings.onChangeLanguage(newLanguage);
+    onChangeLanguage(newLanguage);
     trackEvent({
       category: 'menu',
       action: 'switch-language',

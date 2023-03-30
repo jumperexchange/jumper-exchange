@@ -6,11 +6,11 @@ import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
 
 const ConnectedSubMenuChains = () => {
-  const { account, usedWallet, disconnect, switchChain } = useWallet();
+  const { account, disconnect, switchChain } = useWallet();
   const { chains, isSuccess } = useChainInfos();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    [chains, account.chainId],
   );
 
   const _ConnectedSubMenuChains: MenuListItem[] = [];

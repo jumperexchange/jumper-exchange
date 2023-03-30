@@ -2,20 +2,19 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import Tooltip from '@mui/material/Tooltip';
+import { useSettings, useUserTracking } from '@transferto/dapp/src/hooks';
 import { useTranslation } from 'react-i18next';
-import { useUserTracking } from '../../../../dapp/src/hooks';
 import { useDetectDarkModePreference } from '../../../../dapp/src/providers/ThemeProvider';
-import { useSettings } from '../../hooks';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
-  const settings = useSettings();
+  const { settings, onChangeMode } = useSettings();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const { trackEvent } = useUserTracking();
 
   const handleThemeSwitch = () => {
-    settings.onChangeMode(isDarkMode ? 'light' : 'dark');
+    onChangeMode(isDarkMode ? 'light' : 'dark');
     trackEvent({
       category: 'theme-switch',
       action: `click-theme-switch`,

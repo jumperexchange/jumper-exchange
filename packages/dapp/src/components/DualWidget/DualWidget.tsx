@@ -1,15 +1,16 @@
 import { WidgetVariant } from '@lifi/widget';
 import { Grid } from '@mui/material';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga4';
+import { useSettings } from '../../hooks/useSettings';
 import { LinkMap } from '../../types/';
 import { Widget } from '../Widget';
 import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
 export function DualWidget() {
-  const settings = useSettings();
+  const { settings, onChangeTab } = useSettings();
+
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');
@@ -30,9 +31,7 @@ export function DualWidget() {
 
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
-      starterVariant === 'expandable'
-        ? settings.onChangeTab(0)
-        : settings.onChangeTab(1);
+      starterVariant === 'expandable' ? onChangeTab(0) : onChangeTab(1);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {

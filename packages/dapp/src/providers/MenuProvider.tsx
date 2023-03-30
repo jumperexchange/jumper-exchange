@@ -1,7 +1,27 @@
 import { MenuContextProps } from '@transferto/shared/src';
-import { defaultMenu } from '@transferto/shared/src/config';
 import { useState } from 'react';
 import { createContainer } from 'react-tracked';
+import { SubMenuKeys } from '../const/subMenuKeys';
+
+interface defaultMenuType {
+  copiedToClipboard: boolean;
+  openMainNavbarMenu: boolean;
+  openNavbarWalletMenu: boolean;
+  openNavbarConnectedMenu: boolean;
+  openNavbarSubMenu: string;
+  openSupportModal: boolean;
+  anchorEl: null | JSX.Element;
+}
+
+export const defaultMenu: defaultMenuType = {
+  copiedToClipboard: false,
+  openMainNavbarMenu: false,
+  openNavbarWalletMenu: false,
+  openNavbarConnectedMenu: false,
+  openNavbarSubMenu: SubMenuKeys.none,
+  openSupportModal: false,
+  anchorEl: null,
+};
 
 const initialState: MenuContextProps = {
   ...defaultMenu,

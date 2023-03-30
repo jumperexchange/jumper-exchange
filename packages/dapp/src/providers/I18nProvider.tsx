@@ -2,7 +2,7 @@ import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { defaultLang, localStorageKey } from '../../../shared/src/config';
+import { defaultLang, localStorageKey } from '../config/config';
 import * as supportedLanguages from '../i18n';
 import {
   LanguageKey,
@@ -38,6 +38,7 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     });
 
     if (!localStorage.getItem(localStorageKey.languageMode)) {
+      console.log('use language Detector');
       i18n = i18n.use(LanguageDetector);
     }
 

@@ -6,18 +6,17 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
-import { useMenu } from '../../../hooks';
+import { useMenu, useSettings } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
 
 export const useMainMenuItems = () => {
   const { t: translate, i18n } = useTranslation();
   const i18Path = 'navbar.';
-  const settings = useSettings();
+  const { settings } = useSettings();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
