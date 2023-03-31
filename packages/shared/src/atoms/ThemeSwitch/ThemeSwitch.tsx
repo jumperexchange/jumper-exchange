@@ -28,9 +28,9 @@ export const ThemeSwitch = () => {
     <Tooltip
       title={
         settings.themeMode === 'light'
-          ? translate(`${i18Path}themes.light`)
-          : settings.themeMode === 'dark'
           ? translate(`${i18Path}themes.dark`)
+          : settings.themeMode === 'dark'
+          ? translate(`${i18Path}themes.light`)
           : translate(`${i18Path}themes.auto`)
       }
     >
@@ -40,9 +40,9 @@ export const ThemeSwitch = () => {
         }}
       >
         {settings.themeMode === 'light' ? (
-          <LightModeIcon />
-        ) : settings.themeMode === 'dark' ? (
           <NightlightIcon />
+        ) : settings.themeMode === 'dark' ? (
+          <LightModeIcon />
         ) : (
           <BrightnessAutoIcon />
         )}
