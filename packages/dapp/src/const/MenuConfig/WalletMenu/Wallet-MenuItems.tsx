@@ -2,6 +2,7 @@ import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useMemo, useState } from 'react';
+import { EventTrackingTools } from '../../../hooks/useUserTracking';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
@@ -56,6 +57,7 @@ export const useWalletMenuItems = () => {
             action: 'choose-wallet',
             label: `${wallet}`,
             data: { usedWallet: wallet.name },
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
         },
       });

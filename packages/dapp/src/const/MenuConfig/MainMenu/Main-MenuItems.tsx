@@ -10,6 +10,7 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../const';
+import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
@@ -124,6 +125,7 @@ export const useMainMenuItems = () => {
         trackEvent({
           category: 'menu',
           action: 'open-support-modal',
+          disableTrackingTool: [EventTrackingTools.arcx],
         });
         menu.toggleSupportModal(true);
       },

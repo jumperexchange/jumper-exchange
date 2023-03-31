@@ -7,6 +7,7 @@ import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
+import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 
 export const useMainSubMenuTheme = () => {
@@ -22,6 +23,7 @@ export const useMainSubMenuTheme = () => {
       action: `switch-theme-mode`,
       label: mode,
       data: { theme: `theme-${mode}` },
+      disableTrackingTool: [EventTrackingTools.arcx],
     });
   };
 
