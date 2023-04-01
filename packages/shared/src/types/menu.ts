@@ -7,6 +7,7 @@ export type MenuValueProps = {
   copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
   openNavbarWalletMenu: boolean;
+  openNavbarChainsMenu: boolean;
   openNavbarConnectedMenu: boolean;
   openNavbarSubMenu: string;
   openSupportModal: boolean;
@@ -16,6 +17,7 @@ export type MenuContextProps = {
   anchorRef?: any;
   copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
+  openNavbarChainsMenu?: boolean;
   openNavbarWalletMenu?: boolean;
   openNavbarConnectedMenu?: boolean;
   openNavbarSubMenu?: string;
@@ -40,6 +42,9 @@ export type MenuContextProps = {
 
   // Toggle Navbar Connected Menu
   onOpenNavbarConnectedMenu: (open: boolean) => void;
+
+  // Toggle Navbar Chains Menu
+  onOpenNavbarChainsMenu: (open: boolean) => void;
 
   // Toggle Navbar Sub Menu
   onOpenNavbarSubMenu: (subMenu: string) => void;

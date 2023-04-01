@@ -305,7 +305,7 @@ export const NavbarPaper = styled(Paper, {
     '> .navbar-menu-list': {
       marginTop: 0,
       padding: !!isOpenSubMenu
-        ? openSubMenu === 'wallets'
+        ? openSubMenu === 'wallets' || openSubMenu === 'chains'
           ? `${theme.spacing(0, 3, 3)} !important`
           : `${theme.spacing(0)} !important`
         : `${theme.spacing(3)} !important`,

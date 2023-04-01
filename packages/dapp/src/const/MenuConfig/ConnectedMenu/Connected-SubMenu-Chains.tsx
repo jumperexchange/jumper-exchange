@@ -5,20 +5,19 @@ import { useChainInfos } from '../../../providers/ChainInfosProvider';
 import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
 
-const ConnectedSubMenuChains = () => {
+const useGetChains = () => {
   const { account, usedWallet, disconnect, switchChain } = useWallet();
   const { chains, isSuccess } = useChainInfos();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    [chains, account.chainId],
   );
 
-  const _ConnectedSubMenuChains: MenuListItem[] = [];
-
-  chains.map((el) => {
-    _ConnectedSubMenuChains.push({
+  return chains.map(
+    (el): MenuListItem => ({
       label: `${el.name}`,
       onClick: () => {
+        console.log('switch chain', el);
         switchChain(el.id);
       },
       prefixIcon: (
@@ -29,10 +28,8 @@ const ConnectedSubMenuChains = () => {
         />
       ),
       checkIcon: el.id === activeChain?.id,
-    });
-  });
-
-  return _ConnectedSubMenuChains;
+    }),
+  );
 };
 
-export default ConnectedSubMenuChains;
+export default useGetChains;

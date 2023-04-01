@@ -30,8 +30,8 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
-    "@types/node": "^18.14.6",
-    "@types/react": "^18.0.28",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.31",
     "babel-loader": "^9.1.2",
     "eslint-config-prettier": "^8.7.0",
     "prettier": "^2.8.4"
@@ -39,9 +39,9 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@lifi/wallet-management": "^1.2.9",
+    "@lifi/wallet-management": "^1.2.10",
     "@mui/icons-material": "^5.11.11",
-    "@mui/material": "^5.11.11",
+    "@mui/material": "^5.11.15",
     "i18next": "^22.4.10",
     "js-cookie": "^3.0.1",
     "react": "^18.2.0",

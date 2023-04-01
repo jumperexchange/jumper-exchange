@@ -1,11 +1,18 @@
+import { wallets } from '@lifi/wallet-management';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import LaunchIcon from '@mui/icons-material/Launch';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import Avatar from '@mui/material/Avatar';
+import type { TWallets } from '@transferto/dapp/src/types';
+import { SpotButton } from '@transferto/shared/src/atoms';
+import { walletDigest } from '@transferto/shared/src/utils';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ConnectedMenuItems,
-  ConnectedSubMenuChains,
-  SubMenuKeys,
-} from '../../../../const';
+import { SubMenuKeys } from '../../../../const';
 import { useMenu } from '../../../../providers/MenuProvider';
-import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
+import { useWallet } from '../../../../providers/WalletProvider';
+import { NavbarMenu } from '../../index';
+
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
@@ -13,43 +20,49 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const i18Path = 'navbar.walletMenu.';
   const { t: translate } = useTranslation();
   const menu = useMenu();
-  const _connectedMenuItems = ConnectedMenuItems();
-  const _connectedSubMenuChains = ConnectedSubMenuChains();
+  const { account, usedWallet } = useWallet();
+  const walletSource: TWallets = wallets;
+  const walletIcon: string = useMemo(() => {
+    if (!!usedWallet) {
+      return usedWallet.icon;
+    } else {
+      const walletKey: any = Object.keys(walletSource).filter(
+        (el) => walletSource[el].name === localStorage.activeWalletName,
+      );
+      return walletSource[walletKey]?.icon || '';
+    }
+  }, [usedWallet, walletSource]);
+
+  const _walletDigest = useMemo(() => {
+    return walletDigest(account);
+  }, [account]);
 
   return !!menu.openNavbarConnectedMenu ? ( //todo, ON ???
     <NavbarMenu
-      handleClose={handleClose}
-      open={menu.openNavbarConnectedMenu}
-      isScrollable={menu.openNavbarSubMenu === SubMenuKeys.chains}
+      open={true}
+      isScrollable={true}
       setOpen={menu.onOpenNavbarConnectedMenu}
+      handleClose={handleClose}
       isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
     >
-      {_connectedMenuItems.map((el, index) => (
-        <MenuItemComponent
-          key={`${el.label}-${index}`}
-          label={el.label}
-          prefixIcon={el.prefixIcon}
-          showMoreIcon={el.showMoreIcon}
-          triggerSubMenu={el.triggerSubMenu}
-          showButton={el.showButton}
-          suffixIcon={el.suffixIcon}
-          onClick={el.onClick}
-          open={menu.openNavbarConnectedMenu}
-          isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={menu.onOpenNavbarSubMenu}
-        />
-      ))}
-
-      <SubMenuComponent
-        label={`${translate(`${i18Path}chains`)}`}
-        isSubMenu={true}
-        isScrollable={true}
-        triggerSubMenu={SubMenuKeys.chains}
-        open={menu.openNavbarConnectedMenu}
-        isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
-        setOpenSubMenu={menu.onOpenNavbarSubMenu}
-        subMenuList={_connectedSubMenuChains}
+      <Avatar
+        src={walletIcon}
+        // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
+        sx={{
+          height: '96px',
+          width: '96px',
+        }}
       />
+      <p>{_walletDigest}</p>
+      <SpotButton tooltip={'test'} name="name">
+        <ContentCopyIcon />
+      </SpotButton>
+      <SpotButton tooltip={'test'} name="name">
+        <LaunchIcon />
+      </SpotButton>
+      <SpotButton tooltip={'test'} name="name">
+        <PowerSettingsNewIcon />
+      </SpotButton>
     </NavbarMenu>
   ) : null;
 };

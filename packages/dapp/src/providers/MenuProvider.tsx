@@ -26,6 +26,9 @@ const initialState: MenuContextProps = {
   // Toggle Navbar Wallet Menu
   onOpenNavbarWalletMenu: () => {},
 
+  // Toggle Navbar Chains Menu
+  onOpenNavbarChainsMenu: () => {},
+
   // Toggle Navbar Connected Menu
   onOpenNavbarConnectedMenu: () => {},
 
@@ -63,6 +66,7 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
       openMainNavbarMenu: false,
       openNavbarWalletMenu: false,
       openNavbarConnectedMenu: false,
+      openNavbarChainsMenu: false,
       openNavbarSubMenu: SubMenuKeys.none,
       copiedToClipboard: false,
     }));
@@ -92,6 +96,17 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
         ? SubMenuKeys.wallets
         : (SubMenuKeys.none as string),
       openNavbarWalletMenu: open as boolean,
+    }));
+  };
+
+  // Toggle Navbar Chains Menu
+  const onOpenNavbarChainsMenu = (open: boolean) => {
+    setMenu((oldSettings) => ({
+      ...oldSettings,
+      openNavbarSubMenu: open
+        ? SubMenuKeys.chains
+        : (SubMenuKeys.none as string),
+      openNavbarChainsMenu: open as boolean,
     }));
   };
 
@@ -139,6 +154,9 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
 
         // Toggle Navbar Wallet Menu
         onOpenNavbarWalletMenu,
+
+        // Toggle Navbar Wallet Menu
+        onOpenNavbarChainsMenu,
 
         // Toggle Navbar Connected Menu
         onOpenNavbarConnectedMenu,

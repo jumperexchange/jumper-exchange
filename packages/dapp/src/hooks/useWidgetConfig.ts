@@ -2,10 +2,10 @@ import { Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
-  switchChainAndAddToken
+  switchChainAndAddToken,
 } from '@lifi/wallet-management';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMenu } from '../providers/MenuProvider';
@@ -32,6 +32,7 @@ export function useWidgetConfig({ starterVariant }) {
     }
     return {
       variant: starterVariant ? starterVariant : 'expandable',
+      integrator: 'jumper.exchange',
       walletManagement: {
         signer: account.signer,
         connect: async () => {

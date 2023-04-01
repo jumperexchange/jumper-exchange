@@ -1,5 +1,5 @@
 import { SyntheticEvent } from 'react';
-import { ConnectedMenu, MainMenu, WalletMenu } from '.';
+import { ChainsMenu, ConnectedMenu, MainMenu, WalletMenu } from '.';
 import { useMenu } from '../../../providers/MenuProvider';
 
 export const Menus = () => {
@@ -20,7 +20,7 @@ export const Menus = () => {
     <>
       <MainMenu handleClose={handleClose} />
       <WalletMenu handleClose={handleClose} />
-
+      <ChainsMenu handleClose={handleClose} />
       <ConnectedMenu handleClose={handleClose} />
     </>
   );

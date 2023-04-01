@@ -1,2 +1,2 @@
-export { default as ConnectedMenuItems } from './Connected-MenuItems';
-export { default as ConnectedSubMenuChains } from './Connected-SubMenu-Chains';
+export { default as useConnectedMenu } from './Connected-MenuItems';
+export { default as useGetChains } from './Connected-SubMenu-Chains';

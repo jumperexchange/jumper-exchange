@@ -2,6 +2,7 @@ import { Chain } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { WalletManagementButtons } from '@transferto/shared/src';
+import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { ThemeSwitch } from '@transferto/shared/src/atoms/ThemeSwitch';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useEffect, useMemo, useRef } from 'react';
@@ -50,6 +51,8 @@ const NavbarManagement = () => {
     [chains, account.chainId],
   );
 
+  console.log('account', account.isActive);
+
   return (
     <NavbarManagementContainer className="settings">
       <WalletManagementButtons
@@ -73,6 +76,7 @@ const NavbarManagement = () => {
         }
         isSuccess={isSuccess}
       />
+      {account.isActive ? <ChainSwitch /> : null}
       <ThemeSwitch />
       <NavbarDropdownButton
         ref={anchorRef}

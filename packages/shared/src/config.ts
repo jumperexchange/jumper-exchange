@@ -46,6 +46,7 @@ interface defaultMenuType {
   copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
   openNavbarWalletMenu: boolean;
+  openNavbarChainsMenu: boolean;
   openNavbarConnectedMenu: boolean;
   openNavbarSubMenu: string;
   openSupportModal: boolean;
@@ -56,6 +57,7 @@ export const defaultMenu: defaultMenuType = {
   copiedToClipboard: false,
   openMainNavbarMenu: false,
   openNavbarWalletMenu: false,
+  openNavbarChainsMenu: false,
   openNavbarConnectedMenu: false,
   openNavbarSubMenu: 'none',
   openSupportModal: false,
