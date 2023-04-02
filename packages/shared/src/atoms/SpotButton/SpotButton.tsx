@@ -1,12 +1,9 @@
-import Tooltip from '@mui/material/Tooltip';
 import { SpotButton as SpotButtonStyled } from './SpotButton.style';
 
-export const SpotButton = ({ children, tooltip, name }) => {
+export const SpotButton = ({ children, name }) => {
   return (
     <>
-      <Tooltip title={tooltip}>
-        <SpotButtonStyled>{children}</SpotButtonStyled>
-      </Tooltip>
+      <SpotButtonStyled>{children}</SpotButtonStyled>
       <p>{name}</p>
     </>
   );

@@ -54,13 +54,13 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
         }}
       />
       <p>{_walletDigest}</p>
-      <SpotButton tooltip={'test'} name="name">
+      <SpotButton name="name">
         <ContentCopyIcon />
       </SpotButton>
-      <SpotButton tooltip={'test'} name="name">
+      <SpotButton name="name">
         <LaunchIcon />
       </SpotButton>
-      <SpotButton tooltip={'test'} name="name">
+      <SpotButton name="name">
         <PowerSettingsNewIcon />
       </SpotButton>
     </NavbarMenu>
