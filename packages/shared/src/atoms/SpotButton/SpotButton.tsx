@@ -26,13 +26,7 @@ export const SpotButton = ({
           sx={{
             maxWidth: '64px',
             overflow: 'hidden',
-            maxHeight: '32px',
-            whiteSpace: 'normal',
             textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            msTextOverflow: 'ellipsis',
           }}
           variant={'lifiBodyXSmallStrong'}
         >
