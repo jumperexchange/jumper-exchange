@@ -1,11 +1,12 @@
 import { getChainById } from '@lifi/sdk';
 import { wallets } from '@lifi/wallet-management';
-import CheckIcon from '@mui/icons-material/Check';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Box, Typography, useTheme } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
+import Snackbar from '@mui/material/Snackbar';
 import type { TWallets } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { useSettings } from '@transferto/shared/src/hooks';
@@ -85,11 +86,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
             menu.onCopyToClipboard(true);
           }}
         >
-          {!!menu.copiedToClipboard ? (
-            <CheckIcon sx={{ color: theme.palette.success.main }} />
-          ) : (
-            <ContentCopyIcon />
-          )}
+          <ContentCopyIcon />
         </SpotButton>
         <SpotButton
           name="Explore"
@@ -121,6 +118,15 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           <PowerSettingsNewIcon />
         </SpotButton>
       </Box>
+      <Snackbar
+        open={menu.copiedToClipboard}
+        autoHideDuration={1000}
+        onClose={handleClose}
+      >
+        <MuiAlert elevation={6} variant="filled" severity="success">
+          Copied to Clipboard
+        </MuiAlert>
+      </Snackbar>
     </NavbarMenu>
   ) : null;
 };
