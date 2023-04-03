@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@arcxmoney/analytics": "^1.8.1",
+    "@arcxmoney/analytics": "^1.8.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@lifi/sdk": "^1.7.2",
