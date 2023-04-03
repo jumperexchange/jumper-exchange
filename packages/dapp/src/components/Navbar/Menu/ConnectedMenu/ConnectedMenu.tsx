@@ -1,14 +1,19 @@
+import { getChainById } from '@lifi/sdk';
 import { wallets } from '@lifi/wallet-management';
+import CheckIcon from '@mui/icons-material/Check';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import { Box, Typography, useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import type { TWallets } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
-import { walletDigest } from '@transferto/shared/src/utils';
+import { useSettings } from '@transferto/shared/src/hooks';
+import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../../const';
+import { EventTrackingTools, useUserTracking } from '../../../../hooks';
 import { useMenu } from '../../../../providers/MenuProvider';
 import { useWallet } from '../../../../providers/WalletProvider';
 import { NavbarMenu } from '../../index';
@@ -20,7 +25,10 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const i18Path = 'navbar.walletMenu.';
   const { t: translate } = useTranslation();
   const menu = useMenu();
-  const { account, usedWallet } = useWallet();
+  const { account, usedWallet, disconnect } = useWallet();
+  const theme = useTheme();
+  const { trackPageload } = useUserTracking();
+  const settings = useSettings();
   const walletSource: TWallets = wallets;
   const walletIcon: string = useMemo(() => {
     if (!!usedWallet) {
@@ -37,7 +45,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
     return walletDigest(account);
   }, [account]);
 
-  return !!menu.openNavbarConnectedMenu ? ( //todo, ON ???
+  return !!menu.openNavbarConnectedMenu ? (
     <NavbarMenu
       open={true}
       isScrollable={true}
@@ -45,24 +53,74 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
       handleClose={handleClose}
       isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
     >
-      <Avatar
-        src={walletIcon}
-        // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
-        sx={{
-          height: '96px',
-          width: '96px',
-        }}
-      />
-      <p>{_walletDigest}</p>
-      <SpotButton name="name">
-        <ContentCopyIcon />
-      </SpotButton>
-      <SpotButton name="name">
-        <LaunchIcon />
-      </SpotButton>
-      <SpotButton name="name">
-        <PowerSettingsNewIcon />
-      </SpotButton>
+      <Box textAlign={'center'} mt={theme.spacing(3)}>
+        <Avatar
+          src={walletIcon}
+          // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
+          sx={{
+            padding: theme.spacing(4.5),
+            background:
+              theme.palette.mode === 'light'
+                ? theme.palette.black.main
+                : theme.palette.white.main,
+            margin: 'auto',
+            height: '96px',
+            width: '96px',
+          }}
+        />
+        <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(4)}>
+          {_walletDigest}
+        </Typography>
+      </Box>
+      <Box
+        display={'flex'}
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        mt={theme.spacing(6)}
+      >
+        <SpotButton
+          name="Copy"
+          onClick={() => {
+            navigator?.clipboard?.writeText(account.address);
+            menu.onCopyToClipboard(true);
+          }}
+        >
+          {!!menu.copiedToClipboard ? (
+            <CheckIcon sx={{ color: theme.palette.success.main }} />
+          ) : (
+            <ContentCopyIcon />
+          )}
+        </SpotButton>
+        <SpotButton
+          name="Explore"
+          onClick={() => {
+            openInNewTab(
+              `${
+                getChainById(account.chainId).metamask.blockExplorerUrls[0]
+              }address/${account.address}`,
+            );
+            trackPageload({
+              source: 'connected-menu',
+              destination: 'etherscan-account',
+              url: `https://etherscan.io/address/${account?.address}`,
+              pageload: true,
+              disableTrackingTool: [EventTrackingTools.arcx],
+            });
+          }}
+        >
+          <LaunchIcon />
+        </SpotButton>
+        <SpotButton
+          name={translate(`${i18Path}disconnect`)}
+          variant={'primary'}
+          onClick={() => {
+            disconnect();
+            settings.onWalletDisconnect();
+          }}
+        >
+          <PowerSettingsNewIcon />
+        </SpotButton>
+      </Box>
     </NavbarMenu>
   ) : null;
 };

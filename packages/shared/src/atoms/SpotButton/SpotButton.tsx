@@ -1,10 +1,30 @@
+import { Box, Typography, useTheme } from '@mui/material';
 import { SpotButton as SpotButtonStyled } from './SpotButton.style';
 
-export const SpotButton = ({ children, name }) => {
+interface SpotButtonProps {
+  name?: string;
+  variant?: string;
+  onClick: any;
+  children: any;
+}
+
+export const SpotButton = ({
+  children,
+  name,
+  variant,
+  onClick,
+}: SpotButtonProps) => {
+  const theme = useTheme();
   return (
-    <>
-      <SpotButtonStyled>{children}</SpotButtonStyled>
-      <p>{name}</p>
-    </>
+    <Box textAlign={'center'} p={theme.spacing(3)}>
+      <SpotButtonStyled variant={variant} onClick={onClick}>
+        {children}
+      </SpotButtonStyled>
+      {!!name ? (
+        <Typography mt={theme.spacing(2)} variant={'lifiBodyXSmallStrong'}>
+          {name}
+        </Typography>
+      ) : null}
+    </Box>
   );
 };

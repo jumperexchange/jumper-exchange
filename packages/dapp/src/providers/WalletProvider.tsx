@@ -11,9 +11,9 @@ import React, {
 
 import { useLiFiWalletManagement } from '@lifi/wallet-management/LiFiWalletManagement';
 import {
+  switchChainAndAddToken,
   addChain as walletAddChain,
   switchChain as walletSwitchChain,
-  switchChainAndAddToken,
 } from '@lifi/wallet-management/walletAutomation';
 import { Wallet } from '@lifi/wallet-management/walletProviders';
 import {
@@ -75,7 +75,6 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
 
   // only for injected wallets
   const switchChain = useCallback(async (chainId: number) => {
-    console.log('chainId', chainId);
     return walletSwitchChain(chainId);
   }, []);
 

@@ -1,17 +1,27 @@
-import IconButton from '@mui/material/IconButton';
+import type { IconButtonProps } from '@mui/material';
+import { IconButton } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '../../utils';
 
-export const SpotButton = styled(IconButton)(({ theme }) => ({
+export interface SpotButtonProps extends Omit<IconButtonProps, 'variant'> {
+  variant?: string;
+}
+
+export const SpotButton = styled(IconButton, {
+  shouldForwardProp: (prop) => prop !== 'variant',
+})<SpotButtonProps>(({ theme, variant }) => ({
   color: theme.palette.text.primary,
-  display: 'none',
   width: '64px',
   height: '64px',
   backgroundColor:
-    theme.palette.mode === 'dark'
-      ? theme.palette.alphaLight300.main
-      : theme.palette.white.main,
+    variant === 'primary' && theme.palette.mode === 'dark'
+      ? theme.palette.primary.main
+      : variant === 'primary' && theme.palette.mode === 'light'
+      ? theme.palette.secondary.main
+      : theme.palette.mode === 'dark'
+      ? getContrastAlphaColor(theme, '12%')
+      : getContrastAlphaColor(theme, '4%'),
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'

@@ -38,7 +38,7 @@ export const ChainSwitch = () => {
   };
 
   return (
-    <Tooltip title={activeChain.name}>
+    <Tooltip title={activeChain?.name}>
       <ButtonChainSwitch
         onClick={() => {
           handleOpenChainsMenu();

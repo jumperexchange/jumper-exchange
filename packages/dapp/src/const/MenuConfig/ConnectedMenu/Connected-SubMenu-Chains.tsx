@@ -17,7 +17,6 @@ const useGetChains = () => {
     (el): MenuListItem => ({
       label: `${el.name}`,
       onClick: () => {
-        console.log('switch chain', el);
         switchChain(el.id);
       },
       prefixIcon: (

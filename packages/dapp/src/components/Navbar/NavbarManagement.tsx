@@ -51,8 +51,6 @@ const NavbarManagement = () => {
     [chains, account.chainId],
   );
 
-  console.log('account', account.isActive);
-
   return (
     <NavbarManagementContainer className="settings">
       <WalletManagementButtons

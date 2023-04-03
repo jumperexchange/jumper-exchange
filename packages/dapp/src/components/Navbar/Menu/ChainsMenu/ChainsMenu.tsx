@@ -4,8 +4,8 @@ import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys, useGetChains } from '../../../../const';
 import { useMenu } from '../../../../providers/MenuProvider';
-import { NavbarMenu } from '../../index';
 import MenuItemComponent from '../../MenuItemComponent';
+import { NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -19,8 +19,6 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const chains = useGetChains();
   const theme = useTheme();
 
-  console.log('menu.openNavbarSubMenu', menu.openNavbarSubMenu);
-  console.log(chains);
   return (
     <NavbarMenu
       handleClose={handleClose}

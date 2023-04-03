@@ -46,12 +46,6 @@ const SubMenuComponent = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const menu = useMenu();
-  console.log(
-    'CHECK::::',
-    triggerSubMenu,
-    menu.openNavbarSubMenu,
-    menu.openNavbarSubMenu === triggerSubMenu,
-  );
 
   return (
     !!open && (

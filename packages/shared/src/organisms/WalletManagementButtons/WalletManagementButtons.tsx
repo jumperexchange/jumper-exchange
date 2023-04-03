@@ -79,16 +79,32 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
         // WalletMenu-Button -->
         <ButtonSecondary
           sx={{
-            width: '180px',
+            width: '48px', //'180px',
             paddingRight: '16px',
             position: 'absolute',
             left: '50%',
             transform: 'translateX(-50%)',
+            padding: 0,
+            minWidth: 'inherit',
+            '@media screen and (min-width:430px) and (max-width: 900px)': {
+              width: '180px',
+              padding: '6px 8px',
+            },
+            [theme.breakpoints.up('xs' as Breakpoint)]: {
+              width: '48px',
+              padding: '0',
+            },
             [theme.breakpoints.up('md' as Breakpoint)]: {
               position: 'relative',
+              width: '48px', //'180px',
+              padding: 0,
               left: 'unset',
               display: 'inherit',
               transform: 'unset',
+            },
+            [theme.breakpoints.up('lg' as Breakpoint)]: {
+              width: '180px',
+              padding: '6px 8px',
             },
           }}
           onClick={handleWalletMenuClick}
@@ -98,6 +114,11 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
               src={walletIcon}
               // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
               sx={{
+                padding: theme.spacing(1.5),
+                background:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.black.main
+                    : theme.palette.white.main,
                 height: '32px',
                 width: '32px',
               }}
@@ -105,7 +126,22 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
           ) : (
             <></>
           )}
-          <Typography variant={'lifiBodyMediumStrong'} width={'100%'}>
+          <Typography
+            variant={'lifiBodyMediumStrong'}
+            width={'100%'}
+            sx={{
+              display: 'none',
+              '@media screen and (min-width:430px) and (max-width: 900px)': {
+                display: 'block',
+              },
+              [theme.breakpoints.up('md' as Breakpoint)]: {
+                display: 'none',
+              },
+              [theme.breakpoints.up('lg' as Breakpoint)]: {
+                display: 'block',
+              },
+            }}
+          >
             <>{_walletDigest}</>
           </Typography>
         </ButtonSecondary>
