@@ -2,7 +2,7 @@ import { Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
-  switchChainAndAddToken
+  switchChainAndAddToken,
 } from '@lifi/wallet-management';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { useMenu } from '../providers/MenuProvider';
 import { useWallet } from '../providers/WalletProvider';
 import { LanguageKey } from '../types/i18n';
+import { EventTrackingTools } from './useUserTracking';
 import { useUserTracking } from './useUserTracking/useUserTracking';
 
 export function useWidgetConfig({ starterVariant }) {
@@ -56,6 +57,7 @@ export function useWidgetConfig({ starterVariant }) {
             action: 'disconnect',
             label: 'widget',
             data: { source: 'widget' },
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
           disconnect();
         },
@@ -69,6 +71,7 @@ export function useWidgetConfig({ starterVariant }) {
               data: {
                 switchChain: reqChainId,
               },
+              disableTrackingTool: [EventTrackingTools.arcx],
               // transport: "xhr", // optional, beacon/xhr/image
             });
             return account.signer!;
@@ -85,6 +88,7 @@ export function useWidgetConfig({ starterVariant }) {
               tokenAdded: `${token}`,
               tokenAddChainId: chainId,
             },
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
           await switchChainAndAddToken(chainId, token);
         },
@@ -97,6 +101,7 @@ export function useWidgetConfig({ starterVariant }) {
               chainIdAdded: `${chainId}`,
             },
             // transport: "xhr", // optional, beacon/xhr/image
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
           return addChain(chainId);
         },

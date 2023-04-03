@@ -128,6 +128,7 @@ export const useMainMenuItems = () => {
         trackEvent({
           category: 'menu',
           action: 'open-support-modal',
+          disableTrackingTool: [EventTrackingTools.arcx],
         });
         menu.toggleSupportModal(true);
       },

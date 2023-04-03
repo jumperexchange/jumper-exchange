@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
-import { useUserTracking } from '../../hooks';
+import { EventTrackingTools, useUserTracking } from '../../hooks';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
   return {
@@ -41,6 +41,7 @@ const NavbarTabsContainer = () => {
             action: 'switch-tab',
             label: 'swap',
             data: { tab: 'swap' },
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
         }}
         icon={
@@ -65,6 +66,7 @@ const NavbarTabsContainer = () => {
             action: 'switch-tab',
             label: 'gas',
             data: { tab: 'gas' },
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
         }}
         label={`${translate(`${i18Path}links.refuel`)}`}
