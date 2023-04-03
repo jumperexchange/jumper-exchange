@@ -21,7 +21,21 @@ export const SpotButton = ({
         {children}
       </SpotButtonStyled>
       {!!name ? (
-        <Typography mt={theme.spacing(2)} variant={'lifiBodyXSmallStrong'}>
+        <Typography
+          mt={theme.spacing(2)}
+          sx={{
+            maxWidth: '64px',
+            overflow: 'hidden',
+            maxHeight: '32px',
+            whiteSpace: 'normal',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            msTextOverflow: 'ellipsis',
+          }}
+          variant={'lifiBodyXSmallStrong'}
+        >
           {name}
         </Typography>
       ) : null}
