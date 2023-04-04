@@ -57,6 +57,39 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
     setCopiedToClipboard(false);
   };
 
+  const handleExploreButton = () => {
+    openInNewTab(
+      `${getChainById(account.chainId).metamask.blockExplorerUrls[0]}address/${
+        account.address
+      }`,
+    );
+    trackPageload({
+      source: 'connected-menu',
+      destination: 'blokchain-explorer',
+      url: `${
+        getChainById(account.chainId).metamask.blockExplorerUrls[0]
+      }address/${account.address}`,
+      pageload: true,
+      disableTrackingTool: [EventTrackingTools.arcx],
+    });
+  };
+
+  const handleCopyButton = () => {
+    navigator?.clipboard?.writeText(account.address);
+    setCopiedToClipboard(true);
+    trackEvent({
+      category: 'menu',
+      action: 'copyAddressToClipboard',
+      label: 'copyAddressToClipboard',
+      disableTrackingTool: [EventTrackingTools.arcx],
+    });
+  };
+
+  const handleDisconnectButton = () => {
+    disconnect();
+    settings.onWalletDisconnect();
+  };
+
   return !!menu.openNavbarConnectedMenu ? (
     <NavbarMenu
       open={true}
@@ -100,49 +133,16 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           },
         }}
       >
-        <SpotButton
-          name="Copy"
-          onClick={() => {
-            navigator?.clipboard?.writeText(account.address);
-            setCopiedToClipboard(true);
-            trackEvent({
-              category: 'menu',
-              action: 'copyAddressToClipboard',
-              label: 'copyAddressToClipboard',
-              disableTrackingTool: [EventTrackingTools.arcx],
-            });
-          }}
-        >
+        <SpotButton name="Copy" onClick={handleCopyButton}>
           <ContentCopyIcon />
         </SpotButton>
-        <SpotButton
-          name="Explore"
-          onClick={() => {
-            openInNewTab(
-              `${
-                getChainById(account.chainId).metamask.blockExplorerUrls[0]
-              }address/${account.address}`,
-            );
-            trackPageload({
-              source: 'connected-menu',
-              destination: 'blokchain-explorer',
-              url: `${
-                getChainById(account.chainId).metamask.blockExplorerUrls[0]
-              }address/${account.address}`,
-              pageload: true,
-              disableTrackingTool: [EventTrackingTools.arcx],
-            });
-          }}
-        >
+        <SpotButton name="Explore" onClick={handleExploreButton}>
           <LaunchIcon />
         </SpotButton>
         <SpotButton
           name={translate(`${i18Path}disconnect`)}
           variant={'primary'}
-          onClick={() => {
-            disconnect();
-            settings.onWalletDisconnect();
-          }}
+          onClick={handleDisconnectButton}
         >
           <PowerSettingsNewIcon />
         </SpotButton>
