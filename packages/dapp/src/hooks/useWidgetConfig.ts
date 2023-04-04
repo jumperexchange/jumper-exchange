@@ -2,8 +2,8 @@ import { Token } from '@lifi/sdk';
 import {
   addChain,
   switchChain,
-  switchChainAndAddToken
-} from '@lifi/wallet-management';
+  switchChainAndAddToken,
+} from '../providers/hotfix/wallet-automation-hotfix';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
