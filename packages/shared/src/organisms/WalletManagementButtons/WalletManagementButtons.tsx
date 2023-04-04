@@ -47,10 +47,16 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const handleWalletPicker = () => {
+    !props.menu.openNavbarWalletMenu &&
+      trackEvent({
+        category: 'menu',
+        action: 'open-wallet-menu',
+        disableTrackingTool: [EventTrackingTools.arcx],
+      });
     props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
   };
 
-  const handleWalletMenuClick = () => {
+  const handleConnectedMenuClick = () => {
     !props.menu.openNavbarConnectedMenu &&
       trackEvent({
         category: 'menu',
@@ -81,7 +87,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
           </ButtonPrimary>
         </>
       ) : (
-        // WalletMenu-Button -->
+        // ConnectedMenu-Button -->
         <ButtonSecondary
           sx={{
             width: '48px', //'180px',
@@ -112,7 +118,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
               padding: '6px 8px',
             },
           }}
-          onClick={handleWalletMenuClick}
+          onClick={handleConnectedMenuClick}
         >
           {!!props.isSuccess ? (
             <Avatar
@@ -147,7 +153,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
               },
             }}
           >
-            <>{_walletDigest}</>
+            {_walletDigest}
           </Typography>
         </ButtonSecondary>
       )}

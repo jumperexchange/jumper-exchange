@@ -29,7 +29,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const menu = useMenu();
   const { account, usedWallet, disconnect } = useWallet();
   const theme = useTheme();
-  const { trackPageload } = useUserTracking();
+  const { trackPageload, trackEvent } = useUserTracking();
   const settings = useSettings();
   const walletSource: TWallets = wallets;
   const walletIcon: string = useMemo(() => {
@@ -105,6 +105,12 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           onClick={() => {
             navigator?.clipboard?.writeText(account.address);
             setCopiedToClipboard(true);
+            trackEvent({
+              category: 'menu',
+              action: 'copyAddressToClipboard',
+              label: 'copyAddressToClipboard',
+              disableTrackingTool: [EventTrackingTools.arcx],
+            });
           }}
         >
           <ContentCopyIcon />
@@ -119,8 +125,10 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
             );
             trackPageload({
               source: 'connected-menu',
-              destination: 'etherscan-account',
-              url: `https://etherscan.io/address/${account?.address}`,
+              destination: 'blokchain-explorer',
+              url: `${
+                getChainById(account.chainId).metamask.blockExplorerUrls[0]
+              }address/${account.address}`,
               pageload: true,
               disableTrackingTool: [EventTrackingTools.arcx],
             });
