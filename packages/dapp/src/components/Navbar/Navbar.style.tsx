@@ -23,8 +23,9 @@ import {
 
 import { ButtonSecondary } from '@transferto/shared/src/atoms/ButtonSecondary';
 
-import { alpha, Breakpoint, styled } from '@mui/material/styles';
+import { Breakpoint, alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
+import { SubMenuKeys } from '../../const';
 
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
   height: '48px',
@@ -305,7 +306,8 @@ export const NavbarPaper = styled(Paper, {
     '> .navbar-menu-list': {
       marginTop: 0,
       padding: !!isOpenSubMenu
-        ? openSubMenu === 'wallets' || openSubMenu === 'chains'
+        ? openSubMenu === SubMenuKeys.wallets ||
+          openSubMenu === SubMenuKeys.chains
           ? `${theme.spacing(0, 3, 3)} !important`
           : `${theme.spacing(0)} !important`
         : `${theme.spacing(3)} !important`,
