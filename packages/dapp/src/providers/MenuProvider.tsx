@@ -11,9 +11,6 @@ import { MenuContextProps } from '@transferto/shared/src/types';
 const initialState: MenuContextProps = {
   ...defaultMenu,
 
-  // CopyClipboard
-  onCopyToClipboard: () => {},
-
   // Close ALL Navbar Menus
   onCloseAllNavbarMenus: () => {},
 
@@ -51,14 +48,6 @@ type MenuProviderProps = {
 const MenuProvider = ({ children }: MenuProviderProps) => {
   const [menu, setMenu] = useState(defaultMenu);
 
-  // CopyToClipboard
-  const onCopyToClipboard = (copied: boolean) => {
-    setMenu((oldSettings) => ({
-      ...oldSettings,
-      copiedToClipboard: copied as boolean,
-    }));
-  };
-
   // Close ALL Navbar Menus
   const onCloseAllNavbarMenus = () => {
     setMenu((oldSettings) => ({
@@ -68,7 +57,6 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
       openNavbarConnectedMenu: false,
       openNavbarChainsMenu: false,
       openNavbarSubMenu: SubMenuKeys.none,
-      copiedToClipboard: false,
     }));
   };
 
@@ -139,9 +127,6 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
     <MenuContext.Provider
       value={{
         ...menu,
-
-        // CopyToClipboard
-        onCopyToClipboard,
 
         // Close ALL Navbar Menus
         onCloseAllNavbarMenus,

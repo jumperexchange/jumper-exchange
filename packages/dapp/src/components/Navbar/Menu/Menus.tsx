@@ -13,7 +13,6 @@ export const Menus = () => {
     ) {
       return;
     }
-    menu.onCopyToClipboard(false);
   };
 
   return (

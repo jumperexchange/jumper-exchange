@@ -3,7 +3,7 @@ import { wallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Breakpoint, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
@@ -11,7 +11,7 @@ import type { TWallets } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../../const';
 import { EventTrackingTools, useUserTracking } from '../../../../hooks';
@@ -24,6 +24,7 @@ interface NavbarMenuProps {
 }
 export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const i18Path = 'navbar.walletMenu.';
+  const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t: translate } = useTranslation();
   const menu = useMenu();
   const { account, usedWallet, disconnect } = useWallet();
@@ -45,6 +46,16 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
   }, [account]);
+
+  const handleCloseSnackbar = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string,
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setCopiedToClipboard(false);
+  };
 
   return !!menu.openNavbarConnectedMenu ? (
     <NavbarMenu
@@ -77,13 +88,23 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
         display={'flex'}
         flexDirection={'row'}
         justifyContent={'space-between'}
-        mt={theme.spacing(6)}
+        sx={{
+          margin: `${theme.spacing(3)} auto ${theme.spacing(2)}`,
+          width: '75%',
+          minWidth: '280px',
+
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            marginTop: theme.spacing(6),
+            width: 'auto',
+            minWidth: 'inherit',
+          },
+        }}
       >
         <SpotButton
           name="Copy"
           onClick={() => {
             navigator?.clipboard?.writeText(account.address);
-            menu.onCopyToClipboard(true);
+            setCopiedToClipboard(true);
           }}
         >
           <ContentCopyIcon />
@@ -119,9 +140,9 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
         </SpotButton>
       </Box>
       <Snackbar
-        open={menu.copiedToClipboard}
-        autoHideDuration={1000}
-        onClose={handleClose}
+        open={copiedToClipboard}
+        autoHideDuration={2000}
+        onClose={handleCloseSnackbar}
       >
         <MuiAlert elevation={6} variant="filled" severity="success">
           Copied to Clipboard

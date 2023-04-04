@@ -43,7 +43,6 @@ export const defaultSettings: DefaultSettingsType = {
 };
 
 interface defaultMenuType {
-  copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
   openNavbarWalletMenu: boolean;
   openNavbarChainsMenu: boolean;
@@ -54,7 +53,6 @@ interface defaultMenuType {
 }
 
 export const defaultMenu: defaultMenuType = {
-  copiedToClipboard: false,
   openMainNavbarMenu: false,
   openNavbarWalletMenu: false,
   openNavbarChainsMenu: false,

@@ -1,5 +1,4 @@
 import { wallets } from '@lifi/wallet-management';
-import CheckIcon from '@mui/icons-material/Check';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import Avatar from '@mui/material/Avatar';
@@ -54,14 +53,9 @@ const useConnectedMenu = () => {
       ),
       onClick: () => {
         navigator?.clipboard?.writeText(account.address);
-        menu.onCopyToClipboard(true);
       },
       showMoreIcon: false,
-      suffixIcon: !!menu.copiedToClipboard ? (
-        <CheckIcon sx={{ color: theme.palette.success.main }} />
-      ) : (
-        <ContentCopyIcon />
-      ),
+      suffixIcon: <ContentCopyIcon />,
     },
     {
       label: `${translate(`${i18Path}disconnect`)}`,

@@ -4,7 +4,6 @@ import type { MutableRefObject } from 'react';
 
 export type MenuValueProps = {
   anchorEl: any;
-  copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
   openNavbarWalletMenu: boolean;
   openNavbarChainsMenu: boolean;
@@ -15,16 +14,12 @@ export type MenuValueProps = {
 
 export type MenuContextProps = {
   anchorRef?: any;
-  copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
   openNavbarChainsMenu?: boolean;
   openNavbarWalletMenu?: boolean;
   openNavbarConnectedMenu?: boolean;
   openNavbarSubMenu?: string;
   openSupportModal?: boolean;
-
-  // ClipBoard
-  onCopyToClipboard: (copied: boolean) => void;
 
   // On Iniitialization
   onMenuInit: (
