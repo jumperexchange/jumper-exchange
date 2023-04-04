@@ -72,7 +72,7 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   const onOpenNavbarMainMenu = (open: boolean) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openMainNavbarMenu: open as boolean,
+      openMainNavbarMenu: open,
     }));
   };
 
@@ -80,10 +80,8 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   const onOpenNavbarWalletMenu = (open: boolean) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openNavbarSubMenu: open
-        ? SubMenuKeys.wallets
-        : (SubMenuKeys.none as string),
-      openNavbarWalletMenu: open as boolean,
+      openNavbarSubMenu: open ? SubMenuKeys.wallets : SubMenuKeys.none,
+      openNavbarWalletMenu: open,
     }));
   };
 
@@ -91,10 +89,8 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   const onOpenNavbarChainsMenu = (open: boolean) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openNavbarSubMenu: open
-        ? SubMenuKeys.chains
-        : (SubMenuKeys.none as string),
-      openNavbarChainsMenu: open as boolean,
+      openNavbarSubMenu: open ? SubMenuKeys.chains : SubMenuKeys.none,
+      openNavbarChainsMenu: open,
     }));
   };
 
@@ -102,7 +98,7 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   const onOpenNavbarConnectedMenu = (open: boolean) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openNavbarConnectedMenu: open as boolean,
+      openNavbarConnectedMenu: open,
     }));
   };
 
@@ -110,7 +106,7 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   const onOpenNavbarSubMenu = (subMenu: string) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openNavbarSubMenu: subMenu as string,
+      openNavbarSubMenu: subMenu,
     }));
   };
 
