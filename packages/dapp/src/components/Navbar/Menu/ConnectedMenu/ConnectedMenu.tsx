@@ -11,7 +11,7 @@ import type { TWallets } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../../const';
 import { EventTrackingTools, useUserTracking } from '../../../../hooks';
@@ -90,6 +90,10 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
     settings.onWalletDisconnect();
   };
 
+  useEffect(() => {
+    menu.openNavbarConnectedMenu! && setCopiedToClipboard(false);
+  }, [menu.openNavbarConnectedMenu]);
+
   return !!menu.openNavbarConnectedMenu ? (
     <NavbarMenu
       open={true}
@@ -153,7 +157,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
         onClose={handleCloseSnackbar}
       >
         <MuiAlert elevation={6} variant="filled" severity="success">
-          Copied to Clipboard
+          Wallet address copied
         </MuiAlert>
       </Snackbar>
     </NavbarMenu>
