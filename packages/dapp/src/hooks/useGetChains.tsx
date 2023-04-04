@@ -1,11 +1,11 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
 import { useMemo } from 'react';
-import { useChainInfos } from '../../../providers/ChainInfosProvider';
-import { useWallet } from '../../../providers/WalletProvider';
-import { MenuListItem } from '../../../types';
+import { useChainInfos } from '../providers/ChainInfosProvider';
+import { useWallet } from '../providers/WalletProvider';
+import { MenuListItem } from '../types';
 
-const useGetChains = () => {
+export const useGetChains = () => {
   const { account, usedWallet, disconnect, switchChain } = useWallet();
   const { chains, isSuccess } = useChainInfos();
   const activeChain = useMemo(
@@ -30,5 +30,3 @@ const useGetChains = () => {
     }),
   );
 };
-
-export default useGetChains;
