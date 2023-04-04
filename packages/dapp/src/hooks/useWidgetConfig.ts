@@ -3,7 +3,7 @@ import {
   addChain,
   switchChain,
   switchChainAndAddToken,
-} from '@lifi/wallet-management';
+} from '../providers/hotfix/wallet-automation-hotfix';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
