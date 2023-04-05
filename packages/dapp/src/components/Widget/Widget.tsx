@@ -3,5 +3,5 @@ import { useWidgetConfig } from '../../hooks/';
 
 export function Widget({ starterVariant }) {
   const widgetConfig = useWidgetConfig((starterVariant = { starterVariant }));
-  return <LiFiWidget config={widgetConfig} />;
+  return <LiFiWidget config={widgetConfig} integrator={'jumper.exchange'} />;
 }

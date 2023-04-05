@@ -1,3 +1,4 @@
+import { ChainsResponse } from '@lifi/sdk';
 import { ExtendedChain } from '@lifi/types';
 
 import axios from 'axios';
@@ -27,10 +28,14 @@ export const ChainInfosProvider: React.FC<PropsWithChildren<{}>> = ({
     ['chainStats'],
     async () => {
       const apiUrl = (import.meta as any).env.VITE_LIFI_API_URL;
-      const result = await axios({
+      const result = await axios<ChainsResponse>({
         method: 'GET',
-        url: `${apiUrl}chains`,
+        url: `${apiUrl}/chains`,
       });
+      if ((import.meta as any).env.VITE_LIFI_SHOW_TESTNET) {
+        const testnetChains = result.data.chains.filter((el) => !el.mainnet);
+        return { chains: testnetChains };
+      }
       return result.data;
     },
     {
