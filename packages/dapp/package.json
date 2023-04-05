@@ -57,6 +57,7 @@
     "dev:production": "vite --mode production",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "build:testnet": "tsc && vite build --mode testnet",
     "build:develop": "tsc && vite build --mode development",
     "build:staging": "tsc && vite build --mode staging",
     "build:production": "tsc && vite build --mode production"
