@@ -23,8 +23,6 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const theme = useTheme();
   const { account } = useWallet();
 
-  console.log('chains', chains, 'acc-chain-id', account.chainId);
-
   return (
     <NavbarMenu
       handleClose={handleClose}
