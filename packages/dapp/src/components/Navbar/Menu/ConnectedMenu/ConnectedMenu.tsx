@@ -3,7 +3,7 @@ import { wallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
@@ -102,16 +102,17 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
       handleClose={handleClose}
       isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
     >
-      <Box
-        display={'grid'}
-        gridTemplateColumns={'1fr 1fr 1fr'}
-        m={`${theme.spacing(6)} 0`}
+      <Grid
+        container
+        m={`${theme.spacing(6)} auto`}
+        sx={{
+          maxWidth: '360px',
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            maxWidth: 'auto',
+          },
+        }}
       >
-        <Box
-          textAlign={'center'}
-          mb={theme.spacing(6)}
-          sx={{ minWidth: 0, gridColumnStart: '1', gridColumnEnd: '4' }}
-        >
+        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(6)}>
           <Avatar
             src={walletIcon}
             // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
@@ -129,30 +130,27 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(4)}>
             {_walletDigest}
           </Typography>
-        </Box>
-        <SpotButton
-          name="Copy"
-          onClick={handleCopyButton}
-          style={{ minWidth: 0, gridColumnStart: '1', gridColumnEnd: '2' }}
-        >
-          <ContentCopyIcon />
-        </SpotButton>
-        <SpotButton
-          name="Explore"
-          onClick={handleExploreButton}
-          style={{ minWidth: 0, gridColumnStart: '2', gridColumnEnd: '3' }}
-        >
-          <LaunchIcon />
-        </SpotButton>
-        <SpotButton
-          name={translate(`${i18Path}disconnect`)}
-          variant={'primary'}
-          onClick={handleDisconnectButton}
-          style={{ minWidth: 0, gridColumnStart: '3', gridColumnEnd: '4' }}
-        >
-          <PowerSettingsNewIcon />
-        </SpotButton>
-      </Box>
+        </Grid>
+        <Grid item xs={4}>
+          <SpotButton name="Copy" onClick={handleCopyButton}>
+            <ContentCopyIcon />
+          </SpotButton>
+        </Grid>
+        <Grid item xs={4}>
+          <SpotButton name="Explore" onClick={handleExploreButton}>
+            <LaunchIcon />
+          </SpotButton>
+        </Grid>
+        <Grid item xs={4}>
+          <SpotButton
+            name={translate(`${i18Path}disconnect`)}
+            variant={'primary'}
+            onClick={handleDisconnectButton}
+          >
+            <PowerSettingsNewIcon />
+          </SpotButton>
+        </Grid>
+      </Grid>
       <Snackbar
         open={copiedToClipboard}
         autoHideDuration={2000}
