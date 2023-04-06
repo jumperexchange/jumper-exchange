@@ -80,7 +80,7 @@ const NavbarMenuMobile = ({
                   }
                   component={
                     !!isOpenSubMenu &&
-                    menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                    menu.openNavbarSubMenu !== SubMenuKeys.walletSelect
                       ? 'div'
                       : 'ul'
                   }
@@ -91,8 +91,8 @@ const NavbarMenuMobile = ({
                         {!hideBackArrow && (
                           <ButtonBackArrow
                             onClick={() => {
-                              menu.onOpenNavbarWalletMenu(
-                                !menu.openNavbarWalletMenu,
+                              menu.onOpenNavbarWalletSelectMenu(
+                                !menu.openNavbarWalletSelectMenu,
                               );
                             }}
                           />

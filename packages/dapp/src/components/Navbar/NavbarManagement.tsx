@@ -77,7 +77,7 @@ const NavbarManagement = () => {
         aria-haspopup="true"
         onClick={() => {
           menu.onOpenNavbarSubMenu(SubMenuKeys.none);
-          menu.onOpenNavbarWalletMenu(false);
+          menu.onOpenNavbarWalletSelectMenu(false);
           menu.onOpenNavbarMainMenu(!menu.openMainNavbarMenu);
         }}
       >

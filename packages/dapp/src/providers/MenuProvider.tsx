@@ -21,13 +21,13 @@ const initialState: MenuContextProps = {
   onOpenNavbarMainMenu: () => {},
 
   // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: () => {},
+  onOpenNavbarWalletSelectMenu: () => {},
 
   // Toggle Navbar Chains Menu
   onOpenNavbarChainsMenu: () => {},
 
   // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: () => {},
+  onOpenNavbarWalletMenu: () => {},
 
   // Toggle Navbar Sub Menu
   onOpenNavbarSubMenu: () => {},
@@ -53,8 +53,8 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
       openMainNavbarMenu: false,
+      openNavbarWalletSelectMenu: false,
       openNavbarWalletMenu: false,
-      openNavbarConnectedMenu: false,
       openNavbarChainsMenu: false,
       openNavbarSubMenu: SubMenuKeys.none,
     }));
@@ -77,11 +77,11 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   };
 
   // Toggle Navbar Wallet Menu
-  const onOpenNavbarWalletMenu = (open: boolean) => {
+  const onOpenNavbarWalletSelectMenu = (open: boolean) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openNavbarSubMenu: open ? SubMenuKeys.wallets : SubMenuKeys.none,
-      openNavbarWalletMenu: open,
+      openNavbarSubMenu: open ? SubMenuKeys.walletSelect : SubMenuKeys.none,
+      openNavbarWalletSelectMenu: open,
     }));
   };
 
@@ -95,11 +95,11 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
   };
 
   // Toggle Navbar Connected Menu
-  const onOpenNavbarConnectedMenu = (open: boolean) => {
+  const onOpenNavbarWalletMenu = (open: boolean) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
-      openNavbarConnectedMenu: open,
-      openNavbarSubMenu: open ? SubMenuKeys.connected : SubMenuKeys.none,
+      openNavbarWalletMenu: open,
+      openNavbarSubMenu: open ? SubMenuKeys.walletMenu : SubMenuKeys.none,
     }));
   };
 
@@ -135,13 +135,13 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
         onOpenNavbarMainMenu,
 
         // Toggle Navbar Wallet Menu
-        onOpenNavbarWalletMenu,
+        onOpenNavbarWalletSelectMenu,
 
         // Toggle Navbar Wallet Menu
         onOpenNavbarChainsMenu,
 
         // Toggle Navbar Connected Menu
-        onOpenNavbarConnectedMenu,
+        onOpenNavbarWalletMenu,
 
         // Toggle Navbar Sub Menu
         onOpenNavbarSubMenu,

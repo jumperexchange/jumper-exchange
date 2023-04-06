@@ -45,23 +45,25 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const handleWalletPicker = () => {
-    !props.menu.openNavbarWalletMenu &&
+    !props.menu.openNavbarWalletSelectMenu &&
       trackEvent({
         category: 'menu',
         action: 'open-wallet-menu',
         disableTrackingTool: [EventTrackingTools.arcx],
       });
-    props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
+    props.menu.onOpenNavbarWalletSelectMenu(
+      !props.menu.openNavbarWalletSelectMenu,
+    );
   };
 
   const handleConnectedMenuClick = () => {
-    !props.menu.openNavbarConnectedMenu &&
+    !props.menu.openNavbarWalletMenu &&
       trackEvent({
         category: 'menu',
         action: 'open-connected-menu',
         disableTrackingTool: [EventTrackingTools.arcx],
       });
-    props.menu.onOpenNavbarConnectedMenu(!props.menu.openNavbarConnectedMenu);
+    props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
   };
 
   return (

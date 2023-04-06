@@ -294,7 +294,7 @@ export const NavbarPaper = styled(Paper, {
   '> .navbar-menu-list': {
     marginTop: 0,
     padding: !!isOpenSubMenu
-      ? openSubMenu === SubMenuKeys.wallets ||
+      ? openSubMenu === SubMenuKeys.walletSelect ||
         openSubMenu === SubMenuKeys.chains
         ? `${theme.spacing(0, 3, 3)} !important`
         : `${theme.spacing(0)} !important`
@@ -313,7 +313,7 @@ export const NavbarPaper = styled(Paper, {
     maxHeight: 'calc( 100vh - 72px - 12px )',
 
     borderRadius: '12px !important',
-    width: openSubMenu === SubMenuKeys.connected ? '320px' : '288px',
+    width: openSubMenu === SubMenuKeys.walletMenu ? '320px' : '288px',
     marginTop: '-2px',
   },
 

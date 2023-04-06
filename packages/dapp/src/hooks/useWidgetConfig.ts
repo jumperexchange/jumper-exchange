@@ -37,8 +37,8 @@ export function useWidgetConfig({ starterVariant }) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          menu.onOpenNavbarWalletMenu(
-            !!menu.openNavbarWalletMenu ? false : true,
+          menu.onOpenNavbarWalletSelectMenu(
+            !!menu.openNavbarWalletSelectMenu ? false : true,
           );
           let promiseResolver: (value: void | PromiseLike<void>) => void;
           const loginAwaiter = new Promise<void>(

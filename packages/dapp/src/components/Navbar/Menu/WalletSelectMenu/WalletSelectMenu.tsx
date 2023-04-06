@@ -22,22 +22,22 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
       handleClose={handleClose}
       label={`${translate(`${i18Path}chooseWallet`)}`}
       hideBackArrow={true}
-      open={menu.openNavbarWalletMenu}
-      setOpen={menu.onOpenNavbarWalletMenu}
-      isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.wallets}
+      open={menu.openNavbarWalletSelectMenu}
+      setOpen={menu.onOpenNavbarWalletSelectMenu}
+      isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.walletSelect}
     >
       {!!_walletSelectMenuItems.length ? (
         _walletSelectMenuItems.map((el, index) => (
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
-            triggerSubMenu={SubMenuKeys.wallets}
+            triggerSubMenu={SubMenuKeys.walletSelect}
             showButton={el.showButton}
             showMoreIcon={el.showMoreIcon}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
-            open={!!open ? open : menu.openNavbarWalletMenu}
-            isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.wallets}
+            open={!!open ? open : menu.openNavbarWalletSelectMenu}
+            isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.walletSelect}
             setOpenSubMenu={menu.onOpenNavbarSubMenu}
           />
         ))

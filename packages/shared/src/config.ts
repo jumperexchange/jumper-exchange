@@ -44,9 +44,9 @@ export const defaultSettings: DefaultSettingsType = {
 
 interface defaultMenuType {
   openMainNavbarMenu: boolean;
-  openNavbarWalletMenu: boolean;
+  openNavbarWalletSelectMenu: boolean;
   openNavbarChainsMenu: boolean;
-  openNavbarConnectedMenu: boolean;
+  openNavbarWalletSelectMenu: boolean;
   openNavbarSubMenu: string;
   openSupportModal: boolean;
   anchorEl: null | JSX.Element;
@@ -54,9 +54,9 @@ interface defaultMenuType {
 
 export const defaultMenu: defaultMenuType = {
   openMainNavbarMenu: false,
-  openNavbarWalletMenu: false,
+  openNavbarWalletSelectMenu: false,
   openNavbarChainsMenu: false,
-  openNavbarConnectedMenu: false,
+  openNavbarWalletSelectMenu: false,
   openNavbarSubMenu: 'none',
   openSupportModal: false,
   anchorEl: null,

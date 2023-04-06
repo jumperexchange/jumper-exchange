@@ -22,7 +22,7 @@ import { NavbarMenu } from '../../index';
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
-export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
+export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const i18Path = 'navbar.walletMenu.';
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t: translate } = useTranslation();
@@ -94,13 +94,13 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   };
 
   useEffect(() => {
-    menu.openNavbarWalletMenu! && setCopiedToClipboard(false);
-  }, [menu.openNavbarWalletMenu]);
+    menu.openNavbarWalletSelectMenu! && setCopiedToClipboard(false);
+  }, [menu.openNavbarWalletSelectMenu]);
 
-  return !!menu.openNavbarWalletMenu ? (
+  return !!menu.openNavbarWalletSelectMenu ? (
     <NavbarMenu
       open={true}
-      setOpen={menu.onOpenNavbarWalletMenu}
+      setOpen={menu.onOpenNavbarWalletSelectMenu}
       handleClose={handleClose}
       isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
     >

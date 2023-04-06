@@ -89,7 +89,7 @@ const NavbarMenuDesktop = ({
                     }
                     component={
                       !!isOpenSubMenu &&
-                      menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                      menu.openNavbarSubMenu !== SubMenuKeys.walletSelect
                         ? 'div'
                         : 'ul'
                     }
@@ -100,8 +100,8 @@ const NavbarMenuDesktop = ({
                           {!hideBackArrow && (
                             <ButtonBackArrow
                               onClick={() => {
-                                menu.onOpenNavbarWalletMenu(
-                                  !menu.openNavbarWalletMenu,
+                                menu.onOpenNavbarWalletSelectMenu(
+                                  !menu.openNavbarWalletSelectMenu,
                                 );
                               }}
                             />

@@ -5,9 +5,9 @@ import type { MutableRefObject } from 'react';
 export type MenuValueProps = {
   anchorEl: any;
   openMainNavbarMenu: boolean;
-  openNavbarWalletMenu: boolean;
+  openNavbarWalletSelectMenu: boolean;
   openNavbarChainsMenu: boolean;
-  openNavbarConnectedMenu: boolean;
+  openNavbarWalletMenu: boolean;
   openNavbarSubMenu: string;
   openSupportModal: boolean;
 };
@@ -16,8 +16,8 @@ export type MenuContextProps = {
   anchorRef?: any;
   openMainNavbarMenu?: boolean;
   openNavbarChainsMenu?: boolean;
+  openNavbarWalletSelectMenu?: boolean;
   openNavbarWalletMenu?: boolean;
-  openNavbarConnectedMenu?: boolean;
   openNavbarSubMenu?: string;
   openSupportModal?: boolean;
 
@@ -33,10 +33,10 @@ export type MenuContextProps = {
   onOpenNavbarMainMenu: (open: boolean) => void;
 
   // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: (open: boolean) => void;
+  onOpenNavbarWalletSelectMenu: (open: boolean) => void;
 
   // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: (open: boolean) => void;
+  onOpenNavbarWalletMenu: (open: boolean) => void;
 
   // Toggle Navbar Chains Menu
   onOpenNavbarChainsMenu: (open: boolean) => void;

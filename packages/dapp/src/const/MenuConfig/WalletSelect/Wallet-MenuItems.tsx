@@ -36,7 +36,7 @@ export const useWalletSelectMenuItems = () => {
       }
       await connect(wallet);
       settings.onWalletConnect(wallet.name);
-      menu.onOpenNavbarWalletMenu(false);
+      menu.onOpenNavbarWalletSelectMenu(false);
       try {
       } catch (e) {}
     },
