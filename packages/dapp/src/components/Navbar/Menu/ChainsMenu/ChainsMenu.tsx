@@ -1,3 +1,4 @@
+import CheckIcon from '@mui/icons-material/Check';
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
@@ -5,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../../../const';
 import { useGetChains } from '../../../../hooks';
 import { useMenu } from '../../../../providers/MenuProvider';
+import { useWallet } from '../../../../providers/WalletProvider';
 import MenuItemComponent from '../../MenuItemComponent';
 import { NavbarMenu } from '../../index';
 
@@ -19,6 +21,9 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const menu = useMenu();
   const chains = useGetChains();
   const theme = useTheme();
+  const { account } = useWallet();
+
+  console.log('chains', chains, 'acc-chain-id', account.chainId);
 
   return (
     <NavbarMenu
@@ -39,6 +44,7 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
             triggerSubMenu={SubMenuKeys.chains}
             showButton={el.showButton}
             showMoreIcon={false}
+            suffixIcon={el.chainId === account.chainId && <CheckIcon />}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={!!open ? open : menu.openNavbarChainsMenu}

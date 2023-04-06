@@ -3,7 +3,7 @@ import { Avatar } from '@mui/material';
 import { useMemo } from 'react';
 import { useChainInfos } from '../providers/ChainInfosProvider';
 import { useWallet } from '../providers/WalletProvider';
-import { MenuListItem } from '../types';
+import { ChainsMenuListItem } from '../types';
 
 export const useGetChains = () => {
   const { account, switchChain } = useWallet();
@@ -14,7 +14,7 @@ export const useGetChains = () => {
   );
 
   return chains.map(
-    (el): MenuListItem => ({
+    (el): ChainsMenuListItem => ({
       label: `${el.name}`,
       onClick: () => {
         switchChain(el.id);
@@ -27,6 +27,7 @@ export const useGetChains = () => {
         />
       ),
       checkIcon: el.id === activeChain?.id,
+      chainId: el.id,
     }),
   );
 };

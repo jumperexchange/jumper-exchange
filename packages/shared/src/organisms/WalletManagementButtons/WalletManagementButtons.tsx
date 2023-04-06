@@ -1,4 +1,3 @@
-import type { ExtendedChain } from '@lifi/types';
 import { wallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
@@ -19,7 +18,6 @@ interface WalletManagementButtonsProps {
   walletConnected?: boolean;
   menu: MenuContextProps;
   connectButtonLabel?: ReactElement<any, any>;
-  activeChain?: ExtendedChain;
   isSuccess: boolean;
   walletManagement: any;
 }
