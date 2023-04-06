@@ -16,13 +16,17 @@
     "walletMenu": {
       "disconnect": "Disconnect",
       "chains": "Chains",
-      "switchChain": "Switch Chain"
+      "switchChain": "Switch Chain",
+      "copy": "Copy",
+      "explore": "Explore",
+      "copiedMsg": "Wallet address copied"
     },
     "language": {
       "key": "Language",
       "value": "English"
     },
     "themes": {
+      "changeTheme": "Change Theme",
       "light": "Light",
       "dark": "Dark",
       "auto": "Auto"

@@ -134,12 +134,18 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           </Typography>
         </Grid>
         <Grid item xs={4}>
-          <SpotButton name="Copy" onClick={handleCopyButton}>
+          <SpotButton
+            name={translate(`${i18Path}copy`)}
+            onClick={handleCopyButton}
+          >
             <ContentCopyIcon />
           </SpotButton>
         </Grid>
         <Grid item xs={4}>
-          <SpotButton name="Explore" onClick={handleExploreButton}>
+          <SpotButton
+            name={translate(`${i18Path}explore`)}
+            onClick={handleExploreButton}
+          >
             <LaunchIcon />
           </SpotButton>
         </Grid>
@@ -163,7 +169,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
       sx={{ top: '78px !important' }}
     >
       <MuiAlert elevation={6} variant="filled" severity="success">
-        Wallet address copied
+        {translate(`${i18Path}copiedMsg`)}
       </MuiAlert>
     </Snackbar>
   );

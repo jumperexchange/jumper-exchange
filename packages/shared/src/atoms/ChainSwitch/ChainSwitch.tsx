@@ -11,16 +11,14 @@ import {
 import { useChainInfos } from '../../../../dapp/src/providers/ChainInfosProvider';
 import { useMenu } from '../../../../dapp/src/providers/MenuProvider';
 import { useWallet } from '../../../../dapp/src/providers/WalletProvider';
-import { useSettings } from '../../hooks';
 import { ButtonChainSwitch } from './ChainSwitch.style';
 
 export const ChainSwitch = () => {
-  const settings = useSettings();
   const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const i18Path = 'navbar.walletMenu.';
   const { trackEvent } = useUserTracking();
   const menu = useMenu();
-  const { chains, isSuccess } = useChainInfos();
+  const { chains } = useChainInfos();
   const { account } = useWallet();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
@@ -38,7 +36,7 @@ export const ChainSwitch = () => {
   };
 
   return (
-    <Tooltip title={activeChain?.name}>
+    <Tooltip title={translate(`${i18Path}switchChain`)}>
       <ButtonChainSwitch
         onClick={() => {
           handleOpenChainsMenu();
