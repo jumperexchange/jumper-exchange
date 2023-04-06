@@ -38,7 +38,7 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
             isScrollable={true}
             triggerSubMenu={SubMenuKeys.chains}
             showButton={el.showButton}
-            showMoreIcon={el.showMoreIcon}
+            showMoreIcon={false}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={!!open ? open : menu.openNavbarChainsMenu}
