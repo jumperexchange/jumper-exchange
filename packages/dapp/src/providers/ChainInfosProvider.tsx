@@ -30,7 +30,7 @@ export const ChainInfosProvider: React.FC<PropsWithChildren<{}>> = ({
       const apiUrl = (import.meta as any).env.VITE_LIFI_API_URL;
       const result = await axios<ChainsResponse>({
         method: 'GET',
-        url: `${apiUrl}/chains`,
+        url: `${apiUrl}chains`,
       });
       if ((import.meta as any).env.VITE_LIFI_SHOW_TESTNET) {
         const testnetChains = result.data.chains.filter((el) => !el.mainnet);

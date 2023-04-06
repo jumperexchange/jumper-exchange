@@ -53,6 +53,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:testnet": "vite --mode testnet",
     "dev:staging": "vite --mode staging",
     "dev:production": "vite --mode production",
     "build": "tsc && vite build",
