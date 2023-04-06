@@ -3,7 +3,7 @@ import { wallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import { Box, Breakpoint, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
@@ -102,51 +102,53 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
       handleClose={handleClose}
       isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
     >
-      <Box textAlign={'center'} mt={theme.spacing(3)}>
-        <Avatar
-          src={walletIcon}
-          // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
-          sx={{
-            padding: theme.spacing(4.5),
-            background:
-              theme.palette.mode === 'light'
-                ? theme.palette.black.main
-                : theme.palette.white.main,
-            margin: 'auto',
-            height: '96px',
-            width: '96px',
-          }}
-        />
-        <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(4)}>
-          {_walletDigest}
-        </Typography>
-      </Box>
       <Box
-        display={'flex'}
-        flexDirection={'row'}
-        justifyContent={'space-between'}
-        sx={{
-          margin: `${theme.spacing(3)} auto ${theme.spacing(2)}`,
-          width: '75%',
-          minWidth: '280px',
-
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
-            marginTop: theme.spacing(6),
-            width: 'auto',
-            minWidth: 'inherit',
-          },
-        }}
+        display={'grid'}
+        gridTemplateColumns={'1fr 1fr 1fr'}
+        m={`${theme.spacing(6)} 0`}
       >
-        <SpotButton name="Copy" onClick={handleCopyButton}>
+        <Box
+          textAlign={'center'}
+          mb={theme.spacing(6)}
+          sx={{ minWidth: 0, gridColumnStart: '1', gridColumnEnd: '4' }}
+        >
+          <Avatar
+            src={walletIcon}
+            // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
+            sx={{
+              padding: theme.spacing(4.5),
+              background:
+                theme.palette.mode === 'light'
+                  ? theme.palette.black.main
+                  : theme.palette.white.main,
+              margin: 'auto',
+              height: '96px',
+              width: '96px',
+            }}
+          />
+          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(4)}>
+            {_walletDigest}
+          </Typography>
+        </Box>
+        <SpotButton
+          name="Copy"
+          onClick={handleCopyButton}
+          style={{ minWidth: 0, gridColumnStart: '1', gridColumnEnd: '2' }}
+        >
           <ContentCopyIcon />
         </SpotButton>
-        <SpotButton name="Explore" onClick={handleExploreButton}>
+        <SpotButton
+          name="Explore"
+          onClick={handleExploreButton}
+          style={{ minWidth: 0, gridColumnStart: '2', gridColumnEnd: '3' }}
+        >
           <LaunchIcon />
         </SpotButton>
         <SpotButton
           name={translate(`${i18Path}disconnect`)}
           variant={'primary'}
           onClick={handleDisconnectButton}
+          style={{ minWidth: 0, gridColumnStart: '3', gridColumnEnd: '4' }}
         >
           <PowerSettingsNewIcon />
         </SpotButton>

@@ -14,6 +14,7 @@ export const SpotButton = styled(IconButton, {
   color: theme.palette.text.primary,
   width: '64px',
   height: '64px',
+  margin: 'auto',
   backgroundColor:
     variant === 'primary' && theme.palette.mode === 'dark'
       ? theme.palette.primary.main

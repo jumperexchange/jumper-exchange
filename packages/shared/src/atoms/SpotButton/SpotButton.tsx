@@ -1,11 +1,14 @@
+import type { CSSObject } from '@mui/material';
 import { Box, Typography, useTheme } from '@mui/material';
+import type { ReactNode } from 'react';
 import { SpotButton as SpotButtonStyled } from './SpotButton.style';
 
 interface SpotButtonProps {
   name?: string;
   variant?: string;
   onClick: any;
-  children: any;
+  children: ReactNode;
+  style?: CSSObject;
 }
 
 export const SpotButton = ({
@@ -13,10 +16,11 @@ export const SpotButton = ({
   name,
   variant,
   onClick,
+  style,
 }: SpotButtonProps) => {
   const theme = useTheme();
   return (
-    <Box textAlign={'center'} p={theme.spacing(3)}>
+    <Box textAlign={'center'} sx={{ ...style }}>
       <SpotButtonStyled variant={variant} onClick={onClick}>
         {children}
       </SpotButtonStyled>
@@ -24,9 +28,10 @@ export const SpotButton = ({
         <Typography
           mt={theme.spacing(2)}
           sx={{
-            maxWidth: '64px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
+            maxWidth: '75%',
+            margin: '8px auto',
           }}
           variant={'lifiBodyXSmallStrong'}
         >
