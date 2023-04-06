@@ -63,6 +63,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
         account.address
       }`,
     );
+    menu.onCloseAllNavbarMenus();
     trackPageload({
       source: 'connected-menu',
       destination: 'blokchain-explorer',
@@ -83,10 +84,12 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
       label: 'copyAddressToClipboard',
       disableTrackingTool: [EventTrackingTools.arcx],
     });
+    menu.onCloseAllNavbarMenus();
   };
 
   const handleDisconnectButton = () => {
     disconnect();
+    menu.onCloseAllNavbarMenus();
     settings.onWalletDisconnect();
   };
 
@@ -151,15 +154,18 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           </SpotButton>
         </Grid>
       </Grid>
-      <Snackbar
-        open={copiedToClipboard}
-        autoHideDuration={2000}
-        onClose={handleCloseSnackbar}
-      >
-        <MuiAlert elevation={6} variant="filled" severity="success">
-          Wallet address copied
-        </MuiAlert>
-      </Snackbar>
     </NavbarMenu>
-  ) : null;
+  ) : (
+    <Snackbar
+      open={copiedToClipboard}
+      autoHideDuration={2000}
+      onClose={handleCloseSnackbar}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      sx={{ top: '78px !important' }}
+    >
+      <MuiAlert elevation={6} variant="filled" severity="success">
+        Wallet address copied
+      </MuiAlert>
+    </Snackbar>
+  );
 };
