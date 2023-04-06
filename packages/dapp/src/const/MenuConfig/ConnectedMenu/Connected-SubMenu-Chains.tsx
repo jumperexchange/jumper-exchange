@@ -13,9 +13,18 @@ const ConnectedSubMenuChains = () => {
     [chains.length, account.chainId],
   );
 
+  let availableChains = chains.filter((el) => !el.mainnet);
+
+  if ((import.meta as any).env.VITE_LIFI_SHOW_TESTNET) {
+    const testnetChains = chains.filter(
+      (el) => !el.mainnet || el.id === account.chainId,
+    );
+    availableChains = [...testnetChains];
+  }
+
   const _ConnectedSubMenuChains: MenuListItem[] = [];
 
-  chains.map((el) => {
+  availableChains.map((el) => {
     _ConnectedSubMenuChains.push({
       label: `${el.name}`,
       onClick: () => {

@@ -4,6 +4,7 @@ import { ExtendedChain } from '@lifi/types';
 import axios from 'axios';
 import { createContext, PropsWithChildren, useContext } from 'react';
 import { useQuery } from 'react-query';
+import { useWallet } from './WalletProvider';
 
 export interface ChainInfosContextProps {
   chains: ExtendedChain[];
@@ -32,10 +33,6 @@ export const ChainInfosProvider: React.FC<PropsWithChildren<{}>> = ({
         method: 'GET',
         url: `${apiUrl}chains`,
       });
-      if ((import.meta as any).env.VITE_LIFI_SHOW_TESTNET) {
-        const testnetChains = result.data.chains.filter((el) => !el.mainnet);
-        return { chains: testnetChains };
-      }
       return result.data;
     },
     {
