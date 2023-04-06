@@ -300,7 +300,7 @@ export const NavbarPaper = styled(Paper, {
     borderRadius: '12px 12px 0 0',
     marginBottom: 0,
     maxHeight: 'calc( 100vh - 64px - 12px )', // viewHeight - navbarHeight - offset
-    overflowY: !!isScrollable ? 'auto' : 'inherit',
+    overflowY: 'auto',
     overflowX: 'inherit',
 
     '> .navbar-menu-list': {

@@ -31,7 +31,7 @@ export const SpotButton = ({
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             maxWidth: '75%',
-            margin: '8px auto',
+            margin: '8px auto 0',
           }}
           variant={'lifiBodyXSmallStrong'}
         >
