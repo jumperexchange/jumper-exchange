@@ -325,7 +325,7 @@ export const NavbarPaper = styled(Paper, {
       maxHeight: 'calc( 100vh - 72px - 12px )',
 
       borderRadius: '12px !important',
-      width: '288px',
+      width: openSubMenu === SubMenuKeys.connected ? '320px' : '288px',
       marginTop: '-2px',
     },
 

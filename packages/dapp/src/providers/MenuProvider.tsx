@@ -99,6 +99,7 @@ const MenuProvider = ({ children }: MenuProviderProps) => {
     setMenu((oldSettings) => ({
       ...oldSettings,
       openNavbarConnectedMenu: open,
+      openNavbarSubMenu: open ? SubMenuKeys.connected : SubMenuKeys.none,
     }));
   };
 
