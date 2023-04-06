@@ -132,9 +132,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
                 width: '32px',
               }}
             />
-          ) : (
-            <></>
-          )}
+          ) : null}
           <Typography
             variant={'lifiBodyMediumStrong'}
             width={'100%'}
