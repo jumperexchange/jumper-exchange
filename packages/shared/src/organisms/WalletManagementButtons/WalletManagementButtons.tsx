@@ -88,32 +88,25 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
         // ConnectedMenu-Button -->
         <ButtonSecondary
           sx={{
-            width: '48px', //'180px',
+            width: '180px',
+            padding: '6px 8px',
             paddingRight: '16px',
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            padding: 0,
             minWidth: 'inherit',
             '@media screen and (min-width:430px) and (max-width: 900px)': {
               width: '180px',
               padding: '6px 8px',
             },
-            [theme.breakpoints.up('xs' as Breakpoint)]: {
-              width: '48px',
-              padding: '0',
-            },
             [theme.breakpoints.up('md' as Breakpoint)]: {
               position: 'relative',
               width: '48px', //'180px',
-              padding: 0,
+              padding: '0',
               left: 'unset',
               display: 'inherit',
               transform: 'unset',
             },
             [theme.breakpoints.up('lg' as Breakpoint)]: {
               width: '180px',
-              padding: '6px 8px',
+              padding: '6px',
             },
           }}
           onClick={handleConnectedMenuClick}
@@ -137,10 +130,6 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
             variant={'lifiBodyMediumStrong'}
             width={'100%'}
             sx={{
-              display: 'none',
-              '@media screen and (min-width:430px) and (max-width: 900px)': {
-                display: 'block',
-              },
               [theme.breakpoints.up('md' as Breakpoint)]: {
                 display: 'none',
               },
