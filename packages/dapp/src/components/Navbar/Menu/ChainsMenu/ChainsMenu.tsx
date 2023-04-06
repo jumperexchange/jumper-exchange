@@ -30,7 +30,6 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
       handleClose={handleClose}
       label={`${translate(`${i18Path}chains`)}`}
       hideBackArrow={true}
-      isScrollable={true}
       open={menu.openNavbarChainsMenu}
       setOpen={menu.onOpenNavbarChainsMenu}
       isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.chains}
@@ -40,7 +39,6 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
-            isScrollable={true}
             triggerSubMenu={SubMenuKeys.chains}
             showButton={el.showButton}
             showMoreIcon={false}

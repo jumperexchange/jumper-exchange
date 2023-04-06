@@ -109,11 +109,7 @@ export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
   }),
 );
 
-export interface NavbarPopperProps extends Omit<PopperProps, 'isScrollable'> {}
-
-export const NavbarPopper = styled(Popper, {
-  shouldForwardProp: (prop) => prop !== 'isScrollable',
-})<NavbarPopperProps>(({ theme }) => ({
+export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
   zIndex: 1300,
   bottom: '0 !important',
   left: '0 !important',
@@ -127,12 +123,8 @@ export const NavbarPopper = styled(Popper, {
     transform: 'unset !important',
   },
 }));
-export interface NavbarMenuListProps
-  extends Omit<MenuListProps, 'isScrollable'> {
-  component?: string;
-}
 
-export const NavbarMenuList = styled(MenuList)<NavbarMenuListProps>(() => ({
+export const NavbarMenuList = styled(MenuList)<MenuListProps>(() => ({
   padding: 0,
 }));
 
@@ -249,11 +241,10 @@ export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 export interface MUIMenuItemProps extends Omit<MenuItemProps, 'showButton'> {
   showButton?: boolean;
   component?: string;
-  isScrollable?: boolean;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'isScrollable',
+  shouldForwardProp: (prop) => prop !== 'showButton',
 })<MUIMenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
   padding: showButton ? theme.spacing(0, 3, 3) : theme.spacing(0, 3),
@@ -279,7 +270,6 @@ export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
   openSubMenu?: string;
   isSubMenu?: boolean;
   component?: string;
-  isScrollable?: boolean;
 }
 
 export const NavbarPaper = styled(Paper, {
@@ -287,60 +277,57 @@ export const NavbarPaper = styled(Paper, {
     prop !== 'isDarkMode' &&
     prop !== 'isOpenSubMenu' &&
     prop !== 'openSubMenu' &&
-    prop !== 'isSubMenu' &&
-    prop !== 'isScrollable',
-})<NavbarPaperProps>(
-  ({ theme, isDarkMode, isOpenSubMenu, isScrollable, openSubMenu }) => ({
-    background: theme.palette.surface1.main,
-    padding: 0,
+    prop !== 'isSubMenu',
+})<NavbarPaperProps>(({ theme, isDarkMode, isOpenSubMenu, openSubMenu }) => ({
+  background: theme.palette.surface1.main,
+  padding: 0,
+  marginTop: 0,
+  boxShadow: !isDarkMode
+    ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+    : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  borderRadius: '12px 12px 0 0',
+  marginBottom: 0,
+  maxHeight: 'calc( 100vh - 64px - 12px )', // viewHeight - navbarHeight - offset
+  overflowY: 'auto',
+  overflowX: 'inherit',
+
+  '> .navbar-menu-list': {
     marginTop: 0,
-    boxShadow: !isDarkMode
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-    borderRadius: '12px 12px 0 0',
-    marginBottom: 0,
-    maxHeight: 'calc( 100vh - 64px - 12px )', // viewHeight - navbarHeight - offset
-    overflowY: 'auto',
-    overflowX: 'inherit',
+    padding: !!isOpenSubMenu
+      ? openSubMenu === SubMenuKeys.wallets ||
+        openSubMenu === SubMenuKeys.chains
+        ? `${theme.spacing(0, 3, 3)} !important`
+        : `${theme.spacing(0)} !important`
+      : `${theme.spacing(3)} !important`,
+  },
+  '> .navbar-menu-list.open > ul': {
+    padding: `${theme.spacing(0, 3, 3)} !important`,
+  },
+  width: '100%',
+  transformOrigin: 'bottom',
+  transition:
+    'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 
-    '> .navbar-menu-list': {
-      marginTop: 0,
-      padding: !!isOpenSubMenu
-        ? openSubMenu === SubMenuKeys.wallets ||
-          openSubMenu === SubMenuKeys.chains
-          ? `${theme.spacing(0, 3, 3)} !important`
-          : `${theme.spacing(0)} !important`
-        : `${theme.spacing(3)} !important`,
-    },
-    '> .navbar-menu-list.open > ul': {
-      padding: `${theme.spacing(0, 3, 3)} !important`,
-    },
-    width: '100%',
-    transformOrigin: 'bottom',
-    transition:
-      'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    transformOrigin: 'inherit',
+    maxHeight: 'calc( 100vh - 72px - 12px )',
 
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      transformOrigin: 'inherit',
-      maxHeight: 'calc( 100vh - 72px - 12px )',
+    borderRadius: '12px !important',
+    width: openSubMenu === SubMenuKeys.connected ? '320px' : '288px',
+    marginTop: '-2px',
+  },
 
-      borderRadius: '12px !important',
-      width: openSubMenu === SubMenuKeys.connected ? '320px' : '288px',
-      marginTop: '-2px',
-    },
-
-    [theme.breakpoints.up('md' as Breakpoint)]: {
-      maxHeight: 'calc( 100vh - 80px - 12px )',
-    },
-  }),
-);
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    maxHeight: 'calc( 100vh - 80px - 12px )',
+  },
+}));
 
 export interface MenuLinkItemProps extends Omit<LinkProps, 'component'> {
   component?: string;
 }
 
 export const MenuLinkItem = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'component' && prop !== 'isScrollable',
+  shouldForwardProp: (prop) => prop !== 'component',
 })<MenuLinkItemProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
@@ -350,8 +337,7 @@ export const MenuLinkItem = styled(Link, {
   color: 'inherit',
 }));
 
-export interface MenuItemLabelProps
-  extends Omit<ListItemProps, 'isScrollable'> {
+export interface MenuItemLabelProps extends Omit<ListItemProps, 'variant'> {
   variant?: 'xs' | 'md' | 'lg';
 }
 
@@ -391,28 +377,27 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
 );
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
   component?: string;
-  isScrollable?: boolean;
 }
 
-export const MenuHeaderAppBar = styled(AppBar, {
-  shouldForwardProp: (prop) => prop !== 'isScrollable',
-})<MenuHeaderAppBarProps>(({ theme }) => ({
-  backgroundColor: 'transparent',
-  zIndex: 1500,
-  position: 'fixed',
-  top: 'initial',
-  left: 'initial',
-  right: 'initial',
-  padding: theme.spacing(0, 3, 0, 3),
-  color: theme.palette.text.primary,
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  minHeight: 48,
+export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
+  ({ theme }) => ({
+    backgroundColor: 'transparent',
+    zIndex: 1500,
+    position: 'fixed',
+    top: 'initial',
+    left: 'initial',
+    right: 'initial',
+    padding: theme.spacing(0, 3, 0, 3),
+    color: theme.palette.text.primary,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    minHeight: 48,
 
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(0, 3),
-    position: 'relative',
-    justifyContent: 'flex-start',
-  },
-}));
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      padding: theme.spacing(0, 3),
+      position: 'relative',
+      justifyContent: 'flex-start',
+    },
+  }),
+);

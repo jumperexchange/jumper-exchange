@@ -100,7 +100,6 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   return !!menu.openNavbarConnectedMenu ? (
     <NavbarMenu
       open={true}
-      isScrollable={true}
       setOpen={menu.onOpenNavbarConnectedMenu}
       handleClose={handleClose}
       isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}

@@ -14,7 +14,6 @@ interface MenuItemProps {
   showMoreIcon?: boolean;
   label: string;
   onClick: any;
-  isScrollable?: boolean;
   triggerSubMenu: string;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
@@ -28,7 +27,6 @@ const MenuItemComponent = ({
   showButton,
   showMoreIcon = true,
   onClick,
-  isScrollable,
   label,
   triggerSubMenu,
   prefixIcon,
@@ -41,7 +39,6 @@ const MenuItemComponent = ({
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
-      isScrollable={isScrollable}
       onClick={() => {
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
         !!triggerSubMenu &&

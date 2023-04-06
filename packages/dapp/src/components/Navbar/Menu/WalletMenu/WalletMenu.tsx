@@ -22,7 +22,6 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
       handleClose={handleClose}
       label={`${translate(`${i18Path}chooseWallet`)}`}
       hideBackArrow={true}
-      isScrollable={true}
       open={menu.openNavbarWalletMenu}
       setOpen={menu.onOpenNavbarWalletMenu}
       isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.wallets}
@@ -32,7 +31,6 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
-            isScrollable={true}
             triggerSubMenu={SubMenuKeys.wallets}
             showButton={el.showButton}
             showMoreIcon={el.showMoreIcon}
