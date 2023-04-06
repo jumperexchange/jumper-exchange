@@ -8,7 +8,7 @@ import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
 
-export const useWalletMenuItems = () => {
+export const useWalletSelectMenuItems = () => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
     useState<Wallet>();
   const { connect } = useWallet();

@@ -1,4 +1,4 @@
 export * from './MenuConfig/MainMenu';
-export * from './MenuConfig/WalletMenu';
+export * from './MenuConfig/WalletSelect';
 export * from './linkMap';
 export * from './subMenuKeys';

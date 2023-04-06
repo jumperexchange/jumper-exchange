@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys, useWalletMenuItems } from '../../../../const';
+import { SubMenuKeys, useWalletSelectMenuItems } from '../../../../const';
 import { useMenu } from '../../../../providers/MenuProvider';
 import { MenuItemComponent, NavbarMenu } from '../../index';
 
@@ -11,12 +11,12 @@ interface NavbarMenuProps {
   open?: boolean;
 }
 
-export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
+export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
   const theme = useTheme();
   const menu = useMenu();
-  const _walletMenuItems = useWalletMenuItems();
+  const _walletSelectMenuItems = useWalletSelectMenuItems();
   return (
     <NavbarMenu
       handleClose={handleClose}
@@ -26,8 +26,8 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
       setOpen={menu.onOpenNavbarWalletMenu}
       isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.wallets}
     >
-      {!!_walletMenuItems.length ? (
-        _walletMenuItems.map((el, index) => (
+      {!!_walletSelectMenuItems.length ? (
+        _walletSelectMenuItems.map((el, index) => (
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
