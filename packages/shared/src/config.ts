@@ -44,7 +44,7 @@ export const defaultSettings: DefaultSettingsType = {
 
 interface defaultMenuType {
   openMainNavbarMenu: boolean;
-  openNavbarWalletSelectMenu: boolean;
+  openNavbarWalletMenu: boolean;
   openNavbarChainsMenu: boolean;
   openNavbarWalletSelectMenu: boolean;
   openNavbarSubMenu: string;
