@@ -26,7 +26,8 @@
       "value": "English"
     },
     "themes": {
-      "changeTheme": "Change Theme",
+      "switchToLight": "Switch to Light Theme",
+      "switchToDark": "Switch to Dark Theme",
       "light": "Light",
       "dark": "Dark",
       "auto": "Auto"

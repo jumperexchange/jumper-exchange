@@ -29,25 +29,18 @@ export const ThemeSwitch = () => {
     });
   };
 
-  const translation = {
-    light: translate(`${i18Path}themes.light`),
-    dark: translate(`${i18Path}themes.dark`),
-    auto: translate(`${i18Path}themes.auto`),
-    changeTheme: translate(`${i18Path}themes.changeTheme`),
-  };
-
   const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
 
   return (
     <Tooltip
       title={
         settings.themeMode === 'light'
-          ? `${translation.changeTheme}: ${translation.dark}`
+          ? translate(`${i18Path}themes.switchToDark`)
           : settings.themeMode === 'dark'
-          ? `${translation.changeTheme}: ${translation.light}`
+          ? translate(`${i18Path}themes.switchToLight`)
           : !isDarkModeHook
-          ? `${translation.changeTheme}: ${translation.dark}`
-          : `${translation.changeTheme}: ${translation.light}`
+          ? translate(`${i18Path}themes.switchToDark`)
+          : translate(`${i18Path}themes.switchToLight`)
       }
     >
       <ButtonThemeSwitch
