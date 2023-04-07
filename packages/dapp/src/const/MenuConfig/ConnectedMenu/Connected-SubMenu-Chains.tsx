@@ -13,7 +13,7 @@ const ConnectedSubMenuChains = () => {
     [chains.length, account.chainId],
   );
 
-  let availableChains = chains.filter((el) => !el.mainnet);
+  let availableChains = [...chains];
 
   if ((import.meta as any).env.VITE_LIFI_SHOW_TESTNET) {
     const testnetChains = chains.filter(
