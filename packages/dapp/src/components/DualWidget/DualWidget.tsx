@@ -1,5 +1,6 @@
 import { WidgetVariant } from '@lifi/widget';
 import { Grid } from '@mui/material';
+import { TestnetAlert } from '@transferto/shared/src';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga4';
@@ -60,6 +61,7 @@ export function DualWidget() {
         overflowX: 'hidden',
       }}
     >
+      {import.meta.env.MODE === 'testnet' && <TestnetAlert />}
       <WidgetContainer isActive={_starterVariant === 'expandable'}>
         <Widget starterVariant={'expandable'} />
       </WidgetContainer>

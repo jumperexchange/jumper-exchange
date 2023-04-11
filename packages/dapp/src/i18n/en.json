@@ -37,5 +37,9 @@
       "klimaStaking": "Cross Chain Klima Staking",
       "carbonOffset": "Cross Chain Carbon Offset"
     }
+  },
+  "alert": {
+    "info": "Info",
+    "testnet": "You are currently on our testnet-only view. Any transactions or actions you perform here will not be reflected on the mainnet. To access mainnets, please navigate to <0>{{url}}</0>"
   }
 }
