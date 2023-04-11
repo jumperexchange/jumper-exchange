@@ -1,15 +1,15 @@
 import { Token } from '@lifi/sdk';
-import {
-  addChain,
-  switchChain,
-  switchChainAndAddToken,
-} from '../providers/hotfix/wallet-automation-hotfix';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMenu } from '../providers/MenuProvider';
 import { useWallet } from '../providers/WalletProvider';
+import {
+  addChain,
+  switchChain,
+  switchChainAndAddToken,
+} from '../providers/hotfix/wallet-automation-hotfix';
 import { LanguageKey } from '../types/i18n';
 import { EventTrackingTools } from './useUserTracking';
 import { useUserTracking } from './useUserTracking/useUserTracking';
@@ -141,10 +141,12 @@ export function useWidgetConfig({ starterVariant }) {
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
-        maxPriceImpact: 0.4,
+        defaultRouteOptions: {
+          maxPriceImpact: 0.4,
+        },
       },
       insurance: true,
-      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR
+      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
     starterVariant,
