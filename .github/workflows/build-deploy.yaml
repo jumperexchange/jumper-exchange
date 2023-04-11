@@ -3,6 +3,7 @@ name: Build and deploy
 on:
   push:
     branches:
+      - testnet
       - develop
       - staging
       - main

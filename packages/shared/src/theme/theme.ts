@@ -1,5 +1,6 @@
 import { touchRippleClasses } from '@mui/material/ButtonBase';
-import { createTheme, Theme } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { keyframes } from '@mui/system';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';

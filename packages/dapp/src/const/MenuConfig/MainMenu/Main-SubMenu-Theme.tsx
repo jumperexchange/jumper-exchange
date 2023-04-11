@@ -9,6 +9,7 @@ import {
   ThemeModesSupported,
 } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
+import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useSettingsStore } from '../../../stores';
 
@@ -30,6 +31,7 @@ export const useMainSubMenuTheme = () => {
       action: `switch-theme-mode`,
       label: mode,
       data: { theme: `theme-${mode}` },
+      disableTrackingTool: [EventTrackingTools.arcx],
     });
   };
 

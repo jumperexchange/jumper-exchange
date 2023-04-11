@@ -1,15 +1,15 @@
 import { Token } from '@lifi/sdk';
-import {
-  addChain,
-  switchChain,
-  switchChainAndAddToken,
-} from '@lifi/wallet-management';
 import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUserTracking } from '../../hooks/';
+import { EventTrackingTools, useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
+import {
+  addChain,
+  switchChain,
+  switchChainAndAddToken,
+} from '../../providers/hotfix/wallet-automation-hotfix';
 import { LanguageKey } from '../../types';
 
 export function Widget({ starterVariant }) {
@@ -52,6 +52,7 @@ export function Widget({ starterVariant }) {
             action: 'disconnect',
             label: 'widget',
             data: { source: 'widget' },
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
           disconnect();
         },
@@ -65,6 +66,7 @@ export function Widget({ starterVariant }) {
               data: {
                 switchChain: reqChainId,
               },
+              disableTrackingTool: [EventTrackingTools.arcx],
               // transport: "xhr", // optional, beacon/xhr/image
             });
             return account.signer!;
@@ -81,6 +83,7 @@ export function Widget({ starterVariant }) {
               tokenAdded: `${token}`,
               tokenAddChainId: chainId,
             },
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
           await switchChainAndAddToken(chainId, token);
         },
@@ -93,6 +96,7 @@ export function Widget({ starterVariant }) {
               chainIdAdded: `${chainId}`,
             },
             // transport: "xhr", // optional, beacon/xhr/image
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
           return addChain(chainId);
         },
@@ -130,13 +134,12 @@ export function Widget({ starterVariant }) {
       },
       localStorageKeyPrefix: `jumper-${starterVariant}`,
       sdkConfig: {
-        apiUrl,
+        apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
       },
     };
   }, [
     account.signer,
-    apiUrl,
     disconnect,
     i18n.language,
     i18n.languages,

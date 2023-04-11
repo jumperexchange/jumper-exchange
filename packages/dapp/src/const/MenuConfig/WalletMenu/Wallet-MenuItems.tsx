@@ -3,6 +3,7 @@ import { Avatar } from '@mui/material';
 import { MenuContextProps } from '@transferto/shared/src/types';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useCallback, useMemo, useState } from 'react';
+import { EventTrackingTools } from '../../../hooks/useUserTracking';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useWallet } from '../../../providers/WalletProvider';
 import { useMenuStore } from '../../../stores/menu';
@@ -82,6 +83,7 @@ export const useWalletMenuItems = () => {
             action: 'choose-wallet',
             label: `${wallet}`,
             data: { usedWallet: wallet.name },
+            disableTrackingTool: [EventTrackingTools.arcx],
           });
         },
       });

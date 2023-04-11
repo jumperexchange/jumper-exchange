@@ -6,11 +6,13 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import {
+  MenuContextProps,
+  SettingsContextProps,
+} from '@transferto/shared/src/types';
 import { walletDigest } from '@transferto/shared/src/utils/walletDigest';
-import { SettingsContextProps } from '@transferto/shared/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MenuContextProps } from '../../../../../shared/src/types/menu';
 import { SubMenuKeys } from '../../../const';
 import { useChainInfos } from '../../../providers/ChainInfosProvider';
 import { useWallet } from '../../../providers/WalletProvider';
