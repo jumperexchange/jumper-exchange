@@ -1,4 +1,5 @@
 import { Route } from '@lifi/sdk';
+import { trackingActions, trackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks';
 
 import {
@@ -18,8 +19,8 @@ export function WidgetEvents() {
     const onRouteExecutionStarted = async (route: Route) => {
       if (!!route?.id) {
         trackEvent({
-          category: 'widget-event',
-          action: 'onRouteExecutionStarted',
+          category: trackingCategories.widgetEvent,
+          action: trackingActions.onRouteExecutionStarted,
           data: {
             routeId: route.id,
             steps: route.steps,
@@ -40,8 +41,8 @@ export function WidgetEvents() {
           trackTransaction({
             chain: update.route.fromChainId,
             transactionHash: update.process.txHash,
-            category: 'widget-event',
-            action: 'onRouteExecutionUpdated',
+            category: trackingCategories.widgetEvent,
+            action: trackingActions.onRouteExecutionUpdated,
             data: {
               routeId: `${update.route.id}`,
               transactionLink: update.process.txLink,
@@ -56,8 +57,8 @@ export function WidgetEvents() {
     const onRouteExecutionCompleted = async (route: Route) => {
       if (!!route?.id) {
         trackEvent({
-          category: 'widget-event',
-          action: 'onRouteExecutionCompleted',
+          category: trackingCategories.widgetEvent,
+          action: trackingActions.onRouteExecutionCompleted,
           data: {
             routeId: route.id,
             steps: route.steps,
@@ -77,8 +78,8 @@ export function WidgetEvents() {
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
       trackEvent({
-        category: 'widget-event',
-        action: 'onRouteExecutionFailed',
+        category: trackingCategories.widgetEvent,
+        action: trackingActions.onRouteExecutionFailed,
         data: {
           routeId: update?.route?.id,
           transactionHash: update.process.txHash,
