@@ -1,14 +1,11 @@
 import { Alert, AlertTitle, useTheme } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 
-interface TestnetAlertProps {
-  url: string;
-}
-
-export const TestnetAlert = ({ url }: TestnetAlertProps) => {
+export const TestnetAlert = ({}) => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
   const i18Path = 'alert.';
+  const prodUrl: string = 'https://jumper.exchange';
 
   return (
     <Alert
@@ -28,8 +25,8 @@ export const TestnetAlert = ({ url }: TestnetAlertProps) => {
       <AlertTitle>{translate(`${i18Path}info`)}</AlertTitle>
       <Trans
         i18nKey={`${i18Path}testnet`}
-        values={{ url }}
-        components={[<a href={url}>##placeholder-for-jumper-url##</a>]}
+        values={{ url: prodUrl }}
+        components={[<a href={prodUrl}>##placeholder-for-jumper-url##</a>]}
       />
     </Alert>
   );
