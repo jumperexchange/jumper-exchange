@@ -5,7 +5,7 @@ export const TestnetAlert = ({}) => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
   const i18Path = 'alert.';
-  const prodUrl: string = 'https://jumper.exchange';
+  const prodUrl = 'https://jumper.exchange';
 
   return (
     <Alert
