@@ -9,6 +9,7 @@ import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
+import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
 export const useMainSubMenuTheme = () => {
   const { t: translate } = useTranslation();
@@ -19,9 +20,9 @@ export const useMainSubMenuTheme = () => {
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     settings.onChangeMode(mode);
     trackEvent({
-      category: 'menu',
-      action: `switch-theme-mode`,
-      label: mode,
+      category: TrackingCategories.THEME_MENU,
+      action: TrackingActions.SWITCH_THEME_MODE,
+      label: `theme-${mode}`,
       data: { theme: `theme-${mode}` },
       disableTrackingTool: [EventTrackingTools.arcx],
     });
