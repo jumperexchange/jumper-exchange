@@ -4,7 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
-import { trackingActions, trackingCategories } from '../../const';
+import { TrackingActions, TrackingCategories } from '../../const';
 import { EventTrackingTools, useUserTracking } from '../../hooks';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
@@ -38,8 +38,8 @@ const NavbarTabsContainer = () => {
         onClick={() => {
           window.history.replaceState(null, document.title, '/swap');
           trackEvent({
-            category: trackingCategories.navigation,
-            action: trackingActions.switchTab,
+            category: TrackingCategories.NAVIGATION,
+            action: TrackingActions.SWITCH_TAB,
             label: 'swap',
             data: { tab: 'swap' },
             disableTrackingTool: [EventTrackingTools.arcx],
@@ -63,8 +63,8 @@ const NavbarTabsContainer = () => {
         onClick={() => {
           window.history.replaceState(null, document.title, '/gas');
           trackEvent({
-            category: trackingCategories.navigation,
-            action: trackingActions.switchTab,
+            category: TrackingCategories.NAVIGATION,
+            action: TrackingActions.SWITCH_TAB,
             label: 'gas',
             data: { tab: 'gas' },
             disableTrackingTool: [EventTrackingTools.arcx],

@@ -3,7 +3,7 @@ import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { trackingActions, trackingCategories } from '../const';
+import { TrackingActions, TrackingCategories } from '../const';
 import { useMenu } from '../providers/MenuProvider';
 import { useWallet } from '../providers/WalletProvider';
 import {
@@ -54,8 +54,8 @@ export function useWidgetConfig({ starterVariant }) {
         },
         disconnect: async () => {
           trackEvent({
-            category: trackingCategories.wallet,
-            action: trackingActions.disconnect,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.DISCONNECT,
             disableTrackingTool: [EventTrackingTools.arcx],
           });
           disconnect();
@@ -64,8 +64,8 @@ export function useWidgetConfig({ starterVariant }) {
           await switchChain(reqChainId);
           if (account.signer) {
             trackEvent({
-              category: trackingCategories.wallet,
-              action: trackingActions.switchChain,
+              category: TrackingCategories.WALLET,
+              action: TrackingActions.SWITCH_CHAIN,
               label: `${reqChainId}`,
               data: {
                 switchChain: reqChainId,
@@ -80,8 +80,8 @@ export function useWidgetConfig({ starterVariant }) {
         },
         addToken: async (token: Token, chainId: number) => {
           trackEvent({
-            category: trackingCategories.wallet,
-            action: trackingActions.addToken,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.ADD_TOKEN,
             label: `addToken-${token.name}`,
             data: {
               tokenAdded: `${token.name}`,
@@ -93,8 +93,8 @@ export function useWidgetConfig({ starterVariant }) {
         },
         addChain: async (chainId: number) => {
           trackEvent({
-            category: trackingCategories.wallet,
-            action: trackingActions.addChain,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.ADD_CHAIN,
             label: `addChain-${chainId}`,
             data: {
               chainIdAdded: `${chainId}`,

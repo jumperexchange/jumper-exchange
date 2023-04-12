@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary';
 import { Dispatch, SetStateAction } from 'react';
-import { trackingActions, trackingCategories } from '../../const';
+import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/useUserTracking/useUserTracking';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
@@ -46,8 +46,8 @@ const MenuItemComponent = ({
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
         !!triggerSubMenu &&
           trackEvent({
-            category: trackingCategories.menu,
-            action: trackingActions.openSubmenu,
+            category: TrackingCategories.MENU,
+            action: TrackingActions.OPEN_SUBMENU,
             label: triggerSubMenu,
             data: { subMenu: triggerSubMenu },
           });

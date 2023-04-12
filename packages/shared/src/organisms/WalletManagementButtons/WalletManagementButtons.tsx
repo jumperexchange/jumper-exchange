@@ -4,8 +4,8 @@ import { Avatar, Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
 import React from 'react';
 import {
-  trackingActions,
-  trackingCategories,
+  TrackingActions,
+  TrackingCategories,
 } from '../../../../dapp/src/const';
 import { EventTrackingTools } from '../../../../dapp/src/hooks';
 import { useUserTracking } from '../../../../dapp/src/hooks/useUserTracking/useUserTracking';
@@ -40,8 +40,8 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const handleWalletMenuClick = () => {
     !props.menu.openNavbarConnectedMenu &&
       trackEvent({
-        category: trackingCategories.menu,
-        action: trackingActions.openConnectedMenu,
+        category: TrackingCategories.MENU,
+        action: TrackingActions.OPEN_CONNECTED_MENU,
         disableTrackingTool: [EventTrackingTools.arcx],
       });
     props.menu.onOpenNavbarConnectedMenu(!props.menu.openNavbarConnectedMenu);

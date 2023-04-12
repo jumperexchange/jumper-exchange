@@ -11,8 +11,8 @@ import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import {
   SubMenuKeys,
-  trackingActions,
-  trackingCategories,
+  TrackingActions,
+  TrackingCategories,
 } from '../../../const';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
@@ -130,8 +130,8 @@ export const useMainMenuItems = () => {
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: trackingCategories.supportModal,
-          action: trackingActions.openSupportModal,
+          category: TrackingCategories.SUPPORT_MODAL,
+          action: TrackingActions.OPEN_SUPPORT_MODAL,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
         menu.toggleSupportModal(true);
