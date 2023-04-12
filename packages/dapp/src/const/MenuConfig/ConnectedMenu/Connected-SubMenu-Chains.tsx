@@ -6,25 +6,25 @@ import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
 
 const ConnectedSubMenuChains = () => {
-  const { account, usedWallet, disconnect, switchChain } = useWallet();
-  const { chains, isSuccess } = useChainInfos();
+  const { account, switchChain } = useWallet();
+  const { chains } = useChainInfos();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    [chains, account.chainId],
   );
 
-  let availableChains = [...chains];
+  let availableChains = chains;
 
   if ((import.meta as any).env.VITE_LIFI_SHOW_TESTNET) {
     const testnetChains = chains.filter(
       (el) => !el.mainnet || el.id === account.chainId,
     );
-    availableChains = [...testnetChains];
+    availableChains = testnetChains;
   }
 
   const _ConnectedSubMenuChains: MenuListItem[] = [];
 
-  availableChains.map((el) => {
+  availableChains.forEach((el) => {
     _ConnectedSubMenuChains.push({
       label: `${el.name}`,
       onClick: () => {

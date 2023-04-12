@@ -1,10 +1,8 @@
 import { ChainsResponse } from '@lifi/sdk';
 import { ExtendedChain } from '@lifi/types';
-
 import axios from 'axios';
 import { createContext, PropsWithChildren, useContext } from 'react';
 import { useQuery } from 'react-query';
-import { useWallet } from './WalletProvider';
 
 export interface ChainInfosContextProps {
   chains: ExtendedChain[];

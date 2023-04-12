@@ -28,10 +28,10 @@ const ConnectedMenuItems = () => {
     return walletDigest(account);
   }, [account]);
 
-  const { chains, isSuccess } = useChainInfos();
+  const { chains } = useChainInfos();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    [chains, account.chainId],
   );
 
   const walletSource: TWallets = wallets;
@@ -44,7 +44,7 @@ const ConnectedMenuItems = () => {
       );
       return walletSource[walletKey]?.icon || '';
     }
-  }, [account]);
+  }, [usedWallet, walletSource]);
 
   const _ConnectedMenuItems: MenuListItem[] = [
     {
