@@ -4,6 +4,7 @@ import { TestnetAlert } from '@transferto/shared/src';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga4';
+import { ProdUrl } from '../../const';
 import { LinkMap } from '../../types/';
 import { Widget } from '../Widget';
 import { WidgetContainer } from './DualWidget.style';
@@ -61,9 +62,7 @@ export function DualWidget() {
         overflowX: 'hidden',
       }}
     >
-      {import.meta.env.MODE === 'testnet' && (
-        <TestnetAlert url={import.meta.env.VITE_JUMPER_URL_PROD} />
-      )}
+      {import.meta.env.MODE === 'testnet' && <TestnetAlert url={ProdUrl} />}
       <WidgetContainer isActive={_starterVariant === 'expandable'}>
         <Widget starterVariant={'expandable'} />
       </WidgetContainer>
