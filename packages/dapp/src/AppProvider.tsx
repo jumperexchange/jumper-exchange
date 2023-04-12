@@ -22,7 +22,9 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
             <MenuProvider>
               <ThemeProvider>
                 <ArcxAnalyticsProvider
-                  apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
+                  apiKey={`${
+                    (import.meta as ImportMeta).env.VITE_ARCX_API_KEY
+                  }`}
                   config={{
                     trackWalletConnections: false,
                   }}

@@ -6,7 +6,7 @@ export function Widget({ starterVariant }) {
   return (
     <LiFiWidget
       config={widgetConfig}
-      integrator={import.meta.env.VITE_WIDGET_INTEGRATOR_STRING}
+      integrator={(import.meta as ImportMeta).env.VITE_WIDGET_INTEGRATOR_STRING}
     />
   );
 }

@@ -1,15 +1,15 @@
 import { Token } from '@lifi/sdk';
-import {
-  addChain,
-  switchChain,
-  switchChainAndAddToken,
-} from '../providers/hotfix/wallet-automation-hotfix';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMenu } from '../providers/MenuProvider';
 import { useWallet } from '../providers/WalletProvider';
+import {
+  addChain,
+  switchChain,
+  switchChainAndAddToken,
+} from '../providers/hotfix/wallet-automation-hotfix';
 import { LanguageKey } from '../types/i18n';
 import { EventTrackingTools } from './useUserTracking';
 import { useUserTracking } from './useUserTracking/useUserTracking';
@@ -25,9 +25,9 @@ export function useWidgetConfig({ starterVariant }) {
   const widgetConfig: WidgetConfig = useMemo(() => {
     let rpcs = {};
     try {
-      rpcs = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
+      rpcs = JSON.parse((import.meta as ImportMeta).env.VITE_CUSTOM_RPCS);
     } catch (e) {
-      if (import.meta.env.DEV) {
+      if ((import.meta as ImportMeta).env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
@@ -139,7 +139,7 @@ export function useWidgetConfig({ starterVariant }) {
       },
       localStorageKeyPrefix: `jumper-${starterVariant}`,
       sdkConfig: {
-        apiUrl: import.meta.env.VITE_LIFI_API_URL,
+        apiUrl: (import.meta as ImportMeta).env.VITE_LIFI_API_URL,
         rpcs,
       },
     };

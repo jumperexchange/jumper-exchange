@@ -26,7 +26,7 @@ export const ChainInfosProvider: React.FC<PropsWithChildren<{}>> = ({
   const { data, isSuccess } = useQuery(
     ['chainStats'],
     async () => {
-      const apiUrl = (import.meta as any).env.VITE_LIFI_API_URL;
+      const apiUrl = (import.meta as ImportMeta).env.VITE_LIFI_API_URL;
       const result = await axios<ChainsResponse>({
         method: 'GET',
         url: `${apiUrl}chains`,
