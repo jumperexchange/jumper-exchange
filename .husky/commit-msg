@@ -1,10 +1,23 @@
 #!/bin/sh
-if ! head -1 "$1" | grep -qE "^(Merge|feat|fix|ci|chore|docs|test|style|refactor|perf|build|revert|i18n)(\(.+?\))?: .{1,}$"; then
-    echo "Aborting commit. Your commit message is invalid." >&2
-    echo "It should start with: Merge|feat|fix|ci|chore|docs|test|style|refactor|perf|build|revert|i18n" >&2
+
+commit_msg_file=$1
+commit_msg=`cat $commit_msg_file`
+
+if [ -z "$commit_msg" ]; then
+    echo "Aborting commit. Your commit message is empty." >&2
     exit 1
 fi
-if ! head -1 "$1" | grep -qE "^.{1,88}$"; then
+
+first_line=`echo "$commit_msg" | head -1`
+
+if ! echo "$first_line" | grep -qE "^(feat|fix|ci|chore|docs|test|style|refactor|perf|build|revert|i18n)(\(.+?\))?: .{1,}$" && \
+   ! echo "$first_line" | grep -qE "^Merge (branch|pull request) '.+' into .+$"; then
+    echo "Aborting commit. Your commit message is invalid." >&2
+    echo "It should start with: feat|fix|ci|chore|docs|test|style|refactor|perf|build|revert|i18n, or be a merge commit." >&2
+    exit 1
+fi
+
+if ! echo "$first_line" | grep -qE "^.{1,88}$"; then
     echo "Aborting commit. Your commit message is too long." >&2
     exit 1
 fi
