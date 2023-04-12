@@ -61,7 +61,9 @@ export function DualWidget() {
         overflowX: 'hidden',
       }}
     >
-      {import.meta.env.MODE === 'testnet' && <TestnetAlert />}
+      {import.meta.env.MODE === 'testnet' && (
+        <TestnetAlert url={import.meta.env.VITE_JUMPER_URL_PROD} />
+      )}
       <WidgetContainer isActive={_starterVariant === 'expandable'}>
         <Widget starterVariant={'expandable'} />
       </WidgetContainer>
