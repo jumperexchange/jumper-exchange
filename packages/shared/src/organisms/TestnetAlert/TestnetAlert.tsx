@@ -21,6 +21,7 @@ export const TestnetAlert = ({ url }: TestnetAlertProps) => {
           fontSize: 'larger',
           marginLeft: '4px',
           transform: 'translateY("2px")',
+          color: theme.palette.mode === 'dark' && theme.palette.white.main,
         },
       }}
     >
