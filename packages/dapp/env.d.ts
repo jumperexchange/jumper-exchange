@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_HOTJAR_SNIPPET_VERSION: number;
   readonly VITE_SENTRY_DSN: string;
   readonly VITE_CUSTOM_RPCS: string;
+  readonly VITE_WIDGET_INTEGRATOR_STRING: string;
 }
 
 interface ImportMeta {
