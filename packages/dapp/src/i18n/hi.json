@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "links": {
+      "swap": "स्वैप करें",
+      "dashboard": "डैशबोर्ड",
+      "refuel": "गैस"
+    },
+    "connectWallet": "वॉलेट कनेक्ट करें ",
+    "chooseWallet": "वॉलेट चुनें",
+    "navbarMenu": {
+      "theme": "विषय",
+      "developers": "डेवलपर",
+      "aboutLIFI": "लिफी के बारे में",
+      "support": "सहायता"
+    },
+    "walletMenu": {
+      "disconnect": "डिस्कनेक्ट करें",
+      "chains": "चेन",
+      "switchChain": "चेन बदले"
+    },
+    "language": {
+      "key": "भाषा",
+      "value": "अंग्रेज़ी"
+    },
+    "themes": {
+      "light": "रोशनी",
+      "dark": "अँधेरा",
+      "auto": "स्वतः"
+    },
+    "developers": {
+      "github": "गिटहब",
+      "documentation": "प्रलेखन",
+      "showcases": "शोकेस"
+    },
+    "showcases": {
+      "ukraineDonation": "यूक्रेन का समर्थन करें",
+      "klimaStaking": "क्रॉस चेन क्लिमा स्टेकिंग",
+      "carbonOffset": "क्रॉस चेन कार्बन ऑफसेट"
+    }
+  }
+}
