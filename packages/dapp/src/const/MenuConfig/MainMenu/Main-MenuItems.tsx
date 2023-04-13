@@ -9,7 +9,11 @@ import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys } from '../../../const';
+import {
+  SubMenuKeys,
+  TrackingActions,
+  TrackingCategories,
+} from '../../../const';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
@@ -126,8 +130,8 @@ export const useMainMenuItems = () => {
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: 'menu',
-          action: 'open-support-modal',
+          category: TrackingCategories.SUPPORT_MODAL,
+          action: TrackingActions.OPEN_SUPPORT_MODAL,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
         menu.toggleSupportModal(true);

@@ -4,6 +4,10 @@ import { Avatar, Typography, useTheme } from '@mui/material';
 import type { TWallets } from '@transferto/dapp/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
+import {
+  TrackingActions,
+  TrackingCategories,
+} from '../../../../dapp/src/const';
 import { EventTrackingTools } from '../../../../dapp/src/hooks';
 import { useUserTracking } from '../../../../dapp/src/hooks/useUserTracking/useUserTracking';
 import { ButtonPrimary } from '../../atoms/ButtonPrimary';
@@ -59,8 +63,8 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const handleConnectedMenuClick = () => {
     !props.menu.openNavbarWalletMenu &&
       trackEvent({
-        category: 'menu',
-        action: 'open-connected-menu',
+        category: TrackingCategories.MENU,
+        action: TrackingActions.OPEN_CONNECTED_MENU,
         disableTrackingTool: [EventTrackingTools.arcx],
       });
     props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);

@@ -7,6 +7,7 @@ import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking'
 import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
+import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
 export const useWalletSelectMenuItems = () => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
@@ -40,7 +41,7 @@ export const useWalletSelectMenuItems = () => {
       try {
       } catch (e) {}
     },
-    [connect, ethereum, menu, settings],
+    [connect, ethereum, menu, settings, tally],
   );
 
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
@@ -63,9 +64,9 @@ export const useWalletSelectMenuItems = () => {
         onClick: () => {
           login(wallet);
           trackEvent({
-            category: 'wallet',
-            action: 'choose-wallet',
-            label: `${wallet}`,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.CHOOSE_WALLET,
+            label: `choose-wallet-${wallet}`,
             data: { usedWallet: wallet.name },
             disableTrackingTool: [EventTrackingTools.arcx],
           });
