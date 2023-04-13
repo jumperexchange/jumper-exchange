@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary';
+import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 import { Dispatch, SetStateAction } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/useUserTracking/useUserTracking';
