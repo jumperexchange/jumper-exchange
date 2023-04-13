@@ -61,7 +61,6 @@ export function DualWidget() {
       sx={{
         top: 0,
         display: 'flex',
-        flexDirection: 'column',
         overflowX: 'hidden',
       }}
     >

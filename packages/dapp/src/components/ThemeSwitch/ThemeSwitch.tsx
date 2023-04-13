@@ -4,7 +4,14 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import Tooltip from '@mui/material/Tooltip';
 import type { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
-import { EventTrackingTools, useUserTracking } from '../../hooks';
+import {
+  TrackingActions,
+  TrackingCategories,
+} from '../../../../dapp/src/const';
+import {
+  EventTrackingTools,
+  useUserTracking,
+} from '../../../../dapp/src/hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
@@ -23,9 +30,9 @@ export const ThemeSwitch = () => {
   const handleThemeSwitch = () => {
     onChangeMode(isDarkMode ? 'light' : 'dark');
     trackEvent({
-      category: 'theme-switch',
-      action: `click-theme-switch`,
-      label: isDarkMode ? 'light' : 'dark',
+      category: TrackingCategories.THEME_SWITCH,
+      action: TrackingActions.CLICK_THEME_SWITCH,
+      label: `themeSwitch-${isDarkMode ? 'light' : 'dark'}`,
       data: { themeSwitch: `theme-${isDarkMode ? 'light' : 'dark'}` },
       disableTrackingTool: [EventTrackingTools.arcx],
     });

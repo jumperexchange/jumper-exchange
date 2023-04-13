@@ -3,6 +3,7 @@ import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TrackingActions, TrackingCategories } from '../../const';
 import { EventTrackingTools, useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
 import {
@@ -20,15 +21,15 @@ export function Widget({ starterVariant }) {
   const { trackEvent } = useUserTracking();
 
   // load environment config
-  const env = import.meta.env;
-  const apiUrl = env.VITE_LIFI_API_URL;
-  let rpcs = {};
-  try {
-    rpcs = JSON.parse(env.VITE_CUSTOM_RPCS);
-  } catch (e) {
-    console.error('Parsing custom rpcs failed', e);
-  }
   const widgetConfig: WidgetConfig = useMemo(() => {
+    let rpcs = {};
+    try {
+      rpcs = JSON.parse((import.meta as ImportMeta).env.VITE_CUSTOM_RPCS);
+    } catch (e) {
+      if ((import.meta as ImportMeta).env.DEV) {
+        console.warn('Parsing custom rpcs failed', e);
+      }
+    }
     return {
       variant: starterVariant ? starterVariant : 'expandable',
       walletManagement: {
@@ -48,10 +49,8 @@ export function Widget({ starterVariant }) {
         },
         disconnect: async () => {
           trackEvent({
-            category: 'wallet',
-            action: 'disconnect',
-            label: 'widget',
-            data: { source: 'widget' },
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.DISCONNECT,
             disableTrackingTool: [EventTrackingTools.arcx],
           });
           disconnect();
@@ -60,8 +59,8 @@ export function Widget({ starterVariant }) {
           await switchChain(reqChainId);
           if (account.signer) {
             trackEvent({
-              category: 'wallet',
-              action: 'switch-chain',
+              category: TrackingCategories.WALLET,
+              action: TrackingActions.SWITCH_CHAIN,
               label: `${reqChainId}`,
               data: {
                 switchChain: reqChainId,
@@ -76,11 +75,11 @@ export function Widget({ starterVariant }) {
         },
         addToken: async (token: Token, chainId: number) => {
           trackEvent({
-            category: 'wallet',
-            action: 'add-token',
-            label: `${token}`,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.ADD_TOKEN,
+            label: `addToken-${token.name}`,
             data: {
-              tokenAdded: `${token}`,
+              tokenAdded: `${token.name}`,
               tokenAddChainId: chainId,
             },
             disableTrackingTool: [EventTrackingTools.arcx],
@@ -89,9 +88,9 @@ export function Widget({ starterVariant }) {
         },
         addChain: async (chainId: number) => {
           trackEvent({
-            category: 'wallet',
-            action: 'add-chain',
-            label: `${chainId}`,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.ADD_CHAIN,
+            label: `addChain-${chainId}`,
             data: {
               chainIdAdded: `${chainId}`,
             },
@@ -136,7 +135,12 @@ export function Widget({ starterVariant }) {
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
+        defaultRouteOptions: {
+          maxPriceImpact: 0.4,
+        },
       },
+      insurance: true,
+      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
     account.signer,
@@ -144,7 +148,6 @@ export function Widget({ starterVariant }) {
     i18n.language,
     i18n.languages,
     isDarkMode,
-    rpcs,
     starterVariant,
     theme.palette.accent1.main,
     theme.palette.grey,
@@ -152,5 +155,12 @@ export function Widget({ starterVariant }) {
     theme.palette.surface2.main,
     trackEvent,
   ]);
-  return <LiFiWidget config={widgetConfig} />;
+  return (
+    <LiFiWidget
+      integrator={
+        (import.meta as ImportMeta).env.VITE_WIDGET_INTEGRATOR as string
+      }
+      config={widgetConfig}
+    />
+  );
 }

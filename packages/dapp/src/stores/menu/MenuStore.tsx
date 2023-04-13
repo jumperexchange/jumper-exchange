@@ -21,7 +21,7 @@ export const defaultMenu: defaultMenuType = {
   openMainNavbarMenu: false,
   openNavbarWalletMenu: false,
   openNavbarConnectedMenu: false,
-  openNavbarSubMenu: SubMenuKeys.none,
+  openNavbarSubMenu: 'none',
   openSupportModal: false,
   anchorEl: null,
 };

@@ -9,6 +9,7 @@ export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<WidgetContainerProps>(({ theme, isActive }) => ({
   display: isActive ? 'inherit' : 'none',
+  flex: 1,
   paddingTop: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     paddingTop: theme.spacing(2),

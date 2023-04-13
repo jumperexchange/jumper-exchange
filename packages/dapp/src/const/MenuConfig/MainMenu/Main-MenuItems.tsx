@@ -10,7 +10,11 @@ import { MenuContextProps } from '@transferto/shared/src/types';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys } from '../../../const';
+import {
+  SubMenuKeys,
+  TrackingActions,
+  TrackingCategories,
+} from '../../../const';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
@@ -133,8 +137,8 @@ export const useMainMenuItems = () => {
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: 'menu',
-          action: 'open-support-modal',
+          category: TrackingCategories.SUPPORT_MODAL,
+          action: TrackingActions.OPEN_SUPPORT_MODAL,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
         toggleSupportModal(true);

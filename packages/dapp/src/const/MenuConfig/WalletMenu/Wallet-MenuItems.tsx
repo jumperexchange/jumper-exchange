@@ -9,6 +9,7 @@ import { useWallet } from '../../../providers/WalletProvider';
 import { useMenuStore } from '../../../stores/menu';
 import { useSettingsStore } from '../../../stores/settings/SettingsStore';
 import { MenuListItem } from '../../../types';
+import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
 export const useWalletMenuItems = () => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
@@ -79,9 +80,9 @@ export const useWalletMenuItems = () => {
         onClick: () => {
           login(wallet);
           trackEvent({
-            category: 'wallet',
-            action: 'choose-wallet',
-            label: `${wallet}`,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.CHOOSE_WALLET,
+            label: `choose-wallet-${wallet}`,
             data: { usedWallet: wallet.name },
             disableTrackingTool: [EventTrackingTools.arcx],
           });

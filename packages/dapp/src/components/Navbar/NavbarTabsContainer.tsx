@@ -4,6 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
+import { TrackingActions, TrackingCategories } from '../../const';
 import { EventTrackingTools, useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
@@ -42,8 +43,8 @@ const NavbarTabsContainer = () => {
         onClick={() => {
           window.history.replaceState(null, document.title, '/swap');
           trackEvent({
-            category: 'navigation',
-            action: 'switch-tab',
+            category: TrackingCategories.NAVIGATION,
+            action: TrackingActions.SWITCH_TAB,
             label: 'swap',
             data: { tab: 'swap' },
             disableTrackingTool: [EventTrackingTools.arcx],
@@ -67,8 +68,8 @@ const NavbarTabsContainer = () => {
         onClick={() => {
           window.history.replaceState(null, document.title, '/gas');
           trackEvent({
-            category: 'navigation',
-            action: 'switch-tab',
+            category: TrackingCategories.NAVIGATION,
+            action: TrackingActions.SWITCH_TAB,
             label: 'gas',
             data: { tab: 'gas' },
             disableTrackingTool: [EventTrackingTools.arcx],
