@@ -3031,9 +3031,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.0.0-alpha.3":
-  version: 2.0.0-alpha.3
-  resolution: "@lifi/widget@npm:2.0.0-alpha.3"
+"@lifi/widget@npm:^2.0.0-alpha.4":
+  version: 2.0.0-alpha.4
+  resolution: "@lifi/widget@npm:2.0.0-alpha.4"
   dependencies:
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
@@ -3069,7 +3069,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 7cfdbefb5a0284f2c5e7ab0a4ba786dc308c75c2593f44a5027e09dd2c0f9a9810201b3c4c8d1dcb38f5972a8c536b4d7780530c844b23c9ae0249f419f42bd3
+  checksum: 33e5f2b712467364d5b7123f53eec9c8667241ecd3e1720d496508c7d1eb6be0b223edb9f2a7760a20056ebe27e7f54cc6a35e1458a71e06da6beed6cf2d6008
   languageName: node
   linkType: hard
 
@@ -5587,7 +5587,7 @@ __metadata:
     "@lerna/run": ^6.6.1
     "@lifi/sdk": ^2.0.0-beta.8
     "@lifi/wallet-management": 1.2.11
-    "@lifi/widget": ^2.0.0-alpha.3
+    "@lifi/widget": ^2.0.0-alpha.4
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.12.0
     "@sentry/integrations": ^7.47.0
