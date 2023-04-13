@@ -140,7 +140,12 @@ export function useWidgetConfig({ starterVariant }) {
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
+        defaultRouteOptions: {
+          maxPriceImpact: 0.4,
+        },
       },
+      insurance: true,
+      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
     starterVariant,
