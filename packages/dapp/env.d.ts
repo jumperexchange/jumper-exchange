@@ -1,7 +1,11 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly DEV: any;
+  readonly BASE_URL: string;
+  readonly DEV: boolean;
+  readonly MODE: 'development' | 'testnet' | 'production' | 'staging';
+  readonly PROD: boolean;
+  readonly SSR: boolean;
   readonly VITE_ARCX_API_KEY: string;
   readonly VITE_GOOGLE_ANALYTICS_TRACKING_ID: string;
   readonly VITE_HOTJAR_ID: number;
