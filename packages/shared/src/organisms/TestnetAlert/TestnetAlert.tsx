@@ -1,33 +1,41 @@
-import { Alert, AlertTitle, useTheme } from '@mui/material';
-import { Trans, useTranslation } from 'react-i18next';
-
+import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import { Typography, useTheme } from '@mui/material';
+import {
+  WarningMessageCard,
+  WarningMessageCardTitle,
+} from '@transferto/shared/src/organisms';
+import { useTranslation } from 'react-i18next';
+import { ButtonTransparent } from '../../atoms';
+import { openInNewTab } from '../../utils';
 export const TestnetAlert = ({}) => {
-  const theme = useTheme();
   const { t: translate } = useTranslation();
   const i18Path = 'alert.';
   const prodUrl = 'https://jumper.exchange';
+  const theme = useTheme();
 
   return (
-    <Alert
-      severity="info"
-      sx={{
-        margin: `${theme.spacing(4)} auto ${theme.spacing(2)}`,
-        width: '75%',
-        minWidth: 392,
-        '& a': {
-          fontSize: 'larger',
-          marginLeft: '4px',
-          transform: 'translateY("2px")',
-          color: theme.palette.mode === 'dark' && theme.palette.white.main,
-        },
-      }}
-    >
-      <AlertTitle>{translate(`${i18Path}info`)}</AlertTitle>
-      <Trans
-        i18nKey={`${i18Path}testnet`}
-        values={{ url: prodUrl }}
-        components={[<a href={prodUrl}>##placeholder-for-jumper-url##</a>]}
-      />
-    </Alert>
+    <WarningMessageCard>
+      <WarningMessageCardTitle display="flex" alignItems="center" px={2} pt={2}>
+        <WarningRoundedIcon
+          sx={{
+            marginRight: 1,
+          }}
+        />
+        <Typography variant={'lifiHeaderXSmall'}>
+          {translate(`${i18Path}info`)}
+        </Typography>
+      </WarningMessageCardTitle>
+      <Typography variant={'lifiBodySmall'} pt={theme.spacing(3)}>
+        {translate(`${i18Path}testnet`)}
+      </Typography>
+      <ButtonTransparent
+        onClick={() => {
+          openInNewTab(prodUrl);
+        }}
+        style={{ marginTop: theme.spacing(3), width: '100%' }}
+      >
+        {translate(`${i18Path}switchToMainnet`)}
+      </ButtonTransparent>
+    </WarningMessageCard>
   );
 };
