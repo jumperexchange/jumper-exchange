@@ -1,11 +1,10 @@
 import { Token } from '@lifi/sdk';
+import { useLiFiWalletManagement, Wallet } from '@lifi/wallet-management';
 import {
   addChain as walletAddChain,
   switchChain as walletSwitchChain,
   switchChainAndAddToken,
-  useLiFiWalletManagement,
-  Wallet,
-} from '@lifi/wallet-management';
+} from './hotfix/wallet-automation-hotfix';
 import { Signer } from 'ethers';
 import React, {
   createContext,
