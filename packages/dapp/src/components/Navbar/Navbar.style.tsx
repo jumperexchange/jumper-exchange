@@ -123,8 +123,11 @@ export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
     transform: 'unset !important',
   },
 }));
+export interface NavbarMenuListProps extends Omit<MenuListProps, 'component'> {
+  component?: string;
+}
 
-export const NavbarMenuList = styled(MenuList)<MenuListProps>(() => ({
+export const NavbarMenuList = styled(MenuList)<NavbarMenuListProps>(() => ({
   padding: 0,
 }));
 
