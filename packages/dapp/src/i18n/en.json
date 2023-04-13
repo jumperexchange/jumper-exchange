@@ -40,6 +40,7 @@
   },
   "alert": {
     "info": "Info",
-    "testnet": "You are currently on our testnet-only view. Any transactions or actions you perform here will not be reflected on the mainnet. To access mainnets, please navigate to <0>{{url}}</0>"
+    "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
+    "switchToMainnet": "Switch to Mainnet"
   }
 }
