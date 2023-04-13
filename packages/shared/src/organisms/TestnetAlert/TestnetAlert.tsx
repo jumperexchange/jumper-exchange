@@ -14,7 +14,7 @@ export const TestnetAlert = ({}) => {
   const theme = useTheme();
 
   return (
-    <WarningMessageCard>
+    <WarningMessageCard mt={theme.spacing(8)}>
       <WarningMessageCardTitle display="flex" alignItems="center" px={2} pt={2}>
         <WarningRoundedIcon
           sx={{
