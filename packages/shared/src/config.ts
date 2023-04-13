@@ -54,8 +54,8 @@ interface defaultMenuType {
 
 export const defaultMenu: defaultMenuType = {
   openMainNavbarMenu: false,
-  openNavbarWalletSelectMenu: false,
   openNavbarChainsMenu: false,
+  openNavbarWalletMenu: false,
   openNavbarWalletSelectMenu: false,
   openNavbarSubMenu: 'none',
   openSupportModal: false,
