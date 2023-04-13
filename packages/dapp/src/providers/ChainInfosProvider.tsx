@@ -29,7 +29,7 @@ export const ChainInfosProvider: React.FC<PropsWithChildren<{}>> = ({
       const apiUrl = (import.meta as ImportMeta).env.VITE_LIFI_API_URL;
       const result = await axios<ChainsResponse>({
         method: 'GET',
-        url: `${apiUrl}chains`,
+        url: `${apiUrl}/chains`,
       });
       return result.data;
     },

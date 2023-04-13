@@ -5,8 +5,8 @@ export function Widget({ starterVariant }) {
   const widgetConfig = useWidgetConfig((starterVariant = { starterVariant }));
   return (
     <LiFiWidget
+      integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
       config={widgetConfig}
-      integrator={(import.meta as ImportMeta).env.VITE_WIDGET_INTEGRATOR_STRING}
     />
   );
 }
