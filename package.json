@@ -33,8 +33,5 @@
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "yarn@3.5.0",
-  "dependencies": {
-    "zustand": "^4.3.7"
-  }
+  "packageManager": "yarn@3.5.0"
 }
