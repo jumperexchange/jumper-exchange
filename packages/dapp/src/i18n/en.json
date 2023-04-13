@@ -39,7 +39,7 @@
     }
   },
   "alert": {
-    "info": "Info",
+    "info": "You’re using Testnet",
     "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
     "switchToMainnet": "Switch to Mainnet"
   }
