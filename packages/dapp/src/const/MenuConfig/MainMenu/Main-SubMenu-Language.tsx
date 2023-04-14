@@ -11,8 +11,8 @@ export const useMainSubMenuLanguage = () => {
     i18n.changeLanguage(newLanguage);
     settings.onChangeLanguage(newLanguage);
     trackEvent({
-      category: TrackingCategories.LANGUAGE,
-      action: TrackingActions.SWITCH_LANGUAGE,
+      category: TrackingCategories.Language,
+      action: TrackingActions.SwitchLanguage,
       label: `language-${newLanguage}`,
       data: { language: `language-${newLanguage}` },
       disableTrackingTool: [EventTrackingTools.arcx],

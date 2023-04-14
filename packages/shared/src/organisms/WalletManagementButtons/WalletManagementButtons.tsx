@@ -40,8 +40,8 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const handleWalletMenuClick = () => {
     !props.menu.openNavbarConnectedMenu &&
       trackEvent({
-        category: TrackingCategories.MENU,
-        action: TrackingActions.OPEN_CONNECTED_MENU,
+        category: TrackingCategories.Menu,
+        action: TrackingActions.OpenConnectedMenu,
         disableTrackingTool: [EventTrackingTools.arcx],
       });
     props.menu.onOpenNavbarConnectedMenu(!props.menu.openNavbarConnectedMenu);
