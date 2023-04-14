@@ -23,8 +23,8 @@ export const ThemeSwitch = () => {
 
   const handleThemeSwitch = () => {
     trackEvent({
-      category: TrackingCategories.ThemeSwitch,
-      action: TrackingActions.ClickThemeSwitch,
+      category: TrackingCategories.THEME_SWITCH,
+      action: TrackingActions.CLICK_THEME_SWITCH,
       label: `themeSwitch-${isDarkMode ? 'light' : 'dark'}`,
       data: { themeSwitch: `theme-${isDarkMode ? 'light' : 'dark'}` },
       disableTrackingTool: [EventTrackingTools.arcx],

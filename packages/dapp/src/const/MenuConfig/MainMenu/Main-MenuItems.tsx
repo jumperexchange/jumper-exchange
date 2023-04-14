@@ -130,8 +130,8 @@ export const useMainMenuItems = () => {
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.SupportModal,
-          action: TrackingActions.OpenSupportModal,
+          category: TrackingCategories.SUPPORT_MODAL,
+          action: TrackingActions.OPEN_SUPPORT_MODAL,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
         menu.toggleSupportModal(true);

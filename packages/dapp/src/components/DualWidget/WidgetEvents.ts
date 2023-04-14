@@ -19,8 +19,8 @@ export function WidgetEvents() {
     const onRouteExecutionStarted = async (route: Route) => {
       if (!!route?.id) {
         trackEvent({
-          category: TrackingCategories.WidgetEvent,
-          action: TrackingActions.OnRouteExecutionStarted,
+          category: TrackingCategories.WIDGET_EVENT,
+          action: TrackingActions.ON_ROUTE_EXECUTION_STARTED,
           data: {
             routeId: route.id,
             steps: route.steps,
@@ -41,8 +41,8 @@ export function WidgetEvents() {
           trackTransaction({
             chain: update.route.fromChainId,
             transactionHash: update.process.txHash,
-            category: TrackingCategories.WidgetEvent,
-            action: TrackingActions.OnRouteExecutionUpdated,
+            category: TrackingCategories.WIDGET_EVENT,
+            action: TrackingActions.ON_ROUTE_EXECUTION_UPDATED,
             data: {
               routeId: `${update.route.id}`,
               transactionLink: update.process.txLink,
@@ -57,8 +57,8 @@ export function WidgetEvents() {
     const onRouteExecutionCompleted = async (route: Route) => {
       if (!!route?.id) {
         trackEvent({
-          category: TrackingCategories.WidgetEvent,
-          action: TrackingActions.OnRouteExecutionCompleted,
+          category: TrackingCategories.WIDGET_EVENT,
+          action: TrackingActions.ON_ROUTE_EXECUTION_COMPLETED,
           data: {
             routeId: route.id,
             steps: route.steps,
@@ -78,8 +78,8 @@ export function WidgetEvents() {
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
       trackEvent({
-        category: TrackingCategories.WidgetEvent,
-        action: TrackingActions.OnRouteExecutionFailed,
+        category: TrackingCategories.WIDGET_EVENT,
+        action: TrackingActions.ON_ROUTE_EXECUTION_FAILED,
         data: {
           routeId: update?.route?.id,
           transactionHash: update.process.txHash,

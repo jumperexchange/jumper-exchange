@@ -54,8 +54,8 @@ export function useWidgetConfig({ starterVariant }) {
         },
         disconnect: async () => {
           trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.Disconnect,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.DISCONNECT,
             disableTrackingTool: [EventTrackingTools.arcx],
           });
           disconnect();
@@ -64,8 +64,8 @@ export function useWidgetConfig({ starterVariant }) {
           await switchChain(reqChainId);
           if (account.signer) {
             trackEvent({
-              category: TrackingCategories.Wallet,
-              action: TrackingActions.SwitchChain,
+              category: TrackingCategories.WALLET,
+              action: TrackingActions.SWITCH_CHAIN,
               label: `${reqChainId}`,
               data: {
                 switchChain: reqChainId,
@@ -80,8 +80,8 @@ export function useWidgetConfig({ starterVariant }) {
         },
         addToken: async (token: Token, chainId: number) => {
           trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.AddToken,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.ADD_TOKEN,
             label: `addToken-${token.name}`,
             data: {
               tokenAdded: `${token.name}`,
@@ -93,8 +93,8 @@ export function useWidgetConfig({ starterVariant }) {
         },
         addChain: async (chainId: number) => {
           trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.AddChain,
+            category: TrackingCategories.WALLET,
+            action: TrackingActions.ADD_CHAIN,
             label: `addChain-${chainId}`,
             data: {
               chainIdAdded: `${chainId}`,
