@@ -1,16 +1,18 @@
+import type { StateCreator } from 'zustand';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 // config
-import { defaultSettings } from '@transferto/shared/src';
-import i18next from 'i18next';
+import { defaultLang, defaultSettings } from '@transferto/shared/src';
 // @type
-import { defaultLang } from '@transferto/shared/src/config';
 import type {
+  SettingsProps,
+  SettingsState,
   ThemeModesSupported,
   WalletConnected,
 } from '@transferto/shared/src/types/settings';
-import type { LanguageKey } from '../../types';
+import i18next from 'i18next';
+import { LanguageKey } from '../../types';
 
 // ----------------------------------------------------------------------
 
@@ -20,12 +22,27 @@ export const useSettingsStore = create(
   persist(
     (set) => ({
       ...defaultSettings,
+      setValue: (key, value) =>
+        set(() => ({
+          [key]: value,
+        })),
+      setValues: (values) =>
+        set((state) => {
+          const updatedState: SettingsProps = { ...state };
+          for (const key in values) {
+            if (Object.hasOwn(state, key)) {
+              updatedState[key] = values[key];
+            }
+          }
+          return updatedState;
+        }),
 
       // Tabs
-      onChangeTab: (tab: number) =>
+      onChangeTab: (tab: number) => {
         set({
           activeTab: !!tab ? tab : 0,
-        }),
+        });
+      },
 
       // Wallet
       onWalletConnect: (activeWalletName: string) => {
@@ -77,5 +94,5 @@ export const useSettingsStore = create(
       name: 'jumper-store', // name of the item in the storage (must be unique)
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
-  ),
+  ) as unknown as StateCreator<SettingsState, [], [], SettingsState>,
 );

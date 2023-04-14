@@ -1,36 +1,41 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
+import { MenuContextProps } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
+import { shallow } from 'zustand/shallow';
 import { useChainInfos } from '../../../providers/ChainInfosProvider';
 import { useWallet } from '../../../providers/WalletProvider';
+import { useMenuStore } from '../../../stores';
 import { MenuListItem } from '../../../types';
 
 const ConnectedSubMenuChains = () => {
-  const { account, usedWallet, disconnect, switchChain } = useWallet();
-  const { chains, isSuccess } = useChainInfos();
+  const { account, switchChain } = useWallet();
+  const { chains } = useChainInfos();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains.length, account.chainId],
+    [chains, account.chainId],
   );
 
-  const _ConnectedSubMenuChains: MenuListItem[] = [];
+  const [onCloseAllNavbarMenus] = useMenuStore(
+    (state: MenuContextProps) => [state.onCloseAllNavbarMenus],
+    shallow,
+  );
 
-  chains.map((el) => {
-    _ConnectedSubMenuChains.push({
-      label: `${el.name}`,
-      onClick: () => {
-        switchChain(el.id);
-      },
-      prefixIcon: (
-        <Avatar
-          src={el.logoURI}
-          alt={`${el.name}-chain-logo`}
-          sx={{ height: '32px', width: '32px' }}
-        />
-      ),
-      checkIcon: el.id === activeChain?.id,
-    });
-  });
+  const _ConnectedSubMenuChains: MenuListItem[] = chains.map((el) => ({
+    label: `${el.name}`,
+    onClick: () => {
+      switchChain(el.id);
+      onCloseAllNavbarMenus();
+    },
+    prefixIcon: (
+      <Avatar
+        src={el.logoURI}
+        alt={`${el.name}-chain-logo`}
+        sx={{ height: '32px', width: '32px' }}
+      />
+    ),
+    checkIcon: el.id === activeChain?.id,
+  }));
 
   return _ConnectedSubMenuChains;
 };
