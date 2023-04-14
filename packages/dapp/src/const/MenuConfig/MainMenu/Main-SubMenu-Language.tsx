@@ -1,4 +1,3 @@
-import { SettingsState } from '@transferto/shared/src/types';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { EventTrackingTools, useUserTracking } from '../../../hooks';
@@ -8,7 +7,7 @@ import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 export const useMainSubMenuLanguage = () => {
   const { i18n } = useTranslation();
   const [languageMode, onChangeLanguage] = useSettingsStore(
-    (state: SettingsState) => [state.languageMode, state.onChangeLanguage],
+    (state) => [state.languageMode, state.onChangeLanguage],
     shallow,
   );
   const { trackEvent } = useUserTracking();

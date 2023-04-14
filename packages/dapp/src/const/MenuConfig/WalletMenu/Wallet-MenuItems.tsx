@@ -1,7 +1,6 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { MenuContextProps } from '@transferto/shared/src/types';
-import { SettingsState } from '@transferto/shared/src/types/settings';
 import { useCallback, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { EventTrackingTools } from '../../../hooks/useUserTracking';
@@ -19,7 +18,7 @@ export const useWalletMenuItems = () => {
   const { ethereum, tally } = window as any;
 
   const [onWalletConnect] = useSettingsStore(
-    (state: SettingsState) => [state.onWalletConnect],
+    (state) => [state.onWalletConnect],
     shallow,
   );
 

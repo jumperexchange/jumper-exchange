@@ -6,7 +6,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { MenuContextProps, SettingsState } from '@transferto/shared/src/types';
+import { MenuContextProps } from '@transferto/shared/src/types';
 import { walletDigest } from '@transferto/shared/src/utils/walletDigest';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +30,7 @@ const ConnectedMenuItems = () => {
   );
 
   const [onWalletDisconnect] = useSettingsStore(
-    (state: SettingsState) => [state.onWalletDisconnect],
+    (state) => [state.onWalletDisconnect],
     shallow,
   );
 

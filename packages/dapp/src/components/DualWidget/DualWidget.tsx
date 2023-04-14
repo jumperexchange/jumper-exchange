@@ -1,6 +1,5 @@
 import { WidgetVariant } from '@lifi/widget';
 import { Grid } from '@mui/material';
-import { SettingsState } from '@transferto/shared/src/types/settings';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga4';
 import { shallow } from 'zustand/shallow';
@@ -12,7 +11,7 @@ import { WidgetEvents } from './WidgetEvents';
 
 export function DualWidget() {
   const [activeTab, onChangeTab] = useSettingsStore(
-    (state: SettingsState) => [state.activeTab, state.onChangeTab],
+    (state) => [state.activeTab, state.onChangeTab],
     shallow,
   );
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);

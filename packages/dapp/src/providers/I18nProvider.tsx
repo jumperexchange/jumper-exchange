@@ -1,4 +1,3 @@
-import { SettingsState } from '@transferto/shared/src/types';
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';
@@ -15,7 +14,7 @@ import {
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [languageMode] = useSettingsStore(
-    (state: SettingsState) => [state.languageMode],
+    (state) => [state.languageMode],
     shallow,
   );
 
