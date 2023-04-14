@@ -3,6 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { MenuContextProps } from '@transferto/shared/src/types/menu';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { SubMenuKeys, useWalletMenuItems } from '../../../../const';
 import { useMenuStore } from '../../../../stores/menu';
 import { MenuItemComponent, NavbarMenu } from '../../index';
@@ -16,17 +17,20 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
   const theme = useTheme();
-  const openNavbarWalletMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarWalletMenu,
-  );
-  const onOpenNavbarWalletMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarWalletMenu,
-  );
-  const openNavbarSubMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarSubMenu,
-  );
-  const onOpenNavbarSubMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarSubMenu,
+
+  const [
+    openNavbarWalletMenu,
+    onOpenNavbarWalletMenu,
+    openNavbarSubMenu,
+    onOpenNavbarSubMenu,
+  ] = useMenuStore(
+    (state: MenuContextProps) => [
+      state.openNavbarWalletMenu,
+      state.onOpenNavbarWalletMenu,
+      state.openNavbarSubMenu,
+      state.onOpenNavbarSubMenu,
+    ],
+    shallow,
   );
 
   const _walletMenuItems = useWalletMenuItems();

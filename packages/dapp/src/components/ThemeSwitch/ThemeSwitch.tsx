@@ -2,7 +2,7 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import Tooltip from '@mui/material/Tooltip';
-import type { SettingsContextProps } from '@transferto/shared/src/types/settings';
+import type { SettingsState } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import {
@@ -21,7 +21,7 @@ export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
 
   const [themeMode, onChangeMode] = useSettingsStore(
-    (state: SettingsContextProps) => [state.themeMode, state.onChangeMode],
+    (state: SettingsState) => [state.themeMode, state.onChangeMode],
     shallow,
   );
 

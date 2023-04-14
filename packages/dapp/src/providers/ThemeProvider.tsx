@@ -1,14 +1,14 @@
 import { useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { darkTheme, lightTheme } from '@transferto/shared/src/theme';
-import { SettingsContextProps } from '@transferto/shared/src/types/settings';
+import { SettingsState } from '@transferto/shared/src/types/settings';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { shallow } from 'zustand/shallow';
 import { useSettingsStore } from '../stores';
 
 export const useDetectDarkModePreference = () => {
   const [themeMode] = useSettingsStore(
-    (state: SettingsContextProps) => [state.themeMode],
+    (state: SettingsState) => [state.themeMode],
     shallow,
   );
 

@@ -3,7 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import {
   MenuContextProps,
-  SettingsContextProps,
+  SettingsState,
   WalletManagementButtons,
 } from '@transferto/shared/src';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
@@ -22,7 +22,7 @@ const NavbarManagement = () => {
   const anchorRef = useRef<any>(null);
 
   const [onWalletDisconnect] = useSettingsStore(
-    (state: SettingsContextProps) => [state.onWalletDisconnect],
+    (state: SettingsState) => [state.onWalletDisconnect],
     shallow,
   );
 

@@ -2,7 +2,7 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { SettingsContextProps } from '@transferto/shared/src/types/settings';
+import { SettingsState } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { TrackingActions, TrackingCategories } from '../../const';
@@ -21,7 +21,7 @@ const NavbarTabsContainer = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const [activeTab, onChangeTab] = useSettingsStore(
-    (state: SettingsContextProps) => [state.activeTab, state.onChangeTab],
+    (state: SettingsState) => [state.activeTab, state.onChangeTab],
     shallow,
   );
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));

@@ -5,7 +5,7 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import {
-  SettingsContextProps,
+  SettingsState,
   ThemeModesSupported,
 } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +21,7 @@ export const useMainSubMenuTheme = () => {
   const i18Path = 'navbar.';
 
   const [themeMode, onChangeMode] = useSettingsStore(
-    (state: SettingsContextProps) => [state.themeMode, state.onChangeMode],
+    (state: SettingsState) => [state.themeMode, state.onChangeMode],
     shallow,
   );
 

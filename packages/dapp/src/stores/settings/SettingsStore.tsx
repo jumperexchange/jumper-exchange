@@ -7,32 +7,12 @@ import i18next from 'i18next';
 // @type
 import { defaultLang } from '@transferto/shared/src/config';
 import type {
-  SettingsContextProps,
   ThemeModesSupported,
   WalletConnected,
 } from '@transferto/shared/src/types/settings';
 import type { LanguageKey } from '../../types';
 
 // ----------------------------------------------------------------------
-
-const initialState: SettingsContextProps = {
-  ...defaultSettings,
-  // Wallet
-  onWalletConnect: () => {},
-  onWalletDisconnect: () => {},
-
-  // Mode
-  onChangeMode: () => {},
-
-  // Tabs
-  onChangeTab: () => {},
-
-  // Language
-  onChangeLanguage: () => {},
-
-  // Reset
-  onResetSetting: () => {},
-};
 
 /*--  Use Zustand  --*/
 
@@ -77,17 +57,19 @@ export const useSettingsStore = create(
       // Reset
       onResetSetting: () => {
         set({
-          activeWalletName: !!initialState.activeWalletName
-            ? initialState.activeWalletName
+          activeWalletName: !!defaultSettings.activeWalletName
+            ? defaultSettings.activeWalletName
             : 'none',
-          themeMode: !!initialState.themeMode
-            ? initialState.themeMode
+          themeMode: !!defaultSettings.themeMode
+            ? defaultSettings.themeMode
             : ('auto' as ThemeModesSupported),
           languageMode:
-            initialState.languageMode ||
+            defaultSettings.languageMode ||
             (i18next.language as LanguageKey) ||
             defaultLang,
-          activeTab: !!initialState.activeTab ? initialState.activeTab : 0,
+          activeTab: !!defaultSettings.activeTab
+            ? defaultSettings.activeTab
+            : 0,
         });
       },
     }),
