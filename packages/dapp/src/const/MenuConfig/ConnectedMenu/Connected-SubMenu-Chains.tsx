@@ -22,26 +22,22 @@ const ConnectedSubMenuChains = () => {
     availableChains = testnetChains;
   }
 
-  const _ConnectedSubMenuChains: MenuListItem[] = [];
+  const connectedSubMenuChains: MenuListItem[] = availableChains.map((el) => ({
+    label: `${el.name}`,
+    onClick: () => {
+      switchChain(el.id);
+    },
+    prefixIcon: (
+      <Avatar
+        src={el.logoURI}
+        alt={`${el.name}-chain-logo`}
+        sx={{ height: '32px', width: '32px' }}
+      />
+    ),
+    checkIcon: el.id === activeChain?.id,
+  }));
 
-  availableChains.forEach((el) => {
-    _ConnectedSubMenuChains.push({
-      label: `${el.name}`,
-      onClick: () => {
-        switchChain(el.id);
-      },
-      prefixIcon: (
-        <Avatar
-          src={el.logoURI}
-          alt={`${el.name}-chain-logo`}
-          sx={{ height: '32px', width: '32px' }}
-        />
-      ),
-      checkIcon: el.id === activeChain?.id,
-    });
-  });
-
-  return _ConnectedSubMenuChains;
+  return connectedSubMenuChains;
 };
 
 export default ConnectedSubMenuChains;
