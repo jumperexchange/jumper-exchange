@@ -2,17 +2,7 @@
 
 import type { MutableRefObject } from 'react';
 
-export type MenuValueProps = {
-  anchorEl: any;
-  copiedToClipboard: boolean;
-  openMainNavbarMenu: boolean;
-  openNavbarWalletMenu: boolean;
-  openNavbarConnectedMenu: boolean;
-  openNavbarSubMenu: string;
-  openSupportModal: boolean;
-};
-
-export type MenuContextProps = {
+export interface MenuProps {
   anchorRef?: any;
   copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
@@ -20,7 +10,9 @@ export type MenuContextProps = {
   openNavbarConnectedMenu?: boolean;
   openNavbarSubMenu?: string;
   openSupportModal?: boolean;
+}
 
+export interface MenuState extends MenuProps {
   // ClipBoard
   onCopyToClipboard: (copied: boolean) => void;
 
@@ -46,4 +38,4 @@ export type MenuContextProps = {
 
   // Toggle support modal
   toggleSupportModal: (open: boolean) => void;
-};
+}

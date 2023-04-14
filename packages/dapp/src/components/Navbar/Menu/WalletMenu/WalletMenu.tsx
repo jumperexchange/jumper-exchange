@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
-import { MenuContextProps } from '@transferto/shared/src/types/menu';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { SubMenuKeys, useWalletMenuItems } from '../../../../const';
@@ -24,7 +23,7 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
     openNavbarSubMenu,
     onOpenNavbarSubMenu,
   ] = useMenuStore(
-    (state: MenuContextProps) => [
+    (state) => [
       state.openNavbarWalletMenu,
       state.onOpenNavbarWalletMenu,
       state.openNavbarSubMenu,

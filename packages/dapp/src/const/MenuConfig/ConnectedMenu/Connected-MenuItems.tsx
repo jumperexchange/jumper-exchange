@@ -6,7 +6,6 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { MenuContextProps } from '@transferto/shared/src/types';
 import { walletDigest } from '@transferto/shared/src/utils/walletDigest';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,10 +21,7 @@ const ConnectedMenuItems = () => {
   const i18Path = 'navbar.walletMenu.';
 
   const [copiedToClipboard, onCopyToClipboard] = useMenuStore(
-    (state: MenuContextProps) => [
-      state.copiedToClipboard,
-      state.onCopyToClipboard,
-    ],
+    (state) => [state.copiedToClipboard, state.onCopyToClipboard],
     shallow,
   );
 
@@ -43,8 +39,10 @@ const ConnectedMenuItems = () => {
 
   const { chains, isSuccess } = useChainInfos();
   const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains, account.chainId],
+    () =>
+      isSuccess &&
+      chains.find((chainEl: Chain) => chainEl.id === account.chainId),
+    [isSuccess, chains, account.chainId],
   );
 
   const walletSource: TWallets = wallets;

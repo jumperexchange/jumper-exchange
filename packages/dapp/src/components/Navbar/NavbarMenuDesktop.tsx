@@ -2,7 +2,6 @@ import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
-import { MenuContextProps } from '@transferto/shared/src/types';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { shallow } from 'zustand/shallow';
 import { SubMenuKeys } from '../../const/';
@@ -36,15 +35,14 @@ const NavbarMenuDesktop = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const [openNavbarSubMenu, onCloseAllNavbarMenus] = useMenuStore(
-    (state: MenuContextProps) => [
+  const [openNavbarSubMenu, onCloseAllNavbarMenus, anchorRef] = useMenuStore(
+    (state) => [
       state.openNavbarSubMenu,
       state.onCloseAllNavbarMenus,
+      state.anchorRef,
     ],
     shallow,
   );
-
-  const anchorRef = useMenuStore((state: MenuContextProps) => state.anchorRef);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {

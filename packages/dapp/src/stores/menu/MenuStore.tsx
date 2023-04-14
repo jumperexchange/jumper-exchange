@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 // config
 // @type
+import { MenuProps, MenuState } from '@transferto/shared/src/types';
 import { SubMenuKeys } from '../../const';
 
 // ----------------------------------------------------------------------
@@ -26,8 +27,23 @@ export const defaultMenu: DefaultMenuType = {
   anchorEl: null,
 };
 /*--  Use Zustand  --*/
-export const useMenuStore = create((set) => ({
+export const useMenuStore = create<MenuState>((set, get) => ({
   ...defaultMenu,
+
+  setValue: (key, value) =>
+    set(() => ({
+      [key]: value,
+    })),
+  setValues: (values) =>
+    set((state) => {
+      const updatedState: MenuProps = { ...state };
+      for (const key in values) {
+        if (Object.hasOwn(state, key)) {
+          updatedState[key] = values[key];
+        }
+      }
+      return updatedState;
+    }),
 
   // CopyToClipboard
   onCopyToClipboard: (copied: boolean) => {

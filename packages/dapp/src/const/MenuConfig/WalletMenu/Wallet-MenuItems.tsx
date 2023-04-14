@@ -1,6 +1,5 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
-import { MenuContextProps } from '@transferto/shared/src/types';
 import { useCallback, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { EventTrackingTools } from '../../../hooks/useUserTracking';
@@ -23,10 +22,7 @@ export const useWalletMenuItems = () => {
   );
 
   const [onCloseAllNavbarMenus, onOpenNavbarWalletMenu] = useMenuStore(
-    (state: MenuContextProps) => [
-      state.onCloseAllNavbarMenus,
-      state.onOpenNavbarWalletMenu,
-    ],
+    (state) => [state.onCloseAllNavbarMenus, state.onOpenNavbarWalletMenu],
     shallow,
   );
 

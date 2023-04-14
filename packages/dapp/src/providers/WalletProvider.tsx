@@ -15,7 +15,6 @@ import {
   switchChain as walletSwitchChain,
 } from './hotfix/wallet-automation-hotfix';
 
-import { MenuContextProps } from '@transferto/shared/src/types';
 import {
   WalletAccount,
   WalletContextProps,
@@ -53,7 +52,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
   const [onCloseAllNavbarMenus] = useMenuStore(
-    (state: MenuContextProps) => [state.onCloseAllNavbarMenus],
+    (state) => [state.onCloseAllNavbarMenus],
     shallow,
   );
   const { trackConnectWallet } = useUserTracking();

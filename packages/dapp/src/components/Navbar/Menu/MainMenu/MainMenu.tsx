@@ -1,4 +1,3 @@
-import { MenuContextProps } from '@transferto/shared/src/types/menu';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import {
@@ -30,7 +29,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
     openNavbarSubMenu,
     onOpenNavbarSubMenu,
   ] = useMenuStore(
-    (state: MenuContextProps) => [
+    (state) => [
       state.openMainNavbarMenu,
       state.onOpenNavbarMainMenu,
       state.openNavbarSubMenu,

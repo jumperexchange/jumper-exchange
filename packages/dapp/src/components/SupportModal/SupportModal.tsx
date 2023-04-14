@@ -1,5 +1,4 @@
 import { Breakpoint, Modal, useTheme } from '@mui/material';
-import { MenuContextProps } from '@transferto/shared/src/types';
 import WidgetBot from '@widgetbot/react-embed';
 import { shallow } from 'zustand/shallow';
 import { useMenuStore } from '../../stores/menu';
@@ -8,10 +7,7 @@ import { SupportModalContainer } from './SupportModal.style';
 export const SupportModal = () => {
   const theme = useTheme();
   const [openSupportModal, toggleSupportModal] = useMenuStore(
-    (state: MenuContextProps) => [
-      state.openSupportModal,
-      state.toggleSupportModal,
-    ],
+    (state) => [state.openSupportModal, state.toggleSupportModal],
     shallow,
   );
 

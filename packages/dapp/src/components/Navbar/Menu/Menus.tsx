@@ -1,4 +1,3 @@
-import { MenuContextProps } from '@transferto/shared/src/types';
 import { SyntheticEvent } from 'react';
 import { shallow } from 'zustand/shallow';
 import { ConnectedMenu, MainMenu, WalletMenu } from '.';
@@ -6,7 +5,7 @@ import { useMenuStore } from '../../../stores/menu';
 
 export const Menus = () => {
   const [anchorRef, onCopyToClipboard] = useMenuStore(
-    (state: MenuContextProps) => [state.anchorRef, state.onCopyToClipboard],
+    (state) => [state.anchorRef, state.onCopyToClipboard],
     shallow,
   );
 

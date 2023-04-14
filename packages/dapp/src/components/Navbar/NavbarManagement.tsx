@@ -1,10 +1,7 @@
 import { Chain } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
-import {
-  MenuContextProps,
-  WalletManagementButtons,
-} from '@transferto/shared/src';
+import { WalletManagementButtons } from '@transferto/shared/src';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
@@ -33,7 +30,7 @@ const NavbarManagement = () => {
     openNavbarConnectedMenu,
     onOpenNavbarConnectedMenu,
   ] = useMenuStore(
-    (state: MenuContextProps) => [
+    (state) => [
       state.openMainNavbarMenu,
       state.onOpenNavbarMainMenu,
       state.openNavbarWalletMenu,
@@ -51,9 +48,7 @@ const NavbarManagement = () => {
     onOpenNavbarConnectedMenu,
   };
 
-  const onMenuInit = useMenuStore(
-    (state: MenuContextProps) => state.onMenuInit,
-  );
+  const onMenuInit = useMenuStore((state) => state.onMenuInit);
 
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';

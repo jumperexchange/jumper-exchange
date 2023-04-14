@@ -1,6 +1,5 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
-import { MenuContextProps } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
 import { shallow } from 'zustand/shallow';
 import { useChainInfos } from '../../../providers/ChainInfosProvider';
@@ -17,7 +16,7 @@ const ConnectedSubMenuChains = () => {
   );
 
   const [onCloseAllNavbarMenus] = useMenuStore(
-    (state: MenuContextProps) => [state.onCloseAllNavbarMenus],
+    (state) => [state.onCloseAllNavbarMenus],
     shallow,
   );
 

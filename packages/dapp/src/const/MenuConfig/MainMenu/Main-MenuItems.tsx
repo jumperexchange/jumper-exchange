@@ -6,7 +6,6 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
-import { MenuContextProps } from '@transferto/shared/src/types';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
@@ -31,7 +30,7 @@ export const useMainMenuItems = () => {
   const [themeMode] = useSettingsStore((state) => [state.themeMode], shallow);
 
   const [toggleSupportModal] = useMenuStore(
-    (state: MenuContextProps) => [state.toggleSupportModal],
+    (state) => [state.toggleSupportModal],
     shallow,
   );
 
