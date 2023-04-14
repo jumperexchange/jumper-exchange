@@ -46,8 +46,8 @@ const MenuItemComponent = ({
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
         !!triggerSubMenu &&
           trackEvent({
-            category: TrackingCategories.MENU,
-            action: TrackingActions.OPEN_SUBMENU,
+            category: TrackingCategories.Menu,
+            action: TrackingActions.OpenSubmenu,
             label: triggerSubMenu,
             data: { subMenu: triggerSubMenu },
           });

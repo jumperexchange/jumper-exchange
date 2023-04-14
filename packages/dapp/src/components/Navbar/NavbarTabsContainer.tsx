@@ -38,8 +38,8 @@ const NavbarTabsContainer = () => {
         onClick={() => {
           window.history.replaceState(null, document.title, '/swap');
           trackEvent({
-            category: TrackingCategories.NAVIGATION,
-            action: TrackingActions.SWITCH_TAB,
+            category: TrackingCategories.Navigation,
+            action: TrackingActions.SwitchTab,
             label: 'swap',
             data: { tab: 'swap' },
             disableTrackingTool: [EventTrackingTools.arcx],
@@ -63,8 +63,8 @@ const NavbarTabsContainer = () => {
         onClick={() => {
           window.history.replaceState(null, document.title, '/gas');
           trackEvent({
-            category: TrackingCategories.NAVIGATION,
-            action: TrackingActions.SWITCH_TAB,
+            category: TrackingCategories.Navigation,
+            action: TrackingActions.SwitchTab,
             label: 'gas',
             data: { tab: 'gas' },
             disableTrackingTool: [EventTrackingTools.arcx],
