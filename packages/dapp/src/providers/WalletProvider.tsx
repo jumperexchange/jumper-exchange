@@ -1,10 +1,5 @@
 import { Token } from '@lifi/sdk';
 import { useLiFiWalletManagement, Wallet } from '@lifi/wallet-management';
-import {
-  addChain as walletAddChain,
-  switchChain as walletSwitchChain,
-  switchChainAndAddToken,
-} from './hotfix/wallet-automation-hotfix';
 import { Signer } from 'ethers';
 import React, {
   createContext,
@@ -14,12 +9,18 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import {
+  switchChainAndAddToken,
+  addChain as walletAddChain,
+  switchChain as walletSwitchChain,
+} from './hotfix/wallet-automation-hotfix';
 
 import { MenuContextProps } from '@transferto/shared/src/types';
 import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
+import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../hooks';
 import { useMenuStore } from '../stores/menu';
 
@@ -51,8 +52,9 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
-  const onCloseAllNavbarMenus = useMenuStore(
-    (state: MenuContextProps) => state.onCloseAllNavbarMenus,
+  const [onCloseAllNavbarMenus] = useMenuStore(
+    (state: MenuContextProps) => [state.onCloseAllNavbarMenus],
+    shallow,
   );
   const { trackConnectWallet } = useUserTracking();
   const connect = useCallback(

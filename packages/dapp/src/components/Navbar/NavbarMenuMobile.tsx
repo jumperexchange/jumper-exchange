@@ -3,6 +3,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
 import { MenuContextProps } from '@transferto/shared/src/types';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { shallow } from 'zustand/shallow';
 import { SubMenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import {
@@ -40,8 +41,9 @@ const NavbarMenuMobile = ({
     (state: MenuContextProps) => state.openNavbarSubMenu,
   );
   const anchorRef = useMenuStore((state: MenuContextProps) => state.anchorRef);
-  const onCloseAllNavbarMenus = useMenuStore(
-    (state: MenuContextProps) => state.onCloseAllNavbarMenus,
+  const [onCloseAllNavbarMenus] = useMenuStore(
+    (state: MenuContextProps) => [state.onCloseAllNavbarMenus],
+    shallow,
   );
 
   function handleListKeyDown(event: KeyboardEvent) {

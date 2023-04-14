@@ -4,6 +4,7 @@ import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
 import { MenuContextProps } from '@transferto/shared/src/types';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { shallow } from 'zustand/shallow';
 import { SubMenuKeys } from '../../const/';
 import { useMenuStore } from '../../stores/menu';
 import {
@@ -35,15 +36,15 @@ const NavbarMenuDesktop = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-
-  const openNavbarSubMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarSubMenu,
+  const [openNavbarSubMenu, onCloseAllNavbarMenus] = useMenuStore(
+    (state: MenuContextProps) => [
+      state.openNavbarSubMenu,
+      state.onCloseAllNavbarMenus,
+    ],
+    shallow,
   );
 
   const anchorRef = useMenuStore((state: MenuContextProps) => state.anchorRef);
-  const onCloseAllNavbarMenus = useMenuStore(
-    (state: MenuContextProps) => state.onCloseAllNavbarMenus,
-  );
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {

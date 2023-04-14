@@ -13,25 +13,30 @@ import {
 import { walletDigest } from '@transferto/shared/src/utils/walletDigest';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { SubMenuKeys } from '../../../const';
 import { useChainInfos } from '../../../providers/ChainInfosProvider';
 import { useWallet } from '../../../providers/WalletProvider';
-import { useSettingsStore } from '../../../stores';
-import { useMenuStore } from '../../../stores/menu';
+import { useMenuStore, useSettingsStore } from '../../../stores';
 import { MenuListItem, TWallets } from '../../../types';
 
 const ConnectedMenuItems = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.walletMenu.';
-  const copiedToClipboard = useMenuStore(
-    (state: MenuContextProps) => state.copiedToClipboard,
+
+  const [copiedToClipboard, onCopyToClipboard] = useMenuStore(
+    (state: MenuContextProps) => [
+      state.copiedToClipboard,
+      state.onCopyToClipboard,
+    ],
+    shallow,
   );
-  const onCopyToClipboard = useMenuStore(
-    (state: MenuContextProps) => state.onCopyToClipboard,
+
+  const [onWalletDisconnect] = useSettingsStore(
+    (state: SettingsContextProps) => [state.onWalletDisconnect],
+    shallow,
   );
-  const onWalletDisconnect = useSettingsStore(
-    (state: SettingsContextProps) => state.onWalletDisconnect,
-  );
+
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
 

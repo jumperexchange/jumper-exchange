@@ -3,6 +3,7 @@ import { Grid } from '@mui/material';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga4';
+import { shallow } from 'zustand/shallow';
 import { useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types/';
 import { Widget } from '../Widget';
@@ -10,13 +11,10 @@ import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
 export function DualWidget() {
-  const activeTab = useSettingsStore(
-    (state: SettingsContextProps) => state.activeTab,
+  const [activeTab, onChangeTab] = useSettingsStore(
+    (state: SettingsContextProps) => [state.activeTab, state.onChangeTab],
+    shallow,
   );
-  const onChangeTab = useSettingsStore(
-    (state: SettingsContextProps) => state.onChangeTab,
-  );
-
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');

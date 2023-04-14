@@ -1,5 +1,6 @@
 import { MenuContextProps } from '@transferto/shared/src/types/menu';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import {
   SubMenuKeys,
   useMainMenuItems,
@@ -8,7 +9,7 @@ import {
   useMainSubMenuShowcases,
   useMainSubMenuTheme,
 } from '../../../../const';
-import { useMenuStore } from '../../../../stores/menu';
+import { useMenuStore } from '../../../../stores';
 import { SupportModal } from '../../../SupportModal';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
 interface MainMenuProps {
@@ -23,17 +24,19 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const mainSubMenuDevelopers = useMainSubMenuDevelopers();
   const mainSubMenuLanguage = useMainSubMenuLanguage();
   const mainSubMenuShowcases = useMainSubMenuShowcases();
-  const openMainNavbarMenu = useMenuStore(
-    (state: MenuContextProps) => state.openMainNavbarMenu,
-  );
-  const onOpenNavbarMainMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarMainMenu,
-  );
-  const openNavbarSubMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarSubMenu,
-  );
-  const onOpenNavbarSubMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarSubMenu,
+  const [
+    openMainNavbarMenu,
+    onOpenNavbarMainMenu,
+    openNavbarSubMenu,
+    onOpenNavbarSubMenu,
+  ] = useMenuStore(
+    (state: MenuContextProps) => [
+      state.openMainNavbarMenu,
+      state.onOpenNavbarMainMenu,
+      state.openNavbarSubMenu,
+      state.onOpenNavbarSubMenu,
+    ],
+    shallow,
   );
 
   return (

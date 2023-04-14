@@ -1,16 +1,18 @@
 import { SettingsContextProps } from '@transferto/shared/src/types';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { EventTrackingTools, useUserTracking } from '../../../hooks';
 import { useSettingsStore } from '../../../stores';
 import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
 export const useMainSubMenuLanguage = () => {
   const { i18n } = useTranslation();
-  const languageMode = useSettingsStore(
-    (state: SettingsContextProps) => state.languageMode,
-  );
-  const onChangeLanguage = useSettingsStore(
-    (state: SettingsContextProps) => state.onChangeLanguage,
+  const [languageMode, onChangeLanguage] = useSettingsStore(
+    (state: SettingsContextProps) => [
+      state.languageMode,
+      state.onChangeLanguage,
+    ],
+    shallow,
   );
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage) => {

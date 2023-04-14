@@ -4,6 +4,7 @@ import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { EventTrackingTools, useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
@@ -19,11 +20,10 @@ const NavbarTabsContainer = () => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
-  const activeTab = useSettingsStore((state: any) => state.activeTab);
-  const onChangeTab = useSettingsStore(
-    (state: SettingsContextProps) => state.onChangeTab,
+  const [activeTab, onChangeTab] = useSettingsStore(
+    (state: SettingsContextProps) => [state.activeTab, state.onChangeTab],
+    shallow,
   );
-
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
   const isDarkMode = theme.palette.mode === 'dark';

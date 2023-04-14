@@ -1,5 +1,6 @@
 import { MenuContextProps } from '@transferto/shared/src/types/menu';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import {
   ConnectedMenuItems,
   ConnectedSubMenuChains,
@@ -14,17 +15,19 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const i18Path = 'navbar.walletMenu.';
   const { t: translate } = useTranslation();
 
-  const openNavbarConnectedMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarConnectedMenu,
-  );
-  const onOpenNavbarConnectedMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarConnectedMenu,
-  );
-  const openNavbarSubMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarSubMenu,
-  );
-  const onOpenNavbarSubMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarSubMenu,
+  const [
+    openNavbarConnectedMenu,
+    onOpenNavbarConnectedMenu,
+    openNavbarSubMenu,
+    onOpenNavbarSubMenu,
+  ] = useMenuStore(
+    (state: MenuContextProps) => [
+      state.openNavbarConnectedMenu,
+      state.onOpenNavbarConnectedMenu,
+      state.openNavbarSubMenu,
+      state.onOpenNavbarSubMenu,
+    ],
+    shallow,
   );
 
   const _connectedMenuItems = ConnectedMenuItems();

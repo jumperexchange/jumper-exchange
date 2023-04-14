@@ -10,6 +10,7 @@ import { MenuContextProps } from '@transferto/shared/src/types';
 import { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import {
   SubMenuKeys,
   TrackingActions,
@@ -24,15 +25,18 @@ import { useMenuStore } from '../../../stores/menu';
 export const useMainMenuItems = () => {
   const { t: translate, i18n } = useTranslation();
   const i18Path = 'navbar.';
-  const themeMode = useSettingsStore(
-    (state: SettingsContextProps) => state.themeMode,
-  );
-
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
-  const toggleSupportModal = useMenuStore(
-    (state: MenuContextProps) => state.toggleSupportModal,
+
+  const [themeMode] = useSettingsStore(
+    (state: SettingsContextProps) => [state.themeMode],
+    shallow,
+  );
+
+  const [toggleSupportModal] = useMenuStore(
+    (state: MenuContextProps) => [state.toggleSupportModal],
+    shallow,
   );
 
   return [

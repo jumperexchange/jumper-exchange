@@ -6,7 +6,7 @@ import { SubMenuKeys } from '../../const';
 
 // ----------------------------------------------------------------------
 
-interface defaultMenuType {
+interface DefaultMenuType {
   copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
   openNavbarWalletMenu: boolean;
@@ -16,7 +16,7 @@ interface defaultMenuType {
   anchorEl: null | JSX.Element;
 }
 
-export const defaultMenu: defaultMenuType = {
+export const defaultMenu: DefaultMenuType = {
   copiedToClipboard: false,
   openMainNavbarMenu: false,
   openNavbarWalletMenu: false,

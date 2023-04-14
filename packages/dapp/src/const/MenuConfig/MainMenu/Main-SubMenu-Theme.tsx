@@ -9,6 +9,7 @@ import {
   ThemeModesSupported,
 } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useSettingsStore } from '../../../stores';
@@ -18,11 +19,10 @@ export const useMainSubMenuTheme = () => {
   const { t: translate } = useTranslation();
   const { trackEvent } = useUserTracking();
   const i18Path = 'navbar.';
-  const themeMode = useSettingsStore(
-    (state: SettingsContextProps) => state.themeMode,
-  );
-  const onChangeMode = useSettingsStore(
-    (state: SettingsContextProps) => state.onChangeMode,
+
+  const [themeMode, onChangeMode] = useSettingsStore(
+    (state: SettingsContextProps) => [state.themeMode, state.onChangeMode],
+    shallow,
   );
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {

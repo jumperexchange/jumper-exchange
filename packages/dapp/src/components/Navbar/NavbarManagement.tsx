@@ -8,10 +8,10 @@ import {
 } from '@transferto/shared/src';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { useWallet } from '../../providers/WalletProvider';
-import { useSettingsStore } from '../../stores';
-import { useMenuStore } from '../../stores/menu';
+import { useMenuStore, useSettingsStore } from '../../stores';
 import { ThemeSwitch } from '../ThemeSwitch';
 import {
   NavbarDropdownButton,
@@ -20,24 +20,37 @@ import {
 
 const NavbarManagement = () => {
   const anchorRef = useRef<any>(null);
-  const onWalletDisconnect = useSettingsStore(
-    (state: SettingsContextProps) => state.onWalletDisconnect,
+
+  const [onWalletDisconnect] = useSettingsStore(
+    (state: SettingsContextProps) => [state.onWalletDisconnect],
+    shallow,
   );
 
-  const onOpenNavbarMainMenu = useMenuStore(
-    (state: MenuContextProps) => state.onOpenNavbarMainMenu,
+  const [
+    openMainNavbarMenu,
+    onOpenNavbarMainMenu,
+    openNavbarWalletMenu,
+    onOpenNavbarWalletMenu,
+    openNavbarConnectedMenu,
+    onOpenNavbarConnectedMenu,
+  ] = useMenuStore(
+    (state: MenuContextProps) => [
+      state.openMainNavbarMenu,
+      state.onOpenNavbarMainMenu,
+      state.openNavbarWalletMenu,
+      state.onOpenNavbarWalletMenu,
+      state.openNavbarConnectedMenu,
+      state.onOpenNavbarConnectedMenu,
+    ],
+    shallow,
   );
 
-  const openMainNavbarMenu = useMenuStore(
-    (state: MenuContextProps) => state.openMainNavbarMenu,
-  );
-
-  const toggleMenuHandlers = useMenuStore((state: MenuContextProps) => ({
-    openNavbarWalletMenu: state.openNavbarWalletMenu,
-    onOpenNavbarWalletMenu: state.onOpenNavbarWalletMenu,
-    openNavbarConnectedMenu: state.openNavbarConnectedMenu,
-    onOpenNavbarConnectedMenu: state.onOpenNavbarConnectedMenu,
-  }));
+  const toggleMenuHandlers = {
+    openNavbarWalletMenu,
+    onOpenNavbarWalletMenu,
+    openNavbarConnectedMenu,
+    onOpenNavbarConnectedMenu,
+  };
 
   const onMenuInit = useMenuStore(
     (state: MenuContextProps) => state.onMenuInit,

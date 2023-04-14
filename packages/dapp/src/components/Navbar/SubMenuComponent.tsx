@@ -5,7 +5,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { Dispatch, SetStateAction } from 'react';
-import { MenuContextProps } from '../../../../shared/src/types/menu';
+import { shallow } from 'zustand/shallow';
+import { MenuContextProps } from '../../../../shared/src/types';
 import { SubMenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import { MenuListItem } from '../../types';
@@ -47,8 +48,9 @@ const SubMenuComponent = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const openNavbarSubMenu = useMenuStore(
-    (state: MenuContextProps) => state.openNavbarSubMenu,
+  const [openNavbarSubMenu] = useMenuStore(
+    (state: MenuContextProps) => [state.openNavbarSubMenu],
+    shallow,
   );
 
   return (

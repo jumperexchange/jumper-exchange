@@ -4,6 +4,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import Tooltip from '@mui/material/Tooltip';
 import type { SettingsContextProps } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import {
   TrackingActions,
   TrackingCategories,
@@ -15,14 +16,15 @@ import {
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
+
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
-  const themeMode = useSettingsStore(
-    (state: SettingsContextProps) => state.themeMode,
+
+  const [themeMode, onChangeMode] = useSettingsStore(
+    (state: SettingsContextProps) => [state.themeMode, state.onChangeMode],
+    shallow,
   );
-  const onChangeMode = useSettingsStore(
-    (state: SettingsContextProps) => state.onChangeMode,
-  );
+
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const { trackEvent } = useUserTracking();
