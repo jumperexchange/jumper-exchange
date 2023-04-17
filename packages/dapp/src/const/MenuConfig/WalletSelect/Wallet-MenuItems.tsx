@@ -9,7 +9,7 @@ import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
 import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
-export const useWalletMenuItems = () => {
+export const useWalletSelectMenuItems = () => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
     useState<Wallet>();
   const { connect } = useWallet();
@@ -37,7 +37,7 @@ export const useWalletMenuItems = () => {
       }
       await connect(wallet);
       settings.onWalletConnect(wallet.name);
-      menu.onOpenNavbarWalletMenu(false);
+      menu.onOpenNavbarWalletSelectMenu(false);
       try {
       } catch (e) {}
     },
