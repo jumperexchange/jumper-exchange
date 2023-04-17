@@ -7,6 +7,7 @@ import {
   WidgetEvent,
 } from '@lifi/widget';
 import { useEffect, useRef } from 'react';
+import { TrackingActions, TrackingCategories } from '../../const';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -18,8 +19,8 @@ export function WidgetEvents() {
     const onRouteExecutionStarted = async (route: Route) => {
       if (!!route?.id) {
         trackEvent({
-          category: 'widget-event',
-          action: 'onRouteExecutionStarted',
+          category: TrackingCategories.WIDGET_EVENT,
+          action: TrackingActions.ON_ROUTE_EXECUTION_STARTED,
           data: {
             routeId: route.id,
             steps: route.steps,
@@ -40,8 +41,8 @@ export function WidgetEvents() {
           trackTransaction({
             chain: update.route.fromChainId,
             transactionHash: update.process.txHash,
-            category: 'widget-event',
-            action: 'onRouteExecutionUpdated',
+            category: TrackingCategories.WIDGET_EVENT,
+            action: TrackingActions.ON_ROUTE_EXECUTION_UPDATED,
             data: {
               routeId: `${update.route.id}`,
               transactionLink: update.process.txLink,
@@ -56,8 +57,8 @@ export function WidgetEvents() {
     const onRouteExecutionCompleted = async (route: Route) => {
       if (!!route?.id) {
         trackEvent({
-          category: 'widget-event',
-          action: 'onRouteExecutionCompleted',
+          category: TrackingCategories.WIDGET_EVENT,
+          action: TrackingActions.ON_ROUTE_EXECUTION_COMPLETED,
           data: {
             routeId: route.id,
             steps: route.steps,
@@ -77,8 +78,8 @@ export function WidgetEvents() {
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
       trackEvent({
-        category: 'widget-event',
-        action: 'onRouteExecutionFailed',
+        category: TrackingCategories.WIDGET_EVENT,
+        action: TrackingActions.ON_ROUTE_EXECUTION_FAILED,
         data: {
           routeId: update?.route?.id,
           transactionHash: update.process.txHash,

@@ -21,9 +21,9 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ButtonSecondary } from '@transferto/shared/src/atoms/ButtonSecondary';
+import { ButtonSecondary } from '@transferto/shared/src/atoms/index';
 
-import { alpha, Breakpoint, styled } from '@mui/material/styles';
+import { Breakpoint, alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
