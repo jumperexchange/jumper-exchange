@@ -26,9 +26,9 @@ export function useWidgetConfig({ starterVariant }) {
   const widgetConfig: WidgetConfig = useMemo(() => {
     let rpcs = {};
     try {
-      rpcs = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
+      rpcs = JSON.parse((import.meta as ImportMeta).env.VITE_CUSTOM_RPCS);
     } catch (e) {
-      if (import.meta.env.DEV) {
+      if ((import.meta as ImportMeta).env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
@@ -138,8 +138,16 @@ export function useWidgetConfig({ starterVariant }) {
       },
       localStorageKeyPrefix: `jumper-${starterVariant}`,
       sdkConfig: {
-        apiUrl: import.meta.env.VITE_LIFI_API_URL,
+        apiUrl: (import.meta as ImportMeta).env.VITE_LIFI_API_URL,
         rpcs,
+        defaultRouteOptions: {
+          maxPriceImpact: 0.4,
+        },
+      },
+      insurance: true,
+      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
+      chains: {
+        allow: import.meta.env.MODE === 'testnet' ? [5, 80001, 59140] : [],
       },
     };
   }, [
