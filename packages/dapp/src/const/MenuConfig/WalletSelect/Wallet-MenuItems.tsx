@@ -45,13 +45,12 @@ export const useWalletSelectMenuItems = () => {
   );
 
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
-    const _output = [];
-    supportedWallets.forEach((wallet, index) => {
+    const _output = supportedWallets.map((wallet, index) => {
       // TODO: overwrite taho name ; REMOVE AfTER WALLET MANAGEMENT v2
       if (wallet.name === 'Tally Ho') {
         wallet.name = 'Taho';
       }
-      _output.push({
+      return {
         label: wallet.name,
         prefixIcon: (
           <Avatar
@@ -71,10 +70,10 @@ export const useWalletSelectMenuItems = () => {
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         },
-      });
+      };
     });
     return _output;
-  }, []);
+  }, [login, trackEvent]);
 
   return _WalletMenuItems;
 };
