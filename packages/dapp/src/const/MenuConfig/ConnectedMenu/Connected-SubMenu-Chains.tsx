@@ -36,7 +36,6 @@ const ConnectedSubMenuChains = () => {
     ),
     checkIcon: el.id === activeChain?.id,
   }));
-
   return connectedSubMenuChains;
 };
 
