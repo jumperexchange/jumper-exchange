@@ -14,14 +14,12 @@ export function useInitUserTracking() {
       if (!disableTrackingTool?.includes(EventTrackingTools.hotjar)) {
         !hotjar.initialized() &&
           hotjar.initialize(
-            (import.meta.env as ImportMetaEnv).VITE_HOTJAR_ID,
-            (import.meta.env as ImportMetaEnv).VITE_HOTJAR_SNIPPET_VERSION,
+            import.meta.env.VITE_HOTJAR_ID,
+            import.meta.env.VITE_HOTJAR_SNIPPET_VERSION,
           );
       }
       if (!disableTrackingTool?.includes(EventTrackingTools.ga)) {
-        ReactGA.initialize(
-          (import.meta.env as ImportMetaEnv).VITE_GOOGLE_ANALYTICS_TRACKING_ID,
-        );
+        ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_TRACKING_ID);
       }
     },
     [],
