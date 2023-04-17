@@ -146,6 +146,9 @@ export function useWidgetConfig({ starterVariant }) {
       },
       insurance: true,
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
+      chains: {
+        allow: import.meta.env.MODE === 'testnet' ? [5, 80001, 59140] : [],
+      },
     };
   }, [
     starterVariant,
