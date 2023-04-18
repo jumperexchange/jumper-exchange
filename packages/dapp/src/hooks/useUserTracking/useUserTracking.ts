@@ -79,7 +79,6 @@ export function useUserTracking() {
           walletAction: disconnect ? 'disconnect' : 'connect',
           chainId: `${account.chainId}`,
           account: `${account.address}`,
-          ...data,
         });
       }
       if (

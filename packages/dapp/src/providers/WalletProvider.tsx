@@ -91,10 +91,6 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
         trackConnectWallet({
           account: account,
           disconnect: false,
-          data: {
-            account: `${account.address}`,
-            chain: `${account.chainId}`,
-          },
         });
     };
     updateAccount();
