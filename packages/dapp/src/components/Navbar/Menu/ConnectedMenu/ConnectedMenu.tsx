@@ -15,14 +15,14 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const { t: translate } = useTranslation();
 
   const [
-    openNavbarConnectedMenu,
-    onOpenNavbarConnectedMenu,
+    openNavbarWalletMenu,
+    onOpenNavbarWalletMenu,
     openNavbarSubMenu,
     onOpenNavbarSubMenu,
   ] = useMenuStore(
     (state) => [
-      state.openNavbarConnectedMenu,
-      state.onOpenNavbarConnectedMenu,
+      state.openNavbarWalletMenu,
+      state.onOpenNavbarWalletMenu,
       state.openNavbarSubMenu,
       state.onOpenNavbarSubMenu,
     ],
@@ -32,12 +32,12 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const _connectedMenuItems = ConnectedMenuItems();
   const _connectedSubMenuChains = ConnectedSubMenuChains();
 
-  return !!openNavbarConnectedMenu ? ( //todo, ON ???
+  return !!openNavbarWalletMenu ? ( //todo, ON ???
     <NavbarMenu
       handleClose={handleClose}
-      open={openNavbarConnectedMenu}
+      open={openNavbarWalletMenu}
       isScrollable={openNavbarSubMenu === SubMenuKeys.chains}
-      setOpen={onOpenNavbarConnectedMenu}
+      setOpen={onOpenNavbarWalletMenu}
       isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
     >
       {_connectedMenuItems.map((el, index) => (
@@ -50,7 +50,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
           showButton={el.showButton}
           suffixIcon={el.suffixIcon}
           onClick={el.onClick}
-          open={openNavbarConnectedMenu}
+          open={openNavbarWalletMenu}
           isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={onOpenNavbarSubMenu}
         />
@@ -61,7 +61,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
         isSubMenu={true}
         isScrollable={true}
         triggerSubMenu={SubMenuKeys.chains}
-        open={openNavbarConnectedMenu}
+        open={openNavbarWalletMenu}
         isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
         setOpenSubMenu={onOpenNavbarSubMenu}
         subMenuList={_connectedSubMenuChains}

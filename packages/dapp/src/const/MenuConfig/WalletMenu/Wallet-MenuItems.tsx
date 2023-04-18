@@ -21,8 +21,11 @@ export const useWalletMenuItems = () => {
     shallow,
   );
 
-  const [onCloseAllNavbarMenus, onOpenNavbarWalletMenu] = useMenuStore(
-    (state) => [state.onCloseAllNavbarMenus, state.onOpenNavbarWalletMenu],
+  const [onCloseAllNavbarMenus, onOpenNavbarWalletSelectMenu] = useMenuStore(
+    (state) => [
+      state.onCloseAllNavbarMenus,
+      state.onOpenNavbarWalletSelectMenu,
+    ],
     shallow,
   );
 
@@ -45,7 +48,7 @@ export const useWalletMenuItems = () => {
       }
       await connect(wallet);
       onWalletConnect(wallet.name);
-      onOpenNavbarWalletMenu(false);
+      onOpenNavbarWalletSelectMenu(false);
       try {
       } catch (e) {}
     },
@@ -53,7 +56,7 @@ export const useWalletMenuItems = () => {
       connect,
       ethereum,
       onCloseAllNavbarMenus,
-      onOpenNavbarWalletMenu,
+      onOpenNavbarWalletSelectMenu,
       onWalletConnect,
       tally,
     ],

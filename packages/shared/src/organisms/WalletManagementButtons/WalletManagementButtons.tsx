@@ -14,10 +14,10 @@ import { ButtonSecondary } from '../../atoms/ButtonSecondary';
 import { walletDigest } from '../../utils/walletDigest';
 
 interface ToggleMenuHandlersProps {
+  openNavbarWalletSelectMenu: boolean;
+  onOpenNavbarWalletSelectMenu: (open: boolean) => void;
   openNavbarWalletMenu: boolean;
   onOpenNavbarWalletMenu: (open: boolean) => void;
-  openNavbarConnectedMenu: boolean;
-  onOpenNavbarConnectedMenu: (open: boolean) => void;
 }
 
 interface WalletManagementButtonsProps {
@@ -40,20 +40,20 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const handleWalletPicker = () => {
-    props.toggleMenuHandlers.onOpenNavbarWalletMenu(
-      !props.toggleMenuHandlers.openNavbarWalletMenu,
+    props.toggleMenuHandlers.onOpenNavbarWalletSelectMenu(
+      !props.toggleMenuHandlers.openNavbarWalletSelectMenu,
     );
   };
 
   const handleWalletMenuClick = () => {
-    !props.toggleMenuHandlers.openNavbarConnectedMenu &&
+    !props.toggleMenuHandlers.openNavbarWalletMenu &&
       trackEvent({
         category: TrackingCategories.MENU,
         action: TrackingActions.OPEN_CONNECTED_MENU,
         disableTrackingTool: [EventTrackingTools.arcx],
       });
-    props.toggleMenuHandlers.onOpenNavbarConnectedMenu(
-      !props.toggleMenuHandlers.openNavbarConnectedMenu,
+    props.toggleMenuHandlers.onOpenNavbarWalletMenu(
+      !props.toggleMenuHandlers.openNavbarWalletMenu,
     );
   };
 

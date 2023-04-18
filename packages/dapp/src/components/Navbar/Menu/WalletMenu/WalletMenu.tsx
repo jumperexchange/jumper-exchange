@@ -18,14 +18,14 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const theme = useTheme();
 
   const [
-    openNavbarWalletMenu,
-    onOpenNavbarWalletMenu,
+    openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu,
     openNavbarSubMenu,
     onOpenNavbarSubMenu,
   ] = useMenuStore(
     (state) => [
-      state.openNavbarWalletMenu,
-      state.onOpenNavbarWalletMenu,
+      state.openNavbarWalletSelectMenu,
+      state.onOpenNavbarWalletSelectMenu,
       state.openNavbarSubMenu,
       state.onOpenNavbarSubMenu,
     ],
@@ -38,8 +38,8 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
       handleClose={handleClose}
       label={`${translate(`${i18Path}chooseWallet`)}`}
       isScrollable={true}
-      open={openNavbarWalletMenu}
-      setOpen={onOpenNavbarWalletMenu}
+      open={openNavbarWalletSelectMenu}
+      setOpen={onOpenNavbarWalletSelectMenu}
       isOpenSubMenu={openNavbarSubMenu === SubMenuKeys.wallets}
     >
       {!!_walletMenuItems.length ? (
@@ -53,7 +53,7 @@ export const WalletMenu = ({ handleClose, open }: NavbarMenuProps) => {
             showMoreIcon={el.showMoreIcon}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
-            open={!!open ? open : openNavbarWalletMenu}
+            open={!!open ? open : openNavbarWalletSelectMenu}
             isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.wallets}
             setOpenSubMenu={onOpenNavbarSubMenu}
           />

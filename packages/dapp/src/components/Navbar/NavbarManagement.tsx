@@ -25,27 +25,27 @@ const NavbarManagement = () => {
   const [
     openMainNavbarMenu,
     onOpenNavbarMainMenu,
+    openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu,
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
-    openNavbarConnectedMenu,
-    onOpenNavbarConnectedMenu,
   ] = useMenuStore(
     (state) => [
       state.openMainNavbarMenu,
       state.onOpenNavbarMainMenu,
+      state.openNavbarWalletSelectMenu,
+      state.onOpenNavbarWalletSelectMenu,
       state.openNavbarWalletMenu,
       state.onOpenNavbarWalletMenu,
-      state.openNavbarConnectedMenu,
-      state.onOpenNavbarConnectedMenu,
     ],
     shallow,
   );
 
   const toggleMenuHandlers = {
+    openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu,
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
-    openNavbarConnectedMenu,
-    onOpenNavbarConnectedMenu,
   };
 
   const onMenuInit = useMenuStore((state) => state.onMenuInit);

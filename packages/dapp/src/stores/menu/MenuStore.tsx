@@ -10,8 +10,8 @@ import { SubMenuKeys } from '../../const';
 interface DefaultMenuType {
   copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
+  openNavbarWalletSelectMenu: boolean;
   openNavbarWalletMenu: boolean;
-  openNavbarConnectedMenu: boolean;
   openNavbarSubMenu: string;
   openSupportModal: boolean;
   anchorEl: null | JSX.Element;
@@ -20,8 +20,8 @@ interface DefaultMenuType {
 export const defaultMenu: DefaultMenuType = {
   copiedToClipboard: false,
   openMainNavbarMenu: false,
+  openNavbarWalletSelectMenu: false,
   openNavbarWalletMenu: false,
-  openNavbarConnectedMenu: false,
   openNavbarSubMenu: 'none',
   openSupportModal: false,
   anchorEl: null,
@@ -57,8 +57,8 @@ export const useMenuStore = create<MenuState>((set, get) => ({
     set({
       copiedToClipboard: false,
       openMainNavbarMenu: false,
+      openNavbarWalletSelectMenu: false,
       openNavbarWalletMenu: false,
-      openNavbarConnectedMenu: false,
       openNavbarSubMenu: SubMenuKeys.none,
       openSupportModal: false,
     });
@@ -79,19 +79,19 @@ export const useMenuStore = create<MenuState>((set, get) => ({
   },
 
   // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: (open: boolean) => {
+  onOpenNavbarWalletSelectMenu: (open: boolean) => {
     set({
       openNavbarSubMenu: open
         ? SubMenuKeys.wallets
         : (SubMenuKeys.none as string),
-      openNavbarWalletMenu: open as boolean,
+      openNavbarWalletSelectMenu: open as boolean,
     });
   },
 
   // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: (open: boolean) => {
+  onOpenNavbarWalletMenu: (open: boolean) => {
     set({
-      openNavbarConnectedMenu: open as boolean,
+      openNavbarWalletMenu: open as boolean,
     });
   },
 

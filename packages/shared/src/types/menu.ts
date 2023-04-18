@@ -6,8 +6,8 @@ export interface MenuProps {
   anchorRef?: any;
   copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
+  openNavbarWalletSelectMenu?: boolean;
   openNavbarWalletMenu?: boolean;
-  openNavbarConnectedMenu?: boolean;
   openNavbarSubMenu?: string;
   openSupportModal?: boolean;
 }
@@ -28,10 +28,10 @@ export interface MenuState extends MenuProps {
   onOpenNavbarMainMenu: (open: boolean) => void;
 
   // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: (open: boolean) => void;
+  onOpenNavbarWalletSelectMenu: (open: boolean) => void;
 
   // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: (open: boolean) => void;
+  onOpenNavbarWalletMenu: (open: boolean) => void;
 
   // Toggle Navbar Sub Menu
   onOpenNavbarSubMenu: (subMenu: string) => void;
