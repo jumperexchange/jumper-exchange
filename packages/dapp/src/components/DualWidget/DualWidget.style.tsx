@@ -1,15 +1,14 @@
-import { Box, BoxProps } from '@mui/material';
+import { Grid, GridProps } from '@mui/material';
 import { Breakpoint, styled } from '@mui/material/styles';
 
-export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
+export interface WidgetContainerProps extends Omit<GridProps, 'component'> {
   isActive?: boolean;
 }
 
-export const WidgetContainer = styled(Box, {
+export const WidgetContainer = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<WidgetContainerProps>(({ theme, isActive }) => ({
   display: isActive ? 'inherit' : 'none',
-  flex: 1,
   paddingTop: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     paddingTop: theme.spacing(2),
