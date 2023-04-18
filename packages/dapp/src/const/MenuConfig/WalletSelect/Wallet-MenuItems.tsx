@@ -9,7 +9,7 @@ import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
 import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
-export const useWalletMenuItems = () => {
+export const useWalletSelectMenuItems = () => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
     useState<Wallet>();
   const { connect } = useWallet();
@@ -37,7 +37,7 @@ export const useWalletMenuItems = () => {
       }
       await connect(wallet);
       settings.onWalletConnect(wallet.name);
-      menu.onOpenNavbarWalletMenu(false);
+      menu.onOpenNavbarWalletSelectMenu(false);
       try {
       } catch (e) {}
     },
@@ -45,13 +45,12 @@ export const useWalletMenuItems = () => {
   );
 
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
-    const _output = [];
-    supportedWallets.forEach((wallet, index) => {
+    const _output = supportedWallets.map((wallet, index) => {
       // TODO: overwrite taho name ; REMOVE AfTER WALLET MANAGEMENT v2
       if (wallet.name === 'Tally Ho') {
         wallet.name = 'Taho';
       }
-      _output.push({
+      return {
         label: wallet.name,
         prefixIcon: (
           <Avatar
@@ -71,10 +70,10 @@ export const useWalletMenuItems = () => {
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         },
-      });
+      };
     });
     return _output;
-  }, []);
+  }, [login, trackEvent]);
 
   return _WalletMenuItems;
 };

@@ -4,25 +4,22 @@ import type { MutableRefObject } from 'react';
 
 export type MenuValueProps = {
   anchorEl: any;
-  copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
+  openNavbarWalletSelectMenu: boolean;
+  openNavbarChainsMenu: boolean;
   openNavbarWalletMenu: boolean;
-  openNavbarConnectedMenu: boolean;
   openNavbarSubMenu: string;
   openSupportModal: boolean;
 };
 
 export type MenuContextProps = {
   anchorRef?: any;
-  copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
+  openNavbarChainsMenu?: boolean;
+  openNavbarWalletSelectMenu?: boolean;
   openNavbarWalletMenu?: boolean;
-  openNavbarConnectedMenu?: boolean;
   openNavbarSubMenu?: string;
   openSupportModal?: boolean;
-
-  // ClipBoard
-  onCopyToClipboard: (copied: boolean) => void;
 
   // On Iniitialization
   onMenuInit: (
@@ -36,10 +33,13 @@ export type MenuContextProps = {
   onOpenNavbarMainMenu: (open: boolean) => void;
 
   // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: (open: boolean) => void;
+  onOpenNavbarWalletSelectMenu: (open: boolean) => void;
 
   // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: (open: boolean) => void;
+  onOpenNavbarWalletMenu: (open: boolean) => void;
+
+  // Toggle Navbar Chains Menu
+  onOpenNavbarChainsMenu: (open: boolean) => void;
 
   // Toggle Navbar Sub Menu
   onOpenNavbarSubMenu: (subMenu: string) => void;

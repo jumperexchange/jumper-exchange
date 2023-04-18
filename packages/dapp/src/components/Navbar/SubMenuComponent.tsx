@@ -27,7 +27,6 @@ interface NavbarSubMenuProps {
   suffixIcon?: JSX.Element | string;
   prefixIcon?: JSX.Element | string;
   checkIcon?: boolean;
-  isScrollable?: boolean;
   url?: string;
   subMenuList: MenuListItem[];
   triggerSubMenu: string;
@@ -38,7 +37,6 @@ const SubMenuComponent = ({
   isOpenSubMenu,
   setOpenSubMenu,
   isSubMenu,
-  isScrollable,
   label,
   triggerSubMenu,
   subMenuList,
@@ -56,15 +54,10 @@ const SubMenuComponent = ({
             isSubMenu={isSubMenu}
             openSubMenu={menu.openNavbarSubMenu}
             isOpenSubMenu={isOpenSubMenu}
-            isScrollable={isScrollable}
             isDarkMode={isDarkMode}
           >
             <MenuHeaderAppWrapper>
-              <MenuHeaderAppBar
-                component="div"
-                elevation={0}
-                isScrollable={!!label || isScrollable}
-              >
+              <MenuHeaderAppBar component="div" elevation={0}>
                 <>
                   <ButtonBackArrow
                     style={{ marginLeft: '0px' }}
@@ -116,7 +109,6 @@ const SubMenuComponent = ({
                   </MenuLinkItem>
                 ) : (
                   <MenuItem
-                    isScrollable={isScrollable}
                     onClick={() => {
                       !!el.triggerSubMenu && setOpenSubMenu(el.triggerSubMenu);
                       !!el.onClick && el.onClick();

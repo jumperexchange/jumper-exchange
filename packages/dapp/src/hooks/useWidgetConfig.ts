@@ -1,6 +1,6 @@
 import { Token } from '@lifi/sdk';
 import { HiddenUI, WidgetConfig } from '@lifi/widget';
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../const';
@@ -34,11 +34,12 @@ export function useWidgetConfig({ starterVariant }) {
     }
     return {
       variant: starterVariant ? starterVariant : 'expandable',
+      integrator: 'jumper.exchange',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          menu.onOpenNavbarWalletMenu(
-            !!menu.openNavbarWalletMenu ? false : true,
+          menu.onOpenNavbarWalletSelectMenu(
+            !!menu.openNavbarWalletSelectMenu ? false : true,
           );
           let promiseResolver: (value: void | PromiseLike<void>) => void;
           const loginAwaiter = new Promise<void>(
@@ -145,7 +146,6 @@ export function useWidgetConfig({ starterVariant }) {
         },
       },
       insurance: true,
-      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
     starterVariant,

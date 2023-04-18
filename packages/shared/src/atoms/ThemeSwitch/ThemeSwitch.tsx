@@ -1,6 +1,7 @@
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import { useMediaQuery } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import { useTranslation } from 'react-i18next';
 import {
@@ -32,14 +33,18 @@ export const ThemeSwitch = () => {
     settings.onChangeMode(isDarkMode ? 'light' : 'dark');
   };
 
+  const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
+
   return (
     <Tooltip
       title={
         settings.themeMode === 'light'
-          ? translate(`${i18Path}themes.light`)
+          ? translate(`${i18Path}themes.switchToDark`)
           : settings.themeMode === 'dark'
-          ? translate(`${i18Path}themes.dark`)
-          : translate(`${i18Path}themes.auto`)
+          ? translate(`${i18Path}themes.switchToLight`)
+          : !isDarkModeHook
+          ? translate(`${i18Path}themes.switchToDark`)
+          : translate(`${i18Path}themes.switchToLight`)
       }
     >
       <ButtonThemeSwitch
@@ -48,9 +53,9 @@ export const ThemeSwitch = () => {
         }}
       >
         {settings.themeMode === 'light' ? (
-          <LightModeIcon />
-        ) : settings.themeMode === 'dark' ? (
           <NightlightIcon />
+        ) : settings.themeMode === 'dark' ? (
+          <LightModeIcon />
         ) : (
           <BrightnessAutoIcon />
         )}
