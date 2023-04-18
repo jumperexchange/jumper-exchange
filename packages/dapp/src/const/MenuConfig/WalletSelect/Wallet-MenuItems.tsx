@@ -51,7 +51,7 @@ export const useWalletSelectMenuItems = () => {
         wallet.name = 'Taho';
       }
       return {
-        label: wallet.name,
+        label: `${wallet.name}`,
         prefixIcon: (
           <Avatar
             src={wallet.icon}
@@ -65,8 +65,8 @@ export const useWalletSelectMenuItems = () => {
           trackEvent({
             category: TrackingCategories.Wallet,
             action: TrackingActions.ChooseWallet,
-            label: `choose-wallet-${wallet}`,
-            data: { usedWallet: wallet.name },
+            label: `choose-wallet-${wallet.name}`,
+            data: { usedWallet: `${wallet.name}` },
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         },

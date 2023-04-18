@@ -92,8 +92,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
           account: account,
           disconnect: false,
           data: {
-            account: account.address,
-            chain: account.chainId,
+            account: `${account.address}`,
+            chain: `${account.chainId}`,
           },
         });
     };
