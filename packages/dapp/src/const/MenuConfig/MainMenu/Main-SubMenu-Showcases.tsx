@@ -1,6 +1,5 @@
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 
 export const useMainSubMenuShowcases = () => {
@@ -18,7 +17,6 @@ export const useMainSubMenuShowcases = () => {
           destination: 'showcase-ukraine',
           url: 'https://transferto.xyz/showcase/ukraine',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
         });
       },
     },
@@ -31,7 +29,6 @@ export const useMainSubMenuShowcases = () => {
           destination: 'showcase-klima',
           url: 'https://transferto.xyz/showcase/klima-stake-v2',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
         });
       },
     },
@@ -44,7 +41,6 @@ export const useMainSubMenuShowcases = () => {
           destination: 'showcase-carbon',
           url: 'https://transferto.xyz/showcase/carbon-offset',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
         });
       },
     },

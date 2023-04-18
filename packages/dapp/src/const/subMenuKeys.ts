@@ -1,6 +1,5 @@
 export enum SubMenuKeys {
-  walletSelect = 'walletSelect',
-  walletMenu = 'walletMenu',
+  wallets = 'wallets',
   themes = 'themes',
   chains = 'chains',
   devs = 'devs',

@@ -1,5 +1,10 @@
-import { TokenAmount, TokenWithAmounts } from '@lifi/sdk';
-import { ChainId, ChainKey, Coin, Token } from '@lifi/types';
+import {
+  ChainKey,
+  Coin,
+  Token,
+  TokenAmount,
+  TokenWithAmounts,
+} from '@lifi/sdk';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
 import BigNumber from 'bignumber.js';
 import { Signer } from 'ethers';
@@ -26,28 +31,7 @@ export interface MenuListItem {
   showMoreIcon?: boolean;
   checkIcon?: boolean;
   url?: string;
-  onClick?: any;
-  showButton?: boolean;
-}
-
-export interface ChainsMenuListItem {
-  label: string;
-  prefixIcon?: JSX.Element | string;
-  showMoreIcon?: boolean;
-  checkIcon?: boolean;
-  onClick?: any;
-  chainId: ChainId;
-}
-
-export interface ChainsMenuListItem {
-  label: string;
-  triggerSubMenu?: string;
-  prefixIcon?: JSX.Element | string;
-  suffixIcon?: JSX.Element | string;
-  showMoreIcon?: boolean;
-  checkIcon?: boolean;
-  url?: string;
-  onClick?: any;
+  onClick?: any; //(mode?: string) => void;
   showButton?: boolean;
 }
 

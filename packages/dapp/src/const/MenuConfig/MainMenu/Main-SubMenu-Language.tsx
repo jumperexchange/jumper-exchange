@@ -1,7 +1,6 @@
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
-import { EventTrackingTools, useUserTracking } from '../../../hooks';
-import { TrackingActions, TrackingCategories } from '../../trackingKeys';
+import { useUserTracking } from '../../../hooks';
 
 export const useMainSubMenuLanguage = () => {
   const { i18n } = useTranslation();
@@ -11,11 +10,11 @@ export const useMainSubMenuLanguage = () => {
     i18n.changeLanguage(newLanguage);
     settings.onChangeLanguage(newLanguage);
     trackEvent({
-      category: TrackingCategories.LANGUAGE,
-      action: TrackingActions.SWITCH_LANGUAGE,
-      label: `language-${newLanguage}`,
+      category: 'menu',
+      action: 'switch-language',
+      label: newLanguage,
       data: { language: `language-${newLanguage}` },
-      disableTrackingTool: [EventTrackingTools.arcx],
+      // disableTrackingTool: [EventTrackingTools.arcx],
     });
   };
 

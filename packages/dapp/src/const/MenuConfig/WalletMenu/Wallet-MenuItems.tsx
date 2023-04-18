@@ -2,14 +2,12 @@ import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useMemo, useState } from 'react';
-import { EventTrackingTools } from '../../../hooks/useUserTracking';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
-import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
-export const useWalletSelectMenuItems = () => {
+export const useWalletMenuItems = () => {
   const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
     useState<Wallet>();
   const { connect } = useWallet();
@@ -37,20 +35,21 @@ export const useWalletSelectMenuItems = () => {
       }
       await connect(wallet);
       settings.onWalletConnect(wallet.name);
-      menu.onOpenNavbarWalletSelectMenu(false);
+      menu.onOpenNavbarWalletMenu(false);
       try {
       } catch (e) {}
     },
-    [connect, ethereum, menu, settings, tally],
+    [connect, ethereum, menu, settings],
   );
 
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
-    const _output = supportedWallets.map((wallet, index) => {
+    const _output = [];
+    supportedWallets.forEach((wallet, index) => {
       // TODO: overwrite taho name ; REMOVE AfTER WALLET MANAGEMENT v2
       if (wallet.name === 'Tally Ho') {
         wallet.name = 'Taho';
       }
-      return {
+      _output.push({
         label: wallet.name,
         prefixIcon: (
           <Avatar
@@ -63,17 +62,16 @@ export const useWalletSelectMenuItems = () => {
         onClick: () => {
           login(wallet);
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.CHOOSE_WALLET,
-            label: `choose-wallet-${wallet}`,
+            category: 'wallet',
+            action: 'choose-wallet',
+            label: `${wallet}`,
             data: { usedWallet: wallet.name },
-            disableTrackingTool: [EventTrackingTools.arcx],
           });
         },
-      };
+      });
     });
     return _output;
-  }, [login, trackEvent]);
+  }, []);
 
   return _WalletMenuItems;
 };

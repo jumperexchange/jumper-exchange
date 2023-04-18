@@ -43,20 +43,20 @@ export const defaultSettings: DefaultSettingsType = {
 };
 
 interface defaultMenuType {
+  copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
   openNavbarWalletMenu: boolean;
-  openNavbarChainsMenu: boolean;
-  openNavbarWalletSelectMenu: boolean;
+  openNavbarConnectedMenu: boolean;
   openNavbarSubMenu: string;
   openSupportModal: boolean;
   anchorEl: null | JSX.Element;
 }
 
 export const defaultMenu: defaultMenuType = {
+  copiedToClipboard: false,
   openMainNavbarMenu: false,
-  openNavbarChainsMenu: false,
   openNavbarWalletMenu: false,
-  openNavbarWalletSelectMenu: false,
+  openNavbarConnectedMenu: false,
   openNavbarSubMenu: 'none',
   openSupportModal: false,
   anchorEl: null,
