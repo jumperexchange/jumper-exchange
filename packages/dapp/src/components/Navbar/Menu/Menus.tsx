@@ -1,5 +1,5 @@
 import { SyntheticEvent } from 'react';
-import { ConnectedMenu, MainMenu, WalletMenu } from '.';
+import { ChainsMenu, ConnectedMenu, MainMenu, WalletSelectMenu } from '.';
 import { useMenu } from '../../../providers/MenuProvider';
 
 export const Menus = () => {
@@ -13,14 +13,13 @@ export const Menus = () => {
     ) {
       return;
     }
-    menu.onCopyToClipboard(false);
   };
 
   return (
     <>
       <MainMenu handleClose={handleClose} />
-      <WalletMenu handleClose={handleClose} />
-
+      <WalletSelectMenu handleClose={handleClose} />
+      <ChainsMenu handleClose={handleClose} />
       <ConnectedMenu handleClose={handleClose} />
     </>
   );
