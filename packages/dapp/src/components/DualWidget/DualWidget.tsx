@@ -54,15 +54,13 @@ export function DualWidget() {
       alignItems="center"
       container
       sx={{
-        top: 0,
-        display: 'flex',
         overflowX: 'hidden',
       }}
     >
-      <WidgetContainer isActive={_starterVariant === 'expandable'}>
+      <WidgetContainer item xs={12} isActive={_starterVariant === 'expandable'}>
         <Widget starterVariant={'expandable'} />
       </WidgetContainer>
-      <WidgetContainer isActive={_starterVariant === 'refuel'}>
+      <WidgetContainer item xs={12} isActive={_starterVariant === 'refuel'}>
         <Widget starterVariant={'refuel'} />
       </WidgetContainer>
       <WidgetEvents />
