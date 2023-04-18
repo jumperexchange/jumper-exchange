@@ -19,14 +19,12 @@ interface NavbarMenuProps {
   hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  isScrollable?: boolean;
   label?: string;
   open: boolean;
   children: any;
 }
 
 const NavbarMenuMobile = ({
-  isScrollable,
   handleClose,
   open,
   hideBackArrow,
@@ -65,7 +63,6 @@ const NavbarMenuMobile = ({
               isDarkMode={isDarkMode}
               isOpenSubMenu={isOpenSubMenu}
               openSubMenu={menu.openNavbarSubMenu}
-              isScrollable={!!label || isScrollable}
             >
               <ClickAwayListener
                 onClickAway={(event) => {
@@ -83,23 +80,19 @@ const NavbarMenuMobile = ({
                   }
                   component={
                     !!isOpenSubMenu &&
-                    menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                    menu.openNavbarSubMenu !== SubMenuKeys.walletSelect
                       ? 'div'
                       : 'ul'
                   }
                 >
                   {!!label ? (
                     <MenuHeaderAppWrapper>
-                      <MenuHeaderAppBar
-                        component="div"
-                        elevation={0}
-                        isScrollable={isScrollable}
-                      >
+                      <MenuHeaderAppBar component="div" elevation={0}>
                         {!hideBackArrow && (
                           <ButtonBackArrow
                             onClick={() => {
-                              menu.onOpenNavbarWalletMenu(
-                                !menu.openNavbarWalletMenu,
+                              menu.onOpenNavbarWalletSelectMenu(
+                                !menu.openNavbarWalletSelectMenu,
                               );
                             }}
                           />

@@ -13,6 +13,7 @@ export const ButtonThemeSwitch = styled(IconButton)(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main
       : theme.palette.white.main,
+  zIndex: 1400,
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'

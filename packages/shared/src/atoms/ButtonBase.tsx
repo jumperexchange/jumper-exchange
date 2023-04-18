@@ -1,4 +1,5 @@
-import { Button as MuiButton, ButtonProps } from '@mui/material'; //ButtonProps
+import type { ButtonProps } from '@mui/material';
+import { Button as MuiButton } from '@mui/material'; //ButtonProps
 import { styled } from '@mui/material/styles';
 
 export const ButtonBase = styled(MuiButton)<ButtonProps>(({ theme }) => ({

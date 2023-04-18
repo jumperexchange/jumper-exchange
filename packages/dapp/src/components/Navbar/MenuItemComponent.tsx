@@ -3,9 +3,9 @@ import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary';
 import { Dispatch, SetStateAction } from 'react';
+import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/useUserTracking/useUserTracking';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
-
 interface MenuItemProps {
   open: boolean;
   isOpenSubMenu: boolean;
@@ -14,7 +14,6 @@ interface MenuItemProps {
   showMoreIcon?: boolean;
   label: string;
   onClick: any;
-  isScrollable?: boolean;
   triggerSubMenu: string;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
@@ -28,7 +27,6 @@ const MenuItemComponent = ({
   showButton,
   showMoreIcon = true,
   onClick,
-  isScrollable,
   label,
   triggerSubMenu,
   prefixIcon,
@@ -41,13 +39,12 @@ const MenuItemComponent = ({
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
-      isScrollable={isScrollable}
       onClick={() => {
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
         !!triggerSubMenu &&
           trackEvent({
-            category: 'menu',
-            action: 'open-submenu',
+            category: TrackingCategories.MENU,
+            action: TrackingActions.OPEN_SUBMENU,
             label: triggerSubMenu,
             data: { subMenu: triggerSubMenu },
           });
