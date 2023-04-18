@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ButtonSecondary } from '@transferto/shared/src/atoms/ButtonSecondary';
+import { ButtonSecondary } from '@transferto/shared/src/atoms/index';
 
 import { Breakpoint, alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';

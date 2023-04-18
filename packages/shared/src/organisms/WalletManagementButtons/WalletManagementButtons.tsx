@@ -10,8 +10,8 @@ import {
 } from '../../../../dapp/src/const';
 import { EventTrackingTools } from '../../../../dapp/src/hooks';
 import { useUserTracking } from '../../../../dapp/src/hooks/useUserTracking/useUserTracking';
-import { ButtonPrimary } from '../../atoms/ButtonPrimary';
-import { ButtonSecondary } from '../../atoms/ButtonSecondary';
+import { ButtonPrimary } from '../../atoms/ButtonPrimary.style';
+import { ButtonSecondary } from '../../atoms/ButtonSecondary.style';
 import type { MenuContextProps } from '../../types';
 import { walletDigest } from '../../utils/walletDigest';
 interface WalletManagementButtonsProps {

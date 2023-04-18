@@ -13,7 +13,16 @@ const ConnectedSubMenuChains = () => {
     [chains, account.chainId],
   );
 
-  const connectedSubMenuChains: MenuListItem[] = chains.map((el) => ({
+  let availableChains = chains;
+
+  if (import.meta.env.MODE === 'testnet') {
+    const testnetChains = chains.filter(
+      (el) => !el.mainnet || el.id === account.chainId,
+    );
+    availableChains = testnetChains;
+  }
+
+  const connectedSubMenuChains: MenuListItem[] = availableChains.map((el) => ({
     label: `${el.name}`,
     onClick: () => {
       switchChain(el.id);
@@ -27,7 +36,6 @@ const ConnectedSubMenuChains = () => {
     ),
     checkIcon: el.id === activeChain?.id,
   }));
-
   return connectedSubMenuChains;
 };
 

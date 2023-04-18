@@ -34,7 +34,6 @@ export function useWidgetConfig({ starterVariant }) {
     }
     return {
       variant: starterVariant ? starterVariant : 'expandable',
-      integrator: 'jumper.exchange',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
@@ -146,6 +145,10 @@ export function useWidgetConfig({ starterVariant }) {
         },
       },
       insurance: true,
+      integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
+      chains: {
+        allow: import.meta.env.MODE === 'testnet' ? [5, 80001, 59140] : [],
+      },
     };
   }, [
     starterVariant,

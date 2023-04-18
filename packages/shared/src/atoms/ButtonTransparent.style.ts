@@ -1,8 +1,8 @@
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '../utils';
-import { ButtonBase } from './ButtonBase';
+import { ButtonBase } from './ButtonBase.style';
 
-export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
+export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
   color:
     theme.palette.mode === 'dark'
       ? theme.palette.white.main
@@ -10,13 +10,13 @@ export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
   overflow: 'hidden',
   backgroundColor:
     theme.palette.mode === 'dark'
-      ? theme.palette.alphaLight300.main
-      : theme.palette.white.main,
+      ? alpha(theme.palette.white.main, 0.12)
+      : alpha(theme.palette.black.main, 0.08),
   '&:hover': {
     backgroundColor:
       theme.palette.mode === 'dark'
-        ? theme.palette.alphaLight300.main
-        : theme.palette.white.main,
+        ? alpha(theme.palette.white.main, 0.16)
+        : alpha(theme.palette.black.main, 0.12),
   },
   '&:hover:before': {
     content: '" "',
