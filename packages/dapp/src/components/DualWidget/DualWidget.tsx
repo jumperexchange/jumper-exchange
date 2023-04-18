@@ -1,5 +1,6 @@
 import { WidgetVariant } from '@lifi/widget';
 import { Grid } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { TestnetAlert } from '@transferto/shared/src';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -11,6 +12,7 @@ import { WidgetEvents } from './WidgetEvents';
 
 export function DualWidget() {
   const settings = useSettings();
+  const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] =
     useState<WidgetVariant>('expandable');
@@ -55,16 +57,19 @@ export function DualWidget() {
       alignItems="center"
       container
       sx={{
-        top: 0,
-        display: 'flex',
         overflowX: 'hidden',
       }}
     >
-      {import.meta.env.MODE === 'testnet' && <TestnetAlert />}
-      <WidgetContainer isActive={_starterVariant === 'expandable'}>
+      {import.meta.env.MODE === 'testnet' && (
+        <Grid item xs={12} mt={theme.spacing(6)}>
+          <TestnetAlert />
+        </Grid>
+      )}
+
+      <WidgetContainer item xs={12} isActive={_starterVariant === 'expandable'}>
         <Widget starterVariant={'expandable'} />
       </WidgetContainer>
-      <WidgetContainer isActive={_starterVariant === 'refuel'}>
+      <WidgetContainer item xs={12} isActive={_starterVariant === 'refuel'}>
         <Widget starterVariant={'refuel'} />
       </WidgetContainer>
       <WidgetEvents />

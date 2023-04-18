@@ -5,6 +5,7 @@ const MessageCard = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   position: 'relative',
   whiteSpace: 'pre-line',
+  margin: 'auto',
 }));
 
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({
