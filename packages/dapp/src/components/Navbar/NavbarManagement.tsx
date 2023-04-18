@@ -1,10 +1,10 @@
-import { Chain } from '@lifi/types';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { WalletManagementButtons } from '@transferto/shared/src';
+import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { ThemeSwitch } from '@transferto/shared/src/atoms/ThemeSwitch';
 import { useSettings } from '@transferto/shared/src/hooks';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubMenuKeys } from '../../const';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
@@ -43,12 +43,7 @@ const NavbarManagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { chains, isSuccess } = useChainInfos();
-
-  const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains, account.chainId],
-  );
+  const { isSuccess } = useChainInfos();
 
   return (
     <NavbarManagementContainer className="settings">
@@ -56,7 +51,6 @@ const NavbarManagement = () => {
         walletManagement={walletManagement}
         menu={menu}
         setOpenNavbarSubmenu={menu.onOpenNavbarSubMenu}
-        activeChain={activeChain}
         connectButtonLabel={
           <Typography
             variant={'lifiBodyMediumStrong'}
@@ -73,6 +67,7 @@ const NavbarManagement = () => {
         }
         isSuccess={isSuccess}
       />
+      {account.isActive ? <ChainSwitch /> : null}
       <ThemeSwitch />
       <NavbarDropdownButton
         ref={anchorRef}
@@ -82,7 +77,7 @@ const NavbarManagement = () => {
         aria-haspopup="true"
         onClick={() => {
           menu.onOpenNavbarSubMenu(SubMenuKeys.none);
-          menu.onOpenNavbarWalletMenu(false);
+          menu.onOpenNavbarWalletSelectMenu(false);
           menu.onOpenNavbarMainMenu(!menu.openMainNavbarMenu);
         }}
       >
