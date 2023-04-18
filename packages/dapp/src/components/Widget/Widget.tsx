@@ -3,10 +3,5 @@ import { useWidgetConfig } from '../../hooks/';
 
 export function Widget({ starterVariant }) {
   const widgetConfig = useWidgetConfig((starterVariant = { starterVariant }));
-  return (
-    <LiFiWidget
-      integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
-      config={widgetConfig}
-    />
-  );
+  return <LiFiWidget config={widgetConfig} />;
 }

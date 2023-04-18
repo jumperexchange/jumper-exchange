@@ -1,5 +1,10 @@
 import { Token } from '@lifi/sdk';
 import { useLiFiWalletManagement, Wallet } from '@lifi/wallet-management';
+import {
+  addChain as walletAddChain,
+  switchChain as walletSwitchChain,
+  switchChainAndAddToken,
+} from './hotfix/wallet-automation-hotfix';
 import { Signer } from 'ethers';
 import React, {
   createContext,
@@ -9,17 +14,13 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import {
-  switchChainAndAddToken,
-  addChain as walletAddChain,
-  switchChain as walletSwitchChain,
-} from './hotfix/wallet-automation-hotfix';
 
 import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
 import { useUserTracking } from '../hooks';
+import { useMenu } from './MenuProvider';
 
 const stub = (): never => {
   throw new Error('You forgot to wrap your component in <WalletProvider>.');
@@ -49,6 +50,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
   const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
+  const menu = useMenu();
   const { trackConnectWallet } = useUserTracking();
   const connect = useCallback(
     async (wallet?: Wallet) => {
@@ -63,11 +65,12 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const disconnect = useCallback(async () => {
     setUsedWallet(undefined);
     await walletManagementDisconnect();
+    menu.onCloseAllNavbarMenus();
     trackConnectWallet({
       account: account,
       disconnect: true,
     });
-  }, [account, trackConnectWallet, walletManagementDisconnect]);
+  }, [account, menu, trackConnectWallet, walletManagementDisconnect]);
 
   // only for injected wallets
   const switchChain = useCallback(async (chainId: number) => {

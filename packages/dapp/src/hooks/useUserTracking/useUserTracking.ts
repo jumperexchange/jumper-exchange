@@ -152,13 +152,17 @@ export function useUserTracking() {
             );
       }
       if (!disableTrackingTool?.includes(EventTrackingTools.ga)) {
-        ReactGA.gtag('event', `pageload`, {
-          pageLoad: pageload ? 'external' : 'internal',
-          source,
-          destination,
-          url,
-          ...data,
-        });
+        ReactGA.gtag(
+          'event',
+          `pageload`, // todo: check naming of key words
+          {
+            pageLoad: pageload ? 'external' : 'internal',
+            source,
+            destination,
+            url,
+            ...data,
+          },
+        );
       }
       if (!disableTrackingTool?.includes(EventTrackingTools.arcx)) {
         pageload &&
@@ -191,7 +195,7 @@ export function useUserTracking() {
         hotjar.initialized() && hotjar.event(`${category}-${action}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTools.ga)) {
-        ReactGA.gtag('event', 'transaction', {
+        ReactGA.gtag('event', 'Transaction', {
           category,
           action,
           ...data,

@@ -20,6 +20,7 @@ interface NavbarMenuProps {
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  isScrollable?: boolean;
   open: boolean;
   children: any;
 }
@@ -29,6 +30,7 @@ const NavbarMenuDesktop = ({
   setOpen,
   handleClose,
   hideBackArrow,
+  isScrollable,
   label,
   open,
   children,
@@ -70,6 +72,7 @@ const NavbarMenuDesktop = ({
                 isDarkMode={isDarkMode}
                 isOpenSubMenu={isOpenSubMenu}
                 openSubMenu={menu.openNavbarSubMenu}
+                isScrollable={!!label || isScrollable}
               >
                 <ClickAwayListener
                   onClickAway={(event) => {
@@ -89,19 +92,23 @@ const NavbarMenuDesktop = ({
                     }
                     component={
                       !!isOpenSubMenu &&
-                      menu.openNavbarSubMenu !== SubMenuKeys.walletSelect
+                      menu.openNavbarSubMenu !== SubMenuKeys.wallets
                         ? 'div'
                         : 'ul'
                     }
                   >
                     {!!label ? (
                       <MenuHeaderAppWrapper>
-                        <MenuHeaderAppBar component="div" elevation={0}>
+                        <MenuHeaderAppBar
+                          component="div"
+                          elevation={0}
+                          isScrollable={isScrollable}
+                        >
                           {!hideBackArrow && (
                             <ButtonBackArrow
                               onClick={() => {
-                                menu.onOpenNavbarWalletSelectMenu(
-                                  !menu.openNavbarWalletSelectMenu,
+                                menu.onOpenNavbarWalletMenu(
+                                  !menu.openNavbarWalletMenu,
                                 );
                               }}
                             />

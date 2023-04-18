@@ -4,7 +4,6 @@ import SlideshowIcon from '@mui/icons-material/Slideshow';
 import { useTheme } from '@mui/material/styles';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 
 export const useMainSubMenuDevelopers = () => {
@@ -33,7 +32,6 @@ export const useMainSubMenuDevelopers = () => {
           destination: 'lifi-github',
           url: 'https://github.com/lifinance/',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
         });
       },
     },
@@ -47,7 +45,6 @@ export const useMainSubMenuDevelopers = () => {
           destination: 'lifi-docs',
           url: 'https://docs.li.fi/',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
         });
       },
     },

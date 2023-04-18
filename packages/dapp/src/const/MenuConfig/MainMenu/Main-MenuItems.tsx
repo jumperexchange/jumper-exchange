@@ -9,12 +9,7 @@ import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import {
-  SubMenuKeys,
-  TrackingActions,
-  TrackingCategories,
-} from '../../../const';
-import { EventTrackingTools } from '../../../hooks';
+import { SubMenuKeys } from '../../../const';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenu } from '../../../providers/MenuProvider';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
@@ -74,7 +69,6 @@ export const useMainMenuItems = () => {
           destination: 'twitter-JumperExchange',
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
         });
       },
     },
@@ -97,7 +91,6 @@ export const useMainMenuItems = () => {
           destination: 'discord-lifi',
           url: 'https://discord.gg/lifi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
         });
       },
     },
@@ -120,7 +113,6 @@ export const useMainMenuItems = () => {
           destination: 'lifi-website',
           url: 'https://li.fi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
         });
         openInNewTab('https://li.fi');
       },
@@ -130,9 +122,8 @@ export const useMainMenuItems = () => {
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.SUPPORT_MODAL,
-          action: TrackingActions.OPEN_SUPPORT_MODAL,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          category: 'menu',
+          action: 'open-support-modal',
         });
         menu.toggleSupportModal(true);
       },

@@ -23,9 +23,6 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
               <ThemeProvider>
                 <ArcxAnalyticsProvider
                   apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
-                  config={{
-                    trackWalletConnections: false,
-                  }}
                 >
                   <WalletProvider>
                     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

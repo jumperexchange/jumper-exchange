@@ -10,12 +10,14 @@ interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
   open: boolean;
+  isScrollable?: boolean;
   children: any;
 }
 
 const NavbarMenu = ({
   handleClose,
   open,
+  isScrollable,
   hideBackArrow,
   setOpen,
   label,
@@ -35,6 +37,7 @@ const NavbarMenu = ({
         open={open}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu}
+        isScrollable={isScrollable}
       >
         {children}
       </NavbarMenuDesktop>
@@ -46,6 +49,7 @@ const NavbarMenu = ({
         open={open}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu}
+        isScrollable={isScrollable}
       >
         {children}
       </NavbarMenuMobile>

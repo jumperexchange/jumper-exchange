@@ -6,29 +6,33 @@ import { useWallet } from '../../../providers/WalletProvider';
 import { MenuListItem } from '../../../types';
 
 const ConnectedSubMenuChains = () => {
-  const { account, switchChain } = useWallet();
-  const { chains } = useChainInfos();
+  const { account, usedWallet, disconnect, switchChain } = useWallet();
+  const { chains, isSuccess } = useChainInfos();
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
-    [chains, account.chainId],
+    [chains.length, account.chainId],
   );
 
-  const connectedSubMenuChains: MenuListItem[] = chains.map((el) => ({
-    label: `${el.name}`,
-    onClick: () => {
-      switchChain(el.id);
-    },
-    prefixIcon: (
-      <Avatar
-        src={el.logoURI}
-        alt={`${el.name}-chain-logo`}
-        sx={{ height: '32px', width: '32px' }}
-      />
-    ),
-    checkIcon: el.id === activeChain?.id,
-  }));
+  const _ConnectedSubMenuChains: MenuListItem[] = [];
 
-  return connectedSubMenuChains;
+  chains.map((el) => {
+    _ConnectedSubMenuChains.push({
+      label: `${el.name}`,
+      onClick: () => {
+        switchChain(el.id);
+      },
+      prefixIcon: (
+        <Avatar
+          src={el.logoURI}
+          alt={`${el.name}-chain-logo`}
+          sx={{ height: '32px', width: '32px' }}
+        />
+      ),
+      checkIcon: el.id === activeChain?.id,
+    });
+  });
+
+  return _ConnectedSubMenuChains;
 };
 
 export default ConnectedSubMenuChains;

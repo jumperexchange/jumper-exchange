@@ -1,18 +1,16 @@
 import { Token } from '@lifi/sdk';
-import { HiddenUI, WidgetConfig } from '@lifi/widget';
-import { useTheme } from '@mui/material';
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../const';
-import { useMenu } from '../providers/MenuProvider';
-import { useWallet } from '../providers/WalletProvider';
 import {
   addChain,
   switchChain,
   switchChainAndAddToken,
 } from '../providers/hotfix/wallet-automation-hotfix';
+import { HiddenUI, WidgetConfig } from '@lifi/widget';
+import { useTheme } from '@mui/material/styles';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMenu } from '../providers/MenuProvider';
+import { useWallet } from '../providers/WalletProvider';
 import { LanguageKey } from '../types/i18n';
-import { EventTrackingTools } from './useUserTracking';
 import { useUserTracking } from './useUserTracking/useUserTracking';
 
 export function useWidgetConfig({ starterVariant }) {
@@ -21,7 +19,7 @@ export function useWidgetConfig({ starterVariant }) {
   const { disconnect, account } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
-  const { trackEvent } = useUserTracking();
+  const { trackEvent, trackAttribute } = useUserTracking();
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     let rpcs = {};
@@ -34,12 +32,11 @@ export function useWidgetConfig({ starterVariant }) {
     }
     return {
       variant: starterVariant ? starterVariant : 'expandable',
-      integrator: 'jumper.exchange',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          menu.onOpenNavbarWalletSelectMenu(
-            !!menu.openNavbarWalletSelectMenu ? false : true,
+          menu.onOpenNavbarWalletMenu(
+            !!menu.openNavbarWalletMenu ? false : true,
           );
           let promiseResolver: (value: void | PromiseLike<void>) => void;
           const loginAwaiter = new Promise<void>(
@@ -55,9 +52,10 @@ export function useWidgetConfig({ starterVariant }) {
         },
         disconnect: async () => {
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.DISCONNECT,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            category: 'wallet',
+            action: 'disconnect',
+            label: 'widget',
+            data: { source: 'widget' },
           });
           disconnect();
         },
@@ -65,13 +63,12 @@ export function useWidgetConfig({ starterVariant }) {
           await switchChain(reqChainId);
           if (account.signer) {
             trackEvent({
-              category: TrackingCategories.WALLET,
-              action: TrackingActions.SWITCH_CHAIN,
+              category: 'wallet',
+              action: 'switch-chain',
               label: `${reqChainId}`,
               data: {
                 switchChain: reqChainId,
               },
-              disableTrackingTool: [EventTrackingTools.arcx],
               // transport: "xhr", // optional, beacon/xhr/image
             });
             return account.signer!;
@@ -81,27 +78,25 @@ export function useWidgetConfig({ starterVariant }) {
         },
         addToken: async (token: Token, chainId: number) => {
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.ADD_TOKEN,
-            label: `addToken-${token.name}`,
+            category: 'wallet',
+            action: 'add-token',
+            label: `${token}`,
             data: {
-              tokenAdded: `${token.name}`,
+              tokenAdded: `${token}`,
               tokenAddChainId: chainId,
             },
-            disableTrackingTool: [EventTrackingTools.arcx],
           });
           await switchChainAndAddToken(chainId, token);
         },
         addChain: async (chainId: number) => {
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.ADD_CHAIN,
-            label: `addChain-${chainId}`,
+            category: 'wallet',
+            action: 'add-chain',
+            label: `${chainId}`,
             data: {
               chainIdAdded: `${chainId}`,
             },
             // transport: "xhr", // optional, beacon/xhr/image
-            disableTrackingTool: [EventTrackingTools.arcx],
           });
           return addChain(chainId);
         },
@@ -141,11 +136,7 @@ export function useWidgetConfig({ starterVariant }) {
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
-        defaultRouteOptions: {
-          maxPriceImpact: 0.4,
-        },
       },
-      insurance: true,
     };
   }, [
     starterVariant,

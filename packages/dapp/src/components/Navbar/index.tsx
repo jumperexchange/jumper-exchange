@@ -1,6 +1,6 @@
 export * from './Menu/ConnectedMenu';
 export * from './Menu/MainMenu';
-export * from './Menu/WalletSelectMenu';
+export * from './Menu/WalletMenu';
 export { default as MenuItemComponent } from './MenuItemComponent';
 export { default as Navbar } from './Navbar';
 export { default as NavbarManagement } from './NavbarManagement';

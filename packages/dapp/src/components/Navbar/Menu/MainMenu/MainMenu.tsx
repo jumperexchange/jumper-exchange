@@ -51,6 +51,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           isSubMenu={true}
           label={`${translate(`${i18Path}navbarMenu.theme`)}`}
           triggerSubMenu={SubMenuKeys.themes}
+          isScrollable={true}
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
@@ -61,6 +62,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           isSubMenu={true}
           label={`${translate(`${i18Path}language.key`)}`}
           triggerSubMenu={SubMenuKeys.language}
+          isScrollable={true}
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
@@ -71,6 +73,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           isSubMenu={true}
           label={`${translate(`${i18Path}navbarMenu.developers`)}`}
           triggerSubMenu={SubMenuKeys.devs}
+          isScrollable={true}
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
@@ -81,6 +84,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           isSubMenu={true}
           label={`${translate(`${i18Path}developers.showcases`)}`}
           triggerSubMenu={'showcases'}
+          isScrollable={true}
           open={menu.openMainNavbarMenu}
           isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
           setOpenSubMenu={menu.onOpenNavbarSubMenu}
