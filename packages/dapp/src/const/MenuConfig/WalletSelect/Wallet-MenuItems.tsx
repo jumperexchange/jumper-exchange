@@ -63,8 +63,8 @@ export const useWalletSelectMenuItems = () => {
         onClick: () => {
           login(wallet);
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.CHOOSE_WALLET,
+            category: TrackingCategories.Wallet,
+            action: TrackingActions.ChooseWallet,
             label: `choose-wallet-${wallet}`,
             data: { usedWallet: wallet.name },
             disableTrackingTool: [EventTrackingTools.arcx],
