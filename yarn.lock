@@ -1661,7 +1661,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@coinbase/wallet-sdk@npm:^3.6.5":
+"@coinbase/wallet-sdk@npm:^3.7.0":
   version: 3.7.0
   resolution: "@coinbase/wallet-sdk@npm:3.7.0"
   dependencies:
@@ -2174,7 +2174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/address@npm:5.7.0, @ethersproject/address@npm:^5, @ethersproject/address@npm:^5.7.0":
+"@ethersproject/address@npm:5.7.0, @ethersproject/address@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/address@npm:5.7.0"
   dependencies:
@@ -2367,7 +2367,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5, @ethersproject/providers@npm:^5.7.2":
+"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5.7.2":
   version: 5.7.2
   resolution: "@ethersproject/providers@npm:5.7.2"
   dependencies:
@@ -2882,41 +2882,33 @@ __metadata:
   linkType: hard
 
 "@lifi/types@npm:^3.2.1":
-  version: 3.2.5
-  resolution: "@lifi/types@npm:3.2.5"
+  version: 3.2.7
+  resolution: "@lifi/types@npm:3.2.7"
   dependencies:
     ethers: ^5.7.2
-  checksum: 1929e57dd44ef6ab6694dbb602484668b27f1c14adb9d200f44a53639fa2cadd9facf9115bb2d85ec6c0d83c2b570625e00207deb6be9afd3f607de288559ccf
+  checksum: 79e2f6e347ef508227ed5796f8d3b97367c08dfd989f29751858a3e66acfd16ce078579cf0fbb2ef2349fa8d26a962203008650480dc953f3dec1925ab5462ea
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:1.2.11, @lifi/wallet-management@npm:^1.2.11":
-  version: 1.2.11
-  resolution: "@lifi/wallet-management@npm:1.2.11"
+"@lifi/wallet-management@npm:2.0.0-beta.0, @lifi/wallet-management@npm:^2.0.0-beta.0":
+  version: 2.0.0-beta.0
+  resolution: "@lifi/wallet-management@npm:2.0.0-beta.0"
   dependencies:
-    "@coinbase/wallet-sdk": ^3.6.5
+    "@coinbase/wallet-sdk": ^3.7.0
     "@ethersproject/abstract-signer": ^5.7.0
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.0.0-beta.8
     "@walletconnect/ethereum-provider": ^1.8.0
     "@walletconnect/web3-provider": ^1.8.0
-    "@web3-react/coinbase-wallet": ^8.0.35-beta.0
-    "@web3-react/core": ^8.0.35-beta.0
-    "@web3-react/eip1193": ^8.0.27-beta.0
-    "@web3-react/empty": ^8.0.20-beta.0
-    "@web3-react/metamask": ^8.0.30-beta.0
-    "@web3-react/network": ^8.0.27-beta.0
-    "@web3-react/types": ^8.0.20-beta.0
-    "@web3-react/url": ^8.0.25-beta.0
     react: ^18.2.0
-  checksum: 023356ac11eecd15a90fc6d475f640950e5bb645edadd1fe822c1efa71c1cb180b745a8a575f09e674b0968c11494b5ae64dd952171fb232331dcffc1b7aa611
+  checksum: 6f21d04ce22035d6607ce7bd30f1cfcc627586677031982d86a618f8f4940b237e9ec3fc772e9fab962528c8c80f994956228108dea446e219e63b6448487e5f
   languageName: node
   linkType: hard
 
 "@lifi/widget@npm:^2.0.0-beta.0":
-  version: 2.0.0-beta.0
-  resolution: "@lifi/widget@npm:2.0.0-beta.0"
+  version: 2.0.0-beta.1
+  resolution: "@lifi/widget@npm:2.0.0-beta.1"
   dependencies:
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
@@ -2925,7 +2917,7 @@ __metadata:
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.0.0-beta.8
-    "@lifi/wallet-management": ^1.2.11
+    "@lifi/wallet-management": ^2.0.0-beta.0
     "@mui/icons-material": ^5.11.16
     "@mui/lab": ^5.0.0-alpha.127
     "@mui/material": ^5.12.1
@@ -2952,7 +2944,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 8e0aa9299c3548e120c05ea038c78bf7a5e48d1eb4ca1f731b7c3a76445a02c845fbb57b1c15fbc5e6be0499b0ad633663a5d4b0ddb49781fcf71fb9b38c4820
+  checksum: 82856dac9645fb59055243907e02dae148e26c01334f7870449d17fa771b8c6569c5f85cc5ba73f257a1342424eb4c20fee6ab88e0cd7ae4cdbf5cb0e0cc25d1
   languageName: node
   linkType: hard
 
@@ -2996,13 +2988,6 @@ __metadata:
   version: 1.6.22
   resolution: "@mdx-js/util@npm:1.6.22"
   checksum: 4b393907e39a1a75214f0314bf72a0adfa5e5adffd050dd5efe9c055b8549481a3cfc9f308c16dfb33311daf3ff63added7d5fd1fe52db614c004f886e0e559a
-  languageName: node
-  linkType: hard
-
-"@metamask/detect-provider@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@metamask/detect-provider@npm:1.2.0"
-  checksum: 2c152534a8dd15bc1430bb5159cdf58993549a644cff344a1ff43f4ede8f041aad72b909e822747f6545de3ed293a740ecffc86a859daf7a925c4096efd61eb3
   languageName: node
   linkType: hard
 
@@ -5457,7 +5442,7 @@ __metadata:
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.1
     "@lifi/sdk": ^2.0.0-beta.8
-    "@lifi/wallet-management": 1.2.11
+    "@lifi/wallet-management": 2.0.0-beta.0
     "@lifi/widget": ^2.0.0-beta.0
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.12.1
@@ -5497,7 +5482,7 @@ __metadata:
     "@babel/core": ^7.21.4
     "@emotion/react": ^11.10.6
     "@emotion/styled": ^11.10.6
-    "@lifi/wallet-management": ^1.2.11
+    "@lifi/wallet-management": 2.0.0-beta.0
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.12.1
     "@storybook/addon-actions": ^6.5.16
@@ -5530,13 +5515,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tufjs/models@npm:1.0.2":
-  version: 1.0.2
-  resolution: "@tufjs/models@npm:1.0.2"
+"@tufjs/models@npm:1.0.3":
+  version: 1.0.3
+  resolution: "@tufjs/models@npm:1.0.3"
   dependencies:
     "@tufjs/canonical-json": 1.0.0
-    minimatch: ^8.0.3
-  checksum: 40f234e1b168498340acf4eca51c16df118c56144d3a20c4d659045677ac93121c74b98419c0437f9f701a75cbf9b4d03290e6a7b07eb3218174cbb658044308
+    minimatch: ^7.4.6
+  checksum: 4499de770bd1300510971289ea09038945544db4cd4ef56218986f2587cec77a4971d2b519f87cb67f736edc78d590b65ed0cb2c6ce7467249298611ffea83d0
   languageName: node
   linkType: hard
 
@@ -5586,9 +5571,9 @@ __metadata:
   linkType: hard
 
 "@types/estree@npm:*, @types/estree@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@types/estree@npm:1.0.0"
-  checksum: 910d97fb7092c6738d30a7430ae4786a38542023c6302b95d46f49420b797f21619cdde11fa92b338366268795884111c2eb10356e4bd2c8ad5b92941e9e6443
+  version: 1.0.1
+  resolution: "@types/estree@npm:1.0.1"
+  checksum: e9aa175eacb797216fafce4d41e8202c7a75555bc55232dee0f9903d7171f8f19f0ae7d5191bb1a88cb90e65468be508c0df850a9fb81b4433b293a5a749899d
   languageName: node
   linkType: hard
 
@@ -6412,102 +6397,6 @@ __metadata:
   dependencies:
     "@walletconnect/window-getters": ^1.0.0
   checksum: eec506ff6d35ae6e88db1e38b6f514f6cbf1a45b979878e5e50819d229b616fc645a2b0816145b61acda2701042160a4e0685f080927b87461853a62a887a9e9
-  languageName: node
-  linkType: hard
-
-"@web3-react/coinbase-wallet@npm:^8.0.35-beta.0":
-  version: 8.0.35-beta.0
-  resolution: "@web3-react/coinbase-wallet@npm:8.0.35-beta.0"
-  dependencies:
-    "@web3-react/types": ^8.0.20-beta.0
-  peerDependencies:
-    "@coinbase/wallet-sdk": ^3.0.4
-  checksum: fa8a9e313cb0cb25e90c160545870d4d8657b55b3d42d42cbadb78a5a5c6e8979347ed84315aa6e50fb67c58e9e4c9d26d23d3f4200c22aa94bbfb770b0167d1
-  languageName: node
-  linkType: hard
-
-"@web3-react/core@npm:^8.0.35-beta.0":
-  version: 8.0.35-beta.0
-  resolution: "@web3-react/core@npm:8.0.35-beta.0"
-  dependencies:
-    "@ethersproject/providers": ^5
-    "@web3-react/store": ^8.0.25-beta.0
-    "@web3-react/types": ^8.0.20-beta.0
-    zustand: ^4.0.0-rc.0
-  peerDependencies:
-    react: ">=16.8"
-  dependenciesMeta:
-    "@ethersproject/providers":
-      optional: true
-  checksum: 4c129fbcd97436d62fa788c06b53ee49966f9be3f27f0f5882863949ecfa8c2d7d3d79053d959dd4fb5a1d5775606ae2ba9ccd78b0d8033cb76b6f2513702629
-  languageName: node
-  linkType: hard
-
-"@web3-react/eip1193@npm:^8.0.27-beta.0":
-  version: 8.0.27-beta.0
-  resolution: "@web3-react/eip1193@npm:8.0.27-beta.0"
-  dependencies:
-    "@web3-react/types": ^8.0.20-beta.0
-  checksum: d50109144fc887be8e94a78ae4a39d49939a6909fb0c14d263906adf2998f9c14f3a73564b67cf896431bf5b2f3e41ed90197aa134a350316ab02354586e0b51
-  languageName: node
-  linkType: hard
-
-"@web3-react/empty@npm:^8.0.20-beta.0":
-  version: 8.0.20-beta.0
-  resolution: "@web3-react/empty@npm:8.0.20-beta.0"
-  dependencies:
-    "@web3-react/types": ^8.0.20-beta.0
-  checksum: 56d74ce0daf0a9706d92e9c5a726d7b716bfc774c4ec83b8632920661890e882c53094c80f86fd4361aefa963b9d6291b17b4a916d83a864db069521832644cc
-  languageName: node
-  linkType: hard
-
-"@web3-react/metamask@npm:^8.0.30-beta.0":
-  version: 8.0.30-beta.0
-  resolution: "@web3-react/metamask@npm:8.0.30-beta.0"
-  dependencies:
-    "@metamask/detect-provider": ^1.2.0
-    "@web3-react/types": ^8.0.20-beta.0
-  checksum: a9fb153045d996c5fd3d2a2352dd668ede5309e4c96a0b19a2e5a8ae58b04dba77c5d0da543ff5ac7c3b111a3152f42c77cd00c5e1f5f3b97ab38287198c9aae
-  languageName: node
-  linkType: hard
-
-"@web3-react/network@npm:^8.0.27-beta.0":
-  version: 8.0.27-beta.0
-  resolution: "@web3-react/network@npm:8.0.27-beta.0"
-  dependencies:
-    "@ethersproject/providers": ^5
-    "@web3-react/types": ^8.0.20-beta.0
-  checksum: 5073c450aa7450790c37f262660490a751de8218a392d87d7fd4cb8c20107996479c83adf0a04f14e69444ca40d330eb6dd180be56d80f6b46ef2996372886b1
-  languageName: node
-  linkType: hard
-
-"@web3-react/store@npm:^8.0.25-beta.0":
-  version: 8.0.25-beta.0
-  resolution: "@web3-react/store@npm:8.0.25-beta.0"
-  dependencies:
-    "@ethersproject/address": ^5
-    "@web3-react/types": ^8.0.20-beta.0
-    zustand: ^4.0.0-rc.0
-  checksum: f7061e8eb1e10774f3508a9557459e6ff7586ba7b980a4910f727066ca77bbbac3c5dad4ce7fab67c16646d4e2156a60bd736c32e0d7ec2c059eb9979810ab86
-  languageName: node
-  linkType: hard
-
-"@web3-react/types@npm:^8.0.20-beta.0":
-  version: 8.0.20-beta.0
-  resolution: "@web3-react/types@npm:8.0.20-beta.0"
-  dependencies:
-    zustand: ^4.0.0-rc.0
-  checksum: 65a91fd1c7dfdb21affc2c29d67d697004a0eaeecfb3491da9da9adfc665b2b4c4fe794e5d23d182ad4809fc94ae4e2906cedbca4f5025af697e863b1f672d40
-  languageName: node
-  linkType: hard
-
-"@web3-react/url@npm:^8.0.25-beta.0":
-  version: 8.0.25-beta.0
-  resolution: "@web3-react/url@npm:8.0.25-beta.0"
-  dependencies:
-    "@ethersproject/providers": ^5
-    "@web3-react/types": ^8.0.20-beta.0
-  checksum: 635d156f511f58764533f2ee706d1d9b647cb07373a3ba2de56f12e792166cd579ec64547de2360ae97faf6d7b0f44b1e39118f598582be0b91f938304c0f440
   languageName: node
   linkType: hard
 
@@ -10091,7 +9980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"define-properties@npm:^1.1.2, define-properties@npm:^1.1.3, define-properties@npm:^1.1.4":
+"define-properties@npm:^1.1.2, define-properties@npm:^1.1.3, define-properties@npm:^1.1.4, define-properties@npm:^1.2.0":
   version: 1.2.0
   resolution: "define-properties@npm:1.2.0"
   dependencies:
@@ -10494,9 +10383,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.284":
-  version: 1.4.367
-  resolution: "electron-to-chromium@npm:1.4.367"
-  checksum: 721e4958945a16ff21a63896d4e112da7b8f3fd5540a27280d5777c196fe4e1f1b51359f86c6fe83a267e81f127e4753ec9171547f094f86481a421c809473b0
+  version: 1.4.368
+  resolution: "electron-to-chromium@npm:1.4.368"
+  checksum: b8ec4128a81c86c287cb2d677504c64d50f30c3c1d6dd9700a93797c6311f9f94b1c49a3e5112f5cfb3987a9bbade0133f9ec9898dae592db981059d5c2abdbb
   languageName: node
   linkType: hard
 
@@ -12549,7 +12438,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"functions-have-names@npm:^1.2.2":
+"functions-have-names@npm:^1.2.2, functions-have-names@npm:^1.2.3":
   version: 1.2.3
   resolution: "functions-have-names@npm:1.2.3"
   checksum: c3f1f5ba20f4e962efb71344ce0a40722163e85bee2101ce25f88214e78182d2d2476aa85ef37950c579eb6cf6ee811c17b3101bb84004bb75655f3e33f3fdb5
@@ -16170,7 +16059,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^7.4.2":
+"minimatch@npm:^7.4.2, minimatch@npm:^7.4.6":
   version: 7.4.6
   resolution: "minimatch@npm:7.4.6"
   dependencies:
@@ -16179,7 +16068,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^8.0.2, minimatch@npm:^8.0.3":
+"minimatch@npm:^8.0.2":
   version: 8.0.4
   resolution: "minimatch@npm:8.0.4"
   dependencies:
@@ -19304,13 +19193,13 @@ __metadata:
   linkType: hard
 
 "regexp.prototype.flags@npm:^1.4.3":
-  version: 1.4.3
-  resolution: "regexp.prototype.flags@npm:1.4.3"
+  version: 1.5.0
+  resolution: "regexp.prototype.flags@npm:1.5.0"
   dependencies:
     call-bind: ^1.0.2
-    define-properties: ^1.1.3
-    functions-have-names: ^1.2.2
-  checksum: 51228bae732592adb3ededd5e15426be25f289e9c4ef15212f4da73f4ec3919b6140806374b8894036a86020d054a8d2657d3fee6bb9b4d35d8939c20030b7a6
+    define-properties: ^1.2.0
+    functions-have-names: ^1.2.3
+  checksum: c541687cdbdfff1b9a07f6e44879f82c66bbf07665f9a7544c5fd16acdb3ec8d1436caab01662d2fbcad403f3499d49ab0b77fbc7ef29ef961d98cc4bc9755b4
   languageName: node
   linkType: hard
 
@@ -19753,8 +19642,8 @@ __metadata:
   linkType: hard
 
 "rollup@npm:^3.18.0":
-  version: 3.20.5
-  resolution: "rollup@npm:3.20.5"
+  version: 3.20.6
+  resolution: "rollup@npm:3.20.6"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -19762,7 +19651,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 5f154ea6835bd3700478d399f152237d190eb0ea48d75983f87da5e01f5f624a7264e163e0f2a5d84079d6a5d116c620f0d2bef34f757723406606b7d04fb6a9
+  checksum: fa30f1e1d214b8c62e631d3c181a75d61bc9c20fca38220d6f938bb3bf734a874e407cd641c90f550dc2b127df5029dfb3108be08934a654f1f40b50f368b0c2
   languageName: node
   linkType: hard
 
@@ -20283,15 +20172,15 @@ __metadata:
   linkType: hard
 
 "sigstore@npm:^1.0.0":
-  version: 1.2.0
-  resolution: "sigstore@npm:1.2.0"
+  version: 1.3.0
+  resolution: "sigstore@npm:1.3.0"
   dependencies:
     "@sigstore/protobuf-specs": ^0.1.0
     make-fetch-happen: ^11.0.1
-    tuf-js: ^1.0.0
+    tuf-js: ^1.1.3
   bin:
     sigstore: bin/sigstore.js
-  checksum: 8b06341a1bee97f363a8cab62102b27c88714c5ad9743fada5effb46cc3a5935c27c8149669384f0be7040c8f0c4e69bb7d533f138bdcf3aba91b803a69eac77
+  checksum: 93c78211c2c7245d7d860589ec37fbd822203674c4065a6970fe0740904fac4c7c44d9870016e923865ef2a897b3d56f91ca6162117c4ea3a1153dac1b4b8402
   languageName: node
   linkType: hard
 
@@ -21309,8 +21198,8 @@ __metadata:
   linkType: hard
 
 "terser@npm:^5.10.0, terser@npm:^5.16.5, terser@npm:^5.3.4":
-  version: 5.16.9
-  resolution: "terser@npm:5.16.9"
+  version: 5.17.1
+  resolution: "terser@npm:5.17.1"
   dependencies:
     "@jridgewell/source-map": ^0.3.2
     acorn: ^8.5.0
@@ -21318,7 +21207,7 @@ __metadata:
     source-map-support: ~0.5.20
   bin:
     terser: bin/terser
-  checksum: b373693ee01ce08cc9b9595d57df889acbbc899d929a7fe53662330ce954d53145582f6715c9cc4839d555f5769a28fbeb203155b54e3a9c6c646db292002edd
+  checksum: 69b0e80e3c4084db2819de4d6ae8a2ba79f2fcd7ed6df40fe4b602ec7bfd8e889cc63c7d5268f30990ffecbf6eeda18f857adad9386fe2c2331b398d58ed855c
   languageName: node
   linkType: hard
 
@@ -21613,13 +21502,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tuf-js@npm:^1.0.0":
-  version: 1.1.3
-  resolution: "tuf-js@npm:1.1.3"
+"tuf-js@npm:^1.1.3":
+  version: 1.1.4
+  resolution: "tuf-js@npm:1.1.4"
   dependencies:
-    "@tufjs/models": 1.0.2
+    "@tufjs/models": 1.0.3
     make-fetch-happen: ^11.0.1
-  checksum: 87efe13069b681a131e5643f8bc8ee9ac07f8abeaa32096b896d2842416fcd0f8de29ad5e70be22f18d97a7b4723d72dd8b3962bb838312ff6e7d7465ed3489c
+  checksum: 73595ac6028dd9cf68a65b88730d47ff88f63e836efc2904476939598480d6625745ca43a8f5bb754f667dfd431b81fc81b0e49fc3fdfc2df0cf271536829af9
   languageName: node
   linkType: hard
 
@@ -23235,7 +23124,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.0.0-rc.0, zustand@npm:^4.3.7":
+"zustand@npm:^4.3.7":
   version: 4.3.7
   resolution: "zustand@npm:4.3.7"
   dependencies:
