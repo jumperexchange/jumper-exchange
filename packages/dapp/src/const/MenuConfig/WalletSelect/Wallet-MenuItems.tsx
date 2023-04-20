@@ -21,7 +21,7 @@ export const useWalletSelectMenuItems = () => {
     async (wallet: Wallet) => {
       menu.onCloseAllNavbarMenus();
 
-      if (wallet.installed?.()) {
+      if (!wallet.installed()) {
         setShowWalletIdentityPopover(wallet);
         return;
       }
