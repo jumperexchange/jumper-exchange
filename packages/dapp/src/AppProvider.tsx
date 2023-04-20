@@ -18,7 +18,7 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         <I18NProvider>
           <ThemeProvider>
             <ArcxAnalyticsProvider
-              apiKey={`${(import.meta as ImportMeta).env.VITE_ARCX_API_KEY}`}
+              apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
             >
               <WalletProvider>
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}

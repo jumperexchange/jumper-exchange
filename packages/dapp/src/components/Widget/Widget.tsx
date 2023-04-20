@@ -4,14 +4,14 @@ import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
-import { EventTrackingTools, useUserTracking } from '../../hooks/';
+import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   addChain,
   switchChain,
   switchChainAndAddToken,
 } from '../../providers/hotfix/wallet-automation-hotfix';
-import { LanguageKey } from '../../types';
+import { EventTrackingTools, LanguageKey } from '../../types';
 
 export function Widget({ starterVariant }) {
   const theme = useTheme();
@@ -24,9 +24,9 @@ export function Widget({ starterVariant }) {
   const widgetConfig: WidgetConfig = useMemo(() => {
     let rpcs = {};
     try {
-      rpcs = JSON.parse((import.meta as ImportMeta).env.VITE_CUSTOM_RPCS);
+      rpcs = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
     } catch (e) {
-      if ((import.meta as ImportMeta).env.DEV) {
+      if (import.meta.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
@@ -157,9 +157,7 @@ export function Widget({ starterVariant }) {
   ]);
   return (
     <LiFiWidget
-      integrator={
-        (import.meta as ImportMeta).env.VITE_WIDGET_INTEGRATOR as string
-      }
+      integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
       config={widgetConfig}
     />
   );

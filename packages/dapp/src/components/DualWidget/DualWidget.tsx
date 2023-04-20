@@ -22,9 +22,9 @@ export function DualWidget() {
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (!!url && !!LinkMap[url] && url === LinkMap[url]) {
-      if (url === LinkMap.swap) {
+      if (url === LinkMap.Swap) {
         return 'expandable';
-      } else if (url === LinkMap.gas || url === LinkMap.refuel) {
+      } else if (url === LinkMap.Gas || url === LinkMap.Refuel) {
         return 'refuel';
       }
     } else {

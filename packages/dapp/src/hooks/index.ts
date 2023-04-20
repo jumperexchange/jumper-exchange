@@ -1,2 +1,1 @@
-export { useGetChains } from './useGetChains';
-export * from './useUserTracking/';
+export * from './userTracking';

@@ -1,9 +1,9 @@
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { EventTrackingTools } from '../../../hooks';
-import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useMenuStore } from '../../../stores';
+import { useUserTracking } from '../../hooks';
+import { useMenuStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
 
 export const useShowcasesContent = () => {
   const { t: translate } = useTranslation();

@@ -7,17 +7,17 @@ import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
-import type { TWallets } from '@transferto/dapp/src/types';
+import { MenuKeys } from '@transferto/dapp/src/const';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
+import { useSettingsStore } from '@transferto/dapp/src/stores';
+import { useMenuStore } from '@transferto/dapp/src/stores/menu';
+import { EventTrackingTools, TWallets } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { MenuKeys } from '../../../../const';
-import { EventTrackingTools, useUserTracking } from '../../../../hooks';
-import { useWallet } from '../../../../providers/WalletProvider';
-import { useSettingsStore } from '../../../../stores';
-import { useMenuStore } from '../../../../stores/menu';
 import { NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {

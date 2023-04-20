@@ -2,14 +2,15 @@ import { wallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import type { TWallets } from '@transferto/dapp/src/types';
+import { EventTrackingTools } from '@transferto/dapp/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
+
 import {
   TrackingActions,
   TrackingCategories,
-} from '../../../../dapp/src/const';
-import { EventTrackingTools } from '../../../../dapp/src/hooks';
-import { useUserTracking } from '../../../../dapp/src/hooks/useUserTracking/useUserTracking';
+} from '@transferto/dapp/src/const';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { ButtonPrimary, ButtonSecondary } from '../../atoms';
 import { walletDigest } from '../../utils/walletDigest';
 

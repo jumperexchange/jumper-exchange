@@ -2,12 +2,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
+import { useChainsContent } from '@transferto/dapp/src/const';
+import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
+import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { MenuKeys } from '../../../../const';
-import { useGetChains } from '../../../../hooks';
-import { useWallet } from '../../../../providers/WalletProvider';
-import { useMenuStore } from '../../../../stores';
 import MenuItemComponent from '../../MenuItemComponent';
 import { NavbarMenu } from '../../index';
 
@@ -19,23 +18,18 @@ interface NavbarMenuProps {
 export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const i18Path = 'navbar.walletMenu.';
   const { t: translate } = useTranslation();
-  const chains = useGetChains();
+  const chains = useChainsContent();
   const theme = useTheme();
   const { account } = useWallet();
-  const [
-    openNavbarChainsMenu,
-    onOpenNavbarChainsMenu,
-    openNavbarSubMenu,
-    onOpenNavbarSubMenu,
-  ] = useMenuStore(
-    (state) => [
-      state.openNavbarChainsMenu,
-      state.onOpenNavbarChainsMenu,
-      state.openNavbarSubMenu,
-      state.onOpenNavbarSubMenu,
-    ],
-    shallow,
-  );
+  const [openNavbarChainsMenu, onOpenNavbarChainsMenu, onOpenNavbarSubMenu] =
+    useMenuStore(
+      (state) => [
+        state.openNavbarChainsMenu,
+        state.onOpenNavbarChainsMenu,
+        state.onOpenNavbarSubMenu,
+      ],
+      shallow,
+    );
 
   return !!openNavbarChainsMenu ? (
     <NavbarMenu
@@ -56,7 +50,6 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={openNavbarChainsMenu}
-            isOpenSubMenu={openNavbarSubMenu === MenuKeys.Chains}
             setOpenSubMenu={onOpenNavbarSubMenu}
           />
         ))

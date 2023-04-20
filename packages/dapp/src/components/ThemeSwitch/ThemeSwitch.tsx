@@ -3,18 +3,16 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { useMediaQuery } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import {
   TrackingActions,
   TrackingCategories,
-} from '../../../../dapp/src/const';
-import {
-  EventTrackingTools,
-  useUserTracking,
-} from '../../../../dapp/src/hooks';
+} from '@transferto/dapp/src/const';
+import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
+import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 
 export const ThemeSwitch = () => {

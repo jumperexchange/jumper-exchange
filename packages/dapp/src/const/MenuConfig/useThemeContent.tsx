@@ -7,10 +7,10 @@ import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { EventTrackingTools } from '../../../hooks';
-import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useSettingsStore } from '../../../stores';
-import { TrackingActions, TrackingCategories } from '../../trackingKeys';
+import { useUserTracking } from '../../hooks';
+import { useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
+import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useThemeContent = () => {
   const { t: translate } = useTranslation();

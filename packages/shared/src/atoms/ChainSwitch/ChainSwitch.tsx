@@ -2,16 +2,14 @@ import type { Chain } from '@lifi/types';
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { useChainInfos } from '@transferto/dapp/src/providers/ChainInfosProvider';
+import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
+import { EventTrackingTools } from '@transferto/dapp/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import {
-  EventTrackingTools,
-  useUserTracking,
-} from '../../../../dapp/src/hooks';
-import { useChainInfos } from '../../../../dapp/src/providers/ChainInfosProvider';
-import { useWallet } from '../../../../dapp/src/providers/WalletProvider';
 import { ButtonChainSwitch } from './ChainSwitch.style';
 
 export const ChainSwitch = () => {

@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { EventTrackingTools, useUserTracking } from '../../../hooks';
-import { useSettingsStore } from '../../../stores';
-import { TrackingActions, TrackingCategories } from '../../trackingKeys';
+import { useUserTracking } from '../../hooks';
+import { useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
+import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
   const { i18n } = useTranslation();

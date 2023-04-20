@@ -9,12 +9,11 @@ import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { MenuKeys, TrackingActions, TrackingCategories } from '../..';
-import { EventTrackingTools } from '../../../hooks';
-import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
-import { useSettingsStore } from '../../../stores';
-import { useMenuStore } from '../../../stores/menu';
+import { MenuKeys, TrackingActions, TrackingCategories } from '..';
+import { useUserTracking } from '../../hooks';
+import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
+import { useMenuStore, useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
 
 export const useMainMenuContent = () => {
   const { t: translate, i18n } = useTranslation();

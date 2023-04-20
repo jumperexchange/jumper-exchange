@@ -1,7 +1,7 @@
+import { useMenuStore } from '@transferto/dapp/src/stores/menu';
 import { SyntheticEvent } from 'react';
 import { shallow } from 'zustand/shallow';
 import { ChainsMenu, MainMenu, WalletMenu, WalletSelectMenu } from '.';
-import { useMenuStore } from '../../../stores/menu';
 import { SupportModal } from '../../SupportModal';
 
 export const Menus = () => {

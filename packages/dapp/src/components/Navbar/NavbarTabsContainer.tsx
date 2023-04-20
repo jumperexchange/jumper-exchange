@@ -5,8 +5,9 @@ import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { TrackingActions, TrackingCategories } from '../../const';
-import { EventTrackingTools, useUserTracking } from '../../hooks';
+import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
   return {

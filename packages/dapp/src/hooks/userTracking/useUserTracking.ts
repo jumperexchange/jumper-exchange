@@ -10,7 +10,7 @@ import {
   TrackEventProps,
   trackPageloadProps,
   TrackTransactionProps,
-} from './userTracking.types';
+} from '../../types';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();

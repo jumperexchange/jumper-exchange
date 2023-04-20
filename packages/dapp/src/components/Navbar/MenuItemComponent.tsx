@@ -4,11 +4,10 @@ import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 import { Dispatch, SetStateAction } from 'react';
 import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
-import { useUserTracking } from '../../hooks/useUserTracking/useUserTracking';
+import { useUserTracking } from '../../hooks';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
-  isOpenSubMenu: boolean;
   showButton: boolean;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   showMoreIcon?: boolean;
@@ -22,7 +21,6 @@ interface MenuItemProps {
 
 const MenuItemComponent = ({
   open,
-  isOpenSubMenu,
   setOpenSubMenu,
   showButton,
   showMoreIcon = true,

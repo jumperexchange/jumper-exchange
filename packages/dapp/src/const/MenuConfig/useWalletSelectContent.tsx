@@ -2,12 +2,11 @@ import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import { EventTrackingTools } from '../../../hooks/useUserTracking';
-import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useWallet } from '../../../providers/WalletProvider';
-import { useMenuStore, useSettingsStore } from '../../../stores';
-import { MenuListItem } from '../../../types';
-import { TrackingActions, TrackingCategories } from '../../trackingKeys';
+import { useUserTracking } from '../../hooks';
+import { useWallet } from '../../providers/WalletProvider';
+import { useMenuStore, useSettingsStore } from '../../stores';
+import { EventTrackingTools, MenuListItem } from '../../types';
+import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
@@ -20,11 +19,8 @@ export const useWalletSelectContent = () => {
     shallow,
   );
 
-  const [onCloseAllNavbarMenus, onOpenNavbarWalletSelectMenu] = useMenuStore(
-    (state) => [
-      state.onCloseAllNavbarMenus,
-      state.onOpenNavbarWalletSelectMenu,
-    ],
+  const [onCloseAllNavbarMenus] = useMenuStore(
+    (state) => [state.onCloseAllNavbarMenus],
     shallow,
   );
 
@@ -49,14 +45,7 @@ export const useWalletSelectContent = () => {
       try {
       } catch (e) {}
     },
-    [
-      connect,
-      ethereum,
-      onCloseAllNavbarMenus,
-      onOpenNavbarWalletSelectMenu,
-      onWalletConnect,
-      tally,
-    ],
+    [connect, ethereum, onCloseAllNavbarMenus, onWalletConnect, tally],
   );
 
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {

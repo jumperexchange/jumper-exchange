@@ -1,9 +1,9 @@
+import { defaultLang } from '@transferto/shared/src/config';
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { defaultLang } from '../../../shared/src/config';
 import * as supportedLanguages from '../i18n';
 import { useSettingsStore } from '../stores/settings';
 import {

@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
+import { MenuKeys, useWalletSelectContent } from '@transferto/dapp/src/const';
+import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { MenuKeys, useWalletSelectContent } from '../../../../const';
-import { useMenuStore } from '../../../../stores';
 import { MenuItemComponent, NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
@@ -52,7 +52,6 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={!!open ? open : openNavbarWalletSelectMenu}
-            isOpenSubMenu={openNavbarSubMenu !== MenuKeys.WalletSelect}
             setOpenSubMenu={onOpenNavbarSubMenu}
           />
         ))

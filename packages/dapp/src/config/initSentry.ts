@@ -5,7 +5,7 @@ import { BrowserTracing } from '@sentry/tracing';
 
 export const initSentry = () => {
   Sentry.init({
-    dsn: (import.meta as ImportMeta).env.VITE_SENTRY_DSN,
+    dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
       new CaptureConsole({
         levels: ['error'],
@@ -27,7 +27,7 @@ export const initSentry = () => {
     replaysSessionSampleRate: 0,
     replaysOnErrorSampleRate: 0.25,
     release: version,
-    environment: (import.meta as ImportMeta).env.MODE,
-    enabled: (import.meta as ImportMeta).env.PROD,
+    environment: import.meta.env.MODE,
+    enabled: import.meta.env.PROD,
   });
 };

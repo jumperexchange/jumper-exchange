@@ -1,5 +1,5 @@
 import { ChainID } from '@arcxmoney/analytics';
-import { WalletAccount } from '../../types';
+import { WalletAccount } from './internal.types';
 
 export enum EventTrackingTools {
   arcx,

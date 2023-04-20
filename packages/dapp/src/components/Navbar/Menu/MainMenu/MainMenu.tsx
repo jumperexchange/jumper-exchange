@@ -1,15 +1,14 @@
-import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import {
   MenuKeys,
-  MenuSub,
   useDevelopersContent,
   useLanguagesContent,
   useMainMenuContent,
   useShowcasesContent,
   useThemeContent,
-} from '../../../../const';
-import { useMenuStore } from '../../../../stores';
+} from '@transferto/dapp/src/const';
+import { useMenuStore } from '@transferto/dapp/src/stores';
+import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
 interface MainMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -59,7 +58,6 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
               onClick={el.onClick}
               open={true}
               setOpenSubMenu={onOpenNavbarSubMenu}
-              isOpenSubMenu={openNavbarSubMenu !== MenuSub.None}
             />
           ))}
         <SubMenuComponent

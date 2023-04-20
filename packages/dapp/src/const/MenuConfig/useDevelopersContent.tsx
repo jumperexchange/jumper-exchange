@@ -5,10 +5,10 @@ import { useTheme } from '@mui/material/styles';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { MenuKeys } from '../..';
-import { EventTrackingTools } from '../../../hooks';
-import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useMenuStore } from '../../../stores';
+import { MenuKeys } from '..';
+import { useUserTracking } from '../../hooks';
+import { useMenuStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
 
 export const useDevelopersContent = () => {
   const { t: translate } = useTranslation();
