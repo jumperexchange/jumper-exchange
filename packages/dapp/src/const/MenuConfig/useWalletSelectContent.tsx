@@ -12,7 +12,6 @@ export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect } = useWallet();
   const { trackEvent } = useUserTracking();
-  const { ethereum, tally } = window as any;
 
   const [onWalletConnect] = useSettingsStore(
     (state) => [state.onWalletConnect],
@@ -26,58 +25,54 @@ export const useWalletSelectContent = () => {
 
   const login = useCallback(
     async (wallet: Wallet) => {
-      onCloseAllNavbarMenus();
-      onWalletConnect(wallet.name);
-      if (wallet.checkProviderIdentity) {
-        let checkResult;
-        if (wallet.name === 'Taho') {
-          checkResult = wallet.checkProviderIdentity({ provider: tally });
-        } else {
-          checkResult = wallet.checkProviderIdentity({ provider: ethereum });
-        }
-
-        if (!checkResult) {
-          setShowWalletIdentityPopover(wallet);
-          return;
-        }
+      if (!wallet.installed()) {
+        setShowWalletIdentityPopover(wallet);
+        return;
       }
       await connect(wallet);
+      onWalletConnect(wallet.name);
       try {
       } catch (e) {}
     },
-    [connect, ethereum, onCloseAllNavbarMenus, onWalletConnect, tally],
+    [connect, onWalletConnect],
   );
 
-  const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
-    const _output = supportedWallets.map((wallet, index) => {
-      // TODO: overwrite taho name ; REMOVE AfTER WALLET MANAGEMENT v2
-      if (wallet.name === 'Tally Ho') {
-        wallet.name = 'Taho';
-      }
-      return {
-        label: wallet.name,
-        prefixIcon: (
-          <Avatar
-            src={wallet.icon}
-            alt={`${wallet.name}-wallet-logo`}
-            sx={{ height: '32px', width: '32px' }}
-          />
-        ),
-        showMoreIcon: false,
-        onClick: () => {
-          login(wallet);
-          trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.ChooseWallet,
-            label: `choose-wallet-${wallet}`,
-            data: { usedWallet: wallet.name },
-            disableTrackingTool: [EventTrackingTools.arcx],
-          });
-        },
-      };
-    });
-    return _output;
-  }, [login, trackEvent]);
+  const walletMenuItems = useMemo<MenuListItem[]>(() => {
+    const installedWallets = supportedWallets.filter((wallet) =>
+      wallet.installed(),
+    );
 
-  return _WalletMenuItems;
+    const notInstalledWallets = supportedWallets.filter(
+      (wallet) => !wallet.installed() && wallet.name !== 'Default Wallet', // always remove Default Wallet from not installed Wallets
+    );
+    const _output = [...installedWallets, ...notInstalledWallets].map(
+      (wallet) => {
+        return {
+          label: wallet.name,
+          prefixIcon: (
+            <Avatar
+              src={wallet.icon}
+              alt={`${wallet.name}-wallet-logo`}
+              sx={{ height: '32px', width: '32px' }}
+            />
+          ),
+          showMoreIcon: false,
+          onClick: () => {
+            login(wallet);
+            onCloseAllNavbarMenus();
+            trackEvent({
+              category: TrackingCategories.Wallet,
+              action: TrackingActions.ChooseWallet,
+              label: `choose-wallet-${wallet}`,
+              data: { usedWallet: wallet.name },
+              disableTrackingTool: [EventTrackingTools.arcx],
+            });
+          },
+        };
+      },
+    );
+    return _output;
+  }, [login, onCloseAllNavbarMenus, trackEvent]);
+
+  return walletMenuItems;
 };

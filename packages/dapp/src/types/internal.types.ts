@@ -52,14 +52,6 @@ export interface ChainsMenuListItem {
   showButton?: boolean;
 }
 
-export type TWallet = {
-  name: string;
-  icon: string;
-};
-export type TWallets = {
-  [key: string]: TWallet;
-};
-
 export interface SwapPageStartParams {
   depositChain?: ChainKey;
   depositToken?: string;

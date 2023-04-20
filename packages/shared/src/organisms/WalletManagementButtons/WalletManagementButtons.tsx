@@ -1,8 +1,8 @@
-import { wallets } from '@lifi/wallet-management';
+import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
-import type { TWallets } from '@transferto/dapp/src/types';
 import { EventTrackingTools } from '@transferto/dapp/src/types';
+import type { Wallet } from '@transferto/shared/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
 
@@ -40,7 +40,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
     return walletDigest(account);
   }, [account]);
 
-  const walletSource: TWallets = wallets;
+  const walletSource: Wallet[] = supportedWallets;
   const walletIcon: string = useMemo(() => {
     if (!!usedWallet) {
       return usedWallet.icon;

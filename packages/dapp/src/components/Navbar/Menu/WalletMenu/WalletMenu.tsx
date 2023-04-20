@@ -1,5 +1,5 @@
 import { getChainById } from '@lifi/sdk';
-import { wallets } from '@lifi/wallet-management';
+import { Wallet, supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
@@ -12,7 +12,7 @@ import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
-import { EventTrackingTools, TWallets } from '@transferto/dapp/src/types';
+import { EventTrackingTools } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
@@ -30,7 +30,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
-  const walletSource: TWallets = wallets;
+  const walletSource: Wallet[] = supportedWallets;
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
