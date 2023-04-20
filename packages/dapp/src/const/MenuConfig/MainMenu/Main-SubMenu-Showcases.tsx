@@ -1,12 +1,18 @@
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
+import { useMenuStore } from '../../../stores';
 
 export const useMainSubMenuShowcases = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const { trackPageload } = useUserTracking();
+  const [onCloseAllNavbarMenus] = useMenuStore(
+    (state) => [state.onCloseAllNavbarMenus],
+    shallow,
+  );
 
   return [
     {
@@ -20,6 +26,7 @@ export const useMainSubMenuShowcases = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
+        onCloseAllNavbarMenus();
       },
     },
     {
@@ -33,6 +40,7 @@ export const useMainSubMenuShowcases = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
+        onCloseAllNavbarMenus();
       },
     },
     {
@@ -46,6 +54,7 @@ export const useMainSubMenuShowcases = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
+        onCloseAllNavbarMenus();
       },
     },
   ];

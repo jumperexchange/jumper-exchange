@@ -3,33 +3,32 @@ import { create } from 'zustand';
 // config
 // @type
 import { MenuProps, MenuState } from '@transferto/shared/src/types';
-import { SubMenuKeys } from '../../const';
+import { MenuKeys } from '../../const';
 
 // ----------------------------------------------------------------------
 
 interface DefaultMenuType {
-  copiedToClipboard: boolean;
   openMainNavbarMenu: boolean;
-  openNavbarWalletSelectMenu: boolean;
   openNavbarWalletMenu: boolean;
-  openNavbarSubMenu: string;
+  openNavbarChainsMenu: boolean;
+  openNavbarWalletSelectMenu: boolean;
+  openNavbarSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
-  anchorEl: null | JSX.Element;
+  anchorRef: null | JSX.Element;
 }
 
 export const defaultMenu: DefaultMenuType = {
-  copiedToClipboard: false,
   openMainNavbarMenu: false,
-  openNavbarWalletSelectMenu: false,
   openNavbarWalletMenu: false,
-  openNavbarSubMenu: 'none',
+  openNavbarChainsMenu: false,
+  openNavbarWalletSelectMenu: false,
+  openNavbarSubMenu: 'None',
   openSupportModal: false,
-  anchorEl: null,
+  anchorRef: null,
 };
 /*--  Use Zustand  --*/
 export const useMenuStore = create<MenuState>((set, get) => ({
   ...defaultMenu,
-
   setValue: (key, value) =>
     set(() => ({
       [key]: value,
@@ -45,21 +44,14 @@ export const useMenuStore = create<MenuState>((set, get) => ({
       return updatedState;
     }),
 
-  // CopyToClipboard
-  onCopyToClipboard: (copied: boolean) => {
-    set({
-      copiedToClipboard: copied as boolean,
-    });
-  },
-
   // Close ALL Navbar Menus
   onCloseAllNavbarMenus: () => {
     set({
-      copiedToClipboard: false,
       openMainNavbarMenu: false,
       openNavbarWalletSelectMenu: false,
       openNavbarWalletMenu: false,
-      openNavbarSubMenu: SubMenuKeys.none,
+      openNavbarChainsMenu: false,
+      openNavbarSubMenu: MenuKeys.None,
       openSupportModal: false,
     });
   },
@@ -75,16 +67,15 @@ export const useMenuStore = create<MenuState>((set, get) => ({
   onOpenNavbarMainMenu: (open: boolean) => {
     set({
       openMainNavbarMenu: open as boolean,
+      openNavbarSubMenu: MenuKeys.None,
     });
   },
 
   // Toggle Navbar Wallet Menu
   onOpenNavbarWalletSelectMenu: (open: boolean) => {
     set({
-      openNavbarSubMenu: open
-        ? SubMenuKeys.wallets
-        : (SubMenuKeys.none as string),
       openNavbarWalletSelectMenu: open as boolean,
+      openNavbarSubMenu: MenuKeys.None,
     });
   },
 
@@ -92,21 +83,34 @@ export const useMenuStore = create<MenuState>((set, get) => ({
   onOpenNavbarWalletMenu: (open: boolean) => {
     set({
       openNavbarWalletMenu: open as boolean,
+      openNavbarSubMenu: MenuKeys.None,
+    });
+  },
+
+  // Toggle Navbar Chains Menu
+  onOpenNavbarChainsMenu: (open: boolean) => {
+    set({
+      openNavbarChainsMenu: open as boolean,
+      openNavbarSubMenu: MenuKeys.None,
     });
   },
 
   // Toggle Navbar Sub Menu
-  onOpenNavbarSubMenu: (subMenu: string) => {
+  onOpenNavbarSubMenu: (subMenu: MenuKeys) => {
     set({
-      openNavbarSubMenu: subMenu as string,
+      openNavbarSubMenu: subMenu,
     });
   },
 
   // Toggle support modal
-  toggleSupportModal: (open: boolean) => {
+  onOpenSupportModal: (open: boolean) => {
     set({
       openMainNavbarMenu: false,
+      openNavbarChainsMenu: false,
+      openNavbarWalletSelectMenu: false,
+      openNavbarWalletMenu: false,
       openSupportModal: open,
+      openNavbarSubMenu: MenuKeys.None,
     });
   },
 }));

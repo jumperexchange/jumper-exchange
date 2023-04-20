@@ -9,9 +9,8 @@ import { useMenuStore, useSettingsStore } from '../../../stores';
 import { MenuListItem } from '../../../types';
 import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
-export const useWalletMenuItems = () => {
-  const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
-    useState<Wallet>();
+export const useWalletSelectMenuItems = () => {
+  const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect } = useWallet();
   const { trackEvent } = useUserTracking();
   const { ethereum, tally } = window as any;
@@ -63,13 +62,12 @@ export const useWalletMenuItems = () => {
   );
 
   const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
-    const _output = [];
-    supportedWallets.forEach((wallet, index) => {
+    const _output = supportedWallets.map((wallet, index) => {
       // TODO: overwrite taho name ; REMOVE AfTER WALLET MANAGEMENT v2
       if (wallet.name === 'Tally Ho') {
         wallet.name = 'Taho';
       }
-      _output.push({
+      return {
         label: wallet.name,
         prefixIcon: (
           <Avatar
@@ -82,15 +80,16 @@ export const useWalletMenuItems = () => {
         onClick: () => {
           login(wallet);
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.CHOOSE_WALLET,
+            category: TrackingCategories.Wallet,
+            action: TrackingActions.ChooseWallet,
             label: `choose-wallet-${wallet}`,
             data: { usedWallet: wallet.name },
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         },
-      });
+      };
     });
+    console.log('_output', _output);
     return _output;
   }, [login, trackEvent]);
 

@@ -1,9 +1,10 @@
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
+import { ButtonBackArrow } from '@transferto/shared/src/atoms';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { shallow } from 'zustand/shallow';
-import { SubMenuKeys } from '../../const';
+import { MenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import {
   MenuHeaderAppBar,
@@ -18,17 +19,17 @@ interface NavbarMenuProps {
   isOpenSubMenu: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  isScrollable?: boolean;
+  hideBackArrow?: boolean;
   label?: string;
   open: boolean;
   children: any;
 }
 
 const NavbarMenuMobile = ({
-  isScrollable,
   handleClose,
   open,
   setOpen,
+  hideBackArrow,
   label,
   isOpenSubMenu,
   children,
@@ -36,11 +37,19 @@ const NavbarMenuMobile = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const [openNavbarSubMenu, anchorRef, onCloseAllNavbarMenus] = useMenuStore(
+  const [
+    openNavbarSubMenu,
+    anchorRef,
+    onCloseAllNavbarMenus,
+    openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu,
+  ] = useMenuStore(
     (state) => [
       state.openNavbarSubMenu,
       state.anchorRef,
       state.onCloseAllNavbarMenus,
+      state.openNavbarWalletSelectMenu,
+      state.onOpenNavbarWalletSelectMenu,
     ],
     shallow,
   );
@@ -67,12 +76,7 @@ const NavbarMenuMobile = ({
             transition
             disablePortal
           >
-            <NavbarPaper
-              isDarkMode={isDarkMode}
-              isOpenSubMenu={isOpenSubMenu}
-              openSubMenu={openNavbarSubMenu}
-              isScrollable={!!label || isScrollable}
-            >
+            <NavbarPaper isDarkMode={isDarkMode}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
@@ -83,23 +87,28 @@ const NavbarMenuMobile = ({
                   autoFocusItem={open}
                   id="composition-menu"
                   aria-labelledby="composition-button"
+                  isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                   onKeyDown={handleListKeyDown}
-                  className={
-                    isOpenSubMenu ? 'navbar-menu-list open' : 'navbar-menu-list'
-                  }
+                  hasLabel={!!label}
                   component={
-                    !!isOpenSubMenu && openNavbarSubMenu !== SubMenuKeys.wallets
+                    !!isOpenSubMenu &&
+                    openNavbarSubMenu !== MenuKeys.WalletSelect
                       ? 'div'
                       : 'ul'
                   }
                 >
                   {!!label ? (
                     <MenuHeaderAppWrapper>
-                      <MenuHeaderAppBar
-                        component="div"
-                        elevation={0}
-                        isScrollable={isScrollable}
-                      >
+                      <MenuHeaderAppBar component="div" elevation={0}>
+                        {!hideBackArrow && (
+                          <ButtonBackArrow
+                            onClick={() => {
+                              onOpenNavbarWalletSelectMenu(
+                                !openNavbarWalletSelectMenu,
+                              );
+                            }}
+                          />
+                        )}
                         <Typography
                           variant={'lifiBodyMediumStrong'}
                           width={'100%'}

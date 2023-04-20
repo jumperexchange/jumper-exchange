@@ -49,8 +49,8 @@ export function Widget({ starterVariant }) {
         },
         disconnect: async () => {
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.DISCONNECT,
+            category: TrackingCategories.Wallet,
+            action: TrackingActions.Disconnect,
             disableTrackingTool: [EventTrackingTools.arcx],
           });
           disconnect();
@@ -59,8 +59,8 @@ export function Widget({ starterVariant }) {
           await switchChain(reqChainId);
           if (account.signer) {
             trackEvent({
-              category: TrackingCategories.WALLET,
-              action: TrackingActions.SWITCH_CHAIN,
+              category: TrackingCategories.Wallet,
+              action: TrackingActions.SwitchChain,
               label: `${reqChainId}`,
               data: {
                 switchChain: reqChainId,
@@ -75,8 +75,8 @@ export function Widget({ starterVariant }) {
         },
         addToken: async (token: Token, chainId: number) => {
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.ADD_TOKEN,
+            category: TrackingCategories.Wallet,
+            action: TrackingActions.AddToken,
             label: `addToken-${token.name}`,
             data: {
               tokenAdded: `${token.name}`,
@@ -88,8 +88,8 @@ export function Widget({ starterVariant }) {
         },
         addChain: async (chainId: number) => {
           trackEvent({
-            category: TrackingCategories.WALLET,
-            action: TrackingActions.ADD_CHAIN,
+            category: TrackingCategories.Wallet,
+            action: TrackingActions.AddChain,
             label: `addChain-${chainId}`,
             data: {
               chainIdAdded: `${chainId}`,

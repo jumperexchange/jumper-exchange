@@ -1,6 +1,7 @@
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import { useMediaQuery } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
@@ -31,22 +32,26 @@ export const ThemeSwitch = () => {
   const handleThemeSwitch = () => {
     onChangeMode(isDarkMode ? 'light' : 'dark');
     trackEvent({
-      category: TrackingCategories.THEME_SWITCH,
-      action: TrackingActions.CLICK_THEME_SWITCH,
+      category: TrackingCategories.ThemeSwitch,
+      action: TrackingActions.ClickThemeSwitch,
       label: `themeSwitch-${isDarkMode ? 'light' : 'dark'}`,
       data: { themeSwitch: `theme-${isDarkMode ? 'light' : 'dark'}` },
       disableTrackingTool: [EventTrackingTools.arcx],
     });
   };
 
+  const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
+
   return (
     <Tooltip
       title={
         themeMode === 'light'
-          ? translate(`${i18Path}themes.light`)
+          ? translate(`${i18Path}themes.switchToDark`)
           : themeMode === 'dark'
-          ? translate(`${i18Path}themes.dark`)
-          : translate(`${i18Path}themes.auto`)
+          ? translate(`${i18Path}themes.switchToLight`)
+          : !isDarkModeHook
+          ? translate(`${i18Path}themes.switchToDark`)
+          : translate(`${i18Path}themes.switchToLight`)
       }
     >
       <ButtonThemeSwitch
@@ -55,9 +60,9 @@ export const ThemeSwitch = () => {
         }}
       >
         {themeMode === 'light' ? (
-          <LightModeIcon />
-        ) : themeMode === 'dark' ? (
           <NightlightIcon />
+        ) : themeMode === 'dark' ? (
+          <LightModeIcon />
         ) : (
           <BrightnessAutoIcon />
         )}

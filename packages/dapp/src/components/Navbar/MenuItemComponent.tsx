@@ -1,9 +1,9 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary';
+import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 import { Dispatch, SetStateAction } from 'react';
-import { TrackingActions, TrackingCategories } from '../../const';
+import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/useUserTracking/useUserTracking';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
@@ -14,8 +14,7 @@ interface MenuItemProps {
   showMoreIcon?: boolean;
   label: string;
   onClick: any;
-  isScrollable?: boolean;
-  triggerSubMenu: string;
+  triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
   checkIcon?: boolean;
@@ -28,7 +27,6 @@ const MenuItemComponent = ({
   showButton,
   showMoreIcon = true,
   onClick,
-  isScrollable,
   label,
   triggerSubMenu,
   prefixIcon,
@@ -37,17 +35,25 @@ const MenuItemComponent = ({
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
 
-  return !!open && !isOpenSubMenu ? (
+  console.log(
+    '!!open && !isOpenSubMenu',
+    !!open && !isOpenSubMenu,
+    'open',
+    open,
+    'isOpenSubMenu',
+    isOpenSubMenu,
+  );
+
+  return open ? (
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
-      isScrollable={isScrollable}
       onClick={() => {
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
         !!triggerSubMenu &&
           trackEvent({
-            category: TrackingCategories.MENU,
-            action: TrackingActions.OPEN_SUBMENU,
+            category: TrackingCategories.Menu,
+            action: TrackingActions.OpenSubmenu,
             label: triggerSubMenu,
             data: { subMenu: triggerSubMenu },
           });

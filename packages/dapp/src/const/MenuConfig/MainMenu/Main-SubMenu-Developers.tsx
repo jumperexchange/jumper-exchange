@@ -4,8 +4,11 @@ import SlideshowIcon from '@mui/icons-material/Slideshow';
 import { useTheme } from '@mui/material/styles';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
+import { MenuKeys } from '../..';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
+import { useMenuStore } from '../../../stores';
 
 export const useMainSubMenuDevelopers = () => {
   const { t: translate } = useTranslation();
@@ -13,6 +16,10 @@ export const useMainSubMenuDevelopers = () => {
   const { trackPageload } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const [onCloseAllNavbarMenus] = useMenuStore(
+    (state) => [state.onCloseAllNavbarMenus],
+    shallow,
+  );
 
   return [
     {
@@ -35,6 +42,7 @@ export const useMainSubMenuDevelopers = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
+        onCloseAllNavbarMenus();
       },
     },
     {
@@ -49,13 +57,14 @@ export const useMainSubMenuDevelopers = () => {
           pageload: true,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
+        onCloseAllNavbarMenus();
       },
     },
     {
       label: `${translate(`${i18Path}developers.showcases`)}`,
       prefixIcon: <SlideshowIcon />,
       showMoreIcon: true,
-      triggerSubMenu: 'showcases',
+      triggerSubMenu: MenuKeys.Showcases,
     },
   ];
 };

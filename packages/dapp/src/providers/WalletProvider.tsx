@@ -74,8 +74,12 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       account: account,
       disconnect: true,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, trackConnectWallet, walletManagementDisconnect]);
+  }, [
+    account,
+    onCloseAllNavbarMenus,
+    trackConnectWallet,
+    walletManagementDisconnect,
+  ]);
 
   // only for injected wallets
   const switchChain = useCallback(async (chainId: number) => {

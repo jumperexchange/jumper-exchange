@@ -9,11 +9,7 @@ import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import {
-  SubMenuKeys,
-  TrackingActions,
-  TrackingCategories,
-} from '../../../const';
+import { MenuKeys, TrackingActions, TrackingCategories } from '../../../const';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
@@ -29,8 +25,8 @@ export const useMainMenuItems = () => {
 
   const [themeMode] = useSettingsStore((state) => [state.themeMode], shallow);
 
-  const [toggleSupportModal] = useMenuStore(
-    (state) => [state.toggleSupportModal],
+  const [onOpenSupportModal] = useMenuStore(
+    (state) => [state.onOpenSupportModal],
     shallow,
   );
 
@@ -43,7 +39,7 @@ export const useMainMenuItems = () => {
         <LightModeOutlinedIcon />
       ),
       url: 'https://github.com/lifinance/',
-      triggerSubMenu: SubMenuKeys.themes,
+      triggerSubMenu: MenuKeys.Themes,
     },
     {
       label: `${translate(`${i18Path}language.key`)}`,
@@ -62,12 +58,12 @@ export const useMainMenuItems = () => {
           {i18n.resolvedLanguage}
         </Typography>
       ),
-      triggerSubMenu: SubMenuKeys.language,
+      triggerSubMenu: MenuKeys.Language,
     },
     {
       label: `${translate(`${i18Path}navbarMenu.developers`)}`,
       prefixIcon: <DeveloperModeIcon />,
-      triggerSubMenu: SubMenuKeys.devs,
+      triggerSubMenu: MenuKeys.Devs,
     },
     {
       label: `Twitter`,
@@ -136,11 +132,11 @@ export const useMainMenuItems = () => {
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.SUPPORT_MODAL,
-          action: TrackingActions.OPEN_SUPPORT_MODAL,
+          category: TrackingCategories.SupportModal,
+          action: TrackingActions.OpenSupportModal,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
-        toggleSupportModal(true);
+        onOpenSupportModal(true);
       },
       showButton: true,
     },

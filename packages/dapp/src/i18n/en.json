@@ -16,13 +16,18 @@
     "walletMenu": {
       "disconnect": "Disconnect",
       "chains": "Chains",
-      "switchChain": "Switch Chain"
+      "switchChain": "Switch Chain",
+      "copy": "Copy",
+      "explore": "Explore",
+      "copiedMsg": "Wallet address copied"
     },
     "language": {
       "key": "Language",
       "value": "English"
     },
     "themes": {
+      "switchToLight": "Switch to Light Theme",
+      "switchToDark": "Switch to Dark Theme",
       "light": "Light",
       "dark": "Dark",
       "auto": "Auto"
@@ -37,5 +42,10 @@
       "klimaStaking": "Cross Chain Klima Staking",
       "carbonOffset": "Cross Chain Carbon Offset"
     }
+  },
+  "alert": {
+    "info": "You’re using Testnet",
+    "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
+    "switchToMainnet": "Switch to Mainnet"
   }
 }

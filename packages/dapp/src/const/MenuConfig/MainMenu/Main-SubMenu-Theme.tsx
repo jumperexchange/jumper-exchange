@@ -25,8 +25,8 @@ export const useMainSubMenuTheme = () => {
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     onChangeMode(mode);
     trackEvent({
-      category: TrackingCategories.THEME_MENU,
-      action: TrackingActions.SWITCH_THEME_MODE,
+      category: TrackingCategories.ThemeMenu,
+      action: TrackingActions.SwitchThemeMode,
       label: `theme-${mode}`,
       data: { theme: `theme-${mode}` },
       disableTrackingTool: [EventTrackingTools.arcx],

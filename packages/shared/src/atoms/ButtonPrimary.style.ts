@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { ButtonBase } from './ButtonBase';
+import { ButtonBase } from './ButtonBase.style';
 
 export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
   color: theme.palette.white.main,

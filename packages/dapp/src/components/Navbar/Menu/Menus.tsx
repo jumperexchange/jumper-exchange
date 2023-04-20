@@ -1,27 +1,26 @@
 import { SyntheticEvent } from 'react';
 import { shallow } from 'zustand/shallow';
-import { ConnectedMenu, MainMenu, WalletMenu } from '.';
+import { ChainsMenu, MainMenu, WalletMenu, WalletSelectMenu } from '.';
 import { useMenuStore } from '../../../stores/menu';
+import { SupportModal } from '../../SupportModal';
 
 export const Menus = () => {
-  const [anchorRef, onCopyToClipboard] = useMenuStore(
-    (state) => [state.anchorRef, state.onCopyToClipboard],
-    shallow,
-  );
+  const [anchorRef] = useMenuStore((state) => [state.anchorRef], shallow);
 
   const handleClose = (event: Event | SyntheticEvent) => {
     event.preventDefault();
     if (anchorRef && anchorRef.contains(event.target as HTMLElement)) {
       return;
     }
-    onCopyToClipboard(false);
   };
 
   return (
     <>
       <MainMenu handleClose={handleClose} />
       <WalletMenu handleClose={handleClose} />
-      <ConnectedMenu handleClose={handleClose} />
+      <WalletSelectMenu handleClose={handleClose} />
+      <ChainsMenu handleClose={handleClose} />
+      <SupportModal />
     </>
   );
 };

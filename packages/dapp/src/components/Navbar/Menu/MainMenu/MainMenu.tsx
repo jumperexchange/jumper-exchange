@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import {
-  SubMenuKeys,
+  MenuKeys,
+  MenuSub,
   useMainMenuItems,
   useMainSubMenuDevelopers,
   useMainSubMenuLanguage,
@@ -9,7 +10,6 @@ import {
   useMainSubMenuTheme,
 } from '../../../../const';
 import { useMenuStore } from '../../../../stores';
-import { SupportModal } from '../../../SupportModal';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
 interface MainMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -37,75 +37,70 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
     ],
     shallow,
   );
-
-  return (
+  console.log(
+    'test',
+    openNavbarSubMenu === MenuKeys.None,
+    'openNavbarSubMenu',
+    openNavbarSubMenu,
+  );
+  console.log('openNavbarSubMenu', openNavbarSubMenu);
+  console.log('openMainNavbarMenu', openMainNavbarMenu);
+  return openMainNavbarMenu ? (
     <>
       <NavbarMenu
         handleClose={handleClose}
-        open={openMainNavbarMenu}
+        open={true}
         setOpen={onOpenNavbarMainMenu}
-        isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
+        isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
       >
-        {mainMenuItems.map((el, index) => (
-          <MenuItemComponent
-            key={`${el.label}-${index}`}
-            label={el.label}
-            prefixIcon={el.prefixIcon}
-            triggerSubMenu={el.triggerSubMenu}
-            showButton={el.showButton}
-            showMoreIcon={el.showMoreIcon}
-            suffixIcon={el.suffixIcon}
-            onClick={el.onClick}
-            open={openMainNavbarMenu}
-            isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
-            setOpenSubMenu={onOpenNavbarSubMenu}
-          />
-        ))}
+        {openNavbarSubMenu === MenuKeys.None &&
+          mainMenuItems.map((el, index) => (
+            <MenuItemComponent
+              key={`${el.label}-${index}`}
+              label={el.label}
+              prefixIcon={el.prefixIcon}
+              triggerSubMenu={el.triggerSubMenu}
+              showButton={el.showButton}
+              showMoreIcon={el.showMoreIcon}
+              suffixIcon={el.suffixIcon}
+              onClick={el.onClick}
+              open={true}
+              setOpenSubMenu={onOpenNavbarSubMenu}
+              isOpenSubMenu={openNavbarSubMenu !== MenuSub.None}
+            />
+          ))}
         <SubMenuComponent
-          isSubMenu={true}
           label={`${translate(`${i18Path}navbarMenu.theme`)}`}
-          triggerSubMenu={SubMenuKeys.themes}
-          isScrollable={true}
-          open={openMainNavbarMenu}
-          isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={onOpenNavbarSubMenu}
+          triggerSubMenu={MenuKeys.Themes}
+          open={openNavbarSubMenu === MenuKeys.Themes}
+          prevMenu={MenuKeys.None}
           subMenuList={mainSubMenuTheme}
         />
 
         <SubMenuComponent
-          isSubMenu={true}
           label={`${translate(`${i18Path}language.key`)}`}
-          triggerSubMenu={SubMenuKeys.language}
-          isScrollable={true}
-          open={openMainNavbarMenu}
-          isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={onOpenNavbarSubMenu}
+          triggerSubMenu={MenuKeys.Language}
+          open={openNavbarSubMenu === MenuKeys.Language}
+          prevMenu={MenuKeys.None}
           subMenuList={mainSubMenuLanguage}
         />
 
         <SubMenuComponent
-          isSubMenu={true}
           label={`${translate(`${i18Path}navbarMenu.developers`)}`}
-          triggerSubMenu={SubMenuKeys.devs}
-          isScrollable={true}
-          open={openMainNavbarMenu}
-          isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={onOpenNavbarSubMenu}
+          triggerSubMenu={MenuKeys.Devs}
+          open={openNavbarSubMenu === MenuKeys.Devs}
+          prevMenu={MenuKeys.None}
           subMenuList={mainSubMenuDevelopers}
         />
 
         <SubMenuComponent
-          isSubMenu={true}
           label={`${translate(`${i18Path}developers.showcases`)}`}
-          triggerSubMenu={'showcases'}
-          isScrollable={true}
-          open={openMainNavbarMenu}
-          isOpenSubMenu={openNavbarSubMenu !== SubMenuKeys.none}
-          setOpenSubMenu={onOpenNavbarSubMenu}
+          triggerSubMenu={MenuKeys.Showcases}
+          open={openNavbarSubMenu === MenuKeys.Showcases}
+          prevMenu={MenuKeys.Devs}
           subMenuList={mainSubMenuShowcases}
         />
       </NavbarMenu>
-      <SupportModal />
     </>
-  );
+  ) : null;
 };

@@ -6,13 +6,13 @@ import { SupportModalContainer } from './SupportModal.style';
 
 export const SupportModal = () => {
   const theme = useTheme();
-  const [openSupportModal, toggleSupportModal] = useMenuStore(
-    (state) => [state.openSupportModal, state.toggleSupportModal],
+  const [openSupportModal, onOpenSupportModal] = useMenuStore(
+    (state) => [state.openSupportModal, state.onOpenSupportModal],
     shallow,
   );
 
   return (
-    <Modal open={openSupportModal} onClose={() => toggleSupportModal(false)}>
+    <Modal open={openSupportModal} onClose={() => onOpenSupportModal(false)}>
       <SupportModalContainer>
         <WidgetBot
           server="849912621360218112" // LI.FI / TransferTo.xyz

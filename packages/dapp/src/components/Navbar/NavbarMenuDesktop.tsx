@@ -2,9 +2,10 @@ import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
+import { ButtonBackArrow } from '@transferto/shared/src/atoms';
 import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import { shallow } from 'zustand/shallow';
-import { SubMenuKeys } from '../../const/';
+import { MenuKeys, MenuMain } from '../../const/';
 import { useMenuStore } from '../../stores/menu';
 import {
   MenuHeaderAppBar,
@@ -17,9 +18,9 @@ import {
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
   label?: string;
+  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  isScrollable?: boolean;
   open: boolean;
   children: any;
 }
@@ -28,18 +29,28 @@ const NavbarMenuDesktop = ({
   isOpenSubMenu,
   setOpen,
   handleClose,
-  isScrollable,
+  hideBackArrow,
   label,
   open,
   children,
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const [openNavbarSubMenu, onCloseAllNavbarMenus, anchorRef] = useMenuStore(
+  const [
+    openNavbarSubMenu,
+    onCloseAllNavbarMenus,
+    openNavbarWalletMenu,
+    anchorRef,
+    openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu,
+  ] = useMenuStore(
     (state) => [
       state.openNavbarSubMenu,
       state.onCloseAllNavbarMenus,
+      state.openNavbarWalletMenu,
       state.anchorRef,
+      state.openNavbarWalletSelectMenu,
+      state.onOpenNavbarWalletSelectMenu,
     ],
     shallow,
   );
@@ -75,9 +86,7 @@ const NavbarMenuDesktop = ({
             >
               <NavbarPaper
                 isDarkMode={isDarkMode}
-                isOpenSubMenu={isOpenSubMenu}
-                openSubMenu={openNavbarSubMenu}
-                isScrollable={!!label || isScrollable}
+                isWide={openNavbarWalletMenu}
               >
                 <ClickAwayListener
                   onClickAway={(event) => {
@@ -88,27 +97,29 @@ const NavbarMenuDesktop = ({
                   <NavbarMenuList
                     autoFocusItem={open}
                     id="composition-menu"
+                    isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
-                    className={
-                      isOpenSubMenu
-                        ? 'navbar-menu-list open'
-                        : 'navbar-menu-list'
-                    }
+                    hasLabel={!!label}
                     component={
                       !!isOpenSubMenu &&
-                      openNavbarSubMenu !== SubMenuKeys.wallets
+                      openNavbarSubMenu !== MenuMain.WalletSelect
                         ? 'div'
                         : 'ul'
                     }
                   >
                     {!!label ? (
                       <MenuHeaderAppWrapper>
-                        <MenuHeaderAppBar
-                          component="div"
-                          elevation={0}
-                          isScrollable={isScrollable}
-                        >
+                        <MenuHeaderAppBar component="div" elevation={0}>
+                          {!hideBackArrow && (
+                            <ButtonBackArrow
+                              onClick={() => {
+                                onOpenNavbarWalletSelectMenu(
+                                  !openNavbarWalletSelectMenu,
+                                );
+                              }}
+                            />
+                          )}
                           <Typography
                             variant={'lifiBodyMediumStrong'}
                             width={'100%'}

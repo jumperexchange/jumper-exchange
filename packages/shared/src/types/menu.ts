@@ -1,24 +1,32 @@
 // ----------------------------------------------------------------------
 
+import type { MenuKeys } from '@transferto/dapp/src/const';
 import type { MutableRefObject } from 'react';
 
-export interface MenuProps {
+export type MenuProps = {
+  anchorRef: any;
+  openMainNavbarMenu: boolean;
+  openNavbarWalletSelectMenu: boolean;
+  openNavbarChainsMenu: boolean;
+  openNavbarWalletMenu: boolean;
+  openNavbarSubMenu: keyof typeof MenuKeys;
+  openSupportModal: boolean;
+};
+
+export type MenuContextProps = {
   anchorRef?: any;
-  copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
+  openNavbarChainsMenu?: boolean;
   openNavbarWalletSelectMenu?: boolean;
   openNavbarWalletMenu?: boolean;
-  openNavbarSubMenu?: string;
+  openNavbarSubMenu?: keyof typeof MenuKeys;
   openSupportModal?: boolean;
-}
+};
 
 export interface MenuState extends MenuProps {
-  // ClipBoard
-  onCopyToClipboard: (copied: boolean) => void;
-
   // On Iniitialization
   onMenuInit: (
-    anchorEl: JSX.Element | Element | MutableRefObject<HTMLButtonElement>,
+    anchorRef: JSX.Element | Element | MutableRefObject<HTMLButtonElement>,
   ) => void;
 
   // Close ALL Navbar Menus
@@ -33,9 +41,12 @@ export interface MenuState extends MenuProps {
   // Toggle Navbar Connected Menu
   onOpenNavbarWalletMenu: (open: boolean) => void;
 
+  // Toggle Navbar Chains Menu
+  onOpenNavbarChainsMenu: (open: boolean) => void;
+
   // Toggle Navbar Sub Menu
-  onOpenNavbarSubMenu: (subMenu: string) => void;
+  onOpenNavbarSubMenu: (subMenu: keyof typeof MenuKeys) => void;
 
   // Toggle support modal
-  toggleSupportModal: (open: boolean) => void;
+  onOpenSupportModal: (open: boolean) => void;
 }
