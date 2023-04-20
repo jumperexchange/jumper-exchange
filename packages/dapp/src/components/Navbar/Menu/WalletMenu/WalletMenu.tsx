@@ -182,7 +182,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       sx={{ top: '78px !important' }}
     >
       <MuiAlert elevation={6} variant="filled" severity="success">
-        Wallet address copied
+        {translate(`${i18Path}copiedMsg`)}
       </MuiAlert>
     </Snackbar>
   );

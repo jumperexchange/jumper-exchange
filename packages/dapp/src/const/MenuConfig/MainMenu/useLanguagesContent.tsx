@@ -4,7 +4,7 @@ import { EventTrackingTools, useUserTracking } from '../../../hooks';
 import { useSettingsStore } from '../../../stores';
 import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
-export const useMainSubMenuLanguage = () => {
+export const useLanguagesContent = () => {
   const { i18n } = useTranslation();
   const [languageMode, onChangeLanguage] = useSettingsStore(
     (state) => [state.languageMode, state.onChangeLanguage],

@@ -5,7 +5,7 @@ import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useMenuStore } from '../../../stores';
 
-export const useMainSubMenuShowcases = () => {
+export const useShowcasesContent = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const { trackPageload } = useUserTracking();

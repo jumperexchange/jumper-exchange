@@ -3,11 +3,11 @@ import { shallow } from 'zustand/shallow';
 import {
   MenuKeys,
   MenuSub,
-  useMainMenuItems,
-  useMainSubMenuDevelopers,
-  useMainSubMenuLanguage,
-  useMainSubMenuShowcases,
-  useMainSubMenuTheme,
+  useDevelopersContent,
+  useLanguagesContent,
+  useMainMenuContent,
+  useShowcasesContent,
+  useThemeContent,
 } from '../../../../const';
 import { useMenuStore } from '../../../../stores';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
@@ -18,11 +18,11 @@ interface MainMenuProps {
 export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
-  const mainMenuItems = useMainMenuItems();
-  const mainSubMenuTheme = useMainSubMenuTheme();
-  const mainSubMenuDevelopers = useMainSubMenuDevelopers();
-  const mainSubMenuLanguage = useMainSubMenuLanguage();
-  const mainSubMenuShowcases = useMainSubMenuShowcases();
+  const mainMenuItems = useMainMenuContent();
+  const mainSubMenuTheme = useThemeContent();
+  const mainSubMenuDevelopers = useDevelopersContent();
+  const mainSubMenuLanguage = useLanguagesContent();
+  const mainSubMenuShowcases = useShowcasesContent();
   const [
     openMainNavbarMenu,
     onOpenNavbarMainMenu,

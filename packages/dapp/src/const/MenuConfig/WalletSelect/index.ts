@@ -1,1 +1,1 @@
-export { useWalletSelectMenuItems } from './Wallet-MenuItems';
+export { useWalletSelectContent } from './useWalletSelectContent';

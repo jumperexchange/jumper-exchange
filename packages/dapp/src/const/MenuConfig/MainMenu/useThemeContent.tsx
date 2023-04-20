@@ -12,7 +12,7 @@ import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking'
 import { useSettingsStore } from '../../../stores';
 import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
-export const useMainSubMenuTheme = () => {
+export const useThemeContent = () => {
   const { t: translate } = useTranslation();
   const { trackEvent } = useUserTracking();
   const i18Path = 'navbar.';

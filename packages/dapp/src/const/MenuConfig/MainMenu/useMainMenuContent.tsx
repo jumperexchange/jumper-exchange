@@ -9,14 +9,14 @@ import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { MenuKeys, TrackingActions, TrackingCategories } from '../../../const';
+import { MenuKeys, TrackingActions, TrackingCategories } from '../..';
 import { EventTrackingTools } from '../../../hooks';
 import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
 import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
 import { useSettingsStore } from '../../../stores';
 import { useMenuStore } from '../../../stores/menu';
 
-export const useMainMenuItems = () => {
+export const useMainMenuContent = () => {
   const { t: translate, i18n } = useTranslation();
   const i18Path = 'navbar.';
   const { trackPageload, trackEvent } = useUserTracking();

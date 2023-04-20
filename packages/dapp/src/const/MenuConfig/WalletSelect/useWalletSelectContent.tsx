@@ -9,7 +9,7 @@ import { useMenuStore, useSettingsStore } from '../../../stores';
 import { MenuListItem } from '../../../types';
 import { TrackingActions, TrackingCategories } from '../../trackingKeys';
 
-export const useWalletSelectMenuItems = () => {
+export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect } = useWallet();
   const { trackEvent } = useUserTracking();
@@ -31,7 +31,7 @@ export const useWalletSelectMenuItems = () => {
   const login = useCallback(
     async (wallet: Wallet) => {
       onCloseAllNavbarMenus();
-
+      onWalletConnect(wallet.name);
       if (wallet.checkProviderIdentity) {
         let checkResult;
         if (wallet.name === 'Taho') {
@@ -46,8 +46,6 @@ export const useWalletSelectMenuItems = () => {
         }
       }
       await connect(wallet);
-      onWalletConnect(wallet.name);
-      onOpenNavbarWalletSelectMenu(false);
       try {
       } catch (e) {}
     },

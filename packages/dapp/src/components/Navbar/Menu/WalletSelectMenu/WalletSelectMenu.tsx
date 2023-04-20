@@ -3,7 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { MenuKeys, useWalletSelectMenuItems } from '../../../../const';
+import { MenuKeys, useWalletSelectContent } from '../../../../const';
 import { useMenuStore } from '../../../../stores';
 import { MenuItemComponent, NavbarMenu } from '../../index';
 
@@ -16,7 +16,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const i18Path = 'navbar.';
   const { t: translate } = useTranslation();
   const theme = useTheme();
-  const _walletSelectMenuItems = useWalletSelectMenuItems();
+  const walletSelectMenuItems = useWalletSelectContent();
   const [
     openNavbarWalletSelectMenu,
     onOpenNavbarWalletSelectMenu,
@@ -41,8 +41,8 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
       setOpen={onOpenNavbarWalletSelectMenu}
       isOpenSubMenu={openNavbarSubMenu === MenuKeys.WalletSelect}
     >
-      {!!_walletSelectMenuItems.length ? (
-        _walletSelectMenuItems.map((el, index) => (
+      {!!walletSelectMenuItems.length ? (
+        walletSelectMenuItems.map((el, index) => (
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
