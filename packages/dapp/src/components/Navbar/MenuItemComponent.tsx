@@ -35,15 +35,6 @@ const MenuItemComponent = ({
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
 
-  console.log(
-    '!!open && !isOpenSubMenu',
-    !!open && !isOpenSubMenu,
-    'open',
-    open,
-    'isOpenSubMenu',
-    isOpenSubMenu,
-  );
-
   return open ? (
     <MenuItem
       disableRipple={showButton}

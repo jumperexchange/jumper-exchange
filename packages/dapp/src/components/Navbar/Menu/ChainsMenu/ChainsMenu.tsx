@@ -37,8 +37,6 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
     shallow,
   );
 
-  console.log('chains', chains.length, chains);
-
   return !!openNavbarChainsMenu ? (
     <NavbarMenu
       handleClose={handleClose}

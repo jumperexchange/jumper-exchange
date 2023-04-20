@@ -87,7 +87,6 @@ export const useWalletSelectContent = () => {
         },
       };
     });
-    console.log('_output', _output);
     return _output;
   }, [login, trackEvent]);
 

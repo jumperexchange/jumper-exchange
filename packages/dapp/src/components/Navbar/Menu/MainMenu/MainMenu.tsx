@@ -37,14 +37,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
     ],
     shallow,
   );
-  console.log(
-    'test',
-    openNavbarSubMenu === MenuKeys.None,
-    'openNavbarSubMenu',
-    openNavbarSubMenu,
-  );
-  console.log('openNavbarSubMenu', openNavbarSubMenu);
-  console.log('openMainNavbarMenu', openMainNavbarMenu);
+
   return openMainNavbarMenu ? (
     <>
       <NavbarMenu
