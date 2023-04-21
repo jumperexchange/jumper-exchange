@@ -2,8 +2,7 @@ import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
-import { ButtonBackArrow } from '@transferto/shared/src/atoms';
-import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
+import { KeyboardEvent } from 'react';
 import { shallow } from 'zustand/shallow';
 import { MenuKeys, MenuMain } from '../../const/';
 import { useMenuStore } from '../../stores/menu';
@@ -18,9 +17,9 @@ import {
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
   label?: string;
-  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  transformOrigin?: string;
+  setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
   children: any;
 }
@@ -29,7 +28,7 @@ const NavbarMenuDesktop = ({
   isOpenSubMenu,
   setOpen,
   handleClose,
-  hideBackArrow,
+  transformOrigin,
   label,
   open,
   children,
@@ -41,16 +40,12 @@ const NavbarMenuDesktop = ({
     onCloseAllNavbarMenus,
     openNavbarWalletMenu,
     anchorRef,
-    openNavbarWalletSelectMenu,
-    onOpenNavbarWalletSelectMenu,
   ] = useMenuStore(
     (state) => [
       state.openNavbarSubMenu,
       state.onCloseAllNavbarMenus,
       state.openNavbarWalletMenu,
       state.anchorRef,
-      state.openNavbarWalletSelectMenu,
-      state.onOpenNavbarWalletSelectMenu,
     ],
     shallow,
   );
@@ -58,9 +53,9 @@ const NavbarMenuDesktop = ({
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault();
-      setOpen(false);
+      setOpen(false, null);
     } else if (event.key === 'Escape') {
-      setOpen(false);
+      setOpen(false, null);
     }
   }
 
@@ -72,7 +67,7 @@ const NavbarMenuDesktop = ({
           open={open}
           anchorEl={anchorRef}
           role={undefined}
-          placement="bottom-start"
+          // placement="bottom"
           popperOptions={{ strategy: 'fixed' }}
           transition
           disablePortal
@@ -81,7 +76,7 @@ const NavbarMenuDesktop = ({
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin: 'right top',
+                transformOrigin: transformOrigin ? transformOrigin : 'top',
               }}
             >
               <NavbarPaper
@@ -97,6 +92,7 @@ const NavbarMenuDesktop = ({
                   <NavbarMenuList
                     autoFocusItem={open}
                     id="composition-menu"
+                    autoFocus={open}
                     isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
@@ -111,15 +107,6 @@ const NavbarMenuDesktop = ({
                     {!!label ? (
                       <MenuHeaderAppWrapper>
                         <MenuHeaderAppBar component="div" elevation={0}>
-                          {!hideBackArrow && (
-                            <ButtonBackArrow
-                              onClick={() => {
-                                onOpenNavbarWalletSelectMenu(
-                                  !openNavbarWalletSelectMenu,
-                                );
-                              }}
-                            />
-                          )}
                           <Typography
                             variant={'lifiBodyMediumStrong'}
                             width={'100%'}

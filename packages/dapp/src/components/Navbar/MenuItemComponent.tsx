@@ -9,6 +9,7 @@ import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
   showButton: boolean;
+  autoFocus?: boolean;
   setOpenSubMenu: Dispatch<SetStateAction<string>>;
   showMoreIcon?: boolean;
   label: string;
@@ -23,6 +24,7 @@ const MenuItemComponent = ({
   open,
   setOpenSubMenu,
   showButton,
+  autoFocus,
   showMoreIcon = true,
   onClick,
   label,
@@ -37,6 +39,7 @@ const MenuItemComponent = ({
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
+      autoFocus={autoFocus}
       onClick={() => {
         !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
         !!triggerSubMenu &&

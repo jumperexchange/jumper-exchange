@@ -42,6 +42,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       <NavbarMenu
         handleClose={handleClose}
         open={true}
+        transformOrigin={'top right'}
         setOpen={onOpenNavbarMainMenu}
         isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
       >
@@ -49,6 +50,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           mainMenuItems.map((el, index) => (
             <MenuItemComponent
               key={`${el.label}-${index}`}
+              autoFocus={index > 0 ? true : false}
               label={el.label}
               prefixIcon={el.prefixIcon}
               triggerSubMenu={el.triggerSubMenu}

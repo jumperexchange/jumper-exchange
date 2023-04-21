@@ -1,23 +1,22 @@
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Dispatch, SetStateAction } from 'react';
 import { NavbarMenuDesktop, NavbarMenuMobile } from './index';
 
 interface NavbarMenuProps {
   isOpenSubMenu?: boolean;
   label?: string;
-  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
+  transformOrigin?: string;
   children: any;
 }
 
 const NavbarMenu = ({
   handleClose,
   open,
-  hideBackArrow,
   setOpen,
+  transformOrigin,
   label,
   isOpenSubMenu,
   children,
@@ -31,8 +30,8 @@ const NavbarMenu = ({
     (!!isDesktop ? (
       <NavbarMenuDesktop
         handleClose={handleClose}
-        hideBackArrow={hideBackArrow}
         label={label}
+        transformOrigin={transformOrigin}
         open={open}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu}
@@ -42,7 +41,6 @@ const NavbarMenu = ({
     ) : (
       <NavbarMenuMobile
         handleClose={handleClose}
-        hideBackArrow={hideBackArrow}
         label={label}
         open={open}
         setOpen={setOpen}

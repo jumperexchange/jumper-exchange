@@ -29,8 +29,8 @@ export const ChainSwitch = () => {
     [chains, account.chainId],
   );
 
-  const handleOpenChainsMenu = () => {
-    onOpenNavbarChainsMenu(!openNavbarChainsMenu);
+  const handleOpenChainsMenu = (event) => {
+    onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
 
     trackEvent({
       category: 'chain-menu',
@@ -42,8 +42,8 @@ export const ChainSwitch = () => {
   return (
     <Tooltip title={translate(`${i18Path}switchChain`)}>
       <ButtonChainSwitch
-        onClick={() => {
-          handleOpenChainsMenu();
+        onClick={(event) => {
+          handleOpenChainsMenu(event);
         }}
       >
         {!!activeChain?.logoURI ? (

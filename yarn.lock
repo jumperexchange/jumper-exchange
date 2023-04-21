@@ -5518,6 +5518,7 @@ __metadata:
     react-i18next: ^12.2.0
     typescript: ^5.0.4
     use-media: ^1.4.0
+    zustand: ^4.3.7
   languageName: unknown
   linkType: soft
 

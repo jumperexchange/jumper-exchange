@@ -33,16 +33,16 @@ export interface MenuState extends MenuProps {
   onCloseAllNavbarMenus: () => void;
 
   // Toggle Navbar Main Menu
-  onOpenNavbarMainMenu: (open: boolean) => void;
+  onOpenNavbarMainMenu: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletSelectMenu: (open: boolean) => void;
+  onOpenNavbarWalletSelectMenu: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Navbar Connected Menu
-  onOpenNavbarWalletMenu: (open: boolean) => void;
+  onOpenNavbarWalletMenu: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Navbar Chains Menu
-  onOpenNavbarChainsMenu: (open: boolean) => void;
+  onOpenNavbarChainsMenu: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Navbar Sub Menu
   onOpenNavbarSubMenu: (subMenu: keyof typeof MenuKeys) => void;

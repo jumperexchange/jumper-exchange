@@ -4,10 +4,12 @@ import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
+import { KeyboardEvent } from 'react';
 import { shallow } from 'zustand/shallow';
 import { MenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import { MenuListItem } from '../../types';
+
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -44,8 +46,19 @@ const SubMenuComponent = ({
     shallow,
   );
 
+  function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === 'Backspace') {
+      onOpenNavbarSubMenu(prevMenu);
+    }
+  }
+
   return open && openNavbarSubMenu === triggerSubMenu ? (
-    <NavbarPaper component={'ul'} isDarkMode={isDarkMode}>
+    <NavbarPaper
+      onKeyDown={handleBackSpace}
+      autoFocus={open}
+      component={'ul'}
+      isDarkMode={isDarkMode}
+    >
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
           <>
@@ -63,6 +76,7 @@ const SubMenuComponent = ({
         subMenuList.map((el, index) =>
           !!el.url ? (
             <MenuLinkItem
+              autoFocus={index > 0 ? true : false}
               onClick={() => {
                 !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
                 !!el.onClick && el.onClick();
@@ -99,6 +113,7 @@ const SubMenuComponent = ({
             </MenuLinkItem>
           ) : (
             <MenuItem
+              autoFocus={index > 0 ? true : false}
               onClick={() => {
                 !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
                 !!el.onClick && el.onClick();

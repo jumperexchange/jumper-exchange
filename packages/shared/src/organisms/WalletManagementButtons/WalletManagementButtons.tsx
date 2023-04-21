@@ -4,28 +4,22 @@ import { Avatar, Typography, useTheme } from '@mui/material';
 import { EventTrackingTools } from '@transferto/dapp/src/types';
 import type { Wallet } from '@transferto/shared/src/types';
 import type { ReactElement } from 'react';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import {
   TrackingActions,
   TrackingCategories,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { useMenuStore } from '@transferto/dapp/src/stores';
+import { shallow } from 'zustand/shallow';
 import { ButtonPrimary, ButtonSecondary } from '../../atoms';
 import { walletDigest } from '../../utils/walletDigest';
-
-interface ToggleMenuHandlersProps {
-  openNavbarWalletSelectMenu: boolean;
-  onOpenNavbarWalletSelectMenu: (open: boolean) => void;
-  openNavbarWalletMenu: boolean;
-  onOpenNavbarWalletMenu: (open: boolean) => void;
-}
 
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
   backgroundColor?: string;
   color?: string;
-  toggleMenuHandlers: ToggleMenuHandlersProps;
   walletConnected?: boolean;
   connectButtonLabel?: ReactElement<any, any>;
   isSuccess: boolean;
@@ -39,6 +33,47 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
   }, [account]);
+  const walletMenuAnchor = useRef<any>(null);
+  const walletSelectMenuAnchor = useRef<any>(null);
+
+  const [
+    openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu,
+    openNavbarWalletMenu,
+    onOpenNavbarWalletMenu,
+  ] = useMenuStore(
+    (state) => [
+      state.openNavbarWalletSelectMenu,
+      state.onOpenNavbarWalletSelectMenu,
+      state.openNavbarWalletMenu,
+      state.onOpenNavbarWalletMenu,
+    ],
+    shallow,
+  );
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevWalletSelect = useRef(openNavbarWalletSelectMenu);
+  useEffect(() => {
+    if (
+      prevWalletSelect.current === true &&
+      openNavbarWalletSelectMenu === false
+    ) {
+      console.log('focus');
+      walletSelectMenuAnchor!.current?.focus();
+    }
+
+    prevWalletSelect.current = openNavbarWalletSelectMenu;
+  }, [openNavbarWalletSelectMenu]);
+
+  const prevWallet = useRef(openNavbarWalletMenu);
+  useEffect(() => {
+    if (prevWallet.current === true && openNavbarWalletMenu === false) {
+      console.log('focus');
+      walletMenuAnchor!.current?.focus();
+    }
+
+    prevWallet.current = openNavbarWalletMenu;
+  }, [openNavbarWalletMenu]);
 
   const walletSource: Wallet[] = supportedWallets;
   const walletIcon: string = useMemo(() => {
@@ -54,34 +89,33 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
 
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const handleWalletSelectClick = () => {
-    !props.toggleMenuHandlers.openNavbarWalletSelectMenu &&
+  const handleWalletSelectClick = (event) => {
+    openNavbarWalletSelectMenu &&
       trackEvent({
         category: TrackingCategories.Menu,
         action: TrackingActions.OpenWalletSelectMenu,
         disableTrackingTool: [EventTrackingTools.arcx],
       });
-    props.toggleMenuHandlers.onOpenNavbarWalletSelectMenu(
-      !props.toggleMenuHandlers.openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu(
+      !openNavbarWalletSelectMenu,
+      event.currentTarget,
     );
   };
 
-  const handleWalletMenuClick = () => {
-    !props.toggleMenuHandlers.openNavbarWalletMenu &&
+  const handleWalletMenuClick = (event) => {
+    openNavbarWalletMenu &&
       trackEvent({
         category: TrackingCategories.Menu,
         action: TrackingActions.WalletMenu,
         disableTrackingTool: [EventTrackingTools.arcx],
       });
-    props.toggleMenuHandlers.onOpenNavbarWalletMenu(
-      !props.toggleMenuHandlers.openNavbarWalletMenu,
-    );
+    onOpenNavbarWalletMenu(!openNavbarWalletMenu, event.currentTarget);
   };
 
   return (
     <>
       {!account.address ? (
-        // Connect-Button -->
+        // Connect/WalletSelect-Button -->
         <>
           <ButtonPrimary
             onClick={handleWalletSelectClick}
@@ -99,7 +133,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
           </ButtonPrimary>
         </>
       ) : (
-        // ConnectedMenu-Button -->
+        // Wallet-Menu-Button -->
         <ButtonSecondary
           sx={{
             width: '180px',
@@ -112,7 +146,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
             },
             [theme.breakpoints.up('md' as Breakpoint)]: {
               position: 'relative',
-              width: '48px', //'180px',
+              width: '48px',
               padding: '0',
               left: 'unset',
               display: 'inherit',

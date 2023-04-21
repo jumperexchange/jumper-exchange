@@ -2,7 +2,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { WalletManagementButtons } from '@transferto/shared/src';
 import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
@@ -15,76 +15,45 @@ import {
 } from './Navbar.style';
 
 const NavbarManagement = () => {
-  const anchorRef = useRef<any>(null);
+  const mainMenuAnchor = useRef<any>(null);
 
   const [onWalletDisconnect] = useSettingsStore(
     (state) => [state.onWalletDisconnect],
     shallow,
   );
 
-  const [
-    openMainNavbarMenu,
-    onOpenNavbarMainMenu,
-    openNavbarWalletSelectMenu,
-    onOpenNavbarWalletSelectMenu,
-    openNavbarWalletMenu,
-    onOpenNavbarWalletMenu,
-  ] = useMenuStore(
-    (state) => [
-      state.openMainNavbarMenu,
-      state.onOpenNavbarMainMenu,
-      state.openNavbarWalletSelectMenu,
-      state.onOpenNavbarWalletSelectMenu,
-      state.openNavbarWalletMenu,
-      state.onOpenNavbarWalletMenu,
-    ],
+  const [openMainNavbarMenu, onOpenNavbarMainMenu] = useMenuStore(
+    (state) => [state.openMainNavbarMenu, state.onOpenNavbarMainMenu],
     shallow,
   );
-
-  const toggleMenuHandlers = {
-    openNavbarWalletSelectMenu,
-    onOpenNavbarWalletSelectMenu,
-    openNavbarWalletMenu,
-    onOpenNavbarWalletMenu,
-  };
-
-  const onMenuInit = useMenuStore((state) => state.onMenuInit);
 
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const walletManagement = useWallet();
   const { account } = useWallet();
-
   !account.isActive ?? onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = useRef(openMainNavbarMenu);
+  const prevMainMenu = useRef(openMainNavbarMenu);
   useEffect(() => {
-    if (prevOpen.current === true && openMainNavbarMenu === false) {
-      anchorRef!.current.focus();
+    if (prevMainMenu.current === true && openMainNavbarMenu === false) {
+      console.log('focus');
+      mainMenuAnchor!.current.focus();
     }
 
-    prevOpen.current = openMainNavbarMenu;
+    prevMainMenu.current = openMainNavbarMenu;
   }, [openMainNavbarMenu]);
-
-  useLayoutEffect(() => {
-    onMenuInit(anchorRef.current);
-    // We want to run this once to avoid infinite re-render
-    // FIXME: We need to fix how we manage menu state to avoid re-rendering of the whole app when we open the menu
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const { isSuccess } = useChainInfos();
 
   const handleOnOpenNavbarMainMenu = () => {
-    onOpenNavbarMainMenu(!openMainNavbarMenu);
+    onOpenNavbarMainMenu(!openMainNavbarMenu, mainMenuAnchor.current);
   };
 
   return (
     <NavbarManagementContainer className="settings">
       <WalletManagementButtons
         walletManagement={walletManagement}
-        toggleMenuHandlers={toggleMenuHandlers}
         connectButtonLabel={
           <Typography
             variant={'lifiBodyMediumStrong'}
@@ -104,7 +73,7 @@ const NavbarManagement = () => {
       {account.isActive ? <ChainSwitch /> : null}
       <ThemeSwitch />
       <NavbarDropdownButton
-        ref={anchorRef}
+        ref={mainMenuAnchor}
         id="composition-button"
         aria-controls={openMainNavbarMenu ? 'composition-menu' : undefined}
         aria-expanded={openMainNavbarMenu ? 'true' : undefined}

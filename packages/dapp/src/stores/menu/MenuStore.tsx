@@ -1,11 +1,6 @@
-import { create } from 'zustand';
-
-// config
-// @type
 import { MenuProps, MenuState } from '@transferto/shared/src/types';
+import { create } from 'zustand';
 import { MenuKeys } from '../../const';
-
-// ----------------------------------------------------------------------
 
 interface DefaultMenuType {
   openMainNavbarMenu: boolean;
@@ -26,7 +21,7 @@ export const defaultMenu: DefaultMenuType = {
   openSupportModal: false,
   anchorRef: null,
 };
-/*--  Use Zustand  --*/
+
 export const useMenuStore = create<MenuState>((set, get) => ({
   ...defaultMenu,
   setValue: (key, value) =>
@@ -53,57 +48,60 @@ export const useMenuStore = create<MenuState>((set, get) => ({
       openNavbarChainsMenu: false,
       openNavbarSubMenu: MenuKeys.None,
       openSupportModal: false,
+      anchorRef: null,
     });
   },
 
   // Set AnchorElement on Initialization of Navbar
-  onMenuInit: (anchorRef: JSX.Element) => {
-    set({
-      anchorRef,
-    });
+  onMenuInit: () => {
+    set({});
   },
 
   // Toggle Navbar Main Menu
-  onOpenNavbarMainMenu: (open: boolean) => {
+  onOpenNavbarMainMenu: (open, anchorRef) => {
     set({
       openMainNavbarMenu: open,
       openNavbarSubMenu: MenuKeys.None,
+      anchorRef: open ? anchorRef : null,
     });
   },
 
   // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletSelectMenu: (open: boolean) => {
+  onOpenNavbarWalletSelectMenu: (open, anchorRef) => {
     set({
       openNavbarWalletSelectMenu: open,
       openNavbarSubMenu: MenuKeys.None,
+      anchorRef: open ? anchorRef : null,
     });
   },
 
   // Toggle Navbar Connected Menu
-  onOpenNavbarWalletMenu: (open: boolean) => {
+  onOpenNavbarWalletMenu: (open, anchorRef) => {
     set({
       openNavbarWalletMenu: open,
       openNavbarSubMenu: MenuKeys.None,
+      anchorRef: open ? anchorRef : null,
     });
   },
 
   // Toggle Navbar Chains Menu
-  onOpenNavbarChainsMenu: (open: boolean) => {
+  onOpenNavbarChainsMenu: (open, anchorRef) => {
     set({
       openNavbarChainsMenu: open,
       openNavbarSubMenu: MenuKeys.None,
+      anchorRef: open ? anchorRef : null,
     });
   },
 
   // Toggle Navbar Sub Menu
-  onOpenNavbarSubMenu: (subMenu: MenuKeys) => {
+  onOpenNavbarSubMenu: (subMenu) => {
     set({
       openNavbarSubMenu: subMenu,
     });
   },
 
   // Toggle support modal
-  onOpenSupportModal: (open: boolean) => {
+  onOpenSupportModal: (open) => {
     set({
       openMainNavbarMenu: false,
       openNavbarChainsMenu: false,
