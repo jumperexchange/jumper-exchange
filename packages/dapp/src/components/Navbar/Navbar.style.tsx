@@ -146,8 +146,6 @@ export const NavbarMenuList = styled(MenuList, {
   },
 }));
 
-export const NavbarLinkText = styled('span')({});
-
 export const MenuHeader = styled('div')(() => ({
   padding: '0',
   textAlign: 'center',
