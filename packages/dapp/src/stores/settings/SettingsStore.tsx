@@ -45,9 +45,9 @@ export const useSettingsStore = create(
       },
 
       // Wallet
-      onWalletConnect: (activeWalletName: string) => {
+      onWalletConnect: (activeWalletName: WalletConnected) => {
         set({
-          activeWalletName: activeWalletName as WalletConnected,
+          activeWalletName,
         });
       },
 
@@ -60,14 +60,14 @@ export const useSettingsStore = create(
       // Mode
       onChangeMode: (mode: ThemeModesSupported) => {
         set({
-          themeMode: mode as ThemeModesSupported,
+          themeMode: mode,
         });
       },
 
       // Language
       onChangeLanguage: (language: LanguageKey) => {
         set({
-          languageMode: language as LanguageKey,
+          languageMode: language,
         });
       },
 

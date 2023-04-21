@@ -66,7 +66,7 @@ export const useMenuStore = create<MenuState>((set, get) => ({
   // Toggle Navbar Main Menu
   onOpenNavbarMainMenu: (open: boolean) => {
     set({
-      openMainNavbarMenu: open as boolean,
+      openMainNavbarMenu: open,
       openNavbarSubMenu: MenuKeys.None,
     });
   },
@@ -74,7 +74,7 @@ export const useMenuStore = create<MenuState>((set, get) => ({
   // Toggle Navbar Wallet Menu
   onOpenNavbarWalletSelectMenu: (open: boolean) => {
     set({
-      openNavbarWalletSelectMenu: open as boolean,
+      openNavbarWalletSelectMenu: open,
       openNavbarSubMenu: MenuKeys.None,
     });
   },
@@ -82,7 +82,7 @@ export const useMenuStore = create<MenuState>((set, get) => ({
   // Toggle Navbar Connected Menu
   onOpenNavbarWalletMenu: (open: boolean) => {
     set({
-      openNavbarWalletMenu: open as boolean,
+      openNavbarWalletMenu: open,
       openNavbarSubMenu: MenuKeys.None,
     });
   },
@@ -90,7 +90,7 @@ export const useMenuStore = create<MenuState>((set, get) => ({
   // Toggle Navbar Chains Menu
   onOpenNavbarChainsMenu: (open: boolean) => {
     set({
-      openNavbarChainsMenu: open as boolean,
+      openNavbarChainsMenu: open,
       openNavbarSubMenu: MenuKeys.None,
     });
   },
