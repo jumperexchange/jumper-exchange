@@ -31,14 +31,12 @@ export const OnRamper = () => {
     wgBorderRadius: '12px',
     border: 'unset',
   };
-  console.log(JSON.stringify(widgetStyling));
   const regex = /"([^"]+)":"([^"]+)"(,?)/g;
   const outputString = JSON.stringify(widgetStyling)
     .replace(regex, '$1=$2&')
     .slice(0, -1)
     .substring(1);
 
-  console.log('output:', outputString);
   return (
     <OnRamperIFrame
       src={`https://buy.onramper.com/?apiKey=${
