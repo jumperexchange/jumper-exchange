@@ -3,4 +3,5 @@ export enum LinkMap {
   dashboard = 'dashboard',
   refuel = 'refuel',
   gas = 'gas',
+  buy = 'buy',
 }

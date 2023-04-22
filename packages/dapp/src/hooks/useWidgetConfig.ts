@@ -159,6 +159,9 @@ export function useWidgetConfig({ starterVariant }) {
     menu,
     trackEvent,
     disconnect,
+    switchChain,
+    addToken,
+    addChain,
   ]);
 
   return widgetConfig;

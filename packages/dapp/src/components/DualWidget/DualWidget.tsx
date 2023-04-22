@@ -6,6 +6,7 @@ import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactGA from 'react-ga4';
 import { LinkMap } from '../../types/';
+import { OnRamper } from '../OnRamper';
 import { Widget } from '../Widget';
 import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
@@ -14,8 +15,9 @@ export function DualWidget() {
   const settings = useSettings();
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
-  const [_starterVariant, setStarterVariant] =
-    useState<WidgetVariant>('expandable');
+  const [_starterVariant, setStarterVariant] = useState<WidgetVariant | 'buy'>(
+    'expandable',
+  );
 
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
@@ -25,9 +27,9 @@ export function DualWidget() {
         return 'expandable';
       } else if (url === LinkMap.gas || url === LinkMap.refuel) {
         return 'refuel';
+      } else if (url === LinkMap.buy) {
+        return 'buy';
       }
-    } else {
-      return 'expandable';
     }
   }, []);
 
@@ -35,7 +37,9 @@ export function DualWidget() {
     if (!starterVariantUsed) {
       starterVariant === 'expandable'
         ? settings.onChangeTab(0)
-        : settings.onChangeTab(1);
+        : starterVariant === 'refuel'
+        ? settings.onChangeTab(1)
+        : settings.onChangeTab(2);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
@@ -43,6 +47,8 @@ export function DualWidget() {
         setStarterVariant('expandable');
       } else if (settings.activeTab === 1) {
         setStarterVariant('refuel');
+      } else if (settings.activeTab === 2) {
+        setStarterVariant('buy');
       }
     }
   }, [settings, starterVariant, starterVariantUsed]);
@@ -71,6 +77,9 @@ export function DualWidget() {
       </WidgetContainer>
       <WidgetContainer item xs={12} isActive={_starterVariant === 'refuel'}>
         <Widget starterVariant={'refuel'} />
+      </WidgetContainer>
+      <WidgetContainer item xs={12} isActive={_starterVariant === 'buy'}>
+        <OnRamper />
       </WidgetContainer>
       <WidgetEvents />
     </Grid>
