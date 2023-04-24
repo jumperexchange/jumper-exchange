@@ -8,7 +8,6 @@ import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { MenuKeys, TrackingActions, TrackingCategories } from '..';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
@@ -21,13 +20,8 @@ export const useMainMenuContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
-
-  const [themeMode] = useSettingsStore((state) => [state.themeMode], shallow);
-
-  const [onOpenSupportModal] = useMenuStore(
-    (state) => [state.onOpenSupportModal],
-    shallow,
-  );
+  const themeMode = useSettingsStore((state) => state.themeMode);
+  const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
 
   return [
     {

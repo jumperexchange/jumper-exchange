@@ -46,9 +46,8 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     shallow,
   );
 
-  const [onWalletDisconnect] = useSettingsStore(
-    (state) => [state.onWalletDisconnect],
-    shallow,
+  const onWalletDisconnect = useSettingsStore(
+    (state) => state.onWalletDisconnect,
   );
 
   const walletIcon: string = useMemo(() => {

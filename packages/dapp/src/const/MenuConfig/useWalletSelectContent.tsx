@@ -1,7 +1,6 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
-import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
@@ -13,14 +12,10 @@ export const useWalletSelectContent = () => {
   const { connect } = useWallet();
   const { trackEvent } = useUserTracking();
 
-  const [onWalletConnect] = useSettingsStore(
-    (state) => [state.onWalletConnect],
-    shallow,
-  );
+  const onWalletConnect = useSettingsStore((state) => state.onWalletConnect);
 
-  const [onCloseAllNavbarMenus] = useMenuStore(
-    (state) => [state.onCloseAllNavbarMenus],
-    shallow,
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state) => state.onCloseAllNavbarMenus,
   );
 
   const login = useCallback(

@@ -1,11 +1,10 @@
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
 import { SyntheticEvent } from 'react';
-import { shallow } from 'zustand/shallow';
 import { ChainsMenu, MainMenu, WalletMenu, WalletSelectMenu } from '.';
 import { SupportModal } from '../../SupportModal';
 
 export const Menus = () => {
-  const [anchorRef] = useMenuStore((state) => [state.anchorRef], shallow);
+  const anchorRef = useMenuStore((state) => state.anchorRef);
 
   const handleClose = (event: Event | SyntheticEvent) => {
     event.preventDefault();

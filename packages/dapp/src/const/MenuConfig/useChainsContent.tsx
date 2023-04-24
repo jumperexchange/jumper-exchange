@@ -1,7 +1,6 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
 import { useMemo } from 'react';
-import { shallow } from 'zustand/shallow';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
@@ -11,9 +10,8 @@ export const useChainsContent = () => {
   const { account, switchChain } = useWallet();
   const { chains } = useChainInfos();
 
-  const [onCloseAllNavbarMenus] = useMenuStore(
-    (state) => [state.onCloseAllNavbarMenus],
-    shallow,
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state) => state.onCloseAllNavbarMenus,
   );
 
   const activeChain = useMemo(

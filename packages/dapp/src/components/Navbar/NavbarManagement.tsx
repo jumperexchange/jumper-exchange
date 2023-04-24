@@ -17,9 +17,8 @@ import {
 const NavbarManagement = () => {
   const mainMenuAnchor = useRef<any>(null);
 
-  const [onWalletDisconnect] = useSettingsStore(
-    (state) => [state.onWalletDisconnect],
-    shallow,
+  const onWalletDisconnect = useSettingsStore(
+    (state) => state.onWalletDisconnect,
   );
 
   const [openMainNavbarMenu, onOpenNavbarMainMenu] = useMenuStore(

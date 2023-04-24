@@ -4,7 +4,6 @@ import SlideshowIcon from '@mui/icons-material/Slideshow';
 import { useTheme } from '@mui/material/styles';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { MenuKeys } from '..';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
@@ -16,9 +15,8 @@ export const useDevelopersContent = () => {
   const { trackPageload } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const [onCloseAllNavbarMenus] = useMenuStore(
-    (state) => [state.onCloseAllNavbarMenus],
-    shallow,
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state) => state.onCloseAllNavbarMenus,
   );
 
   return [
