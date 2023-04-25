@@ -52,11 +52,6 @@ export const useMenuStore = create<MenuState>((set, get) => ({
     });
   },
 
-  // Set AnchorElement on Initialization of Navbar
-  onMenuInit: () => {
-    set({});
-  },
-
   // Toggle Navbar Main Menu
   onOpenNavbarMainMenu: (open, anchorRef) => {
     set({

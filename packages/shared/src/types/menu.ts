@@ -1,7 +1,6 @@
 // ----------------------------------------------------------------------
 
 import type { MenuKeys } from '@transferto/dapp/src/const';
-import type { MutableRefObject } from 'react';
 
 export type MenuProps = {
   anchorRef: any;
@@ -24,11 +23,6 @@ export type MenuContextProps = {
 };
 
 export interface MenuState extends MenuProps {
-  // On Iniitialization
-  onMenuInit: (
-    anchorRef: JSX.Element | Element | MutableRefObject<HTMLButtonElement>,
-  ) => void;
-
   // Close ALL Navbar Menus
   onCloseAllNavbarMenus: () => void;
 
