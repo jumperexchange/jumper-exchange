@@ -8,7 +8,7 @@ export const Menus = () => {
 
   const handleClose = (event: Event | SyntheticEvent) => {
     event.preventDefault();
-    if (anchorRef && anchorRef.contains(event.target as HTMLElement)) {
+    if (anchorRef?.contains(event.target as HTMLElement)) {
       return;
     }
   };
