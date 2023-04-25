@@ -61,7 +61,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={`${translate(`${i18Path}links.swap`)}`}
+        label={translate(`${i18Path}links.swap`)}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -75,7 +75,7 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         }}
-        label={`${translate(`${i18Path}links.refuel`)}`}
+        label={translate(`${i18Path}links.refuel`)}
         icon={
           <EvStationOutlinedIcon
             sx={{

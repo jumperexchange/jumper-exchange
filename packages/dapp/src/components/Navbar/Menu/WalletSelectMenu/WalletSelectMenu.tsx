@@ -35,7 +35,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   return (
     <NavbarMenu
       handleClose={handleClose}
-      label={`${translate(`${i18Path}chooseWallet`)}`}
+      label={translate(`${i18Path}chooseWallet`)}
       open={openNavbarWalletSelectMenu}
       transformOrigin={'top'}
       setOpen={onOpenNavbarWalletSelectMenu}

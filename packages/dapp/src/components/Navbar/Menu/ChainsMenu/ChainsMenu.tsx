@@ -34,7 +34,7 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
   return !!openNavbarChainsMenu ? (
     <NavbarMenu
       handleClose={handleClose}
-      label={`${translate(`${i18Path}chains`)}`}
+      label={translate(`${i18Path}chains`)}
       transformOrigin={'top'}
       open={true}
       setOpen={onOpenNavbarChainsMenu}

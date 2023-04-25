@@ -136,7 +136,6 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         <Grid item xs={12} textAlign={'center'} mb={theme.spacing(6)}>
           <Avatar
             src={walletIcon}
-            // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
             sx={{
               padding: theme.spacing(4.5),
               background:
@@ -164,7 +163,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         </Grid>
         <Grid item xs={4}>
           <SpotButton
-            name={`${translate(`${i18Path}disconnect`)}`}
+            name={translate(`${i18Path}disconnect`)}
             variant={'primary'}
             onClick={handleDisconnectButton}
           >
