@@ -76,7 +76,7 @@ const NavbarMenuDesktop = ({
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin: transformOrigin ? transformOrigin : 'top',
+                transformOrigin: transformOrigin || 'top',
               }}
             >
               <NavbarPaper

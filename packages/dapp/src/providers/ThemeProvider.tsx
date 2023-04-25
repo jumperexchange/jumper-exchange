@@ -9,7 +9,7 @@ export const useDetectDarkModePreference = () => {
 
   const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
   if (!themeMode || themeMode === 'auto') {
-    return !!isDarkModeHook ? true : false;
+    return isDarkModeHook;
   } else if (themeMode === 'dark') {
     return true;
   } else {

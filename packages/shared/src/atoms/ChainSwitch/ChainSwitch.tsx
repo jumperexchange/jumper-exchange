@@ -48,8 +48,8 @@ export const ChainSwitch = () => {
       >
         {!!activeChain?.logoURI ? (
           <Avatar
-            src={!!activeChain ? activeChain.logoURI : 'empty'}
-            alt={`${!!activeChain?.name ? activeChain.name : ''}chain-logo`}
+            src={activeChain?.logoURI || 'empty'}
+            alt={`${activeChain?.name}chain-logo`}
             sx={{ height: '32px', width: '32px' }}
           />
         ) : (

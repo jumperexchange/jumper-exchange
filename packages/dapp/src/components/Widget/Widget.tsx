@@ -26,7 +26,7 @@ export function Widget({ starterVariant }) {
       }
     }
     return {
-      variant: starterVariant ? starterVariant : 'expandable',
+      variant: starterVariant || 'expandable',
       walletManagement: {
         signer: account.signer,
         connect: async () => {

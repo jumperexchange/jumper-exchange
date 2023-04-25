@@ -125,9 +125,7 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
               },
             })}
           >
-            {!!props.connectButtonLabel
-              ? props.connectButtonLabel
-              : 'Connect Wallet'}
+            {props.connectButtonLabel || 'Connect Wallet'}
           </ButtonPrimary>
         </>
       ) : (
@@ -160,7 +158,6 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
           {!!props.isSuccess ? (
             <Avatar
               src={walletIcon}
-              // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
               sx={{
                 padding: theme.spacing(1.5),
                 background:

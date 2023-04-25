@@ -18,9 +18,9 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     let resources = (Object.keys(supportedLanguages) as LanguageKey[]).reduce(
       (resources, lng) => {
         resources[lng] = {
-          translation: resources?.[lng]
-            ? (resources?.[lng] as LanguageResources[LanguageKey])
-            : supportedLanguages[lng],
+          translation:
+            (resources?.[lng] as LanguageResources[LanguageKey]) ||
+            supportedLanguages[lng],
         };
         return resources;
       },

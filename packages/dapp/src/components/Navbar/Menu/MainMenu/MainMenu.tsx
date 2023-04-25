@@ -38,62 +38,60 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
   );
 
   return openMainNavbarMenu ? (
-    <>
-      <NavbarMenu
-        handleClose={handleClose}
-        open={true}
-        transformOrigin={'top right'}
-        setOpen={onOpenNavbarMainMenu}
-        isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
-      >
-        {openNavbarSubMenu === MenuKeys.None &&
-          mainMenuItems.map((el, index) => (
-            <MenuItemComponent
-              key={`${el.label}-${index}`}
-              autoFocus={index > 0 ? true : false}
-              label={el.label}
-              prefixIcon={el.prefixIcon}
-              triggerSubMenu={el.triggerSubMenu}
-              showButton={el.showButton}
-              showMoreIcon={el.showMoreIcon}
-              suffixIcon={el.suffixIcon}
-              onClick={el.onClick}
-              open={true}
-              setOpenSubMenu={onOpenNavbarSubMenu}
-            />
-          ))}
-        <SubMenuComponent
-          label={translate(`${i18Path}navbarMenu.theme`)}
-          triggerSubMenu={MenuKeys.Themes}
-          open={openNavbarSubMenu === MenuKeys.Themes}
-          prevMenu={MenuKeys.None}
-          subMenuList={mainSubMenuTheme}
-        />
+    <NavbarMenu
+      handleClose={handleClose}
+      open={true}
+      transformOrigin={'top right'}
+      setOpen={onOpenNavbarMainMenu}
+      isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
+    >
+      {openNavbarSubMenu === MenuKeys.None &&
+        mainMenuItems.map((el, index) => (
+          <MenuItemComponent
+            key={`${el.label}-${index}`}
+            autoFocus={index > 0 ? true : false}
+            label={el.label}
+            prefixIcon={el.prefixIcon}
+            triggerSubMenu={el.triggerSubMenu}
+            showButton={el.showButton}
+            showMoreIcon={el.showMoreIcon}
+            suffixIcon={el.suffixIcon}
+            onClick={el.onClick}
+            open={true}
+            setOpenSubMenu={onOpenNavbarSubMenu}
+          />
+        ))}
+      <SubMenuComponent
+        label={translate(`${i18Path}navbarMenu.theme`)}
+        triggerSubMenu={MenuKeys.Themes}
+        open={openNavbarSubMenu === MenuKeys.Themes}
+        prevMenu={MenuKeys.None}
+        subMenuList={mainSubMenuTheme}
+      />
 
-        <SubMenuComponent
-          label={translate(`${i18Path}language.key`)}
-          triggerSubMenu={MenuKeys.Language}
-          open={openNavbarSubMenu === MenuKeys.Language}
-          prevMenu={MenuKeys.None}
-          subMenuList={mainSubMenuLanguage}
-        />
+      <SubMenuComponent
+        label={translate(`${i18Path}language.key`)}
+        triggerSubMenu={MenuKeys.Language}
+        open={openNavbarSubMenu === MenuKeys.Language}
+        prevMenu={MenuKeys.None}
+        subMenuList={mainSubMenuLanguage}
+      />
 
-        <SubMenuComponent
-          label={translate(`${i18Path}navbarMenu.developers`)}
-          triggerSubMenu={MenuKeys.Devs}
-          open={openNavbarSubMenu === MenuKeys.Devs}
-          prevMenu={MenuKeys.None}
-          subMenuList={mainSubMenuDevelopers}
-        />
+      <SubMenuComponent
+        label={translate(`${i18Path}navbarMenu.developers`)}
+        triggerSubMenu={MenuKeys.Devs}
+        open={openNavbarSubMenu === MenuKeys.Devs}
+        prevMenu={MenuKeys.None}
+        subMenuList={mainSubMenuDevelopers}
+      />
 
-        <SubMenuComponent
-          label={translate(`${i18Path}developers.showcases`)}
-          triggerSubMenu={MenuKeys.Showcases}
-          open={openNavbarSubMenu === MenuKeys.Showcases}
-          prevMenu={MenuKeys.Devs}
-          subMenuList={mainSubMenuShowcases}
-        />
-      </NavbarMenu>
-    </>
+      <SubMenuComponent
+        label={translate(`${i18Path}developers.showcases`)}
+        triggerSubMenu={MenuKeys.Showcases}
+        open={openNavbarSubMenu === MenuKeys.Showcases}
+        prevMenu={MenuKeys.Devs}
+        subMenuList={mainSubMenuShowcases}
+      />
+    </NavbarMenu>
   ) : null;
 };

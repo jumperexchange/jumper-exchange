@@ -40,7 +40,7 @@ export const useSettingsStore = create(
       // Tabs
       onChangeTab: (tab: number) => {
         set({
-          activeTab: !!tab ? tab : 0,
+          activeTab: tab || 0,
         });
       },
 
@@ -74,19 +74,14 @@ export const useSettingsStore = create(
       // Reset
       onResetSetting: () => {
         set({
-          activeWalletName: !!defaultSettings.activeWalletName
-            ? defaultSettings.activeWalletName
-            : 'none',
-          themeMode: !!defaultSettings.themeMode
-            ? defaultSettings.themeMode
-            : ('auto' as ThemeModesSupported),
+          activeWalletName: defaultSettings.activeWalletName || 'none',
+          themeMode:
+            defaultSettings.themeMode || ('auto' as ThemeModesSupported),
           languageMode:
             defaultSettings.languageMode ||
             (i18next.language as LanguageKey) ||
             defaultLang,
-          activeTab: !!defaultSettings.activeTab
-            ? defaultSettings.activeTab
-            : 0,
+          activeTab: defaultSettings.activeTab || 0,
         });
       },
     }),

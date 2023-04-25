@@ -51,7 +51,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
             showMoreIcon={el.showMoreIcon}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
-            open={!!open ? open : openNavbarWalletSelectMenu}
+            open={open || openNavbarWalletSelectMenu}
             setOpenSubMenu={onOpenNavbarSubMenu}
           />
         ))
