@@ -58,7 +58,6 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
       prevWalletSelect.current === true &&
       openNavbarWalletSelectMenu === false
     ) {
-      console.log('focus');
       walletSelectMenuAnchor!.current?.focus();
     }
 
@@ -68,7 +67,6 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const prevWallet = useRef(openNavbarWalletMenu);
   useEffect(() => {
     if (prevWallet.current === true && openNavbarWalletMenu === false) {
-      console.log('focus');
       walletMenuAnchor!.current?.focus();
     }
 

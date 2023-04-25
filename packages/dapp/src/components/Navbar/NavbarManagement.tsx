@@ -36,7 +36,6 @@ const NavbarManagement = () => {
   const prevMainMenu = useRef(openMainNavbarMenu);
   useEffect(() => {
     if (prevMainMenu.current === true && openMainNavbarMenu === false) {
-      console.log('focus');
       mainMenuAnchor!.current.focus();
     }
 
