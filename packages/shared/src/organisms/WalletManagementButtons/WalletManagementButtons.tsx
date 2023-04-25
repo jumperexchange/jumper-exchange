@@ -33,8 +33,6 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
   }, [account]);
-  const walletMenuAnchor = useRef<any>(null);
-  const walletSelectMenuAnchor = useRef<any>(null);
 
   const [
     openNavbarWalletSelectMenu,
@@ -54,22 +52,11 @@ export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
   // return focus to the button when we transitioned from !open -> open
   const prevWalletSelect = useRef(openNavbarWalletSelectMenu);
   useEffect(() => {
-    if (
-      prevWalletSelect.current === true &&
-      openNavbarWalletSelectMenu === false
-    ) {
-      walletSelectMenuAnchor!.current?.focus();
-    }
-
     prevWalletSelect.current = openNavbarWalletSelectMenu;
   }, [openNavbarWalletSelectMenu]);
 
   const prevWallet = useRef(openNavbarWalletMenu);
   useEffect(() => {
-    if (prevWallet.current && !openNavbarWalletMenu) {
-      walletMenuAnchor!.current?.focus();
-    }
-
     prevWallet.current = openNavbarWalletMenu;
   }, [openNavbarWalletMenu]);
 
