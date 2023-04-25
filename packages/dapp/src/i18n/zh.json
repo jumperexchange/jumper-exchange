@@ -3,7 +3,7 @@
     "links": {
       "swap": "兑换",
       "dashboard": "面板",
-      "refuel": "兑换燃料费"
+      "refuel": "兑换燃气费"
     },
     "connectWallet": "连接钱包",
     "chooseWallet": "选择钱包",
@@ -16,13 +16,18 @@
     "walletMenu": {
       "disconnect": "断开连接",
       "chains": "网络",
-      "switchChain": "切换网络"
+      "switchChain": "切换网络",
+      "copy": "复制到剪切板",
+      "explore": "浏览区块浏览器",
+      "copiedMsg": "钱包地址已复制"
     },
     "language": {
       "key": "语言",
       "value": "中文"
     },
     "themes": {
+      "switchToLight": "切换到浅色主题",
+      "switchToDark": "切换到深色主题",
       "light": "浅色主题",
       "dark": "深色主题",
       "auto": "自动切换"
@@ -37,5 +42,10 @@
       "klimaStaking": "跨链质押Klima",
       "carbonOffset": "跨链碳补偿"
     }
+  },
+  "alert": {
+    "info": "您正在使用测试网",
+    "testnet": "在测试网上进行的任何交易或操作将不会在主网上显示。",
+    "switchToMainnet": "切换到主网"
   }
 }

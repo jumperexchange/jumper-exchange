@@ -1,5 +1,5 @@
 import { getChainById } from '@lifi/sdk';
-import { wallets } from '@lifi/wallet-management';
+import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
@@ -7,9 +7,9 @@ import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
-import type { TWallets } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { useSettings } from '@transferto/shared/src/hooks';
+import { Wallet } from '@transferto/shared/src/types';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +31,7 @@ export const ConnectedMenu = ({ handleClose }: NavbarMenuProps) => {
   const theme = useTheme();
   const { trackPageload, trackEvent } = useUserTracking();
   const settings = useSettings();
-  const walletSource: TWallets = wallets;
+  const walletSource: Wallet[] = supportedWallets;
   const walletIcon: string = useMemo(() => {
     if (!!usedWallet) {
       return usedWallet.icon;

@@ -6,11 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../const';
 import { useMenu } from '../providers/MenuProvider';
 import { useWallet } from '../providers/WalletProvider';
-import {
-  addChain,
-  switchChain,
-  switchChainAndAddToken,
-} from '../providers/hotfix/wallet-automation-hotfix';
+
 import { LanguageKey } from '../types/i18n';
 import { EventTrackingTools } from './useUserTracking';
 import { useUserTracking } from './useUserTracking/useUserTracking';
@@ -18,7 +14,7 @@ import { useUserTracking } from './useUserTracking/useUserTracking';
 export function useWidgetConfig({ starterVariant }) {
   const menu = useMenu();
   const theme = useTheme();
-  const { disconnect, account } = useWallet();
+  const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
@@ -89,7 +85,7 @@ export function useWidgetConfig({ starterVariant }) {
             },
             disableTrackingTool: [EventTrackingTools.arcx],
           });
-          await switchChainAndAddToken(chainId, token);
+          await addToken(chainId, token);
         },
         addChain: async (chainId: number) => {
           trackEvent({
