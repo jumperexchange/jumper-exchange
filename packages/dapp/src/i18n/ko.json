@@ -16,13 +16,18 @@
     "walletMenu": {
       "disconnect": "연결 해제",
       "chains": "체인",
-      "switchChain": "체인 변경"
+      "switchChain": "체인 변경",
+      "copy": "복사",
+      "explore": "탐색",
+      "copiedMsg": "지갑 주소 복사 완료"
     },
     "language": {
       "key": "언어",
       "value": "한국어"
     },
     "themes": {
+      "switchToLight": "라이트 모드로 전환",
+      "switchToDark": "다크 모드로 전환",
       "light": "밝게",
       "dark": "어둡게",
       "auto": "자동"
@@ -37,5 +42,10 @@
       "klimaStaking": "크로스 체인 Klima 스테이킹",
       "carbonOffset": "크로스 체인 Carbon 오프셋"
     }
+  },
+  "alert": {
+    "info": "현재 테스트넷을 사용하고 있습니다.",
+    "testnet": "테스트넷 상의 어떠한 트랜잭션도 메인넷에 반영되지 않습니다.",
+    "switchToMainnet": "메인넷으로 전환"
   }
 }

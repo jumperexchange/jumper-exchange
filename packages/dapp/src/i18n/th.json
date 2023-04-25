@@ -16,13 +16,18 @@
     "walletMenu": {
       "disconnect": "ยกเลิกการเชื่อมต่อ",
       "chains": "เชน",
-      "switchChain": "เปลี่ยนเชน"
+      "switchChain": "เปลี่ยนเชน",
+      "copy": "คัดลอก",
+      "explore": "สำรวจ",
+      "copiedMsg": "คัดลอกที่อยู่กระเป๋าเงินแล้ว"
     },
     "language": {
       "key": "ภาษา",
       "value": "ภาษาไทย"
     },
     "themes": {
+      "switchToLight": "เปลี่ยนเป็นธีมสว่าง",
+      "switchToDark": "เปลี่ยนเป็นธีมมืด",
       "light": "สว่าง",
       "dark": "มืด",
       "auto": "อัตโนมัติ"
@@ -37,5 +42,10 @@
       "klimaStaking": "การ Staking Klima ข้ามเชน",
       "carbonOffset": "การข้ามเชนของ หน่วยย่อยของ Carbon"
     }
+  },
+  "alert": {
+    "info": "คุณกำลังใช้เทสเน็ต",
+    "testnet": "ธุรกรรมหรือการกระทำใดๆที่ดำเนินการบนเทสเน็ตจะไม่ปรากฏบนเมนเน็ต",
+    "switchToMainnet": "เปลี่ยนเป็นเมนเน็ต"
   }
 }
