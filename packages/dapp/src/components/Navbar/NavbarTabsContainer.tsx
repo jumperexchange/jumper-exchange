@@ -2,10 +2,12 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { TrackingActions, TrackingCategories } from '../../const';
-import { EventTrackingTools, useUserTracking } from '../../hooks';
+import { useUserTracking } from '../../hooks';
+import { useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
   return {
@@ -18,17 +20,20 @@ const NavbarTabsContainer = () => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
-  const settings = useSettings();
+  const [activeTab, onChangeTab] = useSettingsStore(
+    (state) => [state.activeTab, state.onChangeTab],
+    shallow,
+  );
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
   const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    settings.onChangeTab(newValue);
+    onChangeTab(newValue);
   };
 
   return (
     <NavbarTabs
-      value={!!isDesktop ? settings.activeTab : false}
+      value={!!isDesktop ? activeTab : false}
       onChange={handleChange}
       isDarkMode={isDarkMode}
       aria-label="tabs"
@@ -56,7 +61,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={`${translate(`${i18Path}links.swap`)}`}
+        label={translate(`${i18Path}links.swap`)}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -70,7 +75,7 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         }}
-        label={`${translate(`${i18Path}links.refuel`)}`}
+        label={translate(`${i18Path}links.refuel`)}
         icon={
           <EvStationOutlinedIcon
             sx={{

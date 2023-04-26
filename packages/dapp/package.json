@@ -30,7 +30,8 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.10.0",
     "typescript": "^5.0.4",
-    "use-media": "^1.4.0"
+    "use-media": "^1.4.0",
+    "zustand": "^4.3.7"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",

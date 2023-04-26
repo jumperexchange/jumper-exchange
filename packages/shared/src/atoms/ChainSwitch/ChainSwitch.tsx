@@ -2,31 +2,35 @@ import type { Chain } from '@lifi/types';
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { useChainInfos } from '@transferto/dapp/src/providers/ChainInfosProvider';
+import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
+import { useMenuStore } from '@transferto/dapp/src/stores';
+import { EventTrackingTools } from '@transferto/dapp/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  EventTrackingTools,
-  useUserTracking,
-} from '../../../../dapp/src/hooks';
-import { useChainInfos } from '../../../../dapp/src/providers/ChainInfosProvider';
-import { useMenu } from '../../../../dapp/src/providers/MenuProvider';
-import { useWallet } from '../../../../dapp/src/providers/WalletProvider';
+import { shallow } from 'zustand/shallow';
 import { ButtonChainSwitch } from './ChainSwitch.style';
 
 export const ChainSwitch = () => {
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.walletMenu.';
   const { trackEvent } = useUserTracking();
-  const menu = useMenu();
   const { chains } = useChainInfos();
   const { account } = useWallet();
+
+  const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
+    (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
+    shallow,
+  );
+
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
 
-  const handleOpenChainsMenu = () => {
-    menu.onOpenNavbarChainsMenu(true);
+  const handleOpenChainsMenu = (event) => {
+    onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
 
     trackEvent({
       category: 'chain-menu',
@@ -38,14 +42,14 @@ export const ChainSwitch = () => {
   return (
     <Tooltip title={translate(`${i18Path}switchChain`)}>
       <ButtonChainSwitch
-        onClick={() => {
-          handleOpenChainsMenu();
+        onClick={(event) => {
+          handleOpenChainsMenu(event);
         }}
       >
         {!!activeChain?.logoURI ? (
           <Avatar
-            src={!!activeChain ? activeChain.logoURI : 'empty'}
-            alt={`${!!activeChain?.name ? activeChain.name : ''}chain-logo`}
+            src={activeChain?.logoURI || 'empty'}
+            alt={`${activeChain?.name}chain-logo`}
             sx={{ height: '32px', width: '32px' }}
           />
         ) : (

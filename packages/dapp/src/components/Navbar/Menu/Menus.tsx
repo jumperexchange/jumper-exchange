@@ -1,16 +1,14 @@
+import { useMenuStore } from '@transferto/dapp/src/stores/menu';
 import { SyntheticEvent } from 'react';
-import { ChainsMenu, ConnectedMenu, MainMenu, WalletSelectMenu } from '.';
-import { useMenu } from '../../../providers/MenuProvider';
+import { ChainsMenu, MainMenu, WalletMenu, WalletSelectMenu } from '.';
+import { SupportModal } from '../../SupportModal';
 
 export const Menus = () => {
-  const menu = useMenu();
+  const anchorRef = useMenuStore((state) => state.anchorRef);
 
   const handleClose = (event: Event | SyntheticEvent) => {
     event.preventDefault();
-    if (
-      menu.anchorRef.current &&
-      menu.anchorRef.current.contains(event.target as HTMLElement)
-    ) {
+    if (anchorRef?.contains(event.target as HTMLElement)) {
       return;
     }
   };
@@ -18,9 +16,10 @@ export const Menus = () => {
   return (
     <>
       <MainMenu handleClose={handleClose} />
+      <WalletMenu handleClose={handleClose} />
       <WalletSelectMenu handleClose={handleClose} />
       <ChainsMenu handleClose={handleClose} />
-      <ConnectedMenu handleClose={handleClose} />
+      <SupportModal />
     </>
   );
 };

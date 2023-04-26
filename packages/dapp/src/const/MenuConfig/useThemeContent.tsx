@@ -4,21 +4,26 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
-import { EventTrackingTools } from '../../../hooks';
-import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { TrackingActions, TrackingCategories } from '../../trackingKeys';
+import { shallow } from 'zustand/shallow';
+import { useUserTracking } from '../../hooks';
+import { useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
+import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
-export const useMainSubMenuTheme = () => {
+export const useThemeContent = () => {
   const { t: translate } = useTranslation();
   const { trackEvent } = useUserTracking();
   const i18Path = 'navbar.';
-  const settings = useSettings();
+
+  const [themeMode, onChangeMode] = useSettingsStore(
+    (state) => [state.themeMode, state.onChangeMode],
+    shallow,
+  );
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
-    settings.onChangeMode(mode);
+    onChangeMode(mode);
     trackEvent({
       category: TrackingCategories.ThemeMenu,
       action: TrackingActions.SwitchThemeMode,
@@ -32,34 +37,26 @@ export const useMainSubMenuTheme = () => {
     {
       label: `${translate(`${i18Path}themes.light`)}`,
       prefixIcon:
-        settings.themeMode === 'light' ? (
-          <LightModeIcon />
-        ) : (
-          <LightModeOutlinedIcon />
-        ),
-      checkIcon: settings.themeMode === 'light',
+        themeMode === 'light' ? <LightModeIcon /> : <LightModeOutlinedIcon />,
+      checkIcon: themeMode === 'light',
       onClick: () => handleSwitchMode('light'),
     },
     {
       label: `${translate(`${i18Path}themes.dark`)}`,
       prefixIcon:
-        settings.themeMode === 'dark' ? (
-          <NightlightIcon />
-        ) : (
-          <NightlightOutlinedIcon />
-        ),
-      checkIcon: settings.themeMode === 'dark',
+        themeMode === 'dark' ? <NightlightIcon /> : <NightlightOutlinedIcon />,
+      checkIcon: themeMode === 'dark',
       onClick: () => handleSwitchMode('dark'),
     },
     {
       label: `${translate(`${i18Path}themes.auto`)}`,
       prefixIcon:
-        settings.themeMode === 'auto' ? (
+        themeMode === 'auto' ? (
           <BrightnessAutoIcon />
         ) : (
           <BrightnessAutoOutlinedIcon />
         ),
-      checkIcon: settings.themeMode === 'auto',
+      checkIcon: themeMode === 'auto',
       onClick: () => handleSwitchMode('auto'),
     },
   ];

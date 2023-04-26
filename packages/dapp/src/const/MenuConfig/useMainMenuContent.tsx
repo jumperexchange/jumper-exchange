@@ -6,27 +6,22 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import {
-  SubMenuKeys,
-  TrackingActions,
-  TrackingCategories,
-} from '../../../const';
-import { EventTrackingTools } from '../../../hooks';
-import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useMenu } from '../../../providers/MenuProvider';
-import { useDetectDarkModePreference } from '../../../providers/ThemeProvider';
+import { MenuKeys, TrackingActions, TrackingCategories } from '..';
+import { useUserTracking } from '../../hooks';
+import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
+import { useMenuStore, useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
 
-export const useMainMenuItems = () => {
+export const useMainMenuContent = () => {
   const { t: translate, i18n } = useTranslation();
   const i18Path = 'navbar.';
-  const settings = useSettings();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
-  const menu = useMenu();
+  const themeMode = useSettingsStore((state) => state.themeMode);
+  const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
 
   return [
     {
@@ -37,12 +32,12 @@ export const useMainMenuItems = () => {
         <LightModeOutlinedIcon />
       ),
       url: 'https://github.com/lifinance/',
-      triggerSubMenu: SubMenuKeys.themes,
+      triggerSubMenu: MenuKeys.Themes,
     },
     {
       label: `${translate(`${i18Path}language.key`)}`,
       prefixIcon: <LanguageIcon />,
-      checkIcon: settings.themeMode === 'light',
+      checkIcon: themeMode === 'light',
       suffixIcon: (
         <Typography
           variant="lifiBodyMedium"
@@ -56,12 +51,12 @@ export const useMainMenuItems = () => {
           {i18n.resolvedLanguage}
         </Typography>
       ),
-      triggerSubMenu: SubMenuKeys.language,
+      triggerSubMenu: MenuKeys.Language,
     },
     {
       label: `${translate(`${i18Path}navbarMenu.developers`)}`,
       prefixIcon: <DeveloperModeIcon />,
-      triggerSubMenu: SubMenuKeys.devs,
+      triggerSubMenu: MenuKeys.Devs,
     },
     {
       label: `Twitter`,
@@ -134,7 +129,7 @@ export const useMainMenuItems = () => {
           action: TrackingActions.OpenSupportModal,
           disableTrackingTool: [EventTrackingTools.arcx],
         });
-        menu.toggleSupportModal(true);
+        onOpenSupportModal(true);
       },
       showButton: true,
     },
