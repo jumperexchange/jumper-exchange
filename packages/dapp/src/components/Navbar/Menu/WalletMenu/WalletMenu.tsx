@@ -1,5 +1,5 @@
 import { getChainById } from '@lifi/sdk';
-import { Wallet, supportedWallets } from '@lifi/wallet-management';
+import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
@@ -14,6 +14,7 @@ import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
 import { EventTrackingTools } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
+import { Wallet } from '@transferto/shared/src/types';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';

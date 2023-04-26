@@ -54,6 +54,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:local": "vite --mode localhost",
     "dev:testnet": "vite --mode testnet",
     "dev:staging": "vite --mode staging",
     "dev:production": "vite --mode production",
