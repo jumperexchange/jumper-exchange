@@ -9,6 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { useSettings } from '@transferto/shared/src/hooks';
+import { Wallet } from '@transferto/shared/src/types';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +18,6 @@ import { EventTrackingTools, useUserTracking } from '../../../../hooks';
 import { useMenu } from '../../../../providers/MenuProvider';
 import { useWallet } from '../../../../providers/WalletProvider';
 import { NavbarMenu } from '../../index';
-import { Wallet } from '@transferto/shared/types';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;

@@ -7,8 +7,8 @@ import {
 } from '@lifi/wallet-management';
 import { Signer } from 'ethers';
 import React, {
-  createContext,
   PropsWithChildren,
+  createContext,
   useCallback,
   useEffect,
   useMemo,
