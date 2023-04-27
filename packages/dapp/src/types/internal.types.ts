@@ -3,6 +3,7 @@ import { ChainId, ChainKey, Coin, Token } from '@lifi/types';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
 import BigNumber from 'bignumber.js';
 import { Signer } from 'ethers';
+import { MenuKeys } from '../const';
 
 export interface TokenAmountList {
   [ChainKey: string]: Array<TokenWithAmounts>;
@@ -20,7 +21,7 @@ export interface MenuItem {
 
 export interface MenuListItem {
   label: string;
-  triggerSubMenu?: string;
+  triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
   showMoreIcon?: boolean;
@@ -50,14 +51,6 @@ export interface ChainsMenuListItem {
   onClick?: any;
   showButton?: boolean;
 }
-
-export type TWallet = {
-  name: string;
-  icon: string;
-};
-export type TWallets = {
-  [key: string]: TWallet;
-};
 
 export interface SwapPageStartParams {
   depositChain?: ChainKey;

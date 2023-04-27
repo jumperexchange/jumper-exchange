@@ -1,5 +1,5 @@
 import { getChainById } from '@lifi/sdk';
-import { wallets } from '@lifi/wallet-management';
+import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
@@ -7,16 +7,18 @@ import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
-import type { TWallets } from '@transferto/dapp/src/types';
+import { MenuKeys } from '@transferto/dapp/src/const';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
+import { useSettingsStore } from '@transferto/dapp/src/stores';
+import { useMenuStore } from '@transferto/dapp/src/stores/menu';
+import { EventTrackingTools } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
-import { useSettings } from '@transferto/shared/src/hooks';
+import { Wallet } from '@transferto/shared/src/types';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys } from '../../../../const';
-import { EventTrackingTools, useUserTracking } from '../../../../hooks';
-import { useMenu } from '../../../../providers/MenuProvider';
-import { useWallet } from '../../../../providers/WalletProvider';
+import { shallow } from 'zustand/shallow';
 import { NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
@@ -26,12 +28,29 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const i18Path = 'navbar.walletMenu.';
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t: translate } = useTranslation();
-  const menu = useMenu();
-  const { account, usedWallet, disconnect } = useWallet();
   const theme = useTheme();
+  const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
-  const settings = useSettings();
-  const walletSource: TWallets = wallets;
+  const walletSource: Wallet[] = supportedWallets;
+  const [
+    openNavbarWalletMenu,
+    onOpenNavbarWalletMenu,
+    openNavbarSubMenu,
+    onCloseAllNavbarMenus,
+  ] = useMenuStore(
+    (state) => [
+      state.openNavbarWalletMenu,
+      state.onOpenNavbarWalletMenu,
+      state.openNavbarSubMenu,
+      state.onCloseAllNavbarMenus,
+    ],
+    shallow,
+  );
+
+  const onWalletDisconnect = useSettingsStore(
+    (state) => state.onWalletDisconnect,
+  );
+
   const walletIcon: string = useMemo(() => {
     if (!!usedWallet) {
       return usedWallet.icon;
@@ -63,7 +82,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         account.address
       }`,
     );
-    menu.onCloseAllNavbarMenus();
+    onCloseAllNavbarMenus();
     trackPageload({
       source: 'connected-menu',
       destination: 'blokchain-explorer',
@@ -84,29 +103,30 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       label: 'copyAddressToClipboard',
       disableTrackingTool: [EventTrackingTools.arcx],
     });
-    menu.onCloseAllNavbarMenus();
+    onCloseAllNavbarMenus();
   };
 
   const handleDisconnectButton = () => {
     disconnect();
-    menu.onCloseAllNavbarMenus();
-    settings.onWalletDisconnect();
+    onCloseAllNavbarMenus();
+    onWalletDisconnect();
   };
 
   useEffect(() => {
-    menu.openNavbarWalletSelectMenu! && setCopiedToClipboard(false);
-  }, [menu.openNavbarWalletSelectMenu]);
+    openNavbarWalletMenu! && setCopiedToClipboard(false);
+  }, [openNavbarWalletMenu]);
 
-  return !!menu.openNavbarWalletSelectMenu ? (
+  return !!openNavbarWalletMenu ? (
     <NavbarMenu
       open={true}
-      setOpen={menu.onOpenNavbarWalletSelectMenu}
+      transformOrigin={'top left'}
+      setOpen={onOpenNavbarWalletMenu}
       handleClose={handleClose}
-      isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.none}
+      isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
     >
       <Grid
         container
-        m={`${theme.spacing(6)} auto`}
+        m={`${theme.spacing(6)} auto !important`}
         sx={{
           maxWidth: '360px',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -117,7 +137,6 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         <Grid item xs={12} textAlign={'center'} mb={theme.spacing(6)}>
           <Avatar
             src={walletIcon}
-            // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
             sx={{
               padding: theme.spacing(4.5),
               background:
@@ -163,7 +182,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       sx={{ top: '78px !important' }}
     >
       <MuiAlert elevation={6} variant="filled" severity="success">
-        Wallet address copied
+        {translate(`${i18Path}copiedMsg`)}
       </MuiAlert>
     </Snackbar>
   );

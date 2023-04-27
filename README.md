@@ -2,21 +2,31 @@
 
 Lerna Monorepo for all jumper.exchange related things
 
-## Basic Usage
+## Getting Started
 
 In the root directory run the following commands to get started:
 
 ```
-yarn bootstrap
+yarn
 ```
 
-to install all dependencies, and
+to install all dependencies, and choose one of these start commands to start the development vite server and to start building packages in watch mode.
 
 ```
-yarn dev
+    yarn dev
+    yarn dev:local
+    yarn dev:testnet
+    yarn dev:staging
+    yarn dev:production
 ```
 
-to start the development vite server and to start building packages in watch mode.
+Please refer to the following descriptions of the dev serve scripts:
+
+    dev - starts the app using the backend develop stage
+    dev:local - starts the app using a locally running backend
+    dev:testnet - starts the app in a testnet only mode using the backend staging stage
+    dev:staging - starts the app using the backend staging stage
+    dev:production - starts the app using the backend production stage
 
 ## Project Structure
 

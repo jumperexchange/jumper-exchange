@@ -8,16 +8,8 @@
     "declarationDir": "dist/types"
   },
   "paths": {
-    "@transferto/dapp": [
-      "../dapp/src"
-    ],
-    "@transferto/dapp/*": [
-      "../dapp/src/*"
-    ]
+    "@transferto/dapp": ["../dapp/src"],
+    "@transferto/dapp/*": ["../dapp/src/*"]
   },
-  "include": [
-    "../dapp/src/providers/WalletProvider.tsx",
-    "src/**/*",
-    "../dapp/src/types/i18n.ts"
-  ]
+  "include": ["src/**/*", "../dapp/src/types/i18n.types.ts"]
 }

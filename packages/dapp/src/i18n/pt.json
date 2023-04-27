@@ -16,13 +16,18 @@
     "walletMenu": {
       "disconnect": "Desconectar",
       "chains": "Cadeias",
-      "switchChain": "Trocar Cadeia"
+      "switchChain": "Trocar Cadeia",
+      "copy": "Copiar",
+      "explore": "Explorar",
+      "copiedMsg": "Endereço da carteira copiado"
     },
     "language": {
       "key": "Idioma",
       "value": "Português"
     },
     "themes": {
+      "switchToLight": "Mudar para o Modo Claro",
+      "switchToDark": "Mudar para o Modo Escuro",
       "light": "Claro",
       "dark": "Escuro",
       "auto": "Automático"
@@ -37,5 +42,10 @@
       "klimaStaking": "Staking de Klima de Cadeia Cruzada",
       "carbonOffset": "Compensação de Carbono de Cadeia Cruzada"
     }
+  },
+  "alert": {
+    "info": "Você está usando a rede de testes",
+    "testnet": "Quaisquer transações ou ações realizadas no Testnet não se refletem no Mainnet.",
+    "switchToMainnet": "Alternar para a rede principal"
   }
 }
