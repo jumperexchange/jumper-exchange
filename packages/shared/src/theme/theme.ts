@@ -263,9 +263,9 @@ const themeBase: Theme = createTheme({
       dark: '#E5452F',
     },
     warning: {
-      main: '#FFE668',
-      light: '#FFE668',
-      dark: '#FFE668',
+      main: '#FFCC00',
+      light: '#FFCC00',
+      dark: '#EBC942',
     },
     info: {
       main: '#297EFF',

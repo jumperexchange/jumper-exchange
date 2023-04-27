@@ -1,3 +1,1 @@
-export { useGetChains } from './useGetChains';
-export * from './useUserTracking/';
-export { useWidgetConfig } from './useWidgetConfig';
+export * from './userTracking';

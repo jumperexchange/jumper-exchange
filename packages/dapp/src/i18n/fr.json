@@ -16,13 +16,18 @@
     "walletMenu": {
       "disconnect": "Se déconnecter",
       "chains": "Chaînes",
-      "switchChain": "Changer de chaîne"
+      "switchChain": "Changer de chaîne",
+      "copy": "Copier",
+      "explore": "Explorer",
+      "copiedMsg": "Adresse du portefeuille copiée"
     },
     "language": {
       "key": "Langue",
       "value": "Français"
     },
     "themes": {
+      "switchToLight": "Basculer en mode clair",
+      "switchToDark": "Basculer en mode sombre",
       "light": "Clair",
       "dark": "Sombre",
       "auto": "Auto"
@@ -37,5 +42,10 @@
       "klimaStaking": "Staking de Klima inter-chaînes",
       "carbonOffset": "Compensation Carbon inter-chaînes"
     }
+  },
+  "alert": {
+    "info": "Vous utilisez le Testnet",
+    "testnet": "Toute transaction ou action effectuée sur le Testnet ne sera pas reflétée sur le réseau principal.",
+    "switchToMainnet": "Basculer vers le réseau principal"
   }
 }
