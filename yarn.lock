@@ -1766,9 +1766,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/babel-plugin@npm:^11.10.6":
-  version: 11.10.6
-  resolution: "@emotion/babel-plugin@npm:11.10.6"
+"@emotion/babel-plugin@npm:^11.10.8":
+  version: 11.10.8
+  resolution: "@emotion/babel-plugin@npm:11.10.8"
   dependencies:
     "@babel/helper-module-imports": ^7.16.7
     "@babel/runtime": ^7.18.3
@@ -1780,12 +1780,12 @@ __metadata:
     escape-string-regexp: ^4.0.0
     find-root: ^1.1.0
     source-map: ^0.5.7
-    stylis: 4.1.3
-  checksum: 3eed138932e8edf2598352e69ad949b9db3051a4d6fcff190dacbac9aa838d7ef708b9f3e6c48660625d9311dae82d73477ae4e7a31139feef5eb001a5528421
+    stylis: 4.1.4
+  checksum: b8e2ed0c68a2ea423c5c2efdcf37e0b482dcb74caba042d2987a058f151819f0574fb2298fba4f76fa23265e1975dcf337f1f59ad6f35a33db2f9bf1afe03ee0
   languageName: node
   linkType: hard
 
-"@emotion/cache@npm:^11.10.5, @emotion/cache@npm:^11.10.7":
+"@emotion/cache@npm:^11.10.7":
   version: 11.10.7
   resolution: "@emotion/cache@npm:11.10.7"
   dependencies:
@@ -1795,6 +1795,19 @@ __metadata:
     "@emotion/weak-memoize": ^0.3.0
     stylis: 4.1.3
   checksum: 6b1efed2dffc93dac419409d91f6d57a200d858ec5ffa4b7c30080fdbd93db431ff86bb779c5b8830b8373f3c5dd754d9beb386604ed2667c7d55608ff653dfc
+  languageName: node
+  linkType: hard
+
+"@emotion/cache@npm:^11.10.8":
+  version: 11.10.8
+  resolution: "@emotion/cache@npm:11.10.8"
+  dependencies:
+    "@emotion/memoize": ^0.8.0
+    "@emotion/sheet": ^1.2.1
+    "@emotion/utils": ^1.2.0
+    "@emotion/weak-memoize": ^0.3.0
+    stylis: 4.1.4
+  checksum: a67751db54077813ee3a011f255ee5c79eb375284cec8404866d44da904d69b037566047ca52549772b8038f8cd00ebd092c628ddc764fe89d6932c16afd71e3
   languageName: node
   linkType: hard
 
@@ -1821,13 +1834,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/react@npm:^11.10.6":
-  version: 11.10.6
-  resolution: "@emotion/react@npm:11.10.6"
+"@emotion/react@npm:^11.10.8":
+  version: 11.10.8
+  resolution: "@emotion/react@npm:11.10.8"
   dependencies:
     "@babel/runtime": ^7.18.3
-    "@emotion/babel-plugin": ^11.10.6
-    "@emotion/cache": ^11.10.5
+    "@emotion/babel-plugin": ^11.10.8
+    "@emotion/cache": ^11.10.8
     "@emotion/serialize": ^1.1.1
     "@emotion/use-insertion-effect-with-fallbacks": ^1.0.0
     "@emotion/utils": ^1.2.0
@@ -1838,7 +1851,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 4762042e39126ffaffe76052dc65c9bb0ba6b8893013687ba3cc13ed4dd834c31597f1230684c3c078e90aecc13ab6cd0e3cde0dec8b7761affd2571f4d80019
+  checksum: ac56ef6375fa3bc7acd5a62eb5b2cf9eb4b1586a6a06cb05caab11a516700cf2f7857e0ad65bac57abd74e1141388e01fe65238f2de0075a912e129271c658b8
   languageName: node
   linkType: hard
 
@@ -1862,12 +1875,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/styled@npm:^11.10.6":
-  version: 11.10.6
-  resolution: "@emotion/styled@npm:11.10.6"
+"@emotion/styled@npm:^11.10.8":
+  version: 11.10.8
+  resolution: "@emotion/styled@npm:11.10.8"
   dependencies:
     "@babel/runtime": ^7.18.3
-    "@emotion/babel-plugin": ^11.10.6
+    "@emotion/babel-plugin": ^11.10.8
     "@emotion/is-prop-valid": ^1.2.0
     "@emotion/serialize": ^1.1.1
     "@emotion/use-insertion-effect-with-fallbacks": ^1.0.0
@@ -1878,7 +1891,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: ed0ee4bec3b63ee9c5eb8216b22646313ff1ada06c5183f128d25b73252126e9fde625e81c868be7ccd666b686a73076f923ce188dac25e93d5062ddffdad46f
+  checksum: ceff0ac12f92289ea8febb1c3b4b70c1f3e110354452b9f6ee6461a7c01a24a0e2f071eb4303a7a289aad5cc8b62096561a150b0b6ed096bb1fd3e8503633226
   languageName: node
   linkType: hard
 
@@ -2890,9 +2903,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:2.0.0-beta.3, @lifi/wallet-management@npm:^2.0.0-beta.3":
-  version: 2.0.0-beta.3
-  resolution: "@lifi/wallet-management@npm:2.0.0-beta.3"
+"@lifi/wallet-management@npm:2.0.0-beta.4, @lifi/wallet-management@npm:^2.0.0-beta.4":
+  version: 2.0.0-beta.4
+  resolution: "@lifi/wallet-management@npm:2.0.0-beta.4"
   dependencies:
     "@coinbase/wallet-sdk": ^3.7.1
     "@ethersproject/abstract-signer": ^5.7.0
@@ -2902,22 +2915,22 @@ __metadata:
     "@walletconnect/ethereum-provider": ^1.8.0
     "@walletconnect/web3-provider": ^1.8.0
     react: ^18.2.0
-  checksum: 11aa75bf88029b19e971d6f2abfed1e50c09d3e73d23a8e152168d433dc62bf6981c8e6f73070206070d1fa7baf0284ab3e79a898a603b4513aefd6b47dc593b
+  checksum: c3abaa49da0d067636a6bfff0553d923c96005995bb71cd92e5eb9828dd00c1ccb1c5356e204a8de2975846587bd288d28a8a22eef8aad6a2a3e6baf2b0f93eb
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.0.0-beta.4":
-  version: 2.0.0-beta.4
-  resolution: "@lifi/widget@npm:2.0.0-beta.4"
+"@lifi/widget@npm:^2.0.0-beta.5":
+  version: 2.0.0-beta.5
+  resolution: "@lifi/widget@npm:2.0.0-beta.5"
   dependencies:
-    "@emotion/react": ^11.10.6
-    "@emotion/styled": ^11.10.6
+    "@emotion/react": ^11.10.8
+    "@emotion/styled": ^11.10.8
     "@ethersproject/abstract-signer": ^5.7.0
     "@ethersproject/address": ^5.7.0
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.0.0-beta.11
-    "@lifi/wallet-management": ^2.0.0-beta.3
+    "@lifi/wallet-management": ^2.0.0-beta.4
     "@mui/icons-material": ^5.11.16
     "@mui/lab": ^5.0.0-alpha.128
     "@mui/material": ^5.12.2
@@ -2944,7 +2957,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 6ffefaa162eae7ca9fba63fb2c0b21eab04b6e1b8815c3e7514cbd4be343231546953708f1bdc7c03edbbd67634e0a91669be46b6ea3abd1e7aa5f52f8c2d6a6
+  checksum: 222015da78cca2bf00deb2d562feea3bd269c08784515519bc7d7131bda3a7bb5a5383bb59a0f3ebfe3426f440f81ed39a579924f4b5c1c065b0dce5ea1c688d
   languageName: node
   linkType: hard
 
@@ -5448,14 +5461,14 @@ __metadata:
   resolution: "@transferto/dapp@workspace:packages/dapp"
   dependencies:
     "@arcxmoney/analytics": ^1.9.0
-    "@emotion/react": ^11.10.6
-    "@emotion/styled": ^11.10.6
+    "@emotion/react": ^11.10.8
+    "@emotion/styled": ^11.10.8
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.1
     "@lifi/sdk": ^2.0.0-beta.11
-    "@lifi/wallet-management": 2.0.0-beta.3
-    "@lifi/widget": ^2.0.0-beta.4
+    "@lifi/wallet-management": 2.0.0-beta.4
+    "@lifi/widget": ^2.0.0-beta.5
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.12.2
     "@sentry/integrations": ^7.50.0
@@ -5466,7 +5479,7 @@ __metadata:
     "@types/react-dom": ^18.2.1
     "@vitejs/plugin-react": ^4.0.0
     "@widgetbot/react-embed": ^1.7.0
-    axios: ^1.3.6
+    axios: ^1.4.0
     ethers: ^5.7.2
     husky: ^8.0.3
     i18next: ^22.4.15
@@ -5493,9 +5506,9 @@ __metadata:
   resolution: "@transferto/shared@workspace:packages/shared"
   dependencies:
     "@babel/core": ^7.21.4
-    "@emotion/react": ^11.10.6
-    "@emotion/styled": ^11.10.6
-    "@lifi/wallet-management": 2.0.0-beta.3
+    "@emotion/react": ^11.10.8
+    "@emotion/styled": ^11.10.8
+    "@lifi/wallet-management": 2.0.0-beta.4
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.12.2
     "@storybook/addon-actions": ^6.5.16
@@ -5506,7 +5519,7 @@ __metadata:
     "@storybook/manager-webpack5": ^6.5.16
     "@storybook/react": ^6.5.16
     "@storybook/testing-library": ^0.0.13
-    "@types/node": ^18.16.1
+    "@types/node": ^18.16.2
     "@types/react": ^18.2.0
     babel-loader: ^9.1.2
     eslint-config-prettier: ^8.8.0
@@ -5759,7 +5772,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.16.1":
+"@types/node@npm:*":
   version: 18.16.1
   resolution: "@types/node@npm:18.16.1"
   checksum: 799026b949a48993cba7c9b81b2eabfdfb34c880744cb44c1c990fbedc9e315f3634d126eb2cf9a6e0795577c01016e2326d98565bef695ada9d363fadeb6946
@@ -5777,6 +5790,13 @@ __metadata:
   version: 16.18.25
   resolution: "@types/node@npm:16.18.25"
   checksum: 181760ad6b54fcc498dfeb249e98bbf0be51d7c35e92e760e1a82004fa42b86e8c33a8f8dd7743b5ef872bda0753d9e6a5b8e3f0aed63e9eb79b4e65760c1fbe
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.16.2":
+  version: 18.16.2
+  resolution: "@types/node@npm:18.16.2"
+  checksum: 7ad66d23b3b93885a9f879bff98e0196790ad35589b47a3d81b52db969ad17ee298082020296df5166c2d72d3cd6a4b9ab34d254483637d967944a4b3e6febdb
   languageName: node
   linkType: hard
 
@@ -7687,7 +7707,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.0.0, axios@npm:^1.3.6":
+"axios@npm:^1.0.0":
   version: 1.3.6
   resolution: "axios@npm:1.3.6"
   dependencies:
@@ -7695,6 +7715,17 @@ __metadata:
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
   checksum: c90497ebf738723654a6e80147dc294186ad9d7b08f95f5a22fd48f826c7e06a576229b8dff3137195ca627349a4312e00fa78e4f1c499250b9860596adef44a
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "axios@npm:1.4.0"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 7fb6a4313bae7f45e89d62c70a800913c303df653f19eafec88e56cea2e3821066b8409bc68be1930ecca80e861c52aa787659df0ffec6ad4d451c7816b9386b
   languageName: node
   linkType: hard
 
@@ -21045,6 +21076,13 @@ __metadata:
   version: 4.1.3
   resolution: "stylis@npm:4.1.3"
   checksum: d04dbffcb9bf2c5ca8d8dc09534203c75df3bf711d33973ea22038a99cc475412a350b661ebd99cbc01daa50d7eedcf0d130d121800eb7318759a197023442a6
+  languageName: node
+  linkType: hard
+
+"stylis@npm:4.1.4":
+  version: 4.1.4
+  resolution: "stylis@npm:4.1.4"
+  checksum: cd929bd89709def13b47e6c16b11317bf996a09b4e987fc45a235549c3adf49d41531e017d7df511daa095bc9468c923ae9094a934fe9c62440b7351874dafb7
   languageName: node
   linkType: hard
 
