@@ -1,40 +1,38 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useMemo, useState } from 'react';
-import { EventTrackingTools } from '../../../hooks/useUserTracking';
-import { useUserTracking } from '../../../hooks/useUserTracking/useUserTracking';
-import { useMenu } from '../../../providers/MenuProvider';
-import { useWallet } from '../../../providers/WalletProvider';
-import { MenuListItem } from '../../../types';
-import { TrackingActions, TrackingCategories } from '../../trackingKeys';
+import { useUserTracking } from '../../hooks';
+import { useWallet } from '../../providers/WalletProvider';
+import { useMenuStore, useSettingsStore } from '../../stores';
+import { EventTrackingTools, MenuListItem } from '../../types';
+import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
-export const useWalletSelectMenuItems = () => {
-  const [showWalletIdentityPopover, setShowWalletIdentityPopover] =
-    useState<Wallet>();
+export const useWalletSelectContent = () => {
+  const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect } = useWallet();
   const { trackEvent } = useUserTracking();
-  const settings = useSettings();
-  const menu = useMenu();
+
+  const onWalletConnect = useSettingsStore((state) => state.onWalletConnect);
+
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state) => state.onCloseAllNavbarMenus,
+  );
 
   const login = useCallback(
     async (wallet: Wallet) => {
-      menu.onCloseAllNavbarMenus();
-
       if (!wallet.installed()) {
         setShowWalletIdentityPopover(wallet);
         return;
       }
       await connect(wallet);
-      settings.onWalletConnect(wallet.name);
-      menu.onOpenNavbarWalletSelectMenu(false);
+      onWalletConnect(wallet.name);
       try {
       } catch (e) {}
     },
-    [connect, menu, settings],
+    [connect, onWalletConnect],
   );
 
-  const _WalletMenuItems = useMemo<MenuListItem[]>(() => {
+  const walletMenuItems = useMemo<MenuListItem[]>(() => {
     const installedWallets = supportedWallets.filter((wallet) =>
       wallet.installed(),
     );
@@ -43,7 +41,7 @@ export const useWalletSelectMenuItems = () => {
       (wallet) => !wallet.installed() && wallet.name !== 'Default Wallet', // always remove Default Wallet from not installed Wallets
     );
     const _output = [...installedWallets, ...notInstalledWallets].map(
-      (wallet, index) => {
+      (wallet) => {
         return {
           label: wallet.name,
           prefixIcon: (
@@ -56,6 +54,7 @@ export const useWalletSelectMenuItems = () => {
           showMoreIcon: false,
           onClick: () => {
             login(wallet);
+            onCloseAllNavbarMenus();
             trackEvent({
               category: TrackingCategories.Wallet,
               action: TrackingActions.ChooseWallet,
@@ -68,7 +67,7 @@ export const useWalletSelectMenuItems = () => {
       },
     );
     return _output;
-  }, [login, trackEvent]);
+  }, [login, onCloseAllNavbarMenus, trackEvent]);
 
-  return _WalletMenuItems;
+  return walletMenuItems;
 };

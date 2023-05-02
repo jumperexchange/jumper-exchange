@@ -1,13 +1,19 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
 import { useMemo } from 'react';
-import { useChainInfos } from '../providers/ChainInfosProvider';
-import { useWallet } from '../providers/WalletProvider';
-import { ChainsMenuListItem } from '../types';
+import { useChainInfos } from '../../providers/ChainInfosProvider';
+import { useWallet } from '../../providers/WalletProvider';
+import { useMenuStore } from '../../stores';
+import { ChainsMenuListItem } from '../../types';
 
-export const useGetChains = () => {
+export const useChainsContent = () => {
   const { account, switchChain } = useWallet();
   const { chains } = useChainInfos();
+
+  const onCloseAllNavbarMenus = useMenuStore(
+    (state) => state.onCloseAllNavbarMenus,
+  );
+
   const activeChain = useMemo(
     () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
@@ -17,6 +23,7 @@ export const useGetChains = () => {
     (el): ChainsMenuListItem => ({
       label: `${el.name}`,
       onClick: () => {
+        onCloseAllNavbarMenus();
         switchChain(el.id);
       },
       prefixIcon: (

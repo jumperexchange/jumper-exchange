@@ -1,10 +1,9 @@
 import { WidgetVariant } from '@lifi/widget';
-import { Grid } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import ReactGA from 'react-ga4';
+import { shallow } from 'zustand/shallow';
+import { useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types/';
 import { OnRamper } from '../OnRamper';
 import { Widget } from '../Widget';
@@ -12,7 +11,10 @@ import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
 export function DualWidget() {
-  const settings = useSettings();
+  const [activeTab, onChangeTab] = useSettingsStore(
+    (state) => [state.activeTab, state.onChangeTab],
+    shallow,
+  );
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<WidgetVariant | 'buy'>(
@@ -22,12 +24,11 @@ export function DualWidget() {
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (!!url && !!LinkMap[url] && url === LinkMap[url]) {
-      ReactGA.send({ hitType: 'pageview', page: `/${url}` });
-      if (url === LinkMap.swap) {
+      if (url === LinkMap.Swap) {
         return 'expandable';
-      } else if (url === LinkMap.gas || url === LinkMap.refuel) {
+      } else if (url === LinkMap.Gas || url === LinkMap.Refuel) {
         return 'refuel';
-      } else if (url === LinkMap.buy) {
+      } else if (url === LinkMap.Buy) {
         return 'buy';
       }
     }
@@ -36,26 +37,26 @@ export function DualWidget() {
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
       starterVariant === 'expandable'
-        ? settings.onChangeTab(0)
+        ? onChangeTab(0)
         : starterVariant === 'refuel'
-        ? settings.onChangeTab(1)
-        : settings.onChangeTab(2);
+        ? onChangeTab(1)
+        : onChangeTab(2);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
-      if (settings.activeTab === 0) {
+      if (activeTab === 0) {
         setStarterVariant('expandable');
-      } else if (settings.activeTab === 1) {
+      } else if (activeTab === 1) {
         setStarterVariant('refuel');
-      } else if (settings.activeTab === 2) {
+      } else if (activeTab === 2) {
         setStarterVariant('buy');
       }
     }
-  }, [settings, starterVariant, starterVariantUsed]);
+  }, [activeTab, onChangeTab, starterVariant, starterVariantUsed]);
 
   useEffect(() => {
     getActiveWidget();
-  }, [getActiveWidget, starterVariant, settings.activeTab]);
+  }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
     <Grid

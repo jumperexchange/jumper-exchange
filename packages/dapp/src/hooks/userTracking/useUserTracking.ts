@@ -2,6 +2,7 @@ import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { useCallback } from 'react';
 import ReactGA from 'react-ga4';
 import { hotjar } from 'react-hotjar';
+import { TrackingCategories } from '../../const';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   EventTrackingTools,
@@ -10,7 +11,7 @@ import {
   TrackEventProps,
   trackPageloadProps,
   TrackTransactionProps,
-} from './userTracking.types';
+} from '../../types';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
@@ -59,7 +60,7 @@ export function useUserTracking() {
       ) {
         !disconnect &&
           hotjar.identify(`${account.address}`, {
-            chainId: account.chainId,
+            chainId: `${account.chainId}`,
             ...data,
           });
         hotjar.initialized() &&
@@ -72,12 +73,12 @@ export function useUserTracking() {
         !disconnect &&
           ReactGA.set({
             username: `${account.address}`,
-            chainId: account.chainId,
+            chainId: `${account.chainId}`,
           });
-        ReactGA.gtag('event', 'wallet', {
+        ReactGA.gtag('event', TrackingCategories.Wallet, {
           walletAction: disconnect ? 'disconnect' : 'connect',
-          chainId: account.chainId,
-          ...data,
+          chainId: `${account.chainId}`,
+          account: `${account.address}`,
         });
       }
       if (
@@ -86,8 +87,8 @@ export function useUserTracking() {
       ) {
         !!account.address &&
           (await arcx?.connectWallet({
-            account: account.address,
-            chain: account.chainId,
+            account: `${account.address}`,
+            chain: `${account.chainId}`,
           }));
       }
     },

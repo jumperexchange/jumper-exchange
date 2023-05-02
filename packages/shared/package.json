@@ -30,24 +30,25 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
-    "@types/node": "^18.15.12",
-    "@types/react": "^18.0.37",
+    "@types/node": "^18.16.2",
+    "@types/react": "^18.2.0",
     "babel-loader": "^9.1.2",
     "eslint-config-prettier": "^8.8.0",
-    "prettier": "^2.8.7"
+    "prettier": "^2.8.8"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.6",
-    "@emotion/styled": "^11.10.6",
-    "@lifi/wallet-management": "2.0.0-beta.1",
+    "@emotion/react": "^11.10.8",
+    "@emotion/styled": "^11.10.8",
+    "@lifi/wallet-management": "2.0.0-beta.4",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.12.1",
+    "@mui/material": "^5.12.2",
     "i18next": "^22.4.15",
-    "js-cookie": "^3.0.1",
+    "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^12.2.0",
+    "react-i18next": "^12.2.2",
     "typescript": "^5.0.4",
-    "use-media": "^1.4.0"
+    "use-media": "^1.4.0",
+    "zustand": "^4.3.7"
   }
 }

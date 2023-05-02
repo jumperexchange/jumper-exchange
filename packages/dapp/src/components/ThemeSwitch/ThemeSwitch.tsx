@@ -3,26 +3,32 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { useMediaQuery } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import { useTranslation } from 'react-i18next';
 import {
   TrackingActions,
   TrackingCategories,
-} from '../../../../dapp/src/const';
-import {
-  EventTrackingTools,
-  useUserTracking,
-} from '../../../../dapp/src/hooks';
-import { useDetectDarkModePreference } from '../../../../dapp/src/providers/ThemeProvider';
-import { useSettings } from '../../hooks';
+} from '@transferto/dapp/src/const';
+import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
+import { useUserTracking } from '../../hooks';
+import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
+import { useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
+
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
-  const settings = useSettings();
+
+  const [themeMode, onChangeMode] = useSettingsStore(
+    (state) => [state.themeMode, state.onChangeMode],
+    shallow,
+  );
+
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
   const { trackEvent } = useUserTracking();
 
   const handleThemeSwitch = () => {
+    onChangeMode(isDarkMode ? 'light' : 'dark');
     trackEvent({
       category: TrackingCategories.ThemeSwitch,
       action: TrackingActions.ClickThemeSwitch,
@@ -30,7 +36,6 @@ export const ThemeSwitch = () => {
       data: { themeSwitch: `theme-${isDarkMode ? 'light' : 'dark'}` },
       disableTrackingTool: [EventTrackingTools.arcx],
     });
-    settings.onChangeMode(isDarkMode ? 'light' : 'dark');
   };
 
   const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
@@ -38,9 +43,9 @@ export const ThemeSwitch = () => {
   return (
     <Tooltip
       title={
-        settings.themeMode === 'light'
+        themeMode === 'light'
           ? translate(`${i18Path}themes.switchToDark`)
-          : settings.themeMode === 'dark'
+          : themeMode === 'dark'
           ? translate(`${i18Path}themes.switchToLight`)
           : !isDarkModeHook
           ? translate(`${i18Path}themes.switchToDark`)
@@ -52,9 +57,9 @@ export const ThemeSwitch = () => {
           handleThemeSwitch();
         }}
       >
-        {settings.themeMode === 'light' ? (
+        {themeMode === 'light' ? (
           <NightlightIcon />
-        ) : settings.themeMode === 'dark' ? (
+        ) : themeMode === 'dark' ? (
           <LightModeIcon />
         ) : (
           <BrightnessAutoIcon />

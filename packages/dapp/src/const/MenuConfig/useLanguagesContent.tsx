@@ -1,15 +1,20 @@
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
-import { EventTrackingTools, useUserTracking } from '../../../hooks';
-import { TrackingActions, TrackingCategories } from '../../trackingKeys';
+import { shallow } from 'zustand/shallow';
+import { useUserTracking } from '../../hooks';
+import { useSettingsStore } from '../../stores';
+import { EventTrackingTools } from '../../types';
+import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
-export const useMainSubMenuLanguage = () => {
+export const useLanguagesContent = () => {
   const { i18n } = useTranslation();
-  const settings = useSettings();
+  const [languageMode, onChangeLanguage] = useSettingsStore(
+    (state) => [state.languageMode, state.onChangeLanguage],
+    shallow,
+  );
   const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage) => {
     i18n.changeLanguage(newLanguage);
-    settings.onChangeLanguage(newLanguage);
+    onChangeLanguage(newLanguage);
     trackEvent({
       category: TrackingCategories.Language,
       action: TrackingActions.SwitchLanguage,
@@ -23,7 +28,7 @@ export const useMainSubMenuLanguage = () => {
     .sort()
     .map((lan) => ({
       label: i18n.store.data[lan].translation['navbar']['language']['value'],
-      checkIcon: (settings.languageMode || i18n.resolvedLanguage) === lan,
+      checkIcon: (languageMode || i18n.resolvedLanguage) === lan,
       onClick: () => handleSwitchLanguage(lan),
     }));
 

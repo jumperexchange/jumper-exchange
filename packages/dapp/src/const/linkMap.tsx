@@ -1,7 +1,7 @@
 export enum LinkMap {
-  swap = 'swap',
-  dashboard = 'dashboard',
-  refuel = 'refuel',
-  gas = 'gas',
-  buy = 'buy',
+  Buy = 'buy',
+  Swap = 'swap',
+  Dashboard = 'dashboard',
+  Refuel = 'refuel',
+  Gas = 'gas',
 }

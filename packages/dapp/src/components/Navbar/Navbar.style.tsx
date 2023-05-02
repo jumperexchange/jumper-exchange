@@ -25,7 +25,8 @@ import { ButtonSecondary } from '@transferto/shared/src/atoms/index';
 
 import { Breakpoint, alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
-import { SubMenuKeys } from '../../const';
+
+const MenuLabelHeight = '64px';
 
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
   height: '48px',
@@ -125,13 +126,25 @@ export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
 }));
 export interface NavbarMenuListProps extends Omit<MenuListProps, 'component'> {
   component?: string;
+  isOpenSubMenu?: boolean;
+  hasLabel?: boolean;
 }
 
-export const NavbarMenuList = styled(MenuList)<NavbarMenuListProps>(() => ({
+export const NavbarMenuList = styled(MenuList, {
+  shouldForwardProp: (prop) => prop !== 'isOpenSubMenu' && prop !== 'hasLabel',
+})<NavbarMenuListProps>(({ theme, isOpenSubMenu, hasLabel }) => ({
+  marginTop: 0,
   padding: 0,
+  '& > :first-of-type': {
+    marginTop: isOpenSubMenu || hasLabel ? 'inherit' : theme.spacing(3),
+    paddingTop: isOpenSubMenu ? theme.spacing(3) : 'inherit',
+  },
+  '& > :last-child': {
+    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(6),
+    paddingBottom: isOpenSubMenu ? theme.spacing(3) : 'inherit',
+    paddingTop: hasLabel ? 0 : 'inherit',
+  },
 }));
-
-export const NavbarLinkText = styled('span')({});
 
 export const MenuHeader = styled('div')(() => ({
   padding: '0',
@@ -253,6 +266,7 @@ export const MenuItem = styled(MUIMenuItem, {
   padding: showButton ? theme.spacing(0, 3, 3) : theme.spacing(0, 3),
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
+  margin: theme.spacing(0, 3),
   marginTop: showButton && theme.spacing(2),
   borderRadius: '12px',
 
@@ -269,19 +283,14 @@ export const MenuItem = styled(MUIMenuItem, {
 
 export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
   isDarkMode?: boolean;
-  isOpenSubMenu?: boolean;
-  openSubMenu?: string;
-  isSubMenu?: boolean;
+  isWide?: boolean;
   component?: string;
 }
 
 export const NavbarPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'isDarkMode' &&
-    prop !== 'isOpenSubMenu' &&
-    prop !== 'openSubMenu' &&
-    prop !== 'isSubMenu',
-})<NavbarPaperProps>(({ theme, isDarkMode, isOpenSubMenu, openSubMenu }) => ({
+    prop !== 'isDarkMode' && prop !== 'isWide' && prop !== 'isSubMenu',
+})<NavbarPaperProps>(({ theme, isDarkMode, isWide }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -290,22 +299,9 @@ export const NavbarPaper = styled(Paper, {
     : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-  maxHeight: 'calc( 100vh - 64px - 12px )', // viewHeight - navbarHeight - offset
+  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - navbarHeight - offset
   overflowY: 'auto',
-  overflowX: 'inherit',
-
-  '> .navbar-menu-list': {
-    marginTop: 0,
-    padding: !!isOpenSubMenu
-      ? openSubMenu === SubMenuKeys.walletSelect ||
-        openSubMenu === SubMenuKeys.chains
-        ? `${theme.spacing(0, 3, 3)} !important`
-        : `${theme.spacing(0)} !important`
-      : `${theme.spacing(3)} !important`,
-  },
-  '> .navbar-menu-list.open > ul': {
-    padding: `${theme.spacing(0, 3, 3)} !important`,
-  },
+  overflowX: 'hidden',
   width: '100%',
   transformOrigin: 'bottom',
   transition:
@@ -314,9 +310,8 @@ export const NavbarPaper = styled(Paper, {
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 72px - 12px )',
-
     borderRadius: '12px !important',
-    width: openSubMenu === SubMenuKeys.walletMenu ? '320px' : '288px',
+    width: isWide ? '320px' : '288px',
     marginTop: '-2px',
   },
 
@@ -366,10 +361,10 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     backdropFilter: 'blur(12px)',
     zIndex: 1400,
     overflow: 'hidden',
-    margin: theme.spacing(0, -3),
-    width: 'calc( 100% + 24px )',
+    // margin: theme.spacing(0),
+    margin: theme.spacing(0),
     marginTop: '0px',
-    height: '64px',
+    height: MenuLabelHeight,
     padding: '0px',
     borderTopLeftRadius: '24px',
     borderTopRightRadius: '24px',

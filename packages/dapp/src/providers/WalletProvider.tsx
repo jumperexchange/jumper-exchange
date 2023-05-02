@@ -7,8 +7,8 @@ import {
 } from '@lifi/wallet-management';
 import { Signer } from 'ethers';
 import React, {
-  createContext,
   PropsWithChildren,
+  createContext,
   useCallback,
   useEffect,
   useMemo,
@@ -85,8 +85,12 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       await liFiWalletManagement.disconnect(currentWallet);
       currentWallet.removeAllListeners();
       handleWalletUpdate(undefined);
+      trackConnectWallet({
+        account: account,
+        disconnect: true,
+      });
     }
-  }, [currentWallet]);
+  }, [account, currentWallet, trackConnectWallet]);
 
   const switchChain = useCallback(
     async (chainId: number) => {
@@ -106,7 +110,6 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       try {
         await currentWallet?.addChain(chainId);
         handleWalletUpdate(currentWallet);
-
         return true;
       } catch {
         return false;
