@@ -173,7 +173,6 @@ export const NavbarTabs = styled(Tabs, {
     borderRadius: 28,
     padding: 1,
     display: 'flex',
-    width: 390,
     alignItems: 'center',
   },
   div: {
@@ -220,6 +219,7 @@ export const NavbarTab = styled(Tab, {
   lineHeight: '20px',
   margin: '6px 4px',
   height: '48px',
+  width: '142px',
   minHeight: 'unset',
   color:
     theme.palette.mode === 'dark'

@@ -1,3 +1,4 @@
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
@@ -56,7 +57,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={`${translate(`${i18Path}links.swap`)}`}
+        label={translate(`${i18Path}links.swap`)}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -70,7 +71,7 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         }}
-        label={`${translate(`${i18Path}links.refuel`)}`}
+        label={translate(`${i18Path}links.refuel`)}
         icon={
           <EvStationOutlinedIcon
             sx={{
@@ -95,9 +96,9 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         }}
-        label={'Buy'}
+        label={translate(`${i18Path}links.buy`)}
         icon={
-          <EvStationOutlinedIcon
+          <CreditCardIcon
             sx={{
               marginRight: '6px',
               marginBottom: '0px !important',

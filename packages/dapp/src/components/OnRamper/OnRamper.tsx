@@ -1,5 +1,8 @@
+import { ChainId } from '@lifi/sdk';
 import { useTheme } from '@mui/material';
+import { useWallet } from '../../providers/WalletProvider';
 import { OnRamperIFrame } from './index';
+
 function removeHash(str) {
   if (str.startsWith('#')) {
     return str.substring(1);
@@ -8,14 +11,17 @@ function removeHash(str) {
 }
 
 export const OnRamper = () => {
+  const { account } = useWallet();
   const theme = useTheme();
-  const widgetStyling = {
+
+  const onRamperConfig = {
+    defaultCrypto: ChainId[account.chainId],
     themeName: theme.palette.mode === 'light' ? 'light' : 'dark',
     containerColor: removeHash(theme.palette.surface1.main),
     background: removeHash(theme.palette.surface1.main),
     primaryColor: removeHash(theme.palette.primary.main),
     secondaryColor: removeHash(
-      theme.palette.mode === 'dark' ? '#302B52' : theme.palette.grey[100],
+      theme.palette.mode === 'light' ? theme.palette.grey[100] : '#302B52',
     ),
     cardColor: removeHash(theme.palette.surface2.main),
     primaryTextColor: removeHash(
@@ -23,29 +29,34 @@ export const OnRamper = () => {
         ? theme.palette.black.main
         : theme.palette.white.main,
     ),
-    secondaryTextColor:
+    secondaryTextColor: removeHash(
       theme.palette.mode === 'light'
-        ? theme.palette.black.main
+        ? theme.palette.primary.main
         : theme.palette.white.main,
-    borderRadius: 30,
-    wgBorderRadius: '12px',
-    border: 'unset',
+    ),
+    borderRadius: 2,
+    wgBorderRadius: 1.5,
   };
-  const regex = /"([^"]+)":"([^"]+)"(,?)/g;
-  const outputString = JSON.stringify(widgetStyling)
-    .replace(regex, '$1=$2&')
-    .slice(0, -1)
-    .substring(1);
-
+  const onRamperSrc = `https://buy.onramper.com/?themeName=${
+    onRamperConfig.themeName
+  }&containerColor=${onRamperConfig.containerColor}&primaryColor=${
+    onRamperConfig.primaryColor
+  }&secondaryColor=${onRamperConfig.secondaryColor}&cardColor=${
+    onRamperConfig.cardColor
+  }&primaryTextColor=${onRamperConfig.primaryTextColor}&secondaryTextColor=${
+    onRamperConfig.secondaryTextColor
+  }&borderRadius=${onRamperConfig.borderRadius}&wgBorderRadius=${
+    onRamperConfig.wgBorderRadius
+  }?apiKey=${import.meta.env.VITE_ONRAMPER_API_KEY}&defaultCrypto=${
+    !!onRamperConfig.defaultCrypto ? onRamperConfig.defaultCrypto : 'ETH'
+  }`;
   return (
     <OnRamperIFrame
-      src={`https://buy.onramper.com/?apiKey=${
-        import.meta.env.VITE_ONRAMPER_API_KEY
-      }?defaultCrypto=ETH?excludeCryptos=BTC?${outputString}`}
+      src={onRamperSrc}
       height="540px"
       width="392px"
       title="Onramper widget"
-      allow="accelerometer; autoplay; camera; gyroscope; payment"
+      allow="accelerometer; autoplay; gyroscope; payment"
     ></OnRamperIFrame>
   );
 };
