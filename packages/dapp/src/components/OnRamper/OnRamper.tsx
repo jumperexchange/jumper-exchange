@@ -1,4 +1,3 @@
-import { ChainId } from '@lifi/sdk';
 import { useTheme } from '@mui/material';
 import { useWallet } from '../../providers/WalletProvider';
 import { OnRamperIFrame } from './index';
@@ -15,7 +14,6 @@ export const OnRamper = () => {
   const theme = useTheme();
 
   const onRamperConfig = {
-    defaultCrypto: ChainId[account.chainId],
     themeName: theme.palette.mode === 'light' ? 'light' : 'dark',
     containerColor: removeHash(theme.palette.surface1.main),
     background: removeHash(theme.palette.surface1.main),
@@ -47,9 +45,7 @@ export const OnRamper = () => {
     onRamperConfig.secondaryTextColor
   }&borderRadius=${onRamperConfig.borderRadius}&wgBorderRadius=${
     onRamperConfig.wgBorderRadius
-  }?apiKey=${import.meta.env.VITE_ONRAMPER_API_KEY}&defaultCrypto=${
-    !!onRamperConfig.defaultCrypto ? onRamperConfig.defaultCrypto : 'ETH'
-  }`;
+  }?apiKey=${import.meta.env.VITE_ONRAMPER_API_KEY}`;
   return (
     <OnRamperIFrame
       src={onRamperSrc}
