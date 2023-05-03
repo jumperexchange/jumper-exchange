@@ -1,5 +1,4 @@
 import { useTheme } from '@mui/material';
-import { useWallet } from '../../providers/WalletProvider';
 import { OnRamperIFrame } from './index';
 
 function removeHash(str) {
@@ -10,10 +9,10 @@ function removeHash(str) {
 }
 
 export const OnRamper = () => {
-  const { account } = useWallet();
   const theme = useTheme();
 
   const onRamperConfig = {
+    defaultCrypto: 'ETH',
     themeName: theme.palette.mode === 'light' ? 'light' : 'dark',
     containerColor: removeHash(theme.palette.surface1.main),
     background: removeHash(theme.palette.surface1.main),
@@ -37,7 +36,8 @@ export const OnRamper = () => {
   };
   const onRamperSrc = `https://buy.onramper.com/?themeName=${
     onRamperConfig.themeName
-  }&containerColor=${onRamperConfig.containerColor}&primaryColor=${
+  }&defaultCrypto=${onRamperConfig.defaultCrypto}
+  &containerColor=${onRamperConfig.containerColor}&primaryColor=${
     onRamperConfig.primaryColor
   }&secondaryColor=${onRamperConfig.secondaryColor}&cardColor=${
     onRamperConfig.cardColor
