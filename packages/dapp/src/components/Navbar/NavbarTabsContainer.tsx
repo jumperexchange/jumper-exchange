@@ -1,3 +1,4 @@
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
@@ -88,6 +89,31 @@ const NavbarTabsContainer = () => {
           />
         }
         {...a11yProps(1)}
+      />
+      <NavbarTab
+        onClick={() => {
+          window.history.replaceState(null, document.title, '/buy');
+          trackEvent({
+            category: TrackingCategories.Navigation,
+            action: TrackingActions.SwitchTab,
+            label: 'gas',
+            data: { tab: 'gas' },
+            disableTrackingTool: [EventTrackingTools.arcx],
+          });
+        }}
+        label={translate(`${i18Path}links.buy`)}
+        icon={
+          <CreditCardIcon
+            sx={{
+              marginRight: '6px',
+              marginBottom: '0px !important',
+              color: !!isDarkMode
+                ? theme.palette.white.main
+                : theme.palette.black.main,
+            }}
+          />
+        }
+        {...a11yProps(2)}
       />
     </NavbarTabs>
   );
