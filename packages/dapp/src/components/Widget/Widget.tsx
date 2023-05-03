@@ -7,6 +7,8 @@ import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
 import { EventTrackingTools, LanguageKey } from '../../types';
+import { useMenuStore } from '../../stores';
+import { shallow } from 'zustand/shallow';
 
 export function Widget({ starterVariant }) {
   const theme = useTheme();
@@ -14,6 +16,10 @@ export function Widget({ starterVariant }) {
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
+  const [onOpenNavbarWalletSelectMenu] = useMenuStore(
+    (state) => [state.onOpenNavbarWalletSelectMenu],
+    shallow,
+  );
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo(() => {
@@ -30,12 +36,7 @@ export function Widget({ starterVariant }) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          let promiseResolver: (value: void | PromiseLike<void>) => void;
-          const loginAwaiter = new Promise<void>(
-            (resolve) => (promiseResolver = resolve),
-          );
-
-          await loginAwaiter;
+          onOpenNavbarWalletSelectMenu(true);
           if (account.signer) {
             return account.signer!;
           } else {
