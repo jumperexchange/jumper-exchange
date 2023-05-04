@@ -31,7 +31,7 @@ export const OnRamper = () => {
         ? theme.palette.primary.main
         : theme.palette.white.main,
     ),
-    borderRadius: 2,
+    borderRadius: 0.75,
     wgBorderRadius: 1.5,
   };
   const onRamperSrc = `https://buy.onramper.com/?themeName=${
