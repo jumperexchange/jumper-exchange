@@ -23,7 +23,7 @@ export function DualWidget() {
 
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
-    if (!!url && !!LinkMap[url] && url === LinkMap[url]) {
+    if (url === LinkMap[url.charAt(0).toUpperCase() + url.slice(1)]) {
       if (url === LinkMap.Swap) {
         return 'expandable';
       } else if (url === LinkMap.Gas || url === LinkMap.Refuel) {
@@ -40,7 +40,9 @@ export function DualWidget() {
         ? onChangeTab(0)
         : starterVariant === 'refuel'
         ? onChangeTab(1)
-        : onChangeTab(2);
+        : starterVariant === 'buy'
+        ? onChangeTab(2)
+        : onChangeTab(0);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
