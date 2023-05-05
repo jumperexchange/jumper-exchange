@@ -3,7 +3,7 @@ import { styled } from '@mui/material';
 export const OnRamperIFrame = styled('iframe')(({ theme }) => ({
   borderRadius: '12px',
   border: 'unset',
-  margin: `${theme.spacing(4)} auto`,
+  margin: `0 auto`,
   maxWidth: '392px',
   minWidth: '375px',
   boxShadow:
