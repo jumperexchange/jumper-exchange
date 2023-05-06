@@ -2,6 +2,8 @@ export * from './BackgroundGradient';
 export * from './DualWidget';
 export * from './Navbar';
 export * from './OnRamper';
+export * from './StatsCard';
 export * from './SupportModal';
 export * from './ThemeSwitch';
+export * from './WelcomeWrapper';
 export * from './Widget';

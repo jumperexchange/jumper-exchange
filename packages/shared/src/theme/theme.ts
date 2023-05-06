@@ -72,6 +72,8 @@ declare module '@mui/material/styles' {
     alphaLight800?: PaletteOptions['primary'];
   }
   interface TypographyVariants {
+    lifiBrandHeaderLarge: React.CSSProperties;
+    lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay: React.CSSProperties;
     lifiHeaderXLarge: React.CSSProperties;
     lifiHeaderLarge: React.CSSProperties;
@@ -97,6 +99,8 @@ declare module '@mui/material/styles' {
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
+    lifiBrandHeaderLarge: React.CSSProperties;
+    lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay?: React.CSSProperties;
     lifiHeaderXLarge?: React.CSSProperties;
     lifiHeaderLarge?: React.CSSProperties;
@@ -156,6 +160,8 @@ declare module '@mui/material/Button' {
 }
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    lifiBrandHeaderLarge: true;
+    lifiBrandHeaderXLarge: true;
     lifiHeaderDisplay: true;
     lifiHeaderXLarge: true;
     lifiHeaderLarge: true;
@@ -214,6 +220,8 @@ const themeBase: Theme = createTheme({
     MuiTypography: {
       defaultProps: {
         variantMapping: {
+          lifiBrandHeaderLarge: 'h1',
+          lifiBrandHeaderXLarge: 'h2',
           lifiHeaderDisplay: 'p',
           lifiHeaderXLarge: 'p',
           lifiHeaderLarge: 'p',
@@ -338,13 +346,13 @@ const themeTypographyPreset: Theme = createTheme({
   ...themeBase,
   typography: {
     fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
-    lifiHeaderDisplay: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
-      fontStyle: 'normal',
-      fontSize: 96,
-      lineHeight: '128px',
-      fontWeight: 700,
-
+    lifiBrandHeaderLarge: {
+      fontFamily: "'GT+America+Medium'",
+      fontSize: '24px',
+      fontWeight: 400,
+      lineHeight: '32px',
+      letterSpacing: 0,
+      textAlign: 'center',
       // example to make it responsive:
       // [themeBase.breakpoints.up('sm')]: {
       //   fontSize: 120,
@@ -352,6 +360,21 @@ const themeTypographyPreset: Theme = createTheme({
       //   fontWeight: 700,
       //   letterSpacing: -1,
       // },
+    },
+    lifiBrandHeaderXLarge: {
+      fontFamily: "'GT+America+Bold'",
+      fontSize: '48px',
+      fontWeight: 700,
+      lineHeight: '56px',
+      letterSpacing: 0,
+      textAlign: 'center',
+    },
+    lifiHeaderDisplay: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontSize: '96px',
+      lineHeight: '128px',
+      fontWeight: 700,
     },
     lifiHeaderXLarge: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),

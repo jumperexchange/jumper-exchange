@@ -6,6 +6,7 @@ import { shallow } from 'zustand/shallow';
 import { useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types/';
 import { OnRamper } from '../OnRamper';
+import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
 import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
@@ -61,30 +62,35 @@ export function DualWidget() {
   }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
-    <Grid
-      justifyContent="center"
-      alignItems="center"
-      container
-      sx={{
-        overflowX: 'hidden',
-      }}
-    >
-      {import.meta.env.MODE === 'testnet' && (
-        <Grid item xs={12} mt={theme.spacing(6)}>
-          <TestnetAlert />
-        </Grid>
-      )}
-
-      <WidgetContainer item xs={12} isActive={_starterVariant === 'expandable'}>
-        <Widget starterVariant={'expandable'} />
-      </WidgetContainer>
-      <WidgetContainer item xs={12} isActive={_starterVariant === 'refuel'}>
-        <Widget starterVariant={'refuel'} />
-      </WidgetContainer>
-      <WidgetContainer item xs={12} isActive={_starterVariant === 'buy'}>
-        <OnRamper />
-      </WidgetContainer>
-      <WidgetEvents />
-    </Grid>
+    <WelcomeWrapper>
+      <Grid
+        justifyContent="center"
+        alignItems="center"
+        container
+        sx={{
+          overflowX: 'hidden',
+        }}
+      >
+        {import.meta.env.MODE === 'testnet' && (
+          <Grid item xs={12} mt={theme.spacing(6)}>
+            <TestnetAlert />
+          </Grid>
+        )}
+        <WidgetContainer
+          item
+          xs={12}
+          isActive={_starterVariant === 'expandable'}
+        >
+          <Widget starterVariant={'expandable'} />
+        </WidgetContainer>
+        <WidgetContainer item xs={12} isActive={_starterVariant === 'refuel'}>
+          <Widget starterVariant={'refuel'} />
+        </WidgetContainer>
+        <WidgetContainer item xs={12} isActive={_starterVariant === 'buy'}>
+          <OnRamper />
+        </WidgetContainer>
+        <WidgetEvents />
+      </Grid>
+    </WelcomeWrapper>
   );
 }
