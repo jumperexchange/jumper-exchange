@@ -347,7 +347,7 @@ const themeTypographyPreset: Theme = createTheme({
   typography: {
     fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
     lifiBrandHeaderLarge: {
-      fontFamily: "'GT+America+Medium'",
+      fontFamily: "'GT+America+Medium', system-ui",
       fontSize: '24px',
       fontWeight: 400,
       lineHeight: '32px',
@@ -362,7 +362,7 @@ const themeTypographyPreset: Theme = createTheme({
       // },
     },
     lifiBrandHeaderXLarge: {
-      fontFamily: "'GT+America+Bold'",
+      fontFamily: "'GT+America+Bold', system-ui",
       fontSize: '48px',
       fontWeight: 700,
       lineHeight: '56px',

@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'GT+America+Bold';
+  font-family: 'GT+America+Bold, system-ui';
   font-style: bold;
   font-weight: 700;
   font-display: swap;
@@ -8,7 +8,7 @@
 }
 
 @font-face {
-  font-family: 'GT+America+Medium';
+  font-family: 'GT+America+Medium, system-ui';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
