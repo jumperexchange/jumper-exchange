@@ -16,8 +16,15 @@ export const Card = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(6, 8),
   width: '80px',
+  color:
+    theme.palette.mode === 'dark'
+      ? theme.palette.accent1Alt.main
+      : theme.palette.primary.main,
   userSelect: 'none',
-  background: getContrastAlphaColor(theme, '8%'),
+  background:
+    theme.palette.mode === 'dark'
+      ? getContrastAlphaColor(theme, '8%')
+      : theme.palette.bg.main,
   borderRadius: '16px',
   transition: 'background 1.5s',
   '&:hover': {

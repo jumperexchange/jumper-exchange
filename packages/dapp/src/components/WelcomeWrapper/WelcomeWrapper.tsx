@@ -44,7 +44,7 @@ export const WelcomeWrapper = ({ children, showWelcome, setShowWelcome }) => {
                 color:
                   theme.palette.mode === 'dark'
                     ? theme.palette.accent1Alt.main
-                    : '#BEA0EB',
+                    : theme.palette.primary.main,
               }}
             >
               {translate(`${i18Path}subtitle`)}

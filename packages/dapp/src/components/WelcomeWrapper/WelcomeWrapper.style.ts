@@ -10,7 +10,9 @@ export const Background = styled('div')(({ theme }) => ({
 export const GlowTop = styled('span')(({ theme }) => ({
   position: 'absolute',
   background:
-    'radial-gradient(50% 50% at 50% 50%, rgba(190, 160, 235, 0.4) 0%, rgba(190, 160, 235, 0) 100%);',
+    theme.palette.mode === 'dark'
+      ? 'radial-gradient(50% 50% at 50% 50%, rgba(190, 160, 235, 0.4) 0%, rgba(190, 160, 235, 0) 100%);'
+      : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
   top: '50%',
   left: '50%',
   zIndex: -1,
@@ -21,7 +23,10 @@ export const GlowTop = styled('span')(({ theme }) => ({
 }));
 
 export const CustomColor = styled(Typography)(({ theme }) => ({
-  background: 'linear-gradient(270deg, #D35CFF 0%, #BEA0EB 94.17%)',
+  background:
+    theme.palette.mode === 'dark'
+      ? 'linear-gradient(270deg, #D35CFF 0%, #BEA0EB 94.17%)'
+      : 'linear-gradient(270deg, #31007A 0%, #8700B8 94.17%);',
   backgroundClip: 'text',
   paddingTop: theme.spacing(10),
   textFillColor: 'transparent',
@@ -43,13 +48,19 @@ export const ContentContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
   height: '50%',
   width: '100%',
-  background: 'linear-gradient(180deg, #24203D 0%, #24203D 100%)',
+  background:
+    theme.palette.mode === 'dark'
+      ? 'linear-gradient(180deg, #24203D 0%, #24203D 100%)'
+      : 'linear-gradient(180deg, #F3EBFF 0%, #FFFFFF 100%);',
   ':before': {
     content: '" "',
     height: '288px',
     width: '100%',
     position: 'absolute',
     transform: 'translate(-50%, -287px)',
-    background: 'linear-gradient(180deg, rgba(36, 32, 61, 0) 0%, #24203D 100%)',
+    background:
+      theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, rgba(36, 32, 61, 0) 0%, #24203D 100%)'
+        : 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #F3EBFF 100%);',
   },
 }));
