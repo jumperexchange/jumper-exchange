@@ -1,12 +1,10 @@
-import { Box, Breakpoint, Typography, styled } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 
 export const Background = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.surface2.main,
+  backgroundColor: 'transparent',
   height: '100%',
+  overflow: 'unset',
   // opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    backgroundColor: 'transparent',
-  },
 }));
 
 export const GlowTop = styled('span')(({ theme }) => ({
@@ -19,6 +17,7 @@ export const GlowTop = styled('span')(({ theme }) => ({
   transform: 'translate(-50%, -50%)',
   width: '85vw',
   height: '85vw',
+  maxHeight: 'calc( 100% - 80px )',
 }));
 
 export const CustomColor = styled(Typography)(({ theme }) => ({

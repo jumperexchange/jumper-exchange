@@ -65,7 +65,7 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'sticky',
+    position: 'fixed',
     top: 0,
     backdropFilter: 'blur(12px)',
     boxShadow: 'unset',
@@ -75,6 +75,7 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     padding: theme.spacing(2, 4),
     zIndex: 1300,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
+      position: 'sticky',
       height: '72px',
       padding: theme.spacing(4, 6),
     },

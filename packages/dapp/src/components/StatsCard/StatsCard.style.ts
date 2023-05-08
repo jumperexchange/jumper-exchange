@@ -15,12 +15,15 @@ export const Card = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   padding: theme.spacing(6, 8),
-  width: '128px',
+  width: '80px',
+  userSelect: 'none',
   background: getContrastAlphaColor(theme, '8%'),
   borderRadius: '16px',
   transition: 'background 1.5s',
   '&:hover': {
     background: getContrastAlphaColor(theme, '28%'),
   },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {},
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    width: '128px',
+  },
 }));

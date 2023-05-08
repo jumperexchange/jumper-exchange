@@ -1,5 +1,10 @@
 {
   "navbar": {
+    "welcome": {
+      "title": "Find the best route",
+      "subtitle": "We’re 4x audited multi-chain liquidity aggregator",
+      "cta": "Get started"
+    },
     "links": {
       "swap": "Swap",
       "dashboard": "Dashboard",

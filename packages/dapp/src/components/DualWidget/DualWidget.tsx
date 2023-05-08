@@ -1,5 +1,5 @@
 import { WidgetVariant } from '@lifi/widget';
-import { Grid, useTheme } from '@mui/material';
+import { Breakpoint, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
@@ -16,11 +16,25 @@ export function DualWidget() {
     (state) => [state.activeTab, state.onChangeTab],
     shallow,
   );
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [showFadeAnimation, setShowFadeAnimation] = useState(false);
   const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<WidgetVariant | 'buy'>(
     'expandable',
   );
+
+  useEffect(() => {
+    async function fadeInWidget() {
+      // You can await here
+      await setTimeout(() => {
+        console.log('timeout');
+        setShowFadeAnimation(true);
+      }, 500); // ...
+    }
+    fadeInWidget();
+  }, []); // Or [] if effect doesn't need props or state
 
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
@@ -62,13 +76,24 @@ export function DualWidget() {
   }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
-    <WelcomeWrapper>
+    <WelcomeWrapper showWelcome={showWelcome} setShowWelcome={setShowWelcome}>
       <Grid
         justifyContent="center"
         alignItems="center"
         container
         sx={{
           overflowX: 'hidden',
+          position: showWelcome ? 'absolute' : 'inherit',
+          top:
+            showWelcome && !isDesktop
+              ? '64px'
+              : showWelcome && isDesktop
+              ? '80px'
+              : 'inherit',
+          transition: 'opacity 500ms',
+          zIndex: showWelcome ? '-1' : 'inherit',
+          opacity: showFadeAnimation ? 1 : 0,
+          // transition: 'opacity 1s linear',
         }}
       >
         {import.meta.env.MODE === 'testnet' && (
@@ -79,14 +104,25 @@ export function DualWidget() {
         <WidgetContainer
           item
           xs={12}
+          showWelcome={showWelcome}
           isActive={_starterVariant === 'expandable'}
         >
           <Widget starterVariant={'expandable'} />
         </WidgetContainer>
-        <WidgetContainer item xs={12} isActive={_starterVariant === 'refuel'}>
+        <WidgetContainer
+          item
+          xs={12}
+          isActive={_starterVariant === 'refuel'}
+          showWelcome={showWelcome}
+        >
           <Widget starterVariant={'refuel'} />
         </WidgetContainer>
-        <WidgetContainer item xs={12} isActive={_starterVariant === 'buy'}>
+        <WidgetContainer
+          item
+          xs={12}
+          isActive={_starterVariant === 'buy'}
+          showWelcome={showWelcome}
+        >
           <OnRamper />
         </WidgetContainer>
         <WidgetEvents />
