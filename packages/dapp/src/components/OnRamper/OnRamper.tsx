@@ -52,7 +52,7 @@ export const OnRamper = () => {
       height="540px"
       width="392px"
       title="Onramper widget"
-      allow="accelerometer; autoplay; gyroscope; payment"
+      allow="accelerometer; autoplay; camera; gyroscope; payment"
     ></OnRamperIFrame>
   );
 };
