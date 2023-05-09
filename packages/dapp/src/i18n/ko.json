@@ -3,7 +3,8 @@
     "links": {
       "swap": "스왑",
       "dashboard": "대시보드",
-      "refuel": "가스"
+      "refuel": "가스",
+      "buy": "매수"
     },
     "connectWallet": "지갑 연결",
     "chooseWallet": "지갑 선택",
