@@ -134,6 +134,7 @@ export function Widget({ starterVariant }) {
           maxPriceImpact: 0.4,
         },
       },
+      buildSwapUrl: true,
       insurance: true,
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
