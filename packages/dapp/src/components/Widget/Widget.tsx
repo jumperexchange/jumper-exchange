@@ -26,7 +26,7 @@ export function Widget({ starterVariant }) {
     );
 
   // load environment config
-  const widgetConfig: WidgetConfig = useMemo(() => {
+  const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcs = {};
     try {
       rpcs = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
@@ -46,7 +46,10 @@ export function Widget({ starterVariant }) {
               action: TrackingActions.OpenWalletSelectMenu,
               disableTrackingTool: [EventTrackingTools.arcx],
             });
-          onOpenNavbarWalletSelectMenu(!openNavbarWalletSelectMenu, document.getElementById('connect-wallet-button'));
+          onOpenNavbarWalletSelectMenu(
+            !openNavbarWalletSelectMenu,
+            document.getElementById('connect-wallet-button'),
+          );
 
           return account.signer;
         },
@@ -154,6 +157,8 @@ export function Widget({ starterVariant }) {
     i18n.language,
     i18n.languages,
     isDarkMode,
+    onOpenNavbarWalletSelectMenu,
+    openNavbarWalletSelectMenu,
     starterVariant,
     switchChain,
     theme.palette.accent1.main,
