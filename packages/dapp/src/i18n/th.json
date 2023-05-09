@@ -3,7 +3,8 @@
     "links": {
       "swap": "แลกเปลี่ยน",
       "dashboard": "แผงหน้าจอ",
-      "refuel": "แก็ส"
+      "refuel": "แก็ส",
+      "buy": "ซื้อ"
     },
     "connectWallet": "เชื่อมต่อกระเป๋า",
     "chooseWallet": "เลือกกระเป๋า",
