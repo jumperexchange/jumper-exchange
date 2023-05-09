@@ -3935,7 +3935,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:7.51.2":
+"@sentry/browser@npm:7.51.2, @sentry/browser@npm:^7.51.2":
   version: 7.51.2
   resolution: "@sentry/browser@npm:7.51.2"
   dependencies:
@@ -3995,15 +3995,6 @@ __metadata:
     "@sentry/types": 7.51.2
     "@sentry/utils": 7.51.2
   checksum: 2f6c5b9a31576049e9385aebb384237372889ecf07a6bc9a72a50d4b21584fed2c77bb6897ec7c6fd790469fbcc3c62affeb617475cf39b0993b01a400611aed
-  languageName: node
-  linkType: hard
-
-"@sentry/tracing@npm:^7.51.2":
-  version: 7.51.2
-  resolution: "@sentry/tracing@npm:7.51.2"
-  dependencies:
-    "@sentry-internal/tracing": 7.51.2
-  checksum: df5cf9a26a2dbf9832fcc54ead3f178ac22c9a97426cf2c68e8afdbbf9899a54a806e90d1e639dc1decbaf02effb17bceb69023a719d476c2c2df5fe98a18baa
   languageName: node
   linkType: hard
 
@@ -5441,9 +5432,9 @@ __metadata:
     "@lifi/widget": ^2.0.0-beta.7
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.12.3
+    "@sentry/browser": ^7.51.2
     "@sentry/integrations": ^7.51.2
     "@sentry/react": ^7.51.2
-    "@sentry/tracing": ^7.51.2
     "@transferto/shared": "*"
     "@types/react": ^18.2.6
     "@types/react-dom": ^18.2.4
