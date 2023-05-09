@@ -3,7 +3,6 @@ import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
@@ -16,14 +15,9 @@ export function Widget({ starterVariant }) {
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
-  const [openNavbarWalletSelectMenu, onOpenNavbarWalletSelectMenu] =
-    useMenuStore(
-      (state) => [
-        state.openNavbarWalletSelectMenu,
-        state.onOpenNavbarWalletSelectMenu,
-      ],
-      shallow,
-    );
+  const onOpenNavbarWalletSelectMenu = useMenuStore(
+    (state) => state.onOpenNavbarWalletSelectMenu,
+  );
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
@@ -35,19 +29,19 @@ export function Widget({ starterVariant }) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
+
     return {
       variant: starterVariant || 'expandable',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          openNavbarWalletSelectMenu &&
-            trackEvent({
-              category: TrackingCategories.Menu,
-              action: TrackingActions.OpenWalletSelectMenu,
-              disableTrackingTool: [EventTrackingTools.arcx],
-            });
+          trackEvent({
+            category: TrackingCategories.Menu,
+            action: TrackingActions.OpenWalletSelectMenu,
+            disableTrackingTool: [EventTrackingTools.arcx],
+          });
           onOpenNavbarWalletSelectMenu(
-            !openNavbarWalletSelectMenu,
+            true,
             document.getElementById('connect-wallet-button'),
           );
 
@@ -158,7 +152,6 @@ export function Widget({ starterVariant }) {
     i18n.languages,
     isDarkMode,
     onOpenNavbarWalletSelectMenu,
-    openNavbarWalletSelectMenu,
     starterVariant,
     switchChain,
     theme.palette.accent1.main,
@@ -167,6 +160,7 @@ export function Widget({ starterVariant }) {
     theme.palette.surface2.main,
     trackEvent,
   ]);
+
   return (
     <LiFiWidget
       integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
