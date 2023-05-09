@@ -3,7 +3,8 @@
     "links": {
       "swap": "兑换",
       "dashboard": "面板",
-      "refuel": "兑换燃气费"
+      "refuel": "兑换燃气费",
+      "buy": "购买"
     },
     "connectWallet": "连接钱包",
     "chooseWallet": "选择钱包",
