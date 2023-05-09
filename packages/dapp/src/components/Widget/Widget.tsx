@@ -3,9 +3,11 @@ import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
+import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
 
 export function Widget({ starterVariant }) {
@@ -14,6 +16,14 @@ export function Widget({ starterVariant }) {
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
+  const [openNavbarWalletSelectMenu, onOpenNavbarWalletSelectMenu] =
+    useMenuStore(
+      (state) => [
+        state.openNavbarWalletSelectMenu,
+        state.onOpenNavbarWalletSelectMenu,
+      ],
+      shallow,
+    );
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo(() => {
@@ -30,17 +40,15 @@ export function Widget({ starterVariant }) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          let promiseResolver: (value: void | PromiseLike<void>) => void;
-          const loginAwaiter = new Promise<void>(
-            (resolve) => (promiseResolver = resolve),
-          );
+          openNavbarWalletSelectMenu &&
+            trackEvent({
+              category: TrackingCategories.Menu,
+              action: TrackingActions.OpenWalletSelectMenu,
+              disableTrackingTool: [EventTrackingTools.arcx],
+            });
+          onOpenNavbarWalletSelectMenu(!openNavbarWalletSelectMenu, document.getElementById('connect-wallet-button'));
 
-          await loginAwaiter;
-          if (account.signer) {
-            return account.signer!;
-          } else {
-            throw Error('No signer object after login');
-          }
+          return account.signer;
         },
         disconnect: async () => {
           trackEvent({
