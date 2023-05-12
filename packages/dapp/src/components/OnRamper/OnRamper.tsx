@@ -36,14 +36,14 @@ export const OnRamper = () => {
   };
   const onRamperSrc = `https://buy.onramper.com/?themeName=${
     onRamperConfig.themeName
-  }&defaultCrypto=${onRamperConfig.defaultCrypto}
-  &containerColor=${onRamperConfig.containerColor}&primaryColor=${
+  }?defaultCrypto=${onRamperConfig.defaultCrypto}
+  ?containerColor=${onRamperConfig.containerColor}?primaryColor=${
     onRamperConfig.primaryColor
-  }&secondaryColor=${onRamperConfig.secondaryColor}&cardColor=${
+  }?secondaryColor=${onRamperConfig.secondaryColor}?cardColor=${
     onRamperConfig.cardColor
-  }&primaryTextColor=${onRamperConfig.primaryTextColor}&secondaryTextColor=${
+  }?primaryTextColor=${onRamperConfig.primaryTextColor}?secondaryTextColor=${
     onRamperConfig.secondaryTextColor
-  }&borderRadius=${onRamperConfig.borderRadius}&wgBorderRadius=${
+  }?borderRadius=${onRamperConfig.borderRadius}?wgBorderRadius=${
     onRamperConfig.wgBorderRadius
   }?apiKey=${import.meta.env.VITE_ONRAMPER_API_KEY}`;
   return (
