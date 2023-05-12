@@ -43,7 +43,7 @@ export const WidgetContainer = styled(Grid, {
     top: showWelcome && 0,
   },
 
-  '& > .onramper-container:hover:after, & > div > div:hover:after': {
+  '& > .onramper-container:after, & > div > div:after': {
     content: showWelcome && '" "',
     position: 'absolute',
     zIndex: -1,

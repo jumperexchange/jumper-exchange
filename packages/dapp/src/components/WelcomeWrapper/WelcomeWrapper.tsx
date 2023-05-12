@@ -1,5 +1,4 @@
 import { Typography, useTheme } from '@mui/material';
-import Fade from '@mui/material/Fade';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,12 +23,10 @@ export const WelcomeWrapper = ({ children, showWelcome, setShowWelcome }) => {
     }, 2000);
   };
 
-  return showWelcome ? (
+  return (
     <>
-      <Fade in={showFadeOut} timeout={1500}>
+      {showWelcome ? (
         <Background onClick={handleGetStarted}>
-          {children}
-          {/* <ColoredContainer /> */}
           <ContentContainer>
             <CustomColor variant={'lifiBrandHeaderXLarge'}>
               {translate(`${i18Path}title`)}
@@ -60,10 +57,8 @@ export const WelcomeWrapper = ({ children, showWelcome, setShowWelcome }) => {
             </ButtonPrimary>
           </ContentContainer>
         </Background>
-      </Fade>
-      {/* {children} */}
+      ) : null}
+      {children}
     </>
-  ) : (
-    children
   );
 };

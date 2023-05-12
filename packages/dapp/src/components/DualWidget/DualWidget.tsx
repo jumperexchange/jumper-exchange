@@ -27,16 +27,16 @@ export function DualWidget() {
     'expandable',
   );
 
-  useEffect(() => {
-    async function fadeInWidget() {
-      // You can await here
-      await setTimeout(() => {
-        console.log('timeout');
-        setShowFadeAnimation(true);
-      }, 500); // ...
-    }
-    fadeInWidget();
-  }, []); // Or [] if effect doesn't need props or state
+  // useEffect(() => {
+  //   async function fadeInWidget() {
+  //     // You can await here
+  //     await setTimeout(() => {
+  //       console.log('timeout');
+  //       setShowFadeAnimation(true);
+  //     }, 500); // ...
+  //   }
+  //   fadeInWidget();
+  // }, []); // Or [] if effect doesn't need props or state
 
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
@@ -85,10 +85,11 @@ export function DualWidget() {
         container
         sx={{
           overflow: 'hidden',
+          position: 'absolute',
           top: showWelcome ? NavbarHeight.XS : 'inherit',
           transition: 'opacity 500ms',
           zIndex: showWelcome ? '1' : 'inherit',
-          opacity: showFadeAnimation ? 1 : 0,
+          // opacity: showFadeAnimation ? 1 : 0,
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             // height: NavbarHeight.SM,
             // paddingTop: theme.spacing(4, 6),
