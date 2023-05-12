@@ -5,9 +5,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types/';
+import { NavbarHeight } from '../Navbar/Navbar.style';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
+import { GlowBackground } from '../Widget/Widget.style';
 import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
@@ -82,18 +84,21 @@ export function DualWidget() {
         alignItems="center"
         container
         sx={{
-          overflowX: 'hidden',
-          position: showWelcome ? 'absolute' : 'inherit',
-          top:
-            showWelcome && !isDesktop
-              ? '64px'
-              : showWelcome && isDesktop
-              ? '80px'
-              : 'inherit',
+          overflow: 'hidden',
+          top: showWelcome ? NavbarHeight.XS : 'inherit',
           transition: 'opacity 500ms',
-          zIndex: showWelcome ? '-1' : 'inherit',
+          zIndex: showWelcome ? '1' : 'inherit',
           opacity: showFadeAnimation ? 1 : 0,
-          // transition: 'opacity 1s linear',
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            // height: NavbarHeight.SM,
+            // paddingTop: theme.spacing(4, 6),
+            top: showWelcome ? NavbarHeight.SM : 'inherit',
+          },
+          [theme.breakpoints.up('md' as Breakpoint)]: {
+            // paddingTop: theme.spacing(6),
+            // height: NavbarHeight.LG,
+            top: showWelcome ? NavbarHeight.LG : 'inherit',
+          },
         }}
       >
         {import.meta.env.MODE === 'testnet' && (
@@ -104,6 +109,7 @@ export function DualWidget() {
         <WidgetContainer
           item
           xs={12}
+          className="widget-container"
           showWelcome={showWelcome}
           isActive={_starterVariant === 'expandable'}
         >
@@ -112,10 +118,11 @@ export function DualWidget() {
         <WidgetContainer
           item
           xs={12}
-          isActive={_starterVariant === 'refuel'}
           showWelcome={showWelcome}
+          isActive={_starterVariant === 'refuel'}
         >
           <Widget starterVariant={'refuel'} />
+          <GlowBackground className="glow-bg" />
         </WidgetContainer>
         <WidgetContainer
           item

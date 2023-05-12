@@ -6,10 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import {
   Background,
-  ColoredContainer,
   ContentContainer,
   CustomColor,
-  GlowTop,
 } from './WelcomeWrapper.style';
 
 export const WelcomeWrapper = ({ children, showWelcome, setShowWelcome }) => {
@@ -30,9 +28,8 @@ export const WelcomeWrapper = ({ children, showWelcome, setShowWelcome }) => {
     <>
       <Fade in={showFadeOut} timeout={1500}>
         <Background onClick={handleGetStarted}>
-          <GlowTop />
           {children}
-          <ColoredContainer />
+          {/* <ColoredContainer /> */}
           <ContentContainer>
             <CustomColor variant={'lifiBrandHeaderXLarge'}>
               {translate(`${i18Path}title`)}
@@ -54,8 +51,8 @@ export const WelcomeWrapper = ({ children, showWelcome, setShowWelcome }) => {
               onClick={handleGetStarted}
               sx={(theme) => ({
                 margin: 'auto',
-                marginTop: theme.spacing(12),
-                marginBottom: theme.spacing(13),
+                marginTop: theme.spacing(5),
+                // marginBottom: theme.spacing(13),
                 width: '247px',
               })}
             >
@@ -64,7 +61,7 @@ export const WelcomeWrapper = ({ children, showWelcome, setShowWelcome }) => {
           </ContentContainer>
         </Background>
       </Fade>
-      {children}
+      {/* {children} */}
     </>
   ) : (
     children

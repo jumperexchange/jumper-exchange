@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { OnRamperIFrame } from './index';
 
 function removeHash(str) {
@@ -47,12 +47,14 @@ export const OnRamper = () => {
     onRamperConfig.wgBorderRadius
   }?apiKey=${import.meta.env.VITE_ONRAMPER_API_KEY}`;
   return (
-    <OnRamperIFrame
-      src={onRamperSrc}
-      height="540px"
-      width="392px"
-      title="Onramper widget"
-      allow="accelerometer; autoplay; camera; gyroscope; payment"
-    ></OnRamperIFrame>
+    <Box className="onramper-container">
+      <OnRamperIFrame
+        src={onRamperSrc}
+        height="550px"
+        width="392px"
+        title="Onramper widget"
+        allow="accelerometer; autoplay; camera; gyroscope; payment"
+      ></OnRamperIFrame>
+    </Box>
   );
 };

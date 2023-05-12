@@ -1,5 +1,6 @@
 import { Token } from '@lifi/sdk';
 import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
+import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +9,7 @@ import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
+import { GlowBackground } from './Widget.style';
 
 export function Widget({ starterVariant }) {
   const theme = useTheme();
@@ -162,9 +164,12 @@ export function Widget({ starterVariant }) {
   ]);
 
   return (
-    <LiFiWidget
-      integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
-      config={widgetConfig}
-    />
+    <Box className="widget-wrapper">
+      <LiFiWidget
+        integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
+        config={widgetConfig}
+      />
+      <GlowBackground className="glow-bg" />
+    </Box>
   );
 }

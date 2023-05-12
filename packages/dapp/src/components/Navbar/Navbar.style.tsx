@@ -28,6 +28,12 @@ import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
 const MenuLabelHeight = '64px';
 
+export enum NavbarHeight {
+  XS = '64px',
+  SM = '72px',
+  LG = '80px',
+}
+
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
   height: '48px',
   alignItems: 'center',
@@ -65,23 +71,22 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'fixed',
+    position: 'sticky',
     top: 0,
     backdropFilter: 'blur(12px)',
     boxShadow: 'unset',
     background: 'transparent',
     alignItems: 'center',
-    height: '64px',
+    height: NavbarHeight.XS,
     padding: theme.spacing(2, 4),
     zIndex: 1300,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      position: 'sticky',
-      height: '72px',
+      height: NavbarHeight.SM,
       padding: theme.spacing(4, 6),
     },
     [theme.breakpoints.up('md' as Breakpoint)]: {
       padding: theme.spacing(6),
-      height: '80px',
+      height: NavbarHeight.LG,
     },
   }),
 );
