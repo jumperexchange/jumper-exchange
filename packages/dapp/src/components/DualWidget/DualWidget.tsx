@@ -26,17 +26,6 @@ export function DualWidget() {
     'expandable',
   );
 
-  // useEffect(() => {
-  //   async function fadeInWidget() {
-  //     // You can await here
-  //     await setTimeout(() => {
-  //       console.log('timeout');
-  //       setShowFadeAnimation(true);
-  //     }, 500); // ...
-  //   }
-  //   fadeInWidget();
-  // }, []); // Or [] if effect doesn't need props or state
-
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
