@@ -1,4 +1,4 @@
-import { Breakpoint, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { Card, Container } from './StatsCard.style';
 
 interface StatsCardProps {
@@ -15,7 +15,7 @@ export const StatsCard = ({ number, title }: StatsCardProps) => {
         style={{
           fontSize: '24px',
           lineHeight: '32px',
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
+          [theme.breakpoints.up('sm')]: {
             fontSize: '32px',
             lineHeight: '40px',
           },
@@ -28,7 +28,7 @@ export const StatsCard = ({ number, title }: StatsCardProps) => {
         style={{
           fontSize: '10px',
           lineHeight: '16px',
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
+          [theme.breakpoints.up('sm')]: {
             fontSize: '32px',
             lineHeight: '40px',
           },

@@ -1,6 +1,5 @@
-import { Typography, useTheme } from '@mui/material';
+import { Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import {
@@ -9,53 +8,52 @@ import {
   CustomColor,
 } from './WelcomeWrapper.style';
 
-export const WelcomeWrapper = ({ children, showWelcome, setShowWelcome }) => {
+export const WelcomeWrapper = ({
+  children,
+  showWelcome,
+  setShowWelcome,
+  showFadeOut,
+  handleGetStarted,
+}) => {
   const theme = useTheme();
   const i18Path = 'navbar.welcome.';
   const { t: translate } = useTranslation();
-  const [showFadeOut, setShowFadeOut] = useState(true);
-
-  const handleGetStarted = async () => {
-    setShowFadeOut(false);
-    await setTimeout(() => {
-      console.log('timeout');
-      setShowWelcome(false);
-    }, 2000);
-  };
 
   return (
     <>
       {showWelcome ? (
-        <Background onClick={handleGetStarted}>
-          <ContentContainer>
-            <CustomColor variant={'lifiBrandHeaderXLarge'}>
-              {translate(`${i18Path}title`)}
-            </CustomColor>
-            <Typography
-              variant={'lifiBrandHeaderLarge'}
-              mt={theme.spacing(2)}
-              sx={{
-                color:
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.accent1Alt.main
-                    : theme.palette.primary.main,
-              }}
-            >
-              {translate(`${i18Path}subtitle`)}
-            </Typography>
-            <StatsCards />
-            <ButtonPrimary
-              onClick={handleGetStarted}
-              sx={(theme) => ({
-                margin: 'auto',
-                marginTop: theme.spacing(5),
-                // marginBottom: theme.spacing(13),
-                width: '247px',
-              })}
-            >
-              {translate(`${i18Path}cta`)}
-            </ButtonPrimary>
-          </ContentContainer>
+        <Background className="welcome-wrapper-bg" onClick={handleGetStarted}>
+          <Slide direction="up" in={!showFadeOut} unmountOnExit appear={false}>
+            <ContentContainer>
+              <CustomColor variant={'lifiBrandHeaderXLarge'}>
+                {translate(`${i18Path}title`)}
+              </CustomColor>
+              <Typography
+                variant={'lifiBrandHeaderLarge'}
+                mt={theme.spacing(2)}
+                sx={{
+                  color:
+                    theme.palette.mode === 'dark'
+                      ? theme.palette.accent1Alt.main
+                      : theme.palette.primary.main,
+                }}
+              >
+                {translate(`${i18Path}subtitle`)}
+              </Typography>
+              <StatsCards />
+              <ButtonPrimary
+                onClick={handleGetStarted}
+                sx={(theme) => ({
+                  margin: 'auto',
+                  marginTop: theme.spacing(5),
+                  // marginBottom: theme.spacing(13),
+                  width: '247px',
+                })}
+              >
+                {translate(`${i18Path}cta`)}
+              </ButtonPrimary>
+            </ContentContainer>
+          </Slide>
         </Background>
       ) : null}
       {children}

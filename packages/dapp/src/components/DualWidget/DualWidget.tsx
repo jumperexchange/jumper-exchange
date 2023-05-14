@@ -1,5 +1,5 @@
 import { WidgetVariant } from '@lifi/widget';
-import { Breakpoint, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Breakpoint, Fade, Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
@@ -14,14 +14,13 @@ import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
 export function DualWidget() {
+  const [showFadeOut, setShowFadeOut] = useState(false);
   const [activeTab, onChangeTab] = useSettingsStore(
     (state) => [state.activeTab, state.onChangeTab],
     shallow,
   );
   const [showWelcome, setShowWelcome] = useState(true);
-  const [showFadeAnimation, setShowFadeAnimation] = useState(false);
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<WidgetVariant | 'buy'>(
     'expandable',
@@ -73,12 +72,26 @@ export function DualWidget() {
     }
   }, [activeTab, onChangeTab, starterVariant, starterVariantUsed]);
 
+  const handleGetStarted = async () => {
+    setShowFadeOut(true);
+    console.log('handleGetStartet Begin...');
+    await setTimeout(() => {
+      console.log('timeout');
+      setShowWelcome(false);
+    }, 300);
+  };
+
   useEffect(() => {
     getActiveWidget();
   }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
-    <WelcomeWrapper showWelcome={showWelcome} setShowWelcome={setShowWelcome}>
+    <WelcomeWrapper
+      showWelcome={showWelcome}
+      setShowWelcome={setShowWelcome}
+      showFadeOut={showFadeOut}
+      handleGetStarted={handleGetStarted}
+    >
       <Grid
         justifyContent="center"
         alignItems="center"
@@ -89,7 +102,6 @@ export function DualWidget() {
           top: showWelcome ? NavbarHeight.XS : 'inherit',
           transition: 'opacity 500ms',
           zIndex: showWelcome ? '1' : 'inherit',
-          // opacity: showFadeAnimation ? 1 : 0,
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             // height: NavbarHeight.SM,
             // paddingTop: theme.spacing(4, 6),
@@ -107,18 +119,24 @@ export function DualWidget() {
             <TestnetAlert />
           </Grid>
         )}
+        <Fade in={true} easing={{ enter: '500ms' }}>
+          <WidgetContainer
+            item
+            xs={12}
+            onClick={handleGetStarted}
+            className="widget-container"
+            showWelcome={showWelcome}
+            isActive={_starterVariant === 'expandable'}
+            sx={{ opacity: '1', transition: 'opacity 500ms' }}
+          >
+            <Widget starterVariant={'expandable'} />
+            <GlowBackground className="glow-bg" />
+          </WidgetContainer>
+        </Fade>
         <WidgetContainer
           item
           xs={12}
-          className="widget-container"
-          showWelcome={showWelcome}
-          isActive={_starterVariant === 'expandable'}
-        >
-          <Widget starterVariant={'expandable'} />
-        </WidgetContainer>
-        <WidgetContainer
-          item
-          xs={12}
+          onClick={handleGetStarted}
           showWelcome={showWelcome}
           isActive={_starterVariant === 'refuel'}
         >
@@ -128,8 +146,9 @@ export function DualWidget() {
         <WidgetContainer
           item
           xs={12}
-          isActive={_starterVariant === 'buy'}
+          onClick={handleGetStarted}
           showWelcome={showWelcome}
+          isActive={_starterVariant === 'buy'}
         >
           <OnRamper />
         </WidgetContainer>

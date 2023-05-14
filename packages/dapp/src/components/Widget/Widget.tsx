@@ -9,7 +9,6 @@ import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
-import { GlowBackground } from './Widget.style';
 
 export function Widget({ starterVariant }) {
   const theme = useTheme();
@@ -169,7 +168,6 @@ export function Widget({ starterVariant }) {
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={widgetConfig}
       />
-      <GlowBackground className="glow-bg" />
     </Box>
   );
 }
