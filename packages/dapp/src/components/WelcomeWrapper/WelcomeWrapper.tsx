@@ -11,7 +11,6 @@ import {
 export const WelcomeWrapper = ({
   children,
   showWelcome,
-  setShowWelcome,
   showFadeOut,
   handleGetStarted,
 }) => {
@@ -22,7 +21,7 @@ export const WelcomeWrapper = ({
   return (
     <>
       {showWelcome ? (
-        <Background className="welcome-wrapper-bg" onClick={handleGetStarted}>
+        <Background onClick={handleGetStarted}>
           <Slide direction="up" in={!showFadeOut} unmountOnExit appear={false}>
             <ContentContainer>
               <CustomColor variant={'lifiBrandHeaderXLarge'}>
@@ -46,7 +45,6 @@ export const WelcomeWrapper = ({
                 sx={(theme) => ({
                   margin: 'auto',
                   marginTop: theme.spacing(5),
-                  // marginBottom: theme.spacing(13),
                   width: '247px',
                 })}
               >

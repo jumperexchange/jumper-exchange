@@ -4,13 +4,46 @@ import { NavbarHeight } from '../Navbar/Navbar.style';
 export const Background = styled('div')(({ theme }) => ({
   backgroundColor: 'transparent',
   overflow: 'hidden',
-  position: 'relative',
-  height: `calc( 100vh - ${NavbarHeight.XS} )`,
+  position: 'fixed',
+  width: '100%',
+  top: `-${NavbarHeight.XS}`,
+  filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.04))',
+  height: `calc( 100% + ${NavbarHeight.XS})`,
+  ':before': {
+    content: '" "',
+    height: '100%',
+    width: '100%',
+    position: 'fixed',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    background:
+      theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, rgba(36, 32, 61, 0.24) 0%, #24203D 49.48%, #181529 100%)'
+        : 'transparent',
+    zIndex: -1,
+  },
+  ':after': {
+    content: '" "',
+    height: '100%',
+    width: '100%',
+    position: 'fixed',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    background:
+      'radial-gradient(50% 50% at 50% 50%, rgba(190, 160, 235, 0.4) 0%, rgba(190, 160, 235, 0) 100%)',
+    zIndex: -1,
+  },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: `calc( 100vh - ${NavbarHeight.SM} )`,
+    height: `calc( 100% + ${NavbarHeight.SM} )`,
+    top: `-${NavbarHeight.SM}`,
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    height: `calc( 100vh - ${NavbarHeight.LG} )`,
+    height: `calc( 100% + ${NavbarHeight.LG} )`,
+    top: `-${NavbarHeight.LG}`,
   },
 }));
 
@@ -40,6 +73,6 @@ export const ContentContainer = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(8),
   background:
     theme.palette.mode === 'dark'
-      ? 'linear-gradient(180deg, #24203D 0%, #24203D 100%)'
+      ? 'transparent'
       : 'linear-gradient(180deg, rgba(237, 224, 255, 0.25) 0%, #EDE0FF 38.54%, #F3EBFF 97.4%);',
 }));

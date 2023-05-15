@@ -10,7 +10,7 @@ export const WidgetContainer = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'isActive' && prop !== 'showWelcome',
 })<WidgetContainerProps>(({ theme, isActive, showWelcome }) => ({
   display: isActive ? 'inherit' : 'none',
-  height: showWelcome && '400px',
+  height: showWelcome && '300px',
   zIndex: 1000,
   placeContent: 'center',
   paddingTop: theme.spacing(6),

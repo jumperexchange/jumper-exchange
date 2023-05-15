@@ -3,6 +3,7 @@ import { Breakpoint, Fade, Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
+import { useWallet } from '../../providers/WalletProvider';
 import { useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types/';
 import { NavbarHeight } from '../Navbar/Navbar.style';
@@ -13,12 +14,15 @@ import { GlowBackground } from '../Widget/Widget.style';
 import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
+export const LOCAL_STORAGE_WALLETS_KEY = 'li.fi-wallets';
+
 export function DualWidget() {
   const [showFadeOut, setShowFadeOut] = useState(false);
   const [activeTab, onChangeTab] = useSettingsStore(
     (state) => [state.activeTab, state.onChangeTab],
     shallow,
   );
+  const { account } = useWallet();
   const [showWelcome, setShowWelcome] = useState(true);
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
@@ -63,12 +67,18 @@ export function DualWidget() {
 
   const handleGetStarted = async () => {
     setShowFadeOut(true);
-    console.log('handleGetStartet Begin...');
     await setTimeout(() => {
-      console.log('timeout');
       setShowWelcome(false);
     }, 300);
   };
+
+  const isWalletConnected = useMemo(() => {
+    const activeWallet = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_WALLETS_KEY),
+    );
+    return activeWallet.length > 0 || false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account.isActive]);
 
   useEffect(() => {
     getActiveWidget();
@@ -76,9 +86,8 @@ export function DualWidget() {
 
   return (
     <WelcomeWrapper
-      showWelcome={showWelcome}
-      setShowWelcome={setShowWelcome}
-      showFadeOut={showFadeOut}
+      showWelcome={!isWalletConnected && showWelcome}
+      showFadeOut={!isWalletConnected && showFadeOut}
       handleGetStarted={handleGetStarted}
     >
       <Grid
@@ -88,17 +97,14 @@ export function DualWidget() {
         sx={{
           overflow: 'hidden',
           position: 'absolute',
-          top: showWelcome ? NavbarHeight.XS : 'inherit',
+          top: !isWalletConnected && showWelcome ? NavbarHeight.XS : 'inherit',
           transition: 'opacity 500ms',
-          zIndex: showWelcome ? '1' : 'inherit',
+          zIndex: !isWalletConnected && showWelcome ? '1' : 'inherit',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
-            // height: NavbarHeight.SM,
-            // paddingTop: theme.spacing(4, 6),
-            top: showWelcome ? NavbarHeight.SM : 'inherit',
+            top:
+              !isWalletConnected && showWelcome ? NavbarHeight.SM : 'inherit',
           },
           [theme.breakpoints.up('md' as Breakpoint)]: {
-            // paddingTop: theme.spacing(6),
-            // height: NavbarHeight.LG,
             top: showWelcome ? NavbarHeight.LG : 'inherit',
           },
         }}
@@ -114,7 +120,7 @@ export function DualWidget() {
             xs={12}
             onClick={handleGetStarted}
             className="widget-container"
-            showWelcome={showWelcome}
+            showWelcome={!isWalletConnected && showWelcome}
             isActive={_starterVariant === 'expandable'}
             sx={{ opacity: '1', transition: 'opacity 500ms' }}
           >
@@ -126,7 +132,7 @@ export function DualWidget() {
           item
           xs={12}
           onClick={handleGetStarted}
-          showWelcome={showWelcome}
+          showWelcome={!isWalletConnected && showWelcome}
           isActive={_starterVariant === 'refuel'}
         >
           <Widget starterVariant={'refuel'} />
@@ -136,7 +142,7 @@ export function DualWidget() {
           item
           xs={12}
           onClick={handleGetStarted}
-          showWelcome={showWelcome}
+          showWelcome={!isWalletConnected && showWelcome}
           isActive={_starterVariant === 'buy'}
         >
           <OnRamper />

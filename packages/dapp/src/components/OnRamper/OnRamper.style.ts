@@ -10,8 +10,6 @@ export const OnRamperIFrame = styled('iframe')(({ theme }) => ({
     theme.palette.mode === 'light'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-  '& .oui-currency-card-root': {
-    border: '1px solid orange',
-  },
+  '& .oui-currency-card-root': {},
   // todo: style iframe´s hover-effects on menu + more
 }));

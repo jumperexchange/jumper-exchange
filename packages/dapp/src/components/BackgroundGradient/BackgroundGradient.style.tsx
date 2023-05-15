@@ -80,8 +80,8 @@ export const BackgroundGradients = styled('span')<any>(({ theme }) => ({
 }));
 
 export const BackgroundGradientBottomLeft = styled(BackgroundGradient, {
-  shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<BackgroundGradientProps>(({ theme, isDarkMode }) => ({
+  shouldForwardProp: (prop) => prop !== 'showWelcome',
+})<BackgroundGradientProps>(({ theme }) => ({
   transform: 'translate(-50%,50%) scale(1.5)',
   left: 0,
   opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
