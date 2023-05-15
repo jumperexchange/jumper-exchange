@@ -12,7 +12,7 @@ export const StatsCard = ({ number, title }: StatsCardProps) => {
     <Card>
       <Typography
         variant={'lifiBrandHeaderXLarge'}
-        style={{
+        sx={{
           fontSize: '24px',
           lineHeight: '32px',
           [theme.breakpoints.up('sm')]: {
@@ -25,12 +25,12 @@ export const StatsCard = ({ number, title }: StatsCardProps) => {
       </Typography>
       <Typography
         variant={'lifiBrandHeaderLarge'}
-        style={{
+        sx={{
           fontSize: '10px',
           lineHeight: '16px',
           [theme.breakpoints.up('sm')]: {
-            fontSize: '32px',
-            lineHeight: '40px',
+            fontSize: '16px',
+            lineHeight: '20px',
           },
         }}
       >

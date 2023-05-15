@@ -70,7 +70,7 @@ export const ContentContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
   width: '100%',
   position: 'absolute',
-  paddingBottom: theme.spacing(8),
+  padding: theme.spacing(0, 2, 8),
   background:
     theme.palette.mode === 'dark'
       ? 'transparent'
