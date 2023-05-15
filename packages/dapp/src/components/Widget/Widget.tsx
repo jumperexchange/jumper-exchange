@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
+import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
 
 export function Widget({ starterVariant }) {
@@ -14,9 +15,12 @@ export function Widget({ starterVariant }) {
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
+  const onOpenNavbarWalletSelectMenu = useMenuStore(
+    (state) => state.onOpenNavbarWalletSelectMenu,
+  );
 
   // load environment config
-  const widgetConfig: WidgetConfig = useMemo(() => {
+  const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcs = {};
     try {
       rpcs = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
@@ -25,22 +29,23 @@ export function Widget({ starterVariant }) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
+
     return {
       variant: starterVariant || 'expandable',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          let promiseResolver: (value: void | PromiseLike<void>) => void;
-          const loginAwaiter = new Promise<void>(
-            (resolve) => (promiseResolver = resolve),
+          trackEvent({
+            category: TrackingCategories.Menu,
+            action: TrackingActions.OpenWalletSelectMenu,
+            disableTrackingTool: [EventTrackingTools.arcx],
+          });
+          onOpenNavbarWalletSelectMenu(
+            true,
+            document.getElementById('connect-wallet-button'),
           );
 
-          await loginAwaiter;
-          if (account.signer) {
-            return account.signer!;
-          } else {
-            throw Error('No signer object after login');
-          }
+          return account.signer;
         },
         disconnect: async () => {
           trackEvent({
@@ -134,6 +139,7 @@ export function Widget({ starterVariant }) {
           maxPriceImpact: 0.4,
         },
       },
+      buildSwapUrl: true,
       insurance: true,
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
@@ -145,6 +151,7 @@ export function Widget({ starterVariant }) {
     i18n.language,
     i18n.languages,
     isDarkMode,
+    onOpenNavbarWalletSelectMenu,
     starterVariant,
     switchChain,
     theme.palette.accent1.main,
@@ -153,6 +160,7 @@ export function Widget({ starterVariant }) {
     theme.palette.surface2.main,
     trackEvent,
   ]);
+
   return (
     <LiFiWidget
       integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}

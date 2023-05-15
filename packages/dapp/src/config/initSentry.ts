@@ -1,7 +1,7 @@
 import { version } from '@lifi/widget';
+import { BrowserTracing } from '@sentry/browser';
 import { CaptureConsole, HttpClient } from '@sentry/integrations';
 import * as Sentry from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
 
 export const initSentry = () => {
   Sentry.init({
@@ -29,5 +29,6 @@ export const initSentry = () => {
     release: version,
     environment: import.meta.env.MODE,
     enabled: import.meta.env.PROD,
+    ignoreErrors: ["MetaMask: 'eth_accounts' unexpectedly updated accounts.", 'user rejected transaction'],
   });
 };
