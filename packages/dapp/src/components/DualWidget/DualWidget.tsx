@@ -81,9 +81,11 @@ export function DualWidget() {
       <WidgetContainer item xs={12} isActive={_starterVariant === 'refuel'}>
         <Widget starterVariant={'refuel'} />
       </WidgetContainer>
-      <WidgetContainer item xs={12} isActive={_starterVariant === 'buy'}>
-        <OnRamper />
-      </WidgetContainer>
+      {import.meta.env.VITE_ONRAMPER_ENABLED ? (
+        <WidgetContainer item xs={12} isActive={_starterVariant === 'buy'}>
+          <OnRamper />
+        </WidgetContainer>
+      ) : null}
       <WidgetEvents />
     </Grid>
   );
