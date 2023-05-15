@@ -3,7 +3,8 @@
     "links": {
       "swap": "Своп",
       "dashboard": "Дешборд",
-      "refuel": "Газ"
+      "refuel": "Газ",
+      "buy": "Купівля"
     },
     "connectWallet": "Під'єднати гаманець",
     "chooseWallet": "Оберіть гаманець",

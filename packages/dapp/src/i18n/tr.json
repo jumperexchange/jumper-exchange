@@ -3,7 +3,8 @@
     "links": {
       "swap": "Takas et",
       "dashboard": "Kontrol Paneli",
-      "refuel": "Gaz"
+      "refuel": "Gaz",
+      "buy": "Satın al"
     },
     "connectWallet": "Cüzdanı Bağla",
     "chooseWallet": "Cüzdan Seçin",
@@ -16,13 +17,18 @@
     "walletMenu": {
       "disconnect": "Bağlantıyı Kes",
       "chains": "Zincirler",
-      "switchChain": "Ağ değiştir"
+      "switchChain": "Ağ değiştir",
+      "copy": "Kopyala",
+      "explore": "Keşfet",
+      "copiedMsg": "Cüzdan Adresi kopyalandı"
     },
     "language": {
       "key": "Dil",
       "value": "Türkçe"
     },
     "themes": {
+      "switchToLight": "Açık temaya geç",
+      "switchToDark": "Koyu Temaya geç",
       "light": "Açık",
       "dark": "Koyu",
       "auto": "Otomatik"
@@ -37,5 +43,10 @@
       "klimaStaking": "Cross Chain Klima Staking",
       "carbonOffset": "Zincirler Arası Karbon Dengesi"
     }
+  },
+  "alert": {
+    "info": "Şu anda Test ağındasınız",
+    "testnet": "Testnet üzerinde yapacağınız hiçbir işlem Mainnet üzerinde etkili olmayacaktır.",
+    "switchToMainnet": "Mainnet'e geç"
   }
 }

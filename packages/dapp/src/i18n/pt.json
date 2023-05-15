@@ -3,7 +3,8 @@
     "links": {
       "swap": "Conversão",
       "dashboard": "Painel de controle",
-      "refuel": "Gás"
+      "refuel": "Gás",
+      "buy": "Comprar"
     },
     "connectWallet": "Conectar Carteira",
     "chooseWallet": "Escolha uma Carteira",

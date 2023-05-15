@@ -174,6 +174,7 @@ export const NavbarTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
   display: 'none',
+  minWidth: 392,
   [theme.breakpoints.up('md' as Breakpoint)]: {
     position: 'absolute',
     left: '50%',
@@ -186,7 +187,6 @@ export const NavbarTabs = styled(Tabs, {
     borderRadius: 28,
     padding: 1,
     display: 'flex',
-    width: 390,
     alignItems: 'center',
   },
   div: {
@@ -233,6 +233,7 @@ export const NavbarTab = styled(Tab, {
   lineHeight: '20px',
   margin: '6px 4px',
   height: '48px',
+  width: '142px',
   minHeight: 'unset',
   color:
     theme.palette.mode === 'dark'
