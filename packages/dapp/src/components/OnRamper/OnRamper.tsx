@@ -35,22 +35,9 @@ export const OnRamper = () => {
     wgBorderRadius: 1.5,
   };
 
-  const searchParams = new URLSearchParams();
-  searchParams.append('themeName', onRamperConfig.themeName);
-  searchParams.append('defaultCrypto', onRamperConfig.defaultCrypto);
-  searchParams.append('containerColor', onRamperConfig.containerColor);
-  searchParams.append('primaryColor', onRamperConfig.primaryColor);
-  searchParams.append('secondaryColor', onRamperConfig.secondaryColor);
-  searchParams.append('cardColor', onRamperConfig.cardColor);
-  searchParams.append('primaryTextColor', onRamperConfig.primaryTextColor);
-  searchParams.append('secondaryTextColor', onRamperConfig.secondaryTextColor);
-  searchParams.append('borderRadius', onRamperConfig.borderRadius.toString());
-  searchParams.append(
-    'wgBorderRadius',
-    onRamperConfig.wgBorderRadius.toString(),
+  const searchParams = new URLSearchParams(
+    Object.entries(onRamperConfig).map(([key, value]) => [key, String(value)]),
   );
-  searchParams.append('apiKey', import.meta.env.VITE_ONRAMPER_API_KEY);
-
   const onRamperSrc = `https://buy.onramper.com/?${searchParams.toString()}`;
 
   return (
