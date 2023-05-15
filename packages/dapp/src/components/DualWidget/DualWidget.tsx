@@ -76,7 +76,7 @@ export function DualWidget() {
     const activeWallet = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_WALLETS_KEY),
     );
-    return activeWallet.length > 0 || false;
+    return activeWallet?.length > 0 || false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.isActive]);
 
