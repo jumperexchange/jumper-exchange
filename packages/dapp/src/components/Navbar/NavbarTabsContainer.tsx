@@ -90,31 +90,33 @@ const NavbarTabsContainer = () => {
         }
         {...a11yProps(1)}
       />
-      <NavbarTab
-        onClick={() => {
-          window.history.replaceState(null, document.title, '/buy');
-          trackEvent({
-            category: TrackingCategories.Navigation,
-            action: TrackingActions.SwitchTab,
-            label: 'gas',
-            data: { tab: 'gas' },
-            disableTrackingTool: [EventTrackingTools.arcx],
-          });
-        }}
-        label={translate(`${i18Path}links.buy`)}
-        icon={
-          <CreditCardIcon
-            sx={{
-              marginRight: '6px',
-              marginBottom: '0px !important',
-              color: !!isDarkMode
-                ? theme.palette.white.main
-                : theme.palette.black.main,
-            }}
-          />
-        }
-        {...a11yProps(2)}
-      />
+      {import.meta.env.VITE_ONRAMPER_ENABLED ? (
+        <NavbarTab
+          onClick={() => {
+            window.history.replaceState(null, document.title, '/buy');
+            trackEvent({
+              category: TrackingCategories.Navigation,
+              action: TrackingActions.SwitchTab,
+              label: 'gas',
+              data: { tab: 'gas' },
+              disableTrackingTool: [EventTrackingTools.arcx],
+            });
+          }}
+          label={translate(`${i18Path}links.buy`)}
+          icon={
+            <CreditCardIcon
+              sx={{
+                marginRight: '6px',
+                marginBottom: '0px !important',
+                color: !!isDarkMode
+                  ? theme.palette.white.main
+                  : theme.palette.black.main,
+              }}
+            />
+          }
+          {...a11yProps(2)}
+        />
+      ) : null}
     </NavbarTabs>
   );
 };

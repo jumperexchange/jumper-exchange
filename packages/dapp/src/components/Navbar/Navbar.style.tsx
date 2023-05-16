@@ -180,6 +180,7 @@ export const NavbarTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
   display: 'none',
+  minWidth: 392,
   [theme.breakpoints.up('md' as Breakpoint)]: {
     position: 'absolute',
     left: '50%',

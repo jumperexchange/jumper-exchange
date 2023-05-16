@@ -29,6 +29,9 @@ export const initSentry = () => {
     release: version,
     environment: import.meta.env.MODE,
     enabled: import.meta.env.PROD,
-    ignoreErrors: ["MetaMask: 'eth_accounts' unexpectedly updated accounts."],
+    ignoreErrors: [
+      "MetaMask: 'eth_accounts' unexpectedly updated accounts.",
+      'user rejected transaction',
+    ],
   });
 };

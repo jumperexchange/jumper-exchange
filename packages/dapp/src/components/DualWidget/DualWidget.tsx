@@ -138,15 +138,17 @@ export function DualWidget() {
           <Widget starterVariant={'refuel'} />
           <GlowBackground className="glow-bg" />
         </WidgetContainer>
-        <WidgetContainer
-          item
-          xs={12}
-          onClick={handleGetStarted}
-          showWelcome={!isWalletConnected && showWelcome}
-          isActive={_starterVariant === 'buy'}
-        >
-          <OnRamper />
-        </WidgetContainer>
+        {import.meta.env.VITE_ONRAMPER_ENABLED ? (
+          <WidgetContainer
+            item
+            xs={12}
+            onClick={handleGetStarted}
+            showWelcome={!isWalletConnected && showWelcome}
+            isActive={_starterVariant === 'buy'}
+          >
+            <OnRamper />
+          </WidgetContainer>
+        ) : null}
         <WidgetEvents />
       </Grid>
     </WelcomeWrapper>
