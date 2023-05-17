@@ -21,7 +21,7 @@ export const WelcomeWrapper = ({
   return (
     <>
       {showWelcome ? (
-        <Background onClick={handleGetStarted}>
+        <Background>
           <Slide direction="up" in={!showFadeOut} unmountOnExit appear={false}>
             <ContentContainer>
               <CustomColor variant={'lifiBrandHeaderXLarge'}>
@@ -39,6 +39,7 @@ export const WelcomeWrapper = ({
               >
                 {translate(`${i18Path}subtitle`)}
               </Typography>
+
               <StatsCards />
               <ButtonPrimary
                 onClick={handleGetStarted}
