@@ -34,18 +34,12 @@ export const OnRamper = () => {
     borderRadius: 0.75,
     wgBorderRadius: 1.5,
   };
-  const onRamperSrc = `https://buy.onramper.com/?themeName=${
-    onRamperConfig.themeName
-  }&defaultCrypto=${onRamperConfig.defaultCrypto}
-  &containerColor=${onRamperConfig.containerColor}&primaryColor=${
-    onRamperConfig.primaryColor
-  }&secondaryColor=${onRamperConfig.secondaryColor}&cardColor=${
-    onRamperConfig.cardColor
-  }&primaryTextColor=${onRamperConfig.primaryTextColor}&secondaryTextColor=${
-    onRamperConfig.secondaryTextColor
-  }&borderRadius=${onRamperConfig.borderRadius}&wgBorderRadius=${
-    onRamperConfig.wgBorderRadius
-  }?apiKey=${import.meta.env.VITE_ONRAMPER_API_KEY}`;
+
+  const searchParams = new URLSearchParams(
+    Object.entries(onRamperConfig).map(([key, value]) => [key, String(value)]),
+  );
+  const onRamperSrc = `https://buy.onramper.com/?${searchParams.toString()}`;
+
   return (
     <OnRamperIFrame
       src={onRamperSrc}
