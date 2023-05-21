@@ -1,5 +1,6 @@
 import { Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import {
@@ -17,11 +18,22 @@ export const WelcomeWrapper = ({
   const theme = useTheme();
   const i18Path = 'navbar.welcome.';
   const { t: translate } = useTranslation();
+  const [openChainsPopper, setOpenChainsPopper] = useState(false);
+  const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
+  const [openDexsPopper, setOpenDexsPopper] = useState(false);
 
   return (
     <>
       {showWelcome ? (
-        <Background>
+        <Background
+          className="welcome-background"
+          onClick={(event) => {
+            !openChainsPopper &&
+              !openBridgesPopper &&
+              !openDexsPopper &&
+              handleGetStarted(event);
+          }}
+        >
           <Slide direction="up" in={!showFadeOut} unmountOnExit appear={false}>
             <ContentContainer>
               <CustomColor variant={'lifiBrandHeaderXLarge'}>
@@ -39,8 +51,14 @@ export const WelcomeWrapper = ({
               >
                 {translate(`${i18Path}subtitle`)}
               </Typography>
-
-              <StatsCards />
+              <StatsCards
+                openChainsPopper={openChainsPopper}
+                setOpenChainsPopper={setOpenChainsPopper}
+                openBridgesPopper={openBridgesPopper}
+                setOpenBridgesPopper={setOpenBridgesPopper}
+                openDexsPopper={openDexsPopper}
+                setOpenDexsPopper={setOpenDexsPopper}
+              />
               <ButtonPrimary
                 onClick={handleGetStarted}
                 sx={(theme) => ({

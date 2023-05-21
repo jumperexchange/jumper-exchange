@@ -2,21 +2,28 @@ import CloseIcon from '@mui/icons-material/Close';
 import {
   Avatar,
   Box,
+  Breakpoint,
   Grid,
   IconButton,
   Modal as MUIModal,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { ModalHeader } from './StatsModal.style';
 export const StatsModal = ({ title, open, setOpen, data }) => {
   const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   return (
     <MUIModal
       open={open}
+      onClick={() => {
+        setOpen(false);
+      }}
       onClose={() => {
         setOpen(false);
       }}
+      sx={{ zIndex: 1600 }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -26,16 +33,21 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          margin: 'auto',
+          margin: isDesktop ? 0 : 'auto',
           padding: theme.spacing(3, 6, 6),
           borderRadius: '12px',
-          width: '640px',
+          boxShadow:
+            theme.palette.mode === 'dark'
+              ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+              : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+          width: isDesktop ? '640px' : `calc( 100% - ${theme.spacing(6)})`,
+          maxWidth: '640px',
           maxHeight: '85%',
           overflowY: 'auto',
           background:
             theme.palette.mode === 'dark'
               ? theme.palette.surface2.main
-              : 'orange',
+              : theme.palette.surface1.main,
         }}
       >
         <ModalHeader>
@@ -67,7 +79,13 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
             <CloseIcon />
           </IconButton>
         </ModalHeader>
-        <Grid container alignItems="center" gap={'28px'} mt={theme.spacing(3)}>
+        <Grid
+          container
+          alignItems="center"
+          gap={'28px'}
+          mt={theme.spacing(3)}
+          justifyContent={isDesktop ? 'inherit' : 'space-between'}
+        >
           {data.map((el, index) => {
             return (
               <Grid

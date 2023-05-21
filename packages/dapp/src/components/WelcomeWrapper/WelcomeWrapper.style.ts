@@ -9,6 +9,7 @@ export const Background = styled('div')(({ theme }) => ({
   top: `-${NavbarHeight.XS}`,
   filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.04))',
   height: `calc( 100% + ${NavbarHeight.XS})`,
+  zIndex: 1400,
   ':before': {
     content: '" "',
     height: '100%',
@@ -21,7 +22,7 @@ export const Background = styled('div')(({ theme }) => ({
     background:
       theme.palette.mode === 'dark'
         ? 'linear-gradient(180deg, rgba(36, 32, 61, 0.24) 0%, #24203D 49.48%, #181529 100%)'
-        : 'transparent',
+        : ' linear-gradient(180deg, rgba(237, 224, 255, 0) 0%, #EDE0FF 49.48%, #F3EBFF 97.4%)',
     zIndex: -1,
   },
   ':after': {
@@ -70,9 +71,13 @@ export const ContentContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
   width: '100%',
   position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-33.33%)',
   padding: theme.spacing(0, 2, 8),
-  background:
-    theme.palette.mode === 'dark'
-      ? 'transparent'
-      : 'linear-gradient(180deg, rgba(237, 224, 255, 0.25) 0%, #EDE0FF 38.54%, #F3EBFF 97.4%);',
+  background: 'transparent',
+  [`@media screen and (min-height: 650px)`]: {
+    transform: 'unset',
+    bottom: 0,
+    paddingBottom: theme.spacing(8),
+  },
 }));

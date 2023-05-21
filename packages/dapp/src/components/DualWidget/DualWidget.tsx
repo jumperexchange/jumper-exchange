@@ -11,7 +11,6 @@ import { NavbarHeight } from '../Navbar/Navbar.style';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
-import { GlowBackground } from '../Widget/Widget.style';
 import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
@@ -66,11 +65,17 @@ export function DualWidget() {
     }
   }, [activeTab, onChangeTab, starterVariant, starterVariantUsed]);
 
-  const handleGetStarted = async () => {
-    setShowFadeOut(true);
-    await setTimeout(() => {
-      setShowWelcome(false);
-    }, 300);
+  const handleGetStarted = async (event) => {
+    const classList = event?.target?.classList;
+    if (classList?.contains?.('stats-card')) {
+      return 0;
+    } else {
+      event.stopPropagation();
+      setShowFadeOut(true);
+      await setTimeout(() => {
+        setShowWelcome(false);
+      }, 300);
+    }
   };
 
   const isWalletConnected = useMemo(() => {
@@ -100,15 +105,23 @@ export function DualWidget() {
             overflow: 'hidden',
             position: 'absolute',
             top:
-              !isWalletConnected && showWelcome ? NavbarHeight.XS : 'inherit',
+              !isWalletConnected && showWelcome
+                ? `-${NavbarHeight.XS}`
+                : 'inherit', // 12.5%
             transition: 'opacity 500ms',
-            zIndex: !isWalletConnected && showWelcome ? '1' : 'inherit',
+            zIndex: !isWalletConnected && showWelcome ? '1500' : 'inherit',
             [theme.breakpoints.up('sm' as Breakpoint)]: {
+              position: 'relative',
               top:
-                !isWalletConnected && showWelcome ? NavbarHeight.SM : 'inherit',
+                !isWalletConnected && showWelcome
+                  ? `-${NavbarHeight.SM}`
+                  : 'inherit', // 12.5%            },
             },
             [theme.breakpoints.up('md' as Breakpoint)]: {
-              top: showWelcome ? NavbarHeight.LG : 'inherit',
+              top:
+                !isWalletConnected && showWelcome
+                  ? `-${NavbarHeight.LG}`
+                  : 'inherit', // 12.5%            },
             },
           }}
         >
@@ -124,10 +137,19 @@ export function DualWidget() {
               onClick={handleGetStarted}
               showWelcome={!isWalletConnected && showWelcome}
               isActive={_starterVariant === 'expandable'}
-              sx={{ opacity: '1', transition: 'opacity 500ms' }}
+              sx={{
+                opacity: '1',
+                transition: 'opacity 500ms',
+                // top: '0',
+                // bottom: '50%',
+                // left: '0',
+                // right: '0',
+                // position: 'absolute',
+                // height: '50%',
+              }}
             >
               <Widget starterVariant={'expandable'} />
-              <GlowBackground className="glow-bg" />
+              {/* <GlowBackground className="glow-bg" /> */}
             </WidgetContainer>
           </Fade>
           <WidgetContainer
@@ -138,7 +160,7 @@ export function DualWidget() {
             isActive={_starterVariant === 'refuel'}
           >
             <Widget starterVariant={'refuel'} />
-            <GlowBackground className="glow-bg" />
+            {/* <GlowBackground className="glow-bg" /> */}
           </WidgetContainer>
           {import.meta.env.VITE_ONRAMPER_ENABLED ? (
             <WidgetContainer

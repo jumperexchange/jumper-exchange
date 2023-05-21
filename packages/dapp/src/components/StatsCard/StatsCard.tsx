@@ -1,5 +1,4 @@
-import { Typography, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { useDexsAndBridgesInfos } from '../../providers/DexsAndBridgesInfosProvider';
 import { StatsModal } from '../StatsModal/StatsModal';
@@ -14,12 +13,17 @@ interface StatsCardProps {
 export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
   const theme = useTheme();
   return (
-    <Card onClick={handleClick} sx={{ cursor: 'pointer' }}>
+    <Card
+      className={'stats-card'}
+      onClick={handleClick}
+      sx={{ cursor: 'pointer' }}
+    >
       <Typography
         variant={'lifiBrandHeaderXLarge'}
         sx={{
           fontSize: '24px',
           lineHeight: '32px',
+          pointerEvents: 'none',
           [theme.breakpoints.up('sm')]: {
             fontSize: '32px',
             lineHeight: '40px',
@@ -33,6 +37,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
         sx={{
           fontSize: '10px',
           lineHeight: '16px',
+          pointerEvents: 'none',
           [theme.breakpoints.up('sm')]: {
             fontSize: '16px',
             lineHeight: '20px',
@@ -45,10 +50,14 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
   );
 };
 
-export const StatsCards = ({}) => {
-  const [openChainsPopper, setOpenChainsPopper] = useState(false);
-  const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
-  const [openDexsPopper, setOpenDexsPopper] = useState(false);
+export const StatsCards = ({
+  openChainsPopper,
+  setOpenChainsPopper,
+  openBridgesPopper,
+  setOpenBridgesPopper,
+  openDexsPopper,
+  setOpenDexsPopper,
+}) => {
   const { data } = useDexsAndBridgesInfos();
   const { chains } = useChainInfos();
 
@@ -84,13 +93,13 @@ export const StatsCards = ({}) => {
       },
     },
   ];
+
   return (
     <Container>
       {statsData.map((el, index) => {
         return (
-          <>
+          <Box key={`stats-box-${el.title}-${index}`}>
             <StatsCard
-              key={`stats-card-${index}`}
               title={el.title}
               number={el.number}
               handleClick={el.handleOnClick}
@@ -101,7 +110,7 @@ export const StatsCards = ({}) => {
               setOpen={el.setOpen}
               data={el.data}
             />
-          </>
+          </Box>
         );
       })}
     </Container>

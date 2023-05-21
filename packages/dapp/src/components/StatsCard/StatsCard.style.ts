@@ -16,6 +16,7 @@ export const Card = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(6, 8),
   width: '80px',
+  height: '80px',
   color:
     theme.palette.mode === 'dark'
       ? theme.palette.accent1Alt.main
@@ -23,7 +24,7 @@ export const Card = styled('div')(({ theme }) => ({
   userSelect: 'none',
   background:
     theme.palette.mode === 'dark'
-      ? getContrastAlphaColor(theme, '8%')
+      ? theme.palette.surface3.main
       : theme.palette.bg.main,
   borderRadius: '16px',
   transition: 'background 1.5s',
@@ -32,5 +33,6 @@ export const Card = styled('div')(({ theme }) => ({
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: '128px',
+    height: '128px',
   },
 }));

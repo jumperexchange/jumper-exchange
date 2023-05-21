@@ -10,12 +10,23 @@ export const WidgetContainer = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'isActive' && prop !== 'showWelcome',
 })<WidgetContainerProps>(({ theme, isActive, showWelcome }) => ({
   display: isActive ? 'inherit' : 'none',
-  height: showWelcome && '300px',
-  zIndex: 1000,
+  height: showWelcome && '50vh',
   placeContent: 'center',
-  paddingTop: theme.spacing(6),
+  paddingTop: showWelcome ? 'unset' : theme.spacing(6),
+  minHeight: showWelcome && '250px',
   maskImage:
     showWelcome && 'linear-gradient(to bottom, black 0%, transparent 100%)',
+  zIndex: showWelcome && 1500,
+  [`@media screen and (max-height: 650px)`]: {
+    display: showWelcome && 'none',
+  },
+
+  '& .widget-wrapper': {
+    height: showWelcome && '66%',
+    maxHeight: showWelcome && '350px',
+    position: showWelcome && 'absolute',
+    bottom: showWelcome && '0',
+  },
 
   '& .widget-wrapper div:before, & > .onramper-container:hover:before': {
     content: showWelcome && '" "',
