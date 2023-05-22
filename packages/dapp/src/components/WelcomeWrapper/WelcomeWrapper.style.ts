@@ -30,9 +30,11 @@ export const Background = styled('div')(({ theme }) => ({
     height: '100%',
     width: '100%',
     position: 'fixed',
-    left: 0,
+    left: '50%',
+    opacity: 0.5,
     right: 0,
-    top: 0,
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
     bottom: 0,
     background:
       'radial-gradient(50% 50% at 50% 50%, rgba(190, 160, 235, 0.4) 0%, rgba(190, 160, 235, 0) 100%)',

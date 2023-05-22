@@ -60,18 +60,18 @@ export const WidgetContainer = styled(Grid, {
     zIndex: -1,
     minWidth: '440px',
     minHeight: '440px',
+    opacity: 0,
     width: '80vw',
     height: '80vw',
-    transform: 'translateX(-50%)',
+    transform: 'translate(-50%, -25%)',
+    transitionProperty: 'opacity, transform',
+    transitionDuration: '.6s',
+    transitionTimingFunction: 'ease-in-out',
     left: '50%',
-    top: '0px',
+    top: '50%',
     pointerEvents: 'none',
     background:
       'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
-  },
-
-  '& .widget-wrapper div:hover > .glow-bg': {
-    opacity: showWelcome && 1,
   },
 
   '& > .widget-wrapper > div, & > .onramper-container': {
@@ -86,7 +86,14 @@ export const WidgetContainer = styled(Grid, {
     top: showWelcome && theme.spacing(6),
   },
 
-  '& > div > div, & > .onramper-container': {
+  '& > .onramper-container': {
+    height: '66.6%',
+    maxHeight: showWelcome && '350px',
+    position: showWelcome && 'absolute',
+    bottom: showWelcome && '0',
+  },
+
+  '& > div > div, & > div > div:after, & > .onramper-container': {
     overflow: showWelcome && 'hidden',
     opacity: showWelcome && 0.5,
     transitionProperty: 'padding-top, opacity, top',
@@ -100,17 +107,22 @@ export const WidgetContainer = styled(Grid, {
     opacity: showWelcome && 1,
   },
 
+  '& > .onramper-container:hover': {
+    top: 'unset',
+  },
+
   '& > div > div:hover:after': {
     content: showWelcome && '" "',
     position: 'absolute',
     zIndex: -1,
+    opacity: 1,
     minWidth: '440px',
     minHeight: '440px',
     width: '80vw',
     height: '80vw',
-    transform: 'translateX(-50%)',
+    transform: 'translate(-50%, -25%)',
     left: '50%',
-    top: '0px',
+    top: '66.6%',
     background:
       'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
   },

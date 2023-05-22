@@ -11,6 +11,7 @@ import { NavbarHeight } from '../Navbar/Navbar.style';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
+import { GlowBackground } from '../Widget/Widget.style';
 import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
 
@@ -140,16 +141,10 @@ export function DualWidget() {
               sx={{
                 opacity: '1',
                 transition: 'opacity 500ms',
-                // top: '0',
-                // bottom: '50%',
-                // left: '0',
-                // right: '0',
-                // position: 'absolute',
-                // height: '50%',
               }}
             >
               <Widget starterVariant={'expandable'} />
-              {/* <GlowBackground className="glow-bg" /> */}
+              <GlowBackground />
             </WidgetContainer>
           </Fade>
           <WidgetContainer
@@ -160,7 +155,7 @@ export function DualWidget() {
             isActive={_starterVariant === 'refuel'}
           >
             <Widget starterVariant={'refuel'} />
-            {/* <GlowBackground className="glow-bg" /> */}
+            <GlowBackground />
           </WidgetContainer>
           {import.meta.env.VITE_ONRAMPER_ENABLED ? (
             <WidgetContainer
