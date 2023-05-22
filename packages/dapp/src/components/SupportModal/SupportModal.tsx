@@ -17,7 +17,7 @@ export const SupportModal = () => {
       <SupportModalContainer>
         <WidgetBot
           server="849912621360218112" // LI.FI / TransferTo.xyz
-          channel="1048071264352337951" // #🩹︱web-support
+          channel="1108568727148056646" // #🩹︱web-support
           shard="https://emerald.widgetbot.io"
           style={{
             width: '100%',
