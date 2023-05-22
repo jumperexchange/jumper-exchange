@@ -3,7 +3,8 @@
     "links": {
       "swap": "Swap",
       "dashboard": "Dashboard",
-      "refuel": "Gas"
+      "refuel": "Gas",
+      "buy": "Buy"
     },
     "connectWallet": "Connect Wallet",
     "chooseWallet": "Choose Wallet",
