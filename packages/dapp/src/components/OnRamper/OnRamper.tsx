@@ -12,6 +12,7 @@ export const OnRamper = () => {
   const theme = useTheme();
 
   const onRamperConfig = {
+    apiKey: import.meta.env.VITE_ONRAMPER_API_KEY,
     defaultCrypto: 'ETH',
     themeName: theme.palette.mode === 'light' ? 'light' : 'dark',
     containerColor: removeHash(theme.palette.surface1.main),
@@ -39,7 +40,6 @@ export const OnRamper = () => {
     Object.entries(onRamperConfig).map(([key, value]) => [key, String(value)]),
   );
   const onRamperSrc = `https://buy.onramper.com/?${searchParams.toString()}`;
-
   return (
     <OnRamperIFrame
       src={onRamperSrc}
