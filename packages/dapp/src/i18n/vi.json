@@ -3,7 +3,8 @@
     "links": {
       "swap": "Hoán đổi",
       "dashboard": "Tổng quan",
-      "refuel": "Gas"
+      "refuel": "Gas",
+      "buy": "Mua"
     },
     "connectWallet": "Kết nối ví",
     "chooseWallet": "Chọn ví",
@@ -16,13 +17,18 @@
     "walletMenu": {
       "disconnect": "Ngắt kết nối",
       "chains": "Chains",
-      "switchChain": "Thay đổi Chain"
+      "switchChain": "Thay đổi Chain",
+      "copy": "Sao Chép",
+      "explore": "Explore",
+      "copiedMsg": "Địa chỉ ví đã được sao chép"
     },
     "language": {
       "key": "Ngôn ngữ",
       "value": "Tiếng Việt"
     },
     "themes": {
+      "switchToLight": "Đổi sang Chế độ nền sáng",
+      "switchToDark": "Chuyển sang Chế độ nền tối",
       "light": "Sáng",
       "dark": "Tối",
       "auto": "Tự động"
@@ -37,5 +43,10 @@
       "klimaStaking": "Cross Chain Klima Staking",
       "carbonOffset": "Cross Chain Carbon Offset"
     }
+  },
+  "alert": {
+    "info": "Bạn đang sử dụng mạng thử nghiệm",
+    "testnet": "Mọi giao dịch hoặc hành động được thực hiện trên mạng thử nghiệm sẽ không được phản ánh trên mạng chính.",
+    "switchToMainnet": "Chuyển sang mạng chính"
   }
 }
