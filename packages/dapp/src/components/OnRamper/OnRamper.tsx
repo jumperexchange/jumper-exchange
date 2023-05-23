@@ -40,7 +40,6 @@ export const OnRamper = () => {
     Object.entries(onRamperConfig).map(([key, value]) => [key, String(value)]),
   );
   const onRamperSrc = `https://buy.onramper.com/?${searchParams.toString()}`;
-  console.log('onRamperSrc', onRamperSrc);
   return (
     <OnRamperIFrame
       src={onRamperSrc}
