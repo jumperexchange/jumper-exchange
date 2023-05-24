@@ -87,6 +87,8 @@ export function DualWidget() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.isActive]);
 
+  const showWelcomeWrapper = !isWalletConnected && showWelcome;
+
   useEffect(() => {
     getActiveWidget();
   }, [getActiveWidget, starterVariant, activeTab]);
@@ -94,7 +96,7 @@ export function DualWidget() {
   return (
     <DexsAndBridgesInfosProvider>
       <WelcomeWrapper
-        showWelcome={!isWalletConnected && showWelcome}
+        showWelcome={showWelcomeWrapper}
         showFadeOut={!isWalletConnected && showFadeOut}
         handleGetStarted={handleGetStarted}
       >
@@ -105,24 +107,15 @@ export function DualWidget() {
           sx={{
             overflow: 'hidden',
             position: 'absolute',
-            top:
-              !isWalletConnected && showWelcome
-                ? `-${NavbarHeight.XS}`
-                : 'inherit', // 12.5%
+            top: showWelcomeWrapper ? `-${NavbarHeight.XS}` : 'inherit', // 12.5%
             transition: 'opacity 500ms',
-            zIndex: !isWalletConnected && showWelcome ? '1200' : 'inherit',
+            zIndex: showWelcomeWrapper ? '1200' : 'inherit',
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               position: 'relative',
-              top:
-                !isWalletConnected && showWelcome
-                  ? `-${NavbarHeight.SM}`
-                  : 'inherit', // 12.5%            },
+              top: showWelcomeWrapper ? `-${NavbarHeight.SM}` : 'inherit', // 12.5%            },
             },
             [theme.breakpoints.up('md' as Breakpoint)]: {
-              top:
-                !isWalletConnected && showWelcome
-                  ? `-${NavbarHeight.LG}`
-                  : 'inherit', // 12.5%            },
+              top: showWelcomeWrapper ? `-${NavbarHeight.LG}` : 'inherit', // 12.5%            },
             },
           }}
         >
@@ -136,7 +129,7 @@ export function DualWidget() {
               item
               xs={12}
               onClick={handleGetStarted}
-              showWelcome={!isWalletConnected && showWelcome}
+              showWelcome={showWelcomeWrapper}
               isActive={_starterVariant === 'expandable'}
               sx={{
                 opacity: '1',
@@ -151,7 +144,7 @@ export function DualWidget() {
             item
             xs={12}
             onClick={handleGetStarted}
-            showWelcome={!isWalletConnected && showWelcome}
+            showWelcome={showWelcomeWrapper}
             isActive={_starterVariant === 'refuel'}
           >
             <Widget starterVariant={'refuel'} />
@@ -161,7 +154,7 @@ export function DualWidget() {
               item
               xs={12}
               onClick={handleGetStarted}
-              showWelcome={!isWalletConnected && showWelcome}
+              showWelcome={showWelcomeWrapper}
               isActive={_starterVariant === 'buy'}
             >
               <OnRamper />
