@@ -1,6 +1,9 @@
 import { WidgetVariant } from '@lifi/widget';
 import { Breakpoint, Fade, Grid, useTheme } from '@mui/material';
-import { TestnetAlert } from '@transferto/shared/src';
+import {
+  LOCAL_STORAGE_WALLETS_KEY,
+  TestnetAlert,
+} from '@transferto/shared/src';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { DexsAndBridgesInfosProvider } from '../../providers/DexsAndBridgesInfosProvider';
@@ -11,11 +14,8 @@ import { NavbarHeight } from '../Navbar/Navbar.style';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
-import { GlowBackground } from '../Widget/Widget.style';
 import { WidgetContainer } from './DualWidget.style';
 import { WidgetEvents } from './WidgetEvents';
-
-export const LOCAL_STORAGE_WALLETS_KEY = 'li.fi-wallets';
 
 export function DualWidget() {
   const [showFadeOut, setShowFadeOut] = useState(false);
@@ -110,7 +110,7 @@ export function DualWidget() {
                 ? `-${NavbarHeight.XS}`
                 : 'inherit', // 12.5%
             transition: 'opacity 500ms',
-            zIndex: !isWalletConnected && showWelcome ? '1500' : 'inherit',
+            zIndex: !isWalletConnected && showWelcome ? '1200' : 'inherit',
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               position: 'relative',
               top:
@@ -141,10 +141,10 @@ export function DualWidget() {
               sx={{
                 opacity: '1',
                 transition: 'opacity 500ms',
+                zIndex: 100,
               }}
             >
               <Widget starterVariant={'expandable'} />
-              <GlowBackground />
             </WidgetContainer>
           </Fade>
           <WidgetContainer
@@ -155,7 +155,6 @@ export function DualWidget() {
             isActive={_starterVariant === 'refuel'}
           >
             <Widget starterVariant={'refuel'} />
-            <GlowBackground />
           </WidgetContainer>
           {import.meta.env.VITE_ONRAMPER_ENABLED ? (
             <WidgetContainer

@@ -9,7 +9,7 @@ export const Background = styled('div')(({ theme }) => ({
   top: `-${NavbarHeight.XS}`,
   filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.04))',
   height: `calc( 100% + ${NavbarHeight.XS})`,
-  zIndex: 1400,
+  zIndex: 1200,
   ':before': {
     content: '" "',
     height: '100%',
@@ -21,7 +21,7 @@ export const Background = styled('div')(({ theme }) => ({
     bottom: 0,
     background:
       theme.palette.mode === 'dark'
-        ? 'linear-gradient(180deg, rgba(36, 32, 61, 0.24) 0%, #24203D 49.48%, #181529 100%)'
+        ? theme.palette.bg.main
         : ' linear-gradient(180deg, rgba(237, 224, 255, 0) 0%, #EDE0FF 49.48%, #F3EBFF 97.4%)',
     zIndex: -1,
   },
@@ -31,10 +31,10 @@ export const Background = styled('div')(({ theme }) => ({
     width: '100%',
     position: 'fixed',
     left: '50%',
-    opacity: 0.5,
+    opacity: 0.24,
     right: 0,
     top: '50%',
-    transform: 'translate(-50%, -50%)',
+    transform: 'translate(-50%, -100%)',
     bottom: 0,
     background:
       'radial-gradient(50% 50% at 50% 50%, rgba(190, 160, 235, 0.4) 0%, rgba(190, 160, 235, 0) 100%)',
@@ -59,6 +59,11 @@ export const CustomColor = styled(Typography)(({ theme }) => ({
   textFillColor: 'transparent',
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    fontSize: '48px',
+    fontWeight: 700,
+    lineHeight: '56px',
+  },
 }));
 
 export const ColoredContainer = styled(Box)(({ theme }) => ({
@@ -76,7 +81,10 @@ export const ContentContainer = styled(Box)(({ theme }) => ({
   top: '50%',
   transform: 'translateY(-33.33%)',
   padding: theme.spacing(0, 2, 8),
-  background: 'transparent',
+  background:
+    theme.palette.mode === 'dark'
+      ? 'linear-gradient(180deg, rgba(26, 16, 51, 0) 0%, #1a103370 21.15%)'
+      : 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebff7a 21.15%);',
   [`@media screen and (min-height: 650px)`]: {
     transform: 'unset',
     bottom: 0,

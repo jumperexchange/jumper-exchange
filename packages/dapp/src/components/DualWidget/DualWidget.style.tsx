@@ -1,10 +1,25 @@
 import { Grid, GridProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { keyframes, styled } from '@mui/material/styles';
 
 export interface WidgetContainerProps extends Omit<GridProps, 'component'> {
   isActive?: boolean;
   showWelcome?: boolean;
 }
+
+export const keyframesGlow = (theme) => keyframes`
+0% {
+  top: 20%;
+  opacity: 
+}
+50% {
+  top: 50%;
+  opacity: ${theme.palette.mode === 'dark' ? 0.48 : 0.32};
+}
+100% {
+  top: 20%;
+  opacity: 
+}
+`;
 
 export const WidgetContainer = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'isActive' && prop !== 'showWelcome',
@@ -54,26 +69,6 @@ export const WidgetContainer = styled(Grid, {
     top: showWelcome && 0,
   },
 
-  '& > .onramper-container:after, & > div > div:after': {
-    content: showWelcome && '" "',
-    position: 'absolute',
-    zIndex: -1,
-    minWidth: '440px',
-    minHeight: '440px',
-    opacity: 0,
-    width: '80vw',
-    height: '80vw',
-    transform: 'translate(-50%, -25%)',
-    transitionProperty: 'opacity, transform',
-    transitionDuration: '.6s',
-    transitionTimingFunction: 'ease-in-out',
-    left: '50%',
-    top: '50%',
-    pointerEvents: 'none',
-    background:
-      'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
-  },
-
   '& > .widget-wrapper > div, & > .onramper-container': {
     paddingTop: showWelcome && theme.spacing(6),
   },
@@ -87,18 +82,19 @@ export const WidgetContainer = styled(Grid, {
   },
 
   '& > .onramper-container': {
-    height: '66.6%',
+    height: showWelcome && '66.6%',
+    overflow: showWelcome && 'visible',
     maxHeight: showWelcome && '350px',
     position: showWelcome && 'absolute',
     bottom: showWelcome && '0',
   },
 
   '& > div > div, & > div > div:after, & > .onramper-container': {
-    overflow: showWelcome && 'hidden',
-    opacity: showWelcome && 0.5,
-    transitionProperty: 'padding-top, opacity, top',
-    transitionDuration: '.3s',
-    transitionTimingFunction: 'ease-in-out',
+    // overflow: showWelcome && 'hidden',
+    opacity: showWelcome && 0.75,
+    transitionProperty: showWelcome && 'padding-top, opacity, top',
+    transitionDuration: showWelcome && '.3s',
+    transitionTimingFunction: showWelcome && 'ease-in-out',
   },
 
   '& > div > div:hover, & > .onramper-container:hover': {
@@ -108,22 +104,47 @@ export const WidgetContainer = styled(Grid, {
   },
 
   '& > .onramper-container:hover': {
+    overflow: 'visible',
     top: 'unset',
   },
 
-  '& > div > div:hover:after': {
+  '& > div > div:after, & > .onramper-container:after': {
     content: showWelcome && '" "',
     position: 'absolute',
     zIndex: -1,
-    opacity: 1,
+    opacity: theme.palette.mode === 'dark' ? 0.24 : 0.12,
     minWidth: '440px',
     minHeight: '440px',
-    width: '80vw',
-    height: '80vw',
-    transform: 'translate(-50%, -25%)',
+    pointerEvents: 'none',
+    width: '75vw',
+    height: '75vw',
+    transform: 'translate(-50%, -100%)',
     left: '50%',
-    top: '66.6%',
+    top: 'calc( 75vw / 2 )',
+    transitionProperty: ' top, opacity',
+    transitionDuration: '0.6s',
+    transitionTimingFunction: 'ease-in-out',
     background:
-      'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
+      theme.palette.mode === 'dark'
+        ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);'
+        : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
+  },
+
+  '& > div > div:hover:after, & > .onramper-container:hover:after': {
+    content: showWelcome && '" "',
+    position: 'absolute',
+    zIndex: -1,
+    opacity: theme.palette.mode === 'dark' ? 0.48 : 0.32,
+    minWidth: '440px',
+    minHeight: '440px',
+    width: '100vw',
+    height: '100vw',
+    transform: 'translate(-50%, -50%)',
+    left: '50%',
+    top: '50%',
+    background:
+      theme.palette.mode === 'dark'
+        ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%)'
+        : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
   },
 }));

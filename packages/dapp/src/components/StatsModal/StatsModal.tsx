@@ -10,7 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { ModalHeader } from './StatsModal.style';
+import { ModalHeaderAppBar } from './StatsModal.style';
 export const StatsModal = ({ title, open, setOpen, data }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
@@ -23,7 +23,7 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
       onClose={() => {
         setOpen(false);
       }}
-      sx={{ zIndex: 1600 }}
+      sx={{ zIndex: 1700 }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -34,7 +34,7 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           margin: isDesktop ? 0 : 'auto',
-          padding: theme.spacing(3, 6, 6),
+          paddingBottom: theme.spacing(6),
           borderRadius: '12px',
           boxShadow:
             theme.palette.mode === 'dark'
@@ -50,7 +50,7 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
               : theme.palette.surface1.main,
         }}
       >
-        <ModalHeader>
+        <ModalHeaderAppBar>
           <Typography
             id="modal-modal-title"
             variant={'lifiHeaderXSmall'}
@@ -78,12 +78,12 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
           >
             <CloseIcon />
           </IconButton>
-        </ModalHeader>
+        </ModalHeaderAppBar>
         <Grid
           container
           alignItems="center"
           gap={'28px'}
-          mt={theme.spacing(3)}
+          p={theme.spacing(0, 6)}
           justifyContent={isDesktop ? 'inherit' : 'space-between'}
         >
           {data.map((el, index) => {
@@ -93,7 +93,6 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
                 key={`${title}-item-${index}`}
                 width={'72px'}
                 textAlign={'center'}
-                margin={'12px 0'}
               >
                 <Avatar
                   src={el.logoURI}

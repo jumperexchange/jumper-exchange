@@ -19,7 +19,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
       sx={{ cursor: 'pointer' }}
     >
       <Typography
-        variant={'lifiBrandHeaderXLarge'}
+        variant={'lifiBrandHeaderMedium'}
         sx={{
           fontSize: '24px',
           lineHeight: '32px',
@@ -33,14 +33,12 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
         {number}
       </Typography>
       <Typography
-        variant={'lifiBrandHeaderLarge'}
+        variant={'lifiBrandBodySmall'}
         sx={{
-          fontSize: '10px',
-          lineHeight: '16px',
           pointerEvents: 'none',
+          mt: theme.spacing(1),
           [theme.breakpoints.up('sm')]: {
             fontSize: '16px',
-            lineHeight: '20px',
           },
         }}
       >

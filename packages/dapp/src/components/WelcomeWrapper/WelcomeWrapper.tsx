@@ -1,7 +1,7 @@
-import { Slide, Typography, useTheme } from '@mui/material';
+import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import {
   Background,
@@ -36,20 +36,31 @@ export const WelcomeWrapper = ({
         >
           <Slide direction="up" in={!showFadeOut} unmountOnExit appear={false}>
             <ContentContainer>
-              <CustomColor variant={'lifiBrandHeaderXLarge'}>
+              <CustomColor variant={'lifiBrandHeaderMedium'}>
                 {translate(`${i18Path}title`)}
               </CustomColor>
               <Typography
-                variant={'lifiBrandHeaderLarge'}
-                mt={theme.spacing(2)}
+                variant={'lifiBrandBodyLarge'}
+                mt={theme.spacing(4)}
                 sx={{
                   color:
                     theme.palette.mode === 'dark'
                       ? theme.palette.accent1Alt.main
                       : theme.palette.primary.main,
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    fontSize: '24px',
+                    fontWeight: 400,
+                    lineHeight: '32px',
+                    mt: theme.spacing(2),
+                  },
                 }}
               >
-                {translate(`${i18Path}subtitle`)}
+                {
+                  <Trans
+                    i18nKey={`${i18Path}subtitle`}
+                    components={[<strong />]}
+                  />
+                }
               </Typography>
               <StatsCards
                 openChainsPopper={openChainsPopper}
