@@ -45,10 +45,6 @@ export const WidgetContainer = styled(Grid, {
     maxHeight: showWelcome && '350px',
     position: showWelcome && 'absolute',
     bottom: showWelcome && '0',
-
-    [`@media screen and (max-height: 590px)`]: {
-      top: showWelcome && '5  0%',
-    },
   },
 
   '& .widget-wrapper div:before, & > .onramper-container:hover:before': {
