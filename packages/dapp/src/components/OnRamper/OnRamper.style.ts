@@ -5,6 +5,7 @@ export const OnRamperIFrame = styled('iframe')(({ theme }) => ({
   border: 'unset',
   margin: `0 auto`,
   maxWidth: '392px',
+  height: '560px',
   minWidth: '375px',
   boxShadow:
     theme.palette.mode === 'light'
