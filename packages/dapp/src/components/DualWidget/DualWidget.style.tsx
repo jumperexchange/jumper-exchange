@@ -32,15 +32,23 @@ export const WidgetContainer = styled(Grid, {
   maskImage:
     showWelcome && 'linear-gradient(to bottom, black 0%, transparent 100%)',
   zIndex: showWelcome && 1500,
-  [`@media screen and (max-height: 650px)`]: {
+  [`@media screen and (max-height: 490px)`]: {
     display: showWelcome && 'none',
+
+    '& > .onramper-container, & .widget-wrapper': {
+      top: showWelcome && '50%',
+    },
   },
 
   '& .widget-wrapper': {
-    height: showWelcome && '66%',
+    height: showWelcome && '60%',
     maxHeight: showWelcome && '350px',
     position: showWelcome && 'absolute',
     bottom: showWelcome && '0',
+
+    [`@media screen and (max-height: 590px)`]: {
+      top: showWelcome && '5  0%',
+    },
   },
 
   '& .widget-wrapper div:before, & > .onramper-container:hover:before': {

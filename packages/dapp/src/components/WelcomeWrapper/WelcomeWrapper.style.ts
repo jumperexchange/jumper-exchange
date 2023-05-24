@@ -78,8 +78,7 @@ export const ContentContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
   width: '100%',
   position: 'absolute',
-  top: '50%',
-  transform: 'translateY(-33.33%)',
+  transform: 'translateY(0%)',
   padding: theme.spacing(0, 2, 8),
   background:
     theme.palette.mode === 'dark'
@@ -87,6 +86,7 @@ export const ContentContainer = styled(Box)(({ theme }) => ({
       : 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebff7a 21.15%);',
   [`@media screen and (min-height: 650px)`]: {
     transform: 'unset',
+    top: '50%',
     bottom: 0,
     paddingBottom: theme.spacing(8),
   },
