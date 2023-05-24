@@ -3,7 +3,8 @@
     "links": {
       "swap": "Swap",
       "dashboard": "Dasbor",
-      "refuel": "Gas"
+      "refuel": "Gas",
+      "buy": "Beli"
     },
     "connectWallet": "Hubungkan Dompet",
     "chooseWallet": "Pilih Dompet",
