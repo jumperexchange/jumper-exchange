@@ -1,5 +1,5 @@
 import { Breakpoint, styled } from '@mui/material';
-import { getContrastAlphaColor } from '@transferto/shared/src/utils';
+import { alpha } from '@mui/material/styles';
 
 export const Container = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(8),
@@ -27,9 +27,12 @@ export const Card = styled('div')(({ theme }) => ({
       ? theme.palette.surface3.main
       : theme.palette.white.main,
   borderRadius: '16px',
-  transition: 'background 1.5s',
+  transition: 'background 225ms',
   '&:hover': {
-    background: getContrastAlphaColor(theme, '12%'),
+    background:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.surface3.main, 0.72)
+        : alpha(theme.palette.common.white, 0.64),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: '128px',
