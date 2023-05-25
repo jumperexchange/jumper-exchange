@@ -17,8 +17,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "pre-commit": "echo 'No pre-commits defined in: shared'",
-    "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json",
-    "dev": "tsc -w -p ./tsconfig.json"
+    "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",
@@ -30,8 +29,8 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
-    "@types/node": "^18.16.9",
-    "@types/react": "^18.2.6",
+    "@types/node": "^20.2.3",
+    "@types/react": "^18.2.7",
     "babel-loader": "^9.1.2",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "^2.8.8"
@@ -39,14 +38,14 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "@lifi/wallet-management": "2.0.0-beta.7",
+    "@lifi/wallet-management": "2.0.0-beta.8",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.0",
-    "i18next": "^22.4.15",
+    "@mui/material": "^5.13.2",
+    "i18next": "^22.5.0",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^12.2.2",
+    "react-i18next": "^12.3.1",
     "typescript": "^5.0.4",
     "use-media": "^1.4.0",
     "zustand": "^4.3.8"
