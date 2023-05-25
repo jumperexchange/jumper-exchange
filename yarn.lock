@@ -2885,9 +2885,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^2.0.0-beta.13":
-  version: 2.0.0-beta.13
-  resolution: "@lifi/sdk@npm:2.0.0-beta.13"
+"@lifi/sdk@npm:^2.0.0-beta.15":
+  version: 2.0.0-beta.15
+  resolution: "@lifi/sdk@npm:2.0.0-beta.15"
   dependencies:
     "@ethersproject/abi": ^5.7.0
     "@ethersproject/contracts": ^5.7.0
@@ -2895,7 +2895,7 @@ __metadata:
     bignumber.js: ^9.1.1
     eth-rpc-errors: ^4.0.3
     ethers: ^5.7.2
-  checksum: aba59d9ea9c95bf07c467781ad19f9b5e656c55a38ff4a148e2c2a45325ff92eef64cd47e87b151d249b07c1baabf00e115774b5fb935f7e8fccb419720b568f
+  checksum: 48e08dd7d9eb1cc0c03f4ce9e51debec8f83a9749b83af2726750da89c124ed9d2f20dba75bd64455ad1c462cf734c0e05ebb3d91fd5454a989c67cf5a022782
   languageName: node
   linkType: hard
 
@@ -2908,26 +2908,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:2.0.0-beta.7, @lifi/wallet-management@npm:^2.0.0-beta.7":
-  version: 2.0.0-beta.7
-  resolution: "@lifi/wallet-management@npm:2.0.0-beta.7"
+"@lifi/wallet-management@npm:2.0.0-beta.8, @lifi/wallet-management@npm:^2.0.0-beta.8":
+  version: 2.0.0-beta.8
+  resolution: "@lifi/wallet-management@npm:2.0.0-beta.8"
   dependencies:
     "@coinbase/wallet-sdk": ^3.7.1
     "@ethersproject/abstract-signer": ^5.7.0
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
-    "@lifi/sdk": ^2.0.0-beta.13
+    "@lifi/sdk": ^2.0.0-beta.15
     "@walletconnect/ethereum-provider": ^1.8.0
     "@walletconnect/web3-provider": ^1.8.0
     events: ^3.3.0
     react: ^18.2.0
-  checksum: a07f3f4c5fcb53d2e7a7d2ae06eef34fbad17cfc0a4243bc5a38227c480cd8d8979078b43c8372bece54747fcd70f64078cfd91a8695910c6c76a506e977a3d6
+  checksum: 554140f1e7a5dd68acfca8ea45723a805d3d10f978a86397b7086d10463fba116e141f409077e25a675dba6ff3aa4e7ac1fb52688255f0facaf09d2fadf8d9ef
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.0.0-beta.11":
-  version: 2.0.0-beta.11
-  resolution: "@lifi/widget@npm:2.0.0-beta.11"
+"@lifi/widget@npm:^2.0.0-beta.13":
+  version: 2.0.0-beta.13
+  resolution: "@lifi/widget@npm:2.0.0-beta.13"
   dependencies:
     "@emotion/react": ^11.11.0
     "@emotion/styled": ^11.11.0
@@ -2935,8 +2935,8 @@ __metadata:
     "@ethersproject/address": ^5.7.0
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
-    "@lifi/sdk": ^2.0.0-beta.13
-    "@lifi/wallet-management": ^2.0.0-beta.7
+    "@lifi/sdk": ^2.0.0-beta.15
+    "@lifi/wallet-management": ^2.0.0-beta.8
     "@mui/icons-material": ^5.11.16
     "@mui/lab": ^5.0.0-alpha.131
     "@mui/material": ^5.13.2
@@ -2963,7 +2963,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 670100c6f28c14f1b0e5ce32e33d284677e049292740fdc4cbdc5a22f212566674b2f78e386373e2b107570caaa0f7784f75207b51a2bcdfbf19900942dea25d
+  checksum: 56b921e41a9e09ac01fd3877f0186273237dd24a72a41301e8b1b732c53a2f7b5d763d4220e6153e6cf68b9d310f18ea28ede128d3a9372b11c2d89ea8541dec
   languageName: node
   linkType: hard
 
@@ -3924,95 +3924,95 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/tracing@npm:7.53.0":
-  version: 7.53.0
-  resolution: "@sentry-internal/tracing@npm:7.53.0"
+"@sentry-internal/tracing@npm:7.53.1":
+  version: 7.53.1
+  resolution: "@sentry-internal/tracing@npm:7.53.1"
   dependencies:
-    "@sentry/core": 7.53.0
-    "@sentry/types": 7.53.0
-    "@sentry/utils": 7.53.0
+    "@sentry/core": 7.53.1
+    "@sentry/types": 7.53.1
+    "@sentry/utils": 7.53.1
     tslib: ^1.9.3
-  checksum: 5729a18854f90d6322a75b18cc7b86f412014bd9e3dca8ca805dd233ee07bcb9558155f9c5fac3f7054dd121771f7a8f2c84a9d3d8ef4df237ba626b1f988026
+  checksum: 99fadf422e619faeea436a96b37088ba10850f8e77fca10d7fea6de0c3f1d60b0e8ec1da3b9230f4213fa25f044c99aba585562447ddca0a443d7cbd88c3b81d
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:7.53.0, @sentry/browser@npm:^7.53.0":
-  version: 7.53.0
-  resolution: "@sentry/browser@npm:7.53.0"
+"@sentry/browser@npm:7.53.1, @sentry/browser@npm:^7.53.1":
+  version: 7.53.1
+  resolution: "@sentry/browser@npm:7.53.1"
   dependencies:
-    "@sentry-internal/tracing": 7.53.0
-    "@sentry/core": 7.53.0
-    "@sentry/replay": 7.53.0
-    "@sentry/types": 7.53.0
-    "@sentry/utils": 7.53.0
+    "@sentry-internal/tracing": 7.53.1
+    "@sentry/core": 7.53.1
+    "@sentry/replay": 7.53.1
+    "@sentry/types": 7.53.1
+    "@sentry/utils": 7.53.1
     tslib: ^1.9.3
-  checksum: 51bd5cd3a05e87497db394172210131223cb9cca1417913ae2eae828c3a91bb87962d8f02ef99568f5ef5eb4dc20ec2b984fe89271b9f402bb3fa3495266a3a1
+  checksum: 6250949dfbef169669d9e932515f0d965f449ef82be5fb6b813ab170944cef033c758857a3412aa1a1023d77622f88d8599df8e4b0ea126479f8713bd4aa1838
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.53.0":
-  version: 7.53.0
-  resolution: "@sentry/core@npm:7.53.0"
+"@sentry/core@npm:7.53.1":
+  version: 7.53.1
+  resolution: "@sentry/core@npm:7.53.1"
   dependencies:
-    "@sentry/types": 7.53.0
-    "@sentry/utils": 7.53.0
+    "@sentry/types": 7.53.1
+    "@sentry/utils": 7.53.1
     tslib: ^1.9.3
-  checksum: c62e1eb9cd37fe2fd1c12e01fe1ec38319200436889a0a06ac8063b6937a386dc9a290112702c3af7d4fea3699f943fd84bf16353516d72ea97656119e7d4c00
+  checksum: 5d42bc30a59cb4459eb99441b631e3f9daec5b2e98c24377aae0329127f8c474a9c32353a96e3f4765e3fb18370756e85f6b873cd26bd591e0040917b7fa9cf4
   languageName: node
   linkType: hard
 
-"@sentry/integrations@npm:^7.53.0":
-  version: 7.53.0
-  resolution: "@sentry/integrations@npm:7.53.0"
+"@sentry/integrations@npm:^7.53.1":
+  version: 7.53.1
+  resolution: "@sentry/integrations@npm:7.53.1"
   dependencies:
-    "@sentry/types": 7.53.0
-    "@sentry/utils": 7.53.0
+    "@sentry/types": 7.53.1
+    "@sentry/utils": 7.53.1
     localforage: ^1.8.1
     tslib: ^1.9.3
-  checksum: e25f29423ce11d175017fd403656a1caef03760dd4a7a6457b5081559f295a9f5daf051e7f6712fa3229e2e9a110a85add35a1758dc920f3c5200893714b2584
+  checksum: 55fc930af665afa07f81591f8898c8c10518696d48ec6d9f0864fc05fa5ef754868644f50362bac15734dff93592397ec022d80ded8754b97d64009e63a30712
   languageName: node
   linkType: hard
 
-"@sentry/react@npm:^7.53.0":
-  version: 7.53.0
-  resolution: "@sentry/react@npm:7.53.0"
+"@sentry/react@npm:^7.53.1":
+  version: 7.53.1
+  resolution: "@sentry/react@npm:7.53.1"
   dependencies:
-    "@sentry/browser": 7.53.0
-    "@sentry/types": 7.53.0
-    "@sentry/utils": 7.53.0
+    "@sentry/browser": 7.53.1
+    "@sentry/types": 7.53.1
+    "@sentry/utils": 7.53.1
     hoist-non-react-statics: ^3.3.2
     tslib: ^1.9.3
   peerDependencies:
     react: 15.x || 16.x || 17.x || 18.x
-  checksum: ed15bdebcafe5675ed27d8b025d1ef83f80a972053e812eb0f9d1e3f1980150632a4cf245b863930134b40a91885430806cee0e86fcb724e26d49d2daca3fd77
+  checksum: ee08c6a851cae421a134d62e217c192a961930254ea8775e1960420307f4ff08b659405bd883b12698a55085ad1070ac58e618f5799a7edc775368382e807e2d
   languageName: node
   linkType: hard
 
-"@sentry/replay@npm:7.53.0":
-  version: 7.53.0
-  resolution: "@sentry/replay@npm:7.53.0"
+"@sentry/replay@npm:7.53.1":
+  version: 7.53.1
+  resolution: "@sentry/replay@npm:7.53.1"
   dependencies:
-    "@sentry/core": 7.53.0
-    "@sentry/types": 7.53.0
-    "@sentry/utils": 7.53.0
-  checksum: 1addb8971c8800e221c3fd7d8bf339ca5335c6541cd024bc2b31ea4ac31277eecd800c85a38debcb973ad14eaed2055f167f27328cf611f14a1cf99092faa75a
+    "@sentry/core": 7.53.1
+    "@sentry/types": 7.53.1
+    "@sentry/utils": 7.53.1
+  checksum: c3757077a971183f5f9f87006449a110c0f951c76a777aa45cb2f057100ec5bc8fcf50e4c58e8117ddc0f44fdaada101384a45b2b5c427048b4ce57eb780711d
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.53.0":
-  version: 7.53.0
-  resolution: "@sentry/types@npm:7.53.0"
-  checksum: dca71f8ba7a15e3e5c3cd5902105dcbb005452312b08e59c20201563740e40405f515a81d68a7e739ad8e59c477bd298eadec8675f224c172db810640f4e25dd
+"@sentry/types@npm:7.53.1":
+  version: 7.53.1
+  resolution: "@sentry/types@npm:7.53.1"
+  checksum: 5f76d7d66d5df5d48f66a755e18ae133ea02a9405093b652eb4921ca62c3114343561a2d8067f2be6d9df8dd32d10e30d3ce58150f795600680e6230fb136681
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.53.0":
-  version: 7.53.0
-  resolution: "@sentry/utils@npm:7.53.0"
+"@sentry/utils@npm:7.53.1":
+  version: 7.53.1
+  resolution: "@sentry/utils@npm:7.53.1"
   dependencies:
-    "@sentry/types": 7.53.0
+    "@sentry/types": 7.53.1
     tslib: ^1.9.3
-  checksum: 52656bc18d12f81a9093881a1f74001b0d936690c0f2df035e4d462dbe3881e2d56232ea727ef8fe862f58695fd76fa63776772e2e6b79df6a978ded5802cadf
+  checksum: d9556f161a0eed0e1bb279bac12b99492b6212d9b6cabebbcb2d0f196f99b96c319305ec347d8f06382e2dde5782d5ba20a00f762fbfd4e8699e9100ef921804
   languageName: node
   linkType: hard
 
@@ -5428,16 +5428,16 @@ __metadata:
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
-    "@lifi/sdk": ^2.0.0-beta.13
-    "@lifi/wallet-management": 2.0.0-beta.7
-    "@lifi/widget": ^2.0.0-beta.11
+    "@lifi/sdk": ^2.0.0-beta.15
+    "@lifi/wallet-management": 2.0.0-beta.8
+    "@lifi/widget": ^2.0.0-beta.13
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.2
-    "@sentry/browser": ^7.53.0
-    "@sentry/integrations": ^7.53.0
-    "@sentry/react": ^7.53.0
+    "@sentry/browser": ^7.53.1
+    "@sentry/integrations": ^7.53.1
+    "@sentry/react": ^7.53.1
     "@transferto/shared": "*"
-    "@types/react": ^18.2.6
+    "@types/react": ^18.2.7
     "@types/react-dom": ^18.2.4
     "@vitejs/plugin-react": ^4.0.0
     "@widgetbot/react-embed": ^1.7.0
@@ -5470,7 +5470,7 @@ __metadata:
     "@babel/core": ^7.21.8
     "@emotion/react": ^11.11.0
     "@emotion/styled": ^11.11.0
-    "@lifi/wallet-management": 2.0.0-beta.7
+    "@lifi/wallet-management": 2.0.0-beta.8
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.2
     "@storybook/addon-actions": ^6.5.16
@@ -5482,7 +5482,7 @@ __metadata:
     "@storybook/react": ^6.5.16
     "@storybook/testing-library": ^0.0.13
     "@types/node": ^20.2.3
-    "@types/react": ^18.2.6
+    "@types/react": ^18.2.7
     babel-loader: ^9.1.2
     eslint-config-prettier: ^8.8.0
     i18next: ^22.5.0
@@ -5847,7 +5847,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.2.6":
+"@types/react@npm:*":
   version: 18.2.6
   resolution: "@types/react@npm:18.2.6"
   dependencies:
@@ -5855,6 +5855,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: dea9d232d8df7ac357367a69dcb557711ab3d5501807ffa77cebeee73d49ee94d095f298e36853c63ed47cce097eee4c7eae2aaa8c02fac3f0171ec1b523a819
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.2.7":
+  version: 18.2.7
+  resolution: "@types/react@npm:18.2.7"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: caa5da4cf929766738ec789301dc6fb6624bd48dd317d851c4c9b84b1f47cd8ebe17fe01398cadaa0bc938cd4d502d67f4b9de9ff771dc132096bdc86228efba
   languageName: node
   linkType: hard
 
