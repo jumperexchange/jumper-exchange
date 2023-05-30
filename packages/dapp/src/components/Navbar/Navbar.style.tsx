@@ -46,7 +46,7 @@ export const NavbarExternalBackground = styled('div')(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  zIndex: 1300,
+  zIndex: 1400,
   backgroundColor: '#000000',
   opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -117,7 +117,7 @@ export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
 );
 
 export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
-  zIndex: 1300,
+  zIndex: 1400,
   bottom: '0 !important',
   left: '0 !important',
   top: 'unset !important',

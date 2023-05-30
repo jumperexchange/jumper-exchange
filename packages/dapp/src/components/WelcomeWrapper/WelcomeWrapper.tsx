@@ -47,6 +47,9 @@ export const WelcomeWrapper = ({
                     theme.palette.mode === 'dark'
                       ? theme.palette.accent1Alt.main
                       : theme.palette.primary.main,
+                  '& > .link-lifi': {
+                    fontWeight: 700,
+                  },
                   [theme.breakpoints.up('sm' as Breakpoint)]: {
                     fontSize: '24px',
                     fontWeight: 400,
@@ -58,7 +61,16 @@ export const WelcomeWrapper = ({
                 {
                   <Trans
                     i18nKey={`${i18Path}subtitle`}
-                    components={[<strong />]}
+                    components={[
+                      // eslint-disable-next-line jsx-a11y/anchor-has-content
+                      <a
+                        className={'link-lifi'}
+                        href="https://li.fi"
+                        style={{ color: 'inherit' }}
+                        target={'_blank'}
+                        rel="noreferrer"
+                      />,
+                    ]}
                   />
                 }
               </Typography>
@@ -75,10 +87,25 @@ export const WelcomeWrapper = ({
                 sx={(theme) => ({
                   margin: 'auto',
                   marginTop: theme.spacing(5),
-                  width: '247px',
+                  height: '48px',
+                  width: '192px',
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    height: '56px',
+                    width: '247px',
+                  },
                 })}
               >
-                {translate(`${i18Path}cta`)}
+                <Typography
+                  variant={'lifiBodyMediumStrong'}
+                  sx={{
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      fontSize: '18px',
+                      lineHeight: '24px',
+                    },
+                  }}
+                >
+                  {translate(`${i18Path}cta`)}
+                </Typography>
               </ButtonPrimary>
             </ContentContainer>
           </Slide>

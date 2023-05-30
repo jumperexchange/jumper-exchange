@@ -68,14 +68,17 @@ export function DualWidget() {
 
   const handleGetStarted = async (event) => {
     const classList = event?.target?.classList;
-    if (classList?.contains?.('stats-card')) {
+    if (
+      classList?.contains?.('stats-card') ||
+      classList?.contains?.('link-lifi')
+    ) {
       return 0;
     } else {
       event.stopPropagation();
       setShowFadeOut(true);
       await setTimeout(() => {
         setShowWelcome(false);
-      }, 300);
+      }, 600);
     }
   };
 
@@ -106,10 +109,11 @@ export function DualWidget() {
           container
           sx={{
             overflow: 'hidden',
-            position: 'absolute',
-            top: showWelcomeWrapper ? `-${NavbarHeight.XS}` : 'inherit', // 12.5%
+            position: showWelcomeWrapper && 'absolute',
+            top: !showWelcomeWrapper && 'inherit', // 12.5%
+            height: showWelcomeWrapper && `calc( 50% - ${NavbarHeight.XS} )`,
             transition: 'opacity 500ms',
-            zIndex: showWelcomeWrapper ? '1200' : 'inherit',
+            zIndex: showWelcomeWrapper ? '1300' : 'inherit',
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               position: 'relative',
               top: showWelcomeWrapper ? `-${NavbarHeight.SM}` : 'inherit', // 12.5%            },
