@@ -117,7 +117,7 @@ export function WidgetEvents() {
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
 
     return () => widgetEvents.all.clear();
-  }, [trackEvent, trackTransaction, widgetEvents]);
+  }, [trackAttribute, trackEvent, trackTransaction, widgetEvents]);
 
   return null;
 }
