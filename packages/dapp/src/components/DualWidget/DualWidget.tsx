@@ -1,5 +1,5 @@
 import { WidgetVariant } from '@lifi/widget';
-import { Fade, Grid, useTheme } from '@mui/material';
+import { Breakpoint, Fade, Grid, useTheme } from '@mui/material';
 import {
   LOCAL_STORAGE_WALLETS_KEY,
   TestnetAlert,
@@ -77,7 +77,7 @@ export function DualWidget() {
       event.stopPropagation();
       setShowFadeOut(true);
       await setTimeout(() => {
-        // setShowWelcome(false);
+        setShowWelcome(false);
       }, 600);
     }
   };
@@ -113,20 +113,51 @@ export function DualWidget() {
               showWelcomeWrapper && !showFadeOut
                 ? 'absolute'
                 : showWelcomeWrapper && showFadeOut
-                ? 'relative'
+                ? 'absolute'
                 : 'relative',
             // top: showWelcomeWrapper ? `-${NavbarHeight.SM}` : 'inherit', // 12.5%            },
-            height: showWelcomeWrapper && !showFadeOut ? '50%' : '100%',
+            height:
+              showWelcomeWrapper && !showFadeOut
+                ? '50%'
+                : showWelcomeWrapper && showFadeOut
+                ? `calc( 100% - ${NavbarHeight.XS} )`
+                : '100%',
             transition: 'opacity 500ms',
-            top: showWelcomeWrapper && !showFadeOut ? 0 : NavbarHeight.SM,
+            top:
+              showWelcomeWrapper && !showFadeOut
+                ? 0
+                : showWelcomeWrapper && showFadeOut
+                ? NavbarHeight.XS
+                : 0,
             zIndex: showWelcomeWrapper ? '1300' : 'inherit',
-            // [theme.breakpoints.up('sm' as Breakpoint)]: {
-            //   position: 'relative',
-            //   // top: showWelcomeWrapper ? `-${NavbarHeight.SM}` : 'inherit', // 12.5%            },
-            // },
-            // [theme.breakpoints.up('md' as Breakpoint)]: {
-            //   top: showWelcomeWrapper ? `-${NavbarHeight.LG}` : 'inherit', // 12.5%            },
-            // },
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              top:
+                showWelcomeWrapper && !showFadeOut
+                  ? 0
+                  : showWelcomeWrapper && showFadeOut
+                  ? NavbarHeight.SM
+                  : 0,
+              height:
+                showWelcomeWrapper && !showFadeOut
+                  ? '50%'
+                  : showWelcomeWrapper && showFadeOut
+                  ? `calc( 100% - ${NavbarHeight.SM} )`
+                  : '100%',
+            },
+            [theme.breakpoints.up('md' as Breakpoint)]: {
+              top:
+                showWelcomeWrapper && !showFadeOut
+                  ? 0
+                  : showWelcomeWrapper && showFadeOut
+                  ? NavbarHeight.LG
+                  : 0,
+              height:
+                showWelcomeWrapper && !showFadeOut
+                  ? '50%'
+                  : showWelcomeWrapper && showFadeOut
+                  ? `calc( 100% - ${NavbarHeight.LG} )`
+                  : '100%',
+            },
           }}
         >
           {import.meta.env.MODE === 'testnet' && (

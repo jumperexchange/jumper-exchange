@@ -134,9 +134,9 @@ export const WidgetContainer = styled(Grid, {
     // opacity: 1,
   },
 
-  '& > .onramper-container iframe': {
-    height: showWelcome && '800px',
-  },
+  // '& > .onramper-container iframe': {
+  //   height: showWelcome && '800px',
+  // },
 
   '& > div > div': {
     top: showWelcome && theme.spacing(6),
@@ -145,14 +145,15 @@ export const WidgetContainer = styled(Grid, {
   '& > div > div, & > .onramper-container': {
     // overflow: showWelcome && 'hidden',
     opacity: showWelcome && 0.75,
-    transitionProperty: showWelcome && 'padding-top, opacity, top',
+    transitionProperty:
+      showWelcome && !showFadeOut ? 'padding-top, opacity, top' : 'top',
     transitionDuration: showWelcome && '.3s',
     transitionTimingFunction: showWelcome && 'ease-in-out',
   },
 
   '& > div > div:hover, & > .onramper-container:hover': {
-    top: showWelcome && 0,
-    paddingTop: showWelcome && theme.spacing(0),
+    top: showWelcome && !showFadeOut && 0,
+    paddingTop: showWelcome && !showFadeOut && theme.spacing(0),
     // opacity: showWelcome && 1,
   },
 
@@ -162,7 +163,7 @@ export const WidgetContainer = styled(Grid, {
   },
 
   '& > div > div:after, & > .onramper-container:after': {
-    content: showWelcome && '" "',
+    content: showWelcome && !showFadeOut && '" "',
     position: 'absolute',
     zIndex: -1,
     opacity: theme.palette.mode === 'dark' ? 0.08 : 0.25,
@@ -202,7 +203,7 @@ export const WidgetContainer = styled(Grid, {
   // },
 
   '& > div > div:hover:after, & > .onramper-container:hover:after': {
-    content: showWelcome && '" "',
+    content: showWelcome && !showFadeOut && '" "',
     position: 'absolute',
     zIndex: -1,
     opacity: theme.palette.mode === 'dark' ? 0.48 : 0.5, //0.48 : 0.32,
