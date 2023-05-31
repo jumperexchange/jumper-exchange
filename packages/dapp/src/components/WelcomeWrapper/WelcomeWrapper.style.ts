@@ -7,11 +7,8 @@ export const Background = styled('div')(({ theme }) => ({
   width: '100%',
   top: '50%',
   bottom: 0,
-  // filter: 'drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.04))',
-  height: '50%',
   zIndex: 1300,
-  // overflow: 'initial',
-
+  height: 'calc( 50% + 64px )',
   [`@media screen and (max-height: 490px)`]: {
     height: 'auto',
     top: 0,
@@ -86,33 +83,31 @@ export const ColoredContainer = styled(Box)(({ theme }) => ({
 export const ContentContainer = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   bottom: 0,
-  height: 'auto',
+  height: '100%',
   width: '100%',
   position: 'absolute',
-  transform: 'translateY(0%)',
-  padding: theme.spacing(0, 2, 8),
+  padding: theme.spacing(20, 2, 8),
   [`@media screen and (min-height: 490px)`]: {
     transform: 'unset',
     // top: '50%',
     bottom: 0,
-    paddingBottom: theme.spacing(8),
-    height: '100%',
+    padding: theme.spacing(2, 2, 8),
   },
   '&:before': {
     content: '" "',
-    height: '200%',
+    height: '100%',
     background:
       theme.palette.mode === 'dark'
-        ? 'linear-gradient(180deg, rgba(26, 16, 51, 0) 0%, #1a103370 21.15%)'
-        : 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebff7a 21.15%);',
+        ? 'linear-gradient(180deg, #200a47 0%, #1A1033 21.15%)'
+        : 'linear-gradient(180deg, #e8dafb 0%, #e8dafb 21.15%);',
     pointerEvents: 'none',
     position: 'absolute',
     left: 0,
-    top: '-50vh',
+    top: '0',
     zIndex: '-1',
     width: '100%',
   },
-  // [theme.breakpoints.up('xl' as Breakpoint)]: {
+  // [theme.breakpoints.up('lg' as Breakpoint)]: {
   //   '&:before': {
   //     content: 'unset',
   //   },

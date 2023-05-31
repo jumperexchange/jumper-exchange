@@ -1,6 +1,6 @@
 import { AppBar, AppBarProps, Box } from '@mui/material';
 
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 
 export interface ModalHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
   component?: string;
@@ -19,9 +19,13 @@ export const ModalHeaderAppBar = styled(AppBar)<ModalHeaderAppBarProps>(
     minHeight: 48,
     top: 0,
     padding: theme.spacing(3, 6),
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? alpha(theme.palette.surface2.main, 0.2)
+        : alpha(theme.palette.surface1.main, 0.84),
     backdropFilter: 'blur(12px)',
     boxShadow: 'unset',
-    background: 'transparent',
+    backgroundImage: theme.palette.mode === 'dark' && 'unset',
   }),
 );
 

@@ -1,5 +1,5 @@
 import { WidgetVariant } from '@lifi/widget';
-import { Breakpoint, Fade, Grid, useTheme } from '@mui/material';
+import { Fade, Grid, useTheme } from '@mui/material';
 import {
   LOCAL_STORAGE_WALLETS_KEY,
   TestnetAlert,
@@ -77,7 +77,7 @@ export function DualWidget() {
       event.stopPropagation();
       setShowFadeOut(true);
       await setTimeout(() => {
-        setShowWelcome(false);
+        // setShowWelcome(false);
       }, 600);
     }
   };
@@ -100,7 +100,7 @@ export function DualWidget() {
     <DexsAndBridgesInfosProvider>
       <WelcomeWrapper
         showWelcome={showWelcomeWrapper}
-        showFadeOut={!isWalletConnected && showFadeOut}
+        showFadeOut={showFadeOut}
         handleGetStarted={handleGetStarted}
       >
         <Grid
@@ -109,18 +109,24 @@ export function DualWidget() {
           container
           sx={{
             overflow: 'hidden',
-            position: showWelcomeWrapper && 'absolute',
-            top: !showWelcomeWrapper && 'inherit', // 12.5%
-            height: showWelcomeWrapper && `calc( 50% - ${NavbarHeight.XS} )`,
+            position:
+              showWelcomeWrapper && !showFadeOut
+                ? 'absolute'
+                : showWelcomeWrapper && showFadeOut
+                ? 'relative'
+                : 'relative',
+            // top: showWelcomeWrapper ? `-${NavbarHeight.SM}` : 'inherit', // 12.5%            },
+            height: showWelcomeWrapper && !showFadeOut ? '50%' : '100%',
             transition: 'opacity 500ms',
+            top: showWelcomeWrapper && !showFadeOut ? 0 : NavbarHeight.SM,
             zIndex: showWelcomeWrapper ? '1300' : 'inherit',
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              position: 'relative',
-              top: showWelcomeWrapper ? `-${NavbarHeight.SM}` : 'inherit', // 12.5%            },
-            },
-            [theme.breakpoints.up('md' as Breakpoint)]: {
-              top: showWelcomeWrapper ? `-${NavbarHeight.LG}` : 'inherit', // 12.5%            },
-            },
+            // [theme.breakpoints.up('sm' as Breakpoint)]: {
+            //   position: 'relative',
+            //   // top: showWelcomeWrapper ? `-${NavbarHeight.SM}` : 'inherit', // 12.5%            },
+            // },
+            // [theme.breakpoints.up('md' as Breakpoint)]: {
+            //   top: showWelcomeWrapper ? `-${NavbarHeight.LG}` : 'inherit', // 12.5%            },
+            // },
           }}
         >
           {import.meta.env.MODE === 'testnet' && (
@@ -134,6 +140,7 @@ export function DualWidget() {
               xs={12}
               onClick={handleGetStarted}
               showWelcome={showWelcomeWrapper}
+              showFadeOut={showFadeOut}
               isActive={_starterVariant === 'expandable'}
               sx={{
                 opacity: '1',
@@ -149,6 +156,7 @@ export function DualWidget() {
             xs={12}
             onClick={handleGetStarted}
             showWelcome={showWelcomeWrapper}
+            showFadeOut={showFadeOut}
             isActive={_starterVariant === 'refuel'}
           >
             <Widget starterVariant={'refuel'} />
@@ -159,6 +167,7 @@ export function DualWidget() {
               xs={12}
               onClick={handleGetStarted}
               showWelcome={showWelcomeWrapper}
+              showFadeOut={showFadeOut}
               isActive={_starterVariant === 'buy'}
             >
               <OnRamper />

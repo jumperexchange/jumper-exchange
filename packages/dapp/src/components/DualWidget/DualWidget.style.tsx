@@ -4,13 +4,15 @@ import { styled } from '@mui/material/styles';
 export interface WidgetContainerProps extends Omit<GridProps, 'component'> {
   isActive?: boolean;
   showWelcome?: boolean;
+  showFadeOut?: boolean;
 }
 
 export const WidgetContainer = styled(Grid, {
-  shouldForwardProp: (prop) => prop !== 'isActive' && prop !== 'showWelcome',
-})<WidgetContainerProps>(({ theme, isActive, showWelcome }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== 'isActive' && prop !== 'showWelcome' && prop !== 'showFadeOut',
+})<WidgetContainerProps>(({ theme, isActive, showWelcome, showFadeOut }) => ({
   display: isActive ? 'inherit' : 'none',
-  height: showWelcome && '45vh',
+  height: showWelcome && !showFadeOut ? '45vh' : '100%',
   placeContent: 'center',
   paddingTop: showWelcome ? 'unset' : theme.spacing(6),
   minHeight: showWelcome && '250px',
@@ -53,13 +55,13 @@ export const WidgetContainer = styled(Grid, {
   // },
 
   '&:after': {
-    content: '" "',
+    content: showWelcome && !showFadeOut && '" "',
     background:
       showWelcome && theme.palette.mode === 'dark'
-        ? 'linear-gradient(to top, #f0e5ff 0%, transparent 100%)'
+        ? 'linear-gradient(to top, #200a47 0%, transparent 100%)'
         : showWelcome && theme.palette.mode === 'light'
-        ? 'linear-gradient(to top, #f0e5ff 0%, transparent 100%)'
-        : 'none',
+        ? 'linear-gradient(to top, #e8dafb 0%, transparent 100%)'
+        : 'transparent',
     position: 'absolute',
     height: '150px',
     pointerEvents: 'none',
@@ -67,20 +69,20 @@ export const WidgetContainer = styled(Grid, {
     right: 0,
     bottom: '-4px',
     transitionProperty: showWelcome && 'height, bottom',
-    transitionDuration: showWelcome && '.2s',
+    transitionDuration: showWelcome && '.3s',
     transitionTimingFunction: showWelcome && 'ease-in-out',
   },
 
   '& .widget-wrapper, & > .onramper-container': {
-    height: showWelcome && '62%',
-    maxHeight: showWelcome && '350px',
-    position: showWelcome && 'absolute',
-    bottom: showWelcome && '0',
-    overflow: showWelcome && 'visible',
+    height: showWelcome && !showFadeOut && '62%',
+    maxHeight: showWelcome && !showFadeOut && '350px',
+    position: showWelcome && !showFadeOut && 'absolute',
+    bottom: showWelcome && !showFadeOut && '0',
+    overflow: showWelcome && !showFadeOut && 'visible',
   },
 
   '& .widget-wrapper > div:before, & > .onramper-container:before': {
-    content: showWelcome && '" "',
+    content: showWelcome && !showFadeOut && '" "',
     position: 'absolute',
     left: 0,
     zIndex: 900,
@@ -89,7 +91,11 @@ export const WidgetContainer = styled(Grid, {
     bottom: 0,
     // opacity: 0.5,
     background:
-      'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebffd4 21.15%)',
+      showWelcome && !showFadeOut && theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #000000 80%)'
+        : showWelcome && !showFadeOut && theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebffd4 21.15%)'
+        : 'unset',
     opacity: 0.5,
     width: '392px',
     margin: 'auto',
@@ -119,7 +125,7 @@ export const WidgetContainer = styled(Grid, {
   },
 
   '& > div > div:hover:before': {
-    opacity: 0.1,
+    opacity: 0,
     top: showWelcome && 0,
   },
 
@@ -169,7 +175,7 @@ export const WidgetContainer = styled(Grid, {
     left: '50%',
     top: '0%',
     transitionProperty: ' top, opacity, width, height',
-    transitionDuration: '0.6s',
+    transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
     background:
       theme.palette.mode === 'dark'
@@ -202,7 +208,7 @@ export const WidgetContainer = styled(Grid, {
     opacity: theme.palette.mode === 'dark' ? 0.48 : 0.5, //0.48 : 0.32,
     // width: '50vw',
     // height: '50vw',
-    top: '33%',
+    top: '150%',
     // bottom: '-4px',
     background:
       theme.palette.mode === 'dark'
