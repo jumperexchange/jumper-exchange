@@ -16,23 +16,8 @@ export const WidgetContainer = styled(Grid, {
   placeContent: 'center',
   paddingTop: showWelcome ? 'unset' : theme.spacing(6),
   minHeight: showWelcome && '250px',
-  // maskImage:
-  //   showWelcome && 'linear-gradient(to bottom, black 0%, transparent 100%)',
-
-  // '&:after': {
-  //   content: '" "',
-  //   maskImage:
-  //     showWelcome && 'linear-gradient(to top, black 0%, transparent 100%)',
-  //   position: 'absolute',
-  //   background: 'transparent',
-  //   top: 0,
-  //   left: 0,
-  //   right: 0,
-  //   bottom: 0,
-  //   pointerEvents: 'none',
-  // },
-
   zIndex: showWelcome && 1500,
+
   [`@media screen and (max-height: 490px)`]: {
     display: showWelcome && 'none',
 
@@ -40,19 +25,6 @@ export const WidgetContainer = styled(Grid, {
       top: showWelcome && '50%',
     },
   },
-
-  // '&:before': {
-  //   content: '" "',
-  //   // background:
-  //   //   theme.palette.mode === 'dark'
-  //   //     ? theme.palette.bg.main
-  //   //     : ' linear-gradient(180deg, rgba(237, 224, 255, 0) 0%, #EDE0FF 49.48%, #F3EBFF 97.4%)',
-  //   position: 'absolute',
-  //   top: 0,
-  //   bottom: 0,
-  //   left: 0,
-  //   right: 0,
-  // },
 
   '&:after': {
     content: showWelcome && !showFadeOut && '" "',
@@ -89,7 +61,6 @@ export const WidgetContainer = styled(Grid, {
     cursor: 'pointer',
     right: 0,
     bottom: 0,
-    // opacity: 0.5,
     background:
       showWelcome && !showFadeOut && theme.palette.mode === 'dark'
         ? 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #000000 80%)'
@@ -131,19 +102,13 @@ export const WidgetContainer = styled(Grid, {
 
   '& > .widget-wrapper > div, & > .onramper-container': {
     paddingTop: showWelcome && theme.spacing(6),
-    // opacity: 1,
   },
-
-  // '& > .onramper-container iframe': {
-  //   height: showWelcome && '800px',
-  // },
 
   '& > div > div': {
     top: showWelcome && theme.spacing(6),
   },
 
   '& > div > div, & > .onramper-container': {
-    // overflow: showWelcome && 'hidden',
     opacity: showWelcome && 0.75,
     transitionProperty:
       showWelcome && !showFadeOut ? 'padding-top, opacity, top' : 'top',
@@ -154,7 +119,6 @@ export const WidgetContainer = styled(Grid, {
   '& > div > div:hover, & > .onramper-container:hover': {
     top: showWelcome && !showFadeOut && 0,
     paddingTop: showWelcome && !showFadeOut && theme.spacing(0),
-    // opacity: showWelcome && 1,
   },
 
   '& > .onramper-container:hover': {
@@ -184,33 +148,12 @@ export const WidgetContainer = styled(Grid, {
         : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
   },
 
-  // '& > div > div:after, & > .onramper-container:after': {
-  //   content: showWelcome && '" "',
-  //   position: 'absolute',
-  //   zIndex: -1,
-  //   opacity: theme.palette.mode === 'dark' ? 0.48 : 0.32,
-  //   minWidth: '440px',
-  //   minHeight: '440px',
-  //   width: '100vw',
-  //   height: '100vw',
-  //   transform: 'translate(-50%, -50%)',
-  //   left: '50%',
-  //   top: '50%',
-  //   background:
-  //     theme.palette.mode === 'dark'
-  //       ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%)'
-  //       : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
-  // },
-
   '& > div > div:hover:after, & > .onramper-container:hover:after': {
     content: showWelcome && !showFadeOut && '" "',
     position: 'absolute',
     zIndex: -1,
     opacity: theme.palette.mode === 'dark' ? 0.48 : 0.5, //0.48 : 0.32,
-    // width: '50vw',
-    // height: '50vw',
     top: '150%',
-    // bottom: '-4px',
     background:
       theme.palette.mode === 'dark'
         ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%)'

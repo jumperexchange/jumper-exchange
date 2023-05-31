@@ -115,7 +115,6 @@ export function DualWidget() {
                 : showWelcomeWrapper && showFadeOut
                 ? 'absolute'
                 : 'relative',
-            // top: showWelcomeWrapper ? `-${NavbarHeight.SM}` : 'inherit', // 12.5%            },
             height:
               showWelcomeWrapper && !showFadeOut
                 ? '50%'
