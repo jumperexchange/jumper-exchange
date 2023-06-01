@@ -3,19 +3,12 @@ import { useUserTracking } from '../../hooks';
 
 import {
   RouteExecutionUpdate,
+  RouteHighValueLossUpdate,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
 import { useEffect, useRef } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
-
-// fix: import from @lifi/widget once in place
-interface HighValueLossUpdate {
-  fromAmountUsd: string;
-  gasCostUSD: string | undefined;
-  toAmountUSD: string;
-  valueLoss: string;
-}
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -99,7 +92,7 @@ export function WidgetEvents() {
       });
     };
 
-    const onRouteHighValueLoss = (update: HighValueLossUpdate) => {
+    const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
       trackAttribute({
         data: {
           ...update,
