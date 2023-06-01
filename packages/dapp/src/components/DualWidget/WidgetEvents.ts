@@ -93,9 +93,13 @@ export function WidgetEvents() {
     };
 
     const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
-      trackAttribute({
+      trackEvent({
+        action: TrackingActions.OnRouteHighValueLoss,
+        category: TrackingCategories.WidgetEvent,
+        label: 'click-highValueLossAccepted',
         data: {
           ...update,
+          timestamp: Date.now(),
         },
       });
     };
