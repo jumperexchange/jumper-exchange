@@ -3,7 +3,8 @@
     "links": {
       "swap": "Swap",
       "dashboard": "Dashboard",
-      "refuel": "Gas"
+      "refuel": "Gas",
+      "buy": "Buy"
     },
     "connectWallet": "Wallet verbinden",
     "chooseWallet": "Wallet auswählen",
@@ -16,13 +17,18 @@
     "walletMenu": {
       "disconnect": "Abmelden",
       "chains": "Netzwerk",
-      "switchChain": "Netzwerk wählen"
+      "switchChain": "Netzwerk wählen",
+      "copy": "Kopieren",
+      "explore": "Erkunden",
+      "copiedMsg": "Wallet-Adresse kopiert"
     },
     "language": {
       "key": "Sprache",
       "value": "Deutsch"
     },
     "themes": {
+      "switchToLight": "Zum hellen Theme wechseln",
+      "switchToDark": "Zum dunklen Theme wechseln",
       "light": "Hell",
       "dark": "Dunkel",
       "auto": "Auto"
@@ -37,5 +43,10 @@
       "klimaStaking": "Cross Chain Klima Staking",
       "carbonOffset": "Cross Chain Carbon Offset"
     }
+  },
+  "alert": {
+    "info": "Du verwendest das Testnet",
+    "testnet": "Alle Transaktionen oder Aktionen, die im Testnet durchgeführt werden, haben keinen Einfluss auf das Mainnet und dienen ausschließlich zum Testen.",
+    "switchToMainnet": "Zu Mainnet wechseln"
   }
 }
