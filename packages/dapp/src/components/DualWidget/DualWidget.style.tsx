@@ -30,7 +30,7 @@ export const WidgetContainer = styled(Grid, {
     content: showWelcome && !showFadeOut && '" "',
     background:
       showWelcome && theme.palette.mode === 'dark'
-        ? 'linear-gradient(to top, #200a47 0%, transparent 100%)'
+        ? 'linear-gradient(to top, #170931 0%, transparent 100%)'
         : showWelcome && theme.palette.mode === 'light'
         ? 'linear-gradient(to top, #e8dafb 0%, transparent 100%)'
         : 'transparent',

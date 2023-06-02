@@ -54,7 +54,7 @@ export const ContentContainer = styled(Box)(({ theme }) => ({
     height: '100%',
     background:
       theme.palette.mode === 'dark'
-        ? 'linear-gradient(180deg, #200a47 0%, #1A1033 21.15%)'
+        ? 'linear-gradient(180deg, #170931 0%, #1A1033 21.15%)'
         : 'linear-gradient(180deg, #e8dafb 0%, #e8dafb 21.15%);',
     pointerEvents: 'none',
     position: 'absolute',
