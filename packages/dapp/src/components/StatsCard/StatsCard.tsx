@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
+import { useFetchDexsAndBridges } from '../../hooks';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
-import { useDexsAndBridgesInfos } from '../../providers/DexsAndBridgesInfosProvider';
 import { StatsModal } from '../StatsModal/StatsModal';
 import { Card, Container } from './StatsCard.style';
 
@@ -56,8 +56,10 @@ export const StatsCards = ({
   openDexsPopper,
   setOpenDexsPopper,
 }) => {
-  const { data } = useDexsAndBridgesInfos();
+  const { data } = useFetchDexsAndBridges();
   const { chains } = useChainInfos();
+
+  console.log('data', data);
 
   const statsData = [
     {
@@ -72,8 +74,8 @@ export const StatsCards = ({
     },
     {
       title: 'Bridges',
-      number: data.bridges.length || 16,
-      data: data.bridges,
+      number: data?.bridges.length || 16,
+      data: data?.bridges,
       open: openBridgesPopper,
       setOpen: setOpenBridgesPopper,
       handleOnClick: () => {
@@ -82,8 +84,8 @@ export const StatsCards = ({
     },
     {
       title: 'DEXs',
-      number: data.exchanges.length || 32,
-      data: data.exchanges,
+      number: data?.exchanges.length || 32,
+      data: data?.exchanges,
       open: openDexsPopper,
       setOpen: setOpenDexsPopper,
       handleOnClick: () => {
@@ -94,7 +96,7 @@ export const StatsCards = ({
 
   return (
     <Container>
-      {statsData.map((el, index) => {
+      {statsData?.map((el, index) => {
         return (
           <Box key={`stats-box-${el.title}-${index}`}>
             <StatsCard

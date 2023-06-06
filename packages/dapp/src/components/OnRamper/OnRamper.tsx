@@ -41,7 +41,10 @@ export const OnRamper = () => {
   );
   const onRamperSrc = `https://buy.onramper.com/?${searchParams.toString()}`;
   return (
-    <Box className="onramper-container" sx={{ overflow: 'visible' }}>
+    <Box
+      className="onramper-container"
+      sx={{ overflow: 'visible', textAlign: 'center' }}
+    >
       <OnRamperIFrame
         src={onRamperSrc}
         height="550px"

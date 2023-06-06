@@ -1,7 +1,5 @@
-import { touchRippleClasses } from '@mui/material/ButtonBase';
 import type { Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
-import { keyframes } from '@mui/system';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { resetStyle } from '../style';
@@ -201,34 +199,8 @@ declare module '@mui/material/Typography' {
   }
 }
 
-const enterKeyframe = keyframes`
-  0% {
-    transform: scale(0);
-    opacity: 0.05;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.1;
-  }
-`;
-
 const themeBase: Theme = createTheme({
   components: {
-    MuiButtonBase: {
-      styleOverrides: {
-        root: {
-          [`& .${touchRippleClasses.ripple}.${touchRippleClasses.rippleVisible}`]:
-            {
-              animationName: `${enterKeyframe}`,
-            },
-          [`& .${touchRippleClasses.ripple}.${touchRippleClasses.rippleVisible}`]:
-            {
-              opacity: 0.1,
-              animationName: `${enterKeyframe}`,
-            },
-        },
-      },
-    },
     MuiCssBaseline: {
       styleOverrides: `${resetStyle}`,
     },

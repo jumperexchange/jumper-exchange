@@ -163,7 +163,47 @@ export function Widget({ starterVariant }) {
   ]);
 
   return (
-    <Box className="widget-wrapper">
+    <Box
+      className="widget-wrapper"
+      sx={
+        {
+          // overflow: 'visible',
+          // height: '62%',
+          // width: '100%',
+          // bottom: '0',
+          // position: 'absolute',
+          // '&:before': {
+          //   content: '" "',
+          //   transitionProperty: ' top, opacity, background',
+          //   transitionDuration: '.3s',
+          //   transitionTimingFunction: 'ease-in-out',
+          //   background:
+          //     theme.palette.mode === 'dark'
+          //       ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);'
+          //       : 'radial-gradient(50% 50% at 50% 50%, #9747FF 0%, rgba(255, 255, 255, 0) 100%);',
+          //   position: 'absolute',
+          //   zIndex: -1,
+          //   opacity: theme.palette.mode === 'dark' ? 0.08 : 0.12,
+          //   pointerEvents: 'none',
+          //   minWidth: '640px',
+          //   minHeight: '640px',
+          //   width: '1080px',
+          //   height: '1080px',
+          //   transform: 'translate(-50%, -75%)',
+          //   left: '50%',
+          //   top: '0%',
+          // },
+          // '&:hover:before': {
+          //   opacity: theme.palette.mode === 'dark' ? 0.48 : 0.26, //0.48 : 0.32,
+          //   // top: '150%',
+          //   background:
+          //     theme.palette.mode === 'dark'
+          //       ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%)'
+          //       : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
+          // },
+        }
+      }
+    >
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={widgetConfig}

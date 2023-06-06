@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { AppProvider } from './AppProvider';
-import { DualWidget } from './components/DualWidget';
 import { Navbar } from './components/Navbar';
 import { Menus } from './components/Navbar/Menu/Menus';
+import { Widgets } from './components/Widgets';
 import { useInitUserTracking } from './hooks';
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
     <AppProvider>
       <Navbar />
       <Menus />
-      <DualWidget />
+      <Widgets />
     </AppProvider>
   );
 }
