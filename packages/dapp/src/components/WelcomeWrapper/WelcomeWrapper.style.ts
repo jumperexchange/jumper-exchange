@@ -1,19 +1,5 @@
 import { Box, BoxProps, Breakpoint, Typography, styled } from '@mui/material';
 
-export const Background = styled(Box)(({ theme }) => ({
-  // backgroundColor: 'transparent',
-  // position: 'fixed',
-  // width: '100%',
-  // top: '50%',
-  // bottom: 0,
-  // zIndex: 1300,
-  // height: 'calc( 50% + 64px )',
-  // [`@media screen and (max-height: 490px)`]: {
-  //   height: 'auto',
-  //   top: 0,
-  // },
-}));
-
 export const CustomColor = styled(Typography)(({ theme }) => ({
   background:
     theme.palette.mode === 'dark'
@@ -57,18 +43,4 @@ export const ContentContainer = styled(Box, {
     bottom: 0,
     padding: theme.spacing(2, 2, 8),
   },
-  // '&:before': {
-  //   content: '" "',
-  //   height: '100%',
-  //   background:
-  //     theme.palette.mode === 'dark'
-  //       ? 'linear-gradient(180deg, #170931 0%, #1A1033 21.15%)'
-  //       : 'linear-gradient(180deg, #e8dafb 0%, #e8dafb 21.15%);',
-  //   pointerEvents: 'none',
-  //   position: 'absolute',
-  //   left: 0,
-  //   top: '0',
-  //   zIndex: '-1',
-  //   width: '100%',
-  // },
 }));
