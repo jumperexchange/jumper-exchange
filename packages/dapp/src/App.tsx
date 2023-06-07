@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { AppProvider } from './AppProvider';
+import { FeatureCards } from './components';
 import { DualWidget } from './components/DualWidget';
 import { Navbar } from './components/Navbar';
 import { Menus } from './components/Navbar/Menu/Menus';
@@ -16,6 +17,7 @@ export default function App() {
       <Navbar />
       <Menus />
       <DualWidget />
+      <FeatureCards />
     </AppProvider>
   );
 }
