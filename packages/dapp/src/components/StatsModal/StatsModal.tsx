@@ -78,6 +78,10 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
                   variant={'lifiBodyXSmall'}
                   marginTop={'8px'}
                   sx={{
+                    color:
+                      theme.palette.mode === 'dark'
+                        ? theme.palette.white.main
+                        : theme.palette.black.main,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     maxWidth: '72px',
