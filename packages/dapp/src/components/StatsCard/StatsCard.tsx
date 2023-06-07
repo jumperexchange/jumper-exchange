@@ -48,6 +48,18 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
   );
 };
 
+const sortByName = (data) => {
+  return data?.sort(function (a, b) {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
+};
+
 export const StatsCards = ({
   openChainsPopper,
   setOpenChainsPopper,
@@ -63,7 +75,7 @@ export const StatsCards = ({
     {
       title: 'Chains',
       number: chains.length || 22,
-      data: chains,
+      data: sortByName(chains),
       open: openChainsPopper,
       setOpen: setOpenChainsPopper,
       handleOnClick: () => {
@@ -73,7 +85,7 @@ export const StatsCards = ({
     {
       title: 'Bridges',
       number: data?.bridges.length || 16,
-      data: data?.bridges,
+      data: sortByName(data?.bridges),
       open: openBridgesPopper,
       setOpen: setOpenBridgesPopper,
       handleOnClick: () => {
@@ -83,7 +95,7 @@ export const StatsCards = ({
     {
       title: 'DEXs',
       number: data?.exchanges.length || 32,
-      data: data?.exchanges,
+      data: sortByName(data?.exchanges),
       open: openDexsPopper,
       setOpen: setOpenDexsPopper,
       handleOnClick: () => {
