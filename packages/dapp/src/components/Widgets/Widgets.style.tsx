@@ -122,7 +122,7 @@ export const WidgetContainer = styled(Box, {
   },
 
   '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
-    content: showWelcome && !showFadeOut && '" "',
+    content: showWelcome && '" "',
     transitionProperty: ' top, opacity, background',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
@@ -134,8 +134,6 @@ export const WidgetContainer = styled(Box, {
     zIndex: -1,
     opacity: theme.palette.mode === 'dark' ? 0.24 : 0.12,
     pointerEvents: 'none',
-    minWidth: '640px',
-    minHeight: '640px',
     width: '1080px',
     height: '1080px',
     maxWidth: '100svw',
@@ -146,7 +144,8 @@ export const WidgetContainer = styled(Box, {
   },
 
   '& > .widget-wrapper:hover:before, & > .onramper-wrapper:hover:before': {
-    opacity: theme.palette.mode === 'dark' ? 0.48 : 0.26,
+    top: showFadeOut && 0,
+    opacity: showFadeOut ? 0.05 : theme.palette.mode === 'dark' ? 0.48 : 0.26,
     background:
       theme.palette.mode === 'dark'
         ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%)'
