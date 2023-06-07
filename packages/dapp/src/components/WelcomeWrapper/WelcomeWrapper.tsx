@@ -56,7 +56,7 @@ export const WelcomeWrapper = ({
         in={!showFadeOut}
         unmountOnExit
         appear={false}
-        timeout={600}
+        timeout={400}
       >
         <ContentContainer
           showFadeOut={showFadeOut}
