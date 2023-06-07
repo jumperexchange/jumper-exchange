@@ -52,18 +52,8 @@ export const WidgetContainer = styled(Box, {
 
   '& .widget-wrapper > div, & > .onramper-wrapper .onramper-container': {
     alignSelf: showFadeOut && 'flex-end',
-    height:
-      showWelcome && !showFadeOut
-        ? '100%'
-        : showWelcome && !showFadeOut
-        ? '100%'
-        : '100%',
-    maxHeight:
-      showWelcome && !showFadeOut
-        ? '350px'
-        : showWelcome && showFadeOut
-        ? '100%'
-        : '100%',
+    height: '100%',
+    maxHeight: showWelcome && !showFadeOut ? '350px' : '100%',
     display: 'flex',
     transitionProperty: showWelcome && 'height',
     transitionDuration: showWelcome && '.6s',
@@ -145,7 +135,7 @@ export const WidgetContainer = styled(Box, {
 
   '& > .widget-wrapper:hover:before, & > .onramper-wrapper:hover:before': {
     top: showFadeOut && 0,
-    opacity: showFadeOut ? 0.05 : theme.palette.mode === 'dark' ? 0.48 : 0.26,
+    opacity: showFadeOut ? 0 : theme.palette.mode === 'dark' ? 0.48 : 0.26,
     background:
       theme.palette.mode === 'dark'
         ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%)'
