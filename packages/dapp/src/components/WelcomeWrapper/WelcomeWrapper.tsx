@@ -21,23 +21,10 @@ export const WelcomeWrapper = ({
 
   return (
     <Box
-      className="welcome-wrapper-box"
       sx={{
+        overflow: showWelcome && showFadeOut && 'hidden',
         paddingTop: !showWelcome && !showFadeOut && theme.spacing(7),
-        // '& > :before': {
-        //   content: "' '",
-        //   backgroundPosition: '0% 25%',
-        //   backgroundImage:
-        //     theme.palette.mode === 'dark'
-        //       ? 'linear-gradient(180deg, #170931 0%, #1A1033 21.15%)'
-        //       : 'linear-gradient(180deg, #e8dafb 0%, #e8dafb 21.15%);',
-        //   position: 'relative',
-        //   top: 0,
-        //   left: 0,
-        //   right: 0,
-        //   bottom: 0,
-        //   zIndex: '-1',
-        // },
+
         '&:after': {
           content: showWelcome && !showFadeOut && '" "',
           top: 0,
@@ -64,13 +51,12 @@ export const WelcomeWrapper = ({
       }}
     >
       {children}
-      {/* {showWelcome ? ( */}
       <Slide
         direction="up"
         in={!showFadeOut}
-        // timeout={{ appear: 1000, enter: 2000, exit: 3000 }}
         unmountOnExit
         appear={false}
+        timeout={600}
       >
         <ContentContainer
           showFadeOut={showFadeOut}
@@ -157,7 +143,6 @@ export const WelcomeWrapper = ({
           </ButtonPrimary>
         </ContentContainer>
       </Slide>
-      {/* ) : null} */}
     </Box>
   );
 };

@@ -117,7 +117,7 @@ export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
 );
 
 export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
-  zIndex: 1400,
+  zIndex: 1600,
   bottom: '0 !important',
   left: '0 !important',
   top: 'unset !important',

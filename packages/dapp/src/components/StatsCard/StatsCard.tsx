@@ -59,8 +59,6 @@ export const StatsCards = ({
   const { data } = useFetchDexsAndBridges();
   const { chains } = useChainInfos();
 
-  console.log('data', data);
-
   const statsData = [
     {
       title: 'Chains',

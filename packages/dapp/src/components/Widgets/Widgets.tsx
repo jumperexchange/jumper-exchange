@@ -74,12 +74,10 @@ export function Widgets() {
     } else {
       event.stopPropagation();
       setShowFadeOut(true);
-      console.log({ showWelcome, showFadeOut });
       await setTimeout(() => {
         setShowWelcome(false);
-      }, 2000);
+      }, 600);
     }
-    console.log({ showWelcome, showFadeOut });
   };
 
   const isWalletConnected = useMemo(() => {
@@ -108,8 +106,6 @@ export function Widgets() {
         </Grid>
       )}
       <WidgetContainer
-        item
-        xs={12}
         onClick={handleGetStarted}
         showWelcome={showWelcomeWrapper}
         showFadeOut={showFadeOut}
@@ -123,8 +119,6 @@ export function Widgets() {
         <Widget starterVariant={'expandable'} />
       </WidgetContainer>
       <WidgetContainer
-        item
-        xs={12}
         onClick={handleGetStarted}
         showWelcome={showWelcomeWrapper}
         showFadeOut={showFadeOut}
@@ -134,8 +128,6 @@ export function Widgets() {
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
-          item
-          xs={12}
           onClick={handleGetStarted}
           showWelcome={showWelcomeWrapper}
           showFadeOut={showFadeOut}

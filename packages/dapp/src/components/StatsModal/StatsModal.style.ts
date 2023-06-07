@@ -44,7 +44,7 @@ export const ModalContainer = styled(AppBar)<ModalHeaderAppBarProps>(
 
 export const ModalContent = styled(Grid)<GridProps>(({ theme }) => ({
   alignItems: 'center',
-  gap: '28px',
+  gap: '26px',
   padding: theme.spacing(0, 6),
   justifyContent: 'space-between',
   [theme.breakpoints.up('md' as Breakpoint)]: {

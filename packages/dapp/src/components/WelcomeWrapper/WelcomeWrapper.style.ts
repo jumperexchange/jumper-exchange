@@ -34,13 +34,36 @@ export const ContentContainer = styled(Box, {
   textAlign: 'center',
   bottom: 0,
   height: 'auto',
+  background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
   width: '100%',
-  position: showWelcome && showFadeOut ? 'absolute' : 'inherit',
+  position:
+    showWelcome && !showFadeOut
+      ? 'relative'
+      : showWelcome && showFadeOut
+      ? 'sticky'
+      : 'inherit',
+  zIndex: '1500',
   top: showWelcome && showFadeOut && '50%',
   padding: theme.spacing(20, 2, 8),
   [`@media screen and (min-height: 490px)`]: {
     transform: 'unset',
     bottom: 0,
     padding: theme.spacing(2, 2, 8),
+  },
+
+  '&:before': {
+    content: '" "',
+    position: 'absolute',
+    height: '200px',
+    pointerEvents: 'none',
+    left: '0',
+    right: '0',
+    top: '-200px',
+    /* background-color: '#F3EBFF', */
+    background:
+      theme.palette.mode === 'dark'
+        ? 'linear-gradient(to top, #1A1033 0%, transparent 100%)'
+        : 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)',
+    zIndex: '1000',
   },
 }));
