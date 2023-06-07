@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { OnRamperIFrame } from './index';
 
 function removeHash(str) {
@@ -41,17 +41,12 @@ export const OnRamper = () => {
   );
   const onRamperSrc = `https://buy.onramper.com/?${searchParams.toString()}`;
   return (
-    <Box
-      className="onramper-container"
-      sx={{ overflow: 'visible', textAlign: 'center' }}
-    >
-      <OnRamperIFrame
-        src={onRamperSrc}
-        height="550px"
-        width="392px"
-        title="Onramper widget"
-        allow="accelerometer; autoplay; camera; gyroscope; payment"
-      ></OnRamperIFrame>
-    </Box>
+    <OnRamperIFrame
+      src={onRamperSrc}
+      height="560px"
+      width="392px"
+      title="Onramper widget"
+      allow="accelerometer; autoplay; camera; gyroscope; payment"
+    ></OnRamperIFrame>
   );
 };
