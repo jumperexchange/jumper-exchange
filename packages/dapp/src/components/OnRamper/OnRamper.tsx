@@ -1,5 +1,4 @@
 import { useTheme } from '@mui/material';
-import { OnRamperIFrame } from './index';
 
 function removeHash(str) {
   if (str.startsWith('#')) {
@@ -41,12 +40,23 @@ export const OnRamper = () => {
   );
   const onRamperSrc = `https://buy.onramper.com/?${searchParams.toString()}`;
   return (
-    <OnRamperIFrame
+    <iframe
+      style={{
+        borderRadius: '12px',
+        border: 'unset',
+        margin: `0 auto`,
+        maxWidth: '392px',
+        minWidth: '375px',
+        boxShadow:
+          theme.palette.mode === 'light'
+            ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+            : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+      }}
       src={onRamperSrc}
       height="560px"
       width="392px"
       title="Onramper widget"
       allow="accelerometer; autoplay; camera; gyroscope; payment"
-    ></OnRamperIFrame>
+    ></iframe>
   );
 };
