@@ -31,11 +31,20 @@ export interface ContentContainerProps extends Omit<BoxProps, 'component'> {
 export const ContentContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'showWelcome' && prop !== 'showFadeOut',
 })<ContentContainerProps>(({ theme, showWelcome, showFadeOut }) => ({
+  '@keyframes fadeOut': {
+    from: {
+      opacity: 1,
+    },
+    to: {
+      opacity: 0,
+    },
+  },
   textAlign: 'center',
   bottom: 0,
   height: 'auto',
   background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
   width: '100%',
+  animation: showWelcome && showFadeOut && 'fadeOut .6s 1 ease',
   position:
     showWelcome && !showFadeOut
       ? 'relative'
@@ -44,11 +53,18 @@ export const ContentContainer = styled(Box, {
       : 'inherit',
   zIndex: '1500',
   top: showWelcome && showFadeOut && '50%',
-  padding: theme.spacing(20, 2, 8),
+  padding: theme.spacing(0, 2, 8),
+  overflow: showWelcome && showFadeOut && 'hidden',
   [`@media screen and (min-height: 490px)`]: {
     transform: 'unset',
     bottom: 0,
+    position: 'absolute',
     padding: theme.spacing(2, 2, 8),
+  },
+
+  [`@media screen and (min-height: 810px)`]: {
+    position: showWelcome && !showFadeOut && 'absolute',
+    height: showWelcome && !showFadeOut && '50%',
   },
 
   '&:before': {

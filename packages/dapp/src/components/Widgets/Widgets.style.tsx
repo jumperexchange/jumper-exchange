@@ -34,20 +34,29 @@ export const WidgetContainer = styled(Box, {
   overflow: 'visible',
   width: '392px',
   margin: 'auto',
-  height:
+  maxHeight:
     showWelcome && !showFadeOut
-      ? `calc( 50% - ${NavbarHeight.XS} / 2 )`
+      ? '50%'
+      : showWelcome && showFadeOut
+      ? `calc( 100svh - ${NavbarHeight.XS} )`
       : 'auto',
-  minHeight:
-    showWelcome && !showFadeOut && `calc( 50% - ${NavbarHeight.XS} / 2 )`,
+  minHeight: showWelcome && !showFadeOut && '50%',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     height:
-      showWelcome && !showFadeOut && `calc( 50% - ${NavbarHeight.SM} / 2 )`,
+      showWelcome && !showFadeOut
+        ? '50%'
+        : showWelcome && showFadeOut
+        ? `calc( 100svh - ${NavbarHeight.SM} )`
+        : 'auto',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     height:
-      showWelcome && !showFadeOut && `calc( 50% - ${NavbarHeight.LG} / 2 )`,
+      showWelcome && !showFadeOut
+        ? '50%'
+        : showWelcome && showFadeOut
+        ? `calc( 100svh - ${NavbarHeight.LG} )`
+        : 'auto',
   },
 
   '& .widget-wrapper > div, & > .onramper-wrapper .onramper-container': {
@@ -65,29 +74,32 @@ export const WidgetContainer = styled(Box, {
     overflow: showWelcome && !showFadeOut ? 'hidden' : 'visible',
   },
 
-  '& .widget-wrapper > div:before, & > .onramper-wrapper  .onramper-container:before':
-    {
-      content: showWelcome && !showFadeOut && '" "',
-      position: 'absolute',
-      left: 0,
-      zIndex: 900,
-      cursor: 'pointer',
-      right: 0,
-      bottom: 0,
-      top: theme.spacing(6),
-      background:
-        theme.palette.mode === 'dark'
-          ? 'linear-gradient(180deg, transparent 0%, #000000 50%, #000000 100%)'
-          : 'linear-gradient(180deg, transparent 0%, #ffffff 50%, #ffffff 100%)',
+  '& .widget-wrapper > div:before, & > .onramper-wrapper:after': {
+    content: showWelcome && !showFadeOut && '" "',
+    position: 'absolute',
+    left: 0,
+    zIndex: 900,
+    cursor: 'pointer',
+    right: 0,
+    bottom: 0,
+    top: theme.spacing(6),
+    background:
+      theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, transparent 0%, #000000 50%, #000000 100%)'
+        : 'linear-gradient(180deg, transparent 0%, #ffffff 50%, #ffffff 100%)',
 
-      opacity: 0.5,
-      margin: 'auto',
-      transitionProperty: showWelcome && 'opacity, top, background',
-      transitionDuration: showWelcome && '.3s',
-      transitionTimingFunction: showWelcome && 'ease-in-out',
-      borderTopRightRadius: '12px',
-      borderTopLeftRadius: '12px',
-    },
+    opacity: 0.5,
+    margin: 'auto',
+    transitionProperty: showWelcome && 'opacity, top, background',
+    transitionDuration: showWelcome && '.3s',
+    transitionTimingFunction: showWelcome && 'ease-in-out',
+    borderTopRightRadius: '12px',
+    borderTopLeftRadius: '12px',
+  },
+
+  '& > .onramper-wrapper:after': {
+    top: 0,
+  },
 
   '& .widget-wrapper > div:hover:before, & > .onramper-wrapper  .onramper-container:hover:before':
     {
@@ -104,10 +116,11 @@ export const WidgetContainer = styled(Box, {
 
   '& > .widget-wrapper, & > .onramper-wrapper': {
     overflow: showWelcome && !showFadeOut && 'visible',
-    transform:
-      showWelcome &&
-      !showFadeOut &&
-      `translateY(calc( 100% - ${WidgetTopOffset} ))`,
+    width: showWelcome && !showFadeOut && '100%',
+    position: showWelcome && !showFadeOut && 'absolute',
+    bottom: showWelcome && !showFadeOut && '0',
+    height: showWelcome && !showFadeOut && '62%',
+    maxHeight: showWelcome && !showFadeOut && '350px',
     animation: showWelcome && showFadeOut && 'moveToOrigin .6s 1 ease',
   },
 

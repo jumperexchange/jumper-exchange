@@ -79,7 +79,7 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     alignItems: 'center',
     height: NavbarHeight.XS,
     padding: theme.spacing(2, 4),
-    zIndex: 1500,
+    zIndex: 1600,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       height: NavbarHeight.SM,
       padding: theme.spacing(4, 6),

@@ -22,7 +22,6 @@ export const WelcomeWrapper = ({
   return (
     <Box
       sx={{
-        overflow: showWelcome && showFadeOut && 'hidden',
         paddingTop: !showWelcome && !showFadeOut && theme.spacing(7),
 
         '&:after': {
@@ -42,6 +41,23 @@ export const WelcomeWrapper = ({
         },
         height:
           showWelcome && !showFadeOut && `calc( 100vh - ${NavbarHeight.XS} )`,
+        overflow: showWelcome && showFadeOut ? 'hidden' : 'visible',
+        // overflow: 'hidden',
+
+        [`@media screen and (max-height: 810px)`]: {
+          top: showWelcome && !showFadeOut && '0',
+          position: showWelcome && !showFadeOut && 'absolute',
+          left: showWelcome && !showFadeOut && '0',
+          width: showWelcome && !showFadeOut ? '100%' : 'auto',
+          overflow: showWelcome && !showFadeOut && 'hidden',
+          height:
+            showWelcome && !showFadeOut
+              ? '100%'
+              : showWelcome && showFadeOut
+              ? `calc( 100vh - ${NavbarHeight.SM} )`
+              : 'auto',
+        },
+
         [theme.breakpoints.up('sm' as Breakpoint)]: {
           height: `calc( 100vh - ${NavbarHeight.SM} )`,
         },
