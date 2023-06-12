@@ -1,12 +1,19 @@
+import { useQuery } from '@apollo/client';
+import { getGlossaryById } from '../../graphql/queries/featureCards';
 import { FeatureCard } from './FeatureCard';
 import { FeatureCardsContainer } from './index';
 
 export const FeatureCards = () => {
+  const { loading, error, data } = useQuery(getGlossaryById);
+  console.log('data', data);
   return (
     <FeatureCardsContainer>
       <FeatureCard
-        title="Introducing insurance"
-        subtitle="Insure 100% of tokens in transit from hacks and exploits"
+        error={error}
+        loading={loading}
+        title={data?.featureCard.title}
+        subtitle={data?.featureCard.subtitle}
+        gradient={data?.featureCard.gradientColor}
       />
     </FeatureCardsContainer>
   );

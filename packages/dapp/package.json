@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@apollo/client": "^3.7.15",
     "@arcxmoney/analytics": "^1.9.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
@@ -19,7 +20,9 @@
     "@types/react": "^18.2.8",
     "@widgetbot/react-embed": "^1.7.0",
     "axios": "^1.4.0",
+    "contentful": "^10.2.3",
     "ethers": "^5.7.2",
+    "graphql": "^16.6.0",
     "i18next": "^22.5.0",
     "i18next-browser-languagedetector": "^7.0.2",
     "react": "^18.2.0",
@@ -36,6 +39,8 @@
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/introspection": "^4.0.0",
     "@lerna/run": "^6.6.2",
     "@types/react": "^18.2.8",
     "@types/react-dom": "^18.2.4",
@@ -63,7 +68,8 @@
     "build:testnet": "tsc && vite build --mode testnet",
     "build:develop": "tsc && vite build --mode development",
     "build:staging": "tsc && vite build --mode staging",
-    "build:production": "tsc && vite build --mode production"
+    "build:production": "tsc && vite build --mode production",
+    "codegen": "graphql-codegen --config codegen-config.ts"
   },
   "browserslist": {
     "production": [
