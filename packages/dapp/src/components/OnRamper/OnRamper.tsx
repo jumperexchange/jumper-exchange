@@ -43,7 +43,7 @@ export const OnRamper = () => {
   return (
     <OnRamperIFrame
       src={onRamperSrc}
-      height="540px"
+      height="560px"
       width="392px"
       title="Onramper widget"
       allow="accelerometer; autoplay; camera; gyroscope; payment"
