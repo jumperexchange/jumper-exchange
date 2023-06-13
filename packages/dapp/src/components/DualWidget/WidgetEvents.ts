@@ -3,6 +3,7 @@ import { useUserTracking } from '../../hooks';
 
 import {
   RouteExecutionUpdate,
+  RouteHighValueLossUpdate,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
@@ -11,7 +12,7 @@ import { TrackingActions, TrackingCategories } from '../../const';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
-  const { trackEvent, trackTransaction } = useUserTracking();
+  const { trackEvent, trackTransaction, trackAttribute } = useUserTracking();
 
   const widgetEvents = useWidgetEvents();
 
@@ -91,6 +92,18 @@ export function WidgetEvents() {
       });
     };
 
+    const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
+      trackEvent({
+        action: TrackingActions.OnRouteHighValueLoss,
+        category: TrackingCategories.WidgetEvent,
+        label: 'click-highValueLossAccepted',
+        data: {
+          ...update,
+          timestamp: Date.now(),
+        },
+      });
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -98,9 +111,10 @@ export function WidgetEvents() {
       onRouteExecutionCompleted,
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
+    widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
 
     return () => widgetEvents.all.clear();
-  }, [trackEvent, trackTransaction, widgetEvents]);
+  }, [trackAttribute, trackEvent, trackTransaction, widgetEvents]);
 
   return null;
 }

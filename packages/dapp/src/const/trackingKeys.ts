@@ -19,6 +19,7 @@ export enum TrackingActions {
   OnRouteExecutionCompleted = 'onRouteExecutionCompleted',
   OnRouteExecutionFailed = 'onRouteExecutionFailed',
   OnRouteExecutionUpdated = 'onRouteExecutionUpdated',
+  OnRouteHighValueLoss = 'onRouteHighValueLoss',
   WalletMenu = 'open-wallet-menu',
   OpenSubmenu = 'open-submenu',
   OpenSupportModal = 'open-support-modal',
