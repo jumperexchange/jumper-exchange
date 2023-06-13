@@ -9,7 +9,7 @@ import { ContentContainer, CustomColor } from './WelcomeWrapper.style';
 export const WelcomeWrapper = ({
   children,
   showWelcome,
-  showFadeOut,
+
   handleGetStarted,
 }) => {
   const theme = useTheme();
@@ -22,10 +22,10 @@ export const WelcomeWrapper = ({
   return (
     <Box
       sx={{
-        paddingTop: !showWelcome && !showFadeOut && theme.spacing(7),
+        paddingTop: !showWelcome && theme.spacing(7),
 
         '&:after': {
-          content: showWelcome && !showFadeOut && '" "',
+          content: showWelcome && '" "',
           top: 0,
           position: 'absolute',
           left: 0,
@@ -33,49 +33,41 @@ export const WelcomeWrapper = ({
           right: 0,
           bottom: 0,
           background:
-            showWelcome && !showFadeOut && theme.palette.mode === 'dark'
+            showWelcome && theme.palette.mode === 'dark'
               ? 'linear-gradient(180deg, rgba(26, 16, 51, 0) 0%, #1A1033 21.15%)'
-              : showWelcome && !showFadeOut && theme.palette.mode === 'light'
+              : showWelcome && theme.palette.mode === 'light'
               ? 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebffd4 21.15%)'
               : 'unset',
         },
-        height:
-          showWelcome && !showFadeOut && `calc( 100vh - ${NavbarHeight.XS} )`,
-        overflow: showWelcome && showFadeOut ? 'hidden' : 'visible',
-        // overflow: 'hidden',
+        height: showWelcome && `calc( 100vh - ${NavbarHeight.XS} )`,
+        overflow: showWelcome ? 'visible' : 'hidden',
 
         [`@media screen and (max-height: 810px)`]: {
-          top: showWelcome && !showFadeOut && '0',
-          position: showWelcome && !showFadeOut && 'absolute',
-          left: showWelcome && !showFadeOut && '0',
-          width: showWelcome && !showFadeOut ? '100%' : 'auto',
-          overflow: showWelcome && !showFadeOut && 'hidden',
-          height:
-            showWelcome && !showFadeOut
-              ? '100%'
-              : showWelcome && showFadeOut
-              ? `calc( 100vh - ${NavbarHeight.SM} )`
-              : 'auto',
+          top: showWelcome && '0',
+          position: showWelcome && 'absolute',
+          left: showWelcome && '0',
+          width: showWelcome ? '100%' : 'auto',
+          overflow: showWelcome ? 'hidden' : 'visible',
+          height: showWelcome ? '100%' : 'auto',
         },
 
         [theme.breakpoints.up('sm' as Breakpoint)]: {
-          height: `calc( 100vh - ${NavbarHeight.SM} )`,
+          height: showWelcome ? `calc( 100vh - ${NavbarHeight.SM} )` : 'auto',
         },
         [theme.breakpoints.up('md' as Breakpoint)]: {
-          height: `calc( 100vh - ${NavbarHeight.LG} )`,
+          height: showWelcome ? `calc( 100vh - ${NavbarHeight.LG} )` : 'auto',
         },
       }}
     >
       {children}
       <Slide
         direction="up"
-        in={!showFadeOut}
         unmountOnExit
         appear={false}
         timeout={400}
+        in={showWelcome}
       >
         <ContentContainer
-          showFadeOut={showFadeOut}
           showWelcome={showWelcome}
           onClick={(event) => {
             !openChainsPopper &&

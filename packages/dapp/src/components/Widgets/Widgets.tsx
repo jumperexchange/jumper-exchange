@@ -16,7 +16,6 @@ import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
 export function Widgets() {
-  const [showFadeOut, setShowFadeOut] = useState(false);
   const [activeTab, onChangeTab] = useSettingsStore(
     (state) => [state.activeTab, state.onChangeTab],
     shallow,
@@ -73,10 +72,8 @@ export function Widgets() {
       return 0;
     } else {
       event.stopPropagation();
-      setShowFadeOut(true);
-      await setTimeout(() => {
-        setShowWelcome(false);
-      }, 600);
+      setShowWelcome(false);
+      await setTimeout(() => {}, 600);
     }
   };
 
@@ -97,7 +94,6 @@ export function Widgets() {
   return (
     <WelcomeWrapper
       showWelcome={showWelcomeWrapper}
-      showFadeOut={showFadeOut}
       handleGetStarted={handleGetStarted}
     >
       {import.meta.env.MODE === 'testnet' && (
@@ -108,7 +104,6 @@ export function Widgets() {
       <WidgetContainer
         onClick={handleGetStarted}
         showWelcome={showWelcomeWrapper}
-        showFadeOut={showFadeOut}
         isActive={_starterVariant === 'expandable'}
         sx={{
           opacity: '1',
@@ -121,7 +116,6 @@ export function Widgets() {
       <WidgetContainer
         onClick={handleGetStarted}
         showWelcome={showWelcomeWrapper}
-        showFadeOut={showFadeOut}
         isActive={_starterVariant === 'refuel'}
       >
         <Widget starterVariant={'refuel'} />
@@ -130,7 +124,6 @@ export function Widgets() {
         <WidgetContainer
           onClick={handleGetStarted}
           showWelcome={showWelcomeWrapper}
-          showFadeOut={showFadeOut}
           isActive={_starterVariant === 'buy'}
         >
           <div className="onramper-wrapper">

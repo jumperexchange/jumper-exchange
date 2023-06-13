@@ -25,12 +25,11 @@ export const ColoredContainer = styled(Box)(({ theme }) => ({
 
 export interface ContentContainerProps extends Omit<BoxProps, 'component'> {
   showWelcome?: boolean;
-  showFadeOut?: boolean;
 }
 
 export const ContentContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'showWelcome' && prop !== 'showFadeOut',
-})<ContentContainerProps>(({ theme, showWelcome, showFadeOut }) => ({
+  shouldForwardProp: (prop) => prop !== 'showWelcome',
+})<ContentContainerProps>(({ theme, showWelcome }) => ({
   '@keyframes fadeOut': {
     from: {
       opacity: 1,
@@ -41,30 +40,20 @@ export const ContentContainer = styled(Box, {
   },
   textAlign: 'center',
   bottom: 0,
-  height: 'auto',
+  height: showWelcome ? '100%' : 'auto',
+  minHeight: '340px',
   background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
   width: '100%',
-  animation: showWelcome && showFadeOut && 'fadeOut .6s 1 ease',
-  position:
-    showWelcome && !showFadeOut
-      ? 'relative'
-      : showWelcome && showFadeOut
-      ? 'sticky'
-      : 'inherit',
-  zIndex: '1500',
-  top: showWelcome && showFadeOut && '50%',
+  position: showWelcome ? 'absolute' : 'inherit',
+  zIndex: '1400',
+  top: showWelcome && '50%',
   padding: theme.spacing(0, 2, 8),
-  overflow: showWelcome && showFadeOut && 'hidden',
+  overflow: showWelcome ? 'visible' : 'hidden',
   [`@media screen and (min-height: 490px)`]: {
-    transform: 'unset',
     bottom: 0,
     position: 'absolute',
+    height: showWelcome && '50%',
     padding: theme.spacing(2, 2, 8),
-  },
-
-  [`@media screen and (min-height: 810px)`]: {
-    position: showWelcome && !showFadeOut && 'absolute',
-    height: showWelcome && !showFadeOut && '50%',
   },
 
   '&:before': {
