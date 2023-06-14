@@ -44,14 +44,12 @@ export const ContentContainer = styled(Box, {
   minHeight: '340px',
   background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
   width: '100%',
-  position: showWelcome ? 'absolute' : 'inherit',
+  position: 'absolute',
   zIndex: '1400',
   top: showWelcome && '50%',
   padding: theme.spacing(0, 2, 8),
   overflow: showWelcome ? 'visible' : 'hidden',
   [`@media screen and (min-height: 490px)`]: {
-    bottom: 0,
-    position: 'absolute',
     height: showWelcome && '50%',
     padding: theme.spacing(2, 2, 8),
   },
@@ -64,7 +62,6 @@ export const ContentContainer = styled(Box, {
     left: '0',
     right: '0',
     top: '-200px',
-    /* background-color: '#F3EBFF', */
     background:
       theme.palette.mode === 'dark'
         ? 'linear-gradient(to top, #1A1033 0%, transparent 100%)'

@@ -22,7 +22,29 @@ export const WelcomeWrapper = ({
   return (
     <Box
       sx={{
-        paddingTop: !showWelcome && theme.spacing(7),
+        // paddingTop: !showWelcome && theme.spacing(7),
+        maxHeight: showWelcome && `calc( 100vh - ${NavbarHeight.XS} )`,
+        overflow: showWelcome ? 'visible' : 'hidden',
+
+        // [`@media screen and (max-height: 810px)`]: {
+        //   top: showWelcome && '0',
+        //   position: showWelcome && 'absolute',
+        //   left: showWelcome && '0',
+        //   width: showWelcome ? '100%' : 'auto',
+        //   overflow: showWelcome ? 'hidden' : 'visible',
+        //   height: showWelcome ? '100%' : 'auto',
+        // },
+
+        [theme.breakpoints.up('sm' as Breakpoint)]: {
+          maxHeight: showWelcome
+            ? `calc( 100vh - ${NavbarHeight.SM} )`
+            : 'auto',
+        },
+        [theme.breakpoints.up('md' as Breakpoint)]: {
+          maxHeight: showWelcome
+            ? `calc( 100vh - ${NavbarHeight.LG} )`
+            : 'auto',
+        },
 
         '&:after': {
           content: showWelcome && '" "',
@@ -38,24 +60,6 @@ export const WelcomeWrapper = ({
               : showWelcome && theme.palette.mode === 'light'
               ? 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebffd4 21.15%)'
               : 'unset',
-        },
-        height: showWelcome && `calc( 100vh - ${NavbarHeight.XS} )`,
-        overflow: showWelcome ? 'visible' : 'hidden',
-
-        [`@media screen and (max-height: 810px)`]: {
-          top: showWelcome && '0',
-          position: showWelcome && 'absolute',
-          left: showWelcome && '0',
-          width: showWelcome ? '100%' : 'auto',
-          overflow: showWelcome ? 'hidden' : 'visible',
-          height: showWelcome ? '100%' : 'auto',
-        },
-
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          height: showWelcome ? `calc( 100vh - ${NavbarHeight.SM} )` : 'auto',
-        },
-        [theme.breakpoints.up('md' as Breakpoint)]: {
-          height: showWelcome ? `calc( 100vh - ${NavbarHeight.LG} )` : 'auto',
         },
       }}
     >

@@ -1,6 +1,5 @@
-import { Box, BoxProps, Breakpoint } from '@mui/material';
+import { Box, BoxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { NavbarHeight } from '../Navbar/Navbar.style';
 
 export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
   isActive?: boolean;
@@ -10,7 +9,7 @@ export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
 export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isActive' && prop !== 'showWelcome',
 })<WidgetContainerProps>(({ theme, isActive, showWelcome }) => ({
-  display: isActive && showWelcome ? 'flex' : 'none',
+  display: isActive ? 'inherit' : 'none',
   placeContent: 'center',
   position: showWelcome ? 'relative' : 'inherit',
   zIndex: showWelcome && 1400,
@@ -20,21 +19,10 @@ export const WidgetContainer = styled(Box, {
   maxHeight: showWelcome ? '50%' : 'auto',
   minHeight: isActive && showWelcome && '50%',
 
-  [`@media screen and (min-height: 490px)`]: {
-    display: isActive && 'inherit',
-  },
-
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: showWelcome ? `calc( 100svh - ${NavbarHeight.SM} )` : 'auto',
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    height: showWelcome ? `calc( 100svh - ${NavbarHeight.LG} )` : 'auto',
-  },
-
   '& .widget-wrapper > div, & > .onramper-wrapper .onramper-container': {
     alignSelf: 'flex-end',
     height: '100%',
-    maxHeight: showWelcome ? '350px' : '100%',
+    maxHeight: showWelcome ? '250px' : '100%',
     display: 'flex',
     overflow: showWelcome ? 'hidden' : 'visible',
   },
@@ -76,24 +64,32 @@ export const WidgetContainer = styled(Box, {
     },
 
   '& > .widget-wrapper > div, & > .onramper-wrapper': {
-    paddingTop: showWelcome && theme.spacing(6),
+    overflow: 'hidden',
+    paddingTop: showWelcome ? theme.spacing(6) : theme.spacing(7),
     transitionProperty: showWelcome && 'padding-top',
     transitionDuration: showWelcome && '.3s',
     transitionTimingFunction: showWelcome && 'ease-in-out',
-    overflow: 'visible',
+    [`@media screen and (min-height: 600px)`]: {
+      overflow: 'visible',
+    },
   },
 
   '& > .widget-wrapper, & > .onramper-wrapper': {
     overflow: showWelcome && 'visible',
     width: showWelcome && '100%',
-    bottom: showWelcome && '0',
+    // position: 'absolute',
+    // top: showWelcome ? '-100%' : 'unset',
     height: showWelcome && '100%',
-    maxHeight: showWelcome && '350px',
-    transitionProperty: 'margin-top, padding-top, translateY',
+    maxHeight: showWelcome && '250px',
+    transitionProperty: 'margin-top, padding-top, transform',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    marginTop: showWelcome ? '100%' : '0',
-    transform: showWelcome ? 'translateY( -62% )' : 'translateY( 0 )',
+    marginTop: showWelcome ? '10%' : '0',
+    // transform: showWelcome && 'translateY( 100% )',
+
+    [`@media screen and (min-height: 700px)`]: {
+      marginTop: showWelcome ? 'calc( 50vh - 75%)' : '0',
+    },
   },
 
   '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
@@ -111,8 +107,8 @@ export const WidgetContainer = styled(Box, {
     pointerEvents: 'none',
     width: '1080px',
     height: '1080px',
-    maxWidth: '100svw',
-    maxHeight: '100svh',
+    maxWidth: '90svw',
+    maxHeight: '90svh',
     transform: 'translate(-50%, -50%)',
     left: '50%',
     top: '50%',
