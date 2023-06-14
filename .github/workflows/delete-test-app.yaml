@@ -1,0 +1,24 @@
+on:
+  delete:
+    branches:
+      - 'test/**'
+
+env:
+  BRANCH_NAME: ${{ github.event.ref }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
+    name: Delete Cloudflare Page
+    steps:
+      - name: Delete preview project
+        run: |
+          export PROJECT_NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
+          curl --request DELETE \
+            --url https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/$PROJECT_NAME \
+            --header 'Content-Type: application/json' \
+            --header 'Authorization: Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
