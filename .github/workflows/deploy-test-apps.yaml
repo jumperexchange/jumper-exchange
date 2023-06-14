@@ -28,5 +28,5 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: secrets.CF_ACCOUNT_ID
           CLOUDFLARE_API_TOKEN: secrets.CF_PAGES_API_TOKEN
         run: |
-          yarn install --dev wrangler
+          yarn add --dev wrangler
           npx wrangler pages deploy ./packages/dapp/dist/ --project-name test --branch ${{ env.BRANCH_NAME }}
