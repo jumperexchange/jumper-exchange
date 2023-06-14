@@ -19,6 +19,10 @@ export const WidgetContainer = styled(Box, {
   maxHeight: showWelcome ? '50%' : 'auto',
   minHeight: isActive && showWelcome && '50%',
 
+  [`@media screen and (min-width: 392px)`]: {
+    overflow: showWelcome ? 'visible' : 'hidden',
+  },
+
   '& .widget-wrapper > div, & > .onramper-wrapper .onramper-container': {
     alignSelf: 'flex-end',
     height: '100%',
@@ -74,15 +78,12 @@ export const WidgetContainer = styled(Box, {
   '& > .widget-wrapper, & > .onramper-wrapper': {
     overflow: showWelcome && 'visible',
     width: showWelcome && '100%',
-    // position: 'absolute',
-    // top: showWelcome ? '-100%' : 'unset',
     height: showWelcome && '100%',
     maxHeight: showWelcome && '250px',
     transitionProperty: 'margin-top, padding-top, transform',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
     marginTop: showWelcome ? '10%' : '0',
-    // transform: showWelcome && 'translateY( 100% )',
 
     [`@media screen and (min-height: 700px)`]: {
       marginTop: showWelcome ? 'calc( 50vh - 75%)' : '0',
@@ -108,8 +109,8 @@ export const WidgetContainer = styled(Box, {
     pointerEvents: 'none',
     width: '1080px',
     height: '1080px',
-    maxWidth: '90svw',
-    maxHeight: '90svh',
+    maxWidth: '90vw',
+    maxHeight: '90vh',
     transform: 'translate(-50%, -50%)',
     left: '50%',
     top: '50%',

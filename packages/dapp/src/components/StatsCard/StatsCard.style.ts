@@ -3,6 +3,7 @@ import { alpha } from '@mui/material/styles';
 
 export const Container = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(8),
+  flexWrap: 'wrap',
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(4),

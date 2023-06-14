@@ -23,7 +23,11 @@ export const WelcomeWrapper = ({
     <Box
       sx={{
         maxHeight: showWelcome && `calc( 100vh - ${NavbarHeight.XS} )`,
-        overflow: showWelcome ? 'visible' : 'hidden',
+        overflow: showWelcome ? 'hidden' : 'hidden',
+
+        [`@media screen and (min-width: 392px)`]: {
+          overflow: showWelcome ? 'visible' : 'hidden',
+        },
 
         [theme.breakpoints.up('sm' as Breakpoint)]: {
           maxHeight: showWelcome

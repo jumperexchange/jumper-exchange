@@ -40,8 +40,8 @@ export const ContentContainer = styled(Box, {
   },
   textAlign: 'center',
   bottom: 0,
-  height: showWelcome ? '100%' : 'auto',
-  minHeight: '340px',
+  height: showWelcome ? '50%' : 'auto',
+  minHeight: showWelcome && 'fit-content',
   background: theme.palette.mode === 'dark' ? '#1A1033' : '#F3EBFF',
   width: '100%',
   position: 'absolute',
@@ -49,23 +49,28 @@ export const ContentContainer = styled(Box, {
   top: showWelcome && '50%',
   padding: theme.spacing(0, 2, 8),
   overflow: showWelcome ? 'visible' : 'hidden',
-  [`@media screen and (min-height: 490px)`]: {
-    height: showWelcome && '50%',
-    padding: theme.spacing(2, 2, 8),
-  },
 
   '&:before': {
     content: '" "',
     position: 'absolute',
-    height: '200px',
+    height: '35%',
+    top: '-35%',
     pointerEvents: 'none',
     left: '0',
     right: '0',
-    top: '-200px',
     background:
       theme.palette.mode === 'dark'
         ? 'linear-gradient(to top, #1A1033 0%, transparent 100%)'
         : 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)',
     zIndex: '1000',
+  },
+
+  [`@media screen and (min-height: 490px)`]: {
+    padding: theme.spacing(2, 2, 6),
+
+    '&:before': {
+      top: '-200px',
+      height: '200px',
+    },
   },
 }));
