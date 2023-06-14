@@ -22,18 +22,8 @@ export const WelcomeWrapper = ({
   return (
     <Box
       sx={{
-        // paddingTop: !showWelcome && theme.spacing(7),
         maxHeight: showWelcome && `calc( 100vh - ${NavbarHeight.XS} )`,
         overflow: showWelcome ? 'visible' : 'hidden',
-
-        // [`@media screen and (max-height: 810px)`]: {
-        //   top: showWelcome && '0',
-        //   position: showWelcome && 'absolute',
-        //   left: showWelcome && '0',
-        //   width: showWelcome ? '100%' : 'auto',
-        //   overflow: showWelcome ? 'hidden' : 'visible',
-        //   height: showWelcome ? '100%' : 'auto',
-        // },
 
         [theme.breakpoints.up('sm' as Breakpoint)]: {
           maxHeight: showWelcome
