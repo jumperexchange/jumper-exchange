@@ -1,7 +1,7 @@
 on:
   pull_request:
     branches:
-      - 'auto-**'
+      - 'auto-deployments'
       # - 'test/**'
 
 jobs:
