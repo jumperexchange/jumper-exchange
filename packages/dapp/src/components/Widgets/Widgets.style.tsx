@@ -15,7 +15,7 @@ export const WidgetContainer = styled(Box, {
   zIndex: showWelcome && 1400,
   overflow: 'visible',
   width: '392px',
-  margin: 'auto',
+  margin: '0 auto 24px auto',
   maxHeight: showWelcome ? '50%' : 'auto',
   minHeight: isActive && showWelcome && '50%',
 

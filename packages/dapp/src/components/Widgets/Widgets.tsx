@@ -105,11 +105,6 @@ export function Widgets() {
         onClick={handleGetStarted}
         showWelcome={showWelcomeWrapper}
         isActive={_starterVariant === 'expandable'}
-        sx={{
-          opacity: '1',
-          transition: 'opacity 500ms',
-          zIndex: 100,
-        }}
       >
         <Widget starterVariant={'expandable'} />
       </WidgetContainer>
