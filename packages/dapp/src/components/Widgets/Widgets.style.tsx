@@ -55,10 +55,6 @@ export const WidgetContainer = styled(Box, {
     borderTopLeftRadius: '12px',
   },
 
-  '& > .onramper-wrapper:after': {
-    top: 0,
-  },
-
   '& .widget-wrapper > div:hover:before, & > .onramper-wrapper .onramper-container:hover:before':
     {
       opacity: 0,
