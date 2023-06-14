@@ -39,6 +39,7 @@ export const WidgetContainer = styled(Box, {
     cursor: 'pointer',
     right: 0,
     bottom: 0,
+    top: '48px',
     height: '100%',
     background:
       theme.palette.mode === 'dark'
