@@ -89,6 +89,10 @@ export const WidgetContainer = styled(Box, {
     },
   },
 
+  '& > .onramper-wrapper': {
+    overflow: showWelcome ? 'hidden' : 'visible',
+  },
+
   '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
     content: showWelcome && '" "',
     transitionProperty: 'top, opacity, background',
