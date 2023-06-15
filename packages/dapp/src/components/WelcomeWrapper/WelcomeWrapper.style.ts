@@ -1,4 +1,43 @@
 import { Box, BoxProps, Breakpoint, Typography, styled } from '@mui/material';
+import { NavbarHeight } from '../Navbar/Navbar.style';
+
+export interface WrapperProps extends Omit<BoxProps, 'component'> {
+  showWelcome?: boolean;
+}
+
+export const Wrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'showWelcome',
+})<WrapperProps>(({ theme, showWelcome }) => ({
+  maxHeight: showWelcome && `calc( 100vh - ${NavbarHeight.XS} )`,
+  overflow: showWelcome ? 'hidden' : 'hidden',
+
+  [`@media screen and (min-width: 392px)`]: {
+    overflow: showWelcome ? 'visible' : 'hidden',
+  },
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.SM} )` : 'auto',
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.LG} )` : 'auto',
+  },
+
+  '&:after': {
+    content: showWelcome && '" "',
+    top: 0,
+    position: 'absolute',
+    left: 0,
+    zIndex: -1,
+    right: 0,
+    bottom: 0,
+    background:
+      showWelcome && theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, rgba(26, 16, 51, 0) 0%, #1A1033 21.15%)'
+        : showWelcome && theme.palette.mode === 'light'
+        ? 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebffd4 21.15%)'
+        : 'unset',
+  },
+}));
 
 export const CustomColor = styled(Typography)(({ theme }) => ({
   background:
