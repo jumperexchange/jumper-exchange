@@ -26,7 +26,7 @@ jobs:
 
       - name: Set Project Name
         run: |
-          export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
+          export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]' | tr '[:upper:]' '[:lower:]')
           echo "PROJECT_NAME=jumper-${NAME:0:10}" >> $GITHUB_ENV
 
       - name: Create project if not present
