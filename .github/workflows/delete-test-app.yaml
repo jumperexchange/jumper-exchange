@@ -16,7 +16,9 @@ jobs:
     name: Delete Cloudflare Page
     steps:
       - name: Set Project Name
-        run: echo "PROJECT_NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')" >> $GITHUB_ENV
+        run: |
+          export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
+          echo "PROJECT_NAME=${NAME:0:10}" >> $GITHUB_ENV
 
       - name: Delete preview project
         run: |
