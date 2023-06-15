@@ -97,12 +97,12 @@ export const WidgetContainer = styled(Box, {
   '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
     content: showWelcome && '" "',
     transitionProperty: 'top, opacity, background',
-    transitionDuration: '.3s',
+    transitionDuration: '.4s',
     transitionTimingFunction: 'ease-in-out',
     background:
       theme.palette.mode === 'dark'
         ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);'
-        : 'radial-gradient(50% 50% at 50% 50%, #9747FF 0%, rgba(255, 255, 255, 0) 100%);',
+        : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
     position: 'absolute',
     zIndex: -1,
     opacity: theme.palette.mode === 'dark' ? 0.24 : 0.12,
@@ -117,12 +117,7 @@ export const WidgetContainer = styled(Box, {
   },
 
   '& > .widget-wrapper:hover:before, & > .onramper-wrapper:hover:before': {
-    top: '50%',
-    opacity: theme.palette.mode === 'dark' ? 0.48 : 0.26,
-    background:
-      theme.palette.mode === 'dark'
-        ? 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%)'
-        : 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%)',
+    opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
   },
 
   '& > div > div:hover, & > .onramper-wrapper:hover': {
