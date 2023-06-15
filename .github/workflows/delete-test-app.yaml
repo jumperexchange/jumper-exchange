@@ -6,7 +6,7 @@ env:
 
 jobs:
   remove-test:
-    if: ${{ github.event.action == 'labeled' && github.event.label.name == 'testing' }}
+    if: contains(github.event.pull_request.labels.*.name, 'testing')
     runs-on: ubuntu-latest
     permissions:
       contents: read
