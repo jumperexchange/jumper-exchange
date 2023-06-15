@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Set Project Name
         run: |
-          export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
+          export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]' | tr '[:upper:]' '[:lower:]')
           echo "PROJECT_NAME=${NAME:0:10}" >> $GITHUB_ENV
 
       - name: Delete project if present
