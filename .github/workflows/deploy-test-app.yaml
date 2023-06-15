@@ -19,12 +19,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - name: Install dependencies
+        uses: ./.github/actions/install
 
-      - name: Build App
-        run: yarn install && yarn build
+      - name: Build project
+        run: yarn build
 
       - name: Set Project Name
         run: |
@@ -32,52 +31,64 @@ jobs:
           echo "PROJECT_NAME=${NAME:0:10}" >> $GITHUB_ENV
 
       - name: Create Project
-        run: |
-          curl --request POST \
-            --url https://api.cloudflare.com/client/v4/accounts/account_identifier/pages/projects \
-            --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer ${{ secrets.CF_PAGES_API_TOKEN }}' \
-            --data '{
-            "build_config": {
-              "build_command": "yarn run build",
-              "destination_dir": "packages/dapp/dist/",
-              "root_dir": "/",
-            },
-            "canonical_deployment": null,
-            "deployment_configs": {
-              "preview": {
-                "analytics_engine_datasets": {
-                  "ANALYTICS_ENGINE_BINDING": {
-                    "dataset": "api_analytics"
-                  }
-                },
-                "compatibility_date": "2022-01-01",
-                "compatibility_flags": [
-                  "url_standard"
-                ],
-                "placement": {
-                  "mode": "smart"
-                },
+        uses: actions/github-script@v6
+        with:
+          script: |
+            fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
               },
-              "production": {
-                "analytics_engine_datasets": {
-                  "ANALYTICS_ENGINE_BINDING": {
-                    "dataset": "api_analytics"
+              body: JSON.stringify({
+                build_config: {
+                  build_command: "yarn run build",
+                  destination_dir: "packages/dapp/dist/",
+                  root_dir: "/",
+                },
+                canonical_deployment: null,
+                deployment_configs: {
+                  preview: {
+                    analytics_engine_datasets: {
+                      ANALYTICS_ENGINE_BINDING: {
+                        dataset: "api_analytics"
+                      }
+                    },
+                    compatibility_date: "2022-01-01",
+                    compatibility_flags: [
+                      "url_standard"
+                    ],
+                    placement: {
+                      mode: "smart"
+                    },
+                  },
+                  production: {
+                    analytics_engine_datasets: {
+                      ANALYTICS_ENGINE_BINDING: {
+                        dataset: "api_analytics"
+                      }
+                    },
+                    compatibility_date: "2022-01-01",
+                    compatibility_flags: [
+                      "url_standard"
+                    ],
+                    placement: {
+                      mode: "smart"
+                    },
                   }
                 },
-                "compatibility_date": "2022-01-01",
-                "compatibility_flags": [
-                  "url_standard"
-                ],
-                "placement": {
-                  "mode": "smart"
-                },
+                latest_deployment: null,
+                name: "${{ env.PROJECT_NAME }}",
+                production_branch: "${{ env.BRANCH_NAME }}"
+              })
+            })
+            .then(r => r.json())
+            .then(r => {
+              if (!r?.success) {
+                console.log(r)
+                process.exit(1)
               }
-            },
-            "latest_deployment": null,
-            "name": "${{ env.PROJECT_NAME }}",
-            "production_branch": "${{ env.BRANCH_NAME }}"
-          }'
+            })
 
       - name: Deploy Page
         run: |
