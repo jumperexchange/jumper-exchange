@@ -43,7 +43,7 @@ export const WidgetContainer = styled(Box, {
     cursor: 'pointer',
     right: 0,
     bottom: 0,
-    top: '48px',
+    top: '0',
     height: '100%',
     background:
       theme.palette.mode === 'dark'
@@ -96,7 +96,7 @@ export const WidgetContainer = styled(Box, {
 
   '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
     content: showWelcome && '" "',
-    transitionProperty: 'top, opacity, background',
+    transitionProperty: 'top, opacity',
     transitionDuration: '.4s',
     transitionTimingFunction: 'ease-in-out',
     background:
