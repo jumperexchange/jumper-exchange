@@ -19,12 +19,12 @@ runs:
     # Yarn cache is also reusable between arch and os.
     - name: Restore yarn cache
       uses: actions/cache@v3
-      id: yarn-download-cache
+      id: cache-yarn
       with:
         path: ${{ steps.yarn-config.outputs.CACHE_FOLDER }}
-        key: yarn-download-cache-${{ hashFiles('yarn.lock') }}
+        key: cache-yarn-${{ hashFiles('yarn.lock') }}
         restore-keys: |
-          yarn-download-cache-
+          cache-yarn-
 
     - name: Install dependencies
       env:

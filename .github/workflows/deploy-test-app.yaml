@@ -43,12 +43,14 @@ jobs:
             })
             .then(r => r.json())
             .then(r => {
-              if (r.result?.name) {
+              if (r.success) {
                 // project already created
                 return
               } else if (r.error && r.error !== 'not_found') {
                 console.log(r)
                 process.exit(1)
+              } else {
+                console.log(r)
               }
               fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects', {
                 method: 'POST',
