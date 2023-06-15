@@ -70,13 +70,13 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
                   src={el.logoURI}
                   sx={{
                     margin: 'auto',
-                    height: '64px',
-                    width: '64px',
+                    height: '48px',
+                    width: '48px',
                   }}
                 />
                 <Typography
                   variant={'lifiBodyXSmall'}
-                  marginTop={'8px'}
+                  marginTop={'12px'}
                   sx={{
                     color:
                       theme.palette.mode === 'dark'

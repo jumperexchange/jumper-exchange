@@ -86,7 +86,7 @@ export const WidgetContainer = styled(Box, {
     marginTop: showWelcome ? 'calc( 10% - 24px )' : '0',
 
     [`@media screen and (min-height: 700px)`]: {
-      marginTop: showWelcome ? 'calc( 50vh - 75%)' : '0',
+      marginTop: showWelcome ? 'calc( 50vh - 90%)' : '0',
     },
   },
 
