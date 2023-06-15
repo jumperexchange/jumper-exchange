@@ -73,7 +73,6 @@ export function Widgets() {
     } else {
       event.stopPropagation();
       setShowWelcome(false);
-      await setTimeout(() => {}, 600);
     }
   };
 
