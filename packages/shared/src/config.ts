@@ -30,6 +30,7 @@ interface DefaultSettingsType {
   themeMode: ThemeModesSupported;
   languageMode: LanguageKey;
   activeWalletName: string;
+  welcomeScreenEntered: boolean;
 }
 
 export const defaultSettings: DefaultSettingsType = {
@@ -40,4 +41,5 @@ export const defaultSettings: DefaultSettingsType = {
   languageMode: setLanguage() as LanguageKey,
   activeWalletName:
     (localStorage.getItem(localStorageKey.activeWalletName) as string) || '',
+  welcomeScreenEntered: false,
 };

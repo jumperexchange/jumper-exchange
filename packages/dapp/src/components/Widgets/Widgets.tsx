@@ -16,10 +16,16 @@ import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
 export function Widgets() {
-  const [activeTab, onChangeTab] = useSettingsStore(
-    (state) => [state.activeTab, state.onChangeTab],
-    shallow,
-  );
+  const [activeTab, onChangeTab, welcomeScreenEntered, onWelcomeScreenEntered] =
+    useSettingsStore(
+      (state) => [
+        state.activeTab,
+        state.onChangeTab,
+        state.welcomeScreenEntered,
+        state.onWelcomeScreenEntered,
+      ],
+      shallow,
+    );
   const { account } = useWallet();
   const [showWelcome, setShowWelcome] = useState(true);
   const theme = useTheme();
@@ -73,6 +79,7 @@ export function Widgets() {
     } else {
       event.stopPropagation();
       setShowWelcome(false);
+      onWelcomeScreenEntered(true);
     }
   };
 
@@ -84,7 +91,8 @@ export function Widgets() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.address]);
 
-  const showWelcomeWrapper = !isWalletConnected && showWelcome;
+  const showWelcomeWrapper =
+    !welcomeScreenEntered && !isWalletConnected && showWelcome;
 
   useLayoutEffect(() => {
     getActiveWidget();
