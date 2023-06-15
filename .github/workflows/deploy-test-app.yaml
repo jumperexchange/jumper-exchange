@@ -28,7 +28,7 @@ jobs:
       - name: Set Project Name
         run: |
           export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
-          echo "PROJECT_NAME=${NAME:0:10}" >> $GITHUB_ENV
+          echo "PROJECT_NAME=jumper-${NAME:0:10}" >> $GITHUB_ENV
 
       - name: Create project if not present
         uses: actions/github-script@v6
@@ -43,12 +43,12 @@ jobs:
             })
             .then(r => r.json())
             .then(r => {
-              if (!r.result) {
-                console.log(r)
-                process.exit(1)
-              } else if (r.result.name) {
+              if (r.result?.name) {
                 // project already created
                 return
+              } else if (r.error && r.error !== 'not_found') {
+                console.log(r)
+                process.exit(1)
               }
               fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects', {
                 method: 'POST',
