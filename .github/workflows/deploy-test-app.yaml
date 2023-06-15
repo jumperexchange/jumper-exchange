@@ -34,7 +34,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/${{ env.PROJECT_NAME }}', {
+            fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ env.PROJECT_NAME }}', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -46,11 +46,9 @@ jobs:
               if (r.success) {
                 // project already created
                 return
-              } else if (r.error && r.error !== 'not_found') {
+              } else if (r.error) {
                 console.log(r)
                 process.exit(1)
-              } else {
-                console.log(r)
               }
               fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects', {
                 method: 'POST',
