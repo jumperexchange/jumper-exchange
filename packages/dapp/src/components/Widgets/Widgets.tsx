@@ -69,7 +69,7 @@ export function Widgets() {
       classList?.contains?.('stats-card') ||
       classList?.contains?.('link-lifi')
     ) {
-      return 0;
+      return;
     } else {
       event.stopPropagation();
       setShowWelcome(false);
