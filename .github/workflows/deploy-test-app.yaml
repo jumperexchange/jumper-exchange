@@ -91,6 +91,8 @@ jobs:
             })
 
       - name: Deploy Page
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_PAGES_API_TOKEN }}
         run: |
           yarn add --dev wrangler
           npx wrangler pages deploy ./packages/dapp/dist/ --project-name ${{ env.PROJECT_NAME }} --branch ${{ env.BRANCH_NAME }}
