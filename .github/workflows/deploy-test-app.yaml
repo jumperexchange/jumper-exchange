@@ -30,64 +30,81 @@ jobs:
           export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
           echo "PROJECT_NAME=${NAME:0:10}" >> $GITHUB_ENV
 
-      - name: Create Project
+      - name: Create project if not present
         uses: actions/github-script@v6
         with:
           script: |
-            fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects', {
-              method: 'POST',
+            fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/${{ env.PROJECT_NAME }}', {
+              method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
               },
-              body: JSON.stringify({
-                build_config: {
-                  build_command: "yarn run build",
-                  destination_dir: "packages/dapp/dist/",
-                  root_dir: "/",
-                },
-                canonical_deployment: null,
-                deployment_configs: {
-                  preview: {
-                    analytics_engine_datasets: {
-                      ANALYTICS_ENGINE_BINDING: {
-                        dataset: "api_analytics"
-                      }
-                    },
-                    compatibility_date: "2022-01-01",
-                    compatibility_flags: [
-                      "url_standard"
-                    ],
-                    placement: {
-                      mode: "smart"
-                    },
-                  },
-                  production: {
-                    analytics_engine_datasets: {
-                      ANALYTICS_ENGINE_BINDING: {
-                        dataset: "api_analytics"
-                      }
-                    },
-                    compatibility_date: "2022-01-01",
-                    compatibility_flags: [
-                      "url_standard"
-                    ],
-                    placement: {
-                      mode: "smart"
-                    },
-                  }
-                },
-                latest_deployment: null,
-                name: "${{ env.PROJECT_NAME }}",
-                production_branch: "${{ env.BRANCH_NAME }}"
-              })
             })
             .then(r => r.json())
             .then(r => {
-              if (!r?.success) {
+              if (!r || r.errors.length || !r.result) {
                 console.log(r)
                 process.exit(1)
+              } else if (r.result.name) {
+                // project already created
+                return
               }
+              fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
+                },
+                body: JSON.stringify({
+                  build_config: {
+                    build_command: "yarn run build",
+                    destination_dir: "packages/dapp/dist/",
+                    root_dir: "/",
+                  },
+                  canonical_deployment: null,
+                  deployment_configs: {
+                    preview: {
+                      analytics_engine_datasets: {
+                        ANALYTICS_ENGINE_BINDING: {
+                          dataset: "api_analytics"
+                        }
+                      },
+                      compatibility_date: "2022-01-01",
+                      compatibility_flags: [
+                        "url_standard"
+                      ],
+                      placement: {
+                        mode: "smart"
+                      },
+                    },
+                    production: {
+                      analytics_engine_datasets: {
+                        ANALYTICS_ENGINE_BINDING: {
+                          dataset: "api_analytics"
+                        }
+                      },
+                      compatibility_date: "2022-01-01",
+                      compatibility_flags: [
+                        "url_standard"
+                      ],
+                      placement: {
+                        mode: "smart"
+                      },
+                    }
+                  },
+                  latest_deployment: null,
+                  name: "${{ env.PROJECT_NAME }}",
+                  production_branch: "${{ env.BRANCH_NAME }}"
+                })
+              })
+              .then(r => r.json())
+              .then(r => {
+                if (!r?.success) {
+                  console.log(r)
+                  process.exit(1)
+                }
+              })
             })
 
       - name: Deploy Page
