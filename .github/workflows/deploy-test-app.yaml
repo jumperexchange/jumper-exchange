@@ -6,6 +6,7 @@ on:
 
 env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  PROJECT_NAME: jumper
 
 jobs:
   publish:
@@ -26,12 +27,26 @@ jobs:
       - name: Build App
         run: yarn install && yarn build
 
-      - name: Deploy
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_PAGES_API_TOKEN }}
-        run: |
-          yarn add --dev wrangler
-          # export PROJECT_NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
-          export PROJECT_NAME=test
-          npx wrangler pages deploy ./packages/dapp/dist/ --project-name $PROJECT_NAME --branch ${{ env.BRANCH_NAME }}
+      - name: Set Project Name
+        run: echo "PROJECT_NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')" >> $GITHUB_ENV
+
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            yarn add --dev wrangler
+            npx wrangler pages deploy ./packages/dapp/dist/ --project-name ${{ env.PROJECT_NAME }} --branch ${{ env.BRANCH_NAME }}
+            fetch("https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ env.PROJECT_NAME }}/deployments", {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
+              }
+            })
+            .then((r) => r.json())
+            .then((r) => {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: JSON.stringify(r)
+              })
+            })

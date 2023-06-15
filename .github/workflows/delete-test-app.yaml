@@ -15,10 +15,12 @@ jobs:
 
     name: Delete Cloudflare Page
     steps:
+      - name: Set Project Name
+        run: echo "PROJECT_NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')" >> $GITHUB_ENV
+
       - name: Delete preview project
         run: |
-          export PROJECT_NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
           curl --request DELETE \
-            --url https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/$PROJECT_NAME \
+            --url https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ env.PROJECT_NAME }} \
             --header 'Content-Type: application/json' \
             --header 'Authorization: Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
