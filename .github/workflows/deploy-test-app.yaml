@@ -43,7 +43,7 @@ jobs:
             })
             .then(r => r.json())
             .then(r => {
-              if (!r || r.errors.length || !r.result) {
+              if (!r.result) {
                 console.log(r)
                 process.exit(1)
               } else if (r.result.name) {
