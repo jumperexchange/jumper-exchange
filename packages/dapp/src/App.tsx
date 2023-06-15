@@ -5,6 +5,8 @@ import { Menus } from './components/Navbar/Menu/Menus';
 import { Widgets } from './components/Widgets';
 import { useInitUserTracking } from './hooks';
 
+// dummy commit to check testing deployments. TO BE REMOVED
+
 export default function App() {
   const { initTracking } = useInitUserTracking();
   useEffect(() => {
