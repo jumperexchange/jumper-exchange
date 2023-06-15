@@ -1,13 +1,12 @@
 on:
   delete:
-    branches:
-      - 'test/**'
 
 env:
   BRANCH_NAME: ${{ github.event.ref }}
 
 jobs:
-  publish:
+  remove-test:
+    if: ${{ github.event.action == 'labeled' && github.event.label.name == 'testing' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -20,9 +19,38 @@ jobs:
           export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]')
           echo "PROJECT_NAME=${NAME:0:10}" >> $GITHUB_ENV
 
-      - name: Delete preview project
-        run: |
-          curl --request DELETE \
-            --url https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ env.PROJECT_NAME }} \
-            --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
+      - name: Delete project if present
+        uses: actions/github-script@v6
+        with:
+          script: |
+            fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ env.PROJECT_NAME }}', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
+              },
+            })
+            .then(r => r.json())
+            .then(r => {
+              if (!r.success) {
+                console.log(r)
+                process.exit(1)
+              } else if (!r.result) {
+                // project not created
+                return
+              }
+              fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ env.PROJECT_NAME }}', {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ${{ secrets.CF_PAGES_API_TOKEN }}'
+                },
+              })
+              .then(r => r.json())
+              .then(r => {
+                if (!r?.success) {
+                  console.log(r)
+                  process.exit(1)
+                }
+              })
+            })

@@ -1,14 +1,12 @@
 on:
   pull_request:
-  # push:
-    # branches:
-    #   - 'test/**'
 
 env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
-  publish:
+  deploy-test:
+    if: ${{ github.event.action == 'labeled' && github.event.label.name == 'testing' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -128,14 +126,15 @@ jobs:
             })
             .then((r) => r.json())
             .then((r) => {
-              if (!r?.result?.url) {
+              if (!r.success) {
                 console.log(r)
                 process.exit(1)
               }
+              const obj = r.result[0]
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `Hey! This is your new endopint: [${r.result.url}](${r.result.url})`
+                body: `Hey! This is your new endopint: [${obj.url}](${obj.url})`
               })
             })
