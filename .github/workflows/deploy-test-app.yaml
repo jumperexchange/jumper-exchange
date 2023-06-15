@@ -13,6 +13,7 @@ jobs:
     permissions:
       contents: read
       deployments: write
+      pull-requests: write
 
     name: Publish to Cloudflare Pages
     steps:
@@ -20,10 +21,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        uses: ./.github/actions/install
+        uses: yarn install --immutable --inline-builds
 
       - name: Build project
-        run: yarn build
+        run:  yarn build
 
       - name: Set Project Name
         run: |
