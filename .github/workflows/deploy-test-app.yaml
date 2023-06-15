@@ -128,10 +128,14 @@ jobs:
             })
             .then((r) => r.json())
             .then((r) => {
+              if (!r?.result?.url) {
+                console.log(r)
+                process.exit(1)
+              }
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: JSON.stringify(r)
+                body: `Hey! This is your new endopint: [${r.result.url}](${r.result.url})`
               })
             })
