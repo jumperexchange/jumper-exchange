@@ -1,5 +1,5 @@
 import { WidgetVariant } from '@lifi/widget';
-import { Grid, useTheme } from '@mui/material';
+import { Breakpoint, Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
@@ -67,6 +67,10 @@ export function DualWidget() {
       container
       sx={{
         overflowX: 'hidden',
+        marginBottom: '80px',
+        [theme.breakpoints.up('md' as Breakpoint)]: {
+          marginBottom: '0',
+        },
       }}
     >
       {import.meta.env.MODE === 'testnet' && (

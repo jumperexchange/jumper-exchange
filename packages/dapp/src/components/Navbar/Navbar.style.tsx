@@ -170,24 +170,33 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const NavbarTabs = styled(Tabs, {
-  shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
-  display: 'none',
-  minWidth: 392,
+export const NavbarTabs = styled(Tabs)<TabsProps>(({ theme }) => ({
+  // display: 'none',
+  margin: 'auto',
+  bottom: '12px',
+  borderRadius: 28,
+  padding: 1,
+  display: 'flex',
+  zIndex: 2000,
+  alignItems: 'center',
+  position: 'fixed',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  backdropFilter: 'blur(12px)',
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? theme.palette.alphaLight100.main
+      : '#0000000A',
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    position: 'absolute',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? theme.palette.alphaLight100.main
-        : '#0000000A',
-    margin: 'auto',
-    borderRadius: 28,
-    padding: 1,
-    display: 'flex',
-    alignItems: 'center',
+    backdropFilter: 'unset',
+    minWidth: '392px',
+    boxShadow: 'unset',
+    bottom: 'unset',
+    top: '12px',
   },
   div: {
     height: '56px',
@@ -215,14 +224,11 @@ export const NavbarTabs = styled(Tabs, {
   },
 }));
 
-export const NavbarTab = styled(Tab, {
-  shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<TabProps>(({ theme }) => ({
+export const NavbarTab = styled(Tab)<TabProps>(({ theme }) => ({
   textTransform: 'initial',
   borderRadius: 24,
   letterSpacing: 0,
   display: 'flex',
-  flexGrow: 1,
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
@@ -233,7 +239,9 @@ export const NavbarTab = styled(Tab, {
   lineHeight: '20px',
   margin: '6px 4px',
   height: '48px',
-  width: '142px',
+  width: '48px',
+  minWidth: 'unset',
+  flexGrow: '0',
   minHeight: 'unset',
   color:
     theme.palette.mode === 'dark'
@@ -245,6 +253,15 @@ export const NavbarTab = styled(Tab, {
       theme.palette.mode === 'dark'
         ? theme.palette.white.main
         : theme.palette.black.main,
+  },
+  backgroundColor: alpha(theme.palette.bg.main, 0.48),
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    width: '142px',
+    flexGrow: 1,
+  },
+
+  [theme.breakpoints.up('md' as Breakpoint)]: {
     backgroundColor: 'transparent',
   },
 
@@ -282,25 +299,24 @@ export const MenuItem = styled(MUIMenuItem, {
   },
 }));
 
-export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
-  isDarkMode?: boolean;
+export interface NavbarPaperProps extends Omit<PaperProps, 'isWide'> {
   isWide?: boolean;
   component?: string;
 }
 
 export const NavbarPaper = styled(Paper, {
-  shouldForwardProp: (prop) =>
-    prop !== 'isDarkMode' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<NavbarPaperProps>(({ theme, isDarkMode, isWide }) => ({
+  shouldForwardProp: (prop) => prop !== 'isWide' && prop !== 'isSubMenu',
+})<NavbarPaperProps>(({ theme, isWide }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
-  boxShadow: !isDarkMode
-    ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-    : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - navbarHeight - offset
+  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`,
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',
@@ -362,7 +378,6 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     backdropFilter: 'blur(12px)',
     zIndex: 1400,
     overflow: 'hidden',
-    // margin: theme.spacing(0),
     margin: theme.spacing(0),
     marginTop: '0px',
     height: MenuLabelHeight,

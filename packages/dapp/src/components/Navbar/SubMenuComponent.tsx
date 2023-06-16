@@ -40,7 +40,6 @@ const SubMenuComponent = ({
   subMenuList,
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
   const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore(
     (state) => [state.openNavbarSubMenu, state.onOpenNavbarSubMenu],
     shallow,
@@ -53,12 +52,7 @@ const SubMenuComponent = ({
   }
 
   return open && openNavbarSubMenu === triggerSubMenu ? (
-    <NavbarPaper
-      onKeyDown={handleBackSpace}
-      autoFocus={open}
-      component={'ul'}
-      isDarkMode={isDarkMode}
-    >
+    <NavbarPaper onKeyDown={handleBackSpace} autoFocus={open} component={'ul'}>
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
           <>

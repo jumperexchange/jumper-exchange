@@ -25,18 +25,16 @@ const NavbarTabsContainer = () => {
     (state) => [state.activeTab, state.onChangeTab],
     shallow,
   );
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
+  const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
   const { trackEvent } = useUserTracking();
-  const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     onChangeTab(newValue);
   };
 
   return (
     <NavbarTabs
-      value={!!isDesktop ? activeTab : false}
+      value={activeTab}
       onChange={handleChange}
-      isDarkMode={isDarkMode}
       aria-label="tabs"
       indicatorColor="primary"
     >
@@ -56,13 +54,14 @@ const NavbarTabsContainer = () => {
             sx={{
               marginRight: '6px',
               marginBottom: '0px !important',
-              color: !!isDarkMode
-                ? theme.palette.white.main
-                : theme.palette.black.main,
+              color:
+                theme.palette.mode === 'dark'
+                  ? theme.palette.white.main
+                  : theme.palette.black.main,
             }}
           />
         }
-        label={translate(`${i18Path}links.swap`)}
+        label={isTablet && translate(`${i18Path}links.swap`)}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -76,15 +75,16 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         }}
-        label={translate(`${i18Path}links.refuel`)}
+        label={isTablet && translate(`${i18Path}links.refuel`)}
         icon={
           <EvStationOutlinedIcon
             sx={{
               marginRight: '6px',
               marginBottom: '0px !important',
-              color: !!isDarkMode
-                ? theme.palette.white.main
-                : theme.palette.black.main,
+              color:
+                theme.palette.mode === 'dark'
+                  ? theme.palette.white.main
+                  : theme.palette.black.main,
             }}
           />
         }
@@ -102,15 +102,16 @@ const NavbarTabsContainer = () => {
               disableTrackingTool: [EventTrackingTools.arcx],
             });
           }}
-          label={translate(`${i18Path}links.buy`)}
+          label={isTablet && translate(`${i18Path}links.buy`)}
           icon={
             <CreditCardIcon
               sx={{
                 marginRight: '6px',
                 marginBottom: '0px !important',
-                color: !!isDarkMode
-                  ? theme.palette.white.main
-                  : theme.palette.black.main,
+                color:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.white.main
+                    : theme.palette.black.main,
               }}
             />
           }
