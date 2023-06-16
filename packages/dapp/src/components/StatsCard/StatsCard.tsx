@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { useFetchDexsAndBridges } from '../../hooks';
+import { useCountUpAnimation } from '../../hooks/useCountUpAnimation';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { StatsModal } from '../StatsModal/StatsModal';
 import { Card, Container } from './StatsCard.style';
@@ -12,6 +13,7 @@ interface StatsCardProps {
 
 export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
   const theme = useTheme();
+  const counter = useCountUpAnimation({ children: number, duration: 1000 });
   return (
     <Card
       className={'stats-card'}
@@ -30,7 +32,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
           },
         }}
       >
-        {number}
+        {counter}
       </Typography>
       <Typography
         variant={'lifiBrandBodySmall'}
