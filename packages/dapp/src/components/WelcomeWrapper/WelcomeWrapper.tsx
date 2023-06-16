@@ -28,15 +28,7 @@ export const WelcomeWrapper = ({
         timeout={400}
         in={showWelcome}
       >
-        <ContentContainer
-          showWelcome={showWelcome}
-          onClick={(event) => {
-            !openChainsPopper &&
-              !openBridgesPopper &&
-              !openDexsPopper &&
-              handleGetStarted(event);
-          }}
-        >
+        <ContentContainer showWelcome={showWelcome}>
           <CustomColor variant={'lifiBrandHeaderMedium'}>
             {translate(`${i18Path}title`)}
           </CustomColor>
