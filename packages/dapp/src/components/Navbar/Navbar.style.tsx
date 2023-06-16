@@ -243,6 +243,7 @@ export const NavbarTab = styled(Tab)<TabProps>(({ theme }) => ({
   minWidth: 'unset',
   flexGrow: '0',
   minHeight: 'unset',
+  backgroundColor: 'transparent',
   color:
     theme.palette.mode === 'dark'
       ? theme.palette.white.main
@@ -254,15 +255,10 @@ export const NavbarTab = styled(Tab)<TabProps>(({ theme }) => ({
         ? theme.palette.white.main
         : theme.palette.black.main,
   },
-  backgroundColor: alpha(theme.palette.bg.main, 0.48),
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: '142px',
     flexGrow: 1,
-  },
-
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    backgroundColor: 'transparent',
   },
 
   ':hover': {
