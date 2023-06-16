@@ -177,7 +177,7 @@ export const NavbarTabs = styled(Tabs)<TabsProps>(({ theme }) => ({
   borderRadius: 28,
   padding: 1,
   display: 'flex',
-  zIndex: 2000,
+  zIndex: 1300,
   alignItems: 'center',
   position: 'fixed',
   left: '50%',
