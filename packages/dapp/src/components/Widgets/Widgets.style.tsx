@@ -43,7 +43,7 @@ export const WidgetContainer = styled(Box, {
     cursor: 'pointer',
     right: 0,
     bottom: 0,
-    top: '0',
+    top: '48px',
     height: '100%',
     background:
       theme.palette.mode === 'dark'
@@ -52,7 +52,7 @@ export const WidgetContainer = styled(Box, {
 
     opacity: 0.5,
     margin: 'auto',
-    transitionProperty: showWelcome && 'opacity, background',
+    transitionProperty: showWelcome && 'opacity, top, padding-top',
     transitionDuration: showWelcome && '.3s',
     transitionTimingFunction: showWelcome && 'ease-in-out',
     borderTopRightRadius: '12px',
@@ -118,6 +118,10 @@ export const WidgetContainer = styled(Box, {
 
   '& > .widget-wrapper:hover:before, & > .onramper-wrapper:hover:before': {
     opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
+  },
+
+  '& .widget-wrapper:hover > div:before, & > .onramper-wrapper:hover:after': {
+    top: 0,
   },
 
   '& > div > div:hover, & > .onramper-wrapper:hover': {
