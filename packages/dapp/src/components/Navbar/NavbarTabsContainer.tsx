@@ -52,12 +52,14 @@ const NavbarTabsContainer = () => {
         icon={
           <SwapHorizIcon
             sx={{
-              marginRight: '6px',
               marginBottom: '0px !important',
               color:
                 theme.palette.mode === 'dark'
                   ? theme.palette.white.main
                   : theme.palette.black.main,
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                marginRight: '6px',
+              },
             }}
           />
         }
@@ -79,12 +81,14 @@ const NavbarTabsContainer = () => {
         icon={
           <EvStationOutlinedIcon
             sx={{
-              marginRight: '6px',
               marginBottom: '0px !important',
               color:
                 theme.palette.mode === 'dark'
                   ? theme.palette.white.main
                   : theme.palette.black.main,
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                marginRight: '6px',
+              },
             }}
           />
         }
@@ -106,12 +110,14 @@ const NavbarTabsContainer = () => {
           icon={
             <CreditCardIcon
               sx={{
-                marginRight: '6px',
                 marginBottom: '0px !important',
                 color:
                   theme.palette.mode === 'dark'
                     ? theme.palette.white.main
                     : theme.palette.black.main,
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  marginRight: '6px',
+                },
               }}
             />
           }
