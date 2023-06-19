@@ -9,7 +9,7 @@
     "@emotion/styled": "^11.11.0",
     "@lifi/sdk": "^2.0.0-beta.15",
     "@lifi/wallet-management": "2.0.0-beta.8",
-    "@lifi/widget": "^2.0.0-beta.13",
+    "@lifi/widget": "^2.0.1",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.3",
     "@sentry/browser": "^7.54.0",
