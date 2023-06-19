@@ -10,6 +10,7 @@ export interface SettingsProps {
   languageMode: LanguageKey;
   activeWalletName: WalletConnected;
   activeTab: number;
+  welcomeScreenEntered: boolean;
 }
 export interface SettingsState extends SettingsProps {
   // Wallet
@@ -27,4 +28,7 @@ export interface SettingsState extends SettingsProps {
 
   // Reset
   onResetSetting: VoidFunction;
+
+  // Welcome Screen
+  onWelcomeScreenEntered: (shown: boolean) => void;
 }
