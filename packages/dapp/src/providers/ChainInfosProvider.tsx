@@ -1,6 +1,4 @@
-import { ChainsResponse } from '@lifi/sdk';
 import { ExtendedChain } from '@lifi/types';
-import axios from 'axios';
 import { createContext, PropsWithChildren, useContext } from 'react';
 import { useQuery } from 'react-query';
 
@@ -27,11 +25,9 @@ export const ChainInfosProvider: React.FC<PropsWithChildren<{}>> = ({
     ['chainStats'],
     async () => {
       const apiUrl = import.meta.env.VITE_LIFI_API_URL;
-      const result = await axios<ChainsResponse>({
-        method: 'GET',
-        url: `${apiUrl}/chains`,
-      });
-      return result.data;
+      const response = await fetch(`${apiUrl}/chains`);
+      const result = await response.json();
+      return result;
     },
     {
       enabled: true,
