@@ -17,6 +17,7 @@ export const localStorageKey = {
 // ----------------------------------------------------------------------
 
 export const defaultLang = 'en'; // English
+export const LOCAL_STORAGE_WALLETS_KEY = 'li.fi-wallets';
 
 const setLanguage = () => {
   if (!!localStorage.getItem(localStorageKey.languageMode)) {
@@ -32,6 +33,7 @@ interface DefaultSettingsType {
   languageMode: LanguageKey;
   activeWalletName: string;
   disabledFeatureCards: string[];
+  welcomeScreenEntered: boolean;
 }
 
 export const defaultSettings: DefaultSettingsType = {
@@ -43,4 +45,5 @@ export const defaultSettings: DefaultSettingsType = {
   activeWalletName:
     (localStorage.getItem(localStorageKey.activeWalletName) as string) || '',
   disabledFeatureCards: [],
+  welcomeScreenEntered: false,
 };

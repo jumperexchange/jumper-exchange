@@ -1,5 +1,5 @@
-import { DualWidget } from '../../components/DualWidget';
+import { Widgets } from '../../components/Widgets';
 
 export default function Swap() {
-  return <DualWidget />;
+  return <Widgets />;
 }

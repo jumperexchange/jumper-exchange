@@ -1,3 +1,4 @@
+import '@transferto/shared/src/fonts/gt-america.css';
 import '@transferto/shared/src/fonts/inter.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';

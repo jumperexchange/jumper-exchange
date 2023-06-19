@@ -82,6 +82,13 @@ export const useSettingsStore = create(
           });
       },
 
+      // Welcome Screen
+      onWelcomeScreenEntered: (shown: boolean) => {
+        set({
+          welcomeScreenEntered: shown,
+        });
+      },
+
       // Reset
       onResetSetting: () => {
         set({
