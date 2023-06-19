@@ -12,10 +12,15 @@ import { Card, CardImage } from './FeatureCard.style';
 export const FeatureCard = ({ data, loading, error }) => {
   const [open, setOpen] = useState(true);
   const { t: translate } = useTranslation();
-  const [disabledFeatureCards, onDisableFeatureCard] = useSettingsStore(
-    (state) => [state.disabledFeatureCards, state.onDisableFeatureCard],
-    shallow,
-  );
+  const [disabledFeatureCards, onDisableFeatureCard, welcomeScreenEntered] =
+    useSettingsStore(
+      (state) => [
+        state.disabledFeatureCards,
+        state.onDisableFeatureCard,
+        state.welcomeScreenEntered,
+      ],
+      shallow,
+    );
   const i18Path = 'featureCard.';
   const theme = useTheme();
   const displayConditions = useMemo(() => {
@@ -27,6 +32,7 @@ export const FeatureCard = ({ data, loading, error }) => {
       direction="up"
       in={
         open &&
+        welcomeScreenEntered &&
         (!displayConditions.showOnce ||
           !disabledFeatureCards.includes(displayConditions.id))
       }

@@ -27,7 +27,6 @@ export function Widgets() {
       shallow,
     );
   const { account } = useWallet();
-  const [showWelcome, setShowWelcome] = useState(true);
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<WidgetVariant | 'buy'>(
@@ -78,7 +77,6 @@ export function Widgets() {
       return;
     } else {
       event.stopPropagation();
-      setShowWelcome(false);
       onWelcomeScreenEntered(true);
     }
   };
@@ -91,8 +89,7 @@ export function Widgets() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.address]);
 
-  const showWelcomeWrapper =
-    !welcomeScreenEntered && !isWalletConnected && showWelcome;
+  const showWelcomeWrapper = !welcomeScreenEntered && !isWalletConnected;
 
   useLayoutEffect(() => {
     getActiveWidget();
