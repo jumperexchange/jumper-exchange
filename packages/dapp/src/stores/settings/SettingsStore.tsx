@@ -20,7 +20,7 @@ import { LanguageKey } from '../../types';
 
 export const useSettingsStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...defaultSettings,
       setValue: (key, value) =>
         set(() => ({
@@ -71,6 +71,17 @@ export const useSettingsStore = create(
         });
       },
 
+      // Disable Feature Card
+      onDisableFeatureCard: (id: string) => {
+        const disabledFeatureCards = (get() as SettingsProps)
+          ?.disabledFeatureCards;
+        id &&
+          !disabledFeatureCards.includes(id) &&
+          set({
+            disabledFeatureCards: [...disabledFeatureCards, id],
+          });
+      },
+
       // Reset
       onResetSetting: () => {
         set({
@@ -82,6 +93,7 @@ export const useSettingsStore = create(
             (i18next.language as LanguageKey) ||
             defaultLang,
           activeTab: defaultSettings.activeTab || 0,
+          disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
         });
       },
     }),

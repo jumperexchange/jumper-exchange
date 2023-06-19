@@ -10,6 +10,7 @@ export interface SettingsProps {
   languageMode: LanguageKey;
   activeWalletName: WalletConnected;
   activeTab: number;
+  disabledFeatureCards: string[];
 }
 export interface SettingsState extends SettingsProps {
   // Wallet
@@ -24,6 +25,9 @@ export interface SettingsState extends SettingsProps {
 
   // Language
   onChangeLanguage: (language: LanguageKey) => void;
+
+  // Disable Feature Cards
+  onDisableFeatureCard: (id: string) => void;
 
   // Reset
   onResetSetting: VoidFunction;

@@ -5,9 +5,11 @@ import type { ThemeModesSupported } from './types';
 export const cookiesExpires = 3;
 
 export const localStorageKey = {
+  activeTab: 'activeTab',
   activeWalletName: 'activeWalletName',
   themeMode: 'themeMode',
   languageMode: 'languageMode',
+  disabledFeatureCards: 'disabledFeatureCards',
 };
 
 // MULTI LANGUAGES
@@ -29,6 +31,7 @@ interface DefaultSettingsType {
   themeMode: ThemeModesSupported;
   languageMode: LanguageKey;
   activeWalletName: string;
+  disabledFeatureCards: string[];
 }
 
 export const defaultSettings: DefaultSettingsType = {
@@ -39,4 +42,5 @@ export const defaultSettings: DefaultSettingsType = {
   languageMode: setLanguage() as LanguageKey,
   activeWalletName:
     (localStorage.getItem(localStorageKey.activeWalletName) as string) || '',
+  disabledFeatureCards: [],
 };

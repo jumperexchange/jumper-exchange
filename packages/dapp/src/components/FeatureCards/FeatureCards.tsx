@@ -8,8 +8,15 @@ export const FeatureCards = () => {
 
   return (
     <FeatureCardsContainer>
-      {data?.featureCardCollection?.items.map((cardData) => {
-        return <FeatureCard error={error} loading={loading} data={cardData} />;
+      {data?.featureCardCollection?.items.map((cardData, index) => {
+        return (
+          <FeatureCard
+            error={error}
+            loading={loading}
+            data={cardData}
+            key={`feature-card-${index}`}
+          />
+        );
       })}
     </FeatureCardsContainer>
   );

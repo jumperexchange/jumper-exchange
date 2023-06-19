@@ -3,18 +3,37 @@ import { IconButton, Link, Slide, useTheme } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { shallow } from 'zustand/shallow';
+import { useSettingsStore } from '../../stores';
 import { Card, CardImage } from './FeatureCard.style';
 
 export const FeatureCard = ({ data, loading, error }) => {
   const [open, setOpen] = useState(true);
   const { t: translate } = useTranslation();
+  const [disabledFeatureCards, onDisableFeatureCard] = useSettingsStore(
+    (state) => [state.disabledFeatureCards, state.onDisableFeatureCard],
+    shallow,
+  );
   const i18Path = 'featureCard.';
   const theme = useTheme();
+  const displayConditions = useMemo(() => {
+    return data?.displayConditions && data?.displayConditions[0];
+  }, [data]);
 
   return (
-    <Slide direction="up" in={open} unmountOnExit appear={false} timeout={400}>
+    <Slide
+      direction="up"
+      in={
+        open &&
+        (!displayConditions.showOnce ||
+          !disabledFeatureCards.includes(displayConditions.id))
+      }
+      unmountOnExit
+      appear={false}
+      timeout={400}
+    >
       <Card gradient={data?.gradientColor}>
         <CardContent sx={{ padding: theme.spacing(6), position: 'relative' }}>
           <IconButton
@@ -26,6 +45,9 @@ export const FeatureCard = ({ data, loading, error }) => {
             }}
             onClick={() => {
               setOpen(false);
+              onDisableFeatureCard(
+                data?.displayConditions && data?.displayConditions[0]?.id,
+              );
             }}
           >
             <CloseIcon
