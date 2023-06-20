@@ -62,7 +62,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={translate(`${i18Path}links.swap`)}
+        label={translate(`${i18Path}links.exchange`)}
         {...a11yProps(0)}
       />
       <NavbarTab
