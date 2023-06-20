@@ -5788,7 +5788,6 @@ __metadata:
     "@types/react-dom": ^18.2.6
     "@vitejs/plugin-react": ^4.0.1
     "@widgetbot/react-embed": ^1.7.0
-    axios: ^1.4.0
     ethers: ^5.7.2
     husky: ^8.0.3
     i18next: ^23.2.1
@@ -8007,7 +8006,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.0.0, axios@npm:^1.4.0":
+"axios@npm:^1.0.0":
   version: 1.4.0
   resolution: "axios@npm:1.4.0"
   dependencies:
