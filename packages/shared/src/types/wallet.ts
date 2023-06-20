@@ -1,6 +1,6 @@
 import type { Token } from '@lifi/sdk';
-import type { Wallet } from '@lifi/wallet-management';
 import type { Signer } from 'ethers';
+import type events from 'events';
 
 export interface WalletContextProps {
   account: WalletAccount;
@@ -17,4 +17,18 @@ export interface WalletAccount {
   isActive?: boolean;
   signer?: Signer;
   chainId?: number;
+}
+
+export interface Wallet extends events.EventEmitter {
+  name: string;
+  icon: string;
+  isActivationInProgress: boolean;
+  account: WalletAccount | undefined;
+  installed: () => boolean;
+  connect: () => Promise<void>;
+  autoConnect?: () => Promise<void>;
+  disconnect: () => void;
+  switchChain: (chainId: number) => Promise<boolean>;
+  addChain: (chainId: number) => Promise<boolean>;
+  addToken: (chainId: number, token: Token) => Promise<boolean>;
 }

@@ -1,23 +1,18 @@
 // ----------------------------------------------------------------------
 
-import type { LanguageKey } from '../../../dapp/src/types';
+import type { LanguageKey } from '@transferto/dapp/src/types';
 
 export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;
 
-export type SettingsValueProps = {
+export interface SettingsProps {
   themeMode: ThemeModesSupported;
   languageMode: LanguageKey;
   activeWalletName: WalletConnected;
   activeTab: number;
-};
-
-export type SettingsContextProps = {
-  themeMode?: ThemeModesSupported;
-  languageMode?: LanguageKey;
-  activeTab?: number;
-  activeWalletName?: WalletConnected;
-
+  welcomeScreenEntered: boolean;
+}
+export interface SettingsState extends SettingsProps {
   // Wallet
   onWalletConnect: (activeWalletName: string) => void;
   onWalletDisconnect: VoidFunction;
@@ -33,4 +28,7 @@ export type SettingsContextProps = {
 
   // Reset
   onResetSetting: VoidFunction;
-};
+
+  // Welcome Screen
+  onWelcomeScreenEntered: (shown: boolean) => void;
+}

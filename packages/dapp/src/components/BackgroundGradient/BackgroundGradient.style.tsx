@@ -1,11 +1,10 @@
 import { styled } from '@mui/material/styles';
 export interface BackgroundGradientContainerProps
-  extends Omit<HTMLDivElement, 'isDarkMode' | 'children'> {
+  extends Omit<HTMLDivElement, 'children'> {
   children?: JSX.Element | JSX.Element[] | React.ReactNode;
 }
 export interface BackgroundGradientProps
-  extends Omit<HTMLSpanElement, 'isDarkMode' | 'children' | 'className'> {
-  isDarkMode?: boolean;
+  extends Omit<HTMLSpanElement, 'children' | 'className'> {
   children?: JSX.Element | JSX.Element[] | React.ReactNode;
   className?: string;
 }
@@ -79,9 +78,9 @@ export const BackgroundGradients = styled('span')<any>(({ theme }) => ({
   },
 }));
 
-export const BackgroundGradientBottomLeft = styled(BackgroundGradient, {
-  shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<BackgroundGradientProps>(({ theme, isDarkMode }) => ({
+export const BackgroundGradientBottomLeft = styled(
+  BackgroundGradient,
+)<BackgroundGradientProps>(({ theme }) => ({
   transform: 'translate(-50%,50%) scale(1.5)',
   left: 0,
   opacity: theme.palette.mode === 'dark' ? '0.24' : '0.12',
@@ -90,9 +89,9 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient, {
     'radial-gradient(50% 50% at 50% 50%, #1969FF 0%, rgba(255, 255, 255, 0) 100%)',
 }));
 
-export const BackgroundGradientBottomRight = styled(BackgroundGradient, {
-  shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<BackgroundGradientProps>(({ theme, isDarkMode }) => ({
+export const BackgroundGradientBottomRight = styled(
+  BackgroundGradient,
+)<BackgroundGradientProps>(({ theme }) => ({
   transform: 'translate(50%,50%) scale(1.5)',
   right: 0,
   bottom: 0,
@@ -101,9 +100,9 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient, {
     'radial-gradient(50% 50% at 50% 50%, #E1147B 0%, rgba(255, 255, 255, 0) 100%)',
 }));
 
-export const BackgroundGradientTopCenter = styled(BackgroundGradient, {
-  shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<BackgroundGradientProps>(({ theme, isDarkMode }) => ({
+export const BackgroundGradientTopCenter = styled(
+  BackgroundGradient,
+)<BackgroundGradientProps>(({ theme }) => ({
   transform:
     theme.palette.mode === 'dark'
       ? 'translate(-50%, -50%) scale( calc( 1 + 1 / 3 ))'

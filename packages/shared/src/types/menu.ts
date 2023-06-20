@@ -1,49 +1,46 @@
 // ----------------------------------------------------------------------
 
-import type { MutableRefObject } from 'react';
+import type { MenuKeys } from '@transferto/dapp/src/const';
 
-export type MenuValueProps = {
-  anchorEl: any;
-  copiedToClipboard: boolean;
+export type MenuProps = {
+  anchorRef: any;
   openMainNavbarMenu: boolean;
+  openNavbarWalletSelectMenu: boolean;
+  openNavbarChainsMenu: boolean;
   openNavbarWalletMenu: boolean;
-  openNavbarConnectedMenu: boolean;
-  openNavbarSubMenu: string;
+  openNavbarSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
 };
 
 export type MenuContextProps = {
   anchorRef?: any;
-  copiedToClipboard?: boolean;
   openMainNavbarMenu?: boolean;
+  openNavbarChainsMenu?: boolean;
+  openNavbarWalletSelectMenu?: boolean;
   openNavbarWalletMenu?: boolean;
-  openNavbarConnectedMenu?: boolean;
-  openNavbarSubMenu?: string;
+  openNavbarSubMenu?: keyof typeof MenuKeys;
   openSupportModal?: boolean;
+};
 
-  // ClipBoard
-  onCopyToClipboard: (copied: boolean) => void;
-
-  // On Iniitialization
-  onMenuInit: (
-    anchorEl: JSX.Element | MutableRefObject<HTMLButtonElement>,
-  ) => void;
-
+export interface MenuState extends MenuProps {
   // Close ALL Navbar Menus
   onCloseAllNavbarMenus: () => void;
 
   // Toggle Navbar Main Menu
-  onOpenNavbarMainMenu: (open: boolean) => void;
+  onOpenNavbarMainMenu: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Navbar Wallet Menu
-  onOpenNavbarWalletMenu: (open: boolean) => void;
+  onOpenNavbarWalletSelectMenu: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Navbar Connected Menu
-  onOpenNavbarConnectedMenu: (open: boolean) => void;
+  onOpenNavbarWalletMenu: (open: boolean, anchorRef?: any) => void;
+
+  // Toggle Navbar Chains Menu
+  onOpenNavbarChainsMenu: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Navbar Sub Menu
-  onOpenNavbarSubMenu: (subMenu: string) => void;
+  onOpenNavbarSubMenu: (subMenu: keyof typeof MenuKeys) => void;
 
   // Toggle support modal
-  toggleSupportModal: (open: boolean) => void;
-};
+  onOpenSupportModal: (open: boolean) => void;
+}

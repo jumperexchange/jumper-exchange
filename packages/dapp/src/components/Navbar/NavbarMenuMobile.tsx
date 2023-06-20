@@ -1,10 +1,10 @@
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
-import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
-import { ButtonBackArrow } from '../../../../shared/src/atoms/ButtonArrowBack/ButtonArrowBack';
-import { SubMenuKeys } from '../../const';
-import { useMenu } from '../../providers/MenuProvider';
+import { KeyboardEvent } from 'react';
+import { shallow } from 'zustand/shallow';
+import { MenuKeys } from '../../const';
+import { useMenuStore } from '../../stores/menu';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -16,20 +16,16 @@ import {
 
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  isScrollable?: boolean;
+  setOpen: (open: boolean, anchorRef: any) => void;
   label?: string;
   open: boolean;
   children: any;
 }
 
 const NavbarMenuMobile = ({
-  isScrollable,
   handleClose,
   open,
-  hideBackArrow,
   setOpen,
   label,
   isOpenSubMenu,
@@ -37,14 +33,22 @@ const NavbarMenuMobile = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+
+  const [openNavbarSubMenu, anchorRef, onCloseAllNavbarMenus] = useMenuStore(
+    (state) => [
+      state.openNavbarSubMenu,
+      state.anchorRef,
+      state.onCloseAllNavbarMenus,
+    ],
+    shallow,
+  );
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault();
-      setOpen(false);
+      setOpen(false, null);
     } else if (event.key === 'Escape') {
-      setOpen(false);
+      setOpen(false, null);
     }
   }
 
@@ -55,55 +59,37 @@ const NavbarMenuMobile = ({
         <Slide direction="up" in={open} mountOnEnter unmountOnExit>
           <NavbarPopper
             open={open}
-            anchorEl={menu.anchorRef.current}
+            anchorEl={anchorRef}
             role={undefined}
             placement="bottom-start"
             transition
             disablePortal
           >
-            <NavbarPaper
-              isDarkMode={isDarkMode}
-              isOpenSubMenu={isOpenSubMenu}
-              openSubMenu={menu.openNavbarSubMenu}
-              isScrollable={!!label || isScrollable}
-            >
+            <NavbarPaper isDarkMode={isDarkMode}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
-                  menu.onCloseAllNavbarMenus();
+                  onCloseAllNavbarMenus();
                 }}
               >
                 <NavbarMenuList
                   autoFocusItem={open}
                   id="composition-menu"
                   aria-labelledby="composition-button"
+                  isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                   onKeyDown={handleListKeyDown}
-                  className={
-                    isOpenSubMenu ? 'navbar-menu-list open' : 'navbar-menu-list'
-                  }
+                  autoFocus={open}
+                  hasLabel={!!label}
                   component={
                     !!isOpenSubMenu &&
-                    menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                    openNavbarSubMenu !== MenuKeys.WalletSelect
                       ? 'div'
                       : 'ul'
                   }
                 >
                   {!!label ? (
                     <MenuHeaderAppWrapper>
-                      <MenuHeaderAppBar
-                        component="div"
-                        elevation={0}
-                        isScrollable={isScrollable}
-                      >
-                        {!hideBackArrow && (
-                          <ButtonBackArrow
-                            onClick={() => {
-                              menu.onOpenNavbarWalletMenu(
-                                !menu.openNavbarWalletMenu,
-                              );
-                            }}
-                          />
-                        )}
+                      <MenuHeaderAppBar component="div" elevation={0}>
                         <Typography
                           variant={'lifiBodyMediumStrong'}
                           width={'100%'}

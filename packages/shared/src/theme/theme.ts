@@ -1,7 +1,5 @@
-import { touchRippleClasses } from '@mui/material/ButtonBase';
 import type { Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
-import { keyframes } from '@mui/system';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
 import { resetStyle } from '../style';
@@ -72,6 +70,13 @@ declare module '@mui/material/styles' {
     alphaLight800?: PaletteOptions['primary'];
   }
   interface TypographyVariants {
+    lifiBrandBodyMedium: React.CSSProperties;
+    lifiBrandBodyLarge: React.CSSProperties;
+    lifiBrandBodyXLarge: React.CSSProperties;
+    lifiBrandBodySmall: React.CSSProperties;
+    lifiBrandHeaderMedium: React.CSSProperties;
+    lifiBrandHeaderLarge: React.CSSProperties;
+    lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay: React.CSSProperties;
     lifiHeaderXLarge: React.CSSProperties;
     lifiHeaderLarge: React.CSSProperties;
@@ -97,6 +102,13 @@ declare module '@mui/material/styles' {
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
+    lifiBrandBodyMedium: React.CSSProperties;
+    lifiBrandBodyLarge: React.CSSProperties;
+    lifiBrandBodyXLarge: React.CSSProperties;
+    lifiBrandBodySmall: React.CSSProperties;
+    lifiBrandHeaderMedium: React.CSSProperties;
+    lifiBrandHeaderLarge: React.CSSProperties;
+    lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay?: React.CSSProperties;
     lifiHeaderXLarge?: React.CSSProperties;
     lifiHeaderLarge?: React.CSSProperties;
@@ -156,6 +168,13 @@ declare module '@mui/material/Button' {
 }
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    lifiBrandBodyMedium: true;
+    lifiBrandBodyLarge: true;
+    lifiBrandBodyXLarge: true;
+    lifiBrandBodySmall: true;
+    lifiBrandHeaderMedium: true;
+    lifiBrandHeaderLarge: true;
+    lifiBrandHeaderXLarge: true;
     lifiHeaderDisplay: true;
     lifiHeaderXLarge: true;
     lifiHeaderLarge: true;
@@ -180,40 +199,21 @@ declare module '@mui/material/Typography' {
   }
 }
 
-const enterKeyframe = keyframes`
-  0% {
-    transform: scale(0);
-    opacity: 0.05;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.1;
-  }
-`;
-
 const themeBase: Theme = createTheme({
   components: {
-    MuiButtonBase: {
-      styleOverrides: {
-        root: {
-          [`& .${touchRippleClasses.ripple}.${touchRippleClasses.rippleVisible}`]:
-            {
-              animationName: `${enterKeyframe}`,
-            },
-          [`& .${touchRippleClasses.ripple}.${touchRippleClasses.rippleVisible}`]:
-            {
-              opacity: 0.1,
-              animationName: `${enterKeyframe}`,
-            },
-        },
-      },
-    },
     MuiCssBaseline: {
       styleOverrides: `${resetStyle}`,
     },
     MuiTypography: {
       defaultProps: {
         variantMapping: {
+          lifiBrandBodyMedium: 'p',
+          lifiBrandBodyLarge: 'p',
+          lifiBrandBodyXLarge: 'p',
+          lifiBrandBodySmall: 'p',
+          lifiBrandHeaderMedium: 'p',
+          lifiBrandHeaderLarge: 'p',
+          lifiBrandHeaderXLarge: 'p',
           lifiHeaderDisplay: 'p',
           lifiHeaderXLarge: 'p',
           lifiHeaderLarge: 'p',
@@ -263,9 +263,9 @@ const themeBase: Theme = createTheme({
       dark: '#E5452F',
     },
     warning: {
-      main: '#FFE668',
-      light: '#FFE668',
-      dark: '#FFE668',
+      main: '#FFCC00',
+      light: '#FFCC00',
+      dark: '#EBC942',
     },
     info: {
       main: '#297EFF',
@@ -338,13 +338,13 @@ const themeTypographyPreset: Theme = createTheme({
   ...themeBase,
   typography: {
     fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
-    lifiHeaderDisplay: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
-      fontStyle: 'normal',
-      fontSize: 96,
-      lineHeight: '128px',
-      fontWeight: 700,
-
+    lifiBrandBodySmall: {
+      fontFamily: 'GT-America',
+      fontSize: '14px',
+      fontWeight: 400,
+      lineHeight: '20px',
+      letterSpacing: 0,
+      textAlign: 'center',
       // example to make it responsive:
       // [themeBase.breakpoints.up('sm')]: {
       //   fontSize: 120,
@@ -352,6 +352,69 @@ const themeTypographyPreset: Theme = createTheme({
       //   fontWeight: 700,
       //   letterSpacing: -1,
       // },
+    },
+    lifiBrandBodyXLarge: {
+      fontFamily: 'GT-America',
+      fontSize: '24px',
+      fontWeight: 400,
+      lineHeight: '32px',
+      letterSpacing: 0,
+      textAlign: 'center',
+      // example to make it responsive:
+      // [themeBase.breakpoints.up('sm')]: {
+      //   fontSize: 120,
+      //   lineHeight: '140px',
+      //   fontWeight: 700,
+      //   letterSpacing: -1,
+      // },
+    },
+    lifiBrandBodyLarge: {
+      fontFamily: 'GT-America',
+      fontSize: '18px',
+      fontWeight: 400,
+      lineHeight: '24px',
+      letterSpacing: 0,
+      textAlign: 'center',
+    },
+    lifiBrandBodyMedium: {
+      fontFamily: 'GT-America',
+      fontSize: '16px',
+      fontWeight: 400,
+      lineHeight: '20px',
+      letterSpacing: 0,
+      textAlign: 'center',
+    },
+    lifiBrandHeaderMedium: {
+      fontFamily: 'GT-America',
+      fontSize: '32px',
+      fontWeight: 700,
+      lineHeight: '40px',
+      letterSpacing: 0,
+      textAlign: 'center',
+    },
+
+    lifiBrandHeaderLarge: {
+      fontFamily: 'GT-America',
+      fontSize: '48px',
+      fontWeight: 700,
+      lineHeight: '56px',
+      letterSpacing: 0,
+      textAlign: 'center',
+    },
+    lifiBrandHeaderXLarge: {
+      fontFamily: 'GT-America',
+      fontSize: '48px',
+      fontWeight: 700,
+      lineHeight: '56px',
+      letterSpacing: 0,
+      textAlign: 'center',
+    },
+    lifiHeaderDisplay: {
+      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontStyle: 'normal',
+      fontSize: '96px',
+      lineHeight: '128px',
+      fontWeight: 700,
     },
     lifiHeaderXLarge: {
       fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),

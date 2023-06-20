@@ -1,14 +1,14 @@
 import { Token } from '@lifi/sdk';
-import { useLiFiWalletManagement, Wallet } from '@lifi/wallet-management';
 import {
-  addChain as walletAddChain,
-  switchChain as walletSwitchChain,
-  switchChainAndAddToken,
-} from './hotfix/wallet-automation-hotfix';
+  LiFiWalletManagement,
+  Wallet,
+  readActiveWallets,
+  supportedWallets,
+} from '@lifi/wallet-management';
 import { Signer } from 'ethers';
 import React, {
-  createContext,
   PropsWithChildren,
+  createContext,
   useCallback,
   useEffect,
   useMemo,
@@ -20,7 +20,8 @@ import {
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
 import { useUserTracking } from '../hooks';
-import { useMenu } from './MenuProvider';
+
+const liFiWalletManagement = new LiFiWalletManagement();
 
 const stub = (): never => {
   throw new Error('You forgot to wrap your component in <WalletProvider>.');
@@ -43,65 +44,106 @@ export const useWallet = (): WalletContextProps =>
 export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const {
-    connect: walletManagementConnect,
-    disconnect: walletManagementDisconnect,
-    signer,
-  } = useLiFiWalletManagement();
   const [account, setAccount] = useState<WalletAccount>({});
-  const [usedWallet, setUsedWallet] = useState<Wallet | undefined>();
-  const menu = useMenu();
+  const [currentWallet, setCurrentWallet] = useState<Wallet | undefined>();
   const { trackConnectWallet } = useUserTracking();
-  const connect = useCallback(
-    async (wallet?: Wallet) => {
-      await walletManagementConnect(wallet);
-      const account = await extractAccountFromSigner(signer);
-      setUsedWallet(wallet!);
-      setAccount(account);
-    },
-    [signer, walletManagementConnect],
-  );
+
+  // autoConnect
+  useEffect(() => {
+    const autoConnect = async () => {
+      const persistedActiveWallets = readActiveWallets();
+      const activeWallets = supportedWallets.filter((wallet) =>
+        persistedActiveWallets.some(
+          (perstistedWallet) => perstistedWallet.name === wallet.name,
+        ),
+      );
+      if (!activeWallets.length) {
+        return;
+      }
+      await liFiWalletManagement.autoConnect(activeWallets);
+      activeWallets[0].on('walletAccountChanged', handleWalletUpdate);
+      handleWalletUpdate(activeWallets[0]);
+    };
+    autoConnect();
+  }, []);
+
+  const handleWalletUpdate = async (wallet?: Wallet) => {
+    setCurrentWallet(wallet);
+    const account = await extractAccountFromSigner(wallet?.account?.signer);
+    setAccount(account);
+  };
+
+  const connect = useCallback(async (wallet: Wallet) => {
+    await liFiWalletManagement.connect(wallet);
+    wallet.on('walletAccountChanged', handleWalletUpdate);
+
+    handleWalletUpdate(wallet);
+  }, []);
 
   const disconnect = useCallback(async () => {
-    setUsedWallet(undefined);
-    await walletManagementDisconnect();
-    menu.onCloseAllNavbarMenus();
+    if (currentWallet) {
+      await liFiWalletManagement.disconnect(currentWallet);
+      currentWallet.removeAllListeners();
+      handleWalletUpdate(undefined);
+      trackConnectWallet({
+        account: account,
+        disconnect: true,
+      });
+    }
+  }, [account, currentWallet, trackConnectWallet]);
+
+  const switchChain = useCallback(
+    async (chainId: number) => {
+      try {
+        await currentWallet?.switchChain(chainId);
+        handleWalletUpdate(currentWallet);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [currentWallet],
+  );
+
+  const addChain = useCallback(
+    async (chainId: number) => {
+      try {
+        await currentWallet?.addChain(chainId);
+        handleWalletUpdate(currentWallet);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [currentWallet],
+  );
+
+  const addToken = useCallback(
+    async (chainId: number, token: Token) => {
+      await currentWallet?.addToken(chainId, token);
+      handleWalletUpdate(currentWallet);
+
+      return;
+    },
+    [currentWallet],
+  );
+
+  useEffect(() => {
     trackConnectWallet({
       account: account,
-      disconnect: true,
+      disconnect: false,
+      data: {
+        account: account.address,
+        chain: account.chainId,
+      },
     });
-  }, [account, menu, trackConnectWallet, walletManagementDisconnect]);
-
-  // only for injected wallets
-  const switchChain = useCallback(async (chainId: number) => {
-    return walletSwitchChain(chainId);
-  }, []);
-
-  const addChain = useCallback(async (chainId: number) => {
-    return walletAddChain(chainId);
-  }, []);
-
-  const addToken = useCallback(async (chainId: number, token: Token) => {
-    return switchChainAndAddToken(chainId, token);
-  }, []);
-
-  // keep account information up to date
-  useEffect(() => {
-    const updateAccount = async () => {
-      const account = await extractAccountFromSigner(signer);
-      setAccount(account);
-      account.address &&
-        trackConnectWallet({
-          account: account,
-          disconnect: false,
-          data: {
-            account: account.address,
-            chain: account.chainId,
-          },
-        });
-    };
-    updateAccount();
-  }, [signer, trackConnectWallet]);
+  }, [
+    account,
+    account.signer,
+    account.address,
+    account.chainId,
+    trackConnectWallet,
+  ]);
 
   const value = useMemo(
     () => ({
@@ -111,9 +153,17 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       addChain,
       addToken,
       account,
-      usedWallet,
+      usedWallet: currentWallet,
     }),
-    [account, addChain, addToken, connect, disconnect, switchChain, usedWallet],
+    [
+      account,
+      addChain,
+      addToken,
+      connect,
+      disconnect,
+      switchChain,
+      currentWallet,
+    ],
   );
 
   return (

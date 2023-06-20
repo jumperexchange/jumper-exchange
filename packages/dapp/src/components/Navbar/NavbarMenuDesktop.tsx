@@ -2,10 +2,10 @@ import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
-import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
-import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
-import { SubMenuKeys } from '../../const/';
-import { useMenu } from '../../providers/MenuProvider';
+import { KeyboardEvent } from 'react';
+import { shallow } from 'zustand/shallow';
+import { MenuKeys, MenuMain } from '../../const/';
+import { useMenuStore } from '../../stores/menu';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -16,11 +16,10 @@ import {
 } from './Navbar.style';
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  hideBackArrow: boolean;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  isScrollable?: boolean;
+  transformOrigin?: string;
+  setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
   children: any;
 }
@@ -29,22 +28,34 @@ const NavbarMenuDesktop = ({
   isOpenSubMenu,
   setOpen,
   handleClose,
-  hideBackArrow,
-  isScrollable,
+  transformOrigin,
   label,
   open,
   children,
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+  const [
+    openNavbarSubMenu,
+    onCloseAllNavbarMenus,
+    openNavbarWalletMenu,
+    anchorRef,
+  ] = useMenuStore(
+    (state) => [
+      state.openNavbarSubMenu,
+      state.onCloseAllNavbarMenus,
+      state.openNavbarWalletMenu,
+      state.anchorRef,
+    ],
+    shallow,
+  );
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault();
-      setOpen(false);
+      setOpen(false, null);
     } else if (event.key === 'Escape') {
-      setOpen(false);
+      setOpen(false, null);
     }
   }
 
@@ -54,9 +65,9 @@ const NavbarMenuDesktop = ({
         <NavbarExternalBackground />
         <NavbarPopper
           open={open}
-          anchorEl={menu?.anchorRef?.current}
+          anchorEl={anchorRef}
           role={undefined}
-          placement="bottom-start"
+          // placement="bottom"
           popperOptions={{ strategy: 'fixed' }}
           transition
           disablePortal
@@ -65,54 +76,37 @@ const NavbarMenuDesktop = ({
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin: 'right top',
+                transformOrigin: transformOrigin || 'top',
               }}
             >
               <NavbarPaper
                 isDarkMode={isDarkMode}
-                isOpenSubMenu={isOpenSubMenu}
-                openSubMenu={menu.openNavbarSubMenu}
-                isScrollable={!!label || isScrollable}
+                isWide={openNavbarWalletMenu}
               >
                 <ClickAwayListener
                   onClickAway={(event) => {
                     handleClose(event);
-                    menu.onCloseAllNavbarMenus();
+                    onCloseAllNavbarMenus();
                   }}
                 >
                   <NavbarMenuList
                     autoFocusItem={open}
                     id="composition-menu"
+                    autoFocus={open}
+                    isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
-                    className={
-                      isOpenSubMenu
-                        ? 'navbar-menu-list open'
-                        : 'navbar-menu-list'
-                    }
+                    hasLabel={!!label}
                     component={
                       !!isOpenSubMenu &&
-                      menu.openNavbarSubMenu !== SubMenuKeys.wallets
+                      openNavbarSubMenu !== MenuMain.WalletSelect
                         ? 'div'
                         : 'ul'
                     }
                   >
                     {!!label ? (
                       <MenuHeaderAppWrapper>
-                        <MenuHeaderAppBar
-                          component="div"
-                          elevation={0}
-                          isScrollable={isScrollable}
-                        >
-                          {!hideBackArrow && (
-                            <ButtonBackArrow
-                              onClick={() => {
-                                menu.onOpenNavbarWalletMenu(
-                                  !menu.openNavbarWalletMenu,
-                                );
-                              }}
-                            />
-                          )}
+                        <MenuHeaderAppBar component="div" elevation={0}>
                           <Typography
                             variant={'lifiBodyMediumStrong'}
                             width={'100%'}

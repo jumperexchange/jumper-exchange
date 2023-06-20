@@ -1,5 +1,5 @@
 // @mui
-import type { LanguageKey } from '../../dapp/src/types';
+import type { LanguageKey } from '@transferto/dapp/src/types';
 import type { ThemeModesSupported } from './types';
 
 export const cookiesExpires = 3;
@@ -15,6 +15,7 @@ export const localStorageKey = {
 // ----------------------------------------------------------------------
 
 export const defaultLang = 'en'; // English
+export const LOCAL_STORAGE_WALLETS_KEY = 'li.fi-wallets';
 
 const setLanguage = () => {
   if (!!localStorage.getItem(localStorageKey.languageMode)) {
@@ -29,35 +30,16 @@ interface DefaultSettingsType {
   themeMode: ThemeModesSupported;
   languageMode: LanguageKey;
   activeWalletName: string;
+  welcomeScreenEntered: boolean;
 }
 
 export const defaultSettings: DefaultSettingsType = {
   activeTab: 0,
-  themeMode: !!localStorage.getItem(localStorageKey.themeMode)
-    ? (localStorage.getItem(localStorageKey.themeMode) as ThemeModesSupported)
-    : 'auto',
+  themeMode:
+    (localStorage.getItem(localStorageKey.themeMode) as ThemeModesSupported) ||
+    'auto',
   languageMode: setLanguage() as LanguageKey,
-  activeWalletName: !!localStorage.getItem(localStorageKey.activeWalletName)
-    ? (localStorage.getItem(localStorageKey.activeWalletName) as string)
-    : '',
-};
-
-interface defaultMenuType {
-  copiedToClipboard: boolean;
-  openMainNavbarMenu: boolean;
-  openNavbarWalletMenu: boolean;
-  openNavbarConnectedMenu: boolean;
-  openNavbarSubMenu: string;
-  openSupportModal: boolean;
-  anchorEl: null | JSX.Element;
-}
-
-export const defaultMenu: defaultMenuType = {
-  copiedToClipboard: false,
-  openMainNavbarMenu: false,
-  openNavbarWalletMenu: false,
-  openNavbarConnectedMenu: false,
-  openNavbarSubMenu: 'none',
-  openSupportModal: false,
-  anchorEl: null,
+  activeWalletName:
+    (localStorage.getItem(localStorageKey.activeWalletName) as string) || '',
+  welcomeScreenEntered: false,
 };
