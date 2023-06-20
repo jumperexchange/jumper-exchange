@@ -1,5 +1,11 @@
 import { Token } from '@lifi/sdk';
-import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
+import {
+  HiddenUI,
+  LiFiWidget,
+  WidgetConfig,
+  WidgetSubvariant,
+  WidgetVariant,
+} from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
@@ -32,7 +38,8 @@ export function Widget({ starterVariant }) {
     }
 
     return {
-      subvariant: starterVariant || 'default',
+      variant: 'expandable' as WidgetVariant,
+      subvariant: (starterVariant as WidgetSubvariant) || 'default',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
