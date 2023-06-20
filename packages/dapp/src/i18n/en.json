@@ -7,7 +7,6 @@
     },
     "links": {
       "exchange": "Exchange",
-      "swap": "Swap",
       "dashboard": "Dashboard",
       "refuel": "Gas",
       "buy": "Buy"
