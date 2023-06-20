@@ -1,4 +1,4 @@
-import { WidgetVariant } from '@lifi/widget';
+import { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import {
   LOCAL_STORAGE_WALLETS_KEY,
@@ -29,15 +29,15 @@ export function Widgets() {
   const { account } = useWallet();
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
-  const [_starterVariant, setStarterVariant] = useState<WidgetVariant | 'buy'>(
-    'expandable',
-  );
+  const [_starterVariant, setStarterVariant] = useState<
+    WidgetSubvariant | 'buy'
+  >('default');
 
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
       if (url === LinkMap.Swap) {
-        return 'expandable';
+        return 'default';
       } else if (url === LinkMap.Gas || url === LinkMap.Refuel) {
         return 'refuel';
       } else if (url === LinkMap.Buy) {
@@ -48,7 +48,7 @@ export function Widgets() {
 
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
-      starterVariant === 'expandable'
+      starterVariant === 'default'
         ? onChangeTab(0)
         : starterVariant === 'refuel'
         ? onChangeTab(1)
@@ -59,7 +59,7 @@ export function Widgets() {
       setStarterVariantUsed(true);
     } else {
       if (activeTab === 0) {
-        setStarterVariant('expandable');
+        setStarterVariant('default');
       } else if (activeTab === 1) {
         setStarterVariant('refuel');
       } else if (activeTab === 2) {
@@ -108,9 +108,9 @@ export function Widgets() {
       <WidgetContainer
         onClick={handleGetStarted}
         showWelcome={showWelcomeWrapper}
-        isActive={_starterVariant === 'expandable'}
+        isActive={_starterVariant === 'default'}
       >
-        <Widget starterVariant={'expandable'} />
+        <Widget starterVariant={'default'} />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleGetStarted}
