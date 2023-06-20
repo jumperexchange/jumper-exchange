@@ -19,10 +19,6 @@ export const WidgetContainer = styled(Box, {
   maxHeight: showWelcome ? '50%' : 'auto',
   minHeight: isActive && showWelcome && '50%',
 
-  [`@media screen and (min-width: 392px)`]: {
-    overflow: showWelcome ? 'visible' : 'hidden',
-  },
-
   '& .widget-wrapper > div, & > .onramper-wrapper .onramper-container': {
     alignSelf: 'flex-end',
     height: '100%',
