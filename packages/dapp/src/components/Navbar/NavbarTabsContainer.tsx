@@ -42,12 +42,12 @@ const NavbarTabsContainer = () => {
     >
       <NavbarTab
         onClick={() => {
-          window.history.replaceState(null, document.title, '/swap');
+          window.history.replaceState(null, document.title, '/exchange');
           trackEvent({
             category: TrackingCategories.Navigation,
             action: TrackingActions.SwitchTab,
-            label: 'swap',
-            data: { tab: 'swap' },
+            label: 'exchange',
+            data: { tab: 'exchange' },
             disableTrackingTool: [EventTrackingTools.arcx],
           });
         }}

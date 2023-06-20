@@ -37,7 +37,7 @@ export function Widgets() {
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
-      if (url === LinkMap.Swap) {
+      if (url === LinkMap.Exchange) {
         return 'default';
       } else if (url === LinkMap.Gas || url === LinkMap.Refuel) {
         return 'refuel';
