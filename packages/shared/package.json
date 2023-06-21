@@ -20,7 +20,7 @@
     "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.1",
+    "@babel/core": "^7.22.5",
     "@storybook/addon-actions": "^6.5.16",
     "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-interactions": "^6.5.16",
@@ -29,18 +29,18 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
-    "@types/node": "^20.2.5",
-    "@types/react": "^18.2.8",
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.13",
     "babel-loader": "^9.1.2",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "^2.8.8"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.0",
+    "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@lifi/wallet-management": "2.0.0-beta.8",
+    "@lifi/wallet-management": "2.0.1",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.3",
+    "@mui/material": "^5.13.5",
     "i18next": "^22.5.0",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",

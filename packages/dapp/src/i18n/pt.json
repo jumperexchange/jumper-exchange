@@ -1,5 +1,10 @@
 {
   "navbar": {
+    "welcome": {
+      "title": "Encontrar a melhor rota",
+      "subtitle": "Agregador de liquidez multi-cadeias 4x auditado fornecido pela <0>LI.FI</0>",
+      "cta": "Começar"
+    },
     "links": {
       "swap": "Conversão",
       "dashboard": "Painel de controle",
