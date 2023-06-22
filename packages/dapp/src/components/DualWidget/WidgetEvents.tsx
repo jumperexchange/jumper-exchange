@@ -7,12 +7,16 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
+import MultiSigConfirmationModal from '../MultiSigConfirmationModal/MultiSigConfirmationModal';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { trackEvent, trackTransaction, trackAttribute } = useUserTracking();
+
+  const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
+    useState(true);
 
   const widgetEvents = useWidgetEvents();
 
@@ -104,6 +108,11 @@ export function WidgetEvents() {
       });
     };
 
+    const onSafeRouteInitiation = (route: Route) => {
+      setIsMultiSigConfirmationModalOpen(true);
+      console.log('Got the safe route event');
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -112,9 +121,19 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
+    widgetEvents.on(WidgetEvent.SafeRouteInitiated, onSafeRouteInitiation);
 
     return () => widgetEvents.all.clear();
   }, [trackAttribute, trackEvent, trackTransaction, widgetEvents]);
 
-  return null;
+  const handleMultiSigConfirmationModalClose = () => {
+    setIsMultiSigConfirmationModalOpen(false);
+  };
+
+  return (
+    <MultiSigConfirmationModal
+      open={isMultiSigConfirmationModalOpen}
+      onClose={handleMultiSigConfirmationModalClose}
+    />
+  );
 }
