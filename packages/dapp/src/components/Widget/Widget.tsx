@@ -64,9 +64,9 @@ export function Widget({ starterVariant }) {
   const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
     ?.safeAddress;
 
-  const multiSigConfig = {
-    isMultiSigSigner: isSafeSigner,
-    getMultiSigTransactionDetails: handleMultiSigTransactionDetails,
+  const multisigConfig = {
+    isMultisigSigner: isSafeSigner,
+    getMultisigTransactionDetails: handleMultiSigTransactionDetails,
   };
 
   // load environment config
@@ -188,7 +188,7 @@ export function Widget({ starterVariant }) {
         defaultRouteOptions: {
           maxPriceImpact: 0.4,
         },
-        multiSigConfig,
+        multisigConfig,
       },
       buildSwapUrl: true,
       insurance: true,
