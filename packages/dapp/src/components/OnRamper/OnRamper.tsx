@@ -1,4 +1,5 @@
 import { useTheme } from '@mui/material';
+import { useSettingsStore } from '../../stores';
 import { OnRamperIFrame } from './index';
 
 function removeHash(str) {
@@ -10,9 +11,10 @@ function removeHash(str) {
 
 export const OnRamper = () => {
   const theme = useTheme();
-
+  const [languageMode] = useSettingsStore((state) => [state.languageMode]);
   const onRamperConfig = {
     apiKey: import.meta.env.VITE_ONRAMPER_API_KEY,
+    language: languageMode,
     defaultCrypto: 'ETH',
     themeName: theme.palette.mode === 'light' ? 'light' : 'dark',
     containerColor: removeHash(theme.palette.surface1.main),
