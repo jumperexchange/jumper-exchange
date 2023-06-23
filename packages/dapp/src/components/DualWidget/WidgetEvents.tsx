@@ -16,7 +16,7 @@ export function WidgetEvents() {
   const { trackEvent, trackTransaction, trackAttribute } = useUserTracking();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
-    useState(true);
+    useState(false);
 
   const widgetEvents = useWidgetEvents();
 

@@ -8,6 +8,10 @@ import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
+import {
+  GatewayTransactionDetails,
+  TransactionStatus,
+} from '@safe-global/safe-apps-sdk';
 
 export function Widget({ starterVariant }) {
   const theme = useTheme();
@@ -18,6 +22,52 @@ export function Widget({ starterVariant }) {
   const onOpenNavbarWalletSelectMenu = useMenuStore(
     (state) => state.onOpenNavbarWalletSelectMenu,
   );
+
+  const handleMultiSigTransactionDetails = async (txHash: string) => {
+    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
+
+    const safeTransactionDetails: GatewayTransactionDetails =
+      await safeProviderSDK.txs.getBySafeTxHash(txHash);
+
+    if (safeTransactionDetails.txStatus === TransactionStatus.SUCCESS) {
+      return {
+        status: 'SUCCESS',
+        message: 'All signers have signed the transaction',
+        txHash: safeTransactionDetails.txHash,
+      };
+    }
+
+    if (
+      [TransactionStatus.FAILED, TransactionStatus.CANCELLED].includes(
+        safeTransactionDetails.txStatus,
+      )
+    ) {
+      return {
+        status: 'FAILED',
+        message: `Transaction failed: ${safeTransactionDetails.txStatus}`,
+      };
+    }
+
+    if (
+      [
+        TransactionStatus.AWAITING_CONFIRMATIONS,
+        TransactionStatus.AWAITING_EXECUTION,
+      ].includes(safeTransactionDetails.txStatus)
+    ) {
+      return {
+        status: 'PENDING',
+        message: `${safeTransactionDetails.txStatus} confirmations`,
+      };
+    }
+  };
+
+  const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
+    ?.safeAddress;
+
+  const multiSigConfig = {
+    isMultiSigSigner: isSafeSigner,
+    getMultiSigTransactionDetails: handleMultiSigTransactionDetails,
+  };
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
@@ -138,6 +188,7 @@ export function Widget({ starterVariant }) {
         defaultRouteOptions: {
           maxPriceImpact: 0.4,
         },
+        multiSigConfig,
       },
       buildSwapUrl: true,
       insurance: true,
