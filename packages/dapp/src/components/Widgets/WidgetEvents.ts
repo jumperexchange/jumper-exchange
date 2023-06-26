@@ -123,7 +123,13 @@ export function WidgetEvents() {
     widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
 
     return () => widgetEvents.all.clear();
-  }, [trackAttribute, trackEvent, trackTransaction, widgetEvents]);
+  }, [
+    onOpenSupportModal,
+    trackAttribute,
+    trackEvent,
+    trackTransaction,
+    widgetEvents,
+  ]);
 
   return null;
 }
