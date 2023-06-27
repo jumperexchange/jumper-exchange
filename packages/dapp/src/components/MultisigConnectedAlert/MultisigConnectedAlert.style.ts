@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Breakpoint, Button, alpha } from '@mui/material';
 import { InfoRounded } from '@mui/icons-material';
 
-export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
+export const MultisigConnectedAlertContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: '64px',
   left: '50%',
@@ -28,32 +28,28 @@ export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
 }));
 
-export const MultisigConfirmationModalButton = styled(Button)(({ theme }) => ({
+export const MultisigConnectedAlertButton = styled(Button)(({ theme }) => ({
   width: '100%',
   borderRadius: '24px',
   fontWeight: 700,
   padding: theme.spacing(2.5, 0),
 }));
 
-export const MultisigConfirmationModalIconContainer = styled(Box)(
-  ({ theme }) => ({
-    backgroundColor: alpha(theme.palette.info.main, 0.12),
-    borderRadius: '100%',
-    height: '96px',
-    width: '96px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: '24px',
-  }),
-);
+export const MultisigConnectedAlertIconContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.info.main, 0.12),
+  borderRadius: '100%',
+  height: '96px',
+  width: '96px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom: '24px',
+}));
 
-export const MultisigConfirmationModalIcon = styled(InfoRounded)(
-  ({ theme }) => ({
-    margin: '24px',
-    height: '48px',
-    width: '48px',
-    color: theme.palette.info.main,
-    zIndex: 2,
-  }),
-);
+export const MultisigConnectedAlertIcon = styled(InfoRounded)(({ theme }) => ({
+  margin: '24px',
+  height: '48px',
+  width: '48px',
+  color: theme.palette.info.main,
+  zIndex: 2,
+}));

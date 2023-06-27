@@ -9,13 +9,21 @@ import {
 } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
-import MultiSigConfirmationModal from '../MultiSigConfirmationModal/MultiSigConfirmationModal';
+
+import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
+import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
+import { useWallet } from '../../providers/WalletProvider';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { trackEvent, trackTransaction, trackAttribute } = useUserTracking();
 
+  const { account } = useWallet();
+
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
+    useState(false);
+
+  const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
     useState(false);
 
   const widgetEvents = useWidgetEvents();
@@ -130,10 +138,23 @@ export function WidgetEvents() {
     setIsMultiSigConfirmationModalOpen(false);
   };
 
+  useEffect(() => {
+    const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
+      ?.safeAddress;
+
+    setIsMultisigConnectedAlertOpen(isSafeSigner);
+  }, [account.address]);
+
   return (
-    <MultiSigConfirmationModal
-      open={isMultiSigConfirmationModalOpen}
-      onClose={handleMultiSigConfirmationModalClose}
-    />
+    <>
+      <MultisigConnectedAlert
+        open={isMultisigConnectedAlertOpen}
+        onClose={() => setIsMultisigConnectedAlertOpen(false)}
+      />
+      <MultisigConfirmationModal
+        open={isMultiSigConfirmationModalOpen}
+        onClose={handleMultiSigConfirmationModalClose}
+      />
+    </>
   );
 }

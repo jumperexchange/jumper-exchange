@@ -9,6 +9,7 @@ import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
 import {
+  BaseTransaction,
   GatewayTransactionDetails,
   TransactionStatus,
 } from '@safe-global/safe-apps-sdk';
@@ -32,19 +33,14 @@ export function Widget({ starterVariant }) {
     if (safeTransactionDetails.txStatus === TransactionStatus.SUCCESS) {
       return {
         status: 'SUCCESS',
-        message: 'All signers have signed the transaction',
         txHash: safeTransactionDetails.txHash,
       };
     }
 
-    if (
-      [TransactionStatus.FAILED, TransactionStatus.CANCELLED].includes(
-        safeTransactionDetails.txStatus,
-      )
-    ) {
+    if (TransactionStatus.FAILED === safeTransactionDetails.txStatus) {
       return {
-        status: 'FAILED',
-        message: `Transaction failed: ${safeTransactionDetails.txStatus}`,
+        status: safeTransactionDetails.txStatus,
+        txHash: safeTransactionDetails.txHash,
       };
     }
 
@@ -56,8 +52,35 @@ export function Widget({ starterVariant }) {
     ) {
       return {
         status: 'PENDING',
-        message: `${safeTransactionDetails.txStatus} confirmations`,
+        txHash: safeTransactionDetails.txHash,
       };
+    }
+
+    return {
+      status: safeTransactionDetails.txStatus,
+      txHash: safeTransactionDetails.txHash,
+    };
+  };
+
+  const handleSendingBatchTransaction = async (
+    batchTransactions: BaseTransaction[],
+  ) => {
+    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
+
+    try {
+      console.log('COming here ', batchTransactions);
+      const { safeTxHash } = await safeProviderSDK.txs.send({
+        txs: batchTransactions,
+        params: {
+          safeTxGas: 500000,
+        },
+      });
+
+      return {
+        hash: safeTxHash,
+      };
+    } catch (error) {
+      throw new Error(error);
     }
   };
 
@@ -67,6 +90,8 @@ export function Widget({ starterVariant }) {
   const multisigConfig = {
     isMultisigSigner: isSafeSigner,
     getMultisigTransactionDetails: handleMultiSigTransactionDetails,
+    shouldBatchTransactions: true,
+    sendBatchTransaction: handleSendingBatchTransaction,
   };
 
   // load environment config

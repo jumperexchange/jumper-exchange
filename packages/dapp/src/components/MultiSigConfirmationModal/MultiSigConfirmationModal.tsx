@@ -1,28 +1,44 @@
 import React from 'react';
 import { Modal, Typography } from '@mui/material';
 import {
-  MultiSigConfirmationModalContainer,
-  MultiSigConfirmationModalContent,
-} from './MultiSigConfirmationModal.styles';
+  MultisigConfirmationModalContainer,
+  MultisigConfirmationModalIcon,
+  MultisigConfirmationModalIconContainer,
+} from './MultisigConfirmationModal.styles';
+import { ButtonPrimary } from '@transferto/shared';
+import { useTranslation } from 'react-i18next';
 
-const MultiSigConfirmationModal: React.FC<{
+export const MultisigConfirmationModal: React.FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ open, onClose }) => {
-  return (
-    <Modal open={open} onClose={onClose}>
-      <MultiSigConfirmationModalContainer>
-        <MultiSigConfirmationModalContent>
-          <div>Request sent</div>
+  const i18Path = 'multisig.transactionInitiated';
 
-          <Typography>
-            Please inform all the signers to confirm the transaction within the
-            next 2 mins to avoid any fluctuations in route prices.
-          </Typography>
-        </MultiSigConfirmationModalContent>
-      </MultiSigConfirmationModalContainer>
+  const { t: translate } = useTranslation();
+
+  return (
+    <Modal open={open} onClose={null}>
+      <MultisigConfirmationModalContainer>
+        <MultisigConfirmationModalIconContainer>
+          <MultisigConfirmationModalIcon />
+        </MultisigConfirmationModalIconContainer>
+        <Typography
+          fontWeight={700}
+          textAlign={'center'}
+          marginY={4}
+          style={{
+            fontSize: '1.125rem',
+          }}
+        >
+          {translate(`${i18Path}.title`)}
+        </Typography>
+        <Typography fontSize={'1.125 rem'} marginY={4}>
+          {translate(`${i18Path}.description`)}
+        </Typography>
+        <ButtonPrimary variant="contained" onClick={onClose}>
+          {translate(`${i18Path}.cta`)}
+        </ButtonPrimary>
+      </MultisigConfirmationModalContainer>
     </Modal>
   );
 };
-
-export default MultiSigConfirmationModal;
