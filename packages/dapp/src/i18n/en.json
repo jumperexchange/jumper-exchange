@@ -2,11 +2,11 @@
   "navbar": {
     "welcome": {
       "title": "Find the best route",
-      "subtitle": "4x audited multi-chain liquidity aggregator powered by <0>LI.FI</0>",
+      "subtitle": "<0>4x audited</0> multi-chain liquidity aggregator powered by <1>LI.FI</1>",
       "cta": "Get started"
     },
     "links": {
-      "swap": "Swap",
+      "exchange": "Exchange",
       "dashboard": "Dashboard",
       "refuel": "Gas",
       "buy": "Buy"
