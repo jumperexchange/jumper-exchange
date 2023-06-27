@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { AppProvider } from './AppProvider';
-import { DualWidget } from './components/DualWidget';
 import { Navbar } from './components/Navbar';
 import { Menus } from './components/Navbar/Menu/Menus';
+import { Widgets } from './components/Widgets';
 import { useInitUserTracking } from './hooks';
+
+// dummy commit to check testing deployments. TO BE REMOVED
 
 export default function App() {
   const { initTracking } = useInitUserTracking();
@@ -15,7 +17,7 @@ export default function App() {
     <AppProvider>
       <Navbar />
       <Menus />
-      <DualWidget />
+      <Widgets />
     </AppProvider>
   );
 }

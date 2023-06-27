@@ -3,7 +3,6 @@ import { CssBaseline } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BackgroundGradient } from './components/BackgroundGradient';
-import { HistoryMigration } from './components/HistoryMigration';
 import { ChainInfosProvider } from './providers/ChainInfosProvider';
 import { I18NProvider } from './providers/I18nProvider';
 import { ThemeProvider } from './providers/ThemeProvider';
@@ -30,7 +29,6 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
           </ThemeProvider>
         </I18NProvider>
       </ChainInfosProvider>
-      <HistoryMigration />
     </QueryClientProvider>
   );
 };
