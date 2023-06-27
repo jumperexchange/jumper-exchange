@@ -3147,7 +3147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.1.0":
+"@lifi/widget@npm:^2.1.1":
   version: 2.1.1
   resolution: "@lifi/widget@npm:2.1.1"
   dependencies:
@@ -6194,7 +6194,7 @@ __metadata:
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.0.1
     "@lifi/wallet-management": 2.0.1
-    "@lifi/widget": ^2.1.0
+    "@lifi/widget": ^2.1.1
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.5
     "@sentry/browser": ^7.56.0
