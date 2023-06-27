@@ -1,5 +1,10 @@
 {
   "navbar": {
+    "welcome": {
+      "title": "Finde die beste Route",
+      "subtitle": "4-fach geprüfter Multi-Chain-Liquiditätsaggregator unterstützt von <0>LI.FI</0>",
+      "cta": "Los geht's"
+    },
     "links": {
       "swap": "Swap",
       "dashboard": "Dashboard",
