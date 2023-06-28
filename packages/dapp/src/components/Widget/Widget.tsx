@@ -32,14 +32,21 @@ export function Widget({ starterVariant }) {
 
     if (safeTransactionDetails.txStatus === TransactionStatus.SUCCESS) {
       return {
-        status: 'SUCCESS',
+        status: 'DONE',
         txHash: safeTransactionDetails.txHash,
       };
     }
 
     if (TransactionStatus.FAILED === safeTransactionDetails.txStatus) {
       return {
-        status: safeTransactionDetails.txStatus,
+        status: 'FAILED',
+        txHash: safeTransactionDetails.txHash,
+      };
+    }
+
+    if (TransactionStatus.CANCELLED === safeTransactionDetails.txStatus) {
+      return {
+        status: 'CANCELLED',
         txHash: safeTransactionDetails.txHash,
       };
     }
@@ -68,7 +75,6 @@ export function Widget({ starterVariant }) {
     const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
     try {
-      console.log('COming here ', batchTransactions);
       const { safeTxHash } = await safeProviderSDK.txs.send({
         txs: batchTransactions,
         params: {

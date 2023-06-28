@@ -50,15 +50,16 @@
     "switchToMainnet": "Switch to Mainnet"
   },
   "multisig": {
+    "button": {
+      "cta": "Okay"
+    },
     "connected": {
       "title": "Multisig wallet connected",
-      "description": "Please notify other wallet participants to be ready to sign.",
-      "cta": "Okay"
+      "description": "Please notify other wallet participants to be ready to sign."
     },
     "transactionInitiated": {
       "title": "Multiple signatures required",
-      "description": "Please notify other multisig wallet participants to sign before the transaction expires.",
-      "cta": "Okay"
+      "description": "Please notify other multisig wallet participants to sign before the transaction expires."
     }
   }
 }

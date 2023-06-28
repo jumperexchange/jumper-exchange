@@ -138,6 +138,10 @@ export function WidgetEvents() {
     setIsMultiSigConfirmationModalOpen(false);
   };
 
+  const handleMultisigWalletConnectedModalClose = () => {
+    setIsMultisigConnectedAlertOpen(false);
+  };
+
   useEffect(() => {
     const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
       ?.safeAddress;
@@ -149,7 +153,7 @@ export function WidgetEvents() {
     <>
       <MultisigConnectedAlert
         open={isMultisigConnectedAlertOpen}
-        onClose={() => setIsMultisigConnectedAlertOpen(false)}
+        onClose={handleMultisigWalletConnectedModalClose}
       />
       <MultisigConfirmationModal
         open={isMultiSigConfirmationModalOpen}
