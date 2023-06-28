@@ -11,6 +11,11 @@
       "refuel": "Gas",
       "buy": "Buy"
     },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Bridges",
+      "chains": "Chains"
+    },
     "connectWallet": "Connect Wallet",
     "chooseWallet": "Choose Wallet",
     "navbarMenu": {

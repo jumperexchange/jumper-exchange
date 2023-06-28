@@ -3059,9 +3059,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:2.1.1, @lifi/wallet-management@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@lifi/wallet-management@npm:2.1.1"
+"@lifi/wallet-management@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "@lifi/wallet-management@npm:2.1.2"
   dependencies:
     "@coinbase/wallet-sdk": ^3.7.1
     "@ethersproject/abstract-signer": ^5.7.0
@@ -3069,16 +3069,16 @@ __metadata:
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.1.0
     "@walletconnect/ethereum-provider": ^2.8.4
-    "@walletconnect/modal": ^2.5.4
+    "@walletconnect/modal": ^2.5.5
     events: ^3.3.0
     react: ^18.2.0
-  checksum: c305d7e4467e8aa2ce82c8d35727f493120f7c9a8a9c3242d38741c70a71ab59e558fe57bcdcc59e4e0853054420c8d7712f74d37d471d51e1192c189329a11a
+  checksum: ed37e7c8379ba9f067c668cbf9048c7937b58b5eb6dac58e7247b87956e27573f220e68547a6a2065d0b50b9f2d5724ecb70007a6ac3f20d9f738769ebc0bbe1
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@lifi/widget@npm:2.1.1"
+"@lifi/widget@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "@lifi/widget@npm:2.1.2"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -3087,11 +3087,11 @@ __metadata:
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.1.0
-    "@lifi/wallet-management": ^2.1.1
+    "@lifi/wallet-management": ^2.1.2
     "@mui/icons-material": ^5.11.16
     "@mui/lab": ^5.0.0-alpha.134
     "@mui/material": ^5.13.6
-    "@tanstack/react-query": ^4.29.18
+    "@tanstack/react-query": ^4.29.19
     "@tanstack/react-virtual": ^3.0.0-beta.54
     big.js: ^6.2.1
     i18next: ^23.2.3
@@ -3100,9 +3100,9 @@ __metadata:
     mitt: ^3.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-hook-form: ^7.45.0
+    react-hook-form: ^7.45.1
     react-i18next: ^13.0.1
-    react-intersection-observer: ^9.5.1
+    react-intersection-observer: ^9.5.2
     react-router-dom: ^6.14.0
     react-timer-hook: ^3.0.6
     uuid: ^9.0.0
@@ -3114,7 +3114,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 7aee0981cf16de28f2263b3664dbc1ea7a186113e3ed22aa84f1a379f0c6be4de48a6067cee673f784e2f187faa3deb983778302573e7e2390a3b3871ff72b9a
+  checksum: b3582b14a5e2000e52efef3c76d87230ea058098563b81dc914941b1c31b1dd4e64776bf1cf2027f01baab6a81f50e457bf68e763289e35b1375f7cbbef1daa7
   languageName: node
   linkType: hard
 
@@ -5950,7 +5950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^4.29.18":
+"@tanstack/react-query@npm:^4.29.19":
   version: 4.29.19
   resolution: "@tanstack/react-query@npm:4.29.19"
   dependencies:
@@ -6032,8 +6032,8 @@ __metadata:
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.1.0
-    "@lifi/wallet-management": 2.1.1
-    "@lifi/widget": ^2.1.1
+    "@lifi/wallet-management": ^2.1.2
+    "@lifi/widget": ^2.1.2
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.6
     "@sentry/browser": ^7.56.0
@@ -6057,7 +6057,7 @@ __metadata:
     react-query: ^3.39.3
     react-router-dom: ^6.14.0
     rollup-plugin-polyfill-node: ^0.12.0
-    typescript: ^5.1.3
+    typescript: ^5.1.5
     use-media: ^1.4.0
     vite: ^4.3.9
     web-vitals: ^3.3.2
@@ -6072,7 +6072,7 @@ __metadata:
     "@babel/core": ^7.22.5
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
-    "@lifi/wallet-management": 2.1.1
+    "@lifi/wallet-management": ^2.1.2
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.6
     "@storybook/addon-actions": ^6.5.16
@@ -6093,7 +6093,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-i18next: ^12.3.1
-    typescript: ^5.1.3
+    typescript: ^5.1.5
     use-media: ^1.4.0
     zustand: ^4.3.8
   languageName: unknown
@@ -6859,35 +6859,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/modal-core@npm:2.5.4":
-  version: 2.5.4
-  resolution: "@walletconnect/modal-core@npm:2.5.4"
+"@walletconnect/modal-core@npm:2.5.5":
+  version: 2.5.5
+  resolution: "@walletconnect/modal-core@npm:2.5.5"
   dependencies:
     buffer: 6.0.3
     valtio: 1.10.6
-  checksum: 660a507a7a66812be7020b35fbe72e5052739df696424d59e0db55544dcbaf915e108c29c90578dcd82e7beeacd4891ed835e80bb9b16d2aed475fab3be1599c
+  checksum: 1ae15846b42db95b804a5496f64f262c5389675fd57fb773b05158d721c4141c9e15dc5b72e98682f54ae730928dcd2cb488b84f4bb55c2efaf9b7aa5f69c060
   languageName: node
   linkType: hard
 
-"@walletconnect/modal-ui@npm:2.5.4":
-  version: 2.5.4
-  resolution: "@walletconnect/modal-ui@npm:2.5.4"
+"@walletconnect/modal-ui@npm:2.5.5":
+  version: 2.5.5
+  resolution: "@walletconnect/modal-ui@npm:2.5.5"
   dependencies:
-    "@walletconnect/modal-core": 2.5.4
+    "@walletconnect/modal-core": 2.5.5
     lit: 2.7.5
     motion: 10.16.2
     qrcode: 1.5.3
-  checksum: 40034612895ed7bc7f18e2972b0f3c681f75c59636eb88771387795d4c5e5f301bfbc7e59153d3084dd1606b70943d7885b52a54e22ce780a00696b0761f02de
+  checksum: 09537d4e7e9191ae1624277c22e6f2d064bff3ce1009c5c134573fc3d157e1384d1e0e4e25752e5ae3d9ea493b5e26c4c1773c56c454690891c7d589527b38f9
   languageName: node
   linkType: hard
 
-"@walletconnect/modal@npm:^2.5.4":
-  version: 2.5.4
-  resolution: "@walletconnect/modal@npm:2.5.4"
+"@walletconnect/modal@npm:^2.5.5":
+  version: 2.5.5
+  resolution: "@walletconnect/modal@npm:2.5.5"
   dependencies:
-    "@walletconnect/modal-core": 2.5.4
-    "@walletconnect/modal-ui": 2.5.4
-  checksum: 4bf0974d635ae41df665ae31ed2812c16703b605715e1b61f48c9faf8b66eab589767ff9b6e33016a60b62b1dae05948593d69abe9024b5b68dd66eec170017d
+    "@walletconnect/modal-core": 2.5.5
+    "@walletconnect/modal-ui": 2.5.5
+  checksum: c241fa0196aa1a077134d48272fde3e2c4526290a935edba500d9f01c199988eb3039b61c214dde1a82a360ad93be3335d432e0d951b640aefe3d2fe6749a2d3
   languageName: node
   linkType: hard
 
@@ -19108,12 +19108,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.45.0":
-  version: 7.45.0
-  resolution: "react-hook-form@npm:7.45.0"
+"react-hook-form@npm:^7.45.1":
+  version: 7.45.1
+  resolution: "react-hook-form@npm:7.45.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: 3e35253f0efb0f77f5036c74f85cbdd425adb2fad20a14fc692d573fe552b3d9b7e7ac22193cd767f265fa292c33383d8721cfbdcc5ae41910a35a1ba3655f66
+  checksum: 3abe1dcf449a3d438b4e5403d93d1502f6dab05afd5c5215f0fc88a32f3d06e7f4b77bee75479359c22a418af6ea0f52711478c73773cb5fd0f43da50669aa17
   languageName: node
   linkType: hard
 
@@ -19173,12 +19173,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-intersection-observer@npm:^9.5.1":
-  version: 9.5.1
-  resolution: "react-intersection-observer@npm:9.5.1"
+"react-intersection-observer@npm:^9.5.2":
+  version: 9.5.2
+  resolution: "react-intersection-observer@npm:9.5.2"
   peerDependencies:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 862d531757a9eea1f0eff072be21e6c11d8d9f78c5918609ac8164899365484ce983a50f9ed45c861753d407d2066b3198cf6444506d0c6e4212a4a361995643
+  checksum: cdbe40544930d59fc3820bce017fb688910cbecd7baaf382387a3d60d98a36e1d1e4bc27a876775e99b2a9f86762286a29d7bca21f3345f653cff29850c2641d
   languageName: node
   linkType: hard
 
@@ -20021,7 +20021,7 @@ __metadata:
     lerna: ^7.1.0
     lint-staged: ^13.2.2
     prettier: ^2.8.8
-    typescript: ^5.1.3
+    typescript: ^5.1.5
   languageName: unknown
   linkType: soft
 
@@ -21899,7 +21899,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=3 < 6, typescript@npm:^5.1.3":
+"typescript@npm:>=3 < 6":
   version: 5.1.3
   resolution: "typescript@npm:5.1.3"
   bin:
@@ -21919,7 +21919,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@>=3 < 6#~builtin<compat/typescript>, typescript@patch:typescript@^5.1.3#~builtin<compat/typescript>":
+"typescript@npm:^5.1.5":
+  version: 5.1.5
+  resolution: "typescript@npm:5.1.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 0eef8699e05ae767096924dbed633c340b4d36e953bb8ed87fb12e9dd9dcea5055ceac7182c614a556dbd346a8a82df799d330e1e286ae66e17c84e1710f6a6f
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@>=3 < 6#~builtin<compat/typescript>":
   version: 5.1.3
   resolution: "typescript@patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=77c9e2"
   bin:
@@ -21936,6 +21946,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 1f8f3b6aaea19f0f67cba79057674ba580438a7db55057eb89cc06950483c5d632115c14077f6663ea76fd09fce3c190e6414bb98582ec80aa5a4eaf345d5b68
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.1.5#~builtin<compat/typescript>":
+  version: 5.1.5
+  resolution: "typescript@patch:typescript@npm%3A5.1.5#~builtin<compat/typescript>::version=5.1.5&hash=77c9e2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 33020c886b1aa2e948b557aad4986cf6448b30c58915b12cac873bd35dc2260d93f71af8a661d2c9f352b5d099d9df13a59688e222e79276099b9c5d86d847be
   languageName: node
   linkType: hard
 
