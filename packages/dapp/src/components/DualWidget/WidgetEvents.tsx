@@ -129,7 +129,10 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
-    widgetEvents.on(WidgetEvent.SafeRouteInitiated, onSafeRouteInitiation);
+    widgetEvents.on(
+      WidgetEvent.MultisigTransactionStarted,
+      onSafeRouteInitiation,
+    );
 
     return () => widgetEvents.all.clear();
   }, [trackAttribute, trackEvent, trackTransaction, widgetEvents]);
