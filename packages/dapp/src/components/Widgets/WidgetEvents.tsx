@@ -8,9 +8,12 @@ import {
   WidgetEvent,
   useWidgetEvents,
 } from '@lifi/widget';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useMenuStore } from '../../stores';
+import { MultisigConfirmationModal } from '../MultiSigConfirmationModal';
+import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
+import { useWallet } from '../../providers/WalletProvider';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -19,6 +22,14 @@ export function WidgetEvents() {
     state.onOpenSupportModal,
   ]);
   const widgetEvents = useWidgetEvents();
+
+  const { account } = useWallet();
+
+  const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
+    useState(false);
+
+  const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
+    useState(false);
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: Route) => {
@@ -112,6 +123,10 @@ export function WidgetEvents() {
       onOpenSupportModal(true);
     };
 
+    const onSafeRouteInitiation = () => {
+      setIsMultiSigConfirmationModalOpen(true);
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -121,6 +136,10 @@ export function WidgetEvents() {
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
     widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
+    widgetEvents.on(
+      WidgetEvent.MultisigTransactionStarted,
+      onSafeRouteInitiation,
+    );
 
     return () => widgetEvents.all.clear();
   }, [
@@ -131,5 +150,31 @@ export function WidgetEvents() {
     widgetEvents,
   ]);
 
-  return null;
+  const handleMultiSigConfirmationModalClose = () => {
+    setIsMultiSigConfirmationModalOpen(false);
+  };
+
+  const handleMultisigWalletConnectedModalClose = () => {
+    setIsMultisigConnectedAlertOpen(false);
+  };
+
+  useEffect(() => {
+    const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
+      ?.safeAddress;
+
+    setIsMultisigConnectedAlertOpen(isSafeSigner);
+  }, [account.address]);
+
+  return (
+    <>
+      <MultisigConnectedAlert
+        open={isMultisigConnectedAlertOpen}
+        onClose={handleMultisigWalletConnectedModalClose}
+      />
+      <MultisigConfirmationModal
+        open={isMultiSigConfirmationModalOpen}
+        onClose={handleMultiSigConfirmationModalClose}
+      />
+    </>
+  );
 }

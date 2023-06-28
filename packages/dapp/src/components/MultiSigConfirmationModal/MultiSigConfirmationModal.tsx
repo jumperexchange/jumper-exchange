@@ -35,7 +35,13 @@ export const MultisigConfirmationModal: React.FC<{
         <Typography fontSize={'1.125 rem'} marginY={4}>
           {translate(`${i18Path}.description`)}
         </Typography>
-        <ButtonPrimary variant="contained" onClick={onClose}>
+        <ButtonPrimary
+          style={{
+            width: '100%',
+          }}
+          variant="contained"
+          onClick={onClose}
+        >
           {translate(`multisig.button.cta`)}
         </ButtonPrimary>
       </MultisigConfirmationModalContainer>

@@ -7,24 +7,12 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
-
-import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
-import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
-import { useWallet } from '../../providers/WalletProvider';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { trackEvent, trackTransaction, trackAttribute } = useUserTracking();
-
-  const { account } = useWallet();
-
-  const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
-    useState(false);
-
-  const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
-    useState(false);
 
   const widgetEvents = useWidgetEvents();
 
@@ -116,11 +104,6 @@ export function WidgetEvents() {
       });
     };
 
-    const onSafeRouteInitiation = (route: Route) => {
-      setIsMultiSigConfirmationModalOpen(true);
-      console.log('Got the safe route event');
-    };
-
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -129,39 +112,9 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
-    widgetEvents.on(
-      WidgetEvent.MultisigTransactionStarted,
-      onSafeRouteInitiation,
-    );
 
     return () => widgetEvents.all.clear();
   }, [trackAttribute, trackEvent, trackTransaction, widgetEvents]);
 
-  const handleMultiSigConfirmationModalClose = () => {
-    setIsMultiSigConfirmationModalOpen(false);
-  };
-
-  const handleMultisigWalletConnectedModalClose = () => {
-    setIsMultisigConnectedAlertOpen(false);
-  };
-
-  useEffect(() => {
-    const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
-      ?.safeAddress;
-
-    setIsMultisigConnectedAlertOpen(isSafeSigner);
-  }, [account.address]);
-
-  return (
-    <>
-      <MultisigConnectedAlert
-        open={isMultisigConnectedAlertOpen}
-        onClose={handleMultisigWalletConnectedModalClose}
-      />
-      <MultisigConfirmationModal
-        open={isMultiSigConfirmationModalOpen}
-        onClose={handleMultiSigConfirmationModalClose}
-      />
-    </>
-  );
+  return null;
 }

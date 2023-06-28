@@ -11,7 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
-import { useUserTracking } from '../../hooks/';
+import { useUserTracking } from '../../hooks';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
@@ -20,6 +20,7 @@ import {
   GatewayTransactionDetails,
   TransactionStatus,
 } from '@safe-global/safe-apps-sdk';
+import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 
 export function Widget({ starterVariant }) {
   const theme = useTheme();
@@ -253,6 +254,7 @@ export function Widget({ starterVariant }) {
 
   return (
     <Box className="widget-wrapper">
+      {isSafeSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={widgetConfig}
