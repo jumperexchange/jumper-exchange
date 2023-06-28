@@ -28,6 +28,12 @@ import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
 const MenuLabelHeight = '64px';
 
+export enum NavbarHeight {
+  XS = '64px',
+  SM = '72px',
+  LG = '80px',
+}
+
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
   height: '48px',
   alignItems: 'center',
@@ -40,7 +46,7 @@ export const NavbarExternalBackground = styled('div')(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  zIndex: 1300,
+  zIndex: 1400,
   backgroundColor: '#000000',
   opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -71,16 +77,16 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     boxShadow: 'unset',
     background: 'transparent',
     alignItems: 'center',
-    height: '64px',
+    height: NavbarHeight.XS,
     padding: theme.spacing(2, 4),
-    zIndex: 1300,
+    zIndex: 1500,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      height: '72px',
+      height: NavbarHeight.SM,
       padding: theme.spacing(4, 6),
     },
     [theme.breakpoints.up('md' as Breakpoint)]: {
       padding: theme.spacing(6),
-      height: '80px',
+      height: NavbarHeight.LG,
     },
   }),
 );
@@ -111,7 +117,7 @@ export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
 );
 
 export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
-  zIndex: 1300,
+  zIndex: 1600,
   bottom: '0 !important',
   left: '0 !important',
   top: 'unset !important',

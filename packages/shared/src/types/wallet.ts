@@ -23,7 +23,7 @@ export interface Wallet extends events.EventEmitter {
   name: string;
   icon: string;
   isActivationInProgress: boolean;
-  account: WalletAccount | undefined;
+  account?: WalletAccount;
   installed: () => boolean;
   connect: () => Promise<void>;
   autoConnect?: () => Promise<void>;

@@ -1,5 +1,12 @@
 import { Token } from '@lifi/sdk';
-import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
+import {
+  HiddenUI,
+  LiFiWidget,
+  WidgetConfig,
+  WidgetSubvariant,
+  WidgetVariant,
+} from '@lifi/widget';
+import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -112,7 +119,8 @@ export function Widget({ starterVariant }) {
     }
 
     return {
-      variant: starterVariant || 'expandable',
+      variant: 'expandable' as WidgetVariant,
+      subvariant: (starterVariant as WidgetSubvariant) || 'default',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
@@ -221,7 +229,7 @@ export function Widget({ starterVariant }) {
         },
         multisigConfig,
       },
-      buildSwapUrl: true,
+      buildUrl: true,
       insurance: true,
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
@@ -244,9 +252,11 @@ export function Widget({ starterVariant }) {
   ]);
 
   return (
-    <LiFiWidget
-      integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
-      config={widgetConfig}
-    />
+    <Box className="widget-wrapper">
+      <LiFiWidget
+        integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
+        config={widgetConfig}
+      />
+    </Box>
   );
 }
