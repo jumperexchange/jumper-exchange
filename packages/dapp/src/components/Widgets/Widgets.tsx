@@ -6,6 +6,7 @@ import {
 } from '@transferto/shared/src';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
+import { TabsMap } from '../../const/tabsMap';
 import { useWallet } from '../../providers/WalletProvider';
 import { useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types';
@@ -50,20 +51,20 @@ export function Widgets() {
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
       starterVariant === 'default'
-        ? onChangeTab(0)
+        ? onChangeTab(TabsMap.Exchange)
         : starterVariant === 'refuel'
-        ? onChangeTab(1)
+        ? onChangeTab(TabsMap.Refuel)
         : starterVariant === 'buy'
-        ? onChangeTab(2)
-        : onChangeTab(0);
+        ? onChangeTab(TabsMap.Buy)
+        : onChangeTab(TabsMap.Exchange);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
-      if (activeTab === 0) {
+      if (activeTab === TabsMap.Exchange) {
         setStarterVariant('default');
-      } else if (activeTab === 1) {
+      } else if (activeTab === TabsMap.Refuel) {
         setStarterVariant('refuel');
-      } else if (activeTab === 2) {
+      } else if (activeTab === TabsMap.Buy) {
         setStarterVariant('buy');
       }
     }
