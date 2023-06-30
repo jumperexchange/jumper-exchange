@@ -224,6 +224,7 @@ export function Widget({ starterVariant }) {
         rpcs,
         defaultRouteOptions: {
           maxPriceImpact: 0.4,
+          allowSwitchChain: !isSafeSigner, // avoid routes requiring chain switch for multisig wallets
         },
         multisigConfig,
       },

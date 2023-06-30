@@ -16,7 +16,7 @@ export const MultisigConnectedAlert: React.FC<{
   const { t: translate } = useTranslation();
 
   return (
-    <Modal open={open} onClose={null}>
+    <Modal open={open} onClose={onClose}>
       <MultisigConnectedAlertContainer>
         <MultisigConnectedAlertIconContainer>
           <MultisigConnectedAlertIcon />

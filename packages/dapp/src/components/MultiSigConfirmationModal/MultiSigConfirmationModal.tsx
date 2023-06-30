@@ -1,12 +1,13 @@
 import React from 'react';
 import { Modal, Typography } from '@mui/material';
-import {
-  MultisigConfirmationModalContainer,
-  MultisigConfirmationModalIcon,
-  MultisigConfirmationModalIconContainer,
-} from './MultisigConfirmationModal.styles';
+
 import { ButtonPrimary } from '@transferto/shared';
 import { useTranslation } from 'react-i18next';
+import {
+  MultisigConfirmationModalContainer,
+  MultisigConfirmationModalIconContainer,
+  MultisigConfirmationModalIcon,
+} from './MultiSigConfirmationModal.styles';
 
 export const MultisigConfirmationModal: React.FC<{
   open: boolean;
@@ -17,7 +18,7 @@ export const MultisigConfirmationModal: React.FC<{
   const { t: translate } = useTranslation();
 
   return (
-    <Modal open={open} onClose={null}>
+    <Modal open={open} onClose={onClose}>
       <MultisigConfirmationModalContainer>
         <MultisigConfirmationModalIconContainer>
           <MultisigConfirmationModalIcon />
