@@ -85,9 +85,6 @@ export function Widget({ starterVariant }) {
     try {
       const { safeTxHash } = await safeProviderSDK.txs.send({
         txs: batchTransactions,
-        params: {
-          safeTxGas: 500000,
-        },
       });
 
       return {
