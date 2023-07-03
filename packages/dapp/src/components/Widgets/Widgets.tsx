@@ -1,9 +1,6 @@
 import { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
-import {
-  LOCAL_STORAGE_WALLETS_KEY,
-  TestnetAlert,
-} from '@transferto/shared/src';
+import { TestnetAlert } from '@transferto/shared/src';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { TabsMap } from '../../const/tabsMap';
@@ -38,7 +35,7 @@ export function Widgets() {
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
-      if (url === LinkMap.Swap) {
+      if (url === LinkMap.Exchange) {
         return 'default';
       } else if (url === LinkMap.Gas || url === LinkMap.Refuel) {
         return 'refuel';
@@ -84,16 +81,7 @@ export function Widgets() {
     }
   };
 
-  const isWalletConnected = useMemo(() => {
-    const activeWallet = JSON.parse(
-      localStorage.getItem(LOCAL_STORAGE_WALLETS_KEY),
-    );
-    return activeWallet?.length > 0 || false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account.address]);
-
-  const showWelcomeWrapper =
-    !welcomeScreenEntered && !isWalletConnected && showWelcome;
+  const showWelcomeWrapper = !welcomeScreenEntered && showWelcome;
 
   useLayoutEffect(() => {
     getActiveWidget();

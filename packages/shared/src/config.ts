@@ -16,7 +16,6 @@ export const localStorageKey = {
 // ----------------------------------------------------------------------
 
 export const defaultLang = 'en'; // English
-export const LOCAL_STORAGE_WALLETS_KEY = 'li.fi-wallets';
 
 const setLanguage = () => {
   if (!!localStorage.getItem(localStorageKey.languageMode)) {

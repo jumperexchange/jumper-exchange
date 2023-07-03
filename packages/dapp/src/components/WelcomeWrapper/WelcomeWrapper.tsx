@@ -59,6 +59,13 @@ export const WelcomeWrapper = ({
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
+                    href="https://docs.li.fi/smart-contracts/audits"
+                    target={'_blank'}
+                    rel="noreferrer"
+                  />,
+                  // eslint-disable-next-line jsx-a11y/anchor-has-content
+                  <a
+                    className={'link-lifi'}
                     href="https://li.fi"
                     target={'_blank'}
                     rel="noreferrer"

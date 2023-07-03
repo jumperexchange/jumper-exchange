@@ -2,18 +2,22 @@ import { Route } from '@lifi/sdk';
 import { useUserTracking } from '../../hooks';
 
 import {
+  RouteContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
-  useWidgetEvents,
   WidgetEvent,
+  useWidgetEvents,
 } from '@lifi/widget';
 import { useEffect, useRef } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
+import { useMenuStore } from '../../stores';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { trackEvent, trackTransaction, trackAttribute } = useUserTracking();
-
+  const [onOpenSupportModal] = useMenuStore((state) => [
+    state.onOpenSupportModal,
+  ]);
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
@@ -104,6 +108,10 @@ export function WidgetEvents() {
       });
     };
 
+    const onRouteContactSupport = (supportId: RouteContactSupport) => {
+      onOpenSupportModal(true);
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -112,9 +120,16 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
+    widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
 
     return () => widgetEvents.all.clear();
-  }, [trackAttribute, trackEvent, trackTransaction, widgetEvents]);
+  }, [
+    onOpenSupportModal,
+    trackAttribute,
+    trackEvent,
+    trackTransaction,
+    widgetEvents,
+  ]);
 
   return null;
 }

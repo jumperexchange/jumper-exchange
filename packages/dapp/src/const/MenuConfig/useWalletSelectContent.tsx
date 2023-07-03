@@ -13,7 +13,9 @@ export const useWalletSelectContent = () => {
   const { trackEvent } = useUserTracking();
 
   const onWalletConnect = useSettingsStore((state) => state.onWalletConnect);
-
+  const [onWelcomeScreenEntered] = useSettingsStore((state) => [
+    state.onWelcomeScreenEntered,
+  ]);
   const onCloseAllNavbarMenus = useMenuStore(
     (state) => state.onCloseAllNavbarMenus,
   );
@@ -55,6 +57,7 @@ export const useWalletSelectContent = () => {
           onClick: () => {
             login(wallet);
             onCloseAllNavbarMenus();
+            onWelcomeScreenEntered(true);
             trackEvent({
               category: TrackingCategories.Wallet,
               action: TrackingActions.ChooseWallet,
@@ -67,7 +70,7 @@ export const useWalletSelectContent = () => {
       },
     );
     return _output;
-  }, [login, onCloseAllNavbarMenus, trackEvent]);
+  }, [login, onCloseAllNavbarMenus, onWelcomeScreenEntered, trackEvent]);
 
   return walletMenuItems;
 };
