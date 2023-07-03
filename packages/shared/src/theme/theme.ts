@@ -2,7 +2,6 @@ import type { Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
-import { resetStyle } from '../style';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -168,6 +167,8 @@ declare module '@mui/material/Button' {
 }
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    '@supports (font-variation-settings: normal)': true;
+
     // lifiBrandBodyMedium: true;
     // lifiBrandBodyLarge: true;
     // lifiBrandBodyXLarge: true;
@@ -201,8 +202,18 @@ declare module '@mui/material/Typography' {
 
 const themeBase: Theme = createTheme({
   components: {
+    MuiScopedCssBaseline: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Inter, sans-serif',
+          '@supports (font-variation-settings: normal)': {
+            fontFamily: 'Inter var, sans-serif',
+          },
+        },
+      },
+    },
     MuiCssBaseline: {
-      styleOverrides: `${resetStyle}`,
+      styleOverrides: '@supports (font-variation-settings: normal)',
     },
     MuiTypography: {
       defaultProps: {
@@ -337,7 +348,7 @@ const themeBase: Theme = createTheme({
 const themeTypographyPreset: Theme = createTheme({
   ...themeBase,
   typography: {
-    fontFamily: ['Inter', 'sans-serif'].join(','),
+    fontFamily: ['Inter var', 'Inter', 'sans-serif'].join(','),
     // lifiBrandBodySmall: {
     //   fontFamily: 'GT-America',
     //   fontSize: '14px',
@@ -410,14 +421,14 @@ const themeTypographyPreset: Theme = createTheme({
     //   textAlign: 'center',
     // },
     lifiHeaderDisplay: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontSize: '96px',
       lineHeight: '128px',
       fontWeight: 700,
     },
     lifiHeaderXLarge: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '64px',
@@ -425,7 +436,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderLarge: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '48px',
@@ -433,7 +444,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderMedium: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '32px',
@@ -441,7 +452,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderSmall: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -449,7 +460,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderXSmall: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
@@ -457,7 +468,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXLargeStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 800,
       fontSize: '24px',
@@ -465,7 +476,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXLarge: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '24px',
@@ -473,7 +484,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyLargeStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -481,7 +492,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyLarge: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '18px',
@@ -489,7 +500,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyMediumStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '16px',
@@ -497,7 +508,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyMedium: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '16px',
@@ -505,7 +516,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodySmallStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
@@ -513,7 +524,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodySmall: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '14px',
@@ -521,7 +532,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXSmallStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '12px',
@@ -529,7 +540,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXSmall: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '12px',

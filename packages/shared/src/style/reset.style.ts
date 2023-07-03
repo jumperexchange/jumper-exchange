@@ -2,10 +2,6 @@ import { normalize } from 'polished';
 
 export const resetStyle = `
 ${normalize()};
-  html { font-family: 'Inter', sans-serif; }
-  @supports (font-variation-settings: normal) {
-    html { font-family: 'Inter var', sans-serif; }
-  }
   * {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
