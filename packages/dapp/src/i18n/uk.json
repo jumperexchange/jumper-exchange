@@ -11,6 +11,11 @@
       "refuel": "Газ",
       "buy": "Купівля"
     },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Бриджей",
+      "chains": "Чейнів"
+    },
     "connectWallet": "Під'єднати гаманець",
     "chooseWallet": "Оберіть гаманець",
     "navbarMenu": {

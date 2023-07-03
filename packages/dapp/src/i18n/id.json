@@ -1,10 +1,20 @@
 {
   "navbar": {
+    "welcome": {
+      "title": "Temukan rute terbaik",
+      "subtitle": "<0>4x diaudit</0> agregator likuiditas multi-rantai yang didukung oleh <1>LI.FI</1>",
+      "cta": "Memulai"
+    },
     "links": {
-      "swap": "Swap",
+      "exchange": "Pertukaran",
       "dashboard": "Dasbor",
       "refuel": "Gas",
       "buy": "Beli"
+    },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Bridge",
+      "chains": "Jaringan"
     },
     "connectWallet": "Hubungkan Dompet",
     "chooseWallet": "Pilih Dompet",
