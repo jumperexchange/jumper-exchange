@@ -32,27 +32,55 @@ export function Widget({ starterVariant }) {
     (state) => state.onOpenNavbarWalletSelectMenu,
   );
 
-  const handleMultiSigTransactionDetails = async (txHash: string) => {
+  const handleMultiSigTransactionDetails = async (
+    txHash: string,
+    chainId: number,
+  ) => {
     const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
     const safeTransactionDetails: GatewayTransactionDetails =
       await safeProviderSDK.txs.getBySafeTxHash(txHash);
 
-    if (safeTransactionDetails.txStatus === TransactionStatus.SUCCESS) {
+    console.log({ safeTransactionDetails });
+
+    const safeTxHash = safeTransactionDetails.txId;
+
+    const safeApiTransactionResponse = await fetch(
+      `https://safe-client.safe.global/v1/chains/${chainId}/transactions/${safeTxHash}`,
+    );
+
+    const safeApiTransactionDetails = await safeApiTransactionResponse.json();
+
+    if (
+      [
+        safeTransactionDetails.txStatus,
+        safeApiTransactionDetails.txStatus,
+      ].includes(TransactionStatus.SUCCESS)
+    ) {
       return {
         status: 'DONE',
         txHash: safeTransactionDetails.txHash,
       };
     }
 
-    if (TransactionStatus.FAILED === safeTransactionDetails.txStatus) {
+    if (
+      [
+        safeTransactionDetails.txStatus,
+        safeApiTransactionDetails.txStatus,
+      ].includes(TransactionStatus.FAILED)
+    ) {
       return {
         status: 'FAILED',
         txHash: safeTransactionDetails.txHash,
       };
     }
 
-    if (TransactionStatus.CANCELLED === safeTransactionDetails.txStatus) {
+    if (
+      [
+        safeTransactionDetails.txStatus,
+        safeApiTransactionDetails.txStatus,
+      ].includes(TransactionStatus.CANCELLED)
+    ) {
       return {
         status: 'CANCELLED',
         txHash: safeTransactionDetails.txHash,
@@ -61,9 +89,13 @@ export function Widget({ starterVariant }) {
 
     if (
       [
-        TransactionStatus.AWAITING_CONFIRMATIONS,
-        TransactionStatus.AWAITING_EXECUTION,
-      ].includes(safeTransactionDetails.txStatus)
+        safeTransactionDetails.txStatus,
+        safeApiTransactionDetails.txStatus,
+      ].includes(TransactionStatus.AWAITING_CONFIRMATIONS) ||
+      [
+        safeTransactionDetails.txStatus,
+        safeApiTransactionDetails.txStatus,
+      ].includes(TransactionStatus.AWAITING_EXECUTION)
     ) {
       return {
         status: 'PENDING',
@@ -80,6 +112,7 @@ export function Widget({ starterVariant }) {
   const handleSendingBatchTransaction = async (
     batchTransactions: BaseTransaction[],
   ) => {
+    console.log('Batching');
     const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
     try {
@@ -101,7 +134,7 @@ export function Widget({ starterVariant }) {
   const multisigConfig = {
     isMultisigSigner: isSafeSigner,
     getMultisigTransactionDetails: handleMultiSigTransactionDetails,
-    shouldBatchTransactions: true,
+    shouldBatchTransactions: isSafeSigner,
     sendBatchTransaction: handleSendingBatchTransaction,
   };
 
