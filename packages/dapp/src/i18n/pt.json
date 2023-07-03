@@ -11,6 +11,11 @@
       "refuel": "Gás",
       "buy": "Comprar"
     },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Pontes",
+      "chains": "Redes"
+    },
     "connectWallet": "Conectar Carteira",
     "chooseWallet": "Escolha uma Carteira",
     "navbarMenu": {
