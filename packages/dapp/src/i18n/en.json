@@ -59,10 +59,10 @@
     "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
     "switchToMainnet": "Switch to Mainnet"
   },
+  "button": {
+    "cta": "Okay"
+  },
   "multisig": {
-    "button": {
-      "cta": "Okay"
-    },
     "connected": {
       "title": "Multisig wallet connected",
       "description": "Please notify other wallet participants to be ready to sign."

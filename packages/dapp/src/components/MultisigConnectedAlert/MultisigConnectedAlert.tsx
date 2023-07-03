@@ -40,7 +40,7 @@ export const MultisigConnectedAlert: React.FC<{
             width: '100%',
           }}
         >
-          {translate(`multisig.button.cta`)}
+          {translate(`button.cta`)}
         </ButtonPrimary>
       </MultisigConnectedAlertContainer>
     </Modal>

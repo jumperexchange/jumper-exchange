@@ -51,6 +51,27 @@ export function WidgetEvents() {
       }
     };
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
+      // check if multisig and open the modal
+
+      const isRouteDone = update.route.steps.every(
+        (step) => step.execution?.status === 'DONE',
+      );
+
+      const isRouteFailed = update.route.steps.some(
+        (step) => step.execution?.status === 'FAILED',
+      );
+
+      const multisigRouteStarted = update.route.steps.some((step) =>
+        step.execution?.process.find((process) => !!process.multisigTxHash),
+      );
+
+      const isMultisigRouteActive =
+        !isRouteDone && !isRouteFailed && multisigRouteStarted;
+
+      if (isMultisigRouteActive) {
+        setIsMultiSigConfirmationModalOpen(true);
+      }
+
       if (!!update?.process && !!update.route) {
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
@@ -123,10 +144,6 @@ export function WidgetEvents() {
       onOpenSupportModal(true);
     };
 
-    const onSafeRouteInitiation = () => {
-      setIsMultiSigConfirmationModalOpen(true);
-    };
-
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
@@ -136,10 +153,6 @@ export function WidgetEvents() {
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
     widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
-    widgetEvents.on(
-      WidgetEvent.MultisigTransactionStarted,
-      onSafeRouteInitiation,
-    );
 
     return () => widgetEvents.all.clear();
   }, [

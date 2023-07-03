@@ -41,8 +41,6 @@ export function Widget({ starterVariant }) {
     const safeTransactionDetails: GatewayTransactionDetails =
       await safeProviderSDK.txs.getBySafeTxHash(txHash);
 
-    console.log({ safeTransactionDetails });
-
     const safeTxHash = safeTransactionDetails.txId;
 
     const safeApiTransactionResponse = await fetch(
@@ -50,6 +48,35 @@ export function Widget({ starterVariant }) {
     );
 
     const safeApiTransactionDetails = await safeApiTransactionResponse.json();
+
+    const nonTerminalStatus = [
+      TransactionStatus.SUCCESS,
+      TransactionStatus.CANCELLED,
+      TransactionStatus.FAILED,
+    ];
+
+    const isSafeStatusPending =
+      !nonTerminalStatus.includes(safeTransactionDetails.txStatus) &&
+      !nonTerminalStatus.includes(safeApiTransactionDetails.txStatus);
+
+    console.log({
+      isSafeStatusPending,
+      sdkStatus: safeTransactionDetails.txStatus,
+      apiStatus: safeApiTransactionDetails.txStatus,
+    });
+
+    if (isSafeStatusPending) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 5000);
+      });
+
+      return await handleMultiSigTransactionDetails(txHash, chainId);
+    }
+
+    console.log('Fresh outta recursion', {
+      safeTransactionDetails,
+      safeApiTransactionDetails,
+    });
 
     if (
       [
@@ -87,16 +114,7 @@ export function Widget({ starterVariant }) {
       };
     }
 
-    if (
-      [
-        safeTransactionDetails.txStatus,
-        safeApiTransactionDetails.txStatus,
-      ].includes(TransactionStatus.AWAITING_CONFIRMATIONS) ||
-      [
-        safeTransactionDetails.txStatus,
-        safeApiTransactionDetails.txStatus,
-      ].includes(TransactionStatus.AWAITING_EXECUTION)
-    ) {
+    if (isSafeStatusPending) {
       return {
         status: 'PENDING',
         txHash: safeTransactionDetails.txHash,

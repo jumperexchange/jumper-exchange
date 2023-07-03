@@ -43,7 +43,7 @@ export const MultisigConfirmationModal: React.FC<{
           variant="contained"
           onClick={onClose}
         >
-          {translate(`multisig.button.cta`)}
+          {translate(`button.cta`)}
         </ButtonPrimary>
       </MultisigConfirmationModalContainer>
     </Modal>
