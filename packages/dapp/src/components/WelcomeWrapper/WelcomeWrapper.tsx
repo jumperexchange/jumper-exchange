@@ -29,11 +29,11 @@ export const WelcomeWrapper = ({
         in={showWelcome}
       >
         <ContentContainer showWelcome={showWelcome}>
-          <CustomColor variant={'lifiBrandHeaderMedium'}>
+          <CustomColor variant={'lifiHeaderMedium'}>
             {translate(`${i18Path}title`)}
           </CustomColor>
           <Typography
-            variant={'lifiBrandBodyLarge'}
+            variant={'lifiBodyLarge'}
             mt={theme.spacing(4)}
             sx={{
               color:

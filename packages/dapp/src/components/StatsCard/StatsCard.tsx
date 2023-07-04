@@ -22,7 +22,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
       sx={{ cursor: 'pointer' }}
     >
       <Typography
-        variant={'lifiBrandHeaderMedium'}
+        variant={'lifiHeaderMedium'}
         sx={{
           fontSize: '24px',
           lineHeight: '32px',
@@ -36,7 +36,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
         {counter}
       </Typography>
       <Typography
-        variant={'lifiBrandBodySmall'}
+        variant={'lifiBodySmall'}
         sx={{
           pointerEvents: 'none',
           mt: theme.spacing(1),
