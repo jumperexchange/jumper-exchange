@@ -3050,20 +3050,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@lifi/sdk@npm:2.1.1"
-  dependencies:
-    "@ethersproject/abi": ^5.7.0
-    "@ethersproject/contracts": ^5.7.0
-    "@lifi/types": ^8.0.2
-    bignumber.js: ^9.1.1
-    eth-rpc-errors: ^4.0.3
-    ethers: ^5.7.2
-  checksum: 9c15bf07e86db2fb6f24e0483481f59ed8cd7b0ed7d645cf4ab44b0a1fb59a1d6ceb180e86d28b2fad78777313f00085c3722fc01f748b4e45dd820d465d6446
-  languageName: node
-  linkType: hard
-
 "@lifi/sdk@npm:^2.1.3-beta.0":
   version: 2.1.3-beta.0
   resolution: "@lifi/sdk@npm:2.1.3-beta.0"
@@ -3078,38 +3064,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/types@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "@lifi/types@npm:8.0.2"
-  dependencies:
-    ethers: ^5.7.2
-  checksum: 4bbc939d2c87634439fdffa752b793c76c32fcd2cb0b0c9cfcca6e393775248f6c403d2dd02fe4621313bd298bea623d4b5d7de847fbfe4062722690db200476
-  languageName: node
-  linkType: hard
-
 "@lifi/types@npm:^8.0.3":
   version: 8.0.3
   resolution: "@lifi/types@npm:8.0.3"
   dependencies:
     ethers: ^5.7.2
   checksum: 0a7ec53169a442a5027013b318495914170cd4d5dfbd24b106479986704271417d1aa4e61d8f447ec66a59243dee8688b38f0e7d1e349e750df93b6afaebb703
-  languageName: node
-  linkType: hard
-
-"@lifi/wallet-management@npm:^2.1.3":
-  version: 2.1.3
-  resolution: "@lifi/wallet-management@npm:2.1.3"
-  dependencies:
-    "@coinbase/wallet-sdk": ^3.7.1
-    "@ethersproject/abstract-signer": ^5.7.0
-    "@ethersproject/experimental": ^5.7.0
-    "@ethersproject/providers": ^5.7.2
-    "@lifi/sdk": ^2.1.1
-    "@walletconnect/ethereum-provider": ^2.8.6
-    "@walletconnect/modal": ^2.5.9
-    events: ^3.3.0
-    react: ^18.2.0
-  checksum: 8b8ae5e45d5c5edd6b2750a83fdbeed3cd8d614906c09a98c17a4ece8abe6725a10b57cc57f074a01bcc22da1022bfb9b2982f37ce5d242ec9db4ea66dcbe23e
   languageName: node
   linkType: hard
 
@@ -6328,7 +6288,7 @@ __metadata:
     "@babel/core": ^7.22.5
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
-    "@lifi/wallet-management": ^2.1.3
+    "@lifi/wallet-management": ^2.2.0-beta.0
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.6
     "@storybook/addon-actions": ^6.5.16
