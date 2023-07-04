@@ -7,7 +7,7 @@ import {
   MultisigConfirmationModalContainer,
   MultisigConfirmationModalIconContainer,
   MultisigConfirmationModalIcon,
-} from './MultisigConfirmationModal.styles';
+} from './MultisigConfirmationModal.style';
 
 export const MultisigConfirmationModal: React.FC<{
   open: boolean;
