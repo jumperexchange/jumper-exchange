@@ -1,1 +1,1 @@
-export * from './MultisigConfirmationModal';
+export { MultisigConfirmationModal } from './MultisigConfirmationModal';

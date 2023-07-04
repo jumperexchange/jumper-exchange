@@ -11,7 +11,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useMenuStore } from '../../stores';
-import { MultisigConfirmationModal } from '../MultiSigConfirmationModal';
+import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 import { useWallet } from '../../providers/WalletProvider';
 
