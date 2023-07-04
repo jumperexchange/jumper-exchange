@@ -1,12 +1,12 @@
-import React from 'react';
 import { Modal, Typography } from '@mui/material';
+import React from 'react';
 
 import { ButtonPrimary } from '@transferto/shared';
 import { useTranslation } from 'react-i18next';
 import {
   MultisigConfirmationModalContainer,
-  MultisigConfirmationModalIconContainer,
   MultisigConfirmationModalIcon,
+  MultisigConfirmationModalIconContainer,
 } from './MultisigConfirmationModal.style';
 
 export const MultisigConfirmationModal: React.FC<{

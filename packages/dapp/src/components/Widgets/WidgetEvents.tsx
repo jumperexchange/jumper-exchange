@@ -10,10 +10,10 @@ import {
 } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
+import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
-import { useWallet } from '../../providers/WalletProvider';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();

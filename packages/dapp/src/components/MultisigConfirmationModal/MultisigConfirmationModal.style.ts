@@ -1,6 +1,6 @@
-import { styled } from '@mui/material/styles';
-import { Box, Breakpoint, Button, alpha } from '@mui/material';
 import { InfoRounded } from '@mui/icons-material';
+import { Box, Breakpoint, Button, alpha } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
