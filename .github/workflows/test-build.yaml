@@ -18,19 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          role-to-assume: arn:aws:iam::403372804574:role/github-actions
-          role-session-name: github-actions-role-session
-          aws-region: us-east-2
-
       - name: Install dependencies
         uses: ./.github/actions/yarn-install
 
       - name: Build App
-        run: yarn build:${{env.BRANCH_NAME == 'main' && 'production' || env.BRANCH_NAME }}
+        run: yarn build:develop
