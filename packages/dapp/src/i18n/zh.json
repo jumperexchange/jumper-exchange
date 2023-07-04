@@ -1,10 +1,20 @@
 {
   "navbar": {
+    "welcome": {
+      "title": "查找最佳交易路径",
+      "subtitle": "由<1>LI.FI</1>提供技术支持，<0>高达4次审计</0>的多链流动性聚合器",
+      "cta": "开始使用"
+    },
     "links": {
-      "swap": "兑换",
+      "exchange": "兑换",
       "dashboard": "面板",
       "refuel": "兑换燃气费",
       "buy": "购买"
+    },
+    "statsCards": {
+      "dexs": "交易所",
+      "bridges": "跨链桥",
+      "chains": "区块链"
     },
     "connectWallet": "连接钱包",
     "chooseWallet": "选择钱包",
