@@ -1,4 +1,4 @@
-import { Token } from '@lifi/sdk';
+import { ChainId, ChainKey, MultisigConfig, Token } from '@lifi/sdk';
 import {
   HiddenUI,
   LiFiWidget,
@@ -149,11 +149,36 @@ export function Widget({ starterVariant }) {
   const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
     ?.safeAddress;
 
-  const multisigConfig = {
-    isMultisigSigner: isSafeSigner,
-    getMultisigTransactionDetails: handleMultiSigTransactionDetails,
-    shouldBatchTransactions: isSafeSigner,
-    sendBatchTransaction: handleSendingBatchTransaction,
+  const getMultisigWidgetConfig = (): Partial<{
+    multisigWidget: Partial<WidgetConfig>;
+    multisigSdkConfig: MultisigConfig;
+  }> => {
+    const multisigConfig = {
+      isMultisigSigner: isSafeSigner,
+      getMultisigTransactionDetails: handleMultiSigTransactionDetails,
+      shouldBatchTransactions: isSafeSigner,
+      sendBatchTransaction: handleSendingBatchTransaction,
+    };
+
+    if (isSafeSigner) {
+      const currentChain = account.chainId;
+
+      const fromChain: ChainId = Object.values(ChainId).find(
+        (chainId) => chainId !== currentChain,
+      ) as ChainId;
+
+      return {
+        multisigWidget: {
+          fromChain: ChainKey[fromChain],
+          requiredUI: ['toAddress'],
+        },
+        multisigSdkConfig: {
+          ...multisigConfig,
+        },
+      };
+    }
+
+    return {};
   };
 
   // load environment config
@@ -166,6 +191,8 @@ export function Widget({ starterVariant }) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
+
+    const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
 
     return {
       variant: 'expandable' as WidgetVariant,
@@ -270,6 +297,7 @@ export function Widget({ starterVariant }) {
         },
       },
       localStorageKeyPrefix: `jumper-${starterVariant}`,
+      ...multisigWidget,
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
@@ -277,7 +305,7 @@ export function Widget({ starterVariant }) {
           maxPriceImpact: 0.4,
           allowSwitchChain: !isSafeSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        multisigConfig,
+        multisigConfig: { ...multisigSdkConfig },
       },
       buildUrl: true,
       insurance: true,
