@@ -41,7 +41,7 @@ export const useSettingsStore = create(
       // Tabs
       onChangeTab: (tab: number) => {
         set({
-          activeTab: tab || TabsMap.Exchange,
+          activeTab: tab || TabsMap.Exchange.index,
         });
       },
 
@@ -89,7 +89,7 @@ export const useSettingsStore = create(
             defaultSettings.languageMode ||
             (i18next.language as LanguageKey) ||
             defaultLang,
-          activeTab: defaultSettings.activeTab || TabsMap.Exchange,
+          activeTab: defaultSettings.activeTab || TabsMap.Exchange.index,
         });
       },
     }),

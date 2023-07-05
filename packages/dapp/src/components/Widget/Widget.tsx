@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
+import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
@@ -122,7 +123,7 @@ export function Widget({ starterVariant }) {
         },
       },
       chains: {
-        allow: starterVariant === 'refuel' ? refuelAllowChains : [],
+        allow: starterVariant === TabsMap.Refuel.value ? refuelAllowChains : [],
       },
       containerStyle: {
         borderRadius: '12px',

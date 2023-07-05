@@ -34,7 +34,7 @@ interface DefaultSettingsType {
 }
 
 export const defaultSettings: DefaultSettingsType = {
-  activeTab: TabsMap.Exchange,
+  activeTab: TabsMap.Exchange.index,
   themeMode:
     (localStorage.getItem(localStorageKey.themeMode) as ThemeModesSupported) ||
     'auto',

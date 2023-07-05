@@ -1,6 +1,15 @@
-export enum TabsMap {
-  Exchange = 0,
-  Gas = 1,
-  Refuel = 1,
-  Buy = 2,
+import { WidgetSubvariant } from '@lifi/widget/types';
+
+interface TabsMapType {
+  [key: string]: {
+    index: number;
+    value: WidgetSubvariant | 'buy';
+  };
 }
+
+export const TabsMap: TabsMapType = {
+  Exchange: { index: 0, value: 'default' },
+  Gas: { index: 1, value: 'refuel' },
+  Refuel: { index: 1, value: 'refuel' },
+  Buy: { index: 2, value: 'buy' },
+};
