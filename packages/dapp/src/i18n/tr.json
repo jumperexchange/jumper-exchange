@@ -1,10 +1,20 @@
 {
   "navbar": {
+    "welcome": {
+      "title": "En iyi rotayı bul",
+      "subtitle": "<0>4 kez denetlenmiş</0> <1>LI.FI</1> tarafından desteklenen çok zincirli likidite toplayıcı",
+      "cta": "Başlayın"
+    },
     "links": {
-      "swap": "Takas et",
+      "exchange": "Al-Sat",
       "dashboard": "Kontrol Paneli",
       "refuel": "Gaz",
       "buy": "Satın al"
+    },
+    "statsCards": {
+      "dexs": "Merkeziyetsiz Borsalar",
+      "bridges": "Köprüler",
+      "chains": "Ağlar"
     },
     "connectWallet": "Cüzdanı Bağla",
     "chooseWallet": "Cüzdan Seçin",
