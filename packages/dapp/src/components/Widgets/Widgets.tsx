@@ -35,7 +35,7 @@ export function Widgets() {
     if (Object.values(LinkMap).includes(url as LinkMap)) {
       if (url === TabsMap.Exchange.value) {
         return TabsMap.Exchange.value;
-      } else if (url === TabsMap.Gas.value || url === TabsMap.Refuel.value) {
+      } else if (url === TabsMap.Refuel.value) {
         return TabsMap.Refuel.value;
       } else if (url === TabsMap.Buy.value) {
         return TabsMap.Buy.value;
