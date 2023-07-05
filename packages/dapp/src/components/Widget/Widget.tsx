@@ -12,9 +12,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks/';
-import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore, useSettingsStore } from '../../stores';
+import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
 
 const refuelAllowChains: ChainId[] = [
@@ -39,25 +38,7 @@ export function Widget({ starterVariant }) {
   const onOpenNavbarWalletSelectMenu = useMenuStore(
     (state) => state.onOpenNavbarWalletSelectMenu,
   );
-  const [activeTab] = useSettingsStore((state) => [state.activeTab]);
-  const { chains } = useChainInfos();
 
-  const refuelDenyChains = useMemo(() => {
-    let output: number[] = [];
-    // if (activeTab === TabsMap.Gas || activeTab === TabsMap.Refuel) {
-    for (let i = 0; i < chains.length; i++) {
-      if (!refuelAllowChains.includes(chains[i].id as ChainId)) {
-        output.push(chains[i].id);
-      }
-    }
-    // }
-
-    return output;
-  }, [chains]);
-
-  console.log('refuelDenyChains', refuelDenyChains);
-  console.log('activeTab', activeTab);
-  console.log('starterVariant', starterVariant);
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcs = {};
@@ -141,10 +122,7 @@ export function Widget({ starterVariant }) {
         },
       },
       chains: {
-        deny:
-          starterVariant === 'refuel' || starterVariant === 'gas'
-            ? refuelDenyChains
-            : [],
+        allow: starterVariant === 'refuel' ? refuelAllowChains : [],
       },
       containerStyle: {
         borderRadius: '12px',
@@ -198,7 +176,6 @@ export function Widget({ starterVariant }) {
     i18n.languages,
     isDarkMode,
     onOpenNavbarWalletSelectMenu,
-    refuelDenyChains,
     starterVariant,
     switchChain,
     theme.palette.accent1.main,
@@ -207,8 +184,6 @@ export function Widget({ starterVariant }) {
     theme.palette.surface2.main,
     trackEvent,
   ]);
-
-  console.log('starterVariant', starterVariant);
 
   return (
     <Box className="widget-wrapper">
