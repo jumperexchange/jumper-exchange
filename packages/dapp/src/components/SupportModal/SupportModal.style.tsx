@@ -1,6 +1,18 @@
-import { Box } from '@mui/material';
+import { Box, Modal as MUIModal } from '@mui/material';
 import { Breakpoint, styled } from '@mui/material/styles';
 import { NavbarHeight } from '../Navbar/Navbar.style';
+
+export const Modal = styled(MUIModal)(({ theme }) => ({
+  paddingTop: NavbarHeight.XS,
+  zIndex: 1500,
+  overflow: 'auto',
+  // [theme.breakpoints.up('sm' as Breakpoint)]: {
+  //   paddingTop: NavbarHeight.SM,
+  // },
+  // [theme.breakpoints.up('md' as Breakpoint)]: {
+  //   paddingTop: NavbarHeight.LG,
+  // },
+}));
 
 export const SupportModalContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
