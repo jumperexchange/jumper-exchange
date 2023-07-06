@@ -33,5 +33,9 @@
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "yarn@3.5.1"
+  "packageManager": "yarn@3.5.1",
+  "resolutions": {
+    "@lifi/widget": "portal:/Users/abhishekkumar/Desktop/work/widget/packages/widget",
+    "@lifi/wallet-management": "portal:/Users/abhishekkumar/Desktop/work/widget/packages/wallet-management"
+  }
 }

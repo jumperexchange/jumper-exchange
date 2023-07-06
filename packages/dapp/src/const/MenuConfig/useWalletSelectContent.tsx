@@ -55,15 +55,9 @@ export const useWalletSelectContent = () => {
   }, [account?.address]);
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
-    const installedWallets = supportedWallets.filter(async (wallet) => {
-      const response = await wallet.installed();
-      console.log({
-        wallet: wallet.name,
-        installed: wallet.installed(),
-        response,
-      });
-      return wallet.installed();
-    });
+    const installedWallets = supportedWallets.filter(
+      async (wallet) => await wallet.installed(),
+    );
 
     const notInstalledWallets = supportedWallets.filter(
       (wallet) => !wallet.installed() && wallet.name !== 'Default Wallet', // always remove Default Wallet from not installed Wallets
