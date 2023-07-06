@@ -6,22 +6,24 @@ import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTools, MenuListItem } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
-import SafeAppsSDK from '@safe-global/safe-apps-sdk/dist/src/sdk';
+import { useMultisig } from '../../hooks/useMultisig';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect } = useWallet();
   const { trackEvent } = useUserTracking();
-  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+  const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
+    useState(false);
+
+  const { checkMultisigEnvironment } = useMultisig();
 
   const verifyMultisigEnvironment = async () => {
-    const sdk = new SafeAppsSDK();
-    const accountInfo = await sdk.safe.getInfo();
+    const isMultisig = await checkMultisigEnvironment();
 
-    if (accountInfo.safeAddress) {
-      setIsMultisigEnvironment(true);
+    if (isMultisig) {
+      setIsCurrentMultisigEnvironment(true);
     } else {
-      setIsMultisigEnvironment(false);
+      setIsCurrentMultisigEnvironment(false);
     }
   };
 
@@ -53,9 +55,15 @@ export const useWalletSelectContent = () => {
   }, [account?.address]);
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
-    const installedWallets = supportedWallets.filter((wallet) =>
-      wallet.installed(),
-    );
+    const installedWallets = supportedWallets.filter(async (wallet) => {
+      const response = await wallet.installed();
+      console.log({
+        wallet: wallet.name,
+        installed: wallet.installed(),
+        response,
+      });
+      return wallet.installed();
+    });
 
     const notInstalledWallets = supportedWallets.filter(
       (wallet) => !wallet.installed() && wallet.name !== 'Default Wallet', // always remove Default Wallet from not installed Wallets
@@ -65,7 +73,7 @@ export const useWalletSelectContent = () => {
       ...installedWallets,
       ...notInstalledWallets,
     ].filter((wallet) => {
-      if (!isMultisigEnvironment) {
+      if (!isCurrentMultisigEnvironment) {
         return wallet.name !== 'Safe';
       }
       return true;
@@ -98,7 +106,7 @@ export const useWalletSelectContent = () => {
     });
     return _output;
   }, [
-    isMultisigEnvironment,
+    isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
     onWelcomeScreenEntered,

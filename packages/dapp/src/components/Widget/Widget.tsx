@@ -1,4 +1,4 @@
-import { ChainId, ChainKey, MultisigConfig, Token } from '@lifi/sdk';
+import { Token } from '@lifi/sdk';
 import {
   HiddenUI,
   LiFiWidget,
@@ -15,12 +15,8 @@ import { useUserTracking } from '../../hooks';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
-import {
-  BaseTransaction,
-  GatewayTransactionDetails,
-  TransactionStatus,
-} from '@safe-global/safe-apps-sdk';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
+import { useMultisig } from '../../hooks/useMultisig';
 
 export function Widget({ starterVariant }) {
   const theme = useTheme();
@@ -32,154 +28,7 @@ export function Widget({ starterVariant }) {
     (state) => state.onOpenNavbarWalletSelectMenu,
   );
 
-  const handleMultiSigTransactionDetails = async (
-    txHash: string,
-    chainId: number,
-  ) => {
-    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
-
-    const safeTransactionDetails: GatewayTransactionDetails =
-      await safeProviderSDK.txs.getBySafeTxHash(txHash);
-
-    const safeTxHash = safeTransactionDetails.txId;
-
-    const safeApiTransactionResponse = await fetch(
-      `https://safe-client.safe.global/v1/chains/${chainId}/transactions/${safeTxHash}`,
-    );
-
-    const safeApiTransactionDetails = await safeApiTransactionResponse.json();
-
-    const nonTerminalStatus = [
-      TransactionStatus.SUCCESS,
-      TransactionStatus.CANCELLED,
-      TransactionStatus.FAILED,
-    ];
-
-    const isSafeStatusPending =
-      !nonTerminalStatus.includes(safeTransactionDetails.txStatus) &&
-      !nonTerminalStatus.includes(safeApiTransactionDetails.txStatus);
-
-    console.log({
-      isSafeStatusPending,
-      sdkStatus: safeTransactionDetails.txStatus,
-      apiStatus: safeApiTransactionDetails.txStatus,
-    });
-
-    if (isSafeStatusPending) {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 5000);
-      });
-
-      return await handleMultiSigTransactionDetails(txHash, chainId);
-    }
-
-    console.log('Fresh outta recursion', {
-      safeTransactionDetails,
-      safeApiTransactionDetails,
-    });
-
-    if (
-      [
-        safeTransactionDetails.txStatus,
-        safeApiTransactionDetails.txStatus,
-      ].includes(TransactionStatus.SUCCESS)
-    ) {
-      return {
-        status: 'DONE',
-        txHash: safeTransactionDetails.txHash,
-      };
-    }
-
-    if (
-      [
-        safeTransactionDetails.txStatus,
-        safeApiTransactionDetails.txStatus,
-      ].includes(TransactionStatus.FAILED)
-    ) {
-      return {
-        status: 'FAILED',
-        txHash: safeTransactionDetails.txHash,
-      };
-    }
-
-    if (
-      [
-        safeTransactionDetails.txStatus,
-        safeApiTransactionDetails.txStatus,
-      ].includes(TransactionStatus.CANCELLED)
-    ) {
-      return {
-        status: 'CANCELLED',
-        txHash: safeTransactionDetails.txHash,
-      };
-    }
-
-    if (isSafeStatusPending) {
-      return {
-        status: 'PENDING',
-        txHash: safeTransactionDetails.txHash,
-      };
-    }
-
-    return {
-      status: safeTransactionDetails.txStatus,
-      txHash: safeTransactionDetails.txHash,
-    };
-  };
-
-  const handleSendingBatchTransaction = async (
-    batchTransactions: BaseTransaction[],
-  ) => {
-    console.log('Batching');
-    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
-
-    try {
-      const { safeTxHash } = await safeProviderSDK.txs.send({
-        txs: batchTransactions,
-      });
-
-      return {
-        hash: safeTxHash,
-      };
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
-  const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
-    ?.safeAddress;
-
-  const getMultisigWidgetConfig = (): Partial<{
-    multisigWidget: Partial<WidgetConfig>;
-    multisigSdkConfig: MultisigConfig;
-  }> => {
-    const multisigConfig = {
-      isMultisigSigner: isSafeSigner,
-      getMultisigTransactionDetails: handleMultiSigTransactionDetails,
-      shouldBatchTransactions: isSafeSigner,
-      sendBatchTransaction: handleSendingBatchTransaction,
-    };
-
-    if (isSafeSigner) {
-      const currentChain = account.chainId;
-
-      const fromChain: ChainId = Object.values(ChainId).find(
-        (chainId) => chainId !== currentChain,
-      ) as ChainId;
-
-      return {
-        multisigWidget: {
-          fromChain: ChainKey[fromChain],
-          requiredUI: ['toAddress'],
-        },
-        multisigSdkConfig: {
-          ...multisigConfig,
-        },
-      };
-    }
-
-    return {};
-  };
+  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
@@ -303,7 +152,7 @@ export function Widget({ starterVariant }) {
         rpcs,
         defaultRouteOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain: !isSafeSigner, // avoid routes requiring chain switch for multisig wallets
+          allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
         multisigConfig: { ...multisigSdkConfig },
       },
@@ -331,7 +180,7 @@ export function Widget({ starterVariant }) {
 
   return (
     <Box className="widget-wrapper">
-      {isSafeSigner && <MultisigWalletHeaderAlert />}
+      {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={widgetConfig}

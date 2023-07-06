@@ -14,6 +14,7 @@ import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
+import { useMultisig } from '../../hooks/useMultisig';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -22,6 +23,7 @@ export function WidgetEvents() {
     state.onOpenSupportModal,
   ]);
   const widgetEvents = useWidgetEvents();
+  const { isMultisigSigner } = useMultisig();
 
   const { account } = useWallet();
 
@@ -172,10 +174,7 @@ export function WidgetEvents() {
   };
 
   useEffect(() => {
-    const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
-      ?.safeAddress;
-
-    setIsMultisigConnectedAlertOpen(isSafeSigner);
+    setIsMultisigConnectedAlertOpen(isMultisigSigner);
   }, [account.address]);
 
   return (
