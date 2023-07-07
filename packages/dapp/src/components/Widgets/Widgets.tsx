@@ -114,6 +114,7 @@ export function Widgets() {
           onClick={handleGetStarted}
           showWelcome={showWelcomeWrapper}
           isActive={_starterVariant === TabsMap.Buy.value}
+          sx={{ width: '392px' }}
         >
           <div className="onramper-wrapper">
             <OnRamper />
