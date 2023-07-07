@@ -23,7 +23,7 @@ export function WidgetEvents() {
     state.onOpenSupportModal,
   ]);
   const widgetEvents = useWidgetEvents();
-  const { isMultisigSigner } = useMultisig();
+  const { isMultisigSigner, shouldOpenMultisigSignatureModal } = useMultisig();
 
   const { account } = useWallet();
 
@@ -55,20 +55,9 @@ export function WidgetEvents() {
     const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
 
-      const isRouteDone = update.route.steps.every(
-        (step) => step.execution?.status === 'DONE',
+      const isMultisigRouteActive = shouldOpenMultisigSignatureModal(
+        update.route,
       );
-
-      const isRouteFailed = update.route.steps.some(
-        (step) => step.execution?.status === 'FAILED',
-      );
-
-      const multisigRouteStarted = update.route.steps.some((step) =>
-        step.execution?.process.find((process) => !!process.multisigTxHash),
-      );
-
-      const isMultisigRouteActive =
-        !isRouteDone && !isRouteFailed && multisigRouteStarted;
 
       if (isMultisigRouteActive) {
         setIsMultiSigConfirmationModalOpen(true);

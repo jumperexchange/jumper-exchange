@@ -6,6 +6,7 @@ import {
   TransactionStatus,
 } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk/dist/src/sdk';
+import { Route } from '@lifi/sdk';
 
 export const useMultisig = () => {
   const { account } = useWallet();
@@ -23,6 +24,7 @@ export const useMultisig = () => {
   const handleMultiSigTransactionDetails = async (
     txHash: string,
     chainId: number,
+    updateIntermediateStatus: () => void,
   ) => {
     const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
@@ -47,6 +49,16 @@ export const useMultisig = () => {
       !nonTerminalStatus.includes(safeTransactionDetails.txStatus) &&
       !nonTerminalStatus.includes(safeApiTransactionDetails.txStatus);
 
+    const isAwaitingExecution = [
+      safeTransactionDetails.txStatus,
+      safeApiTransactionDetails.txStatus,
+    ].includes(TransactionStatus.AWAITING_EXECUTION);
+
+    if (isAwaitingExecution) {
+      console.log('Updating intermediate status');
+      updateIntermediateStatus();
+    }
+
     console.log({
       isSafeStatusPending,
       sdkStatus: safeTransactionDetails.txStatus,
@@ -58,7 +70,11 @@ export const useMultisig = () => {
         setTimeout(resolve, 5000);
       });
 
-      return await handleMultiSigTransactionDetails(txHash, chainId);
+      return await handleMultiSigTransactionDetails(
+        txHash,
+        chainId,
+        updateIntermediateStatus,
+      );
     }
 
     if (
@@ -161,9 +177,29 @@ export const useMultisig = () => {
     return {};
   };
 
+  const shouldOpenMultisigSignatureModal = (route: Route) => {
+    const isRouteDone = route.steps.every(
+      (step) => step.execution?.status === 'DONE',
+    );
+
+    const isRouteFailed = route.steps.some(
+      (step) => step.execution?.status === 'FAILED',
+    );
+
+    const multisigRouteStarted = route.steps.some((step) =>
+      step.execution?.process.find(
+        (process) =>
+          !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
+      ),
+    );
+
+    return !isRouteDone && !isRouteFailed && multisigRouteStarted;
+  };
+
   return {
     isMultisigSigner: isSafeSigner,
     getMultisigWidgetConfig,
     checkMultisigEnvironment,
+    shouldOpenMultisigSignatureModal,
   };
 };
