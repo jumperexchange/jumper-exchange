@@ -61,14 +61,10 @@ export const WidgetContainer = styled(Box, {
     },
 
   '& > .widget-wrapper > div, & > .onramper-wrapper': {
-    overflow: 'hidden',
     paddingTop: showWelcome ? theme.spacing(6) : theme.spacing(7),
     transitionProperty: showWelcome && 'padding-top',
     transitionDuration: showWelcome && '.3s',
     transitionTimingFunction: showWelcome && 'ease-in-out',
-    [`@media screen and (min-height: 600px)`]: {
-      overflow: 'visible',
-    },
   },
 
   '& > .widget-wrapper, & > .onramper-wrapper': {
