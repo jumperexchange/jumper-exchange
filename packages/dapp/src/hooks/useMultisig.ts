@@ -5,7 +5,7 @@ import {
   GatewayTransactionDetails,
   TransactionStatus,
 } from '@safe-global/safe-apps-sdk';
-import SafeAppsSDK from '@safe-global/safe-apps-sdk/dist/src/sdk';
+import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 import { Route } from '@lifi/sdk';
 import { useSettingsStore } from '../stores';
 

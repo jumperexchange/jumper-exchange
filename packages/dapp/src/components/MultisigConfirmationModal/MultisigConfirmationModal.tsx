@@ -1,5 +1,4 @@
 import { Modal, Typography } from '@mui/material';
-import React from 'react';
 
 import { ButtonPrimary } from '@transferto/shared';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +42,7 @@ export const MultisigConfirmationModal: React.FC<{
           variant="contained"
           onClick={onClose}
         >
-          {translate(`button.cta`)}
+          {translate(`button.okay`)}
         </ButtonPrimary>
       </MultisigConfirmationModalContainer>
     </Modal>

@@ -60,7 +60,7 @@
     "switchToMainnet": "Switch to Mainnet"
   },
   "button": {
-    "cta": "Okay"
+    "okay": "Okay"
   },
   "multisig": {
     "connected": {

@@ -55,18 +55,24 @@ export const useWalletSelectContent = () => {
   }, [account?.address]);
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
-    const installedWallets = supportedWallets.filter(
-      async (wallet) => await wallet.installed(),
+    let availableWallets: Wallet[] = [];
+
+    Promise.all(supportedWallets.map((wallet) => wallet.installed())).then(
+      (installed) => {
+        // separate into installed and not installed wallets
+        const installedWallets = supportedWallets.filter(
+          (_, index) => installed[index],
+        );
+        // always remove Default Wallet from not installed Wallets
+        const notInstalledWallets = supportedWallets.filter(
+          (wallet, index) =>
+            !installed[index] && wallet.name !== 'Default Wallet',
+        );
+        availableWallets = [...installedWallets, ...notInstalledWallets];
+      },
     );
 
-    const notInstalledWallets = supportedWallets.filter(
-      (wallet) => !wallet.installed() && wallet.name !== 'Default Wallet', // always remove Default Wallet from not installed Wallets
-    );
-
-    const walletsOptions: Wallet[] = [
-      ...installedWallets,
-      ...notInstalledWallets,
-    ].filter((wallet) => {
+    const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {
       if (!isCurrentMultisigEnvironment) {
         return wallet.name !== 'Safe';
       }

@@ -1,4 +1,3 @@
-import React from 'react';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
 import { Typography } from '@mui/material';

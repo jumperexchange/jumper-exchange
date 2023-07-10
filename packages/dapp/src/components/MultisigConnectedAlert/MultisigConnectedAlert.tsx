@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   MultisigConnectedAlertContainer,
   MultisigConnectedAlertIconContainer,
@@ -40,7 +39,7 @@ export const MultisigConnectedAlert: React.FC<{
             width: '100%',
           }}
         >
-          {translate(`button.cta`)}
+          {translate(`button.okay`)}
         </ButtonPrimary>
       </MultisigConnectedAlertContainer>
     </Modal>
