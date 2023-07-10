@@ -22244,11 +22244,11 @@ __metadata:
 
 "typescript@patch:typescript@>=3 < 6#~builtin<compat/typescript>":
   version: 5.1.3
-  resolution: "typescript@patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=77c9e2"
+  resolution: "typescript@patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 32a25b2e128a4616f999d4ee502aabb1525d5647bc8955e6edf05d7fbc53af8aa98252e2f6ba80bcedfc0260c982b885f3c09cfac8bb65d2924f3133ad1e1e62
+  checksum: 6f0a9dca6bf4ce9dcaf4e282aade55ef4c56ecb5fb98d0a4a5c0113398815aea66d871b5611e83353e5953a19ed9ef103cf5a76ac0f276d550d1e7cd5344f61e
   languageName: node
   linkType: hard
 
@@ -22264,11 +22264,11 @@ __metadata:
 
 "typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>":
   version: 5.1.6
-  resolution: "typescript@patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=77c9e2"
+  resolution: "typescript@patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 21e88b0a0c0226f9cb9fd25b9626fb05b4c0f3fddac521844a13e1f30beb8f14e90bd409a9ac43c812c5946d714d6e0dee12d5d02dfc1c562c5aacfa1f49b606
+  checksum: f53bfe97f7c8b2b6d23cf572750d4e7d1e0c5fff1c36d859d0ec84556a827b8785077bc27676bf7e71fae538e517c3ecc0f37e7f593be913d884805d931bc8be
   languageName: node
   linkType: hard
 
