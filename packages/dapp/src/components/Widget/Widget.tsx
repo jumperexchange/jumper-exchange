@@ -14,7 +14,7 @@ import { TrackingActions, TrackingCategories } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
 import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore } from '../../stores';
+import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { useMultisig } from '../../hooks/useMultisig';
@@ -41,6 +41,7 @@ export function Widget({ starterVariant }) {
   const onOpenNavbarWalletSelectMenu = useMenuStore(
     (state) => state.onOpenNavbarWalletSelectMenu,
   );
+  const destinationChain = useSettingsStore((state) => state.destinationChain);
 
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
@@ -178,6 +179,7 @@ export function Widget({ starterVariant }) {
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
+    destinationChain,
     account.signer,
     addChain,
     addToken,

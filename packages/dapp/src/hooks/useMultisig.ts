@@ -7,9 +7,12 @@ import {
 } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk/dist/src/sdk';
 import { Route } from '@lifi/sdk';
+import { useSettingsStore } from '../stores';
 
 export const useMultisig = () => {
   const { account } = useWallet();
+
+  const { destinationChain } = useSettingsStore();
 
   const checkMultisigEnvironment = async () => {
     const sdk = new SafeAppsSDK();
@@ -55,15 +58,8 @@ export const useMultisig = () => {
     ].includes(TransactionStatus.AWAITING_EXECUTION);
 
     if (isAwaitingExecution) {
-      console.log('Updating intermediate status');
       updateIntermediateStatus();
     }
-
-    console.log({
-      isSafeStatusPending,
-      sdkStatus: safeTransactionDetails.txStatus,
-      apiStatus: safeApiTransactionDetails.txStatus,
-    });
 
     if (isSafeStatusPending) {
       await new Promise((resolve) => {
@@ -129,7 +125,6 @@ export const useMultisig = () => {
   const handleSendingBatchTransaction = async (
     batchTransactions: BaseTransaction[],
   ) => {
-    console.log('Batching');
     const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
     try {
@@ -163,10 +158,12 @@ export const useMultisig = () => {
         (chainId) => chainId !== currentChain,
       ) as ChainId;
 
+      const shouldRequireToAddress = account.chainId !== destinationChain;
+
       return {
         multisigWidget: {
           fromChain: ChainKey[fromChain],
-          requiredUI: ['toAddress'],
+          requiredUI: shouldRequireToAddress ? ['toAddress'] : [],
         },
         multisigSdkConfig: {
           ...multisigConfig,

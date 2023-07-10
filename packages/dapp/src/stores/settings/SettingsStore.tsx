@@ -79,6 +79,13 @@ export const useSettingsStore = create(
         });
       },
 
+      // Destination Chain
+      onDestinationChainSelected: (chainId: number) => {
+        set({
+          destinationChain: chainId,
+        });
+      },
+
       // Reset
       onResetSetting: () => {
         set({
