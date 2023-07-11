@@ -106,6 +106,7 @@ export const useWalletSelectContent = () => {
     });
     return _output;
   }, [
+    availableWallets.length,
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
