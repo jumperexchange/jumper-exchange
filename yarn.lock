@@ -3064,9 +3064,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^2.2.0-beta.0":
-  version: 2.2.0-beta.0
-  resolution: "@lifi/sdk@npm:2.2.0-beta.0"
+"@lifi/sdk@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@lifi/sdk@npm:2.2.0"
   dependencies:
     "@ethersproject/abi": ^5.7.0
     "@ethersproject/contracts": ^5.7.0
@@ -3074,7 +3074,7 @@ __metadata:
     bignumber.js: ^9.1.1
     eth-rpc-errors: ^4.0.3
     ethers: ^5.7.2
-  checksum: aa5c675214c86c43083bc20eb1cfd6fb197c346f712dd7ea2d69d037c10bf123854a47dc4bf2e4f56755ff7457920dd649629793da43146b746217f68be07f03
+  checksum: 872da079df13d3946c1e6c2406d54621656c89e9244ec5773f0d779b8dfff75cd5ce390113bb0ad1b5c54631ab480fa83a38348715418a6fdbb5649254450253
   languageName: node
   linkType: hard
 
@@ -3084,6 +3084,25 @@ __metadata:
   dependencies:
     ethers: ^5.7.2
   checksum: 0a7ec53169a442a5027013b318495914170cd4d5dfbd24b106479986704271417d1aa4e61d8f447ec66a59243dee8688b38f0e7d1e349e750df93b6afaebb703
+  languageName: node
+  linkType: hard
+
+"@lifi/wallet-management@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@lifi/wallet-management@npm:2.2.0"
+  dependencies:
+    "@coinbase/wallet-sdk": ^3.7.1
+    "@ethersproject/abstract-signer": ^5.7.0
+    "@ethersproject/experimental": ^5.7.0
+    "@ethersproject/providers": ^5.7.2
+    "@lifi/sdk": ^2.2.0
+    "@safe-global/safe-apps-provider": ^0.17.1
+    "@safe-global/safe-apps-sdk": ^8.0.0
+    "@walletconnect/ethereum-provider": ^2.9.0
+    "@walletconnect/modal": ^2.5.9
+    events: ^3.3.0
+    react: ^18.2.0
+  checksum: e9a10177e780cf4e66c0a8fd659e270b3edf8a24d8a532edb891cb22c5af1d8386697bf1ce37f6a180fc96684c85c8b1b2ffe15fb214ea278208ed02892268c4
   languageName: node
   linkType: hard
 
@@ -3106,28 +3125,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^2.2.0-beta.2":
-  version: 2.2.0-beta.2
-  resolution: "@lifi/wallet-management@npm:2.2.0-beta.2"
-  dependencies:
-    "@coinbase/wallet-sdk": ^3.7.1
-    "@ethersproject/abstract-signer": ^5.7.0
-    "@ethersproject/experimental": ^5.7.0
-    "@ethersproject/providers": ^5.7.2
-    "@lifi/sdk": ^2.2.0-beta.0
-    "@safe-global/safe-apps-provider": ^0.17.1
-    "@safe-global/safe-apps-sdk": ^8.0.0
-    "@walletconnect/ethereum-provider": ^2.9.0
-    "@walletconnect/modal": ^2.5.9
-    events: ^3.3.0
-    react: ^18.2.0
-  checksum: 263bf3e64c5e3785bdda20c33533732edbb72bf11d691983607edd53f483cb3a06eff81a4c6a44cacb450009693e5d80d32ccf7d9b32aa82ab303a1a76d72e19
-  languageName: node
-  linkType: hard
-
-"@lifi/widget@npm:^2.2.0-beta.2":
-  version: 2.2.0-beta.2
-  resolution: "@lifi/widget@npm:2.2.0-beta.2"
+"@lifi/widget@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@lifi/widget@npm:2.2.0"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -3135,8 +3135,8 @@ __metadata:
     "@ethersproject/address": ^5.7.0
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
-    "@lifi/sdk": ^2.2.0-beta.0
-    "@lifi/wallet-management": ^2.2.0-beta.2
+    "@lifi/sdk": ^2.2.0
+    "@lifi/wallet-management": ^2.2.0
     "@mui/icons-material": ^5.13.7
     "@mui/lab": ^5.0.0-alpha.135
     "@mui/material": ^5.13.7
@@ -3150,7 +3150,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-hook-form: ^7.45.1
-    react-i18next: ^13.0.1
+    react-i18next: ^13.0.2
     react-intersection-observer: ^9.5.2
     react-router-dom: ^6.14.1
     react-timer-hook: ^3.0.6
@@ -3163,7 +3163,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 0dbfe527e6e3e57626300c084a306c81fe330fd36de62903d1a0cdedfbd35585a4b3724c1f1c58334866d3c5b46387093e00921773927ee2da5df72b48ae5652
+  checksum: b5754f6e3c25eb603e0ee388516243b5fee1be7497a5ebcfce1283b6e01600745742031fd7a71f5904e432e696789ca391888277c4699ec6c08831b8675f8daf
   languageName: node
   linkType: hard
 
@@ -6269,9 +6269,9 @@ __metadata:
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
-    "@lifi/sdk": ^2.2.0-beta.0
-    "@lifi/wallet-management": ^2.2.0-beta.2
-    "@lifi/widget": ^2.2.0-beta.2
+    "@lifi/sdk": ^2.2.0
+    "@lifi/wallet-management": ^2.2.0
+    "@lifi/widget": ^2.2.0
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.6
     "@safe-global/safe-apps-sdk": ^8.0.0
@@ -19445,9 +19445,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^13.0.1":
-  version: 13.0.1
-  resolution: "react-i18next@npm:13.0.1"
+"react-i18next@npm:^13.0.2":
+  version: 13.0.2
+  resolution: "react-i18next@npm:13.0.2"
   dependencies:
     "@babel/runtime": ^7.22.5
     html-parse-stringify: ^3.0.1
@@ -19459,7 +19459,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: eac59c4517c07e4e4b182570140ad9b2f7a7920dac5dadd694107ea6359743fe855390192072464fac579d3de1370bf4656b987a8c9c77babeb5b60ff8f17d3c
+  checksum: ab8226939f3681efb5a8628f938d90b3311336e69ca9aaf1ea54aad6fac3395516736971a3484234455f3831ecae8555f68c32fa1cd4d38b94ff69769da2b677
   languageName: node
   linkType: hard
 
