@@ -12,7 +12,6 @@ export interface SettingsProps {
   activeWalletName: WalletConnected;
   activeTab: number;
   welcomeScreenEntered: boolean;
-  destinationChain: ChainId;
 }
 export interface SettingsState extends SettingsProps {
   // Wallet
@@ -33,7 +32,4 @@ export interface SettingsState extends SettingsProps {
 
   // Welcome Screen
   onWelcomeScreenEntered: (shown: boolean) => void;
-
-  // Destination Chain
-  onDestinationChainSelected: (chainId: number) => void;
 }

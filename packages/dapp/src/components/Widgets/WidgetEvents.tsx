@@ -7,12 +7,12 @@ import {
   RouteHighValueLossUpdate,
   WidgetEvent,
   useWidgetEvents,
-  ExecutionPathDetails,
+  ChainTokenSelected,
 } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore, useSettingsStore } from '../../stores';
+import { useMenuStore, useMultisigStore } from '../../stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 import { useMultisig } from '../../hooks/useMultisig';
@@ -25,7 +25,7 @@ export function WidgetEvents() {
   ]);
   const widgetEvents = useWidgetEvents();
   const { isMultisigSigner, shouldOpenMultisigSignatureModal } = useMultisig();
-  const [onDestinationChainSelected] = useSettingsStore((state) => [
+  const [onDestinationChainSelected] = useMultisigStore((state) => [
     state.onDestinationChainSelected,
   ]);
 
@@ -139,8 +139,8 @@ export function WidgetEvents() {
       onOpenSupportModal(true);
     };
 
-    const handleMultisigExecutionPathDetails = (
-      destinationData: ExecutionPathDetails,
+    const handleMultisigChainTokenSelected = (
+      destinationData: ChainTokenSelected,
     ) => {
       onDestinationChainSelected(destinationData.chainId);
     };
@@ -156,7 +156,7 @@ export function WidgetEvents() {
     widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
-      handleMultisigExecutionPathDetails,
+      handleMultisigChainTokenSelected,
     );
 
     return () => widgetEvents.all.clear();

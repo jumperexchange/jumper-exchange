@@ -14,7 +14,7 @@ import { TrackingActions, TrackingCategories } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
 import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore, useSettingsStore } from '../../stores';
+import { useMenuStore, useMultisigStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { useMultisig } from '../../hooks/useMultisig';
@@ -41,7 +41,7 @@ export function Widget({ starterVariant }) {
   const onOpenNavbarWalletSelectMenu = useMenuStore(
     (state) => state.onOpenNavbarWalletSelectMenu,
   );
-  const destinationChain = useSettingsStore((state) => state.destinationChain);
+  const destinationChain = useMultisigStore((state) => state.destinationChain);
 
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 

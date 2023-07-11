@@ -7,12 +7,12 @@ import {
 } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 import { Route } from '@lifi/sdk';
-import { useSettingsStore } from '../stores';
+import { useMultisigStore } from '../stores';
 
 export const useMultisig = () => {
   const { account } = useWallet();
 
-  const { destinationChain } = useSettingsStore();
+  const { destinationChain } = useMultisigStore();
 
   const checkMultisigEnvironment = async () => {
     const sdk = new SafeAppsSDK();
