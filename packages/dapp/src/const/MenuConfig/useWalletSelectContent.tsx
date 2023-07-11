@@ -15,9 +15,26 @@ export const useWalletSelectContent = () => {
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
     useState(false);
 
+  const [availableWallets, setAvailableWallets] = useState<Wallet[]>([]);
+
   const { checkMultisigEnvironment } = useMultisig();
 
-  const verifyMultisigEnvironment = async () => {
+  const initializeWalletSelect = async () => {
+    Promise.all(supportedWallets.map((wallet) => wallet.installed())).then(
+      (installed) => {
+        // separate into installed and not installed wallets
+        const installedWallets = supportedWallets.filter(
+          (_, index) => installed[index],
+        );
+        // always remove Default Wallet from not installed Wallets
+        const notInstalledWallets = supportedWallets.filter(
+          (wallet, index) =>
+            !installed[index] && wallet.name !== 'Default Wallet',
+        );
+        setAvailableWallets([...installedWallets, ...notInstalledWallets]);
+      },
+    );
+
     const isMultisig = await checkMultisigEnvironment();
 
     if (isMultisig) {
@@ -51,27 +68,10 @@ export const useWalletSelectContent = () => {
   );
 
   useEffect(() => {
-    verifyMultisigEnvironment();
+    initializeWalletSelect();
   }, [account?.address]);
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
-    let availableWallets: Wallet[] = [];
-
-    Promise.all(supportedWallets.map((wallet) => wallet.installed())).then(
-      (installed) => {
-        // separate into installed and not installed wallets
-        const installedWallets = supportedWallets.filter(
-          (_, index) => installed[index],
-        );
-        // always remove Default Wallet from not installed Wallets
-        const notInstalledWallets = supportedWallets.filter(
-          (wallet, index) =>
-            !installed[index] && wallet.name !== 'Default Wallet',
-        );
-        availableWallets = [...installedWallets, ...notInstalledWallets];
-      },
-    );
-
     const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {
       if (!isCurrentMultisigEnvironment) {
         return wallet.name !== 'Safe';
