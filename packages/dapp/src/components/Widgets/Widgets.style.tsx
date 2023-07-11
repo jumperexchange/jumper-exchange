@@ -14,7 +14,6 @@ export const WidgetContainer = styled(Box, {
   position: showWelcome ? 'relative' : 'inherit',
   zIndex: showWelcome && 1400,
   overflow: 'visible',
-  width: showWelcome ? '392px' : 'auto',
   margin: '0 auto 24px auto',
   maxHeight: showWelcome ? '50%' : 'auto',
   minHeight: isActive && showWelcome && '50%',
@@ -75,15 +74,18 @@ export const WidgetContainer = styled(Box, {
     transitionProperty: 'margin-top, padding-top, transform',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    marginTop: showWelcome ? 'calc( 10% - 24px )' : '0',
+    marginTop: showWelcome ? '24px' : '0',
 
     [`@media screen and (min-height: 700px)`]: {
-      marginTop: showWelcome ? 'calc( 50vh - 90%)' : '0',
+      marginTop: showWelcome ? 'calc( 50vh - 680px / 2.5 - 80px)' : '0',
     },
   },
 
   '& > .onramper-wrapper': {
     overflow: showWelcome ? 'hidden' : 'visible',
+    [`@media screen and (min-height: 900px)`]: {
+      overflow: 'visible',
+    },
   },
 
   '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
