@@ -10,7 +10,7 @@ import { useMultisig } from '../../hooks/useMultisig';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
-  const { connect } = useWallet();
+  const { connect, account } = useWallet();
   const { trackEvent } = useUserTracking();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
     useState(false);
@@ -20,6 +20,10 @@ export const useWalletSelectContent = () => {
   const { checkMultisigEnvironment } = useMultisig();
 
   const initializeWalletSelect = async () => {
+    const isMultisig = await checkMultisigEnvironment();
+
+    console.log({ isMultisig });
+
     const walletsPromise = supportedWallets.map(
       async (wallet) => await wallet.installed(),
     );
@@ -45,8 +49,6 @@ export const useWalletSelectContent = () => {
     console.log({ notInstalledWallets });
     setAvailableWallets([...installedWallets, ...notInstalledWallets]);
 
-    const isMultisig = await checkMultisigEnvironment();
-
     if (isMultisig) {
       setIsCurrentMultisigEnvironment(true);
     } else {
@@ -54,14 +56,16 @@ export const useWalletSelectContent = () => {
     }
   };
 
-  const onWalletConnect = useSettingsStore((state) => state.onWalletConnect);
-  const [onWelcomeScreenEntered] = useSettingsStore((state) => [
-    state.onWelcomeScreenEntered,
-  ]);
+  const { onWalletConnect, onWelcomeScreenEntered } = useSettingsStore(
+    (state) => ({
+      onWalletConnect: state.onWalletConnect,
+      onWelcomeScreenEntered: state.onWelcomeScreenEntered,
+    }),
+  );
+
   const onCloseAllNavbarMenus = useMenuStore(
     (state) => state.onCloseAllNavbarMenus,
   );
-  const { account } = useWallet();
 
   const login = useCallback(
     async (wallet: Wallet) => {
