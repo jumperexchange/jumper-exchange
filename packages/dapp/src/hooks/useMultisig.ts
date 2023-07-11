@@ -15,6 +15,10 @@ export const useMultisig = () => {
   const { destinationChain } = useMultisigStore();
 
   const checkMultisigEnvironment = async () => {
+    if (window?.parent === window) {
+      return false;
+    }
+
     const sdk = new SafeAppsSDK();
     const accountInfo = await sdk.safe.getInfo();
 

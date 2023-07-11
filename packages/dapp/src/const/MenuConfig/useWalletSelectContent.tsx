@@ -22,31 +22,28 @@ export const useWalletSelectContent = () => {
   const initializeWalletSelect = async () => {
     const isMultisig = await checkMultisigEnvironment();
 
-    console.log({ isMultisig });
-
-    const walletsPromise = supportedWallets.map(
-      async (wallet) => await wallet.installed(),
-    );
-
-    console.log({ walletsPromise });
+    const walletsPromise = supportedWallets
+      .filter((wallet) => {
+        if (!isMultisig) {
+          return wallet.name !== 'Safe';
+        }
+        return true;
+      })
+      .map(async (wallet) => await wallet.installed());
 
     const walletsInstalled = await Promise.all(walletsPromise);
-
-    console.log({ walletsInstalled });
 
     // separate into installed and not installed wallets
     const installedWallets = supportedWallets.filter(
       (_, index) => walletsInstalled[index],
     );
 
-    console.log({ installedWallets });
     // always remove Default Wallet from not installed Wallets
     const notInstalledWallets = supportedWallets.filter(
       (wallet, index) =>
         !walletsInstalled[index] && wallet.name !== 'Default Wallet',
     );
 
-    console.log({ notInstalledWallets });
     setAvailableWallets([...installedWallets, ...notInstalledWallets]);
 
     if (isMultisig) {
@@ -84,8 +81,6 @@ export const useWalletSelectContent = () => {
   useEffect(() => {
     initializeWalletSelect();
   }, [account?.address]);
-
-  console.log({ availableWallets });
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
     const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {
