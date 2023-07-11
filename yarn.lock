@@ -4548,16 +4548,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-apps-sdk@npm:^7.11.0":
-  version: 7.11.0
-  resolution: "@safe-global/safe-apps-sdk@npm:7.11.0"
-  dependencies:
-    "@safe-global/safe-gateway-typescript-sdk": ^3.5.3
-    ethers: ^5.7.2
-  checksum: 8ada9c238fa485a12f0ecac14aa0c0497635f118c03537980e4ab32da7e8bfd7f01e25cfa1aaac28842e9e27d0d12598aaca943e342d94db305d2b6b9a65df9e
-  languageName: node
-  linkType: hard
-
 "@safe-global/safe-gateway-typescript-sdk@npm:^3.5.3":
   version: 3.7.3
   resolution: "@safe-global/safe-gateway-typescript-sdk@npm:3.7.3"
@@ -6284,7 +6274,7 @@ __metadata:
     "@lifi/widget": ^2.2.0-beta.2
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.6
-    "@safe-global/safe-apps-sdk": ^7.11.0
+    "@safe-global/safe-apps-sdk": ^8.0.0
     "@sentry/browser": ^7.57.0
     "@sentry/integrations": ^7.57.0
     "@sentry/react": ^7.57.0
