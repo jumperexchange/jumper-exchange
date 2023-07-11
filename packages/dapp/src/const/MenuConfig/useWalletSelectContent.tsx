@@ -20,6 +20,26 @@ export const useWalletSelectContent = () => {
   const { checkMultisigEnvironment } = useMultisig();
 
   const initializeWalletSelect = async () => {
+    const walletsPromise = supportedWallets.map(
+      async (wallet) => await wallet.installed(),
+    );
+    const walletsInstalled = await Promise.all(walletsPromise);
+
+    // separate into installed and not installed wallets
+    const installedWallets = supportedWallets.filter(
+      (_, index) => walletsInstalled[index],
+    );
+
+    console.log({ installedWallets });
+    // always remove Default Wallet from not installed Wallets
+    const notInstalledWallets = supportedWallets.filter(
+      (wallet, index) =>
+        !walletsInstalled[index] && wallet.name !== 'Default Wallet',
+    );
+
+    console.log({ notInstalledWallets });
+    setAvailableWallets([...installedWallets, ...notInstalledWallets]);
+
     const isMultisig = await checkMultisigEnvironment();
 
     if (isMultisig) {
@@ -55,23 +75,6 @@ export const useWalletSelectContent = () => {
   useEffect(() => {
     initializeWalletSelect();
   }, [account?.address]);
-
-  useEffect(() => {
-    Promise.all(supportedWallets.map((wallet) => wallet.installed())).then(
-      (installed) => {
-        // separate into installed and not installed wallets
-        const installedWallets = supportedWallets.filter(
-          (_, index) => installed[index],
-        );
-        // always remove Default Wallet from not installed Wallets
-        const notInstalledWallets = supportedWallets.filter(
-          (wallet, index) =>
-            !installed[index] && wallet.name !== 'Default Wallet',
-        );
-        setAvailableWallets([...installedWallets, ...notInstalledWallets]);
-      },
-    );
-  }, []);
 
   console.log({ availableWallets });
 
