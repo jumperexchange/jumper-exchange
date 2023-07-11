@@ -23,7 +23,12 @@ export const useWalletSelectContent = () => {
     const walletsPromise = supportedWallets.map(
       async (wallet) => await wallet.installed(),
     );
+
+    console.log({ walletsPromise });
+
     const walletsInstalled = await Promise.all(walletsPromise);
+
+    console.log({ walletsInstalled });
 
     // separate into installed and not installed wallets
     const installedWallets = supportedWallets.filter(
