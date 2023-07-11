@@ -31,6 +31,9 @@ export const useWalletSelectContent = () => {
           (wallet, index) =>
             !installed[index] && wallet.name !== 'Default Wallet',
         );
+
+        console.log([...installedWallets, ...notInstalledWallets]);
+
         setAvailableWallets([...installedWallets, ...notInstalledWallets]);
       },
     );
@@ -70,6 +73,8 @@ export const useWalletSelectContent = () => {
   useEffect(() => {
     initializeWalletSelect();
   }, [account?.address]);
+
+  console.log({ availableWallets });
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
     const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {
