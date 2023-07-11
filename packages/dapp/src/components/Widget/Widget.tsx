@@ -1,4 +1,4 @@
-import { Token } from '@lifi/sdk';
+import { ChainId, Token } from '@lifi/sdk';
 import {
   HiddenUI,
   LiFiWidget,
@@ -11,10 +11,24 @@ import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
+import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
+
+const refuelAllowChains: ChainId[] = [
+  ChainId.ETH,
+  ChainId.POL,
+  ChainId.BSC,
+  ChainId.DAI,
+  ChainId.FTM,
+  ChainId.AVA,
+  ChainId.ARB,
+  ChainId.OPT,
+  ChainId.FUS,
+  ChainId.VEL,
+];
 
 export function Widget({ starterVariant }) {
   const theme = useTheme();
@@ -108,6 +122,9 @@ export function Widget({ starterVariant }) {
           return addChain(chainId);
         },
       },
+      chains: {
+        allow: starterVariant === TabsMap.Refuel.value ? refuelAllowChains : [],
+      },
       containerStyle: {
         borderRadius: '12px',
         boxShadow: !isDarkMode
@@ -139,7 +156,7 @@ export function Widget({ starterVariant }) {
           },
         },
       },
-      localStorageKeyPrefix: `jumper-${starterVariant}`,
+      keyPrefix: `jumper-${starterVariant}`,
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,

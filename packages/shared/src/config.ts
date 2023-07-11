@@ -1,4 +1,5 @@
 // @mui
+import { TabsMap } from '@transferto/dapp/src/const/tabsMap';
 import type { LanguageKey } from '@transferto/dapp/src/types';
 import type { ThemeModesSupported } from './types';
 
@@ -17,7 +18,6 @@ export const localStorageKey = {
 // ----------------------------------------------------------------------
 
 export const defaultLang = 'en'; // English
-export const LOCAL_STORAGE_WALLETS_KEY = 'li.fi-wallets';
 
 const setLanguage = () => {
   if (!!localStorage.getItem(localStorageKey.languageMode)) {
@@ -37,7 +37,7 @@ interface DefaultSettingsType {
 }
 
 export const defaultSettings: DefaultSettingsType = {
-  activeTab: 0,
+  activeTab: TabsMap.Exchange.index,
   themeMode:
     (localStorage.getItem(localStorageKey.themeMode) as ThemeModesSupported) ||
     'auto',

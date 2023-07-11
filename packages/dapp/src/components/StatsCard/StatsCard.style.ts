@@ -28,12 +28,22 @@ export const Card = styled('div')(({ theme }) => ({
       ? theme.palette.surface3.main
       : theme.palette.white.main,
   borderRadius: '16px',
-  transition: 'background 225ms',
+  transitionProperty: 'box-shadow, background',
+  transitionDuration: '.3s',
+  transitionTimingFunction: 'ease-in-out',
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
   '&:hover': {
     background:
       theme.palette.mode === 'dark'
         ? alpha(theme.palette.surface3.main, 0.72)
         : alpha(theme.palette.common.white, 0.64),
+    boxShadow:
+      theme.palette.mode === 'dark'
+        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
+        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: '128px',

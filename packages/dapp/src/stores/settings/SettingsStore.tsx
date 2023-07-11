@@ -12,6 +12,7 @@ import type {
   WalletConnected,
 } from '@transferto/shared/src/types/settings';
 import i18next from 'i18next';
+import { TabsMap } from '../../const/tabsMap';
 import { LanguageKey } from '../../types';
 
 // ----------------------------------------------------------------------
@@ -40,7 +41,7 @@ export const useSettingsStore = create(
       // Tabs
       onChangeTab: (tab: number) => {
         set({
-          activeTab: tab || 0,
+          activeTab: tab || TabsMap.Exchange.index,
         });
       },
 
@@ -99,8 +100,8 @@ export const useSettingsStore = create(
             defaultSettings.languageMode ||
             (i18next.language as LanguageKey) ||
             defaultLang,
-          activeTab: defaultSettings.activeTab || 0,
           disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
+          activeTab: defaultSettings.activeTab || TabsMap.Exchange.index,
         });
       },
     }),

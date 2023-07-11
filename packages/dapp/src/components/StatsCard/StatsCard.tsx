@@ -1,4 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useFetchDexsAndBridges } from '../../hooks';
 import { useCountUpAnimation } from '../../hooks/useCountUpAnimation';
 import { useChainInfos } from '../../providers/ChainInfosProvider';
@@ -21,7 +22,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
       sx={{ cursor: 'pointer' }}
     >
       <Typography
-        variant={'lifiBrandHeaderMedium'}
+        variant={'lifiHeaderMedium'}
         sx={{
           fontSize: '24px',
           lineHeight: '32px',
@@ -35,7 +36,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
         {counter}
       </Typography>
       <Typography
-        variant={'lifiBrandBodySmall'}
+        variant={'lifiBodySmall'}
         sx={{
           pointerEvents: 'none',
           mt: theme.spacing(1),
@@ -72,10 +73,12 @@ export const StatsCards = ({
 }) => {
   const { data } = useFetchDexsAndBridges();
   const { chains } = useChainInfos();
+  const i18Path = 'navbar.statsCards.';
+  const { t: translate } = useTranslation();
 
   const statsData = [
     {
-      title: 'Chains',
+      title: translate(`${i18Path}chains`),
       number: chains.length || 22,
       data: sortByName(chains),
       open: openChainsPopper,
@@ -85,7 +88,7 @@ export const StatsCards = ({
       },
     },
     {
-      title: 'Bridges',
+      title: translate(`${i18Path}bridges`),
       number: data?.bridges.length || 16,
       data: sortByName(data?.bridges),
       open: openBridgesPopper,
@@ -95,7 +98,7 @@ export const StatsCards = ({
       },
     },
     {
-      title: 'DEXs',
+      title: translate(`${i18Path}dexs`),
       number: data?.exchanges.length || 32,
       data: sortByName(data?.exchanges),
       open: openDexsPopper,

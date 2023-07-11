@@ -1,10 +1,20 @@
 {
   "navbar": {
+    "welcome": {
+      "title": "หาเส้นทางที่ดีที่สุด",
+      "subtitle": "4x ในการตรวจสอบหลายเชนโดย LI.FI",
+      "cta": "เริ่มต้นใช้งาน"
+    },
     "links": {
-      "swap": "แลกเปลี่ยน",
+      "exchange": "แลกเปลี่ยน",
       "dashboard": "แผงหน้าจอ",
       "refuel": "แก็ส",
       "buy": "ซื้อ"
+    },
+    "statsCards": {
+      "dexs": "DEX",
+      "bridges": "บริดจ์",
+      "chains": "เชน"
     },
     "connectWallet": "เชื่อมต่อกระเป๋า",
     "chooseWallet": "เลือกกระเป๋า",

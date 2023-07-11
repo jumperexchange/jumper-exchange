@@ -29,11 +29,11 @@ export const WelcomeWrapper = ({
         in={showWelcome}
       >
         <ContentContainer showWelcome={showWelcome}>
-          <CustomColor variant={'lifiBrandHeaderMedium'}>
+          <CustomColor variant={'lifiHeaderMedium'}>
             {translate(`${i18Path}title`)}
           </CustomColor>
           <Typography
-            variant={'lifiBrandBodyLarge'}
+            variant={'lifiBodyLarge'}
             mt={theme.spacing(4)}
             sx={{
               color:
@@ -56,6 +56,13 @@ export const WelcomeWrapper = ({
               <Trans
                 i18nKey={`${i18Path}subtitle`}
                 components={[
+                  // eslint-disable-next-line jsx-a11y/anchor-has-content
+                  <a
+                    className={'link-lifi'}
+                    href="https://docs.li.fi/smart-contracts/audits"
+                    target={'_blank'}
+                    rel="noreferrer"
+                  />,
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
