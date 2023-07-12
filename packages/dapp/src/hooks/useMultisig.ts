@@ -28,7 +28,7 @@ export const useMultisig = () => {
       new Promise<undefined>((resolve) => setTimeout(resolve, 200)),
     ]);
 
-    return !!accountInfo?.safeAddress || isIframeEnvironment;
+    return !!accountInfo?.safeAddress;
   };
 
   const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
