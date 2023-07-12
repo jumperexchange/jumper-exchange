@@ -1,7 +1,8 @@
-import { MultisigProps } from '@transferto/shared';
+import { MultisigProps, MultisigState } from '@transferto/shared';
 import { create } from 'zustand';
 
-export const useMultisigStore = create((set) => ({
+export const useMultisigStore = create<MultisigState>((set) => ({
+  destinationChain: undefined,
   setValue: (key, value) =>
     set(() => ({
       [key]: value,
@@ -16,8 +17,6 @@ export const useMultisigStore = create((set) => ({
       }
       return updatedState;
     }),
-
-  // Destination Chain
   onDestinationChainSelected: (chainId: number) => {
     set({
       destinationChain: chainId,
