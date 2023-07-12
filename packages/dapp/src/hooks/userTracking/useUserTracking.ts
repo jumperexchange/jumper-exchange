@@ -68,6 +68,12 @@ export function useUserTracking() {
       }
       if (
         !!account.address &&
+        !disableTrackingTool?.includes(EventTrackingTools.raleon)
+      ) {
+        window?.raleon.walletConnected(account.address);
+      }
+      if (
+        !!account.address &&
         !disableTrackingTool?.includes(EventTrackingTools.ga)
       ) {
         !disconnect &&
