@@ -3050,20 +3050,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^2.1.3-beta.0":
-  version: 2.1.3-beta.0
-  resolution: "@lifi/sdk@npm:2.1.3-beta.0"
-  dependencies:
-    "@ethersproject/abi": ^5.7.0
-    "@ethersproject/contracts": ^5.7.0
-    "@lifi/types": ^8.0.3
-    bignumber.js: ^9.1.1
-    eth-rpc-errors: ^4.0.3
-    ethers: ^5.7.2
-  checksum: 3322698e9c5761ceaa99392e4780d7e1ecfa4892da34dd296fe733ad9237066208ccbf504456c1e6526af76ceb8fafc0f524ff0ef8e80f9d145810ad4cf2f76c
-  languageName: node
-  linkType: hard
-
 "@lifi/sdk@npm:^2.2.0":
   version: 2.2.0
   resolution: "@lifi/sdk@npm:2.2.0"
@@ -3087,9 +3073,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@lifi/wallet-management@npm:2.2.0"
+"@lifi/wallet-management@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@lifi/wallet-management@npm:2.2.1"
   dependencies:
     "@coinbase/wallet-sdk": ^3.7.1
     "@ethersproject/abstract-signer": ^5.7.0
@@ -3099,35 +3085,16 @@ __metadata:
     "@safe-global/safe-apps-provider": ^0.17.1
     "@safe-global/safe-apps-sdk": ^8.0.0
     "@walletconnect/ethereum-provider": ^2.9.0
-    "@walletconnect/modal": ^2.5.9
+    "@walletconnect/modal": ^2.6.0
     events: ^3.3.0
     react: ^18.2.0
-  checksum: e9a10177e780cf4e66c0a8fd659e270b3edf8a24d8a532edb891cb22c5af1d8386697bf1ce37f6a180fc96684c85c8b1b2ffe15fb214ea278208ed02892268c4
+  checksum: 306634ad4d6a4cd87dced6a82847e3ae0793d9c8d5fa1bcb6f0144d68d58f4576e10a74d50feab1f4d9f3fd7cc5d00d88c9d2a22ab9ca32830826bbaa075ccb7
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^2.2.0-beta.0":
-  version: 2.2.0-beta.1
-  resolution: "@lifi/wallet-management@npm:2.2.0-beta.1"
-  dependencies:
-    "@coinbase/wallet-sdk": ^3.7.1
-    "@ethersproject/abstract-signer": ^5.7.0
-    "@ethersproject/experimental": ^5.7.0
-    "@ethersproject/providers": ^5.7.2
-    "@lifi/sdk": ^2.1.3-beta.0
-    "@safe-global/safe-apps-provider": ^0.17.1
-    "@safe-global/safe-apps-sdk": ^8.0.0
-    "@walletconnect/ethereum-provider": ^2.9.0
-    "@walletconnect/modal": ^2.5.9
-    events: ^3.3.0
-    react: ^18.2.0
-  checksum: f5213bd35ea901114e5058bbea7cc224730af93b3415d98f46d97ff97d85716a45e6d6860bb3b82d495d3786fca5ea9912d9849d67b82cbe5131e7b9a36ddbf2
-  languageName: node
-  linkType: hard
-
-"@lifi/widget@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@lifi/widget@npm:2.2.0"
+"@lifi/widget@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@lifi/widget@npm:2.2.1"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -3136,14 +3103,14 @@ __metadata:
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.2.0
-    "@lifi/wallet-management": ^2.2.0
-    "@mui/icons-material": ^5.13.7
-    "@mui/lab": ^5.0.0-alpha.135
-    "@mui/material": ^5.13.7
+    "@lifi/wallet-management": ^2.2.1
+    "@mui/icons-material": ^5.14.0
+    "@mui/lab": ^5.0.0-alpha.136
+    "@mui/material": ^5.14.0
     "@tanstack/react-query": ^4.29.19
     "@tanstack/react-virtual": ^3.0.0-beta.54
     big.js: ^6.2.1
-    i18next: ^23.2.8
+    i18next: ^23.2.10
     i18next-browser-languagedetector: ^7.1.0
     microdiff: ^1.3.2
     mitt: ^3.0.1
@@ -3163,7 +3130,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: b5754f6e3c25eb603e0ee388516243b5fee1be7497a5ebcfce1283b6e01600745742031fd7a71f5904e432e696789ca391888277c4699ec6c08831b8675f8daf
+  checksum: 91beccaf616c648ad0c565cc0d6856e534a04ffbe9244c5a650b4828fb8f6c8d5dbb839ccc0e3439c968421074ad0244e59a2ee8031e0d0516b1edbfaca189d6
   languageName: node
   linkType: hard
 
@@ -3363,9 +3330,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/base@npm:5.0.0-beta.6":
-  version: 5.0.0-beta.6
-  resolution: "@mui/base@npm:5.0.0-beta.6"
+"@mui/base@npm:5.0.0-beta.7":
+  version: 5.0.0-beta.7
+  resolution: "@mui/base@npm:5.0.0-beta.7"
   dependencies:
     "@babel/runtime": ^7.22.5
     "@emotion/is-prop-valid": ^1.2.1
@@ -3382,7 +3349,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 04c7f040363ffa304cac08310896d5b330048305510f43de85b564b009fbb429b49cbaf7d723fdae49e22c84c8f1cbaeec6244c1b49e9090c4b18235a812c6a0
+  checksum: 2b524f2a334818c6abe2419e24ded29b6fdb78375077ea6d16bfc55fd6e173cc21f6fb6286feb29215632e7f247b523244b5a1c809303570854fb15de5e83f47
   languageName: node
   linkType: hard
 
@@ -3393,10 +3360,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/core-downloads-tracker@npm:^5.13.7":
-  version: 5.13.7
-  resolution: "@mui/core-downloads-tracker@npm:5.13.7"
-  checksum: 446c4cf226c168cdfc31462e202fd3756dde45d70fdd41b218294c44f8a0564e64617353210c95387b982b2efb77e60f6a3600beca134e91684f7bb834141a41
+"@mui/core-downloads-tracker@npm:^5.14.0":
+  version: 5.14.0
+  resolution: "@mui/core-downloads-tracker@npm:5.14.0"
+  checksum: 20b5b830ac3661c9a7b331c4c4a5ea4ba614907182576ebde2508564bda7102f037670105097db31a1452cf55d092dd9dff94fb6931b87910bb48d1fb11c8b50
   languageName: node
   linkType: hard
 
@@ -3416,9 +3383,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:^5.13.7":
-  version: 5.13.7
-  resolution: "@mui/icons-material@npm:5.13.7"
+"@mui/icons-material@npm:^5.14.0":
+  version: 5.14.0
+  resolution: "@mui/icons-material@npm:5.14.0"
   dependencies:
     "@babel/runtime": ^7.22.5
   peerDependencies:
@@ -3428,17 +3395,17 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: f2bff37c5bf9038073b733c9fd1f5c595c7e8094e2616622babb9133dde7d671b0c068faf6db10cfb45e6105ab0d2d3f348b947441419454516afba5a513d652
+  checksum: a4bbf351baf3d7502de8f97aee020086563c2a0661742e612aed28d9ed3ecfd62e63e0c8927b148a52073048054f7c050f4cdc62cc325e3244b86fc04c278447
   languageName: node
   linkType: hard
 
-"@mui/lab@npm:^5.0.0-alpha.135":
-  version: 5.0.0-alpha.135
-  resolution: "@mui/lab@npm:5.0.0-alpha.135"
+"@mui/lab@npm:^5.0.0-alpha.136":
+  version: 5.0.0-alpha.136
+  resolution: "@mui/lab@npm:5.0.0-alpha.136"
   dependencies:
     "@babel/runtime": ^7.22.5
-    "@mui/base": 5.0.0-beta.6
-    "@mui/system": ^5.13.7
+    "@mui/base": 5.0.0-beta.7
+    "@mui/system": ^5.14.0
     "@mui/types": ^7.2.4
     "@mui/utils": ^5.13.7
     clsx: ^1.2.1
@@ -3458,7 +3425,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: d13534b0d603971931ca4b759d38f6cae8b99167263907d8a368e21fc054c04550d31518bf2553b5777b0e334978ef054202f9acac392330ec1de3e3622730fc
+  checksum: 69188272072f1555b3de5706eb65e7f966524bbf1e2a1479764b4dfbb362747370cf637ca664aa22f383ffd38ec474ef7811487956f23b749f587344c039e82d
   languageName: node
   linkType: hard
 
@@ -3495,14 +3462,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.13.7":
-  version: 5.13.7
-  resolution: "@mui/material@npm:5.13.7"
+"@mui/material@npm:^5.14.0":
+  version: 5.14.0
+  resolution: "@mui/material@npm:5.14.0"
   dependencies:
     "@babel/runtime": ^7.22.5
-    "@mui/base": 5.0.0-beta.6
-    "@mui/core-downloads-tracker": ^5.13.7
-    "@mui/system": ^5.13.7
+    "@mui/base": 5.0.0-beta.7
+    "@mui/core-downloads-tracker": ^5.14.0
+    "@mui/system": ^5.14.0
     "@mui/types": ^7.2.4
     "@mui/utils": ^5.13.7
     "@types/react-transition-group": ^4.4.6
@@ -3524,7 +3491,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: 2e63d6d046a68a8307d6167a98199202ae05df68747647259435535003f68f4dd02f27baf17003d5ed6d438e9a38846ce05e6b531dd19b9f2905352e85df41f0
+  checksum: f1b1060b46fdcae6f4515f464bfab58f186fa1dd2e68e5bae0b0c3f42aafc9a73a08411141f870694c00b590a2593caa8fa6dc5b9e68be9d38eeaeda839ca716
   languageName: node
   linkType: hard
 
@@ -3611,9 +3578,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/system@npm:^5.13.7":
-  version: 5.13.7
-  resolution: "@mui/system@npm:5.13.7"
+"@mui/system@npm:^5.14.0":
+  version: 5.14.0
+  resolution: "@mui/system@npm:5.14.0"
   dependencies:
     "@babel/runtime": ^7.22.5
     "@mui/private-theming": ^5.13.7
@@ -3635,7 +3602,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: 6d316ea3be91bb5a7c7c3068bd45c9d98b2d554483e33a65b14ac7e2a5baaf30e24da8688537a7a7e3cb20fb620723359425f89e430b1c264e5502c7282a1797
+  checksum: 8855bf8d36b2131a8edfe54c7ecbbf299562ca115ee34d51f47bd225b5800244b91a100f03e14e040a559de94603877a59882482e60c2eb2f4d47f8bd0740a6a
   languageName: node
   linkType: hard
 
@@ -6270,8 +6237,8 @@ __metadata:
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.2.0
-    "@lifi/wallet-management": ^2.2.0
-    "@lifi/widget": ^2.2.0
+    "@lifi/wallet-management": ^2.2.1
+    "@lifi/widget": ^2.2.1
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.6
     "@safe-global/safe-apps-sdk": ^8.0.0
@@ -6311,7 +6278,7 @@ __metadata:
     "@babel/core": ^7.22.5
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
-    "@lifi/wallet-management": ^2.2.0-beta.0
+    "@lifi/wallet-management": ^2.2.1
     "@mui/icons-material": ^5.11.16
     "@mui/material": ^5.13.6
     "@storybook/addon-actions": ^6.5.16
@@ -7117,35 +7084,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@walletconnect/modal-core@npm:2.5.9":
-  version: 2.5.9
-  resolution: "@walletconnect/modal-core@npm:2.5.9"
+"@walletconnect/modal-core@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@walletconnect/modal-core@npm:2.6.0"
   dependencies:
-    buffer: 6.0.3
-    valtio: 1.10.6
-  checksum: dfcb0b7a50febafe08fd80fec2b31b86722a27aedad8ee0656af895e2c8b1a2c8a91c7bb5f968bea5b8de9ab7fc908c6f52cef194f949e37da597acd0f1a263b
+    valtio: 1.10.7
+  checksum: b1b9373a4f3a8fdacd5c59666a0fd4d3c55b4fc2e33f2f805fa32214cc74c7ccaf693d1fa4b10974a521d9d15dd4a01b86ee3324ca787db281d2a602c322c220
   languageName: node
   linkType: hard
 
-"@walletconnect/modal-ui@npm:2.5.9":
-  version: 2.5.9
-  resolution: "@walletconnect/modal-ui@npm:2.5.9"
+"@walletconnect/modal-ui@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@walletconnect/modal-ui@npm:2.6.0"
   dependencies:
-    "@walletconnect/modal-core": 2.5.9
-    lit: 2.7.5
+    "@walletconnect/modal-core": 2.6.0
+    lit: 2.7.6
     motion: 10.16.2
     qrcode: 1.5.3
-  checksum: c0050715734b532f75b81c3abb75c6cce513b1481c9cec66f648aa698ddd3af4ec70978a0976b06843229e6f7ea14cc927432dc66cfe53967db7d96c9437f692
+  checksum: 62e8893683aa76425c775924cfb559e28f4a711467d92c65f1e9318d290c5892d14c0298622862d52841d8e0f6e31f2e16213d7a58365364940da504c59291ab
   languageName: node
   linkType: hard
 
-"@walletconnect/modal@npm:^2.5.9":
-  version: 2.5.9
-  resolution: "@walletconnect/modal@npm:2.5.9"
+"@walletconnect/modal@npm:^2.6.0":
+  version: 2.6.0
+  resolution: "@walletconnect/modal@npm:2.6.0"
   dependencies:
-    "@walletconnect/modal-core": 2.5.9
-    "@walletconnect/modal-ui": 2.5.9
-  checksum: ba52f4210c238644a2c4d6fbfc1692d7f49e4fa4a85e793aa79c299e9e4d16c0555fcf08bb94726186256aec1e43abb3d7297a61020abe7211f6faac1163dddd
+    "@walletconnect/modal-core": 2.6.0
+    "@walletconnect/modal-ui": 2.6.0
+  checksum: 14e07799499f9da5d08c4d85119b9734030e95f42543c6be39e6bab6dceba985f97eb401acfb3a1cbf9185fb413d7f8c5f0c0cf302ad165cdb4ec6b47b3d6550
   languageName: node
   linkType: hard
 
@@ -13998,12 +13964,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.2.8":
-  version: 23.2.8
-  resolution: "i18next@npm:23.2.8"
+"i18next@npm:^23.2.10":
+  version: 23.2.10
+  resolution: "i18next@npm:23.2.10"
   dependencies:
     "@babel/runtime": ^7.22.5
-  checksum: 6f01943cc8bf3e9315773fecbed2a8bcede4575dd505badea12c8f07b69936f5d0474dc6a724b123bedc8a3db4e12dca1e377d807eda90f1bd53d8f66b4694fb
+  checksum: 68a0189dc54631a37e1ead81727cdf91ab3fb27b224a0d6f9ff91ea8caae931d068898c778f0bdf9eb70f4bbe455657531600b22f76cc5610fbb33d5f6ad5261
   languageName: node
   linkType: hard
 
@@ -15863,14 +15829,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lit@npm:2.7.5":
-  version: 2.7.5
-  resolution: "lit@npm:2.7.5"
+"lit@npm:2.7.6":
+  version: 2.7.6
+  resolution: "lit@npm:2.7.6"
   dependencies:
     "@lit/reactive-element": ^1.6.0
     lit-element: ^3.3.0
     lit-html: ^2.7.0
-  checksum: 61a3f87c57136618f47a30b36cdfb592fcba42dcfbdb104d2b5ca291148c2d9a32fcb713bb91090bd08d6897a00e73f8425da6e3626aa080eaf410a32397ae69
+  checksum: 984a7fb9c0fa387f20177a07de22ea1c9cdc01a7dc7cb1c400d1df5b43a8956908460482a3259ea173555c6f0f13457d2ddc5c84d4c365007afd86e7ca58b384
   languageName: node
   linkType: hard
 
@@ -22812,9 +22778,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"valtio@npm:1.10.6":
-  version: 1.10.6
-  resolution: "valtio@npm:1.10.6"
+"valtio@npm:1.10.7":
+  version: 1.10.7
+  resolution: "valtio@npm:1.10.7"
   dependencies:
     proxy-compare: 2.5.1
     use-sync-external-store: 1.2.0
@@ -22823,7 +22789,7 @@ __metadata:
   peerDependenciesMeta:
     react:
       optional: true
-  checksum: 0e738aa204c479c8f8c89c0a7478d6784c28ddd712be529fdc5c421d3ec28157fec2fb022a75cd4f45b8c4b470fbc64a27032adba6ed9936bdad989256222adf
+  checksum: fec3aa06e494d8230e5074a2da1077835c0940e383a411935f92e27db2d75ca28d53b63cb815b07dca0edb4bb4c3b6beabd6bec475be70bf26c03b04bd201058
   languageName: node
   linkType: hard
 
