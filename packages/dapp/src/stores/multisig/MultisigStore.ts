@@ -1,10 +1,6 @@
 import { MultisigProps } from '@transferto/shared';
 import { create } from 'zustand';
 
-// ----------------------------------------------------------------------
-
-/*--  Use Zustand  --*/
-
 export const useMultisigStore = create((set) => ({
   setValue: (key, value) =>
     set(() => ({
