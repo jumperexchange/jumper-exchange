@@ -15,14 +15,15 @@ export const useMultisig = () => {
   const { destinationChain } = useMultisigStore();
 
   const checkMultisigEnvironment = async () => {
-    if (window?.parent === window) {
-      return false;
-    }
+    const isIframeEnvironment = window?.parent !== window;
 
     const sdk = new SafeAppsSDK();
-    const accountInfo = await sdk.safe.getInfo();
+    const accountInfo = await Promise.race([
+      sdk.safe.getInfo(),
+      new Promise<undefined>((resolve) => setTimeout(resolve, 200)),
+    ]);
 
-    return !!accountInfo;
+    return !!accountInfo?.safeAddress || isIframeEnvironment;
   };
 
   const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe

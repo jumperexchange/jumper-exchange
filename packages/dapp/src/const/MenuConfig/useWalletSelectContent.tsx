@@ -22,14 +22,9 @@ export const useWalletSelectContent = () => {
   const initializeWalletSelect = async () => {
     const isMultisig = await checkMultisigEnvironment();
 
-    const walletsPromise = supportedWallets
-      .filter((wallet) => {
-        if (!isMultisig) {
-          return wallet.name !== 'Safe';
-        }
-        return true;
-      })
-      .map(async (wallet) => await wallet.installed());
+    const walletsPromise = supportedWallets.map(
+      async (wallet) => await wallet.installed(),
+    );
 
     const walletsInstalled = await Promise.all(walletsPromise);
 
