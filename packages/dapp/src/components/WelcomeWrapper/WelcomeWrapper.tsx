@@ -5,12 +5,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 
-export const WelcomeWrapper = ({
-  children,
-  showWelcome,
-
-  handleGetStarted,
-}) => {
+export const WelcomeWrapper = ({ children, showWelcome, handleGetStarted }) => {
   const theme = useTheme();
   const i18Path = 'navbar.welcome.';
   const { t: translate } = useTranslation();

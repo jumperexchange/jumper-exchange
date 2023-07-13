@@ -36,6 +36,7 @@ export enum NavbarHeight {
 
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
   height: '48px',
+  cursor: 'pointer',
   alignItems: 'center',
   display: 'flex',
 }));
