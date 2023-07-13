@@ -82,7 +82,7 @@ export const WidgetContainer = styled(Box, {
     marginTop: showWelcome ? '24px' : '0',
 
     [`@media screen and (min-height: 700px)`]: {
-      marginTop: showWelcome ? 'calc( 50vh - 680px / 2.75 - 80px)' : '0', // (mid viewheight - half-two/thirds widget height - header height )
+      marginTop: showWelcome ? 'calc( 50vh - 680px / 2.75 - 80px - 48px)' : '0', // (mid viewheight - half-two/thirds widget height - header height )
     },
   },
 

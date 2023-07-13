@@ -39,8 +39,8 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
         variant={'lifiBodySmall'}
         sx={{
           pointerEvents: 'none',
-          mt: theme.spacing(1),
           [theme.breakpoints.up('sm')]: {
+            mt: theme.spacing(1),
             fontSize: '16px',
           },
         }}
