@@ -1,21 +1,60 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUserTracking } from '../../hooks';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTools, MenuListItem } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
+import { useMultisig } from '../../hooks/useMultisig';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
-  const { connect } = useWallet();
+  const { connect, account } = useWallet();
   const { trackEvent } = useUserTracking();
+  const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
+    useState(false);
 
-  const onWalletConnect = useSettingsStore((state) => state.onWalletConnect);
-  const [onWelcomeScreenEntered] = useSettingsStore((state) => [
-    state.onWelcomeScreenEntered,
-  ]);
+  const [availableWallets, setAvailableWallets] = useState<Wallet[]>([]);
+
+  const { checkMultisigEnvironment } = useMultisig();
+
+  const initializeWalletSelect = async () => {
+    const isMultisig = await checkMultisigEnvironment();
+
+    const walletsPromise = supportedWallets.map(
+      async (wallet) => await wallet.installed(),
+    );
+
+    const walletsInstalled = await Promise.all(walletsPromise);
+
+    // separate into installed and not installed wallets
+    const installedWallets = supportedWallets.filter(
+      (_, index) => walletsInstalled[index],
+    );
+
+    // always remove Default Wallet from not installed Wallets
+    const notInstalledWallets = supportedWallets.filter(
+      (wallet, index) =>
+        !walletsInstalled[index] && wallet.name !== 'Default Wallet',
+    );
+
+    setAvailableWallets([...installedWallets, ...notInstalledWallets]);
+
+    if (isMultisig) {
+      setIsCurrentMultisigEnvironment(true);
+    } else {
+      setIsCurrentMultisigEnvironment(false);
+    }
+  };
+
+  const { onWalletConnect, onWelcomeScreenEntered } = useSettingsStore(
+    (state) => ({
+      onWalletConnect: state.onWalletConnect,
+      onWelcomeScreenEntered: state.onWelcomeScreenEntered,
+    }),
+  );
+
   const onCloseAllNavbarMenus = useMenuStore(
     (state) => state.onCloseAllNavbarMenus,
   );
@@ -34,43 +73,52 @@ export const useWalletSelectContent = () => {
     [connect, onWalletConnect],
   );
 
-  const walletMenuItems = useMemo<MenuListItem[]>(() => {
-    const installedWallets = supportedWallets.filter((wallet) =>
-      wallet.installed(),
-    );
+  useEffect(() => {
+    initializeWalletSelect();
+  }, [account?.address]);
 
-    const notInstalledWallets = supportedWallets.filter(
-      (wallet) => !wallet.installed() && wallet.name !== 'Default Wallet', // always remove Default Wallet from not installed Wallets
-    );
-    const _output = [...installedWallets, ...notInstalledWallets].map(
-      (wallet) => {
-        return {
-          label: wallet.name,
-          prefixIcon: (
-            <Avatar
-              src={wallet.icon}
-              alt={`${wallet.name}-wallet-logo`}
-              sx={{ height: '32px', width: '32px' }}
-            />
-          ),
-          showMoreIcon: false,
-          onClick: () => {
-            login(wallet);
-            onCloseAllNavbarMenus();
-            onWelcomeScreenEntered(true);
-            trackEvent({
-              category: TrackingCategories.Wallet,
-              action: TrackingActions.ChooseWallet,
-              label: `choose-wallet-${wallet}`,
-              data: { usedWallet: wallet.name },
-              disableTrackingTool: [EventTrackingTools.arcx],
-            });
-          },
-        };
-      },
-    );
+  const walletMenuItems = useMemo<MenuListItem[]>(() => {
+    const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {
+      if (!isCurrentMultisigEnvironment) {
+        return wallet.name !== 'Safe';
+      }
+      return true;
+    });
+
+    const _output = walletsOptions.map((wallet) => {
+      return {
+        label: wallet.name,
+        prefixIcon: (
+          <Avatar
+            src={wallet.icon}
+            alt={`${wallet.name}-wallet-logo`}
+            sx={{ height: '32px', width: '32px' }}
+          />
+        ),
+        showMoreIcon: false,
+        onClick: () => {
+          login(wallet);
+          onCloseAllNavbarMenus();
+          onWelcomeScreenEntered(true);
+          trackEvent({
+            category: TrackingCategories.Wallet,
+            action: TrackingActions.ChooseWallet,
+            label: `choose-wallet-${wallet}`,
+            data: { usedWallet: wallet.name },
+            disableTrackingTool: [EventTrackingTools.arcx],
+          });
+        },
+      };
+    });
     return _output;
-  }, [login, onCloseAllNavbarMenus, onWelcomeScreenEntered, trackEvent]);
+  }, [
+    availableWallets.length,
+    isCurrentMultisigEnvironment,
+    login,
+    onCloseAllNavbarMenus,
+    onWelcomeScreenEntered,
+    trackEvent,
+  ]);
 
   return walletMenuItems;
 };
