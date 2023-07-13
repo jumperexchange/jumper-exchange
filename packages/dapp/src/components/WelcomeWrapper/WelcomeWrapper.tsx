@@ -5,12 +5,17 @@ import { Trans, useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 
+interface WelcomeWrapperProps {
+  children: JSX.Element;
+  showWelcome: boolean;
+  handleGetStarted: (event: any) => void;
+}
+
 export const WelcomeWrapper = ({
   children,
   showWelcome,
-
   handleGetStarted,
-}) => {
+}: WelcomeWrapperProps) => {
   const theme = useTheme();
   const i18Path = 'navbar.welcome.';
   const { t: translate } = useTranslation();
@@ -19,7 +24,7 @@ export const WelcomeWrapper = ({
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
 
   return (
-    <Wrapper showWelcome={showWelcome}>
+    <Wrapper showWelcome={showWelcome || false}>
       {children}
       <Slide
         direction="up"

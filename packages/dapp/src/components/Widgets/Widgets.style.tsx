@@ -12,11 +12,11 @@ export const WidgetContainer = styled(Box, {
   display: isActive ? 'inherit' : 'none',
   placeContent: 'center',
   position: showWelcome ? 'relative' : 'inherit',
-  zIndex: showWelcome && 1400,
+  zIndex: showWelcome ? 1400 : 'inherit',
   overflow: 'visible',
   margin: '0 auto 24px auto',
   maxHeight: showWelcome ? '50%' : 'auto',
-  minHeight: isActive && showWelcome && '50%',
+  minHeight: isActive && showWelcome ? '50%' : 'inherit',
 
   '& .widget-wrapper > div, & > .onramper-wrapper .onramper-container': {
     alignSelf: 'flex-end',

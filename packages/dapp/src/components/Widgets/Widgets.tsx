@@ -1,7 +1,13 @@
 import { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  MouseEventHandler,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { shallow } from 'zustand/shallow';
 import { TabsMap } from '../../const/tabsMap';
 import { useSettingsStore } from '../../stores';
@@ -30,7 +36,9 @@ export function Widgets() {
     WidgetSubvariant | 'buy'
   >(TabsMap.Exchange.value);
 
-  const starterVariant = useMemo(() => {
+  type StarterVariantType = 'buy' | WidgetSubvariant | undefined;
+
+  const starterVariant: StarterVariantType = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
       if (url === TabsMap.Exchange.value) {
@@ -40,6 +48,8 @@ export function Widgets() {
       } else if (url === TabsMap.Buy.value) {
         return TabsMap.Buy.value;
       }
+    } else {
+      return TabsMap.Exchange.value;
     }
   }, []);
 
@@ -65,8 +75,8 @@ export function Widgets() {
     }
   }, [activeTab, onChangeTab, starterVariant, starterVariantUsed]);
 
-  const handleGetStarted = async (event) => {
-    const classList = event?.target?.classList;
+  const handleGetStarted: MouseEventHandler<HTMLDivElement> = (event) => {
+    const classList = (event?.target as HTMLElement)?.classList;
     if (
       classList?.contains?.('stats-card') ||
       classList?.contains?.('link-lifi')
@@ -90,38 +100,40 @@ export function Widgets() {
       showWelcome={showWelcomeWrapper}
       handleGetStarted={handleGetStarted}
     >
-      {import.meta.env.MODE === 'testnet' && (
-        <Grid item xs={12} mt={theme.spacing(6)}>
-          <TestnetAlert />
-        </Grid>
-      )}
-      <WidgetContainer
-        onClick={handleGetStarted}
-        showWelcome={showWelcomeWrapper}
-        isActive={_starterVariant === TabsMap.Exchange.value}
-      >
-        <Widget starterVariant={TabsMap.Exchange} />
-      </WidgetContainer>
-      <WidgetContainer
-        onClick={handleGetStarted}
-        showWelcome={showWelcomeWrapper}
-        isActive={_starterVariant === TabsMap.Refuel.value}
-      >
-        <Widget starterVariant={TabsMap.Refuel.value} />
-      </WidgetContainer>
-      {import.meta.env.VITE_ONRAMPER_ENABLED ? (
+      <>
+        {import.meta.env.MODE === 'testnet' && (
+          <Grid item xs={12} mt={theme.spacing(6)}>
+            <TestnetAlert />
+          </Grid>
+        )}
+        <WidgetContainer
+          onClick={handleGetStarted}
+          showWelcome={showWelcomeWrapper || false}
+          isActive={_starterVariant === TabsMap.Exchange.value}
+        >
+          <Widget starterVariant={TabsMap.Exchange} />
+        </WidgetContainer>
         <WidgetContainer
           onClick={handleGetStarted}
           showWelcome={showWelcomeWrapper}
-          isActive={_starterVariant === TabsMap.Buy.value}
-          sx={{ width: '392px' }}
+          isActive={_starterVariant === TabsMap.Refuel.value}
         >
-          <div className="onramper-wrapper">
-            <OnRamper />
-          </div>
+          <Widget starterVariant={TabsMap.Refuel.value} />
         </WidgetContainer>
-      ) : null}
-      <WidgetEvents />
+        {import.meta.env.VITE_ONRAMPER_ENABLED ? (
+          <WidgetContainer
+            onClick={handleGetStarted}
+            showWelcome={showWelcomeWrapper}
+            isActive={_starterVariant === TabsMap.Buy.value}
+            sx={{ width: '392px' }}
+          >
+            <div className="onramper-wrapper">
+              <OnRamper />
+            </div>
+          </WidgetContainer>
+        ) : null}
+        <WidgetEvents />
+      </>
     </WelcomeWrapper>
   );
 }

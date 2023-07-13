@@ -20,13 +20,11 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const [
     openNavbarWalletSelectMenu,
     onOpenNavbarWalletSelectMenu,
-    onOpenNavbarSubMenu,
     openNavbarSubMenu,
   ] = useMenuStore(
     (state) => [
       state.openNavbarWalletSelectMenu,
       state.onOpenNavbarWalletSelectMenu,
-      state.onOpenNavbarSubMenu,
       state.openNavbarSubMenu,
     ],
     shallow,
@@ -47,12 +45,11 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
             key={`${el.label}-${index}`}
             label={el.label}
             triggerSubMenu={MenuKeys.WalletSelect}
-            showButton={el.showButton}
+            showButton={el.showButton || false}
             showMoreIcon={el.showMoreIcon}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={open || openNavbarWalletSelectMenu}
-            setOpenSubMenu={onOpenNavbarSubMenu}
           />
         ))
       ) : (

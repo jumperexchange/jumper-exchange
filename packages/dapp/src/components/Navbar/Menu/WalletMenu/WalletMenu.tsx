@@ -1,4 +1,4 @@
-import { getChainById } from '@lifi/sdk';
+import getChainById from '@lifi/sdk';
 import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -56,7 +56,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       return usedWallet.icon;
     } else {
       const walletKey: any = Object.keys(walletSource).filter(
-        (el) => walletSource[el].name === localStorage.activeWalletName,
+        (el: string, index: number) => walletSource[index].name === localStorage.activeWalletName,
       );
       return walletSource[walletKey]?.icon || '';
     }
@@ -95,7 +95,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   };
 
   const handleCopyButton = () => {
-    navigator?.clipboard?.writeText(account.address);
+    account.address && navigator?.clipboard?.writeText(account.address);
     setCopiedToClipboard(true);
     trackEvent({
       category: 'menu',

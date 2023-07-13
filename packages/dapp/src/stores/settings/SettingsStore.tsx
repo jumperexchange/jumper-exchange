@@ -21,14 +21,14 @@ import { LanguageKey } from '../../types';
 
 export const useSettingsStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...defaultSettings,
-      setValue: (key, value) =>
+      setValue: (key: keyof SettingsProps, value: any) =>
         set(() => ({
           [key]: value,
         })),
-      setValues: (values) =>
-        set((state) => {
+      setValues: (values: { [x: string]: any }) =>
+        set((state: SettingsProps) => {
           const updatedState: SettingsProps = { ...state };
           for (const key in values) {
             if (Object.hasOwn(state, key)) {

@@ -8,8 +8,15 @@
     "declarationDir": "dist/types"
   },
   "paths": {
-    "@transferto/dapp": ["../dapp/src"],
-    "@transferto/dapp/*": ["../dapp/src/*"]
+    "@transferto/dapp": [
+      "../dapp/src"
+    ],
+    "@transferto/dapp/*": [
+      "../dapp/src/*"
+    ]
   },
-  "include": ["src/**/*", "../dapp/src/types/i18n.types.ts"]
+  "include": [
+    "src/**/*",
+    "../dapp/src/types/i18n.types.ts"
+  ]
 }

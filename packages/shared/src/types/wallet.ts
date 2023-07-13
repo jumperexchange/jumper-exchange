@@ -1,4 +1,4 @@
-import type { Token } from '@lifi/sdk';
+import type { Token } from '@lifi/types';
 import type { Signer } from 'ethers';
 import type events from 'events';
 

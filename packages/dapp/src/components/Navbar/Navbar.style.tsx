@@ -274,7 +274,7 @@ export const MenuItem = styled(MUIMenuItem, {
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
   margin: theme.spacing(0, 3),
-  marginTop: showButton && theme.spacing(2),
+  marginTop: showButton ? theme.spacing(2) : 0,
   borderRadius: '12px',
 
   '&:hover': {

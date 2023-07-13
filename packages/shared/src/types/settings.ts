@@ -12,6 +12,7 @@ export interface SettingsProps {
   activeWalletName: WalletConnected;
   activeTab: number;
   welcomeScreenEntered: boolean;
+  [key: string]: any;
 }
 export interface SettingsState extends SettingsProps {
   // Wallet

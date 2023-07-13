@@ -21,12 +21,11 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const chains = useChainsContent();
   const theme = useTheme();
   const { account } = useWallet();
-  const [openNavbarChainsMenu, onOpenNavbarChainsMenu, onOpenNavbarSubMenu] =
+  const [openNavbarChainsMenu, onOpenNavbarChainsMenu] =
     useMenuStore(
       (state) => [
         state.openNavbarChainsMenu,
         state.onOpenNavbarChainsMenu,
-        state.onOpenNavbarSubMenu,
       ],
       shallow,
     );
@@ -44,13 +43,12 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
-            showButton={el.showButton}
+            showButton={el.showButton ? el.showButton : false}
             showMoreIcon={false}
-            suffixIcon={el.chainId === account.chainId && <CheckIcon />}
+            suffixIcon={(el.chainId && el.chainId === account.chainId) && <CheckIcon /> || undefined}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={openNavbarChainsMenu}
-            setOpenSubMenu={onOpenNavbarSubMenu}
           />
         ))
       ) : (

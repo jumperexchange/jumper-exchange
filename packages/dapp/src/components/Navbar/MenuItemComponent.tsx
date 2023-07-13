@@ -2,15 +2,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
-import { Dispatch, SetStateAction } from 'react';
 import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks';
+import { useMenuStore } from '../../stores';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
   showButton: boolean;
   autoFocus?: boolean;
-  setOpenSubMenu: Dispatch<SetStateAction<string>>;
   showMoreIcon?: boolean;
   label: string;
   onClick: any;
@@ -21,8 +20,7 @@ interface MenuItemProps {
 }
 
 const MenuItemComponent = ({
-  open,
-  setOpenSubMenu,
+  open,  
   showButton,
   autoFocus,
   showMoreIcon = true,
@@ -34,14 +32,20 @@ const MenuItemComponent = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
+  const [onOpenNavbarSubMenu] =
+  useMenuStore(
+    (state) => [
+      state.onOpenNavbarSubMenu,
+    ],
+  );
 
   return open ? (
     <MenuItem
       disableRipple={showButton}
-      showButton={showButton}
+      showButton={showButton || false}
       autoFocus={autoFocus}
       onClick={() => {
-        !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
+        !!triggerSubMenu && onOpenNavbarSubMenu(triggerSubMenu);
         !!triggerSubMenu &&
           trackEvent({
             category: TrackingCategories.Menu,

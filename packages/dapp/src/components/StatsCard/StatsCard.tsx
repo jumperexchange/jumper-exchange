@@ -1,4 +1,5 @@
 import { Box, Typography, useTheme } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchDexsAndBridges } from '../../hooks';
 import { useCountUpAnimation } from '../../hooks/useCountUpAnimation';
@@ -51,8 +52,13 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
   );
 };
 
-const sortByName = (data) => {
-  return data?.sort(function (a, b) {
+type DataItem = {
+  name: string;
+  // Other properties of the data item
+};
+
+const sortByName = (data: DataItem[]): DataItem[] => {
+  return data?.sort(function (a: DataItem, b: DataItem) {
     if (a.name < b.name) {
       return -1;
     }
@@ -63,6 +69,16 @@ const sortByName = (data) => {
   });
 };
 
+
+interface StatsCardsProps {
+  openChainsPopper: boolean;
+  setOpenChainsPopper: Dispatch<SetStateAction<boolean>>;
+  openBridgesPopper: boolean;
+  setOpenBridgesPopper: Dispatch<SetStateAction<boolean>>;
+  openDexsPopper: boolean;
+  setOpenDexsPopper: Dispatch<SetStateAction<boolean>>;
+}
+
 export const StatsCards = ({
   openChainsPopper,
   setOpenChainsPopper,
@@ -70,7 +86,7 @@ export const StatsCards = ({
   setOpenBridgesPopper,
   openDexsPopper,
   setOpenDexsPopper,
-}) => {
+}: StatsCardsProps) => {
   const { data } = useFetchDexsAndBridges();
   const { chains } = useChainInfos();
   const i18Path = 'navbar.statsCards.';
