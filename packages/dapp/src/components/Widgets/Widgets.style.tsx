@@ -14,7 +14,6 @@ export const WidgetContainer = styled(Box, {
   position: showWelcome ? 'relative' : 'inherit',
   zIndex: showWelcome && 1400,
   overflow: 'visible',
-  width: showWelcome ? '392px' : 'auto',
   margin: '0 auto 24px auto',
   maxHeight: showWelcome ? '50%' : 'auto',
   minHeight: isActive && showWelcome && '50%',
