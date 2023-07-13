@@ -20,7 +20,7 @@ export const getFeatureCardById = gql`
 
 export const getFeatureCards = gql`
   query {
-    featureCardCollection {
+    featureCardCollection(order: sys_firstPublishedAt_ASC) {
       items {
         title
         subtitle
