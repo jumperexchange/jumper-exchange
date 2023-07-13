@@ -1,3 +1,4 @@
+import type { ChainId } from '@lifi/types';
 // ----------------------------------------------------------------------
 
 import type { LanguageKey } from '@transferto/dapp/src/types';
