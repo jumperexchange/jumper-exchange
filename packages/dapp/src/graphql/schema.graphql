@@ -8,6 +8,15 @@ type Query {
     where: AssetFilter
     order: [AssetOrder]
   ): AssetCollection
+  article(id: String!, preview: Boolean, locale: String): Article
+  articleCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+    where: ArticleFilter
+    order: [ArticleOrder]
+  ): ArticleCollection
   featureCard(id: String!, preview: Boolean, locale: String): FeatureCard
   featureCardCollection(
     skip: Int = 0
@@ -26,15 +35,6 @@ type Query {
     where: AuthorFilter
     order: [AuthorOrder]
   ): AuthorCollection
-  article(id: String!, preview: Boolean, locale: String): Article
-  articleCollection(
-    skip: Int = 0
-    limit: Int = 100
-    preview: Boolean
-    locale: String
-    where: ArticleFilter
-    order: [ArticleOrder]
-  ): ArticleCollection
   pageSection(id: String!, preview: Boolean, locale: String): PageSection
   pageSectionCollection(
     skip: Int = 0
@@ -256,24 +256,27 @@ type AssetLinkingCollections {
     preview: Boolean
     locale: String
   ): EntryCollection
+  articleCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+    order: [AssetLinkingCollectionsArticleCollectionOrder]
+  ): ArticleCollection
   featureCardCollection(
     skip: Int = 0
     limit: Int = 100
     preview: Boolean
     locale: String
+    order: [AssetLinkingCollectionsFeatureCardCollectionOrder]
   ): FeatureCardCollection
   authorCollection(
     skip: Int = 0
     limit: Int = 100
     preview: Boolean
     locale: String
+    order: [AssetLinkingCollectionsAuthorCollectionOrder]
   ): AuthorCollection
-  articleCollection(
-    skip: Int = 0
-    limit: Int = 100
-    preview: Boolean
-    locale: String
-  ): ArticleCollection
 }
 
 type EntryCollection {
@@ -286,94 +289,6 @@ type EntryCollection {
 interface Entry {
   sys: Sys!
   contentfulMetadata: ContentfulMetadata!
-}
-
-type FeatureCardCollection {
-  total: Int!
-  skip: Int!
-  limit: Int!
-  items: [FeatureCard]!
-}
-
-# Those FeatureCards being displayed on Jumper for news, updates and others which can also be used for campaigns. [See type definition](https://app.contentful.com/spaces/55dvf9f8kaqk/content_types/featureCard)
-type FeatureCard implements Entry {
-  sys: Sys!
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): FeatureCardLinkingCollections
-  title(locale: String): String
-  subtitle(locale: String): FeatureCardSubtitle
-  url(locale: String): String
-  gradientColor(locale: String): String
-  imageLightMode(preview: Boolean, locale: String): Asset
-  imageDarkMode(preview: Boolean, locale: String): Asset
-}
-
-type FeatureCardLinkingCollections {
-  entryCollection(
-    skip: Int = 0
-    limit: Int = 100
-    preview: Boolean
-    locale: String
-  ): EntryCollection
-}
-
-type FeatureCardSubtitle {
-  json: JSON!
-  links: FeatureCardSubtitleLinks!
-}
-
-# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-scalar JSON
-
-type FeatureCardSubtitleLinks {
-  entries: FeatureCardSubtitleEntries!
-  assets: FeatureCardSubtitleAssets!
-}
-
-type FeatureCardSubtitleEntries {
-  inline: [Entry]!
-  hyperlink: [Entry]!
-  block: [Entry]!
-}
-
-type FeatureCardSubtitleAssets {
-  hyperlink: [Asset]!
-  block: [Asset]!
-}
-
-type AuthorCollection {
-  total: Int!
-  skip: Int!
-  limit: Int!
-  items: [Author]!
-}
-
-# [See type definition](https://app.contentful.com/spaces/55dvf9f8kaqk/content_types/author)
-type Author implements Entry {
-  sys: Sys!
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): AuthorLinkingCollections
-  name(locale: String): String
-  bio(locale: String): String
-  profileImage(preview: Boolean, locale: String): Asset
-  twitter(locale: String): String
-  linkedin(locale: String): String
-  title(locale: String): String
-}
-
-type AuthorLinkingCollections {
-  entryCollection(
-    skip: Int = 0
-    limit: Int = 100
-    preview: Boolean
-    locale: String
-  ): EntryCollection
-  articleCollection(
-    skip: Int = 0
-    limit: Int = 100
-    preview: Boolean
-    locale: String
-  ): ArticleCollection
 }
 
 type ArticleCollection {
@@ -403,6 +318,8 @@ type Article implements Entry {
     limit: Int = 100
     preview: Boolean
     locale: String
+    where: PageSectionFilter
+    order: [ArticleSectionCollectionOrder]
   ): ArticleSectionCollection
   videoEmbedCollection(
     skip: Int = 0
@@ -410,7 +327,15 @@ type Article implements Entry {
     preview: Boolean
     locale: String
   ): ArticleVideoEmbedCollection
-  author(preview: Boolean, locale: String): Author
+  author(preview: Boolean, locale: String, where: AuthorFilter): Author
+  articleFaqCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+    where: FaqFilter
+    order: [ArticleArticleFaqCollectionOrder]
+  ): ArticleArticleFaqCollection
 }
 
 type ArticleLinkingCollections {
@@ -425,6 +350,7 @@ type ArticleLinkingCollections {
     limit: Int = 100
     preview: Boolean
     locale: String
+    order: [ArticleLinkingCollectionsPageSectionCollectionOrder]
   ): PageSectionCollection
 }
 
@@ -446,6 +372,8 @@ type PageSection implements Entry {
     limit: Int = 100
     preview: Boolean
     locale: String
+    where: ArticleFilter
+    order: [PageSectionArticlesCollectionOrder]
   ): PageSectionArticlesCollection
   iconName(locale: String): String
 }
@@ -462,13 +390,32 @@ type PageSectionLinkingCollections {
     limit: Int = 100
     preview: Boolean
     locale: String
+    order: [PageSectionLinkingCollectionsArticleCollectionOrder]
   ): ArticleCollection
   pageCollection(
     skip: Int = 0
     limit: Int = 100
     preview: Boolean
     locale: String
+    order: [PageSectionLinkingCollectionsPageCollectionOrder]
   ): PageCollection
+}
+
+enum PageSectionLinkingCollectionsArticleCollectionOrder {
+  title_ASC
+  title_DESC
+  subtitle_ASC
+  subtitle_DESC
+  slug_ASC
+  slug_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 type PageCollection {
@@ -489,6 +436,8 @@ type Page implements Entry {
     limit: Int = 100
     preview: Boolean
     locale: String
+    where: PageSectionFilter
+    order: [PageSectionsCollectionOrder]
   ): PageSectionsCollection
 }
 
@@ -508,11 +457,299 @@ type PageSectionsCollection {
   items: [PageSection]!
 }
 
+input PageSectionFilter {
+  articles: cfArticleNestedFilter
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  title_exists: Boolean
+  title: String
+  title_not: String
+  title_in: [String]
+  title_not_in: [String]
+  title_contains: String
+  title_not_contains: String
+  articlesCollection_exists: Boolean
+  iconName_exists: Boolean
+  iconName: String
+  iconName_not: String
+  iconName_in: [String]
+  iconName_not_in: [String]
+  iconName_contains: String
+  iconName_not_contains: String
+  OR: [PageSectionFilter]
+  AND: [PageSectionFilter]
+}
+
+input cfArticleNestedFilter {
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  title_exists: Boolean
+  title: String
+  title_not: String
+  title_in: [String]
+  title_not_in: [String]
+  title_contains: String
+  title_not_contains: String
+  subtitle_exists: Boolean
+  subtitle: String
+  subtitle_not: String
+  subtitle_in: [String]
+  subtitle_not_in: [String]
+  subtitle_contains: String
+  subtitle_not_contains: String
+  mediaCollection_exists: Boolean
+  content_exists: Boolean
+  content_contains: String
+  content_not_contains: String
+  slug_exists: Boolean
+  slug: String
+  slug_not: String
+  slug_in: [String]
+  slug_not_in: [String]
+  slug_contains: String
+  slug_not_contains: String
+  sectionCollection_exists: Boolean
+  videoEmbedCollection_exists: Boolean
+  author_exists: Boolean
+  articleFaqCollection_exists: Boolean
+  OR: [cfArticleNestedFilter]
+  AND: [cfArticleNestedFilter]
+}
+
+input SysFilter {
+  id_exists: Boolean
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  publishedAt_exists: Boolean
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime]
+  publishedAt_not_in: [DateTime]
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  firstPublishedAt_exists: Boolean
+  firstPublishedAt: DateTime
+  firstPublishedAt_not: DateTime
+  firstPublishedAt_in: [DateTime]
+  firstPublishedAt_not_in: [DateTime]
+  firstPublishedAt_gt: DateTime
+  firstPublishedAt_gte: DateTime
+  firstPublishedAt_lt: DateTime
+  firstPublishedAt_lte: DateTime
+  publishedVersion_exists: Boolean
+  publishedVersion: Float
+  publishedVersion_not: Float
+  publishedVersion_in: [Float]
+  publishedVersion_not_in: [Float]
+  publishedVersion_gt: Float
+  publishedVersion_gte: Float
+  publishedVersion_lt: Float
+  publishedVersion_lte: Float
+}
+
+input ContentfulMetadataFilter {
+  tags_exists: Boolean
+  tags: ContentfulMetadataTagsFilter
+}
+
+input ContentfulMetadataTagsFilter {
+  id_contains_all: [String]
+  id_contains_some: [String]
+  id_contains_none: [String]
+}
+
+enum PageSectionsCollectionOrder {
+  title_ASC
+  title_DESC
+  iconName_ASC
+  iconName_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum PageSectionLinkingCollectionsPageCollectionOrder {
+  title_ASC
+  title_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
 type PageSectionArticlesCollection {
   total: Int!
   skip: Int!
   limit: Int!
   items: [Article]!
+}
+
+input ArticleFilter {
+  section: cfPageSectionNestedFilter
+  author: cfAuthorNestedFilter
+  articleFaq: cfFaqNestedFilter
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  title_exists: Boolean
+  title: String
+  title_not: String
+  title_in: [String]
+  title_not_in: [String]
+  title_contains: String
+  title_not_contains: String
+  subtitle_exists: Boolean
+  subtitle: String
+  subtitle_not: String
+  subtitle_in: [String]
+  subtitle_not_in: [String]
+  subtitle_contains: String
+  subtitle_not_contains: String
+  mediaCollection_exists: Boolean
+  content_exists: Boolean
+  content_contains: String
+  content_not_contains: String
+  slug_exists: Boolean
+  slug: String
+  slug_not: String
+  slug_in: [String]
+  slug_not_in: [String]
+  slug_contains: String
+  slug_not_contains: String
+  sectionCollection_exists: Boolean
+  videoEmbedCollection_exists: Boolean
+  author_exists: Boolean
+  articleFaqCollection_exists: Boolean
+  OR: [ArticleFilter]
+  AND: [ArticleFilter]
+}
+
+input cfPageSectionNestedFilter {
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  title_exists: Boolean
+  title: String
+  title_not: String
+  title_in: [String]
+  title_not_in: [String]
+  title_contains: String
+  title_not_contains: String
+  articlesCollection_exists: Boolean
+  iconName_exists: Boolean
+  iconName: String
+  iconName_not: String
+  iconName_in: [String]
+  iconName_not_in: [String]
+  iconName_contains: String
+  iconName_not_contains: String
+  OR: [cfPageSectionNestedFilter]
+  AND: [cfPageSectionNestedFilter]
+}
+
+input cfAuthorNestedFilter {
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  name_exists: Boolean
+  name: String
+  name_not: String
+  name_in: [String]
+  name_not_in: [String]
+  name_contains: String
+  name_not_contains: String
+  bio_exists: Boolean
+  bio: String
+  bio_not: String
+  bio_in: [String]
+  bio_not_in: [String]
+  bio_contains: String
+  bio_not_contains: String
+  profileImage_exists: Boolean
+  twitter_exists: Boolean
+  twitter: String
+  twitter_not: String
+  twitter_in: [String]
+  twitter_not_in: [String]
+  twitter_contains: String
+  twitter_not_contains: String
+  linkedin_exists: Boolean
+  linkedin: String
+  linkedin_not: String
+  linkedin_in: [String]
+  linkedin_not_in: [String]
+  linkedin_contains: String
+  linkedin_not_contains: String
+  title_exists: Boolean
+  title: String
+  title_not: String
+  title_in: [String]
+  title_not_in: [String]
+  title_contains: String
+  title_not_contains: String
+  OR: [cfAuthorNestedFilter]
+  AND: [cfAuthorNestedFilter]
+}
+
+input cfFaqNestedFilter {
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  question_exists: Boolean
+  question: String
+  question_not: String
+  question_in: [String]
+  question_not_in: [String]
+  question_contains: String
+  question_not_contains: String
+  answer_exists: Boolean
+  answer_contains: String
+  answer_not_contains: String
+  OR: [cfFaqNestedFilter]
+  AND: [cfFaqNestedFilter]
+}
+
+enum PageSectionArticlesCollectionOrder {
+  title_ASC
+  title_DESC
+  subtitle_ASC
+  subtitle_DESC
+  slug_ASC
+  slug_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum ArticleLinkingCollectionsPageSectionCollectionOrder {
+  title_ASC
+  title_DESC
+  iconName_ASC
+  iconName_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 type AssetCollection {
@@ -527,9 +764,13 @@ type ArticleContent {
   links: ArticleContentLinks!
 }
 
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
+
 type ArticleContentLinks {
   entries: ArticleContentEntries!
   assets: ArticleContentAssets!
+  resources: ArticleContentResources!
 }
 
 type ArticleContentEntries {
@@ -543,6 +784,20 @@ type ArticleContentAssets {
   block: [Asset]!
 }
 
+type ArticleContentResources {
+  block: [ResourceLink!]!
+}
+
+type ResourceLink {
+  sys: ResourceSys!
+}
+
+type ResourceSys {
+  type: String!
+  urn: String!
+  linkType: String!
+}
+
 type ArticleSectionCollection {
   total: Int!
   skip: Int!
@@ -550,11 +805,314 @@ type ArticleSectionCollection {
   items: [PageSection]!
 }
 
+enum ArticleSectionCollectionOrder {
+  title_ASC
+  title_DESC
+  iconName_ASC
+  iconName_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
 type ArticleVideoEmbedCollection {
   total: Int!
   skip: Int!
   limit: Int!
   items: [Entry]!
+}
+
+# [See type definition](https://app.contentful.com/spaces/55dvf9f8kaqk/content_types/author)
+type Author implements Entry {
+  sys: Sys!
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): AuthorLinkingCollections
+  name(locale: String): String
+  bio(locale: String): String
+  profileImage(preview: Boolean, locale: String): Asset
+  twitter(locale: String): String
+  linkedin(locale: String): String
+  title(locale: String): String
+}
+
+type AuthorLinkingCollections {
+  entryCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+  ): EntryCollection
+  articleCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+    order: [AuthorLinkingCollectionsArticleCollectionOrder]
+  ): ArticleCollection
+}
+
+enum AuthorLinkingCollectionsArticleCollectionOrder {
+  title_ASC
+  title_DESC
+  subtitle_ASC
+  subtitle_DESC
+  slug_ASC
+  slug_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+input AuthorFilter {
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  name_exists: Boolean
+  name: String
+  name_not: String
+  name_in: [String]
+  name_not_in: [String]
+  name_contains: String
+  name_not_contains: String
+  bio_exists: Boolean
+  bio: String
+  bio_not: String
+  bio_in: [String]
+  bio_not_in: [String]
+  bio_contains: String
+  bio_not_contains: String
+  profileImage_exists: Boolean
+  twitter_exists: Boolean
+  twitter: String
+  twitter_not: String
+  twitter_in: [String]
+  twitter_not_in: [String]
+  twitter_contains: String
+  twitter_not_contains: String
+  linkedin_exists: Boolean
+  linkedin: String
+  linkedin_not: String
+  linkedin_in: [String]
+  linkedin_not_in: [String]
+  linkedin_contains: String
+  linkedin_not_contains: String
+  title_exists: Boolean
+  title: String
+  title_not: String
+  title_in: [String]
+  title_not_in: [String]
+  title_contains: String
+  title_not_contains: String
+  OR: [AuthorFilter]
+  AND: [AuthorFilter]
+}
+
+type ArticleArticleFaqCollection {
+  total: Int!
+  skip: Int!
+  limit: Int!
+  items: [Faq]!
+}
+
+# FAQ Item [See type definition](https://app.contentful.com/spaces/55dvf9f8kaqk/content_types/faq)
+type Faq implements Entry {
+  sys: Sys!
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): FaqLinkingCollections
+  question(locale: String): String
+  answer(locale: String): FaqAnswer
+}
+
+type FaqLinkingCollections {
+  entryCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+  ): EntryCollection
+  articleCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+    order: [FaqLinkingCollectionsArticleCollectionOrder]
+  ): ArticleCollection
+}
+
+enum FaqLinkingCollectionsArticleCollectionOrder {
+  title_ASC
+  title_DESC
+  subtitle_ASC
+  subtitle_DESC
+  slug_ASC
+  slug_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type FaqAnswer {
+  json: JSON!
+  links: FaqAnswerLinks!
+}
+
+type FaqAnswerLinks {
+  entries: FaqAnswerEntries!
+  assets: FaqAnswerAssets!
+  resources: FaqAnswerResources!
+}
+
+type FaqAnswerEntries {
+  inline: [Entry]!
+  hyperlink: [Entry]!
+  block: [Entry]!
+}
+
+type FaqAnswerAssets {
+  hyperlink: [Asset]!
+  block: [Asset]!
+}
+
+type FaqAnswerResources {
+  block: [ResourceLink!]!
+}
+
+input FaqFilter {
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  question_exists: Boolean
+  question: String
+  question_not: String
+  question_in: [String]
+  question_not_in: [String]
+  question_contains: String
+  question_not_contains: String
+  answer_exists: Boolean
+  answer_contains: String
+  answer_not_contains: String
+  OR: [FaqFilter]
+  AND: [FaqFilter]
+}
+
+enum ArticleArticleFaqCollectionOrder {
+  question_ASC
+  question_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum AssetLinkingCollectionsArticleCollectionOrder {
+  title_ASC
+  title_DESC
+  subtitle_ASC
+  subtitle_DESC
+  slug_ASC
+  slug_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type FeatureCardCollection {
+  total: Int!
+  skip: Int!
+  limit: Int!
+  items: [FeatureCard]!
+}
+
+# Those FeatureCards being displayed on Jumper for news, updates and others which can also be used for campaigns. [See type definition](https://app.contentful.com/spaces/55dvf9f8kaqk/content_types/featureCard)
+type FeatureCard implements Entry {
+  sys: Sys!
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): FeatureCardLinkingCollections
+  title(locale: String): String
+  subtitle(locale: String): String
+  url(locale: String): String
+  gradientColor(locale: String): String
+  imageLightMode(preview: Boolean, locale: String): Asset
+  imageDarkMode(preview: Boolean, locale: String): Asset
+  displayConditions(locale: String): JSON
+}
+
+type FeatureCardLinkingCollections {
+  entryCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+  ): EntryCollection
+}
+
+enum AssetLinkingCollectionsFeatureCardCollectionOrder {
+  title_ASC
+  title_DESC
+  subtitle_ASC
+  subtitle_DESC
+  url_ASC
+  url_DESC
+  gradientColor_ASC
+  gradientColor_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type AuthorCollection {
+  total: Int!
+  skip: Int!
+  limit: Int!
+  items: [Author]!
+}
+
+enum AssetLinkingCollectionsAuthorCollectionOrder {
+  name_ASC
+  name_DESC
+  bio_ASC
+  bio_DESC
+  twitter_ASC
+  twitter_DESC
+  linkedin_ASC
+  linkedin_DESC
+  title_ASC
+  title_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
 }
 
 input AssetFilter {
@@ -626,54 +1184,6 @@ input AssetFilter {
   AND: [AssetFilter]
 }
 
-input SysFilter {
-  id_exists: Boolean
-  id: String
-  id_not: String
-  id_in: [String]
-  id_not_in: [String]
-  id_contains: String
-  id_not_contains: String
-  publishedAt_exists: Boolean
-  publishedAt: DateTime
-  publishedAt_not: DateTime
-  publishedAt_in: [DateTime]
-  publishedAt_not_in: [DateTime]
-  publishedAt_gt: DateTime
-  publishedAt_gte: DateTime
-  publishedAt_lt: DateTime
-  publishedAt_lte: DateTime
-  firstPublishedAt_exists: Boolean
-  firstPublishedAt: DateTime
-  firstPublishedAt_not: DateTime
-  firstPublishedAt_in: [DateTime]
-  firstPublishedAt_not_in: [DateTime]
-  firstPublishedAt_gt: DateTime
-  firstPublishedAt_gte: DateTime
-  firstPublishedAt_lt: DateTime
-  firstPublishedAt_lte: DateTime
-  publishedVersion_exists: Boolean
-  publishedVersion: Float
-  publishedVersion_not: Float
-  publishedVersion_in: [Float]
-  publishedVersion_not_in: [Float]
-  publishedVersion_gt: Float
-  publishedVersion_gte: Float
-  publishedVersion_lt: Float
-  publishedVersion_lte: Float
-}
-
-input ContentfulMetadataFilter {
-  tags_exists: Boolean
-  tags: ContentfulMetadataTagsFilter
-}
-
-input ContentfulMetadataTagsFilter {
-  id_contains_all: [String]
-  id_contains_some: [String]
-  id_contains_none: [String]
-}
-
 enum AssetOrder {
   url_ASC
   url_DESC
@@ -697,6 +1207,23 @@ enum AssetOrder {
   sys_publishedVersion_DESC
 }
 
+enum ArticleOrder {
+  title_ASC
+  title_DESC
+  subtitle_ASC
+  subtitle_DESC
+  slug_ASC
+  slug_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
 input FeatureCardFilter {
   sys: SysFilter
   contentfulMetadata: ContentfulMetadataFilter
@@ -708,6 +1235,10 @@ input FeatureCardFilter {
   title_contains: String
   title_not_contains: String
   subtitle_exists: Boolean
+  subtitle: String
+  subtitle_not: String
+  subtitle_in: [String]
+  subtitle_not_in: [String]
   subtitle_contains: String
   subtitle_not_contains: String
   url_exists: Boolean
@@ -726,6 +1257,7 @@ input FeatureCardFilter {
   gradientColor_not_contains: String
   imageLightMode_exists: Boolean
   imageDarkMode_exists: Boolean
+  displayConditions_exists: Boolean
   OR: [FeatureCardFilter]
   AND: [FeatureCardFilter]
 }
@@ -733,6 +1265,8 @@ input FeatureCardFilter {
 enum FeatureCardOrder {
   title_ASC
   title_DESC
+  subtitle_ASC
+  subtitle_DESC
   url_ASC
   url_DESC
   gradientColor_ASC
@@ -745,49 +1279,6 @@ enum FeatureCardOrder {
   sys_firstPublishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
-}
-
-input AuthorFilter {
-  sys: SysFilter
-  contentfulMetadata: ContentfulMetadataFilter
-  name_exists: Boolean
-  name: String
-  name_not: String
-  name_in: [String]
-  name_not_in: [String]
-  name_contains: String
-  name_not_contains: String
-  bio_exists: Boolean
-  bio: String
-  bio_not: String
-  bio_in: [String]
-  bio_not_in: [String]
-  bio_contains: String
-  bio_not_contains: String
-  profileImage_exists: Boolean
-  twitter_exists: Boolean
-  twitter: String
-  twitter_not: String
-  twitter_in: [String]
-  twitter_not_in: [String]
-  twitter_contains: String
-  twitter_not_contains: String
-  linkedin_exists: Boolean
-  linkedin: String
-  linkedin_not: String
-  linkedin_in: [String]
-  linkedin_not_in: [String]
-  linkedin_contains: String
-  linkedin_not_contains: String
-  title_exists: Boolean
-  title: String
-  title_not: String
-  title_in: [String]
-  title_not_in: [String]
-  title_contains: String
-  title_not_contains: String
-  OR: [AuthorFilter]
-  AND: [AuthorFilter]
 }
 
 enum AuthorOrder {
@@ -809,183 +1300,6 @@ enum AuthorOrder {
   sys_firstPublishedAt_DESC
   sys_publishedVersion_ASC
   sys_publishedVersion_DESC
-}
-
-input ArticleFilter {
-  section: cfPageSectionNestedFilter
-  author: cfAuthorNestedFilter
-  sys: SysFilter
-  contentfulMetadata: ContentfulMetadataFilter
-  title_exists: Boolean
-  title: String
-  title_not: String
-  title_in: [String]
-  title_not_in: [String]
-  title_contains: String
-  title_not_contains: String
-  subtitle_exists: Boolean
-  subtitle: String
-  subtitle_not: String
-  subtitle_in: [String]
-  subtitle_not_in: [String]
-  subtitle_contains: String
-  subtitle_not_contains: String
-  mediaCollection_exists: Boolean
-  content_exists: Boolean
-  content_contains: String
-  content_not_contains: String
-  slug_exists: Boolean
-  slug: String
-  slug_not: String
-  slug_in: [String]
-  slug_not_in: [String]
-  slug_contains: String
-  slug_not_contains: String
-  sectionCollection_exists: Boolean
-  videoEmbedCollection_exists: Boolean
-  author_exists: Boolean
-  OR: [ArticleFilter]
-  AND: [ArticleFilter]
-}
-
-input cfPageSectionNestedFilter {
-  sys: SysFilter
-  contentfulMetadata: ContentfulMetadataFilter
-  title_exists: Boolean
-  title: String
-  title_not: String
-  title_in: [String]
-  title_not_in: [String]
-  title_contains: String
-  title_not_contains: String
-  articlesCollection_exists: Boolean
-  iconName_exists: Boolean
-  iconName: String
-  iconName_not: String
-  iconName_in: [String]
-  iconName_not_in: [String]
-  iconName_contains: String
-  iconName_not_contains: String
-  OR: [cfPageSectionNestedFilter]
-  AND: [cfPageSectionNestedFilter]
-}
-
-input cfAuthorNestedFilter {
-  sys: SysFilter
-  contentfulMetadata: ContentfulMetadataFilter
-  name_exists: Boolean
-  name: String
-  name_not: String
-  name_in: [String]
-  name_not_in: [String]
-  name_contains: String
-  name_not_contains: String
-  bio_exists: Boolean
-  bio: String
-  bio_not: String
-  bio_in: [String]
-  bio_not_in: [String]
-  bio_contains: String
-  bio_not_contains: String
-  profileImage_exists: Boolean
-  twitter_exists: Boolean
-  twitter: String
-  twitter_not: String
-  twitter_in: [String]
-  twitter_not_in: [String]
-  twitter_contains: String
-  twitter_not_contains: String
-  linkedin_exists: Boolean
-  linkedin: String
-  linkedin_not: String
-  linkedin_in: [String]
-  linkedin_not_in: [String]
-  linkedin_contains: String
-  linkedin_not_contains: String
-  title_exists: Boolean
-  title: String
-  title_not: String
-  title_in: [String]
-  title_not_in: [String]
-  title_contains: String
-  title_not_contains: String
-  OR: [cfAuthorNestedFilter]
-  AND: [cfAuthorNestedFilter]
-}
-
-enum ArticleOrder {
-  title_ASC
-  title_DESC
-  subtitle_ASC
-  subtitle_DESC
-  slug_ASC
-  slug_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-input PageSectionFilter {
-  articles: cfArticleNestedFilter
-  sys: SysFilter
-  contentfulMetadata: ContentfulMetadataFilter
-  title_exists: Boolean
-  title: String
-  title_not: String
-  title_in: [String]
-  title_not_in: [String]
-  title_contains: String
-  title_not_contains: String
-  articlesCollection_exists: Boolean
-  iconName_exists: Boolean
-  iconName: String
-  iconName_not: String
-  iconName_in: [String]
-  iconName_not_in: [String]
-  iconName_contains: String
-  iconName_not_contains: String
-  OR: [PageSectionFilter]
-  AND: [PageSectionFilter]
-}
-
-input cfArticleNestedFilter {
-  sys: SysFilter
-  contentfulMetadata: ContentfulMetadataFilter
-  title_exists: Boolean
-  title: String
-  title_not: String
-  title_in: [String]
-  title_not_in: [String]
-  title_contains: String
-  title_not_contains: String
-  subtitle_exists: Boolean
-  subtitle: String
-  subtitle_not: String
-  subtitle_in: [String]
-  subtitle_not_in: [String]
-  subtitle_contains: String
-  subtitle_not_contains: String
-  mediaCollection_exists: Boolean
-  content_exists: Boolean
-  content_contains: String
-  content_not_contains: String
-  slug_exists: Boolean
-  slug: String
-  slug_not: String
-  slug_in: [String]
-  slug_not_in: [String]
-  slug_contains: String
-  slug_not_contains: String
-  sectionCollection_exists: Boolean
-  videoEmbedCollection_exists: Boolean
-  author_exists: Boolean
-  OR: [cfArticleNestedFilter]
-  AND: [cfArticleNestedFilter]
 }
 
 enum PageSectionOrder {
@@ -1032,6 +1346,7 @@ type JobsContent {
 type JobsContentLinks {
   entries: JobsContentEntries!
   assets: JobsContentAssets!
+  resources: JobsContentResources!
 }
 
 type JobsContentEntries {
@@ -1043,6 +1358,10 @@ type JobsContentEntries {
 type JobsContentAssets {
   hyperlink: [Asset]!
   block: [Asset]!
+}
+
+type JobsContentResources {
+  block: [ResourceLink!]!
 }
 
 type JobsCollection {
@@ -1136,6 +1455,7 @@ type TermsOfUseContent {
 type TermsOfUseContentLinks {
   entries: TermsOfUseContentEntries!
   assets: TermsOfUseContentAssets!
+  resources: TermsOfUseContentResources!
 }
 
 type TermsOfUseContentEntries {
@@ -1147,6 +1467,10 @@ type TermsOfUseContentEntries {
 type TermsOfUseContentAssets {
   hyperlink: [Asset]!
   block: [Asset]!
+}
+
+type TermsOfUseContentResources {
+  block: [ResourceLink!]!
 }
 
 type TermsOfUseCollection {
@@ -1224,67 +1548,11 @@ enum PageOrder {
   sys_publishedVersion_DESC
 }
 
-# FAQ Item [See type definition](https://app.contentful.com/spaces/55dvf9f8kaqk/content_types/faq)
-type Faq implements Entry {
-  sys: Sys!
-  contentfulMetadata: ContentfulMetadata!
-  linkedFrom(allowedLocales: [String]): FaqLinkingCollections
-  question(locale: String): String
-  answer(locale: String): FaqAnswer
-}
-
-type FaqLinkingCollections {
-  entryCollection(
-    skip: Int = 0
-    limit: Int = 100
-    preview: Boolean
-    locale: String
-  ): EntryCollection
-}
-
-type FaqAnswer {
-  json: JSON!
-  links: FaqAnswerLinks!
-}
-
-type FaqAnswerLinks {
-  entries: FaqAnswerEntries!
-  assets: FaqAnswerAssets!
-}
-
-type FaqAnswerEntries {
-  inline: [Entry]!
-  hyperlink: [Entry]!
-  block: [Entry]!
-}
-
-type FaqAnswerAssets {
-  hyperlink: [Asset]!
-  block: [Asset]!
-}
-
 type FaqCollection {
   total: Int!
   skip: Int!
   limit: Int!
   items: [Faq]!
-}
-
-input FaqFilter {
-  sys: SysFilter
-  contentfulMetadata: ContentfulMetadataFilter
-  question_exists: Boolean
-  question: String
-  question_not: String
-  question_in: [String]
-  question_not_in: [String]
-  question_contains: String
-  question_not_contains: String
-  answer_exists: Boolean
-  answer_contains: String
-  answer_not_contains: String
-  OR: [FaqFilter]
-  AND: [FaqFilter]
 }
 
 enum FaqOrder {
