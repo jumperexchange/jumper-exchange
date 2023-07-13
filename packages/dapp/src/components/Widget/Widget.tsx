@@ -12,12 +12,10 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
-import { useUserTracking } from '../../hooks';
+import { useUserTracking } from '../../hooks/';
 import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore, useMultisigStore } from '../../stores';
+import { useMenuStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
-import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
-import { useMultisig } from '../../hooks/useMultisig';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -41,9 +39,6 @@ export function Widget({ starterVariant }) {
   const onOpenNavbarWalletSelectMenu = useMenuStore(
     (state) => state.onOpenNavbarWalletSelectMenu,
   );
-  const destinationChain = useMultisigStore((state) => state.destinationChain);
-
-  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
@@ -55,8 +50,6 @@ export function Widget({ starterVariant }) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
-
-    const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
 
     return {
       variant: 'expandable' as WidgetVariant,
@@ -164,22 +157,18 @@ export function Widget({ starterVariant }) {
         },
       },
       keyPrefix: `jumper-${starterVariant}`,
-      ...multisigWidget,
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
         defaultRouteOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        multisigConfig: { ...multisigSdkConfig },
       },
       buildUrl: true,
       insurance: true,
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
-    destinationChain,
     account.signer,
     addChain,
     addToken,
@@ -199,7 +188,6 @@ export function Widget({ starterVariant }) {
 
   return (
     <Box className="widget-wrapper">
-      {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={widgetConfig}

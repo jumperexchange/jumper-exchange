@@ -20,7 +20,6 @@ import {
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
 import { useUserTracking } from '../hooks';
-import { useMultisig } from '../hooks/useMultisig';
 
 const liFiWalletManagement = new LiFiWalletManagement();
 
@@ -48,27 +47,10 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const [account, setAccount] = useState<WalletAccount>({});
   const [currentWallet, setCurrentWallet] = useState<Wallet | undefined>();
   const { trackConnectWallet } = useUserTracking();
-  const { checkMultisigEnvironment } = useMultisig();
-
-  const connectMultisigWallet = async () => {
-    const isMultisig = await checkMultisigEnvironment();
-
-    if (!isMultisig) {
-      return;
-    }
-
-    const multisigWallet = supportedWallets.find(
-      (wallet) => wallet.name === 'Safe',
-    );
-    if (multisigWallet) {
-      await liFiWalletManagement.connect(multisigWallet);
-    }
-  };
 
   // autoConnect
   useEffect(() => {
     const autoConnect = async () => {
-      await connectMultisigWallet();
       const persistedActiveWallets = readActiveWallets();
       const activeWallets = supportedWallets.filter((wallet) =>
         persistedActiveWallets.some(
