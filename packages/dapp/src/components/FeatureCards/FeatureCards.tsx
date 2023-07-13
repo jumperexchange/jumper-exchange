@@ -8,6 +8,7 @@ export const FeatureCards = () => {
   const { loading, error, data } = useQuery(getFeatureCards);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
+  console.log('hello world');
 
   return (
     isDesktop && (
