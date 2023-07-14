@@ -86,15 +86,14 @@ export const useSettingsStore = create(
     }),
     {
       name: 'jumper-store', // name of the item in the storage (must be unique)
-      version: 2,
-      migrate: (persistedState: any, version) => {
-        if (version === 0 && persistedState.activeTab) {
-          const oldStore = persistedState;
-          const newStore = delete oldStore['activeTab'];
-          return newStore;
-        }
+      version: 7,
+      migrate: (persistedState: SettingsProps, version) => {
+        const newStore = { ...persistedState };
+        Object.keys(defaultSettings)
+          .filter((el) => !(el in persistedState))
+          .forEach((el) => delete newStore[el]);
 
-        return persistedState as SettingsState;
+        return newStore;
       },
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
