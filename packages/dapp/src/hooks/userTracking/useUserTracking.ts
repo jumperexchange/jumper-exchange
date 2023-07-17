@@ -70,7 +70,9 @@ export function useUserTracking() {
         !!account.address &&
         !disableTrackingTool?.includes(EventTrackingTools.raleon)
       ) {
-        window?.raleon.walletConnected(account.address);
+        !disconnect
+          ? window?.raleon.walletConnected(account.address)
+          : window?.raleon.walletDisconnected();
       }
       if (
         !!account.address &&
