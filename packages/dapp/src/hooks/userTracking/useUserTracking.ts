@@ -132,8 +132,18 @@ export function useUserTracking() {
           ...data,
         });
       }
+      if (
+        !disableTrackingTool?.includes(EventTrackingTools.raleon) &&
+        account.isActive
+      ) {
+        window.raleon.registerEvent(
+          `${category}`,
+          account.address,
+          `${action}-${label}`,
+        );
+      }
     },
-    [arcx],
+    [account.address, account.isActive, arcx],
   );
 
   const trackPageload = useCallback(
@@ -177,8 +187,18 @@ export function useUserTracking() {
             ...data,
           });
       }
+      if (!disableTrackingTool?.includes(EventTrackingTools.raleon)) {
+        pageload &&
+          window.raleon.registerEvent(
+            'pageload',
+            account.address,
+            `${pageload ? 'external' : 'internal'}-${
+              destination ? destination : ''
+            }`,
+          );
+      }
     },
-    [arcx],
+    [account.address, arcx],
   );
 
   const trackTransaction = useCallback(
@@ -206,9 +226,9 @@ export function useUserTracking() {
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTools.arcx)) {
-        await arcx?.transaction({
-          chain, // required(string) - chain ID that the transaction is taking place on
-          transactionHash, // required(string) - hash of the transaction
+        arcx?.transaction({
+          chain,
+          transactionHash,
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });
       }
