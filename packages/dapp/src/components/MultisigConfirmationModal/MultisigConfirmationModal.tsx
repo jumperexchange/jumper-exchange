@@ -1,6 +1,6 @@
 import { Modal, Typography } from '@mui/material';
 
-import { ButtonPrimary } from '@transferto/shared';
+import { ButtonPrimary } from '@transferto/shared/src';
 import { useTranslation } from 'react-i18next';
 import {
   MultisigConfirmationModalContainer,

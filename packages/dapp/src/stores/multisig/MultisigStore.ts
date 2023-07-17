@@ -1,4 +1,4 @@
-import { MultisigProps, MultisigState } from '@transferto/shared';
+import { MultisigProps, MultisigState } from '@transferto/shared/src';
 import { create } from 'zustand';
 
 export const useMultisigStore = create<MultisigState>((set) => ({
