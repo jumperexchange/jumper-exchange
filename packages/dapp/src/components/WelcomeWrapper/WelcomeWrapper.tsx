@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
-
 interface WelcomeWrapperProps {
   children: JSX.Element;
   showWelcome: boolean;

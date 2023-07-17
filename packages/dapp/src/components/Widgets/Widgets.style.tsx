@@ -11,6 +11,7 @@ export const WidgetContainer = styled(Box, {
 })<WidgetContainerProps>(({ theme, isActive, showWelcome }) => ({
   display: isActive ? 'inherit' : 'none',
   placeContent: 'center',
+  width: showWelcome ? '392px' : 'auto',
   position: showWelcome ? 'relative' : 'inherit',
   zIndex: showWelcome ? 1400 : 'inherit',
   overflow: 'visible',
@@ -60,10 +61,14 @@ export const WidgetContainer = styled(Box, {
     },
 
   '& > .widget-wrapper > div, & > .onramper-wrapper': {
+    overflow: 'hidden',
     paddingTop: showWelcome ? theme.spacing(6) : theme.spacing(7),
     transitionProperty: showWelcome && 'padding-top',
     transitionDuration: showWelcome && '.3s',
     transitionTimingFunction: showWelcome && 'ease-in-out',
+    [`@media screen and (min-height: 600px)`]: {
+      overflow: 'visible',
+    },
   },
 
   '& > .widget-wrapper, & > .onramper-wrapper': {
@@ -74,15 +79,18 @@ export const WidgetContainer = styled(Box, {
     transitionProperty: 'margin-top, padding-top, transform',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    marginTop: showWelcome ? 'calc( 10% - 24px )' : '0',
+    marginTop: showWelcome ? '24px' : '0',
 
     [`@media screen and (min-height: 700px)`]: {
-      marginTop: showWelcome ? 'calc( 50vh - 90%)' : '0',
+      marginTop: showWelcome ? 'calc( 50vh - 680px / 2.75 - 80px)' : '0', // (mid viewheight - half-two/thirds widget height - header height )
     },
   },
 
   '& > .onramper-wrapper': {
     overflow: showWelcome ? 'hidden' : 'visible',
+    [`@media screen and (min-height: 900px)`]: {
+      overflow: 'visible',
+    },
   },
 
   '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
