@@ -23,7 +23,6 @@ export function Widgets() {
       ],
       shallow,
     );
-  const [showWelcome, setShowWelcome] = useState(true);
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
@@ -74,12 +73,9 @@ export function Widgets() {
       return;
     } else {
       event.stopPropagation();
-      setShowWelcome(false);
       onWelcomeScreenEntered(true);
     }
   };
-
-  const showWelcomeWrapper = !welcomeScreenEntered && showWelcome;
 
   useLayoutEffect(() => {
     getActiveWidget();
@@ -87,7 +83,7 @@ export function Widgets() {
 
   return (
     <WelcomeWrapper
-      showWelcome={showWelcomeWrapper}
+      showWelcome={!welcomeScreenEntered}
       handleGetStarted={handleGetStarted}
     >
       {import.meta.env.MODE === 'testnet' && (
@@ -97,14 +93,14 @@ export function Widgets() {
       )}
       <WidgetContainer
         onClick={handleGetStarted}
-        showWelcome={showWelcomeWrapper}
+        showWelcome={!welcomeScreenEntered}
         isActive={_starterVariant === TabsMap.Exchange.value}
       >
         <Widget starterVariant={TabsMap.Exchange} />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleGetStarted}
-        showWelcome={showWelcomeWrapper}
+        showWelcome={!welcomeScreenEntered}
         isActive={_starterVariant === TabsMap.Refuel.value}
       >
         <Widget starterVariant={TabsMap.Refuel.value} />
@@ -112,7 +108,7 @@ export function Widgets() {
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleGetStarted}
-          showWelcome={showWelcomeWrapper}
+          showWelcome={!welcomeScreenEntered}
           isActive={_starterVariant === TabsMap.Buy.value}
           sx={{ width: '392px' }}
         >
