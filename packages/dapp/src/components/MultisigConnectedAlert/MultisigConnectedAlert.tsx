@@ -1,10 +1,10 @@
+import { Modal, Typography } from '@mui/material';
+import { ButtonPrimary, useTranslation } from '@transferto/shared/src';
 import {
   MultisigConnectedAlertContainer,
-  MultisigConnectedAlertIconContainer,
   MultisigConnectedAlertIcon,
+  MultisigConnectedAlertIconContainer,
 } from './MultisigConnectedAlert.style';
-import { Modal, Typography } from '@mui/material';
-import { ButtonPrimary, useTranslation } from '@transferto/shared';
 
 export const MultisigConnectedAlert: React.FC<{
   open: boolean;

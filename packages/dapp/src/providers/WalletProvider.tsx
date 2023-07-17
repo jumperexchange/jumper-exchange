@@ -1,4 +1,4 @@
-import { Token } from '@lifi/sdk';
+import { ChainId, Token } from '@lifi/sdk';
 import {
   LiFiWalletManagement,
   Wallet,
@@ -151,8 +151,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       account: account,
       disconnect: false,
       data: {
-        account: account.address,
-        chain: account.chainId,
+        account: account.address as string,
+        chain: account.chainId as ChainId,
       },
     });
   }, [

@@ -8,7 +8,7 @@ import { StatsModal } from '../StatsModal/StatsModal';
 import { Card, Container } from './StatsCard.style';
 
 interface StatsCardProps {
-  number: number;
+  number: string;
   title: string;
   handleClick: () => void;
 }
@@ -69,6 +69,14 @@ const sortByName = (data: DataItem[]): DataItem[] => {
   });
 };
 
+interface StatsDataProps {
+  title: string;
+  number: string;
+  data: DataItem[];
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  handleOnClick: () => void;
+}
 
 interface StatsCardsProps {
   openChainsPopper: boolean;
@@ -92,7 +100,7 @@ export const StatsCards = ({
   const i18Path = 'navbar.statsCards.';
   const { t: translate } = useTranslation();
 
-  const statsData = [
+  const statsData: StatsDataProps[] = [
     {
       title: translate(`${i18Path}chains`),
       number: chains.length || 22,

@@ -1,12 +1,16 @@
-import { WidgetConfig } from '@lifi/widget';
-import { useWallet } from '../providers/WalletProvider';
-import { BaseTransaction, ChainId, ChainKey, MultisigConfig } from '@lifi/sdk';
 import {
+  BaseTransaction,
+  ChainId,
+  ChainKey,
+  MultisigConfig,
+  Route,
+} from '@lifi/sdk';
+import { WidgetConfig } from '@lifi/widget';
+import SafeAppsSDK, {
   GatewayTransactionDetails,
   TransactionStatus,
 } from '@safe-global/safe-apps-sdk';
-import SafeAppsSDK from '@safe-global/safe-apps-sdk';
-import { Route } from '@lifi/sdk';
+import { useWallet } from '../providers/WalletProvider';
 import { useMultisigStore } from '../stores';
 
 export const useMultisig = () => {
@@ -34,10 +38,21 @@ export const useMultisig = () => {
   const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
     ?.safeAddress;
 
-  const handleMultiSigTransactionDetails = async (
+  type StatusType = 'DONE' | 'FAILED' | 'CANCELLED' | 'PENDING';
+  interface HandleMultiSigTransactionDetailsProps {
+    status: StatusType;
+    txHash: string;
+    updateIntermediateStatus?: () => void;
+  }
+
+  const handleMultiSigTransactionDetails: (
     txHash: string,
     chainId: number,
     updateIntermediateStatus: () => void,
+  ) => Promise<HandleMultiSigTransactionDetailsProps> = async (
+    txHash,
+    chainId,
+    updateIntermediateStatus,
   ) => {
     const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
@@ -146,7 +161,7 @@ export const useMultisig = () => {
         hash: safeTxHash,
       };
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   };
 
@@ -186,18 +201,21 @@ export const useMultisig = () => {
 
   const shouldOpenMultisigSignatureModal = (route: Route) => {
     const isRouteDone = route.steps.every(
-      (step) => step.execution?.status === 'DONE',
+      (step: { execution: { status: StatusType } }) =>
+        step.execution?.status === 'DONE',
     );
 
     const isRouteFailed = route.steps.some(
-      (step) => step.execution?.status === 'FAILED',
+      (step: { execution: { status: StatusType } }) =>
+        step.execution?.status === 'FAILED',
     );
 
-    const multisigRouteStarted = route.steps.some((step) =>
-      step.execution?.process.find(
-        (process) =>
-          !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
-      ),
+    const multisigRouteStarted = route.steps.some(
+      (step: { execution: { process: any[] } }) =>
+        step.execution?.process.find(
+          (process) =>
+            !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
+        ),
     );
 
     return !isRouteDone && !isRouteFailed && multisigRouteStarted;

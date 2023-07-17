@@ -1,17 +1,17 @@
-import { MultisigProps, MultisigState } from '@transferto/shared';
+import { MultisigState } from '@transferto/shared/src';
 import { create } from 'zustand';
 
 export const useMultisigStore = create<MultisigState>((set) => ({
   destinationChain: undefined,
-  setValue: (key, value) =>
+  setValue: (key: keyof MultisigState, value: any) =>
     set(() => ({
       [key]: value,
     })),
-  setValues: (values) =>
+  setValues: (values: { [x: string]: any }) =>
     set((state) => {
-      const updatedState: MultisigProps = { ...state };
+      const updatedState: { [key: string]: any } = { ...state };
       for (const key in values) {
-        if (Object.hasOwn(state, key)) {
+        if (Object.hasOwn(values, key)) {
           updatedState[key] = values[key];
         }
       }

@@ -2,20 +2,20 @@ import { Route } from '@lifi/sdk';
 import { useUserTracking } from '../../hooks';
 
 import {
+  ChainTokenSelected,
   RouteContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
   WidgetEvent,
   useWidgetEvents,
-  ChainTokenSelected,
 } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
+import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useMultisigStore } from '../../stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
-import { useMultisig } from '../../hooks/useMultisig';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -72,7 +72,7 @@ export function WidgetEvents() {
           lastTxHashRef.current = update.process.txHash;
           trackTransaction({
             chain: update.route.fromChainId,
-            transactionHash: update.process.txHash,
+            transactionHash: update.process.txHash || '',
             category: TrackingCategories.WidgetEvent,
             action: TrackingActions.OnRouteExecutionUpdated,
             data: {

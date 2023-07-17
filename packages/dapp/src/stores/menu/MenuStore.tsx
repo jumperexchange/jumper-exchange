@@ -1,4 +1,4 @@
-import { MenuProps, MenuState } from '@transferto/shared/src/types';
+import { MenuState } from '@transferto/shared/src/types';
 import { create } from 'zustand';
 import { MenuKeys } from '../../const';
 
@@ -22,17 +22,23 @@ export const defaultMenu: DefaultMenuType = {
   anchorRef: null,
 };
 
+type Enum = 'char' | 'num';
+type Store = {
+  value: Enum;
+  setValue: (newValue: Enum) => void;
+};
+
 export const useMenuStore = create<MenuState>((set, get) => ({
   ...defaultMenu,
-  setValue: (key, value) =>
+  setValue: (key: keyof MenuState, value: any) =>
     set(() => ({
       [key]: value,
     })),
-  setValues: (values) =>
+  setValues: (values: { [x: string]: any }) =>
     set((state) => {
-      const updatedState: MenuProps = { ...state };
+      const updatedState: { [key: string]: any } = { ...state };
       for (const key in values) {
-        if (Object.hasOwn(state, key)) {
+        if (Object.hasOwnProperty.call(values, key)) {
           updatedState[key] = values[key];
         }
       }

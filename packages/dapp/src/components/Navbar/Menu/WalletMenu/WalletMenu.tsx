@@ -1,4 +1,4 @@
-import getChainById from '@lifi/sdk';
+import { getChainById } from '@lifi/sdk';
 import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -56,7 +56,8 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       return usedWallet.icon;
     } else {
       const walletKey: any = Object.keys(walletSource).filter(
-        (el: string, index: number) => walletSource[index].name === localStorage.activeWalletName,
+        (el: string, index: number) =>
+          walletSource[index].name === localStorage.activeWalletName,
       );
       return walletSource[walletKey]?.icon || '';
     }
@@ -77,18 +78,21 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   };
 
   const handleExploreButton = () => {
-    openInNewTab(
-      `${getChainById(account.chainId).metamask.blockExplorerUrls[0]}address/${
-        account.address
-      }`,
-    );
+    account.chainId &&
+      openInNewTab(
+        `${
+          getChainById(account.chainId).metamask.blockExplorerUrls[0]
+        }address/${account.address}`,
+      );
     onCloseAllNavbarMenus();
     trackPageload({
       source: 'connected-menu',
       destination: 'blokchain-explorer',
-      url: `${
-        getChainById(account.chainId).metamask.blockExplorerUrls[0]
-      }address/${account.address}`,
+      url: !!account.chainId
+        ? `${
+            getChainById(account.chainId).metamask.blockExplorerUrls[0]
+          }address/${account.address}`
+        : '',
       pageload: true,
       disableTrackingTool: [EventTrackingTools.arcx],
     });

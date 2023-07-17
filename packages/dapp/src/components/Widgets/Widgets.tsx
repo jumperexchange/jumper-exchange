@@ -18,6 +18,8 @@ import { Widget } from '../Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
+export type StarterVariantType = 'buy' | WidgetSubvariant;
+
 export function Widgets() {
   const [activeTab, onChangeTab, welcomeScreenEntered, onWelcomeScreenEntered] =
     useSettingsStore(
@@ -36,8 +38,6 @@ export function Widgets() {
     WidgetSubvariant | 'buy'
   >(TabsMap.Exchange.value);
 
-  type StarterVariantType = 'buy' | WidgetSubvariant | undefined;
-
   const starterVariant: StarterVariantType = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
@@ -45,7 +45,7 @@ export function Widgets() {
         return TabsMap.Exchange.value;
       } else if (url === TabsMap.Refuel.value) {
         return TabsMap.Refuel.value;
-      } else if (url === TabsMap.Buy.value) {
+      } else {
         return TabsMap.Buy.value;
       }
     } else {
@@ -111,7 +111,7 @@ export function Widgets() {
           showWelcome={showWelcomeWrapper || false}
           isActive={_starterVariant === TabsMap.Exchange.value}
         >
-          <Widget starterVariant={TabsMap.Exchange} />
+          <Widget starterVariant={TabsMap.Exchange.value} />
         </WidgetContainer>
         <WidgetContainer
           onClick={handleGetStarted}

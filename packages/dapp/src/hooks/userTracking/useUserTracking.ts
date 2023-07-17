@@ -33,7 +33,7 @@ export function useUserTracking() {
         data && ReactGA.set({ ...data });
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTools.arcx)) {
-        await arcx.attribute({
+        await arcx?.attribute({
           ...data,
           //   source, // optional(string) - the origin of the web traffic (eg. discord, twitter etc)
           //   campaignId, // optional(string) - a specific identifier of the campaign (eg. bankless-5)

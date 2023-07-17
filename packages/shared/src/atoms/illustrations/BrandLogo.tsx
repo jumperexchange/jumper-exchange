@@ -1,12 +1,17 @@
 import type { Breakpoint, Theme } from '@mui/material';
+
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const JumperLogo = ({ theme }) => {
+interface Props {
+  theme: Theme;
+}
+
+const JumperLogo = ({ theme }: Props) => {
   const mainCol =
     theme.palette.mode === 'light'
-      ? theme.palette.accent1.main
-      : theme.palette.accent1Alt.main;
-  const subCol = theme.palette.accent2.main;
+      ? theme?.palette.accent1.main
+      : theme?.palette.accent1Alt.main;
+  const subCol = theme?.palette.accent2.main;
 
   return (
     <svg
@@ -52,13 +57,13 @@ const JumperLogo = ({ theme }) => {
   );
 };
 
-const JumperIcon = ({ theme }) => {
+const JumperIcon = ({ theme }: Props) => {
   const mainCol =
-    theme.palette.mode === 'light'
-      ? theme.palette.accent1.main
-      : theme.palette.accent1Alt.main;
+    theme?.palette.mode === 'light'
+      ? theme?.palette.accent1.main
+      : theme?.palette.accent1Alt.main;
 
-  const subCol = theme.palette.accent2.main;
+  const subCol = theme?.palette.accent2.main;
 
   return (
     <svg

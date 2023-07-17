@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTools, LanguageKey } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
@@ -12,7 +12,7 @@ export const useLanguagesContent = () => {
     shallow,
   );
   const { trackEvent } = useUserTracking();
-  const handleSwitchLanguage = (newLanguage) => {
+  const handleSwitchLanguage = (newLanguage: LanguageKey) => {
     i18n.changeLanguage(newLanguage);
     onChangeLanguage(newLanguage);
     trackEvent({
@@ -26,11 +26,18 @@ export const useLanguagesContent = () => {
 
   const languages = Object.keys(i18n.store.data)
     .sort()
-    .map((lan) => ({
-      label: i18n.store.data[lan].translation['navbar']['language']['value'],
-      checkIcon: (languageMode || i18n.resolvedLanguage) === lan,
-      onClick: () => handleSwitchLanguage(lan),
-    }));
+    .map((lan) => {
+      console.log(
+        "i18n.store.data[lan].translation['navbar']",
+        i18n.store.data[lan].translation['navbar'],
+      );
+
+      return {
+        label: i18n.store.data[lan].translation['navbar']['language']['value'],
+        checkIcon: (languageMode || i18n.resolvedLanguage) === lan,
+        onClick: () => handleSwitchLanguage(lan as LanguageKey),
+      };
+    });
 
   return languages;
 };

@@ -7,6 +7,7 @@ import { useChainInfos } from '@transferto/dapp/src/providers/ChainInfosProvider
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { EventTrackingTools } from '@transferto/dapp/src/types';
+import type { MouseEventHandler } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
@@ -29,7 +30,9 @@ export const ChainSwitch = () => {
     [chains, account.chainId],
   );
 
-  const handleOpenChainsMenu = (event) => {
+  const handleOpenChainsMenu: MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
     onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
 
     trackEvent({
@@ -41,11 +44,7 @@ export const ChainSwitch = () => {
 
   return (
     <Tooltip title={translate(`${i18Path}switchChain`)}>
-      <ButtonChainSwitch
-        onClick={(event) => {
-          handleOpenChainsMenu(event);
-        }}
-      >
+      <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar
             src={activeChain?.logoURI || 'empty'}
