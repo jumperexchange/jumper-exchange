@@ -13,11 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
+import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useMultisigStore } from '../../stores';
 import { EventTrackingTools, LanguageKey } from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
-import { useMultisig } from '../../hooks/useMultisig';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -67,7 +67,10 @@ export function Widget({ starterVariant }) {
           trackEvent({
             category: TrackingCategories.Menu,
             action: TrackingActions.OpenWalletSelectMenu,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTools.arcx,
+              EventTrackingTools.raleon,
+            ],
           });
           onOpenNavbarWalletSelectMenu(
             true,
@@ -80,7 +83,10 @@ export function Widget({ starterVariant }) {
           trackEvent({
             category: TrackingCategories.Wallet,
             action: TrackingActions.Disconnect,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTools.arcx,
+              EventTrackingTools.raleon,
+            ],
           });
           disconnect();
         },
@@ -179,22 +185,23 @@ export function Widget({ starterVariant }) {
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
-    destinationChain,
+    getMultisigWidgetConfig,
+    starterVariant,
     account.signer,
-    addChain,
-    addToken,
-    disconnect,
+    isDarkMode,
     i18n.language,
     i18n.languages,
-    isDarkMode,
-    onOpenNavbarWalletSelectMenu,
-    starterVariant,
-    switchChain,
+    theme.palette.surface2.main,
+    theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
+    isMultisigSigner,
     trackEvent,
+    onOpenNavbarWalletSelectMenu,
+    disconnect,
+    switchChain,
+    addToken,
+    addChain,
   ]);
 
   return (

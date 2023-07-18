@@ -5,6 +5,7 @@ import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 import { Dispatch, SetStateAction } from 'react';
 import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks';
+import { EventTrackingTools } from '../../types';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
@@ -48,6 +49,7 @@ const MenuItemComponent = ({
             action: TrackingActions.OpenSubmenu,
             label: triggerSubMenu,
             data: { subMenu: triggerSubMenu },
+            disableTrackingTool: [EventTrackingTools.raleon],
           });
         !!onClick && onClick();
       }}

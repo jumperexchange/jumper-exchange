@@ -189,18 +189,8 @@ export function useUserTracking() {
             ...data,
           });
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.raleon)) {
-        pageload &&
-          window.raleon.registerEvent(
-            'pageload',
-            account.address,
-            `${pageload ? 'external' : 'internal'}-${
-              destination ? destination : ''
-            }`,
-          );
-      }
     },
-    [account.address, arcx],
+    [arcx],
   );
 
   const trackTransaction = useCallback(
