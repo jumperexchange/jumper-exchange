@@ -3,7 +3,7 @@ import { IconButton, Link, Slide, useTheme } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
 import { Card, CardImage } from './FeatureCard.style';
@@ -16,6 +16,12 @@ export const FeatureCard = ({ data, loading, error }) => {
   ]);
   const i18Path = 'featureCard.';
   const theme = useTheme();
+
+  useEffect(() => {
+    data?.displayConditions &&
+      data?.displayConditions[0]?.showOnce &&
+      onDisableFeatureCard(data?.displayConditions[0]?.id);
+  }, [data?.displayConditions, onDisableFeatureCard]);
 
   return (
     <Slide direction="up" in={open} unmountOnExit appear={false} timeout={400}>
@@ -30,8 +36,8 @@ export const FeatureCard = ({ data, loading, error }) => {
             }}
             onClick={() => {
               setOpen(false);
-              data?.displayConditions &&
-                data?.displayConditions[0]?.showOnce &&
+              !data?.displayConditions[0].hasOwnProperty('showOnce') &&
+                !!data?.displayConditions[0]?.id &&
                 onDisableFeatureCard(data?.displayConditions[0]?.id);
             }}
           >

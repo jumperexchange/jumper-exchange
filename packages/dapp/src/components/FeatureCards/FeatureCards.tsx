@@ -17,11 +17,8 @@ export const FeatureCards = () => {
   const featureCardsFetched = useMemo(() => {
     return data?.featureCardCollection?.items.filter(
       (el, index) =>
-        (el.displayConditions &&
-          el.displayConditions[0] &&
-          !el.displayConditions[0]?.showOnce) ||
-        (el.displayConditions &&
-          !disabledFeatureCards.includes(el.displayConditions[0]?.id)),
+        el.displayConditions &&
+        !disabledFeatureCards.includes(el.displayConditions[0]?.id),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.featureCardCollection?.items]);
