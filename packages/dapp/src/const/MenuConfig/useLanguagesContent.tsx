@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTools, LanguageKey } from '../../types';
+import { EventTrackingTools, LanguageKey, ResourceKey } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
@@ -33,7 +33,10 @@ export const useLanguagesContent = () => {
       );
 
       return {
-        label: i18n.store.data[lan].translation['navbar']['language']['value'],
+        label:
+          i18n.store.data[lan as string].translation['navbar' as ResourceKey][
+            'language'
+          ]['value'],
         checkIcon: (languageMode || i18n.resolvedLanguage) === lan,
         onClick: () => handleSwitchLanguage(lan as LanguageKey),
       };

@@ -83,7 +83,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       handleWalletUpdate(activeWallets[0]);
     };
     autoConnect();
-  }, []);
+  }, [connectMultisigWallet]);
 
   const handleWalletUpdate = async (wallet?: Wallet) => {
     setCurrentWallet(wallet);
