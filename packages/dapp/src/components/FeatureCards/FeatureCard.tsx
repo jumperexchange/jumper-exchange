@@ -81,6 +81,8 @@ export const FeatureCard = ({ data, loading, error }) => {
               </Typography>
               <CardActions sx={{ padding: 0, marginTop: theme.spacing(2) }}>
                 <Link
+                  target="_blank"
+                  rel="noopener"
                   href={data?.url || 'https://li.fi'}
                   sx={{
                     textDecoration: 'none',
