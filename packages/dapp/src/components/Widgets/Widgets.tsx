@@ -96,7 +96,7 @@ export function Widgets() {
         showWelcome={!welcomeScreenEntered}
         isActive={_starterVariant === TabsMap.Exchange.value}
       >
-        <Widget starterVariant={TabsMap.Exchange} />
+        <Widget starterVariant={TabsMap.Exchange.value} />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleGetStarted}
