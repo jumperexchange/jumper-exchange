@@ -1,8 +1,9 @@
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { CssBaseline } from '@mui/material';
+import { QueryClientProvider } from '@tanstack/react-query';
 import type { PropsWithChildren } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import { BackgroundGradient } from './components/BackgroundGradient';
+import { queryClient } from './config/queryClient';
 import {
   ChainInfosProvider,
   ContentfulProvider,
@@ -10,8 +11,6 @@ import {
   ThemeProvider,
   WalletProvider,
 } from './providers';
-
-const queryClient = new QueryClient();
 
 export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
