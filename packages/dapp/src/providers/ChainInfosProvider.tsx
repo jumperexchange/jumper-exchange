@@ -1,6 +1,6 @@
 import { ExtendedChain } from '@lifi/types';
+import { useQuery } from '@tanstack/react-query';
 import { createContext, PropsWithChildren, useContext } from 'react';
-import { useQuery } from 'react-query';
 
 export interface ChainInfosContextProps {
   chains: ExtendedChain[];
