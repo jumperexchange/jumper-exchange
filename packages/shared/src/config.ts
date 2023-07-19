@@ -1,5 +1,4 @@
 // @mui
-import { TabsMap } from '@transferto/dapp/src/const/tabsMap';
 import type { LanguageKey } from '@transferto/dapp/src/types';
 import type { ThemeModesSupported } from './types';
 
@@ -26,7 +25,6 @@ const setLanguage = () => {
 };
 
 interface DefaultSettingsType {
-  activeTab: number;
   themeMode: ThemeModesSupported;
   languageMode: LanguageKey;
   activeWalletName: string;
@@ -34,7 +32,6 @@ interface DefaultSettingsType {
 }
 
 export const defaultSettings: DefaultSettingsType = {
-  activeTab: TabsMap.Exchange.index,
   themeMode:
     (localStorage.getItem(localStorageKey.themeMode) as ThemeModesSupported) ||
     'auto',

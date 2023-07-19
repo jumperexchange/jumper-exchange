@@ -4,10 +4,9 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks';
-import { useSettingsStore } from '../../stores';
+import { useActiveTabStore } from '../../stores';
 import { EventTrackingTools } from '../../types';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
@@ -21,15 +20,12 @@ const NavbarTabsContainer = () => {
   const theme = useTheme();
   const { t: translate } = useTranslation();
   const i18Path = 'navbar.';
-  const [activeTab, onChangeTab] = useSettingsStore(
-    (state) => [state.activeTab, state.onChangeTab],
-    shallow,
-  );
+  const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
   const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    onChangeTab(newValue);
+    setActiveTab(newValue);
   };
 
   return (
