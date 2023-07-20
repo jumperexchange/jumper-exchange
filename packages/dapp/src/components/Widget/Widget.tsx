@@ -76,9 +76,7 @@ export function Widget({ starterVariant }: WidgetProps) {
             true,
             document.getElementById('connect-wallet-button'),
           );
-
-          // TODO: @denny how to handle case where signer isn't present
-          return account.signer;
+          return account.signer!;
         },
         disconnect: async () => {
           trackEvent({
@@ -176,7 +174,8 @@ export function Widget({ starterVariant }: WidgetProps) {
           maxPriceImpact: 0.4,
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        multisigConfig: { ...multisigSdkConfig },
+        // TODO: @abhishek remove ! and think about better handling
+        multisigConfig: { ...multisigSdkConfig! },
       },
       buildUrl: true,
       insurance: true,

@@ -6,7 +6,7 @@ import { EventTrackingTools, LanguageKey, ResourceKey } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [languageMode, onChangeLanguage] = useSettingsStore(
     (state) => [state.languageMode, state.onChangeLanguage],
     shallow,
@@ -26,16 +26,11 @@ export const useLanguagesContent = () => {
 
   const languages = Object.keys(i18n.store.data as ResourceKey)
     .sort()
-    .map((language) => {
-      // i18n.store.data[lan as string].translation['navbar'][
-
-      return {
-        label:
-          i18n.store.data[language].translation['navbar']['language']['value'],
-        checkIcon: (languageMode || i18n.resolvedLanguage) === lan,
-        onClick: () => handleSwitchLanguage(lan as LanguageKey),
-      };
-    });
+    .map((lng) => ({
+      label: t('navbar.language.value', { lng }),
+      checkIcon: (languageMode || i18n.resolvedLanguage) === lng,
+      onClick: () => handleSwitchLanguage(lng as LanguageKey),
+    }));
 
   return languages;
 };
