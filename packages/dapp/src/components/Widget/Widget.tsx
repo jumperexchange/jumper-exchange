@@ -78,6 +78,7 @@ export function Widget({ starterVariant }: WidgetProps) {
             document.getElementById('connect-wallet-button'),
           );
 
+          // TODO: @denny how to handle case where signer isn't present
           return account.signer;
         },
         disconnect: async () => {

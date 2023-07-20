@@ -1,3 +1,4 @@
+import type { Signer } from '@ethersproject/abstract-signer';
 import { ChainId, Token } from '@lifi/sdk';
 import {
   LiFiWalletManagement,
@@ -5,7 +6,7 @@ import {
   readActiveWallets,
   supportedWallets,
 } from '@lifi/wallet-management';
-import { Signer } from 'ethers';
+
 import React, {
   PropsWithChildren,
   createContext,
@@ -50,6 +51,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const { trackConnectWallet } = useUserTracking();
   const { checkMultisigEnvironment } = useMultisig();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const connectMultisigWallet = async () => {
     const isMultisig = await checkMultisigEnvironment();
 
@@ -189,7 +191,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   );
 };
 
-const extractAccountFromSigner = async (signer?: Signer) => {
+const extractAccountFromSigner = async (signer?: Signer): Promise<WalletAccount> => {
   try {
     return {
       address: (await signer?.getAddress()) || undefined,

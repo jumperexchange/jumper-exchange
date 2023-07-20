@@ -3,15 +3,16 @@ import {
   ChainId,
   ChainKey,
   MultisigConfig,
+  MultisigTxDetails,
   Route,
 } from '@lifi/sdk';
-import { WidgetConfig } from '@lifi/widget';
 import SafeAppsSDK, {
   GatewayTransactionDetails,
   TransactionStatus,
 } from '@safe-global/safe-apps-sdk';
 import { useWallet } from '../providers/WalletProvider';
 import { useMultisigStore } from '../stores';
+import { MultisigWidgetConfig } from '../types';
 
 export const useMultisig = () => {
   const { account } = useWallet();
@@ -38,22 +39,11 @@ export const useMultisig = () => {
   const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
     ?.safeAddress;
 
-  type StatusType = 'DONE' | 'FAILED' | 'CANCELLED' | 'PENDING';
-  interface HandleMultiSigTransactionDetailsProps {
-    status: StatusType;
-    txHash: string;
-    updateIntermediateStatus?: () => void;
-  }
-
-  const handleMultiSigTransactionDetails: (
+  const handleMultiSigTransactionDetails = async (
     txHash: string,
     chainId: number,
-    updateIntermediateStatus: () => void,
-  ) => Promise<HandleMultiSigTransactionDetailsProps> = async (
-    txHash,
-    chainId,
-    updateIntermediateStatus,
-  ) => {
+    updateIntermediateStatus?: () => void,
+  ): Promise<MultisigTxDetails> => {
     const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
     const safeTransactionDetails: GatewayTransactionDetails =
@@ -83,7 +73,7 @@ export const useMultisig = () => {
     ].includes(TransactionStatus.AWAITING_EXECUTION);
 
     if (isAwaitingExecution) {
-      updateIntermediateStatus();
+      updateIntermediateStatus?.();
     }
 
     if (isSafeStatusPending) {
@@ -106,7 +96,8 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'DONE',
-        txHash: safeTransactionDetails.txHash,
+        txHash: safeTransactionDetails.txHash ,
+        message: "" // TODO: @abhishek remove the message from SDK types to remove TS error
       };
     }
 
@@ -118,7 +109,8 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'FAILED',
-        txHash: safeTransactionDetails.txHash,
+        txHash: safeTransactionDetails.txHash ,
+        message: ""
       };
     }
 
@@ -130,20 +122,23 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'CANCELLED',
-        txHash: safeTransactionDetails.txHash,
+        txHash: safeTransactionDetails.txHash ,
+        message: ""
       };
     }
 
     if (isSafeStatusPending) {
       return {
         status: 'PENDING',
-        txHash: safeTransactionDetails.txHash,
+        txHash: safeTransactionDetails.txHash ,
+        message: ""
       };
     }
 
     return {
-      status: safeTransactionDetails.txStatus,
-      txHash: safeTransactionDetails.txHash,
+      status: "PENDING",
+      txHash: safeTransactionDetails.txHash ,
+      message: ""
     };
   };
 
@@ -166,7 +161,7 @@ export const useMultisig = () => {
   };
 
   const getMultisigWidgetConfig = (): Partial<{
-    multisigWidget: Partial<WidgetConfig>;
+    multisigWidget: MultisigWidgetConfig;
     multisigSdkConfig: MultisigConfig;
   }> => {
     const multisigConfig = {
@@ -179,15 +174,16 @@ export const useMultisig = () => {
     if (isSafeSigner) {
       const currentChain = account.chainId;
 
-      const fromChain: ChainId = Object.values(ChainId).find(
-        (chainId) => chainId !== currentChain,
-      ) as ChainId;
-
       const shouldRequireToAddress = account.chainId !== destinationChain;
+
+      // get the Chain symbol (ETH) from chainID
+      // get the ChainKey(eth) from ChainID(ETH)
+      // unsure if it'll always be the same letters in lowercase, hence getting from mapping
+      const fromChainKey = currentChain && (ChainKey as Record<string, string>)[ChainId[currentChain]] as ChainKey
 
       return {
         multisigWidget: {
-          fromChain: ChainKey[fromChain],
+          fromChain: fromChainKey,
           requiredUI: shouldRequireToAddress ? ['toAddress'] : [],
         },
         multisigSdkConfig: {
@@ -201,17 +197,17 @@ export const useMultisig = () => {
 
   const shouldOpenMultisigSignatureModal = (route: Route) => {
     const isRouteDone = route.steps.every(
-      (step: { execution: { status: StatusType } }) =>
-        step.execution?.status === 'DONE',
+      (step) =>
+        step.execution?.status === "DONE",
     );
 
     const isRouteFailed = route.steps.some(
-      (step: { execution: { status: StatusType } }) =>
+      (step) =>
         step.execution?.status === 'FAILED',
     );
 
     const multisigRouteStarted = route.steps.some(
-      (step: { execution: { process: any[] } }) =>
+      (step) =>
         step.execution?.process.find(
           (process) =>
             !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',

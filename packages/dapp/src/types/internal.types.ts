@@ -2,8 +2,9 @@ import { TokenAmount, TokenWithAmounts } from '@lifi/sdk';
 import { ChainId, ChainKey, Coin, Token } from '@lifi/types';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
 import BigNumber from 'bignumber.js';
-import { Signer } from 'ethers';
+import type { Signer } from '@ethersproject/abstract-signer';
 import { MenuKeys } from '../const';
+import { WidgetConfig } from '@lifi/widget';
 
 export interface TokenAmountList {
   [ChainKey: string]: Array<TokenWithAmounts>;
@@ -132,3 +133,5 @@ export interface WalletAccount {
   signer?: Signer;
   chainId?: number;
 }
+
+export type MultisigWidgetConfig = Pick<WidgetConfig, "fromChain" | "requiredUI">
