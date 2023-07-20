@@ -11,6 +11,11 @@
       "refuel": "Gaz",
       "buy": "Acheter"
     },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Ponts",
+      "chains": "Chaines"
+    },
     "connectWallet": "Connecter le portefeuille",
     "chooseWallet": "Choisir le portefeuille",
     "navbarMenu": {
@@ -53,5 +58,22 @@
     "info": "Vous utilisez le Testnet",
     "testnet": "Toute transaction ou action effectuée sur le Testnet ne sera pas reflétée sur le réseau principal.",
     "switchToMainnet": "Basculer vers le réseau principal"
+  },
+  "button": {
+    "okay": "Ok"
+  },
+  "multisig": {
+    "connected": {
+      "title": "Portefeuille multisignature connecté",
+      "description": "Merci d'informer les autres participants du portefeuille que la transaction est prête à être signée."
+    },
+    "transactionInitiated": {
+      "title": "Signatures multiples requises",
+      "description": "Merci de demander autres participants disposant d'un portefeuille multisignature, de signer avant que la transaction n'expire."
+    },
+    "alert": {
+      "title": "Portefeuille multisignature connecté",
+      "description": "L'adresse du portefeuille de destination est nécessaire pour effectuer l'échange."
+    }
   }
 }
