@@ -12,7 +12,6 @@ import type {
   WalletConnected,
 } from '@transferto/shared/src/types/settings';
 import i18next from 'i18next';
-import { TabsMap } from '../../const/tabsMap';
 import { LanguageKey } from '../../types';
 
 // ----------------------------------------------------------------------
@@ -37,13 +36,6 @@ export const useSettingsStore = create(
           }
           return updatedState;
         }),
-
-      // Tabs
-      onChangeTab: (tab: number) => {
-        set({
-          activeTab: tab || TabsMap.Exchange.index,
-        });
-      },
 
       // Wallet
       onWalletConnect: (activeWalletName: WalletConnected) => {
@@ -101,12 +93,22 @@ export const useSettingsStore = create(
             (i18next.language as LanguageKey) ||
             defaultLang,
           disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
-          activeTab: defaultSettings.activeTab || TabsMap.Exchange.index,
         });
       },
     }),
     {
       name: 'jumper-store', // name of the item in the storage (must be unique)
+      version: 1,
+      migrate: (persistedState: SettingsProps, version) => {
+        if (version === 0) {
+          const newStore = { ...persistedState };
+          Object.keys(persistedState)
+            .filter((el) => !(el in defaultSettings))
+            .forEach((el) => delete newStore[el]);
+          return newStore;
+        }
+        return persistedState;
+      },
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ) as unknown as StateCreator<SettingsState, [], [], SettingsState>,
