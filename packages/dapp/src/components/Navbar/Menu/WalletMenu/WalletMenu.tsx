@@ -30,7 +30,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
-  const walletSource: Wallet[] = supportedWallets;
+  const walletSource = supportedWallets;
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,

@@ -35,7 +35,7 @@ export const useMenuStore = create<MenuState>((set, get) => ({
       [key]: value,
     })),
   setValues: (values: { [x: string]: any }) =>
-    set((state) => {
+    set((state: MenuState) => {
       const updatedState: { [key: string]: any } = { ...state };
       for (const key in values) {
         if (Object.hasOwnProperty.call(values, key)) {

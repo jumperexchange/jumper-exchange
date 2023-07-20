@@ -2,11 +2,11 @@ import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUserTracking } from '../../hooks';
+import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTools, MenuListItem } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
-import { useMultisig } from '../../hooks/useMultisig';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
@@ -65,7 +65,7 @@ export const useWalletSelectContent = () => {
         setShowWalletIdentityPopover(wallet);
         return;
       }
-      await connect(wallet);
+      await connect(wallet as Wallet | undefined);
       onWalletConnect(wallet.name);
       try {
       } catch (e) {}
@@ -75,7 +75,7 @@ export const useWalletSelectContent = () => {
 
   useEffect(() => {
     initializeWalletSelect();
-  }, [account?.address]);
+  }, [account.address, initializeWalletSelect]);
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
     const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {
@@ -111,14 +111,7 @@ export const useWalletSelectContent = () => {
       };
     });
     return _output;
-  }, [
-    availableWallets.length,
-    isCurrentMultisigEnvironment,
-    login,
-    onCloseAllNavbarMenus,
-    onWelcomeScreenEntered,
-    trackEvent,
-  ]);
+  }, [availableWallets, isCurrentMultisigEnvironment, login, onCloseAllNavbarMenus, onWelcomeScreenEntered, trackEvent]);
 
   return walletMenuItems;
 };
