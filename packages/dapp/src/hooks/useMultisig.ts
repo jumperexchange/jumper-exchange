@@ -198,17 +198,17 @@ export const useMultisig = () => {
 
   const shouldOpenMultisigSignatureModal = (route: Route) => {
     const isRouteDone = route.steps.every(
-      (step: { execution: { status: StatusType } }) =>
+      (step) =>
         step.execution?.status === 'DONE',
     );
 
     const isRouteFailed = route.steps.some(
-      (step: { execution: { status: StatusType } }) =>
+      (step) =>
         step.execution?.status === 'FAILED',
     );
 
     const multisigRouteStarted = route.steps.some(
-      (step: { execution: { process: any[] } }) =>
+      (step) =>
         step.execution?.process.find(
           (process) =>
             !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
