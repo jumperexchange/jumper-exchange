@@ -2,6 +2,7 @@ import {
   BaseTransaction,
   ChainId,
   ChainKey,
+  LifiStep,
   MultisigConfig,
   Route,
 } from '@lifi/sdk';
@@ -36,7 +37,7 @@ export const useMultisig = () => {
   };
 
   const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
-    ?.safeAddress;
+    ?.safeAddress || false;
 
   type StatusType = 'DONE' | 'FAILED' | 'CANCELLED' | 'PENDING';
   interface HandleMultiSigTransactionDetailsProps {
@@ -201,17 +202,17 @@ export const useMultisig = () => {
 
   const shouldOpenMultisigSignatureModal = (route: Route) => {
     const isRouteDone = route.steps.every(
-      (step: { execution: { status: StatusType } }) =>
+      (step: LifiStep) =>
         step.execution?.status === 'DONE',
     );
 
     const isRouteFailed = route.steps.some(
-      (step: { execution: { status: StatusType } }) =>
+      (step: LifiStep) =>
         step.execution?.status === 'FAILED',
     );
 
     const multisigRouteStarted = route.steps.some(
-      (step: { execution: { process: any[] } }) =>
+      (step: LifiStep) =>
         step.execution?.process.find(
           (process) =>
             !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',

@@ -14,7 +14,6 @@ import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
 import { EventTrackingTools } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
-import { Wallet } from '@transferto/shared/src/types';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +30,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
-  const walletSource: Wallet[] = supportedWallets;
+  const walletSource = supportedWallets;
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,

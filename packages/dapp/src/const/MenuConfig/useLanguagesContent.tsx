@@ -24,19 +24,14 @@ export const useLanguagesContent = () => {
     });
   };
 
-  const languages = Object.keys(i18n.store.data)
+  const languages = Object.keys(i18n.store.data as ResourceKey)
     .sort()
-    .map((lan) => {
-      console.log(
-        "i18n.store.data[lan].translation['navbar']",
-        i18n.store.data[lan].translation['navbar'],
-      );
+    .map((language) => {
+      // i18n.store.data[lan as string].translation['navbar'][
 
       return {
         label:
-          i18n.store.data[lan as string].translation['navbar' as ResourceKey][
-            'language'
-          ]['value'],
+          i18n.store.data[language].translation['navbar']['language']['value'],
         checkIcon: (languageMode || i18n.resolvedLanguage) === lan,
         onClick: () => handleSwitchLanguage(lan as LanguageKey),
       };

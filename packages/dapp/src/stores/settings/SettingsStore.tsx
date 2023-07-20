@@ -87,7 +87,7 @@ export const useSettingsStore = create(
     {
       name: 'jumper-store', // name of the item in the storage (must be unique)
       version: 1,
-      migrate: (persistedState: SettingsProps, version) => {
+      migrate: (persistedState: SettingsState, version: number): unknown => {
         if (version === 0) {
           const newStore = { ...persistedState };
           Object.keys(persistedState)
