@@ -68,6 +68,14 @@ export function useUserTracking() {
       }
       if (
         !!account.address &&
+        !disableTrackingTool?.includes(EventTrackingTools.Raleon)
+      ) {
+        !disconnect
+          ? window?.raleon.walletConnected(account.address)
+          : window?.raleon.walletDisconnected();
+      }
+      if (
+        !!account.address &&
         !disableTrackingTool?.includes(EventTrackingTools.GA)
       ) {
         !disconnect &&
@@ -126,8 +134,18 @@ export function useUserTracking() {
           ...data,
         });
       }
+      if (
+        !disableTrackingTool?.includes(EventTrackingTools.Raleon) &&
+        account.isActive
+      ) {
+        window.raleon.registerEvent(
+          `${category}`,
+          account.address,
+          `${action}-${label}`,
+        );
+      }
     },
-    [arcx],
+    [account.address, account.isActive, arcx],
   );
 
   const trackPageload = useCallback(

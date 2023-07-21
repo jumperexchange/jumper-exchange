@@ -101,7 +101,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       category: 'menu',
       action: 'copyAddressToClipboard',
       label: 'copyAddressToClipboard',
-      disableTrackingTool: [EventTrackingTools.ARCx],
+      disableTrackingTool: [EventTrackingTools.ARCx, EventTrackingTools.Raleon],
     });
     onCloseAllNavbarMenus();
   };

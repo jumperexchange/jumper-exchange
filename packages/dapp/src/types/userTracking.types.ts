@@ -5,6 +5,7 @@ export enum EventTrackingTools {
   ARCx,
   GA,
   Hotjar,
+  Raleon,
 }
 
 export interface InitTrackingProps {

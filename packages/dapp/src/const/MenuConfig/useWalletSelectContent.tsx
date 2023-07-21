@@ -105,14 +105,17 @@ export const useWalletSelectContent = () => {
             action: TrackingActions.ChooseWallet,
             label: `choose-wallet-${wallet}`,
             data: { usedWallet: wallet.name },
-            disableTrackingTool: [EventTrackingTools.ARCx],
+            disableTrackingTool: [
+              EventTrackingTools.ARCx,
+              EventTrackingTools.Raleon,
+            ],
           });
         },
       };
     });
     return _output;
   }, [
-    availableWallets.length,
+    availableWallets,
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,

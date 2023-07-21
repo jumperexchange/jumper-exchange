@@ -67,7 +67,10 @@ export function Widget({ starterVariant }) {
           trackEvent({
             category: TrackingCategories.Menu,
             action: TrackingActions.OpenWalletSelectMenu,
-            disableTrackingTool: [EventTrackingTools.ARCx],
+            disableTrackingTool: [
+              EventTrackingTools.ARCx,
+              EventTrackingTools.Raleon,
+            ],
           });
           onOpenNavbarWalletSelectMenu(
             true,
@@ -80,7 +83,10 @@ export function Widget({ starterVariant }) {
           trackEvent({
             category: TrackingCategories.Wallet,
             action: TrackingActions.Disconnect,
-            disableTrackingTool: [EventTrackingTools.ARCx],
+            disableTrackingTool: [
+              EventTrackingTools.ARCx,
+              EventTrackingTools.Raleon,
+            ],
           });
           disconnect();
         },
@@ -179,22 +185,23 @@ export function Widget({ starterVariant }) {
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
-    destinationChain,
+    getMultisigWidgetConfig,
+    starterVariant,
     account.signer,
-    addChain,
-    addToken,
-    disconnect,
+    isDarkMode,
     i18n.language,
     i18n.languages,
-    isDarkMode,
-    onOpenNavbarWalletSelectMenu,
-    starterVariant,
-    switchChain,
+    theme.palette.surface2.main,
+    theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
+    isMultisigSigner,
     trackEvent,
+    onOpenNavbarWalletSelectMenu,
+    disconnect,
+    switchChain,
+    addToken,
+    addChain,
   ]);
 
   return (
