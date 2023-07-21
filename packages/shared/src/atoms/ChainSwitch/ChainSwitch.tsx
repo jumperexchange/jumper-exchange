@@ -6,7 +6,7 @@ import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useChains } from '@transferto/dapp/src/hooks/useChains';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
-import { EventTrackingTools } from '@transferto/dapp/src/types';
+import { EventTrackingTool } from '@transferto/dapp/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
@@ -35,7 +35,7 @@ export const ChainSwitch = () => {
     trackEvent({
       category: 'chain-menu',
       action: `click-open-chain-menu`,
-      disableTrackingTool: [EventTrackingTools.ARCx, EventTrackingTools.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 

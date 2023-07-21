@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import ReactGA from 'react-ga4';
 import { hotjar } from 'react-hotjar';
-import { EventTrackingTools, InitTrackingProps } from '../../types';
+import { EventTrackingTool, InitTrackingProps } from '../../types';
 
 export function useInitUserTracking() {
   const initTracking = useCallback(
@@ -11,14 +11,14 @@ export function useInitUserTracking() {
      *
      */
     async ({ disableTrackingTool }: InitTrackingProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTools.Hotjar)) {
+      if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         !hotjar.initialized() &&
           hotjar.initialize(
             import.meta.env.VITE_HOTJAR_ID,
             import.meta.env.VITE_HOTJAR_SNIPPET_VERSION,
           );
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.GA)) {
+      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_TRACKING_ID);
       }
     },

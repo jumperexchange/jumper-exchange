@@ -7,7 +7,7 @@ import {
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useMenuStore } from '@transferto/dapp/src/stores';
-import { EventTrackingTools } from '@transferto/dapp/src/types';
+import { EventTrackingTool } from '@transferto/dapp/src/types';
 import type { Wallet } from '@transferto/shared/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
@@ -67,10 +67,7 @@ export const WalletManagementButtons: React.FC<
       trackEvent({
         category: TrackingCategories.Menu,
         action: TrackingActions.OpenWalletSelectMenu,
-        disableTrackingTool: [
-          EventTrackingTools.ARCx,
-          EventTrackingTools.Raleon,
-        ],
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletSelectMenu(
       !openNavbarWalletSelectMenu,
@@ -83,10 +80,7 @@ export const WalletManagementButtons: React.FC<
       trackEvent({
         category: TrackingCategories.Menu,
         action: TrackingActions.WalletMenu,
-        disableTrackingTool: [
-          EventTrackingTools.ARCx,
-          EventTrackingTools.Raleon,
-        ],
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletMenu(!openNavbarWalletMenu, event.currentTarget);
   };

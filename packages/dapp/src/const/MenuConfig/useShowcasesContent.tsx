@@ -2,7 +2,7 @@ import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTool } from '../../types';
 
 export const useShowcasesContent = () => {
   const { t: translate } = useTranslation();
@@ -22,7 +22,7 @@ export const useShowcasesContent = () => {
           destination: 'showcase-ukraine',
           url: 'https://transferto.xyz/showcase/ukraine',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.ARCx],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         onCloseAllNavbarMenus();
       },
@@ -36,7 +36,7 @@ export const useShowcasesContent = () => {
           destination: 'showcase-klima',
           url: 'https://transferto.xyz/showcase/klima-stake-v2',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.ARCx],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         onCloseAllNavbarMenus();
       },
@@ -50,7 +50,7 @@ export const useShowcasesContent = () => {
           destination: 'showcase-carbon',
           url: 'https://transferto.xyz/showcase/carbon-offset',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.ARCx],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         onCloseAllNavbarMenus();
       },

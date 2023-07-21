@@ -1,7 +1,7 @@
 import { ChainID } from '@arcxmoney/analytics';
 import { WalletAccount } from './internal.types';
 
-export enum EventTrackingTools {
+export enum EventTrackingTool {
   ARCx,
   GA,
   Hotjar,
@@ -9,7 +9,7 @@ export enum EventTrackingTools {
 }
 
 export interface InitTrackingProps {
-  disableTrackingTool?: EventTrackingTools[];
+  disableTrackingTool?: EventTrackingTool[];
 }
 
 export interface TrackEventProps {
@@ -17,14 +17,14 @@ export interface TrackEventProps {
   category: string;
   label?: string;
   data?: { [key: string]: string | number | boolean | any };
-  disableTrackingTool?: EventTrackingTools[];
+  disableTrackingTool?: EventTrackingTool[];
 }
 
 export interface TrackTransactionProps {
   action: string;
   category: string;
   chain: ChainID;
-  disableTrackingTool?: EventTrackingTools[];
+  disableTrackingTool?: EventTrackingTool[];
   data: Record<string, unknown>;
   transactionHash: string;
 }
@@ -34,17 +34,17 @@ export interface trackPageloadProps {
   source: string;
   data?: { [key: string]: string | number | boolean };
   pageload: boolean;
-  disableTrackingTool?: EventTrackingTools[];
+  disableTrackingTool?: EventTrackingTool[];
   url: string;
 }
 
 export interface TrackConnectWalletProps {
   account: WalletAccount;
   data?: { [key: string]: string | number | boolean };
-  disableTrackingTool?: EventTrackingTools[];
+  disableTrackingTool?: EventTrackingTool[];
   disconnect?: boolean;
 }
 export interface TrackAttributeProps {
   data?: { [key: string]: string | number | boolean };
-  disableTrackingTool?: EventTrackingTools[];
+  disableTrackingTool?: EventTrackingTool[];
 }
