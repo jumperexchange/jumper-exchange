@@ -26,7 +26,7 @@
     },
     "walletMenu": {
       "disconnect": "Bağlantıyı Kes",
-      "chains": "Zincirler",
+      "chains": "Ağlar",
       "switchChain": "Ağ değiştir",
       "copy": "Kopyala",
       "explore": "Keşfet",
@@ -58,5 +58,22 @@
     "info": "Şu anda Test ağındasınız",
     "testnet": "Testnet üzerinde yapacağınız hiçbir işlem Mainnet üzerinde etkili olmayacaktır.",
     "switchToMainnet": "Mainnet'e geç"
+  },
+  "button": {
+    "okay": "Tamam"
+  },
+  "multisig": {
+    "connected": {
+      "title": "Çoklu cüzdan bağlandı",
+      "description": "Lütfen diğer cüzdan katılımcılarını imzalamaya hazır olmaları için bilgilendirin."
+    },
+    "transactionInitiated": {
+      "title": "Çoklu imza gerekiyor",
+      "description": "Lütfen diğer cüzdan katılımcılarını işlem süresi geçmeden imzalamaları için bilgilendirin."
+    },
+    "alert": {
+      "title": "Çoklu cüzdan bağlandı",
+      "description": "İşlemi tamamlamak için hedef cüzdan adresi gereklidir."
+    }
   }
 }
