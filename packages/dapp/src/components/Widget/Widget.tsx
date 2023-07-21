@@ -174,8 +174,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           maxPriceImpact: 0.4,
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        // TODO: @abhishek remove ! and think about better handling
-        multisigConfig: { ...multisigSdkConfig! },
+        multisigConfig: { ...(multisigSdkConfig ?? {}) },
       },
       buildUrl: true,
       insurance: true,
