@@ -11,14 +11,14 @@ export function useInitUserTracking() {
      *
      */
     async ({ disableTrackingTool }: InitTrackingProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTools.hotjar)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.Hotjar)) {
         !hotjar.initialized() &&
           hotjar.initialize(
             import.meta.env.VITE_HOTJAR_ID,
             import.meta.env.VITE_HOTJAR_SNIPPET_VERSION,
           );
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.ga)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.GA)) {
         ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_TRACKING_ID);
       }
     },

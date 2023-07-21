@@ -20,7 +20,7 @@ export const useLanguagesContent = () => {
       action: TrackingActions.SwitchLanguage,
       label: `language-${newLanguage}`,
       data: { language: `language-${newLanguage}` },
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTools.ARCx],
     });
   };
 

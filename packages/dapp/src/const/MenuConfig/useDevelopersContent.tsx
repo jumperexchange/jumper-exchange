@@ -38,7 +38,7 @@ export const useDevelopersContent = () => {
           destination: 'lifi-github',
           url: 'https://github.com/lifinance/',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTools.ARCx],
         });
         onCloseAllNavbarMenus();
       },
@@ -53,7 +53,7 @@ export const useDevelopersContent = () => {
           destination: 'lifi-docs',
           url: 'https://docs.li.fi/',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTools.ARCx],
         });
         onCloseAllNavbarMenus();
       },

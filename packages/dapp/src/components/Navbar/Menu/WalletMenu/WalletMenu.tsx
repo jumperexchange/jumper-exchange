@@ -90,7 +90,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         getChainById(account.chainId).metamask.blockExplorerUrls[0]
       }address/${account.address}`,
       pageload: true,
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTools.ARCx],
     });
   };
 
@@ -101,7 +101,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       category: 'menu',
       action: 'copyAddressToClipboard',
       label: 'copyAddressToClipboard',
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTools.ARCx],
     });
     onCloseAllNavbarMenus();
   };

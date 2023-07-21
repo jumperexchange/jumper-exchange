@@ -69,7 +69,7 @@ export const useMainMenuContent = () => {
           destination: 'twitter-JumperExchange',
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTools.ARCx],
         });
       },
     },
@@ -92,7 +92,7 @@ export const useMainMenuContent = () => {
           destination: 'discord-lifi',
           url: 'https://discord.gg/lifi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTools.ARCx],
         });
       },
     },
@@ -115,7 +115,7 @@ export const useMainMenuContent = () => {
           destination: 'lifi-website',
           url: 'https://li.fi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTools.ARCx],
         });
         openInNewTab('https://li.fi');
       },
@@ -127,7 +127,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategories.SupportModal,
           action: TrackingActions.OpenSupportModal,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTools.ARCx],
         });
         onOpenSupportModal(true);
       },

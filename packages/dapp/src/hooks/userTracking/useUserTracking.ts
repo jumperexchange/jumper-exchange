@@ -23,16 +23,16 @@ export function useUserTracking() {
      *
      */
     async ({ data, disableTrackingTool }: TrackAttributeProps) => {
-      if (data && !disableTrackingTool?.includes(EventTrackingTools.hotjar)) {
+      if (data && !disableTrackingTool?.includes(EventTrackingTools.Hotjar)) {
         hotjar.initialized() &&
           hotjar.identify(account?.address ? account?.address : null, {
             ...data,
           });
       }
-      if (data && !disableTrackingTool?.includes(EventTrackingTools.ga)) {
+      if (data && !disableTrackingTool?.includes(EventTrackingTools.GA)) {
         data && ReactGA.set({ ...data });
       }
-      if (data && !disableTrackingTool?.includes(EventTrackingTools.arcx)) {
+      if (data && !disableTrackingTool?.includes(EventTrackingTools.ARCx)) {
         await arcx.attribute({
           ...data,
           //   source, // optional(string) - the origin of the web traffic (eg. discord, twitter etc)
@@ -56,7 +56,7 @@ export function useUserTracking() {
     }: TrackConnectWalletProps) => {
       if (
         !!account.address &&
-        !disableTrackingTool?.includes(EventTrackingTools.hotjar)
+        !disableTrackingTool?.includes(EventTrackingTools.Hotjar)
       ) {
         !disconnect &&
           hotjar.identify(`${account.address}`, {
@@ -68,7 +68,7 @@ export function useUserTracking() {
       }
       if (
         !!account.address &&
-        !disableTrackingTool?.includes(EventTrackingTools.ga)
+        !disableTrackingTool?.includes(EventTrackingTools.GA)
       ) {
         !disconnect &&
           ReactGA.set({
@@ -82,7 +82,7 @@ export function useUserTracking() {
         });
       }
       if (
-        !disableTrackingTool?.includes(EventTrackingTools.arcx) &&
+        !disableTrackingTool?.includes(EventTrackingTools.ARCx) &&
         !disconnect
       ) {
         !!account.address &&
@@ -107,18 +107,18 @@ export function useUserTracking() {
       data,
       disableTrackingTool,
     }: TrackEventProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTools.hotjar)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.Hotjar)) {
         hotjar.initialized() &&
           hotjar.event(`${category}-${action}${label ?? '-' + label}`);
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.ga)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.GA)) {
         ReactGA.gtag('event', category, {
           action,
           label,
           ...data,
         });
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.arcx)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.ARCx)) {
         arcx?.event(`${category}-${action}`, {
           category,
           label,
@@ -143,7 +143,7 @@ export function useUserTracking() {
       disableTrackingTool,
       url,
     }: trackPageloadProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTools.hotjar)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.Hotjar)) {
         hotjar.initialized() && pageload
           ? hotjar.stateChange(url)
           : hotjar.event(
@@ -152,7 +152,7 @@ export function useUserTracking() {
               }${destination && '-' + destination}`,
             );
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.ga)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.GA)) {
         ReactGA.gtag('event', `pageload`, {
           pageLoad: pageload ? 'external' : 'internal',
           source,
@@ -161,7 +161,7 @@ export function useUserTracking() {
           ...data,
         });
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.arcx)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.ARCx)) {
         pageload &&
           arcx?.event(`pageload`, {
             url,
@@ -188,10 +188,10 @@ export function useUserTracking() {
       disableTrackingTool,
       transactionHash,
     }: TrackTransactionProps) => {
-      if (!disableTrackingTool?.includes(EventTrackingTools.hotjar)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.Hotjar)) {
         hotjar.initialized() && hotjar.event(`${category}-${action}`);
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.ga)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.GA)) {
         ReactGA.gtag('event', 'transaction', {
           category,
           action,
@@ -199,7 +199,7 @@ export function useUserTracking() {
           transactionHash,
         });
       }
-      if (!disableTrackingTool?.includes(EventTrackingTools.arcx)) {
+      if (!disableTrackingTool?.includes(EventTrackingTools.ARCx)) {
         await arcx?.transaction({
           chain, // required(string) - chain ID that the transaction is taking place on
           transactionHash, // required(string) - hash of the transaction

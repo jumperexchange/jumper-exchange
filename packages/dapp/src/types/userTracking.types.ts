@@ -2,9 +2,9 @@ import { ChainID } from '@arcxmoney/analytics';
 import { WalletAccount } from './internal.types';
 
 export enum EventTrackingTools {
-  arcx,
-  ga,
-  hotjar,
+  ARCx,
+  GA,
+  Hotjar,
 }
 
 export interface InitTrackingProps {

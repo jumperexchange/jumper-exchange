@@ -34,7 +34,7 @@ export const ThemeSwitch = () => {
       action: TrackingActions.ClickThemeSwitch,
       label: `themeSwitch-${isDarkMode ? 'light' : 'dark'}`,
       data: { themeSwitch: `theme-${isDarkMode ? 'light' : 'dark'}` },
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTools.ARCx],
     });
   };
 
