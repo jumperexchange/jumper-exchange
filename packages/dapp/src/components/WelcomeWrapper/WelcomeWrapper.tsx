@@ -38,8 +38,8 @@ export const WelcomeWrapper = ({
           </CustomColor>
           <Typography
             variant={'lifiBodyLarge'}
-            mt={theme.spacing(4)}
             sx={{
+              marginTop: theme.spacing(4),
               color:
                 theme.palette.mode === 'dark'
                   ? theme.palette.accent1Alt.main
@@ -47,12 +47,12 @@ export const WelcomeWrapper = ({
               '& > .link-lifi': {
                 fontWeight: 700,
                 color: 'inherit',
+                textDecoration: 'none',
               },
               [theme.breakpoints.up('sm' as Breakpoint)]: {
                 fontSize: '24px',
                 fontWeight: 400,
                 lineHeight: '32px',
-                mt: theme.spacing(2),
               },
             }}
           >
@@ -90,11 +90,11 @@ export const WelcomeWrapper = ({
             onClick={handleGetStarted}
             sx={(theme) => ({
               margin: 'auto',
-              marginTop: theme.spacing(5),
+              marginTop: theme.spacing(8),
               height: '48px',
               width: '192px',
               [theme.breakpoints.up('sm' as Breakpoint)]: {
-                marginTop: theme.spacing(8),
+                marginTop: theme.spacing(12),
                 height: '56px',
                 borderRadius: '28px',
                 width: '247px',

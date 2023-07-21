@@ -84,6 +84,10 @@ export const WidgetContainer = styled(Box, {
     [`@media screen and (min-height: 700px)`]: {
       marginTop: showWelcome ? 'calc( 50vh - 680px / 2.75 - 80px)' : '0', // (mid viewheight - half-two/thirds widget height - header height )
     },
+
+    [`@media screen and (min-height: 900px)`]: {
+      marginTop: showWelcome ? 'calc( 50vh - 680px / 2.75 - 128px)' : '0', // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+    },
   },
 
   '& > .onramper-wrapper': {

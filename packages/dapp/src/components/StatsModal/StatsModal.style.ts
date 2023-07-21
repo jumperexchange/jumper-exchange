@@ -34,6 +34,9 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? theme.palette.surface2.main
       : theme.palette.surface1.main,
+  '&:focus-visible': {
+    outline: 0,
+  },
 
   [theme.breakpoints.up('md' as Breakpoint)]: {
     margin: 0,
