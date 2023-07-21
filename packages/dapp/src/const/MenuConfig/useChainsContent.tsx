@@ -1,14 +1,14 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
 import { useMemo } from 'react';
-import { useChainInfos } from '../../providers/ChainInfosProvider';
+import { useChains } from '../../hooks/useChains';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { ChainsMenuListItem } from '../../types';
 
 export const useChainsContent = () => {
   const { account, switchChain } = useWallet();
-  const { chains } = useChainInfos();
+  const { chains } = useChains();
 
   const onCloseAllNavbarMenus = useMenuStore(
     (state) => state.onCloseAllNavbarMenus,
