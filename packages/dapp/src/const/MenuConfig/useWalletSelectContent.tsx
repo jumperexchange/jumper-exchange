@@ -2,11 +2,11 @@ import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUserTracking } from '../../hooks';
+import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTools, MenuListItem } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
-import { useMultisig } from '../../hooks/useMultisig';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
@@ -105,14 +105,17 @@ export const useWalletSelectContent = () => {
             action: TrackingActions.ChooseWallet,
             label: `choose-wallet-${wallet}`,
             data: { usedWallet: wallet.name },
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTools.arcx,
+              EventTrackingTools.raleon,
+            ],
           });
         },
       };
     });
     return _output;
   }, [
-    availableWallets.length,
+    availableWallets,
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,

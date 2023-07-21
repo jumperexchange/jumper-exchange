@@ -35,7 +35,7 @@ export const ChainSwitch = () => {
     trackEvent({
       category: 'chain-menu',
       action: `click-open-chain-menu`,
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTools.arcx, EventTrackingTools.raleon],
     });
   };
 

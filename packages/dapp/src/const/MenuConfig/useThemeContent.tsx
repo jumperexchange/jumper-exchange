@@ -29,7 +29,7 @@ export const useThemeContent = () => {
       action: TrackingActions.SwitchThemeMode,
       label: `theme-${mode}`,
       data: { theme: `theme-${mode}` },
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTools.arcx, EventTrackingTools.raleon],
     });
   };
 

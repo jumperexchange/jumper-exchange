@@ -127,7 +127,10 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategories.SupportModal,
           action: TrackingActions.OpenSupportModal,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [
+            EventTrackingTools.arcx,
+            EventTrackingTools.raleon,
+          ],
         });
         onOpenSupportModal(true);
       },
