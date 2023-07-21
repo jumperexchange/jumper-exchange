@@ -5,7 +5,7 @@ import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { useChainInfos } from '../../providers/ChainInfosProvider';
+import { useChains } from '../../hooks/useChains';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { ThemeSwitch } from '../ThemeSwitch';
@@ -42,7 +42,7 @@ const NavbarManagement = () => {
     prevMainMenu.current = openMainNavbarMenu;
   }, [openMainNavbarMenu]);
 
-  const { isSuccess } = useChainInfos();
+  const { isSuccess } = useChains();
 
   const handleOnOpenNavbarMainMenu = () => {
     onOpenNavbarMainMenu(!openMainNavbarMenu, mainMenuAnchor.current);
