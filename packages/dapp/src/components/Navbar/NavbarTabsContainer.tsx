@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useActiveTabStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTool } from '../../types';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
   return {
@@ -44,7 +44,7 @@ const NavbarTabsContainer = () => {
             action: TrackingActions.SwitchTab,
             label: 'exchange',
             data: { tab: 'exchange' },
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [EventTrackingTool.ARCx],
           });
         }}
         icon={
@@ -69,7 +69,7 @@ const NavbarTabsContainer = () => {
             action: TrackingActions.SwitchTab,
             label: 'gas',
             data: { tab: 'gas' },
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [EventTrackingTool.ARCx],
           });
         }}
         label={translate(`${i18Path}links.refuel`)}
@@ -95,7 +95,7 @@ const NavbarTabsContainer = () => {
               action: TrackingActions.SwitchTab,
               label: 'gas',
               data: { tab: 'gas' },
-              disableTrackingTool: [EventTrackingTools.arcx],
+              disableTrackingTool: [EventTrackingTool.ARCx],
             });
           }}
           label={translate(`${i18Path}links.buy`)}

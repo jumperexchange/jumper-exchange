@@ -12,7 +12,7 @@ import { MenuKeys, TrackingActions, TrackingCategories } from '..';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTool } from '../../types';
 
 export const useMainMenuContent = () => {
   const { t: translate, i18n } = useTranslation();
@@ -69,7 +69,7 @@ export const useMainMenuContent = () => {
           destination: 'twitter-JumperExchange',
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
       },
     },
@@ -92,7 +92,7 @@ export const useMainMenuContent = () => {
           destination: 'discord-lifi',
           url: 'https://discord.gg/lifi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
       },
     },
@@ -115,7 +115,7 @@ export const useMainMenuContent = () => {
           destination: 'lifi-website',
           url: 'https://li.fi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         openInNewTab('https://li.fi');
       },
@@ -128,8 +128,8 @@ export const useMainMenuContent = () => {
           category: TrackingCategories.SupportModal,
           action: TrackingActions.OpenSupportModal,
           disableTrackingTool: [
-            EventTrackingTools.arcx,
-            EventTrackingTools.raleon,
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
           ],
         });
         onOpenSupportModal(true);
