@@ -17,7 +17,7 @@ import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
-import { EventTrackingTools, LanguageKey } from '../../types';
+import { EventTrackingTool, LanguageKey } from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 
 const refuelAllowChains: ChainId[] = [
@@ -70,7 +70,10 @@ export function Widget({ starterVariant }: WidgetProps) {
           trackEvent({
             category: TrackingCategories.Menu,
             action: TrackingActions.OpenWalletSelectMenu,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           onOpenNavbarWalletSelectMenu(
             true,
@@ -82,7 +85,10 @@ export function Widget({ starterVariant }: WidgetProps) {
           trackEvent({
             category: TrackingCategories.Wallet,
             action: TrackingActions.Disconnect,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           disconnect();
         },
@@ -96,7 +102,7 @@ export function Widget({ starterVariant }: WidgetProps) {
               data: {
                 switchChain: reqChainId,
               },
-              disableTrackingTool: [EventTrackingTools.arcx],
+              disableTrackingTool: [EventTrackingTool.ARCx],
               // transport: "xhr", // optional, beacon/xhr/image
             });
             return account.signer!;
@@ -113,7 +119,7 @@ export function Widget({ starterVariant }: WidgetProps) {
               tokenAdded: `${token.name}`,
               tokenAddChainId: chainId,
             },
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [EventTrackingTool.ARCx],
           });
           await addToken(chainId, token);
         },
@@ -126,7 +132,7 @@ export function Widget({ starterVariant }: WidgetProps) {
               chainIdAdded: `${chainId}`,
             },
             // transport: "xhr", // optional, beacon/xhr/image
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [EventTrackingTool.ARCx],
           });
           return addChain(chainId);
         },

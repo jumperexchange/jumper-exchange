@@ -161,7 +161,9 @@ export function WidgetEvents() {
 
     return () => widgetEvents.all.clear();
   }, [
+    onDestinationChainSelected,
     onOpenSupportModal,
+    shouldOpenMultisigSignatureModal,
     trackAttribute,
     trackEvent,
     trackTransaction,

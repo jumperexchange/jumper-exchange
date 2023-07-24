@@ -5,6 +5,7 @@ import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
+import { EventTrackingTool } from '../../types';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
@@ -20,7 +21,7 @@ interface MenuItemProps {
 }
 
 const MenuItemComponent = ({
-  open,  
+  open,
   showButton,
   autoFocus,
   showMoreIcon = true,
@@ -32,12 +33,9 @@ const MenuItemComponent = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const [onOpenNavbarSubMenu] =
-  useMenuStore(
-    (state) => [
-      state.onOpenNavbarSubMenu,
-    ],
-  );
+  const [onOpenNavbarSubMenu] = useMenuStore((state) => [
+    state.onOpenNavbarSubMenu,
+  ]);
 
   return open ? (
     <MenuItem
@@ -52,6 +50,7 @@ const MenuItemComponent = ({
             action: TrackingActions.OpenSubmenu,
             label: triggerSubMenu,
             data: { subMenu: triggerSubMenu },
+            disableTrackingTool: [EventTrackingTool.Raleon],
           });
         !!onClick && onClick();
       }}

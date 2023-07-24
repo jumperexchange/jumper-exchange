@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTool } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useThemeContent = () => {
@@ -29,7 +29,7 @@ export const useThemeContent = () => {
       action: TrackingActions.SwitchThemeMode,
       label: `theme-${mode}`,
       data: { theme: `theme-${mode}` },
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 

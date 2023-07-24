@@ -12,7 +12,7 @@ import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTool } from '../../types';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 
 export const ThemeSwitch = () => {
@@ -34,7 +34,7 @@ export const ThemeSwitch = () => {
       action: TrackingActions.ClickThemeSwitch,
       label: `themeSwitch-${isDarkMode ? 'light' : 'dark'}`,
       data: { themeSwitch: `theme-${isDarkMode ? 'light' : 'dark'}` },
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 

@@ -12,7 +12,7 @@ import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
-import { EventTrackingTools } from '@transferto/dapp/src/types';
+import { EventTrackingTool } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
@@ -93,7 +93,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
           }address/${account.address}`
         : '',
       pageload: true,
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx],
     });
   };
 
@@ -104,7 +104,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       category: 'menu',
       action: 'copyAddressToClipboard',
       label: 'copyAddressToClipboard',
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     onCloseAllNavbarMenus();
   };

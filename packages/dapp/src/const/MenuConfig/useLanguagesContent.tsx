@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTools, LanguageKey, ResourceKey } from '../../types';
+import { EventTrackingTool, LanguageKey, ResourceKey } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
@@ -20,7 +20,7 @@ export const useLanguagesContent = () => {
       action: TrackingActions.SwitchLanguage,
       label: `language-${newLanguage}`,
       data: { language: `language-${newLanguage}` },
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 

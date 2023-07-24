@@ -5,7 +5,7 @@ import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
-import { EventTrackingTools, MenuListItem } from '../../types';
+import { EventTrackingTool, MenuListItem } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useWalletSelectContent = () => {
@@ -105,13 +105,23 @@ export const useWalletSelectContent = () => {
             action: TrackingActions.ChooseWallet,
             label: `choose-wallet-${wallet}`,
             data: { usedWallet: wallet.name },
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
         },
       };
     });
     return _output;
-  }, [availableWallets, isCurrentMultisigEnvironment, login, onCloseAllNavbarMenus, onWelcomeScreenEntered, trackEvent]);
+  }, [
+    availableWallets,
+    isCurrentMultisigEnvironment,
+    login,
+    onCloseAllNavbarMenus,
+    onWelcomeScreenEntered,
+    trackEvent,
+  ]);
 
   return walletMenuItems;
 };
