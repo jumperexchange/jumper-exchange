@@ -37,8 +37,8 @@ export const useMultisig = () => {
     return !!accountInfo?.safeAddress;
   };
 
-  const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
-    ?.safeAddress || false;
+  const isSafeSigner =
+    !!(account?.signer?.provider as any)?.provider?.safe?.safeAddress || false;
 
   const handleMultiSigTransactionDetails = async (
     txHash: string,
@@ -97,8 +97,7 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'DONE',
-        txHash: safeTransactionDetails.txHash ,
-        message: "" // TODO: @abhishek remove the message from SDK types to remove TS error
+        txHash: safeTransactionDetails.txHash,
       };
     }
 
@@ -110,8 +109,7 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'FAILED',
-        txHash: safeTransactionDetails.txHash ,
-        message: ""
+        txHash: safeTransactionDetails.txHash,
       };
     }
 
@@ -123,23 +121,20 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'CANCELLED',
-        txHash: safeTransactionDetails.txHash ,
-        message: ""
+        txHash: safeTransactionDetails.txHash,
       };
     }
 
     if (isSafeStatusPending) {
       return {
         status: 'PENDING',
-        txHash: safeTransactionDetails.txHash ,
-        message: ""
+        txHash: safeTransactionDetails.txHash,
       };
     }
 
     return {
-      status: "PENDING",
-      txHash: safeTransactionDetails.txHash ,
-      message: ""
+      status: 'PENDING',
+      txHash: safeTransactionDetails.txHash,
     };
   };
 
@@ -180,7 +175,11 @@ export const useMultisig = () => {
       // get the Chain symbol (ETH) from chainID
       // get the ChainKey(eth) from ChainID(ETH)
       // unsure if it'll always be the same letters in lowercase, hence getting from mapping
-      const fromChainKey = currentChain && (ChainKey as Record<string, string>)[ChainId[currentChain]] as ChainKey
+      const fromChainKey =
+        currentChain &&
+        ((ChainKey as Record<string, string>)[
+          ChainId[currentChain]
+        ] as ChainKey);
 
       return {
         multisigWidget: {
@@ -198,13 +197,11 @@ export const useMultisig = () => {
 
   const shouldOpenMultisigSignatureModal = (route: Route) => {
     const isRouteDone = route.steps.every(
-      (step) =>
-        step.execution?.status === 'DONE',
+      (step) => step.execution?.status === 'DONE',
     );
 
     const isRouteFailed = route.steps.some(
-      (step) =>
-        step.execution?.status === 'FAILED',
+      (step) => step.execution?.status === 'FAILED',
     );
 
     const multisigRouteStarted = route.steps.some(

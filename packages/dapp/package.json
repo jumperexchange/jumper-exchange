@@ -7,7 +7,7 @@
     "@arcxmoney/analytics": "^1.9.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@lifi/sdk": "^2.2.0",
+    "@lifi/sdk": "^2.2.1",
     "@lifi/wallet-management": "^2.2.1",
     "@lifi/widget": "^2.2.1",
     "@mui/icons-material": "^5.14.0",
