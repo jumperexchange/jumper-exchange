@@ -3,8 +3,7 @@ import {
   HiddenUI,
   LiFiWidget,
   WidgetConfig,
-  WidgetSubvariant,
-  WidgetVariant,
+  WidgetSubvariant
 } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -32,7 +31,11 @@ const refuelAllowChains: ChainId[] = [
   ChainId.VEL,
 ];
 
-export function Widget({ starterVariant }) {
+export function Widget({
+  starterVariant,
+}: {
+  starterVariant: WidgetSubvariant;
+}) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
@@ -59,8 +62,8 @@ export function Widget({ starterVariant }) {
     const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
 
     return {
-      variant: 'expandable' as WidgetVariant,
-      subvariant: (starterVariant as WidgetSubvariant) || 'default',
+      variant: starterVariant === 'refuel' ? 'default' : 'expandable',
+      subvariant: starterVariant || 'default',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
