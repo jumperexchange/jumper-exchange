@@ -132,8 +132,6 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     handleMultisigEnvironmentCheck();
   }, [account]);
 
-  console.log({ isMultisigEnvironment });
-
   return !!openNavbarWalletMenu ? (
     <NavbarMenu
       open={true}
