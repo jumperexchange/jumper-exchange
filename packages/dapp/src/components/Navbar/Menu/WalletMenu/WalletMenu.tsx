@@ -20,17 +20,23 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { NavbarMenu } from '../../index';
+import { useMultisig } from '../../../../hooks/useMultisig';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
 export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
+  const { checkMultisigEnvironment } = useMultisig();
+
   const i18Path = 'navbar.walletMenu.';
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t: translate } = useTranslation();
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
+
+  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+
   const walletSource: Wallet[] = supportedWallets;
   const [
     openNavbarWalletMenu,
@@ -112,9 +118,21 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     onWalletDisconnect();
   };
 
+  const handleMultisigEnvironmentCheck = async () => {
+    const response = await checkMultisigEnvironment();
+
+    setIsMultisigEnvironment(response);
+  };
+
   useEffect(() => {
     openNavbarWalletMenu! && setCopiedToClipboard(false);
   }, [openNavbarWalletMenu]);
+
+  useEffect(() => {
+    handleMultisigEnvironmentCheck();
+  }, [account]);
+
+  console.log({ isMultisigEnvironment });
 
   return !!openNavbarWalletMenu ? (
     <NavbarMenu
@@ -152,17 +170,19 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
             {_walletDigest}
           </Typography>
         </Grid>
-        <Grid item xs={4}>
-          <SpotButton name="Copy" onClick={handleCopyButton}>
-            <ContentCopyIcon />
-          </SpotButton>
-        </Grid>
-        <Grid item xs={4}>
+        {!isMultisigEnvironment && (
+          <Grid item xs={4}>
+            <SpotButton name="Copy" onClick={handleCopyButton}>
+              <ContentCopyIcon />
+            </SpotButton>
+          </Grid>
+        )}
+        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton name="Explore" onClick={handleExploreButton}>
             <LaunchIcon />
           </SpotButton>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton
             name={translate(`${i18Path}disconnect`)}
             variant={'primary'}
