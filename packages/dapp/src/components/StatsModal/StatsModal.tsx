@@ -16,6 +16,7 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
   const theme = useTheme();
   return (
     <MUIModal
+      disableAutoFocus={true}
       open={open}
       onClick={() => {
         setOpen(false);
@@ -27,7 +28,7 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <ModalContainer>
+      <ModalContainer className="modal-container">
         <ModalHeaderAppBar>
           <Typography
             id="modal-modal-title"

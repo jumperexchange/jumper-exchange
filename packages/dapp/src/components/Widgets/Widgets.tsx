@@ -4,7 +4,7 @@ import { TestnetAlert } from '@transferto/shared/src';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { TabsMap } from '../../const/tabsMap';
-import { useSettingsStore } from '../../stores';
+import { useActiveTabStore, useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
@@ -13,16 +13,11 @@ import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
 export function Widgets() {
-  const [activeTab, onChangeTab, welcomeScreenEntered, onWelcomeScreenEntered] =
-    useSettingsStore(
-      (state) => [
-        state.activeTab,
-        state.onChangeTab,
-        state.welcomeScreenEntered,
-        state.onWelcomeScreenEntered,
-      ],
-      shallow,
-    );
+  const { activeTab, setActiveTab } = useActiveTabStore();
+  const [welcomeScreenEntered, onWelcomeScreenEntered] = useSettingsStore(
+    (state) => [state.welcomeScreenEntered, state.onWelcomeScreenEntered],
+    shallow,
+  );
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
@@ -45,12 +40,12 @@ export function Widgets() {
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
       starterVariant === TabsMap.Exchange.value
-        ? onChangeTab(TabsMap.Exchange.index)
+        ? setActiveTab(TabsMap.Exchange.index)
         : starterVariant === TabsMap.Refuel.value
-        ? onChangeTab(TabsMap.Refuel.index)
+        ? setActiveTab(TabsMap.Refuel.index)
         : starterVariant === TabsMap.Buy.value
-        ? onChangeTab(TabsMap.Buy.index)
-        : onChangeTab(TabsMap.Exchange.index);
+        ? setActiveTab(TabsMap.Buy.index)
+        : setActiveTab(TabsMap.Exchange.index);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
@@ -62,7 +57,7 @@ export function Widgets() {
         setStarterVariant(TabsMap.Buy.value);
       }
     }
-  }, [activeTab, onChangeTab, starterVariant, starterVariantUsed]);
+  }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   const handleGetStarted = async (event) => {
     const classList = event?.target?.classList;
@@ -96,14 +91,14 @@ export function Widgets() {
         showWelcome={!welcomeScreenEntered}
         isActive={_starterVariant === TabsMap.Exchange.value}
       >
-        <Widget starterVariant={TabsMap.Exchange} />
+        <Widget starterVariant={TabsMap.Exchange.value as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleGetStarted}
         showWelcome={!welcomeScreenEntered}
         isActive={_starterVariant === TabsMap.Refuel.value}
       >
-        <Widget starterVariant={TabsMap.Refuel.value} />
+        <Widget starterVariant={TabsMap.Refuel.value as WidgetSubvariant} />
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
