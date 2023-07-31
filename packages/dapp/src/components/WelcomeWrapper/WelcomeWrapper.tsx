@@ -5,12 +5,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 
-export const WelcomeWrapper = ({
-  children,
-  showWelcome,
-
-  handleGetStarted,
-}) => {
+export const WelcomeWrapper = ({ children, showWelcome, handleGetStarted }) => {
   const theme = useTheme();
   const i18Path = 'navbar.welcome.';
   const { t: translate } = useTranslation();
@@ -29,13 +24,13 @@ export const WelcomeWrapper = ({
         in={showWelcome}
       >
         <ContentContainer showWelcome={showWelcome}>
-          <CustomColor variant={'lifiBrandHeaderMedium'}>
+          <CustomColor variant={'lifiHeaderMedium'}>
             {translate(`${i18Path}title`)}
           </CustomColor>
           <Typography
-            variant={'lifiBrandBodyLarge'}
-            mt={theme.spacing(4)}
+            variant={'lifiBodyLarge'}
             sx={{
+              marginTop: theme.spacing(4),
               color:
                 theme.palette.mode === 'dark'
                   ? theme.palette.accent1Alt.main
@@ -43,12 +38,12 @@ export const WelcomeWrapper = ({
               '& > .link-lifi': {
                 fontWeight: 700,
                 color: 'inherit',
+                textDecoration: 'none',
               },
               [theme.breakpoints.up('sm' as Breakpoint)]: {
                 fontSize: '24px',
                 fontWeight: 400,
                 lineHeight: '32px',
-                mt: theme.spacing(2),
               },
             }}
           >
@@ -86,11 +81,11 @@ export const WelcomeWrapper = ({
             onClick={handleGetStarted}
             sx={(theme) => ({
               margin: 'auto',
-              marginTop: theme.spacing(5),
+              marginTop: theme.spacing(8),
               height: '48px',
               width: '192px',
               [theme.breakpoints.up('sm' as Breakpoint)]: {
-                marginTop: theme.spacing(8),
+                marginTop: theme.spacing(12),
                 height: '56px',
                 borderRadius: '28px',
                 width: '247px',

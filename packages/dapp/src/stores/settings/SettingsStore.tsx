@@ -37,13 +37,6 @@ export const useSettingsStore = create(
           return updatedState;
         }),
 
-      // Tabs
-      onChangeTab: (tab: number) => {
-        set({
-          activeTab: tab || 0,
-        });
-      },
-
       // Wallet
       onWalletConnect: (activeWalletName: WalletConnected) => {
         set({
@@ -88,12 +81,22 @@ export const useSettingsStore = create(
             defaultSettings.languageMode ||
             (i18next.language as LanguageKey) ||
             defaultLang,
-          activeTab: defaultSettings.activeTab || 0,
         });
       },
     }),
     {
       name: 'jumper-store', // name of the item in the storage (must be unique)
+      version: 1,
+      migrate: (persistedState: SettingsProps, version) => {
+        if (version === 0) {
+          const newStore = { ...persistedState };
+          Object.keys(persistedState)
+            .filter((el) => !(el in defaultSettings))
+            .forEach((el) => delete newStore[el]);
+          return newStore;
+        }
+        return persistedState;
+      },
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ) as unknown as StateCreator<SettingsState, [], [], SettingsState>,

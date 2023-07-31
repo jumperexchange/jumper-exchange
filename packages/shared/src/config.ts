@@ -25,7 +25,6 @@ const setLanguage = () => {
 };
 
 interface DefaultSettingsType {
-  activeTab: number;
   themeMode: ThemeModesSupported;
   languageMode: LanguageKey;
   activeWalletName: string;
@@ -33,7 +32,6 @@ interface DefaultSettingsType {
 }
 
 export const defaultSettings: DefaultSettingsType = {
-  activeTab: 0,
   themeMode:
     (localStorage.getItem(localStorageKey.themeMode) as ThemeModesSupported) ||
     'auto',

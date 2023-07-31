@@ -3,8 +3,8 @@ import { Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import { useWallet } from '../../providers/WalletProvider';
-import { useSettingsStore } from '../../stores';
+import { TabsMap } from '../../const/tabsMap';
+import { useActiveTabStore, useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
@@ -13,58 +13,51 @@ import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 
 export function Widgets() {
-  const [activeTab, onChangeTab, welcomeScreenEntered, onWelcomeScreenEntered] =
-    useSettingsStore(
-      (state) => [
-        state.activeTab,
-        state.onChangeTab,
-        state.welcomeScreenEntered,
-        state.onWelcomeScreenEntered,
-      ],
-      shallow,
-    );
-  const { account } = useWallet();
-  const [showWelcome, setShowWelcome] = useState(true);
+  const { activeTab, setActiveTab } = useActiveTabStore();
+  const [welcomeScreenEntered, onWelcomeScreenEntered] = useSettingsStore(
+    (state) => [state.welcomeScreenEntered, state.onWelcomeScreenEntered],
+    shallow,
+  );
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
-  >('default');
+  >(TabsMap.Exchange.value);
 
   const starterVariant = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
-      if (url === LinkMap.Exchange) {
-        return 'default';
-      } else if (url === LinkMap.Gas || url === LinkMap.Refuel) {
-        return 'refuel';
-      } else if (url === LinkMap.Buy) {
-        return 'buy';
+      if (url === TabsMap.Exchange.value) {
+        return TabsMap.Exchange.value;
+      } else if (url === TabsMap.Refuel.value) {
+        return TabsMap.Refuel.value;
+      } else if (url === TabsMap.Buy.value) {
+        return TabsMap.Buy.value;
       }
     }
   }, []);
 
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
-      starterVariant === 'default'
-        ? onChangeTab(0)
-        : starterVariant === 'refuel'
-        ? onChangeTab(1)
-        : starterVariant === 'buy'
-        ? onChangeTab(2)
-        : onChangeTab(0);
+      starterVariant === TabsMap.Exchange.value
+        ? setActiveTab(TabsMap.Exchange.index)
+        : starterVariant === TabsMap.Refuel.value
+        ? setActiveTab(TabsMap.Refuel.index)
+        : starterVariant === TabsMap.Buy.value
+        ? setActiveTab(TabsMap.Buy.index)
+        : setActiveTab(TabsMap.Exchange.index);
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
-      if (activeTab === 0) {
-        setStarterVariant('default');
-      } else if (activeTab === 1) {
-        setStarterVariant('refuel');
-      } else if (activeTab === 2) {
-        setStarterVariant('buy');
+      if (activeTab === TabsMap.Exchange.index) {
+        setStarterVariant(TabsMap.Exchange.value);
+      } else if (activeTab === TabsMap.Refuel.index) {
+        setStarterVariant(TabsMap.Refuel.value);
+      } else if (activeTab === TabsMap.Buy.index) {
+        setStarterVariant(TabsMap.Buy.value);
       }
     }
-  }, [activeTab, onChangeTab, starterVariant, starterVariantUsed]);
+  }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   const handleGetStarted = async (event) => {
     const classList = event?.target?.classList;
@@ -75,12 +68,9 @@ export function Widgets() {
       return;
     } else {
       event.stopPropagation();
-      setShowWelcome(false);
       onWelcomeScreenEntered(true);
     }
   };
-
-  const showWelcomeWrapper = !welcomeScreenEntered && showWelcome;
 
   useLayoutEffect(() => {
     getActiveWidget();
@@ -88,7 +78,7 @@ export function Widgets() {
 
   return (
     <WelcomeWrapper
-      showWelcome={showWelcomeWrapper}
+      showWelcome={!welcomeScreenEntered}
       handleGetStarted={handleGetStarted}
     >
       {import.meta.env.MODE === 'testnet' && (
@@ -98,23 +88,24 @@ export function Widgets() {
       )}
       <WidgetContainer
         onClick={handleGetStarted}
-        showWelcome={showWelcomeWrapper}
-        isActive={_starterVariant === 'default'}
+        showWelcome={!welcomeScreenEntered}
+        isActive={_starterVariant === TabsMap.Exchange.value}
       >
-        <Widget starterVariant={'default'} />
+        <Widget starterVariant={TabsMap.Exchange.value as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleGetStarted}
-        showWelcome={showWelcomeWrapper}
-        isActive={_starterVariant === 'refuel'}
+        showWelcome={!welcomeScreenEntered}
+        isActive={_starterVariant === TabsMap.Refuel.value}
       >
-        <Widget starterVariant={'refuel'} />
+        <Widget starterVariant={TabsMap.Refuel.value as WidgetSubvariant} />
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleGetStarted}
-          showWelcome={showWelcomeWrapper}
-          isActive={_starterVariant === 'buy'}
+          showWelcome={!welcomeScreenEntered}
+          isActive={_starterVariant === TabsMap.Buy.value}
+          sx={{ width: '392px' }}
         >
           <div className="onramper-wrapper">
             <OnRamper />
