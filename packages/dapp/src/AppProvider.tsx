@@ -5,7 +5,6 @@ import type { PropsWithChildren } from 'react';
 import { BackgroundGradient } from './components/BackgroundGradient';
 import { queryClient } from './config/queryClient';
 import {
-  ChainInfosProvider,
   ContentfulProvider,
   I18NProvider,
   ThemeProvider,
@@ -16,22 +15,20 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ContentfulProvider>
-        <ChainInfosProvider>
-          <I18NProvider>
-            <ThemeProvider>
-              <ArcxAnalyticsProvider
-                apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
-              >
-                <WalletProvider>
-                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                  <CssBaseline />
-                  <BackgroundGradient />
-                  {children}
-                </WalletProvider>
-              </ArcxAnalyticsProvider>
-            </ThemeProvider>
-          </I18NProvider>
-        </ChainInfosProvider>
+        <I18NProvider>
+          <ThemeProvider>
+            <ArcxAnalyticsProvider
+              apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
+            >
+              <WalletProvider>
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <BackgroundGradient />
+                {children}
+              </WalletProvider>
+            </ArcxAnalyticsProvider>
+          </ThemeProvider>
+        </I18NProvider>
       </ContentfulProvider>
     </QueryClientProvider>
   );

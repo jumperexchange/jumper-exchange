@@ -4,7 +4,6 @@ import {
   LiFiWidget,
   WidgetConfig,
   WidgetSubvariant,
-  WidgetVariant,
 } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -13,11 +12,11 @@ import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
+import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useMultisigStore } from '../../stores';
-import { EventTrackingTools, LanguageKey } from '../../types';
+import { EventTrackingTool, LanguageKey } from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
-import { useMultisig } from '../../hooks/useMultisig';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -32,7 +31,11 @@ const refuelAllowChains: ChainId[] = [
   ChainId.VEL,
 ];
 
-export function Widget({ starterVariant }) {
+export function Widget({
+  starterVariant,
+}: {
+  starterVariant: WidgetSubvariant;
+}) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
@@ -59,15 +62,18 @@ export function Widget({ starterVariant }) {
     const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
 
     return {
-      variant: 'expandable' as WidgetVariant,
-      subvariant: (starterVariant as WidgetSubvariant) || 'default',
+      variant: starterVariant === 'refuel' ? 'default' : 'expandable',
+      subvariant: starterVariant || 'default',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
           trackEvent({
             category: TrackingCategories.Menu,
             action: TrackingActions.OpenWalletSelectMenu,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           onOpenNavbarWalletSelectMenu(
             true,
@@ -80,7 +86,10 @@ export function Widget({ starterVariant }) {
           trackEvent({
             category: TrackingCategories.Wallet,
             action: TrackingActions.Disconnect,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           disconnect();
         },
@@ -94,7 +103,7 @@ export function Widget({ starterVariant }) {
               data: {
                 switchChain: reqChainId,
               },
-              disableTrackingTool: [EventTrackingTools.arcx],
+              disableTrackingTool: [EventTrackingTool.ARCx],
               // transport: "xhr", // optional, beacon/xhr/image
             });
             return account.signer!;
@@ -111,7 +120,7 @@ export function Widget({ starterVariant }) {
               tokenAdded: `${token.name}`,
               tokenAddChainId: chainId,
             },
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [EventTrackingTool.ARCx],
           });
           await addToken(chainId, token);
         },
@@ -124,7 +133,7 @@ export function Widget({ starterVariant }) {
               chainIdAdded: `${chainId}`,
             },
             // transport: "xhr", // optional, beacon/xhr/image
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [EventTrackingTool.ARCx],
           });
           return addChain(chainId);
         },
@@ -179,22 +188,23 @@ export function Widget({ starterVariant }) {
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
-    destinationChain,
+    getMultisigWidgetConfig,
+    starterVariant,
     account.signer,
-    addChain,
-    addToken,
-    disconnect,
+    isDarkMode,
     i18n.language,
     i18n.languages,
-    isDarkMode,
-    onOpenNavbarWalletSelectMenu,
-    starterVariant,
-    switchChain,
+    theme.palette.surface2.main,
+    theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
+    isMultisigSigner,
     trackEvent,
+    onOpenNavbarWalletSelectMenu,
+    disconnect,
+    switchChain,
+    addToken,
+    addChain,
   ]);
 
   return (
