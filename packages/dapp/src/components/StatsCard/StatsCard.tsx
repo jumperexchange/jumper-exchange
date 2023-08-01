@@ -1,8 +1,8 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useFetchDexsAndBridges } from '../../hooks';
+import { useChains } from '../../hooks/useChains';
 import { useCountUpAnimation } from '../../hooks/useCountUpAnimation';
-import { useChainInfos } from '../../providers/ChainInfosProvider';
 import { StatsModal } from '../StatsModal/StatsModal';
 import { Card, Container } from './StatsCard.style';
 
@@ -22,7 +22,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
       sx={{ cursor: 'pointer' }}
     >
       <Typography
-        variant={'lifiBrandHeaderMedium'}
+        variant={'lifiHeaderMedium'}
         sx={{
           fontSize: '24px',
           lineHeight: '32px',
@@ -36,11 +36,11 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
         {counter}
       </Typography>
       <Typography
-        variant={'lifiBrandBodySmall'}
+        variant={'lifiBodySmall'}
         sx={{
           pointerEvents: 'none',
-          mt: theme.spacing(1),
           [theme.breakpoints.up('sm')]: {
+            mt: theme.spacing(1),
             fontSize: '16px',
           },
         }}
@@ -72,7 +72,7 @@ export const StatsCards = ({
   setOpenDexsPopper,
 }) => {
   const { data } = useFetchDexsAndBridges();
-  const { chains } = useChainInfos();
+  const { chains } = useChains();
   const i18Path = 'navbar.statsCards.';
   const { t: translate } = useTranslation();
 

@@ -12,7 +12,7 @@ import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
-import { EventTrackingTools } from '@transferto/dapp/src/types';
+import { EventTrackingTool } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { Wallet } from '@transferto/shared/src/types';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
@@ -20,17 +20,23 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import { NavbarMenu } from '../../index';
+import { useMultisig } from '../../../../hooks/useMultisig';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
 export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
+  const { checkMultisigEnvironment } = useMultisig();
+
   const i18Path = 'navbar.walletMenu.';
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t: translate } = useTranslation();
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
+
+  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+
   const walletSource: Wallet[] = supportedWallets;
   const [
     openNavbarWalletMenu,
@@ -90,7 +96,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         getChainById(account.chainId).metamask.blockExplorerUrls[0]
       }address/${account.address}`,
       pageload: true,
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx],
     });
   };
 
@@ -101,7 +107,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       category: 'menu',
       action: 'copyAddressToClipboard',
       label: 'copyAddressToClipboard',
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     onCloseAllNavbarMenus();
   };
@@ -112,9 +118,19 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     onWalletDisconnect();
   };
 
+  const handleMultisigEnvironmentCheck = async () => {
+    const response = await checkMultisigEnvironment();
+
+    setIsMultisigEnvironment(response);
+  };
+
   useEffect(() => {
     openNavbarWalletMenu! && setCopiedToClipboard(false);
   }, [openNavbarWalletMenu]);
+
+  useEffect(() => {
+    handleMultisigEnvironmentCheck();
+  }, [account]);
 
   return !!openNavbarWalletMenu ? (
     <NavbarMenu
@@ -152,17 +168,19 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
             {_walletDigest}
           </Typography>
         </Grid>
-        <Grid item xs={4}>
-          <SpotButton name="Copy" onClick={handleCopyButton}>
-            <ContentCopyIcon />
-          </SpotButton>
-        </Grid>
-        <Grid item xs={4}>
+        {!isMultisigEnvironment && (
+          <Grid item xs={4}>
+            <SpotButton name="Copy" onClick={handleCopyButton}>
+              <ContentCopyIcon />
+            </SpotButton>
+          </Grid>
+        )}
+        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton name="Explore" onClick={handleExploreButton}>
             <LaunchIcon />
           </SpotButton>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton
             name={translate(`${i18Path}disconnect`)}
             variant={'primary'}

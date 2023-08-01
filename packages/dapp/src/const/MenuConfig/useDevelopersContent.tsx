@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { MenuKeys } from '..';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTool } from '../../types';
 
 export const useDevelopersContent = () => {
   const { t: translate } = useTranslation();
@@ -38,7 +38,7 @@ export const useDevelopersContent = () => {
           destination: 'lifi-github',
           url: 'https://github.com/lifinance/',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         onCloseAllNavbarMenus();
       },
@@ -53,7 +53,7 @@ export const useDevelopersContent = () => {
           destination: 'lifi-docs',
           url: 'https://docs.li.fi/',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         onCloseAllNavbarMenus();
       },

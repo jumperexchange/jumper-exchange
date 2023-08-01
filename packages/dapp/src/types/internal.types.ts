@@ -5,6 +5,23 @@ import BigNumber from 'bignumber.js';
 import { Signer } from 'ethers';
 import { MenuKeys } from '../const';
 
+interface RaleonProps {
+  addPopup: (n: string, e: string) => void;
+  enableMessages: (e: boolean) => void;
+  enableQuests: (e: boolean) => void;
+  generateRaleonId: () => string;
+  pageVisited: (e: string) => void;
+  registerEvent: (e: string, t: string, o: any, a?: string) => void;
+  walletConnected: (e: string) => void;
+  walletDisconnected: () => void;
+}
+
+declare global {
+  interface Window {
+    raleon: RaleonProps;
+  }
+}
+
 export interface TokenAmountList {
   [ChainKey: string]: Array<TokenWithAmounts>;
 }

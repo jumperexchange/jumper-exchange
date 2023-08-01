@@ -58,5 +58,22 @@
     "info": "You’re using Testnet",
     "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
     "switchToMainnet": "Switch to Mainnet"
+  },
+  "button": {
+    "okay": "Okay"
+  },
+  "multisig": {
+    "connected": {
+      "title": "Multisig wallet connected",
+      "description": "Please notify other wallet participants to be ready to sign."
+    },
+    "transactionInitiated": {
+      "title": "Multiple signatures required",
+      "description": "Please notify other multisig wallet participants to sign before the transaction expires."
+    },
+    "alert": {
+      "title": "Multisig wallet connected",
+      "description": "Destination wallet address is required to complete the exchange."
+    }
   }
 }
