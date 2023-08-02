@@ -31,7 +31,6 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.14.2",
     "typescript": "^5.1.6",
-    "use-media": "^1.4.0",
     "zustand": "^4.4.0"
   },
   "devDependencies": {
