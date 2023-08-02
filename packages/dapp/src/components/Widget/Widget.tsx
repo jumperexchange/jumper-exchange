@@ -4,7 +4,6 @@ import {
   LiFiWidget,
   WidgetConfig,
   WidgetSubvariant,
-  WidgetVariant,
 } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -62,8 +61,8 @@ export function Widget({ starterVariant }: WidgetProps) {
     const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
 
     return {
-      variant: 'expandable' as WidgetVariant,
-      subvariant: (starterVariant as WidgetSubvariant) || 'default',
+      variant: starterVariant === 'refuel' ? 'default' : 'expandable',
+      subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
