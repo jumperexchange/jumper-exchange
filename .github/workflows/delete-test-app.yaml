@@ -1,5 +1,6 @@
 on:
-  delete:
+  pull_request:
+    types: ["closed"]
 
 env:
   BRANCH_NAME: ${{ github.event.ref }}
