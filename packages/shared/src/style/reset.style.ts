@@ -1,7 +1,4 @@
-import { normalize } from 'polished';
-
 export const resetStyle = `
-${normalize()};
   * {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
