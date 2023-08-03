@@ -3,7 +3,7 @@ on:
     types: ["closed"]
 
 env:
-  BRANCH_NAME: ${{ github.event.ref }}
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
   remove-test:
@@ -18,7 +18,7 @@ jobs:
       - name: Set Project Name
         run: |
           export NAME=$(echo ${{ env.BRANCH_NAME }} | tr -d -c '[:alnum:]' | tr '[:upper:]' '[:lower:]')
-          echo "PROJECT_NAME=${NAME:0:10}" >> $GITHUB_ENV
+          echo "PROJECT_NAME=jumper-${NAME:0:10}" >> $GITHUB_ENV
 
       - name: Delete project if present
         uses: actions/github-script@v6
@@ -33,12 +33,9 @@ jobs:
             })
             .then(r => r.json())
             .then(r => {
-              if (!r.success) {
+              if (!r || !r.success || !r.result) {
                 console.log(r)
                 process.exit(1)
-              } else if (!r.result) {
-                // project not created
-                return
               }
               fetch('https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/pages/projects/${{ env.PROJECT_NAME }}', {
                 method: 'DELETE',
