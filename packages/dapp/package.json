@@ -20,7 +20,7 @@
     "@transferto/shared": "*",
     "@types/react": "^18.2.15",
     "@widgetbot/react-embed": "^1.7.0",
-    "ethers": "^6.6.2",
+    "ethers": "^5.7.2",
     "i18next": "^23.2.11",
     "i18next-browser-languagedetector": "^7.1.0",
     "react": "^18.2.0",
