@@ -25,6 +25,7 @@ import { ButtonSecondary } from '@transferto/shared/src/atoms/index';
 
 import { Breakpoint, alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
+import { ElementType } from 'react';
 
 const MenuLabelHeight = '64px';
 
@@ -264,7 +265,7 @@ export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
 export interface MUIMenuItemProps extends Omit<MenuItemProps, 'showButton'> {
   showButton?: boolean;
-  component?: string;
+  component?: ElementType<any>;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
@@ -292,7 +293,7 @@ export const MenuItem = styled(MUIMenuItem, {
 export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
   isDarkMode?: boolean;
   isWide?: boolean;
-  component?: string;
+  component?: ElementType<any>;
 }
 
 export const NavbarPaper = styled(Paper, {

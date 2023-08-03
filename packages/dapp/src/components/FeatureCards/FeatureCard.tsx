@@ -3,14 +3,16 @@ import { IconButton, Link, Slide, useTheme } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
 import { Card, CardImage } from './FeatureCard.style';
 
-export const FeatureCard = ({ data, loading, error }) => {
+export const FeatureCard = ({ data, isSuccess, assets }) => {
   const [open, setOpen] = useState(true);
   const { t: translate } = useTranslation();
+  const [lightImageUrl, setLightImageUrl] = useState('');
+  const [darkImageUrl, setDarkImageUrl] = useState('');
   const [onDisableFeatureCard] = useSettingsStore((state) => [
     state.onDisableFeatureCard,
   ]);
@@ -18,10 +20,23 @@ export const FeatureCard = ({ data, loading, error }) => {
   const theme = useTheme();
 
   useEffect(() => {
-    data?.displayConditions &&
-      data?.displayConditions[0]?.showOnce &&
-      onDisableFeatureCard(data?.displayConditions[0]?.id);
-  }, [data?.displayConditions, onDisableFeatureCard]);
+    data?.fields?.displayConditions &&
+      data?.fields?.displayConditions[0]?.showOnce &&
+      onDisableFeatureCard(data?.fields?.displayConditions[0]?.id);
+  }, [data?.fields?.displayConditions, onDisableFeatureCard]);
+
+  const imageUrl = useMemo(() => {
+    return assets.filter((el) => {
+      return theme.palette.mode === 'dark'
+        ? el?.sys?.id === data?.fields?.imageDarkMode?.sys?.id
+        : el?.sys?.id === data?.fields?.imageLightMode?.sys?.id;
+    })[0].fields?.file?.url;
+  }, [
+    theme.palette.mode,
+    assets,
+    data?.fields?.imageDarkMode?.sys?.id,
+    data?.fields?.imageLightMode?.sys?.id,
+  ]);
 
   return (
     <Slide
@@ -43,9 +58,9 @@ export const FeatureCard = ({ data, loading, error }) => {
             }}
             onClick={() => {
               setOpen(false);
-              !data?.displayConditions[0].hasOwnProperty('showOnce') &&
-                !!data?.displayConditions[0]?.id &&
-                onDisableFeatureCard(data?.displayConditions[0]?.id);
+              !data?.fields?.displayConditions[0].hasOwnProperty('showOnce') &&
+                !!data?.fields?.displayConditions[0]?.id &&
+                onDisableFeatureCard(data?.fields?.displayConditions[0]?.id);
             }}
           >
             <CloseIcon
@@ -60,7 +75,7 @@ export const FeatureCard = ({ data, loading, error }) => {
             />
           </IconButton>
 
-          {loading && error ? (
+          {!isSuccess ? (
             'loading'
           ) : (
             <>
@@ -72,7 +87,7 @@ export const FeatureCard = ({ data, loading, error }) => {
                 }}
                 gutterBottom
               >
-                {data?.title}
+                {data?.fields?.title}
               </Typography>
               <Typography
                 variant={'lifiBodySmall'}
@@ -84,13 +99,13 @@ export const FeatureCard = ({ data, loading, error }) => {
                   textOverflow: 'ellipsis',
                 }}
               >
-                {data?.subtitle}
+                {data?.fields?.subtitle}
               </Typography>
               <CardActions sx={{ padding: 0, marginTop: theme.spacing(2) }}>
                 <Link
                   target="_blank"
                   rel="noopener"
-                  href={data?.url || 'https://li.fi'}
+                  href={data?.fields?.url || 'https://li.fi'}
                   sx={{
                     textDecoration: 'none',
                     color:
@@ -106,11 +121,7 @@ export const FeatureCard = ({ data, loading, error }) => {
               </CardActions>
               <CardImage
                 component="img"
-                src={
-                  theme.palette.mode === 'dark'
-                    ? data?.imageDarkMode.url
-                    : data?.imageLightMode.url
-                }
+                src={imageUrl}
                 alt="Feature Card Image"
               />
             </>

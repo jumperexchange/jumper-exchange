@@ -1,27 +1,28 @@
-import { useQuery } from '@apollo/client';
 import { Breakpoint, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import { getFeatureCards } from '../../graphql/queries/featureCards';
+import { useFeatureCards } from '../../hooks/useFeatureCards';
 import { useSettingsStore } from '../../stores';
 import { FeatureCard, FeatureCardsContainer } from './index';
 
 export const FeatureCards = () => {
-  const { loading, error, data } = useQuery(getFeatureCards);
   const [featureCards, setFeatureCards] = useState([]);
   const [disabledFeatureCards, welcomeScreenEntered] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenEntered],
     shallow,
   );
 
+  const { featureCards: data, isSuccess } = useFeatureCards();
+  console.log(data);
   const featureCardsFetched = useMemo(() => {
-    return data?.featureCardCollection?.items.filter(
+    return data?.items?.filter(
       (el, index) =>
-        el.displayConditions &&
-        !disabledFeatureCards.includes(el.displayConditions[0]?.id),
+        isSuccess &&
+        el.fields.displayConditions &&
+        !disabledFeatureCards.includes(el.fields.displayConditions[0]?.id),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.featureCardCollection?.items]);
+  }, [isSuccess, data?.items]);
 
   useEffect(() => {
     setFeatureCards(featureCardsFetched?.slice(0, 4));
@@ -38,9 +39,9 @@ export const FeatureCards = () => {
           featureCards.map((cardData, index) => {
             return (
               <FeatureCard
-                error={error}
-                loading={loading}
+                isSuccess={isSuccess}
                 data={cardData}
+                assets={data?.includes?.Asset || []}
                 key={`feature-card-${index}`}
               />
             );

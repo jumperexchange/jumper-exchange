@@ -17,6 +17,7 @@ interface ImportMetaEnv {
   readonly VITE_ONRAMPER_ENABLED: string;
   readonly VITE_CONTENTFUL_SPACE_ID: string;
   readonly VITE_CONTENTFUL_ACCESS_TOKEN: string;
+  readonly VITE_CONTENTFUL_API_URL: string;
 }
 
 interface ImportMeta {
