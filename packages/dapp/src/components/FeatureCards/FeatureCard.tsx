@@ -24,7 +24,14 @@ export const FeatureCard = ({ data, loading, error }) => {
   }, [data?.displayConditions, onDisableFeatureCard]);
 
   return (
-    <Slide direction="up" in={open} unmountOnExit appear={false} timeout={400}>
+    <Slide
+      direction="up"
+      in={open}
+      unmountOnExit
+      appear={false}
+      timeout={150}
+      easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
+    >
       <Card gradient={data?.gradientColor}>
         <CardContent sx={{ padding: theme.spacing(6), position: 'relative' }}>
           <IconButton
