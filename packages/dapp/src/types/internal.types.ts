@@ -45,7 +45,7 @@ export interface MenuItem {
 }
 
 export interface MenuListItem {
-  label: string;
+  label: string | unknown;
   triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;

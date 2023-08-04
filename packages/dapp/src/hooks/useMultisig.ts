@@ -2,7 +2,6 @@ import {
   BaseTransaction,
   ChainId,
   ChainKey,
-  LifiStep,
   MultisigConfig,
   MultisigTxDetails,
   Route,

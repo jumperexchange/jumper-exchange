@@ -105,7 +105,7 @@ const SubMenuComponent = ({
                     ml={!!el.prefixIcon ? '12px' : 'inherit'}
                     mr={!!el.suffixIcon ? '12px' : 'inherit'}
                   >
-                    {el.label}
+                    {`${el.label || ' '}`}
                   </Typography>
                   {el.suffixIcon}
                 </>
@@ -143,7 +143,7 @@ const SubMenuComponent = ({
                       },
                     }}
                   >
-                    {el.label}
+                    {`${el.label || ' '}`}
                   </Typography>
                 </>
               </MenuItemLabel>

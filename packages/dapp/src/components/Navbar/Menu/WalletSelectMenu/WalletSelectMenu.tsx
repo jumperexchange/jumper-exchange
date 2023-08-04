@@ -43,7 +43,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
         walletSelectMenuItems.map((el, index) => (
           <MenuItemComponent
             key={`${el.label}-${index}`}
-            label={el.label}
+            label={`${el.label || ' '}`}
             triggerSubMenu={MenuKeys.WalletSelect}
             showButton={el.showButton || false}
             showMoreIcon={el.showMoreIcon}

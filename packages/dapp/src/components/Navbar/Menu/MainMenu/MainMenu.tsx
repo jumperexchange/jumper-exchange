@@ -56,9 +56,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           />
         ))}
       <SubMenuComponent
-        label={
-          translate<string, any, string>(`navbar.navbarMenu.theme`) as string
-        }
+        label={translate(`${I18_PATH}navbarMenu.theme`, 'translation')}
         triggerSubMenu={MenuKeys.Themes}
         open={openNavbarSubMenu === MenuKeys.Themes}
         prevMenu={MenuKeys.None}
