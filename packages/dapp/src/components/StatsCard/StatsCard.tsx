@@ -97,12 +97,12 @@ export const StatsCards = ({
 }: StatsCardsProps) => {
   const { data } = useFetchDexsAndBridges();
   const { chains } = useChains();
-  const i18Path = 'navbar.statsCards.';
-  const { t: translate } = useTranslation();
+  const I18_PATH = 'navbar.statsCards.';
+  const { t: translate } = useTranslation('translation');
 
   const statsData: StatsDataProps[] = [
     {
-      title: translate(`${i18Path}chains`),
+      title: translate(I18_PATH, 'chains'),
       number: chains.length || 22,
       data: sortByName(chains),
       open: openChainsPopper,
@@ -112,7 +112,7 @@ export const StatsCards = ({
       },
     },
     {
-      title: translate(`${i18Path}bridges`),
+      title: translate(I18_PATH, 'bridges'),
       number: data?.bridges.length || 16,
       data: sortByName(data?.bridges),
       open: openBridgesPopper,
@@ -122,7 +122,7 @@ export const StatsCards = ({
       },
     },
     {
-      title: translate(`${i18Path}dexs`),
+      title: translate(I18_PATH, 'dexs'),
       number: data?.exchanges.length || 32,
       data: sortByName(data?.exchanges),
       open: openDexsPopper,

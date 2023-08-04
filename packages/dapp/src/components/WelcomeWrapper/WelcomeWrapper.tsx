@@ -16,7 +16,7 @@ export const WelcomeWrapper = ({
   handleGetStarted,
 }: WelcomeWrapperProps) => {
   const theme = useTheme();
-  const i18Path = 'navbar.welcome.';
+  const I18_PATH = 'navbar.welcome.';
   const { t: translate } = useTranslation();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
@@ -34,7 +34,7 @@ export const WelcomeWrapper = ({
       >
         <ContentContainer showWelcome={showWelcome}>
           <CustomColor variant={'lifiHeaderMedium'}>
-            {translate(`${i18Path}title`)}
+            {translate(I18_PATH, 'title')}
           </CustomColor>
           <Typography
             variant={'lifiBodyLarge'}
@@ -58,7 +58,7 @@ export const WelcomeWrapper = ({
           >
             {
               <Trans
-                i18nKey={`${i18Path}subtitle`}
+                i18nKey={`${I18_PATH}subtitle` as string & never[]}
                 components={[
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
@@ -110,7 +110,7 @@ export const WelcomeWrapper = ({
                 },
               }}
             >
-              {translate(`${i18Path}cta`)}
+              {translate(I18_PATH, 'cta')}
             </Typography>
           </ButtonPrimary>
         </ContentContainer>

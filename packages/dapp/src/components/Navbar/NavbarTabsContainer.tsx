@@ -18,8 +18,8 @@ function a11yProps(index: number) {
 
 const NavbarTabsContainer = () => {
   const theme = useTheme();
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t: translate } = useTranslation('translation');
+  const I18_PATH = 'navbar.';
   const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
@@ -58,7 +58,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={translate(`${i18Path}links.exchange`)}
+        label={translate(I18_PATH, 'links.exchange')}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -72,7 +72,7 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTool.ARCx],
           });
         }}
-        label={translate(`${i18Path}links.refuel`)}
+        label={translate(I18_PATH, 'links.refuel')}
         icon={
           <EvStationOutlinedIcon
             sx={{
@@ -98,7 +98,7 @@ const NavbarTabsContainer = () => {
               disableTrackingTool: [EventTrackingTool.ARCx],
             });
           }}
-          label={translate(`${i18Path}links.buy`)}
+          label={translate(I18_PATH, 'links.buy')}
           icon={
             <CreditCardIcon
               sx={{

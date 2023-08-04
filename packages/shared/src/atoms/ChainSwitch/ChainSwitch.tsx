@@ -14,8 +14,8 @@ import { shallow } from 'zustand/shallow';
 import { ButtonChainSwitch } from './ChainSwitch.style';
 
 export const ChainSwitch = () => {
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.walletMenu.';
+  const { t: translate } = useTranslation('translation');
+  const I18_PATH = 'navbar.walletMenu.';
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
   const { account } = useWallet();
@@ -43,7 +43,7 @@ export const ChainSwitch = () => {
   };
 
   return (
-    <Tooltip title={translate(`${i18Path}switchChain`)}>
+    <Tooltip title={translate(I18_PATH, 'switchChain')}>
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar

@@ -1,6 +1,6 @@
 import type { StateCreator } from 'zustand';
-import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { createWithEqualityFn } from 'zustand/traditional';
 
 // config
 import { defaultLang, defaultSettings } from '@transferto/shared/src';
@@ -12,13 +12,14 @@ import type {
   WalletConnected,
 } from '@transferto/shared/src/types/settings';
 import i18next from 'i18next';
+import { shallow } from 'zustand/shallow';
 import { LanguageKey } from '../../types';
 
 // ----------------------------------------------------------------------
 
 /*--  Use Zustand  --*/
 
-export const useSettingsStore = create(
+export const useSettingsStore = createWithEqualityFn(
   persist(
     (set, get) => ({
       ...defaultSettings,
@@ -100,4 +101,5 @@ export const useSettingsStore = create(
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ) as unknown as StateCreator<SettingsState, [], [], SettingsState>,
+  shallow,
 );

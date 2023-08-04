@@ -7,7 +7,7 @@ import {
 } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { MenuState } from '@transferto/shared';
+import { MenuState } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
@@ -39,7 +39,7 @@ interface WidgetProps {
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
-  const { i18n } = useTranslation();
+  const { i18n } = useTranslation('translation');
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
   const onOpenNavbarWalletSelectMenu = useMenuStore(

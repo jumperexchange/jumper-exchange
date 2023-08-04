@@ -1,10 +1,17 @@
+import type { Signer } from '@ethersproject/abstract-signer';
 import { TokenAmount, TokenWithAmounts } from '@lifi/sdk';
 import { ChainId, ChainKey, Coin, Token } from '@lifi/types';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
-import BigNumber from 'bignumber.js';
-import type { Signer } from '@ethersproject/abstract-signer';
-import { MenuKeys } from '../const';
 import { WidgetConfig } from '@lifi/widget';
+import BigNumber from 'bignumber.js';
+import 'react-i18next';
+import { MenuKeys } from '../const';
+
+declare module 'react-i18next' {
+  interface CustomTypeOptions {
+    allowObjectInHTMLChildren: true;
+  }
+}
 
 interface RaleonProps {
   addPopup: (n: string, e: string) => void;
@@ -151,4 +158,7 @@ export interface WalletAccount {
   chainId?: number;
 }
 
-export type MultisigWidgetConfig = Pick<WidgetConfig, "fromChain" | "requiredUI">
+export type MultisigWidgetConfig = Pick<
+  WidgetConfig,
+  'fromChain' | 'requiredUI'
+>;

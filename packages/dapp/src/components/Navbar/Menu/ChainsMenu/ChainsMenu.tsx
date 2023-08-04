@@ -16,24 +16,20 @@ interface NavbarMenuProps {
 }
 
 export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
-  const i18Path = 'navbar.walletMenu.';
-  const { t: translate } = useTranslation();
+  const I18_PATH = 'navbar.walletMenu.';
+  const { t: translate } = useTranslation('translation');
   const chains = useChainsContent();
   const theme = useTheme();
   const { account } = useWallet();
-  const [openNavbarChainsMenu, onOpenNavbarChainsMenu] =
-    useMenuStore(
-      (state) => [
-        state.openNavbarChainsMenu,
-        state.onOpenNavbarChainsMenu,
-      ],
-      shallow,
-    );
+  const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
+    (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
+    shallow,
+  );
 
   return !!openNavbarChainsMenu ? (
     <NavbarMenu
       handleClose={handleClose}
-      label={translate(`${i18Path}chains`)}
+      label={translate(I18_PATH, 'chains')}
       transformOrigin={'top'}
       open={true}
       setOpen={onOpenNavbarChainsMenu}
@@ -45,7 +41,10 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
             label={el.label}
             showButton={el.showButton ? el.showButton : false}
             showMoreIcon={false}
-            suffixIcon={(el.chainId && el.chainId === account.chainId) && <CheckIcon /> || undefined}
+            suffixIcon={
+              (el.chainId && el.chainId === account.chainId && <CheckIcon />) ||
+              undefined
+            }
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={openNavbarChainsMenu}

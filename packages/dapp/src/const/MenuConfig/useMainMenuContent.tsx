@@ -15,8 +15,8 @@ import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 
 export const useMainMenuContent = () => {
-  const { t: translate, i18n } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t: translate, i18n } = useTranslation('translation');
+  const I18_PATH = 'navbar.';
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
@@ -25,7 +25,7 @@ export const useMainMenuContent = () => {
 
   return [
     {
-      label: `${translate(`${i18Path}navbarMenu.theme`)}`,
+      label: translate(I18_PATH, 'navbarMenu.theme'),
       prefixIcon: isDarkMode ? (
         <NightlightOutlinedIcon />
       ) : (
@@ -35,7 +35,7 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Themes,
     },
     {
-      label: `${translate(`${i18Path}language.key`)}`,
+      label: translate(I18_PATH, 'language.key'),
       prefixIcon: <LanguageIcon />,
       checkIcon: themeMode === 'light',
       suffixIcon: (
@@ -54,7 +54,7 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Language,
     },
     {
-      label: `${translate(`${i18Path}navbarMenu.developers`)}`,
+      label: translate(I18_PATH, 'navbarMenu.developers'),
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: MenuKeys.Devs,
     },
@@ -97,7 +97,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: `${translate(`${i18Path}navbarMenu.aboutLIFI`)}`,
+      label: translate(I18_PATH, 'navbarMenu.aboutLIFI'),
       prefixIcon: (
         <LifiSmallLogo
           style={{ flexShrink: 0 }}
@@ -121,7 +121,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: `${translate(`${i18Path}navbarMenu.support`)}`,
+      label: translate(I18_PATH, 'navbarMenu.support'),
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({

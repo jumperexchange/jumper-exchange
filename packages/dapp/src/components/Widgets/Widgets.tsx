@@ -111,13 +111,6 @@ export function Widgets() {
         >
           <Widget starterVariant={TabsMap.Refuel.value as WidgetSubvariant} />
         </WidgetContainer>
-        <WidgetContainer
-          onClick={handleGetStarted}
-          showWelcome={!welcomeScreenEntered}
-          isActive={_starterVariant === TabsMap.Refuel.value}
-        >
-          <Widget starterVariant={TabsMap.Refuel.value} />
-        </WidgetContainer>
         {import.meta.env.VITE_ONRAMPER_ENABLED ? (
           <WidgetContainer
             onClick={handleGetStarted}

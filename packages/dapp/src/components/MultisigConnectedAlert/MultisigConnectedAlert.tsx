@@ -1,5 +1,6 @@
 import { Modal, Typography } from '@mui/material';
-import { ButtonPrimary, useTranslation } from '@transferto/shared/src';
+import { ButtonPrimary } from '@transferto/shared/src';
+import { useTranslation } from 'react-i18next';
 import {
   MultisigConnectedAlertContainer,
   MultisigConnectedAlertIcon,
@@ -10,9 +11,9 @@ export const MultisigConnectedAlert: React.FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ open, onClose }) => {
-  const i18Path = 'multisig.connected';
+  const I18_PATH = 'multisig.connected';
 
-  const { t: translate } = useTranslation();
+  const { t: translate } = useTranslation('translation');
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -28,10 +29,10 @@ export const MultisigConnectedAlert: React.FC<{
             fontSize: '1.125rem',
           }}
         >
-          {translate(`${i18Path}.title`)}
+          {translate(I18_PATH, 'title')}
         </Typography>
         <Typography fontSize={'1.125 rem'} marginY={4}>
-          {translate(`${i18Path}.description`)}
+          {translate(I18_PATH, 'description')}
         </Typography>
         <ButtonPrimary
           onClick={onClose}
@@ -39,7 +40,7 @@ export const MultisigConnectedAlert: React.FC<{
             width: '100%',
           }}
         >
-          {translate(`button.okay`)}
+          {translate('button', 'okay')}
         </ButtonPrimary>
       </MultisigConnectedAlertContainer>
     </Modal>

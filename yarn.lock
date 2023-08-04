@@ -3332,7 +3332,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:^5.14.0, @mui/icons-material@npm:^5.14.1":
+"@mui/icons-material@npm:^5.14.1, @mui/icons-material@npm:^5.14.3":
   version: 5.14.3
   resolution: "@mui/icons-material@npm:5.14.3"
   dependencies:
@@ -3378,7 +3378,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.14.0, @mui/material@npm:^5.14.2":
+"@mui/material@npm:^5.14.2, @mui/material@npm:^5.14.3":
   version: 5.14.3
   resolution: "@mui/material@npm:5.14.3"
   dependencies:
@@ -4435,7 +4435,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:7.61.0, @sentry/browser@npm:^7.58.1":
+"@sentry/browser@npm:7.61.0, @sentry/browser@npm:^7.61.0":
   version: 7.61.0
   resolution: "@sentry/browser@npm:7.61.0"
   dependencies:
@@ -4460,7 +4460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/integrations@npm:^7.58.1":
+"@sentry/integrations@npm:^7.61.0":
   version: 7.61.0
   resolution: "@sentry/integrations@npm:7.61.0"
   dependencies:
@@ -4472,7 +4472,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/react@npm:^7.58.1":
+"@sentry/react@npm:^7.61.0":
   version: 7.61.0
   resolution: "@sentry/react@npm:7.61.0"
   dependencies:
@@ -6034,7 +6034,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^4.29.19, @tanstack/react-query@npm:^4.32.0":
+"@tanstack/react-query@npm:^4.32.0, @tanstack/react-query@npm:^4.32.1":
   version: 4.32.1
   resolution: "@tanstack/react-query@npm:4.32.1"
   dependencies:
@@ -6118,36 +6118,36 @@ __metadata:
     "@lifi/sdk": ^2.2.2
     "@lifi/wallet-management": ^2.2.4
     "@lifi/widget": ^2.2.6
-    "@mui/icons-material": ^5.14.0
-    "@mui/material": ^5.14.0
+    "@mui/icons-material": ^5.14.3
+    "@mui/material": ^5.14.3
     "@safe-global/safe-apps-sdk": ^8.0.0
-    "@sentry/browser": ^7.58.1
-    "@sentry/integrations": ^7.58.1
-    "@sentry/react": ^7.58.1
-    "@tanstack/react-query": ^4.29.19
+    "@sentry/browser": ^7.61.0
+    "@sentry/integrations": ^7.61.0
+    "@sentry/react": ^7.61.0
+    "@tanstack/react-query": ^4.32.1
     "@transferto/shared": "*"
-    "@types/react": ^18.2.15
+    "@types/react": ^18.2.18
     "@types/react-dom": ^18.2.7
-    "@vitejs/plugin-react": ^4.0.3
-    "@widgetbot/react-embed": ^1.7.0
+    "@vitejs/plugin-react": ^4.0.4
+    "@widgetbot/react-embed": ^1.8.0
     ethers: ^5.7.2
     husky: ^8.0.3
-    i18next: ^23.2.11
+    i18next: ^23.4.1
     i18next-browser-languagedetector: ^7.1.0
-    lerna: ^7.1.3
+    lerna: ^7.1.4
     react: ^18.2.0
     react-dom: ^18.2.0
     react-ga4: ^2.1.0
     react-hotjar: ^6.1.0
-    react-i18next: ^13.0.2
+    react-i18next: ^13.0.3
     react-query: ^3.39.3
-    react-router-dom: ^6.14.1
+    react-router-dom: ^6.14.2
     rollup-plugin-polyfill-node: ^0.12.0
     typescript: ^5.1.6
     use-media: ^1.4.0
-    vite: ^4.4.4
+    vite: ^4.4.8
     web-vitals: ^3.4.0
-    zustand: ^4.3.9
+    zustand: ^4.4.0
   languageName: unknown
   linkType: soft
 
@@ -6159,8 +6159,8 @@ __metadata:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
     "@lifi/wallet-management": ^2.2.4
-    "@mui/icons-material": ^5.14.0
-    "@mui/material": ^5.14.0
+    "@mui/icons-material": ^5.14.3
+    "@mui/material": ^5.14.3
     "@storybook/addon-actions": ^6.5.16
     "@storybook/addon-essentials": ^6.5.16
     "@storybook/addon-interactions": ^6.5.16
@@ -6169,19 +6169,19 @@ __metadata:
     "@storybook/manager-webpack5": ^6.5.16
     "@storybook/react": ^6.5.16
     "@storybook/testing-library": ^0.0.13
-    "@types/node": ^20.4.2
-    "@types/react": ^18.2.15
+    "@types/node": ^20.4.6
+    "@types/react": ^18.2.18
     babel-loader: ^9.1.3
-    eslint-config-prettier: ^8.8.0
-    i18next: ^23.2.11
+    eslint-config-prettier: ^8.10.0
+    i18next: ^23.4.1
     js-cookie: ^3.0.5
     prettier: ^3.0.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-i18next: ^13.0.2
+    react-i18next: ^13.0.3
     typescript: ^5.1.6
     use-media: ^1.4.0
-    zustand: ^4.3.9
+    zustand: ^4.4.0
   languageName: unknown
   linkType: soft
 
@@ -6413,7 +6413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.4.2":
+"@types/node@npm:*, @types/node@npm:^20.4.6":
   version: 20.4.6
   resolution: "@types/node@npm:20.4.6"
   checksum: 28dfc13da87f579264840bc5b8a2cde2dcb93662464a0d58f0fa98eba1aae978e3c73e893474238c4a1226d0b1a14e3936520ff9795e1c4e06fad3282be83d18
@@ -6510,7 +6510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.2.15":
+"@types/react@npm:*, @types/react@npm:^18.2.18":
   version: 18.2.18
   resolution: "@types/react@npm:18.2.18"
   dependencies:
@@ -6779,7 +6779,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:^4.0.3":
+"@vitejs/plugin-react@npm:^4.0.4":
   version: 4.0.4
   resolution: "@vitejs/plugin-react@npm:4.0.4"
   dependencies:
@@ -7469,7 +7469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@widgetbot/react-embed@npm:^1.7.0":
+"@widgetbot/react-embed@npm:^1.8.0":
   version: 1.8.0
   resolution: "@widgetbot/react-embed@npm:1.8.0"
   dependencies:
@@ -11571,7 +11571,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.8.0":
+"eslint-config-prettier@npm:^8.10.0":
   version: 8.10.0
   resolution: "eslint-config-prettier@npm:8.10.0"
   peerDependencies:
@@ -11643,7 +11643,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.25.3, eslint-plugin-import@npm:^2.27.5":
+"eslint-plugin-import@npm:^2.25.3, eslint-plugin-import@npm:^2.28.0":
   version: 2.28.0
   resolution: "eslint-plugin-import@npm:2.28.0"
   dependencies:
@@ -11742,7 +11742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:^7.32.2":
+"eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:^7.33.1":
   version: 7.33.1
   resolution: "eslint-plugin-react@npm:7.33.1"
   dependencies:
@@ -11822,7 +11822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.45.0":
+"eslint@npm:^8.46.0":
   version: 8.46.0
   resolution: "eslint@npm:8.46.0"
   dependencies:
@@ -13943,7 +13943,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.2.11, i18next@npm:^23.3.0":
+"i18next@npm:^23.3.0, i18next@npm:^23.4.1":
   version: 23.4.1
   resolution: "i18next@npm:23.4.1"
   dependencies:
@@ -15574,7 +15574,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lerna@npm:^7.1.3":
+"lerna@npm:^7.1.4":
   version: 7.1.4
   resolution: "lerna@npm:7.1.4"
   dependencies:
@@ -19430,7 +19430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^13.0.2":
+"react-i18next@npm:^13.0.2, react-i18next@npm:^13.0.3":
   version: 13.0.3
   resolution: "react-i18next@npm:13.0.3"
   dependencies:
@@ -19530,7 +19530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.14.1, react-router-dom@npm:^6.14.2":
+"react-router-dom@npm:^6.14.2":
   version: 6.14.2
   resolution: "react-router-dom@npm:6.14.2"
   dependencies:
@@ -20297,17 +20297,17 @@ __metadata:
   resolution: "root@workspace:."
   dependencies:
     "@lerna/run": ^6.6.2
-    eslint: ^8.45.0
-    eslint-config-prettier: ^8.8.0
+    eslint: ^8.46.0
+    eslint-config-prettier: ^8.10.0
     eslint-config-react-app: ^7.0.1
     eslint-plugin-flowtype: ^8.0.3
-    eslint-plugin-import: ^2.27.5
+    eslint-plugin-import: ^2.28.0
     eslint-plugin-jsx-a11y: ^6.7.1
     eslint-plugin-prettier: ^5.0.0
-    eslint-plugin-react: ^7.32.2
+    eslint-plugin-react: ^7.33.1
     eslint-plugin-react-hooks: ^4.6.0
     husky: ^8.0.3
-    lerna: ^7.1.3
+    lerna: ^7.1.4
     lint-staged: ^13.2.3
     prettier: ^3.0.0
     typescript: ^5.1.6
@@ -22923,7 +22923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.4.4":
+"vite@npm:^4.4.8":
   version: 4.4.8
   resolution: "vite@npm:4.4.8"
   dependencies:
@@ -23713,7 +23713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.3.9":
+"zustand@npm:^4.3.9, zustand@npm:^4.4.0":
   version: 4.4.0
   resolution: "zustand@npm:4.4.0"
   dependencies:

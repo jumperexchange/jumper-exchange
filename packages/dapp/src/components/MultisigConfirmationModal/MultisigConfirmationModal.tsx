@@ -12,9 +12,9 @@ export const MultisigConfirmationModal: React.FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ open, onClose }) => {
-  const i18Path = 'multisig.transactionInitiated';
+  const I18_PATH = 'multisig.transactionInitiated';
 
-  const { t: translate } = useTranslation();
+  const { t: translate } = useTranslation('translation');
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -30,10 +30,10 @@ export const MultisigConfirmationModal: React.FC<{
             fontSize: '1.125rem',
           }}
         >
-          {translate(`${i18Path}.title`)}
+          {translate(I18_PATH, 'title')}
         </Typography>
         <Typography fontSize={'1.125 rem'} marginY={4}>
-          {translate(`${i18Path}.description`)}
+          {translate(I18_PATH, 'description')}
         </Typography>
         <ButtonPrimary
           style={{
@@ -42,7 +42,7 @@ export const MultisigConfirmationModal: React.FC<{
           variant="contained"
           onClick={onClose}
         >
-          {translate(`button.okay`)}
+          {translate('button', 'okay')}
         </ButtonPrimary>
       </MultisigConfirmationModalContainer>
     </Modal>

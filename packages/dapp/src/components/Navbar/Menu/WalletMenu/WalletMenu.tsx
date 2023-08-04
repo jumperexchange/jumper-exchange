@@ -27,9 +27,9 @@ interface NavbarMenuProps {
 export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { checkMultisigEnvironment } = useMultisig();
 
-  const i18Path = 'navbar.walletMenu.';
+  const I18_PATH = 'navbar.walletMenu.';
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
-  const { t: translate } = useTranslation();
+  const { t: translate } = useTranslation('translation');
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
@@ -131,7 +131,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
   useEffect(() => {
     handleMultisigEnvironmentCheck();
-  }, [account]);
+  }, [account, handleMultisigEnvironmentCheck]);
 
   return !!openNavbarWalletMenu ? (
     <NavbarMenu
@@ -183,7 +183,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         </Grid>
         <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton
-            name={translate(`${i18Path}disconnect`)}
+            name={translate(I18_PATH, 'disconnect')}
             variant={'primary'}
             onClick={handleDisconnectButton}
           >
@@ -201,7 +201,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       sx={{ top: '78px !important' }}
     >
       <MuiAlert elevation={6} variant="filled" severity="success">
-        {translate(`${i18Path}copiedMsg`)}
+        {translate(I18_PATH, 'copiedMsg')}
       </MuiAlert>
     </Snackbar>
   );
