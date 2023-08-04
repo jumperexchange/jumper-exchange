@@ -18,7 +18,7 @@ function a11yProps(index: number) {
 
 const NavbarTabsContainer = () => {
   const theme = useTheme();
-  const { t: translate } = useTranslation('translation');
+  const { t: translate } = useTranslation();
   const I18_PATH = 'navbar.';
   const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
