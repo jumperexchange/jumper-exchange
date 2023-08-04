@@ -58,7 +58,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={translate(I18_PATH, 'links.exchange')}
+        label={translate(`${I18_PATH}links.exchange`, 'translation')}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -72,7 +72,7 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTool.ARCx],
           });
         }}
-        label={translate(I18_PATH, 'links.refuel')}
+        label={translate(`${I18_PATH}links.refuel`, 'translation')}
         icon={
           <EvStationOutlinedIcon
             sx={{
@@ -98,7 +98,7 @@ const NavbarTabsContainer = () => {
               disableTrackingTool: [EventTrackingTool.ARCx],
             });
           }}
-          label={translate(I18_PATH, 'links.buy')}
+          label={translate(`${I18_PATH}links.buy`, 'translation')}
           icon={
             <CreditCardIcon
               sx={{
