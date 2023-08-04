@@ -13,7 +13,7 @@ import { EventTrackingTool } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useThemeContent = () => {
-  const { t: translate } = useTranslation('translation');
+  const { t: translate } = useTranslation();
   const { trackEvent } = useUserTracking();
   const I18_PATH = 'navbar.';
 
@@ -35,21 +35,21 @@ export const useThemeContent = () => {
 
   return [
     {
-      label: translate(I18_PATH, 'themes.light'),
+      label: translate(`${I18_PATH}themes.light`, 'translation'),
       prefixIcon:
         themeMode === 'light' ? <LightModeIcon /> : <LightModeOutlinedIcon />,
       checkIcon: themeMode === 'light',
       onClick: () => handleSwitchMode('light'),
     },
     {
-      label: translate(I18_PATH, 'themes.dark'),
+      label: translate(`${I18_PATH}themes.dark`, 'translation'),
       prefixIcon:
         themeMode === 'dark' ? <NightlightIcon /> : <NightlightOutlinedIcon />,
       checkIcon: themeMode === 'dark',
       onClick: () => handleSwitchMode('dark'),
     },
     {
-      label: translate(I18_PATH, 'themes.auto'),
+      label: translate(`${I18_PATH}themes.auto`, 'translation'),
       prefixIcon:
         themeMode === 'auto' ? (
           <BrightnessAutoIcon />

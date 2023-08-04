@@ -9,7 +9,7 @@ import {
 } from './MultisigWalletHeaderAlert.style';
 
 export const MultisigWalletHeaderAlert = () => {
-  const { t: translate } = useTranslation('translation');
+  const { t: translate } = useTranslation();
   const I18_PATH = 'multisig.alert.';
 
   return (
@@ -17,11 +17,11 @@ export const MultisigWalletHeaderAlert = () => {
       <MultisigWalletHeaderAlertTitle>
         <InfoRoundedIcon />
         <Typography fontWeight={700} marginLeft={1}>
-          {translate(I18_PATH, 'multisig.alert.title')}
+          {translate(`${I18_PATH}multisig.alert.title`, 'translation')}
         </Typography>
       </MultisigWalletHeaderAlertTitle>
       <MultisigWalletHeaderAlertContent marginTop={1.5}>
-        {translate(I18_PATH, 'description')}
+        {translate(`${I18_PATH}description`, 'translation')}
       </MultisigWalletHeaderAlertContent>
     </MultisigWalletHeaderAlertContainer>
   );

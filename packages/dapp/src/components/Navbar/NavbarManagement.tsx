@@ -26,7 +26,7 @@ const NavbarManagement = () => {
     shallow,
   );
 
-  const { t: translate } = useTranslation('translation');
+  const { t: translate } = useTranslation();
   const I18_PATH = 'navbar.';
   const walletManagement = useWallet();
   const { account } = useWallet();
@@ -63,7 +63,7 @@ const NavbarManagement = () => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {translate(I18_PATH, 'connectWallet')}
+            {translate(`${I18_PATH}connectWallet`, 'translation')}
           </Typography>
         }
         isSuccess={isSuccess}

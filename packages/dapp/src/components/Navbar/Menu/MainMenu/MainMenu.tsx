@@ -16,7 +16,7 @@ interface MainMenuProps {
 
 export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const I18_PATH = 'navbar.';
-  const { t: translate } = useTranslation('translation');
+  const { t: translate } = useTranslation();
   const mainMenuItems = useMainMenuContent();
   const mainSubMenuTheme = useThemeContent();
   const mainSubMenuDevelopers = useDevelopersContent();
@@ -66,7 +66,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={translate(I18_PATH, 'language.key')}
+        label={translate(`${I18_PATH}language.key`, 'translation')}
         triggerSubMenu={MenuKeys.Language}
         open={openNavbarSubMenu === MenuKeys.Language}
         prevMenu={MenuKeys.None}
@@ -74,7 +74,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={translate(I18_PATH, 'navbarMenu.developers')}
+        label={translate(`${I18_PATH}navbarMenu.developers`, 'translation')}
         triggerSubMenu={MenuKeys.Devs}
         open={openNavbarSubMenu === MenuKeys.Devs}
         prevMenu={MenuKeys.None}
@@ -82,7 +82,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={translate(I18_PATH, 'developers.showcases')}
+        label={translate(`${I18_PATH}developers.showcases`, 'translation')}
         triggerSubMenu={MenuKeys.Showcases}
         open={openNavbarSubMenu === MenuKeys.Showcases}
         prevMenu={MenuKeys.Devs}

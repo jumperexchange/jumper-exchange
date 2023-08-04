@@ -25,7 +25,7 @@ export const useMainMenuContent = () => {
 
   return [
     {
-      label: translate(I18_PATH, 'navbarMenu.theme'),
+      label: translate(`${I18_PATH}navbarMenu.theme`, 'translation'),
       prefixIcon: isDarkMode ? (
         <NightlightOutlinedIcon />
       ) : (
@@ -35,7 +35,7 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Themes,
     },
     {
-      label: translate(I18_PATH, 'language.key'),
+      label: translate(`${I18_PATH}language.key`, 'translation'),
       prefixIcon: <LanguageIcon />,
       checkIcon: themeMode === 'light',
       suffixIcon: (
@@ -54,7 +54,7 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Language,
     },
     {
-      label: translate(I18_PATH, 'navbarMenu.developers'),
+      label: translate(`${I18_PATH}navbarMenu.developers`, 'translation'),
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: MenuKeys.Devs,
     },
@@ -97,7 +97,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: translate(I18_PATH, 'navbarMenu.aboutLIFI'),
+      label: translate(`${I18_PATH}navbarMenu.aboutLIFI`, 'translation'),
       prefixIcon: (
         <LifiSmallLogo
           style={{ flexShrink: 0 }}
@@ -121,7 +121,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: translate(I18_PATH, 'navbarMenu.support'),
+      label: translate(`${I18_PATH}navbarMenu.support`, 'translation'),
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({

@@ -12,7 +12,7 @@ const I18_PATH = 'alert.';
 const PROD_URL = 'https://jumper.exchange';
 
 export const TestnetAlert = () => {
-  const { t: translate } = useTranslation('translation');
+  const { t: translate } = useTranslation();
   const theme = useTheme();
 
   return (
@@ -24,11 +24,11 @@ export const TestnetAlert = () => {
           }}
         />
         <Typography variant={'lifiHeaderXSmall'}>
-          {translate(I18_PATH, 'info')}
+          {translate(`${I18_PATH}info`, 'translation')}
         </Typography>
       </WarningMessageCardTitle>
       <Typography variant={'lifiBodySmall'} pt={theme.spacing(3)}>
-        {translate(I18_PATH, 'testnet')}
+        {translate(`${I18_PATH}testnet`, 'translation')}
       </Typography>
       <ButtonTransparent
         onClick={() => {
@@ -36,7 +36,7 @@ export const TestnetAlert = () => {
         }}
         style={{ marginTop: theme.spacing(3), width: '100%' }}
       >
-        {translate(I18_PATH, 'switchToMainnet')}
+        {translate(`${I18_PATH}switchToMainnet`, 'translation')}
       </ButtonTransparent>
     </WarningMessageCard>
   );

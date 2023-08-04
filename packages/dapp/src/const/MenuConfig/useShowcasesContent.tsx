@@ -5,7 +5,7 @@ import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 
 export const useShowcasesContent = () => {
-  const { t: translate } = useTranslation('translation');
+  const { t: translate } = useTranslation();
   const I18_PATH = 'navbar.';
   const { trackPageload } = useUserTracking();
   const onCloseAllNavbarMenus = useMenuStore(
@@ -14,7 +14,7 @@ export const useShowcasesContent = () => {
 
   return [
     {
-      label: translate(I18_PATH, 'showcases.ukraineDonation'),
+      label: translate(`${I18_PATH}showcases.ukraineDonation`, 'translation'),
       onClick: () => {
         openInNewTab('https://transferto.xyz/showcase/ukraine');
         trackPageload({
@@ -28,7 +28,7 @@ export const useShowcasesContent = () => {
       },
     },
     {
-      label: translate(I18_PATH, 'showcases.klimaStaking'),
+      label: translate(`${I18_PATH}showcases.klimaStaking`, 'translation'),
       onClick: () => {
         openInNewTab('https://transferto.xyz/showcase/klima-stake-v2');
         trackPageload({
@@ -42,7 +42,7 @@ export const useShowcasesContent = () => {
       },
     },
     {
-      label: translate(I18_PATH, 'showcases.carbonOffset'),
+      label: translate(`${I18_PATH}showcases.carbonOffset`, 'translation'),
       onClick: () => {
         openInNewTab('https://transferto.xyz/showcase/carbon-offset');
         trackPageload({
