@@ -75,7 +75,8 @@ export const useWalletSelectContent = () => {
 
   useEffect(() => {
     initializeWalletSelect();
-  }, [account.address, initializeWalletSelect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account.address]);
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
     const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {
