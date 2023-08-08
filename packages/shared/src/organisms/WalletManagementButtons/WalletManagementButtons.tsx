@@ -10,7 +10,6 @@ import { useMenuStore } from '@transferto/dapp/src/stores';
 import { EventTrackingTool } from '@transferto/dapp/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
-import { shallow } from 'zustand/shallow';
 import { ButtonPrimary, ButtonSecondary } from '../../atoms';
 import { walletDigest } from '../../utils/walletDigest';
 
@@ -39,15 +38,12 @@ export const WalletManagementButtons: React.FC<
     onOpenNavbarWalletSelectMenu,
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
-  ] = useMenuStore(
-    (state) => [
-      state.openNavbarWalletSelectMenu,
-      state.onOpenNavbarWalletSelectMenu,
-      state.openNavbarWalletMenu,
-      state.onOpenNavbarWalletMenu,
-    ],
-    shallow,
-  );
+  ] = useMenuStore((state) => [
+    state.openNavbarWalletSelectMenu,
+    state.onOpenNavbarWalletSelectMenu,
+    state.openNavbarWalletMenu,
+    state.onOpenNavbarWalletMenu,
+  ]);
 
   const walletSource = supportedWallets;
   const walletIcon: string = useMemo(() => {

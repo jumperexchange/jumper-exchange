@@ -6,7 +6,6 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
@@ -17,10 +16,10 @@ export const useThemeContent = () => {
   const { trackEvent } = useUserTracking();
   const I18_PATH = 'navbar.';
 
-  const [themeMode, onChangeMode] = useSettingsStore(
-    (state) => [state.themeMode, state.onChangeMode],
-    shallow,
-  );
+  const [themeMode, onChangeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.onChangeMode,
+  ]);
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     onChangeMode(mode);

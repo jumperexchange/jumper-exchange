@@ -8,7 +8,6 @@ import {
   TrackingCategories,
 } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
@@ -18,10 +17,10 @@ import { ButtonThemeSwitch } from './ThemeSwitch.style';
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
 
-  const [themeMode, onChangeMode] = useSettingsStore(
-    (state) => [state.themeMode, state.onChangeMode],
-    shallow,
-  );
+  const [themeMode, onChangeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.onChangeMode,
+  ]);
 
   const { t: translate } = useTranslation();
   const I18_PATH = 'navbar.';

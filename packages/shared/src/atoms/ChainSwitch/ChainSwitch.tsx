@@ -10,7 +10,6 @@ import { EventTrackingTool } from '@transferto/dapp/src/types';
 import type { MouseEventHandler } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { ButtonChainSwitch } from './ChainSwitch.style';
 
 export const ChainSwitch = () => {
@@ -22,7 +21,6 @@ export const ChainSwitch = () => {
 
   const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
     (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
-    shallow,
   );
 
   const activeChain = useMemo(

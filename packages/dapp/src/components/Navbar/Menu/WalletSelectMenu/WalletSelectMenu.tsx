@@ -4,7 +4,6 @@ import { useTheme } from '@mui/material/styles';
 import { MenuKeys, useWalletSelectContent } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { MenuItemComponent, NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
@@ -21,14 +20,11 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
     openNavbarWalletSelectMenu,
     onOpenNavbarWalletSelectMenu,
     openNavbarSubMenu,
-  ] = useMenuStore(
-    (state) => [
-      state.openNavbarWalletSelectMenu,
-      state.onOpenNavbarWalletSelectMenu,
-      state.openNavbarSubMenu,
-    ],
-    shallow,
-  );
+  ] = useMenuStore((state) => [
+    state.openNavbarWalletSelectMenu,
+    state.onOpenNavbarWalletSelectMenu,
+    state.openNavbarSubMenu,
+  ]);
 
   return (
     <NavbarMenu

@@ -5,7 +5,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { KeyboardEvent } from 'react';
-import { shallow } from 'zustand/shallow';
 import { MenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import { MenuListItem } from '../../types';
@@ -41,10 +40,10 @@ const SubMenuComponent = ({
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore(
-    (state) => [state.openNavbarSubMenu, state.onOpenNavbarSubMenu],
-    shallow,
-  );
+  const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore((state) => [
+    state.openNavbarSubMenu,
+    state.onOpenNavbarSubMenu,
+  ]);
 
   function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Backspace') {

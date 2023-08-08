@@ -6,7 +6,6 @@ import { useChainsContent } from '@transferto/dapp/src/const';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import MenuItemComponent from '../../MenuItemComponent';
 import { NavbarMenu } from '../../index';
 
@@ -23,7 +22,6 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const { account } = useWallet();
   const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
     (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
-    shallow,
   );
 
   return !!openNavbarChainsMenu ? (

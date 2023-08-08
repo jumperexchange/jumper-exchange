@@ -8,7 +8,6 @@ import {
 } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
 interface MainMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -23,14 +22,11 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const mainSubMenuLanguage = useLanguagesContent();
   const mainSubMenuShowcases = useShowcasesContent();
   const [openMainNavbarMenu, onOpenNavbarMainMenu, openNavbarSubMenu] =
-    useMenuStore(
-      (state) => [
-        state.openMainNavbarMenu,
-        state.onOpenNavbarMainMenu,
-        state.openNavbarSubMenu,
-      ],
-      shallow,
-    );
+    useMenuStore((state) => [
+      state.openMainNavbarMenu,
+      state.onOpenNavbarMainMenu,
+      state.openNavbarSubMenu,
+    ]);
 
   return openMainNavbarMenu ? (
     <NavbarMenu

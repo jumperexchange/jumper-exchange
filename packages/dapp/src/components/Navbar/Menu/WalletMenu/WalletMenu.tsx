@@ -17,7 +17,6 @@ import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
 
@@ -40,15 +39,12 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     onOpenNavbarWalletMenu,
     openNavbarSubMenu,
     onCloseAllNavbarMenus,
-  ] = useMenuStore(
-    (state) => [
-      state.openNavbarWalletMenu,
-      state.onOpenNavbarWalletMenu,
-      state.openNavbarSubMenu,
-      state.onCloseAllNavbarMenus,
-    ],
-    shallow,
-  );
+  ] = useMenuStore((state) => [
+    state.openNavbarWalletMenu,
+    state.onOpenNavbarWalletMenu,
+    state.openNavbarSubMenu,
+    state.onCloseAllNavbarMenus,
+  ]);
 
   const onWalletDisconnect = useSettingsStore(
     (state) => state.onWalletDisconnect,

@@ -8,7 +8,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { shallow } from 'zustand/shallow';
 import { TabsMap } from '../../const/tabsMap';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
 import { LinkMap } from '../../types';
@@ -24,7 +23,6 @@ export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const [welcomeScreenEntered, onWelcomeScreenEntered] = useSettingsStore(
     (state) => [state.welcomeScreenEntered, state.onWelcomeScreenEntered],
-    shallow,
   );
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
