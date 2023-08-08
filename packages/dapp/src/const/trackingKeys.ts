@@ -3,6 +3,7 @@ export enum TrackingCategories {
   Menu = 'menu',
   Navigation = 'navigation',
   Wallet = 'wallet',
+  WalletSelectMenu = 'wallet-select-menu',
   SupportModal = 'support-modal',
   ThemeMenu = 'theme-menu',
   ThemeSwitch = 'theme-switch',
