@@ -17,14 +17,6 @@
     "pre-commit": "echo 'No pre-commits defined in: shared'",
     "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
   },
-  "devDependencies": {
-    "@babel/core": "^7.22.10",
-    "@types/node": "^20.4.8",
-    "@types/react": "^18.2.19",
-    "babel-loader": "^9.1.3",
-    "eslint-config-prettier": "^8.10.0",
-    "prettier": "^3.0.1"
-  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
