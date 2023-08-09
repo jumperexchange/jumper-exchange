@@ -1,20 +1,17 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 interface WelcomeWrapperProps {
-  children: JSX.Element;
   showWelcome: boolean;
   handleGetStarted: (event: any) => void;
 }
 
-export const WelcomeWrapper = ({
-  children,
-  showWelcome,
-  handleGetStarted,
-}: WelcomeWrapperProps) => {
+export const WelcomeWrapper: React.FC<
+  PropsWithChildren<WelcomeWrapperProps>
+> = ({ children, showWelcome, handleGetStarted }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);

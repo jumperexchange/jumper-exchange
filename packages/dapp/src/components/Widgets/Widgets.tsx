@@ -89,40 +89,38 @@ export function Widgets() {
       showWelcome={!welcomeScreenEntered}
       handleGetStarted={handleGetStarted}
     >
-      <>
-        {import.meta.env.MODE === 'testnet' && (
-          <Grid item xs={12} mt={theme.spacing(6)}>
-            <TestnetAlert />
-          </Grid>
-        )}
+      {import.meta.env.MODE === 'testnet' && (
+        <Grid item xs={12} mt={theme.spacing(6)}>
+          <TestnetAlert />
+        </Grid>
+      )}
+      <WidgetContainer
+        onClick={handleGetStarted}
+        showWelcome={!welcomeScreenEntered}
+        isActive={_starterVariant === TabsMap.Exchange.value}
+      >
+        <Widget starterVariant={TabsMap.Exchange.value as WidgetSubvariant} />
+      </WidgetContainer>
+      <WidgetContainer
+        onClick={handleGetStarted}
+        showWelcome={!welcomeScreenEntered}
+        isActive={_starterVariant === TabsMap.Refuel.value}
+      >
+        <Widget starterVariant={TabsMap.Refuel.value as WidgetSubvariant} />
+      </WidgetContainer>
+      {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleGetStarted}
           showWelcome={!welcomeScreenEntered}
-          isActive={_starterVariant === TabsMap.Exchange.value}
+          isActive={_starterVariant === TabsMap.Buy.value}
+          sx={{ width: '392px' }}
         >
-          <Widget starterVariant={TabsMap.Exchange.value as WidgetSubvariant} />
+          <div className="onramper-wrapper">
+            <OnRamper />
+          </div>
         </WidgetContainer>
-        <WidgetContainer
-          onClick={handleGetStarted}
-          showWelcome={!welcomeScreenEntered}
-          isActive={_starterVariant === TabsMap.Refuel.value}
-        >
-          <Widget starterVariant={TabsMap.Refuel.value as WidgetSubvariant} />
-        </WidgetContainer>
-        {import.meta.env.VITE_ONRAMPER_ENABLED ? (
-          <WidgetContainer
-            onClick={handleGetStarted}
-            showWelcome={!welcomeScreenEntered}
-            isActive={_starterVariant === TabsMap.Buy.value}
-            sx={{ width: '392px' }}
-          >
-            <div className="onramper-wrapper">
-              <OnRamper />
-            </div>
-          </WidgetContainer>
-        ) : null}
-        <WidgetEvents />
-      </>
+      ) : null}
+      <WidgetEvents />
     </WelcomeWrapper>
   );
 }
