@@ -39,8 +39,9 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
             showButton={el.showButton ? el.showButton : false}
             showMoreIcon={false}
             suffixIcon={
-              (el.chainId && el.chainId === account.chainId && <CheckIcon />) ||
-              undefined
+              el.chainId && el.chainId === account.chainId ? (
+                <CheckIcon />
+              ) : undefined
             }
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
