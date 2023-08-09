@@ -16,7 +16,7 @@ export const MultisigWalletHeaderAlert = () => {
       <MultisigWalletHeaderAlertTitle>
         <InfoRoundedIcon />
         <Typography fontWeight={700} marginLeft={1}>
-          {t('multisig.alert.multisig.alert.title')}
+          {t('multisig.alert.title')}
         </Typography>
       </MultisigWalletHeaderAlertTitle>
       <MultisigWalletHeaderAlertContent marginTop={1.5}>
