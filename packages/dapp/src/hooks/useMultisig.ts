@@ -36,8 +36,9 @@ export const useMultisig = () => {
     return !!accountInfo?.safeAddress;
   };
 
-  const isSafeSigner =
-    !!(account?.signer?.provider as any)?.provider?.safe?.safeAddress || false;
+  const isSafeSigner = Boolean(
+    (account?.signer?.provider as any)?.provider?.safe?.safeAddress,
+  );
 
   const handleMultiSigTransactionDetails = async (
     txHash: string,
