@@ -28,7 +28,7 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
       handleClose={handleClose}
       label={t('navbar.walletMenu.chains')}
       transformOrigin={'top'}
-      open={true}
+      open
       setOpen={onOpenNavbarChainsMenu}
     >
       {chains.length ? (

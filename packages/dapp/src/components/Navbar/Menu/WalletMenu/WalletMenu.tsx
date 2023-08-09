@@ -129,7 +129,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
   return !!openNavbarWalletMenu ? (
     <NavbarMenu
-      open={true}
+      open
       transformOrigin={'top left'}
       setOpen={onOpenNavbarWalletMenu}
       handleClose={handleClose}

@@ -30,7 +30,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
   return openMainNavbarMenu ? (
     <NavbarMenu
       handleClose={handleClose}
-      open={true}
+      open
       transformOrigin={'top right'}
       setOpen={onOpenNavbarMainMenu}
       isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
@@ -47,7 +47,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             showMoreIcon={el.showMoreIcon}
             suffixIcon={el.suffixIcon}
             onClick={el.onClick}
-            open={true}
+            open
           />
         ))}
       <SubMenuComponent
