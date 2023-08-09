@@ -60,15 +60,13 @@ const SubMenuComponent = ({
     >
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
-          <>
-            <ButtonBackArrow
-              style={{ marginLeft: '0px' }}
-              onClick={() => {
-                onOpenNavbarSubMenu(prevMenu);
-              }}
-            />
-            <MenuHeaderLabel>{label}</MenuHeaderLabel>
-          </>
+          <ButtonBackArrow
+            style={{ marginLeft: '0px' }}
+            onClick={() => {
+              onOpenNavbarSubMenu(prevMenu);
+            }}
+          />
+          <MenuHeaderLabel>{label}</MenuHeaderLabel>
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>
       {!!subMenuList.length ? (
@@ -92,22 +90,20 @@ const SubMenuComponent = ({
                     : 'md'
                 }
               >
-                <>
-                  {el.prefixIcon}
-                  <Typography
-                    sx={{
-                      maxWidth: 'inherit',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                    variant={'lifiBodyMedium'}
-                    ml={!!el.prefixIcon ? '12px' : 'inherit'}
-                    mr={!!el.suffixIcon ? '12px' : 'inherit'}
-                  >
-                    {`${el.label || ' '}`}
-                  </Typography>
-                  {el.suffixIcon}
-                </>
+                {el.prefixIcon}
+                <Typography
+                  sx={{
+                    maxWidth: 'inherit',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                  variant={'lifiBodyMedium'}
+                  ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                  mr={!!el.suffixIcon ? '12px' : 'inherit'}
+                >
+                  {`${el.label || ' '}`}
+                </Typography>
+                {el.suffixIcon}
               </MenuItemLabel>
             </MenuLinkItem>
           ) : (
@@ -128,23 +124,21 @@ const SubMenuComponent = ({
                     : 'md'
                 }
               >
-                <>
-                  {el.prefixIcon}
-                  <Typography
-                    variant={'lifiBodyMedium'}
-                    ml={!!el.prefixIcon ? '12px' : 'inherit'}
-                    sx={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      maxWidth: 'inherit',
-                      [theme.breakpoints.up('sm' as Breakpoint)]: {
-                        maxWidth: el.prefixIcon ? '188px' : 'inherit',
-                      },
-                    }}
-                  >
-                    {`${el.label || ' '}`}
-                  </Typography>
-                </>
+                {el.prefixIcon}
+                <Typography
+                  variant={'lifiBodyMedium'}
+                  ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    maxWidth: 'inherit',
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      maxWidth: el.prefixIcon ? '188px' : 'inherit',
+                    },
+                  }}
+                >
+                  {`${el.label || ' '}`}
+                </Typography>
               </MenuItemLabel>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon && (

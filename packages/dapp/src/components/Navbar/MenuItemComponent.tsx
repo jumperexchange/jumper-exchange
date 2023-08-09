@@ -58,26 +58,24 @@ const MenuItemComponent = ({
       <>
         {showButton ? (
           <ButtonPrimary fullWidth>
-            <>
-              {prefixIcon}
-              <Typography
-                variant={'lifiBodyMediumStrong'}
-                component={'span'}
-                ml={!!prefixIcon ? '9.5px' : 'inherit'}
-                mr={!!prefixIcon ? '9.5px' : 'inherit'}
-                sx={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  maxWidth: '208px',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    maxWidth: '168px',
-                  },
-                }}
-              >
-                {label}
-              </Typography>
-              {suffixIcon}
-            </>
+            {prefixIcon}
+            <Typography
+              variant={'lifiBodyMediumStrong'}
+              component={'span'}
+              ml={!!prefixIcon ? '9.5px' : 'inherit'}
+              mr={!!prefixIcon ? '9.5px' : 'inherit'}
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: '208px',
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  maxWidth: '168px',
+                },
+              }}
+            >
+              {label}
+            </Typography>
+            {suffixIcon}
           </ButtonPrimary>
         ) : (
           <>
@@ -90,22 +88,20 @@ const MenuItemComponent = ({
                   : 'md'
               }
             >
-              <>
-                {prefixIcon}
-                <Typography
-                  variant={'lifiBodyMedium'}
-                  ml={'12px'}
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: prefixIcon ? '188px' : 'inherit',
-                    },
-                  }}
-                >
-                  {label}
-                </Typography>
-              </>
+              {prefixIcon}
+              <Typography
+                variant={'lifiBodyMedium'}
+                ml={'12px'}
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    maxWidth: prefixIcon ? '188px' : 'inherit',
+                  },
+                }}
+              >
+                {label}
+              </Typography>
             </MenuItemLabel>
             <div
               style={{
