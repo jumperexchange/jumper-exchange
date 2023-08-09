@@ -15,7 +15,6 @@ interface NavbarMenuProps {
 }
 
 export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
-  const I18_PATH = 'navbar.walletMenu.';
   const { t: translate } = useTranslation();
   const chains = useChainsContent();
   const theme = useTheme();
@@ -27,7 +26,7 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
   return !!openNavbarChainsMenu ? (
     <NavbarMenu
       handleClose={handleClose}
-      label={translate(`${I18_PATH}chains`, 'translation')}
+      label={translate('navbar.walletMenu.chains', 'translation')}
       transformOrigin={'top'}
       open={true}
       setOpen={onOpenNavbarChainsMenu}

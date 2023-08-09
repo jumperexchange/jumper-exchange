@@ -14,7 +14,6 @@ import { ButtonChainSwitch } from './ChainSwitch.style';
 
 export const ChainSwitch = () => {
   const { t: translate } = useTranslation();
-  const I18_PATH = 'navbar.walletMenu.';
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
   const { account } = useWallet();
@@ -41,7 +40,7 @@ export const ChainSwitch = () => {
   };
 
   return (
-    <Tooltip title={translate(`${I18_PATH}switchChain`, 'translation')}>
+    <Tooltip title={translate('navbar.walletMenu.switchChain', 'translation')}>
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar

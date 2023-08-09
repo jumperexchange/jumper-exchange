@@ -25,8 +25,6 @@ interface NavbarMenuProps {
 }
 export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { checkMultisigEnvironment } = useMultisig();
-
-  const I18_PATH = 'navbar.walletMenu.';
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t: translate } = useTranslation();
   const theme = useTheme();
@@ -179,7 +177,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         </Grid>
         <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton
-            name={translate(`${I18_PATH}disconnect`, 'translation')}
+            name={translate('navbar.walletMenu.disconnect', 'translation')}
             variant={'primary'}
             onClick={handleDisconnectButton}
           >
@@ -197,7 +195,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       sx={{ top: '78px !important' }}
     >
       <MuiAlert elevation={6} variant="filled" severity="success">
-        {translate(`${I18_PATH}copiedMsg`, 'translation')}
+        {translate('navbar.walletMenu.copiedMsg', 'translation')}
       </MuiAlert>
     </Snackbar>
   );

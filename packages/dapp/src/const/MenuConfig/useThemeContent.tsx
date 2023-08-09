@@ -14,7 +14,6 @@ import { TrackingActions, TrackingCategories } from '../trackingKeys';
 export const useThemeContent = () => {
   const { t: translate } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const I18_PATH = 'navbar.';
 
   const [themeMode, onChangeMode] = useSettingsStore((state) => [
     state.themeMode,
@@ -34,21 +33,21 @@ export const useThemeContent = () => {
 
   return [
     {
-      label: translate(`${I18_PATH}themes.light`, 'translation'),
+      label: translate('navbar.themes.light', 'translation'),
       prefixIcon:
         themeMode === 'light' ? <LightModeIcon /> : <LightModeOutlinedIcon />,
       checkIcon: themeMode === 'light',
       onClick: () => handleSwitchMode('light'),
     },
     {
-      label: translate(`${I18_PATH}themes.dark`, 'translation'),
+      label: translate('navbar.themes.dark', 'translation'),
       prefixIcon:
         themeMode === 'dark' ? <NightlightIcon /> : <NightlightOutlinedIcon />,
       checkIcon: themeMode === 'dark',
       onClick: () => handleSwitchMode('dark'),
     },
     {
-      label: translate(`${I18_PATH}themes.auto`, 'translation'),
+      label: translate('navbar.themes.auto', 'translation'),
       prefixIcon:
         themeMode === 'auto' ? (
           <BrightnessAutoIcon />

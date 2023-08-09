@@ -16,7 +16,6 @@ import { EventTrackingTool } from '../../types';
 
 export const useMainMenuContent = () => {
   const { t: translate, i18n } = useTranslation('translation');
-  const I18_PATH = 'navbar.';
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
@@ -25,7 +24,7 @@ export const useMainMenuContent = () => {
 
   return [
     {
-      label: translate(`${I18_PATH}navbarMenu.theme`, 'translation'),
+      label: translate('navbar.navbarMenu.theme', 'translation'),
       prefixIcon: isDarkMode ? (
         <NightlightOutlinedIcon />
       ) : (
@@ -35,7 +34,7 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Themes,
     },
     {
-      label: translate(`${I18_PATH}language.key`, 'translation'),
+      label: translate('navbar.language.key', 'translation'),
       prefixIcon: <LanguageIcon />,
       checkIcon: themeMode === 'light',
       suffixIcon: (
@@ -54,12 +53,12 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Language,
     },
     {
-      label: translate(`${I18_PATH}navbarMenu.developers`, 'translation'),
+      label: translate('navbar.navbarMenu.developers', 'translation'),
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: MenuKeys.Devs,
     },
     {
-      label: `Twitter`,
+      label: 'Twitter',
       prefixIcon: <TwitterIcon />,
       showMoreIcon: false,
       onClick: () => {
@@ -74,7 +73,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: `Discord`,
+      label: 'Discord',
       prefixIcon: (
         <Discord
           color={
@@ -97,7 +96,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: translate(`${I18_PATH}navbarMenu.aboutLIFI`, 'translation'),
+      label: translate('navbar.navbarMenu.aboutLIFI', 'translation'),
       prefixIcon: (
         <LifiSmallLogo
           style={{ flexShrink: 0 }}
@@ -121,7 +120,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: translate(`${I18_PATH}navbarMenu.support`, 'translation'),
+      label: translate('navbar.navbarMenu.support', 'translation'),
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({

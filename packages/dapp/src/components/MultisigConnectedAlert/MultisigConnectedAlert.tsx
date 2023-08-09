@@ -11,8 +11,6 @@ export const MultisigConnectedAlert: React.FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ open, onClose }) => {
-  const I18_PATH = 'multisig.connected';
-
   const { t: translate } = useTranslation();
 
   return (
@@ -29,10 +27,10 @@ export const MultisigConnectedAlert: React.FC<{
             fontSize: '1.125rem',
           }}
         >
-          {translate(`${I18_PATH}title`, 'translation')}
+          {translate('multisig.connected.title', 'translation')}
         </Typography>
         <Typography fontSize={'1.125 rem'} marginY={4}>
-          {translate(`${I18_PATH}description`, 'translation')}
+          {translate('multisig.connected.description', 'translation')}
         </Typography>
         <ButtonPrimary
           onClick={onClose}
