@@ -75,6 +75,7 @@ export const useWalletSelectContent = () => {
 
   useEffect(() => {
     initializeWalletSelect();
+    // fix: remove 'initializeWalletSelect' from dep´s to fix infinite loop / freeze
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.address]);
 

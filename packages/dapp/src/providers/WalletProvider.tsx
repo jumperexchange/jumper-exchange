@@ -51,7 +51,6 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const { trackConnectWallet } = useUserTracking();
   const { checkMultisigEnvironment } = useMultisig();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const connectMultisigWallet = async () => {
     const isMultisig = await checkMultisigEnvironment();
 
@@ -85,7 +84,9 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       handleWalletUpdate(activeWallets[0]);
     };
     autoConnect();
-  }, [connectMultisigWallet]);
+    // fixing: disconnect only works on 2nd attempt
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleWalletUpdate = async (wallet?: Wallet) => {
     setCurrentWallet(wallet);
@@ -191,7 +192,9 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   );
 };
 
-const extractAccountFromSigner = async (signer?: Signer): Promise<WalletAccount> => {
+const extractAccountFromSigner = async (
+  signer?: Signer,
+): Promise<WalletAccount> => {
   try {
     return {
       address: (await signer?.getAddress()) || undefined,

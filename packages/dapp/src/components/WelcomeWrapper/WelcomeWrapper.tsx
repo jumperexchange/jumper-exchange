@@ -56,6 +56,7 @@ export const WelcomeWrapper: React.FC<
               <Trans
                 i18nKey={'navbar.welcome.subtitle' as string & never[]}
                 components={[
+                  // fix: allow component with "no content"
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
