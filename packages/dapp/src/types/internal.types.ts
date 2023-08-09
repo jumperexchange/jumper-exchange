@@ -2,7 +2,7 @@ import type { Signer } from '@ethersproject/abstract-signer';
 import { TokenAmount, TokenWithAmounts } from '@lifi/sdk';
 import { ChainId, ChainKey, Coin, Token } from '@lifi/types';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
-import { WidgetConfig } from '@lifi/widget';
+import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import BigNumber from 'bignumber.js';
 import 'react-i18next';
 import { MenuKeys } from '../const';
@@ -43,6 +43,8 @@ export interface MenuItem {
   label: string;
   destination: string;
 }
+
+export type StarterVariantType = 'buy' | WidgetSubvariant;
 
 export interface MenuListItem {
   label: string | unknown;

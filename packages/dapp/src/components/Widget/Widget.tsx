@@ -1,10 +1,5 @@
 import { ChainId, Token } from '@lifi/sdk';
-import {
-  HiddenUI,
-  LiFiWidget,
-  WidgetConfig,
-  WidgetSubvariant,
-} from '@lifi/widget';
+import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MenuState } from '@transferto/shared/src/types';
@@ -16,7 +11,11 @@ import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
-import { EventTrackingTool, LanguageKey } from '../../types';
+import {
+  EventTrackingTool,
+  LanguageKey,
+  StarterVariantType,
+} from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 
 const refuelAllowChains: ChainId[] = [
@@ -33,7 +32,7 @@ const refuelAllowChains: ChainId[] = [
 ];
 
 interface WidgetProps {
-  starterVariant: 'buy' | WidgetSubvariant;
+  starterVariant: StarterVariantType;
 }
 
 export function Widget({ starterVariant }: WidgetProps) {

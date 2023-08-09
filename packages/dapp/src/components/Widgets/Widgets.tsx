@@ -10,14 +10,12 @@ import {
 } from 'react';
 import { TabsMap } from '../../const/tabsMap';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
-import { LinkMap } from '../../types';
+import { LinkMap, StarterVariantType } from '../../types';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
-
-export type StarterVariantType = 'buy' | WidgetSubvariant;
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
