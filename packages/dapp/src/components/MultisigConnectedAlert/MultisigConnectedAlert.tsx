@@ -27,10 +27,10 @@ export const MultisigConnectedAlert: React.FC<{
             fontSize: '1.125rem',
           }}
         >
-          {t('multisig.connected.title', 'translation')}
+          {t('multisig.connected.title')}
         </Typography>
         <Typography fontSize={'1.125 rem'} marginY={4}>
-          {t('multisig.connected.description', 'translation')}
+          {t('multisig.connected.description')}
         </Typography>
         <ButtonPrimary
           onClick={onClose}
@@ -38,7 +38,7 @@ export const MultisigConnectedAlert: React.FC<{
             width: '100%',
           }}
         >
-          {t('button.okay', 'translation')}
+          {t('button.okay')}
         </ButtonPrimary>
       </MultisigConnectedAlertContainer>
     </Modal>

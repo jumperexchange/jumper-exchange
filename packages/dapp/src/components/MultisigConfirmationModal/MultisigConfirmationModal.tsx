@@ -28,10 +28,10 @@ export const MultisigConfirmationModal: React.FC<{
             fontSize: '1.125rem',
           }}
         >
-          {t('multisig.transactionInitiated.title', 'translation')}
+          {t('multisig.transactionInitiated.title')}
         </Typography>
         <Typography fontSize={'1.125 rem'} marginY={4}>
-          {t('multisig.transactionInitiated.description', 'translation')}
+          {t('multisig.transactionInitiated.description')}
         </Typography>
         <ButtonPrimary
           style={{
@@ -40,7 +40,7 @@ export const MultisigConfirmationModal: React.FC<{
           variant="contained"
           onClick={onClose}
         >
-          {t('button.okay', 'translation')}
+          {t('button.okay')}
         </ButtonPrimary>
       </MultisigConfirmationModalContainer>
     </Modal>

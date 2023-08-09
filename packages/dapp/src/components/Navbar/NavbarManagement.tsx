@@ -61,7 +61,7 @@ const NavbarManagement = () => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {t('navbar.connectWallet', 'translation')}
+            {t('navbar.connectWallet')}
           </Typography>
         }
         isSuccess={isSuccess}

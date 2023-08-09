@@ -177,7 +177,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         </Grid>
         <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton
-            name={t('navbar.walletMenu.disconnect', 'translation')}
+            name={t('navbar.walletMenu.disconnect')}
             variant={'primary'}
             onClick={handleDisconnectButton}
           >
@@ -195,7 +195,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       sx={{ top: '78px !important' }}
     >
       <MuiAlert elevation={6} variant="filled" severity="success">
-        {t('navbar.walletMenu.copiedMsg', 'translation')}
+        {t('navbar.walletMenu.copiedMsg')}
       </MuiAlert>
     </Snackbar>
   );

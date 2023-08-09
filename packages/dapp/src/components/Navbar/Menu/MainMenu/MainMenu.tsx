@@ -51,7 +51,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           />
         ))}
       <SubMenuComponent
-        label={t('navbar.navbarMenu.theme', 'translation')}
+        label={t('navbar.navbarMenu.theme')}
         triggerSubMenu={MenuKeys.Themes}
         open={openNavbarSubMenu === MenuKeys.Themes}
         prevMenu={MenuKeys.None}
@@ -59,7 +59,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={t('navbar.language.key', 'translation')}
+        label={t('navbar.language.key')}
         triggerSubMenu={MenuKeys.Language}
         open={openNavbarSubMenu === MenuKeys.Language}
         prevMenu={MenuKeys.None}
@@ -67,7 +67,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={t('navbar.navbarMenu.developers', 'translation')}
+        label={t('navbar.navbarMenu.developers')}
         triggerSubMenu={MenuKeys.Devs}
         open={openNavbarSubMenu === MenuKeys.Devs}
         prevMenu={MenuKeys.None}
@@ -75,7 +75,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={t('navbar.developers.showcases', 'translation')}
+        label={t('navbar.developers.showcases')}
         triggerSubMenu={MenuKeys.Showcases}
         open={openNavbarSubMenu === MenuKeys.Showcases}
         prevMenu={MenuKeys.Devs}

@@ -22,12 +22,10 @@ export const TestnetAlert = () => {
             marginRight: 1,
           }}
         />
-        <Typography variant={'lifiHeaderXSmall'}>
-          {t('alert.info', 'translation')}
-        </Typography>
+        <Typography variant={'lifiHeaderXSmall'}>{t('alert.info')}</Typography>
       </WarningMessageCardTitle>
       <Typography variant={'lifiBodySmall'} pt={theme.spacing(3)}>
-        {t('alert.testnet', 'translation')}
+        {t('alert.testnet')}
       </Typography>
       <ButtonTransparent
         onClick={() => {
@@ -35,7 +33,7 @@ export const TestnetAlert = () => {
         }}
         style={{ marginTop: theme.spacing(3), width: '100%' }}
       >
-        {t('alert.switchToMainnet', 'translation')}
+        {t('alert.switchToMainnet')}
       </ButtonTransparent>
     </WarningMessageCard>
   );

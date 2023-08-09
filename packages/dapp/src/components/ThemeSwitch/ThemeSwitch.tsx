@@ -42,12 +42,12 @@ export const ThemeSwitch = () => {
     <Tooltip
       title={
         themeMode === 'light'
-          ? t('navbar.themes.switchToDark', 'translation')
+          ? t('navbar.themes.switchToDark')
           : themeMode === 'dark'
-          ? t('navbar.themes.switchToLight', 'translation')
+          ? t('navbar.themes.switchToLight')
           : !isDarkModeHook
-          ? t('navbar.themes.switchToDark', 'translation')
-          : t('navbar.themes.switchToLight', 'translation')
+          ? t('navbar.themes.switchToDark')
+          : t('navbar.themes.switchToLight')
       }
     >
       <ButtonThemeSwitch

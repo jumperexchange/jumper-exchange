@@ -33,21 +33,21 @@ export const useThemeContent = () => {
 
   return [
     {
-      label: t('navbar.themes.light', 'translation'),
+      label: t('navbar.themes.light'),
       prefixIcon:
         themeMode === 'light' ? <LightModeIcon /> : <LightModeOutlinedIcon />,
       checkIcon: themeMode === 'light',
       onClick: () => handleSwitchMode('light'),
     },
     {
-      label: t('navbar.themes.dark', 'translation'),
+      label: t('navbar.themes.dark'),
       prefixIcon:
         themeMode === 'dark' ? <NightlightIcon /> : <NightlightOutlinedIcon />,
       checkIcon: themeMode === 'dark',
       onClick: () => handleSwitchMode('dark'),
     },
     {
-      label: t('navbar.themes.auto', 'translation'),
+      label: t('navbar.themes.auto'),
       prefixIcon:
         themeMode === 'auto' ? (
           <BrightnessAutoIcon />

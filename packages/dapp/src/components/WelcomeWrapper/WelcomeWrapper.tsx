@@ -33,7 +33,7 @@ export const WelcomeWrapper = ({
       >
         <ContentContainer showWelcome={showWelcome}>
           <CustomColor variant={'lifiHeaderMedium'}>
-            {t('navbar.welcome.title', 'translation')}
+            {t('navbar.welcome.title')}
           </CustomColor>
           <Typography
             variant={'lifiBodyLarge'}
@@ -109,7 +109,7 @@ export const WelcomeWrapper = ({
                 },
               }}
             >
-              {t('navbar.welcome.cta', 'translation')}
+              {t('navbar.welcome.cta')}
             </Typography>
           </ButtonPrimary>
         </ContentContainer>

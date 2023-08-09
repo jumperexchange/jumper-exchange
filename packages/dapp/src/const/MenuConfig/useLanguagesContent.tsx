@@ -26,7 +26,7 @@ export const useLanguagesContent = () => {
   const languages = Object.keys(i18n.store.data as ResourceKey)
     .sort()
     .map((lng) => ({
-      label: t('navbar.language.value', 'translation', { lng }),
+      label: t('navbar.language.value', { lng }),
       checkIcon: (languageMode || i18n.resolvedLanguage) === lng,
       onClick: () => handleSwitchLanguage(lng as LanguageKey),
     }));

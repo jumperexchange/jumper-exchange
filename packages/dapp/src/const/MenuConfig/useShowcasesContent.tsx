@@ -13,7 +13,7 @@ export const useShowcasesContent = () => {
 
   return [
     {
-      label: t('navbar.showcases.ukraineDonation', 'translation'),
+      label: t('navbar.showcases.ukraineDonation'),
       onClick: () => {
         openInNewTab('https://transferto.xyz/showcase/ukraine');
         trackPageload({
@@ -27,7 +27,7 @@ export const useShowcasesContent = () => {
       },
     },
     {
-      label: t('navbar.showcases.klimaStaking', 'translation'),
+      label: t('navbar.showcases.klimaStaking'),
       onClick: () => {
         openInNewTab('https://transferto.xyz/showcase/klima-stake-v2');
         trackPageload({
@@ -41,7 +41,7 @@ export const useShowcasesContent = () => {
       },
     },
     {
-      label: t('navbar.showcases.carbonOffset', 'translation'),
+      label: t('navbar.showcases.carbonOffset'),
       onClick: () => {
         openInNewTab('https://transferto.xyz/showcase/carbon-offset');
         trackPageload({

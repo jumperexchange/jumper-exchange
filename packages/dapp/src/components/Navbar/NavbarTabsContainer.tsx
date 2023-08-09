@@ -57,7 +57,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={t('navbar.links.exchange', 'translation')}
+        label={t('navbar.links.exchange')}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -71,7 +71,7 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTool.ARCx],
           });
         }}
-        label={t('navbar.links.refuel', 'translation')}
+        label={t('navbar.links.refuel')}
         icon={
           <EvStationOutlinedIcon
             sx={{
@@ -97,7 +97,7 @@ const NavbarTabsContainer = () => {
               disableTrackingTool: [EventTrackingTool.ARCx],
             });
           }}
-          label={t('navbar.links.buy', 'translation')}
+          label={t('navbar.links.buy')}
           icon={
             <CreditCardIcon
               sx={{

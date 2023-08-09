@@ -19,7 +19,7 @@ export const useDevelopersContent = () => {
 
   return [
     {
-      label: t('navbar.developers.github', 'translation'),
+      label: t('navbar.developers.github'),
       prefixIcon: (
         <GitHubIcon
           sx={{
@@ -42,7 +42,7 @@ export const useDevelopersContent = () => {
       },
     },
     {
-      label: t('navbar.developers.documentation', 'translation'),
+      label: t('navbar.developers.documentation'),
       prefixIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
         openInNewTab('https://docs.li.fi/');
@@ -57,7 +57,7 @@ export const useDevelopersContent = () => {
       },
     },
     {
-      label: t('navbar.developers.showcases', 'translation'),
+      label: t('navbar.developers.showcases'),
       prefixIcon: <SlideshowIcon />,
       showMoreIcon: true,
       triggerSubMenu: MenuKeys.Showcases,
