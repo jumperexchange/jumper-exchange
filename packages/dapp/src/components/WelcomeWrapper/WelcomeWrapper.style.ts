@@ -76,12 +76,9 @@ export interface ContentContainerProps extends Omit<BoxProps, 'component'> {
 const fadeOut = keyframes`
   from {
     opacity: 1;
-    transform: scale(1);
   }
-
   to {
     opacity: 0;
-    transform: scale(2);
   }
 `;
 
