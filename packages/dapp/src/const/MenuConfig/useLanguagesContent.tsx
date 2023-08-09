@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTool, LanguageKey, ResourceKey } from '../../types';
+import { EventTrackingTool, LanguageKey } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
@@ -23,7 +23,7 @@ export const useLanguagesContent = () => {
     });
   };
 
-  const languages = Object.keys(i18n.store.data as ResourceKey)
+  const languages = Object.keys(i18n.store.data)
     .sort()
     .map((lng) => ({
       label: t('navbar.language.value', { lng }),
