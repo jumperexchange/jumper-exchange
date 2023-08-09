@@ -11,7 +11,7 @@ export const MultisigConnectedAlert: React.FC<{
   open: boolean;
   onClose: () => void;
 }> = ({ open, onClose }) => {
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -27,10 +27,10 @@ export const MultisigConnectedAlert: React.FC<{
             fontSize: '1.125rem',
           }}
         >
-          {translate('multisig.connected.title', 'translation')}
+          {t('multisig.connected.title', 'translation')}
         </Typography>
         <Typography fontSize={'1.125 rem'} marginY={4}>
-          {translate('multisig.connected.description', 'translation')}
+          {t('multisig.connected.description', 'translation')}
         </Typography>
         <ButtonPrimary
           onClick={onClose}
@@ -38,7 +38,7 @@ export const MultisigConnectedAlert: React.FC<{
             width: '100%',
           }}
         >
-          {translate('button.okay', 'translation')}
+          {t('button.okay', 'translation')}
         </ButtonPrimary>
       </MultisigConnectedAlertContainer>
     </Modal>

@@ -12,7 +12,7 @@ interface NavbarMenuProps {
 }
 
 export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
   const [
@@ -28,7 +28,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   return (
     <NavbarMenu
       handleClose={handleClose}
-      label={translate('navbar.chooseWallet', 'translation')}
+      label={t('navbar.chooseWallet', 'translation')}
       open={openNavbarWalletSelectMenu}
       transformOrigin={'top'}
       setOpen={onOpenNavbarWalletSelectMenu}

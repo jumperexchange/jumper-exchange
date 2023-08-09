@@ -11,7 +11,7 @@ import { openInNewTab } from '../../utils';
 const PROD_URL = 'https://jumper.exchange';
 
 export const TestnetAlert = () => {
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   return (
@@ -23,11 +23,11 @@ export const TestnetAlert = () => {
           }}
         />
         <Typography variant={'lifiHeaderXSmall'}>
-          {translate('alert.info', 'translation')}
+          {t('alert.info', 'translation')}
         </Typography>
       </WarningMessageCardTitle>
       <Typography variant={'lifiBodySmall'} pt={theme.spacing(3)}>
-        {translate('alert.testnet', 'translation')}
+        {t('alert.testnet', 'translation')}
       </Typography>
       <ButtonTransparent
         onClick={() => {
@@ -35,7 +35,7 @@ export const TestnetAlert = () => {
         }}
         style={{ marginTop: theme.spacing(3), width: '100%' }}
       >
-        {translate('alert.switchToMainnet', 'translation')}
+        {t('alert.switchToMainnet', 'translation')}
       </ButtonTransparent>
     </WarningMessageCard>
   );

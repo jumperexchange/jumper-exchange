@@ -16,7 +16,7 @@ export const WelcomeWrapper = ({
   handleGetStarted,
 }: WelcomeWrapperProps) => {
   const theme = useTheme();
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
@@ -33,7 +33,7 @@ export const WelcomeWrapper = ({
       >
         <ContentContainer showWelcome={showWelcome}>
           <CustomColor variant={'lifiHeaderMedium'}>
-            {translate('navbar.welcome.title', 'translation')}
+            {t('navbar.welcome.title', 'translation')}
           </CustomColor>
           <Typography
             variant={'lifiBodyLarge'}
@@ -109,7 +109,7 @@ export const WelcomeWrapper = ({
                 },
               }}
             >
-              {translate('navbar.welcome.cta', 'translation')}
+              {t('navbar.welcome.cta', 'translation')}
             </Typography>
           </ButtonPrimary>
         </ContentContainer>

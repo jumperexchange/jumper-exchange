@@ -18,7 +18,7 @@ function a11yProps(index: number) {
 
 const NavbarTabsContainer = () => {
   const theme = useTheme();
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
@@ -57,7 +57,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={translate('navbar.links.exchange', 'translation')}
+        label={t('navbar.links.exchange', 'translation')}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -71,7 +71,7 @@ const NavbarTabsContainer = () => {
             disableTrackingTool: [EventTrackingTool.ARCx],
           });
         }}
-        label={translate('navbar.links.refuel', 'translation')}
+        label={t('navbar.links.refuel', 'translation')}
         icon={
           <EvStationOutlinedIcon
             sx={{
@@ -97,7 +97,7 @@ const NavbarTabsContainer = () => {
               disableTrackingTool: [EventTrackingTool.ARCx],
             });
           }}
-          label={translate('navbar.links.buy', 'translation')}
+          label={t('navbar.links.buy', 'translation')}
           icon={
             <CreditCardIcon
               sx={{

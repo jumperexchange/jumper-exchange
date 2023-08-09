@@ -5,7 +5,7 @@ import { EventTrackingTool, LanguageKey, ResourceKey } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
-  const { i18n, t: translate } = useTranslation('translation');
+  const { i18n, t } = useTranslation();
   const [languageMode, onChangeLanguage] = useSettingsStore((state) => [
     state.languageMode,
     state.onChangeLanguage,
@@ -26,7 +26,7 @@ export const useLanguagesContent = () => {
   const languages = Object.keys(i18n.store.data as ResourceKey)
     .sort()
     .map((lng) => ({
-      label: translate('navbar.language.value', 'translation', { lng }),
+      label: t('navbar.language.value', 'translation', { lng }),
       checkIcon: (languageMode || i18n.resolvedLanguage) === lng,
       onClick: () => handleSwitchLanguage(lng as LanguageKey),
     }));

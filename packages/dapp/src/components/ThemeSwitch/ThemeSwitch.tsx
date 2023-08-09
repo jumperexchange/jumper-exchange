@@ -22,7 +22,7 @@ export const ThemeSwitch = () => {
     state.onChangeMode,
   ]);
 
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
 
   const handleThemeSwitch = () => {
@@ -42,12 +42,12 @@ export const ThemeSwitch = () => {
     <Tooltip
       title={
         themeMode === 'light'
-          ? translate('navbar.themes.switchToDark', 'translation')
+          ? t('navbar.themes.switchToDark', 'translation')
           : themeMode === 'dark'
-          ? translate('navbar.themes.switchToLight', 'translation')
+          ? t('navbar.themes.switchToLight', 'translation')
           : !isDarkModeHook
-          ? translate('navbar.themes.switchToDark', 'translation')
-          : translate('navbar.themes.switchToLight', 'translation')
+          ? t('navbar.themes.switchToDark', 'translation')
+          : t('navbar.themes.switchToLight', 'translation')
       }
     >
       <ButtonThemeSwitch

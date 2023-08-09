@@ -25,7 +25,7 @@ const NavbarManagement = () => {
     state.onOpenNavbarMainMenu,
   ]);
 
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const walletManagement = useWallet();
   const { account } = useWallet();
   !account.isActive ?? onWalletDisconnect();
@@ -61,7 +61,7 @@ const NavbarManagement = () => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {translate('navbar.connectWallet', 'translation')}
+            {t('navbar.connectWallet', 'translation')}
           </Typography>
         }
         isSuccess={isSuccess}

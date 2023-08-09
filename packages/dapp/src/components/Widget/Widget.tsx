@@ -39,7 +39,7 @@ interface WidgetProps {
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
-  const { i18n } = useTranslation('translation');
+  const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
   const onOpenNavbarWalletSelectMenu = useMenuStore(
