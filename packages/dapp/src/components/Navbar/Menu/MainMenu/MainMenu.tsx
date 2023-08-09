@@ -43,7 +43,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             label={el.label}
             prefixIcon={el.prefixIcon}
             triggerSubMenu={el.triggerSubMenu}
-            showButton={el.showButton || false}
+            showButton={el.showButton ?? false}
             showMoreIcon={el.showMoreIcon}
             suffixIcon={el.suffixIcon}
             onClick={el.onClick}
