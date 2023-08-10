@@ -68,7 +68,7 @@ export const StatsModal = ({ title, open, setOpen, data }: NavbarMenuProps) => {
           </IconButton>
         </ModalHeaderAppBar>
         <ModalContent container>
-          {data.map(
+          {data?.map(
             (
               el: { logoURI: string | undefined; name: string },
               index: number,
