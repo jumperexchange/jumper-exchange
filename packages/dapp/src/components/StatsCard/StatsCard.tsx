@@ -58,7 +58,7 @@ type DataItem = {
 };
 
 const sortByName = (data: DataItem[]): DataItem[] => {
-  return data.sort(function (a: DataItem, b: DataItem) {
+  return data?.sort(function (a: DataItem, b: DataItem) {
     if (a.name < b.name) {
       return -1;
     }
