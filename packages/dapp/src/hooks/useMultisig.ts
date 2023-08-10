@@ -37,7 +37,7 @@ export const useMultisig = () => {
   };
 
   const isSafeSigner = Boolean(
-    (account.signer?.provider as any).safe.safeAddress,
+    (account?.signer?.provider as any)?.provider?.safe?.safeAddress,
   );
 
   const handleMultiSigTransactionDetails = async (

@@ -56,7 +56,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         (el: string, index: number) =>
           walletSource[index].name === localStorage.activeWalletName,
       );
-      return walletSource[walletKey].icon || '';
+      return walletSource[walletKey]?.icon || '';
     }
   }, [usedWallet, walletSource]);
 
