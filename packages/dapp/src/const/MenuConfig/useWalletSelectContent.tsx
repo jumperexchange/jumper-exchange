@@ -104,7 +104,7 @@ export const useWalletSelectContent = () => {
           onWelcomeScreenEntered(true);
           trackEvent({
             category: TrackingCategories.Wallet,
-            action: TrackingActions.ChooseWallet,
+            action: TrackingActions.SelectWallet,
             label: `choose-wallet-${wallet}`,
             data: { usedWallet: wallet.name },
             disableTrackingTool: [

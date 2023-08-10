@@ -30,13 +30,17 @@ export const useDevelopersContent = () => {
         />
       ),
       onClick: () => {
-        openInNewTab('https://github.com/lifinance/');
+        const githubUrl = 'https://github.com/lifinance/';
+        openInNewTab(githubUrl);
         trackPageload({
           source: 'menu',
           destination: 'lifi-github',
-          url: 'https://github.com/lifinance/',
+          url: githubUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },
@@ -45,13 +49,17 @@ export const useDevelopersContent = () => {
       label: t('navbar.developers.documentation'),
       prefixIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
-        openInNewTab('https://docs.li.fi/');
+        const docsUrl = 'https://docs.li.fi/';
+        openInNewTab(docsUrl);
         trackPageload({
           source: 'menu',
           destination: 'lifi-docs',
-          url: 'https://docs.li.fi/',
+          url: docsUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },

@@ -19,7 +19,7 @@ import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
-  const { trackEvent, trackTransaction, trackAttribute } = useUserTracking();
+  const { trackEvent, trackTransaction } = useUserTracking();
   const [onOpenSupportModal] = useMenuStore((state) => [
     state.onOpenSupportModal,
   ]);
@@ -164,7 +164,6 @@ export function WidgetEvents() {
     onDestinationChainSelected,
     onOpenSupportModal,
     shouldOpenMultisigSignatureModal,
-    trackAttribute,
     trackEvent,
     trackTransaction,
     widgetEvents,

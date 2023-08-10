@@ -83,7 +83,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       );
     onCloseAllNavbarMenus();
     trackPageload({
-      source: 'connected-menu',
+      source: 'wallet-menu',
       destination: 'blokchain-explorer',
       url: !!account.chainId
         ? `${
@@ -91,7 +91,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
           }address/${account.address}`
         : '',
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 
