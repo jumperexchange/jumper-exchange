@@ -20,7 +20,7 @@
   "dependencies": {
     "@lifi/wallet-management": "^2.2.4",
     "@mui/icons-material": "^5.14.3",
-    "@mui/material": "^5.14.3",
+    "@mui/material": "^5.14.4",
     "i18next": "^23.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
