@@ -19,8 +19,8 @@ import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { NavbarMenu } from '../../index';
 import { useMultisig } from '../../../../hooks/useMultisig';
+import { NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -90,13 +90,13 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     );
     onCloseAllNavbarMenus();
     trackPageload({
-      source: 'connected-menu',
+      source: 'wallet-menu',
       destination: 'blokchain-explorer',
       url: `${
         getChainById(account.chainId).metamask.blockExplorerUrls[0]
       }address/${account.address}`,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 
