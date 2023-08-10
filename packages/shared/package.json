@@ -18,8 +18,6 @@
     "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
     "@lifi/wallet-management": "^2.2.4",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.3",
