@@ -1,6 +1,5 @@
-import { type Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import type { CSSProperties } from 'react';
 
 const JumperLogo = ({ theme }) => {
   const mainCol =
@@ -53,12 +52,7 @@ const JumperLogo = ({ theme }) => {
   );
 };
 
-interface JumperIconProps {
-  theme: any;
-  styles?: CSSProperties;
-}
-
-export const JumperIcon = ({ theme, styles }: JumperIconProps) => {
+const JumperIcon = ({ theme }) => {
   const mainCol =
     theme.palette.mode === 'light'
       ? theme.palette.accent1.main
@@ -73,7 +67,6 @@ export const JumperIcon = ({ theme, styles }: JumperIconProps) => {
       height="32"
       fill="none"
       viewBox="0 0 32 32"
-      style={styles}
     >
       <path
         fill={mainCol}

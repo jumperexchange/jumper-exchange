@@ -3,7 +3,6 @@ import { IconButton, Link, Slide, useTheme } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { JumperIcon } from '@transferto/shared/src/atoms/illustrations';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
@@ -50,7 +49,6 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
         <CardContent
           sx={{
             padding: theme.spacing(6),
-            height: '100%',
             position: 'relative',
           }}
         >
@@ -79,67 +77,47 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
               }}
             />
           </IconButton>
-
-          {!isSuccess ? (
-            <JumperIcon
-              theme={theme}
-              styles={{
-                animation: 'pulse 1.4s linear infinite',
-                position: 'absolute',
-                left: 'calc( 50% - 20px )',
-                top: 'calc( 50% - 20px)',
-                filter: 'grayscale(.8) opacity(0.25)',
+          <Typography
+            variant={'lifiHeaderSmall'}
+            sx={{
+              fontSize: '24px',
+              lineHeight: '32px',
+            }}
+            gutterBottom
+          >
+            {data?.fields?.title}
+          </Typography>
+          <Typography
+            variant={'lifiBodySmall'}
+            sx={{
+              lineHeight: '24px',
+              width: '240px',
+              height: '48px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {data?.fields?.subtitle}
+          </Typography>
+          <CardActions sx={{ padding: 0, marginTop: theme.spacing(2) }}>
+            <Link
+              target="_blank"
+              rel="noopener"
+              href={data?.fields?.url || 'https://li.fi'}
+              sx={{
+                textDecoration: 'none',
+                color:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.accent1Alt.main
+                    : theme.palette.primary.main,
               }}
-            />
-          ) : (
-            <>
-              <Typography
-                variant={'lifiHeaderSmall'}
-                sx={{
-                  fontSize: '24px',
-                  lineHeight: '32px',
-                }}
-                gutterBottom
-              >
-                {data?.fields?.title}
+            >
+              <Typography variant="lifiBodySmallStrong">
+                {translate(`${i18Path}learnMore`)}
               </Typography>
-              <Typography
-                variant={'lifiBodySmall'}
-                sx={{
-                  lineHeight: '24px',
-                  width: '240px',
-                  height: '48px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {data?.fields?.subtitle}
-              </Typography>
-              <CardActions sx={{ padding: 0, marginTop: theme.spacing(2) }}>
-                <Link
-                  target="_blank"
-                  rel="noopener"
-                  href={data?.fields?.url || 'https://li.fi'}
-                  sx={{
-                    textDecoration: 'none',
-                    color:
-                      theme.palette.mode === 'dark'
-                        ? theme.palette.accent1Alt.main
-                        : theme.palette.primary.main,
-                  }}
-                >
-                  <Typography variant="lifiBodySmallStrong">
-                    {translate(`${i18Path}learnMore`)}
-                  </Typography>
-                </Link>
-              </CardActions>
-              <CardImage
-                component="img"
-                src={imageUrl}
-                alt="Feature Card Image"
-              />
-            </>
-          )}
+            </Link>
+          </CardActions>
+          <CardImage component="img" src={imageUrl} alt="Feature Card Image" />
         </CardContent>
       </Card>
     </Slide>
