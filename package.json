@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "repository": "https://github.com/lifinance/jumper.exchange",
   "devDependencies": {
-    "@babel/core": "^7.22.10",
     "@lerna/run": "^6.6.2",
     "@types/node": "^20.4.8",
     "@types/react": "^18.2.19",
