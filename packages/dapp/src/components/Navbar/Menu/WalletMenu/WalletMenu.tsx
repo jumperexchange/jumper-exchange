@@ -15,7 +15,7 @@ import { useMenuStore } from '@transferto/dapp/src/stores/menu';
 import { EventTrackingTool } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
@@ -113,11 +113,13 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     onWalletDisconnect();
   };
 
-  const handleMultisigEnvironmentCheck = async () => {
+  const handleMultisigEnvironmentCheck = useCallback(async () => {
     const response = await checkMultisigEnvironment();
 
     setIsMultisigEnvironment(response);
-  };
+    // Check MultisigEnvironment only on first render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     openNavbarWalletMenu! && setCopiedToClipboard(false);
