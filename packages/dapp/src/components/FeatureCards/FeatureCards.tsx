@@ -13,7 +13,6 @@ export const FeatureCards = () => {
   );
 
   const { featureCards: data, isSuccess } = useFeatureCards();
-  console.log(data);
   const featureCardsFetched = useMemo(() => {
     return data?.items?.filter(
       (el, index) =>

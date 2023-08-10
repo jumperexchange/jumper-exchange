@@ -27,7 +27,6 @@ export const useFeatureCards = (): UseFeatureCardsProps => {
       refetchInterval: 1000 * 60 * 60,
     },
   );
-  console.log(data);
   return {
     featureCards: data ?? [],
     isSuccess,
