@@ -3,6 +3,7 @@ import { IconButton, Link, Slide, useTheme } from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { JumperIcon } from '@transferto/shared/src/atoms/illustrations';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
@@ -11,8 +12,6 @@ import { Card, CardImage } from './FeatureCard.style';
 export const FeatureCard = ({ data, isSuccess, assets }) => {
   const [open, setOpen] = useState(true);
   const { t: translate } = useTranslation();
-  const [lightImageUrl, setLightImageUrl] = useState('');
-  const [darkImageUrl, setDarkImageUrl] = useState('');
   const [onDisableFeatureCard] = useSettingsStore((state) => [
     state.onDisableFeatureCard,
   ]);
@@ -47,8 +46,14 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
       timeout={150}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
-      <Card gradient={data?.gradientColor}>
-        <CardContent sx={{ padding: theme.spacing(6), position: 'relative' }}>
+      <Card gradient={data?.gradientColor} className="test">
+        <CardContent
+          sx={{
+            padding: theme.spacing(6),
+            height: '100%',
+            position: 'relative',
+          }}
+        >
           <IconButton
             disableRipple={true}
             sx={{
@@ -76,7 +81,16 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
           </IconButton>
 
           {!isSuccess ? (
-            'loading'
+            <JumperIcon
+              theme={theme}
+              styles={{
+                animation: 'pulse 1.4s linear infinite',
+                position: 'absolute',
+                left: 'calc( 50% - 20px )',
+                top: 'calc( 50% - 20px)',
+                filter: 'grayscale(.8) opacity(0.25)',
+              }}
+            />
           ) : (
             <>
               <Typography

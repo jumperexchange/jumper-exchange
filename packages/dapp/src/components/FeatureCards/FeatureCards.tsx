@@ -20,8 +20,9 @@ export const FeatureCards = () => {
         el.fields.displayConditions &&
         !disabledFeatureCards.includes(el.fields.displayConditions[0]?.id),
     );
+    // trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, data?.items]);
+  }, [data?.items, isSuccess]);
 
   useEffect(() => {
     setFeatureCards(featureCardsFetched?.slice(0, 4));
@@ -34,7 +35,7 @@ export const FeatureCards = () => {
     isDesktop &&
     welcomeScreenEntered && (
       <FeatureCardsContainer>
-        {featureCards?.length &&
+        {!!featureCards?.length &&
           featureCards.map((cardData, index) => {
             return (
               <FeatureCard
