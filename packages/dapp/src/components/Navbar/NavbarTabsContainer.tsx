@@ -44,7 +44,10 @@ const NavbarTabsContainer = () => {
             action: TrackingActions.SwitchTab,
             label: 'exchange',
             data: { tab: 'exchange' },
-            disableTrackingTool: [EventTrackingTool.ARCx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
         }}
         icon={
@@ -69,7 +72,10 @@ const NavbarTabsContainer = () => {
             action: TrackingActions.SwitchTab,
             label: 'gas',
             data: { tab: 'gas' },
-            disableTrackingTool: [EventTrackingTool.ARCx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
         }}
         label={translate(`${i18Path}links.refuel`)}
@@ -93,9 +99,12 @@ const NavbarTabsContainer = () => {
             trackEvent({
               category: TrackingCategories.Navigation,
               action: TrackingActions.SwitchTab,
-              label: 'gas',
-              data: { tab: 'gas' },
-              disableTrackingTool: [EventTrackingTool.ARCx],
+              label: 'buy',
+              data: { tab: 'buy' },
+              disableTrackingTool: [
+                EventTrackingTool.ARCx,
+                EventTrackingTool.Raleon,
+              ],
             });
           }}
           label={translate(`${i18Path}links.buy`)}

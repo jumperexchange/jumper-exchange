@@ -69,7 +69,7 @@ export function Widget({
         connect: async () => {
           trackEvent({
             category: TrackingCategories.Menu,
-            action: TrackingActions.OpenWalletSelectMenu,
+            action: TrackingActions.ConnectWallet,
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,
@@ -103,7 +103,10 @@ export function Widget({
               data: {
                 switchChain: reqChainId,
               },
-              disableTrackingTool: [EventTrackingTool.ARCx],
+              disableTrackingTool: [
+                EventTrackingTool.ARCx,
+                EventTrackingTool.Raleon,
+              ],
               // transport: "xhr", // optional, beacon/xhr/image
             });
             return account.signer!;
@@ -120,7 +123,10 @@ export function Widget({
               tokenAdded: `${token.name}`,
               tokenAddChainId: chainId,
             },
-            disableTrackingTool: [EventTrackingTool.ARCx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           await addToken(chainId, token);
         },
