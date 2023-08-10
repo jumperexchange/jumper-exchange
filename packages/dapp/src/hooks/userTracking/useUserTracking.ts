@@ -25,7 +25,7 @@ export function useUserTracking() {
     async ({ data, disableTrackingTool }: TrackAttributeProps) => {
       if (data && !disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() &&
-          hotjar.identify(account?.address ? account?.address : null, {
+          hotjar.identify(account.address ? account.address : null, {
             ...data,
           });
       }
@@ -71,8 +71,8 @@ export function useUserTracking() {
         !disableTrackingTool?.includes(EventTrackingTool.Raleon)
       ) {
         !disconnect
-          ? window?.raleon.walletConnected(account.address)
-          : window?.raleon.walletDisconnected();
+          ? window.raleon.walletConnected(account.address)
+          : window.raleon.walletDisconnected();
       }
       if (
         !!account.address &&

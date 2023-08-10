@@ -66,10 +66,10 @@ export function Widgets() {
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   const handleGetStarted: MouseEventHandler<HTMLDivElement> = (event) => {
-    const classList = (event?.target as HTMLElement)?.classList;
+    const classList = (event.target as HTMLElement).classList;
     if (
-      classList?.contains?.('stats-card') ||
-      classList?.contains?.('link-lifi')
+      classList.contains?.('stats-card') ||
+      classList.contains?.('link-lifi')
     ) {
       return;
     } else {

@@ -44,8 +44,8 @@ export const ChainSwitch = () => {
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar
-            src={activeChain?.logoURI || 'empty'}
-            alt={`${activeChain?.name}chain-logo`}
+            src={activeChain.logoURI || 'empty'}
+            alt={`${activeChain.name}chain-logo`}
             sx={{ height: '32px', width: '32px' }}
           />
         ) : (

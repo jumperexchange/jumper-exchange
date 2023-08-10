@@ -58,7 +58,7 @@ type DataItem = {
 };
 
 const sortByName = (data: DataItem[]): DataItem[] => {
-  return data?.sort(function (a: DataItem, b: DataItem) {
+  return data.sort(function (a: DataItem, b: DataItem) {
     if (a.name < b.name) {
       return -1;
     }
@@ -112,8 +112,8 @@ export const StatsCards = ({
     },
     {
       title: t('navbar.statsCards.bridges'),
-      number: data?.bridges.length || 16,
-      data: sortByName(data?.bridges),
+      number: data.bridges.length || 16,
+      data: sortByName(data.bridges),
       open: openBridgesPopper,
       setOpen: setOpenBridgesPopper,
       handleOnClick: () => {
@@ -122,8 +122,8 @@ export const StatsCards = ({
     },
     {
       title: t('navbar.statsCards.dexs'),
-      number: data?.exchanges.length || 32,
-      data: sortByName(data?.exchanges),
+      number: data.exchanges.length || 32,
+      data: sortByName(data.exchanges),
       open: openDexsPopper,
       setOpen: setOpenDexsPopper,
       handleOnClick: () => {
@@ -134,7 +134,7 @@ export const StatsCards = ({
 
   return (
     <Container>
-      {statsData?.map((el, index) => {
+      {statsData.map((el, index) => {
         return (
           <Box key={`stats-box-${el.title}-${index}`}>
             <StatsCard

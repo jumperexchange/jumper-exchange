@@ -21,7 +21,7 @@ export const useMultisig = () => {
 
   const checkMultisigEnvironment = async () => {
     // in Multisig env, window.parent is not equal to window
-    const isIframeEnvironment = window?.parent !== window;
+    const isIframeEnvironment = window.parent !== window;
 
     if (!isIframeEnvironment) {
       return false;
@@ -37,7 +37,7 @@ export const useMultisig = () => {
   };
 
   const isSafeSigner = Boolean(
-    (account?.signer?.provider as any)?.provider?.safe?.safeAddress,
+    (account.signer?.provider as any).safe.safeAddress,
   );
 
   const handleMultiSigTransactionDetails = async (
@@ -45,7 +45,7 @@ export const useMultisig = () => {
     chainId: number,
     updateIntermediateStatus?: () => void,
   ): Promise<MultisigTxDetails> => {
-    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
+    const safeProviderSDK = (account.signer?.provider as any).sdk;
 
     const safeTransactionDetails: GatewayTransactionDetails =
       await safeProviderSDK.txs.getBySafeTxHash(txHash);
@@ -141,7 +141,7 @@ export const useMultisig = () => {
   const handleSendingBatchTransaction = async (
     batchTransactions: BaseTransaction[],
   ) => {
-    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
+    const safeProviderSDK = (account.signer?.provider as any).sdk;
 
     try {
       const { safeTxHash } = await safeProviderSDK.txs.send({

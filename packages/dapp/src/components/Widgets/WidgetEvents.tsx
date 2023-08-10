@@ -39,7 +39,7 @@ export function WidgetEvents() {
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: Route) => {
-      if (!!route?.id) {
+      if (!!route.id) {
         trackEvent({
           category: TrackingCategories.WidgetEvent,
           action: TrackingActions.OnRouteExecutionStarted,
@@ -67,7 +67,7 @@ export function WidgetEvents() {
         setIsMultiSigConfirmationModalOpen(true);
       }
 
-      if (!!update?.process && !!update.route) {
+      if (!!update.process && !!update.route) {
         if (update.process.txHash !== lastTxHashRef.current) {
           lastTxHashRef.current = update.process.txHash;
           trackTransaction({
@@ -87,7 +87,7 @@ export function WidgetEvents() {
       }
     };
     const onRouteExecutionCompleted = async (route: Route) => {
-      if (!!route?.id) {
+      if (!!route.id) {
         trackEvent({
           category: TrackingCategories.WidgetEvent,
           action: TrackingActions.OnRouteExecutionCompleted,
@@ -113,7 +113,7 @@ export function WidgetEvents() {
         category: TrackingCategories.WidgetEvent,
         action: TrackingActions.OnRouteExecutionFailed,
         data: {
-          routeId: update?.route?.id,
+          routeId: update.route.id,
           transactionHash: update.process.txHash,
           status: update.process.status,
           message: update.process.message,
