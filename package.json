@@ -21,7 +21,8 @@
     "lerna": "^7.1.5",
     "lint-staged": "^13.2.3",
     "prettier": "^3.0.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "web-vitals": "^3.4.0"
   },
   "scripts": {
     "bootstrap": "yarn install; lerna bootstrap;",
