@@ -194,7 +194,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   ) : (
     <Snackbar
       open={copiedToClipboard}
-      autoHideDuration={50000}
+      autoHideDuration={2000}
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       sx={{ top: '80px !important' }}
