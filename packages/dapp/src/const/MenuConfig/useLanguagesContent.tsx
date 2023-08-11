@@ -4,6 +4,7 @@ import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
+import * as supportedLanguages from '../../i18n';
 
 export const useLanguagesContent = () => {
   const { i18n } = useTranslation();
@@ -24,12 +25,14 @@ export const useLanguagesContent = () => {
     });
   };
 
-  const languages = Object.keys(i18n.store.data)
+  console.log({ data: i18n.store.data });
+
+  const languages = Object.entries(supportedLanguages)
     .sort()
-    .map((lan) => ({
-      label: i18n.store.data[lan].translation['navbar']['language']['value'],
-      checkIcon: (languageMode || i18n.resolvedLanguage) === lan,
-      onClick: () => handleSwitchLanguage(lan),
+    .map(([language, languageValue]) => ({
+      label: languageValue.language.value,
+      checkIcon: (languageMode || i18n.resolvedLanguage) === language,
+      onClick: () => handleSwitchLanguage(language),
     }));
 
   return languages;
