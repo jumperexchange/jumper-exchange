@@ -194,10 +194,10 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   ) : (
     <Snackbar
       open={copiedToClipboard}
-      autoHideDuration={2000}
+      autoHideDuration={50000}
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      sx={{ top: '78px !important' }}
+      sx={{ top: '80px !important' }}
     >
       <MuiAlert elevation={6} variant="filled" severity="success">
         {translate(`${i18Path}copiedMsg`)}
