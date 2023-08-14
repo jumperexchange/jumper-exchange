@@ -65,7 +65,7 @@ export const useWalletSelectContent = () => {
         setShowWalletIdentityPopover(wallet);
         return;
       }
-      await connect(wallet);
+      await connect(wallet as Wallet | undefined);
       onWalletConnect(wallet.name);
       try {
       } catch (e) {}
@@ -75,7 +75,9 @@ export const useWalletSelectContent = () => {
 
   useEffect(() => {
     initializeWalletSelect();
-  }, [account?.address]);
+    // fix: remove 'initializeWalletSelect' from dep´s to fix infinite loop / freeze
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account.address]);
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
     const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {

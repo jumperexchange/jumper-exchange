@@ -1,5 +1,5 @@
-import type { Token } from '@lifi/sdk';
-import type { Signer } from 'ethers';
+import type { Token } from '@lifi/types';
+import type { Signer } from '@ethersproject/abstract-signer';
 import type events from 'events';
 
 export interface WalletContextProps {

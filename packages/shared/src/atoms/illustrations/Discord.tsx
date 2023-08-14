@@ -1,4 +1,4 @@
-export const Discord = (props) => (
+export const Discord = (props: any) => (
   <svg
     width={25}
     height={24}

@@ -7,12 +7,21 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react';
 import {
   ModalContainer,
   ModalContent,
   ModalHeaderAppBar,
 } from './StatsModal.style';
-export const StatsModal = ({ title, open, setOpen, data }) => {
+
+interface NavbarMenuProps {
+  title: string;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  data: any;
+}
+
+export const StatsModal = ({ title, open, setOpen, data }: NavbarMenuProps) => {
   const theme = useTheme();
   return (
     <MUIModal
@@ -59,42 +68,47 @@ export const StatsModal = ({ title, open, setOpen, data }) => {
           </IconButton>
         </ModalHeaderAppBar>
         <ModalContent container>
-          {data?.map((el, index) => {
-            return (
-              <Grid
-                item
-                key={`${title}-item-${index}`}
-                width={'72px'}
-                textAlign={'center'}
-              >
-                <Avatar
-                  src={el.logoURI}
-                  sx={{
-                    margin: 'auto',
-                    height: '48px',
-                    width: '48px',
-                  }}
-                />
-                <Typography
-                  variant={'lifiBodyXSmall'}
-                  marginTop={'12px'}
-                  sx={{
-                    color:
-                      theme.palette.mode === 'dark'
-                        ? theme.palette.white.main
-                        : theme.palette.black.main,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '72px',
-                    height: '32px',
-                    maxHeight: '32px',
-                  }}
+          {data?.map(
+            (
+              el: { logoURI: string | undefined; name: string },
+              index: number,
+            ) => {
+              return (
+                <Grid
+                  item
+                  key={`${title}-item-${index}`}
+                  width={'72px'}
+                  textAlign={'center'}
                 >
-                  {el.name}
-                </Typography>
-              </Grid>
-            );
-          })}
+                  <Avatar
+                    src={el.logoURI}
+                    sx={{
+                      margin: 'auto',
+                      height: '48px',
+                      width: '48px',
+                    }}
+                  />
+                  <Typography
+                    variant={'lifiBodyXSmall'}
+                    marginTop={'12px'}
+                    sx={{
+                      color:
+                        theme.palette.mode === 'dark'
+                          ? theme.palette.white.main
+                          : theme.palette.black.main,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '72px',
+                      height: '32px',
+                      maxHeight: '32px',
+                    }}
+                  >
+                    {el.name}
+                  </Typography>
+                </Grid>
+              );
+            },
+          )}
         </ModalContent>
       </ModalContainer>
     </MUIModal>

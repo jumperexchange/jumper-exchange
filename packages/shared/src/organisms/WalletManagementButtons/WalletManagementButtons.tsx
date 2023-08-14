@@ -8,10 +8,8 @@ import {
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { EventTrackingTool } from '@transferto/dapp/src/types';
-import type { Wallet } from '@transferto/shared/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
-import { shallow } from 'zustand/shallow';
 import { ButtonPrimary, ButtonSecondary } from '../../atoms';
 import { walletDigest } from '../../utils/walletDigest';
 
@@ -40,29 +38,33 @@ export const WalletManagementButtons: React.FC<
     onOpenNavbarWalletSelectMenu,
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
-  ] = useMenuStore(
-    (state) => [
-      state.openNavbarWalletSelectMenu,
-      state.onOpenNavbarWalletSelectMenu,
-      state.openNavbarWalletMenu,
-      state.onOpenNavbarWalletMenu,
-    ],
-    shallow,
-  );
+  ] = useMenuStore((state) => [
+    state.openNavbarWalletSelectMenu,
+    state.onOpenNavbarWalletSelectMenu,
+    state.openNavbarWalletMenu,
+    state.onOpenNavbarWalletMenu,
+  ]);
 
-  const walletSource: Wallet[] = supportedWallets;
+  const walletSource = supportedWallets;
   const walletIcon: string = useMemo(() => {
     if (!!usedWallet) {
       return usedWallet.icon;
     } else {
-      const walletKey: any = Object.keys(walletSource).filter(
-        (el) => walletSource[el].name === localStorage.activeWalletName,
-      );
-      return walletSource[walletKey]?.icon || '';
+      for (const key in Object.keys(walletSource)) {
+        if (walletSource.hasOwnProperty(key)) {
+          let value = walletSource[key];
+          if (value.name === localStorage.activeWalletName) {
+            return value.icon;
+          }
+          //do something with value;
+        }
+      }
     }
   }, [usedWallet, walletSource]);
 
-  const handleWalletSelectClick = (event) => {
+  const handleWalletSelectClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     openNavbarWalletSelectMenu &&
       trackEvent({
         category: TrackingCategories.Menu,
@@ -75,7 +77,9 @@ export const WalletManagementButtons: React.FC<
     );
   };
 
-  const handleWalletMenuClick = (event) => {
+  const handleWalletMenuClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     openNavbarWalletMenu &&
       trackEvent({
         category: TrackingCategories.Menu,

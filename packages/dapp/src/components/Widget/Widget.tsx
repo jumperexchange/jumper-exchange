@@ -1,12 +1,8 @@
 import { ChainId, Token } from '@lifi/sdk';
-import {
-  HiddenUI,
-  LiFiWidget,
-  WidgetConfig,
-  WidgetSubvariant,
-} from '@lifi/widget';
+import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { MenuState } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
@@ -14,8 +10,12 @@ import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore, useMultisigStore } from '../../stores';
-import { EventTrackingTool, LanguageKey } from '../../types';
+import { useMenuStore } from '../../stores';
+import {
+  EventTrackingTool,
+  LanguageKey,
+  StarterVariantType,
+} from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 
 const refuelAllowChains: ChainId[] = [
@@ -31,21 +31,19 @@ const refuelAllowChains: ChainId[] = [
   ChainId.VEL,
 ];
 
-export function Widget({
-  starterVariant,
-}: {
-  starterVariant: WidgetSubvariant;
-}) {
+interface WidgetProps {
+  starterVariant: StarterVariantType;
+}
+
+export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
   const onOpenNavbarWalletSelectMenu = useMenuStore(
-    (state) => state.onOpenNavbarWalletSelectMenu,
+    (state: MenuState) => state.onOpenNavbarWalletSelectMenu,
   );
-  const destinationChain = useMultisigStore((state) => state.destinationChain);
-
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
   // load environment config
@@ -63,7 +61,7 @@ export function Widget({
 
     return {
       variant: starterVariant === 'refuel' ? 'default' : 'expandable',
-      subvariant: starterVariant || 'default',
+      subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
@@ -79,8 +77,7 @@ export function Widget({
             true,
             document.getElementById('connect-wallet-button'),
           );
-
-          return account.signer;
+          return account.signer!;
         },
         disconnect: async () => {
           trackEvent({
@@ -187,7 +184,7 @@ export function Widget({
           maxPriceImpact: 0.4,
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        multisigConfig: { ...multisigSdkConfig },
+        multisigConfig: { ...(multisigSdkConfig ?? {}) },
       },
       buildUrl: true,
       insurance: true,

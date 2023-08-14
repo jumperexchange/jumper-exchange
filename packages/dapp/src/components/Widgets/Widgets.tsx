@@ -1,11 +1,16 @@
 import { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { shallow } from 'zustand/shallow';
+import {
+  MouseEventHandler,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { TabsMap } from '../../const/tabsMap';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
-import { LinkMap } from '../../types';
+import { LinkMap, StarterVariantType } from '../../types';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
@@ -16,7 +21,6 @@ export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const [welcomeScreenEntered, onWelcomeScreenEntered] = useSettingsStore(
     (state) => [state.welcomeScreenEntered, state.onWelcomeScreenEntered],
-    shallow,
   );
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
@@ -24,16 +28,18 @@ export function Widgets() {
     WidgetSubvariant | 'buy'
   >(TabsMap.Exchange.value);
 
-  const starterVariant = useMemo(() => {
+  const starterVariant: StarterVariantType = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
       if (url === TabsMap.Exchange.value) {
         return TabsMap.Exchange.value;
       } else if (url === TabsMap.Refuel.value) {
         return TabsMap.Refuel.value;
-      } else if (url === TabsMap.Buy.value) {
+      } else {
         return TabsMap.Buy.value;
       }
+    } else {
+      return TabsMap.Exchange.value;
     }
   }, []);
 
@@ -59,11 +65,11 @@ export function Widgets() {
     }
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
-  const handleGetStarted = async (event) => {
-    const classList = event?.target?.classList;
+  const handleGetStarted: MouseEventHandler<HTMLDivElement> = (event) => {
+    const classList = (event.target as HTMLElement).classList;
     if (
-      classList?.contains?.('stats-card') ||
-      classList?.contains?.('link-lifi')
+      classList.contains?.('stats-card') ||
+      classList.contains?.('link-lifi')
     ) {
       return;
     } else {
