@@ -3045,7 +3045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^2.2.1, @lifi/sdk@npm:^2.2.2":
+"@lifi/sdk@npm:^2.2.1":
   version: 2.2.2
   resolution: "@lifi/sdk@npm:2.2.2"
   dependencies:
@@ -3056,6 +3056,20 @@ __metadata:
     eth-rpc-errors: ^4.0.3
     ethers: ^5.7.2
   checksum: 785417ff843ffd9b803679b7e962726e7b8ddd6b7d1358e80c875b40c8980b45fd904f78e65b6fe5169b72ff7fc7fbb6efe253f72484c4c1d58e895d94e0f41c
+  languageName: node
+  linkType: hard
+
+"@lifi/sdk@npm:^2.2.3":
+  version: 2.2.3
+  resolution: "@lifi/sdk@npm:2.2.3"
+  dependencies:
+    "@ethersproject/abi": ^5.7.0
+    "@ethersproject/contracts": ^5.7.0
+    "@lifi/types": ^8.0.4
+    bignumber.js: ^9.1.1
+    eth-rpc-errors: ^4.0.3
+    ethers: ^5.7.2
+  checksum: af747759374cbf17302a7def2fa9eb7f80e4dee2eefd155f44db71abf7156a6db0cb103bbf452d7fa976c97ef4af486140183970d73c7378898fddaf3b918ba6
   languageName: node
   linkType: hard
 
@@ -3087,9 +3101,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.2.6":
-  version: 2.2.6
-  resolution: "@lifi/widget@npm:2.2.6"
+"@lifi/widget@npm:^2.2.7":
+  version: 2.2.7
+  resolution: "@lifi/widget@npm:2.2.7"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -3125,7 +3139,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: b4fe00682b15b8f41f279fbea264f36dc7728bd899a9c8585da90fced22dc76f1bd79a9085d7dd8ca8001534e315cf0a353189f0f2435425e2dd1e0ea396c997
+  checksum: 7e58134426f757328f6c95d7e6d3fa564e7016574a65dfa91203bff5dc63e5494b8d7c6825f503c8b94610b6a35ce4b2fc4f61003443717bef18d79525728840
   languageName: node
   linkType: hard
 
@@ -6269,9 +6283,9 @@ __metadata:
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
-    "@lifi/sdk": ^2.2.2
+    "@lifi/sdk": ^2.2.3
     "@lifi/wallet-management": ^2.2.4
-    "@lifi/widget": ^2.2.6
+    "@lifi/widget": ^2.2.7
     "@mui/icons-material": ^5.14.0
     "@mui/material": ^5.14.0
     "@safe-global/safe-apps-sdk": ^8.0.0
