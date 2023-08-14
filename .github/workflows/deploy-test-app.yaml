@@ -107,12 +107,12 @@ jobs:
             })
 
       - name: Deploy Page
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_PAGES_API_TOKEN }}
-        run: |
-          yarn add --dev wrangler
-          npx wrangler pages deploy ./packages/dapp/dist/ --project-name ${{ env.PROJECT_NAME }} --branch ${{ env.BRANCH_NAME }}
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_PAGES_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: | 
+            pages deploy ./packages/dapp/dist/ --project-name ${{ env.PROJECT_NAME }} --branch ${{ env.BRANCH_NAME }}
 
       - name: Comment Test Endpoint
         uses: actions/github-script@v6

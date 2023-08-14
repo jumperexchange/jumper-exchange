@@ -16,13 +16,17 @@ export const useShowcasesContent = () => {
     {
       label: `${translate(`${i18Path}showcases.ukraineDonation`)}`,
       onClick: () => {
-        openInNewTab('https://transferto.xyz/showcase/ukraine');
+        const ukraineUrl = 'https://transferto.xyz/showcase/ukraine';
+        openInNewTab(ukraineUrl);
         trackPageload({
           source: 'menu',
           destination: 'showcase-ukraine',
-          url: 'https://transferto.xyz/showcase/ukraine',
+          url: ukraineUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },
@@ -30,13 +34,18 @@ export const useShowcasesContent = () => {
     {
       label: `${translate(`${i18Path}showcases.klimaStaking`)}`,
       onClick: () => {
-        openInNewTab('https://transferto.xyz/showcase/klima-stake-v2');
+        const klimaStakingUrl =
+          'https://transferto.xyz/showcase/klima-stake-v2';
+        openInNewTab(klimaStakingUrl);
         trackPageload({
           source: 'menu',
           destination: 'showcase-klima',
-          url: 'https://transferto.xyz/showcase/klima-stake-v2',
+          url: klimaStakingUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },
@@ -44,13 +53,17 @@ export const useShowcasesContent = () => {
     {
       label: `${translate(`${i18Path}showcases.carbonOffset`)}`,
       onClick: () => {
-        openInNewTab('https://transferto.xyz/showcase/carbon-offset');
+        const carbonUrl = 'https://transferto.xyz/showcase/carbon-offset';
+        openInNewTab(carbonUrl);
         trackPageload({
           source: 'menu',
           destination: 'showcase-carbon',
-          url: 'https://transferto.xyz/showcase/carbon-offset',
+          url: carbonUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },

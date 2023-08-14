@@ -49,7 +49,10 @@ const MenuItemComponent = ({
             action: TrackingActions.OpenSubmenu,
             label: triggerSubMenu,
             data: { subMenu: triggerSubMenu },
-            disableTrackingTool: [EventTrackingTool.Raleon],
+            disableTrackingTool: [
+              EventTrackingTool.Raleon,
+              EventTrackingTool.ARCx,
+            ],
           });
         !!onClick && onClick();
       }}
