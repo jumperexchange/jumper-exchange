@@ -33,9 +33,5 @@
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "yarn@3.6.1",
-  "dependencies": {
-    "i18next-http-backend": "^2.2.1",
-    "i18next-resources-to-backend": "^1.1.4"
-  }
+  "packageManager": "yarn@3.6.1"
 }
