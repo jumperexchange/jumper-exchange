@@ -41,7 +41,7 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
       direction="up"
       in={open}
       unmountOnExit
-      appear={false}
+      appear={true}
       timeout={150}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
