@@ -7,7 +7,7 @@ import {
   ListItem,
   ListItemProps,
   MenuItem as MUIMenuItem,
-  MenuItemProps,
+  MenuItemProps as MUIMenuItemProps,
   MenuList,
   MenuListProps,
   Paper,
@@ -263,14 +263,14 @@ export const NavbarTab = styled(Tab, {
 
 export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
-export interface MUIMenuItemProps extends Omit<MenuItemProps, 'showButton'> {
+export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;
-  component?: ElementType<any> | undefined;
+  component?: ElementType<any>;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton',
-})<MUIMenuItemProps>(({ theme, showButton }) => ({
+  shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
+})<MenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
   padding: showButton ? theme.spacing(0, 3, 3) : theme.spacing(0, 3),
   backgroundColor: 'inherit',
@@ -290,10 +290,11 @@ export const MenuItem = styled(MUIMenuItem, {
   },
 }));
 
-export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
+export interface NavbarPaperProps
+  extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isDarkMode?: boolean;
   isWide?: boolean;
-  component?: ElementType<any> | undefined;
+  component?: ElementType<any>;
 }
 
 export const NavbarPaper = styled(Paper, {
