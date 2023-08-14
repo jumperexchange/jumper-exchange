@@ -1749,6 +1749,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.21.5":
+  version: 7.22.10
+  resolution: "@babel/runtime@npm:7.22.10"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: 524d41517e68953dbc73a4f3616b8475e5813f64e28ba89ff5fca2c044d535c2ea1a3f310df1e5bb06162e1f0b401b5c4af73fe6e2519ca2450d9d8c44cf268d
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:~7.5.4":
   version: 7.5.5
   resolution: "@babel/runtime@npm:7.5.5"
@@ -6288,6 +6297,8 @@ __metadata:
     husky: ^8.0.3
     i18next: ^22.5.0
     i18next-browser-languagedetector: ^7.0.2
+    i18next-http-backend: ^2.2.1
+    i18next-resources-to-backend: ^1.1.4
     lerna: ^7.1.3
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -20012,6 +20023,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"regenerator-runtime@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "regenerator-runtime@npm:0.14.0"
+  checksum: 1c977ad82a82a4412e4f639d65d22be376d3ebdd30da2c003eeafdaaacd03fc00c2320f18120007ee700900979284fc78a9f00da7fb593f6e6eeebc673fba9a3
+  languageName: node
+  linkType: hard
+
 "regenerator-transform@npm:^0.15.1":
   version: 0.15.1
   resolution: "regenerator-transform@npm:0.15.1"
@@ -20470,8 +20488,6 @@ __metadata:
     eslint-plugin-react: ^7.32.2
     eslint-plugin-react-hooks: ^4.6.0
     husky: ^8.0.3
-    i18next-http-backend: ^2.2.1
-    i18next-resources-to-backend: ^1.1.4
     lerna: ^7.1.3
     lint-staged: ^13.2.3
     prettier: ^3.0.0
