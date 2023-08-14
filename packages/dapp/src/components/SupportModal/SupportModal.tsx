@@ -1,16 +1,15 @@
 import { Breakpoint, useTheme } from '@mui/material';
 import WidgetBot from '@widgetbot/react-embed';
-import { shallow } from 'zustand/shallow';
 import { useMenuStore } from '../../stores/menu';
 import { NavbarHeight } from '../Navbar/Navbar.style';
 import { Modal, SupportModalContainer } from './SupportModal.style';
 
 export const SupportModal = () => {
   const theme = useTheme();
-  const [openSupportModal, onOpenSupportModal] = useMenuStore(
-    (state) => [state.openSupportModal, state.onOpenSupportModal],
-    shallow,
-  );
+  const [openSupportModal, onOpenSupportModal] = useMenuStore((state) => [
+    state.openSupportModal,
+    state.onOpenSupportModal,
+  ]);
 
   return (
     <Modal open={openSupportModal} onClose={() => onOpenSupportModal(false)}>

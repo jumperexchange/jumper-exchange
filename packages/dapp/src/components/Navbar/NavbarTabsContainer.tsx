@@ -18,8 +18,7 @@ function a11yProps(index: number) {
 
 const NavbarTabsContainer = () => {
   const theme = useTheme();
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t } = useTranslation();
   const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
@@ -61,7 +60,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={translate(`${i18Path}links.exchange`)}
+        label={t('navbar.links.exchange')}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -78,7 +77,7 @@ const NavbarTabsContainer = () => {
             ],
           });
         }}
-        label={translate(`${i18Path}links.refuel`)}
+        label={t('navbar.links.refuel')}
         icon={
           <EvStationOutlinedIcon
             sx={{
@@ -107,7 +106,7 @@ const NavbarTabsContainer = () => {
               ],
             });
           }}
-          label={translate(`${i18Path}links.buy`)}
+          label={t('navbar.links.buy')}
           icon={
             <CreditCardIcon
               sx={{

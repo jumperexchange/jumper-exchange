@@ -4,7 +4,6 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { useSettingsStore } from '../stores/settings';
-import backend from 'i18next-http-backend';
 import resourcesToBackend from 'i18next-resources-to-backend';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {

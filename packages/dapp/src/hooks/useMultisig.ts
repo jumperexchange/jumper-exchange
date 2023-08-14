@@ -1,13 +1,18 @@
-import { WidgetConfig } from '@lifi/widget';
-import { useWallet } from '../providers/WalletProvider';
-import { BaseTransaction, ChainId, ChainKey, MultisigConfig } from '@lifi/sdk';
 import {
+  BaseTransaction,
+  ChainId,
+  ChainKey,
+  MultisigConfig,
+  MultisigTxDetails,
+  Route,
+} from '@lifi/sdk';
+import SafeAppsSDK, {
   GatewayTransactionDetails,
   TransactionStatus,
 } from '@safe-global/safe-apps-sdk';
-import SafeAppsSDK from '@safe-global/safe-apps-sdk';
-import { Route } from '@lifi/sdk';
+import { useWallet } from '../providers/WalletProvider';
 import { useMultisigStore } from '../stores';
+import { MultisigWidgetConfig } from '../types';
 
 export const useMultisig = () => {
   const { account } = useWallet();
@@ -16,7 +21,7 @@ export const useMultisig = () => {
 
   const checkMultisigEnvironment = async () => {
     // in Multisig env, window.parent is not equal to window
-    const isIframeEnvironment = window?.parent !== window;
+    const isIframeEnvironment = window.parent !== window;
 
     if (!isIframeEnvironment) {
       return false;
@@ -31,15 +36,16 @@ export const useMultisig = () => {
     return !!accountInfo?.safeAddress;
   };
 
-  const isSafeSigner = !!(account?.signer?.provider as any)?.provider?.safe
-    ?.safeAddress;
+  const isSafeSigner = Boolean(
+    (account?.signer?.provider as any)?.provider?.safe?.safeAddress,
+  );
 
   const handleMultiSigTransactionDetails = async (
     txHash: string,
     chainId: number,
-    updateIntermediateStatus: () => void,
-  ) => {
-    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
+    updateIntermediateStatus?: () => void,
+  ): Promise<MultisigTxDetails> => {
+    const safeProviderSDK = (account.signer?.provider as any).sdk;
 
     const safeTransactionDetails: GatewayTransactionDetails =
       await safeProviderSDK.txs.getBySafeTxHash(txHash);
@@ -68,7 +74,7 @@ export const useMultisig = () => {
     ].includes(TransactionStatus.AWAITING_EXECUTION);
 
     if (isAwaitingExecution) {
-      updateIntermediateStatus();
+      updateIntermediateStatus?.();
     }
 
     if (isSafeStatusPending) {
@@ -127,7 +133,7 @@ export const useMultisig = () => {
     }
 
     return {
-      status: safeTransactionDetails.txStatus,
+      status: 'PENDING',
       txHash: safeTransactionDetails.txHash,
     };
   };
@@ -135,7 +141,7 @@ export const useMultisig = () => {
   const handleSendingBatchTransaction = async (
     batchTransactions: BaseTransaction[],
   ) => {
-    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
+    const safeProviderSDK = (account.signer?.provider as any).sdk;
 
     try {
       const { safeTxHash } = await safeProviderSDK.txs.send({
@@ -146,12 +152,12 @@ export const useMultisig = () => {
         hash: safeTxHash,
       };
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error as string);
     }
   };
 
   const getMultisigWidgetConfig = (): Partial<{
-    multisigWidget: Partial<WidgetConfig>;
+    multisigWidget: MultisigWidgetConfig;
     multisigSdkConfig: MultisigConfig;
   }> => {
     const multisigConfig = {
@@ -164,15 +170,20 @@ export const useMultisig = () => {
     if (isSafeSigner) {
       const currentChain = account.chainId;
 
-      const fromChain: ChainId = Object.values(ChainId).find(
-        (chainId) => chainId !== currentChain,
-      ) as ChainId;
-
       const shouldRequireToAddress = account.chainId !== destinationChain;
+
+      // get the Chain symbol (ETH) from chainID
+      // get the ChainKey(eth) from ChainID(ETH)
+      // unsure if it'll always be the same letters in lowercase, hence getting from mapping
+      const fromChainKey =
+        currentChain &&
+        ((ChainKey as Record<string, string>)[
+          ChainId[currentChain]
+        ] as ChainKey);
 
       return {
         multisigWidget: {
-          fromChain: ChainKey[fromChain],
+          fromChain: fromChainKey,
           requiredUI: shouldRequireToAddress ? ['toAddress'] : [],
         },
         multisigSdkConfig: {
@@ -193,11 +204,12 @@ export const useMultisig = () => {
       (step) => step.execution?.status === 'FAILED',
     );
 
-    const multisigRouteStarted = route.steps.some((step) =>
-      step.execution?.process.find(
-        (process) =>
-          !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
-      ),
+    const multisigRouteStarted = route.steps.some(
+      (step) =>
+        step.execution?.process.find(
+          (process) =>
+            !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
+        ),
     );
 
     return !isRouteDone && !isRouteFailed && multisigRouteStarted;

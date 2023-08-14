@@ -1,25 +1,29 @@
-import { MultisigProps, MultisigState } from '@transferto/shared/src';
-import { create } from 'zustand';
+import { MultisigState } from '@transferto/shared/src';
+import { shallow } from 'zustand/shallow';
+import { createWithEqualityFn } from 'zustand/traditional';
 
-export const useMultisigStore = create<MultisigState>((set) => ({
-  destinationChain: undefined,
-  setValue: (key, value) =>
-    set(() => ({
-      [key]: value,
-    })),
-  setValues: (values) =>
-    set((state) => {
-      const updatedState: MultisigProps = { ...state };
-      for (const key in values) {
-        if (Object.hasOwn(state, key)) {
-          updatedState[key] = values[key];
+export const useMultisigStore = createWithEqualityFn<MultisigState>(
+  (set) => ({
+    destinationChain: undefined,
+    setValue: (key: keyof MultisigState, value: any) =>
+      set(() => ({
+        [key]: value,
+      })),
+    setValues: (values: { [x: string]: any }) =>
+      set((state) => {
+        const updatedState: { [key: string]: any } = { ...state };
+        for (const key in values) {
+          if (Object.hasOwn(values, key)) {
+            updatedState[key] = values[key];
+          }
         }
-      }
-      return updatedState;
-    }),
-  onDestinationChainSelected: (chainId: number) => {
-    set({
-      destinationChain: chainId,
-    });
-  },
-}));
+        return updatedState;
+      }),
+    onDestinationChainSelected: (chainId: number) => {
+      set({
+        destinationChain: chainId,
+      });
+    },
+  }),
+  shallow,
+);

@@ -3,7 +3,6 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
 import { KeyboardEvent } from 'react';
-import { shallow } from 'zustand/shallow';
 import { MenuKeys, MenuMain } from '../../const/';
 import { useMenuStore } from '../../stores/menu';
 import {
@@ -40,15 +39,12 @@ const NavbarMenuDesktop = ({
     onCloseAllNavbarMenus,
     openNavbarWalletMenu,
     anchorRef,
-  ] = useMenuStore(
-    (state) => [
-      state.openNavbarSubMenu,
-      state.onCloseAllNavbarMenus,
-      state.openNavbarWalletMenu,
-      state.anchorRef,
-    ],
-    shallow,
-  );
+  ] = useMenuStore((state) => [
+    state.openNavbarSubMenu,
+    state.onCloseAllNavbarMenus,
+    state.openNavbarWalletMenu,
+    state.anchorRef,
+  ]);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {

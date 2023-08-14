@@ -4,7 +4,6 @@ import { WalletManagementButtons } from '@transferto/shared/src';
 import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { useChains } from '../../hooks/useChains';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
@@ -21,13 +20,12 @@ const NavbarManagement = () => {
     (state) => state.onWalletDisconnect,
   );
 
-  const [openMainNavbarMenu, onOpenNavbarMainMenu] = useMenuStore(
-    (state) => [state.openMainNavbarMenu, state.onOpenNavbarMainMenu],
-    shallow,
-  );
+  const [openMainNavbarMenu, onOpenNavbarMainMenu] = useMenuStore((state) => [
+    state.openMainNavbarMenu,
+    state.onOpenNavbarMainMenu,
+  ]);
 
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t } = useTranslation();
   const walletManagement = useWallet();
   const { account } = useWallet();
   !account.isActive ?? onWalletDisconnect();
@@ -63,7 +61,7 @@ const NavbarManagement = () => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {translate(`${i18Path}connectWallet`)}
+            {t('navbar.connectWallet')}
           </Typography>
         }
         isSuccess={isSuccess}
