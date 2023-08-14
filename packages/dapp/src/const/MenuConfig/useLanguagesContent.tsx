@@ -31,7 +31,7 @@ export const useLanguagesContent = () => {
     .map(([language, languageValue]) => ({
       label: languageValue.language.value,
       checkIcon: (languageMode || i18n.resolvedLanguage) === language,
-      onClick: () => handleSwitchLanguage(language),
+      onClick: () => handleSwitchLanguage(language as LanguageKey),
     }));
 
   return languages;

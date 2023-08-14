@@ -5,6 +5,7 @@ import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { useSettingsStore } from '../stores/settings';
 import resourcesToBackend from 'i18next-resources-to-backend';
+import { LanguageKey } from '../types';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const languageMode = useSettingsStore((state) => state.languageMode);
@@ -29,8 +30,7 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     i18n
       .use(LanguageDetector)
       .use(
-        resourcesToBackend((language, namespace) => {
-          console.log({ language, namespace });
+        resourcesToBackend((language: string, namespace: string) => {
           return import(`../i18n/${language}/${namespace}.json`);
         }),
       )
@@ -46,5 +46,3 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 };
-
-<div data-apikey="">something</div>;
