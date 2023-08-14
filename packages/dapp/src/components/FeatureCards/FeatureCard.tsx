@@ -10,11 +10,10 @@ import { Card, CardImage } from './FeatureCard.style';
 
 export const FeatureCard = ({ data, isSuccess, assets }) => {
   const [open, setOpen] = useState(true);
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const [onDisableFeatureCard] = useSettingsStore((state) => [
     state.onDisableFeatureCard,
   ]);
-  const i18Path = 'featureCard.';
   const theme = useTheme();
 
   useEffect(() => {
@@ -113,7 +112,7 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
               }}
             >
               <Typography variant="lifiBodySmallStrong">
-                {translate(`${i18Path}learnMore`)}
+                {t('featureCard.learnMore')}
               </Typography>
             </Link>
           </CardActions>
