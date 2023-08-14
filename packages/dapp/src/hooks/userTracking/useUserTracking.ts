@@ -25,7 +25,7 @@ export function useUserTracking() {
     async ({ data, disableTrackingTool }: TrackAttributeProps) => {
       if (data && !disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() &&
-          hotjar.identify(account?.address ? account?.address : null, {
+          hotjar.identify(account.address ? account.address : null, {
             ...data,
           });
       }
@@ -33,7 +33,7 @@ export function useUserTracking() {
         data && ReactGA.set({ ...data });
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        await arcx.attribute({
+        await arcx?.attribute({
           ...data,
           //   source, // optional(string) - the origin of the web traffic (eg. discord, twitter etc)
           //   campaignId, // optional(string) - a specific identifier of the campaign (eg. bankless-5)
@@ -71,8 +71,8 @@ export function useUserTracking() {
         !disableTrackingTool?.includes(EventTrackingTool.Raleon)
       ) {
         !disconnect
-          ? window?.raleon.walletConnected(account.address)
-          : window?.raleon.walletDisconnected();
+          ? window.raleon.walletConnected(account.address)
+          : window.raleon.walletDisconnected();
       }
       if (
         !!account.address &&
@@ -136,7 +136,8 @@ export function useUserTracking() {
       }
       if (
         !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
-        account.isActive
+        account.isActive &&
+        !!account.address
       ) {
         window.raleon.registerEvent(
           `${category}`,

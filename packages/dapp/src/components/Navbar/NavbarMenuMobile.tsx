@@ -2,7 +2,6 @@ import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
 import { KeyboardEvent } from 'react';
-import { shallow } from 'zustand/shallow';
 import { MenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import {
@@ -40,7 +39,6 @@ const NavbarMenuMobile = ({
       state.anchorRef,
       state.onCloseAllNavbarMenus,
     ],
-    shallow,
   );
 
   function handleListKeyDown(event: KeyboardEvent) {

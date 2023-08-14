@@ -1,3 +1,3 @@
 export * from './Discord';
-export * from './Lifi-Small-Logo';
+export * from './LifiSmallLogo';
 export * from './Wallet-Icon';

@@ -27,5 +27,21 @@
     "react-i18next": "^13.0.3",
     "typescript": "^5.1.6",
     "zustand": "^4.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
+    "@types/node": "^20.4.6",
+    "@types/react": "^18.2.18",
+    "babel-loader": "^9.1.3",
+    "eslint-config-prettier": "^8.10.0",
+    "prettier": "^3.0.0"
   }
 }

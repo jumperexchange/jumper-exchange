@@ -8,10 +8,8 @@ import { MenuKeys } from '..';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
-
 export const useDevelopersContent = () => {
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t } = useTranslation();
   const { trackPageload } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
@@ -21,7 +19,7 @@ export const useDevelopersContent = () => {
 
   return [
     {
-      label: `${translate(`${i18Path}developers.github`)}`,
+      label: t('navbar.developers.github'),
       prefixIcon: (
         <GitHubIcon
           sx={{
@@ -48,7 +46,7 @@ export const useDevelopersContent = () => {
       },
     },
     {
-      label: `${translate(`${i18Path}developers.documentation`)}`,
+      label: t('navbar.developers.documentation'),
       prefixIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
         const docsUrl = 'https://docs.li.fi/';
@@ -67,7 +65,7 @@ export const useDevelopersContent = () => {
       },
     },
     {
-      label: `${translate(`${i18Path}developers.showcases`)}`,
+      label: t('navbar.developers.showcases'),
       prefixIcon: <SlideshowIcon />,
       showMoreIcon: true,
       triggerSubMenu: MenuKeys.Showcases,

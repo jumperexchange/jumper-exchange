@@ -1,20 +1,25 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
+interface WelcomeWrapperProps {
+  showWelcome: boolean;
+  handleGetStarted: (event: any) => void;
+}
 
-export const WelcomeWrapper = ({ children, showWelcome, handleGetStarted }) => {
+export const WelcomeWrapper: React.FC<
+  PropsWithChildren<WelcomeWrapperProps>
+> = ({ children, showWelcome, handleGetStarted }) => {
   const theme = useTheme();
-  const i18Path = 'navbar.welcome.';
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
 
   return (
-    <Wrapper showWelcome={showWelcome}>
+    <Wrapper showWelcome={showWelcome || false}>
       {children}
       <Slide
         direction="up"
@@ -25,7 +30,7 @@ export const WelcomeWrapper = ({ children, showWelcome, handleGetStarted }) => {
       >
         <ContentContainer showWelcome={showWelcome}>
           <CustomColor variant={'lifiHeaderMedium'}>
-            {translate(`${i18Path}title`)}
+            {t('navbar.welcome.title')}
           </CustomColor>
           <Typography
             variant={'lifiBodyLarge'}
@@ -49,8 +54,9 @@ export const WelcomeWrapper = ({ children, showWelcome, handleGetStarted }) => {
           >
             {
               <Trans
-                i18nKey={`${i18Path}subtitle`}
+                i18nKey={'navbar.welcome.subtitle' as string & never[]}
                 components={[
+                  // fix: allow component with "no content"
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
@@ -101,7 +107,7 @@ export const WelcomeWrapper = ({ children, showWelcome, handleGetStarted }) => {
                 },
               }}
             >
-              {translate(`${i18Path}cta`)}
+              {t('navbar.welcome.cta')}
             </Typography>
           </ButtonPrimary>
         </ContentContainer>
