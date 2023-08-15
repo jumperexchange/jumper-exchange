@@ -15,6 +15,7 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
     state.onDisableFeatureCard,
   ]);
   const theme = useTheme();
+  console.log('data', data);
 
   useEffect(() => {
     data?.fields?.displayConditions &&
@@ -27,13 +28,15 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
       return theme.palette.mode === 'dark'
         ? el?.sys?.id === data?.fields?.imageDarkMode?.sys?.id
         : el?.sys?.id === data?.fields?.imageLightMode?.sys?.id;
-    })[0].fields?.file?.url;
+    })[0]?.fields?.file?.url;
   }, [
     theme.palette.mode,
     assets,
     data?.fields?.imageDarkMode?.sys?.id,
     data?.fields?.imageLightMode?.sys?.id,
   ]);
+
+  console.log('imageUrl', imageUrl);
 
   return (
     <Slide
@@ -76,28 +79,32 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
               }}
             />
           </IconButton>
-          <Typography
-            variant={'lifiHeaderSmall'}
-            sx={{
-              fontSize: '24px',
-              lineHeight: '32px',
-            }}
-            gutterBottom
-          >
-            {data?.fields?.title}
-          </Typography>
-          <Typography
-            variant={'lifiBodySmall'}
-            sx={{
-              lineHeight: '24px',
-              width: '240px',
-              height: '48px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {data?.fields?.subtitle}
-          </Typography>
+          {!!data?.fields?.title && (
+            <Typography
+              variant={'lifiHeaderSmall'}
+              sx={{
+                fontSize: '24px',
+                lineHeight: '32px',
+              }}
+              gutterBottom
+            >
+              {data?.fields?.title}
+            </Typography>
+          )}
+          {!!data?.fields?.subtitle && (
+            <Typography
+              variant={'lifiBodySmall'}
+              sx={{
+                lineHeight: '24px',
+                width: '240px',
+                height: '48px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {data?.fields?.subtitle}
+            </Typography>
+          )}
           <CardActions sx={{ padding: 0, marginTop: theme.spacing(2) }}>
             <Link
               target="_blank"
@@ -116,7 +123,13 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
               </Typography>
             </Link>
           </CardActions>
-          <CardImage component="img" src={imageUrl} alt="Feature Card Image" />
+          {imageUrl && (
+            <CardImage
+              component="img"
+              src={imageUrl}
+              alt="Feature Card Image"
+            />
+          )}
         </CardContent>
       </Card>
     </Slide>

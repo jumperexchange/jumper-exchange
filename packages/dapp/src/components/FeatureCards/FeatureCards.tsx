@@ -14,18 +14,23 @@ export const FeatureCards = () => {
 
   const { featureCards: data, isSuccess } = useFeatureCards();
   const featureCardsFetched = useMemo(() => {
-    return data?.items?.filter(
-      (el, index) =>
-        isSuccess &&
-        el.fields.displayConditions &&
-        !disabledFeatureCards.includes(el.fields.displayConditions[0]?.id),
-    );
+    if (Array.isArray(data?.items) && !!data?.items.length) {
+      return data?.items?.filter(
+        (el, index) =>
+          isSuccess &&
+          el.fields.displayConditions &&
+          !disabledFeatureCards.includes(el.fields.displayConditions[0]?.id),
+      );
+    }
     // trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.items, isSuccess]);
 
   useEffect(() => {
-    setFeatureCards(featureCardsFetched?.slice(0, 4));
+    if (Array.isArray(featureCardsFetched)) {
+      !!featureCardsFetched.length &&
+        setFeatureCards(featureCardsFetched?.slice(0, 4));
+    }
   }, [featureCardsFetched]);
 
   const theme = useTheme();
@@ -35,17 +40,17 @@ export const FeatureCards = () => {
     isDesktop &&
     welcomeScreenEntered && (
       <FeatureCardsContainer>
-        {!!featureCards?.length &&
-          featureCards.map((cardData, index) => {
-            return (
-              <FeatureCard
-                isSuccess={isSuccess}
-                data={cardData}
-                assets={data?.includes?.Asset || []}
-                key={`feature-card-${index}`}
-              />
-            );
-          })}
+        {featureCards.map((cardData, index) => {
+          console.log('cardData', cardData);
+          return (
+            <FeatureCard
+              isSuccess={isSuccess}
+              data={cardData}
+              assets={data?.includes?.Asset || []}
+              key={`feature-card-${index}`}
+            />
+          );
+        })}
       </FeatureCardsContainer>
     )
   );
