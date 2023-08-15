@@ -1,15 +1,20 @@
 import { WidgetSubvariant } from '@lifi/widget/types';
+import { LinkMap } from './linkMap';
 
 interface TabsMapType {
   [key: string]: {
     index: number;
-    value: WidgetSubvariant | 'buy';
+    variant: WidgetSubvariant | 'buy';
     destination: string[];
   };
 }
 
 export const TabsMap: TabsMapType = {
-  Exchange: { index: 0, value: 'default', destination: ['exchange'] },
-  Refuel: { index: 1, value: 'refuel', destination: ['gas', 'refuel'] },
-  Buy: { index: 2, value: 'buy', destination: ['buy'] },
+  Exchange: { index: 0, variant: 'default', destination: [LinkMap.Exchange] },
+  Refuel: {
+    index: 1,
+    variant: 'refuel',
+    destination: [LinkMap.Gas, LinkMap.Refuel],
+  },
+  Buy: { index: 2, variant: 'buy', destination: [LinkMap.Buy] },
 };

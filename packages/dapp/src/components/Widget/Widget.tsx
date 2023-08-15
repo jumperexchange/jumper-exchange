@@ -142,7 +142,8 @@ export function Widget({ starterVariant }: WidgetProps) {
         },
       },
       chains: {
-        allow: starterVariant === TabsMap.Refuel.value ? refuelAllowChains : [],
+        allow:
+          starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
       },
       containerStyle: {
         borderRadius: '12px',
