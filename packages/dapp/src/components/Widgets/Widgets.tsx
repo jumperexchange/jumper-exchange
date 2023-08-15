@@ -31,12 +31,14 @@ export function Widgets() {
   const starterVariant: StarterVariantType = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
-      if (url === TabsMap.Exchange.value) {
-        return TabsMap.Exchange.value;
-      } else if (url === TabsMap.Refuel.value) {
+      if (!!TabsMap.Buy.destination.filter((el) => el === url).length) {
+        return TabsMap.Buy.value;
+      } else if (
+        !!TabsMap.Refuel.destination.filter((el) => el === url).length
+      ) {
         return TabsMap.Refuel.value;
       } else {
-        return TabsMap.Buy.value;
+        return TabsMap.Exchange.value;
       }
     } else {
       return TabsMap.Exchange.value;
