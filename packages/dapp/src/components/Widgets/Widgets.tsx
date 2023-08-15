@@ -41,7 +41,7 @@ export function Widgets() {
         return TabsMap.Exchange.variant;
       }
     } else {
-      // default: Exchange-Tab
+      // default and fallback: Exchange-Tab
       return TabsMap.Exchange.variant;
     }
   }, []);
