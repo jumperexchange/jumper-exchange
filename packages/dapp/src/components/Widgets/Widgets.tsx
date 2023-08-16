@@ -48,22 +48,36 @@ export function Widgets() {
 
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
-      starterVariant === TabsMap.Exchange.variant
-        ? setActiveTab(TabsMap.Exchange.index)
-        : starterVariant === TabsMap.Refuel.variant
-        ? setActiveTab(TabsMap.Refuel.index)
-        : starterVariant === TabsMap.Buy.variant
-        ? setActiveTab(TabsMap.Buy.index)
-        : setActiveTab(TabsMap.Exchange.index);
+      switch (starterVariant) {
+        case TabsMap.Exchange.variant:
+          setActiveTab(TabsMap.Exchange.index);
+          break;
+        case TabsMap.Refuel.variant:
+          setActiveTab(TabsMap.Refuel.index);
+          break;
+        case TabsMap.Buy.variant:
+          setActiveTab(TabsMap.Buy.index);
+          break;
+        default:
+          setActiveTab(TabsMap.Exchange.index);
+          break;
+      }
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
-      if (activeTab === TabsMap.Exchange.index) {
-        setStarterVariant(TabsMap.Exchange.variant);
-      } else if (activeTab === TabsMap.Refuel.index) {
-        setStarterVariant(TabsMap.Refuel.variant);
-      } else if (activeTab === TabsMap.Buy.index) {
-        setStarterVariant(TabsMap.Buy.variant);
+      switch (activeTab) {
+        case TabsMap.Exchange.index:
+          setStarterVariant(TabsMap.Exchange.variant);
+          break;
+        case TabsMap.Refuel.index:
+          setStarterVariant(TabsMap.Refuel.variant);
+          break;
+        case TabsMap.Buy.index:
+          setStarterVariant(TabsMap.Buy.variant);
+          break;
+        default:
+          setStarterVariant(TabsMap.Exchange.variant);
+          break;
       }
     }
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
