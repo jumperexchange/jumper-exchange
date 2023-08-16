@@ -60,7 +60,6 @@ export function Widgets() {
           break;
         default:
           setActiveTab(TabsMap.Exchange.index);
-          break;
       }
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
@@ -77,7 +76,6 @@ export function Widgets() {
           break;
         default:
           setStarterVariant(TabsMap.Exchange.variant);
-          break;
       }
     }
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
