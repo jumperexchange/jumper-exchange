@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { FeatureCardsResponse } from '../types/featureCardsRequest';
+import { FeatureCardsResponseType } from '../types';
 
 export interface UseFeatureCardsProps {
-  featureCards: FeatureCardsResponse;
+  featureCards: FeatureCardsResponseType | undefined;
   isSuccess: boolean;
 }
 
@@ -34,7 +34,7 @@ export const useFeatureCards = (): UseFeatureCardsProps => {
     },
   );
   return {
-    featureCards: data ?? [],
+    featureCards: data ?? undefined,
     isSuccess,
   };
 };

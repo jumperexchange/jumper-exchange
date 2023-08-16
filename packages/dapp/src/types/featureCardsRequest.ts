@@ -1,112 +1,95 @@
-export interface FeatureCardsResponse {
+export type FeatureCardsResponseType = {
   sys: {
     type: string;
   };
   total: number;
   skip: number;
   limit: number;
-  items: Array<FeatureCardsItems>;
-  includes: { Asset: FeactureCardsAsset };
-}
+  items: FeatureCardType[];
+  includes: {
+    Asset: FeatureCardAsset[];
+  };
+};
 
-export interface FeatureCardsItems {
-  fields: {
-    displayConditions: {
+export type FeatureCardType = {
+  fields: FeatureCardEntry;
+  metadata: {
+    tags: any[];
+  };
+  sys: Sys;
+};
+
+export type FeatureCardEntry = {
+  displayConditions: DisplayConditions[];
+  subtitle: string;
+  gradientColor?: string;
+  title: string;
+  url: string;
+  imageDarkMode?: Image;
+  imageLightMode?: Image;
+};
+
+export type FeatureCardAsset = {
+  fields: Fields;
+  metadata: {
+    tags: any[];
+  };
+  sys: Sys;
+};
+
+type Sys = {
+  createdAt: string;
+  environment: {
+    sys: {
       id: string;
-      showOnce: boolean;
-    }[];
-    imageDarkMode: {
-      sys: {
-        id: string;
-        linkType: string;
-        type: string;
-      };
+      linkType: string;
+      type: string;
     };
-    imageLightMode: {
-      sys: {
-        id: string;
-        linkType: string;
-        type: string;
-      };
-    };
-    subtitle: string;
-    title: string;
-    url: string;
   };
-  metadata: {
-    tags: string[];
+  id: string;
+  locale: string;
+  revision: number;
+  space: {
+    sys: {
+      id: string;
+      linkType: string;
+      type: string;
+    };
   };
-  sys: {
-    contentType: {
-      sys: {
-        id: string;
-        linkType: string;
-        type: string;
-      };
-    };
-    createdAt: string;
-    environment: {
-      sys: {
-        id: string;
-        linkType: string;
-        type: string;
-      };
-    };
-    id: string;
-    locale: string;
-    revision: number;
-    space: {
-      sys: {
-        id: string;
-        linkType: string;
-        type: string;
-      };
-    };
-    type: string;
-    updatedAt: string;
-  };
-}
+  type: string;
+  updatedAt: string;
+};
 
-export interface FeactureCardsAsset {
-  metadata: {
-    tags: string[];
+type FileDetails = {
+  image: {
+    height: number;
+    width: number;
   };
+  size: number;
+};
+
+type File = {
+  contentType: string;
+  details: FileDetails;
+  fileName: string;
+  url: string;
+};
+
+type Fields = {
+  description: string;
+  file: File;
+  title: string;
+};
+
+type DisplayConditions = {
+  id: string;
+  showOnce: boolean;
+};
+
+type Image = {
   sys: {
-    space: {
-      sys: {
-        type: string;
-        linkType: string;
-        id: string;
-      };
-    };
     id: string;
+    linkType: string;
     type: string;
-    createdAt: string;
-    updatedAt: string;
-    environment: {
-      sys: {
-        id: string;
-        type: string;
-        linkType: string;
-      };
-    };
-    revision: number;
-    locale: string;
   };
-  fields: {
-    title: string;
-    description: string;
-    file: {
-      url: string;
-      details: {
-        size: number;
-        image: {
-          width: number;
-          height: number;
-        };
-      };
-      fileName: string;
-      contentType: string;
-    };
-  };
-}
+};

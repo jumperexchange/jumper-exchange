@@ -6,17 +6,26 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
+
+import {
+  FeatureCardAsset,
+  FeatureCardType,
+} from '../../types/featureCardsRequest';
 import { Card, CardImage } from './FeatureCard.style';
 
-export const FeatureCard = ({ data, isSuccess, assets }) => {
+interface FeatureCardProps {
+  data: FeatureCardType;
+  isSuccess: boolean;
+  assets: FeatureCardAsset[];
+}
+
+export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const { t } = useTranslation();
   const [onDisableFeatureCard] = useSettingsStore((state) => [
     state.onDisableFeatureCard,
   ]);
   const theme = useTheme();
-  console.log('data', data);
-
   useEffect(() => {
     data?.fields?.displayConditions &&
       data?.fields?.displayConditions[0]?.showOnce &&
@@ -24,7 +33,7 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
   }, [data?.fields?.displayConditions, onDisableFeatureCard]);
 
   const imageUrl = useMemo(() => {
-    return assets.filter((el) => {
+    return assets.filter((el: FeatureCardAsset) => {
       return theme.palette.mode === 'dark'
         ? el?.sys?.id === data?.fields?.imageDarkMode?.sys?.id
         : el?.sys?.id === data?.fields?.imageLightMode?.sys?.id;
@@ -35,9 +44,6 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
     data?.fields?.imageDarkMode?.sys?.id,
     data?.fields?.imageLightMode?.sys?.id,
   ]);
-
-  console.log('imageUrl', imageUrl);
-
   return (
     <Slide
       direction="up"
@@ -47,7 +53,7 @@ export const FeatureCard = ({ data, isSuccess, assets }) => {
       timeout={150}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
-      <Card gradient={data?.gradientColor} className="test">
+      <Card gradient={data?.fields.gradientColor || undefined}>
         <CardContent
           sx={{
             padding: theme.spacing(6),

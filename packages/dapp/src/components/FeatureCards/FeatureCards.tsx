@@ -3,10 +3,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { useFeatureCards } from '../../hooks/useFeatureCards';
 import { useSettingsStore } from '../../stores';
+import { FeatureCardType } from '../../types/featureCardsRequest';
 import { FeatureCard, FeatureCardsContainer } from './index';
 
 export const FeatureCards = () => {
-  const [featureCards, setFeatureCards] = useState([]);
+  const [featureCards, setFeatureCards] = useState<FeatureCardType[]>([]);
   const [disabledFeatureCards, welcomeScreenEntered] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenEntered],
     shallow,
@@ -35,13 +36,11 @@ export const FeatureCards = () => {
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
-
   return (
     isDesktop &&
     welcomeScreenEntered && (
       <FeatureCardsContainer>
         {featureCards.map((cardData, index) => {
-          console.log('cardData', cardData);
           return (
             <FeatureCard
               isSuccess={isSuccess}
