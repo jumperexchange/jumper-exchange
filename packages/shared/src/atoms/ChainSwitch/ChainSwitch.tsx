@@ -7,21 +7,19 @@ import { useChains } from '@transferto/dapp/src/hooks/useChains';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { EventTrackingTool } from '@transferto/dapp/src/types';
+import type { MouseEventHandler } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { ButtonChainSwitch } from './ChainSwitch.style';
 
 export const ChainSwitch = () => {
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.walletMenu.';
+  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
   const { account } = useWallet();
 
   const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
     (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
-    shallow,
   );
 
   const activeChain = useMemo(
@@ -29,7 +27,9 @@ export const ChainSwitch = () => {
     [chains, account.chainId],
   );
 
-  const handleOpenChainsMenu = (event) => {
+  const handleOpenChainsMenu: MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
     onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
 
     trackEvent({
@@ -40,16 +40,12 @@ export const ChainSwitch = () => {
   };
 
   return (
-    <Tooltip title={translate(`${i18Path}switchChain`)}>
-      <ButtonChainSwitch
-        onClick={(event) => {
-          handleOpenChainsMenu(event);
-        }}
-      >
+    <Tooltip title={t('navbar.walletMenu.switchChain')}>
+      <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar
-            src={activeChain?.logoURI || 'empty'}
-            alt={`${activeChain?.name}chain-logo`}
+            src={activeChain.logoURI || 'empty'}
+            alt={`${activeChain.name}chain-logo`}
             sx={{ height: '32px', width: '32px' }}
           />
         ) : (

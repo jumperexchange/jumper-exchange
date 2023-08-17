@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { createWithEqualityFn } from 'zustand/traditional';
 import { TabsMap } from '../../const/tabsMap';
 
 interface ActiveTabState {
@@ -6,7 +6,10 @@ interface ActiveTabState {
   setActiveTab: (tab: number) => void;
 }
 
-export const useActiveTabStore = create<ActiveTabState>((set) => ({
-  activeTab: TabsMap.Exchange.index,
-  setActiveTab: (tab: number) => set({ activeTab: tab }),
-}));
+export const useActiveTabStore = createWithEqualityFn<ActiveTabState>(
+  (set) => ({
+    activeTab: TabsMap.Exchange.index,
+    setActiveTab: (tab: number) => set({ activeTab: tab }),
+  }),
+  Object.is,
+);

@@ -34,7 +34,7 @@ const NavbarMenu = ({
         transformOrigin={transformOrigin}
         open={open}
         setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu}
+        isOpenSubMenu={isOpenSubMenu || false}
       >
         {children}
       </NavbarMenuDesktop>
@@ -44,7 +44,7 @@ const NavbarMenu = ({
         label={label}
         open={open}
         setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu}
+        isOpenSubMenu={isOpenSubMenu || false}
       >
         {children}
       </NavbarMenuMobile>

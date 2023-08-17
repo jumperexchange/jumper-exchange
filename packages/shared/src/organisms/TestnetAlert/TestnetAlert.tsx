@@ -8,11 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { ButtonTransparent } from '../../atoms';
 import { openInNewTab } from '../../utils';
 
-const I18_PATH = 'alert.';
 const PROD_URL = 'https://jumper.exchange';
 
 export const TestnetAlert = () => {
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
 
   return (
@@ -23,12 +22,10 @@ export const TestnetAlert = () => {
             marginRight: 1,
           }}
         />
-        <Typography variant={'lifiHeaderXSmall'}>
-          {translate(`${I18_PATH}info`)}
-        </Typography>
+        <Typography variant={'lifiHeaderXSmall'}>{t('alert.info')}</Typography>
       </WarningMessageCardTitle>
       <Typography variant={'lifiBodySmall'} pt={theme.spacing(3)}>
-        {translate(`${I18_PATH}testnet`)}
+        {t('alert.testnet')}
       </Typography>
       <ButtonTransparent
         onClick={() => {
@@ -36,7 +33,7 @@ export const TestnetAlert = () => {
         }}
         style={{ marginTop: theme.spacing(3), width: '100%' }}
       >
-        {translate(`${I18_PATH}switchToMainnet`)}
+        {t('alert.switchToMainnet')}
       </ButtonTransparent>
     </WarningMessageCard>
   );

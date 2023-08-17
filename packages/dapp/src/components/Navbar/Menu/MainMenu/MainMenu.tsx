@@ -8,39 +8,29 @@ import {
 } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
 interface MainMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
 
 export const MainMenu = ({ handleClose }: MainMenuProps) => {
-  const i18Path = 'navbar.';
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const mainMenuItems = useMainMenuContent();
   const mainSubMenuTheme = useThemeContent();
   const mainSubMenuDevelopers = useDevelopersContent();
   const mainSubMenuLanguage = useLanguagesContent();
   const mainSubMenuShowcases = useShowcasesContent();
-  const [
-    openMainNavbarMenu,
-    onOpenNavbarMainMenu,
-    openNavbarSubMenu,
-    onOpenNavbarSubMenu,
-  ] = useMenuStore(
-    (state) => [
+  const [openMainNavbarMenu, onOpenNavbarMainMenu, openNavbarSubMenu] =
+    useMenuStore((state) => [
       state.openMainNavbarMenu,
       state.onOpenNavbarMainMenu,
       state.openNavbarSubMenu,
-      state.onOpenNavbarSubMenu,
-    ],
-    shallow,
-  );
+    ]);
 
   return openMainNavbarMenu ? (
     <NavbarMenu
       handleClose={handleClose}
-      open={true}
+      open
       transformOrigin={'top right'}
       setOpen={onOpenNavbarMainMenu}
       isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
@@ -53,16 +43,15 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             label={el.label}
             prefixIcon={el.prefixIcon}
             triggerSubMenu={el.triggerSubMenu}
-            showButton={el.showButton}
+            showButton={el.showButton ?? false}
             showMoreIcon={el.showMoreIcon}
             suffixIcon={el.suffixIcon}
             onClick={el.onClick}
-            open={true}
-            setOpenSubMenu={onOpenNavbarSubMenu}
+            open
           />
         ))}
       <SubMenuComponent
-        label={translate(`${i18Path}navbarMenu.theme`)}
+        label={t('navbar.navbarMenu.theme')}
         triggerSubMenu={MenuKeys.Themes}
         open={openNavbarSubMenu === MenuKeys.Themes}
         prevMenu={MenuKeys.None}
@@ -70,7 +59,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={translate(`${i18Path}language.key`)}
+        label={t('navbar.language.key')}
         triggerSubMenu={MenuKeys.Language}
         open={openNavbarSubMenu === MenuKeys.Language}
         prevMenu={MenuKeys.None}
@@ -78,7 +67,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={translate(`${i18Path}navbarMenu.developers`)}
+        label={t('navbar.navbarMenu.developers')}
         triggerSubMenu={MenuKeys.Devs}
         open={openNavbarSubMenu === MenuKeys.Devs}
         prevMenu={MenuKeys.None}
@@ -86,7 +75,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={translate(`${i18Path}developers.showcases`)}
+        label={t('navbar.developers.showcases')}
         triggerSubMenu={MenuKeys.Showcases}
         open={openNavbarSubMenu === MenuKeys.Showcases}
         prevMenu={MenuKeys.Devs}
