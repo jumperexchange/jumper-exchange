@@ -19,7 +19,7 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       (resources, lng) => {
         resources[lng] = {
           translation:
-            (resources?.[lng] as LanguageResources[LanguageKey]) ||
+            (resources[lng] as LanguageResources[LanguageKey]) ||
             supportedLanguages[lng],
         };
         return resources;

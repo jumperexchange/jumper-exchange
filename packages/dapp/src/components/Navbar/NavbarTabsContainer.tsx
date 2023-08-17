@@ -18,8 +18,7 @@ function a11yProps(index: number) {
 
 const NavbarTabsContainer = () => {
   const theme = useTheme();
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t } = useTranslation();
   const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
@@ -44,7 +43,10 @@ const NavbarTabsContainer = () => {
             action: TrackingActions.SwitchTab,
             label: 'exchange',
             data: { tab: 'exchange' },
-            disableTrackingTool: [EventTrackingTool.ARCx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
         }}
         icon={
@@ -58,7 +60,7 @@ const NavbarTabsContainer = () => {
             }}
           />
         }
-        label={translate(`${i18Path}links.exchange`)}
+        label={t('navbar.links.exchange')}
         {...a11yProps(0)}
       />
       <NavbarTab
@@ -69,10 +71,13 @@ const NavbarTabsContainer = () => {
             action: TrackingActions.SwitchTab,
             label: 'gas',
             data: { tab: 'gas' },
-            disableTrackingTool: [EventTrackingTool.ARCx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
         }}
-        label={translate(`${i18Path}links.refuel`)}
+        label={t('navbar.links.refuel')}
         icon={
           <EvStationOutlinedIcon
             sx={{
@@ -93,12 +98,15 @@ const NavbarTabsContainer = () => {
             trackEvent({
               category: TrackingCategories.Navigation,
               action: TrackingActions.SwitchTab,
-              label: 'gas',
-              data: { tab: 'gas' },
-              disableTrackingTool: [EventTrackingTool.ARCx],
+              label: 'buy',
+              data: { tab: 'buy' },
+              disableTrackingTool: [
+                EventTrackingTool.ARCx,
+                EventTrackingTool.Raleon,
+              ],
             });
           }}
-          label={translate(`${i18Path}links.buy`)}
+          label={t('navbar.links.buy')}
           icon={
             <CreditCardIcon
               sx={{

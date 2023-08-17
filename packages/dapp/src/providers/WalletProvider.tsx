@@ -1,11 +1,12 @@
-import { Token } from '@lifi/sdk';
+import type { Signer } from '@ethersproject/abstract-signer';
+import { ChainId, Token } from '@lifi/sdk';
 import {
   LiFiWalletManagement,
   Wallet,
   readActiveWallets,
   supportedWallets,
 } from '@lifi/wallet-management';
-import { Signer } from 'ethers';
+
 import React, {
   PropsWithChildren,
   createContext,
@@ -83,6 +84,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       handleWalletUpdate(activeWallets[0]);
     };
     autoConnect();
+    // fixing: disconnect only works on 2nd attempt
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleWalletUpdate = async (wallet?: Wallet) => {
@@ -151,8 +154,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       account: account,
       disconnect: false,
       data: {
-        account: account.address,
-        chain: account.chainId,
+        account: account.address as string,
+        chain: account.chainId as ChainId,
       },
     });
   }, [
@@ -189,7 +192,9 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   );
 };
 
-const extractAccountFromSigner = async (signer?: Signer) => {
+const extractAccountFromSigner = async (
+  signer?: Signer,
+): Promise<WalletAccount> => {
   try {
     return {
       address: (await signer?.getAddress()) || undefined,

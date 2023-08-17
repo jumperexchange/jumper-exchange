@@ -1,4 +1,3 @@
-import type { ChainId } from '@lifi/types';
 // ----------------------------------------------------------------------
 
 import type { LanguageKey } from '@transferto/dapp/src/types';
@@ -10,8 +9,8 @@ export interface SettingsProps {
   themeMode: ThemeModesSupported;
   languageMode: LanguageKey;
   activeWalletName: WalletConnected;
-  activeTab: number;
   welcomeScreenEntered: boolean;
+  [key: string]: any;
 }
 export interface SettingsState extends SettingsProps {
   // Wallet

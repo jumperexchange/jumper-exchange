@@ -5,8 +5,7 @@ import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 
 export const useShowcasesContent = () => {
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t } = useTranslation();
   const { trackPageload } = useUserTracking();
   const onCloseAllNavbarMenus = useMenuStore(
     (state) => state.onCloseAllNavbarMenus,
@@ -14,43 +13,56 @@ export const useShowcasesContent = () => {
 
   return [
     {
-      label: `${translate(`${i18Path}showcases.ukraineDonation`)}`,
+      label: t('navbar.showcases.ukraineDonation'),
       onClick: () => {
-        openInNewTab('https://transferto.xyz/showcase/ukraine');
+        const ukraineUrl = 'https://transferto.xyz/showcase/ukraine';
+        openInNewTab(ukraineUrl);
         trackPageload({
           source: 'menu',
           destination: 'showcase-ukraine',
-          url: 'https://transferto.xyz/showcase/ukraine',
+          url: ukraineUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },
     },
     {
-      label: `${translate(`${i18Path}showcases.klimaStaking`)}`,
+      label: t('navbar.showcases.klimaStaking'),
       onClick: () => {
-        openInNewTab('https://transferto.xyz/showcase/klima-stake-v2');
+        const klimaStakingUrl =
+          'https://transferto.xyz/showcase/klima-stake-v2';
+        openInNewTab(klimaStakingUrl);
         trackPageload({
           source: 'menu',
           destination: 'showcase-klima',
-          url: 'https://transferto.xyz/showcase/klima-stake-v2',
+          url: klimaStakingUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },
     },
     {
-      label: `${translate(`${i18Path}showcases.carbonOffset`)}`,
+      label: t('navbar.showcases.carbonOffset'),
       onClick: () => {
-        openInNewTab('https://transferto.xyz/showcase/carbon-offset');
+        const carbonUrl = 'https://transferto.xyz/showcase/carbon-offset';
+        openInNewTab(carbonUrl);
         trackPageload({
           source: 'menu',
           destination: 'showcase-carbon',
-          url: 'https://transferto.xyz/showcase/carbon-offset',
+          url: carbonUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },

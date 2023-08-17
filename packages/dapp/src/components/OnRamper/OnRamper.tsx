@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material';
 import { OnRamperIFrame } from './index';
 
-function removeHash(str) {
+function removeHash(str: string) {
   if (str.startsWith('#')) {
     return str.substring(1);
   }

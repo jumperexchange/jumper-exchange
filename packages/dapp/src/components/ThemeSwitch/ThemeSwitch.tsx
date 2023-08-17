@@ -8,7 +8,6 @@ import {
   TrackingCategories,
 } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
@@ -18,13 +17,12 @@ import { ButtonThemeSwitch } from './ThemeSwitch.style';
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
 
-  const [themeMode, onChangeMode] = useSettingsStore(
-    (state) => [state.themeMode, state.onChangeMode],
-    shallow,
-  );
+  const [themeMode, onChangeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.onChangeMode,
+  ]);
 
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
 
   const handleThemeSwitch = () => {
@@ -44,12 +42,12 @@ export const ThemeSwitch = () => {
     <Tooltip
       title={
         themeMode === 'light'
-          ? translate(`${i18Path}themes.switchToDark`)
+          ? t('navbar.themes.switchToDark')
           : themeMode === 'dark'
-          ? translate(`${i18Path}themes.switchToLight`)
+          ? t('navbar.themes.switchToLight')
           : !isDarkModeHook
-          ? translate(`${i18Path}themes.switchToDark`)
-          : translate(`${i18Path}themes.switchToLight`)
+          ? t('navbar.themes.switchToDark')
+          : t('navbar.themes.switchToLight')
       }
     >
       <ButtonThemeSwitch
