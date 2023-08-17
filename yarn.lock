@@ -2732,7 +2732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/sdk@npm:^2.2.1, @lifi/sdk@npm:^2.2.3":
+"@lifi/sdk@npm:^2.2.1":
   version: 2.2.3
   resolution: "@lifi/sdk@npm:2.2.3"
   dependencies:
@@ -2746,12 +2746,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lifi/sdk@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@lifi/sdk@npm:2.3.0"
+  dependencies:
+    "@ethersproject/abi": ^5.7.0
+    "@ethersproject/contracts": ^5.7.0
+    "@lifi/types": ^8.4.0
+    bignumber.js: ^9.1.1
+    eth-rpc-errors: ^4.0.3
+    ethers: ^5.7.2
+  checksum: 96e61cd053c63897d8e3a999523f6f04732ad7fb9940140ab30a17cb4f83827cf9d8ad91e338769e72bfb7e4c7bbbb9ee2baae199523c7029c6c65d3751e37ad
+  languageName: node
+  linkType: hard
+
 "@lifi/types@npm:^8.0.4":
   version: 8.3.0
   resolution: "@lifi/types@npm:8.3.0"
   dependencies:
     ethers: ^5.7.2
   checksum: 4a16ca3a0beb097461c03b3cc35ea7d090d42e9ec299e70cfe6c033a02618946efe122cb8e79c72ea9f4af6f5d4447ba69592caa6253a4c22972342c19fae734
+  languageName: node
+  linkType: hard
+
+"@lifi/types@npm:^8.4.0":
+  version: 8.4.0
+  resolution: "@lifi/types@npm:8.4.0"
+  dependencies:
+    ethers: ^5.7.2
+  checksum: 54cc658b2d04b10c3faff72ac1bcbc5c69e5699be320dd913a15f4c2b2fdb6b4b888b488ffc40e90b4131ae6e5611677b863ac867227a7c1e19d1d9d8c434021
   languageName: node
   linkType: hard
 
@@ -4528,7 +4551,7 @@ __metadata:
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
-    "@lifi/sdk": ^2.2.3
+    "@lifi/sdk": ^2.3.0
     "@lifi/wallet-management": ^2.2.4
     "@lifi/widget": ^2.2.7
     "@mui/icons-material": ^5.14.3
