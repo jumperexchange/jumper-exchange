@@ -26,41 +26,56 @@ export function Widgets() {
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
-  >(TabsMap.Exchange.value);
+  >(TabsMap.Exchange.variant);
 
   const starterVariant: StarterVariantType = useMemo(() => {
     let url = window.location.pathname.slice(1);
     if (Object.values(LinkMap).includes(url as LinkMap)) {
-      if (url === TabsMap.Exchange.value) {
-        return TabsMap.Exchange.value;
-      } else if (url === TabsMap.Refuel.value) {
-        return TabsMap.Refuel.value;
+      if (!!TabsMap.Buy.destination.filter((el) => el === url).length) {
+        return TabsMap.Buy.variant;
+      } else if (
+        !!TabsMap.Refuel.destination.filter((el) => el === url).length
+      ) {
+        return TabsMap.Refuel.variant;
       } else {
-        return TabsMap.Buy.value;
+        return TabsMap.Exchange.variant;
       }
     } else {
-      return TabsMap.Exchange.value;
+      // default and fallback: Exchange-Tab
+      return TabsMap.Exchange.variant;
     }
   }, []);
 
   const getActiveWidget = useCallback(() => {
     if (!starterVariantUsed) {
-      starterVariant === TabsMap.Exchange.value
-        ? setActiveTab(TabsMap.Exchange.index)
-        : starterVariant === TabsMap.Refuel.value
-        ? setActiveTab(TabsMap.Refuel.index)
-        : starterVariant === TabsMap.Buy.value
-        ? setActiveTab(TabsMap.Buy.index)
-        : setActiveTab(TabsMap.Exchange.index);
+      switch (starterVariant) {
+        case TabsMap.Exchange.variant:
+          setActiveTab(TabsMap.Exchange.index);
+          break;
+        case TabsMap.Refuel.variant:
+          setActiveTab(TabsMap.Refuel.index);
+          break;
+        case TabsMap.Buy.variant:
+          setActiveTab(TabsMap.Buy.index);
+          break;
+        default:
+          setActiveTab(TabsMap.Exchange.index);
+      }
       setStarterVariant(starterVariant);
       setStarterVariantUsed(true);
     } else {
-      if (activeTab === TabsMap.Exchange.index) {
-        setStarterVariant(TabsMap.Exchange.value);
-      } else if (activeTab === TabsMap.Refuel.index) {
-        setStarterVariant(TabsMap.Refuel.value);
-      } else if (activeTab === TabsMap.Buy.index) {
-        setStarterVariant(TabsMap.Buy.value);
+      switch (activeTab) {
+        case TabsMap.Exchange.index:
+          setStarterVariant(TabsMap.Exchange.variant);
+          break;
+        case TabsMap.Refuel.index:
+          setStarterVariant(TabsMap.Refuel.variant);
+          break;
+        case TabsMap.Buy.index:
+          setStarterVariant(TabsMap.Buy.variant);
+          break;
+        default:
+          setStarterVariant(TabsMap.Exchange.variant);
       }
     }
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
@@ -95,22 +110,22 @@ export function Widgets() {
       <WidgetContainer
         onClick={handleGetStarted}
         showWelcome={!welcomeScreenEntered}
-        isActive={_starterVariant === TabsMap.Exchange.value}
+        isActive={_starterVariant === TabsMap.Exchange.variant}
       >
-        <Widget starterVariant={TabsMap.Exchange.value as WidgetSubvariant} />
+        <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleGetStarted}
         showWelcome={!welcomeScreenEntered}
-        isActive={_starterVariant === TabsMap.Refuel.value}
+        isActive={_starterVariant === TabsMap.Refuel.variant}
       >
-        <Widget starterVariant={TabsMap.Refuel.value as WidgetSubvariant} />
+        <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleGetStarted}
           showWelcome={!welcomeScreenEntered}
-          isActive={_starterVariant === TabsMap.Buy.value}
+          isActive={_starterVariant === TabsMap.Buy.variant}
           sx={{ width: '392px' }}
         >
           <div className="onramper-wrapper">
