@@ -45,7 +45,7 @@ export const useMultisig = () => {
     chainId: number,
     updateIntermediateStatus?: () => void,
   ): Promise<MultisigTxDetails> => {
-    const safeProviderSDK = (account.signer?.provider as any).sdk;
+    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
     const safeTransactionDetails: GatewayTransactionDetails =
       await safeProviderSDK.txs.getBySafeTxHash(txHash);
@@ -141,7 +141,7 @@ export const useMultisig = () => {
   const handleSendingBatchTransaction = async (
     batchTransactions: BaseTransaction[],
   ) => {
-    const safeProviderSDK = (account.signer?.provider as any).sdk;
+    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
 
     try {
       const { safeTxHash } = await safeProviderSDK.txs.send({
