@@ -1,4 +1,12 @@
 <div align="center">
+<p align="center">
+  
+![jumper](https://github.com/pucedoteth/jumper.exchange/assets/119044801/1832c55f-b433-4dba-a02b-a054529faaaf)
+</p>
+<p align="center">
+  Crypto's Everything Exchange.
+</p>
+<h1 align="center">
 
 [![license](https://img.shields.io/badge/license-Apache%202-blue)](/LICENSE.md)
 [![Crowdin](https://badges.crowdin.net/jumper-exchange/localized.svg)](https://crowdin.com/project/jumper-exchange)
