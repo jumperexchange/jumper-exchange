@@ -69,7 +69,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             }}
             onClick={() => {
               setOpen(false);
-              !data?.fields?.displayConditions[0].hasOwnProperty('showOnce') &&
+              !data?.fields?.displayConditions[0]?.hasOwnProperty('showOnce') &&
                 !!data?.fields?.displayConditions[0]?.id &&
                 onDisableFeatureCard(data?.fields?.displayConditions[0]?.id);
             }}
