@@ -28,7 +28,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   const theme = useTheme();
   useEffect(() => {
     data?.fields?.displayConditions &&
-      data?.fields?.displayConditions?.showOnce &&
+      data?.fields?.displayConditions.showOnce &&
       onDisableFeatureCard(data?.fields?.displayConditions?.id);
   }, [data?.fields?.displayConditions, onDisableFeatureCard]);
 
