@@ -28,8 +28,8 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   const theme = useTheme();
   useEffect(() => {
     data?.fields?.displayConditions &&
-      data?.fields?.displayConditions[0]?.showOnce &&
-      onDisableFeatureCard(data?.fields?.displayConditions[0]?.id);
+      data?.fields?.displayConditions?.showOnce &&
+      onDisableFeatureCard(data?.fields?.displayConditions?.id);
   }, [data?.fields?.displayConditions, onDisableFeatureCard]);
 
   const imageUrl = useMemo(() => {
@@ -69,9 +69,9 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             }}
             onClick={() => {
               setOpen(false);
-              !data?.fields?.displayConditions[0]?.hasOwnProperty('showOnce') &&
-                !!data?.fields?.displayConditions[0]?.id &&
-                onDisableFeatureCard(data?.fields?.displayConditions[0]?.id);
+              !data?.fields?.displayConditions?.hasOwnProperty('showOnce') &&
+                !!data?.fields?.displayConditions?.id &&
+                onDisableFeatureCard(data?.fields?.displayConditions?.id);
             }}
           >
             <CloseIcon
