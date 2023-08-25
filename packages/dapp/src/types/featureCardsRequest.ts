@@ -20,7 +20,7 @@ export type FeatureCardType = {
 };
 
 export type FeatureCardEntry = {
-  displayConditions: DisplayConditions[];
+  displayConditions: DisplayConditions;
   subtitle: string;
   gradientColor?: string;
   title: string;

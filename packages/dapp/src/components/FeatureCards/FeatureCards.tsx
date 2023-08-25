@@ -20,7 +20,7 @@ export const FeatureCards = () => {
         (el, index) =>
           isSuccess &&
           el.fields.displayConditions &&
-          !disabledFeatureCards.includes(el.fields.displayConditions[0]?.id),
+          !disabledFeatureCards.includes(el.fields.displayConditions?.id),
       );
     }
     // trigger featureCardsFetched-filtering only once
