@@ -14,43 +14,40 @@ export default defineConfig({
         short_name: 'Jumper.Exchange',
         description: 'Multi-Chain Bridging & Swapping (powered by LI.FI)',
         theme_color: '#653BA3',
-        icons: [
-          {
-            src: 'favicon.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'favicon.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-        shortcuts: [
-          {
-            name: 'Swap/Bridge',
-            short_name: 'swap/bridge',
-            description: 'Swap/bridge via Jumper',
-            url: '/?source=pwa',
-          },
-          {
-            name: 'Gas',
-            short_name: 'Gas',
-            description: 'Gas via Jumper',
-            url: '/gas?source=pwa',
-          },
-          {
-            name: 'Buy',
-            short_name: 'Buy',
-            description: 'Buy on Jumper',
-            url: '/buy?source=pwa',
-          },
-        ],
+        // icons: [
+        //   {
+        //     src: 'favicon.png',
+        //     sizes: '192x192',
+        //     type: 'image/png',
+        //   },
+        //   {
+        //     src: 'favicon.png',
+        //     sizes: '512x512',
+        //     type: 'image/png',
+        //   },
+        // ],
+        // shortcuts: [
+        //   {
+        //     name: 'Swap/Bridge',
+        //     short_name: 'swap/bridge',
+        //     description: 'Swap/bridge via Jumper',
+        //     url: '/?source=pwa',
+        //   },
+        //   {
+        //     name: 'Gas',
+        //     short_name: 'Gas',
+        //     description: 'Gas via Jumper',
+        //     url: '/gas?source=pwa',
+        //   },
+        //   {
+        //     name: 'Buy',
+        //     short_name: 'Buy',
+        //     description: 'Buy on Jumper',
+        //     url: '/buy?source=pwa',
+        //   },
+        // ],
       },
-      workbox: {
-        cleanupOutdatedCaches: false,
-      },
-      registerType: 'autoUpdate',
+      // registerType: 'autoUpdate',
       devOptions: {
         enabled: true,
       },
