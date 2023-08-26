@@ -2,9 +2,40 @@ import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfil
 import react from '@vitejs/plugin-react';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePWA({
+      includeAssets: ['favicon.ico'],
+      manifest: {
+        name: 'Jumper.Exchange',
+        short_name: 'Jumper.Exchange',
+        description: 'Multi-Chain Bridging & Swapping (powered by LI.FI)',
+        theme_color: '#653BA3',
+        icons: [
+          {
+            src: 'favicon.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'favicon.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
+      workbox: {
+        cleanupOutdatedCaches: false,
+      },
+      registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true,
+      },
+    }),
+  ],
   esbuild: {
     target: 'esnext',
   },
