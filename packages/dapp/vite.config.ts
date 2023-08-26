@@ -62,9 +62,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       plugins: [
-        nodePolyfills({
-          include: null,
-        }),
+        // throwing build errors, commenting out for now
+        // nodePolyfills({
+        //   include: null,
+        // }),
       ],
     },
     sourcemap: false,
