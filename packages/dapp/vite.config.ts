@@ -26,6 +26,26 @@ export default defineConfig({
             type: 'image/png',
           },
         ],
+        shortcuts: [
+          {
+            name: 'Swap/Bridge',
+            short_name: 'swap/bridge',
+            description: 'Swap/bridge via Jumper',
+            url: '/?source=pwa',
+          },
+          {
+            name: 'Gas',
+            short_name: 'Gas',
+            description: 'Gas via Jumper',
+            url: '/gas?source=pwa',
+          },
+          {
+            name: 'Buy',
+            short_name: 'Buy',
+            description: 'Buy on Jumper',
+            url: '/buy?source=pwa',
+          },
+        ],
       },
       workbox: {
         cleanupOutdatedCaches: false,
