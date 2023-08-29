@@ -10,15 +10,20 @@ export const useLanguagesContent = () => {
     state.languageMode,
     state.onChangeLanguage,
   ]);
-  const { trackEvent } = useUserTracking();
+  const { trackEvent, trackAttribute } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {
     i18n.changeLanguage(newLanguage);
     onChangeLanguage(newLanguage);
+    trackAttribute({
+      data: {
+        language: newLanguage,
+      },
+    });
     trackEvent({
-      category: TrackingCategories.Language,
+      category: TrackingCategories.LanguageMenu,
       action: TrackingActions.SwitchLanguage,
       label: `language-${newLanguage}`,
-      data: { language: `language-${newLanguage}` },
+      data: { 'switched-language': newLanguage },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };

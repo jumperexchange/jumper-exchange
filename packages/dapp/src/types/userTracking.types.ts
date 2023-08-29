@@ -15,7 +15,7 @@ export interface InitTrackingProps {
 export interface TrackEventProps {
   action: string;
   category: string;
-  label?: string;
+  label: string;
   data?: { [key: string]: string | number | boolean | any };
   disableTrackingTool?: EventTrackingTool[];
 }
@@ -26,7 +26,7 @@ export interface TrackTransactionProps {
   chain: ChainID;
   disableTrackingTool?: EventTrackingTool[];
   data: Record<string, unknown>;
-  transactionHash: string;
+  txhash: string;
 }
 
 export interface trackPageloadProps {

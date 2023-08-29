@@ -7,6 +7,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
 
+import { TrackingActions, TrackingCategories } from '../../const';
+import { useUserTracking } from '../../hooks';
+import { EventTrackingTool } from '../../types';
 import {
   FeatureCardAsset,
   FeatureCardType,
@@ -22,6 +25,7 @@ interface FeatureCardProps {
 export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const [onDisableFeatureCard] = useSettingsStore((state) => [
     state.onDisableFeatureCard,
   ]);
@@ -72,6 +76,19 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               !data?.fields?.displayConditions?.hasOwnProperty('showOnce') &&
                 !!data?.fields?.displayConditions?.id &&
                 onDisableFeatureCard(data?.fields?.displayConditions?.id);
+              trackEvent({
+                category: TrackingCategories.FeatureCard,
+                action: TrackingActions.CloseFeatureCard,
+                label: `close-${data?.fields?.displayConditions?.id}`,
+                data: {
+                  'feature-card-title': data?.fields?.title,
+                  'feature-card-id': data?.fields?.displayConditions?.id,
+                },
+                disableTrackingTool: [
+                  EventTrackingTool.ARCx,
+                  EventTrackingTool.Raleon,
+                ],
+              });
             }}
           >
             <CloseIcon
@@ -116,6 +133,22 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               target="_blank"
               rel="noopener"
               href={data?.fields?.url || 'https://li.fi'}
+              onClick={() => {
+                trackEvent({
+                  category: TrackingCategories.FeatureCard,
+                  action: TrackingActions.ClickLearnMore,
+                  label: 'click-learn-more',
+                  data: {
+                    'feature-card-title': data.fields.title,
+                    id: data.fields.displayConditions.id,
+                    url: data.fields.url,
+                  },
+                  disableTrackingTool: [
+                    EventTrackingTool.ARCx,
+                    EventTrackingTool.Raleon,
+                  ],
+                });
+              }}
               sx={{
                 textDecoration: 'none',
                 color:

@@ -47,7 +47,7 @@ export interface MenuItem {
 export type StarterVariantType = 'buy' | WidgetSubvariant;
 
 export interface MenuListItem {
-  label: string | unknown;
+  label: string;
   triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;

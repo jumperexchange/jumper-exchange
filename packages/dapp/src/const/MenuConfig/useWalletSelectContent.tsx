@@ -87,7 +87,7 @@ export const useWalletSelectContent = () => {
       return true;
     });
 
-    const _output = walletsOptions.map((wallet) => {
+    const output = walletsOptions.map((wallet) => {
       return {
         label: wallet.name,
         prefixIcon: (
@@ -103,10 +103,10 @@ export const useWalletSelectContent = () => {
           onCloseAllNavbarMenus();
           onWelcomeScreenEntered(true);
           trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.SelectWallet,
-            label: `choose-wallet-${wallet}`,
-            data: { usedWallet: wallet.name },
+            category: TrackingCategories.WalletSelectMenu,
+            action: TrackingActions.ConnectWallet,
+            label: wallet.name,
+            data: { 'used-wallet': wallet.name },
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,
@@ -115,7 +115,7 @@ export const useWalletSelectContent = () => {
         },
       };
     });
-    return _output;
+    return output;
   }, [
     availableWallets,
     isCurrentMultisigEnvironment,

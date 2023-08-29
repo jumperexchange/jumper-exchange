@@ -5,10 +5,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { KeyboardEvent } from 'react';
-import { MenuKeys } from '../../const';
+import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
 import { useMenuStore } from '../../stores/menu';
-import { MenuListItem } from '../../types';
+import { EventTrackingTool, MenuListItem } from '../../types';
 
+import { useUserTracking } from '../../hooks';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -40,6 +41,7 @@ const SubMenuComponent = ({
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const { trackEvent } = useUserTracking();
   const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore((state) => [
     state.openNavbarSubMenu,
     state.onOpenNavbarSubMenu,
@@ -111,7 +113,21 @@ const SubMenuComponent = ({
               autoFocus={index > 0 ? true : false}
               onClick={() => {
                 !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
-                el.onClick();
+                !!el.triggerSubMenu &&
+                  trackEvent({
+                    category: TrackingCategories.SubMenu,
+                    action: TrackingActions.OpenSubmenu,
+                    label: `open-sub-menu-${el.triggerSubMenu.toLowerCase()}`,
+                    data: {
+                      'sub-Menu': el.triggerSubMenu,
+                      'prev-menu': prevMenu,
+                    },
+                    disableTrackingTool: [
+                      EventTrackingTool.Raleon,
+                      EventTrackingTool.ARCx,
+                    ],
+                  });
+                typeof el.onClick === 'function' && el.onClick();
               }}
               key={`${el.label}-${index}`}
             >

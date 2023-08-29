@@ -7,7 +7,11 @@ import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
-import { MenuKeys } from '@transferto/dapp/src/const';
+import {
+  MenuKeys,
+  TrackingActions,
+  TrackingCategories,
+} from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useSettingsStore } from '@transferto/dapp/src/stores';
@@ -83,7 +87,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       );
     onCloseAllNavbarMenus();
     trackPageload({
-      source: 'wallet-menu',
+      source: TrackingCategories.Wallet,
       destination: 'blokchain-explorer',
       url: !!account.chainId
         ? `${
@@ -99,8 +103,8 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     account.address && navigator.clipboard.writeText(account.address);
     setCopiedToClipboard(true);
     trackEvent({
-      category: 'menu',
-      action: 'copyAddressToClipboard',
+      category: TrackingCategories.WalletMenu,
+      action: TrackingActions.CopyAddressToClipboard,
       label: 'copyAddressToClipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });

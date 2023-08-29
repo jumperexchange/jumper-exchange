@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTool } from '../../types';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 
 export const ThemeSwitch = () => {
@@ -23,17 +22,23 @@ export const ThemeSwitch = () => {
   ]);
 
   const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+  const { trackEvent, trackAttribute } = useUserTracking();
 
   const handleThemeSwitch = () => {
-    onChangeMode(isDarkMode ? 'light' : 'dark');
+    trackAttribute({
+      data: {
+        theme: isDarkMode ? 'dark' : 'light',
+      },
+    });
     trackEvent({
       category: TrackingCategories.ThemeSwitch,
-      action: TrackingActions.ClickThemeSwitch,
-      label: `themeSwitch-${isDarkMode ? 'light' : 'dark'}`,
-      data: { themeSwitch: `theme-${isDarkMode ? 'light' : 'dark'}` },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      action: TrackingActions.SwitchTheme,
+      label: `theme-${isDarkMode ? 'light' : 'dark'}`,
+      data: {
+        theme: isDarkMode ? 'light' : 'dark',
+      },
     });
+    onChangeMode(isDarkMode ? 'light' : 'dark');
   };
 
   const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');

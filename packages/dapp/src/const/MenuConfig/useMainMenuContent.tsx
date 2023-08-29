@@ -64,7 +64,7 @@ export const useMainMenuContent = () => {
       onClick: () => {
         openInNewTab('https://twitter.com/JumperExchange');
         trackPageload({
-          source: 'menu',
+          source: TrackingCategories.MainMenu,
           destination: 'twitter-JumperExchange',
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
@@ -90,7 +90,7 @@ export const useMainMenuContent = () => {
       onClick: () => {
         openInNewTab('https://discord.gg/lifi');
         trackPageload({
-          source: 'menu',
+          source: TrackingCategories.Menu,
           destination: 'discord-lifi',
           url: 'https://discord.gg/lifi',
           pageload: true,
@@ -116,7 +116,7 @@ export const useMainMenuContent = () => {
       showMoreIcon: false,
       onClick: () => {
         trackPageload({
-          source: 'menu',
+          source: TrackingCategories.Menu,
           destination: 'lifi-website',
           url: 'https://li.fi',
           pageload: true,
@@ -134,6 +134,7 @@ export const useMainMenuContent = () => {
       onClick: () => {
         trackEvent({
           category: TrackingCategories.Menu,
+          label: 'open-support-modal',
           action: TrackingActions.OpenSupportModal,
           disableTrackingTool: [
             EventTrackingTool.ARCx,

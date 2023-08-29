@@ -1,33 +1,49 @@
 export enum TrackingCategories {
-  Language = 'language',
+  ChainsMenu = 'chains-menu',
+  MainMenu = 'main-menu',
   Menu = 'menu',
+  FeatureCard = 'feature-card',
   Navigation = 'navigation',
-  Wallet = 'wallet',
-  WalletSelectMenu = 'wallet-select-menu',
-  SupportModal = 'support-modal',
+  LanguageMenu = 'language-menu',
+  SubMenu = 'sub-menu',
   ThemeMenu = 'theme-menu',
   ThemeSwitch = 'theme-switch',
+  Wallet = 'wallet',
+  WalletMenu = 'wallet-menu',
+  WalletSelectMenu = 'wallet-select-menu',
+  Widget = 'widget',
   WidgetEvent = 'widget-event',
 }
 
 export enum TrackingActions {
+  // Widget
   AddChain = 'add-chain',
   AddToken = 'add-token',
-  ClickThemeSwitch = 'click-theme-switch',
-  SelectWallet = 'select-wallet',
+
+  // WalletMenu
   ConnectWallet = 'connect-wallet',
+  CopyAddressToClipboard = 'copy-addr-to-clipboard',
   Disconnect = 'disconnect',
+  SwitchChain = 'switch-chain',
+
+  // Widget
   OnRouteExecutionStarted = 'onRouteExecutionStarted',
   OnRouteExecutionCompleted = 'onRouteExecutionCompleted',
   OnRouteExecutionFailed = 'onRouteExecutionFailed',
   OnRouteExecutionUpdated = 'onRouteExecutionUpdated',
   OnRouteHighValueLoss = 'onRouteHighValueLoss',
-  OpenWalletMenu = 'open-wallet-menu',
+
+  // Feature Card
+  ClickLearnMore = 'click-learn-more',
+  CloseFeatureCard = 'close-feature-card',
+
+  // Menu
   OpenSubmenu = 'open-submenu',
   OpenSupportModal = 'open-support-modal',
   OpenWalletSelectMenu = 'open-wallet-select-menu',
-  SwitchChain = 'switch-chain',
+  PageLoad = 'pageload',
   SwitchLanguage = 'switch-language',
   SwitchTab = 'switch-tab',
-  SwitchThemeMode = 'switch-theme-mode',
+  SwitchTheme = 'switch-theme',
+  WalletConnection = 'wallet-connection',
 }

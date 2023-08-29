@@ -2,6 +2,10 @@ import type { Chain } from '@lifi/types';
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
+import {
+  TrackingActions,
+  TrackingCategories,
+} from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useChains } from '@transferto/dapp/src/hooks/useChains';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
@@ -31,10 +35,10 @@ export const ChainSwitch = () => {
     event,
   ) => {
     onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
-
     trackEvent({
-      category: 'chain-menu',
-      action: `click-open-chain-menu`,
+      category: TrackingCategories.ChainsMenu,
+      action: TrackingActions.OpenSubmenu,
+      label: `click-open-chains-menu`,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };

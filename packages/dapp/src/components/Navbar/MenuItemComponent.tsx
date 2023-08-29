@@ -46,10 +46,10 @@ const MenuItemComponent = ({
         !!triggerSubMenu && onOpenNavbarSubMenu(triggerSubMenu);
         !!triggerSubMenu &&
           trackEvent({
-            category: TrackingCategories.Menu,
+            category: TrackingCategories.MainMenu,
             action: TrackingActions.OpenSubmenu,
-            label: triggerSubMenu,
-            data: { subMenu: triggerSubMenu },
+            label: `open-sub-menu-${triggerSubMenu.toLowerCase()}`,
+            data: { 'sub-Menu': triggerSubMenu },
             disableTrackingTool: [
               EventTrackingTool.Raleon,
               EventTrackingTool.ARCx,

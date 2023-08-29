@@ -1,6 +1,8 @@
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import BrightnessAutoOutlinedIcon from '@mui/icons-material/BrightnessAutoOutlined';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import ReactGA from 'react-ga4';
+
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
@@ -13,7 +15,7 @@ import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useThemeContent = () => {
   const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+  const { trackEvent, trackAttribute } = useUserTracking();
 
   const [themeMode, onChangeMode] = useSettingsStore((state) => [
     state.themeMode,
@@ -22,11 +24,20 @@ export const useThemeContent = () => {
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     onChangeMode(mode);
+    console.log(ReactGA);
+
+    trackAttribute({
+      data: {
+        theme: mode,
+      },
+    });
     trackEvent({
       category: TrackingCategories.ThemeMenu,
-      action: TrackingActions.SwitchThemeMode,
+      action: TrackingActions.SwitchTheme,
       label: `theme-${mode}`,
-      data: { theme: `theme-${mode}` },
+      data: {
+        theme: mode,
+      },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };

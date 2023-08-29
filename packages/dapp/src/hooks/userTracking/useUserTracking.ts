@@ -2,15 +2,15 @@ import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { useCallback } from 'react';
 import ReactGA from 'react-ga4';
 import { hotjar } from 'react-hotjar';
-import { TrackingCategories } from '../../const';
+import { TrackingActions, TrackingCategories } from '../../const';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   EventTrackingTool,
   TrackAttributeProps,
   TrackConnectWalletProps,
   TrackEventProps,
-  trackPageloadProps,
   TrackTransactionProps,
+  trackPageloadProps,
 } from '../../types';
 
 export function useUserTracking() {
@@ -30,7 +30,7 @@ export function useUserTracking() {
           });
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        data && ReactGA.set({ ...data });
+        data && ReactGA.gtag('set', { ...data });
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         await arcx?.attribute({
@@ -78,15 +78,14 @@ export function useUserTracking() {
         !!account.address &&
         !disableTrackingTool?.includes(EventTrackingTool.GA)
       ) {
-        !disconnect &&
-          ReactGA.set({
-            username: `${account.address}`,
-            chainId: `${account.chainId}`,
-          });
-        ReactGA.gtag('event', TrackingCategories.Wallet, {
-          walletAction: disconnect ? 'disconnect' : 'connect',
+        ReactGA.gtag('set', {
+          username: !disconnect ? account.address : 'NOT_CONNECTED',
+          chainId: !disconnect ? account.chainId : 'NOT_CONNECTED',
+        });
+        ReactGA.gtag('event', TrackingActions.WalletConnection, {
+          event_category: TrackingCategories.Wallet,
+          label: disconnect ? 'disconnect' : 'connect',
           chainId: `${account.chainId}`,
-          account: `${account.address}`,
         });
       }
       if (
@@ -120,10 +119,19 @@ export function useUserTracking() {
           hotjar.event(`${category}-${action}${label ?? '-' + label}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.gtag('event', category, {
-          action,
+        console.log('GA-output', {
+          category: category,
+          action: action,
+          label, // optional
+          ...data,
+        });
+        ReactGA.gtag('event', action, {
+          event_category: category,
           label,
           ...data,
+          // value: 99, // optional, must be a number
+          // nonInteraction: true, // optional, true/false
+          // transport: "xhr", // optional, beacon/xhr/image
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
@@ -172,11 +180,11 @@ export function useUserTracking() {
             );
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.gtag('event', `pageload`, {
-          pageLoad: pageload ? 'external' : 'internal',
+        ReactGA.gtag('event', TrackingActions.PageLoad, {
+          event_category: pageload ? 'external' : 'internal',
+          url,
           source,
           destination,
-          url,
           ...data,
         });
       }
@@ -205,23 +213,23 @@ export function useUserTracking() {
       chain,
       data,
       disableTrackingTool,
-      transactionHash,
+      txhash,
     }: TrackTransactionProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() && hotjar.event(`${category}-${action}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.gtag('event', 'transaction', {
-          category,
-          action,
+        ReactGA.gtag('event', action, {
+          event_category: category,
+          chain,
+          txhash,
           ...data,
-          transactionHash,
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        await arcx?.transaction({
-          chain, // required(string) - chain ID that the transaction is taking place on
-          transactionHash, // required(string) - hash of the transaction
+        arcx?.transaction({
+          chain,
+          transactionHash: txhash,
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });
       }

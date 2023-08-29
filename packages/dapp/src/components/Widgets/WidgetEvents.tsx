@@ -43,6 +43,7 @@ export function WidgetEvents() {
         trackEvent({
           category: TrackingCategories.WidgetEvent,
           action: TrackingActions.OnRouteExecutionStarted,
+          label: 'execution-start',
           data: {
             routeId: route.id,
             steps: route.steps,
@@ -72,10 +73,11 @@ export function WidgetEvents() {
           lastTxHashRef.current = update.process.txHash;
           trackTransaction({
             chain: update.route.fromChainId,
-            transactionHash: update.process.txHash || '',
+            txhash: update.process.txHash || '',
             category: TrackingCategories.WidgetEvent,
             action: TrackingActions.OnRouteExecutionUpdated,
             data: {
+              label: 'execution-update',
               routeId: `${update.route.id}`,
               transactionLink: update.process.txLink,
               steps: update.route.steps,
@@ -91,6 +93,7 @@ export function WidgetEvents() {
         trackEvent({
           category: TrackingCategories.WidgetEvent,
           action: TrackingActions.OnRouteExecutionCompleted,
+          label: 'execution-success',
           data: {
             routeId: route.id,
             steps: route.steps,
@@ -112,9 +115,10 @@ export function WidgetEvents() {
       trackEvent({
         category: TrackingCategories.WidgetEvent,
         action: TrackingActions.OnRouteExecutionFailed,
+        label: 'execution-error',
         data: {
           routeId: update.route.id,
-          transactionHash: update.process.txHash,
+          txhash: update.process.txHash,
           status: update.process.status,
           message: update.process.message,
           error: update.process.error,
@@ -179,6 +183,8 @@ export function WidgetEvents() {
 
   useEffect(() => {
     setIsMultisigConnectedAlertOpen(isMultisigSigner);
+    // prevent endless loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.address]);
 
   return (
