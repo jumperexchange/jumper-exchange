@@ -23,7 +23,7 @@ export const useDevelopersContent = () => {
       prefixIcon: (
         <GitHubIcon
           sx={{
-            color: !!isDarkMode
+            color: isDarkMode
               ? theme.palette.white.main
               : theme.palette.black.main,
           }}
