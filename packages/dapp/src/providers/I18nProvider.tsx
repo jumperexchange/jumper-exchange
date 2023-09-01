@@ -5,7 +5,6 @@ import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { useSettingsStore } from '../stores/settings';
 import resourcesToBackend from 'i18next-resources-to-backend';
-import '../i18n/en/translation.json';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const languageMode = useSettingsStore((state) => state.languageMode);
