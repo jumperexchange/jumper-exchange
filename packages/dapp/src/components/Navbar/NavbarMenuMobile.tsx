@@ -51,7 +51,7 @@ const NavbarMenuMobile = ({
   }
 
   return (
-    !!open && (
+    open && (
       <>
         <NavbarExternalBackground />
         <Slide direction="up" in={open} mountOnEnter unmountOnExit>
@@ -79,8 +79,7 @@ const NavbarMenuMobile = ({
                   autoFocus={open}
                   hasLabel={!!label}
                   component={
-                    !!isOpenSubMenu &&
-                    openNavbarSubMenu !== MenuKeys.WalletSelect
+                    isOpenSubMenu && openNavbarSubMenu !== MenuKeys.WalletSelect
                       ? 'div'
                       : 'ul'
                   }
