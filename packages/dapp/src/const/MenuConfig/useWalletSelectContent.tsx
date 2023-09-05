@@ -6,12 +6,16 @@ import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool, MenuListItem } from '../../types';
-import { TrackingActions, TrackingCategories } from '../trackingKeys';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingParameters,
+} from '../trackingKeys';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect, account } = useWallet();
-  const { trackEvent } = useUserTracking();
+  const { trackEvent, trackAttribute } = useUserTracking();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
     useState(false);
 
@@ -102,11 +106,16 @@ export const useWalletSelectContent = () => {
           login(wallet);
           onCloseAllNavbarMenus();
           onWelcomeScreenEntered(true);
+          trackAttribute({
+            data: {
+              [TrackingParameters.Wallet]: wallet.name,
+            },
+          });
           trackEvent({
             category: TrackingCategories.WalletSelectMenu,
             action: TrackingActions.ConnectWallet,
             label: wallet.name,
-            data: { 'used-wallet': wallet.name },
+            data: { wallet: wallet.name },
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,

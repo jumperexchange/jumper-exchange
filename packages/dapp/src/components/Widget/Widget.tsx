@@ -5,7 +5,11 @@ import { useTheme } from '@mui/material/styles';
 import { MenuState } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../../const';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingParameters,
+} from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
@@ -67,8 +71,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         connect: async () => {
           trackAttribute({
             data: {
-              connected: true,
-              'had-connected': true,
+              [TrackingParameters.Connected]: true,
             },
           });
 
@@ -90,7 +93,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         disconnect: async () => {
           trackAttribute({
             data: {
-              connected: false,
+              [TrackingParameters.Connected]: false,
             },
           });
           trackEvent({
@@ -128,13 +131,13 @@ export function Widget({ starterVariant }: WidgetProps) {
         addToken: async (token: Token, chainId: number) => {
           trackAttribute({
             data: {
-              'added-token': true,
+              [TrackingParameters.AddedToken]: true,
             },
           });
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.AddToken,
-            label: `addToken-${token.name}`,
+            label: `add-token-${token.name}`,
             data: {
               tokenAdded: `${token.name}`,
               tokenAddChainId: chainId,
@@ -149,16 +152,13 @@ export function Widget({ starterVariant }: WidgetProps) {
         addChain: async (chainId: number) => {
           trackAttribute({
             data: {
-              'added-chain': true,
+              [TrackingParameters.AddedChain]: true,
             },
           });
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.AddChain,
-            label: `addChain-${chainId}`,
-            data: {
-              chainIdAdded: `${chainId}`,
-            },
+            label: `add-chain-${chainId}`,
             disableTrackingTool: [EventTrackingTool.ARCx],
           });
           return addChain(chainId);

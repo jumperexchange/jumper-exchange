@@ -18,6 +18,7 @@ export function useInitUserTracking() {
             import.meta.env.VITE_HOTJAR_SNIPPET_VERSION,
           );
       }
+
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_TRACKING_ID);
       }

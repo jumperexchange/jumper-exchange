@@ -2,7 +2,11 @@ import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
 import { EventTrackingTool, LanguageKey } from '../../types';
-import { TrackingActions, TrackingCategories } from '../trackingKeys';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingParameters,
+} from '../trackingKeys';
 
 export const useLanguagesContent = () => {
   const { i18n, t } = useTranslation();
@@ -16,7 +20,7 @@ export const useLanguagesContent = () => {
     onChangeLanguage(newLanguage);
     trackAttribute({
       data: {
-        language: newLanguage,
+        [TrackingParameters.Language]: newLanguage,
       },
     });
     trackEvent({

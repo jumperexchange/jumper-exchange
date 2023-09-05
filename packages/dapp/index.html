@@ -47,18 +47,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', '%VITE_GOOGLE_ANALYTICS_TRACKING_ID%', {
-      connected: false,
-      language: i18n.language,
-      theme: 'unset',
-      'debug_mode': false,
-      'had-connected': false,
-      'added-token': false,
-      'added-chain': false,
-      'default-system-language': 'unset',
-      'default-system-theme': 'unset',
-
-    });
+    gtag('config', '%VITE_GOOGLE_ANALYTICS_TRACKING_ID%');
   </script>
   <script>
     var script = document.createElement("script")

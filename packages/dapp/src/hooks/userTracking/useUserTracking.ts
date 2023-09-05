@@ -30,7 +30,7 @@ export function useUserTracking() {
           });
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        data && ReactGA.gtag('set', { ...data });
+        data && ReactGA.gtag('set', 'user_properties', data);
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         await arcx?.attribute({
@@ -78,12 +78,18 @@ export function useUserTracking() {
         !!account.address &&
         !disableTrackingTool?.includes(EventTrackingTool.GA)
       ) {
-        ReactGA.gtag('set', {
-          username: !disconnect ? account.address : 'NOT_CONNECTED',
-          chainId: !disconnect ? account.chainId : 'NOT_CONNECTED',
-        });
-        ReactGA.gtag('event', TrackingActions.WalletConnection, {
-          event_category: TrackingCategories.Wallet,
+        disconnect
+          ? ReactGA.gtag('set', 'user_properties', {
+              connected: 'false',
+            })
+          : ReactGA.gtag('set', 'user_properties', {
+              username: account.address,
+              chainId: account.chainId,
+              connected: 'true',
+            });
+
+        ReactGA.gtag('event', TrackingActions.ConnectWallet, {
+          category: TrackingCategories.Wallet,
           label: disconnect ? 'disconnect' : 'connect',
           chainId: `${account.chainId}`,
         });
@@ -125,14 +131,23 @@ export function useUserTracking() {
           label, // optional
           ...data,
         });
-        ReactGA.gtag('event', action, {
-          event_category: category,
+
+        ReactGA.event(action, {
+          category: category,
           label,
           ...data,
           // value: 99, // optional, must be a number
           // nonInteraction: true, // optional, true/false
           // transport: "xhr", // optional, beacon/xhr/image
         });
+        /* 
+        Alternative usage:
+        ReactGA.gtag('event', action, {
+          category: category,
+          label,
+          ...data,
+          });
+        */
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         arcx?.event(`${category}-${action}`, {
@@ -181,7 +196,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         ReactGA.gtag('event', TrackingActions.PageLoad, {
-          event_category: pageload ? 'external' : 'internal',
+          category: pageload ? 'external' : 'internal',
           url,
           source,
           destination,
@@ -220,7 +235,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         ReactGA.gtag('event', action, {
-          event_category: category,
+          category: category,
           chain,
           txhash,
           ...data,
