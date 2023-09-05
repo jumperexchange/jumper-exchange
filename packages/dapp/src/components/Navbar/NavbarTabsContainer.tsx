@@ -4,7 +4,11 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../../const';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+} from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useActiveTabStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
@@ -42,7 +46,7 @@ const NavbarTabsContainer = () => {
             category: TrackingCategories.Navigation,
             action: TrackingActions.SwitchTab,
             label: 'exchange',
-            data: { tab: 'exchange' },
+            data: { [TrackingEventParameters.Tab]: 'exchange' },
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,
@@ -70,7 +74,7 @@ const NavbarTabsContainer = () => {
             category: TrackingCategories.Navigation,
             action: TrackingActions.SwitchTab,
             label: 'gas',
-            data: { tab: 'gas' },
+            data: { [TrackingEventParameters.Tab]: 'gas' },
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,
@@ -99,7 +103,7 @@ const NavbarTabsContainer = () => {
               category: TrackingCategories.Navigation,
               action: TrackingActions.SwitchTab,
               label: 'buy',
-              data: { tab: 'buy' },
+              data: { [TrackingEventParameters.Tab]: 'buy' },
               disableTrackingTool: [
                 EventTrackingTool.ARCx,
                 EventTrackingTool.Raleon,

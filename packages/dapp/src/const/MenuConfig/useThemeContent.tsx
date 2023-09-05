@@ -15,7 +15,8 @@ import { EventTrackingTool } from '../../types';
 import {
   TrackingActions,
   TrackingCategories,
-  TrackingParameters,
+  TrackingEventParameters,
+  TrackingUserProperties,
 } from '../trackingKeys';
 
 export const useThemeContent = () => {
@@ -34,7 +35,7 @@ export const useThemeContent = () => {
 
     trackAttribute({
       data: {
-        [TrackingParameters.Theme]:
+        [TrackingUserProperties.Theme]:
           mode === 'auto' ? (isDarkModeHook ? 'dark' : 'light') : mode,
       },
     });
@@ -43,7 +44,7 @@ export const useThemeContent = () => {
       action: TrackingActions.SwitchTheme,
       label: `theme-${mode}`,
       data: {
-        theme: mode,
+        [TrackingEventParameters.Theme]: mode,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });

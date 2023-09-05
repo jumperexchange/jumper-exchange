@@ -5,7 +5,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { KeyboardEvent } from 'react';
-import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
+import {
+  MenuKeys,
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+} from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import { EventTrackingTool, MenuListItem } from '../../types';
 
@@ -119,8 +124,8 @@ const SubMenuComponent = ({
                     action: TrackingActions.OpenSubmenu,
                     label: `open-sub-menu-${el.triggerSubMenu.toLowerCase()}`,
                     data: {
-                      'sub-Menu': el.triggerSubMenu,
-                      'prev-menu': prevMenu,
+                      [TrackingEventParameters.SubMenu]: el.triggerSubMenu,
+                      [TrackingEventParameters.PrevMenu]: prevMenu,
                     },
                     disableTrackingTool: [
                       EventTrackingTool.Raleon,

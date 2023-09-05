@@ -7,7 +7,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
 
-import { TrackingActions, TrackingCategories } from '../../const';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+} from '../../const';
 import { useUserTracking } from '../../hooks';
 import { EventTrackingTool } from '../../types';
 import {
@@ -81,8 +85,10 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
                 action: TrackingActions.CloseFeatureCard,
                 label: `close-${data?.fields?.displayConditions?.id}`,
                 data: {
-                  'feature-card-title': data?.fields?.title,
-                  'feature-card-id': data?.fields?.displayConditions?.id,
+                  [TrackingEventParameters.FeatureCardTitle]:
+                    data?.fields?.title,
+                  [TrackingEventParameters.FeatureCardId]:
+                    data?.fields?.displayConditions?.id,
                 },
                 disableTrackingTool: [
                   EventTrackingTool.ARCx,
@@ -139,8 +145,10 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
                   action: TrackingActions.ClickLearnMore,
                   label: 'click-learn-more',
                   data: {
-                    'feature-card-title': data.fields.title,
-                    id: data.fields.displayConditions.id,
+                    [TrackingEventParameters.FeatureCardTitle]:
+                      data.fields.title,
+                    [TrackingEventParameters.FeatureCardId]:
+                      data.fields.displayConditions.id,
                     url: data.fields.url,
                   },
                   disableTrackingTool: [

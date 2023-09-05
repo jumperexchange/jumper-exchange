@@ -3,7 +3,7 @@ import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { TrackingParameters } from '../const';
+import { TrackingUserProperties } from '../const';
 import { useUserTracking } from '../hooks';
 import * as supportedLanguages from '../i18n';
 import { useSettingsStore } from '../stores/settings';
@@ -46,8 +46,8 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     if (!languageMode) {
       trackAttribute({
         data: {
-          [TrackingParameters.Language]: i18n.language,
-          [TrackingParameters.DefaultLanguage]: i18n.language,
+          [TrackingUserProperties.Language]: i18n.language,
+          [TrackingUserProperties.DefaultLanguage]: i18n.language,
         },
       });
       i18n = i18n.use(LanguageDetector);

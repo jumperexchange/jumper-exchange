@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
-import { TrackingParameters } from '../../const/trackingKeys';
+import { TrackingEventParameters } from '../../const/trackingKeys';
 import { useFetchDexsAndBridges, useUserTracking } from '../../hooks';
 import { useChains } from '../../hooks/useChains';
 import { useCountUpAnimation } from '../../hooks/useCountUpAnimation';
@@ -101,7 +101,7 @@ export const StatsCards = ({
   const { data } = useFetchDexsAndBridges();
   const { chains } = useChains();
   const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+  const { trackEvent, trackAttribute } = useUserTracking();
 
   const statsData: StatsDataProps[] = [
     {
@@ -115,7 +115,7 @@ export const StatsCards = ({
           category: TrackingCategories.WelcomeScreen,
           action: TrackingActions.OpenStatsModal,
           label: 'chains-stats',
-          data: { [TrackingParameters.StatsModal]: 'chains-stats' },
+          data: { [TrackingEventParameters.StatsModal]: 'chains-stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
@@ -135,7 +135,7 @@ export const StatsCards = ({
           category: TrackingCategories.WelcomeScreen,
           action: TrackingActions.OpenStatsModal,
           label: 'bridges-stats',
-          data: { [TrackingParameters.StatsModal]: 'bridges-stats' },
+          data: { [TrackingEventParameters.StatsModal]: 'bridges-stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
@@ -155,7 +155,7 @@ export const StatsCards = ({
           category: TrackingCategories.WelcomeScreen,
           action: TrackingActions.OpenStatsModal,
           label: 'dexes-stats',
-          data: { [TrackingParameters.StatsModal]: 'dexes-stats' },
+          data: { [TrackingEventParameters.StatsModal]: 'dexes-stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,

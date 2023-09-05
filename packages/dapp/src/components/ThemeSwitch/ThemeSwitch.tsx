@@ -6,7 +6,8 @@ import Tooltip from '@mui/material/Tooltip';
 import {
   TrackingActions,
   TrackingCategories,
-  TrackingParameters,
+  TrackingEventParameters,
+  TrackingUserProperties,
 } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
@@ -29,7 +30,7 @@ export const ThemeSwitch = () => {
     const changeMode = isDarkMode ? 'light' : 'dark';
     trackAttribute({
       data: {
-        [TrackingParameters.Theme]: changeMode,
+        [TrackingUserProperties.Theme]: changeMode,
       },
     });
     trackEvent({
@@ -37,7 +38,7 @@ export const ThemeSwitch = () => {
       action: TrackingActions.SwitchTheme,
       label: `theme-${changeMode}`,
       data: {
-        [TrackingParameters.Theme]: changeMode,
+        [TrackingEventParameters.Theme]: changeMode,
       },
     });
     onChangeMode(changeMode);

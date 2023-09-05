@@ -9,7 +9,8 @@ import { EventTrackingTool, MenuListItem } from '../../types';
 import {
   TrackingActions,
   TrackingCategories,
-  TrackingParameters,
+  TrackingEventParameters,
+  TrackingUserProperties,
 } from '../trackingKeys';
 
 export const useWalletSelectContent = () => {
@@ -108,14 +109,14 @@ export const useWalletSelectContent = () => {
           onWelcomeScreenEntered(true);
           trackAttribute({
             data: {
-              [TrackingParameters.Wallet]: wallet.name,
+              [TrackingUserProperties.Wallet]: wallet.name,
             },
           });
           trackEvent({
             category: TrackingCategories.WalletSelectMenu,
             action: TrackingActions.ConnectWallet,
             label: wallet.name,
-            data: { wallet: wallet.name },
+            data: { [TrackingEventParameters.Wallet]: wallet.name },
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,
@@ -131,6 +132,7 @@ export const useWalletSelectContent = () => {
     login,
     onCloseAllNavbarMenus,
     onWelcomeScreenEntered,
+    trackAttribute,
     trackEvent,
   ]);
 

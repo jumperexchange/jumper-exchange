@@ -10,7 +10,11 @@ import {
   useWidgetEvents,
 } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
-import { TrackingActions, TrackingCategories } from '../../const';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+} from '../../const';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useMultisigStore } from '../../stores';
@@ -45,14 +49,14 @@ export function WidgetEvents() {
           action: TrackingActions.OnRouteExecutionStarted,
           label: 'execution-start',
           data: {
-            routeId: route.id,
-            steps: route.steps,
-            fromToken: route.fromToken,
-            fromChainId: route.fromChainId,
-            toToken: route.toToken,
-            toChainId: route.toChainId,
-            fromAmount: route.fromAmount,
-            toAmount: route.toAmount,
+            [TrackingEventParameters.RouteId]: route.id,
+            [TrackingEventParameters.Steps]: route.steps,
+            [TrackingEventParameters.FromToken]: route.fromToken,
+            [TrackingEventParameters.FromChainId]: route.fromChainId,
+            [TrackingEventParameters.ToToken]: route.toToken,
+            [TrackingEventParameters.ToChainId]: route.toChainId,
+            [TrackingEventParameters.FromAmount]: route.fromAmount,
+            [TrackingEventParameters.ToAmount]: route.toAmount,
           },
         });
       }
@@ -95,18 +99,18 @@ export function WidgetEvents() {
           action: TrackingActions.OnRouteExecutionCompleted,
           label: 'execution-success',
           data: {
-            routeId: route.id,
-            steps: route.steps,
-            fromChainId: route.fromChainId,
-            fromAmountUSD: route.fromAmountUSD,
-            fromAmount: route.fromAmount,
-            fromToken: route.fromToken,
-            fromAddress: route.fromAddress,
-            toChainId: route.toChainId,
-            toAmountUSD: route.toAmountUSD,
-            toAmount: route.toAmount,
-            toAmountMin: route.toAmountMin,
-            toToken: route.toToken,
+            [TrackingEventParameters.RouteId]: route.id,
+            [TrackingEventParameters.Steps]: route.steps,
+            [TrackingEventParameters.FromChainId]: route.fromChainId,
+            [TrackingEventParameters.FromAmountUSD]: route.fromAmountUSD,
+            [TrackingEventParameters.FromAmount]: route.fromAmount,
+            [TrackingEventParameters.FromToken]: route.fromToken,
+            [TrackingEventParameters.FromAddress]: route.fromAddress,
+            [TrackingEventParameters.ToChainId]: route.toChainId,
+            [TrackingEventParameters.ToAmountUSD]: route.toAmountUSD,
+            [TrackingEventParameters.ToAmount]: route.toAmount,
+            [TrackingEventParameters.ToAmountMin]: route.toAmountMin,
+            [TrackingEventParameters.ToToken]: route.toToken,
           },
         });
       }
@@ -117,12 +121,12 @@ export function WidgetEvents() {
         action: TrackingActions.OnRouteExecutionFailed,
         label: 'execution-error',
         data: {
-          routeId: update.route.id,
-          txhash: update.process.txHash,
-          status: update.process.status,
-          message: update.process.message,
-          error: update.process.error,
-          steps: update.route.steps,
+          [TrackingEventParameters.RouteId]: update.route.id,
+          [TrackingEventParameters.TxHash]: update.process.txHash,
+          [TrackingEventParameters.Status]: update.process.status,
+          [TrackingEventParameters.Message]: update.process.message,
+          [TrackingEventParameters.Error]: update.process.error,
+          [TrackingEventParameters.Steps]: update.route.steps,
         },
       });
     };
@@ -134,7 +138,7 @@ export function WidgetEvents() {
         label: 'click-highValueLossAccepted',
         data: {
           ...update,
-          timestamp: Date.now(),
+          [TrackingEventParameters.Timestamp]: Date.now(),
         },
       });
     };

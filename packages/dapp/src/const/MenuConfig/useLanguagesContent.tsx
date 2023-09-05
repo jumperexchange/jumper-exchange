@@ -5,7 +5,7 @@ import { EventTrackingTool, LanguageKey } from '../../types';
 import {
   TrackingActions,
   TrackingCategories,
-  TrackingParameters,
+  TrackingUserProperties,
 } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
@@ -20,7 +20,7 @@ export const useLanguagesContent = () => {
     onChangeLanguage(newLanguage);
     trackAttribute({
       data: {
-        [TrackingParameters.Language]: newLanguage,
+        [TrackingUserProperties.Language]: newLanguage,
       },
     });
     trackEvent({

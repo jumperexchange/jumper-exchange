@@ -53,7 +53,43 @@ export enum TrackingCategories {
   WidgetEvent = 'widget-event',
 }
 
-export enum TrackingParameters {
+// can be used as custom dimensions / metrics
+export enum TrackingEventParameters {
+  FeatureCardTitle = 'feature-card-title',
+  FeatureCardId = 'feature-card-id',
+  Tab = 'tab',
+  PrevMenu = 'prev-menu',
+  ChainIdAdded = 'chain-added',
+  TokenAdded = 'token-added',
+  TokenAddedChainId = 'token-added-chainId',
+  SwitchChain = 'switch-chain',
+  SubMenu = 'sub-menu',
+  StatsModal = 'stats-modal',
+  Theme = 'theme',
+  Wallet = 'wallet',
+
+  // Transaction:
+  RouteId = 'routeId',
+  Steps = 'steps',
+  FromToken = 'fromToken',
+  FromChainId = 'fromChainId',
+  ToToken = 'toToken',
+  Timestamp = 'timestamp',
+  Status = 'status',
+  Error = 'error',
+  Message = 'message',
+  TxHash = 'txhash',
+  ToChainId = 'toChainId',
+  FromAmount = 'fromAmount',
+  ToAmount = 'toAmount',
+  ToAmountUSD = 'toAmountUSD',
+  ToAmountMin = 'toAmountMin',
+  FromAmountUSD = 'fromAmountUSD',
+  FromAddress = 'fromAddress',
+}
+
+// can be used as user_properties
+export enum TrackingUserProperties {
   AddedToken = 'added_token',
   AddedChain = 'added_chain',
   Connected = 'connected',

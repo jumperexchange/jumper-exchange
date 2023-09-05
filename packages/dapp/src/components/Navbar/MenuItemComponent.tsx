@@ -2,7 +2,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
-import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
+import {
+  MenuKeys,
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+} from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
@@ -49,7 +54,7 @@ const MenuItemComponent = ({
             category: TrackingCategories.MainMenu,
             action: TrackingActions.OpenSubmenu,
             label: `open-sub-menu-${triggerSubMenu.toLowerCase()}`,
-            data: { 'sub-Menu': triggerSubMenu },
+            data: { [TrackingEventParameters.SubMenu]: triggerSubMenu },
             disableTrackingTool: [
               EventTrackingTool.Raleon,
               EventTrackingTool.ARCx,

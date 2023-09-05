@@ -2,7 +2,7 @@ import { useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { darkTheme, lightTheme } from '@transferto/shared/src/theme';
 import React, { PropsWithChildren, useMemo } from 'react';
-import { TrackingParameters } from '../const';
+import { TrackingUserProperties } from '../const';
 import { useUserTracking } from '../hooks';
 import { useSettingsStore } from '../stores';
 
@@ -15,8 +15,10 @@ export const useDetectDarkModePreference = () => {
     if (!themeMode) {
       trackAttribute({
         data: {
-          [TrackingParameters.Theme]: isDarkModeHook ? 'dark' : 'light',
-          [TrackingParameters.DefaultTheme]: isDarkModeHook ? 'dark' : 'light',
+          [TrackingUserProperties.Theme]: isDarkModeHook ? 'dark' : 'light',
+          [TrackingUserProperties.DefaultTheme]: isDarkModeHook
+            ? 'dark'
+            : 'light',
         },
       });
     }

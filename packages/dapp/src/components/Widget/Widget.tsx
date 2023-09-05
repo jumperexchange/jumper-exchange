@@ -8,7 +8,8 @@ import { useTranslation } from 'react-i18next';
 import {
   TrackingActions,
   TrackingCategories,
-  TrackingParameters,
+  TrackingEventParameters,
+  TrackingUserProperties,
 } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
@@ -71,7 +72,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         connect: async () => {
           trackAttribute({
             data: {
-              [TrackingParameters.Connected]: true,
+              [TrackingUserProperties.Connected]: true,
             },
           });
 
@@ -93,7 +94,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         disconnect: async () => {
           trackAttribute({
             data: {
-              [TrackingParameters.Connected]: false,
+              [TrackingUserProperties.Connected]: false,
             },
           });
           trackEvent({
@@ -115,7 +116,7 @@ export function Widget({ starterVariant }: WidgetProps) {
               action: TrackingActions.SwitchChain,
               label: `${reqChainId}`,
               data: {
-                switchChain: reqChainId,
+                [TrackingEventParameters.SwitchChain]: reqChainId,
               },
               disableTrackingTool: [
                 EventTrackingTool.ARCx,
@@ -131,7 +132,7 @@ export function Widget({ starterVariant }: WidgetProps) {
         addToken: async (token: Token, chainId: number) => {
           trackAttribute({
             data: {
-              [TrackingParameters.AddedToken]: true,
+              [TrackingUserProperties.AddedToken]: true,
             },
           });
           trackEvent({
@@ -139,8 +140,8 @@ export function Widget({ starterVariant }: WidgetProps) {
             action: TrackingActions.AddToken,
             label: `add-token-${token.name}`,
             data: {
-              tokenAdded: `${token.name}`,
-              tokenAddChainId: chainId,
+              [TrackingEventParameters.TokenAdded]: `${token.name}`,
+              [TrackingEventParameters.TokenAddedChainId]: chainId,
             },
             disableTrackingTool: [
               EventTrackingTool.ARCx,
@@ -152,14 +153,20 @@ export function Widget({ starterVariant }: WidgetProps) {
         addChain: async (chainId: number) => {
           trackAttribute({
             data: {
-              [TrackingParameters.AddedChain]: true,
+              [TrackingUserProperties.AddedChain]: true,
             },
           });
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.AddChain,
             label: `add-chain-${chainId}`,
-            disableTrackingTool: [EventTrackingTool.ARCx],
+            data: {
+              [TrackingEventParameters.ChainIdAdded]: `${chainId}`,
+            },
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           return addChain(chainId);
         },
