@@ -33,7 +33,7 @@ const NavbarTabsContainer = () => {
 
   return (
     <NavbarTabs
-      value={!!isDesktop ? activeTab : false}
+      value={isDesktop ? activeTab : false}
       onChange={handleChange}
       isDarkMode={isDarkMode}
       aria-label="tabs"
@@ -58,7 +58,7 @@ const NavbarTabsContainer = () => {
             sx={{
               marginRight: '6px',
               marginBottom: '0px !important',
-              color: !!isDarkMode
+              color: isDarkMode
                 ? theme.palette.white.main
                 : theme.palette.black.main,
             }}
@@ -87,7 +87,7 @@ const NavbarTabsContainer = () => {
             sx={{
               marginRight: '6px',
               marginBottom: '0px !important',
-              color: !!isDarkMode
+              color: isDarkMode
                 ? theme.palette.white.main
                 : theme.palette.black.main,
             }}
@@ -116,7 +116,7 @@ const NavbarTabsContainer = () => {
               sx={{
                 marginRight: '6px',
                 marginBottom: '0px !important',
-                color: !!isDarkMode
+                color: isDarkMode
                   ? theme.palette.white.main
                   : theme.palette.black.main,
               }}

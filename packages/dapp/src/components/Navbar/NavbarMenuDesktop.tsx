@@ -56,7 +56,7 @@ const NavbarMenuDesktop = ({
   }
 
   return (
-    !!open && (
+    open && (
       <>
         <NavbarExternalBackground />
         <NavbarPopper
@@ -94,7 +94,7 @@ const NavbarMenuDesktop = ({
                     onKeyDown={handleListKeyDown}
                     hasLabel={!!label}
                     component={
-                      !!isOpenSubMenu &&
+                      isOpenSubMenu &&
                       openNavbarSubMenu !== MenuMain.WalletSelect
                         ? 'div'
                         : 'ul'

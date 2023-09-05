@@ -133,7 +133,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     handleMultisigEnvironmentCheck();
   }, [account, handleMultisigEnvironmentCheck]);
 
-  return !!openNavbarWalletMenu ? (
+  return openNavbarWalletMenu ? (
     <NavbarMenu
       open
       transformOrigin={'top left'}
