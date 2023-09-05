@@ -32,7 +32,6 @@ export enum TrackingActions {
   SwitchLanguage = 'switch-language',
   SwitchTab = 'switch-tab',
   SwitchTheme = 'switch-theme',
-  WalletConnection = 'wallet-connection',
 }
 
 export enum TrackingCategories {
@@ -59,6 +58,7 @@ export enum TrackingEventParameters {
   FeatureCardId = 'feature-card-id',
   Tab = 'tab',
   PrevMenu = 'prev-menu',
+  ChainId = 'chainId',
   ChainIdAdded = 'chain-added',
   TokenAdded = 'token-added',
   TokenAddedChainId = 'token-added-chainId',
@@ -92,8 +92,15 @@ export enum TrackingEventParameters {
 export enum TrackingUserProperties {
   AddedToken = 'added_token',
   AddedChain = 'added_chain',
+  ChainId = 'chain_id',
   Connected = 'connected',
+  HadEnteredWelcomeScreen = 'had_entered_welcome_screen',
+  HadConnected = 'had_connected',
+  HadAcceptedHighValueLoss = 'had_accepted_hv_loss',
+  HadFailure = 'had_failure',
+  HadSuccessfulTx = 'had_succesful_tx',
   Theme = 'theme',
+  UserAddress = 'user_address',
   DefaultTheme = 'default_system_theme',
   Language = 'language',
   DefaultLanguage = 'default_system_language',

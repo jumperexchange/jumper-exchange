@@ -2,7 +2,12 @@ import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { useCallback } from 'react';
 import ReactGA from 'react-ga4';
 import { hotjar } from 'react-hotjar';
-import { TrackingActions, TrackingCategories } from '../../const';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+  TrackingUserProperties,
+} from '../../const';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   EventTrackingTool,
@@ -80,18 +85,19 @@ export function useUserTracking() {
       ) {
         disconnect
           ? ReactGA.gtag('set', 'user_properties', {
-              connected: 'false',
+              [TrackingUserProperties.Connected]: 'false',
             })
           : ReactGA.gtag('set', 'user_properties', {
-              username: account.address,
-              chainId: account.chainId,
-              connected: 'true',
+              [TrackingUserProperties.UserAddress]: account.address,
+              [TrackingUserProperties.ChainId]: account.chainId,
+              [TrackingUserProperties.Connected]: 'true',
+              [TrackingUserProperties.HadConnected]: 'true',
             });
 
         ReactGA.gtag('event', TrackingActions.ConnectWallet, {
           category: TrackingCategories.Wallet,
           label: disconnect ? 'disconnect' : 'connect',
-          chainId: `${account.chainId}`,
+          [TrackingEventParameters.ChainId]: `${account.chainId}`,
         });
       }
       if (
@@ -181,7 +187,7 @@ export function useUserTracking() {
       destination,
       source,
       data,
-      pageload, // requires page load?
+      pageload, // requires page load? -> true
       disableTrackingTool,
       url,
     }: trackPageloadProps) => {
