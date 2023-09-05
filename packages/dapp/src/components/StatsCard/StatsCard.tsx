@@ -1,9 +1,12 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useFetchDexsAndBridges } from '../../hooks';
+import { TrackingActions, TrackingCategories } from '../../const';
+import { TrackingParameters } from '../../const/trackingKeys';
+import { useFetchDexsAndBridges, useUserTracking } from '../../hooks';
 import { useChains } from '../../hooks/useChains';
 import { useCountUpAnimation } from '../../hooks/useCountUpAnimation';
+import { EventTrackingTool } from '../../types';
 import { StatsModal } from '../StatsModal/StatsModal';
 import { Card, Container } from './StatsCard.style';
 
@@ -98,6 +101,7 @@ export const StatsCards = ({
   const { data } = useFetchDexsAndBridges();
   const { chains } = useChains();
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
 
   const statsData: StatsDataProps[] = [
     {
@@ -107,6 +111,16 @@ export const StatsCards = ({
       open: openChainsPopper,
       setOpen: setOpenChainsPopper,
       handleOnClick: () => {
+        trackEvent({
+          category: TrackingCategories.WelcomeScreen,
+          action: TrackingActions.OpenStatsModal,
+          label: 'chains-stats',
+          data: { [TrackingParameters.StatsModal]: 'chains-stats' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         setOpenChainsPopper(!openChainsPopper);
       },
     },
@@ -117,6 +131,16 @@ export const StatsCards = ({
       open: openBridgesPopper,
       setOpen: setOpenBridgesPopper,
       handleOnClick: () => {
+        trackEvent({
+          category: TrackingCategories.WelcomeScreen,
+          action: TrackingActions.OpenStatsModal,
+          label: 'bridges-stats',
+          data: { [TrackingParameters.StatsModal]: 'bridges-stats' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         setOpenBridgesPopper(!openBridgesPopper);
       },
     },
@@ -127,6 +151,16 @@ export const StatsCards = ({
       open: openDexsPopper,
       setOpen: setOpenDexsPopper,
       handleOnClick: () => {
+        trackEvent({
+          category: TrackingCategories.WelcomeScreen,
+          action: TrackingActions.OpenStatsModal,
+          label: 'dexes-stats',
+          data: { [TrackingParameters.StatsModal]: 'dexes-stats' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         setOpenDexsPopper(!openDexsPopper);
       },
     },

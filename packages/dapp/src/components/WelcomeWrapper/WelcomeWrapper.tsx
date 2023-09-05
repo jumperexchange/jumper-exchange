@@ -2,6 +2,8 @@ import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
 import { PropsWithChildren, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { useUserTracking } from '../../hooks';
+import { EventTrackingTool } from '../../types';
 import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 interface WelcomeWrapperProps {
@@ -14,6 +16,7 @@ export const WelcomeWrapper: React.FC<
 > = ({ children, showWelcome, handleGetStarted }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { trackPageload } = useUserTracking();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
@@ -63,11 +66,35 @@ export const WelcomeWrapper: React.FC<
                     href="https://docs.li.fi/smart-contracts/audits"
                     target={'_blank'}
                     rel="noreferrer"
+                    onClick={() => {
+                      trackPageload({
+                        source: 'welcome-screen',
+                        destination: 'docs-sc-audits',
+                        url: 'https://docs.li.fi/smart-contracts/audits',
+                        pageload: true,
+                        disableTrackingTool: [
+                          EventTrackingTool.ARCx,
+                          EventTrackingTool.Raleon,
+                        ],
+                      });
+                    }}
                   />,
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
                     href="https://li.fi"
+                    onClick={() => {
+                      trackPageload({
+                        source: 'welcome-screen',
+                        destination: 'lifi-website',
+                        url: 'https://li.fi',
+                        pageload: true,
+                        disableTrackingTool: [
+                          EventTrackingTool.ARCx,
+                          EventTrackingTool.Raleon,
+                        ],
+                      });
+                    }}
                     target={'_blank'}
                     rel="noreferrer"
                   />,

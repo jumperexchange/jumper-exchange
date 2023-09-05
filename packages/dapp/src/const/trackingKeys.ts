@@ -16,6 +16,10 @@ export enum TrackingActions {
   OnRouteExecutionUpdated = 'onRouteExecutionUpdated',
   OnRouteHighValueLoss = 'onRouteHighValueLoss',
 
+  // Welcome-Screen
+  EnterWelcomeScreen = 'enter-welcome-screen',
+  OpenStatsModal = 'open-stats-modal',
+
   // Feature Card
   ClickLearnMore = 'click-learn-more',
   CloseFeatureCard = 'close-feature-card',
@@ -44,17 +48,19 @@ export enum TrackingCategories {
   Wallet = 'wallet',
   WalletMenu = 'wallet-menu',
   WalletSelectMenu = 'wallet-select-menu',
+  WelcomeScreen = 'welcome-screen',
   Widget = 'widget',
   WidgetEvent = 'widget-event',
 }
 
 export enum TrackingParameters {
+  AddedToken = 'added_token',
+  AddedChain = 'added_chain',
   Connected = 'connected',
   Theme = 'theme',
   DefaultTheme = 'default_system_theme',
-  AddedToken = 'added_token',
-  AddedChain = 'added_chain',
-  DefaultLanguage = 'default_system_language',
   Language = 'language',
+  DefaultLanguage = 'default_system_language',
+  StatsModal = 'stats_modal',
   Wallet = 'wallet',
 }
