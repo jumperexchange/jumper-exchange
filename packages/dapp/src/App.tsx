@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import ReactGA from 'react-ga4';
 import { AppProvider } from './AppProvider';
 import { FeatureCards } from './components';
 import { Navbar } from './components/Navbar';
@@ -17,23 +16,6 @@ export default function App() {
 
   return (
     <AppProvider>
-      <button
-        onClick={() => {
-          console.log('consent', 'default', {
-            ad_storage: 'granted',
-            analytics_storage: 'granted',
-          });
-          ReactGA.gtag('consent', 'default', {
-            ad_storage: 'granted',
-            analytics_storage: 'granted',
-            functionality_storage: 'granted',
-            personalization_storage: 'granted',
-            security_storage: 'granted',
-          });
-        }}
-      >
-        GRANT CONSENT
-      </button>
       <Navbar />
       <Menus />
       <Widgets />

@@ -131,13 +131,6 @@ export function useUserTracking() {
           hotjar.event(`${category}-${action}${label ?? '-' + label}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        console.log('GA-output', {
-          category: category,
-          action: action,
-          label, // optional
-          ...data,
-        });
-
         ReactGA.event(action, {
           category: category,
           label,

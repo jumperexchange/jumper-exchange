@@ -1,7 +1,6 @@
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import BrightnessAutoOutlinedIcon from '@mui/icons-material/BrightnessAutoOutlined';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import ReactGA from 'react-ga4';
 
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
@@ -31,8 +30,6 @@ export const useThemeContent = () => {
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     onChangeMode(mode);
-    console.log(ReactGA);
-
     trackAttribute({
       data: {
         [TrackingUserProperties.Theme]:

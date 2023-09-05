@@ -22,7 +22,6 @@ const setLanguage = () => {
   if (!!localStorage.getItem(localStorageKey.languageMode)) {
     return localStorage.getItem(localStorageKey.languageMode);
   } else {
-    console.log('no language has been set');
     return '';
   }
 };
