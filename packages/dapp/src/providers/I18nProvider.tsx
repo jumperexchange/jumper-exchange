@@ -12,9 +12,7 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
   const resources = {
     en: {
-      translation: {
-        ...en,
-      },
+      translation: en,
     },
   };
 

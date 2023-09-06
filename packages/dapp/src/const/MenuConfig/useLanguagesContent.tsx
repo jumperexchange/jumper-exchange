@@ -24,8 +24,6 @@ export const useLanguagesContent = () => {
     });
   };
 
-  console.log({ data: i18n.store.data });
-
   const languages = Object.entries(supportedLanguages)
     .sort()
     .map(([language, languageValue]) => ({
