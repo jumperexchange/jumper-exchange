@@ -51,7 +51,7 @@ const NavbarManagement = () => {
     trackEvent({
       category: TrackingCategories.Menu,
       action: TrackingActions.OpenSubmenu,
-      label: `open-main-menu`,
+      label: `open_main_menu`,
       disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
     });
   };

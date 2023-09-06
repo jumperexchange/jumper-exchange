@@ -19,7 +19,7 @@ export const useShowcasesContent = () => {
         openInNewTab(ukraineUrl);
         trackPageload({
           source: 'menu',
-          destination: 'showcase-ukraine',
+          destination: 'showcase_ukraine',
           url: ukraineUrl,
           pageload: true,
           disableTrackingTool: [
@@ -38,7 +38,7 @@ export const useShowcasesContent = () => {
         openInNewTab(klimaStakingUrl);
         trackPageload({
           source: 'menu',
-          destination: 'showcase-klima',
+          destination: 'showcase_klima',
           url: klimaStakingUrl,
           pageload: true,
           disableTrackingTool: [
@@ -56,7 +56,7 @@ export const useShowcasesContent = () => {
         openInNewTab(carbonUrl);
         trackPageload({
           source: 'menu',
-          destination: 'showcase-carbon',
+          destination: 'showcase_carbon',
           url: carbonUrl,
           pageload: true,
           disableTrackingTool: [

@@ -79,7 +79,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.ConnectWallet,
-            label: 'click-connect-wallet',
+            label: 'click_connect_wallet',
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,
@@ -100,7 +100,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.Disconnect,
-            label: 'disconnect-wallet',
+            label: 'disconnect_wallet',
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,
@@ -138,7 +138,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.AddToken,
-            label: `add-token-${token.name}`,
+            label: `add_token_${token.name}`,
             data: {
               [TrackingEventParameters.TokenAdded]: `${token.name}`,
               [TrackingEventParameters.TokenAddedChainId]: chainId,
@@ -159,7 +159,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.AddChain,
-            label: `add-chain-${chainId}`,
+            label: `add_chain_${chainId}`,
             data: {
               [TrackingEventParameters.ChainIdAdded]: `${chainId}`,
             },

@@ -105,7 +105,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     trackEvent({
       category: TrackingCategories.WalletMenu,
       action: TrackingActions.CopyAddressToClipboard,
-      label: 'copyAddressToClipboard',
+      label: 'copy_addr_to_clipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     onCloseAllNavbarMenus();

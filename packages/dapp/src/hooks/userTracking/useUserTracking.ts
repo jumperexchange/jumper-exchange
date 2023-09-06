@@ -235,8 +235,6 @@ export function useUserTracking() {
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         ReactGA.gtag('event', action, {
           category: category,
-          chain,
-          txhash,
           ...data,
         });
       }

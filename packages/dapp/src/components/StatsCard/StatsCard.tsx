@@ -114,8 +114,8 @@ export const StatsCards = ({
         trackEvent({
           category: TrackingCategories.WelcomeScreen,
           action: TrackingActions.OpenStatsModal,
-          label: 'chains-stats',
-          data: { [TrackingEventParameters.StatsModal]: 'chains-stats' },
+          label: 'chains_stats',
+          data: { [TrackingEventParameters.StatsModal]: 'chains_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
@@ -134,8 +134,8 @@ export const StatsCards = ({
         trackEvent({
           category: TrackingCategories.WelcomeScreen,
           action: TrackingActions.OpenStatsModal,
-          label: 'bridges-stats',
-          data: { [TrackingEventParameters.StatsModal]: 'bridges-stats' },
+          label: 'bridges_stats',
+          data: { [TrackingEventParameters.StatsModal]: 'bridges_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
@@ -154,8 +154,8 @@ export const StatsCards = ({
         trackEvent({
           category: TrackingCategories.WelcomeScreen,
           action: TrackingActions.OpenStatsModal,
-          label: 'dexes-stats',
-          data: { [TrackingEventParameters.StatsModal]: 'dexes-stats' },
+          label: 'dexes_stats',
+          data: { [TrackingEventParameters.StatsModal]: 'dexes_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,

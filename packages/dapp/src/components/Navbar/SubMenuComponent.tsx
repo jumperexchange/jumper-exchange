@@ -122,7 +122,7 @@ const SubMenuComponent = ({
                   trackEvent({
                     category: TrackingCategories.SubMenu,
                     action: TrackingActions.OpenSubmenu,
-                    label: `open-sub-menu-${el.triggerSubMenu.toLowerCase()}`,
+                    label: `open_sub_menu_${el.triggerSubMenu.toLowerCase()}`,
                     data: {
                       [TrackingEventParameters.SubMenu]: el.triggerSubMenu,
                       [TrackingEventParameters.PrevMenu]: prevMenu,

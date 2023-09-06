@@ -102,7 +102,7 @@ export function Widgets() {
       trackEvent({
         category: TrackingCategories.WelcomeScreen,
         action: TrackingActions.EnterWelcomeScreen,
-        label: 'enter-welcome-screen',
+        label: 'enter_welcome_screen',
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     }

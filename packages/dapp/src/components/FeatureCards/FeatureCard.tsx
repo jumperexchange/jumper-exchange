@@ -83,7 +83,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               trackEvent({
                 category: TrackingCategories.FeatureCard,
                 action: TrackingActions.CloseFeatureCard,
-                label: `close-${data?.fields?.displayConditions?.id}`,
+                label: `close_${data?.fields?.displayConditions?.id}`,
                 data: {
                   [TrackingEventParameters.FeatureCardTitle]:
                     data?.fields?.title,
@@ -143,7 +143,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
                 trackEvent({
                   category: TrackingCategories.FeatureCard,
                   action: TrackingActions.ClickLearnMore,
-                  label: 'click-learn-more',
+                  label: 'click_learn_more',
                   data: {
                     [TrackingEventParameters.FeatureCardTitle]:
                       data.fields.title,
