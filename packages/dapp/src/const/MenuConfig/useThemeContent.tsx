@@ -29,11 +29,10 @@ export const useThemeContent = () => {
   ]);
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
-    onChangeMode(mode);
     trackAttribute({
       data: {
         [TrackingUserProperties.Theme]:
-          mode === 'auto' ? (isDarkModeHook ? 'dark' : 'light') : mode,
+          mode === 'auto' ? (isDarkModeHook ? 'light' : 'dark') : mode,
       },
     });
     trackEvent({
@@ -41,10 +40,11 @@ export const useThemeContent = () => {
       action: TrackingActions.SwitchTheme,
       label: `theme_${mode}`,
       data: {
-        [TrackingEventParameters.Theme]: mode,
+        [TrackingEventParameters.SwitchedTheme]: mode,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
+    onChangeMode(mode);
   };
 
   return [

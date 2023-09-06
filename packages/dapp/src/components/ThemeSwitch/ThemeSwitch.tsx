@@ -38,7 +38,7 @@ export const ThemeSwitch = () => {
       action: TrackingActions.SwitchTheme,
       label: `theme_${changeMode}`,
       data: {
-        [TrackingEventParameters.Theme]: changeMode,
+        [TrackingEventParameters.SwitchedTheme]: changeMode,
       },
     });
     onChangeMode(changeMode);

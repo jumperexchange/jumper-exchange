@@ -5,6 +5,7 @@ import { EventTrackingTool, LanguageKey } from '../../types';
 import {
   TrackingActions,
   TrackingCategories,
+  TrackingEventParameters,
   TrackingUserProperties,
 } from '../trackingKeys';
 
@@ -26,8 +27,8 @@ export const useLanguagesContent = () => {
     trackEvent({
       category: TrackingCategories.LanguageMenu,
       action: TrackingActions.SwitchLanguage,
-      label: `language-${newLanguage}`,
-      data: { 'switched-language': newLanguage },
+      label: `language_${newLanguage}`,
+      data: { [TrackingEventParameters.SwitchedLanguage]: newLanguage },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };

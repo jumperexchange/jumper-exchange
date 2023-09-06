@@ -16,14 +16,20 @@ import {
   TrackingEventParameters,
   TrackingUserProperties,
 } from '../../const';
+import { TabsMap } from '../../const/tabsMap';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore, useMultisigStore } from '../../stores';
+import {
+  useActiveTabStore,
+  useMenuStore,
+  useMultisigStore,
+} from '../../stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
+  const { activeTab } = useActiveTabStore();
   const { trackEvent, trackAttribute, trackTransaction } = useUserTracking();
   const [onOpenSupportModal] = useMenuStore((state) => [
     state.onOpenSupportModal,
@@ -48,16 +54,20 @@ export function WidgetEvents() {
         trackEvent({
           category: TrackingCategories.WidgetEvent,
           action: TrackingActions.OnRouteExecutionStarted,
-          label: 'execution-start',
+          label: 'execution_start',
           data: {
             [TrackingEventParameters.RouteId]: route.id,
-            [TrackingEventParameters.Steps]: route.steps,
             [TrackingEventParameters.FromToken]: route.fromToken,
-            [TrackingEventParameters.FromChainId]: route.fromChainId,
             [TrackingEventParameters.ToToken]: route.toToken,
+            [TrackingEventParameters.FromChainId]: route.fromChainId,
             [TrackingEventParameters.ToChainId]: route.toChainId,
             [TrackingEventParameters.FromAmount]: route.fromAmount,
             [TrackingEventParameters.ToAmount]: route.toAmount,
+            [TrackingEventParameters.FromAmountUSD]: route.fromAmountUSD,
+            [TrackingEventParameters.ToAmountUSD]: route.toAmountUSD,
+            [TrackingEventParameters.Variant]: Object.values(TabsMap).filter(
+              (el) => el.index === activeTab,
+            )[0].variant,
           },
         });
       }
@@ -82,11 +92,30 @@ export function WidgetEvents() {
             category: TrackingCategories.WidgetEvent,
             action: TrackingActions.OnRouteExecutionUpdated,
             data: {
-              label: 'execution-update',
-              routeId: `${update.route.id}`,
-              transactionLink: update.process.txLink,
-              steps: update.route.steps,
-              status: update.process.status,
+              label: 'execution_update',
+              [TrackingEventParameters.FromAmountUSD]:
+                update.route.fromAmountUSD,
+              [TrackingEventParameters.ToAmountUSD]: update.route.toAmountUSD,
+              [TrackingEventParameters.FromAmount]: update.route.fromAmount,
+              [TrackingEventParameters.ToAmount]: update.route.toAmount,
+              [TrackingEventParameters.FromToken]: update.route.fromToken,
+              [TrackingEventParameters.ToToken]: update.route.toToken,
+              [TrackingEventParameters.FromChainId]: update.route.fromChainId,
+              [TrackingEventParameters.ToChainId]: update.route.toChainId,
+              [TrackingEventParameters.RouteId]: `${update.route.id}`,
+              [TrackingEventParameters.Status]: update.process.status,
+              [TrackingEventParameters.TxHash]: update.process.txHash || '',
+              [TrackingEventParameters.TxLink]: update.process.txLink || '',
+              [TrackingEventParameters.Type]: update.process.type,
+              [TrackingEventParameters.GasCostUSD]: update.route.gasCostUSD,
+              [TrackingEventParameters.ErrorCode]:
+                update.process.error?.code || '',
+              [TrackingEventParameters.ErrorMessage]:
+                update.process.error?.message || '',
+              [TrackingEventParameters.InsuranceFeeAmountUSD]:
+                update.route.insurance.feeAmountUsd,
+              [TrackingEventParameters.InsuranceState]:
+                update.route.insurance?.state,
               nonInteraction: true,
             },
           });
@@ -103,10 +132,9 @@ export function WidgetEvents() {
         trackEvent({
           category: TrackingCategories.WidgetEvent,
           action: TrackingActions.OnRouteExecutionCompleted,
-          label: 'execution-success',
+          label: 'execution_success',
           data: {
             [TrackingEventParameters.RouteId]: route.id,
-            [TrackingEventParameters.Steps]: route.steps,
             [TrackingEventParameters.FromChainId]: route.fromChainId,
             [TrackingEventParameters.FromAmountUSD]: route.fromAmountUSD,
             [TrackingEventParameters.FromAmount]: route.fromAmount,
@@ -130,14 +158,15 @@ export function WidgetEvents() {
       trackEvent({
         category: TrackingCategories.WidgetEvent,
         action: TrackingActions.OnRouteExecutionFailed,
-        label: 'execution-error',
+        label: 'execution_error',
         data: {
           [TrackingEventParameters.RouteId]: update.route.id,
           [TrackingEventParameters.TxHash]: update.process.txHash,
           [TrackingEventParameters.Status]: update.process.status,
-          [TrackingEventParameters.Message]: update.process.message,
-          [TrackingEventParameters.Error]: update.process.error,
-          [TrackingEventParameters.Steps]: update.route.steps,
+          [TrackingEventParameters.Message]: update.process.message || '',
+          [TrackingEventParameters.ErrorMessage]:
+            update.process.error?.message || '',
+          [TrackingEventParameters.ErrorCode]: update.process.error?.code || '',
         },
       });
     };
@@ -151,9 +180,12 @@ export function WidgetEvents() {
       trackEvent({
         action: TrackingActions.OnRouteHighValueLoss,
         category: TrackingCategories.WidgetEvent,
-        label: 'click-highValueLossAccepted',
+        label: 'click_high_value_loss_accepted',
         data: {
-          ...update,
+          [TrackingEventParameters.FromAmountUSD]: update.fromAmountUsd,
+          [TrackingEventParameters.ToAmountUSD]: update.toAmountUSD,
+          [TrackingEventParameters.GasCostUSD]: update.gasCostUSD,
+          [TrackingEventParameters.ValueLoss]: update.valueLoss,
           [TrackingEventParameters.Timestamp]: Date.now(),
         },
       });
@@ -185,9 +217,11 @@ export function WidgetEvents() {
 
     return () => widgetEvents.all.clear();
   }, [
+    activeTab,
     onDestinationChainSelected,
     onOpenSupportModal,
     shouldOpenMultisigSignatureModal,
+    trackAttribute,
     trackEvent,
     trackTransaction,
     widgetEvents,
