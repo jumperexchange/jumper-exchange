@@ -5,7 +5,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { KeyboardEvent } from 'react';
-import { shallow } from 'zustand/shallow';
 import { MenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import { MenuListItem } from '../../types';
@@ -41,10 +40,10 @@ const SubMenuComponent = ({
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore(
-    (state) => [state.openNavbarSubMenu, state.onOpenNavbarSubMenu],
-    shallow,
-  );
+  const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore((state) => [
+    state.openNavbarSubMenu,
+    state.onOpenNavbarSubMenu,
+  ]);
 
   function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Backspace') {
@@ -61,15 +60,13 @@ const SubMenuComponent = ({
     >
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
-          <>
-            <ButtonBackArrow
-              style={{ marginLeft: '0px' }}
-              onClick={() => {
-                onOpenNavbarSubMenu(prevMenu);
-              }}
-            />
-            <MenuHeaderLabel>{label}</MenuHeaderLabel>
-          </>
+          <ButtonBackArrow
+            style={{ marginLeft: '0px' }}
+            onClick={() => {
+              onOpenNavbarSubMenu(prevMenu);
+            }}
+          />
+          <MenuHeaderLabel>{label}</MenuHeaderLabel>
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>
       {!!subMenuList.length ? (
@@ -79,7 +76,7 @@ const SubMenuComponent = ({
               autoFocus={index > 0 ? true : false}
               onClick={() => {
                 !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
-                el.onClick?.();
+                el.onClick();
               }}
               component="li"
               key={`${el.label}-${index}`}
@@ -93,22 +90,20 @@ const SubMenuComponent = ({
                     : 'md'
                 }
               >
-                <>
-                  {el.prefixIcon}
-                  <Typography
-                    sx={{
-                      maxWidth: 'inherit',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}
-                    variant={'lifiBodyMedium'}
-                    ml={!!el.prefixIcon ? '12px' : 'inherit'}
-                    mr={!!el.suffixIcon ? '12px' : 'inherit'}
-                  >
-                    {el.label}
-                  </Typography>
-                  {el.suffixIcon}
-                </>
+                {el.prefixIcon}
+                <Typography
+                  sx={{
+                    maxWidth: 'inherit',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                  variant={'lifiBodyMedium'}
+                  ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                  mr={!!el.suffixIcon ? '12px' : 'inherit'}
+                >
+                  {`${el.label || ' '}`}
+                </Typography>
+                {el.suffixIcon}
               </MenuItemLabel>
             </MenuLinkItem>
           ) : (
@@ -116,7 +111,7 @@ const SubMenuComponent = ({
               autoFocus={index > 0 ? true : false}
               onClick={() => {
                 !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
-                el.onClick?.();
+                el.onClick();
               }}
               key={`${el.label}-${index}`}
             >
@@ -129,23 +124,21 @@ const SubMenuComponent = ({
                     : 'md'
                 }
               >
-                <>
-                  {el.prefixIcon}
-                  <Typography
-                    variant={'lifiBodyMedium'}
-                    ml={!!el.prefixIcon ? '12px' : 'inherit'}
-                    sx={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      maxWidth: 'inherit',
-                      [theme.breakpoints.up('sm' as Breakpoint)]: {
-                        maxWidth: el.prefixIcon ? '188px' : 'inherit',
-                      },
-                    }}
-                  >
-                    {el.label}
-                  </Typography>
-                </>
+                {el.prefixIcon}
+                <Typography
+                  variant={'lifiBodyMedium'}
+                  ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    maxWidth: 'inherit',
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      maxWidth: el.prefixIcon ? '188px' : 'inherit',
+                    },
+                  }}
+                >
+                  {`${el.label || ' '}`}
+                </Typography>
               </MenuItemLabel>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon && (

@@ -6,21 +6,19 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTool } from '../../types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useThemeContent = () => {
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const i18Path = 'navbar.';
 
-  const [themeMode, onChangeMode] = useSettingsStore(
-    (state) => [state.themeMode, state.onChangeMode],
-    shallow,
-  );
+  const [themeMode, onChangeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.onChangeMode,
+  ]);
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     onChangeMode(mode);
@@ -29,27 +27,27 @@ export const useThemeContent = () => {
       action: TrackingActions.SwitchThemeMode,
       label: `theme-${mode}`,
       data: { theme: `theme-${mode}` },
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 
   return [
     {
-      label: `${translate(`${i18Path}themes.light`)}`,
+      label: t('navbar.themes.light'),
       prefixIcon:
         themeMode === 'light' ? <LightModeIcon /> : <LightModeOutlinedIcon />,
       checkIcon: themeMode === 'light',
       onClick: () => handleSwitchMode('light'),
     },
     {
-      label: `${translate(`${i18Path}themes.dark`)}`,
+      label: t('navbar.themes.dark'),
       prefixIcon:
         themeMode === 'dark' ? <NightlightIcon /> : <NightlightOutlinedIcon />,
       checkIcon: themeMode === 'dark',
       onClick: () => handleSwitchMode('dark'),
     },
     {
-      label: `${translate(`${i18Path}themes.auto`)}`,
+      label: t('navbar.themes.auto'),
       prefixIcon:
         themeMode === 'auto' ? (
           <BrightnessAutoIcon />

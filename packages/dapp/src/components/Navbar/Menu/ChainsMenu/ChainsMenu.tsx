@@ -6,7 +6,6 @@ import { useChainsContent } from '@transferto/dapp/src/const';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
 import MenuItemComponent from '../../MenuItemComponent';
 import { NavbarMenu } from '../../index';
 
@@ -16,27 +15,20 @@ interface NavbarMenuProps {
 }
 
 export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
-  const i18Path = 'navbar.walletMenu.';
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const chains = useChainsContent();
   const theme = useTheme();
   const { account } = useWallet();
-  const [openNavbarChainsMenu, onOpenNavbarChainsMenu, onOpenNavbarSubMenu] =
-    useMenuStore(
-      (state) => [
-        state.openNavbarChainsMenu,
-        state.onOpenNavbarChainsMenu,
-        state.onOpenNavbarSubMenu,
-      ],
-      shallow,
-    );
+  const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
+    (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
+  );
 
-  return !!openNavbarChainsMenu ? (
+  return openNavbarChainsMenu ? (
     <NavbarMenu
       handleClose={handleClose}
-      label={translate(`${i18Path}chains`)}
+      label={t('navbar.walletMenu.chains')}
       transformOrigin={'top'}
-      open={true}
+      open
       setOpen={onOpenNavbarChainsMenu}
     >
       {chains.length ? (
@@ -44,13 +36,16 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
           <MenuItemComponent
             key={`${el.label}-${index}`}
             label={el.label}
-            showButton={el.showButton}
+            showButton={el.showButton ? el.showButton : false}
             showMoreIcon={false}
-            suffixIcon={el.chainId === account.chainId && <CheckIcon />}
+            suffixIcon={
+              el.chainId && el.chainId === account.chainId ? (
+                <CheckIcon />
+              ) : undefined
+            }
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
             open={openNavbarChainsMenu}
-            setOpenSubMenu={onOpenNavbarSubMenu}
           />
         ))
       ) : (

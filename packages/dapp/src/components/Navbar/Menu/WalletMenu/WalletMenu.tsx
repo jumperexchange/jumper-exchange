@@ -12,40 +12,37 @@ import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
-import { EventTrackingTools } from '@transferto/dapp/src/types';
+import { EventTrackingTool } from '@transferto/dapp/src/types';
 import { SpotButton } from '@transferto/shared/src/atoms';
-import { Wallet } from '@transferto/shared/src/types';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { shallow } from 'zustand/shallow';
+import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
 export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
-  const i18Path = 'navbar.walletMenu.';
+  const { checkMultisigEnvironment } = useMultisig();
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
-  const walletSource: Wallet[] = supportedWallets;
+  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+  const walletSource = supportedWallets;
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
     openNavbarSubMenu,
     onCloseAllNavbarMenus,
-  ] = useMenuStore(
-    (state) => [
-      state.openNavbarWalletMenu,
-      state.onOpenNavbarWalletMenu,
-      state.openNavbarSubMenu,
-      state.onCloseAllNavbarMenus,
-    ],
-    shallow,
-  );
+  ] = useMenuStore((state) => [
+    state.openNavbarWalletMenu,
+    state.onOpenNavbarWalletMenu,
+    state.openNavbarSubMenu,
+    state.onCloseAllNavbarMenus,
+  ]);
 
   const onWalletDisconnect = useSettingsStore(
     (state) => state.onWalletDisconnect,
@@ -56,7 +53,8 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       return usedWallet.icon;
     } else {
       const walletKey: any = Object.keys(walletSource).filter(
-        (el) => walletSource[el].name === localStorage.activeWalletName,
+        (el: string, index: number) =>
+          walletSource[index].name === localStorage.activeWalletName,
       );
       return walletSource[walletKey]?.icon || '';
     }
@@ -77,31 +75,34 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   };
 
   const handleExploreButton = () => {
-    openInNewTab(
-      `${getChainById(account.chainId).metamask.blockExplorerUrls[0]}address/${
-        account.address
-      }`,
-    );
+    account.chainId &&
+      openInNewTab(
+        `${
+          getChainById(account.chainId).metamask.blockExplorerUrls[0]
+        }address/${account.address}`,
+      );
     onCloseAllNavbarMenus();
     trackPageload({
-      source: 'connected-menu',
+      source: 'wallet-menu',
       destination: 'blokchain-explorer',
-      url: `${
-        getChainById(account.chainId).metamask.blockExplorerUrls[0]
-      }address/${account.address}`,
+      url: !!account.chainId
+        ? `${
+            getChainById(account.chainId).metamask.blockExplorerUrls[0]
+          }address/${account.address}`
+        : '',
       pageload: true,
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 
   const handleCopyButton = () => {
-    navigator?.clipboard?.writeText(account.address);
+    account.address && navigator.clipboard.writeText(account.address);
     setCopiedToClipboard(true);
     trackEvent({
       category: 'menu',
       action: 'copyAddressToClipboard',
       label: 'copyAddressToClipboard',
-      disableTrackingTool: [EventTrackingTools.arcx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     onCloseAllNavbarMenus();
   };
@@ -112,13 +113,25 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     onWalletDisconnect();
   };
 
+  const handleMultisigEnvironmentCheck = useCallback(async () => {
+    const response = await checkMultisigEnvironment();
+
+    setIsMultisigEnvironment(response);
+    // Check MultisigEnvironment only on first render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     openNavbarWalletMenu! && setCopiedToClipboard(false);
   }, [openNavbarWalletMenu]);
 
-  return !!openNavbarWalletMenu ? (
+  useEffect(() => {
+    handleMultisigEnvironmentCheck();
+  }, [account, handleMultisigEnvironmentCheck]);
+
+  return openNavbarWalletMenu ? (
     <NavbarMenu
-      open={true}
+      open
       transformOrigin={'top left'}
       setOpen={onOpenNavbarWalletMenu}
       handleClose={handleClose}
@@ -152,19 +165,21 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
             {_walletDigest}
           </Typography>
         </Grid>
-        <Grid item xs={4}>
-          <SpotButton name="Copy" onClick={handleCopyButton}>
-            <ContentCopyIcon />
-          </SpotButton>
-        </Grid>
-        <Grid item xs={4}>
+        {!isMultisigEnvironment && (
+          <Grid item xs={4}>
+            <SpotButton name="Copy" onClick={handleCopyButton}>
+              <ContentCopyIcon />
+            </SpotButton>
+          </Grid>
+        )}
+        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton name="Explore" onClick={handleExploreButton}>
             <LaunchIcon />
           </SpotButton>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
           <SpotButton
-            name={translate(`${i18Path}disconnect`)}
+            name={t('navbar.walletMenu.disconnect')}
             variant={'primary'}
             onClick={handleDisconnectButton}
           >
@@ -179,10 +194,10 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       autoHideDuration={2000}
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      sx={{ top: '78px !important' }}
+      sx={{ top: '80px !important' }}
     >
       <MuiAlert elevation={6} variant="filled" severity="success">
-        {translate(`${i18Path}copiedMsg`)}
+        {t('navbar.walletMenu.copiedMsg')}
       </MuiAlert>
     </Snackbar>
   );

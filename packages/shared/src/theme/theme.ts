@@ -2,7 +2,6 @@ import type { Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 import type React from 'react';
-import { resetStyle } from '../style';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -70,13 +69,13 @@ declare module '@mui/material/styles' {
     alphaLight800?: PaletteOptions['primary'];
   }
   interface TypographyVariants {
-    lifiBrandBodyMedium: React.CSSProperties;
-    lifiBrandBodyLarge: React.CSSProperties;
-    lifiBrandBodyXLarge: React.CSSProperties;
-    lifiBrandBodySmall: React.CSSProperties;
-    lifiBrandHeaderMedium: React.CSSProperties;
-    lifiBrandHeaderLarge: React.CSSProperties;
-    lifiBrandHeaderXLarge: React.CSSProperties;
+    // lifiBrandBodyMedium: React.CSSProperties;
+    // lifiBrandBodyLarge: React.CSSProperties;
+    // lifiBrandBodyXLarge: React.CSSProperties;
+    // lifiBrandBodySmall: React.CSSProperties;
+    // lifiBrandHeaderMedium: React.CSSProperties;
+    // lifiBrandHeaderLarge: React.CSSProperties;
+    // lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay: React.CSSProperties;
     lifiHeaderXLarge: React.CSSProperties;
     lifiHeaderLarge: React.CSSProperties;
@@ -102,13 +101,13 @@ declare module '@mui/material/styles' {
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
-    lifiBrandBodyMedium: React.CSSProperties;
-    lifiBrandBodyLarge: React.CSSProperties;
-    lifiBrandBodyXLarge: React.CSSProperties;
-    lifiBrandBodySmall: React.CSSProperties;
-    lifiBrandHeaderMedium: React.CSSProperties;
-    lifiBrandHeaderLarge: React.CSSProperties;
-    lifiBrandHeaderXLarge: React.CSSProperties;
+    // lifiBrandBodyMedium: React.CSSProperties;
+    // lifiBrandBodyLarge: React.CSSProperties;
+    // lifiBrandBodyXLarge: React.CSSProperties;
+    // lifiBrandBodySmall: React.CSSProperties;
+    // lifiBrandHeaderMedium: React.CSSProperties;
+    // lifiBrandHeaderLarge: React.CSSProperties;
+    // lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay?: React.CSSProperties;
     lifiHeaderXLarge?: React.CSSProperties;
     lifiHeaderLarge?: React.CSSProperties;
@@ -168,13 +167,15 @@ declare module '@mui/material/Button' {
 }
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
-    lifiBrandBodyMedium: true;
-    lifiBrandBodyLarge: true;
-    lifiBrandBodyXLarge: true;
-    lifiBrandBodySmall: true;
-    lifiBrandHeaderMedium: true;
-    lifiBrandHeaderLarge: true;
-    lifiBrandHeaderXLarge: true;
+    '@supports (font-variation-settings: normal)': true;
+
+    // lifiBrandBodyMedium: true;
+    // lifiBrandBodyLarge: true;
+    // lifiBrandBodyXLarge: true;
+    // lifiBrandBodySmall: true;
+    // lifiBrandHeaderMedium: true;
+    // lifiBrandHeaderLarge: true;
+    // lifiBrandHeaderXLarge: true;
     lifiHeaderDisplay: true;
     lifiHeaderXLarge: true;
     lifiHeaderLarge: true;
@@ -201,19 +202,32 @@ declare module '@mui/material/Typography' {
 
 const themeBase: Theme = createTheme({
   components: {
-    MuiCssBaseline: {
-      styleOverrides: `${resetStyle}`,
+    MuiScopedCssBaseline: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Inter, sans-serif',
+          '@supports (font-variation-settings: normal)': {
+            fontFamily: 'Inter var, sans-serif',
+          },
+        },
+      },
     },
+    MuiCssBaseline: {
+      styleOverrides: {
+        '@supports': { 'font-variation-settings': 'normal' },
+      },
+    },
+
     MuiTypography: {
       defaultProps: {
         variantMapping: {
-          lifiBrandBodyMedium: 'p',
-          lifiBrandBodyLarge: 'p',
-          lifiBrandBodyXLarge: 'p',
-          lifiBrandBodySmall: 'p',
-          lifiBrandHeaderMedium: 'p',
-          lifiBrandHeaderLarge: 'p',
-          lifiBrandHeaderXLarge: 'p',
+          // lifiBrandBodyMedium: 'p',
+          // lifiBrandBodyLarge: 'p',
+          // lifiBrandBodyXLarge: 'p',
+          // lifiBrandBodySmall: 'p',
+          // lifiBrandHeaderMedium: 'p',
+          // lifiBrandHeaderLarge: 'p',
+          // lifiBrandHeaderXLarge: 'p',
           lifiHeaderDisplay: 'p',
           lifiHeaderXLarge: 'p',
           lifiHeaderLarge: 'p',
@@ -337,87 +351,87 @@ const themeBase: Theme = createTheme({
 const themeTypographyPreset: Theme = createTheme({
   ...themeBase,
   typography: {
-    fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
-    lifiBrandBodySmall: {
-      fontFamily: 'GT-America',
-      fontSize: '14px',
-      fontWeight: 400,
-      lineHeight: '20px',
-      letterSpacing: 0,
-      textAlign: 'center',
-      // example to make it responsive:
-      // [themeBase.breakpoints.up('sm')]: {
-      //   fontSize: 120,
-      //   lineHeight: '140px',
-      //   fontWeight: 700,
-      //   letterSpacing: -1,
-      // },
-    },
-    lifiBrandBodyXLarge: {
-      fontFamily: 'GT-America',
-      fontSize: '24px',
-      fontWeight: 400,
-      lineHeight: '32px',
-      letterSpacing: 0,
-      textAlign: 'center',
-      // example to make it responsive:
-      // [themeBase.breakpoints.up('sm')]: {
-      //   fontSize: 120,
-      //   lineHeight: '140px',
-      //   fontWeight: 700,
-      //   letterSpacing: -1,
-      // },
-    },
-    lifiBrandBodyLarge: {
-      fontFamily: 'GT-America',
-      fontSize: '18px',
-      fontWeight: 400,
-      lineHeight: '24px',
-      letterSpacing: 0,
-      textAlign: 'center',
-    },
-    lifiBrandBodyMedium: {
-      fontFamily: 'GT-America',
-      fontSize: '16px',
-      fontWeight: 400,
-      lineHeight: '20px',
-      letterSpacing: 0,
-      textAlign: 'center',
-    },
-    lifiBrandHeaderMedium: {
-      fontFamily: 'GT-America',
-      fontSize: '32px',
-      fontWeight: 700,
-      lineHeight: '40px',
-      letterSpacing: 0,
-      textAlign: 'center',
-    },
+    fontFamily: ['Inter var', 'Inter', 'sans-serif'].join(','),
+    // lifiBrandBodySmall: {
+    //   fontFamily: 'GT-America',
+    //   fontSize: '14px',
+    //   fontWeight: 400,
+    //   lineHeight: '20px',
+    //   letterSpacing: 0,
+    //   textAlign: 'center',
+    //   // example to make it responsive:
+    //   // [themeBase.breakpoints.up('sm')]: {
+    //   //   fontSize: 120,
+    //   //   lineHeight: '140px',
+    //   //   fontWeight: 700,
+    //   //   letterSpacing: -1,
+    //   // },
+    // },
+    // lifiBrandBodyXLarge: {
+    //   fontFamily: 'GT-America',
+    //   fontSize: '24px',
+    //   fontWeight: 400,
+    //   lineHeight: '32px',
+    //   letterSpacing: 0,
+    //   textAlign: 'center',
+    //   // example to make it responsive:
+    //   // [themeBase.breakpoints.up('sm')]: {
+    //   //   fontSize: 120,
+    //   //   lineHeight: '140px',
+    //   //   fontWeight: 700,
+    //   //   letterSpacing: -1,
+    //   // },
+    // },
+    // lifiBrandBodyLarge: {
+    //   fontFamily: 'GT-America',
+    //   fontSize: '18px',
+    //   fontWeight: 400,
+    //   lineHeight: '24px',
+    //   letterSpacing: 0,
+    //   textAlign: 'center',
+    // },
+    // lifiBrandBodyMedium: {
+    //   fontFamily: 'GT-America',
+    //   fontSize: '16px',
+    //   fontWeight: 400,
+    //   lineHeight: '20px',
+    //   letterSpacing: 0,
+    //   textAlign: 'center',
+    // },
+    // lifiBrandHeaderMedium: {
+    //   fontFamily: 'GT-America',
+    //   fontSize: '32px',
+    //   fontWeight: 700,
+    //   lineHeight: '40px',
+    //   letterSpacing: 0,
+    //   textAlign: 'center',
+    // },
 
-    lifiBrandHeaderLarge: {
-      fontFamily: 'GT-America',
-      fontSize: '48px',
-      fontWeight: 700,
-      lineHeight: '56px',
-      letterSpacing: 0,
-      textAlign: 'center',
-    },
-    lifiBrandHeaderXLarge: {
-      fontFamily: 'GT-America',
-      fontSize: '48px',
-      fontWeight: 700,
-      lineHeight: '56px',
-      letterSpacing: 0,
-      textAlign: 'center',
-    },
+    // lifiBrandHeaderLarge: {
+    //   fontFamily: 'GT-America',
+    //   fontSize: '48px',
+    //   fontWeight: 700,
+    //   lineHeight: '56px',
+    //   letterSpacing: 0,
+    //   textAlign: 'center',
+    // },
+    // lifiBrandHeaderXLarge: {
+    //   fontFamily: 'GT-America',
+    //   fontSize: '48px',
+    //   fontWeight: 700,
+    //   lineHeight: '56px',
+    //   letterSpacing: 0,
+    //   textAlign: 'center',
+    // },
     lifiHeaderDisplay: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontSize: '96px',
       lineHeight: '128px',
       fontWeight: 700,
     },
     lifiHeaderXLarge: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '64px',
@@ -425,7 +439,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderLarge: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '48px',
@@ -433,7 +447,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderMedium: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '32px',
@@ -441,7 +455,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderSmall: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -449,7 +463,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiHeaderXSmall: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
@@ -457,7 +471,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXLargeStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 800,
       fontSize: '24px',
@@ -465,7 +479,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXLarge: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '24px',
@@ -473,7 +487,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyLargeStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '18px',
@@ -481,7 +495,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyLarge: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '18px',
@@ -489,7 +503,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyMediumStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '16px',
@@ -497,7 +511,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyMedium: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '16px',
@@ -505,7 +519,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodySmallStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '14px',
@@ -513,7 +527,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodySmall: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 400,
       fontSize: '14px',
@@ -521,7 +535,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXSmallStrong: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
       fontSize: '12px',
@@ -529,7 +543,7 @@ const themeTypographyPreset: Theme = createTheme({
       letterSpacing: 0,
     },
     lifiBodyXSmall: {
-      fontFamily: ['Inter', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['Inter var', 'Inter', 'Arial', 'sans-serif'].join(','),
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '12px',

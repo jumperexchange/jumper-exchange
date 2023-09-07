@@ -26,15 +26,15 @@ const NavbarMenu = ({
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
   return (
-    !!open &&
-    (!!isDesktop ? (
+    open &&
+    (isDesktop ? (
       <NavbarMenuDesktop
         handleClose={handleClose}
         label={label}
         transformOrigin={transformOrigin}
         open={open}
         setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu}
+        isOpenSubMenu={isOpenSubMenu || false}
       >
         {children}
       </NavbarMenuDesktop>
@@ -44,7 +44,7 @@ const NavbarMenu = ({
         label={label}
         open={open}
         setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu}
+        isOpenSubMenu={isOpenSubMenu || false}
       >
         {children}
       </NavbarMenuMobile>

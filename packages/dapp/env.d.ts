@@ -14,6 +14,12 @@ interface ImportMetaEnv {
   readonly VITE_CUSTOM_RPCS: string;
   readonly VITE_WIDGET_INTEGRATOR: string;
   readonly VITE_LIFI_API_URL: string;
+  readonly VITE_ONRAMPER_ENABLED: string;
+  readonly VITE_CONTENTFUL_API_URL: string;
+  readonly VITE_CONTENTFUL_PREVIEW_API_URL: string;
+  readonly VITE_CONTENTFUL_SPACE_ID: string;
+  readonly VITE_CONTENTFUL_ACCESS_TOKEN: string;
+  readonly VITE_CONTENTFUL_PREVIEW_TOKEN: string;
 }
 
 interface ImportMeta {

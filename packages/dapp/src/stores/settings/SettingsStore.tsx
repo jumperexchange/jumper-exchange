@@ -1,6 +1,6 @@
 import type { StateCreator } from 'zustand';
-import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { createWithEqualityFn } from 'zustand/traditional';
 
 // config
 import { defaultLang, defaultSettings } from '@transferto/shared/src';
@@ -12,22 +12,23 @@ import type {
   WalletConnected,
 } from '@transferto/shared/src/types/settings';
 import i18next from 'i18next';
+import { shallow } from 'zustand/shallow';
 import { LanguageKey } from '../../types';
 
 // ----------------------------------------------------------------------
 
 /*--  Use Zustand  --*/
 
-export const useSettingsStore = create(
+export const useSettingsStore = createWithEqualityFn(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...defaultSettings,
-      setValue: (key, value) =>
+      setValue: (key: keyof SettingsProps, value: any) =>
         set(() => ({
           [key]: value,
         })),
-      setValues: (values) =>
-        set((state) => {
+      setValues: (values: { [x: string]: any }) =>
+        set((state: SettingsProps) => {
           const updatedState: SettingsProps = { ...state };
           for (const key in values) {
             if (Object.hasOwn(state, key)) {
@@ -36,13 +37,6 @@ export const useSettingsStore = create(
           }
           return updatedState;
         }),
-
-      // Tabs
-      onChangeTab: (tab: number) => {
-        set({
-          activeTab: tab || 0,
-        });
-      },
 
       // Wallet
       onWalletConnect: (activeWalletName: WalletConnected) => {
@@ -71,6 +65,17 @@ export const useSettingsStore = create(
         });
       },
 
+      // Disable Feature Card
+      onDisableFeatureCard: (id: string) => {
+        const disabledFeatureCards = (get() as SettingsProps)
+          ?.disabledFeatureCards;
+        id &&
+          !disabledFeatureCards.includes(id) &&
+          set({
+            disabledFeatureCards: [...disabledFeatureCards, id],
+          });
+      },
+
       // Welcome Screen
       onWelcomeScreenEntered: (shown: boolean) => {
         set({
@@ -88,13 +93,25 @@ export const useSettingsStore = create(
             defaultSettings.languageMode ||
             (i18next.language as LanguageKey) ||
             defaultLang,
-          activeTab: defaultSettings.activeTab || 0,
+          disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
         });
       },
     }),
     {
       name: 'jumper-store', // name of the item in the storage (must be unique)
+      version: 1,
+      migrate: (persistedState: any, version: number) => {
+        if (version === 0) {
+          const newStore = { ...persistedState };
+          Object.keys(persistedState)
+            .filter((el) => !(el in defaultSettings))
+            .forEach((el) => delete newStore[el]);
+          return newStore;
+        }
+        return persistedState;
+      },
       // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
     },
   ) as unknown as StateCreator<SettingsState, [], [], SettingsState>,
+  shallow,
 );

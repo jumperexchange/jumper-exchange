@@ -7,7 +7,7 @@ import {
   ListItem,
   ListItemProps,
   MenuItem as MUIMenuItem,
-  MenuItemProps,
+  MenuItemProps as MUIMenuItemProps,
   MenuList,
   MenuListProps,
   Paper,
@@ -25,6 +25,7 @@ import { ButtonSecondary } from '@transferto/shared/src/atoms/index';
 
 import { Breakpoint, alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
+import { ElementType } from 'react';
 
 const MenuLabelHeight = '64px';
 
@@ -36,6 +37,7 @@ export enum NavbarHeight {
 
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
   height: '48px',
+  cursor: 'pointer',
   alignItems: 'center',
   display: 'flex',
 }));
@@ -261,20 +263,20 @@ export const NavbarTab = styled(Tab, {
 
 export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
-export interface MUIMenuItemProps extends Omit<MenuItemProps, 'showButton'> {
+export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;
-  component?: string;
+  component?: ElementType<any>;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton',
-})<MUIMenuItemProps>(({ theme, showButton }) => ({
+  shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
+})<MenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
   padding: showButton ? theme.spacing(0, 3, 3) : theme.spacing(0, 3),
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
   margin: theme.spacing(0, 3),
-  marginTop: showButton && theme.spacing(2),
+  marginTop: showButton ? theme.spacing(2) : 0,
   borderRadius: '12px',
 
   '&:hover': {
@@ -288,10 +290,11 @@ export const MenuItem = styled(MUIMenuItem, {
   },
 }));
 
-export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
+export interface NavbarPaperProps
+  extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isDarkMode?: boolean;
   isWide?: boolean;
-  component?: string;
+  component?: ElementType<any>;
 }
 
 export const NavbarPaper = styled(Paper, {

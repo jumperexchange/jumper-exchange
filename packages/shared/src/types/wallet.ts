@@ -1,5 +1,5 @@
-import type { Token } from '@lifi/sdk';
-import type { Signer } from 'ethers';
+import type { Token } from '@lifi/types';
+import type { Signer } from '@ethersproject/abstract-signer';
 import type events from 'events';
 
 export interface WalletContextProps {
@@ -23,8 +23,8 @@ export interface Wallet extends events.EventEmitter {
   name: string;
   icon: string;
   isActivationInProgress: boolean;
-  account: WalletAccount | undefined;
-  installed: () => boolean;
+  account?: WalletAccount;
+  installed: () => Promise<boolean>;
   connect: () => Promise<void>;
   autoConnect?: () => Promise<void>;
   disconnect: () => void;

@@ -14,6 +14,12 @@ export const ButtonBackArrow: React.FC<ButtonBackArrowProps> = ({
 }) => {
   const theme = useTheme();
 
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <ButtonBackArrowWrapper
       size="medium"
@@ -25,9 +31,7 @@ export const ButtonBackArrow: React.FC<ButtonBackArrowProps> = ({
           backgroundColor: getContrastAlphaColor(theme, '4%'),
         },
       }}
-      onClick={() => {
-        onClick();
-      }}
+      onClick={handleClick}
     >
       <ArrowBackIcon />
     </ButtonBackArrowWrapper>

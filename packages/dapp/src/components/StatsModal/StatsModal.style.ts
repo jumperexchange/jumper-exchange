@@ -34,6 +34,9 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
     theme.palette.mode === 'dark'
       ? theme.palette.surface2.main
       : theme.palette.surface1.main,
+  '&:focus-visible': {
+    outline: 0,
+  },
 
   [theme.breakpoints.up('md' as Breakpoint)]: {
     margin: 0,
@@ -74,7 +77,7 @@ export const ModalHeaderAppBar = styled(AppBar)<ModalHeaderAppBarProps>(
         : alpha(theme.palette.surface1.main, 0.84),
     backdropFilter: 'blur(12px)',
     boxShadow: 'unset',
-    backgroundImage: theme.palette.mode === 'dark' && 'unset',
+    // backgroundImage: theme.palette.mode === 'dark' ? 'unset' : '',
   }),
 );
 

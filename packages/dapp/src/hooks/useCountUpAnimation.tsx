@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
 
-const easeOutQuad = (t) => t * (2 - t);
+const easeOutQuad = (t: number) => t * (2 - t);
 const frameDuration = 1000 / 60;
+
+interface UseCountUpAnimationProps {
+  children: string;
+  duration?: number;
+  delay?: number;
+}
 
 export const useCountUpAnimation = ({
   children,
   duration = 2000,
   delay = 300,
-}) => {
+}: UseCountUpAnimationProps) => {
   const countTo = parseInt(children, 10);
   const [count, setCount] = useState(0);
 

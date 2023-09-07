@@ -1,4 +1,5 @@
 import type * as languages from '../i18n';
+
 // i18n: start -->
 export type PartialResource<T> = T extends object
   ? {

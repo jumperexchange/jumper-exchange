@@ -1,0 +1,82 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Find the best route",
+      "subtitle": "<0>4x audited</0> multi-chain liquidity aggregator powered by <1>LI.FI</1>",
+      "cta": "Get started"
+    },
+    "links": {
+      "exchange": "Exchange",
+      "dashboard": "Dashboard",
+      "refuel": "Gas",
+      "buy": "Buy"
+    },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Bridges",
+      "chains": "Chains"
+    },
+    "connectWallet": "Connect Wallet",
+    "chooseWallet": "Choose Wallet",
+    "navbarMenu": {
+      "theme": "Theme",
+      "developers": "Developers",
+      "aboutLIFI": "About LI.FI",
+      "support": "Support"
+    },
+    "walletMenu": {
+      "disconnect": "Disconnect",
+      "chains": "Chains",
+      "switchChain": "Switch Chain",
+      "copy": "Copy",
+      "explore": "Explore",
+      "copiedMsg": "Wallet address copied"
+    },
+    "language": {
+      "key": "Language",
+      "value": "English"
+    },
+    "themes": {
+      "switchToLight": "Switch to Light Theme",
+      "switchToDark": "Switch to Dark Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "auto": "Auto"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Documentation",
+      "showcases": "Showcases"
+    },
+    "showcases": {
+      "ukraineDonation": "Support Ukraine 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Cross Chain Carbon Offset"
+    }
+  },
+  "alert": {
+    "info": "You’re using Testnet",
+    "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
+    "switchToMainnet": "Switch to Mainnet"
+  },
+  "featureCard": {
+    "learnMore": "Learn more"
+  },
+  "button": {
+    "okay": "Okay"
+  },
+  "multisig": {
+    "connected": {
+      "title": "Multisig wallet connected",
+      "description": "Please notify other wallet participants to be ready to sign."
+    },
+    "transactionInitiated": {
+      "title": "Multiple signatures required",
+      "description": "Please notify other multisig wallet participants to sign before the transaction expires."
+    },
+    "alert": {
+      "title": "Multisig wallet connected",
+      "description": "Destination wallet address is required to complete the exchange."
+    }
+  }
+}

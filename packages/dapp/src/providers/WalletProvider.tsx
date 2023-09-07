@@ -1,11 +1,12 @@
-import { Token } from '@lifi/sdk';
+import type { Signer } from '@ethersproject/abstract-signer';
+import { ChainId, Token } from '@lifi/sdk';
 import {
   LiFiWalletManagement,
   Wallet,
   readActiveWallets,
   supportedWallets,
 } from '@lifi/wallet-management';
-import { Signer } from 'ethers';
+
 import React, {
   PropsWithChildren,
   createContext,
@@ -20,6 +21,7 @@ import {
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
 import { useUserTracking } from '../hooks';
+import { useMultisig } from '../hooks/useMultisig';
 
 const liFiWalletManagement = new LiFiWalletManagement();
 
@@ -47,10 +49,27 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const [account, setAccount] = useState<WalletAccount>({});
   const [currentWallet, setCurrentWallet] = useState<Wallet | undefined>();
   const { trackConnectWallet } = useUserTracking();
+  const { checkMultisigEnvironment } = useMultisig();
+
+  const connectMultisigWallet = async () => {
+    const isMultisig = await checkMultisigEnvironment();
+
+    if (!isMultisig) {
+      return;
+    }
+
+    const multisigWallet = supportedWallets.find(
+      (wallet) => wallet.name === 'Safe',
+    );
+    if (multisigWallet) {
+      await liFiWalletManagement.connect(multisigWallet);
+    }
+  };
 
   // autoConnect
   useEffect(() => {
     const autoConnect = async () => {
+      await connectMultisigWallet();
       const persistedActiveWallets = readActiveWallets();
       const activeWallets = supportedWallets.filter((wallet) =>
         persistedActiveWallets.some(
@@ -65,6 +84,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       handleWalletUpdate(activeWallets[0]);
     };
     autoConnect();
+    // fixing: disconnect only works on 2nd attempt
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleWalletUpdate = async (wallet?: Wallet) => {
@@ -133,8 +154,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       account: account,
       disconnect: false,
       data: {
-        account: account.address,
-        chain: account.chainId,
+        account: account.address as string,
+        chain: account.chainId as ChainId,
       },
     });
   }, [
@@ -171,7 +192,9 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   );
 };
 
-const extractAccountFromSigner = async (signer?: Signer) => {
+const extractAccountFromSigner = async (
+  signer?: Signer,
+): Promise<WalletAccount> => {
   try {
     return {
       address: (await signer?.getAddress()) || undefined,

@@ -12,11 +12,10 @@ import { MenuKeys, TrackingActions, TrackingCategories } from '..';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
+import { EventTrackingTool } from '../../types';
 
 export const useMainMenuContent = () => {
-  const { t: translate, i18n } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t, i18n } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = useDetectDarkModePreference();
@@ -25,7 +24,7 @@ export const useMainMenuContent = () => {
 
   return [
     {
-      label: `${translate(`${i18Path}navbarMenu.theme`)}`,
+      label: t('navbar.navbarMenu.theme'),
       prefixIcon: isDarkMode ? (
         <NightlightOutlinedIcon />
       ) : (
@@ -35,7 +34,7 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Themes,
     },
     {
-      label: `${translate(`${i18Path}language.key`)}`,
+      label: t('navbar.language.key'),
       prefixIcon: <LanguageIcon />,
       checkIcon: themeMode === 'light',
       suffixIcon: (
@@ -54,12 +53,12 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Language,
     },
     {
-      label: `${translate(`${i18Path}navbarMenu.developers`)}`,
+      label: t('navbar.navbarMenu.developers'),
       prefixIcon: <DeveloperModeIcon />,
       triggerSubMenu: MenuKeys.Devs,
     },
     {
-      label: `Twitter`,
+      label: 'Twitter',
       prefixIcon: <TwitterIcon />,
       showMoreIcon: false,
       onClick: () => {
@@ -69,12 +68,15 @@ export const useMainMenuContent = () => {
           destination: 'twitter-JumperExchange',
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
       },
     },
     {
-      label: `Discord`,
+      label: 'Discord',
       prefixIcon: (
         <Discord
           color={
@@ -92,12 +94,15 @@ export const useMainMenuContent = () => {
           destination: 'discord-lifi',
           url: 'https://discord.gg/lifi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
       },
     },
     {
-      label: `${translate(`${i18Path}navbarMenu.aboutLIFI`)}`,
+      label: t('navbar.navbarMenu.aboutLIFI'),
       prefixIcon: (
         <LifiSmallLogo
           style={{ flexShrink: 0 }}
@@ -115,19 +120,25 @@ export const useMainMenuContent = () => {
           destination: 'lifi-website',
           url: 'https://li.fi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         openInNewTab('https://li.fi');
       },
     },
     {
-      label: `${translate(`${i18Path}navbarMenu.support`)}`,
+      label: t('navbar.navbarMenu.support'),
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.SupportModal,
+          category: TrackingCategories.Menu,
           action: TrackingActions.OpenSupportModal,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onOpenSupportModal(true);
       },

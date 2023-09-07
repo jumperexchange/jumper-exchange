@@ -7,11 +7,9 @@ import { useTranslation } from 'react-i18next';
 import { MenuKeys } from '..';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
-import { EventTrackingTools } from '../../types';
-
+import { EventTrackingTool } from '../../types';
 export const useDevelopersContent = () => {
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
+  const { t } = useTranslation();
   const { trackPageload } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
@@ -21,45 +19,53 @@ export const useDevelopersContent = () => {
 
   return [
     {
-      label: `${translate(`${i18Path}developers.github`)}`,
+      label: t('navbar.developers.github'),
       prefixIcon: (
         <GitHubIcon
           sx={{
-            color: !!isDarkMode
+            color: isDarkMode
               ? theme.palette.white.main
               : theme.palette.black.main,
           }}
         />
       ),
       onClick: () => {
-        openInNewTab('https://github.com/lifinance/');
+        const githubUrl = 'https://github.com/lifinance/';
+        openInNewTab(githubUrl);
         trackPageload({
           source: 'menu',
           destination: 'lifi-github',
-          url: 'https://github.com/lifinance/',
+          url: githubUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },
     },
     {
-      label: `${translate(`${i18Path}developers.documentation`)}`,
+      label: t('navbar.developers.documentation'),
       prefixIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
-        openInNewTab('https://docs.li.fi/');
+        const docsUrl = 'https://docs.li.fi/';
+        openInNewTab(docsUrl);
         trackPageload({
           source: 'menu',
           destination: 'lifi-docs',
-          url: 'https://docs.li.fi/',
+          url: docsUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTools.arcx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
         });
         onCloseAllNavbarMenus();
       },
     },
     {
-      label: `${translate(`${i18Path}developers.showcases`)}`,
+      label: t('navbar.developers.showcases'),
       prefixIcon: <SlideshowIcon />,
       showMoreIcon: true,
       triggerSubMenu: MenuKeys.Showcases,

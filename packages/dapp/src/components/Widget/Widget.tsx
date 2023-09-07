@@ -1,24 +1,50 @@
-import { Token } from '@lifi/sdk';
+import { ChainId, Token } from '@lifi/sdk';
 import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { MenuState } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';
-import { useUserTracking } from '../../hooks/';
+import { TabsMap } from '../../const/tabsMap';
+import { useUserTracking } from '../../hooks';
+import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
-import { EventTrackingTools, LanguageKey } from '../../types';
+import {
+  EventTrackingTool,
+  LanguageKey,
+  StarterVariantType,
+} from '../../types';
+import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 
-export function Widget({ starterVariant }) {
+const refuelAllowChains: ChainId[] = [
+  ChainId.ETH,
+  ChainId.POL,
+  ChainId.BSC,
+  ChainId.DAI,
+  ChainId.FTM,
+  ChainId.AVA,
+  ChainId.ARB,
+  ChainId.OPT,
+  ChainId.FUS,
+  ChainId.VEL,
+];
+
+interface WidgetProps {
+  starterVariant: StarterVariantType;
+}
+
+export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
   const onOpenNavbarWalletSelectMenu = useMenuStore(
-    (state) => state.onOpenNavbarWalletSelectMenu,
+    (state: MenuState) => state.onOpenNavbarWalletSelectMenu,
   );
+  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
@@ -31,28 +57,36 @@ export function Widget({ starterVariant }) {
       }
     }
 
+    const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
+
     return {
-      variant: starterVariant || 'expandable',
+      variant: starterVariant === 'refuel' ? 'default' : 'expandable',
+      subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletManagement: {
         signer: account.signer,
         connect: async () => {
           trackEvent({
             category: TrackingCategories.Menu,
-            action: TrackingActions.OpenWalletSelectMenu,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            action: TrackingActions.ConnectWallet,
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           onOpenNavbarWalletSelectMenu(
             true,
             document.getElementById('connect-wallet-button'),
           );
-
-          return account.signer;
+          return account.signer!;
         },
         disconnect: async () => {
           trackEvent({
             category: TrackingCategories.Wallet,
             action: TrackingActions.Disconnect,
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           disconnect();
         },
@@ -66,7 +100,10 @@ export function Widget({ starterVariant }) {
               data: {
                 switchChain: reqChainId,
               },
-              disableTrackingTool: [EventTrackingTools.arcx],
+              disableTrackingTool: [
+                EventTrackingTool.ARCx,
+                EventTrackingTool.Raleon,
+              ],
               // transport: "xhr", // optional, beacon/xhr/image
             });
             return account.signer!;
@@ -83,7 +120,10 @@ export function Widget({ starterVariant }) {
               tokenAdded: `${token.name}`,
               tokenAddChainId: chainId,
             },
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [
+              EventTrackingTool.ARCx,
+              EventTrackingTool.Raleon,
+            ],
           });
           await addToken(chainId, token);
         },
@@ -96,10 +136,14 @@ export function Widget({ starterVariant }) {
               chainIdAdded: `${chainId}`,
             },
             // transport: "xhr", // optional, beacon/xhr/image
-            disableTrackingTool: [EventTrackingTools.arcx],
+            disableTrackingTool: [EventTrackingTool.ARCx],
           });
           return addChain(chainId);
         },
+      },
+      chains: {
+        allow:
+          starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
       },
       containerStyle: {
         borderRadius: '12px',
@@ -111,7 +155,7 @@ export function Widget({ starterVariant }) {
         default: i18n.language as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
-      appearance: !!isDarkMode ? 'dark' : 'light',
+      appearance: isDarkMode ? 'dark' : 'light',
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
         shape: {
@@ -132,38 +176,44 @@ export function Widget({ starterVariant }) {
           },
         },
       },
-      localStorageKeyPrefix: `jumper-${starterVariant}`,
+      keyPrefix: `jumper-${starterVariant}`,
+      ...multisigWidget,
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
         rpcs,
         defaultRouteOptions: {
           maxPriceImpact: 0.4,
+          allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
+        multisigConfig: { ...(multisigSdkConfig ?? {}) },
       },
-      buildSwapUrl: true,
+      buildUrl: true,
       insurance: true,
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
+    getMultisigWidgetConfig,
+    starterVariant,
     account.signer,
-    addChain,
-    addToken,
-    disconnect,
+    isDarkMode,
     i18n.language,
     i18n.languages,
-    isDarkMode,
-    onOpenNavbarWalletSelectMenu,
-    starterVariant,
-    switchChain,
+    theme.palette.surface2.main,
+    theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
-    theme.palette.surface1.main,
-    theme.palette.surface2.main,
+    isMultisigSigner,
     trackEvent,
+    onOpenNavbarWalletSelectMenu,
+    disconnect,
+    switchChain,
+    addToken,
+    addChain,
   ]);
 
   return (
     <Box className="widget-wrapper">
+      {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={widgetConfig}
