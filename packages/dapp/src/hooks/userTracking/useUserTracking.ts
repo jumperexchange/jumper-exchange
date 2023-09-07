@@ -88,7 +88,6 @@ export function useUserTracking() {
               [TrackingUserProperties.Connected]: 'false',
             })
           : ReactGA.gtag('set', 'user_properties', {
-              [TrackingUserProperties.UserAddress]: account.address,
               [TrackingUserProperties.ChainId]: account.chainId,
               [TrackingUserProperties.Connected]: 'true',
               [TrackingUserProperties.HadConnected]: 'true',

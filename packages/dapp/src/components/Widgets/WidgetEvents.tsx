@@ -139,7 +139,6 @@ export function WidgetEvents() {
             [TrackingEventParameters.FromAmountUSD]: route.fromAmountUSD,
             [TrackingEventParameters.FromAmount]: route.fromAmount,
             [TrackingEventParameters.FromToken]: route.fromToken,
-            [TrackingEventParameters.FromAddress]: route.fromAddress,
             [TrackingEventParameters.ToChainId]: route.toChainId,
             [TrackingEventParameters.ToAmountUSD]: route.toAmountUSD,
             [TrackingEventParameters.ToAmount]: route.toAmount,
