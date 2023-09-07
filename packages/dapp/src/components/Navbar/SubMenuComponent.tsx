@@ -75,7 +75,7 @@ const SubMenuComponent = ({
             <MenuLinkItem
               autoFocus={index > 0 ? true : false}
               onClick={() => {
-                !!el.triggerSubMenu
+                el.triggerSubMenu
                   ? onOpenNavbarSubMenu(el.triggerSubMenu)
                   : el.onClick();
               }}
@@ -111,7 +111,7 @@ const SubMenuComponent = ({
             <MenuItem
               autoFocus={index > 0 ? true : false}
               onClick={() => {
-                !!el.triggerSubMenu
+                el.triggerSubMenu
                   ? onOpenNavbarSubMenu(el.triggerSubMenu)
                   : el.onClick();
               }}
