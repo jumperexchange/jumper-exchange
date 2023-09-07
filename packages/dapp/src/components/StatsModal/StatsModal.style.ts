@@ -77,8 +77,13 @@ export const ModalHeaderAppBar = styled(AppBar)<ModalHeaderAppBarProps>(
         : alpha(theme.palette.surface1.main, 0.84),
     backdropFilter: 'blur(12px)',
     boxShadow: 'unset',
-    '@supports not ( -moz-appearance:none )': {
-      backgroundImage: 'unset',
+    backgroundImage: 'unset',
+
+    '@supports ( -moz-appearance:none )': {
+      backgroundColor:
+        theme.palette.mode === 'dark'
+          ? theme.palette.surface2.main
+          : theme.palette.surface1.main,
     },
   }),
 );
