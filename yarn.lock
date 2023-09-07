@@ -1593,7 +1593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.22.10":
+"@babel/runtime@npm:^7.21.5, @babel/runtime@npm:^7.22.10":
   version: 7.22.15
   resolution: "@babel/runtime@npm:7.22.15"
   dependencies:
@@ -4695,6 +4695,8 @@ __metadata:
     husky: ^8.0.3
     i18next: ^23.4.9
     i18next-browser-languagedetector: ^7.1.0
+    i18next-http-backend: ^2.2.1
+    i18next-resources-to-backend: ^1.1.4
     lerna: ^7.2.0
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -7021,6 +7023,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cross-fetch@npm:3.1.6":
+  version: 3.1.6
+  resolution: "cross-fetch@npm:3.1.6"
+  dependencies:
+    node-fetch: ^2.6.11
+  checksum: 704b3519ab7de488328cc49a52cf1aa14132ec748382be5b9557b22398c33ffa7f8c2530e8a97ed8cb55da52b0a9740a9791d361271c4591910501682d981d9c
+  languageName: node
+  linkType: hard
+
 "cross-fetch@npm:^3.1.4, cross-fetch@npm:^3.1.5":
   version: 3.1.8
   resolution: "cross-fetch@npm:3.1.8"
@@ -9279,6 +9290,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next-http-backend@npm:^2.2.1":
+  version: 2.2.2
+  resolution: "i18next-http-backend@npm:2.2.2"
+  dependencies:
+    cross-fetch: 3.1.6
+  checksum: b098cf89e685bf8f2487a3cfd2e792d85218620b8311c91cc0782f2af03420e518c5d8e899cd9011af3472837362556d7468ff38c890aaf98d2721419a901434
+  languageName: node
+  linkType: hard
+
+"i18next-resources-to-backend@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "i18next-resources-to-backend@npm:1.1.4"
+  dependencies:
+    "@babel/runtime": ^7.21.5
+  checksum: 4f3f25de0d9c96b109dfdc9259864898ac9d140a80a372925e0c5a34b13bd95dcb4c682c6255a5f3bb4c4dc40c20d0f9d1b82c491ebe2f8f245ae149fe911a1d
+  languageName: node
+  linkType: hard
+
 "i18next@npm:^23.3.0":
   version: 23.4.4
   resolution: "i18next@npm:23.4.4"
@@ -11352,6 +11381,20 @@ __metadata:
     encoding:
       optional: true
   checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^2.6.11":
+  version: 2.7.0
+  resolution: "node-fetch@npm:2.7.0"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: d76d2f5edb451a3f05b15115ec89fc6be39de37c6089f1b6368df03b91e1633fd379a7e01b7ab05089a25034b2023d959b47e59759cb38d88341b2459e89d6e5
   languageName: node
   linkType: hard
 
