@@ -4424,7 +4424,7 @@ __metadata:
     ethers: ^5.7.2
     husky: ^8.0.3
     i18next: ^23.4.4
-    i18next-browser-languagedetector: ^7.0.2
+    i18next-browser-languagedetector: ^7.1.0
     i18next-http-backend: ^2.2.1
     i18next-resources-to-backend: ^1.1.4
     lerna: ^7.1.5
@@ -8937,7 +8937,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-browser-languagedetector@npm:^7.0.2, i18next-browser-languagedetector@npm:^7.1.0":
+"i18next-browser-languagedetector@npm:^7.1.0":
   version: 7.1.0
   resolution: "i18next-browser-languagedetector@npm:7.1.0"
   dependencies:
