@@ -1,35 +1,25 @@
 import { defaultLang } from '@transferto/shared/src/config';
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import resourcesToBackend from 'i18next-resources-to-backend';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { TrackingUserProperties } from '../const';
 import { useUserTracking } from '../hooks';
-import * as supportedLanguages from '../i18n';
+import en from '../i18n/en/translation.json';
 import { useSettingsStore } from '../stores/settings';
-import {
-  LanguageKey,
-  LanguageResources,
-  LanguageTranslationResources,
-} from '../types';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const languageMode = useSettingsStore((state) => state.languageMode);
   const { trackAttribute } = useUserTracking();
 
-  const i18n = useMemo(() => {
-    let resources = (Object.keys(supportedLanguages) as LanguageKey[]).reduce(
-      (resources, lng) => {
-        resources[lng] = {
-          translation:
-            (resources[lng] as LanguageResources[LanguageKey]) ||
-            supportedLanguages[lng],
-        };
-        return resources;
-      },
-      {} as LanguageTranslationResources,
-    );
+  const resources = {
+    en: {
+      translation: en,
+    },
+  };
 
+  const i18n = useMemo(() => {
     let i18n = i18next.createInstance({
       lng: languageMode,
       fallbackLng: defaultLang,
@@ -53,11 +43,22 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       i18n = i18n.use(LanguageDetector);
     }
 
-    i18n.use(initReactI18next).init({
-      resources,
-      fallbackLng: defaultLang,
-      react: { useSuspense: false },
-    });
+    i18n
+      .use(LanguageDetector)
+      .use(
+        resourcesToBackend((language: string, namespace: string) => {
+          return import(`../i18n/${language}/${namespace}.json`);
+        }),
+      )
+      .use(initReactI18next)
+      .init({
+        // required to be true for paritally loading languages from resources and backend
+        partialBundledLanguages: true,
+        resources,
+        fallbackLng: defaultLang,
+        react: { useSuspense: false },
+        ns: ['translation'],
+      });
 
     return i18n;
   }, [languageMode, trackAttribute]);
