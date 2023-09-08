@@ -1,4 +1,6 @@
 import type * as languages from '../i18n';
+import type language from '../i18n/en/language.json';
+import type translation from '../i18n/en/translation.json';
 
 // i18n: start -->
 export type PartialResource<T> = T extends object
@@ -11,14 +13,18 @@ export type LanguageKey = keyof typeof languages;
 
 export type LanguageResources =
   | {
-      [language in LanguageKey]?: PartialResource<typeof languages.en>;
+      [language in LanguageKey]?: PartialResource<typeof translation & typeof language>;
     }
   | {
-      [language: string]: PartialResource<typeof languages.en>;
+      [language: string]: PartialResource<typeof translation & typeof language>;
     };
 
 export type LanguageTranslationResource = {
-  [namespace in 'translation']: PartialResource<typeof languages.en>;
+  [namespace in 'translation']: PartialResource<typeof translation>;
+};
+
+export type LanguageResource = {
+  [namespace in 'language']: PartialResource<typeof language>;
 };
 
 export type LanguageTranslationResources = {
