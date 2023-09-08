@@ -1,10 +1,8 @@
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import SlideshowIcon from '@mui/icons-material/Slideshow';
 import { useTheme } from '@mui/material/styles';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { MenuKeys } from '..';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
