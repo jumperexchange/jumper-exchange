@@ -14,7 +14,7 @@
     "statsCards": {
       "dexs": "DEXs",
       "bridges": "Pontes",
-      "chains": "Redes"
+      "chains": "Cadeias"
     },
     "connectWallet": "Conectar Carteira",
     "chooseWallet": "Escolha uma Carteira",
@@ -31,10 +31,6 @@
       "copy": "Copiar",
       "explore": "Explorar",
       "copiedMsg": "Endereço da carteira copiado"
-    },
-    "language": {
-      "key": "Idioma",
-      "value": "Português"
     },
     "themes": {
       "switchToLight": "Mudar para o Modo Claro",

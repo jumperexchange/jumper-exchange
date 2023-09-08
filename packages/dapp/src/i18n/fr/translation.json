@@ -32,10 +32,6 @@
       "explore": "Explorer",
       "copiedMsg": "Adresse du portefeuille copiée"
     },
-    "language": {
-      "key": "Langue",
-      "value": "Français"
-    },
     "themes": {
       "switchToLight": "Basculer en mode clair",
       "switchToDark": "Basculer en mode sombre",
