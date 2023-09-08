@@ -64,11 +64,5 @@ export const useDevelopersContent = () => {
         onCloseAllNavbarMenus();
       },
     },
-    {
-      label: t('navbar.developers.showcases'),
-      prefixIcon: <SlideshowIcon />,
-      showMoreIcon: true,
-      triggerSubMenu: MenuKeys.Showcases,
-    },
   ];
 };
