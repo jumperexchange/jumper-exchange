@@ -32,10 +32,6 @@
       "explore": "Explorar",
       "copiedMsg": "Endereço da carteira copiado"
     },
-    "language": {
-      "key": "Idioma",
-      "value": "Inglês"
-    },
     "themes": {
       "switchToLight": "Mudar para o Modo Claro",
       "switchToDark": "Mudar para o Modo Escuro",
