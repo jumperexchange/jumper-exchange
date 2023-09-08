@@ -6,20 +6,31 @@ import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { TrackingUserProperties } from '../const';
 import { useUserTracking } from '../hooks';
-import en from '../i18n/en/translation.json';
+import * as supportedLanguages from '../i18n';
+import translation from '../i18n/en/translation.json';
 import { useSettingsStore } from '../stores/settings';
+import { LanguageKey, LanguageResources } from '../types';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const languageMode = useSettingsStore((state) => state.languageMode);
   const { trackAttribute } = useUserTracking();
 
-  const resources = {
-    en: {
-      translation: en,
-    },
-  };
-
   const i18n = useMemo(() => {
+    const resources: Record<string, any> = {
+      en: {
+        translation,
+      },
+    };
+
+    (
+      Object.keys(supportedLanguages as LanguageResources) as LanguageKey[]
+    ).forEach((language: LanguageKey) => {
+      resources[language] = {
+        ...resources[language],
+        language: (supportedLanguages as LanguageResources)[language],
+      };
+    });
+
     let i18n = i18next.createInstance({
       lng: languageMode,
       fallbackLng: defaultLang,
