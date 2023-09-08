@@ -44,16 +44,6 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       },
     });
 
-    if (!languageMode) {
-      trackAttribute({
-        data: {
-          [TrackingUserProperties.Language]: i18n.language,
-          [TrackingUserProperties.DefaultLanguage]: i18n.language,
-        },
-      });
-      i18n = i18n.use(LanguageDetector);
-    }
-
     i18n
       .use(LanguageDetector)
       .use(
@@ -72,7 +62,16 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       });
 
     return i18n;
-  }, [languageMode, trackAttribute]);
+  }, [languageMode]);
+
+  if (!languageMode && i18n?.resolvedLanguage) {
+    trackAttribute({
+      data: {
+        [TrackingUserProperties.Language]: i18n.language,
+        [TrackingUserProperties.DefaultLanguage]: i18n.language,
+      },
+    });
+  }
 
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 };
