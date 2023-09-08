@@ -1,22 +1,33 @@
 import { defaultLang } from '@transferto/shared/src/config';
 import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import resourcesToBackend from 'i18next-resources-to-backend';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import * as supportedLanguages from '../i18n';
+import translation from '../i18n/en/translation.json';
 import { useSettingsStore } from '../stores/settings';
-import resourcesToBackend from 'i18next-resources-to-backend';
-import en from '../i18n/en/translation.json';
+import { LanguageKey, LanguageResources } from '../types';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const languageMode = useSettingsStore((state) => state.languageMode);
 
-  const resources = {
-    en: {
-      translation: en,
-    },
-  };
-
   const i18n = useMemo(() => {
+    const resources: Record<string, any> = {
+      en: {
+        translation,
+      },
+    };
+
+    (
+      Object.keys(supportedLanguages as LanguageResources) as LanguageKey[]
+    ).forEach((language: LanguageKey) => {
+      resources[language] = {
+        ...resources[language],
+        language: (supportedLanguages as LanguageResources)[language],
+      };
+    });
+
     let i18n = i18next.createInstance({
       lng: languageMode,
       fallbackLng: defaultLang,
