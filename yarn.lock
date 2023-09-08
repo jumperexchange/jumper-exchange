@@ -4598,10 +4598,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.33.0":
-  version: 4.33.0
-  resolution: "@tanstack/query-core@npm:4.33.0"
-  checksum: fae325f1d79b936435787797c32367331d5b8e9c5ced84852bf2085115e3aafef57a7ae530a6b0af46da4abafb4b0afaef885926b71715a0e6f166d74da61c7f
+"@tanstack/query-core@npm:4.35.0":
+  version: 4.35.0
+  resolution: "@tanstack/query-core@npm:4.35.0"
+  checksum: 7a6f24164bce5d7367e2bb58f94380d9608bf4df2726e4e8b0e4f42e84d40cc7883baab2127c0c7e8eaa5c4d444a80c1e5f6e7930d21768a863c82baf22a75d4
   languageName: node
   linkType: hard
 
@@ -4624,11 +4624,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^4.33.0":
-  version: 4.33.0
-  resolution: "@tanstack/react-query@npm:4.33.0"
+"@tanstack/react-query@npm:^4.35.0":
+  version: 4.35.0
+  resolution: "@tanstack/react-query@npm:4.35.0"
   dependencies:
-    "@tanstack/query-core": 4.33.0
+    "@tanstack/query-core": 4.35.0
     use-sync-external-store: ^1.2.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -4639,7 +4639,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: b3cf4afa427435e464e077b3f23c891e38e5f78873518f15c1d061ad55f1464d6241ecd92d796a5dbc9412b4fd7eb30b01f2a9cfc285ee9f30dfdd2ca0ecaf4b
+  checksum: d3a140a010f0266eca9dae83c4995f2b541ceb8cafafd7247c5c17ec4e09416d2f2a88450f23ebab45c132125e4e4222e77a69354c0dd5d459170c7a24f1b172
   languageName: node
   linkType: hard
 
@@ -4685,7 +4685,7 @@ __metadata:
     "@sentry/browser": ^7.68.0
     "@sentry/integrations": ^7.68.0
     "@sentry/react": ^7.68.0
-    "@tanstack/react-query": ^4.33.0
+    "@tanstack/react-query": ^4.35.0
     "@transferto/shared": "*"
     "@types/react": ^18.2.21
     "@types/react-dom": ^18.2.7
@@ -4693,9 +4693,9 @@ __metadata:
     "@widgetbot/react-embed": ^1.9.0
     ethers: ^6.7.1
     husky: ^8.0.3
-    i18next: ^23.4.9
+    i18next: ^23.5.0
     i18next-browser-languagedetector: ^7.1.0
-    i18next-http-backend: ^2.2.1
+    i18next-http-backend: ^2.2.2
     i18next-resources-to-backend: ^1.1.4
     lerna: ^7.2.0
     react: ^18.2.0
@@ -4723,7 +4723,7 @@ __metadata:
     "@types/node": ^20.5.9
     "@types/react": ^18.2.21
     eslint-config-prettier: ^9.0.0
-    i18next: ^23.4.9
+    i18next: ^23.5.0
     prettier: ^3.0.3
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -9290,7 +9290,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-http-backend@npm:^2.2.1":
+"i18next-http-backend@npm:^2.2.2":
   version: 2.2.2
   resolution: "i18next-http-backend@npm:2.2.2"
   dependencies:
@@ -9317,12 +9317,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.4.9":
-  version: 23.4.9
-  resolution: "i18next@npm:23.4.9"
+"i18next@npm:^23.5.0":
+  version: 23.5.0
+  resolution: "i18next@npm:23.5.0"
   dependencies:
     "@babel/runtime": ^7.22.5
-  checksum: 46ac2415dc817c0e25e1c5e64332249825cd63b5fb9a5d42e3a2329d4ecd098c0f15a243f56b53e03db02e2e9931ca9bb4447370b2436f9ad6556de40ce981cf
+  checksum: 026ff157d551e9adda132f2dfeb7da16b0f1f53af424e3374536a118ea5445aca4a6b5e86fd8fe483054e4cf55043b8ecc524806d816f1a8cc7ab201693378e1
   languageName: node
   linkType: hard
 
