@@ -59,6 +59,9 @@
     "testnet": "Quaisquer transações ou ações realizadas no Testnet não se refletem no Mainnet.",
     "switchToMainnet": "Alternar para a rede principal"
   },
+  "featureCard": {
+    "learnMore": "Saiba mais"
+  },
   "button": {
     "okay": "Ok"
   },
