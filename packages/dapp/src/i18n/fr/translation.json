@@ -59,6 +59,9 @@
     "testnet": "Toute transaction ou action effectuée sur le Testnet ne sera pas reflétée sur le réseau principal.",
     "switchToMainnet": "Basculer vers le réseau principal"
   },
+  "featureCard": {
+    "learnMore": "Plus d'info"
+  },
   "button": {
     "okay": "Ok"
   },
