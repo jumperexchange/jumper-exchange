@@ -28,9 +28,13 @@ export function useUserTracking() {
      *
      */
     async ({ data, disableTrackingTool }: TrackAttributeProps) => {
-      if (data && !disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
+      if (
+        !!account.address &&
+        data &&
+        !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
+      ) {
         hotjar.initialized() &&
-          hotjar.identify(account.address ? account.address : null, {
+          hotjar.identify(account.address, {
             ...data,
           });
       }
@@ -64,8 +68,8 @@ export function useUserTracking() {
         !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
       ) {
         !disconnect &&
-          hotjar.identify(`${account.address}`, {
-            chainId: `${account.chainId}`,
+          hotjar.identify(account.address, {
+            [TrackingUserProperties.ChainId]: account.chainId,
             ...data,
           });
         hotjar.initialized() &&
@@ -127,7 +131,7 @@ export function useUserTracking() {
     }: TrackEventProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() &&
-          hotjar.event(`${category}-${action}${label ?? '-' + label}`);
+          hotjar.event(`${action}-${category}-${label ?? '-' + label}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         ReactGA.event(action, {
@@ -148,10 +152,9 @@ export function useUserTracking() {
         */
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        arcx?.event(`${category}-${action}`, {
+        arcx?.event(action, {
           category,
           label,
-          action,
           ...data,
         });
       }
