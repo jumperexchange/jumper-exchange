@@ -160,11 +160,7 @@ export function useUserTracking() {
         account.isActive &&
         !!account.address
       ) {
-        window.raleon.registerEvent(
-          `${category}`,
-          account.address,
-          `${action}-${label}`,
-        );
+        window.raleon.registerEvent(action, account.address, category);
       }
     },
     [account.address, account.isActive, arcx],
@@ -186,11 +182,7 @@ export function useUserTracking() {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() && pageload
           ? hotjar.stateChange(url)
-          : hotjar.event(
-              `pageload${source && '-' + source}${
-                pageload ? '-external' : '-internal'
-              }${destination && '-' + destination}`,
-            );
+          : hotjar.event(`pageload${destination && '-' + destination}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         ReactGA.gtag('event', TrackingActions.PageLoad, {
@@ -211,8 +203,19 @@ export function useUserTracking() {
             ...data,
           });
       }
+      if (
+        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
+        account.isActive &&
+        !!account.address
+      ) {
+        window.raleon.registerEvent(
+          `pageload-${pageload ? 'external' : 'internal'}`,
+          account.address,
+          destination,
+        );
+      }
     },
-    [arcx],
+    [account.address, account.isActive, arcx],
   );
 
   const trackTransaction = useCallback(
@@ -244,8 +247,15 @@ export function useUserTracking() {
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });
       }
+      if (
+        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
+        account.isActive &&
+        !!account.address
+      ) {
+        window.raleon.registerEvent(action, account.address, category);
+      }
     },
-    [arcx],
+    [account.address, account.isActive, arcx],
   );
 
   return {
