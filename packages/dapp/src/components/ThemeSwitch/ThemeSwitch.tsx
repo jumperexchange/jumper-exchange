@@ -58,11 +58,7 @@ export const ThemeSwitch = () => {
           : t('navbar.themes.switchToLight')
       }
     >
-      <ButtonThemeSwitch
-        onClick={() => {
-          handleThemeSwitch();
-        }}
-      >
+      <ButtonThemeSwitch onClick={handleThemeSwitch}>
         {themeMode === 'light' ? (
           <NightlightIcon />
         ) : themeMode === 'dark' ? (

@@ -52,6 +52,40 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
     data?.fields?.imageDarkMode?.sys?.id,
     data?.fields?.imageLightMode?.sys?.id,
   ]);
+
+  const handleClose = () => {
+    setOpen(false);
+    !data?.fields?.displayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.fields?.displayConditions?.id &&
+      onDisableFeatureCard(data?.fields?.displayConditions?.id);
+    trackEvent({
+      category: TrackingCategories.FeatureCard,
+      action: TrackingActions.CloseFeatureCard,
+      label: `close_${data?.fields?.displayConditions?.id}`,
+      data: {
+        [TrackingEventParameters.FeatureCardTitle]: data?.fields?.title,
+        [TrackingEventParameters.FeatureCardId]:
+          data?.fields?.displayConditions?.id,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+  };
+
+  const handleLearnMore = () => {
+    trackEvent({
+      category: TrackingCategories.FeatureCard,
+      action: TrackingActions.ClickLearnMore,
+      label: 'click_learn_more',
+      data: {
+        [TrackingEventParameters.FeatureCardTitle]: data.fields.title,
+        [TrackingEventParameters.FeatureCardId]:
+          data.fields.displayConditions.id,
+        url: data.fields.url,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+  };
+
   return (
     <Slide
       direction="up"
@@ -75,27 +109,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               right: theme.spacing(2),
               top: theme.spacing(2),
             }}
-            onClick={() => {
-              setOpen(false);
-              !data?.fields?.displayConditions?.hasOwnProperty('showOnce') &&
-                !!data?.fields?.displayConditions?.id &&
-                onDisableFeatureCard(data?.fields?.displayConditions?.id);
-              trackEvent({
-                category: TrackingCategories.FeatureCard,
-                action: TrackingActions.CloseFeatureCard,
-                label: `close_${data?.fields?.displayConditions?.id}`,
-                data: {
-                  [TrackingEventParameters.FeatureCardTitle]:
-                    data?.fields?.title,
-                  [TrackingEventParameters.FeatureCardId]:
-                    data?.fields?.displayConditions?.id,
-                },
-                disableTrackingTool: [
-                  EventTrackingTool.ARCx,
-                  EventTrackingTool.Raleon,
-                ],
-              });
-            }}
+            onClick={handleClose}
           >
             <CloseIcon
               sx={{
@@ -139,24 +153,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               target="_blank"
               rel="noopener"
               href={data?.fields?.url || 'https://li.fi'}
-              onClick={() => {
-                trackEvent({
-                  category: TrackingCategories.FeatureCard,
-                  action: TrackingActions.ClickLearnMore,
-                  label: 'click_learn_more',
-                  data: {
-                    [TrackingEventParameters.FeatureCardTitle]:
-                      data.fields.title,
-                    [TrackingEventParameters.FeatureCardId]:
-                      data.fields.displayConditions.id,
-                    url: data.fields.url,
-                  },
-                  disableTrackingTool: [
-                    EventTrackingTool.ARCx,
-                    EventTrackingTool.Raleon,
-                  ],
-                });
-              }}
+              onClick={handleLearnMore}
               sx={{
                 textDecoration: 'none',
                 color:

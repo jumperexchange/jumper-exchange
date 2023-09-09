@@ -31,6 +31,18 @@ const NavbarTabsContainer = () => {
     setActiveTab(newValue);
   };
 
+  const handleClickTab =
+    (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
+      window.history.replaceState(null, document.title, `/${tab}`);
+      trackEvent({
+        category: TrackingCategories.Navigation,
+        action: TrackingActions.SwitchTab,
+        label: tab,
+        data: { [TrackingEventParameters.Tab]: tab },
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+    };
+
   return (
     <NavbarTabs
       value={isDesktop ? activeTab : false}
@@ -40,19 +52,7 @@ const NavbarTabsContainer = () => {
       indicatorColor="primary"
     >
       <NavbarTab
-        onClick={() => {
-          window.history.replaceState(null, document.title, '/exchange');
-          trackEvent({
-            category: TrackingCategories.Navigation,
-            action: TrackingActions.SwitchTab,
-            label: 'exchange',
-            data: { [TrackingEventParameters.Tab]: 'exchange' },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
-        }}
+        onClick={handleClickTab('exchange')}
         icon={
           <SwapHorizIcon
             sx={{
@@ -68,19 +68,7 @@ const NavbarTabsContainer = () => {
         {...a11yProps(0)}
       />
       <NavbarTab
-        onClick={() => {
-          window.history.replaceState(null, document.title, '/gas');
-          trackEvent({
-            category: TrackingCategories.Navigation,
-            action: TrackingActions.SwitchTab,
-            label: 'gas',
-            data: { [TrackingEventParameters.Tab]: 'gas' },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
-        }}
+        onClick={handleClickTab('refuel')}
         label={t('navbar.links.refuel')}
         icon={
           <EvStationOutlinedIcon
@@ -97,19 +85,7 @@ const NavbarTabsContainer = () => {
       />
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <NavbarTab
-          onClick={() => {
-            window.history.replaceState(null, document.title, '/buy');
-            trackEvent({
-              category: TrackingCategories.Navigation,
-              action: TrackingActions.SwitchTab,
-              label: 'buy',
-              data: { [TrackingEventParameters.Tab]: 'buy' },
-              disableTrackingTool: [
-                EventTrackingTool.ARCx,
-                EventTrackingTool.Raleon,
-              ],
-            });
-          }}
+          onClick={handleClickTab('buy')}
           label={t('navbar.links.buy')}
           icon={
             <CreditCardIcon

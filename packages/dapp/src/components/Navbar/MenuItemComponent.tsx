@@ -42,26 +42,25 @@ const MenuItemComponent = ({
     state.onOpenNavbarSubMenu,
   ]);
 
+  const handleClick = () => {
+    !!triggerSubMenu && onOpenNavbarSubMenu(triggerSubMenu);
+    !!triggerSubMenu &&
+      trackEvent({
+        category: TrackingCategories.MainMenu,
+        action: TrackingActions.OpenSubmenu,
+        label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
+        data: { [TrackingEventParameters.SubMenu]: triggerSubMenu },
+        disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+      });
+    !!onClick && onClick();
+  };
+
   return open ? (
     <MenuItem
       disableRipple={showButton}
       showButton={showButton || false}
       autoFocus={autoFocus}
-      onClick={() => {
-        !!triggerSubMenu && onOpenNavbarSubMenu(triggerSubMenu);
-        !!triggerSubMenu &&
-          trackEvent({
-            category: TrackingCategories.MainMenu,
-            action: TrackingActions.OpenSubmenu,
-            label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
-            data: { [TrackingEventParameters.SubMenu]: triggerSubMenu },
-            disableTrackingTool: [
-              EventTrackingTool.Raleon,
-              EventTrackingTool.ARCx,
-            ],
-          });
-        !!onClick && onClick();
-      }}
+      onClick={handleClick}
     >
       <>
         {showButton ? (

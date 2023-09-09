@@ -14,6 +14,10 @@ export const TestnetAlert = () => {
   const { t } = useTranslation();
   const theme = useTheme();
 
+  const handleClick = () => {
+    openInNewTab(PROD_URL);
+  };
+
   return (
     <WarningMessageCard mt={theme.spacing(8)}>
       <WarningMessageCardTitle display="flex" alignItems="center" px={2} pt={2}>
@@ -28,9 +32,7 @@ export const TestnetAlert = () => {
         {t('alert.testnet')}
       </Typography>
       <ButtonTransparent
-        onClick={() => {
-          openInNewTab(PROD_URL);
-        }}
+        onClick={handleClick}
         style={{ marginTop: theme.spacing(3), width: '100%' }}
       >
         {t('alert.switchToMainnet')}

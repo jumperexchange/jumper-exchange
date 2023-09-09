@@ -21,6 +21,26 @@ export const WelcomeWrapper: React.FC<
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
 
+  const handleAuditClick = () => {
+    trackPageload({
+      source: 'welcome-screen',
+      destination: 'docs-sc-audits',
+      url: 'https://docs.li.fi/smart-contracts/audits',
+      pageload: true,
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+  };
+
+  const handleLIFIClick = () => {
+    trackPageload({
+      source: 'welcome-screen',
+      destination: 'lifi-website',
+      url: 'https://li.fi',
+      pageload: true,
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+  };
+
   return (
     <Wrapper showWelcome={showWelcome || false}>
       {children}
@@ -66,35 +86,13 @@ export const WelcomeWrapper: React.FC<
                     href="https://docs.li.fi/smart-contracts/audits"
                     target={'_blank'}
                     rel="noreferrer"
-                    onClick={() => {
-                      trackPageload({
-                        source: 'welcome-screen',
-                        destination: 'docs-sc-audits',
-                        url: 'https://docs.li.fi/smart-contracts/audits',
-                        pageload: true,
-                        disableTrackingTool: [
-                          EventTrackingTool.ARCx,
-                          EventTrackingTool.Raleon,
-                        ],
-                      });
-                    }}
+                    onClick={handleAuditClick}
                   />,
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
                     href="https://li.fi"
-                    onClick={() => {
-                      trackPageload({
-                        source: 'welcome-screen',
-                        destination: 'lifi-website',
-                        url: 'https://li.fi',
-                        pageload: true,
-                        disableTrackingTool: [
-                          EventTrackingTool.ARCx,
-                          EventTrackingTool.Raleon,
-                        ],
-                      });
-                    }}
+                    onClick={handleLIFIClick}
                     target={'_blank'}
                     rel="noreferrer"
                   />,
