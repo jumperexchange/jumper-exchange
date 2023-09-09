@@ -52,16 +52,6 @@
   <script>
     var script = document.createElement("script")
     script.onload = function () {
-      setupRaleonParameters(46);
-    };
-    script.src = 'https://dqpqjbq51w8fz.cloudfront.net/raleon_snippet.min.js';
-    document.getElementsByTagName("head")[0].appendChild(script);
-  </script>
-
-  <script>
-
-    var script = document.createElement("script")
-    script.onload = function () {
       let paramData = {
         orgId: 46,
         applicationId: '%MODE%', //Utilize this to manage event scope (examples v1, v2, or dev, prod, etc)
@@ -73,16 +63,9 @@
       };
       setupRaleonParametersV2(paramData);
     };
-
     script.src = 'https://dqpqjbq51w8fz.cloudfront.net/raleon_snippet.min.js';
     document.getElementsByTagName("head")[0].appendChild(script);
-
   </script>
-
-
-
-  %MODE%
-
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
   <script type="module" src="/src/index.tsx"></script>
