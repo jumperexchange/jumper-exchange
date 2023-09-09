@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
-import { KeyboardEvent, MouseEventHandler } from 'react';
+import { KeyboardEvent } from 'react';
 import {
   MenuKeys,
   TrackingActions,
@@ -58,25 +58,21 @@ const SubMenuComponent = ({
     }
   }
 
-  const handleClick =
-    (el: MenuListItem) => (event: MouseEventHandler<HTMLLIElement>) => {
-      !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
-      !!el.triggerSubMenu &&
-        trackEvent({
-          category: TrackingCategories.SubMenu,
-          action: TrackingActions.OpenSubmenu,
-          label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
-          data: {
-            [TrackingEventParameters.SubMenu]: el.triggerSubMenu,
-            [TrackingEventParameters.PrevMenu]: prevMenu,
-          },
-          disableTrackingTool: [
-            EventTrackingTool.Raleon,
-            EventTrackingTool.ARCx,
-          ],
-        });
-      typeof el.onClick === 'function' && el.onClick();
-    };
+  const handleClick = (el: MenuListItem) => {
+    !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
+    !!el.triggerSubMenu &&
+      trackEvent({
+        category: TrackingCategories.SubMenu,
+        action: TrackingActions.OpenSubmenu,
+        label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
+        data: {
+          [TrackingEventParameters.SubMenu]: el.triggerSubMenu,
+          [TrackingEventParameters.PrevMenu]: prevMenu,
+        },
+        disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+      });
+    typeof el.onClick === 'function' && el.onClick();
+  };
 
   const handleBackNavigation = () => {
     onOpenNavbarSubMenu(prevMenu);
