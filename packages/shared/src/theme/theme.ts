@@ -213,8 +213,11 @@ const themeBase: Theme = createTheme({
       },
     },
     MuiCssBaseline: {
-      styleOverrides: '@supports (font-variation-settings: normal)',
+      styleOverrides: {
+        '@supports': { 'font-variation-settings': 'normal' },
+      },
     },
+
     MuiTypography: {
       defaultProps: {
         variantMapping: {

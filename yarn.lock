@@ -1577,7 +1577,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.2, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.22.5, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.2, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.19.4, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.21.5, @babel/runtime@npm:^7.22.5, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
   version: 7.22.10
   resolution: "@babel/runtime@npm:7.22.10"
   dependencies:
@@ -2774,9 +2774,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.2.8":
-  version: 2.2.8
-  resolution: "@lifi/widget@npm:2.2.8"
+"@lifi/wallet-management@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@lifi/wallet-management@npm:2.3.0"
+  dependencies:
+    "@coinbase/wallet-sdk": ^3.7.1
+    "@ethersproject/abstract-signer": ^5.7.0
+    "@ethersproject/experimental": ^5.7.0
+    "@ethersproject/providers": ^5.7.2
+    "@lifi/sdk": ^2.2.1
+    "@safe-global/safe-apps-provider": ^0.17.1
+    "@safe-global/safe-apps-sdk": ^8.0.0
+    "@walletconnect/ethereum-provider": ^2.9.1
+    "@walletconnect/modal": ^2.6.1
+    events: ^3.3.0
+    react: ^18.2.0
+  checksum: 0bd25e2f1a2dbd9a7edfd351215017db60c88f7217cc0e11ed4bd7b9966eec2d237b83feea6b22261a434e3b33e8adea7b2bb1dfd27dd7d12e06bb864a387fdc
+  languageName: node
+  linkType: hard
+
+"@lifi/widget@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@lifi/widget@npm:2.4.0"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -2785,7 +2804,7 @@ __metadata:
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.2.1
-    "@lifi/wallet-management": ^2.2.5
+    "@lifi/wallet-management": ^2.3.0
     "@mui/icons-material": ^5.14.1
     "@mui/lab": ^5.0.0-alpha.137
     "@mui/material": ^5.14.2
@@ -2812,7 +2831,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: b735015891bbcad936ef66816563d5eeea38826a67f22e35f98e329b4619ad20d7a747e223f8f94aa6e557ee911ee65257307ccd17839941f2d931cd7e60e543
+  checksum: b992ed478f04b96b370157c674ab682edd2680b170427f64d39bdf8c972e0d9938c5e9dea0af56a54bebe00608db75561f657a8e4d7266a9773a4ef8b852bccc
   languageName: node
   linkType: hard
 
@@ -4407,8 +4426,8 @@ __metadata:
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.3.0
-    "@lifi/wallet-management": ^2.2.5
-    "@lifi/widget": ^2.2.8
+    "@lifi/wallet-management": ^2.3.0
+    "@lifi/widget": ^2.4.0
     "@mui/icons-material": ^5.14.3
     "@mui/material": ^5.14.5
     "@safe-global/safe-apps-sdk": ^8.1.0
@@ -4425,6 +4444,8 @@ __metadata:
     husky: ^8.0.3
     i18next: ^23.4.4
     i18next-browser-languagedetector: ^7.1.0
+    i18next-http-backend: ^2.2.1
+    i18next-resources-to-backend: ^1.1.4
     lerna: ^7.1.5
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -6719,6 +6740,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cross-fetch@npm:3.1.6":
+  version: 3.1.6
+  resolution: "cross-fetch@npm:3.1.6"
+  dependencies:
+    node-fetch: ^2.6.11
+  checksum: 704b3519ab7de488328cc49a52cf1aa14132ec748382be5b9557b22398c33ffa7f8c2530e8a97ed8cb55da52b0a9740a9791d361271c4591910501682d981d9c
+  languageName: node
+  linkType: hard
+
 "cross-fetch@npm:^3.1.4, cross-fetch@npm:^3.1.5":
   version: 3.1.8
   resolution: "cross-fetch@npm:3.1.8"
@@ -8935,6 +8965,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next-http-backend@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "i18next-http-backend@npm:2.2.1"
+  dependencies:
+    cross-fetch: 3.1.6
+  checksum: a3f33b455555587ac1a5db94119bd944dca1ce7b685161d487dd0bd50342f4ed060dd263bf1adacd14cb0c0a58f695befb9a22ea1eb87f19be98ef7bbac91349
+  languageName: node
+  linkType: hard
+
+"i18next-resources-to-backend@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "i18next-resources-to-backend@npm:1.1.4"
+  dependencies:
+    "@babel/runtime": ^7.21.5
+  checksum: 4f3f25de0d9c96b109dfdc9259864898ac9d140a80a372925e0c5a34b13bd95dcb4c682c6255a5f3bb4c4dc40c20d0f9d1b82c491ebe2f8f245ae149fe911a1d
+  languageName: node
+  linkType: hard
+
 "i18next@npm:^23.3.0, i18next@npm:^23.4.4":
   version: 23.4.4
   resolution: "i18next@npm:23.4.4"
@@ -11002,7 +11050,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.12, node-fetch@npm:^2.6.7":
+"node-fetch@npm:^2.6.11, node-fetch@npm:^2.6.12, node-fetch@npm:^2.6.7":
   version: 2.6.12
   resolution: "node-fetch@npm:2.6.12"
   dependencies:

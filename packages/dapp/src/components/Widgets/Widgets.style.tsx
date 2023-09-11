@@ -1,5 +1,4 @@
-import { Box, BoxProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, BoxProps, styled } from '@mui/material';
 
 export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
   isActive?: boolean;

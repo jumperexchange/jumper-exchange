@@ -23,7 +23,7 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
     (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
   );
 
-  return !!openNavbarChainsMenu ? (
+  return openNavbarChainsMenu ? (
     <NavbarMenu
       handleClose={handleClose}
       label={t('navbar.walletMenu.chains')}

@@ -65,6 +65,17 @@ export const useSettingsStore = createWithEqualityFn(
         });
       },
 
+      // Disable Feature Card
+      onDisableFeatureCard: (id: string) => {
+        const disabledFeatureCards = (get() as SettingsProps)
+          ?.disabledFeatureCards;
+        id &&
+          !disabledFeatureCards.includes(id) &&
+          set({
+            disabledFeatureCards: [...disabledFeatureCards, id],
+          });
+      },
+
       // Welcome Screen
       onWelcomeScreenEntered: (shown: boolean) => {
         set({
@@ -82,6 +93,7 @@ export const useSettingsStore = createWithEqualityFn(
             defaultSettings.languageMode ||
             (i18next.language as LanguageKey) ||
             defaultLang,
+          disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
         });
       },
     }),

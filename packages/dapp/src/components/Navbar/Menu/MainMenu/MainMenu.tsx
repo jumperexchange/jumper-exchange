@@ -59,7 +59,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       />
 
       <SubMenuComponent
-        label={t('navbar.language.key')}
+        label={t('language.key', { ns: 'language' })}
         triggerSubMenu={MenuKeys.Language}
         open={openNavbarSubMenu === MenuKeys.Language}
         prevMenu={MenuKeys.None}

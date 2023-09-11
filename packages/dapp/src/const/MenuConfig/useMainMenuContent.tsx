@@ -34,7 +34,7 @@ export const useMainMenuContent = () => {
       triggerSubMenu: MenuKeys.Themes,
     },
     {
-      label: t('navbar.language.key'),
+      label: t('language.key', { ns: 'language' }),
       prefixIcon: <LanguageIcon />,
       checkIcon: themeMode === 'light',
       suffixIcon: (
