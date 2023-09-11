@@ -1,25 +1,25 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
 import { useMemo } from 'react';
-import { useChains } from '../../hooks/useChains';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
+import { useChainsStore } from '../../stores/chains';
 import { ChainsMenuListItem } from '../../types';
 
 export const useChainsContent = () => {
   const { account, switchChain } = useWallet();
-  const { chains } = useChains();
+  const chains = useChainsStore((state) => state.chains);
 
   const onCloseAllNavbarMenus = useMenuStore(
     (state) => state.onCloseAllNavbarMenus,
   );
 
   const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
 
-  return chains.map(
+  return chains?.map(
     (el): ChainsMenuListItem => ({
       label: `${el.name}`,
       onClick: () => {

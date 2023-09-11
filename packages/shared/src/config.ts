@@ -1,4 +1,5 @@
 // @mui
+import type { ExtendedChain } from '@lifi/types';
 import type { LanguageKey } from '@transferto/dapp/src/types';
 import type { ThemeModesSupported } from './types';
 
@@ -10,6 +11,7 @@ export const localStorageKey = {
   themeMode: 'themeMode',
   languageMode: 'languageMode',
   disabledFeatureCards: 'disabledFeatureCards',
+  chains: 'chains',
 };
 
 // MULTI LANGUAGES
@@ -25,6 +27,10 @@ const setLanguage = () => {
     return '';
   }
 };
+
+interface DefaultChainsType {
+  data: ExtendedChain[];
+}
 
 interface DefaultSettingsType {
   themeMode: ThemeModesSupported;
@@ -43,4 +49,10 @@ export const defaultSettings: DefaultSettingsType = {
     (localStorage.getItem(localStorageKey.activeWalletName) as string) || '',
   disabledFeatureCards: [],
   welcomeScreenEntered: false,
+};
+
+export const defaultChains: DefaultChainsType = {
+  data: localStorage.getItem(localStorageKey.chains)
+    ? JSON.parse(localStorage.getItem(localStorageKey.chains) ?? '')
+    : [],
 };
