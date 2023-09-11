@@ -2023,10 +2023,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.48.0":
-  version: 8.48.0
-  resolution: "@eslint/js@npm:8.48.0"
-  checksum: b2755f9c0ee810c886eba3c50dcacb184ba5a5cd1cbc01988ee506ad7340653cae0bd55f1d95c64b56dfc6d25c2caa7825335ffd2c50165bae9996fe0f396851
+"@eslint/js@npm:8.49.0":
+  version: 8.49.0
+  resolution: "@eslint/js@npm:8.49.0"
+  checksum: a6601807c8aeeefe866926ad92ed98007c034a735af20ff709009e39ad1337474243d47908500a3bde04e37bfba16bcf1d3452417f962e1345bc8756edd6b830
   languageName: node
   linkType: hard
 
@@ -2488,14 +2488,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/config-array@npm:^0.11.10":
-  version: 0.11.10
-  resolution: "@humanwhocodes/config-array@npm:0.11.10"
+"@humanwhocodes/config-array@npm:^0.11.11":
+  version: 0.11.11
+  resolution: "@humanwhocodes/config-array@npm:0.11.11"
   dependencies:
     "@humanwhocodes/object-schema": ^1.2.1
     debug: ^4.1.1
     minimatch: ^3.0.5
-  checksum: 1b1302e2403d0e35bc43e66d67a2b36b0ad1119efc704b5faff68c41f791a052355b010fb2d27ef022670f550de24cd6d08d5ecf0821c16326b7dcd0ee5d5d8a
+  checksum: db84507375ab77b8ffdd24f498a5b49ad6b64391d30dd2ac56885501d03964d29637e05b1ed5aefa09d57ac667e28028bc22d2da872bfcd619652fbdb5f4ca19
   languageName: node
   linkType: hard
 
@@ -2824,9 +2824,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^2.2.5":
-  version: 2.2.5
-  resolution: "@lifi/wallet-management@npm:2.2.5"
+"@lifi/wallet-management@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@lifi/wallet-management@npm:2.3.0"
   dependencies:
     "@coinbase/wallet-sdk": ^3.7.1
     "@ethersproject/abstract-signer": ^5.7.0
@@ -2839,13 +2839,13 @@ __metadata:
     "@walletconnect/modal": ^2.6.1
     events: ^3.3.0
     react: ^18.2.0
-  checksum: 1c455861a5667250cfdd34a79e14bb31656a631d64ee0e8df770357e29980126fbc5ca8975f1ded080bb94eedfb1e6d8c8212a0c62671ac83eab413204ad8712
+  checksum: 0bd25e2f1a2dbd9a7edfd351215017db60c88f7217cc0e11ed4bd7b9966eec2d237b83feea6b22261a434e3b33e8adea7b2bb1dfd27dd7d12e06bb864a387fdc
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "@lifi/widget@npm:2.3.0"
+"@lifi/widget@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@lifi/widget@npm:2.4.0"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -2854,7 +2854,7 @@ __metadata:
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.2.1
-    "@lifi/wallet-management": ^2.2.5
+    "@lifi/wallet-management": ^2.3.0
     "@mui/icons-material": ^5.14.1
     "@mui/lab": ^5.0.0-alpha.137
     "@mui/material": ^5.14.2
@@ -2881,7 +2881,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: be0a2c7cdaf597763f2b2bf0e3895c130132bbf6c9ffbbd2a75c90cd8a10820e274eea58a6663fa20aca3a73d007f73d0b5439dffeb46093895dd82b8e0c819d
+  checksum: b992ed478f04b96b370157c674ab682edd2680b170427f64d39bdf8c972e0d9938c5e9dea0af56a54bebe00608db75561f657a8e4d7266a9773a4ef8b852bccc
   languageName: node
   linkType: hard
 
@@ -4677,8 +4677,8 @@ __metadata:
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.3.1
-    "@lifi/wallet-management": ^2.2.5
-    "@lifi/widget": ^2.3.0
+    "@lifi/wallet-management": ^2.3.0
+    "@lifi/widget": ^2.4.0
     "@mui/icons-material": ^5.14.8
     "@mui/material": ^5.14.8
     "@safe-global/safe-apps-sdk": ^8.1.0
@@ -4693,7 +4693,7 @@ __metadata:
     "@widgetbot/react-embed": ^1.9.0
     ethers: ^6.7.1
     husky: ^8.0.3
-    i18next: ^23.5.0
+    i18next: ^23.5.1
     i18next-browser-languagedetector: ^7.1.0
     i18next-http-backend: ^2.2.2
     i18next-resources-to-backend: ^1.1.4
@@ -4717,13 +4717,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@transferto/shared@workspace:packages/shared"
   dependencies:
-    "@lifi/wallet-management": ^2.2.5
+    "@lifi/wallet-management": ^2.3.0
     "@mui/icons-material": ^5.14.8
     "@mui/material": ^5.14.8
-    "@types/node": ^20.5.9
+    "@types/node": ^20.6.0
     "@types/react": ^18.2.21
     eslint-config-prettier: ^9.0.0
-    i18next: ^23.5.0
+    i18next: ^23.5.1
     prettier: ^3.0.3
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -4831,10 +4831,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.5.9":
-  version: 20.5.9
-  resolution: "@types/node@npm:20.5.9"
-  checksum: 717490e94131722144878b4ca1a963ede1673bb8f2ef78c2f5b50b918df6dc9b35e7f8283e5c2a7a9f137730f7c08dc6228e53d4494a94c9ee16881e6ce6caed
+"@types/node@npm:^20.6.0":
+  version: 20.6.0
+  resolution: "@types/node@npm:20.6.0"
+  checksum: 52611801af5cf151c6fac1963aa4a8a8ca2e388a9e9ed82b01b70bca762088ded5b32cc789c5564220d5d7dccba2b8dd34446a3d4fc74736805e1f2cf262e29d
   languageName: node
   linkType: hard
 
@@ -8016,15 +8016,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.48.0":
-  version: 8.48.0
-  resolution: "eslint@npm:8.48.0"
+"eslint@npm:^8.49.0":
+  version: 8.49.0
+  resolution: "eslint@npm:8.49.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.2.0
     "@eslint-community/regexpp": ^4.6.1
     "@eslint/eslintrc": ^2.1.2
-    "@eslint/js": 8.48.0
-    "@humanwhocodes/config-array": ^0.11.10
+    "@eslint/js": 8.49.0
+    "@humanwhocodes/config-array": ^0.11.11
     "@humanwhocodes/module-importer": ^1.0.1
     "@nodelib/fs.walk": ^1.2.8
     ajv: ^6.12.4
@@ -8059,7 +8059,7 @@ __metadata:
     text-table: ^0.2.0
   bin:
     eslint: bin/eslint.js
-  checksum: f20b359a4f8123fec5c033577368cc020d42978b1b45303974acd8da7a27063168ee3fe297ab5b35327162f6a93154063e3ce6577102f70f9809aff793db9bd0
+  checksum: 4dfe257e1e42da2f9da872b05aaaf99b0f5aa022c1a91eee8f2af1ab72651b596366320c575ccd4e0469f7b4c97aff5bb85ae3323ebd6a293c3faef4028b0d81
   languageName: node
   linkType: hard
 
@@ -9317,12 +9317,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.5.0":
-  version: 23.5.0
-  resolution: "i18next@npm:23.5.0"
+"i18next@npm:^23.5.1":
+  version: 23.5.1
+  resolution: "i18next@npm:23.5.1"
   dependencies:
     "@babel/runtime": ^7.22.5
-  checksum: 026ff157d551e9adda132f2dfeb7da16b0f1f53af424e3374536a118ea5445aca4a6b5e86fd8fe483054e4cf55043b8ecc524806d816f1a8cc7ab201693378e1
+  checksum: 4be043bd72287bfae9777a3252b9458d2e3f5e9a97ea62cf434e6e3767b45df4365d8780d0dd14efd4e9da5eb0f90534510b138f1372d1cb9012000a69bbedaf
   languageName: node
   linkType: hard
 
@@ -13453,10 +13453,10 @@ __metadata:
   resolution: "root@workspace:."
   dependencies:
     "@lerna/run": ^6.6.2
-    "@types/node": ^20.5.9
+    "@types/node": ^20.6.0
     "@types/react": ^18.2.21
     "@types/react-dom": ^18.2.7
-    eslint: ^8.48.0
+    eslint: ^8.49.0
     eslint-config-prettier: ^9.0.0
     eslint-config-react-app: ^7.0.1
     eslint-plugin-flowtype: ^8.0.3

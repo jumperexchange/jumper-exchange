@@ -18,10 +18,10 @@
     "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
   },
   "dependencies": {
-    "@lifi/wallet-management": "^2.2.5",
+    "@lifi/wallet-management": "^2.3.0",
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.14.8",
-    "i18next": "^23.5.0",
+    "i18next": "^23.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.2.2",
@@ -29,7 +29,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.6.0",
     "@types/react": "^18.2.21",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3"
