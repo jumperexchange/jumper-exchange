@@ -32,10 +32,6 @@
       "explore": "Переглянути",
       "copiedMsg": "Адреса гаманця скопійована"
     },
-    "language": {
-      "key": "Мова",
-      "value": "Українська"
-    },
     "themes": {
       "switchToLight": "Увімкнути світлу тему",
       "switchToDark": "Увімкнути темну тему",
@@ -58,6 +54,9 @@
     "info": "Ви використовуєте Testnet",
     "testnet": "Будь-які транзакції або дії, що виконуються у Testnet, не будуть відображені в Mainnet.",
     "switchToMainnet": "Перейти на Mainnet"
+  },
+  "featureCard": {
+    "learnMore": "Дізнатися більше"
   },
   "button": {
     "okay": "Добре"
