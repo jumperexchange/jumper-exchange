@@ -2774,9 +2774,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.2.8":
-  version: 2.2.8
-  resolution: "@lifi/widget@npm:2.2.8"
+"@lifi/wallet-management@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@lifi/wallet-management@npm:2.3.0"
+  dependencies:
+    "@coinbase/wallet-sdk": ^3.7.1
+    "@ethersproject/abstract-signer": ^5.7.0
+    "@ethersproject/experimental": ^5.7.0
+    "@ethersproject/providers": ^5.7.2
+    "@lifi/sdk": ^2.2.1
+    "@safe-global/safe-apps-provider": ^0.17.1
+    "@safe-global/safe-apps-sdk": ^8.0.0
+    "@walletconnect/ethereum-provider": ^2.9.1
+    "@walletconnect/modal": ^2.6.1
+    events: ^3.3.0
+    react: ^18.2.0
+  checksum: 0bd25e2f1a2dbd9a7edfd351215017db60c88f7217cc0e11ed4bd7b9966eec2d237b83feea6b22261a434e3b33e8adea7b2bb1dfd27dd7d12e06bb864a387fdc
+  languageName: node
+  linkType: hard
+
+"@lifi/widget@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@lifi/widget@npm:2.4.0"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -2785,7 +2804,7 @@ __metadata:
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.2.1
-    "@lifi/wallet-management": ^2.2.5
+    "@lifi/wallet-management": ^2.3.0
     "@mui/icons-material": ^5.14.1
     "@mui/lab": ^5.0.0-alpha.137
     "@mui/material": ^5.14.2
@@ -2812,7 +2831,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: b735015891bbcad936ef66816563d5eeea38826a67f22e35f98e329b4619ad20d7a747e223f8f94aa6e557ee911ee65257307ccd17839941f2d931cd7e60e543
+  checksum: b992ed478f04b96b370157c674ab682edd2680b170427f64d39bdf8c972e0d9938c5e9dea0af56a54bebe00608db75561f657a8e4d7266a9773a4ef8b852bccc
   languageName: node
   linkType: hard
 
@@ -4407,8 +4426,8 @@ __metadata:
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.3.0
-    "@lifi/wallet-management": ^2.2.5
-    "@lifi/widget": ^2.2.8
+    "@lifi/wallet-management": ^2.3.0
+    "@lifi/widget": ^2.4.0
     "@mui/icons-material": ^5.14.3
     "@mui/material": ^5.14.5
     "@safe-global/safe-apps-sdk": ^8.1.0
