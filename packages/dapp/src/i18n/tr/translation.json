@@ -32,10 +32,6 @@
       "explore": "Keşfet",
       "copiedMsg": "Cüzdan Adresi kopyalandı"
     },
-    "language": {
-      "key": "Dil",
-      "value": "Türkçe"
-    },
     "themes": {
       "switchToLight": "Açık temaya geç",
       "switchToDark": "Koyu Temaya geç",
@@ -50,7 +46,7 @@
     },
     "showcases": {
       "ukraineDonation": "Ukrayna'ya destek ol 🇺🇦",
-      "klimaStaking": "Cross Chain Klima Staking",
+      "klimaStaking": "Ağlar Arası Klima Stake",
       "carbonOffset": "Zincirler Arası Karbon Dengesi"
     }
   },
@@ -58,6 +54,9 @@
     "info": "Şu anda Test ağındasınız",
     "testnet": "Testnet üzerinde yapacağınız hiçbir işlem Mainnet üzerinde etkili olmayacaktır.",
     "switchToMainnet": "Mainnet'e geç"
+  },
+  "featureCard": {
+    "learnMore": "Daha fazla bilgi edinin"
   },
   "button": {
     "okay": "Tamam"
