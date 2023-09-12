@@ -6,6 +6,7 @@ import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import BigNumber from 'bignumber.js';
 import 'react-i18next';
 import { MenuKeys } from '../const';
+import { Gtag } from './gtag';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
@@ -27,7 +28,7 @@ interface RaleonProps {
 declare global {
   interface Window {
     raleon: RaleonProps;
-    gtag: (...args: any[]) => void;
+    gtag: Gtag.Gtag;
   }
 }
 
