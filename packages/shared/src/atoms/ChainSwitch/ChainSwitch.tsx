@@ -39,7 +39,7 @@ export const ChainSwitch = () => {
     trackEvent({
       category: TrackingCategories.ChainsMenu,
       action: TrackingActions.OpenSubmenu,
-      label: `click_open_chains_menu`,
+      label: 'click_open_chains_menu',
       data: { [TrackingEventParameters.SubMenu]: 'chains_menu' },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
