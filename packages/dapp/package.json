@@ -6,8 +6,8 @@
   "dependencies": {
     "@arcxmoney/analytics": "^1.9.1",
     "@lifi/sdk": "^2.3.1",
-    "@lifi/wallet-management": "^2.3.0",
-    "@lifi/widget": "^2.4.0",
+    "@lifi/wallet-management": "^2.3.2",
+    "@lifi/widget": "^2.4.2",
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.14.8",
     "@safe-global/safe-apps-sdk": "^8.1.0",

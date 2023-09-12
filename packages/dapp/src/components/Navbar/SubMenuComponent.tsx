@@ -59,8 +59,8 @@ const SubMenuComponent = ({
   }
 
   const handleClick = (el: MenuListItem) => {
-    !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
-    !!el.triggerSubMenu &&
+    if (el.triggerSubMenu) {
+      onOpenNavbarSubMenu(el.triggerSubMenu);
       trackEvent({
         category: TrackingCategories.SubMenu,
         action: TrackingActions.OpenSubmenu,
@@ -71,7 +71,9 @@ const SubMenuComponent = ({
         },
         disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
       });
-    typeof el.onClick === 'function' && el.onClick();
+    } else {
+      typeof el.onClick === 'function' && el.onClick();
+    }
   };
 
   const handleBackNavigation = () => {
@@ -100,8 +102,9 @@ const SubMenuComponent = ({
             <MenuLinkItem
               autoFocus={index > 0 ? true : false}
               onClick={() => {
-                !!el.triggerSubMenu && onOpenNavbarSubMenu(el.triggerSubMenu);
-                el.onClick();
+                el.triggerSubMenu
+                  ? onOpenNavbarSubMenu(el.triggerSubMenu)
+                  : el.onClick();
               }}
               component="li"
               key={`${el.label}-${index}`}

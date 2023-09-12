@@ -31,8 +31,13 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
           fontSize: '24px',
           lineHeight: '32px',
           pointerEvents: 'none',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '80px',
+          maxHeight: '32px',
           [theme.breakpoints.up('sm')]: {
             fontSize: '32px',
+            maxHeight: '40px',
             lineHeight: '40px',
           },
         }}
@@ -43,9 +48,14 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
         variant={'lifiBodySmall'}
         sx={{
           pointerEvents: 'none',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '80px',
+          maxHeight: '20px',
           [theme.breakpoints.up('sm')]: {
             mt: theme.spacing(1),
             fontSize: '16px',
+            maxWidth: '118px',
           },
         }}
       >
