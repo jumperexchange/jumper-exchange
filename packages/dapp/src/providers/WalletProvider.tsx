@@ -150,12 +150,17 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   );
 
   useEffect(() => {
+    console.log('Account data changed');
+    const data = currentWallet ? { wallet: currentWallet.name } : undefined;
     trackConnectWallet({
       account: account,
       disconnect: false,
       data: {
-        account: account.address as string,
-        chain: account.chainId as ChainId,
+        ...data,
+        ...{
+          account: account.address as string,
+          chain: account.chainId as ChainId,
+        },
       },
     });
   }, [
@@ -164,6 +169,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     account.address,
     account.chainId,
     trackConnectWallet,
+    currentWallet,
   ]);
 
   const value = useMemo(

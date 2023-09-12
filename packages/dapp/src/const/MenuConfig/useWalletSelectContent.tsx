@@ -16,7 +16,7 @@ import {
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect, account } = useWallet();
-  const { trackEvent, trackAttribute } = useUserTracking();
+  // const { trackEvent, trackAttribute } = useUserTracking();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
     useState(false);
 
@@ -107,21 +107,21 @@ export const useWalletSelectContent = () => {
           login(wallet);
           onCloseAllNavbarMenus();
           onWelcomeScreenEntered(true);
-          trackAttribute({
-            data: {
-              [TrackingUserProperties.Wallet]: wallet.name,
-            },
-          });
-          trackEvent({
-            category: TrackingCategories.WalletSelectMenu,
-            action: TrackingActions.ConnectWallet,
-            label: wallet.name,
-            data: { [TrackingEventParameters.Wallet]: wallet.name },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
+          // trackAttribute({
+          //   data: {
+          //     [TrackingUserProperties.Wallet]: wallet.name,
+          //   },
+          // });
+          //   trackEvent({
+          //     category: TrackingCategories.WalletSelectMenu,
+          //     action: TrackingActions.ConnectWallet,
+          //     label: wallet.name,
+          //     data: { [TrackingEventParameters.Wallet]: wallet.name },
+          //     disableTrackingTool: [
+          //       EventTrackingTool.ARCx,
+          //       EventTrackingTool.Raleon,
+          //     ],
+          //   });
         },
       };
     });
@@ -132,8 +132,8 @@ export const useWalletSelectContent = () => {
     login,
     onCloseAllNavbarMenus,
     onWelcomeScreenEntered,
-    trackAttribute,
-    trackEvent,
+    // trackAttribute,
+    // trackEvent,
   ]);
 
   return walletMenuItems;

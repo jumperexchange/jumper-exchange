@@ -92,11 +92,15 @@ export function useUserTracking() {
             })
           : window.gtag('set', 'user_properties', {
               [TrackingUserProperties.ChainId]: account.chainId,
+              [TrackingUserProperties.Wallet]: data!.wallet,
               [TrackingUserProperties.Connected]: 'true',
               [TrackingUserProperties.HadConnected]: 'true',
             });
-
+        const preConfigData = data?.wallet
+          ? { wallet: data.wallet }
+          : undefined;
         window.gtag('event', TrackingActions.ConnectWallet, {
+          ...preConfigData,
           category: TrackingCategories.Wallet,
           label: disconnect ? 'disconnect' : 'connect',
           [TrackingEventParameters.ChainId]: `${account.chainId}`,
