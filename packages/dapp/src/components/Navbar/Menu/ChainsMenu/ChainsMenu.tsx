@@ -31,7 +31,7 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
       open
       setOpen={onOpenNavbarChainsMenu}
     >
-      {chains.length ? (
+      {chains?.length ? (
         chains.map((el, index) => (
           <MenuItemComponent
             key={`${el.label}-${index}`}

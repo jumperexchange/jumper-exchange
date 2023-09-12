@@ -1,13 +1,11 @@
-import { ExtendedChain } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
+import { useChainsStore } from '../stores/chains';
 
-export interface ChainProps {
-  chains: ExtendedChain[];
-  isSuccess: boolean;
-}
+export type ChainProps = void;
 
 export const useChains = (): ChainProps => {
-  const { data, isSuccess } = useQuery(
+  const [onChainsLoad] = useChainsStore((state) => [state.onChainsLoad]);
+  const { data } = useQuery(
     ['chainStats'],
     async () => {
       const apiUrl = import.meta.env.VITE_LIFI_API_URL;
@@ -20,8 +18,5 @@ export const useChains = (): ChainProps => {
       refetchInterval: 1000 * 60 * 60,
     },
   );
-  return {
-    chains: data?.chains ?? [],
-    isSuccess,
-  };
+  return onChainsLoad(data?.chains ?? []);
 };

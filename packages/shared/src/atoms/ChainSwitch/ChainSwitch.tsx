@@ -3,9 +3,9 @@ import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
-import { useChains } from '@transferto/dapp/src/hooks/useChains';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
+import { useChainsStore } from '@transferto/dapp/src/stores/chains';
 import { EventTrackingTool } from '@transferto/dapp/src/types';
 import type { MouseEventHandler } from 'react';
 import { useMemo } from 'react';
@@ -15,7 +15,7 @@ import { ButtonChainSwitch } from './ChainSwitch.style';
 export const ChainSwitch = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const { chains } = useChains();
+  const chains = useChainsStore((state) => state.chains);
   const { account } = useWallet();
 
   const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
@@ -23,7 +23,7 @@ export const ChainSwitch = () => {
   );
 
   const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
 

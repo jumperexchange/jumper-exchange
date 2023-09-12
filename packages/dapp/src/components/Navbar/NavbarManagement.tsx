@@ -4,9 +4,9 @@ import { WalletManagementButtons } from '@transferto/shared/src';
 import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useChains } from '../../hooks/useChains';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
+import { useChainsStore } from '../../stores/chains';
 import { ThemeSwitch } from '../ThemeSwitch';
 import {
   NavbarDropdownButton,
@@ -40,7 +40,7 @@ const NavbarManagement = () => {
     prevMainMenu.current = openMainNavbarMenu;
   }, [openMainNavbarMenu]);
 
-  const { isSuccess } = useChains();
+  const chains = useChainsStore((state) => state.chains);
 
   const handleOnOpenNavbarMainMenu = () => {
     onOpenNavbarMainMenu(!openMainNavbarMenu, mainMenuAnchor.current);
@@ -64,7 +64,7 @@ const NavbarManagement = () => {
             {t('navbar.connectWallet')}
           </Typography>
         }
-        isSuccess={isSuccess}
+        isSuccess={chains?.length > 0}
       />
       {account.isActive ? <ChainSwitch /> : null}
       <ThemeSwitch />

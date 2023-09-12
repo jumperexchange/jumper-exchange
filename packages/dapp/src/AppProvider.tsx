@@ -1,7 +1,7 @@
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { CssBaseline } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { BackgroundGradient } from './components/BackgroundGradient';
 import { queryClient } from './config/queryClient';
 import {
@@ -14,8 +14,8 @@ import {
 export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
+      <ChainsProvider />
       <I18NProvider>
-        <ChainsProvider />
         <ThemeProvider>
           <ArcxAnalyticsProvider
             apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}

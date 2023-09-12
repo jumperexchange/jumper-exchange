@@ -2,8 +2,8 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchDexsAndBridges } from '../../hooks';
-import { useChains } from '../../hooks/useChains';
 import { useCountUpAnimation } from '../../hooks/useCountUpAnimation';
+import { useChainsStore } from '../../stores/chains';
 import { StatsModal } from '../StatsModal/StatsModal';
 import { Card, Container } from './StatsCard.style';
 
@@ -96,7 +96,7 @@ export const StatsCards = ({
   setOpenDexsPopper,
 }: StatsCardsProps) => {
   const { data } = useFetchDexsAndBridges();
-  const { chains } = useChains();
+  const chains = useChainsStore((state) => state.chains);
   const { t } = useTranslation();
 
   const statsData: StatsDataProps[] = [
