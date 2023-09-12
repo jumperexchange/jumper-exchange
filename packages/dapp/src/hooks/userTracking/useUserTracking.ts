@@ -1,6 +1,5 @@
 import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { useCallback } from 'react';
-import ReactGA from 'react-ga4';
 import { hotjar } from 'react-hotjar';
 import {
   TrackingActions,
@@ -39,7 +38,7 @@ export function useUserTracking() {
           });
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        data && ReactGA.gtag('set', 'user_properties', data);
+        data && window.gtag('set', 'user_properties', data);
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         await arcx?.attribute({
@@ -88,16 +87,16 @@ export function useUserTracking() {
         !disableTrackingTool?.includes(EventTrackingTool.GA)
       ) {
         disconnect
-          ? ReactGA.gtag('set', 'user_properties', {
+          ? window.gtag('set', 'user_properties', {
               [TrackingUserProperties.Connected]: 'false',
             })
-          : ReactGA.gtag('set', 'user_properties', {
+          : window.gtag('set', 'user_properties', {
               [TrackingUserProperties.ChainId]: account.chainId,
               [TrackingUserProperties.Connected]: 'true',
               [TrackingUserProperties.HadConnected]: 'true',
             });
 
-        ReactGA.gtag('event', TrackingActions.ConnectWallet, {
+        window.gtag('event', TrackingActions.ConnectWallet, {
           category: TrackingCategories.Wallet,
           label: disconnect ? 'disconnect' : 'connect',
           [TrackingEventParameters.ChainId]: `${account.chainId}`,
@@ -134,22 +133,11 @@ export function useUserTracking() {
           hotjar.event(`${action}-${category}-${label ?? '-' + label}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.event(action, {
+        window.gtag('event', action, {
           category: category,
           label,
           ...data,
-          // value: 99, // optional, must be a number
-          // nonInteraction: true, // optional, true/false
-          // transport: "xhr", // optional, beacon/xhr/image
         });
-        /* 
-        Alternative usage:
-        ReactGA.gtag('event', action, {
-          category: category,
-          label,
-          ...data,
-          });
-        */
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         arcx?.event(action, {
@@ -188,7 +176,7 @@ export function useUserTracking() {
           : hotjar.event(`pageload${destination && '-' + destination}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.gtag('event', TrackingActions.PageLoad, {
+        window.gtag('event', TrackingActions.PageLoad, {
           category: pageload ? 'external' : 'internal',
           url,
           source,
@@ -238,7 +226,7 @@ export function useUserTracking() {
         hotjar.initialized() && hotjar.event(`${category}-${action}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.gtag('event', action, {
+        window.gtag('event', action, {
           category: category,
           ...data,
         });

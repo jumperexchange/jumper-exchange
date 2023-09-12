@@ -27,6 +27,7 @@ interface RaleonProps {
 declare global {
   interface Window {
     raleon: RaleonProps;
+    gtag: (...args: any[]) => void;
   }
 }
 
