@@ -8,7 +8,12 @@ import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { MenuKeys, TrackingActions, TrackingCategories } from '..';
+import {
+  MenuKeys,
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+} from '..';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
@@ -136,6 +141,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategories.Menu,
           label: 'open-support-modal',
           action: TrackingActions.OpenSupportModal,
+          data: { [TrackingEventParameters.SubMenu]: 'support_modal' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,

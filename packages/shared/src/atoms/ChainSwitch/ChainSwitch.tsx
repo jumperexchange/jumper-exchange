@@ -5,6 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 import {
   TrackingActions,
   TrackingCategories,
+  TrackingEventParameters,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useChains } from '@transferto/dapp/src/hooks/useChains';
@@ -39,6 +40,7 @@ export const ChainSwitch = () => {
       category: TrackingCategories.ChainsMenu,
       action: TrackingActions.OpenSubmenu,
       label: `click_open_chains_menu`,
+      data: { [TrackingEventParameters.SubMenu]: 'chains_menu' },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };

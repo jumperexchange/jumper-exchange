@@ -4,7 +4,11 @@ import { WalletManagementButtons } from '@transferto/shared/src';
 import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../../const';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+} from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useChains } from '../../hooks/useChains';
 import { useWallet } from '../../providers/WalletProvider';
@@ -52,6 +56,7 @@ const NavbarManagement = () => {
       category: TrackingCategories.Menu,
       action: TrackingActions.OpenSubmenu,
       label: `open_main_menu`,
+      data: { [TrackingEventParameters.SubMenu]: 'main_menu' },
       disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
     });
   };
