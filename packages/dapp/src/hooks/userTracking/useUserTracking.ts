@@ -137,7 +137,7 @@ export function useUserTracking() {
       if (
         !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
         account.isActive &&
-        !!account.address
+        account.address
       ) {
         window.raleon.registerEvent(
           `${category}`,

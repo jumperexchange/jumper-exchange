@@ -3,7 +3,6 @@ import {
   useDevelopersContent,
   useLanguagesContent,
   useMainMenuContent,
-  useShowcasesContent,
   useThemeContent,
 } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
@@ -19,7 +18,6 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const mainSubMenuTheme = useThemeContent();
   const mainSubMenuDevelopers = useDevelopersContent();
   const mainSubMenuLanguage = useLanguagesContent();
-  const mainSubMenuShowcases = useShowcasesContent();
   const [openMainNavbarMenu, onOpenNavbarMainMenu, openNavbarSubMenu] =
     useMenuStore((state) => [
       state.openMainNavbarMenu,
@@ -72,14 +70,6 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
         open={openNavbarSubMenu === MenuKeys.Devs}
         prevMenu={MenuKeys.None}
         subMenuList={mainSubMenuDevelopers}
-      />
-
-      <SubMenuComponent
-        label={t('navbar.developers.showcases')}
-        triggerSubMenu={MenuKeys.Showcases}
-        open={openNavbarSubMenu === MenuKeys.Showcases}
-        prevMenu={MenuKeys.Devs}
-        subMenuList={mainSubMenuShowcases}
       />
     </NavbarMenu>
   ) : null;
