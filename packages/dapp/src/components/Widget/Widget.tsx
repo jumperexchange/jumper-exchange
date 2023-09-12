@@ -70,15 +70,9 @@ export function Widget({ starterVariant }: WidgetProps) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          trackAttribute({
-            data: {
-              [TrackingUserProperties.Connected]: true,
-            },
-          });
-
           trackEvent({
             category: TrackingCategories.Widget,
-            action: TrackingActions.ConnectWallet,
+            action: TrackingActions.OpenWalletSelectMenu,
             label: 'click_connect_wallet',
             disableTrackingTool: [
               EventTrackingTool.ARCx,
@@ -100,7 +94,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.Disconnect,
-            label: 'disconnect_wallet',
+            label: 'click_disconnect_wallet',
             disableTrackingTool: [
               EventTrackingTool.ARCx,
               EventTrackingTool.Raleon,
@@ -109,14 +103,14 @@ export function Widget({ starterVariant }: WidgetProps) {
           disconnect();
         },
         switchChain: async (reqChainId: number) => {
-          await switchChain(reqChainId);
-          if (account.signer) {
+          window.gtag('event', '');
+          await switchChain(reqChainId).then(() => {
             trackEvent({
               category: TrackingCategories.Widget,
               action: TrackingActions.SwitchChain,
               label: `${reqChainId}`,
               data: {
-                [TrackingEventParameters.SwitchChain]: reqChainId,
+                [TrackingEventParameters.SwitchedChain]: reqChainId,
               },
               disableTrackingTool: [
                 EventTrackingTool.ARCx,
@@ -124,51 +118,56 @@ export function Widget({ starterVariant }: WidgetProps) {
               ],
               // transport: "xhr", // optional, beacon/xhr/image
             });
+          });
+          if (account.signer) {
             return account.signer!;
           } else {
             throw Error('No signer object after chain switch');
           }
         },
         addToken: async (token: Token, chainId: number) => {
-          trackAttribute({
-            data: {
-              [TrackingUserProperties.AddedToken]: true,
-            },
+          await addToken(chainId, token).then(() => {
+            trackAttribute({
+              data: {
+                [TrackingUserProperties.AddedToken]: true,
+              },
+            });
+            trackEvent({
+              category: TrackingCategories.Widget,
+              action: TrackingActions.AddToken,
+              label: `add_token_${token.name}`,
+              data: {
+                [TrackingEventParameters.TokenAdded]: `${token.name}`,
+                [TrackingEventParameters.TokenAddedChainId]: chainId,
+              },
+              disableTrackingTool: [
+                EventTrackingTool.ARCx,
+                EventTrackingTool.Raleon,
+              ],
+            });
           });
-          trackEvent({
-            category: TrackingCategories.Widget,
-            action: TrackingActions.AddToken,
-            label: `add_token_${token.name}`,
-            data: {
-              [TrackingEventParameters.TokenAdded]: `${token.name}`,
-              [TrackingEventParameters.TokenAddedChainId]: chainId,
-            },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
-          await addToken(chainId, token);
         },
         addChain: async (chainId: number) => {
-          trackAttribute({
-            data: {
-              [TrackingUserProperties.AddedChain]: true,
-            },
+          return addChain(chainId).then((data) => {
+            trackAttribute({
+              data: {
+                [TrackingUserProperties.AddedChain]: true,
+              },
+            });
+            trackEvent({
+              category: TrackingCategories.Widget,
+              action: TrackingActions.AddChain,
+              label: `add_chain_${chainId}`,
+              data: {
+                [TrackingEventParameters.ChainIdAdded]: `${chainId}`,
+              },
+              disableTrackingTool: [
+                EventTrackingTool.ARCx,
+                EventTrackingTool.Raleon,
+              ],
+            });
+            return data;
           });
-          trackEvent({
-            category: TrackingCategories.Widget,
-            action: TrackingActions.AddChain,
-            label: `add_chain_${chainId}`,
-            data: {
-              [TrackingEventParameters.ChainIdAdded]: `${chainId}`,
-            },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
-          return addChain(chainId);
         },
       },
       chains: {

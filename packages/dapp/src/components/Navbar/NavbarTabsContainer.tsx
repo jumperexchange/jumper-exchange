@@ -37,7 +37,7 @@ const NavbarTabsContainer = () => {
       trackEvent({
         category: TrackingCategories.Navigation,
         action: TrackingActions.SwitchTab,
-        label: tab,
+        label: `switch_tab_to_${tab}`,
         data: { [TrackingEventParameters.Tab]: tab },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });

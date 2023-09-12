@@ -59,14 +59,15 @@ export enum TrackingEventParameters {
   Tab = 'tab',
   PrevMenu = 'prev_menu',
   ChainId = 'chain_id',
+  ChainName = 'chain_name',
   ChainIdAdded = 'chain_added',
-  TokenAdded = 'token_added',
-  TokenAddedChainId = 'token_added_chain_id',
-  SwitchChain = 'switch_chain',
   SubMenu = 'submenu',
   StatsModal = 'stats_modal',
+  SwitchedChain = 'switched_chain',
   SwitchedTheme = 'switched_theme',
   SwitchedLanguage = 'switched_language',
+  TokenAdded = 'token_added',
+  TokenAddedChainId = 'token_added_chain_id',
   Wallet = 'wallet',
 
   // Transaction:
