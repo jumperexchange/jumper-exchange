@@ -2824,9 +2824,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "@lifi/wallet-management@npm:2.3.0"
+"@lifi/wallet-management@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "@lifi/wallet-management@npm:2.3.2"
   dependencies:
     "@coinbase/wallet-sdk": ^3.7.1
     "@ethersproject/abstract-signer": ^5.7.0
@@ -2839,13 +2839,13 @@ __metadata:
     "@walletconnect/modal": ^2.6.1
     events: ^3.3.0
     react: ^18.2.0
-  checksum: 0bd25e2f1a2dbd9a7edfd351215017db60c88f7217cc0e11ed4bd7b9966eec2d237b83feea6b22261a434e3b33e8adea7b2bb1dfd27dd7d12e06bb864a387fdc
+  checksum: dfd37a23ab5e9e390290a7b06aebdf55d6aa865c4d6bcccae02400830f2bc7b2a0130fc05d4e8c203ef3eb01b85aa977bd548d304a9a48b2cc45c7fe2f9a5ff2
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "@lifi/widget@npm:2.4.0"
+"@lifi/widget@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "@lifi/widget@npm:2.4.2"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -2854,7 +2854,7 @@ __metadata:
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.2.1
-    "@lifi/wallet-management": ^2.3.0
+    "@lifi/wallet-management": ^2.3.2
     "@mui/icons-material": ^5.14.1
     "@mui/lab": ^5.0.0-alpha.137
     "@mui/material": ^5.14.2
@@ -2881,7 +2881,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: b992ed478f04b96b370157c674ab682edd2680b170427f64d39bdf8c972e0d9938c5e9dea0af56a54bebe00608db75561f657a8e4d7266a9773a4ef8b852bccc
+  checksum: 171bb07346ed1d6c29e53fc9a75b6432e12e011d847e493578392b49366addf309c03b1e738c9b756fd9a3dcca3f4f0b8b1c27aec193e47f7c6e523e2324cd0a
   languageName: node
   linkType: hard
 
@@ -4677,8 +4677,8 @@ __metadata:
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.3.1
-    "@lifi/wallet-management": ^2.3.0
-    "@lifi/widget": ^2.4.0
+    "@lifi/wallet-management": ^2.3.2
+    "@lifi/widget": ^2.4.2
     "@mui/icons-material": ^5.14.8
     "@mui/material": ^5.14.8
     "@safe-global/safe-apps-sdk": ^8.1.0
@@ -4717,7 +4717,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@transferto/shared@workspace:packages/shared"
   dependencies:
-    "@lifi/wallet-management": ^2.3.0
+    "@lifi/wallet-management": ^2.3.2
     "@mui/icons-material": ^5.14.8
     "@mui/material": ^5.14.8
     "@types/node": ^20.6.0
