@@ -1,6 +1,6 @@
 import type { Signer } from '@ethersproject/abstract-signer';
 import { TokenAmount, TokenWithAmounts } from '@lifi/sdk';
-import { ChainId, ChainKey, Coin, Token } from '@lifi/types';
+import { Coin, Token } from '@lifi/types';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import BigNumber from 'bignumber.js';
@@ -64,7 +64,7 @@ export interface ChainsMenuListItem {
   showMoreIcon?: boolean;
   checkIcon?: boolean;
   onClick?: any;
-  chainId: ChainId;
+  chainId: number;
 }
 
 export interface ChainsMenuListItem {
@@ -80,10 +80,10 @@ export interface ChainsMenuListItem {
 }
 
 export interface SwapPageStartParams {
-  depositChain?: ChainKey;
+  depositChain?: string;
   depositToken?: string;
   depositAmount: BigNumber;
-  withdrawChain?: ChainKey;
+  withdrawChain?: string;
   withdrawToken?: string;
 }
 
@@ -98,15 +98,6 @@ export interface DataType {
   coin: Coin;
   portfolio: Amounts;
 }
-
-export function chainKeysToObject(val: any) {
-  const result: { [ChainKey: string]: any } = {};
-  for (const key in ChainKey) {
-    result[key.toLowerCase()] = JSON.parse(JSON.stringify(val));
-  }
-  return result;
-}
-
 export interface Wallet {
   address: string;
   loading: boolean;
