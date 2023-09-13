@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 export interface ChainProps {
   chains: ExtendedChain[];
   isSuccess: boolean;
+  getChainById: (id: number) => ExtendedChain;
 }
 
 export const useChains = (): ChainProps => {
@@ -20,7 +21,18 @@ export const useChains = (): ChainProps => {
       refetchInterval: 1000 * 60 * 60,
     },
   );
+
+  const getChainById = (id: number) => {
+    const filteredChain = data?.chains.find((el: any) => el.id === id);
+    if (filteredChain) {
+      return filteredChain;
+    } else {
+      throw Error(`ChainID ${id} is not available`);
+    }
+  };
+
   return {
+    getChainById: getChainById,
     chains: data?.chains ?? [],
     isSuccess,
   };
