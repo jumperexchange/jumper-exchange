@@ -1,6 +1,6 @@
 import type { ChainId } from '@lifi/types';
 export interface MultisigProps {
-  destinationChain?: number;
+  destinationChain?: ChainId;
 }
 export interface MultisigState extends MultisigProps {
   // Destination Chain
