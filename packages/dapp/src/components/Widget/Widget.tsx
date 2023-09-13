@@ -9,7 +9,6 @@ import {
   TrackingActions,
   TrackingCategories,
   TrackingEventParameters,
-  TrackingUserProperties,
 } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
@@ -86,11 +85,6 @@ export function Widget({ starterVariant }: WidgetProps) {
           return account.signer!;
         },
         disconnect: async () => {
-          trackAttribute({
-            data: {
-              [TrackingUserProperties.Connected]: false,
-            },
-          });
           trackEvent({
             category: TrackingCategories.Widget,
             action: TrackingActions.Disconnect,
@@ -127,11 +121,6 @@ export function Widget({ starterVariant }: WidgetProps) {
         },
         addToken: async (token: Token, chainId: number) => {
           await addToken(chainId, token).then(() => {
-            trackAttribute({
-              data: {
-                [TrackingUserProperties.AddedToken]: true,
-              },
-            });
             trackEvent({
               category: TrackingCategories.Widget,
               action: TrackingActions.AddToken,
@@ -149,11 +138,6 @@ export function Widget({ starterVariant }: WidgetProps) {
         },
         addChain: async (chainId: number) => {
           return addChain(chainId).then((data) => {
-            trackAttribute({
-              data: {
-                [TrackingUserProperties.AddedChain]: true,
-              },
-            });
             trackEvent({
               category: TrackingCategories.Widget,
               action: TrackingActions.AddChain,
@@ -232,7 +216,6 @@ export function Widget({ starterVariant }: WidgetProps) {
     theme.palette.accent1.main,
     theme.palette.grey,
     isMultisigSigner,
-    trackAttribute,
     trackEvent,
     onOpenNavbarWalletSelectMenu,
     disconnect,

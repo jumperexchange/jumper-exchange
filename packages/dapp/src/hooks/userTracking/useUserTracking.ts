@@ -5,7 +5,6 @@ import {
   TrackingActions,
   TrackingCategories,
   TrackingEventParameters,
-  TrackingUserProperties,
 } from '../../const';
 import { useWallet } from '../../providers/WalletProvider';
 import {
@@ -68,7 +67,7 @@ export function useUserTracking() {
       ) {
         !disconnect &&
           hotjar.identify(account.address, {
-            [TrackingUserProperties.ChainId]: account.chainId,
+            [TrackingEventParameters.ChainId]: account.chainId,
             ...data,
           });
         hotjar.initialized() &&
@@ -86,24 +85,10 @@ export function useUserTracking() {
         !!account.address &&
         !disableTrackingTool?.includes(EventTrackingTool.GA)
       ) {
-        disconnect
-          ? window.gtag('set', 'user_properties', {
-              [TrackingUserProperties.Connected]: 'false',
-            })
-          : window.gtag('set', 'user_properties', {
-              [TrackingUserProperties.ChainId]: account.chainId,
-              [TrackingUserProperties.Wallet]: data!.wallet,
-              [TrackingUserProperties.Connected]: 'true',
-              [TrackingUserProperties.HadConnected]: 'true',
-            });
-        const preConfigData = data?.wallet
-          ? { wallet: data.wallet }
-          : undefined;
         window.gtag('event', TrackingActions.ConnectWallet, {
-          ...preConfigData,
           category: TrackingCategories.Wallet,
           label: disconnect ? 'disconnect' : 'connect',
-          [TrackingEventParameters.ChainId]: `${account.chainId}`,
+          ...data,
         });
       }
       if (

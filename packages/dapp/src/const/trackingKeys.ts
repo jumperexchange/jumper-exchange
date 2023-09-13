@@ -1,3 +1,7 @@
+/*
+  Name of an action that a user makes on the site. 
+  GA: in GA this is the name of the even that is fired
+*/
 export enum TrackingActions {
   // Widget
   AddChain = 'add_chain',
@@ -6,7 +10,7 @@ export enum TrackingActions {
   // WalletMenu
   ConnectWallet = 'connect_wallet',
   CopyAddressToClipboard = 'copy_addr_to_clipboard',
-  Disconnect = 'disconnect',
+  Disconnect = 'disconnect_wallet',
   SwitchChain = 'switch_chain',
 
   // Widget
@@ -14,7 +18,7 @@ export enum TrackingActions {
   OnRouteExecutionCompleted = 'on_route_exec_completed',
   OnRouteExecutionFailed = 'on_route_exec_failed',
   OnRouteExecutionUpdated = 'on_route_exec_updated',
-  OnRouteHighValueLoss = 'on_route_high_vloss',
+  OnRouteHighValueLoss = 'on_route_high_value_loss',
 
   // Welcome_Screen
   EnterWelcomeScreen = 'enter_welcome_screen',
@@ -71,49 +75,30 @@ export enum TrackingEventParameters {
   Wallet = 'wallet',
 
   // Transaction:
-  RouteId = 'route_id',
-  Steps = 'steps',
-  FromToken = 'from_token',
-  FromChainId = 'from_chain_id',
-  ToToken = 'to_token',
-  Timestamp = 'timestamp',
-  SubStatus = 'substatus',
-  Status = 'status',
-  Error = 'error',
-  Message = 'message',
-  GasCostUSD = 'gas_cost_usd',
-  TxHash = 'tx_hash',
-  TxLink = 'tx_link',
-  ToChainId = 'to_chain_id',
-  FromAmount = 'from_amount',
-  ToAmount = 'to_amount',
-  ToAmountUSD = 'to_amount_usd',
-  ToAmountMin = 'to_amount_min',
-  FromAmountUSD = 'from_amount_usd',
-  Variant = 'variant',
-  Type = 'type',
-  ErrorCode = 'error_code',
-  ErrorMessage = 'error_message',
-  InsuranceState = 'insurance_state',
-  InsuranceFeeAmountUSD = 'insurance_fee_amount_usd',
-  ValueLoss = 'value_loss',
-}
-
-// can be used as user_properties
-export enum TrackingUserProperties {
-  AddedToken = 'added_token',
-  AddedChain = 'added_chain',
-  ChainId = 'chain_id',
-  Connected = 'connected',
-  HadEnteredWelcomeScreen = 'had_entered_welcome_screen',
-  HadConnected = 'had_connected',
-  HadAcceptedHighValueLoss = 'had_accepted_hv_loss',
-  HadFailure = 'had_failure',
-  HadSuccessfulTx = 'had_succesful_tx',
-  Theme = 'theme',
-  DefaultTheme = 'default_system_theme',
-  Language = 'language',
-  DefaultLanguage = 'default_system_language',
-  StatsModal = 'stats_modal',
-  Wallet = 'wallet',
+  RouteId = 'event_route_id',
+  Steps = 'event_steps',
+  FromToken = 'event_from_token',
+  FromChainId = 'event_from_chain_id',
+  ToToken = 'event_to_token',
+  Timestamp = 'event_timestamp',
+  SubStatus = 'event_substatus',
+  Status = 'event_status',
+  Error = 'event_error',
+  Message = 'event_message',
+  GasCostUSD = 'event_gas_cost_usd',
+  TxHash = 'event_tx_hash',
+  TxLink = 'event_tx_link',
+  ToChainId = 'event_to_chain_id',
+  FromAmount = 'event_from_amount',
+  ToAmount = 'event_to_amount',
+  ToAmountUSD = 'event_to_amount_usd',
+  ToAmountMin = 'event_to_amount_min',
+  FromAmountUSD = 'event_from_amount_usd',
+  Variant = 'event_variant',
+  Type = 'event_type',
+  ErrorCode = 'event_error_code',
+  ErrorMessage = 'event_error_message',
+  InsuranceState = 'event_insurance_state',
+  InsuranceFeeAmountUSD = 'event_insurance_fee_amount_usd',
+  ValueLoss = 'event_value_loss',
 }

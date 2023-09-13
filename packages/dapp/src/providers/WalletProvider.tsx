@@ -97,7 +97,13 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const connect = useCallback(async (wallet: Wallet) => {
     await liFiWalletManagement.connect(wallet);
     wallet.on('walletAccountChanged', handleWalletUpdate);
-
+    trackConnectWallet({
+      account: account,
+      disconnect: false,
+      data: {
+        wallet: wallet.name,
+      },
+    });
     handleWalletUpdate(wallet);
   }, []);
 
@@ -148,29 +154,29 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     },
     [currentWallet],
   );
-
-  useEffect(() => {
-    console.log('Account data changed');
-    const data = currentWallet ? { wallet: currentWallet.name } : undefined;
-    trackConnectWallet({
-      account: account,
-      disconnect: false,
-      data: {
-        ...data,
-        ...{
-          account: account.address as string,
-          chain: account.chainId as ChainId,
-        },
-      },
-    });
-  }, [
-    account,
-    account.signer,
-    account.address,
-    account.chainId,
-    trackConnectWallet,
-    currentWallet,
-  ]);
+  // TODO: remove after refactor
+  // useEffect(() => {
+  //   console.log('Account data changed');
+  //   const data = currentWallet ? { wallet: currentWallet.name } : undefined;
+  //   trackConnectWallet({
+  //     account: account,
+  //     disconnect: false,
+  //     data: {
+  //       ...data,
+  //       ...{
+  //         account: account.address as string,
+  //         chain: account.chainId as ChainId,
+  //       },
+  //     },
+  //   });
+  // }, [
+  //   account,
+  //   account.signer,
+  //   account.address,
+  //   account.chainId,
+  //   trackConnectWallet,
+  //   currentWallet,
+  // ]);
 
   const value = useMemo(
     () => ({
