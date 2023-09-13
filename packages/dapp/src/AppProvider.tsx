@@ -1,12 +1,18 @@
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { CssBaseline } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import type { PropsWithChildren } from 'react';
 import { BackgroundGradient } from './components/BackgroundGradient';
-import { queryClient } from './config/queryClient';
+import { localStoragePersister, queryClient } from './config/queryClient';
 import { I18NProvider, ThemeProvider, WalletProvider } from './providers';
 
 export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+  persistQueryClient({
+    queryClient,
+    persister: localStoragePersister,
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
       <I18NProvider>
