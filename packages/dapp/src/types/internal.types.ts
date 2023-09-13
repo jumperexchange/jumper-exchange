@@ -1,3 +1,4 @@
+import { ChainId } from '@lifi/types';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import 'react-i18next';
 import { MenuKeys } from '../const';
@@ -55,7 +56,7 @@ export interface ChainsMenuListItem {
   showMoreIcon?: boolean;
   checkIcon?: boolean;
   onClick?: any;
-  chainId: number;
+  chainId: ChainId;
 }
 
 export interface ChainsMenuListItem {

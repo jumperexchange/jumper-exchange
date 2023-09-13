@@ -1,10 +1,10 @@
-import { ExtendedChain } from '@lifi/types';
+import { Chain, ChainId, ExtendedChain } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
 
 export interface ChainProps {
   chains: ExtendedChain[];
   isSuccess: boolean;
-  getChainById: (id: number) => ExtendedChain;
+  getChainById: (id: ChainId) => ExtendedChain;
 }
 
 export const useChains = (): ChainProps => {
@@ -22,8 +22,8 @@ export const useChains = (): ChainProps => {
     },
   );
 
-  const getChainById = (id: number) => {
-    const filteredChain = data?.chains.find((el: any) => el.id === id);
+  const getChainById = (id: ChainId) => {
+    const filteredChain = data?.chains.find((el: Chain) => el.id === id);
     if (filteredChain) {
       return filteredChain;
     } else {
