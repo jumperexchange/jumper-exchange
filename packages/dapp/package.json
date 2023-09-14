@@ -37,7 +37,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@lerna/run": "^6.6.2",
-    "@lifi/types": "^9.0.0-alpha",
+    "@lifi/types": "^8.7.0",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.4",
