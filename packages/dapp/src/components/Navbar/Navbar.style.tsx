@@ -234,7 +234,6 @@ export const NavbarTab = styled(Tab, {
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  fontFamily: 'Inter',
   fontStyle: 'normal',
   fontWeight: '700',
   fontSize: '16px',

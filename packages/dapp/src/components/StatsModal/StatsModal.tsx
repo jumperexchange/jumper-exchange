@@ -44,7 +44,6 @@ export const StatsModal = ({ title, open, setOpen, data }: NavbarMenuProps) => {
             variant={'lifiHeaderXSmall'}
             component="h3"
             sx={{
-              fontFamily: 'Inter',
               fontStyle: 'normal',
               fontWeight: '700',
               fontSize: '18px',

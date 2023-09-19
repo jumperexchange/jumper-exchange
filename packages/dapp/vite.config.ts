@@ -1,10 +1,24 @@
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import react from '@vitejs/plugin-react';
+import { FontaineTransform } from 'fontaine';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    FontaineTransform.vite({
+      fallbacks: [
+        'BlinkMacSystemFont',
+        'Segoe UI',
+        'Helvetica Neue',
+        'Arial',
+        'Noto Sans',
+        'sans-serif'
+      ],
+      resolvePath: id => new URL('.' + id, import.meta.url),
+    }),
+    react(),
+  ],
   esbuild: {
     target: 'esnext',
   },
