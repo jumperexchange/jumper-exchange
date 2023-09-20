@@ -23,7 +23,7 @@ interface NavbarMenuProps {
   children: any;
 }
 
-const NavbarMenuDesktop = ({
+export const NavbarMenuDesktop = ({
   isOpenSubMenu,
   setOpen,
   handleClose,
@@ -126,5 +126,3 @@ const NavbarMenuDesktop = ({
     )
   );
 };
-
-export default NavbarMenuDesktop;

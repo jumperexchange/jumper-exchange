@@ -20,7 +20,7 @@ interface MenuItemProps {
   checkIcon?: boolean;
 }
 
-const MenuItemComponent = ({
+export const MenuItemComponent = ({
   open,
   showButton,
   autoFocus,
@@ -123,5 +123,3 @@ const MenuItemComponent = ({
     </MenuItem>
   ) : null;
 };
-
-export default MenuItemComponent;

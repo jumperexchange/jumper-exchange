@@ -13,7 +13,7 @@ import {
   NavbarManagement as NavbarManagementContainer,
 } from './Navbar.style';
 
-const NavbarManagement = () => {
+export const NavbarManagement = () => {
   const mainMenuAnchor = useRef<any>(null);
 
   const onWalletDisconnect = useSettingsStore(
@@ -86,5 +86,3 @@ const NavbarManagement = () => {
     </NavbarManagementContainer>
   );
 };
-
-export default NavbarManagement;

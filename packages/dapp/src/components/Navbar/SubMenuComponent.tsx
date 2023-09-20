@@ -31,7 +31,7 @@ interface NavbarSubMenuProps {
   triggerSubMenu: MenuKeys;
 }
 
-const SubMenuComponent = ({
+export const SubMenuComponent = ({
   open,
   prevMenu,
   label,
@@ -157,5 +157,3 @@ const SubMenuComponent = ({
     </NavbarPaper>
   ) : null;
 };
-
-export default SubMenuComponent;

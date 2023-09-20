@@ -6,7 +6,7 @@ import { useChainsContent } from '@transferto/dapp/src/const';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
-import MenuItemComponent from '../../MenuItemComponent';
+import { MenuItemComponent } from '../../MenuItemComponent';
 import { NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {

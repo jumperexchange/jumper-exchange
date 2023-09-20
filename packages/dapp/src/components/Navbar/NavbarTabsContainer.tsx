@@ -16,7 +16,7 @@ function a11yProps(index: number) {
   };
 }
 
-const NavbarTabsContainer = () => {
+export const NavbarTabsContainer = () => {
   const theme = useTheme();
   const { t } = useTranslation();
   const { activeTab, setActiveTab } = useActiveTabStore();
@@ -124,5 +124,3 @@ const NavbarTabsContainer = () => {
     </NavbarTabs>
   );
 };
-
-export default NavbarTabsContainer;

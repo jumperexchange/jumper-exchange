@@ -12,7 +12,7 @@ interface NavbarMenuProps {
   children: any;
 }
 
-const NavbarMenu = ({
+export const NavbarMenu = ({
   handleClose,
   open,
   setOpen,
@@ -51,5 +51,3 @@ const NavbarMenu = ({
     ))
   );
 };
-
-export default NavbarMenu;

@@ -22,7 +22,7 @@ interface NavbarMenuProps {
   children: any;
 }
 
-const NavbarMenuMobile = ({
+export const NavbarMenuMobile = ({
   handleClose,
   open,
   setOpen,
@@ -109,5 +109,3 @@ const NavbarMenuMobile = ({
     )
   );
 };
-
-export default NavbarMenuMobile;

@@ -4,7 +4,8 @@ import { useWallet } from '../../providers/WalletProvider';
 import { useSettingsStore } from '../../stores';
 import { NavbarBrandContainer, NavbarContainer } from './Navbar.style';
 import { NavbarManagement, NavbarTabsContainer } from './index';
-const Navbar = () => {
+
+export const Navbar = () => {
   const theme = useTheme();
   const { account } = useWallet();
   const [onWelcomeScreenEntered] = useSettingsStore((state) => [
@@ -25,5 +26,3 @@ const Navbar = () => {
     </NavbarContainer>
   );
 };
-
-export default Navbar;
