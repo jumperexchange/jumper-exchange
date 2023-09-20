@@ -3,7 +3,7 @@ import { Typography, useTheme } from '@mui/material';
 import {
   WarningMessageCard,
   WarningMessageCardTitle,
-} from '@transferto/shared/src/organisms';
+} from '@transferto/shared';
 import { useTranslation } from 'react-i18next';
 import { ButtonTransparent } from '../../atoms';
 import { openInNewTab } from '../../utils';

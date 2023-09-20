@@ -2,7 +2,7 @@ import { ChainId, Token } from '@lifi/sdk';
 import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { MenuState } from '@transferto/shared/src/types';
+import { MenuState } from '@transferto/shared';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingActions, TrackingCategories } from '../../const';

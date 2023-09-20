@@ -21,10 +21,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ButtonSecondary } from '@transferto/shared/src/atoms/index';
+import { ButtonSecondary } from '@transferto/shared';
 
 import { Breakpoint, alpha, styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from '@transferto/shared/src/utils';
+import { getContrastAlphaColor } from '@transferto/shared';
 import { ElementType } from 'react';
 
 const MenuLabelHeight = '64px';

@@ -16,10 +16,7 @@ import React, {
   useState,
 } from 'react';
 
-import {
-  WalletAccount,
-  WalletContextProps,
-} from '@transferto/shared/src/types/wallet';
+import { WalletAccount, WalletContextProps } from '@transferto/shared';
 import { useUserTracking } from '../hooks';
 import { useMultisig } from '../hooks/useMultisig';
 

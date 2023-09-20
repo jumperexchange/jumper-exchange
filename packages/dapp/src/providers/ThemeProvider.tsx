@@ -1,6 +1,6 @@
 import { useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { darkTheme, lightTheme } from '@transferto/shared/src/theme';
+import { darkTheme, lightTheme } from '@transferto/shared';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { useSettingsStore } from '../stores';
 

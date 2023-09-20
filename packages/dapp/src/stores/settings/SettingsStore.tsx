@@ -3,14 +3,14 @@ import { persist } from 'zustand/middleware';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 // config
-import { defaultLang, defaultSettings } from '@transferto/shared/src';
+import { defaultLang, defaultSettings } from '@transferto/shared';
 // @type
 import type {
   SettingsProps,
   SettingsState,
   ThemeModesSupported,
   WalletConnected,
-} from '@transferto/shared/src/types/settings';
+} from '@transferto/shared';
 import i18next from 'i18next';
 import { shallow } from 'zustand/shallow';
 import { LanguageKey } from '../../types';

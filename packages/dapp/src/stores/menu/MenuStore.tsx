@@ -1,4 +1,4 @@
-import { MenuState } from '@transferto/shared/src/types';
+import { MenuState } from '@transferto/shared';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { MenuKeys } from '../../const';

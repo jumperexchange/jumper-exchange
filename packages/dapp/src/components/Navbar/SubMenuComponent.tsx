@@ -3,7 +3,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
+import { ButtonBackArrow } from '@transferto/shared';
 import { KeyboardEvent } from 'react';
 import { MenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';

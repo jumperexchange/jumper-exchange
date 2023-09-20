@@ -1,5 +1,5 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
-import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
+import { ButtonPrimary } from '@transferto/shared';
 import { PropsWithChildren, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { StatsCards } from '../StatsCard';

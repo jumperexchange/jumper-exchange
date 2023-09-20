@@ -1,6 +1,6 @@
 import { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
-import { TestnetAlert } from '@transferto/shared/src';
+import { TestnetAlert } from '@transferto/shared';
 import {
   MouseEventHandler,
   useCallback,

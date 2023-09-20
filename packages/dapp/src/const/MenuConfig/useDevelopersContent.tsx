@@ -1,7 +1,7 @@
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
-import { openInNewTab } from '@transferto/shared/src/utils/';
+import { openInNewTab } from '@transferto/shared';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';

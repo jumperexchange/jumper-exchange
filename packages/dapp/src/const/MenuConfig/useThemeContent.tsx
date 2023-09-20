@@ -4,7 +4,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
-import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
+import { ThemeModesSupported } from '@transferto/shared';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';

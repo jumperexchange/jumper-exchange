@@ -1,7 +1,7 @@
 import IconButton from '@mui/material/IconButton';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from '@transferto/shared/src/utils';
+import { getContrastAlphaColor } from '@transferto/shared';
 
 export const ButtonThemeSwitch = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary,

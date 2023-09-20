@@ -1,5 +1,5 @@
 import { useTheme } from '@mui/material/styles';
-import { BrandLogo } from '@transferto/shared/src/atoms/illustrations';
+import { BrandLogo } from '@transferto/shared';
 import { useWallet } from '../../providers/WalletProvider';
 import { useSettingsStore } from '../../stores';
 import { NavbarBrandContainer, NavbarContainer } from './Navbar.style';

@@ -1,4 +1,4 @@
-import { MultisigState } from '@transferto/shared/src';
+import { MultisigState } from '@transferto/shared';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 

@@ -1,7 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
-import { WalletManagementButtons } from '@transferto/shared/src';
-import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
+import { ChainSwitch, WalletManagementButtons } from '@transferto/shared';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useChains } from '../../hooks/useChains';
