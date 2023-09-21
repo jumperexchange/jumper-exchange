@@ -1,6 +1,6 @@
 import type { Signer } from '@ethersproject/abstract-signer';
 import { TokenAmount, TokenWithAmounts } from '@lifi/sdk';
-import { ChainId, ChainKey, Coin, Token } from '@lifi/types';
+import { ChainId, ChainKey, Token } from '@lifi/types';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import BigNumber from 'bignumber.js';
@@ -90,13 +90,6 @@ export interface SwapPageStartParams {
 export interface Amounts {
   amount_coin: BigNumber;
   amount_usd: BigNumber;
-}
-
-export interface DataType {
-  [key: string]: string | number | Amounts | Coin; // kind of deactivating typing for DataType; last resort?
-  key: React.Key;
-  coin: Coin;
-  portfolio: Amounts;
 }
 
 export function chainKeysToObject(val: any) {

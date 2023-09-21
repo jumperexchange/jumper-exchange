@@ -18,7 +18,7 @@
     "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
   },
   "dependencies": {
-    "@lifi/wallet-management": "^2.3.3",
+    "@lifi/wallet-management": "^2.3.4",
     "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.10",
     "i18next": "^23.5.1",
