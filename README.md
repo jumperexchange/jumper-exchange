@@ -8,8 +8,7 @@
 
 # Jumper.Exchange
 
-Lerna Monorepo for all jumper.exchange related things
-
+This is the official Jumper.Exchange dapp that gets deployed to `develop.jumper.exchange`, `staging.jumper.exchange` and `jumper.exchange`. This is a vite.js app
 ## Getting Started
 
 In the root directory run the following commands to get started:
@@ -36,16 +35,3 @@ Please refer to the following descriptions of the dev serve scripts:
     dev:staging - starts the app using the backend staging stage
     dev:production - starts the app using the backend production stage
 
-## Project Structure
-
-### packages/dapp/
-
-This is the jumper.exchange page that gets deployed to `develop.jumper.exchange`, `staging.jumper.exchange` and `jumper.exchange`. This is a vite.js app
-
-### packages/shared/
-
-This is a collection of shared atoms/molecules/organisms that can be used across the entire project to ensure a unified UI/UX
-
-### packages/<other_folders>
-
-NOT EXISTING YET. Sub-apps of the transferto page. These componentized sub-apps will be resuable accross this project and could also be used in different external projects.

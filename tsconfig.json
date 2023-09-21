@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "baseUrl": ".",
+    "baseUrl": "src",
+    "incremental": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -18,6 +19,69 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES6",
+    "paths": {
+      "src/*": [
+        "./*"
+      ],
+      // We define this path for all files/folders inside
+      // components folder:
+      "components/*": [
+        "components/*"
+      ],
+      // We define this path for the index.ts file inside the
+      // components folder:
+      "components": [
+        "components"
+      ],
+      "assets/*": [
+        "assets/*"
+      ],
+      "assets": [
+        "assets"
+      ],
+      "config/*": [
+        "config/*"
+      ],
+      "config": [
+        "config"
+      ],
+      "const/*": [
+        "const/*"
+      ],
+      "const": [
+        "const"
+      ],
+      "stores/*": [
+        "stores/*"
+      ],
+      "stores": [
+        "stores"
+      ],
+      "hooks/*": [
+        "hooks/*"
+      ],
+      "hooks": [
+        "hooks"
+      ],
+      "providers/*": [
+        "providers/*"
+      ],
+      "providers": [
+        "providers"
+      ],
+      "types/*": [
+        "types/*"
+      ],
+      "types": [
+        "types"
+      ]
+      // "i18n/*": [
+      //   "i18n/*"
+      // ],
+      // "i18n": [
+      //   "i18n"
+      // ]
+    },
   },
   "plugins": [
     "import"
@@ -47,6 +111,7 @@
   ],
   "include": [
     "next-env.d.ts",
+    "env.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ]
