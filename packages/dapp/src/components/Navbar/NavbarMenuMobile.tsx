@@ -11,7 +11,7 @@ import {
   NavbarMenuList,
   NavbarPaper,
   NavbarPopper,
-} from './Navbar.style';
+} from '.';
 
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;

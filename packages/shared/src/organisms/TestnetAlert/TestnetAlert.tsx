@@ -1,12 +1,12 @@
+import { ButtonTransparent } from '@atoms';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { Typography, useTheme } from '@mui/material';
 import {
   WarningMessageCard,
   WarningMessageCardTitle,
 } from '@transferto/shared';
+import { openInNewTab } from '@utils';
 import { useTranslation } from 'react-i18next';
-import { ButtonTransparent } from '../../atoms';
-import { openInNewTab } from '../../utils';
 
 const PROD_URL = 'https://jumper.exchange';
 

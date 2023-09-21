@@ -1,6 +1,6 @@
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { NavbarMenuDesktop, NavbarMenuMobile } from './index';
+import { NavbarMenuDesktop, NavbarMenuMobile } from '.';
 
 interface NavbarMenuProps {
   isOpenSubMenu?: boolean;

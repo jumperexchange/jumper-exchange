@@ -8,7 +8,7 @@ import { useUserTracking } from 'hooks';
 import { useTranslation } from 'react-i18next';
 import { useActiveTabStore } from 'stores';
 import { EventTrackingTool } from 'types';
-import { NavbarTab, NavbarTabs } from './Navbar.style';
+import { NavbarTab, NavbarTabs } from '.';
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,

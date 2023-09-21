@@ -1,1 +1,2 @@
-export { ButtonBackArrow } from './ButtonArrowBack';
+export * from './ButtonArrowBack';
+export * from './ButtonArrowBack.style';

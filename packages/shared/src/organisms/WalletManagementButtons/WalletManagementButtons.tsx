@@ -1,3 +1,4 @@
+import { ButtonPrimary, ButtonSecondary } from '@atoms';
 import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
@@ -8,10 +9,9 @@ import {
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { EventTrackingTool } from '@transferto/dapp/src/types';
+import { walletDigest } from '@utils';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
-import { ButtonPrimary, ButtonSecondary } from '../../atoms';
-import { walletDigest } from '../../utils/walletDigest';
 
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;

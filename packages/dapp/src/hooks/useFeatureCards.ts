@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { FeatureCardsResponseType } from '../types';
+import { FeatureCardsResponseType } from 'types';
 
 export interface UseFeatureCardsProps {
   featureCards: FeatureCardsResponseType | undefined;

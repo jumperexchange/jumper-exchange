@@ -1,9 +1,9 @@
 import { TrackingActions, TrackingCategories } from 'const';
 import { useUserTracking } from 'hooks';
+import * as supportedLanguages from 'i18n';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from 'stores';
 import { EventTrackingTool, LanguageKey } from 'types';
-import * as supportedLanguages from '../../i18n';
 export const useLanguagesContent = () => {
   const { i18n, t } = useTranslation();
   const [languageMode, onChangeLanguage] = useSettingsStore((state) => [

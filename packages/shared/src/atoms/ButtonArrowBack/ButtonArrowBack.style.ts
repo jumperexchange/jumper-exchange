@@ -1,5 +1,5 @@
 import { IconButton, styled } from '@mui/material';
-import { getContrastAlphaColor } from '../../utils';
+import { getContrastAlphaColor } from '@utils';
 
 export const ButtonBackArrowWrapper = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary,

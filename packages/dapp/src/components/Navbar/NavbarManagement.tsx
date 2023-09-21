@@ -1,16 +1,17 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
-import { ChainSwitch, WalletManagementButtons } from '@transferto/shared';
-import { ThemeSwitch } from 'components';
+import { WalletManagementButtons } from '@transferto/shared';
+import {
+  ChainSwitch,
+  NavbarDropdownButton,
+  NavbarManagementContainer,
+  ThemeSwitch,
+} from 'components';
 import { useChains } from 'hooks';
 import { useWallet } from 'providers';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMenuStore, useSettingsStore } from 'stores';
-import {
-  NavbarDropdownButton,
-  NavbarManagementContainer,
-} from './Navbar.style';
 
 export const NavbarManagement = () => {
   const mainMenuAnchor = useRef<any>(null);

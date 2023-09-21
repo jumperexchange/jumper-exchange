@@ -1,4 +1,5 @@
 export * from './BackgroundGradient';
+export * from './ChainSwitch';
 export * from './FeatureCards';
 export * from './Navbar';
 export * from './OnRamper';

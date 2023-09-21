@@ -1,6 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from '../../utils';
+import { getContrastAlphaColor } from '@transferto/shared';
 
 export const ButtonChainSwitch = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary,

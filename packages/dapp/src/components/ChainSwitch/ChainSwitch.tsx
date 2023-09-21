@@ -2,15 +2,14 @@ import type { Chain } from '@lifi/types';
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import { useUserTracking } from '@transferto/dapp/src/hooks';
-import { useChains } from '@transferto/dapp/src/hooks/useChains';
-import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
-import { useMenuStore } from '@transferto/dapp/src/stores';
-import { EventTrackingTool } from '@transferto/dapp/src/types';
+import { useChains, useUserTracking } from 'hooks';
+import { useWallet } from 'providers';
 import type { MouseEventHandler } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonChainSwitch } from './ChainSwitch.style';
+import { useMenuStore } from 'stores';
+import { EventTrackingTool } from 'types';
+import { ButtonChainSwitch } from './';
 
 export const ChainSwitch = () => {
   const { t } = useTranslation();

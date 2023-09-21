@@ -2,7 +2,7 @@ import { useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { darkTheme, lightTheme } from '@transferto/shared';
 import React, { PropsWithChildren, useMemo } from 'react';
-import { useSettingsStore } from '../stores';
+import { useSettingsStore } from 'stores';
 
 export const useDetectDarkModePreference = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);

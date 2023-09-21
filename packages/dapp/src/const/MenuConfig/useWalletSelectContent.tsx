@@ -1,11 +1,11 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
+import { TrackingActions, TrackingCategories } from 'const';
 import { useMultisig, useUserTracking } from 'hooks';
 import { useWallet } from 'providers';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMenuStore, useSettingsStore } from 'stores';
 import { EventTrackingTool, MenuListItem } from 'types';
-import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();

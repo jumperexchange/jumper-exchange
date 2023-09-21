@@ -10,9 +10,9 @@ import SafeAppsSDK, {
   GatewayTransactionDetails,
   TransactionStatus,
 } from '@safe-global/safe-apps-sdk';
-import { useWallet } from '../providers/WalletProvider';
-import { useMultisigStore } from '../stores';
-import { MultisigWidgetConfig } from '../types';
+import { useWallet } from 'providers';
+import { useMultisigStore } from 'stores';
+import { MultisigWidgetConfig } from 'types';
 
 export const useMultisig = () => {
   const { account } = useWallet();

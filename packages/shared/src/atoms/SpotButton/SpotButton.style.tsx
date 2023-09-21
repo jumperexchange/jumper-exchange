@@ -2,7 +2,7 @@ import type { IconButtonProps } from '@mui/material';
 import { IconButton } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { darken, styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from '../../utils';
+import { getContrastAlphaColor } from '@utils';
 
 export interface SpotButtonProps extends Omit<IconButtonProps, 'variant'> {
   variant?: string;

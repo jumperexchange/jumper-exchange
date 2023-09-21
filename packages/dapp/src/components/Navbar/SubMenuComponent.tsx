@@ -17,7 +17,7 @@ import {
   MenuItemLabel,
   MenuLinkItem,
   NavbarPaper,
-} from './Navbar.style';
+} from '.';
 
 interface NavbarSubMenuProps {
   open: boolean;

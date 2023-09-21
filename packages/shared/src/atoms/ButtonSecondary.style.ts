@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from '../utils';
-import { ButtonBase } from './ButtonBase.style';
+import { getContrastAlphaColor } from '@utils';
+import { ButtonBase } from '.';
 
 export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
   color:
