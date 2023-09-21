@@ -1,8 +1,8 @@
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
 import { CssBaseline } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { BackgroundGradient } from 'components';
 import type { PropsWithChildren } from 'react';
-import { BackgroundGradient } from './components/BackgroundGradient';
 import { queryClient } from './config/queryClient';
 import { I18NProvider, ThemeProvider, WalletProvider } from './providers';
 

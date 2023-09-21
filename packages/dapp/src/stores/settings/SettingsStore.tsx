@@ -12,8 +12,8 @@ import type {
   WalletConnected,
 } from '@transferto/shared';
 import i18next from 'i18next';
+import { LanguageKey } from 'types';
 import { shallow } from 'zustand/shallow';
-import { LanguageKey } from '../../types';
 
 // ----------------------------------------------------------------------
 

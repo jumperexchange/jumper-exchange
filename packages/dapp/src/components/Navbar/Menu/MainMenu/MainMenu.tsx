@@ -1,13 +1,13 @@
+import { MenuItemComponent, NavbarMenu, SubMenuComponent } from 'components';
 import {
   MenuKeys,
   useDevelopersContent,
   useLanguagesContent,
   useMainMenuContent,
   useThemeContent,
-} from '@transferto/dapp/src/const';
-import { useMenuStore } from '@transferto/dapp/src/stores';
+} from 'const';
 import { useTranslation } from 'react-i18next';
-import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
+import { useMenuStore } from 'stores';
 interface MainMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }

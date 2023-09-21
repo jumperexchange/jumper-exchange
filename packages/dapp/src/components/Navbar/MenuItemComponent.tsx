@@ -2,11 +2,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared';
-import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
-import { useUserTracking } from '../../hooks';
-import { useMenuStore } from '../../stores';
-import { EventTrackingTool } from '../../types';
-import { MenuItem, MenuItemLabel } from './Navbar.style';
+import { MenuKeys, TrackingActions, TrackingCategories } from 'const';
+import { useUserTracking } from 'hooks';
+import { useMenuStore } from 'stores';
+import { EventTrackingTool } from 'types';
+import { MenuItem, MenuItemLabel } from '.';
 interface MenuItemProps {
   open: boolean;
   showButton: boolean;

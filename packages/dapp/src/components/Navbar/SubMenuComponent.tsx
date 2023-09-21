@@ -4,10 +4,10 @@ import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared';
+import { MenuKeys } from 'const';
 import { KeyboardEvent } from 'react';
-import { MenuKeys } from '../../const';
-import { useMenuStore } from '../../stores/menu';
-import { MenuListItem } from '../../types';
+import { useMenuStore } from 'stores';
+import { MenuListItem } from 'types';
 
 import {
   MenuHeaderAppBar,

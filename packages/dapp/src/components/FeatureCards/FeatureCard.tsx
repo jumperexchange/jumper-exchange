@@ -5,13 +5,10 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSettingsStore } from '../../stores';
+import { useSettingsStore } from 'stores';
 
-import {
-  FeatureCardAsset,
-  FeatureCardType,
-} from '../../types/featureCardsRequest';
-import { Card, CardImage } from './FeatureCard.style';
+import { FeatureCardAsset, FeatureCardType } from 'types';
+import { FCard as Card, CardImage } from '.';
 
 interface FeatureCardProps {
   data: FeatureCardType;

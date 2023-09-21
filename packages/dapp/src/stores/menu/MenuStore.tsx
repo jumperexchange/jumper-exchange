@@ -1,7 +1,7 @@
 import { MenuState } from '@transferto/shared';
+import { MenuKeys } from 'const';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import { MenuKeys } from '../../const';
 
 interface DefaultMenuType {
   openMainNavbarMenu: boolean;

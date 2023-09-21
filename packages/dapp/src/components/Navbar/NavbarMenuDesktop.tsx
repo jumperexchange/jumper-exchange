@@ -2,9 +2,9 @@ import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import { useTheme } from '@mui/material/styles';
+import { MenuKeys, MenuMain } from 'const';
 import { KeyboardEvent } from 'react';
-import { MenuKeys, MenuMain } from '../../const/';
-import { useMenuStore } from '../../stores/menu';
+import { useMenuStore } from 'stores';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,

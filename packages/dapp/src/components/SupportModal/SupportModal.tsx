@@ -1,7 +1,7 @@
 import { Breakpoint, useTheme } from '@mui/material';
 import WidgetBot from '@widgetbot/react-embed';
-import { useMenuStore } from '../../stores/menu';
-import { NavbarHeight } from '../Navbar/Navbar.style';
+import { NavbarHeight } from 'components';
+import { useMenuStore } from 'stores';
 import { Modal, SupportModalContainer } from './SupportModal.style';
 
 export const SupportModal = () => {

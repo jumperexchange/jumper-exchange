@@ -1,11 +1,9 @@
 import { Box, Typography, useTheme } from '@mui/material';
+import { StatsModal } from 'components';
+import { useChains, useCountUpAnimation, useFetchDexsAndBridges } from 'hooks';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useFetchDexsAndBridges } from '../../hooks';
-import { useChains } from '../../hooks/useChains';
-import { useCountUpAnimation } from '../../hooks/useCountUpAnimation';
-import { StatsModal } from '../StatsModal/StatsModal';
-import { Card, Container } from './StatsCard.style';
+import { SCard as Card, Container } from './StatsCard.style';
 
 interface StatsCardProps {
   number: string;

@@ -5,10 +5,10 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import { ThemeModesSupported } from '@transferto/shared';
+import { useUserTracking } from 'hooks';
 import { useTranslation } from 'react-i18next';
-import { useUserTracking } from '../../hooks';
-import { useSettingsStore } from '../../stores';
-import { EventTrackingTool } from '../../types';
+import { useSettingsStore } from 'stores';
+import { EventTrackingTool } from 'types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useThemeContent = () => {

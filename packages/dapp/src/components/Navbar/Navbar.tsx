@@ -1,9 +1,13 @@
 import { useTheme } from '@mui/material/styles';
 import { BrandLogo } from '@transferto/shared';
-import { useWallet } from '../../providers/WalletProvider';
-import { useSettingsStore } from '../../stores';
-import { NavbarBrandContainer, NavbarContainer } from './Navbar.style';
-import { NavbarManagement, NavbarTabsContainer } from './index';
+import {
+  NavbarBrandContainer,
+  NavbarContainer,
+  NavbarManagement,
+  NavbarTabsContainer,
+} from 'components';
+import { useWallet } from 'providers';
+import { useSettingsStore } from 'stores';
 
 export const Navbar = () => {
   const theme = useTheme();

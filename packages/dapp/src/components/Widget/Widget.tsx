@@ -3,19 +3,13 @@ import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MenuState } from '@transferto/shared';
+import { TabsMap, TrackingActions, TrackingCategories } from 'const';
+import { useMultisig, useUserTracking } from 'hooks';
+import { useWallet } from 'providers';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../../const';
-import { TabsMap } from '../../const/tabsMap';
-import { useUserTracking } from '../../hooks';
-import { useMultisig } from '../../hooks/useMultisig';
-import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore } from '../../stores';
-import {
-  EventTrackingTool,
-  LanguageKey,
-  StarterVariantType,
-} from '../../types';
+import { useMenuStore } from 'stores';
+import { EventTrackingTool, LanguageKey, StarterVariantType } from 'types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 
 const refuelAllowChains: ChainId[] = [

@@ -1,11 +1,10 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
+import { useMultisig, useUserTracking } from 'hooks';
+import { useWallet } from 'providers';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useUserTracking } from '../../hooks';
-import { useMultisig } from '../../hooks/useMultisig';
-import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore, useSettingsStore } from '../../stores';
-import { EventTrackingTool, MenuListItem } from '../../types';
+import { useMenuStore, useSettingsStore } from 'stores';
+import { EventTrackingTool, MenuListItem } from 'types';
 import { TrackingActions, TrackingCategories } from '../trackingKeys';
 
 export const useWalletSelectContent = () => {

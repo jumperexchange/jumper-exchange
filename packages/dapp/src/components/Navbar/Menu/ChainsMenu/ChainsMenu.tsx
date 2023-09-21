@@ -2,12 +2,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
-import { useChainsContent } from '@transferto/dapp/src/const';
-import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
-import { useMenuStore } from '@transferto/dapp/src/stores';
+import { MenuItemComponent, NavbarMenu } from 'components';
+import { useChainsContent } from 'const';
+import { useWallet } from 'providers';
 import { useTranslation } from 'react-i18next';
-import { MenuItemComponent } from '../../MenuItemComponent';
-import { NavbarMenu } from '../../index';
+import { useMenuStore } from 'stores';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;

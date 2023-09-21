@@ -6,7 +6,7 @@ import {
   MultisigWalletHeaderAlertContainer,
   MultisigWalletHeaderAlertContent,
   MultisigWalletHeaderAlertTitle,
-} from './MultisigWalletHeaderAlert.style';
+} from '.';
 
 export const MultisigWalletHeaderAlert = () => {
   const { t } = useTranslation();

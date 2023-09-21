@@ -2,20 +2,22 @@ import { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared';
 import {
+  OnRamper,
+  WelcomeWrapper,
+  Widget,
+  WidgetContainer,
+  WidgetEvents,
+} from 'components';
+import { TabsMap } from 'const';
+import {
   MouseEventHandler,
   useCallback,
   useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
-import { TabsMap } from '../../const/tabsMap';
-import { useActiveTabStore, useSettingsStore } from '../../stores';
-import { LinkMap, StarterVariantType } from '../../types';
-import { OnRamper } from '../OnRamper';
-import { WelcomeWrapper } from '../WelcomeWrapper';
-import { Widget } from '../Widget';
-import { WidgetEvents } from './WidgetEvents';
-import { WidgetContainer } from './Widgets.style';
+import { useActiveTabStore, useSettingsStore } from 'stores';
+import { LinkMap, StarterVariantType } from 'types';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();

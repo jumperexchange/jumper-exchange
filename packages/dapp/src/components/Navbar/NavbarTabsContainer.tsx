@@ -3,11 +3,11 @@ import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
+import { TrackingActions, TrackingCategories } from 'const';
+import { useUserTracking } from 'hooks';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../../const';
-import { useUserTracking } from '../../hooks';
-import { useActiveTabStore } from '../../stores';
-import { EventTrackingTool } from '../../types';
+import { useActiveTabStore } from 'stores';
+import { EventTrackingTool } from 'types';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
   return {

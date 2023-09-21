@@ -11,7 +11,7 @@ export interface CardProps extends Omit<MuiCardProps, 'component'> {
   gradient?: string;
 }
 
-export const Card = styled(MuiCard, {
+export const FCard = styled(MuiCard, {
   shouldForwardProp: (prop) => prop !== 'gradient',
 })<CardProps>(({ theme, gradient }) => ({
   width: 384,

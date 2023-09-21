@@ -56,7 +56,7 @@ export const NavbarExternalBackground = styled('div')(({ theme }) => ({
   },
 }));
 
-export const NavbarManagement = styled('div')({
+export const NavbarManagementContainer = styled('div')({
   display: 'flex',
   justifySelf: 'self-end',
 });

@@ -1,8 +1,8 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared';
+import { StatsCards } from 'components';
 import { PropsWithChildren, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 interface WelcomeWrapperProps {
   showWelcome: boolean;

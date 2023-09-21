@@ -6,7 +6,7 @@ import {
   keyframes,
   styled,
 } from '@mui/material';
-import { NavbarHeight } from '../Navbar/Navbar.style';
+import { NavbarHeight } from 'components';
 
 export interface WrapperProps extends Omit<BoxProps, 'component'> {
   showWelcome?: boolean;

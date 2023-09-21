@@ -3,7 +3,7 @@ import {
   BackgroundGradientBottomRight,
   BackgroundGradientContainer,
   BackgroundGradientTopCenter,
-} from './BackgroundGradient.style';
+} from '.';
 
 export const BackgroundGradient = () => {
   return (

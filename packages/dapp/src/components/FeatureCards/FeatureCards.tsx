@@ -1,10 +1,10 @@
 import { Breakpoint, useMediaQuery, useTheme } from '@mui/material';
+import { useFeatureCards } from 'hooks';
 import { useEffect, useMemo, useState } from 'react';
+import { useSettingsStore } from 'stores';
+import { FeatureCardType } from 'types';
 import { shallow } from 'zustand/shallow';
-import { useFeatureCards } from '../../hooks/useFeatureCards';
-import { useSettingsStore } from '../../stores';
-import { FeatureCardType } from '../../types/featureCardsRequest';
-import { FeatureCard, FeatureCardsContainer } from './index';
+import { FeatureCard, FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
   const [featureCards, setFeatureCards] = useState<FeatureCardType[]>([]);

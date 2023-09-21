@@ -4,10 +4,10 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { useSettingsStore } from 'stores';
+import { LanguageKey, LanguageResources } from 'types';
 import * as supportedLanguages from '../i18n';
 import translation from '../i18n/en/translation.json';
-import { useSettingsStore } from '../stores/settings';
-import { LanguageKey, LanguageResources } from '../types';
 
 export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const languageMode = useSettingsStore((state) => state.languageMode);

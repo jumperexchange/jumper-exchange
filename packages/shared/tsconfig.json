@@ -1,13 +1,60 @@
 {
   "extends": "../../tsconfig.json",
+  "baseUrl": ".",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "declarationDir": "dist/types"
+    "declarationDir": "dist/types",
+    "paths": {
+      "@transferto/dapp": [
+        "../dapp/src"
+      ],
+      "@transferto/dapp/*": [
+        "../dapp/src/*"
+      ],
+      "@src/*": [
+        "./src/*"
+      ],
+      "@atoms/*": [
+        "./src/atoms/*"
+      ],
+      "@atoms": [
+        "./src/atoms"
+      ],
+      "@fonts/*": [
+        "./src/fonts/*"
+      ],
+      "@fonts": [
+        "./src/fonts"
+      ],
+      "@organisms/*": [
+        "./src/organisms/*"
+      ],
+      "@organisms": [
+        "./src/organisms"
+      ],
+      "@stories/*": [
+        "./src/stories/*"
+      ],
+      "@stories": [
+        "./src/stories"
+      ],
+      "@types/*": [
+        "./src/types/*"
+      ],
+      "@types": [
+        "./src/types"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@utils": [
+        "./src/utils"
+      ],
+    }
   },
-  "include": ["src/**/*", "../dapp/src/types/i18n.types.ts"],
-  "paths": {
-    "@transferto/dapp": ["../dapp/src"],
-    "@transferto/dapp/*": ["../dapp/src/*"]
-  }
+  "include": [
+    "src/**/*",
+    "../dapp/src/types/i18n.types.ts"
+  ],
 }

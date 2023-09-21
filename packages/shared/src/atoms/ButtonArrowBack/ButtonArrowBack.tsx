@@ -1,7 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useTheme } from '@mui/material';
 import { getContrastAlphaColor } from '../../utils';
-import { ButtonBackArrowWrapper } from './ButtonArrowBack.styled';
+import { ButtonBackArrowWrapper } from './ButtonArrowBack.style';
 
 type ButtonBackArrowProps = {
   onClick?: () => void;

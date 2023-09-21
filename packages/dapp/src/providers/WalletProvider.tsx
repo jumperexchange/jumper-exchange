@@ -17,8 +17,7 @@ import React, {
 } from 'react';
 
 import { WalletAccount, WalletContextProps } from '@transferto/shared';
-import { useUserTracking } from '../hooks';
-import { useMultisig } from '../hooks/useMultisig';
+import { useMultisig, useUserTracking } from 'hooks';
 
 const liFiWalletManagement = new LiFiWalletManagement();
 

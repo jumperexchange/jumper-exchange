@@ -1,5 +1,5 @@
 import { Route } from '@lifi/sdk';
-import { useUserTracking } from '../../hooks';
+import { useUserTracking } from 'hooks';
 
 import {
   ChainTokenSelected,
@@ -9,11 +9,11 @@ import {
   WidgetEvent,
   useWidgetEvents,
 } from '@lifi/widget';
+import { TrackingActions, TrackingCategories } from 'const';
+import { useMultisig } from 'hooks';
+import { useWallet } from 'providers';
 import { useEffect, useRef, useState } from 'react';
-import { TrackingActions, TrackingCategories } from '../../const';
-import { useMultisig } from '../../hooks/useMultisig';
-import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore, useMultisigStore } from '../../stores';
+import { useMenuStore, useMultisigStore } from 'stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 

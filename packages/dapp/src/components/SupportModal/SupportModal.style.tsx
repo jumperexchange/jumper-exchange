@@ -1,6 +1,6 @@
 import { Box, Modal as MUIModal } from '@mui/material';
 import { Breakpoint, styled } from '@mui/material/styles';
-import { NavbarHeight } from '../Navbar/Navbar.style';
+import { NavbarHeight } from 'components';
 
 export const Modal = styled(MUIModal)(({ theme }) => ({
   paddingTop: NavbarHeight.XS,

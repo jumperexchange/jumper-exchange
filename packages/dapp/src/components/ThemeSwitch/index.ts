@@ -1,1 +1,2 @@
-export { ThemeSwitch } from './ThemeSwitch';
+export * from './ThemeSwitch';
+export * from './ThemeSwitch.style';

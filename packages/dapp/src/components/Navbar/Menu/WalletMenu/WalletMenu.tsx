@@ -7,17 +7,15 @@ import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
-import { MenuKeys } from '@transferto/dapp/src/const';
-import { useUserTracking } from '@transferto/dapp/src/hooks';
-import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
-import { useSettingsStore } from '@transferto/dapp/src/stores';
-import { useMenuStore } from '@transferto/dapp/src/stores/menu';
-import { EventTrackingTool } from '@transferto/dapp/src/types';
 import { SpotButton, openInNewTab, walletDigest } from '@transferto/shared';
+import { NavbarMenu } from 'components';
+import { MenuKeys } from 'const';
+import { useMultisig, useUserTracking } from 'hooks';
+import { useWallet } from 'providers';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMultisig } from '../../../../hooks/useMultisig';
-import { NavbarMenu } from '../../index';
+import { useMenuStore, useSettingsStore } from 'stores';
+import { EventTrackingTool } from 'types';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;

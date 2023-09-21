@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import ReactGA from 'react-ga4';
 import { hotjar } from 'react-hotjar';
-import { EventTrackingTool, InitTrackingProps } from '../../types';
+import { EventTrackingTool, InitTrackingProps } from 'types';
 
 export function useInitUserTracking() {
   const initTracking = useCallback(

@@ -1,7 +1,12 @@
-import { useMenuStore } from '@transferto/dapp/src/stores/menu';
+import {
+  ChainsMenu,
+  MainMenu,
+  SupportModal,
+  WalletMenu,
+  WalletSelectMenu,
+} from 'components';
 import { SyntheticEvent } from 'react';
-import { ChainsMenu, MainMenu, WalletMenu, WalletSelectMenu } from '.';
-import { SupportModal } from '../../SupportModal';
+import { useMenuStore } from 'stores';
 
 export const Menus = () => {
   const anchorRef = useMenuStore((state) => state.anchorRef);

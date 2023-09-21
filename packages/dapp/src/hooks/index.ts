@@ -1,3 +1,4 @@
+export * from './useChains';
 export * from './useCountUpAnimation';
 export * from './useFeatureCards';
 export * from './useFetchDexsAndBridges';

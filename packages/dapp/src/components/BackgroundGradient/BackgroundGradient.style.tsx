@@ -9,19 +9,6 @@ export interface BackgroundGradientProps
   className?: string;
 }
 
-// export const RelativeContainer = styled(Box)(({ theme }) => ({
-//   position: 'relative',
-//   background: theme.palette.bg.main,
-//   pointerEvents: 'none',
-//   width: '100%',
-//   minWidth: 375,
-//   height: '100vh',
-//   overflow: 'auto',
-//   flex: 1,
-//   boxSizing: 'border-box',
-//   zIndex: -1,
-// }));
-
 export const BackgroundGradientContainer = styled('div')<any>(({ theme }) => ({
   position: 'fixed',
   overflow: 'hidden',
@@ -34,7 +21,7 @@ export const BackgroundGradientContainer = styled('div')<any>(({ theme }) => ({
   zIndex: -1,
 }));
 
-export const BackgroundGradient = styled('span')<any>(({ theme }) => ({
+const BackgroundGradient = styled('span')<any>(({ theme }) => ({
   content: '""',
   position: 'absolute',
   width: '100vh',

@@ -6,12 +6,12 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo, openInNewTab } from '@transferto/shared';
+import { useUserTracking } from 'hooks';
+import { useDetectDarkModePreference } from 'providers';
 import { useTranslation } from 'react-i18next';
+import { useMenuStore, useSettingsStore } from 'stores';
+import { EventTrackingTool } from 'types';
 import { MenuKeys, TrackingActions, TrackingCategories } from '..';
-import { useUserTracking } from '../../hooks';
-import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
-import { useMenuStore, useSettingsStore } from '../../stores';
-import { EventTrackingTool } from '../../types';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();

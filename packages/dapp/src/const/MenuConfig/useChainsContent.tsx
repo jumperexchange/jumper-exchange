@@ -1,10 +1,10 @@
 import { Chain } from '@lifi/types';
 import { Avatar } from '@mui/material';
+import { useChains } from 'hooks';
+import { useWallet } from 'providers';
 import { useMemo } from 'react';
-import { useChains } from '../../hooks/useChains';
-import { useWallet } from '../../providers/WalletProvider';
-import { useMenuStore } from '../../stores';
-import { ChainsMenuListItem } from '../../types';
+import { useMenuStore } from 'stores';
+import { ChainsMenuListItem } from 'types';
 
 export const useChainsContent = () => {
   const { account, switchChain } = useWallet();

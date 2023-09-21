@@ -3,8 +3,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { MenuKeys, useWalletSelectContent } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
+import { MenuItemComponent, NavbarMenu } from 'components';
 import { useTranslation } from 'react-i18next';
-import { MenuItemComponent, NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;

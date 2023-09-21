@@ -10,7 +10,7 @@ export const Container = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {},
 }));
 
-export const Card = styled('div')(({ theme }) => ({
+export const SCard = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@lifi/wallet-management": "^2.3.3",
-    "@mui/icons-material": "^5.14.8",
-    "@mui/material": "^5.14.8",
+    "@mui/icons-material": "^5.14.9",
+    "@mui/material": "^5.14.10",
     "i18next": "^23.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,8 +29,8 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "@types/node": "^20.6.0",
-    "@types/react": "^18.2.21",
+    "@types/node": "^20.6.3",
+    "@types/react": "^18.2.22",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3"
   }

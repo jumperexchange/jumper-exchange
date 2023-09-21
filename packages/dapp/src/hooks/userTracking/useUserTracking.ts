@@ -1,9 +1,9 @@
 import { useArcxAnalytics } from '@arcxmoney/analytics';
+import { TrackingCategories } from 'const';
+import { useWallet } from 'providers';
 import { useCallback } from 'react';
 import ReactGA from 'react-ga4';
 import { hotjar } from 'react-hotjar';
-import { TrackingCategories } from '../../const';
-import { useWallet } from '../../providers/WalletProvider';
 import {
   EventTrackingTool,
   TrackAttributeProps,
@@ -11,7 +11,7 @@ import {
   TrackEventProps,
   trackPageloadProps,
   TrackTransactionProps,
-} from '../../types';
+} from 'types';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();

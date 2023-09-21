@@ -5,7 +5,7 @@ import {
   MultisigConnectedAlertContainer,
   MultisigConnectedAlertIcon,
   MultisigConnectedAlertIconContainer,
-} from './MultisigConnectedAlert.style';
+} from '.';
 
 export const MultisigConnectedAlert: React.FC<{
   open: boolean;

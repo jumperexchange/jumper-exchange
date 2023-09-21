@@ -3,16 +3,13 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { useMediaQuery } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-import {
-  TrackingActions,
-  TrackingCategories,
-} from '@transferto/dapp/src/const';
+import { TrackingActions, TrackingCategories } from 'const';
+import { useUserTracking } from 'hooks';
+import { useDetectDarkModePreference } from 'providers';
 import { useTranslation } from 'react-i18next';
-import { useUserTracking } from '../../hooks';
-import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
-import { useSettingsStore } from '../../stores';
-import { EventTrackingTool } from '../../types';
-import { ButtonThemeSwitch } from './ThemeSwitch.style';
+import { useSettingsStore } from 'stores';
+import { EventTrackingTool } from 'types';
+import { ButtonThemeSwitch } from '.';
 
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();

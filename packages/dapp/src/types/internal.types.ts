@@ -4,8 +4,8 @@ import { ChainId, ChainKey, Coin, Token } from '@lifi/types';
 import { Wallet as WalletManagementWallet } from '@lifi/wallet-management';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import BigNumber from 'bignumber.js';
+import { MenuKeys } from 'const';
 import 'react-i18next';
-import { MenuKeys } from '../const';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
