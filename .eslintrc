@@ -7,7 +7,8 @@
   },
   "extends": [
     "react-app",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    // "plugin:import/typescript"
   ],
   "settings": {
     "import/resolver": {
