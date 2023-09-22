@@ -1,6 +1,6 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, keyframes, styled } from '@mui/material';
-import { NavbarHeight } from 'src/components';
+import { NavbarHeight } from 'src/const';
 
 export interface WrapperProps extends Omit<BoxProps, 'component'> {
   showWelcome?: boolean;
@@ -20,7 +20,7 @@ export const Wrapper = styled(Box, {
     maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.SM} )` : 'auto',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.LG} )` : 'auto',
+    maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.MD} )` : 'auto',
   },
 
   '&:after': {

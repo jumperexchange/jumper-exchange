@@ -2,10 +2,9 @@ import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { ButtonTransparent } from 'src/atoms';
-import { WarningMessageCard, WarningMessageCardTitle } from 'src/organisms';
+import { WarningMessageCard, WarningMessageCardTitle } from 'src/components';
+import { PROD_URL } from 'src/const';
 import { openInNewTab } from 'src/utils';
-
-const PROD_URL = 'https://jumper.exchange';
 
 export const TestnetAlert = () => {
   const { t } = useTranslation();

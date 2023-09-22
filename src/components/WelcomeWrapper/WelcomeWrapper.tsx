@@ -4,7 +4,7 @@ import type { PropsWithChildren } from 'react';
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { ButtonPrimary } from 'src/atoms';
-import { StatsCards } from 'src/components';
+import { StatsCards } from 'src/organisms';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 interface WelcomeWrapperProps {
   showWelcome: boolean;

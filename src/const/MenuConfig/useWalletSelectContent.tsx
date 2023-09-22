@@ -56,8 +56,8 @@ export const useWalletSelectContent = () => {
     }),
   );
 
-  const onCloseAllNavbarMenus = useMenuStore(
-    (state) => state.onCloseAllNavbarMenus,
+  const onCloseAllPopperMenus = useMenuStore(
+    (state) => state.onCloseAllPopperMenus,
   );
 
   const login = useCallback(
@@ -101,7 +101,7 @@ export const useWalletSelectContent = () => {
         showMoreIcon: false,
         onClick: () => {
           login(wallet);
-          onCloseAllNavbarMenus();
+          onCloseAllPopperMenus();
           onWelcomeScreenEntered(true);
           trackEvent({
             category: TrackingCategories.Wallet,
@@ -121,7 +121,7 @@ export const useWalletSelectContent = () => {
     availableWallets,
     isCurrentMultisigEnvironment,
     login,
-    onCloseAllNavbarMenus,
+    onCloseAllPopperMenus,
     onWelcomeScreenEntered,
     trackEvent,
   ]);

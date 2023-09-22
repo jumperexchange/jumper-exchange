@@ -11,8 +11,8 @@ export const useDevelopersContent = () => {
   const { trackPageload } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const onCloseAllNavbarMenus = useMenuStore(
-    (state) => state.onCloseAllNavbarMenus,
+  const onCloseAllPopperMenus = useMenuStore(
+    (state) => state.onCloseAllPopperMenus,
   );
 
   return [
@@ -40,7 +40,7 @@ export const useDevelopersContent = () => {
             EventTrackingTool.Raleon,
           ],
         });
-        onCloseAllNavbarMenus();
+        onCloseAllPopperMenus();
       },
     },
     {
@@ -59,7 +59,7 @@ export const useDevelopersContent = () => {
             EventTrackingTool.Raleon,
           ],
         });
-        onCloseAllNavbarMenus();
+        onCloseAllPopperMenus();
       },
     },
   ];

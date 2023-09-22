@@ -1,13 +1,6 @@
-import { Box, Typography, useTheme } from '@mui/material';
-import type { Dispatch, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
-import { StatsModal } from 'src/components';
-import {
-  useChains,
-  useCountUpAnimation,
-  useFetchDexsAndBridges,
-} from 'src/hooks';
-import { SCard as Card, Container } from './StatsCard.style';
+import { Typography, useTheme } from '@mui/material';
+import { useCountUpAnimation } from 'src/hooks';
+import { SCard as Card } from './StatsCard.style';
 
 interface StatsCardProps {
   number: string;
@@ -61,108 +54,5 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
         {title}
       </Typography>
     </Card>
-  );
-};
-
-type DataItem = {
-  name: string;
-  // Other properties of the data item
-};
-
-const sortByName = (data: DataItem[]): DataItem[] => {
-  return data?.sort(function (a: DataItem, b: DataItem) {
-    if (a.name < b.name) {
-      return -1;
-    }
-    if (a.name > b.name) {
-      return 1;
-    }
-    return 0;
-  });
-};
-
-interface StatsDataProps {
-  title: string;
-  number: string;
-  data: DataItem[];
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  handleOnClick: () => void;
-}
-
-interface StatsCardsProps {
-  openChainsPopper: boolean;
-  setOpenChainsPopper: Dispatch<SetStateAction<boolean>>;
-  openBridgesPopper: boolean;
-  setOpenBridgesPopper: Dispatch<SetStateAction<boolean>>;
-  openDexsPopper: boolean;
-  setOpenDexsPopper: Dispatch<SetStateAction<boolean>>;
-}
-
-export const StatsCards = ({
-  openChainsPopper,
-  setOpenChainsPopper,
-  openBridgesPopper,
-  setOpenBridgesPopper,
-  openDexsPopper,
-  setOpenDexsPopper,
-}: StatsCardsProps) => {
-  const { data } = useFetchDexsAndBridges();
-  const { chains } = useChains();
-  const { t } = useTranslation();
-
-  const statsData: StatsDataProps[] = [
-    {
-      title: t('navbar.statsCards.chains'),
-      number: chains.length || 22,
-      data: sortByName(chains),
-      open: openChainsPopper,
-      setOpen: setOpenChainsPopper,
-      handleOnClick: () => {
-        setOpenChainsPopper(!openChainsPopper);
-      },
-    },
-    {
-      title: t('navbar.statsCards.bridges'),
-      number: data?.bridges.length || 16,
-      data: sortByName(data?.bridges),
-      open: openBridgesPopper,
-      setOpen: setOpenBridgesPopper,
-      handleOnClick: () => {
-        setOpenBridgesPopper(!openBridgesPopper);
-      },
-    },
-    {
-      title: t('navbar.statsCards.dexs'),
-      number: data?.exchanges.length || 32,
-      data: sortByName(data?.exchanges),
-      open: openDexsPopper,
-      setOpen: setOpenDexsPopper,
-      handleOnClick: () => {
-        setOpenDexsPopper(!openDexsPopper);
-      },
-    },
-  ];
-
-  return (
-    <Container>
-      {statsData.map((el, index) => {
-        return (
-          <Box key={`stats-box-${el.title}-${index}`}>
-            <StatsCard
-              title={el.title}
-              number={el.number}
-              handleClick={el.handleOnClick}
-            />
-            <StatsModal
-              title={el.title}
-              open={el.open}
-              setOpen={el.setOpen}
-              data={el.data}
-            />
-          </Box>
-        );
-      })}
-    </Container>
   );
 };

@@ -10,8 +10,8 @@ export const useChainsContent = () => {
   const { account, switchChain } = useWallet();
   const { chains } = useChains();
 
-  const onCloseAllNavbarMenus = useMenuStore(
-    (state) => state.onCloseAllNavbarMenus,
+  const onCloseAllPopperMenus = useMenuStore(
+    (state) => state.onCloseAllPopperMenus,
   );
 
   const activeChain = useMemo(
@@ -23,7 +23,7 @@ export const useChainsContent = () => {
     (el): ChainsMenuListItem => ({
       label: `${el.name}`,
       onClick: () => {
-        onCloseAllNavbarMenus();
+        onCloseAllPopperMenus();
         switchChain(el.id);
       },
       prefixIcon: (

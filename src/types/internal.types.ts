@@ -26,7 +26,7 @@ declare global {
   }
 }
 
-export interface MenuItem {
+export interface PopperItem {
   label: string;
   destination: string;
 }
@@ -70,3 +70,7 @@ export type MultisigWidgetConfig = Pick<
   WidgetConfig,
   'fromChain' | 'requiredUI'
 >;
+
+export type DataItem = {
+  name: string;
+};

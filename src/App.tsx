@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { FeatureCards, Menus, Navbar, Widgets } from 'src/components';
 import { useInitUserTracking } from 'src/hooks';
 import { AppProvider } from './AppProvider';
+import { FeatureCards, Header, Menus, Widgets } from './organisms';
 
 export function App() {
   const { initTracking } = useInitUserTracking();
@@ -11,7 +11,7 @@ export function App() {
 
   return (
     <AppProvider>
-      <Navbar />
+      <Header />
       <Menus />
       <Widgets />
       <FeatureCards />

@@ -4,27 +4,27 @@ import type { MenuKeys } from '@transferto/dapp/src/const';
 
 export type MenuProps = {
   anchorRef: any;
-  openMainNavbarMenu: boolean;
+  openMainPopperMenu: boolean;
   openNavbarWalletSelectMenu: boolean;
   openNavbarChainsMenu: boolean;
   openNavbarWalletMenu: boolean;
-  openNavbarSubMenu: keyof typeof MenuKeys;
+  openPopperSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
 };
 
 export type MenuContextProps = {
   anchorRef?: any;
-  openMainNavbarMenu?: boolean;
+  openMainPopperMenu?: boolean;
   openNavbarChainsMenu?: boolean;
   openNavbarWalletSelectMenu?: boolean;
   openNavbarWalletMenu?: boolean;
-  openNavbarSubMenu?: keyof typeof MenuKeys;
+  openPopperSubMenu?: keyof typeof MenuKeys;
   openSupportModal?: boolean;
 };
 
 export interface MenuState extends MenuProps {
   // Close ALL Navbar Menus
-  onCloseAllNavbarMenus: () => void;
+  onCloseAllPopperMenus: () => void;
 
   // Toggle Navbar Main Menu
   onOpenNavbarMainMenu: (open: boolean, anchorRef?: any) => void;
@@ -39,7 +39,7 @@ export interface MenuState extends MenuProps {
   onOpenNavbarChainsMenu: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Navbar Sub Menu
-  onOpenNavbarSubMenu: (subMenu: keyof typeof MenuKeys) => void;
+  onOpenPopperSubMenu: (subMenu: keyof typeof MenuKeys) => void;
 
   // Toggle support modal
   onOpenSupportModal: (open: boolean) => void;

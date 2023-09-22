@@ -1,1 +1,2 @@
-export * from './BrandLogo';
+export * from './LogoLarge';
+export * from './LogoSmall';

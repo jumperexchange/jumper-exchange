@@ -1,12 +1,6 @@
 import { useTheme } from '@mui/material';
+import { removeHash } from 'src/utils';
 import { OnRamperIFrame } from './index';
-
-function removeHash(str: string) {
-  if (str.startsWith('#')) {
-    return str.substring(1);
-  }
-  return str;
-}
 
 export const OnRamper = () => {
   const theme = useTheme();
