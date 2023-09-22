@@ -2792,6 +2792,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lifi/types@npm:^8.7.0":
+  version: 8.7.0
+  resolution: "@lifi/types@npm:8.7.0"
+  dependencies:
+    ethers: ^5.7.2
+  checksum: 230b468de2411a8683c5caf2ed9295920d236463e81acc9c60aeb25a99835a971554a1b6198a5b7e44099e0a72b77b6417a035a2776be0903a669afebb6e2d08
+  languageName: node
+  linkType: hard
+
 "@lifi/types@npm:^8.7.1":
   version: 8.7.1
   resolution: "@lifi/types@npm:8.7.1"
@@ -4463,6 +4472,7 @@ __metadata:
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.4.0
+    "@lifi/types": ^8.7.0
     "@lifi/wallet-management": ^2.3.4
     "@lifi/widget": ^2.4.5
     "@mui/icons-material": ^5.14.9
