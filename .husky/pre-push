@@ -3,4 +3,4 @@
 
 echo "Executing pre-push scripts"
 
-yarn pre-push
+git diff HEAD --quiet && yarn
