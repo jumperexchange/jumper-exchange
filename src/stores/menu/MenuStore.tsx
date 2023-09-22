@@ -1,5 +1,5 @@
-import type { MenuState } from '@transferto/shared';
 import { MenuKeys } from 'src/const';
+import type { MenuState } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 

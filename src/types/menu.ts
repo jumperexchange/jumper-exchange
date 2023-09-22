@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-import type { MenuKeys } from '@transferto/dapp/src/const';
+import type { MenuKeys } from 'src/const';
 
 export type MenuProps = {
   anchorRef: any;

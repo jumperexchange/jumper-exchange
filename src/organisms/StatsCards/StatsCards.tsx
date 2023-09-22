@@ -1,8 +1,9 @@
 import { Box } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StatsCard, StatsModal } from 'src/components';
+import { StatsCard } from 'src/components';
 import { useChains, useFetchDexsAndBridges } from 'src/hooks';
+import { StatsModal } from 'src/organisms';
 import type { DataItem } from 'src/types';
 import { sortByName } from 'src/utils';
 import { StatsCardsContainer as Container } from './StatsCards.style';

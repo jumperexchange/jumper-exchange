@@ -35,13 +35,13 @@ export const NavbarMenuDesktop = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const [
-    openNavbarSubMenu,
-    onCloseAllNavbarMenus,
+    openPopperSubMenu,
+    onCloseAllPopperMenus,
     openNavbarWalletMenu,
     anchorRef,
   ] = useMenuStore((state) => [
-    state.openNavbarSubMenu,
-    state.onCloseAllNavbarMenus,
+    state.openPopperSubMenu,
+    state.onCloseAllPopperMenus,
     state.openNavbarWalletMenu,
     state.anchorRef,
   ]);
@@ -82,20 +82,20 @@ export const NavbarMenuDesktop = ({
                 <ClickAwayListener
                   onClickAway={(event) => {
                     handleClose(event);
-                    onCloseAllNavbarMenus();
+                    onCloseAllPopperMenus();
                   }}
                 >
                   <PopperMenuList
                     autoFocusItem={open}
                     id="composition-menu"
                     autoFocus={open}
-                    isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
+                    isOpenSubMenu={openPopperSubMenu !== MenuKeys.None}
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                     hasLabel={!!label}
                     component={
                       isOpenSubMenu &&
-                      openNavbarSubMenu !== MenuMain.WalletSelect
+                      openPopperSubMenu !== MenuMain.WalletSelect
                         ? 'div'
                         : 'ul'
                     }

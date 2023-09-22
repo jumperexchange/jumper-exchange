@@ -1,4 +1,5 @@
-import { MultisigState } from '@transferto/shared';
+import type { ChainId } from '@lifi/types';
+import type { MultisigState } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
@@ -19,7 +20,7 @@ export const useMultisigStore = createWithEqualityFn<MultisigState>(
         }
         return updatedState;
       }),
-    onDestinationChainSelected: (chainId: number) => {
+    onDestinationChainSelected: (chainId: ChainId) => {
       set({
         destinationChain: chainId,
       });

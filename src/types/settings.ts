@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-import type { LanguageKey } from '@transferto/dapp/src/types';
+import type { LanguageKey } from 'src/types';
 
 export type ThemeModesSupported = 'light' | 'dark' | 'auto';
 export type WalletConnected = string;

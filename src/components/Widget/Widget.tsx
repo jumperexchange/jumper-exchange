@@ -4,14 +4,13 @@ import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import type { MenuState } from '@transferto/shared';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabsMap, TrackingActions, TrackingCategories } from 'src/const';
 import { useMultisig, useUserTracking } from 'src/hooks';
 import { useWallet } from 'src/providers';
 import { useMenuStore } from 'src/stores';
-import type { LanguageKey, StarterVariantType } from 'src/types';
+import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 
