@@ -2,9 +2,6 @@
 import structuredClone from '@ungap/structured-clone';
 
 if (!('structuredClone' in globalThis)) {
-  globalThis.structuredClone = ((
-    value: StructuredSerializeOptions | undefined,
-    options?: { lossy?: boolean | undefined } | undefined,
-  ): StructuredSerializeOptions | undefined =>
-    structuredClone(value, options)) as any;
+  globalThis.structuredClone = (value: any, options: any) =>
+    structuredClone(value, options);
 }
