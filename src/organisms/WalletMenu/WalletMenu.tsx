@@ -1,4 +1,3 @@
-import { getChainById } from '@lifi/sdk';
 import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -13,12 +12,11 @@ import { useTranslation } from 'react-i18next';
 import { SpotButton } from 'src/atoms';
 import { PopperMenu } from 'src/components';
 import { MenuKeys } from 'src/const';
-import { useMultisig, useUserTracking } from 'src/hooks';
+import { useChains, useMultisig, useUserTracking } from 'src/hooks';
 import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
-
 interface PopperMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
@@ -31,6 +29,7 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const walletSource = supportedWallets;
+  const { getChainById } = useChains();
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,

@@ -1,9 +1,10 @@
-import { ExtendedChain } from '@lifi/types';
+import type { Chain, ChainId, ExtendedChain } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
 
 export interface ChainProps {
   chains: ExtendedChain[];
   isSuccess: boolean;
+  getChainById: (id: ChainId) => ExtendedChain;
 }
 
 export const useChains = (): ChainProps => {
@@ -20,7 +21,18 @@ export const useChains = (): ChainProps => {
       refetchInterval: 1000 * 60 * 60,
     },
   );
+
+  const getChainById = (id: ChainId) => {
+    const filteredChain = data?.chains.find((el: Chain) => el.id === id);
+    if (filteredChain) {
+      return filteredChain;
+    } else {
+      throw Error(`ChainID ${id} is not available`);
+    }
+  };
+
   return {
+    getChainById: getChainById,
     chains: data?.chains ?? [],
     isSuccess,
   };

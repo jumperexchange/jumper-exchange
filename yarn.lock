@@ -2555,7 +2555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/types@npm:^8.7.1":
+"@lifi/types@npm:^8.7.0, @lifi/types@npm:^8.7.1":
   version: 8.7.1
   resolution: "@lifi/types@npm:8.7.1"
   dependencies:
@@ -3541,6 +3541,7 @@ __metadata:
     "@arcxmoney/analytics": ^1.9.1
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@lifi/sdk": ^2.4.0
+    "@lifi/types": ^8.7.0
     "@lifi/wallet-management": ^2.3.4
     "@lifi/widget": ^2.4.5
     "@mui/icons-material": ^5.14.9
