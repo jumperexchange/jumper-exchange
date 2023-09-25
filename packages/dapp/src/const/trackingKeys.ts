@@ -4,41 +4,41 @@
 */
 export enum TrackingActions {
   // Widget
-  AddChain = 'add_chain',
-  AddToken = 'add_token',
+  AddChain = 'action_add_chain',
+  AddToken = 'action_add_token',
 
   // WalletMenu
-  ConnectWallet = 'connect_wallet',
-  CopyAddressToClipboard = 'copy_addr_to_clipboard',
-  DisconnectWallet = 'disconnect_wallet',
-  OpenBlockchainExplorer = 'open_blockchain_explorer',
+  ConnectWallet = 'action_connect_wallet',
+  CopyAddressToClipboard = 'action_copy_addr_to_clipboard',
+  DisconnectWallet = 'action_disconnect_wallet',
+  OpenBlockchainExplorer = 'action_open_blockchain_explorer',
 
-  SwitchChain = 'switch_chain',
+  SwitchChain = 'action_switch_chain',
 
   // Widget
-  OnRouteExecutionStarted = 'on_route_exec_started',
-  OnRouteExecutionCompleted = 'on_route_exec_completed',
-  OnRouteExecutionFailed = 'on_route_exec_failed',
-  OnRouteExecutionUpdated = 'on_route_exec_updated',
-  OnRouteHighValueLoss = 'on_route_high_value_loss',
+  OnRouteExecutionStarted = 'action_on_route_exec_started',
+  OnRouteExecutionCompleted = 'action_on_route_exec_completed',
+  OnRouteExecutionFailed = 'action_on_route_exec_failed',
+  OnRouteExecutionUpdated = 'action_on_route_exec_updated',
+  OnRouteHighValueLoss = 'action_on_route_high_value_loss',
 
   // Welcome_Screen
-  OpenWelcomeMessageScreen = 'open_welcome_screen',
-  CloseWelcomeScreen = 'close_welcome_screen',
-  OpenStatsModal = 'open_stats_modal',
-  OpenWelcomeMessageLink = 'open_welcome_message_link',
+  OpenWelcomeMessageScreen = 'action_open_welcome_screen',
+  CloseWelcomeScreen = 'action_close_welcome_screen',
+  OpenStatsModal = 'action_open_stats_modal',
+  OpenWelcomeMessageLink = 'action_open_welcome_message_link',
 
   // Feature Card
-  ClickLearnMore = 'click_cta',
-  CloseFeatureCard = 'close_feature_card',
-  DisplayFeatureCard = 'display_feature_card',
+  ClickLearnMore = 'action_click_cta',
+  CloseFeatureCard = 'action_close_feature_card',
+  DisplayFeatureCard = 'action_display_feature_card',
 
   // Menu
-  OpenMenu = 'open_submenu',
-  PageLoad = 'pageload',
-  SwitchLanguage = 'switch_language',
-  SwitchTab = 'switch_tab',
-  SwitchTheme = 'switch_theme',
+  OpenMenu = 'action_open_submenu',
+  PageLoad = 'action_pageload',
+  SwitchLanguage = 'action_switch_language',
+  SwitchTab = 'action_switch_tab',
+  SwitchTheme = 'action_switch_theme',
 }
 
 export enum TrackingCategories {
