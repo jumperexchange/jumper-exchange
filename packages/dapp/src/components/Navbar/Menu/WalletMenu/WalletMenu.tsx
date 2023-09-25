@@ -80,11 +80,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
   const handleExploreButton = () => {
     account.chainId && onCloseAllNavbarMenus();
-    openInNewTab(
-      `${getChainById(account.chainId).metamask.blockExplorerUrls[0]}address/${
-        account.address
-      }`,
-    );
+
     trackEvent({
       category: TrackingCategories.WalletMenu,
       action: TrackingActions.OpenBlockchainExplorer,
