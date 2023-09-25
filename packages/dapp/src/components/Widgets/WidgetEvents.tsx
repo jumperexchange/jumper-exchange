@@ -14,7 +14,6 @@ import {
   TrackingActions,
   TrackingCategories,
   TrackingEventParameters,
-  TrackingUserProperties,
 } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useMultisig } from '../../hooks/useMultisig';
@@ -30,7 +29,7 @@ import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
-  const { trackEvent, trackAttribute, trackTransaction } = useUserTracking();
+  const { trackEvent, trackTransaction } = useUserTracking();
   const [onOpenSupportModal] = useMenuStore((state) => [
     state.onOpenSupportModal,
   ]);
@@ -124,11 +123,6 @@ export function WidgetEvents() {
     };
     const onRouteExecutionCompleted = async (route: Route) => {
       if (!!route.id) {
-        trackAttribute({
-          data: {
-            [TrackingUserProperties.HadSuccessfulTx]: true,
-          },
-        });
         trackEvent({
           category: TrackingCategories.WidgetEvent,
           action: TrackingActions.OnRouteExecutionCompleted,
@@ -149,11 +143,6 @@ export function WidgetEvents() {
       }
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
-      trackAttribute({
-        data: {
-          [TrackingUserProperties.HadFailure]: true,
-        },
-      });
       trackEvent({
         category: TrackingCategories.WidgetEvent,
         action: TrackingActions.OnRouteExecutionFailed,
@@ -171,11 +160,6 @@ export function WidgetEvents() {
     };
 
     const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
-      trackAttribute({
-        data: {
-          [TrackingUserProperties.HadAcceptedHighValueLoss]: true,
-        },
-      });
       trackEvent({
         action: TrackingActions.OnRouteHighValueLoss,
         category: TrackingCategories.WidgetEvent,
@@ -220,7 +204,6 @@ export function WidgetEvents() {
     onDestinationChainSelected,
     onOpenSupportModal,
     shouldOpenMultisigSignatureModal,
-    trackAttribute,
     trackEvent,
     trackTransaction,
     widgetEvents,

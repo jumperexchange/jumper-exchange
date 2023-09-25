@@ -10,8 +10,6 @@ import {
 } from 'react';
 import { TrackingActions, TrackingCategories } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
-import { TrackingUserProperties } from '../../const/trackingKeys';
-import { useUserTracking } from '../../hooks';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool, LinkMap, StarterVariantType } from '../../types';
 import { OnRamper } from '../OnRamper';
@@ -19,6 +17,7 @@ import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
+import { useUserTracking } from '../../hooks';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
@@ -26,7 +25,7 @@ export function Widgets() {
     (state) => [state.welcomeScreenEntered, state.onWelcomeScreenEntered],
   );
   const theme = useTheme();
-  const { trackEvent, trackAttribute } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
@@ -94,11 +93,6 @@ export function Widgets() {
     } else {
       event.stopPropagation();
       onWelcomeScreenEntered(true);
-      trackAttribute({
-        data: {
-          [TrackingUserProperties.HadEnteredWelcomeScreen]: 'true',
-        },
-      });
       trackEvent({
         category: TrackingCategories.WelcomeScreen,
         action: TrackingActions.EnterWelcomeScreen,

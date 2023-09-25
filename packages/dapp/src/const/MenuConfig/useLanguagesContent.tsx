@@ -7,7 +7,6 @@ import {
   TrackingActions,
   TrackingCategories,
   TrackingEventParameters,
-  TrackingUserProperties,
 } from '../trackingKeys';
 
 export const useLanguagesContent = () => {
@@ -16,15 +15,10 @@ export const useLanguagesContent = () => {
     state.languageMode,
     state.onChangeLanguage,
   ]);
-  const { trackEvent, trackAttribute } = useUserTracking();
+  const { trackEvent } = useUserTracking();
   const handleSwitchLanguage = (newLanguage: LanguageKey) => {
     i18n.changeLanguage(newLanguage);
     onChangeLanguage(newLanguage);
-    trackAttribute({
-      data: {
-        [TrackingUserProperties.Language]: newLanguage,
-      },
-    });
     trackEvent({
       category: TrackingCategories.LanguageMenu,
       action: TrackingActions.SwitchLanguage,

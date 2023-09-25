@@ -111,7 +111,7 @@ export const StatsCards = ({
   const { data } = useFetchDexsAndBridges();
   const { chains } = useChains();
   const { t } = useTranslation();
-  const { trackEvent, trackAttribute } = useUserTracking();
+  const { trackEvent } = useUserTracking();
 
   const statsData: StatsDataProps[] = [
     {

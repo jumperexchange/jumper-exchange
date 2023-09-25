@@ -7,7 +7,6 @@ import {
   TrackingActions,
   TrackingCategories,
   TrackingEventParameters,
-  TrackingUserProperties,
 } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
@@ -24,15 +23,11 @@ export const ThemeSwitch = () => {
   ]);
 
   const { t } = useTranslation();
-  const { trackEvent, trackAttribute } = useUserTracking();
+  const { trackEvent } = useUserTracking();
 
   const handleThemeSwitch = () => {
     const changeMode = isDarkMode ? 'light' : 'dark';
-    trackAttribute({
-      data: {
-        [TrackingUserProperties.Theme]: changeMode,
-      },
-    });
+
     trackEvent({
       category: TrackingCategories.ThemeSwitch,
       action: TrackingActions.SwitchTheme,

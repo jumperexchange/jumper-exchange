@@ -14,8 +14,8 @@ export interface InitTrackingProps {
 
 export interface TrackEventProps {
   action: string;
-  category: string;
-  label: string;
+  category?: string;
+  label?: string;
   data?: { [key: string]: string | number | boolean | any };
   disableTrackingTool?: EventTrackingTool[];
 }
@@ -39,10 +39,15 @@ export interface trackPageloadProps {
 }
 
 export interface TrackConnectWalletProps {
-  account: WalletAccount;
+  account?: WalletAccount;
   data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
   disconnect?: boolean;
+}
+
+export interface TrackDisconnectConnectWalletProps {
+  data?: { [key: string]: string | number | boolean };
+  disableTrackingTool?: EventTrackingTool[];
 }
 export interface TrackAttributeProps {
   data?: { [key: string]: string | number | boolean };

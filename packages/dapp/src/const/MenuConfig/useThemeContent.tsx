@@ -5,7 +5,6 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
-import { useMediaQuery } from '@mui/material';
 import { ThemeModesSupported } from '@transferto/shared/src/types/settings';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
@@ -15,13 +14,11 @@ import {
   TrackingActions,
   TrackingCategories,
   TrackingEventParameters,
-  TrackingUserProperties,
 } from '../trackingKeys';
 
 export const useThemeContent = () => {
   const { t } = useTranslation();
-  const { trackEvent, trackAttribute } = useUserTracking();
-  const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
+  const { trackEvent } = useUserTracking();
 
   const [themeMode, onChangeMode] = useSettingsStore((state) => [
     state.themeMode,
@@ -29,12 +26,6 @@ export const useThemeContent = () => {
   ]);
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
-    trackAttribute({
-      data: {
-        [TrackingUserProperties.Theme]:
-          mode === 'auto' ? (isDarkModeHook ? 'light' : 'dark') : mode,
-      },
-    });
     trackEvent({
       category: TrackingCategories.ThemeMenu,
       action: TrackingActions.SwitchTheme,
