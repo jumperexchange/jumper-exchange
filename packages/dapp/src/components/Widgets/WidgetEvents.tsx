@@ -56,8 +56,8 @@ export function WidgetEvents() {
           label: 'execution_start',
           data: {
             [TrackingEventParameters.RouteId]: route.id,
-            [TrackingEventParameters.FromToken]: route.fromToken,
-            [TrackingEventParameters.ToToken]: route.toToken,
+            [TrackingEventParameters.FromToken]: route.fromToken.address,
+            [TrackingEventParameters.ToToken]: route.toToken.address,
             [TrackingEventParameters.FromChainId]: route.fromChainId,
             [TrackingEventParameters.ToChainId]: route.toChainId,
             [TrackingEventParameters.FromAmount]: route.fromAmount,
@@ -97,8 +97,9 @@ export function WidgetEvents() {
               [TrackingEventParameters.ToAmountUSD]: update.route.toAmountUSD,
               [TrackingEventParameters.FromAmount]: update.route.fromAmount,
               [TrackingEventParameters.ToAmount]: update.route.toAmount,
-              [TrackingEventParameters.FromToken]: update.route.fromToken,
-              [TrackingEventParameters.ToToken]: update.route.toToken,
+              [TrackingEventParameters.FromToken]:
+                update.route.fromToken.address,
+              [TrackingEventParameters.ToToken]: update.route.toToken.address,
               [TrackingEventParameters.FromChainId]: update.route.fromChainId,
               [TrackingEventParameters.ToChainId]: update.route.toChainId,
               [TrackingEventParameters.RouteId]: `${update.route.id}`,
@@ -132,12 +133,12 @@ export function WidgetEvents() {
             [TrackingEventParameters.FromChainId]: route.fromChainId,
             [TrackingEventParameters.FromAmountUSD]: route.fromAmountUSD,
             [TrackingEventParameters.FromAmount]: route.fromAmount,
-            [TrackingEventParameters.FromToken]: route.fromToken,
+            [TrackingEventParameters.FromToken]: route.fromToken.address,
             [TrackingEventParameters.ToChainId]: route.toChainId,
             [TrackingEventParameters.ToAmountUSD]: route.toAmountUSD,
             [TrackingEventParameters.ToAmount]: route.toAmount,
             [TrackingEventParameters.ToAmountMin]: route.toAmountMin,
-            [TrackingEventParameters.ToToken]: route.toToken,
+            [TrackingEventParameters.ToToken]: route.toToken.address,
           },
         });
       }
