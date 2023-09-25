@@ -69,9 +69,9 @@ export const WalletManagementButtons: React.FC<
     openNavbarWalletSelectMenu &&
       trackEvent({
         category: TrackingCategories.WalletSelectMenu,
-        action: TrackingActions.OpenSubmenu,
+        action: TrackingActions.OpenMenu,
         label: 'open_wallet_select_menu',
-        data: { [TrackingEventParameters.SubMenu]: 'wallet_select_menu' },
+        data: { [TrackingEventParameters.Menu]: 'wallet_select_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletSelectMenu(
@@ -86,9 +86,9 @@ export const WalletManagementButtons: React.FC<
     openNavbarWalletMenu &&
       trackEvent({
         category: TrackingCategories.WalletMenu,
-        action: TrackingActions.OpenSubmenu,
+        action: TrackingActions.OpenMenu,
         label: 'open_wallet_menu',
-        data: { [TrackingEventParameters.SubMenu]: 'wallet_menu' },
+        data: { [TrackingEventParameters.Menu]: 'wallet_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletMenu(!openNavbarWalletMenu, event.currentTarget);

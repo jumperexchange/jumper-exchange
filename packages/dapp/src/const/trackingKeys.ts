@@ -30,9 +30,7 @@ export enum TrackingActions {
   DisplayFeatureCard = 'display_feature_card',
 
   // Menu
-  OpenSubmenu = 'open_submenu',
-  OpenSupportModal = 'open_support_modal',
-  OpenWalletSelectMenu = 'open_wallet_select_menu',
+  OpenMenu = 'open_submenu',
   PageLoad = 'pageload',
   SwitchLanguage = 'switch_language',
   SwitchTab = 'switch_tab',
@@ -66,7 +64,7 @@ export enum TrackingEventParameters {
   ChainId = 'param_chain_id',
   ChainName = 'param_chain_name',
   ChainIdAdded = 'param_chain_added',
-  SubMenu = 'param_submenu',
+  Menu = 'param_menu',
   StatsModal = 'param_stats_modal',
   SwitchedChain = 'param_switched_chain',
   SwitchedTheme = 'param_switched_theme',

@@ -38,9 +38,9 @@ export const ChainSwitch = () => {
     onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
     trackEvent({
       category: TrackingCategories.ChainsMenu,
-      action: TrackingActions.OpenSubmenu,
+      action: TrackingActions.OpenMenu,
       label: 'click_open_chains_menu',
-      data: { [TrackingEventParameters.SubMenu]: 'chains_menu' },
+      data: { [TrackingEventParameters.Menu]: 'chains_menu' },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
