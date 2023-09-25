@@ -80,6 +80,11 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
   const handleExploreButton = () => {
     account.chainId && onCloseAllNavbarMenus();
+    openInNewTab(
+      `${getChainById(account.chainId).metamask.blockExplorerUrls[0]}address/${
+        account.address
+      }`,
+    );
     trackEvent({
       category: TrackingCategories.WalletMenu,
       action: TrackingActions.OpenBlockchainExplorer,
@@ -97,11 +102,12 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
-    openInNewTab(
-      `${getChainById(account.chainId).metamask.blockExplorerUrls[0]}address/${
-        account.address
-      }`,
-    );
+    account.chainId &&
+      openInNewTab(
+        `${
+          getChainById(account.chainId).metamask.blockExplorerUrls[0]
+        }address/${account.address}`,
+      );
   };
 
   const handleCopyButton = () => {
