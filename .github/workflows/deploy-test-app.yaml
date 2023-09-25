@@ -1,12 +1,17 @@
 on:
   pull_request:
+    types:
+      - labeled
+      - opened
+      - reopened
+      - synchronize
 
 env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
 
 jobs:
   deploy-test:
-    if: contains(github.event.pull_request.labels.*.name, 'testing')
+    if: contains(github.event.label.name, 'testing') || contains(github.event.pull_request.labels.*.name, 'testing')
     runs-on: ubuntu-latest
     permissions:
       contents: read
