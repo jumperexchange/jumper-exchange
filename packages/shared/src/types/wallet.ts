@@ -1,14 +1,15 @@
-import type { Token } from '@lifi/types';
 import type { Signer } from '@ethersproject/abstract-signer';
+import type { Token } from '@lifi/types';
+import type { ChainId } from '@lifi/types';
 import type events from 'events';
 
 export interface WalletContextProps {
   account: WalletAccount;
   usedWallet?: Wallet;
-  addChain(chainId: number): Promise<boolean>;
-  addToken(chainId: number, token: Token): Promise<void>;
+  addChain(chainId: ChainId): Promise<boolean>;
+  addToken(chainId: ChainId, token: Token): Promise<void>;
   disconnect(): void;
-  switchChain(chainId: number): Promise<boolean>;
+  switchChain(chainId: ChainId): Promise<boolean>;
   connect(wallet?: Wallet | undefined): Promise<void>;
 }
 
@@ -16,7 +17,7 @@ export interface WalletAccount {
   address?: string;
   isActive?: boolean;
   signer?: Signer;
-  chainId?: number;
+  chainId?: ChainId;
 }
 
 export interface Wallet extends events.EventEmitter {
@@ -28,7 +29,7 @@ export interface Wallet extends events.EventEmitter {
   connect: () => Promise<void>;
   autoConnect?: () => Promise<void>;
   disconnect: () => void;
-  switchChain: (chainId: number) => Promise<boolean>;
-  addChain: (chainId: number) => Promise<boolean>;
-  addToken: (chainId: number, token: Token) => Promise<boolean>;
+  switchChain: (chainId: ChainId) => Promise<boolean>;
+  addChain: (chainId: ChainId) => Promise<boolean>;
+  addToken: (chainId: ChainId, token: Token) => Promise<boolean>;
 }
