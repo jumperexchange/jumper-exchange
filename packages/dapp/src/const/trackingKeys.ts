@@ -11,6 +11,8 @@ export enum TrackingActions {
   ConnectWallet = 'connect_wallet',
   CopyAddressToClipboard = 'copy_addr_to_clipboard',
   DisconnectWallet = 'disconnect_wallet',
+  OpenBlockchainExplorer = 'open_blockchain_explorer',
+
   SwitchChain = 'switch_chain',
 
   // Widget
