@@ -95,7 +95,7 @@ export function Widgets() {
       onWelcomeScreenEntered(true);
       trackEvent({
         category: TrackingCategories.WelcomeScreen,
-        action: TrackingActions.EnterWelcomeScreen,
+        action: TrackingActions.CloseWelcomeScreen,
         label: 'enter_welcome_screen',
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });

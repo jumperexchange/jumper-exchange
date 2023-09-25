@@ -23,8 +23,10 @@ export enum TrackingActions {
   OnRouteHighValueLoss = 'on_route_high_value_loss',
 
   // Welcome_Screen
-  EnterWelcomeScreen = 'enter_welcome_screen',
+  OpenWelcomeMessageScreen = 'open_welcome_screen',
+  CloseWelcomeScreen = 'close_welcome_screen',
   OpenStatsModal = 'open_stats_modal',
+  OpenWelcomeMessageLink = 'open_welcome_message_link',
 
   // Feature Card
   ClickLearnMore = 'click_cta',
@@ -68,6 +70,7 @@ export enum TrackingEventParameters {
   ChainIdAdded = 'param_chain_added',
   Menu = 'param_menu',
   StatsModal = 'param_stats_modal',
+  WelcomeMessageLink = 'param_welcome_message_link',
   SwitchedChain = 'param_switched_chain',
   SwitchedTheme = 'param_switched_theme',
   SwitchedLanguage = 'param_switched_language',

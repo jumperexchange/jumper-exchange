@@ -1,11 +1,16 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { EventTrackingTool } from '../../types';
 import { StatsCards } from '../StatsCard';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
+import {
+  TrackingActions,
+  TrackingCategories,
+  TrackingEventParameters,
+} from '../../const';
 interface WelcomeWrapperProps {
   showWelcome: boolean;
   handleGetStarted: (event: any) => void;
@@ -16,12 +21,30 @@ export const WelcomeWrapper: React.FC<
 > = ({ children, showWelcome, handleGetStarted }) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { trackPageload } = useUserTracking();
+  const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
 
+  useEffect(() => {
+    if (showWelcome) {
+      trackEvent({
+        category: TrackingCategories.WelcomeScreen,
+        label: 'open-welcome-screen',
+        action: TrackingActions.OpenWelcomeMessageScreen,
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+    }
+  }, [showWelcome, trackEvent]);
+
   const handleAuditClick = () => {
+    trackEvent({
+      category: TrackingCategories.WelcomeScreen,
+      label: 'open-welcome-message-link',
+      action: TrackingActions.OpenWelcomeMessageLink,
+      data: { [TrackingEventParameters.WelcomeMessageLink]: '4x_audited' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
     trackPageload({
       source: 'welcome-screen',
       destination: 'docs-sc-audits',
@@ -32,6 +55,13 @@ export const WelcomeWrapper: React.FC<
   };
 
   const handleLIFIClick = () => {
+    trackEvent({
+      category: TrackingCategories.WelcomeScreen,
+      label: 'open-welcome-message-link',
+      action: TrackingActions.OpenWelcomeMessageLink,
+      data: { [TrackingEventParameters.WelcomeMessageLink]: 'LIFI' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
     trackPageload({
       source: 'welcome-screen',
       destination: 'lifi-website',
