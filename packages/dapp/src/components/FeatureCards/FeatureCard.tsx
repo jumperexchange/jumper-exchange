@@ -40,6 +40,29 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       onDisableFeatureCard(data?.fields?.displayConditions?.id);
   }, [data?.fields?.displayConditions, onDisableFeatureCard]);
 
+  useEffect(() => {
+    if (open) {
+      trackEvent({
+        category: TrackingCategories.FeatureCard,
+        action: TrackingActions.DisplayFeatureCard,
+        label: 'display-feature-card',
+        data: {
+          [TrackingEventParameters.FeatureCardTitle]: data.fields.title,
+          [TrackingEventParameters.FeatureCardId]:
+            data.fields.displayConditions.id,
+          url: data.fields.url,
+        },
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+    }
+  }, [
+    data.fields.displayConditions.id,
+    data.fields.title,
+    data.fields.url,
+    open,
+    trackEvent,
+  ]);
+
   const imageUrl = useMemo(() => {
     return assets.filter((el: FeatureCardAsset) => {
       return theme.palette.mode === 'dark'
@@ -71,11 +94,11 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
     });
   };
 
-  const handleLearnMore = () => {
+  const handleCTA = () => {
     trackEvent({
       category: TrackingCategories.FeatureCard,
       action: TrackingActions.ClickLearnMore,
-      label: 'click_learn_more',
+      label: 'click_cta',
       data: {
         [TrackingEventParameters.FeatureCardTitle]: data.fields.title,
         [TrackingEventParameters.FeatureCardId]:
@@ -156,7 +179,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               target="_blank"
               rel="noopener"
               href={data?.fields?.url || 'https://li.fi'}
-              onClick={handleLearnMore}
+              onClick={handleCTA}
               sx={{
                 textDecoration: 'none',
                 color:

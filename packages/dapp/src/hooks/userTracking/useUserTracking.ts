@@ -90,32 +90,7 @@ export function useUserTracking() {
     [account.address],
   );
 
-  // const trackConnectWallet = useCallback(
-  //   /**
-  //    * Track Wallet-Connection with GA, HJ and ARCx
-  //    *
-  //    */
-  //   async ({ data, disableTrackingTool, account }: TrackConnectWalletProps) => {
-  //     if (
-  //       account?.address &&
-  //       !account.chainId &&
-  //       !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
-  //     ) {
-  //     }
-  //     if (!account && !disableTrackingTool?.includes(EventTrackingTool.GA)) {
-  //       window.gtag('event', TrackingActions.ConnectWallet, {
-  //         ...data,
-  //       });
-  //     }
-  //   },
-  //   [arcx],
-  // );
-
   const trackEvent = useCallback(
-    /**
-     * Track an Event with GA, HJ and ARCx
-     *
-     */
     async ({
       action,
       category,

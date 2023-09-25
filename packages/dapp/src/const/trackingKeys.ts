@@ -25,8 +25,9 @@ export enum TrackingActions {
   OpenStatsModal = 'open_stats_modal',
 
   // Feature Card
-  ClickLearnMore = 'click_learn_more',
+  ClickLearnMore = 'click_cta',
   CloseFeatureCard = 'close_feature_card',
+  DisplayFeatureCard = 'display_feature_card',
 
   // Menu
   OpenSubmenu = 'open_submenu',
