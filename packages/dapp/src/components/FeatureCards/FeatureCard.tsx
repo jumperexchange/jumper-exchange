@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
 
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../../const';
@@ -44,7 +44,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
     if (open) {
       trackEvent({
         category: TrackingCategories.FeatureCard,
-        action: TrackingActions.DisplayFeatureCard,
+        action: TrackingAction.DisplayFeatureCard,
         label: 'display-feature-card',
         data: {
           [TrackingEventParameters.FeatureCardTitle]: data.fields.title,
@@ -83,7 +83,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       onDisableFeatureCard(data?.fields?.displayConditions?.id);
     trackEvent({
       category: TrackingCategories.FeatureCard,
-      action: TrackingActions.CloseFeatureCard,
+      action: TrackingAction.CloseFeatureCard,
       label: `close_${data?.fields?.displayConditions?.id}`,
       data: {
         [TrackingEventParameters.FeatureCardTitle]: data?.fields?.title,
@@ -97,7 +97,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   const handleCTA = () => {
     trackEvent({
       category: TrackingCategories.FeatureCard,
-      action: TrackingActions.ClickLearnMore,
+      action: TrackingAction.ClickLearnMore,
       label: 'click_cta',
       data: {
         [TrackingEventParameters.FeatureCardTitle]: data.fields.title,

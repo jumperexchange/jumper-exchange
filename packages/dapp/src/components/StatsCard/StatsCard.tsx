@@ -1,7 +1,7 @@
 import { Box, Typography, useTheme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../../const';
+import { TrackingAction, TrackingCategories } from '../../const';
 import { TrackingEventParameters } from '../../const/trackingKeys';
 import { useFetchDexsAndBridges, useUserTracking } from '../../hooks';
 import { useChains } from '../../hooks/useChains';
@@ -123,7 +123,7 @@ export const StatsCards = ({
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategories.WelcomeScreen,
-          action: TrackingActions.OpenStatsModal,
+          action: TrackingAction.OpenStatsModal,
           label: 'chains_stats',
           data: { [TrackingEventParameters.StatsModal]: 'chains_stats' },
           disableTrackingTool: [
@@ -143,7 +143,7 @@ export const StatsCards = ({
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategories.WelcomeScreen,
-          action: TrackingActions.OpenStatsModal,
+          action: TrackingAction.OpenStatsModal,
           label: 'bridges_stats',
           data: { [TrackingEventParameters.StatsModal]: 'bridges_stats' },
           disableTrackingTool: [
@@ -163,7 +163,7 @@ export const StatsCards = ({
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategories.WelcomeScreen,
-          action: TrackingActions.OpenStatsModal,
+          action: TrackingAction.OpenStatsModal,
           label: 'dexes_stats',
           data: { [TrackingEventParameters.StatsModal]: 'dexes_stats' },
           disableTrackingTool: [

@@ -1,5 +1,5 @@
 import type { Signer } from '@ethersproject/abstract-signer';
-import { ChainId, Token } from '@lifi/sdk';
+import { Token } from '@lifi/sdk';
 import {
   LiFiWalletManagement,
   Wallet,
@@ -20,9 +20,9 @@ import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
+import { TrackingAction, TrackingEventParameters } from '../const';
 import { useUserTracking } from '../hooks';
 import { useMultisig } from '../hooks/useMultisig';
-import { TrackingActions, TrackingEventParameters } from '../const';
 import { EventTrackingTool } from '../types';
 
 const liFiWalletManagement = new LiFiWalletManagement();
@@ -100,7 +100,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     async (wallet: Wallet) => {
       await liFiWalletManagement.connect(wallet);
       trackEvent({
-        action: TrackingActions.ConnectWallet,
+        action: TrackingAction.ConnectWallet,
         data: {
           [TrackingEventParameters.Wallet]: wallet.name,
         },
@@ -132,7 +132,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       try {
         await currentWallet?.switchChain(chainId);
         trackEvent({
-          action: TrackingActions.SwitchChain,
+          action: TrackingAction.SwitchChain,
           data: {
             [TrackingEventParameters.SwitchedChain]: chainId,
           },
@@ -156,7 +156,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       try {
         await currentWallet?.addChain(chainId);
         trackEvent({
-          action: TrackingActions.AddChain,
+          action: TrackingAction.AddChain,
           data: {
             [TrackingEventParameters.ChainIdAdded]: chainId,
           },
@@ -175,7 +175,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     async (chainId: number, token: Token) => {
       await currentWallet?.addToken(chainId, token);
       trackEvent({
-        action: TrackingActions.AddToken,
+        action: TrackingAction.AddToken,
         data: {
           [TrackingEventParameters.AddedTokenAddress]: token.address,
           [TrackingEventParameters.AddedTokenName]: token.name,

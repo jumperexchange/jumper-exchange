@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
 import {
   MenuKeys,
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
@@ -84,7 +84,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
     trackEvent({
       category: TrackingCategories.WalletMenu,
-      action: TrackingActions.OpenBlockchainExplorer,
+      action: TrackingAction.OpenBlockchainExplorer,
       label: 'open-blockchain-explorer-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
@@ -112,7 +112,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     setCopiedToClipboard(true);
     trackEvent({
       category: TrackingCategories.WalletMenu,
-      action: TrackingActions.CopyAddressToClipboard,
+      action: TrackingAction.CopyAddressToClipboard,
       label: 'copy_addr_to_clipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });

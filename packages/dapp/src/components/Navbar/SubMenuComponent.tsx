@@ -7,7 +7,7 @@ import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { KeyboardEvent } from 'react';
 import {
   MenuKeys,
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../../const';
@@ -63,7 +63,7 @@ const SubMenuComponent = ({
       onOpenNavbarSubMenu(el.triggerSubMenu);
       trackEvent({
         category: TrackingCategories.SubMenu,
-        action: TrackingActions.OpenMenu,
+        action: TrackingAction.OpenMenu,
         label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
         data: {
           [TrackingEventParameters.Menu]: el.triggerSubMenu,

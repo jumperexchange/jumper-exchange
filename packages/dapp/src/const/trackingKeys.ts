@@ -2,7 +2,7 @@
   Name of an action that a user makes on the site. 
   GA: in GA this is the name of the even that is fired
 */
-export enum TrackingActions {
+export enum TrackingAction {
   // Widget
   AddChain = 'action_add_chain',
   AddToken = 'action_add_token',

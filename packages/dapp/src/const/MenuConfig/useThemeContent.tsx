@@ -11,7 +11,7 @@ import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../trackingKeys';
@@ -28,7 +28,7 @@ export const useThemeContent = () => {
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
       category: TrackingCategories.ThemeMenu,
-      action: TrackingActions.SwitchTheme,
+      action: TrackingAction.SwitchTheme,
       label: `theme_${mode}`,
       data: {
         [TrackingEventParameters.SwitchedTheme]: mode,

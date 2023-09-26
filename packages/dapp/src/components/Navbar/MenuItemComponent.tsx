@@ -4,7 +4,7 @@ import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 import {
   MenuKeys,
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../../const';
@@ -47,7 +47,7 @@ const MenuItemComponent = ({
     !!triggerSubMenu &&
       trackEvent({
         category: TrackingCategories.MainMenu,
-        action: TrackingActions.OpenMenu,
+        action: TrackingAction.OpenMenu,
         label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
         data: { [TrackingEventParameters.Menu]: triggerSubMenu },
         disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],

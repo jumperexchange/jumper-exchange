@@ -11,7 +11,7 @@ import {
 } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../../const';
@@ -52,7 +52,7 @@ export function WidgetEvents() {
       if (!!route.id) {
         trackEvent({
           category: TrackingCategories.WidgetEvent,
-          action: TrackingActions.OnRouteExecutionStarted,
+          action: TrackingAction.OnRouteExecutionStarted,
           label: 'execution_start',
           data: {
             [TrackingEventParameters.RouteId]: route.id,
@@ -89,7 +89,7 @@ export function WidgetEvents() {
             chain: update.route.fromChainId,
             txhash: update.process.txHash || '',
             category: TrackingCategories.WidgetEvent,
-            action: TrackingActions.OnRouteExecutionUpdated,
+            action: TrackingAction.OnRouteExecutionUpdated,
             data: {
               label: 'execution_update',
               [TrackingEventParameters.FromAmountUSD]:
@@ -126,7 +126,7 @@ export function WidgetEvents() {
       if (!!route.id) {
         trackEvent({
           category: TrackingCategories.WidgetEvent,
-          action: TrackingActions.OnRouteExecutionCompleted,
+          action: TrackingAction.OnRouteExecutionCompleted,
           label: 'execution_success',
           data: {
             [TrackingEventParameters.RouteId]: route.id,
@@ -146,7 +146,7 @@ export function WidgetEvents() {
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
       trackEvent({
         category: TrackingCategories.WidgetEvent,
-        action: TrackingActions.OnRouteExecutionFailed,
+        action: TrackingAction.OnRouteExecutionFailed,
         label: 'execution_error',
         data: {
           [TrackingEventParameters.RouteId]: update.route.id,
@@ -162,7 +162,7 @@ export function WidgetEvents() {
 
     const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
       trackEvent({
-        action: TrackingActions.OnRouteHighValueLoss,
+        action: TrackingAction.OnRouteHighValueLoss,
         category: TrackingCategories.WidgetEvent,
         label: 'click_high_value_loss_accepted',
         data: {

@@ -1,7 +1,7 @@
 import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { useCallback, useEffect } from 'react';
 import { hotjar } from 'react-hotjar';
-import { TrackingActions, TrackingEventParameters } from '../../const';
+import { TrackingAction, TrackingEventParameters } from '../../const';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   EventTrackingTool,
@@ -29,7 +29,7 @@ export function useUserTracking() {
       hotjar.identify(account.address, {
         [TrackingEventParameters.Wallet]: usedWallet.name,
       });
-      hotjar.initialized() && hotjar.event(TrackingActions.ConnectWallet);
+      hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
     }
   }, [account, account.address, account.chainId, arcx, usedWallet]);
 
@@ -72,7 +72,7 @@ export function useUserTracking() {
         hotjar.identify(account.address, {
           ...data,
         });
-        hotjar.initialized() && hotjar.event(TrackingActions.DisconnectWallet);
+        hotjar.initialized() && hotjar.event(TrackingAction.DisconnectWallet);
       }
       if (
         account.address &&
@@ -81,7 +81,7 @@ export function useUserTracking() {
         window.raleon.walletDisconnected();
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        window.gtag('event', TrackingActions.DisconnectWallet, {
+        window.gtag('event', TrackingAction.DisconnectWallet, {
           ...data,
         });
       }
@@ -143,7 +143,7 @@ export function useUserTracking() {
           : hotjar.event(`pageload${destination && '-' + destination}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        window.gtag('event', TrackingActions.PageLoad, {
+        window.gtag('event', TrackingAction.PageLoad, {
           category: pageload ? 'external' : 'internal',
           url,
           source,

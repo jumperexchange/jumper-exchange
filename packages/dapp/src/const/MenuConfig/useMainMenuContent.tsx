@@ -10,7 +10,7 @@ import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import {
   MenuKeys,
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '..';
@@ -70,7 +70,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategories.Menu,
           label: 'click-lifi-link',
-          action: TrackingActions.OpenMenu,
+          action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_twitter' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
@@ -106,7 +106,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategories.Menu,
           label: 'click-discord-link',
-          action: TrackingActions.OpenMenu,
+          action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_discord' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
@@ -143,7 +143,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategories.Menu,
           label: 'click-lifi-link',
-          action: TrackingActions.OpenMenu,
+          action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_website' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
@@ -170,7 +170,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategories.Menu,
           label: 'open-support-modal',
-          action: TrackingActions.OpenMenu,
+          action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'support_modal' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,

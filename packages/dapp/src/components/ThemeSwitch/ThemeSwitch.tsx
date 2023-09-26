@@ -4,7 +4,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import { useMediaQuery } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '@transferto/dapp/src/const';
@@ -30,7 +30,7 @@ export const ThemeSwitch = () => {
 
     trackEvent({
       category: TrackingCategories.ThemeSwitch,
-      action: TrackingActions.SwitchTheme,
+      action: TrackingAction.SwitchTheme,
       label: `theme_${changeMode}`,
       data: {
         [TrackingEventParameters.SwitchedTheme]: changeMode,

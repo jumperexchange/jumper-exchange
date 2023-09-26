@@ -8,8 +8,9 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { TrackingActions, TrackingCategories } from '../../const';
+import { TrackingAction, TrackingCategories } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
+import { useUserTracking } from '../../hooks';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool, LinkMap, StarterVariantType } from '../../types';
 import { OnRamper } from '../OnRamper';
@@ -17,7 +18,6 @@ import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
-import { useUserTracking } from '../../hooks';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
@@ -95,7 +95,7 @@ export function Widgets() {
       onWelcomeScreenEntered(true);
       trackEvent({
         category: TrackingCategories.WelcomeScreen,
-        action: TrackingActions.CloseWelcomeScreen,
+        action: TrackingAction.CloseWelcomeScreen,
         label: 'enter_welcome_screen',
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });

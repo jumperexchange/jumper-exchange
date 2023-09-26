@@ -5,7 +5,7 @@ import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../../const';
@@ -36,7 +36,7 @@ const NavbarTabsContainer = () => {
       window.history.replaceState(null, document.title, `/${tab}`);
       trackEvent({
         category: TrackingCategories.Navigation,
-        action: TrackingActions.SwitchTab,
+        action: TrackingAction.SwitchTab,
         label: `switch_tab_to_${tab}`,
         data: { [TrackingEventParameters.Tab]: tab },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],

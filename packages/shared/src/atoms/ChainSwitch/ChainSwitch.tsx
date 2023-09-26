@@ -3,7 +3,7 @@ import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '@transferto/dapp/src/const';
@@ -38,7 +38,7 @@ export const ChainSwitch = () => {
     onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
     trackEvent({
       category: TrackingCategories.ChainsMenu,
-      action: TrackingActions.OpenMenu,
+      action: TrackingAction.OpenMenu,
       label: 'click_open_chains_menu',
       data: { [TrackingEventParameters.Menu]: 'chains_menu' },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],

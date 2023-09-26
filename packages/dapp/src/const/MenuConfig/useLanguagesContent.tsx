@@ -4,7 +4,7 @@ import * as supportedLanguages from '../../i18n';
 import { useSettingsStore } from '../../stores';
 import { EventTrackingTool, LanguageKey } from '../../types';
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../trackingKeys';
@@ -21,7 +21,7 @@ export const useLanguagesContent = () => {
     onChangeLanguage(newLanguage);
     trackEvent({
       category: TrackingCategories.LanguageMenu,
-      action: TrackingActions.SwitchLanguage,
+      action: TrackingAction.SwitchLanguage,
       label: `language_${newLanguage}`,
       data: { [TrackingEventParameters.SwitchedLanguage]: newLanguage },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],

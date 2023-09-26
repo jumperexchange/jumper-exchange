@@ -7,7 +7,7 @@ import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../trackingKeys';
@@ -37,7 +37,7 @@ export const useDevelopersContent = () => {
         trackEvent({
           category: TrackingCategories.Menu,
           label: 'open-lifi-github',
-          action: TrackingActions.OpenMenu,
+          action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_github' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
@@ -66,7 +66,7 @@ export const useDevelopersContent = () => {
         trackEvent({
           category: TrackingCategories.Menu,
           label: 'open-lifi-docs',
-          action: TrackingActions.OpenMenu,
+          action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_docs' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,

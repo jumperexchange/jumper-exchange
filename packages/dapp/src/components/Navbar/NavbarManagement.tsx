@@ -5,7 +5,7 @@ import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  TrackingActions,
+  TrackingAction,
   TrackingCategories,
   TrackingEventParameters,
 } from '../../const';
@@ -54,7 +54,7 @@ const NavbarManagement = () => {
     onOpenNavbarMainMenu(!openMainNavbarMenu, mainMenuAnchor.current);
     trackEvent({
       category: TrackingCategories.Menu,
-      action: TrackingActions.OpenMenu,
+      action: TrackingAction.OpenMenu,
       label: 'open_main_menu',
       data: { [TrackingEventParameters.Menu]: 'main_menu' },
       disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
