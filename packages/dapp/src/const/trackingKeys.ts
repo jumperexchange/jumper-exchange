@@ -60,7 +60,7 @@ export enum TrackingCategory {
 }
 
 // can be used as custom dimensions / metrics
-export enum TrackingEventParameters {
+export enum TrackingEventParameter {
   FeatureCardTitle = 'param_feature_card_title',
   FeatureCardId = 'param_feature_card_id',
   Tab = 'param_tab',

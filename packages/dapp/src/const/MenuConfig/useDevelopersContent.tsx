@@ -9,7 +9,7 @@ import { EventTrackingTool } from '../../types';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../trackingKeys';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
@@ -38,7 +38,7 @@ export const useDevelopersContent = () => {
           category: TrackingCategory.Menu,
           label: 'open-lifi-github',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameters.Menu]: 'lifi_github' },
+          data: { [TrackingEventParameter.Menu]: 'lifi_github' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
@@ -67,7 +67,7 @@ export const useDevelopersContent = () => {
           category: TrackingCategory.Menu,
           label: 'open-lifi-docs',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameters.Menu]: 'lifi_docs' },
+          data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,

@@ -12,7 +12,7 @@ import {
   MenuKeys,
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '..';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
@@ -71,7 +71,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-lifi-link',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameters.Menu]: 'lifi_twitter' },
+          data: { [TrackingEventParameter.Menu]: 'lifi_twitter' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
@@ -107,7 +107,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-discord-link',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameters.Menu]: 'lifi_discord' },
+          data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
@@ -144,7 +144,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'click-lifi-link',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameters.Menu]: 'lifi_website' },
+          data: { [TrackingEventParameter.Menu]: 'lifi_website' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
@@ -171,7 +171,7 @@ export const useMainMenuContent = () => {
           category: TrackingCategory.Menu,
           label: 'open-support-modal',
           action: TrackingAction.OpenMenu,
-          data: { [TrackingEventParameters.Menu]: 'support_modal' },
+          data: { [TrackingEventParameter.Menu]: 'support_modal' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,

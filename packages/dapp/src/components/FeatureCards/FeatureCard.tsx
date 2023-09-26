@@ -10,7 +10,7 @@ import { useSettingsStore } from '../../stores';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
 import { EventTrackingTool } from '../../types';
@@ -47,8 +47,8 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
         action: TrackingAction.DisplayFeatureCard,
         label: 'display-feature-card',
         data: {
-          [TrackingEventParameters.FeatureCardTitle]: data.fields.title,
-          [TrackingEventParameters.FeatureCardId]:
+          [TrackingEventParameter.FeatureCardTitle]: data.fields.title,
+          [TrackingEventParameter.FeatureCardId]:
             data.fields.displayConditions.id,
           url: data.fields.url,
         },
@@ -86,8 +86,8 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       action: TrackingAction.CloseFeatureCard,
       label: `close_${data?.fields?.displayConditions?.id}`,
       data: {
-        [TrackingEventParameters.FeatureCardTitle]: data?.fields?.title,
-        [TrackingEventParameters.FeatureCardId]:
+        [TrackingEventParameter.FeatureCardTitle]: data?.fields?.title,
+        [TrackingEventParameter.FeatureCardId]:
           data?.fields?.displayConditions?.id,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
@@ -100,8 +100,8 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       action: TrackingAction.ClickLearnMore,
       label: 'click_cta',
       data: {
-        [TrackingEventParameters.FeatureCardTitle]: data.fields.title,
-        [TrackingEventParameters.FeatureCardId]:
+        [TrackingEventParameter.FeatureCardTitle]: data.fields.title,
+        [TrackingEventParameter.FeatureCardId]:
           data.fields.displayConditions.id,
         url: data.fields.url,
       },

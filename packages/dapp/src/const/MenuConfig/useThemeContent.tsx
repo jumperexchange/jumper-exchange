@@ -13,7 +13,7 @@ import { EventTrackingTool } from '../../types';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../trackingKeys';
 
 export const useThemeContent = () => {
@@ -31,7 +31,7 @@ export const useThemeContent = () => {
       action: TrackingAction.SwitchTheme,
       label: `theme_${mode}`,
       data: {
-        [TrackingEventParameters.SwitchedTheme]: mode,
+        [TrackingEventParameter.SwitchedTheme]: mode,
       },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });

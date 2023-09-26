@@ -6,7 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
@@ -33,7 +33,7 @@ export const ThemeSwitch = () => {
       action: TrackingAction.SwitchTheme,
       label: `theme_${changeMode}`,
       data: {
-        [TrackingEventParameters.SwitchedTheme]: changeMode,
+        [TrackingEventParameter.SwitchedTheme]: changeMode,
       },
     });
     onChangeMode(changeMode);

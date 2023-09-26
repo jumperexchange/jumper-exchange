@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useChains } from '../../hooks/useChains';
@@ -56,7 +56,7 @@ const NavbarManagement = () => {
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
       label: 'open_main_menu',
-      data: { [TrackingEventParameters.Menu]: 'main_menu' },
+      data: { [TrackingEventParameter.Menu]: 'main_menu' },
       disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
     });
   };

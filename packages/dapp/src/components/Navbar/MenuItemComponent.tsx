@@ -6,7 +6,7 @@ import {
   MenuKeys,
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
@@ -49,7 +49,7 @@ const MenuItemComponent = ({
         category: TrackingCategory.MainMenu,
         action: TrackingAction.OpenMenu,
         label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
-        data: { [TrackingEventParameters.Menu]: triggerSubMenu },
+        data: { [TrackingEventParameter.Menu]: triggerSubMenu },
         disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
       });
     !!onClick && onClick();

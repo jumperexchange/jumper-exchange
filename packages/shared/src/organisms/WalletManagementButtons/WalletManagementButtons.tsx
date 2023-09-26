@@ -4,7 +4,7 @@ import { Avatar, Typography, useTheme } from '@mui/material';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useMenuStore } from '@transferto/dapp/src/stores';
@@ -71,7 +71,7 @@ export const WalletManagementButtons: React.FC<
         category: TrackingCategory.WalletSelectMenu,
         action: TrackingAction.OpenMenu,
         label: 'open_wallet_select_menu',
-        data: { [TrackingEventParameters.Menu]: 'wallet_select_menu' },
+        data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletSelectMenu(
@@ -88,7 +88,7 @@ export const WalletManagementButtons: React.FC<
         category: TrackingCategory.WalletMenu,
         action: TrackingAction.OpenMenu,
         label: 'open_wallet_menu',
-        data: { [TrackingEventParameters.Menu]: 'wallet_menu' },
+        data: { [TrackingEventParameter.Menu]: 'wallet_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletMenu(!openNavbarWalletMenu, event.currentTarget);

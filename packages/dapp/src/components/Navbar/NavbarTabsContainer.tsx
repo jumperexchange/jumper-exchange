@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useActiveTabStore } from '../../stores';
@@ -38,7 +38,7 @@ const NavbarTabsContainer = () => {
         category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,
         label: `switch_tab_to_${tab}`,
-        data: { [TrackingEventParameters.Tab]: tab },
+        data: { [TrackingEventParameter.Tab]: tab },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     };

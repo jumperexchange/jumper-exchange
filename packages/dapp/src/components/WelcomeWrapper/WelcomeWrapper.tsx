@@ -5,7 +5,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
 import { EventTrackingTool } from '../../types';
@@ -42,7 +42,7 @@ export const WelcomeWrapper: React.FC<
       category: TrackingCategory.WelcomeScreen,
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
-      data: { [TrackingEventParameters.WelcomeMessageLink]: '4x_audited' },
+      data: { [TrackingEventParameter.WelcomeMessageLink]: '4x_audited' },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     trackPageload({
@@ -59,7 +59,7 @@ export const WelcomeWrapper: React.FC<
       category: TrackingCategory.WelcomeScreen,
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
-      data: { [TrackingEventParameters.WelcomeMessageLink]: 'LIFI' },
+      data: { [TrackingEventParameter.WelcomeMessageLink]: 'LIFI' },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     trackPageload({

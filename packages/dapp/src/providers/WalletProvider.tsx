@@ -20,7 +20,7 @@ import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
-import { TrackingAction, TrackingEventParameters } from '../const';
+import { TrackingAction, TrackingEventParameter } from '../const';
 import { useUserTracking } from '../hooks';
 import { useMultisig } from '../hooks/useMultisig';
 import { EventTrackingTool } from '../types';
@@ -102,7 +102,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       trackEvent({
         action: TrackingAction.ConnectWallet,
         data: {
-          [TrackingEventParameters.Wallet]: wallet.name,
+          [TrackingEventParameter.Wallet]: wallet.name,
         },
         disableTrackingTool: [
           EventTrackingTool.ARCx,
@@ -122,7 +122,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       currentWallet.removeAllListeners();
       handleWalletUpdate(undefined);
       trackDisconnectWallet({
-        data: { [TrackingEventParameters.Wallet]: currentWallet.name },
+        data: { [TrackingEventParameter.Wallet]: currentWallet.name },
       });
     }
   }, [currentWallet, trackDisconnectWallet]);
@@ -134,7 +134,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
         trackEvent({
           action: TrackingAction.SwitchChain,
           data: {
-            [TrackingEventParameters.SwitchedChain]: chainId,
+            [TrackingEventParameter.SwitchedChain]: chainId,
           },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
@@ -158,7 +158,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
         trackEvent({
           action: TrackingAction.AddChain,
           data: {
-            [TrackingEventParameters.ChainIdAdded]: chainId,
+            [TrackingEventParameter.ChainIdAdded]: chainId,
           },
         });
 
@@ -177,8 +177,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       trackEvent({
         action: TrackingAction.AddToken,
         data: {
-          [TrackingEventParameters.AddedTokenAddress]: token.address,
-          [TrackingEventParameters.AddedTokenName]: token.name,
+          [TrackingEventParameter.AddedTokenAddress]: token.address,
+          [TrackingEventParameter.AddedTokenName]: token.name,
         },
       });
 

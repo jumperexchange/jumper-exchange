@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useMultisig } from '../../hooks/useMultisig';
@@ -55,16 +55,16 @@ export function WidgetEvents() {
           action: TrackingAction.OnRouteExecutionStarted,
           label: 'execution_start',
           data: {
-            [TrackingEventParameters.RouteId]: route.id,
-            [TrackingEventParameters.FromToken]: route.fromToken.address,
-            [TrackingEventParameters.ToToken]: route.toToken.address,
-            [TrackingEventParameters.FromChainId]: route.fromChainId,
-            [TrackingEventParameters.ToChainId]: route.toChainId,
-            [TrackingEventParameters.FromAmount]: route.fromAmount,
-            [TrackingEventParameters.ToAmount]: route.toAmount,
-            [TrackingEventParameters.FromAmountUSD]: route.fromAmountUSD,
-            [TrackingEventParameters.ToAmountUSD]: route.toAmountUSD,
-            [TrackingEventParameters.Variant]: Object.values(TabsMap).filter(
+            [TrackingEventParameter.RouteId]: route.id,
+            [TrackingEventParameter.FromToken]: route.fromToken.address,
+            [TrackingEventParameter.ToToken]: route.toToken.address,
+            [TrackingEventParameter.FromChainId]: route.fromChainId,
+            [TrackingEventParameter.ToChainId]: route.toChainId,
+            [TrackingEventParameter.FromAmount]: route.fromAmount,
+            [TrackingEventParameter.ToAmount]: route.toAmount,
+            [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
+            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
+            [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
               (el) => el.index === activeTab,
             )[0].variant,
           },
@@ -92,29 +92,29 @@ export function WidgetEvents() {
             action: TrackingAction.OnRouteExecutionUpdated,
             data: {
               label: 'execution_update',
-              [TrackingEventParameters.FromAmountUSD]:
+              [TrackingEventParameter.FromAmountUSD]:
                 update.route.fromAmountUSD,
-              [TrackingEventParameters.ToAmountUSD]: update.route.toAmountUSD,
-              [TrackingEventParameters.FromAmount]: update.route.fromAmount,
-              [TrackingEventParameters.ToAmount]: update.route.toAmount,
-              [TrackingEventParameters.FromToken]:
+              [TrackingEventParameter.ToAmountUSD]: update.route.toAmountUSD,
+              [TrackingEventParameter.FromAmount]: update.route.fromAmount,
+              [TrackingEventParameter.ToAmount]: update.route.toAmount,
+              [TrackingEventParameter.FromToken]:
                 update.route.fromToken.address,
-              [TrackingEventParameters.ToToken]: update.route.toToken.address,
-              [TrackingEventParameters.FromChainId]: update.route.fromChainId,
-              [TrackingEventParameters.ToChainId]: update.route.toChainId,
-              [TrackingEventParameters.RouteId]: `${update.route.id}`,
-              [TrackingEventParameters.Status]: update.process.status,
-              [TrackingEventParameters.TxHash]: update.process.txHash || '',
-              [TrackingEventParameters.TxLink]: update.process.txLink || '',
-              [TrackingEventParameters.Type]: update.process.type,
-              [TrackingEventParameters.GasCostUSD]: update.route.gasCostUSD,
-              [TrackingEventParameters.ErrorCode]:
+              [TrackingEventParameter.ToToken]: update.route.toToken.address,
+              [TrackingEventParameter.FromChainId]: update.route.fromChainId,
+              [TrackingEventParameter.ToChainId]: update.route.toChainId,
+              [TrackingEventParameter.RouteId]: `${update.route.id}`,
+              [TrackingEventParameter.Status]: update.process.status,
+              [TrackingEventParameter.TxHash]: update.process.txHash || '',
+              [TrackingEventParameter.TxLink]: update.process.txLink || '',
+              [TrackingEventParameter.Type]: update.process.type,
+              [TrackingEventParameter.GasCostUSD]: update.route.gasCostUSD,
+              [TrackingEventParameter.ErrorCode]:
                 update.process.error?.code || '',
-              [TrackingEventParameters.ErrorMessage]:
+              [TrackingEventParameter.ErrorMessage]:
                 update.process.error?.message || '',
-              [TrackingEventParameters.InsuranceFeeAmountUSD]:
+              [TrackingEventParameter.InsuranceFeeAmountUSD]:
                 update.route.insurance.feeAmountUsd,
-              [TrackingEventParameters.InsuranceState]:
+              [TrackingEventParameter.InsuranceState]:
                 update.route.insurance?.state,
               nonInteraction: true,
             },
@@ -129,16 +129,16 @@ export function WidgetEvents() {
           action: TrackingAction.OnRouteExecutionCompleted,
           label: 'execution_success',
           data: {
-            [TrackingEventParameters.RouteId]: route.id,
-            [TrackingEventParameters.FromChainId]: route.fromChainId,
-            [TrackingEventParameters.FromAmountUSD]: route.fromAmountUSD,
-            [TrackingEventParameters.FromAmount]: route.fromAmount,
-            [TrackingEventParameters.FromToken]: route.fromToken.address,
-            [TrackingEventParameters.ToChainId]: route.toChainId,
-            [TrackingEventParameters.ToAmountUSD]: route.toAmountUSD,
-            [TrackingEventParameters.ToAmount]: route.toAmount,
-            [TrackingEventParameters.ToAmountMin]: route.toAmountMin,
-            [TrackingEventParameters.ToToken]: route.toToken.address,
+            [TrackingEventParameter.RouteId]: route.id,
+            [TrackingEventParameter.FromChainId]: route.fromChainId,
+            [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
+            [TrackingEventParameter.FromAmount]: route.fromAmount,
+            [TrackingEventParameter.FromToken]: route.fromToken.address,
+            [TrackingEventParameter.ToChainId]: route.toChainId,
+            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
+            [TrackingEventParameter.ToAmount]: route.toAmount,
+            [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
+            [TrackingEventParameter.ToToken]: route.toToken.address,
           },
         });
       }
@@ -149,13 +149,13 @@ export function WidgetEvents() {
         action: TrackingAction.OnRouteExecutionFailed,
         label: 'execution_error',
         data: {
-          [TrackingEventParameters.RouteId]: update.route.id,
-          [TrackingEventParameters.TxHash]: update.process.txHash,
-          [TrackingEventParameters.Status]: update.process.status,
-          [TrackingEventParameters.Message]: update.process.message || '',
-          [TrackingEventParameters.ErrorMessage]:
+          [TrackingEventParameter.RouteId]: update.route.id,
+          [TrackingEventParameter.TxHash]: update.process.txHash,
+          [TrackingEventParameter.Status]: update.process.status,
+          [TrackingEventParameter.Message]: update.process.message || '',
+          [TrackingEventParameter.ErrorMessage]:
             update.process.error?.message || '',
-          [TrackingEventParameters.ErrorCode]: update.process.error?.code || '',
+          [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
         },
       });
     };
@@ -166,11 +166,11 @@ export function WidgetEvents() {
         category: TrackingCategory.WidgetEvent,
         label: 'click_high_value_loss_accepted',
         data: {
-          [TrackingEventParameters.FromAmountUSD]: update.fromAmountUsd,
-          [TrackingEventParameters.ToAmountUSD]: update.toAmountUSD,
-          [TrackingEventParameters.GasCostUSD]: update.gasCostUSD,
-          [TrackingEventParameters.ValueLoss]: update.valueLoss,
-          [TrackingEventParameters.Timestamp]: Date.now(),
+          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUsd,
+          [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
+          [TrackingEventParameter.GasCostUSD]: update.gasCostUSD,
+          [TrackingEventParameter.ValueLoss]: update.valueLoss,
+          [TrackingEventParameter.Timestamp]: Date.now(),
         },
       });
     };

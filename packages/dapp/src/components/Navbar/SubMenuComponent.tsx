@@ -9,7 +9,7 @@ import {
   MenuKeys,
   TrackingAction,
   TrackingCategory,
-  TrackingEventParameters,
+  TrackingEventParameter,
 } from '../../const';
 import { useMenuStore } from '../../stores/menu';
 import { EventTrackingTool, MenuListItem } from '../../types';
@@ -66,8 +66,8 @@ const SubMenuComponent = ({
         action: TrackingAction.OpenMenu,
         label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
         data: {
-          [TrackingEventParameters.Menu]: el.triggerSubMenu,
-          [TrackingEventParameters.PrevMenu]: prevMenu,
+          [TrackingEventParameter.Menu]: el.triggerSubMenu,
+          [TrackingEventParameter.PrevMenu]: prevMenu,
         },
         disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
       });

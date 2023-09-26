@@ -1,7 +1,7 @@
 import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { useCallback, useEffect } from 'react';
 import { hotjar } from 'react-hotjar';
-import { TrackingAction, TrackingEventParameters } from '../../const';
+import { TrackingAction, TrackingEventParameter } from '../../const';
 import { useWallet } from '../../providers/WalletProvider';
 import {
   EventTrackingTool,
@@ -27,7 +27,7 @@ export function useUserTracking() {
       });
       window.raleon.walletConnected(account.address);
       hotjar.identify(account.address, {
-        [TrackingEventParameters.Wallet]: usedWallet.name,
+        [TrackingEventParameter.Wallet]: usedWallet.name,
       });
       hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
     }
