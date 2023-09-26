@@ -5,7 +5,7 @@ import { useMediaQuery } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,7 @@ export const ThemeSwitch = () => {
     const changeMode = isDarkMode ? 'light' : 'dark';
 
     trackEvent({
-      category: TrackingCategories.ThemeSwitch,
+      category: TrackingCategory.ThemeSwitch,
       action: TrackingAction.SwitchTheme,
       label: `theme_${changeMode}`,
       data: {

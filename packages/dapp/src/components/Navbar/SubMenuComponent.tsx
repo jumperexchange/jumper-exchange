@@ -8,7 +8,7 @@ import { KeyboardEvent } from 'react';
 import {
   MenuKeys,
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '../../const';
 import { useMenuStore } from '../../stores/menu';
@@ -62,7 +62,7 @@ const SubMenuComponent = ({
     if (el.triggerSubMenu) {
       onOpenNavbarSubMenu(el.triggerSubMenu);
       trackEvent({
-        category: TrackingCategories.SubMenu,
+        category: TrackingCategory.SubMenu,
         action: TrackingAction.OpenMenu,
         label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
         data: {

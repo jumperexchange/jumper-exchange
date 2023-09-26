@@ -9,7 +9,7 @@ import { useSettingsStore } from '../../stores';
 
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
@@ -43,7 +43,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   useEffect(() => {
     if (open) {
       trackEvent({
-        category: TrackingCategories.FeatureCard,
+        category: TrackingCategory.FeatureCard,
         action: TrackingAction.DisplayFeatureCard,
         label: 'display-feature-card',
         data: {
@@ -82,7 +82,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       !!data?.fields?.displayConditions?.id &&
       onDisableFeatureCard(data?.fields?.displayConditions?.id);
     trackEvent({
-      category: TrackingCategories.FeatureCard,
+      category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
       label: `close_${data?.fields?.displayConditions?.id}`,
       data: {
@@ -96,7 +96,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
 
   const handleCTA = () => {
     trackEvent({
-      category: TrackingCategories.FeatureCard,
+      category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickLearnMore,
       label: 'click_cta',
       data: {

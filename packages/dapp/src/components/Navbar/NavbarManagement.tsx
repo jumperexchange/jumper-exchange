@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
@@ -53,7 +53,7 @@ const NavbarManagement = () => {
   const handleOnOpenNavbarMainMenu = () => {
     onOpenNavbarMainMenu(!openMainNavbarMenu, mainMenuAnchor.current);
     trackEvent({
-      category: TrackingCategories.Menu,
+      category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
       label: 'open_main_menu',
       data: { [TrackingEventParameters.Menu]: 'main_menu' },

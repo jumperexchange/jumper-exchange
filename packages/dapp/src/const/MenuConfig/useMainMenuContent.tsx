@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import {
   MenuKeys,
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '..';
 import { useUserTracking } from '../../hooks';
@@ -68,7 +68,7 @@ export const useMainMenuContent = () => {
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.Menu,
+          category: TrackingCategory.Menu,
           label: 'click-lifi-link',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_twitter' },
@@ -78,7 +78,7 @@ export const useMainMenuContent = () => {
           ],
         });
         trackPageload({
-          source: TrackingCategories.MainMenu,
+          source: TrackingCategory.MainMenu,
           destination: 'twitter-JumperExchange',
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
@@ -104,7 +104,7 @@ export const useMainMenuContent = () => {
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.Menu,
+          category: TrackingCategory.Menu,
           label: 'click-discord-link',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_discord' },
@@ -114,7 +114,7 @@ export const useMainMenuContent = () => {
           ],
         });
         trackPageload({
-          source: TrackingCategories.Menu,
+          source: TrackingCategory.Menu,
           destination: 'discord-lifi',
           url: 'https://discord.gg/lifi',
           pageload: true,
@@ -141,7 +141,7 @@ export const useMainMenuContent = () => {
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.Menu,
+          category: TrackingCategory.Menu,
           label: 'click-lifi-link',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_website' },
@@ -151,7 +151,7 @@ export const useMainMenuContent = () => {
           ],
         });
         trackPageload({
-          source: TrackingCategories.Menu,
+          source: TrackingCategory.Menu,
           destination: 'lifi-website',
           url: 'https://li.fi',
           pageload: true,
@@ -168,7 +168,7 @@ export const useMainMenuContent = () => {
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.Menu,
+          category: TrackingCategory.Menu,
           label: 'open-support-modal',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'support_modal' },

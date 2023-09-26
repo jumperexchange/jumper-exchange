@@ -5,7 +5,7 @@ import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 import {
   MenuKeys,
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
@@ -46,7 +46,7 @@ const MenuItemComponent = ({
     !!triggerSubMenu && onOpenNavbarSubMenu(triggerSubMenu);
     !!triggerSubMenu &&
       trackEvent({
-        category: TrackingCategories.MainMenu,
+        category: TrackingCategory.MainMenu,
         action: TrackingAction.OpenMenu,
         label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
         data: { [TrackingEventParameters.Menu]: triggerSubMenu },

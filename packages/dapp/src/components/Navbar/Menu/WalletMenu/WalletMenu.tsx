@@ -9,7 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import {
   MenuKeys,
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
@@ -83,13 +83,13 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     account.chainId && onCloseAllNavbarMenus();
 
     trackEvent({
-      category: TrackingCategories.WalletMenu,
+      category: TrackingCategory.WalletMenu,
       action: TrackingAction.OpenBlockchainExplorer,
       label: 'open-blockchain-explorer-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     trackPageload({
-      source: TrackingCategories.Wallet,
+      source: TrackingCategory.Wallet,
       destination: 'blokchain-explorer',
       url: !!account.chainId
         ? `${
@@ -111,7 +111,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     account.address && navigator.clipboard.writeText(account.address);
     setCopiedToClipboard(true);
     trackEvent({
-      category: TrackingCategories.WalletMenu,
+      category: TrackingCategory.WalletMenu,
       action: TrackingAction.CopyAddressToClipboard,
       label: 'copy_addr_to_clipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],

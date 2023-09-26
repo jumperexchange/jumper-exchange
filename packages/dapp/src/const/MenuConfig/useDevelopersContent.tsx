@@ -8,7 +8,7 @@ import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '../trackingKeys';
 export const useDevelopersContent = () => {
@@ -35,7 +35,7 @@ export const useDevelopersContent = () => {
       onClick: () => {
         const githubUrl = 'https://github.com/lifinance/';
         trackEvent({
-          category: TrackingCategories.Menu,
+          category: TrackingCategory.Menu,
           label: 'open-lifi-github',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_github' },
@@ -64,7 +64,7 @@ export const useDevelopersContent = () => {
       onClick: () => {
         const docsUrl = 'https://docs.li.fi/';
         trackEvent({
-          category: TrackingCategories.Menu,
+          category: TrackingCategory.Menu,
           label: 'open-lifi-docs',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameters.Menu]: 'lifi_docs' },

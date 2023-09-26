@@ -12,7 +12,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
@@ -51,7 +51,7 @@ export function WidgetEvents() {
     const onRouteExecutionStarted = async (route: Route) => {
       if (!!route.id) {
         trackEvent({
-          category: TrackingCategories.WidgetEvent,
+          category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionStarted,
           label: 'execution_start',
           data: {
@@ -88,7 +88,7 @@ export function WidgetEvents() {
           trackTransaction({
             chain: update.route.fromChainId,
             txhash: update.process.txHash || '',
-            category: TrackingCategories.WidgetEvent,
+            category: TrackingCategory.WidgetEvent,
             action: TrackingAction.OnRouteExecutionUpdated,
             data: {
               label: 'execution_update',
@@ -125,7 +125,7 @@ export function WidgetEvents() {
     const onRouteExecutionCompleted = async (route: Route) => {
       if (!!route.id) {
         trackEvent({
-          category: TrackingCategories.WidgetEvent,
+          category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
           label: 'execution_success',
           data: {
@@ -145,7 +145,7 @@ export function WidgetEvents() {
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
       trackEvent({
-        category: TrackingCategories.WidgetEvent,
+        category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnRouteExecutionFailed,
         label: 'execution_error',
         data: {
@@ -163,7 +163,7 @@ export function WidgetEvents() {
     const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
       trackEvent({
         action: TrackingAction.OnRouteHighValueLoss,
-        category: TrackingCategories.WidgetEvent,
+        category: TrackingCategory.WidgetEvent,
         label: 'click_high_value_loss_accepted',
         data: {
           [TrackingEventParameters.FromAmountUSD]: update.fromAmountUsd,

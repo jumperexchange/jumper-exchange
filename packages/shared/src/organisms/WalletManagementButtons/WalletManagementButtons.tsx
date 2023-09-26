@@ -3,7 +3,7 @@ import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
@@ -68,7 +68,7 @@ export const WalletManagementButtons: React.FC<
   ) => {
     openNavbarWalletSelectMenu &&
       trackEvent({
-        category: TrackingCategories.WalletSelectMenu,
+        category: TrackingCategory.WalletSelectMenu,
         action: TrackingAction.OpenMenu,
         label: 'open_wallet_select_menu',
         data: { [TrackingEventParameters.Menu]: 'wallet_select_menu' },
@@ -85,7 +85,7 @@ export const WalletManagementButtons: React.FC<
   ) => {
     openNavbarWalletMenu &&
       trackEvent({
-        category: TrackingCategories.WalletMenu,
+        category: TrackingCategory.WalletMenu,
         action: TrackingAction.OpenMenu,
         label: 'open_wallet_menu',
         data: { [TrackingEventParameters.Menu]: 'wallet_menu' },

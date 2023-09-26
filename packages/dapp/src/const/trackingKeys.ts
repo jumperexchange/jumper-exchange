@@ -41,7 +41,7 @@ export enum TrackingAction {
   SwitchTheme = 'action_switch_theme',
 }
 
-export enum TrackingCategories {
+export enum TrackingCategory {
   ChainsMenu = 'cat_chains_menu',
   MainMenu = 'cat_main_menu',
   Menu = 'cat_menu',

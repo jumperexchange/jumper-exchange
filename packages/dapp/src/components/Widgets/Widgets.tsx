@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { TrackingAction, TrackingCategories } from '../../const';
+import { TrackingAction, TrackingCategory } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
@@ -94,7 +94,7 @@ export function Widgets() {
       event.stopPropagation();
       onWelcomeScreenEntered(true);
       trackEvent({
-        category: TrackingCategories.WelcomeScreen,
+        category: TrackingCategory.WelcomeScreen,
         action: TrackingAction.CloseWelcomeScreen,
         label: 'enter_welcome_screen',
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],

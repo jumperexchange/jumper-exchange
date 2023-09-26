@@ -6,7 +6,7 @@ import { Breakpoint, useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
@@ -35,7 +35,7 @@ const NavbarTabsContainer = () => {
     (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       window.history.replaceState(null, document.title, `/${tab}`);
       trackEvent({
-        category: TrackingCategories.Navigation,
+        category: TrackingCategory.Navigation,
         action: TrackingAction.SwitchTab,
         label: `switch_tab_to_${tab}`,
         data: { [TrackingEventParameters.Tab]: tab },

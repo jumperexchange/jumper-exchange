@@ -4,7 +4,7 @@ import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
@@ -37,7 +37,7 @@ export const ChainSwitch = () => {
   ) => {
     onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
     trackEvent({
-      category: TrackingCategories.ChainsMenu,
+      category: TrackingCategory.ChainsMenu,
       action: TrackingAction.OpenMenu,
       label: 'click_open_chains_menu',
       data: { [TrackingEventParameters.Menu]: 'chains_menu' },

@@ -4,7 +4,7 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import {
   TrackingAction,
-  TrackingCategories,
+  TrackingCategory,
   TrackingEventParameters,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
@@ -29,7 +29,7 @@ export const WelcomeWrapper: React.FC<
   useEffect(() => {
     if (showWelcome) {
       trackEvent({
-        category: TrackingCategories.WelcomeScreen,
+        category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
         action: TrackingAction.OpenWelcomeMessageScreen,
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
@@ -39,7 +39,7 @@ export const WelcomeWrapper: React.FC<
 
   const handleAuditClick = () => {
     trackEvent({
-      category: TrackingCategories.WelcomeScreen,
+      category: TrackingCategory.WelcomeScreen,
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameters.WelcomeMessageLink]: '4x_audited' },
@@ -56,7 +56,7 @@ export const WelcomeWrapper: React.FC<
 
   const handleLIFIClick = () => {
     trackEvent({
-      category: TrackingCategories.WelcomeScreen,
+      category: TrackingCategory.WelcomeScreen,
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameters.WelcomeMessageLink]: 'LIFI' },
