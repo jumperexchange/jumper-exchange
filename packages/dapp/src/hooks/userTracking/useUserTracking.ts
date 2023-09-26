@@ -6,8 +6,7 @@ import { useWallet } from '../../providers/WalletProvider';
 import {
   EventTrackingTool,
   TrackAttributeProps,
-  TrackConnectWalletProps,
-  TrackDisconnectConnectWalletProps,
+  TrackDisconnectWalletProps,
   TrackEventProps,
   TrackTransactionProps,
   trackPageloadProps,
@@ -65,7 +64,7 @@ export function useUserTracking() {
   );
 
   const trackDisconnectWallet = useCallback(
-    ({ data, disableTrackingTool }: TrackDisconnectConnectWalletProps) => {
+    ({ data, disableTrackingTool }: TrackDisconnectWalletProps) => {
       if (
         account.address &&
         !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
