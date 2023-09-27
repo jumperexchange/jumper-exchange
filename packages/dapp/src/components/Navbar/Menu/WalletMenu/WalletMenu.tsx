@@ -1,4 +1,3 @@
-import { getChainById } from '@lifi/sdk';
 import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -17,6 +16,7 @@ import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useChains } from '../../../../hooks/useChains';
 import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
 
@@ -32,6 +32,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const walletSource = supportedWallets;
+  const { getChainById } = useChains();
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
@@ -129,7 +130,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     handleMultisigEnvironmentCheck();
   }, [account, handleMultisigEnvironmentCheck]);
 
-  return !!openNavbarWalletMenu ? (
+  return openNavbarWalletMenu ? (
     <NavbarMenu
       open
       transformOrigin={'top left'}

@@ -91,6 +91,9 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               sx={{
                 fontSize: '24px',
                 lineHeight: '32px',
+                maxHeight: '32px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
               gutterBottom
             >
@@ -102,7 +105,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               variant={'lifiBodySmall'}
               sx={{
                 lineHeight: '24px',
-                width: '240px',
+                width: '224px',
                 height: '48px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -124,7 +127,15 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
                     : theme.palette.primary.main,
               }}
             >
-              <Typography variant="lifiBodySmallStrong">
+              <Typography
+                variant="lifiBodySmallStrong"
+                sx={{
+                  maxWidth: '224px',
+                  maxHeight: '20px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
                 {t('featureCard.learnMore')}
               </Typography>
             </Link>

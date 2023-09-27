@@ -32,10 +32,6 @@
       "explore": "Explore",
       "copiedMsg": "Wallet address copied"
     },
-    "language": {
-      "key": "Language",
-      "value": "English"
-    },
     "themes": {
       "switchToLight": "Switch to Light Theme",
       "switchToDark": "Switch to Dark Theme",
@@ -45,13 +41,7 @@
     },
     "developers": {
       "github": "GitHub",
-      "documentation": "Documentation",
-      "showcases": "Showcases"
-    },
-    "showcases": {
-      "ukraineDonation": "Support Ukraine 🇺🇦",
-      "klimaStaking": "Cross Chain Klima Staking",
-      "carbonOffset": "Cross Chain Carbon Offset"
+      "documentation": "Documentation"
     }
   },
   "alert": {

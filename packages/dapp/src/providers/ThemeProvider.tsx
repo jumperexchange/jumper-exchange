@@ -23,7 +23,7 @@ export const ThemeProvider: React.FC<PropsWithChildren<{}>> = ({
   const isDarkMode = useDetectDarkModePreference();
 
   const activeTheme = useMemo(() => {
-    return !!isDarkMode ? darkTheme : lightTheme;
+    return isDarkMode ? darkTheme : lightTheme;
   }, [isDarkMode]);
 
   return <MuiThemeProvider theme={activeTheme}>{children}</MuiThemeProvider>;

@@ -101,8 +101,12 @@ export const WelcomeWrapper: React.FC<
             <Typography
               variant={'lifiBodyMediumStrong'}
               sx={{
+                maxHeight: '40px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
                   fontSize: '18px',
+                  maxHeight: '48px',
                   lineHeight: '24px',
                 },
               }}

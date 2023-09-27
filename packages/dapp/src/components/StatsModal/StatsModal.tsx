@@ -49,6 +49,9 @@ export const StatsModal = ({ title, open, setOpen, data }: NavbarMenuProps) => {
               fontWeight: '700',
               fontSize: '18px',
               lineHeight: '24px',
+              maxWidth: '80%',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
           >
             {title}

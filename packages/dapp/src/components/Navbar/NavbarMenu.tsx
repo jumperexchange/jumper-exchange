@@ -26,8 +26,8 @@ const NavbarMenu = ({
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
   return (
-    !!open &&
-    (!!isDesktop ? (
+    open &&
+    (isDesktop ? (
       <NavbarMenuDesktop
         handleClose={handleClose}
         label={label}

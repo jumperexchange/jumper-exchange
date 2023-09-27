@@ -32,10 +32,6 @@
       "explore": "Explorer",
       "copiedMsg": "Adresse du portefeuille copiée"
     },
-    "language": {
-      "key": "Langue",
-      "value": "Français"
-    },
     "themes": {
       "switchToLight": "Basculer en mode clair",
       "switchToDark": "Basculer en mode sombre",
@@ -58,6 +54,9 @@
     "info": "Vous utilisez le Testnet",
     "testnet": "Toute transaction ou action effectuée sur le Testnet ne sera pas reflétée sur le réseau principal.",
     "switchToMainnet": "Basculer vers le réseau principal"
+  },
+  "featureCard": {
+    "learnMore": "Plus d'info"
   },
   "button": {
     "okay": "Ok"
