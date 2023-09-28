@@ -144,13 +144,13 @@ const SubMenuComponent = ({
               </MenuItemLabel>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon && (
-                <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
               )}
             </MenuItem>
           ),
         )
       ) : (
-        <Box textAlign={'center'} mt={theme.spacing(2)}>
+        <Box textAlign={'center'} mt={theme.spacing(1)}>
           <CircularProgress />
         </Box>
       )}

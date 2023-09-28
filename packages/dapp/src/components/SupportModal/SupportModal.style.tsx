@@ -19,14 +19,14 @@ export const SupportModalContainer = styled(Box)(({ theme }) => ({
   left: '50%',
   transform: 'translateX(-50%)',
   width: '100%',
-  top: `calc( ${NavbarHeight.XS} + ${theme.spacing(3)} )`,
+  top: `calc( ${NavbarHeight.XS} + ${theme.spacing(1.5)} )`,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     top: NavbarHeight.SM,
     width: '100%',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     width: '50%',
-    maxHeight: `calc( 100vh - ${NavbarHeight.LG} - ${theme.spacing(4)} )`,
+    maxHeight: `calc( 100vh - ${NavbarHeight.LG} - ${theme.spacing(2)} )`,
     overflow: 'auto',
     borderRadius: '12px',
     top: NavbarHeight.LG,

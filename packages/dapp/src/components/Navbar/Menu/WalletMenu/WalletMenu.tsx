@@ -140,7 +140,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     >
       <Grid
         container
-        m={`${theme.spacing(6)} auto !important`}
+        m={`${theme.spacing(3)} auto !important`}
         sx={{
           maxWidth: '360px',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -148,11 +148,11 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
           },
         }}
       >
-        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(6)}>
+        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(3)}>
           <Avatar
             src={walletIcon}
             sx={{
-              padding: theme.spacing(4.5),
+              padding: theme.spacing(2.25),
               background:
                 theme.palette.mode === 'light'
                   ? theme.palette.black.main
@@ -162,7 +162,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
               width: '96px',
             }}
           />
-          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(4)}>
+          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(2)}>
             {_walletDigest}
           </Typography>
         </Grid>

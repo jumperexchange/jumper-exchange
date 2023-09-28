@@ -4,6 +4,18 @@ import { deepmerge } from '@mui/utils';
 import type React from 'react';
 
 declare module '@mui/material/styles' {
+  interface Shape {
+    borderRadius: number;
+    borderRadiusSecondary: number;
+  }
+
+  interface Theme {
+    shape: Shape;
+  }
+
+  interface ThemeOptions {
+    shape?: Partial<Shape>;
+  }
   interface Palette {
     tertiary: Palette['primary'];
     white: Palette['primary'];
@@ -200,7 +212,15 @@ declare module '@mui/material/Typography' {
   }
 }
 
+const shape = {
+  borderRadius: 12,
+  borderRadiusSecondary: 8,
+};
+
 const themeBase: Theme = createTheme({
+  shape: {
+    ...shape,
+  },
   components: {
     MuiScopedCssBaseline: {
       styleOverrides: {
@@ -209,6 +229,19 @@ const themeBase: Theme = createTheme({
           '@supports (font-variation-settings: normal)': {
             fontFamily: 'Inter var, sans-serif',
           },
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: ({ theme }) => ({
+          backgroundColor: 'rgb(0 0 0 / 64%)',
+          backdropFilter: 'blur(3px)',
+          fontSize: '0.75rem',
+          padding: theme.spacing(1, 1.5),
+        }),
+        arrow: {
+          color: 'rgb(0 0 0 / 64%)',
         },
       },
     },
@@ -253,7 +286,6 @@ const themeBase: Theme = createTheme({
       },
     },
   },
-  spacing: 4,
   palette: {
     grey: {
       100: '#F6F5FA',

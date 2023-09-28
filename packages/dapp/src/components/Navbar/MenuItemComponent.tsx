@@ -114,7 +114,7 @@ const MenuItemComponent = ({
             >
               {suffixIcon}
               {showMoreIcon && (
-                <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
               )}
             </div>
           </>
