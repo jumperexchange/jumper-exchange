@@ -2,6 +2,5 @@
 import structuredClone from '@ungap/structured-clone';
 
 if (!('structuredClone' in globalThis)) {
-  globalThis.structuredClone = (value: any, options: any) =>
-    structuredClone(value, options);
+  globalThis.structuredClone = structuredClone as any;
 }
