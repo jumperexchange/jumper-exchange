@@ -11,7 +11,10 @@ import {
   TrackingAction,
   TrackingCategory,
 } from '@transferto/dapp/src/const';
-import { useUserTracking } from '@transferto/dapp/src/hooks';
+import {
+  useBlockchainExplorerURL,
+  useUserTracking,
+} from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
@@ -20,7 +23,6 @@ import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useChains } from '../../../../hooks/useChains';
 import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
 
@@ -32,11 +34,11 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t } = useTranslation();
   const theme = useTheme();
+  const blockchainExplorerURL = useBlockchainExplorerURL();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const walletSource = supportedWallets;
-  const { getChainById } = useChains();
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
@@ -88,23 +90,16 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       label: 'open-blockchain-explorer-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
-    trackPageload({
-      source: TrackingCategory.Wallet,
-      destination: 'blokchain-explorer',
-      url: !!account.chainId
-        ? `${
-            getChainById(account.chainId).metamask.blockExplorerUrls[0]
-          }address/${account.address}`
-        : '',
-      pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
-    });
-    account.chainId &&
-      openInNewTab(
-        `${
-          getChainById(account.chainId).metamask.blockExplorerUrls[0]
-        }address/${account.address}`,
-      );
+    if (blockchainExplorerURL) {
+      trackPageload({
+        source: TrackingCategory.Wallet,
+        destination: 'blokchain-explorer',
+        url: blockchainExplorerURL || '',
+        pageload: true,
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+      openInNewTab(blockchainExplorerURL);
+    }
   };
 
   const handleCopyButton = () => {
