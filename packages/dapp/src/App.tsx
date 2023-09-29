@@ -13,6 +13,7 @@ export default function App() {
   useEffect(() => {
     initTracking({ disableTrackingTool: [] });
   }, [initTracking]);
+  console.log(`mode: ${import.meta.env.MODE}`);
   console.log(`url: ${import.meta.env.VITE_LIFI_API_URL}`);
   return (
     <AppProvider>
