@@ -41,13 +41,7 @@
     },
     "developers": {
       "github": "GitHub",
-      "documentation": "Документація",
-      "showcases": "Приклади"
-    },
-    "showcases": {
-      "ukraineDonation": "Підтримати Україну 🇺🇦",
-      "klimaStaking": "Cross Chain Klima Staking",
-      "carbonOffset": "Cross Chain Carbon Offset"
+      "documentation": "Документація"
     }
   },
   "alert": {
