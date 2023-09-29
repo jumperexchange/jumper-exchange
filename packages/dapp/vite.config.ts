@@ -8,14 +8,14 @@ export default defineConfig({
   plugins: [
     FontaineTransform.vite({
       fallbacks: [
+        'Arial',
+        'Noto Sans',
         'BlinkMacSystemFont',
         'Segoe UI',
         'Helvetica Neue',
-        'Arial',
-        'Noto Sans',
-        'sans-serif'
+        'sans-serif',
       ],
-      resolvePath: id => new URL('.' + id, import.meta.url),
+      resolvePath: (id) => new URL('.' + id, import.meta.url),
     }),
     react(),
   ],
