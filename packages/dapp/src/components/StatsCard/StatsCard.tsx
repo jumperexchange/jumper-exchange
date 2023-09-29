@@ -112,7 +112,7 @@ export const StatsCards = ({
   const statsData: StatsDataProps[] = [
     {
       title: t('navbar.statsCards.chains'),
-      number: chains.length || 22,
+      number: chains.length || 0,
       data: sortByName(chains),
       open: openChainsPopper,
       setOpen: setOpenChainsPopper,
@@ -122,7 +122,7 @@ export const StatsCards = ({
     },
     {
       title: t('navbar.statsCards.bridges'),
-      number: data?.bridges.length || 16,
+      number: data?.bridges.length || 0,
       data: sortByName(data?.bridges),
       open: openBridgesPopper,
       setOpen: setOpenBridgesPopper,
@@ -132,7 +132,7 @@ export const StatsCards = ({
     },
     {
       title: t('navbar.statsCards.dexs'),
-      number: data?.exchanges.length || 32,
+      number: data?.exchanges.length || 0,
       data: sortByName(data?.exchanges),
       open: openDexsPopper,
       setOpen: setOpenDexsPopper,
