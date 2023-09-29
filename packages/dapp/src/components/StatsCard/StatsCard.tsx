@@ -112,7 +112,7 @@ export const StatsCards = ({
   const statsData: StatsDataProps[] = [
     {
       title: t('navbar.statsCards.chains'),
-      number: chains.length || 0,
+      number: chains?.length || 0,
       data: sortByName(chains),
       open: openChainsPopper,
       setOpen: setOpenChainsPopper,
