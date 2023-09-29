@@ -4516,7 +4516,6 @@ __metadata:
     lerna: ^7.3.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-ga4: ^2.1.0
     react-hotjar: ^6.1.0
     react-i18next: ^13.2.2
     react-query: ^3.39.3
@@ -12758,13 +12757,6 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
   checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
-  languageName: node
-  linkType: hard
-
-"react-ga4@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "react-ga4@npm:2.1.0"
-  checksum: f7fb41141418d4ad14756f1126a1e9958db37d4d84ae6cd798043dc03a390b6dba74d69311af0349f0b9580a43bda8930138194ccc29c4100efe446e2d6eb057
   languageName: node
   linkType: hard
 

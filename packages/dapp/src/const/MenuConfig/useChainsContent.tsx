@@ -21,7 +21,7 @@ export const useChainsContent = () => {
 
   return chains?.map(
     (el): ChainsMenuListItem => ({
-      label: `${el.name}`,
+      label: el.name,
       onClick: () => {
         onCloseAllNavbarMenus();
         switchChain(el.id);

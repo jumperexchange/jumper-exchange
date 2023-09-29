@@ -4,14 +4,14 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import { useMediaQuery } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import {
-  TrackingActions,
-  TrackingCategories,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
 } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
-import { EventTrackingTool } from '../../types';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 
 export const ThemeSwitch = () => {
@@ -26,14 +26,17 @@ export const ThemeSwitch = () => {
   const { trackEvent } = useUserTracking();
 
   const handleThemeSwitch = () => {
-    onChangeMode(isDarkMode ? 'light' : 'dark');
+    const changeMode = isDarkMode ? 'light' : 'dark';
+
     trackEvent({
-      category: TrackingCategories.ThemeSwitch,
-      action: TrackingActions.ClickThemeSwitch,
-      label: `themeSwitch-${isDarkMode ? 'light' : 'dark'}`,
-      data: { themeSwitch: `theme-${isDarkMode ? 'light' : 'dark'}` },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      category: TrackingCategory.ThemeSwitch,
+      action: TrackingAction.SwitchTheme,
+      label: `theme_${changeMode}`,
+      data: {
+        [TrackingEventParameter.SwitchedTheme]: changeMode,
+      },
     });
+    onChangeMode(changeMode);
   };
 
   const isDarkModeHook = useMediaQuery('(prefers-color-scheme: dark)');
@@ -51,11 +54,7 @@ export const ThemeSwitch = () => {
       }
       arrow
     >
-      <ButtonThemeSwitch
-        onClick={() => {
-          handleThemeSwitch();
-        }}
-      >
+      <ButtonThemeSwitch onClick={handleThemeSwitch}>
         {themeMode === 'light' ? (
           <NightlightIcon />
         ) : themeMode === 'dark' ? (

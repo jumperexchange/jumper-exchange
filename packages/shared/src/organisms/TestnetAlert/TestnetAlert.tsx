@@ -1,10 +1,7 @@
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { Typography, useTheme } from '@mui/material';
-import {
-  WarningMessageCard,
-  WarningMessageCardTitle,
-} from '@transferto/shared/src/organisms';
 import { useTranslation } from 'react-i18next';
+import { WarningMessageCard, WarningMessageCardTitle } from '..';
 import { ButtonTransparent } from '../../atoms';
 import { openInNewTab } from '../../utils';
 
@@ -13,6 +10,10 @@ const PROD_URL = 'https://jumper.exchange';
 export const TestnetAlert = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+
+  const handleClick = () => {
+    openInNewTab(PROD_URL);
+  };
 
   return (
     <WarningMessageCard mt={theme.spacing(4)}>
@@ -28,9 +29,7 @@ export const TestnetAlert = () => {
         {t('alert.testnet')}
       </Typography>
       <ButtonTransparent
-        onClick={() => {
-          openInNewTab(PROD_URL);
-        }}
+        onClick={handleClick}
         style={{ marginTop: theme.spacing(1.5), width: '100%' }}
       >
         {t('alert.switchToMainnet')}

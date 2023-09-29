@@ -6,8 +6,15 @@ import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
-import { MenuKeys } from '@transferto/dapp/src/const';
-import { useUserTracking } from '@transferto/dapp/src/hooks';
+import {
+  MenuKeys,
+  TrackingAction,
+  TrackingCategory,
+} from '@transferto/dapp/src/const';
+import {
+  useBlockchainExplorerURL,
+  useUserTracking,
+} from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
@@ -16,7 +23,6 @@ import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useChains } from '../../../../hooks/useChains';
 import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
 
@@ -28,11 +34,11 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t } = useTranslation();
   const theme = useTheme();
+  const blockchainExplorerURL = useBlockchainExplorerURL();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const walletSource = supportedWallets;
-  const { getChainById } = useChains();
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
@@ -76,33 +82,33 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   };
 
   const handleExploreButton = () => {
-    account.chainId &&
-      openInNewTab(
-        `${
-          getChainById(account.chainId).metamask.blockExplorerUrls[0]
-        }address/${account.address}`,
-      );
-    onCloseAllNavbarMenus();
-    trackPageload({
-      source: 'wallet-menu',
-      destination: 'blokchain-explorer',
-      url: !!account.chainId
-        ? `${
-            getChainById(account.chainId).metamask.blockExplorerUrls[0]
-          }address/${account.address}`
-        : '',
-      pageload: true,
+    account.chainId && onCloseAllNavbarMenus();
+
+    trackEvent({
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.OpenBlockchainExplorer,
+      label: 'open-blockchain-explorer-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
+    if (blockchainExplorerURL) {
+      trackPageload({
+        source: TrackingCategory.Wallet,
+        destination: 'blokchain-explorer',
+        url: blockchainExplorerURL || '',
+        pageload: true,
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+      openInNewTab(blockchainExplorerURL);
+    }
   };
 
   const handleCopyButton = () => {
     account.address && navigator.clipboard.writeText(account.address);
     setCopiedToClipboard(true);
     trackEvent({
-      category: 'menu',
-      action: 'copyAddressToClipboard',
-      label: 'copyAddressToClipboard',
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.CopyAddressToClipboard,
+      label: 'copy_addr_to_clipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     onCloseAllNavbarMenus();
