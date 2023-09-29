@@ -23,7 +23,7 @@ export const ChainSwitch = () => {
   );
 
   const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
 
