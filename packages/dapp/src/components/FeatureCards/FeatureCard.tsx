@@ -121,7 +121,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       <Card gradient={data?.fields.gradientColor || undefined}>
         <CardContent
           sx={{
-            padding: theme.spacing(6),
+            padding: theme.spacing(3),
             position: 'relative',
           }}
         >
@@ -129,8 +129,8 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             disableRipple={true}
             sx={{
               position: 'absolute',
-              right: theme.spacing(2),
-              top: theme.spacing(2),
+              right: theme.spacing(1),
+              top: theme.spacing(1),
             }}
             onClick={handleClose}
           >
@@ -174,7 +174,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               {data?.fields?.subtitle}
             </Typography>
           )}
-          <CardActions sx={{ padding: 0, marginTop: theme.spacing(2) }}>
+          <CardActions sx={{ padding: 0, marginTop: theme.spacing(1) }}>
             <Link
               target="_blank"
               rel="noopener"

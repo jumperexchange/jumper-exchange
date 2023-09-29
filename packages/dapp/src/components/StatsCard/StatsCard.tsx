@@ -53,7 +53,7 @@ export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
           maxWidth: '80px',
           maxHeight: '20px',
           [theme.breakpoints.up('sm')]: {
-            mt: theme.spacing(1),
+            mt: theme.spacing(0.5),
             fontSize: '16px',
             maxWidth: '118px',
           },

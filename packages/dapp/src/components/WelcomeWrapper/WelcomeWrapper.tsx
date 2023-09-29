@@ -88,7 +88,7 @@ export const WelcomeWrapper: React.FC<
           <Typography
             variant={'lifiBodyLarge'}
             sx={{
-              marginTop: theme.spacing(4),
+              marginTop: theme.spacing(2),
               color:
                 theme.palette.mode === 'dark'
                   ? theme.palette.accent1Alt.main
@@ -142,11 +142,11 @@ export const WelcomeWrapper: React.FC<
             onClick={handleGetStarted}
             sx={(theme) => ({
               margin: 'auto',
-              marginTop: theme.spacing(8),
+              marginTop: theme.spacing(4),
               height: '48px',
               width: '192px',
               [theme.breakpoints.up('sm' as Breakpoint)]: {
-                marginTop: theme.spacing(12),
+                marginTop: theme.spacing(6),
                 height: '56px',
                 borderRadius: '28px',
                 width: '247px',
