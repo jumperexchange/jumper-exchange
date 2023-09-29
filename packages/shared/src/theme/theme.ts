@@ -229,7 +229,7 @@ const themeBase: Theme = createTheme({
             'Inter, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif',
           '@supports (font-variation-settings: normal)': {
             fontFamily:
-              'Inter, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif',
+              'Inter var, Inter fallback, Arial, Noto Sans, BlinkMacSystemFont, Segoe UI, Helvetica Neue, sans-serif',
           },
         },
       },
