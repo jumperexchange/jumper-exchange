@@ -6,7 +6,7 @@ export const ButtonChainSwitch = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary,
   width: '48px',
   height: '48px',
-  marginLeft: theme.spacing(3),
+  marginLeft: theme.spacing(1.5),
   backgroundColor:
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main

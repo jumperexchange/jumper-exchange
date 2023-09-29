@@ -49,6 +49,7 @@ export const ThemeSwitch = () => {
           ? t('navbar.themes.switchToDark')
           : t('navbar.themes.switchToLight')
       }
+      arrow
     >
       <ButtonThemeSwitch
         onClick={() => {

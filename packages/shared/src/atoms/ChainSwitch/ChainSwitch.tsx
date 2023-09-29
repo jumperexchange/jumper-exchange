@@ -40,7 +40,7 @@ export const ChainSwitch = () => {
   };
 
   return (
-    <Tooltip title={t('navbar.walletMenu.switchChain')}>
+    <Tooltip title={t('navbar.walletMenu.switchChain')} arrow>
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar

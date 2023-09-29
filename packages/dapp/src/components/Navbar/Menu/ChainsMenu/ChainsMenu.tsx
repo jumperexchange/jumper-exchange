@@ -49,7 +49,7 @@ export const ChainsMenu = ({ handleClose, open }: NavbarMenuProps) => {
           />
         ))
       ) : (
-        <Box textAlign={'center'} mt={theme.spacing(2)}>
+        <Box textAlign={'center'} mt={theme.spacing(1)}>
           <CircularProgress />
         </Box>
       )}
