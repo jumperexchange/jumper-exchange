@@ -26,7 +26,7 @@ export const SpotButton = ({
       </SpotButtonStyled>
       {!!name ? (
         <Typography
-          mt={theme.spacing(2)}
+          mt={theme.spacing(1)}
           sx={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',

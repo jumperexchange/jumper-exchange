@@ -15,7 +15,7 @@ export const TestnetAlert = () => {
   const theme = useTheme();
 
   return (
-    <WarningMessageCard mt={theme.spacing(8)}>
+    <WarningMessageCard mt={theme.spacing(4)}>
       <WarningMessageCardTitle display="flex" alignItems="center" px={2} pt={2}>
         <WarningRoundedIcon
           sx={{
@@ -24,14 +24,14 @@ export const TestnetAlert = () => {
         />
         <Typography variant={'lifiHeaderXSmall'}>{t('alert.info')}</Typography>
       </WarningMessageCardTitle>
-      <Typography variant={'lifiBodySmall'} pt={theme.spacing(3)}>
+      <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
         {t('alert.testnet')}
       </Typography>
       <ButtonTransparent
         onClick={() => {
           openInNewTab(PROD_URL);
         }}
-        style={{ marginTop: theme.spacing(3), width: '100%' }}
+        style={{ marginTop: theme.spacing(1.5), width: '100%' }}
       >
         {t('alert.switchToMainnet')}
       </ButtonTransparent>

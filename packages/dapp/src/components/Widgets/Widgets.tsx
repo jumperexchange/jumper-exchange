@@ -103,7 +103,7 @@ export function Widgets() {
       handleGetStarted={handleGetStarted}
     >
       {import.meta.env.MODE === 'testnet' && (
-        <Grid item xs={12} mt={theme.spacing(6)}>
+        <Grid item xs={12} mt={theme.spacing(3)}>
           <TestnetAlert />
         </Grid>
       )}
