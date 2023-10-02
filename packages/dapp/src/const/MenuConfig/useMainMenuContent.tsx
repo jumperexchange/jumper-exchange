@@ -128,7 +128,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: t('navbar.navbarMenu.lifi_explorer'),
+      label: t('navbar.navbarMenu.lifiExplorer'),
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
       onClick: () => {
