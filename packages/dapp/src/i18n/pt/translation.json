@@ -1,0 +1,72 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Encontrar a melhor rota",
+      "subtitle": "Agregador de liquidez multi-cadeias <0>4x auditado</0> fornecido pela <1>LI.FI</1>",
+      "cta": "Começar"
+    },
+    "links": {
+      "exchange": "Conversão",
+      "dashboard": "Painel de controle",
+      "refuel": "Gás",
+      "buy": "Comprar"
+    },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Pontes",
+      "chains": "Cadeias"
+    },
+    "connectWallet": "Conectar Carteira",
+    "chooseWallet": "Escolha uma Carteira",
+    "navbarMenu": {
+      "theme": "Tema",
+      "developers": "Desenvolvedores",
+      "aboutLIFI": "Sobre a LI.FI",
+      "support": "Suporte"
+    },
+    "walletMenu": {
+      "disconnect": "Desconectar",
+      "chains": "Cadeias",
+      "switchChain": "Trocar Cadeia",
+      "copy": "Copiar",
+      "explore": "Explorar",
+      "copiedMsg": "Endereço da carteira copiado"
+    },
+    "themes": {
+      "switchToLight": "Mudar para o Modo Claro",
+      "switchToDark": "Mudar para o Modo Escuro",
+      "light": "Claro",
+      "dark": "Escuro",
+      "auto": "Automático"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Documentação"
+    }
+  },
+  "alert": {
+    "info": "Você está usando a rede de testes",
+    "testnet": "Quaisquer transações ou ações realizadas no Testnet não se refletem no Mainnet.",
+    "switchToMainnet": "Alternar para a rede principal"
+  },
+  "featureCard": {
+    "learnMore": "Saiba mais"
+  },
+  "button": {
+    "okay": "Ok"
+  },
+  "multisig": {
+    "connected": {
+      "title": "Carteira Multisig conectada",
+      "description": "Por favor, notifique os outros participantes da carteira para estarem prontos para assinarem."
+    },
+    "transactionInitiated": {
+      "title": "São necessárias múltiplas assinaturas",
+      "description": "Por favor, notifique os outros participantes da carteira multisig para assinarem antes que a transação expire."
+    },
+    "alert": {
+      "title": "Carteira multisig conectada",
+      "description": "O endereço da carteira de destino é necessário para completar a troca."
+    }
+  }
+}

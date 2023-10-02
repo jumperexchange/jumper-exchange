@@ -1,0 +1,62 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Temukan rute terbaik",
+      "subtitle": "<0>4x diaudit</0> agregator likuiditas multi-rantai yang didukung oleh <1>LI.FI</1>",
+      "cta": "Memulai"
+    },
+    "links": {
+      "exchange": "Pertukaran",
+      "dashboard": "Dasbor",
+      "refuel": "Gas",
+      "buy": "Beli"
+    },
+    "statsCards": {
+      "dexs": "DEXs",
+      "bridges": "Bridge",
+      "chains": "Jaringan"
+    },
+    "connectWallet": "Hubungkan Dompet",
+    "chooseWallet": "Pilih Dompet",
+    "navbarMenu": {
+      "theme": "Tema",
+      "developers": "Para Pengembang",
+      "aboutLIFI": "Tentang LI.FI",
+      "support": "Bantuan"
+    },
+    "walletMenu": {
+      "disconnect": "Tidak terkoneksi",
+      "chains": "Jaringan",
+      "switchChain": "Pindah Jaringan",
+      "copy": "Salin",
+      "explore": "Jelajah",
+      "copiedMsg": "Alamat dompet disalin"
+    },
+    "language": {
+      "key": "Bahasa",
+      "value": "Indonesian"
+    },
+    "themes": {
+      "switchToLight": "Beralih ke Tema Terang",
+      "switchToDark": "Beralih ke Tema Gelap",
+      "light": "Terang",
+      "dark": "Gelap",
+      "auto": "Otomatis"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Dokumentasi",
+      "showcases": "Showcase"
+    },
+    "showcases": {
+      "ukraineDonation": "Dukung Ukraina 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Cross Chain Carbon Offset"
+    }
+  },
+  "alert": {
+    "info": "Anda menggunakan Testnet",
+    "testnet": "Setiap transaksi atau tindakan yang dilakukan di Testnet tidak akan tercermin di Mainnet.",
+    "switchToMainnet": "Beralih ke Mainnet"
+  }
+}

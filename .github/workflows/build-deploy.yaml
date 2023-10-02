@@ -21,10 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
@@ -32,8 +28,11 @@ jobs:
           role-session-name: github-actions-role-session
           aws-region: us-east-2
 
+      - name: Install dependencies
+        uses: ./.github/actions/yarn-install
+
       - name: Build App
-        run: yarn install && yarn build:${{env.BRANCH_NAME == 'main' && 'production' || env.BRANCH_NAME }}
+        run: yarn build:${{env.BRANCH_NAME == 'main' && 'production' || env.BRANCH_NAME }}
 
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./packages/dapp/dist/ ${{ env.BRANCH_NAME == 'main' && 's3://' || format('s3://{0}.',env.BRANCH_NAME) }}jumper.exchange --delete

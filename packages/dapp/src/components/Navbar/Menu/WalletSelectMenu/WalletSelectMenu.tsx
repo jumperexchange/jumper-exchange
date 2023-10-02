@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
+import { MenuKeys, useWalletSelectContent } from '@transferto/dapp/src/const';
+import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
-import { SubMenuKeys, useWalletSelectMenuItems } from '../../../../const';
-import { useMenu } from '../../../../providers/MenuProvider';
 import { MenuItemComponent, NavbarMenu } from '../../index';
 
 interface NavbarMenuProps {
@@ -12,37 +12,43 @@ interface NavbarMenuProps {
 }
 
 export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
-  const i18Path = 'navbar.';
-  const { t: translate } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
-  const menu = useMenu();
-  const _walletSelectMenuItems = useWalletSelectMenuItems();
+  const walletSelectMenuItems = useWalletSelectContent();
+  const [
+    openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu,
+    openNavbarSubMenu,
+  ] = useMenuStore((state) => [
+    state.openNavbarWalletSelectMenu,
+    state.onOpenNavbarWalletSelectMenu,
+    state.openNavbarSubMenu,
+  ]);
+
   return (
     <NavbarMenu
       handleClose={handleClose}
-      label={`${translate(`${i18Path}chooseWallet`)}`}
-      hideBackArrow={true}
-      open={menu.openNavbarWalletSelectMenu}
-      setOpen={menu.onOpenNavbarWalletSelectMenu}
-      isOpenSubMenu={menu.openNavbarSubMenu === SubMenuKeys.walletSelect}
+      label={t('navbar.chooseWallet')}
+      open={openNavbarWalletSelectMenu}
+      transformOrigin={'top'}
+      setOpen={onOpenNavbarWalletSelectMenu}
+      isOpenSubMenu={openNavbarSubMenu === MenuKeys.WalletSelect}
     >
-      {!!_walletSelectMenuItems.length ? (
-        _walletSelectMenuItems.map((el, index) => (
+      {!!walletSelectMenuItems.length ? (
+        walletSelectMenuItems.map((el, index) => (
           <MenuItemComponent
             key={`${el.label}-${index}`}
-            label={el.label}
-            triggerSubMenu={SubMenuKeys.walletSelect}
-            showButton={el.showButton}
+            label={`${el.label || ' '}`}
+            triggerSubMenu={MenuKeys.WalletSelect}
+            showButton={el.showButton || false}
             showMoreIcon={el.showMoreIcon}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
-            open={!!open ? open : menu.openNavbarWalletSelectMenu}
-            isOpenSubMenu={menu.openNavbarSubMenu !== SubMenuKeys.walletSelect}
-            setOpenSubMenu={menu.onOpenNavbarSubMenu}
+            open={open || openNavbarWalletSelectMenu}
           />
         ))
       ) : (
-        <Box textAlign={'center'} mt={theme.spacing(2)}>
+        <Box textAlign={'center'} mt={theme.spacing(1)}>
           <CircularProgress />
         </Box>
       )}

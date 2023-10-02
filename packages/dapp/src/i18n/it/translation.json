@@ -1,0 +1,79 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Scopri la route migliore",
+      "subtitle": "<0>4x verificato</0> aggregatori di liquidità multi-chain powerade by <1>LI.FI</1>",
+      "cta": "Inizia adesso"
+    },
+    "links": {
+      "exchange": "Exchange",
+      "dashboard": "Dashboard",
+      "refuel": "Gas",
+      "buy": "Acquista"
+    },
+    "statsCards": {
+      "dexs": "DEX",
+      "bridges": "Bridges",
+      "chains": "Chains"
+    },
+    "connectWallet": "Collega il portafoglio",
+    "chooseWallet": "Scegli il portafoglio",
+    "navbarMenu": {
+      "theme": "Tema",
+      "developers": "Sviluppatori",
+      "aboutLIFI": "Info su LI.FI",
+      "support": "Assistenza"
+    },
+    "walletMenu": {
+      "disconnect": "Disconnetti",
+      "chains": "Chains",
+      "switchChain": "Cambia Chain",
+      "copy": "Copia",
+      "explore": "Esplora",
+      "copiedMsg": "Indirizzo del portafogli copiato"
+    },
+    "language": {
+      "key": "Lingua",
+      "value": "Italiano"
+    },
+    "themes": {
+      "switchToLight": "Passa al tema chiaro",
+      "switchToDark": "Passa al tema scuro",
+      "light": "Chiaro",
+      "dark": "Scuro",
+      "auto": "Automatico"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Documentazione",
+      "showcases": "In primo piano"
+    },
+    "showcases": {
+      "ukraineDonation": "Sostieni l'Ucraina 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Compenso Emissioni CO2 Cross Chain"
+    }
+  },
+  "alert": {
+    "info": "Stai utilizzando una Testnet",
+    "testnet": "Qualsiasi transazione o azione eseguita su una Testnet non si rifletterà sulla rete principale Mainnet.",
+    "switchToMainnet": "Passa a Mainnet"
+  },
+  "button": {
+    "okay": "Ok"
+  },
+  "multisig": {
+    "connected": {
+      "title": "Portafoglio Multisig connesso",
+      "description": "Si prega di avvisare gli altri partecipanti del wallet di essere pronti per firmare."
+    },
+    "transactionInitiated": {
+      "title": "Sono necessarie firme multiple",
+      "description": "Si prega di avvisare gli altri partecipanti del wallet multisig di firmare prima della scadenza della transazione."
+    },
+    "alert": {
+      "title": "Wallet Multisig connesso",
+      "description": "L'indirizzo del wallet di destinazione è necessario per completare lo scambio."
+    }
+  }
+}

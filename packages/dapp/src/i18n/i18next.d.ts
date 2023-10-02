@@ -1,7 +1,8 @@
 import 'i18next';
-import en from './en.json';
+import language from './en/language.json';
+import translation from './en/translation.json';
 
-const defaultResource = { translation: en };
+const defaultResource = { language, translation };
 
 declare module 'i18next' {
   interface CustomTypeOptions {

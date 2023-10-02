@@ -7,7 +7,7 @@ import {
   ListItem,
   ListItemProps,
   MenuItem as MUIMenuItem,
-  MenuItemProps,
+  MenuItemProps as MUIMenuItemProps,
   MenuList,
   MenuListProps,
   Paper,
@@ -25,10 +25,19 @@ import { ButtonSecondary } from '@transferto/shared/src/atoms/index';
 
 import { Breakpoint, alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
-import { SubMenuKeys } from '../../const';
+import { ElementType } from 'react';
+
+const MenuLabelHeight = '64px';
+
+export enum NavbarHeight {
+  XS = '64px',
+  SM = '72px',
+  LG = '80px',
+}
 
 export const NavbarBrandContainer = styled(Link)(({ theme }) => ({
   height: '48px',
+  cursor: 'pointer',
   alignItems: 'center',
   display: 'flex',
 }));
@@ -39,7 +48,7 @@ export const NavbarExternalBackground = styled('div')(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  zIndex: 1300,
+  zIndex: 1400,
   backgroundColor: '#000000',
   opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -53,7 +62,7 @@ export const NavbarManagement = styled('div')({
 });
 
 export const NavBar = styled(AppBar)(({ theme }) => ({
-  marginTop: theme.spacing(4),
+  marginTop: theme.spacing(2),
   background: 'transparent',
   boxShadow: 'none',
 }));
@@ -70,16 +79,16 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     boxShadow: 'unset',
     background: 'transparent',
     alignItems: 'center',
-    height: '64px',
-    padding: theme.spacing(2, 4),
-    zIndex: 1300,
+    height: NavbarHeight.XS,
+    padding: theme.spacing(1, 2),
+    zIndex: 1500,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      height: '72px',
-      padding: theme.spacing(4, 6),
+      height: NavbarHeight.SM,
+      padding: theme.spacing(2, 3),
     },
     [theme.breakpoints.up('md' as Breakpoint)]: {
-      padding: theme.spacing(6),
-      height: '80px',
+      padding: theme.spacing(3),
+      height: NavbarHeight.LG,
     },
   }),
 );
@@ -94,13 +103,13 @@ export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
         : theme.palette.primary.main,
     width: '48px',
     borderRadius: '50%',
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(1.5),
     minWidth: 'unset',
     height: '48px',
     ':hover:before': {
       backgroundColor:
         theme.palette.mode === 'dark'
-          ? getContrastAlphaColor(theme, '12%')
+          ? getContrastAlphaColor(theme, '4%')
           : theme.palette.alphaDark100.main,
     },
     ':hover': {
@@ -110,7 +119,7 @@ export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
 );
 
 export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
-  zIndex: 1300,
+  zIndex: 1600,
   bottom: '0 !important',
   left: '0 !important',
   top: 'unset !important',
@@ -125,13 +134,25 @@ export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
 }));
 export interface NavbarMenuListProps extends Omit<MenuListProps, 'component'> {
   component?: string;
+  isOpenSubMenu?: boolean;
+  hasLabel?: boolean;
 }
 
-export const NavbarMenuList = styled(MenuList)<NavbarMenuListProps>(() => ({
+export const NavbarMenuList = styled(MenuList, {
+  shouldForwardProp: (prop) => prop !== 'isOpenSubMenu' && prop !== 'hasLabel',
+})<NavbarMenuListProps>(({ theme, isOpenSubMenu, hasLabel }) => ({
+  marginTop: 0,
   padding: 0,
+  '& > :first-of-type': {
+    marginTop: isOpenSubMenu || hasLabel ? 'inherit' : theme.spacing(1.5),
+    paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
+  },
+  '& > :last-child': {
+    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
+    paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
+    paddingTop: hasLabel ? 0 : 'inherit',
+  },
 }));
-
-export const NavbarLinkText = styled('span')({});
 
 export const MenuHeader = styled('div')(() => ({
   padding: '0',
@@ -161,6 +182,7 @@ export const NavbarTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'isDarkMode',
 })<TabsProps & { isDarkMode: boolean }>(({ theme }) => ({
   display: 'none',
+  minWidth: 392,
   [theme.breakpoints.up('md' as Breakpoint)]: {
     position: 'absolute',
     left: '50%',
@@ -173,7 +195,6 @@ export const NavbarTabs = styled(Tabs, {
     borderRadius: 28,
     padding: 1,
     display: 'flex',
-    width: 390,
     alignItems: 'center',
   },
   div: {
@@ -213,13 +234,13 @@ export const NavbarTab = styled(Tab, {
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  fontFamily: 'Inter',
   fontStyle: 'normal',
   fontWeight: '700',
   fontSize: '16px',
   lineHeight: '20px',
   margin: '6px 4px',
   height: '48px',
+  width: '142px',
   minHeight: 'unset',
   color:
     theme.palette.mode === 'dark'
@@ -241,19 +262,20 @@ export const NavbarTab = styled(Tab, {
 
 export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
-export interface MUIMenuItemProps extends Omit<MenuItemProps, 'showButton'> {
+export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;
-  component?: string;
+  component?: ElementType<any>;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton',
-})<MUIMenuItemProps>(({ theme, showButton }) => ({
+  shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
+})<MenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
-  padding: showButton ? theme.spacing(0, 3, 3) : theme.spacing(0, 3),
+  padding: showButton ? theme.spacing(0, 1.5, 1.5) : theme.spacing(0, 1.5),
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
-  marginTop: showButton && theme.spacing(2),
+  margin: theme.spacing(0, 1.5),
+  marginTop: showButton ? theme.spacing(1) : 0,
   borderRadius: '12px',
 
   '&:hover': {
@@ -267,21 +289,17 @@ export const MenuItem = styled(MUIMenuItem, {
   },
 }));
 
-export interface NavbarPaperProps extends Omit<PaperProps, 'isDarkMode'> {
+export interface NavbarPaperProps
+  extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isDarkMode?: boolean;
-  isOpenSubMenu?: boolean;
-  openSubMenu?: string;
-  isSubMenu?: boolean;
-  component?: string;
+  isWide?: boolean;
+  component?: ElementType<any>;
 }
 
 export const NavbarPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'isDarkMode' &&
-    prop !== 'isOpenSubMenu' &&
-    prop !== 'openSubMenu' &&
-    prop !== 'isSubMenu',
-})<NavbarPaperProps>(({ theme, isDarkMode, isOpenSubMenu, openSubMenu }) => ({
+    prop !== 'isDarkMode' && prop !== 'isWide' && prop !== 'isSubMenu',
+})<NavbarPaperProps>(({ theme, isDarkMode, isWide }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -290,22 +308,9 @@ export const NavbarPaper = styled(Paper, {
     : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-  maxHeight: 'calc( 100vh - 64px - 12px )', // viewHeight - navbarHeight - offset
+  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - navbarHeight - offset
   overflowY: 'auto',
-  overflowX: 'inherit',
-
-  '> .navbar-menu-list': {
-    marginTop: 0,
-    padding: !!isOpenSubMenu
-      ? openSubMenu === SubMenuKeys.walletSelect ||
-        openSubMenu === SubMenuKeys.chains
-        ? `${theme.spacing(0, 3, 3)} !important`
-        : `${theme.spacing(0)} !important`
-      : `${theme.spacing(3)} !important`,
-  },
-  '> .navbar-menu-list.open > ul': {
-    padding: `${theme.spacing(0, 3, 3)} !important`,
-  },
+  overflowX: 'hidden',
   width: '100%',
   transformOrigin: 'bottom',
   transition:
@@ -314,9 +319,8 @@ export const NavbarPaper = styled(Paper, {
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 72px - 12px )',
-
     borderRadius: '12px !important',
-    width: openSubMenu === SubMenuKeys.walletMenu ? '320px' : '288px',
+    width: isWide ? '320px' : '288px',
     marginTop: '-2px',
   },
 
@@ -334,7 +338,7 @@ export const MenuLinkItem = styled(Link, {
 })<MenuLinkItemProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  padding: `0 ${theme.spacing(6)}`,
+  padding: `0 ${theme.spacing(3)}`,
   height: '48px',
   textDecoration: 'none',
   color: 'inherit',
@@ -366,10 +370,10 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     backdropFilter: 'blur(12px)',
     zIndex: 1400,
     overflow: 'hidden',
-    margin: theme.spacing(0, -3),
-    width: 'calc( 100% + 24px )',
+    // margin: theme.spacing(0),
+    margin: theme.spacing(0),
     marginTop: '0px',
-    height: '64px',
+    height: MenuLabelHeight,
     padding: '0px',
     borderTopLeftRadius: '24px',
     borderTopRightRadius: '24px',
@@ -390,7 +394,7 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     top: 'initial',
     left: 'initial',
     right: 'initial',
-    padding: theme.spacing(0, 3, 0, 3),
+    padding: theme.spacing(0, 1.5, 0, 1.5),
     color: theme.palette.text.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -398,7 +402,7 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     minHeight: 48,
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      padding: theme.spacing(0, 3),
+      padding: theme.spacing(0, 1.5),
       position: 'relative',
       justifyContent: 'flex-start',
     },

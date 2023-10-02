@@ -1,11 +1,17 @@
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useMediaQuery } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { useSettings } from '@transferto/shared/src/hooks';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../../const';
-import { EventTrackingTools, useUserTracking } from '../../hooks';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '../../const';
+import { useUserTracking } from '../../hooks';
+import { useActiveTabStore } from '../../stores';
+import { EventTrackingTool } from '../../types';
 import { NavbarTab, NavbarTabs } from './Navbar.style';
 function a11yProps(index: number) {
   return {
@@ -16,67 +22,60 @@ function a11yProps(index: number) {
 
 const NavbarTabsContainer = () => {
   const theme = useTheme();
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.';
-  const settings = useSettings();
+  const { t } = useTranslation();
+  const { activeTab, setActiveTab } = useActiveTabStore();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
   const { trackEvent } = useUserTracking();
   const isDarkMode = theme.palette.mode === 'dark';
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    settings.onChangeTab(newValue);
+    setActiveTab(newValue);
   };
+
+  const handleClickTab =
+    (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
+      window.history.replaceState(null, document.title, `/${tab}`);
+      trackEvent({
+        category: TrackingCategory.Navigation,
+        action: TrackingAction.SwitchTab,
+        label: `switch_tab_to_${tab}`,
+        data: { [TrackingEventParameter.Tab]: tab },
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+    };
 
   return (
     <NavbarTabs
-      value={!!isDesktop ? settings.activeTab : false}
+      value={isDesktop ? activeTab : false}
       onChange={handleChange}
       isDarkMode={isDarkMode}
       aria-label="tabs"
       indicatorColor="primary"
     >
       <NavbarTab
-        onClick={() => {
-          window.history.replaceState(null, document.title, '/swap');
-          trackEvent({
-            category: TrackingCategories.Navigation,
-            action: TrackingActions.SwitchTab,
-            label: 'swap',
-            data: { tab: 'swap' },
-            disableTrackingTool: [EventTrackingTools.arcx],
-          });
-        }}
+        onClick={handleClickTab('exchange')}
         icon={
           <SwapHorizIcon
             sx={{
               marginRight: '6px',
               marginBottom: '0px !important',
-              color: !!isDarkMode
+              color: isDarkMode
                 ? theme.palette.white.main
                 : theme.palette.black.main,
             }}
           />
         }
-        label={`${translate(`${i18Path}links.swap`)}`}
+        label={t('navbar.links.exchange')}
         {...a11yProps(0)}
       />
       <NavbarTab
-        onClick={() => {
-          window.history.replaceState(null, document.title, '/gas');
-          trackEvent({
-            category: TrackingCategories.Navigation,
-            action: TrackingActions.SwitchTab,
-            label: 'gas',
-            data: { tab: 'gas' },
-            disableTrackingTool: [EventTrackingTools.arcx],
-          });
-        }}
-        label={`${translate(`${i18Path}links.refuel`)}`}
+        onClick={handleClickTab('refuel')}
+        label={t('navbar.links.refuel')}
         icon={
           <EvStationOutlinedIcon
             sx={{
               marginRight: '6px',
               marginBottom: '0px !important',
-              color: !!isDarkMode
+              color: isDarkMode
                 ? theme.palette.white.main
                 : theme.palette.black.main,
             }}
@@ -84,6 +83,24 @@ const NavbarTabsContainer = () => {
         }
         {...a11yProps(1)}
       />
+      {import.meta.env.VITE_ONRAMPER_ENABLED ? (
+        <NavbarTab
+          onClick={handleClickTab('buy')}
+          label={t('navbar.links.buy')}
+          icon={
+            <CreditCardIcon
+              sx={{
+                marginRight: '6px',
+                marginBottom: '0px !important',
+                color: isDarkMode
+                  ? theme.palette.white.main
+                  : theme.palette.black.main,
+              }}
+            />
+          }
+          {...a11yProps(2)}
+        />
+      ) : null}
     </NavbarTabs>
   );
 };

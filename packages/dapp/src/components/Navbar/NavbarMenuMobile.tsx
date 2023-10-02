@@ -1,10 +1,9 @@
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useTheme } from '@mui/material/styles';
-import { Dispatch, KeyboardEvent, SetStateAction } from 'react';
-import { ButtonBackArrow } from '../../../../shared/src/atoms/ButtonArrowBack/ButtonArrowBack';
-import { SubMenuKeys } from '../../const';
-import { useMenu } from '../../providers/MenuProvider';
+import { KeyboardEvent } from 'react';
+import { MenuKeys } from '../../const';
+import { useMenuStore } from '../../stores/menu';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -16,9 +15,8 @@ import {
 
 interface NavbarMenuProps {
   isOpenSubMenu: boolean;
-  hideBackArrow?: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpen: (open: boolean, anchorRef: any) => void;
   label?: string;
   open: boolean;
   children: any;
@@ -27,7 +25,6 @@ interface NavbarMenuProps {
 const NavbarMenuMobile = ({
   handleClose,
   open,
-  hideBackArrow,
   setOpen,
   label,
   isOpenSubMenu,
@@ -35,52 +32,54 @@ const NavbarMenuMobile = ({
 }: NavbarMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const menu = useMenu();
+
+  const [openNavbarSubMenu, anchorRef, onCloseAllNavbarMenus] = useMenuStore(
+    (state) => [
+      state.openNavbarSubMenu,
+      state.anchorRef,
+      state.onCloseAllNavbarMenus,
+    ],
+  );
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault();
-      setOpen(false);
+      setOpen(false, null);
     } else if (event.key === 'Escape') {
-      setOpen(false);
+      setOpen(false, null);
     }
   }
 
   return (
-    !!open && (
+    open && (
       <>
         <NavbarExternalBackground />
         <Slide direction="up" in={open} mountOnEnter unmountOnExit>
           <NavbarPopper
             open={open}
-            anchorEl={menu.anchorRef.current}
+            anchorEl={anchorRef}
             role={undefined}
             placement="bottom-start"
             transition
             disablePortal
           >
-            <NavbarPaper
-              isDarkMode={isDarkMode}
-              isOpenSubMenu={isOpenSubMenu}
-              openSubMenu={menu.openNavbarSubMenu}
-            >
+            <NavbarPaper isDarkMode={isDarkMode}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
-                  menu.onCloseAllNavbarMenus();
+                  onCloseAllNavbarMenus();
                 }}
               >
                 <NavbarMenuList
                   autoFocusItem={open}
                   id="composition-menu"
                   aria-labelledby="composition-button"
+                  isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                   onKeyDown={handleListKeyDown}
-                  className={
-                    isOpenSubMenu ? 'navbar-menu-list open' : 'navbar-menu-list'
-                  }
+                  autoFocus={open}
+                  hasLabel={!!label}
                   component={
-                    !!isOpenSubMenu &&
-                    menu.openNavbarSubMenu !== SubMenuKeys.walletSelect
+                    isOpenSubMenu && openNavbarSubMenu !== MenuKeys.WalletSelect
                       ? 'div'
                       : 'ul'
                   }
@@ -88,15 +87,6 @@ const NavbarMenuMobile = ({
                   {!!label ? (
                     <MenuHeaderAppWrapper>
                       <MenuHeaderAppBar component="div" elevation={0}>
-                        {!hideBackArrow && (
-                          <ButtonBackArrow
-                            onClick={() => {
-                              menu.onOpenNavbarWalletSelectMenu(
-                                !menu.openNavbarWalletSelectMenu,
-                              );
-                            }}
-                          />
-                        )}
                         <Typography
                           variant={'lifiBodyMediumStrong'}
                           width={'100%'}

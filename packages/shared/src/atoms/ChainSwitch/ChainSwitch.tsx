@@ -2,50 +2,56 @@ import type { Chain } from '@lifi/types';
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@transferto/dapp/src/const';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { useChains } from '@transferto/dapp/src/hooks/useChains';
+import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
+import { useMenuStore } from '@transferto/dapp/src/stores';
+import { EventTrackingTool } from '@transferto/dapp/src/types';
+import type { MouseEventHandler } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  EventTrackingTools,
-  useUserTracking,
-} from '../../../../dapp/src/hooks';
-import { useChainInfos } from '../../../../dapp/src/providers/ChainInfosProvider';
-import { useMenu } from '../../../../dapp/src/providers/MenuProvider';
-import { useWallet } from '../../../../dapp/src/providers/WalletProvider';
 import { ButtonChainSwitch } from './ChainSwitch.style';
 
 export const ChainSwitch = () => {
-  const { t: translate } = useTranslation();
-  const i18Path = 'navbar.walletMenu.';
+  const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const menu = useMenu();
-  const { chains } = useChainInfos();
+  const { chains } = useChains();
   const { account } = useWallet();
+
+  const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
+    (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
+  );
+
   const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
 
-  const handleOpenChainsMenu = () => {
-    menu.onOpenNavbarChainsMenu(true);
-
+  const handleOpenChainsMenu: MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
+    onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
     trackEvent({
-      category: 'chain-menu',
-      action: `click-open-chain-menu`,
-      disableTrackingTool: [EventTrackingTools.arcx],
+      category: TrackingCategory.ChainsMenu,
+      action: TrackingAction.OpenMenu,
+      label: 'click_open_chains_menu',
+      data: { [TrackingEventParameter.Menu]: 'chains_menu' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 
   return (
-    <Tooltip title={translate(`${i18Path}switchChain`)}>
-      <ButtonChainSwitch
-        onClick={() => {
-          handleOpenChainsMenu();
-        }}
-      >
+    <Tooltip title={t('navbar.walletMenu.switchChain')} arrow>
+      <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar
-            src={!!activeChain ? activeChain.logoURI : 'empty'}
-            alt={`${!!activeChain?.name ? activeChain.name : ''}chain-logo`}
+            src={activeChain.logoURI || 'empty'}
+            alt={`${activeChain.name}chain-logo`}
             sx={{ height: '32px', width: '32px' }}
           />
         ) : (

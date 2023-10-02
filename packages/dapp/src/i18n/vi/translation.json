@@ -1,0 +1,57 @@
+{
+  "navbar": {
+    "welcome": {
+      "title": "Tìm tuyến đường tốt nhất",
+      "subtitle": "<0>4x audited</0> Nguồn tổng hợp thanh khoản đa chuỗi được cung cấp bởi <1>LI.FI</1>",
+      "cta": "Bắt đầu"
+    },
+    "links": {
+      "exchange": "Hoán đổi",
+      "dashboard": "Tổng quan",
+      "refuel": "Gas",
+      "buy": "Mua"
+    },
+    "connectWallet": "Kết nối ví",
+    "chooseWallet": "Chọn ví",
+    "navbarMenu": {
+      "theme": "Giao diện",
+      "developers": "Developers",
+      "aboutLIFI": "Về LI.FI",
+      "support": "Hỗ trợ"
+    },
+    "walletMenu": {
+      "disconnect": "Ngắt kết nối",
+      "chains": "Chains",
+      "switchChain": "Thay đổi Chain",
+      "copy": "Sao Chép",
+      "explore": "Explore",
+      "copiedMsg": "Địa chỉ ví đã được sao chép"
+    },
+    "language": {
+      "key": "Ngôn ngữ",
+      "value": "Tiếng Việt"
+    },
+    "themes": {
+      "switchToLight": "Đổi sang Chế độ nền sáng",
+      "switchToDark": "Chuyển sang Chế độ nền tối",
+      "light": "Sáng",
+      "dark": "Tối",
+      "auto": "Tự động"
+    },
+    "developers": {
+      "github": "GitHub",
+      "documentation": "Tài liệu",
+      "showcases": "Showcases"
+    },
+    "showcases": {
+      "ukraineDonation": "Ủng hộ Ukraine 🇺🇦",
+      "klimaStaking": "Cross Chain Klima Staking",
+      "carbonOffset": "Cross Chain Carbon Offset"
+    }
+  },
+  "alert": {
+    "info": "Bạn đang sử dụng mạng thử nghiệm",
+    "testnet": "Mọi giao dịch hoặc hành động được thực hiện trên mạng thử nghiệm sẽ không được phản ánh trên mạng chính.",
+    "switchToMainnet": "Chuyển sang mạng chính"
+  }
+}

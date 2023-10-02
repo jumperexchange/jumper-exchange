@@ -1,27 +1,29 @@
-import { Breakpoint, Modal, useTheme } from '@mui/material';
+import { Breakpoint, useTheme } from '@mui/material';
 import WidgetBot from '@widgetbot/react-embed';
-import { useMenu } from '../../providers/MenuProvider';
-import { SupportModalContainer } from './SupportModal.style';
+import { useMenuStore } from '../../stores/menu';
+import { NavbarHeight } from '../Navbar/Navbar.style';
+import { Modal, SupportModalContainer } from './SupportModal.style';
 
 export const SupportModal = () => {
-  const menu = useMenu();
   const theme = useTheme();
+  const [openSupportModal, onOpenSupportModal] = useMenuStore((state) => [
+    state.openSupportModal,
+    state.onOpenSupportModal,
+  ]);
 
   return (
-    <Modal
-      open={menu.openSupportModal}
-      onClose={() => menu.toggleSupportModal(false)}
-    >
+    <Modal open={openSupportModal} onClose={() => onOpenSupportModal(false)}>
       <SupportModalContainer>
         <WidgetBot
           server="849912621360218112" // LI.FI / TransferTo.xyz
-          channel="1048071264352337951" // #🩹︱web-support
+          channel="1108568727148056646" // #🩹︱web-support
           shard="https://emerald.widgetbot.io"
           style={{
             width: '100%',
-            height: 'calc( 100vh - 64px )',
+            height: '80vh',
+            maxHeight: `calc( 100vh - ${NavbarHeight.XS} )`,
             [theme.breakpoints.up('sm' as Breakpoint)]: {
-              height: 'calc( 100vh - 72px )',
+              maxHeight: `calc( 100vh - ${NavbarHeight.SM} )`,
             },
             [theme.breakpoints.up('md' as Breakpoint)]: {
               height: '500px',

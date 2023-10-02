@@ -1,5 +1,5 @@
-export * from './Menu/ConnectedMenu';
 export * from './Menu/MainMenu';
+export * from './Menu/WalletMenu';
 export * from './Menu/WalletSelectMenu';
 export { default as MenuItemComponent } from './MenuItemComponent';
 export { default as Navbar } from './Navbar';

@@ -2,19 +2,24 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
-import { Dispatch, SetStateAction } from 'react';
-import { TrackingActions, TrackingCategories } from '../../const';
-import { useUserTracking } from '../../hooks/useUserTracking/useUserTracking';
+import {
+  MenuKeys,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '../../const';
+import { useUserTracking } from '../../hooks';
+import { useMenuStore } from '../../stores';
+import { EventTrackingTool } from '../../types';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
-  isOpenSubMenu: boolean;
   showButton: boolean;
-  setOpenSubMenu: Dispatch<SetStateAction<string>>;
+  autoFocus?: boolean;
   showMoreIcon?: boolean;
   label: string;
   onClick: any;
-  triggerSubMenu: string;
+  triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
   checkIcon?: boolean;
@@ -22,9 +27,8 @@ interface MenuItemProps {
 
 const MenuItemComponent = ({
   open,
-  isOpenSubMenu,
-  setOpenSubMenu,
   showButton,
+  autoFocus,
   showMoreIcon = true,
   onClick,
   label,
@@ -34,46 +38,51 @@ const MenuItemComponent = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
+  const [onOpenNavbarSubMenu] = useMenuStore((state) => [
+    state.onOpenNavbarSubMenu,
+  ]);
 
-  return !!open && !isOpenSubMenu ? (
+  const handleClick = () => {
+    !!triggerSubMenu && onOpenNavbarSubMenu(triggerSubMenu);
+    !!triggerSubMenu &&
+      trackEvent({
+        category: TrackingCategory.MainMenu,
+        action: TrackingAction.OpenMenu,
+        label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
+        data: { [TrackingEventParameter.Menu]: triggerSubMenu },
+        disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+      });
+    !!onClick && onClick();
+  };
+
+  return open ? (
     <MenuItem
       disableRipple={showButton}
-      showButton={showButton}
-      onClick={() => {
-        !!triggerSubMenu && setOpenSubMenu(triggerSubMenu);
-        !!triggerSubMenu &&
-          trackEvent({
-            category: TrackingCategories.Menu,
-            action: TrackingActions.OpenSubmenu,
-            label: triggerSubMenu,
-            data: { subMenu: triggerSubMenu },
-          });
-        !!onClick && onClick();
-      }}
+      showButton={showButton || false}
+      autoFocus={autoFocus}
+      onClick={handleClick}
     >
       <>
         {showButton ? (
           <ButtonPrimary fullWidth>
-            <>
-              {prefixIcon}
-              <Typography
-                variant={'lifiBodyMediumStrong'}
-                component={'span'}
-                ml={!!prefixIcon ? '9.5px' : 'inherit'}
-                mr={!!prefixIcon ? '9.5px' : 'inherit'}
-                sx={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  maxWidth: '208px',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    maxWidth: '168px',
-                  },
-                }}
-              >
-                {label}
-              </Typography>
-              {suffixIcon}
-            </>
+            {prefixIcon}
+            <Typography
+              variant={'lifiBodyMediumStrong'}
+              component={'span'}
+              ml={!!prefixIcon ? '9.5px' : 'inherit'}
+              mr={!!prefixIcon ? '9.5px' : 'inherit'}
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: '208px',
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  maxWidth: '168px',
+                },
+              }}
+            >
+              {label}
+            </Typography>
+            {suffixIcon}
           </ButtonPrimary>
         ) : (
           <>
@@ -86,22 +95,20 @@ const MenuItemComponent = ({
                   : 'md'
               }
             >
-              <>
-                {prefixIcon}
-                <Typography
-                  variant={'lifiBodyMedium'}
-                  ml={'12px'}
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: prefixIcon ? '188px' : 'inherit',
-                    },
-                  }}
-                >
-                  {label}
-                </Typography>
-              </>
+              {prefixIcon}
+              <Typography
+                variant={'lifiBodyMedium'}
+                ml={'12px'}
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    maxWidth: prefixIcon ? '188px' : 'inherit',
+                  },
+                }}
+              >
+                {label}
+              </Typography>
             </MenuItemLabel>
             <div
               style={{
@@ -111,7 +118,7 @@ const MenuItemComponent = ({
             >
               {suffixIcon}
               {showMoreIcon && (
-                <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
               )}
             </div>
           </>

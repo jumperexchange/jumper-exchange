@@ -1,153 +1,170 @@
-import { wallets } from '@lifi/wallet-management';
+import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
-import type { TWallets } from '@transferto/dapp/src/types';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@transferto/dapp/src/const';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { useMenuStore } from '@transferto/dapp/src/stores';
+import { EventTrackingTool } from '@transferto/dapp/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
-import {
-  TrackingActions,
-  TrackingCategories,
-} from '../../../../dapp/src/const';
-import { EventTrackingTools } from '../../../../dapp/src/hooks';
-import { useUserTracking } from '../../../../dapp/src/hooks/useUserTracking/useUserTracking';
-import { ButtonPrimary } from '../../atoms/ButtonPrimary.style';
-import { ButtonSecondary } from '../../atoms/ButtonSecondary.style';
-import type { MenuContextProps } from '../../types';
+import { ButtonPrimary, ButtonSecondary } from '../../atoms';
 import { walletDigest } from '../../utils/walletDigest';
+
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
   backgroundColor?: string;
-  setOpenNavbarSubmenu?: (subMenu: string) => void;
   color?: string;
   walletConnected?: boolean;
-  menu: MenuContextProps;
   connectButtonLabel?: ReactElement<any, any>;
   isSuccess: boolean;
   walletManagement: any;
 }
 
-export const WalletManagementButtons: React.FC<WalletManagementButtonsProps> = (
-  props,
-) => {
-  const { account, usedWallet } = props.walletManagement;
+export const WalletManagementButtons: React.FC<
+  WalletManagementButtonsProps
+> = ({ walletManagement, connectButtonLabel, isSuccess }) => {
+  const theme = useTheme();
+  const { trackEvent } = useUserTracking();
+  const { account, usedWallet } = walletManagement;
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
   }, [account]);
 
-  const walletSource: TWallets = wallets;
+  const [
+    openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu,
+    openNavbarWalletMenu,
+    onOpenNavbarWalletMenu,
+  ] = useMenuStore((state) => [
+    state.openNavbarWalletSelectMenu,
+    state.onOpenNavbarWalletSelectMenu,
+    state.openNavbarWalletMenu,
+    state.onOpenNavbarWalletMenu,
+  ]);
+
+  const walletSource = supportedWallets;
   const walletIcon: string = useMemo(() => {
     if (!!usedWallet) {
       return usedWallet.icon;
     } else {
-      const walletKey: any = Object.keys(walletSource).filter(
-        (el) => walletSource[el].name === localStorage.activeWalletName,
-      );
-      return walletSource[walletKey]?.icon || '';
+      for (const key in Object.keys(walletSource)) {
+        if (walletSource.hasOwnProperty(key)) {
+          let value = walletSource[key];
+          if (value.name === localStorage.activeWalletName) {
+            return value.icon;
+          }
+          //do something with value;
+        }
+      }
     }
   }, [usedWallet, walletSource]);
 
-  const theme = useTheme();
-  const { trackEvent } = useUserTracking();
-  const handleWalletPicker = () => {
-    !props.menu.openNavbarWalletSelectMenu &&
+  const handleWalletSelectClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    openNavbarWalletSelectMenu &&
       trackEvent({
-        category: 'menu',
-        action: 'open-wallet-menu',
-        disableTrackingTool: [EventTrackingTools.arcx],
+        category: TrackingCategory.WalletSelectMenu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_wallet_select_menu',
+        data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
-    props.menu.onOpenNavbarWalletSelectMenu(
-      !props.menu.openNavbarWalletSelectMenu,
+    onOpenNavbarWalletSelectMenu(
+      !openNavbarWalletSelectMenu,
+      event.currentTarget,
     );
   };
 
-  const handleConnectedMenuClick = () => {
-    !props.menu.openNavbarWalletMenu &&
+  const handleWalletMenuClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    openNavbarWalletMenu &&
       trackEvent({
-        category: TrackingCategories.Menu,
-        action: TrackingActions.OpenConnectedMenu,
-        disableTrackingTool: [EventTrackingTools.arcx],
+        category: TrackingCategory.WalletMenu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_wallet_menu',
+        data: { [TrackingEventParameter.Menu]: 'wallet_menu' },
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
-    props.menu.onOpenNavbarWalletMenu(!props.menu.openNavbarWalletMenu);
+    onOpenNavbarWalletMenu(!openNavbarWalletMenu, event.currentTarget);
   };
 
-  return (
-    <>
-      {!account.address ? (
-        // Connect-Button -->
-        <>
-          <ButtonPrimary
-            onClick={handleWalletPicker}
-            sx={(theme) => ({
-              display: 'none',
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                width: '169px',
-                display: 'inline-flex !important',
-              },
-            })}
-          >
-            {!!props.connectButtonLabel
-              ? props.connectButtonLabel
-              : 'Connect Wallet'}
-          </ButtonPrimary>
-        </>
-      ) : (
-        // ConnectedMenu-Button -->
-        <ButtonSecondary
+  return !account.address ? (
+    // Connect/WalletSelect-Button -->
+    <ButtonPrimary
+      // Used in the widget
+      id="connect-wallet-button"
+      onClick={handleWalletSelectClick}
+      sx={(theme) => ({
+        display: 'none',
+        [theme.breakpoints.up('sm' as Breakpoint)]: {
+          width: '169px',
+          display: 'inline-flex !important',
+        },
+      })}
+    >
+      {connectButtonLabel}
+    </ButtonPrimary>
+  ) : (
+    // Wallet-Menu-Button -->
+    <ButtonSecondary
+      sx={{
+        width: '180px',
+        padding: '6px 8px',
+        paddingRight: '16px',
+        minWidth: 'inherit',
+        '@media screen and (min-width:430px) and (max-width: 900px)': {
+          width: '180px',
+          padding: '6px 8px',
+        },
+        [theme.breakpoints.up('md' as Breakpoint)]: {
+          position: 'relative',
+          width: '48px',
+          padding: '0',
+          left: 'unset',
+          display: 'inherit',
+          transform: 'unset',
+        },
+        [theme.breakpoints.up('lg' as Breakpoint)]: {
+          width: '180px',
+          padding: '6px',
+        },
+      }}
+      onClick={handleWalletMenuClick}
+    >
+      {isSuccess ? (
+        <Avatar
+          src={walletIcon}
           sx={{
-            width: '180px',
-            padding: '6px 8px',
-            paddingRight: '16px',
-            minWidth: 'inherit',
-            '@media screen and (min-width:430px) and (max-width: 900px)': {
-              width: '180px',
-              padding: '6px 8px',
-            },
-            [theme.breakpoints.up('md' as Breakpoint)]: {
-              position: 'relative',
-              width: '48px', //'180px',
-              padding: '0',
-              left: 'unset',
-              display: 'inherit',
-              transform: 'unset',
-            },
-            [theme.breakpoints.up('lg' as Breakpoint)]: {
-              width: '180px',
-              padding: '6px',
-            },
+            padding: theme.spacing(0.75),
+            background:
+              theme.palette.mode === 'light'
+                ? theme.palette.black.main
+                : theme.palette.white.main,
+            height: '32px',
+            width: '32px',
           }}
-          onClick={handleConnectedMenuClick}
-        >
-          {!!props.isSuccess ? (
-            <Avatar
-              src={walletIcon}
-              // alt={`${!!usedWallet.name ? usedWallet.name : ''}wallet-logo`}
-              sx={{
-                padding: theme.spacing(1.5),
-                background:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.black.main
-                    : theme.palette.white.main,
-                height: '32px',
-                width: '32px',
-              }}
-            />
-          ) : null}
-          <Typography
-            variant={'lifiBodyMediumStrong'}
-            width={'100%'}
-            sx={{
-              [theme.breakpoints.up('md' as Breakpoint)]: {
-                display: 'none',
-              },
-              [theme.breakpoints.up('lg' as Breakpoint)]: {
-                display: 'block',
-              },
-            }}
-          >
-            {_walletDigest}
-          </Typography>
-        </ButtonSecondary>
-      )}
-    </>
+        />
+      ) : null}
+      <Typography
+        variant={'lifiBodyMediumStrong'}
+        width={'100%'}
+        sx={{
+          [theme.breakpoints.up('md' as Breakpoint)]: {
+            display: 'none',
+          },
+          [theme.breakpoints.up('lg' as Breakpoint)]: {
+            display: 'block',
+          },
+        }}
+      >
+        {_walletDigest}
+      </Typography>
+    </ButtonSecondary>
   );
 };
