@@ -21,6 +21,7 @@
     "navbarMenu": {
       "theme": "Theme",
       "developers": "Developers",
+      "lifi_explorer": "LI.FI Explorer",
       "aboutLIFI": "About LI.FI",
       "support": "Support"
     },
@@ -41,8 +42,7 @@
     },
     "developers": {
       "github": "GitHub",
-      "documentation": "Documentation",
-      "explorer": "Explorer"
+      "documentation": "Documentation"
     }
   },
   "alert": {
