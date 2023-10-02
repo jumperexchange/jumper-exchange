@@ -3,13 +3,16 @@ import { Typography } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from 'src/atoms';
-import type { MenuKeys } from 'src/const';
-import { TrackingActions, TrackingCategories } from 'src/const';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+  type MenuKeys,
+} from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { PopperItemContainer as Container, PopperItemLabel } from '.';
-
 interface MenuItemProps {
   open: boolean;
   showButton: boolean;
@@ -40,26 +43,25 @@ export const PopperItem = ({
     state.onOpenPopperSubMenu,
   ]);
 
+  const handleClick = () => {
+    triggerSubMenu && onOpenPopperSubMenu(triggerSubMenu);
+    triggerSubMenu &&
+      trackEvent({
+        category: TrackingCategory.MainMenu,
+        action: TrackingAction.OpenMenu,
+        label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
+        data: { [TrackingEventParameter.Menu]: triggerSubMenu },
+        disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+      });
+    !!onClick && onClick();
+  };
+
   return open ? (
     <Container
       disableRipple={showButton}
       showButton={showButton || false}
       autoFocus={autoFocus}
-      onClick={() => {
-        !!triggerSubMenu && onOpenPopperSubMenu(triggerSubMenu);
-        !!triggerSubMenu &&
-          trackEvent({
-            category: TrackingCategories.Menu,
-            action: TrackingActions.OpenSubmenu,
-            label: triggerSubMenu,
-            data: { subMenu: triggerSubMenu },
-            disableTrackingTool: [
-              EventTrackingTool.Raleon,
-              EventTrackingTool.ARCx,
-            ],
-          });
-        !!onClick && onClick();
-      }}
+      onClick={handleClick}
     >
       <>
         {showButton ? (
@@ -117,7 +119,7 @@ export const PopperItem = ({
             >
               {suffixIcon}
               {showMoreIcon && (
-                <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
               )}
             </div>
           </>

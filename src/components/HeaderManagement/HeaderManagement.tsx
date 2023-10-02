@@ -3,14 +3,21 @@ import { Typography } from '@mui/material';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChainSwitch, PopperToggle, ThemeSwitch } from 'src/components';
-import { useChains } from 'src/hooks';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
+import { useChains, useUserTracking } from 'src/hooks';
 import { WalletManagementButtons } from 'src/organisms';
 import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
+import { EventTrackingTool } from 'src/types';
 import { HeaderManagementContainer as Container } from '.';
 
 export const HeaderManagement = () => {
   const mainMenuAnchor = useRef<any>(null);
+  const { trackEvent } = useUserTracking();
 
   const onWalletDisconnect = useSettingsStore(
     (state) => state.onWalletDisconnect,
@@ -40,6 +47,13 @@ export const HeaderManagement = () => {
 
   const handleOnOpenNavbarMainMenu = () => {
     onOpenNavbarMainMenu(!openMainPopperMenu, mainMenuAnchor.current);
+    trackEvent({
+      category: TrackingCategory.Menu,
+      action: TrackingAction.OpenMenu,
+      label: 'open_main_menu',
+      data: { [TrackingEventParameter.Menu]: 'main_menu' },
+      disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+    });
   };
 
   return (

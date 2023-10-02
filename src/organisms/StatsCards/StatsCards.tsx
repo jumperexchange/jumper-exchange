@@ -2,12 +2,16 @@ import { Box } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatsCard } from 'src/components';
-import { useChains, useFetchDexsAndBridges } from 'src/hooks';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
+import { useChains, useFetchDexsAndBridges, useUserTracking } from 'src/hooks';
 import { StatsModal } from 'src/organisms';
-import type { DataItem } from 'src/types';
+import { EventTrackingTool, type DataItem } from 'src/types';
 import { sortByName } from 'src/utils';
 import { StatsCardsContainer as Container } from './StatsCards.style';
-
 interface StatsDataProps {
   title: string;
   number: string;
@@ -34,38 +38,69 @@ export const StatsCards = ({
   openDexsPopper,
   setOpenDexsPopper,
 }: StatsCardsProps) => {
-  const { data } = useFetchDexsAndBridges();
+  const { exchanges, bridges } = useFetchDexsAndBridges();
   const { chains } = useChains();
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
 
   const statsData: StatsDataProps[] = [
     {
       title: t('navbar.statsCards.chains'),
-      number: chains.length || 22,
+      number: chains?.length || 0,
       data: sortByName(chains),
       open: openChainsPopper,
       setOpen: setOpenChainsPopper,
       handleOnClick: () => {
+        trackEvent({
+          category: TrackingCategory.WelcomeScreen,
+          action: TrackingAction.OpenStatsModal,
+          label: 'chains_stats',
+          data: { [TrackingEventParameter.StatsModal]: 'chains_stats' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         setOpenChainsPopper(!openChainsPopper);
       },
     },
     {
       title: t('navbar.statsCards.bridges'),
-      number: data?.bridges.length || 16,
-      data: sortByName(data?.bridges),
+      number: bridges?.length || 0,
+      data: sortByName(bridges),
       open: openBridgesPopper,
       setOpen: setOpenBridgesPopper,
       handleOnClick: () => {
+        trackEvent({
+          category: TrackingCategory.WelcomeScreen,
+          action: TrackingAction.OpenStatsModal,
+          label: 'bridges_stats',
+          data: { [TrackingEventParameter.StatsModal]: 'bridges_stats' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         setOpenBridgesPopper(!openBridgesPopper);
       },
     },
     {
       title: t('navbar.statsCards.dexs'),
-      number: data?.exchanges.length || 32,
-      data: sortByName(data?.exchanges),
+      number: exchanges?.length || 0,
+      data: sortByName(exchanges),
       open: openDexsPopper,
       setOpen: setOpenDexsPopper,
       handleOnClick: () => {
+        trackEvent({
+          category: TrackingCategory.WelcomeScreen,
+          action: TrackingAction.OpenStatsModal,
+          label: 'dexes_stats',
+          data: { [TrackingEventParameter.StatsModal]: 'dexes_stats' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         setOpenDexsPopper(!openDexsPopper);
       },
     },

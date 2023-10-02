@@ -3,11 +3,12 @@ import { Grid, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { OnRamper, WelcomeWrapper, Widget } from 'src/components';
-import { TabsMap } from 'src/const';
+import { TabsMap, TrackingAction, TrackingCategory } from 'src/const';
+import { useUserTracking } from 'src/hooks';
 import { TestnetAlert, WidgetContainer, WidgetEvents } from 'src/organisms';
 import { useActiveTabStore, useSettingsStore } from 'src/stores';
 import type { StarterVariantType } from 'src/types';
-import { LinkMap } from 'src/types';
+import { EventTrackingTool, LinkMap } from 'src/types';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
@@ -15,6 +16,7 @@ export function Widgets() {
     (state) => [state.welcomeScreenEntered, state.onWelcomeScreenEntered],
   );
   const theme = useTheme();
+  const { trackEvent } = useUserTracking();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
@@ -82,6 +84,12 @@ export function Widgets() {
     } else {
       event.stopPropagation();
       onWelcomeScreenEntered(true);
+      trackEvent({
+        category: TrackingCategory.WelcomeScreen,
+        action: TrackingAction.CloseWelcomeScreen,
+        label: 'enter_welcome_screen',
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
     }
   };
 
@@ -95,7 +103,7 @@ export function Widgets() {
       handleGetStarted={handleGetStarted}
     >
       {import.meta.env.MODE === 'testnet' && (
-        <Grid item xs={12} mt={theme.spacing(6)}>
+        <Grid item xs={12} mt={theme.spacing(3)}>
           <TestnetAlert />
         </Grid>
       )}

@@ -1,21 +1,37 @@
 import { useArcxAnalytics } from '@arcxmoney/analytics';
-import { useCallback } from 'react';
-import ReactGA from 'react-ga4';
+import { useCallback, useEffect } from 'react';
 import { hotjar } from 'react-hotjar';
-import { TrackingCategories } from 'src/const';
+import { TrackingAction, TrackingEventParameter } from 'src/const';
 import { useWallet } from 'src/providers';
 import type {
   TrackAttributeProps,
-  TrackConnectWalletProps,
+  TrackDisconnectWalletProps,
   TrackEventProps,
-  trackPageloadProps,
   TrackTransactionProps,
+  trackPageloadProps,
 } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
-  const { account } = useWallet();
+  const { account, usedWallet } = useWallet();
+
+  /* 
+  use useEffect depended on account to track wallet connects with account depended tracking software
+  */
+  useEffect(() => {
+    if (account?.address && account?.chainId && usedWallet) {
+      arcx?.connectWallet({
+        account: `${account.address}`,
+        chain: `${account.chainId}`,
+      });
+      window.raleon.walletConnected(account.address);
+      hotjar.identify(account.address, {
+        [TrackingEventParameter.Wallet]: usedWallet.name,
+      });
+      hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
+    }
+  }, [account, account.address, account.chainId, arcx, usedWallet]);
 
   const trackAttribute = useCallback(
     /**
@@ -23,14 +39,18 @@ export function useUserTracking() {
      *
      */
     async ({ data, disableTrackingTool }: TrackAttributeProps) => {
-      if (data && !disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
+      if (
+        !!account.address &&
+        data &&
+        !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
+      ) {
         hotjar.initialized() &&
-          hotjar.identify(account.address ? account.address : null, {
+          hotjar.identify(account.address, {
             ...data,
           });
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        data && ReactGA.set({ ...data });
+        data && window.gtag('set', 'user_properties', data);
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         await arcx?.attribute({
@@ -43,71 +63,33 @@ export function useUserTracking() {
     [account?.address, arcx],
   );
 
-  const trackConnectWallet = useCallback(
-    /**
-     * Track Wallet-Connection with GA, HJ and ARCx
-     *
-     */
-    async ({
-      disconnect,
-      data,
-      disableTrackingTool,
-      account,
-    }: TrackConnectWalletProps) => {
+  const trackDisconnectWallet = useCallback(
+    ({ data, disableTrackingTool }: TrackDisconnectWalletProps) => {
       if (
-        !!account.address &&
+        account.address &&
         !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
       ) {
-        !disconnect &&
-          hotjar.identify(`${account.address}`, {
-            chainId: `${account.chainId}`,
-            ...data,
-          });
-        hotjar.initialized() &&
-          hotjar.event(`wallet${disconnect ? '-disconnect' : '-connect'}`);
+        hotjar.identify(account.address, {
+          ...data,
+        });
+        hotjar.initialized() && hotjar.event(TrackingAction.DisconnectWallet);
       }
       if (
-        !!account.address &&
+        account.address &&
         !disableTrackingTool?.includes(EventTrackingTool.Raleon)
       ) {
-        !disconnect
-          ? window.raleon.walletConnected(account.address)
-          : window.raleon.walletDisconnected();
+        window.raleon.walletDisconnected();
       }
-      if (
-        !!account.address &&
-        !disableTrackingTool?.includes(EventTrackingTool.GA)
-      ) {
-        !disconnect &&
-          ReactGA.set({
-            username: `${account.address}`,
-            chainId: `${account.chainId}`,
-          });
-        ReactGA.gtag('event', TrackingCategories.Wallet, {
-          walletAction: disconnect ? 'disconnect' : 'connect',
-          chainId: `${account.chainId}`,
-          account: `${account.address}`,
+      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
+        window.gtag('event', TrackingAction.DisconnectWallet, {
+          ...data,
         });
       }
-      if (
-        !disableTrackingTool?.includes(EventTrackingTool.ARCx) &&
-        !disconnect
-      ) {
-        !!account.address &&
-          (await arcx?.connectWallet({
-            account: `${account.address}`,
-            chain: `${account.chainId}`,
-          }));
-      }
     },
-    [arcx],
+    [account.address],
   );
 
   const trackEvent = useCallback(
-    /**
-     * Track an Event with GA, HJ and ARCx
-     *
-     */
     async ({
       action,
       category,
@@ -117,20 +99,17 @@ export function useUserTracking() {
     }: TrackEventProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() &&
-          hotjar.event(`${category}-${action}${label ?? '-' + label}`);
+          hotjar.event(`${action}-${category}-${label ?? '-' + label}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.gtag('event', category, {
-          action,
-          label,
+        window.gtag('event', action, {
+          category: category,
           ...data,
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        arcx?.event(`${category}-${action}`, {
-          category,
-          label,
-          action,
+        arcx?.event(action, {
+          category: category,
           ...data,
         });
       }
@@ -139,11 +118,7 @@ export function useUserTracking() {
         account.isActive &&
         account.address
       ) {
-        window.raleon.registerEvent(
-          `${category}`,
-          account.address,
-          `${action}-${label}`,
-        );
+        window.raleon.registerEvent(action, account.address, category);
       }
     },
     [account.address, account.isActive, arcx],
@@ -158,25 +133,21 @@ export function useUserTracking() {
       destination,
       source,
       data,
-      pageload, // requires page load?
+      pageload, // requires page load? -> true
       disableTrackingTool,
       url,
     }: trackPageloadProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() && pageload
           ? hotjar.stateChange(url)
-          : hotjar.event(
-              `pageload${source && '-' + source}${
-                pageload ? '-external' : '-internal'
-              }${destination && '-' + destination}`,
-            );
+          : hotjar.event(`pageload${destination && '-' + destination}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.gtag('event', `pageload`, {
-          pageLoad: pageload ? 'external' : 'internal',
+        window.gtag('event', TrackingAction.PageLoad, {
+          category: pageload ? 'external' : 'internal',
+          url,
           source,
           destination,
-          url,
           ...data,
         });
       }
@@ -190,8 +161,19 @@ export function useUserTracking() {
             ...data,
           });
       }
+      if (
+        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
+        account.isActive &&
+        !!account.address
+      ) {
+        window.raleon.registerEvent(
+          `pageload-${pageload ? 'external' : 'internal'}`,
+          account.address,
+          destination,
+        );
+      }
     },
-    [arcx],
+    [account.address, account.isActive, arcx],
   );
 
   const trackTransaction = useCallback(
@@ -205,33 +187,38 @@ export function useUserTracking() {
       chain,
       data,
       disableTrackingTool,
-      transactionHash,
+      txhash,
     }: TrackTransactionProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
         hotjar.initialized() && hotjar.event(`${category}-${action}`);
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.gtag('event', 'transaction', {
-          category,
-          action,
+        window.gtag('event', action, {
+          category: category,
           ...data,
-          transactionHash,
         });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        await arcx?.transaction({
-          chain, // required(string) - chain ID that the transaction is taking place on
-          transactionHash, // required(string) - hash of the transaction
+        arcx?.transaction({
+          chain,
+          transactionHash: txhash,
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });
       }
+      if (
+        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
+        account.isActive &&
+        !!account.address
+      ) {
+        window.raleon.registerEvent(action, account.address, category);
+      }
     },
-    [arcx],
+    [account.address, account.isActive, arcx],
   );
 
   return {
     trackAttribute,
-    trackConnectWallet,
+    trackDisconnectWallet,
     trackEvent,
     trackPageload,
     trackTransaction,

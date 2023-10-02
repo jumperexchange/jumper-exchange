@@ -15,13 +15,13 @@ export const useChainsContent = () => {
   );
 
   const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
 
-  return chains.map(
+  return chains?.map(
     (el): ChainsMenuListItem => ({
-      label: `${el.name}`,
+      label: el.name,
       onClick: () => {
         onCloseAllPopperMenus();
         switchChain(el.id);

@@ -1,10 +1,17 @@
 import type { Breakpoint } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
 import type { PropsWithChildren } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { ButtonPrimary } from 'src/atoms';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
+import { useUserTracking } from 'src/hooks';
 import { StatsCards } from 'src/organisms';
+import { EventTrackingTool } from 'src/types';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 interface WelcomeWrapperProps {
   showWelcome: boolean;
@@ -16,9 +23,55 @@ export const WelcomeWrapper: React.FC<
 > = ({ children, showWelcome, handleGetStarted }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
+
+  useEffect(() => {
+    if (showWelcome) {
+      trackEvent({
+        category: TrackingCategory.WelcomeScreen,
+        label: 'open-welcome-screen',
+        action: TrackingAction.OpenWelcomeMessageScreen,
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+    }
+  }, [showWelcome, trackEvent]);
+
+  const handleAuditClick = () => {
+    trackEvent({
+      category: TrackingCategory.WelcomeScreen,
+      label: 'open-welcome-message-link',
+      action: TrackingAction.OpenWelcomeMessageLink,
+      data: { [TrackingEventParameter.WelcomeMessageLink]: '4x_audited' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+    trackPageload({
+      source: 'welcome-screen',
+      destination: 'docs-sc-audits',
+      url: 'https://docs.li.fi/smart-contracts/audits',
+      pageload: true,
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+  };
+
+  const handleLIFIClick = () => {
+    trackEvent({
+      category: TrackingCategory.WelcomeScreen,
+      label: 'open-welcome-message-link',
+      action: TrackingAction.OpenWelcomeMessageLink,
+      data: { [TrackingEventParameter.WelcomeMessageLink]: 'LIFI' },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+    trackPageload({
+      source: 'welcome-screen',
+      destination: 'lifi-website',
+      url: 'https://li.fi',
+      pageload: true,
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+  };
 
   return (
     <Wrapper showWelcome={showWelcome || false}>
@@ -37,7 +90,7 @@ export const WelcomeWrapper: React.FC<
           <Typography
             variant={'lifiBodyLarge'}
             sx={{
-              marginTop: theme.spacing(4),
+              marginTop: theme.spacing(2),
               color:
                 theme.palette.mode === 'dark'
                   ? theme.palette.accent1Alt.main
@@ -65,11 +118,13 @@ export const WelcomeWrapper: React.FC<
                     href="https://docs.li.fi/smart-contracts/audits"
                     target={'_blank'}
                     rel="noreferrer"
+                    onClick={handleAuditClick}
                   />,
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
                     href="https://li.fi"
+                    onClick={handleLIFIClick}
                     target={'_blank'}
                     rel="noreferrer"
                   />,
@@ -89,11 +144,11 @@ export const WelcomeWrapper: React.FC<
             onClick={handleGetStarted}
             sx={(theme) => ({
               margin: 'auto',
-              marginTop: theme.spacing(8),
+              marginTop: theme.spacing(4),
               height: '48px',
               width: '192px',
               [theme.breakpoints.up('sm' as Breakpoint)]: {
-                marginTop: theme.spacing(12),
+                marginTop: theme.spacing(6),
                 height: '56px',
                 borderRadius: '28px',
                 width: '247px',

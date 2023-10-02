@@ -5,7 +5,11 @@ import { useMediaQuery } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from 'src/const';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { useActiveTabStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
@@ -29,6 +33,18 @@ export const Tabs = () => {
     setActiveTab(newValue);
   };
 
+  const handleClickTab =
+    (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
+      window.history.replaceState(null, document.title, `/${tab}`);
+      trackEvent({
+        category: TrackingCategory.Navigation,
+        action: TrackingAction.SwitchTab,
+        label: `switch_tab_to_${tab}`,
+        data: { [TrackingEventParameter.Tab]: tab },
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+    };
+
   return (
     <TabsContainer
       value={isDesktop ? activeTab : false}
@@ -38,19 +54,7 @@ export const Tabs = () => {
       indicatorColor="primary"
     >
       <Tab
-        onClick={() => {
-          window.history.replaceState(null, document.title, '/exchange');
-          trackEvent({
-            category: TrackingCategories.Navigation,
-            action: TrackingActions.SwitchTab,
-            label: 'exchange',
-            data: { tab: 'exchange' },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
-        }}
+        onClick={handleClickTab('exchange')}
         icon={
           <SwapHorizIcon
             sx={{
@@ -66,19 +70,7 @@ export const Tabs = () => {
         {...a11yProps(0)}
       />
       <Tab
-        onClick={() => {
-          window.history.replaceState(null, document.title, '/gas');
-          trackEvent({
-            category: TrackingCategories.Navigation,
-            action: TrackingActions.SwitchTab,
-            label: 'gas',
-            data: { tab: 'gas' },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
-        }}
+        onClick={handleClickTab('refuel')}
         label={t('navbar.links.refuel')}
         icon={
           <EvStationOutlinedIcon
@@ -95,19 +87,7 @@ export const Tabs = () => {
       />
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <Tab
-          onClick={() => {
-            window.history.replaceState(null, document.title, '/buy');
-            trackEvent({
-              category: TrackingCategories.Navigation,
-              action: TrackingActions.SwitchTab,
-              label: 'buy',
-              data: { tab: 'buy' },
-              disableTrackingTool: [
-                EventTrackingTool.ARCx,
-                EventTrackingTool.Raleon,
-              ],
-            });
-          }}
+          onClick={handleClickTab('buy')}
           label={t('navbar.links.buy')}
           icon={
             <CreditCardIcon

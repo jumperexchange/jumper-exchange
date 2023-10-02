@@ -42,10 +42,6 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       },
     });
 
-    if (!languageMode) {
-      i18n = i18n.use(LanguageDetector);
-    }
-
     i18n
       .use(LanguageDetector)
       .use(

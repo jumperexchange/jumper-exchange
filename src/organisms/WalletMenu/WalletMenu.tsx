@@ -11,8 +11,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SpotButton } from 'src/atoms';
 import { PopperMenu } from 'src/components';
-import { MenuKeys } from 'src/const';
-import { useChains, useMultisig, useUserTracking } from 'src/hooks';
+import { MenuKeys, TrackingAction, TrackingCategory } from 'src/const';
+import {
+  useBlockchainExplorerURL,
+  useMultisig,
+  useUserTracking,
+} from 'src/hooks';
 import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
@@ -25,11 +29,11 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t } = useTranslation();
   const theme = useTheme();
+  const blockchainExplorerURL = useBlockchainExplorerURL();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const walletSource = supportedWallets;
-  const { getChainById } = useChains();
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
@@ -73,33 +77,33 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   };
 
   const handleExploreButton = () => {
-    account.chainId &&
-      openInNewTab(
-        `${
-          getChainById(account.chainId).metamask.blockExplorerUrls[0]
-        }address/${account.address}`,
-      );
-    onCloseAllPopperMenus();
-    trackPageload({
-      source: 'wallet-menu',
-      destination: 'blokchain-explorer',
-      url: !!account.chainId
-        ? `${
-            getChainById(account.chainId).metamask.blockExplorerUrls[0]
-          }address/${account.address}`
-        : '',
-      pageload: true,
+    account.chainId && onCloseAllPopperMenus();
+
+    trackEvent({
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.OpenBlockchainExplorer,
+      label: 'open-blockchain-explorer-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
+    if (blockchainExplorerURL) {
+      trackPageload({
+        source: TrackingCategory.Wallet,
+        destination: 'blokchain-explorer',
+        url: blockchainExplorerURL || '',
+        pageload: true,
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+      openInNewTab(blockchainExplorerURL);
+    }
   };
 
   const handleCopyButton = () => {
     account.address && navigator.clipboard.writeText(account.address);
     setCopiedToClipboard(true);
     trackEvent({
-      category: 'menu',
-      action: 'copyAddressToClipboard',
-      label: 'copyAddressToClipboard',
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.CopyAddressToClipboard,
+      label: 'copy_addr_to_clipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     onCloseAllPopperMenus();
@@ -137,7 +141,7 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
     >
       <Grid
         container
-        m={`${theme.spacing(6)} auto !important`}
+        m={`${theme.spacing(3)} auto !important`}
         sx={{
           maxWidth: '360px',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -145,11 +149,11 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
           },
         }}
       >
-        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(6)}>
+        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(3)}>
           <Avatar
             src={walletIcon}
             sx={{
-              padding: theme.spacing(4.5),
+              padding: theme.spacing(2.25),
               background:
                 theme.palette.mode === 'light'
                   ? theme.palette.black.main
@@ -159,7 +163,7 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
               width: '96px',
             }}
           />
-          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(4)}>
+          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(2)}>
             {_walletDigest}
           </Typography>
         </Grid>

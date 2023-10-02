@@ -23,16 +23,21 @@ interface PopperMenuProps {
 
 export const StatsModal = ({ title, open, setOpen, data }: PopperMenuProps) => {
   const theme = useTheme();
+
+  const handleOpenStatsModal = () => {
+    setOpen(false);
+  };
+
+  const handleCloseStatsModal = () => {
+    setOpen(false);
+  };
+
   return (
     <MUIModal
       disableAutoFocus={true}
       open={open}
-      onClick={() => {
-        setOpen(false);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
+      onClick={handleOpenStatsModal}
+      onClose={handleCloseStatsModal}
       sx={{ zIndex: 1700 }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -44,7 +49,6 @@ export const StatsModal = ({ title, open, setOpen, data }: PopperMenuProps) => {
             variant={'lifiHeaderXSmall'}
             component="h3"
             sx={{
-              fontFamily: 'Inter',
               fontStyle: 'normal',
               fontWeight: '700',
               fontSize: '18px',
@@ -63,9 +67,7 @@ export const StatsModal = ({ title, open, setOpen, data }: PopperMenuProps) => {
             }}
             aria-label="close modal"
             component="label"
-            onClick={() => {
-              setOpen(false);
-            }}
+            onClick={handleCloseStatsModal}
           >
             <CloseIcon />
           </IconButton>

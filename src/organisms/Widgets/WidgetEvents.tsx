@@ -9,15 +9,21 @@ import type {
 } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
-import { TrackingActions, TrackingCategories } from 'src/const';
+import {
+  TabsMap,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
 import { useMultisig } from 'src/hooks';
 import { useWallet } from 'src/providers';
-import { useMenuStore, useMultisigStore } from 'src/stores';
+import { useActiveTabStore, useMenuStore, useMultisigStore } from 'src/stores';
 import { MultisigConfirmationModal } from '../../components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../../components/MultisigConnectedAlert';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
+  const { activeTab } = useActiveTabStore();
   const { trackEvent, trackTransaction } = useUserTracking();
   const [onOpenSupportModal] = useMenuStore((state) => [
     state.onOpenSupportModal,
@@ -40,17 +46,22 @@ export function WidgetEvents() {
     const onRouteExecutionStarted = async (route: Route) => {
       if (!!route.id) {
         trackEvent({
-          category: TrackingCategories.WidgetEvent,
-          action: TrackingActions.OnRouteExecutionStarted,
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnRouteExecutionStarted,
+          label: 'execution_start',
           data: {
-            routeId: route.id,
-            steps: route.steps,
-            fromToken: route.fromToken,
-            fromChainId: route.fromChainId,
-            toToken: route.toToken,
-            toChainId: route.toChainId,
-            fromAmount: route.fromAmount,
-            toAmount: route.toAmount,
+            [TrackingEventParameter.RouteId]: route.id,
+            [TrackingEventParameter.FromToken]: route.fromToken.address,
+            [TrackingEventParameter.ToToken]: route.toToken.address,
+            [TrackingEventParameter.FromChainId]: route.fromChainId,
+            [TrackingEventParameter.ToChainId]: route.toChainId,
+            [TrackingEventParameter.FromAmount]: route.fromAmount,
+            [TrackingEventParameter.ToAmount]: route.toAmount,
+            [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
+            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
+            [TrackingEventParameter.Variant]: Object.values(TabsMap).filter(
+              (el) => el.index === activeTab,
+            )[0].variant,
           },
         });
       }
@@ -71,14 +82,35 @@ export function WidgetEvents() {
           lastTxHashRef.current = update.process.txHash;
           trackTransaction({
             chain: update.route.fromChainId,
-            transactionHash: update.process.txHash || '',
-            category: TrackingCategories.WidgetEvent,
-            action: TrackingActions.OnRouteExecutionUpdated,
+            txhash: update.process.txHash || '',
+            category: TrackingCategory.WidgetEvent,
+            action: TrackingAction.OnRouteExecutionUpdated,
             data: {
-              routeId: `${update.route.id}`,
-              transactionLink: update.process.txLink,
-              steps: update.route.steps,
-              status: update.process.status,
+              label: 'execution_update',
+              [TrackingEventParameter.FromAmountUSD]:
+                update.route.fromAmountUSD,
+              [TrackingEventParameter.ToAmountUSD]: update.route.toAmountUSD,
+              [TrackingEventParameter.FromAmount]: update.route.fromAmount,
+              [TrackingEventParameter.ToAmount]: update.route.toAmount,
+              [TrackingEventParameter.FromToken]:
+                update.route.fromToken.address,
+              [TrackingEventParameter.ToToken]: update.route.toToken.address,
+              [TrackingEventParameter.FromChainId]: update.route.fromChainId,
+              [TrackingEventParameter.ToChainId]: update.route.toChainId,
+              [TrackingEventParameter.RouteId]: `${update.route.id}`,
+              [TrackingEventParameter.Status]: update.process.status,
+              [TrackingEventParameter.TxHash]: update.process.txHash || '',
+              [TrackingEventParameter.TxLink]: update.process.txLink || '',
+              [TrackingEventParameter.Type]: update.process.type,
+              [TrackingEventParameter.GasCostUSD]: update.route.gasCostUSD,
+              [TrackingEventParameter.ErrorCode]:
+                update.process.error?.code || '',
+              [TrackingEventParameter.ErrorMessage]:
+                update.process.error?.message || '',
+              [TrackingEventParameter.InsuranceFeeAmountUSD]:
+                update.route.insurance.feeAmountUsd,
+              [TrackingEventParameter.InsuranceState]:
+                update.route.insurance?.state,
               nonInteraction: true,
             },
           });
@@ -88,48 +120,52 @@ export function WidgetEvents() {
     const onRouteExecutionCompleted = async (route: Route) => {
       if (!!route.id) {
         trackEvent({
-          category: TrackingCategories.WidgetEvent,
-          action: TrackingActions.OnRouteExecutionCompleted,
+          category: TrackingCategory.WidgetEvent,
+          action: TrackingAction.OnRouteExecutionCompleted,
+          label: 'execution_success',
           data: {
-            routeId: route.id,
-            steps: route.steps,
-            fromChainId: route.fromChainId,
-            fromAmountUSD: route.fromAmountUSD,
-            fromAmount: route.fromAmount,
-            fromToken: route.fromToken,
-            fromAddress: route.fromAddress,
-            toChainId: route.toChainId,
-            toAmountUSD: route.toAmountUSD,
-            toAmount: route.toAmount,
-            toAmountMin: route.toAmountMin,
-            toToken: route.toToken,
+            [TrackingEventParameter.RouteId]: route.id,
+            [TrackingEventParameter.FromChainId]: route.fromChainId,
+            [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
+            [TrackingEventParameter.FromAmount]: route.fromAmount,
+            [TrackingEventParameter.FromToken]: route.fromToken.address,
+            [TrackingEventParameter.ToChainId]: route.toChainId,
+            [TrackingEventParameter.ToAmountUSD]: route.toAmountUSD,
+            [TrackingEventParameter.ToAmount]: route.toAmount,
+            [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
+            [TrackingEventParameter.ToToken]: route.toToken.address,
           },
         });
       }
     };
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
       trackEvent({
-        category: TrackingCategories.WidgetEvent,
-        action: TrackingActions.OnRouteExecutionFailed,
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnRouteExecutionFailed,
+        label: 'execution_error',
         data: {
-          routeId: update.route.id,
-          transactionHash: update.process.txHash,
-          status: update.process.status,
-          message: update.process.message,
-          error: update.process.error,
-          steps: update.route.steps,
+          [TrackingEventParameter.RouteId]: update.route.id,
+          [TrackingEventParameter.TxHash]: update.process.txHash,
+          [TrackingEventParameter.Status]: update.process.status,
+          [TrackingEventParameter.Message]: update.process.message || '',
+          [TrackingEventParameter.ErrorMessage]:
+            update.process.error?.message || '',
+          [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
         },
       });
     };
 
     const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
       trackEvent({
-        action: TrackingActions.OnRouteHighValueLoss,
-        category: TrackingCategories.WidgetEvent,
-        label: 'click-highValueLossAccepted',
+        action: TrackingAction.OnRouteHighValueLoss,
+        category: TrackingCategory.WidgetEvent,
+        label: 'click_high_value_loss_accepted',
         data: {
-          ...update,
-          timestamp: Date.now(),
+          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUsd,
+          [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
+          [TrackingEventParameter.GasCostUSD]: update.gasCostUSD,
+          [TrackingEventParameter.ValueLoss]: update.valueLoss,
+          [TrackingEventParameter.Timestamp]: Date.now(),
         },
       });
     };
@@ -160,6 +196,7 @@ export function WidgetEvents() {
 
     return () => widgetEvents.all.clear();
   }, [
+    activeTab,
     onDestinationChainSelected,
     onOpenSupportModal,
     shouldOpenMultisigSignatureModal,
@@ -178,6 +215,8 @@ export function WidgetEvents() {
 
   useEffect(() => {
     setIsMultisigConnectedAlertOpen(isMultisigSigner);
+    // prevent endless loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account.address]);
 
   return (

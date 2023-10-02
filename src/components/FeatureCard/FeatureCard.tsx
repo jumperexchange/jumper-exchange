@@ -7,7 +7,17 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from 'src/stores';
 
-import type { FeatureCardAsset, FeatureCardType } from 'src/types';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
+import { useUserTracking } from 'src/hooks';
+import {
+  EventTrackingTool,
+  type FeatureCardAsset,
+  type FeatureCardType,
+} from 'src/types';
 import { FCard as Card, CardImage } from '.';
 
 interface FeatureCardProps {
@@ -19,6 +29,7 @@ interface FeatureCardProps {
 export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const [onDisableFeatureCard] = useSettingsStore((state) => [
     state.onDisableFeatureCard,
   ]);
@@ -28,6 +39,29 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       data?.fields?.displayConditions.showOnce &&
       onDisableFeatureCard(data?.fields?.displayConditions?.id);
   }, [data?.fields?.displayConditions, onDisableFeatureCard]);
+
+  useEffect(() => {
+    if (open) {
+      trackEvent({
+        category: TrackingCategory.FeatureCard,
+        action: TrackingAction.DisplayFeatureCard,
+        label: 'display-feature-card',
+        data: {
+          [TrackingEventParameter.FeatureCardTitle]: data.fields.title,
+          [TrackingEventParameter.FeatureCardId]:
+            data.fields.displayConditions.id,
+          url: data.fields.url,
+        },
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+    }
+  }, [
+    data.fields.displayConditions.id,
+    data.fields.title,
+    data.fields.url,
+    open,
+    trackEvent,
+  ]);
 
   const imageUrl = useMemo(() => {
     return assets.filter((el: FeatureCardAsset) => {
@@ -41,6 +75,40 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
     data?.fields?.imageDarkMode?.sys?.id,
     data?.fields?.imageLightMode?.sys?.id,
   ]);
+
+  const handleClose = () => {
+    setOpen(false);
+    !data?.fields?.displayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.fields?.displayConditions?.id &&
+      onDisableFeatureCard(data?.fields?.displayConditions?.id);
+    trackEvent({
+      category: TrackingCategory.FeatureCard,
+      action: TrackingAction.CloseFeatureCard,
+      label: `close_${data?.fields?.displayConditions?.id}`,
+      data: {
+        [TrackingEventParameter.FeatureCardTitle]: data?.fields?.title,
+        [TrackingEventParameter.FeatureCardId]:
+          data?.fields?.displayConditions?.id,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+  };
+
+  const handleCTA = () => {
+    trackEvent({
+      category: TrackingCategory.FeatureCard,
+      action: TrackingAction.ClickLearnMore,
+      label: 'click_cta',
+      data: {
+        [TrackingEventParameter.FeatureCardTitle]: data.fields.title,
+        [TrackingEventParameter.FeatureCardId]:
+          data.fields.displayConditions.id,
+        url: data.fields.url,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+    });
+  };
+
   return (
     <Slide
       direction="up"
@@ -53,7 +121,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       <Card gradient={data?.fields.gradientColor || undefined}>
         <CardContent
           sx={{
-            padding: theme.spacing(6),
+            padding: theme.spacing(3),
             position: 'relative',
           }}
         >
@@ -61,15 +129,10 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             disableRipple={true}
             sx={{
               position: 'absolute',
-              right: theme.spacing(2),
-              top: theme.spacing(2),
+              right: theme.spacing(1),
+              top: theme.spacing(1),
             }}
-            onClick={() => {
-              setOpen(false);
-              !data?.fields?.displayConditions?.hasOwnProperty('showOnce') &&
-                !!data?.fields?.displayConditions?.id &&
-                onDisableFeatureCard(data?.fields?.displayConditions?.id);
-            }}
+            onClick={handleClose}
           >
             <CloseIcon
               sx={{
@@ -111,11 +174,12 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               {data?.fields?.subtitle}
             </Typography>
           )}
-          <CardActions sx={{ padding: 0, marginTop: theme.spacing(2) }}>
+          <CardActions sx={{ padding: 0, marginTop: theme.spacing(1) }}>
             <Link
               target="_blank"
               rel="noopener"
               href={data?.fields?.url || 'https://li.fi'}
+              onClick={handleCTA}
               sx={{
                 textDecoration: 'none',
                 color:

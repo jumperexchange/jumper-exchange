@@ -1,12 +1,17 @@
 import * as supportedLanguages from 'i18n';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from 'src/const';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import type { LanguageKey } from 'src/types';
 import { EventTrackingTool } from 'src/types';
+
 export const useLanguagesContent = () => {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
   const [languageMode, onChangeLanguage] = useSettingsStore((state) => [
     state.languageMode,
     state.onChangeLanguage,
@@ -16,10 +21,10 @@ export const useLanguagesContent = () => {
     i18n.changeLanguage(newLanguage);
     onChangeLanguage(newLanguage);
     trackEvent({
-      category: TrackingCategories.Language,
-      action: TrackingActions.SwitchLanguage,
-      label: `language-${newLanguage}`,
-      data: { language: `language-${newLanguage}` },
+      category: TrackingCategory.LanguageMenu,
+      action: TrackingAction.SwitchLanguage,
+      label: `language_${newLanguage}`,
+      data: { [TrackingEventParameter.SwitchedLanguage]: newLanguage },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };

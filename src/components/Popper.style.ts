@@ -49,13 +49,13 @@ export const PopperToggle = styled(ButtonSecondary)<ButtonProps>(
         : theme.palette.primary.main,
     width: '48px',
     borderRadius: '50%',
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(1.5),
     minWidth: 'unset',
     height: '48px',
     ':hover:before': {
       backgroundColor:
         theme.palette.mode === 'dark'
-          ? getContrastAlphaColor(theme, '12%')
+          ? getContrastAlphaColor(theme, '4%')
           : theme.palette.alphaDark100.main,
     },
     ':hover': {
@@ -90,12 +90,12 @@ export const PopperMenuList = styled(MenuList, {
   marginTop: 0,
   padding: 0,
   '& > :first-of-type': {
-    marginTop: isOpenSubMenu || hasLabel ? 'inherit' : theme.spacing(3),
-    paddingTop: isOpenSubMenu ? theme.spacing(3) : 'inherit',
+    marginTop: isOpenSubMenu || hasLabel ? 'inherit' : theme.spacing(1.5),
+    paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
   },
   '& > :last-child': {
-    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(6),
-    paddingBottom: isOpenSubMenu ? theme.spacing(3) : 'inherit',
+    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
+    paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
     paddingTop: hasLabel ? 0 : 'inherit',
   },
 }));
@@ -165,7 +165,7 @@ export const PopperLinkItem = styled(Link, {
 })<PopperLinkItemProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  padding: `0 ${theme.spacing(6)}`,
+  padding: `0 ${theme.spacing(1.5)}`,
   height: '48px',
   textDecoration: 'none',
   color: 'inherit',
@@ -182,7 +182,6 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     backdropFilter: 'blur(12px)',
     zIndex: 1400,
     overflow: 'hidden',
-    // margin: theme.spacing(0),
     margin: theme.spacing(0),
     marginTop: '0px',
     height: MenuLabelHeight,
@@ -206,7 +205,7 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     top: 'initial',
     left: 'initial',
     right: 'initial',
-    padding: theme.spacing(0, 3, 0, 3),
+    padding: theme.spacing(0, 1.5, 0, 1.5),
     color: theme.palette.text.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -214,7 +213,7 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     minHeight: 48,
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      padding: theme.spacing(0, 3),
+      padding: theme.spacing(0, 1.5),
       position: 'relative',
       justifyContent: 'flex-start',
     },

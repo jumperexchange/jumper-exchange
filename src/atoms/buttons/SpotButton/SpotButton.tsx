@@ -24,9 +24,9 @@ export const SpotButton = ({
       <SpotButtonStyled variant={variant} onClick={onClick}>
         {children}
       </SpotButtonStyled>
-      {!!name ? (
+      {name ? (
         <Typography
-          mt={theme.spacing(2)}
+          mt={theme.spacing(1)}
           sx={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',

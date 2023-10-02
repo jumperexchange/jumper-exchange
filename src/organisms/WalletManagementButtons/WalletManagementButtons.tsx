@@ -4,7 +4,11 @@ import { Avatar, Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
 import { ButtonPrimary, ButtonSecondary } from 'src/atoms';
-import { TrackingActions, TrackingCategories } from 'src/const';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
@@ -64,8 +68,10 @@ export const WalletManagementButtons: React.FC<
   ) => {
     openNavbarWalletSelectMenu &&
       trackEvent({
-        category: TrackingCategories.Menu,
-        action: TrackingActions.OpenWalletSelectMenu,
+        category: TrackingCategory.WalletSelectMenu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_wallet_select_menu',
+        data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletSelectMenu(
@@ -79,8 +85,10 @@ export const WalletManagementButtons: React.FC<
   ) => {
     openNavbarWalletMenu &&
       trackEvent({
-        category: TrackingCategories.Menu,
-        action: TrackingActions.OpenWalletMenu,
+        category: TrackingCategory.WalletMenu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_wallet_menu',
+        data: { [TrackingEventParameter.Menu]: 'wallet_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletMenu(!openNavbarWalletMenu, event.currentTarget);
@@ -133,7 +141,7 @@ export const WalletManagementButtons: React.FC<
         <Avatar
           src={walletIcon}
           sx={{
-            padding: theme.spacing(1.5),
+            padding: theme.spacing(0.75),
             background:
               theme.palette.mode === 'light'
                 ? theme.palette.black.main

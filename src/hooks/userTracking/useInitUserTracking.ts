@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import ReactGA from 'react-ga4';
 import { hotjar } from 'react-hotjar';
 import type { InitTrackingProps } from 'src/types';
 import { EventTrackingTool } from 'src/types';
@@ -7,9 +6,9 @@ import { EventTrackingTool } from 'src/types';
 export function useInitUserTracking() {
   const initTracking = useCallback(
     /**
-     * Initialize for Tracking with GA and HJ
+     * Initialize for Tracking with HJ
      * (ARCx has its own Provider)
-     *
+     * (Google Analytics is initialized in index.html)
      */
     async ({ disableTrackingTool }: InitTrackingProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
@@ -18,9 +17,6 @@ export function useInitUserTracking() {
             import.meta.env.VITE_HOTJAR_ID,
             import.meta.env.VITE_HOTJAR_SNIPPET_VERSION,
           );
-      }
-      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
-        ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_TRACKING_ID);
       }
     },
     [],

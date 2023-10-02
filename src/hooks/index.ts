@@ -1,3 +1,4 @@
+export * from './useBlockchainExplorerURL';
 export * from './useChains';
 export * from './useCountUpAnimation';
 export * from './useFeatureCards';

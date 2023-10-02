@@ -18,14 +18,14 @@ export const HeaderContainer = styled(AppBar)<{ sticky?: boolean }>(
     background: 'transparent',
     alignItems: 'center',
     height: NavbarHeight.XS,
-    padding: theme.spacing(2, 4),
+    padding: theme.spacing(1, 2),
     zIndex: 1500,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       height: NavbarHeight.SM,
-      padding: theme.spacing(4, 6),
+      padding: theme.spacing(2, 3),
     },
     [theme.breakpoints.up('md' as Breakpoint)]: {
-      padding: theme.spacing(6),
+      padding: theme.spacing(3),
       height: NavbarHeight.MD,
     },
   }),

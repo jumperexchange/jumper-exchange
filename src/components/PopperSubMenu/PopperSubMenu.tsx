@@ -5,10 +5,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import type { Breakpoint } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import type { KeyboardEvent } from 'react';
-import type { MenuKeys } from 'src/const';
-import { useMenuStore } from 'src/stores';
-import type { MenuListItem } from 'src/types';
-
 import { ButtonBackArrow } from 'src/atoms';
 import {
   MenuHeaderAppBar,
@@ -19,6 +15,15 @@ import {
   PopperItemLabel,
   PopperLinkItem,
 } from 'src/components';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+  type MenuKeys,
+} from 'src/const';
+import { useUserTracking } from 'src/hooks';
+import { useMenuStore } from 'src/stores';
+import { EventTrackingTool, type MenuListItem } from 'src/types';
 
 interface PopperSubMenuProps {
   open: boolean;
@@ -41,6 +46,7 @@ export const PopperSubMenu = ({
 }: PopperSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const { trackEvent } = useUserTracking();
   const [openPopperSubMenu, onOpenPopperSubMenu] = useMenuStore((state) => [
     state.openPopperSubMenu,
     state.onOpenPopperSubMenu,
@@ -51,6 +57,28 @@ export const PopperSubMenu = ({
       onOpenPopperSubMenu(prevMenu);
     }
   }
+
+  const handleClick = (el: MenuListItem) => {
+    if (el.triggerSubMenu) {
+      onOpenPopperSubMenu(el.triggerSubMenu);
+      trackEvent({
+        category: TrackingCategory.SubMenu,
+        action: TrackingAction.OpenMenu,
+        label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
+        data: {
+          [TrackingEventParameter.Menu]: el.triggerSubMenu,
+          [TrackingEventParameter.PrevMenu]: prevMenu,
+        },
+        disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+      });
+    } else {
+      typeof el.onClick === 'function' && el.onClick();
+    }
+  };
+
+  const handleBackNavigation = () => {
+    onOpenPopperSubMenu(prevMenu);
+  };
 
   return open && openPopperSubMenu === triggerSubMenu ? (
     <NavbarPaper
@@ -63,9 +91,7 @@ export const PopperSubMenu = ({
         <MenuHeaderAppBar component="div" elevation={0}>
           <ButtonBackArrow
             style={{ marginLeft: '0px' }}
-            onClick={() => {
-              onOpenPopperSubMenu(prevMenu);
-            }}
+            onClick={handleBackNavigation}
           />
           <PopperHeaderLabel>{label}</PopperHeaderLabel>
         </MenuHeaderAppBar>
@@ -111,11 +137,7 @@ export const PopperSubMenu = ({
           ) : (
             <PopperItemContainer
               autoFocus={index > 0 ? true : false}
-              onClick={() => {
-                el.triggerSubMenu
-                  ? onOpenPopperSubMenu(el.triggerSubMenu)
-                  : el.onClick();
-              }}
+              onClick={() => handleClick(el)}
               key={`${el.label}-${index}`}
             >
               <PopperItemLabel
@@ -145,13 +167,13 @@ export const PopperSubMenu = ({
               </PopperItemLabel>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon && (
-                <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
               )}
             </PopperItemContainer>
           ),
         )
       ) : (
-        <Box textAlign={'center'} mt={theme.spacing(2)}>
+        <Box textAlign={'center'} mt={theme.spacing(1)}>
           <CircularProgress />
         </Box>
       )}

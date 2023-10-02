@@ -18,13 +18,13 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
   left: '50%',
   transform: 'translate(-50%, -50%)',
   margin: 'auto',
-  paddingBottom: theme.spacing(6),
+  paddingBottom: theme.spacing(3),
   borderRadius: '12px',
   boxShadow:
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-  width: `calc( 100% - ${theme.spacing(6)})`,
+  width: `calc( 100% - ${theme.spacing(3)})`,
   maxWidth: '640px',
   maxHeight: '85%',
   overflowY: 'auto',
@@ -45,7 +45,7 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
 export const ModalContent = styled(Grid)<GridProps>(({ theme }) => ({
   alignItems: 'center',
   gap: '26px',
-  padding: theme.spacing(0, 6),
+  padding: theme.spacing(0, 3),
   justifyContent: 'space-between',
   [theme.breakpoints.up('md' as Breakpoint)]: {
     justifyContent: 'inherit',
@@ -68,7 +68,7 @@ export const ModalHeaderAppBar = styled(AppBar)<ModalHeaderAppBarProps>(
     alignItems: 'center',
     minHeight: 48,
     top: 0,
-    padding: theme.spacing(3, 6),
+    padding: theme.spacing(1.5, 3),
     backgroundColor:
       theme.palette.mode === 'dark'
         ? alpha(theme.palette.surface2.main, 0.2)

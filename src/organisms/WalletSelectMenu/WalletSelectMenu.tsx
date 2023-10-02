@@ -48,7 +48,7 @@ export const WalletSelectMenu = ({ handleClose, open }: PopperMenuProps) => {
           />
         ))
       ) : (
-        <Box textAlign={'center'} mt={theme.spacing(2)}>
+        <Box textAlign={'center'} mt={theme.spacing(1)}>
           <CircularProgress />
         </Box>
       )}
