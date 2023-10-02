@@ -5,17 +5,13 @@ import { useTheme } from '@mui/material/styles';
 import { MenuState } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TrackingActions, TrackingCategories } from '../../const';
+
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
-import {
-  EventTrackingTool,
-  LanguageKey,
-  StarterVariantType,
-} from '../../types';
+import { LanguageKey, StarterVariantType } from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 
 const refuelAllowChains: ChainId[] = [
@@ -65,14 +61,6 @@ export function Widget({ starterVariant }: WidgetProps) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          trackEvent({
-            category: TrackingCategories.Menu,
-            action: TrackingActions.ConnectWallet,
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
           onOpenNavbarWalletSelectMenu(
             true,
             document.getElementById('connect-wallet-button'),
@@ -80,64 +68,20 @@ export function Widget({ starterVariant }: WidgetProps) {
           return account.signer!;
         },
         disconnect: async () => {
-          trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.Disconnect,
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
           disconnect();
         },
         switchChain: async (reqChainId: number) => {
           await switchChain(reqChainId);
           if (account.signer) {
-            trackEvent({
-              category: TrackingCategories.Wallet,
-              action: TrackingActions.SwitchChain,
-              label: `${reqChainId}`,
-              data: {
-                switchChain: reqChainId,
-              },
-              disableTrackingTool: [
-                EventTrackingTool.ARCx,
-                EventTrackingTool.Raleon,
-              ],
-              // transport: "xhr", // optional, beacon/xhr/image
-            });
             return account.signer!;
           } else {
             throw Error('No signer object after chain switch');
           }
         },
         addToken: async (token: Token, chainId: number) => {
-          trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.AddToken,
-            label: `addToken-${token.name}`,
-            data: {
-              tokenAdded: `${token.name}`,
-              tokenAddChainId: chainId,
-            },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
           await addToken(chainId, token);
         },
         addChain: async (chainId: number) => {
-          trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.AddChain,
-            label: `addChain-${chainId}`,
-            data: {
-              chainIdAdded: `${chainId}`,
-            },
-            // transport: "xhr", // optional, beacon/xhr/image
-            disableTrackingTool: [EventTrackingTool.ARCx],
-          });
           return addChain(chainId);
         },
       },
@@ -203,7 +147,6 @@ export function Widget({ starterVariant }: WidgetProps) {
     theme.palette.accent1.main,
     theme.palette.grey,
     isMultisigSigner,
-    trackEvent,
     onOpenNavbarWalletSelectMenu,
     disconnect,
     switchChain,
