@@ -35,8 +35,8 @@ export function Widget({ starterVariant }: WidgetProps) {
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
-  const onOpenNavbarWalletSelectMenu = useMenuStore(
-    (state: MenuState) => state.onOpenNavbarWalletSelectMenu,
+  const onOpenWalletSelectPopper = useMenuStore(
+    (state: MenuState) => state.onOpenWalletSelectPopper,
   );
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
@@ -59,7 +59,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          onOpenNavbarWalletSelectMenu(
+          onOpenWalletSelectPopper(
             true,
             document.getElementById('connect-wallet-button'),
           );
@@ -145,7 +145,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     theme.palette.accent1.main,
     theme.palette.grey,
     isMultisigSigner,
-    onOpenNavbarWalletSelectMenu,
+    onOpenWalletSelectPopper,
     disconnect,
     switchChain,
     addToken,

@@ -35,15 +35,15 @@ export const WalletManagementButtons: React.FC<
   }, [account]);
 
   const [
-    openNavbarWalletSelectMenu,
-    onOpenNavbarWalletSelectMenu,
-    openNavbarWalletMenu,
-    onOpenNavbarWalletMenu,
+    openWalletSelectPopper,
+    onOpenWalletSelectPopper,
+    openWalletPopper,
+    onOpenWalletPopper,
   ] = useMenuStore((state) => [
-    state.openNavbarWalletSelectMenu,
-    state.onOpenNavbarWalletSelectMenu,
-    state.openNavbarWalletMenu,
-    state.onOpenNavbarWalletMenu,
+    state.openWalletSelectPopper,
+    state.onOpenWalletSelectPopper,
+    state.openWalletPopper,
+    state.onOpenWalletPopper,
   ]);
 
   const walletSource = supportedWallets;
@@ -66,7 +66,7 @@ export const WalletManagementButtons: React.FC<
   const handleWalletSelectClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    openNavbarWalletSelectMenu &&
+    openWalletSelectPopper &&
       trackEvent({
         category: TrackingCategory.WalletSelectMenu,
         action: TrackingAction.OpenMenu,
@@ -74,16 +74,13 @@ export const WalletManagementButtons: React.FC<
         data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
-    onOpenNavbarWalletSelectMenu(
-      !openNavbarWalletSelectMenu,
-      event.currentTarget,
-    );
+    onOpenWalletSelectPopper(!openWalletSelectPopper, event.currentTarget);
   };
 
   const handleWalletMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    openNavbarWalletMenu &&
+    openWalletPopper &&
       trackEvent({
         category: TrackingCategory.WalletMenu,
         action: TrackingAction.OpenMenu,
@@ -91,7 +88,7 @@ export const WalletManagementButtons: React.FC<
         data: { [TrackingEventParameter.Menu]: 'wallet_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
-    onOpenNavbarWalletMenu(!openNavbarWalletMenu, event.currentTarget);
+    onOpenWalletPopper(!openWalletPopper, event.currentTarget);
   };
 
   return !account.address ? (

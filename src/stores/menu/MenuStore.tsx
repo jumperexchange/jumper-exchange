@@ -4,21 +4,21 @@ import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface DefaultMenuType {
-  openMainPopperMenu: boolean;
-  openNavbarWalletMenu: boolean;
-  openNavbarChainsMenu: boolean;
-  openNavbarWalletSelectMenu: boolean;
-  openPopperSubMenu: keyof typeof MenuKeys;
+  openMainMenuPopper: boolean;
+  openWalletPopper: boolean;
+  openChainsPopper: boolean;
+  openWalletSelectPopper: boolean;
+  openSubMenuPopper: keyof typeof MenuKeys;
   openSupportModal: boolean;
   anchorRef: null | JSX.Element;
 }
 
 export const defaultMenu: DefaultMenuType = {
-  openMainPopperMenu: false,
-  openNavbarWalletMenu: false,
-  openNavbarChainsMenu: false,
-  openNavbarWalletSelectMenu: false,
-  openPopperSubMenu: 'None',
+  openMainMenuPopper: false,
+  openWalletPopper: false,
+  openChainsPopper: false,
+  openWalletSelectPopper: false,
+  openSubMenuPopper: 'None',
   openSupportModal: false,
   anchorRef: null,
 };
@@ -44,68 +44,68 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     // Close ALL Navbar Menus
     onCloseAllPopperMenus: () => {
       set({
-        openMainPopperMenu: false,
-        openNavbarWalletSelectMenu: false,
-        openNavbarWalletMenu: false,
-        openNavbarChainsMenu: false,
-        openPopperSubMenu: MenuKeys.None,
+        openMainMenuPopper: false,
+        openWalletSelectPopper: false,
+        openWalletPopper: false,
+        openChainsPopper: false,
+        openSubMenuPopper: MenuKeys.None,
         openSupportModal: false,
         anchorRef: null,
       });
     },
 
     // Toggle Navbar Main Menu
-    onOpenNavbarMainMenu: (open, anchorRef) => {
+    onOpenMainMenuPopper: (open, anchorRef) => {
       set({
-        openMainPopperMenu: open,
-        openPopperSubMenu: MenuKeys.None,
+        openMainMenuPopper: open,
+        openSubMenuPopper: MenuKeys.None,
         anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Navbar Wallet Menu
-    onOpenNavbarWalletSelectMenu: (open, anchorRef) => {
+    onOpenWalletSelectPopper: (open, anchorRef) => {
       set({
-        openNavbarWalletSelectMenu: open,
-        openPopperSubMenu: MenuKeys.None,
+        openWalletSelectPopper: open,
+        openSubMenuPopper: MenuKeys.None,
         anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Navbar Connected Menu
-    onOpenNavbarWalletMenu: (open, anchorRef) => {
+    onOpenWalletPopper: (open, anchorRef) => {
       set({
-        openNavbarWalletMenu: open,
-        openPopperSubMenu: MenuKeys.None,
+        openWalletPopper: open,
+        openSubMenuPopper: MenuKeys.None,
         anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Navbar Chains Menu
-    onOpenNavbarChainsMenu: (open, anchorRef) => {
+    onOpenChainsPopper: (open, anchorRef) => {
       set({
-        openNavbarChainsMenu: open,
-        openPopperSubMenu: MenuKeys.None,
+        openChainsPopper: open,
+        openSubMenuPopper: MenuKeys.None,
         anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Navbar Sub Menu
-    onOpenPopperSubMenu: (subMenu) => {
+    onOpenSubMenuPopper: (subMenu) => {
       set({
-        openPopperSubMenu: subMenu,
+        openSubMenuPopper: subMenu,
       });
     },
 
     // Toggle support modal
     onOpenSupportModal: (open) => {
       set({
-        openMainPopperMenu: false,
-        openNavbarChainsMenu: false,
-        openNavbarWalletSelectMenu: false,
-        openNavbarWalletMenu: false,
+        openMainMenuPopper: false,
+        openChainsPopper: false,
+        openWalletSelectPopper: false,
+        openWalletPopper: false,
         openSupportModal: open,
-        openPopperSubMenu: MenuKeys.None,
+        openSubMenuPopper: MenuKeys.None,
       });
     },
   }),

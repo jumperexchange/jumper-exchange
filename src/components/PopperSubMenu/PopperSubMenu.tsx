@@ -9,11 +9,11 @@ import { ButtonBackArrow } from 'src/atoms';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
-  NavbarPaper,
   PopperHeaderLabel,
   PopperItemContainer,
   PopperItemLabel,
   PopperLinkItem,
+  PopperPaper,
 } from 'src/components';
 import {
   TrackingAction,
@@ -47,20 +47,20 @@ export const PopperSubMenu = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
-  const [openPopperSubMenu, onOpenPopperSubMenu] = useMenuStore((state) => [
-    state.openPopperSubMenu,
-    state.onOpenPopperSubMenu,
+  const [openSubMenuPopper, onOpenSubMenuPopper] = useMenuStore((state) => [
+    state.openSubMenuPopper,
+    state.onOpenSubMenuPopper,
   ]);
 
   function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Backspace') {
-      onOpenPopperSubMenu(prevMenu);
+      onOpenSubMenuPopper(prevMenu);
     }
   }
 
   const handleClick = (el: MenuListItem) => {
     if (el.triggerSubMenu) {
-      onOpenPopperSubMenu(el.triggerSubMenu);
+      onOpenSubMenuPopper(el.triggerSubMenu);
       trackEvent({
         category: TrackingCategory.SubMenu,
         action: TrackingAction.OpenMenu,
@@ -77,11 +77,11 @@ export const PopperSubMenu = ({
   };
 
   const handleBackNavigation = () => {
-    onOpenPopperSubMenu(prevMenu);
+    onOpenSubMenuPopper(prevMenu);
   };
 
-  return open && openPopperSubMenu === triggerSubMenu ? (
-    <NavbarPaper
+  return open && openSubMenuPopper === triggerSubMenu ? (
+    <PopperPaper
       onKeyDown={handleBackSpace}
       autoFocus={open}
       component={'ul'}
@@ -103,7 +103,7 @@ export const PopperSubMenu = ({
               autoFocus={index > 0 ? true : false}
               onClick={() => {
                 el.triggerSubMenu
-                  ? onOpenPopperSubMenu(el.triggerSubMenu)
+                  ? onOpenSubMenuPopper(el.triggerSubMenu)
                   : el.onClick();
               }}
               component="li"
@@ -177,6 +177,6 @@ export const PopperSubMenu = ({
           <CircularProgress />
         </Box>
       )}
-    </NavbarPaper>
+    </PopperPaper>
   ) : null;
 };

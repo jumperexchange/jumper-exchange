@@ -15,24 +15,21 @@ export const WalletSelectMenu = ({ handleClose, open }: PopperMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
-  const [
-    openNavbarWalletSelectMenu,
-    onOpenNavbarWalletSelectMenu,
-    openPopperSubMenu,
-  ] = useMenuStore((state) => [
-    state.openNavbarWalletSelectMenu,
-    state.onOpenNavbarWalletSelectMenu,
-    state.openPopperSubMenu,
-  ]);
+  const [openWalletSelectPopper, onOpenWalletSelectPopper, openSubMenuPopper] =
+    useMenuStore((state) => [
+      state.openWalletSelectPopper,
+      state.onOpenWalletSelectPopper,
+      state.openSubMenuPopper,
+    ]);
 
   return (
     <PopperMenu
       handleClose={handleClose}
       label={t('navbar.chooseWallet')}
-      open={openNavbarWalletSelectMenu}
+      open={openWalletSelectPopper}
       transformOrigin={'top'}
-      setOpen={onOpenNavbarWalletSelectMenu}
-      isOpenSubMenu={openPopperSubMenu === MenuKeys.WalletSelect}
+      setOpen={onOpenWalletSelectPopper}
+      isOpenSubMenu={openSubMenuPopper === MenuKeys.WalletSelect}
     >
       {!!walletSelectMenuItems.length ? (
         walletSelectMenuItems.map((el, index) => (
@@ -44,7 +41,7 @@ export const WalletSelectMenu = ({ handleClose, open }: PopperMenuProps) => {
             showMoreIcon={el.showMoreIcon}
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
-            open={open || openNavbarWalletSelectMenu}
+            open={open || openWalletSelectPopper}
           />
         ))
       ) : (

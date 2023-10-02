@@ -5,10 +5,10 @@ import type { KeyboardEvent } from 'react';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
-  NavbarPaper,
   NavbarPopper,
   PopperExternalBackground,
   PopperMenuList,
+  PopperPaper,
 } from 'src/components';
 import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
@@ -33,9 +33,9 @@ export const PopperMenuMobile = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
 
-  const [openPopperSubMenu, anchorRef, onCloseAllPopperMenus] = useMenuStore(
+  const [openSubMenuPopper, anchorRef, onCloseAllPopperMenus] = useMenuStore(
     (state) => [
-      state.openPopperSubMenu,
+      state.openSubMenuPopper,
       state.anchorRef,
       state.onCloseAllPopperMenus,
     ],
@@ -63,7 +63,7 @@ export const PopperMenuMobile = ({
             transition
             disablePortal
           >
-            <NavbarPaper isDarkMode={isDarkMode}>
+            <PopperPaper isDarkMode={isDarkMode}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
@@ -74,12 +74,12 @@ export const PopperMenuMobile = ({
                   autoFocusItem={open}
                   id="composition-menu"
                   aria-labelledby="composition-button"
-                  isOpenSubMenu={openPopperSubMenu !== MenuKeys.None}
+                  isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
                   onKeyDown={handleListKeyDown}
                   autoFocus={open}
                   hasLabel={!!label}
                   component={
-                    isOpenSubMenu && openPopperSubMenu !== MenuKeys.WalletSelect
+                    isOpenSubMenu && openSubMenuPopper !== MenuKeys.WalletSelect
                       ? 'div'
                       : 'ul'
                   }
@@ -102,7 +102,7 @@ export const PopperMenuMobile = ({
                   {children}
                 </PopperMenuList>
               </ClickAwayListener>
-            </NavbarPaper>
+            </PopperPaper>
           </NavbarPopper>
         </Slide>
       </>

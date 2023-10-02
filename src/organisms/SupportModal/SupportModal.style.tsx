@@ -1,10 +1,10 @@
 import { Box, Modal as MUIModal } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { NavbarHeight } from 'src/const';
+import { HeaderHeight } from 'src/const';
 
 export const Modal = styled(MUIModal)(({ theme }) => ({
-  paddingTop: NavbarHeight.XS,
+  paddingTop: HeaderHeight.XS,
   zIndex: 1500,
   overflow: 'auto',
 }));
@@ -14,16 +14,16 @@ export const SupportModalContainer = styled(Box)(({ theme }) => ({
   left: '50%',
   transform: 'translateX(-50%)',
   width: '100%',
-  top: `calc( ${NavbarHeight.XS} + ${theme.spacing(1.5)} )`,
+  top: `calc( ${HeaderHeight.XS} + ${theme.spacing(1.5)} )`,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    top: NavbarHeight.SM,
+    top: HeaderHeight.SM,
     width: '100%',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     width: '50%',
-    maxHeight: `calc( 100vh - ${NavbarHeight.MD} - ${theme.spacing(2)} )`,
+    maxHeight: `calc( 100vh - ${HeaderHeight.MD} - ${theme.spacing(2)} )`,
     overflow: 'auto',
     borderRadius: '12px',
-    top: NavbarHeight.MD,
+    top: HeaderHeight.MD,
   },
 }));

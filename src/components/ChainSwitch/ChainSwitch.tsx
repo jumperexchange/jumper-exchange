@@ -22,9 +22,10 @@ export const ChainSwitch = () => {
   const { chains } = useChains();
   const { account } = useWallet();
 
-  const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
-    (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
-  );
+  const [openChainsPopper, onOpenChainsPopper] = useMenuStore((state) => [
+    state.openChainsPopper,
+    state.onOpenChainsPopper,
+  ]);
 
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
@@ -34,7 +35,7 @@ export const ChainSwitch = () => {
   const handleOpenChainsMenu: MouseEventHandler<HTMLButtonElement> = (
     event,
   ) => {
-    onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
+    onOpenChainsPopper(!openChainsPopper, event.currentTarget);
     trackEvent({
       category: TrackingCategory.ChainsMenu,
       action: TrackingAction.OpenMenu,

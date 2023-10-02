@@ -116,17 +116,17 @@ export const PopperHeaderLabel = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export interface NavbarPaperProps
+export interface PopperPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isDarkMode?: boolean;
   isWide?: boolean;
   component?: ElementType<any>;
 }
 
-export const NavbarPaper = styled(Paper, {
+export const PopperPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'isDarkMode' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<NavbarPaperProps>(({ theme, isDarkMode, isWide }) => ({
+})<PopperPaperProps>(({ theme, isDarkMode, isWide }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -135,7 +135,7 @@ export const NavbarPaper = styled(Paper, {
     : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - navbarHeight - offset
+  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - HeaderHeight - offset
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',

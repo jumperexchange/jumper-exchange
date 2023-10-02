@@ -23,9 +23,9 @@ export const HeaderManagement = () => {
     (state) => state.onWalletDisconnect,
   );
 
-  const [openMainPopperMenu, onOpenNavbarMainMenu] = useMenuStore((state) => [
-    state.openMainPopperMenu,
-    state.onOpenNavbarMainMenu,
+  const [openMainMenuPopper, onOpenMainMenuPopper] = useMenuStore((state) => [
+    state.openMainMenuPopper,
+    state.onOpenMainMenuPopper,
   ]);
 
   const { t } = useTranslation();
@@ -34,19 +34,19 @@ export const HeaderManagement = () => {
   !account.isActive ?? onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
-  const prevMainMenu = useRef(openMainPopperMenu);
+  const prevMainMenu = useRef(openMainMenuPopper);
   useEffect(() => {
-    if (prevMainMenu.current === true && openMainPopperMenu === false) {
+    if (prevMainMenu.current === true && openMainMenuPopper === false) {
       mainMenuAnchor!.current.focus();
     }
 
-    prevMainMenu.current = openMainPopperMenu;
-  }, [openMainPopperMenu]);
+    prevMainMenu.current = openMainMenuPopper;
+  }, [openMainMenuPopper]);
 
   const { isSuccess } = useChains();
 
   const handleOnOpenNavbarMainMenu = () => {
-    onOpenNavbarMainMenu(!openMainPopperMenu, mainMenuAnchor.current);
+    onOpenMainMenuPopper(!openMainMenuPopper, mainMenuAnchor.current);
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
@@ -81,8 +81,8 @@ export const HeaderManagement = () => {
       <PopperToggle
         ref={mainMenuAnchor}
         id="composition-button"
-        aria-controls={openMainPopperMenu ? 'composition-menu' : undefined}
-        aria-expanded={openMainPopperMenu ? 'true' : undefined}
+        aria-controls={openMainMenuPopper ? 'composition-menu' : undefined}
+        aria-expanded={openMainMenuPopper ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleOnOpenNavbarMainMenu}
       >

@@ -39,12 +39,12 @@ export const PopperItem = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const [onOpenPopperSubMenu] = useMenuStore((state) => [
-    state.onOpenPopperSubMenu,
+  const [onOpenSubMenuPopper] = useMenuStore((state) => [
+    state.onOpenSubMenuPopper,
   ]);
 
   const handleClick = () => {
-    triggerSubMenu && onOpenPopperSubMenu(triggerSubMenu);
+    triggerSubMenu && onOpenSubMenuPopper(triggerSubMenu);
     triggerSubMenu &&
       trackEvent({
         category: TrackingCategory.MainMenu,

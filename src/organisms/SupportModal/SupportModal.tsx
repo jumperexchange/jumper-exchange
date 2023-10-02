@@ -1,7 +1,7 @@
 import type { Breakpoint } from '@mui/material';
 import { useTheme } from '@mui/material';
 import WidgetBot from '@widgetbot/react-embed';
-import { NavbarHeight } from 'src/const';
+import { HeaderHeight } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import { Modal, SupportModalContainer } from './SupportModal.style';
 
@@ -22,9 +22,9 @@ export const SupportModal = () => {
           style={{
             width: '100%',
             height: '80vh',
-            maxHeight: `calc( 100vh - ${NavbarHeight.XS} )`,
+            maxHeight: `calc( 100vh - ${HeaderHeight.XS} )`,
             [theme.breakpoints.up('sm' as Breakpoint)]: {
-              maxHeight: `calc( 100vh - ${NavbarHeight.SM} )`,
+              maxHeight: `calc( 100vh - ${HeaderHeight.SM} )`,
             },
             [theme.breakpoints.up('md' as Breakpoint)]: {
               height: '500px',

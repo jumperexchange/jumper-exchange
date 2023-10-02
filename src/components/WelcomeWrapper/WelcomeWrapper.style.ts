@@ -1,6 +1,6 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, Typography, keyframes, styled } from '@mui/material';
-import { NavbarHeight } from 'src/const';
+import { HeaderHeight } from 'src/const';
 
 export interface WrapperProps extends Omit<BoxProps, 'component'> {
   showWelcome?: boolean;
@@ -9,7 +9,7 @@ export interface WrapperProps extends Omit<BoxProps, 'component'> {
 export const Wrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'showWelcome',
 })<WrapperProps>(({ theme, showWelcome }) => ({
-  maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.XS} )` : 'unset',
+  maxHeight: showWelcome ? `calc( 100vh - ${HeaderHeight.XS} )` : 'unset',
   overflow: showWelcome ? 'hidden' : 'hidden',
 
   [`@media screen and (min-width: 392px)`]: {
@@ -17,10 +17,10 @@ export const Wrapper = styled(Box, {
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.SM} )` : 'auto',
+    maxHeight: showWelcome ? `calc( 100vh - ${HeaderHeight.SM} )` : 'auto',
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.MD} )` : 'auto',
+    maxHeight: showWelcome ? `calc( 100vh - ${HeaderHeight.MD} )` : 'auto',
   },
 
   '&:after': {

@@ -35,14 +35,14 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const walletSource = supportedWallets;
   const [
-    openNavbarWalletMenu,
-    onOpenNavbarWalletMenu,
-    openPopperSubMenu,
+    openWalletPopper,
+    onOpenWalletPopper,
+    openSubMenuPopper,
     onCloseAllPopperMenus,
   ] = useMenuStore((state) => [
-    state.openNavbarWalletMenu,
-    state.onOpenNavbarWalletMenu,
-    state.openPopperSubMenu,
+    state.openWalletPopper,
+    state.onOpenWalletPopper,
+    state.openSubMenuPopper,
     state.onCloseAllPopperMenus,
   ]);
 
@@ -124,20 +124,20 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   }, []);
 
   useEffect(() => {
-    openNavbarWalletMenu! && setCopiedToClipboard(false);
-  }, [openNavbarWalletMenu]);
+    openWalletPopper! && setCopiedToClipboard(false);
+  }, [openWalletPopper]);
 
   useEffect(() => {
     handleMultisigEnvironmentCheck();
   }, [account, handleMultisigEnvironmentCheck]);
 
-  return openNavbarWalletMenu ? (
+  return openWalletPopper ? (
     <PopperMenu
       open
       transformOrigin={'top left'}
-      setOpen={onOpenNavbarWalletMenu}
+      setOpen={onOpenWalletPopper}
       handleClose={handleClose}
-      isOpenSubMenu={openPopperSubMenu !== MenuKeys.None}
+      isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
     >
       <Grid
         container

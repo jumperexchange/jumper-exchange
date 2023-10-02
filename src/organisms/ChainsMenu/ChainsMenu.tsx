@@ -18,17 +18,18 @@ export const ChainsMenu = ({ handleClose, open }: PopperMenuProps) => {
   const chains = useChainsContent();
   const theme = useTheme();
   const { account } = useWallet();
-  const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
-    (state) => [state.openNavbarChainsMenu, state.onOpenNavbarChainsMenu],
-  );
+  const [openChainsPopper, onOpenChainsPopper] = useMenuStore((state) => [
+    state.openChainsPopper,
+    state.onOpenChainsPopper,
+  ]);
 
-  return openNavbarChainsMenu ? (
+  return openChainsPopper ? (
     <PopperMenu
       handleClose={handleClose}
       label={t('navbar.walletMenu.chains')}
       transformOrigin={'top'}
       open
-      setOpen={onOpenNavbarChainsMenu}
+      setOpen={onOpenChainsPopper}
     >
       {chains.length ? (
         chains.map((el, index) => (
@@ -44,7 +45,7 @@ export const ChainsMenu = ({ handleClose, open }: PopperMenuProps) => {
             }
             prefixIcon={el.prefixIcon}
             onClick={el.onClick}
-            open={openNavbarChainsMenu}
+            open={openChainsPopper}
           />
         ))
       ) : (

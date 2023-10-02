@@ -6,10 +6,10 @@ import type { KeyboardEvent } from 'react';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
-  NavbarPaper,
   NavbarPopper,
   PopperExternalBackground,
   PopperMenuList,
+  PopperPaper,
 } from 'src/components';
 import { MenuKeys, MenuMain } from 'src/const';
 import { useMenuStore } from 'src/stores';
@@ -35,14 +35,14 @@ export const PopperMenuDesktop = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const [
-    openPopperSubMenu,
+    openSubMenuPopper,
     onCloseAllPopperMenus,
-    openNavbarWalletMenu,
+    openWalletPopper,
     anchorRef,
   ] = useMenuStore((state) => [
-    state.openPopperSubMenu,
+    state.openSubMenuPopper,
     state.onCloseAllPopperMenus,
-    state.openNavbarWalletMenu,
+    state.openWalletPopper,
     state.anchorRef,
   ]);
 
@@ -75,10 +75,7 @@ export const PopperMenuDesktop = ({
                 transformOrigin: transformOrigin || 'top',
               }}
             >
-              <NavbarPaper
-                isDarkMode={isDarkMode}
-                isWide={openNavbarWalletMenu}
-              >
+              <PopperPaper isDarkMode={isDarkMode} isWide={openWalletPopper}>
                 <ClickAwayListener
                   onClickAway={(event) => {
                     handleClose(event);
@@ -89,13 +86,13 @@ export const PopperMenuDesktop = ({
                     autoFocusItem={open}
                     id="composition-menu"
                     autoFocus={open}
-                    isOpenSubMenu={openPopperSubMenu !== MenuKeys.None}
+                    isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                     hasLabel={!!label}
                     component={
                       isOpenSubMenu &&
-                      openPopperSubMenu !== MenuMain.WalletSelect
+                      openSubMenuPopper !== MenuMain.WalletSelect
                         ? 'div'
                         : 'ul'
                     }
@@ -118,7 +115,7 @@ export const PopperMenuDesktop = ({
                     {children}
                   </PopperMenuList>
                 </ClickAwayListener>
-              </NavbarPaper>
+              </PopperPaper>
             </Grow>
           )}
         </NavbarPopper>

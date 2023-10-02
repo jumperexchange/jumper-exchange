@@ -18,22 +18,22 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const mainSubMenuTheme = useThemeContent();
   const mainSubMenuDevelopers = useDevelopersContent();
   const mainSubMenuLanguage = useLanguagesContent();
-  const [openMainPopperMenu, onOpenNavbarMainMenu, openPopperSubMenu] =
+  const [openMainMenuPopper, onOpenMainMenuPopper, openSubMenuPopper] =
     useMenuStore((state) => [
-      state.openMainPopperMenu,
-      state.onOpenNavbarMainMenu,
-      state.openPopperSubMenu,
+      state.openMainMenuPopper,
+      state.onOpenMainMenuPopper,
+      state.openSubMenuPopper,
     ]);
 
-  return openMainPopperMenu ? (
+  return openMainMenuPopper ? (
     <PopperMenu
       handleClose={handleClose}
       open
       transformOrigin={'top right'}
-      setOpen={onOpenNavbarMainMenu}
-      isOpenSubMenu={openPopperSubMenu !== MenuKeys.None}
+      setOpen={onOpenMainMenuPopper}
+      isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
     >
-      {openPopperSubMenu === MenuKeys.None &&
+      {openSubMenuPopper === MenuKeys.None &&
         mainMenuItems.map((el, index) => (
           <PopperItem
             key={`${el.label}-${index}`}
@@ -51,7 +51,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       <PopperSubMenu
         label={t('navbar.navbarMenu.theme')}
         triggerSubMenu={MenuKeys.Themes}
-        open={openPopperSubMenu === MenuKeys.Themes}
+        open={openSubMenuPopper === MenuKeys.Themes}
         prevMenu={MenuKeys.None}
         subMenuList={mainSubMenuTheme}
       />
@@ -59,7 +59,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       <PopperSubMenu
         label={t('language.key', { ns: 'language' })}
         triggerSubMenu={MenuKeys.Language}
-        open={openPopperSubMenu === MenuKeys.Language}
+        open={openSubMenuPopper === MenuKeys.Language}
         prevMenu={MenuKeys.None}
         subMenuList={mainSubMenuLanguage}
       />
@@ -67,7 +67,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       <PopperSubMenu
         label={t('navbar.navbarMenu.developers')}
         triggerSubMenu={MenuKeys.Devs}
-        open={openPopperSubMenu === MenuKeys.Devs}
+        open={openSubMenuPopper === MenuKeys.Devs}
         prevMenu={MenuKeys.None}
         subMenuList={mainSubMenuDevelopers}
       />
