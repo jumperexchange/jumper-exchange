@@ -135,7 +135,7 @@ export const useMainMenuContent = () => {
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'click-brand-assets',
-          action: TrackingAction.OpenMenu,
+          action: TrackingAction.DownloadBrandAssets,
           data: { [TrackingEventParameter.Menu]: 'brand_assets' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
