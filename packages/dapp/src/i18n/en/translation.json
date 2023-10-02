@@ -41,7 +41,8 @@
     },
     "developers": {
       "github": "GitHub",
-      "documentation": "Documentation"
+      "documentation": "Documentation",
+      "explorer": "Explorer"
     }
   },
   "alert": {
