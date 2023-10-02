@@ -21,7 +21,7 @@
     "navbarMenu": {
       "theme": "Theme",
       "developers": "Developers",
-      "lifi_explorer": "LI.FI Explorer",
+      "lifiExplorer": "LI.FI Explorer",
       "aboutLIFI": "About LI.FI",
       "support": "Support"
     },
