@@ -1,4 +1,5 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
+import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import LanguageIcon from '@mui/icons-material/Language';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
@@ -124,6 +125,24 @@ export const useMainMenuContent = () => {
           ],
         });
         openInNewTab('https://discord.gg/lifi');
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.brandAssets'),
+      prefixIcon: <FolderZipOutlinedIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-brand-assets',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'brand_assets' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
+        openInNewTab('/Jumper_Assets.zip');
       },
     },
     {
