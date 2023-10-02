@@ -41,13 +41,7 @@
     },
     "developers": {
       "github": "GitHub",
-      "documentation": "Dökümantasyon",
-      "showcases": "Vitrinler"
-    },
-    "showcases": {
-      "ukraineDonation": "Ukrayna'ya destek ol 🇺🇦",
-      "klimaStaking": "Ağlar Arası Klima Stake",
-      "carbonOffset": "Zincirler Arası Karbon Dengesi"
+      "documentation": "Dökümantasyon"
     }
   },
   "alert": {

@@ -1,17 +1,14 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
-import { EventTrackingTool, MenuListItem } from '../../types';
-import { TrackingActions, TrackingCategories } from '../trackingKeys';
+import { MenuListItem } from '../../types';
 
 export const useWalletSelectContent = () => {
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect, account } = useWallet();
-  const { trackEvent } = useUserTracking();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
     useState(false);
 
@@ -87,7 +84,7 @@ export const useWalletSelectContent = () => {
       return true;
     });
 
-    const _output = walletsOptions.map((wallet) => {
+    const output = walletsOptions.map((wallet) => {
       return {
         label: wallet.name,
         prefixIcon: (
@@ -102,27 +99,16 @@ export const useWalletSelectContent = () => {
           login(wallet);
           onCloseAllNavbarMenus();
           onWelcomeScreenEntered(true);
-          trackEvent({
-            category: TrackingCategories.Wallet,
-            action: TrackingActions.SelectWallet,
-            label: `choose-wallet-${wallet}`,
-            data: { usedWallet: wallet.name },
-            disableTrackingTool: [
-              EventTrackingTool.ARCx,
-              EventTrackingTool.Raleon,
-            ],
-          });
         },
       };
     });
-    return _output;
+    return output;
   }, [
     availableWallets,
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
     onWelcomeScreenEntered,
-    trackEvent,
   ]);
 
   return walletMenuItems;

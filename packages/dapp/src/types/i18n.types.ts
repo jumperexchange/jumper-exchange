@@ -13,7 +13,9 @@ export type LanguageKey = keyof typeof languages;
 
 export type LanguageResources =
   | {
-      [language in LanguageKey]?: PartialResource<typeof translation & typeof language>;
+      [language in LanguageKey]?: PartialResource<
+        typeof translation & typeof language
+      >;
     }
   | {
       [language: string]: PartialResource<typeof translation & typeof language>;

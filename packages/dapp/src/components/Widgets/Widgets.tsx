@@ -8,9 +8,11 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { TrackingAction, TrackingCategory } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
+import { useUserTracking } from '../../hooks';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
-import { LinkMap, StarterVariantType } from '../../types';
+import { EventTrackingTool, LinkMap, StarterVariantType } from '../../types';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
@@ -23,6 +25,7 @@ export function Widgets() {
     (state) => [state.welcomeScreenEntered, state.onWelcomeScreenEntered],
   );
   const theme = useTheme();
+  const { trackEvent } = useUserTracking();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'
@@ -90,6 +93,12 @@ export function Widgets() {
     } else {
       event.stopPropagation();
       onWelcomeScreenEntered(true);
+      trackEvent({
+        category: TrackingCategory.WelcomeScreen,
+        action: TrackingAction.CloseWelcomeScreen,
+        label: 'enter_welcome_screen',
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
     }
   };
 
@@ -103,7 +112,7 @@ export function Widgets() {
       handleGetStarted={handleGetStarted}
     >
       {import.meta.env.MODE === 'testnet' && (
-        <Grid item xs={12} mt={theme.spacing(6)}>
+        <Grid item xs={12} mt={theme.spacing(3)}>
           <TestnetAlert />
         </Grid>
       )}

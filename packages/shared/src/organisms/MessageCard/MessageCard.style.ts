@@ -11,7 +11,7 @@ const MessageCard = styled(Box)(({ theme }) => ({
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({
   width: '392px',
   borderRadius: '12px',
-  padding: theme.spacing(4, 6),
+  padding: theme.spacing(2, 3),
   boxShadow:
     theme.palette.mode === 'dark'
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'

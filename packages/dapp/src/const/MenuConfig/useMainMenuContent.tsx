@@ -8,7 +8,12 @@ import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
-import { MenuKeys, TrackingActions, TrackingCategories } from '..';
+import {
+  MenuKeys,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '..';
 import { useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
@@ -62,9 +67,18 @@ export const useMainMenuContent = () => {
       prefixIcon: <TwitterIcon />,
       showMoreIcon: false,
       onClick: () => {
-        openInNewTab('https://twitter.com/JumperExchange');
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-lifi-link',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'lifi_twitter' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.MainMenu,
           destination: 'twitter-JumperExchange',
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
@@ -73,6 +87,7 @@ export const useMainMenuContent = () => {
             EventTrackingTool.Raleon,
           ],
         });
+        openInNewTab('https://twitter.com/JumperExchange');
       },
     },
     {
@@ -88,9 +103,18 @@ export const useMainMenuContent = () => {
       ),
       showMoreIcon: false,
       onClick: () => {
-        openInNewTab('https://discord.gg/lifi');
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-discord-link',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.Menu,
           destination: 'discord-lifi',
           url: 'https://discord.gg/lifi',
           pageload: true,
@@ -99,6 +123,7 @@ export const useMainMenuContent = () => {
             EventTrackingTool.Raleon,
           ],
         });
+        openInNewTab('https://discord.gg/lifi');
       },
     },
     {
@@ -115,8 +140,18 @@ export const useMainMenuContent = () => {
       ),
       showMoreIcon: false,
       onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-lifi-link',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'lifi_website' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.Menu,
           destination: 'lifi-website',
           url: 'https://li.fi',
           pageload: true,
@@ -133,8 +168,10 @@ export const useMainMenuContent = () => {
       prefixIcon: <Discord color={theme.palette.white.main} />,
       onClick: () => {
         trackEvent({
-          category: TrackingCategories.Menu,
-          action: TrackingActions.OpenSupportModal,
+          category: TrackingCategory.Menu,
+          label: 'open-support-modal',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'support_modal' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,

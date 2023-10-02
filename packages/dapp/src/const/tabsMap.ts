@@ -10,11 +10,19 @@ interface TabsMapType {
 }
 
 export const TabsMap: TabsMapType = {
-  Exchange: { index: 0, variant: 'default', destination: [LinkMap.Exchange] },
+  Exchange: {
+    index: 0,
+    variant: 'default',
+    destination: [LinkMap.Exchange],
+  },
   Refuel: {
     index: 1,
     variant: 'refuel',
     destination: [LinkMap.Gas, LinkMap.Refuel],
   },
-  Buy: { index: 2, variant: 'buy', destination: [LinkMap.Buy] },
+  Buy: {
+    index: 2,
+    variant: 'buy',
+    destination: [LinkMap.Buy],
+  },
 };

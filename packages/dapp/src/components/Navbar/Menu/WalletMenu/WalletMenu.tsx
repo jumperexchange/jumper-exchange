@@ -1,4 +1,3 @@
-import { getChainById } from '@lifi/sdk';
 import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -7,8 +6,15 @@ import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Snackbar from '@mui/material/Snackbar';
-import { MenuKeys } from '@transferto/dapp/src/const';
-import { useUserTracking } from '@transferto/dapp/src/hooks';
+import {
+  MenuKeys,
+  TrackingAction,
+  TrackingCategory,
+} from '@transferto/dapp/src/const';
+import {
+  useBlockchainExplorerURL,
+  useUserTracking,
+} from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useSettingsStore } from '@transferto/dapp/src/stores';
 import { useMenuStore } from '@transferto/dapp/src/stores/menu';
@@ -28,6 +34,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t } = useTranslation();
   const theme = useTheme();
+  const blockchainExplorerURL = useBlockchainExplorerURL();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
@@ -75,33 +82,33 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   };
 
   const handleExploreButton = () => {
-    account.chainId &&
-      openInNewTab(
-        `${
-          getChainById(account.chainId).metamask.blockExplorerUrls[0]
-        }address/${account.address}`,
-      );
-    onCloseAllNavbarMenus();
-    trackPageload({
-      source: 'wallet-menu',
-      destination: 'blokchain-explorer',
-      url: !!account.chainId
-        ? `${
-            getChainById(account.chainId).metamask.blockExplorerUrls[0]
-          }address/${account.address}`
-        : '',
-      pageload: true,
+    account.chainId && onCloseAllNavbarMenus();
+
+    trackEvent({
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.OpenBlockchainExplorer,
+      label: 'open-blockchain-explorer-wallet',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
+    if (blockchainExplorerURL) {
+      trackPageload({
+        source: TrackingCategory.Wallet,
+        destination: 'blokchain-explorer',
+        url: blockchainExplorerURL || '',
+        pageload: true,
+        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      });
+      openInNewTab(blockchainExplorerURL);
+    }
   };
 
   const handleCopyButton = () => {
     account.address && navigator.clipboard.writeText(account.address);
     setCopiedToClipboard(true);
     trackEvent({
-      category: 'menu',
-      action: 'copyAddressToClipboard',
-      label: 'copyAddressToClipboard',
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.CopyAddressToClipboard,
+      label: 'copy_addr_to_clipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
     onCloseAllNavbarMenus();
@@ -139,7 +146,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     >
       <Grid
         container
-        m={`${theme.spacing(6)} auto !important`}
+        m={`${theme.spacing(3)} auto !important`}
         sx={{
           maxWidth: '360px',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -147,11 +154,11 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
           },
         }}
       >
-        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(6)}>
+        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(3)}>
           <Avatar
             src={walletIcon}
             sx={{
-              padding: theme.spacing(4.5),
+              padding: theme.spacing(2.25),
               background:
                 theme.palette.mode === 'light'
                   ? theme.palette.black.main
@@ -161,7 +168,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
               width: '96px',
             }}
           />
-          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(4)}>
+          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(2)}>
             {_walletDigest}
           </Typography>
         </Grid>

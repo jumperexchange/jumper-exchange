@@ -2,11 +2,11 @@ import { Breakpoint, styled } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
 export const Container = styled('div')(({ theme }) => ({
-  marginTop: theme.spacing(8),
+  marginTop: theme.spacing(4),
   flexWrap: 'wrap',
   display: 'flex',
   justifyContent: 'center',
-  gap: theme.spacing(4),
+  gap: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {},
 }));
 
@@ -15,7 +15,7 @@ export const Card = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: theme.spacing(6, 8),
+  padding: theme.spacing(3, 4),
   width: '104px',
   height: '96px',
   color:
