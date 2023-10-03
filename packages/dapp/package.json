@@ -5,7 +5,7 @@
   "type": "module",
   "dependencies": {
     "@arcxmoney/analytics": "^1.9.1",
-    "@lifi/sdk": "^2.4.0",
+    "@lifi/sdk": "^2.4.1",
     "@lifi/wallet-management": "^2.3.4",
     "@lifi/widget": "^2.4.6",
     "@mui/icons-material": "^5.14.9",
