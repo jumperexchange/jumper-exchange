@@ -6,6 +6,7 @@ import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab } from 'src/utils';
+import { DOCS_URL, GITHUB_URL } from '..';
 import {
   TrackingAction,
   TrackingCategory,
@@ -34,7 +35,6 @@ export const useDevelopersContent = () => {
         />
       ),
       onClick: () => {
-        const githubUrl = 'https://github.com/lifinance/';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'open-lifi-github',
@@ -48,14 +48,14 @@ export const useDevelopersContent = () => {
         trackPageload({
           source: 'menu',
           destination: 'lifi-github',
-          url: githubUrl,
+          url: GITHUB_URL,
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
           ],
         });
-        openInNewTab(githubUrl);
+        openInNewTab(GITHUB_URL);
         onCloseAllPopperMenus();
       },
     },
@@ -63,7 +63,6 @@ export const useDevelopersContent = () => {
       label: t('navbar.developers.documentation'),
       prefixIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
-        const docsUrl = 'https://docs.li.fi/';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'open-lifi-docs',
@@ -77,14 +76,14 @@ export const useDevelopersContent = () => {
         trackPageload({
           source: 'menu',
           destination: 'lifi-docs',
-          url: docsUrl,
+          url: DOCS_URL,
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
           ],
         });
-        openInNewTab(docsUrl);
+        openInNewTab(DOCS_URL);
         onCloseAllPopperMenus();
       },
     },

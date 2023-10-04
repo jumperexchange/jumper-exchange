@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from 'src/stores';
 
 import {
+  LIFI_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
@@ -178,7 +179,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Link
               target="_blank"
               rel="noopener"
-              href={data?.fields?.url || 'https://li.fi'}
+              href={data?.fields?.url || LIFI_URL}
               onClick={handleCTA}
               sx={{
                 textDecoration: 'none',

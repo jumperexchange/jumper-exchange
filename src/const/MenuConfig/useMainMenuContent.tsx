@@ -14,7 +14,10 @@ import { EventTrackingTool } from 'src/types';
 import { openInNewTab } from 'src/utils';
 import {
   DISCORD_URL,
+  GITHUB_URL,
+  LIFI_URL,
   MenuKeys,
+  TWITTER_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
@@ -36,7 +39,7 @@ export const useMainMenuContent = () => {
       ) : (
         <LightModeOutlinedIcon />
       ),
-      url: 'https://github.com/lifinance/',
+      url: GITHUB_URL,
       triggerSubMenu: MenuKeys.Themes,
     },
     {
@@ -81,14 +84,14 @@ export const useMainMenuContent = () => {
         trackPageload({
           source: TrackingCategory.MainMenu,
           destination: 'twitter-JumperExchange',
-          url: 'https://twitter.com/JumperExchange',
+          url: TWITTER_URL,
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
           ],
         });
-        openInNewTab('https://twitter.com/JumperExchange');
+        openInNewTab(TWITTER_URL);
       },
     },
     {
@@ -154,14 +157,14 @@ export const useMainMenuContent = () => {
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'lifi-website',
-          url: 'https://li.fi',
+          url: LIFI_URL,
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
           ],
         });
-        openInNewTab('https://li.fi');
+        openInNewTab(LIFI_URL);
       },
     },
     {

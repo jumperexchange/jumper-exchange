@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { ButtonPrimary } from 'src/atoms';
 import {
+  AUDITS_URL,
+  LIFI_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
@@ -50,7 +52,7 @@ export const WelcomeWrapper: React.FC<
     trackPageload({
       source: 'welcome-screen',
       destination: 'docs-sc-audits',
-      url: 'https://docs.li.fi/smart-contracts/audits',
+      url: AUDITS_URL,
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
@@ -67,7 +69,7 @@ export const WelcomeWrapper: React.FC<
     trackPageload({
       source: 'welcome-screen',
       destination: 'lifi-website',
-      url: 'https://li.fi',
+      url: LIFI_URL,
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
@@ -115,7 +117,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href="https://docs.li.fi/smart-contracts/audits"
+                    href={AUDITS_URL}
                     target={'_blank'}
                     rel="noreferrer"
                     onClick={handleAuditClick}
@@ -123,7 +125,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href="https://li.fi"
+                    href={LIFI_URL}
                     onClick={handleLIFIClick}
                     target={'_blank'}
                     rel="noreferrer"
