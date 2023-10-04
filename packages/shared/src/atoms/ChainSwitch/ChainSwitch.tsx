@@ -2,6 +2,11 @@ import type { Chain } from '@lifi/types';
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useChains } from '@transferto/dapp/src/hooks/useChains';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
@@ -23,7 +28,7 @@ export const ChainSwitch = () => {
   );
 
   const activeChain = useMemo(
-    () => chains.find((chainEl: Chain) => chainEl.id === account.chainId),
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
 
@@ -31,16 +36,17 @@ export const ChainSwitch = () => {
     event,
   ) => {
     onOpenNavbarChainsMenu(!openNavbarChainsMenu, event.currentTarget);
-
     trackEvent({
-      category: 'chain-menu',
-      action: `click-open-chain-menu`,
+      category: TrackingCategory.ChainsMenu,
+      action: TrackingAction.OpenMenu,
+      label: 'click_open_chains_menu',
+      data: { [TrackingEventParameter.Menu]: 'chains_menu' },
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
   };
 
   return (
-    <Tooltip title={t('navbar.walletMenu.switchChain')}>
+    <Tooltip title={t('navbar.walletMenu.switchChain')} arrow>
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar

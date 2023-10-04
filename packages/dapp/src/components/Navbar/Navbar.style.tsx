@@ -62,7 +62,7 @@ export const NavbarManagement = styled('div')({
 });
 
 export const NavBar = styled(AppBar)(({ theme }) => ({
-  marginTop: theme.spacing(4),
+  marginTop: theme.spacing(2),
   background: 'transparent',
   boxShadow: 'none',
 }));
@@ -80,14 +80,14 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
     background: 'transparent',
     alignItems: 'center',
     height: NavbarHeight.XS,
-    padding: theme.spacing(2, 4),
+    padding: theme.spacing(1, 2),
     zIndex: 1500,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       height: NavbarHeight.SM,
-      padding: theme.spacing(4, 6),
+      padding: theme.spacing(2, 3),
     },
     [theme.breakpoints.up('md' as Breakpoint)]: {
-      padding: theme.spacing(6),
+      padding: theme.spacing(3),
       height: NavbarHeight.LG,
     },
   }),
@@ -103,13 +103,13 @@ export const NavbarDropdownButton = styled(ButtonSecondary)<ButtonProps>(
         : theme.palette.primary.main,
     width: '48px',
     borderRadius: '50%',
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(1.5),
     minWidth: 'unset',
     height: '48px',
     ':hover:before': {
       backgroundColor:
         theme.palette.mode === 'dark'
-          ? getContrastAlphaColor(theme, '12%')
+          ? getContrastAlphaColor(theme, '4%')
           : theme.palette.alphaDark100.main,
     },
     ':hover': {
@@ -144,12 +144,12 @@ export const NavbarMenuList = styled(MenuList, {
   marginTop: 0,
   padding: 0,
   '& > :first-of-type': {
-    marginTop: isOpenSubMenu || hasLabel ? 'inherit' : theme.spacing(3),
-    paddingTop: isOpenSubMenu ? theme.spacing(3) : 'inherit',
+    marginTop: isOpenSubMenu || hasLabel ? 'inherit' : theme.spacing(1.5),
+    paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
   },
   '& > :last-child': {
-    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(6),
-    paddingBottom: isOpenSubMenu ? theme.spacing(3) : 'inherit',
+    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
+    paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
     paddingTop: hasLabel ? 0 : 'inherit',
   },
 }));
@@ -234,7 +234,6 @@ export const NavbarTab = styled(Tab, {
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  fontFamily: 'Inter',
   fontStyle: 'normal',
   fontWeight: '700',
   fontSize: '16px',
@@ -272,11 +271,11 @@ export const MenuItem = styled(MUIMenuItem, {
   shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
 })<MenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
-  padding: showButton ? theme.spacing(0, 3, 3) : theme.spacing(0, 3),
+  padding: showButton ? theme.spacing(0, 1.5, 1.5) : theme.spacing(0, 1.5),
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
-  margin: theme.spacing(0, 3),
-  marginTop: showButton ? theme.spacing(2) : 0,
+  margin: theme.spacing(0, 1.5),
+  marginTop: showButton ? theme.spacing(1) : 0,
   borderRadius: '12px',
 
   '&:hover': {
@@ -339,7 +338,7 @@ export const MenuLinkItem = styled(Link, {
 })<MenuLinkItemProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  padding: `0 ${theme.spacing(6)}`,
+  padding: `0 ${theme.spacing(3)}`,
   height: '48px',
   textDecoration: 'none',
   color: 'inherit',
@@ -395,7 +394,7 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     top: 'initial',
     left: 'initial',
     right: 'initial',
-    padding: theme.spacing(0, 3, 0, 3),
+    padding: theme.spacing(0, 1.5, 0, 1.5),
     color: theme.palette.text.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -403,7 +402,7 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     minHeight: 48,
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      padding: theme.spacing(0, 3),
+      padding: theme.spacing(0, 1.5),
       position: 'relative',
       justifyContent: 'flex-start',
     },

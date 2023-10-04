@@ -4,9 +4,16 @@ import { WalletManagementButtons } from '@transferto/shared/src';
 import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '../../const';
+import { useUserTracking } from '../../hooks';
 import { useChains } from '../../hooks/useChains';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
+import { EventTrackingTool } from '../../types';
 import { ThemeSwitch } from '../ThemeSwitch';
 import {
   NavbarDropdownButton,
@@ -15,6 +22,7 @@ import {
 
 const NavbarManagement = () => {
   const mainMenuAnchor = useRef<any>(null);
+  const { trackEvent } = useUserTracking();
 
   const onWalletDisconnect = useSettingsStore(
     (state) => state.onWalletDisconnect,
@@ -44,6 +52,13 @@ const NavbarManagement = () => {
 
   const handleOnOpenNavbarMainMenu = () => {
     onOpenNavbarMainMenu(!openMainNavbarMenu, mainMenuAnchor.current);
+    trackEvent({
+      category: TrackingCategory.Menu,
+      action: TrackingAction.OpenMenu,
+      label: 'open_main_menu',
+      data: { [TrackingEventParameter.Menu]: 'main_menu' },
+      disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+    });
   };
 
   return (

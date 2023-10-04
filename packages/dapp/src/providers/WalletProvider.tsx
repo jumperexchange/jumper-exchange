@@ -1,5 +1,5 @@
 import type { Signer } from '@ethersproject/abstract-signer';
-import { ChainId, Token } from '@lifi/sdk';
+import { Token } from '@lifi/sdk';
 import {
   LiFiWalletManagement,
   Wallet,
@@ -20,8 +20,10 @@ import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
+import { TrackingAction, TrackingEventParameter } from '../const';
 import { useUserTracking } from '../hooks';
 import { useMultisig } from '../hooks/useMultisig';
+import { EventTrackingTool } from '../types';
 
 const liFiWalletManagement = new LiFiWalletManagement();
 
@@ -48,7 +50,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
 }) => {
   const [account, setAccount] = useState<WalletAccount>({});
   const [currentWallet, setCurrentWallet] = useState<Wallet | undefined>();
-  const { trackConnectWallet } = useUserTracking();
+  const { trackEvent, trackDisconnectWallet } = useUserTracking();
   const { checkMultisigEnvironment } = useMultisig();
 
   const connectMultisigWallet = async () => {
@@ -94,77 +96,98 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     setAccount(account);
   };
 
-  const connect = useCallback(async (wallet: Wallet) => {
-    await liFiWalletManagement.connect(wallet);
-    wallet.on('walletAccountChanged', handleWalletUpdate);
-
-    handleWalletUpdate(wallet);
-  }, []);
+  const connect = useCallback(
+    async (wallet: Wallet) => {
+      await liFiWalletManagement.connect(wallet);
+      trackEvent({
+        action: TrackingAction.ConnectWallet,
+        data: {
+          [TrackingEventParameter.Wallet]: wallet.name,
+        },
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Hotjar,
+          EventTrackingTool.Raleon,
+        ],
+      });
+      wallet.on('walletAccountChanged', handleWalletUpdate);
+      handleWalletUpdate(wallet);
+    },
+    [trackEvent],
+  );
 
   const disconnect = useCallback(async () => {
     if (currentWallet) {
       await liFiWalletManagement.disconnect(currentWallet);
       currentWallet.removeAllListeners();
       handleWalletUpdate(undefined);
-      trackConnectWallet({
-        account: account,
-        disconnect: true,
+      trackDisconnectWallet({
+        data: { [TrackingEventParameter.Wallet]: currentWallet.name },
       });
     }
-  }, [account, currentWallet, trackConnectWallet]);
+  }, [currentWallet, trackDisconnectWallet]);
 
   const switchChain = useCallback(
     async (chainId: number) => {
       try {
         await currentWallet?.switchChain(chainId);
+        trackEvent({
+          action: TrackingAction.SwitchChain,
+          data: {
+            [TrackingEventParameter.SwitchedChain]: chainId,
+          },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Hotjar,
+            EventTrackingTool.Raleon,
+          ],
+        });
         handleWalletUpdate(currentWallet);
         return true;
       } catch {
         return false;
       }
     },
-    [currentWallet],
+    [currentWallet, trackEvent],
   );
 
   const addChain = useCallback(
     async (chainId: number) => {
       try {
         await currentWallet?.addChain(chainId);
+        trackEvent({
+          action: TrackingAction.AddChain,
+          data: {
+            [TrackingEventParameter.ChainIdAdded]: chainId,
+          },
+        });
+
         handleWalletUpdate(currentWallet);
         return true;
       } catch {
         return false;
       }
     },
-    [currentWallet],
+    [currentWallet, trackEvent],
   );
 
   const addToken = useCallback(
     async (chainId: number, token: Token) => {
       await currentWallet?.addToken(chainId, token);
+      trackEvent({
+        action: TrackingAction.AddToken,
+        data: {
+          [TrackingEventParameter.AddedTokenAddress]: token.address,
+          [TrackingEventParameter.AddedTokenName]: token.name,
+        },
+      });
+
       handleWalletUpdate(currentWallet);
 
       return;
     },
-    [currentWallet],
+    [currentWallet, trackEvent],
   );
-
-  useEffect(() => {
-    trackConnectWallet({
-      account: account,
-      disconnect: false,
-      data: {
-        account: account.address as string,
-        chain: account.chainId as ChainId,
-      },
-    });
-  }, [
-    account,
-    account.signer,
-    account.address,
-    account.chainId,
-    trackConnectWallet,
-  ]);
 
   const value = useMemo(
     () => ({

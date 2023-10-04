@@ -41,13 +41,7 @@
     },
     "developers": {
       "github": "GitHub",
-      "documentation": "Documentation",
-      "showcases": "Vitrines"
-    },
-    "showcases": {
-      "ukraineDonation": "Soutenir l’Ukraine 🇺🇦",
-      "klimaStaking": "Staking de Klima inter-chaînes",
-      "carbonOffset": "Compensation Carbon inter-chaînes"
+      "documentation": "Documentation"
     }
   },
   "alert": {

@@ -5,10 +5,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
 import { KeyboardEvent } from 'react';
-import { MenuKeys } from '../../const';
+import {
+  MenuKeys,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '../../const';
 import { useMenuStore } from '../../stores/menu';
-import { MenuListItem } from '../../types';
+import { EventTrackingTool, MenuListItem } from '../../types';
 
+import { useUserTracking } from '../../hooks';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -40,6 +46,7 @@ const SubMenuComponent = ({
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const { trackEvent } = useUserTracking();
   const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore((state) => [
     state.openNavbarSubMenu,
     state.onOpenNavbarSubMenu,
@@ -50,6 +57,28 @@ const SubMenuComponent = ({
       onOpenNavbarSubMenu(prevMenu);
     }
   }
+
+  const handleClick = (el: MenuListItem) => {
+    if (el.triggerSubMenu) {
+      onOpenNavbarSubMenu(el.triggerSubMenu);
+      trackEvent({
+        category: TrackingCategory.SubMenu,
+        action: TrackingAction.OpenMenu,
+        label: `open_submenu_${el.triggerSubMenu.toLowerCase()}`,
+        data: {
+          [TrackingEventParameter.Menu]: el.triggerSubMenu,
+          [TrackingEventParameter.PrevMenu]: prevMenu,
+        },
+        disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+      });
+    } else {
+      typeof el.onClick === 'function' && el.onClick();
+    }
+  };
+
+  const handleBackNavigation = () => {
+    onOpenNavbarSubMenu(prevMenu);
+  };
 
   return open && openNavbarSubMenu === triggerSubMenu ? (
     <NavbarPaper
@@ -62,9 +91,7 @@ const SubMenuComponent = ({
         <MenuHeaderAppBar component="div" elevation={0}>
           <ButtonBackArrow
             style={{ marginLeft: '0px' }}
-            onClick={() => {
-              onOpenNavbarSubMenu(prevMenu);
-            }}
+            onClick={handleBackNavigation}
           />
           <MenuHeaderLabel>{label}</MenuHeaderLabel>
         </MenuHeaderAppBar>
@@ -110,11 +137,7 @@ const SubMenuComponent = ({
           ) : (
             <MenuItem
               autoFocus={index > 0 ? true : false}
-              onClick={() => {
-                el.triggerSubMenu
-                  ? onOpenNavbarSubMenu(el.triggerSubMenu)
-                  : el.onClick();
-              }}
+              onClick={() => handleClick(el)}
               key={`${el.label}-${index}`}
             >
               <MenuItemLabel
@@ -144,13 +167,13 @@ const SubMenuComponent = ({
               </MenuItemLabel>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon && (
-                <ChevronRightIcon sx={{ ml: theme.spacing(2) }} />
+                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
               )}
             </MenuItem>
           ),
         )
       ) : (
-        <Box textAlign={'center'} mt={theme.spacing(2)}>
+        <Box textAlign={'center'} mt={theme.spacing(1)}>
           <CircularProgress />
         </Box>
       )}

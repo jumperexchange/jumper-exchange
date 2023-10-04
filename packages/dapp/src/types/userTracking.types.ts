@@ -1,5 +1,5 @@
 import { ChainID } from '@arcxmoney/analytics';
-import { WalletAccount } from './internal.types';
+import { WalletAccount } from '@transferto/shared/src/types';
 
 export enum EventTrackingTool {
   ARCx,
@@ -14,7 +14,7 @@ export interface InitTrackingProps {
 
 export interface TrackEventProps {
   action: string;
-  category: string;
+  category?: string;
   label?: string;
   data?: { [key: string]: string | number | boolean | any };
   disableTrackingTool?: EventTrackingTool[];
@@ -26,7 +26,7 @@ export interface TrackTransactionProps {
   chain: ChainID;
   disableTrackingTool?: EventTrackingTool[];
   data: Record<string, unknown>;
-  transactionHash: string;
+  txhash: string;
 }
 
 export interface trackPageloadProps {
@@ -39,10 +39,15 @@ export interface trackPageloadProps {
 }
 
 export interface TrackConnectWalletProps {
-  account: WalletAccount;
+  account?: WalletAccount;
   data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
   disconnect?: boolean;
+}
+
+export interface TrackDisconnectWalletProps {
+  data?: { [key: string]: string | number | boolean };
+  disableTrackingTool?: EventTrackingTool[];
 }
 export interface TrackAttributeProps {
   data?: { [key: string]: string | number | boolean };

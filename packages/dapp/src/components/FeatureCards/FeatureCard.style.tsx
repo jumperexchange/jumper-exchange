@@ -18,7 +18,7 @@ export const Card = styled(MuiCard, {
   height: 160,
   borderRadius: '12px',
   position: 'relative',
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
   background: `radial-gradient(circle at 506px 437px, ${
     gradient ? gradient : '#3F49E1'
@@ -46,6 +46,6 @@ export const CardImage = styled(CardMedia)<CardImageProps>(({ theme }) => ({
   maxHeight: '106px',
   position: 'absolute',
   objectFit: 'contain',
-  right: theme.spacing(7.5),
-  bottom: theme.spacing(7),
+  right: theme.spacing(3.75),
+  bottom: theme.spacing(3.5),
 }));
