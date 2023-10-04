@@ -7,7 +7,6 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TabsMap } from '../../const/tabsMap';
-import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
@@ -36,7 +35,6 @@ export function Widget({ starterVariant }: WidgetProps) {
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
-  const { trackEvent } = useUserTracking();
   const onOpenNavbarWalletSelectMenu = useMenuStore(
     (state: MenuState) => state.onOpenNavbarWalletSelectMenu,
   );
