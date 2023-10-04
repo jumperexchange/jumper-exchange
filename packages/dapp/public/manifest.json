@@ -24,9 +24,9 @@
       "type": "image/x-icon"
     },
     {
-      "src": "favicon-144x144.png",
+      "src": "logo.svg",
       "sizes": "144x144",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any"
     }
   ],
