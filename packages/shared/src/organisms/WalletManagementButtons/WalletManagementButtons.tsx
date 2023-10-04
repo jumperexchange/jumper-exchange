@@ -2,8 +2,9 @@ import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
 import {
-  TrackingActions,
-  TrackingCategories,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
 import { useMenuStore } from '@transferto/dapp/src/stores';
@@ -67,8 +68,10 @@ export const WalletManagementButtons: React.FC<
   ) => {
     openNavbarWalletSelectMenu &&
       trackEvent({
-        category: TrackingCategories.Menu,
-        action: TrackingActions.OpenWalletSelectMenu,
+        category: TrackingCategory.WalletSelectMenu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_wallet_select_menu',
+        data: { [TrackingEventParameter.Menu]: 'wallet_select_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletSelectMenu(
@@ -82,8 +85,10 @@ export const WalletManagementButtons: React.FC<
   ) => {
     openNavbarWalletMenu &&
       trackEvent({
-        category: TrackingCategories.Menu,
-        action: TrackingActions.OpenWalletMenu,
+        category: TrackingCategory.WalletMenu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_wallet_menu',
+        data: { [TrackingEventParameter.Menu]: 'wallet_menu' },
         disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
       });
     onOpenNavbarWalletMenu(!openNavbarWalletMenu, event.currentTarget);

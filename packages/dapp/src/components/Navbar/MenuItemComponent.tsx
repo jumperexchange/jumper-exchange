@@ -2,7 +2,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
-import { MenuKeys, TrackingActions, TrackingCategories } from '../../const';
+import {
+  MenuKeys,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '../../const';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
@@ -37,26 +42,25 @@ const MenuItemComponent = ({
     state.onOpenNavbarSubMenu,
   ]);
 
+  const handleClick = () => {
+    !!triggerSubMenu && onOpenNavbarSubMenu(triggerSubMenu);
+    !!triggerSubMenu &&
+      trackEvent({
+        category: TrackingCategory.MainMenu,
+        action: TrackingAction.OpenMenu,
+        label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
+        data: { [TrackingEventParameter.Menu]: triggerSubMenu },
+        disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+      });
+    !!onClick && onClick();
+  };
+
   return open ? (
     <MenuItem
       disableRipple={showButton}
       showButton={showButton || false}
       autoFocus={autoFocus}
-      onClick={() => {
-        !!triggerSubMenu && onOpenNavbarSubMenu(triggerSubMenu);
-        !!triggerSubMenu &&
-          trackEvent({
-            category: TrackingCategories.Menu,
-            action: TrackingActions.OpenSubmenu,
-            label: triggerSubMenu,
-            data: { subMenu: triggerSubMenu },
-            disableTrackingTool: [
-              EventTrackingTool.Raleon,
-              EventTrackingTool.ARCx,
-            ],
-          });
-        !!onClick && onClick();
-      }}
+      onClick={handleClick}
     >
       <>
         {showButton ? (

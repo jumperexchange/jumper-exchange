@@ -6,9 +6,14 @@ import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '../trackingKeys';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
-  const { trackPageload } = useUserTracking();
+  const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const onCloseAllNavbarMenus = useMenuStore(
@@ -29,7 +34,16 @@ export const useDevelopersContent = () => {
       ),
       onClick: () => {
         const githubUrl = 'https://github.com/lifinance/';
-        openInNewTab(githubUrl);
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'open-lifi-github',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'lifi_github' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         trackPageload({
           source: 'menu',
           destination: 'lifi-github',
@@ -40,6 +54,7 @@ export const useDevelopersContent = () => {
             EventTrackingTool.Raleon,
           ],
         });
+        openInNewTab(githubUrl);
         onCloseAllNavbarMenus();
       },
     },
@@ -48,7 +63,16 @@ export const useDevelopersContent = () => {
       prefixIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
         const docsUrl = 'https://docs.li.fi/';
-        openInNewTab(docsUrl);
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'open-lifi-docs',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
         trackPageload({
           source: 'menu',
           destination: 'lifi-docs',
@@ -59,6 +83,7 @@ export const useDevelopersContent = () => {
             EventTrackingTool.Raleon,
           ],
         });
+        openInNewTab(docsUrl);
         onCloseAllNavbarMenus();
       },
     },
