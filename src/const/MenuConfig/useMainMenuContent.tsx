@@ -2,6 +2,7 @@ import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -128,6 +129,35 @@ export const useMainMenuContent = () => {
           ],
         });
         openInNewTab(DISCORD_URL);
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.lifiExplorer'),
+      prefixIcon: <SearchOutlinedIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        const explorerUrl = 'https://explorer.li.fi?utm_source=jumper';
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'open-lifi-explorer',
+          action: TrackingAction.OpenMenu,
+          data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
+        trackPageload({
+          source: 'menu',
+          destination: 'lifi-explorer',
+          url: explorerUrl,
+          pageload: true,
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
+        openInNewTab(explorerUrl);
       },
     },
     {
