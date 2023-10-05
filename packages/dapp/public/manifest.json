@@ -4,27 +4,27 @@
   "description": "Multi-Chain Bridging & Swapping (powered by LI.FI)",
   "icons": [
     {
-      "src": "favicon-16x16.ico",
+      "src": "logo-16x16.svg",
       "sizes": "16x16",
-      "type": "image/x-icon"
+      "type": "image/svg+xml"
     },
     {
-      "src": "favicon-24x24.ico",
+      "src": "logo-24x24.svg",
       "sizes": "24x24",
-      "type": "image/x-icon"
+      "type": "image/svg+xml"
     },
     {
-      "src": "favicon-32x32.ico",
+      "src": "logo-32x32.svg",
       "sizes": "32x32",
-      "type": "image/x-icon"
+      "type": "image/svg+xml"
     },
     {
-      "src": "favicon-64x64.ico",
+      "src": "logo-64x64.svg",
       "sizes": "64x64",
-      "type": "image/x-icon"
+      "type": "image/svg+xml"
     },
     {
-      "src": "logo.svg",
+      "src": "logo-144x144.svg",
       "sizes": "144x144",
       "type": "image/svg+xml",
       "purpose": "any"
