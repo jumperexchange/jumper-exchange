@@ -7,7 +7,6 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TabsMap } from '../../const/tabsMap';
-import { useUserTracking } from '../../hooks';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
@@ -36,7 +35,6 @@ export function Widget({ starterVariant }: WidgetProps) {
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
   const isDarkMode = theme.palette.mode === 'dark';
-  const { trackEvent } = useUserTracking();
   const onOpenNavbarWalletSelectMenu = useMenuStore(
     (state: MenuState) => state.onOpenNavbarWalletSelectMenu,
   );
@@ -96,7 +94,7 @@ export function Widget({ starterVariant }: WidgetProps) {
           : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       },
       languages: {
-        default: i18n.language as LanguageKey,
+        default: i18n.resolvedLanguage as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
       appearance: isDarkMode ? 'dark' : 'light',
@@ -140,7 +138,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     starterVariant,
     account.signer,
     isDarkMode,
-    i18n.language,
+    i18n.resolvedLanguage,
     i18n.languages,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
