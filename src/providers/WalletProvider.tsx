@@ -1,11 +1,11 @@
 import type { Signer } from '@ethersproject/abstract-signer';
 import type { Token } from '@lifi/sdk';
+import type { Wallet } from '@lifi/wallet-management';
 import {
   LiFiWalletManagement,
   readActiveWallets,
   supportedWallets,
 } from '@lifi/wallet-management';
-
 import type { PropsWithChildren } from 'react';
 import React, {
   createContext,
@@ -14,7 +14,6 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-
 import { useMultisig, useUserTracking } from 'src/hooks';
 import type { WalletAccount, WalletContextProps } from 'src/types';
 import { TrackingAction, TrackingEventParameter } from '../const';

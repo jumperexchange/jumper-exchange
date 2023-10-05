@@ -1,7 +1,6 @@
 import type { Signer } from '@ethersproject/abstract-signer';
-import type { Token } from '@lifi/types';
-import type { ChainId } from '@lifi/types';
-import type events from 'events';
+import type { ChainId, Token } from '@lifi/types';
+import type { EventEmitter } from 'events';
 
 export interface WalletContextProps {
   account: WalletAccount;
@@ -20,7 +19,7 @@ export interface WalletAccount {
   chainId?: ChainId;
 }
 
-export interface Wallet extends events.EventEmitter {
+export interface Wallet extends EventEmitter {
   name: string;
   icon: string;
   isActivationInProgress: boolean;
