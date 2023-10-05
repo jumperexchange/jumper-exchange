@@ -82,6 +82,7 @@
     "preview": "vite preview",
     "clean": "rimraf --no-glob ./tsconfig.tsbuildinfo",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint-staged": "lint-staged",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "test": "run-s 'test:*'",
     "test:unit": "echo \"No tests yet\"",
@@ -90,6 +91,16 @@
     "pre-commit": "lint-staged",
     "pre-push": "yarn build",
     "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
+  },
+  "lint-staged": {
+    "**/*.(ts|tsx|js)": [
+      "yarn tsc --noEmit",
+      "yarn eslint --fix",
+      "yarn prettier --write"
+    ],
+    "**/*.(md|json)": [
+      "yarn prettier --write"
+    ]
   },
   "browserslist": {
     "production": [
