@@ -18,20 +18,6 @@ export const usePopperIsOpened = () => {
   ]);
 
   useEffect(() => {
-    console.log({
-      openMainNavbarMenu,
-      openNavbarWalletMenu,
-      openNavbarSubMenu,
-      openNavbarChainsMenu,
-      openNavbarWalletSelectMenu,
-    });
-    console.log(
-      openMainNavbarMenu ||
-        openNavbarWalletMenu ||
-        openNavbarSubMenu !== 'None' ||
-        openNavbarChainsMenu ||
-        openNavbarWalletSelectMenu,
-    );
     setPopperOpened(
       openMainNavbarMenu ||
         openNavbarWalletMenu ||
