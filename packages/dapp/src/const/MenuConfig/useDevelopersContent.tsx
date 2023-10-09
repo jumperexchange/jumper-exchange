@@ -1,6 +1,7 @@
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
+import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import { openInNewTab } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../../hooks';
@@ -85,6 +86,24 @@ export const useDevelopersContent = () => {
         });
         openInNewTab(docsUrl);
         onCloseAllNavbarMenus();
+      },
+    },
+    {
+      label: t('navbar.navbarMenu.brandAssets'),
+      prefixIcon: <FolderZipOutlinedIcon />,
+      showMoreIcon: false,
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-brand-assets',
+          action: TrackingAction.DownloadBrandAssets,
+          data: { [TrackingEventParameter.Menu]: 'brand_assets' },
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Raleon,
+          ],
+        });
+        openInNewTab('/Jumper_Assets.zip');
       },
     },
   ];
