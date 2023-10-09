@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useMenuStore } from '../stores';
 
 export const usePopperIsOpened = () => {
-  const [popperOpened, setPopperOpened] = useState<boolean>();
   const [
     openMainNavbarMenu,
     openNavbarWalletMenu,
@@ -17,21 +15,11 @@ export const usePopperIsOpened = () => {
     state.openNavbarWalletSelectMenu,
   ]);
 
-  useEffect(() => {
-    setPopperOpened(
-      openMainNavbarMenu ||
-        openNavbarWalletMenu ||
-        openNavbarSubMenu !== 'None' ||
-        openNavbarChainsMenu ||
-        openNavbarWalletSelectMenu,
-    );
-  }, [
-    openMainNavbarMenu,
-    openNavbarChainsMenu,
-    openNavbarSubMenu,
-    openNavbarWalletMenu,
-    openNavbarWalletSelectMenu,
-  ]);
-
-  return popperOpened;
+  return (
+    openMainNavbarMenu ||
+    openNavbarWalletMenu ||
+    openNavbarSubMenu !== 'None' ||
+    openNavbarChainsMenu ||
+    openNavbarWalletSelectMenu
+  );
 };
