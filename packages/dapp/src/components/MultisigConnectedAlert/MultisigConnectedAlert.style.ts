@@ -1,6 +1,6 @@
-import { styled } from '@mui/material/styles';
-import { Box, Breakpoint, Button, alpha } from '@mui/material';
 import { InfoRounded } from '@mui/icons-material';
+import { Box, Breakpoint, Button, alpha } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 export const MultisigConnectedAlertContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
@@ -16,7 +16,7 @@ export const MultisigConnectedAlertContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: theme.spacing(6),
+  padding: theme.spacing(3),
   borderRadius: '16px',
   background:
     theme.palette.mode === 'dark'
@@ -32,7 +32,7 @@ export const MultisigConnectedAlertButton = styled(Button)(({ theme }) => ({
   width: '100%',
   borderRadius: '24px',
   fontWeight: 700,
-  padding: theme.spacing(2.5, 0),
+  padding: theme.spacing(1.25, 0),
 }));
 
 export const MultisigConnectedAlertIconContainer = styled(Box)(({ theme }) => ({

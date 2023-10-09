@@ -2,6 +2,7 @@ import { ChainId } from '@lifi/types';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import 'react-i18next';
 import { MenuKeys } from '../const';
+import { Gtag } from './gtag';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
@@ -23,6 +24,7 @@ interface RaleonProps {
 declare global {
   interface Window {
     raleon: RaleonProps;
+    gtag: Gtag.Gtag;
   }
 }
 
@@ -39,7 +41,7 @@ export interface MenuItem {
 export type StarterVariantType = 'buy' | WidgetSubvariant;
 
 export interface MenuListItem {
-  label: string | unknown;
+  label: string;
   triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;

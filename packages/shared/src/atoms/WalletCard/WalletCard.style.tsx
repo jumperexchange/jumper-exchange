@@ -2,7 +2,7 @@ import { Avatar, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const WalletItem = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(3),
+  padding: theme.spacing(1.5),
   borderRadius: '8px',
   display: 'flex',
   flexDirection: 'row',

@@ -94,7 +94,7 @@ export const ContentContainer = styled(Box, {
   position: 'absolute',
   zIndex: '1400',
   top: '50%',
-  padding: theme.spacing(0, 2, 8),
+  padding: theme.spacing(0, 1, 4),
   overflow: 'visible',
   animation: !showWelcome ? fadeOut : 'unset',
   animationDuration: '.5s',
@@ -115,7 +115,7 @@ export const ContentContainer = styled(Box, {
   },
 
   [`@media screen and (min-height: 490px)`]: {
-    padding: theme.spacing(2, 2, 6),
+    padding: theme.spacing(1, 1, 3),
 
     '&:before': {
       top: '-200px',

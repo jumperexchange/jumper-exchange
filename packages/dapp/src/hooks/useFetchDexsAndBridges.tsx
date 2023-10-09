@@ -9,7 +9,8 @@ export const useFetchDexsAndBridges = () => {
   });
 
   return {
-    data,
+    bridges: data?.bridges,
+    exchanges: data?.exchanges,
     isLoading,
     error,
   };

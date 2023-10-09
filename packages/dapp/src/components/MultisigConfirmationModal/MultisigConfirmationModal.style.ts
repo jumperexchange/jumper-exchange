@@ -16,7 +16,7 @@ export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: theme.spacing(6),
+  padding: theme.spacing(3),
   borderRadius: '16px',
   background:
     theme.palette.mode === 'dark'
@@ -32,7 +32,7 @@ export const MultisigConfirmationModalButton = styled(Button)(({ theme }) => ({
   width: '100%',
   borderRadius: '24px',
   fontWeight: 700,
-  padding: theme.spacing(2.5, 0),
+  padding: theme.spacing(1.25, 0),
 }));
 
 export const MultisigConfirmationModalIconContainer = styled(Box)(

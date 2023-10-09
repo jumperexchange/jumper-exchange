@@ -21,6 +21,7 @@
     "navbarMenu": {
       "theme": "Tema",
       "developers": "Desenvolvedores",
+      "lifiExplorer": "Explorador LI.FI",
       "aboutLIFI": "Sobre a LI.FI",
       "support": "Suporte"
     },
@@ -41,13 +42,7 @@
     },
     "developers": {
       "github": "GitHub",
-      "documentation": "Documentação",
-      "showcases": "Destaques"
-    },
-    "showcases": {
-      "ukraineDonation": "Apoie a Ucrânia 🇺🇦",
-      "klimaStaking": "Staking de Klima de Cadeia Cruzada",
-      "carbonOffset": "Compensação de Carbono de Cadeia Cruzada"
+      "documentation": "Documentação"
     }
   },
   "alert": {
