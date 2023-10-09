@@ -19,6 +19,7 @@
     "connectWallet": "Connect Wallet",
     "chooseWallet": "Choose Wallet",
     "navbarMenu": {
+      "brandAssets": "Brand Assets",
       "theme": "Theme",
       "developers": "Developers",
       "lifiExplorer": "LI.FI Explorer",
