@@ -25,6 +25,8 @@ export const WelcomeWrapper: React.FC<
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
+  const LIFI_URL =
+    'https://li.fi/?utm_source=b2c_jumper&utm_medium=landing_page&utm_campaign=welcome_screen';
 
   useEffect(() => {
     if (showWelcome) {
@@ -65,7 +67,7 @@ export const WelcomeWrapper: React.FC<
     trackPageload({
       source: 'welcome-screen',
       destination: 'lifi-website',
-      url: 'https://li.fi/?utm_source=b2c_jumper&utm_medium=landing_page&utm_campaign=welcome_screen',
+      url: LIFI_URL,
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
@@ -121,7 +123,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href="https://li.fi/?utm_source=b2c_jumper&utm_medium=landing_page&utm_campaign=welcome_screen"
+                    href={LIFI_URL}
                     onClick={handleLIFIClick}
                     target={'_blank'}
                     rel="noreferrer"
