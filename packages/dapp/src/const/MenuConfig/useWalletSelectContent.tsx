@@ -1,5 +1,5 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
-import { Avatar, useMediaQuery } from '@mui/material';
+import { Avatar, Theme, useMediaQuery } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
@@ -7,8 +7,8 @@ import { useMenuStore, useSettingsStore } from '../../stores';
 import { MenuListItem } from '../../types';
 
 export const useWalletSelectContent = () => {
-  const isDesktopView = useMediaQuery((theme) =>
-    (theme as any).breakpoints.up('sm'),
+  const isDesktopView = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up('sm'),
   );
 
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
