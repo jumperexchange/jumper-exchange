@@ -65,7 +65,7 @@ export const WelcomeWrapper: React.FC<
     trackPageload({
       source: 'welcome-screen',
       destination: 'lifi-website',
-      url: 'https://li.fi',
+      url: 'https://li.fi/?utm_source=b2c_jumper&utm_medium=landing_page&utm_campaign=welcome_screen',
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
@@ -121,7 +121,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href="https://li.fi"
+                    href="https://li.fi/?utm_source=b2c_jumper&utm_medium=landing_page&utm_campaign=welcome_screen"
                     onClick={handleLIFIClick}
                     target={'_blank'}
                     rel="noreferrer"
