@@ -7,7 +7,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@transferto/dapp/src/const';
-import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { usePopperIsOpened, useUserTracking } from '@transferto/dapp/src/hooks';
 import { useChains } from '@transferto/dapp/src/hooks/useChains';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
 import { useMenuStore } from '@transferto/dapp/src/stores';
@@ -21,6 +21,7 @@ export const ChainSwitch = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
+  const popperOpened = usePopperIsOpened();
   const { account } = useWallet();
 
   const [openNavbarChainsMenu, onOpenNavbarChainsMenu] = useMenuStore(
@@ -46,7 +47,11 @@ export const ChainSwitch = () => {
   };
 
   return (
-    <Tooltip title={t('navbar.walletMenu.switchChain')} arrow>
+    <Tooltip
+      title={t('navbar.walletMenu.switchChain')}
+      disableHoverListener={popperOpened}
+      arrow
+    >
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar

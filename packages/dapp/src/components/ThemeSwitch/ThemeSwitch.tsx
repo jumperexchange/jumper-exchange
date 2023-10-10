@@ -9,13 +9,14 @@ import {
   TrackingEventParameter,
 } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
-import { useUserTracking } from '../../hooks';
+import { usePopperIsOpened, useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
+  const popperOpened = usePopperIsOpened();
 
   const [themeMode, onChangeMode] = useSettingsStore((state) => [
     state.themeMode,
@@ -43,6 +44,7 @@ export const ThemeSwitch = () => {
 
   return (
     <Tooltip
+      disableHoverListener={popperOpened}
       title={
         themeMode === 'light'
           ? t('navbar.themes.switchToDark')
