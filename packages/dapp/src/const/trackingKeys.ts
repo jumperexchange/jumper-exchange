@@ -39,6 +39,7 @@ export enum TrackingAction {
   SwitchLanguage = 'action_switch_language',
   SwitchTab = 'action_switch_tab',
   SwitchTheme = 'action_switch_theme',
+  DownloadBrandAssets = 'action_dl_brand_assets',
 }
 
 export enum TrackingCategory {

@@ -1,5 +1,4 @@
 import bn from './bn/language.json';
-// import de from './de/language.json';
 import en from './en/language.json';
 import es from './es/language.json';
 import fr from './fr/language.json';
