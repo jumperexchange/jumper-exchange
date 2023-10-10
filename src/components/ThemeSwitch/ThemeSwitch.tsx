@@ -9,13 +9,14 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
+import { usePopperIsOpened, useUserTracking } from 'src/hooks';
 import { useDetectDarkModePreference } from 'src/providers';
 import { useSettingsStore } from 'src/stores';
 import { ButtonThemeSwitch } from '.';
 
 export const ThemeSwitch = () => {
   const isDarkMode = useDetectDarkModePreference();
+  const popperOpened = usePopperIsOpened();
 
   const [themeMode, onChangeMode] = useSettingsStore((state) => [
     state.themeMode,
@@ -43,6 +44,7 @@ export const ThemeSwitch = () => {
 
   return (
     <Tooltip
+      disableHoverListener={popperOpened}
       title={
         themeMode === 'light'
           ? t('navbar.themes.switchToDark')

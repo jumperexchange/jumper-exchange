@@ -10,7 +10,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useChains, useUserTracking } from 'src/hooks';
+import { useChains, usePopperIsOpened, useUserTracking } from 'src/hooks';
 import { useWallet } from 'src/providers';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
@@ -20,6 +20,7 @@ export const ChainSwitch = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
+  const popperOpened = usePopperIsOpened();
   const { account } = useWallet();
 
   const [openChainsPopper, onOpenChainsPopper] = useMenuStore((state) => [
@@ -46,7 +47,11 @@ export const ChainSwitch = () => {
   };
 
   return (
-    <Tooltip title={t('navbar.walletMenu.switchChain')} arrow>
+    <Tooltip
+      title={t('navbar.walletMenu.switchChain')}
+      disableHoverListener={popperOpened}
+      arrow
+    >
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (
           <Avatar
