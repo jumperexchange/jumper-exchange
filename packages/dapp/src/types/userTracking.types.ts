@@ -5,7 +5,7 @@ export enum EventTrackingTool {
   ARCx,
   GA,
   Hotjar,
-  Raleon,
+  Cookie3,
 }
 
 export interface InitTrackingProps {
@@ -14,8 +14,8 @@ export interface InitTrackingProps {
 
 export interface TrackEventProps {
   action: string;
-  category?: string;
-  label?: string;
+  category: string;
+  label: string;
   data?: { [key: string]: string | number | boolean | any };
   disableTrackingTool?: EventTrackingTool[];
 }
