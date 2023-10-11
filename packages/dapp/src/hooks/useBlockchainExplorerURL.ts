@@ -7,8 +7,10 @@ export const useBlockchainExplorerURL = () => {
 
   if (account.isActive && account.chainId) {
     const chain = getChainById(account.chainId);
-    if (isSuccess) {
+    if (isSuccess && chain?.metamask) {
       return `${chain.metamask.blockExplorerUrls[0]}address/${account.address}`;
+    } else {
+      console.error(`No blockchain explorer found for ${account.chainId}`);
     }
   }
 };
