@@ -84,8 +84,6 @@ export function Widgets() {
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   const handleGetStarted: MouseEventHandler<HTMLDivElement> = (event) => {
-    if (welcomeScreenClosed) return;
-
     const classList = (event.target as HTMLElement).classList;
     if (
       classList.contains?.('stats-card') ||
@@ -119,14 +117,14 @@ export function Widgets() {
         </Grid>
       )}
       <WidgetContainer
-        onClick={handleGetStarted}
+        onClick={!welcomeScreenClosed ? handleGetStarted : undefined}
         showWelcome={!welcomeScreenClosed}
         isActive={_starterVariant === TabsMap.Exchange.variant}
       >
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
-        onClick={handleGetStarted}
+        onClick={!welcomeScreenClosed ? handleGetStarted : undefined}
         showWelcome={!welcomeScreenClosed}
         isActive={_starterVariant === TabsMap.Refuel.variant}
       >
@@ -134,7 +132,7 @@ export function Widgets() {
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
-          onClick={handleGetStarted}
+          onClick={!welcomeScreenClosed ? handleGetStarted : undefined}
           showWelcome={!welcomeScreenClosed}
           isActive={_starterVariant === TabsMap.Buy.variant}
           sx={{ width: '392px' }}
