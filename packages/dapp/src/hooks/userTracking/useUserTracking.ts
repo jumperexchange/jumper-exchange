@@ -25,7 +25,6 @@ export function useUserTracking() {
         account: `${account.address}`,
         chain: `${account.chainId}`,
       });
-      window.raleon.walletConnected(account.address);
       hotjar.identify(account.address, {
         [TrackingEventParameter.Wallet]: usedWallet.name,
       });
@@ -78,7 +77,6 @@ export function useUserTracking() {
         account.address &&
         !disableTrackingTool?.includes(EventTrackingTool.Raleon)
       ) {
-        window.raleon.walletDisconnected();
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         window.gtag('event', TrackingAction.DisconnectWallet, {
@@ -118,7 +116,6 @@ export function useUserTracking() {
         account.isActive &&
         account.address
       ) {
-        window.raleon.registerEvent(action, account.address, category);
       }
     },
     [account.address, account.isActive, arcx],
@@ -166,11 +163,6 @@ export function useUserTracking() {
         account.isActive &&
         !!account.address
       ) {
-        window.raleon.registerEvent(
-          `pageload-${pageload ? 'external' : 'internal'}`,
-          account.address,
-          destination,
-        );
       }
     },
     [account.address, account.isActive, arcx],
@@ -210,7 +202,6 @@ export function useUserTracking() {
         account.isActive &&
         !!account.address
       ) {
-        window.raleon.registerEvent(action, account.address, category);
       }
     },
     [account.address, account.isActive, arcx],
