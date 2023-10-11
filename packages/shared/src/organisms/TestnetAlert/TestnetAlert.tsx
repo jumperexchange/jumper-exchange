@@ -5,7 +5,8 @@ import { WarningMessageCard, WarningMessageCardTitle } from '..';
 import { ButtonTransparent } from '../../atoms';
 import { openInNewTab } from '../../utils';
 
-const PROD_URL = 'https://jumper.exchange';
+const PROD_URL =
+  'https://jumper.exchange?utm_source=b2c_jumper&utm_medium=testnet';
 
 export const TestnetAlert = () => {
   const { t } = useTranslation();
