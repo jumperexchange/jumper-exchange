@@ -132,7 +132,8 @@ export const useMainMenuContent = () => {
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
       onClick: () => {
-        const explorerUrl = 'https://explorer.li.fi?utm_source=jumper';
+        const explorerUrl =
+          'https://explorer.li.fi?utm_source=b2c_jumper&utm_medium=menu';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'open-lifi-explorer',
