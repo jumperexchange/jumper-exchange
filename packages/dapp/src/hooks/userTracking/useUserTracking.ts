@@ -11,9 +11,11 @@ import {
   TrackTransactionProps,
   trackPageloadProps,
 } from '../../types';
+import { useCookie3 } from '../useCookie3';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
+  const cookie3 = useCookie3();
   const { account, usedWallet } = useWallet();
 
   /* 
@@ -73,11 +75,6 @@ export function useUserTracking() {
         });
         hotjar.initialized() && hotjar.event(TrackingAction.DisconnectWallet);
       }
-      if (
-        account.address &&
-        !disableTrackingTool?.includes(EventTrackingTool.Raleon)
-      ) {
-      }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         window.gtag('event', TrackingAction.DisconnectWallet, {
           ...data,
@@ -112,13 +109,17 @@ export function useUserTracking() {
         });
       }
       if (
-        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
-        account.isActive &&
-        account.address
+        !disableTrackingTool?.includes(EventTrackingTool.Cookie3) &&
+        cookie3?.trackEvent({
+          category,
+          action,
+          name: label,
+          //value: todo add to trackingEventProps
+        })
       ) {
       }
     },
-    [account.address, account.isActive, arcx],
+    [arcx, cookie3],
   );
 
   const trackPageload = useCallback(
@@ -158,14 +159,8 @@ export function useUserTracking() {
             ...data,
           });
       }
-      if (
-        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
-        account.isActive &&
-        !!account.address
-      ) {
-      }
     },
-    [account.address, account.isActive, arcx],
+    [arcx],
   );
 
   const trackTransaction = useCallback(
@@ -197,14 +192,8 @@ export function useUserTracking() {
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });
       }
-      if (
-        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
-        account.isActive &&
-        !!account.address
-      ) {
-      }
     },
-    [account.address, account.isActive, arcx],
+    [arcx],
   );
 
   return {
