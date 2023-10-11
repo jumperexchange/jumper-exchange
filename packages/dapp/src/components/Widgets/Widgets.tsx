@@ -21,8 +21,8 @@ import { WidgetContainer } from './Widgets.style';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const [welcomeScreenEntered, onWelcomeScreenEntered] = useSettingsStore(
-    (state) => [state.welcomeScreenEntered, state.onWelcomeScreenEntered],
+  const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
+    (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
   );
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
@@ -84,7 +84,7 @@ export function Widgets() {
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   const handleGetStarted: MouseEventHandler<HTMLDivElement> = (event) => {
-    if (welcomeScreenEntered) return;
+    if (welcomeScreenClosed) return;
 
     const classList = (event.target as HTMLElement).classList;
     if (
@@ -94,7 +94,7 @@ export function Widgets() {
       return;
     } else {
       event.stopPropagation();
-      onWelcomeScreenEntered(true);
+      onWelcomeScreenClosed(true);
       trackEvent({
         category: TrackingCategory.WelcomeScreen,
         action: TrackingAction.CloseWelcomeScreen,
@@ -110,7 +110,7 @@ export function Widgets() {
 
   return (
     <WelcomeWrapper
-      showWelcome={!welcomeScreenEntered}
+      showWelcome={!welcomeScreenClosed}
       handleGetStarted={handleGetStarted}
     >
       {import.meta.env.MODE === 'testnet' && (
@@ -120,14 +120,14 @@ export function Widgets() {
       )}
       <WidgetContainer
         onClick={handleGetStarted}
-        showWelcome={!welcomeScreenEntered}
+        showWelcome={!welcomeScreenClosed}
         isActive={_starterVariant === TabsMap.Exchange.variant}
       >
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
         onClick={handleGetStarted}
-        showWelcome={!welcomeScreenEntered}
+        showWelcome={!welcomeScreenClosed}
         isActive={_starterVariant === TabsMap.Refuel.variant}
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
@@ -135,7 +135,7 @@ export function Widgets() {
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           onClick={handleGetStarted}
-          showWelcome={!welcomeScreenEntered}
+          showWelcome={!welcomeScreenClosed}
           isActive={_starterVariant === TabsMap.Buy.variant}
           sx={{ width: '392px' }}
         >
