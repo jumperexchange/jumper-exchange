@@ -171,6 +171,7 @@ export const useMainMenuContent = () => {
       ),
       showMoreIcon: false,
       onClick: () => {
+        const lifiUrl = 'https://li.fi?utm_source=b2c_jumper&utm_medium=menu';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'click-lifi-link',
@@ -184,14 +185,14 @@ export const useMainMenuContent = () => {
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'lifi-website',
-          url: 'https://li.fi',
+          url: lifiUrl,
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Raleon,
           ],
         });
-        openInNewTab('https://li.fi');
+        openInNewTab(lifiUrl);
       },
     },
     {
