@@ -40,20 +40,14 @@ export const useDevelopersContent = () => {
           label: 'open-lifi-github',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_github' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
-          ],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         trackPageload({
           source: 'menu',
           destination: 'lifi-github',
           url: githubUrl,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
-          ],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         openInNewTab(githubUrl);
         onCloseAllNavbarMenus();
@@ -69,20 +63,14 @@ export const useDevelopersContent = () => {
           label: 'open-lifi-docs',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
-          ],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         trackPageload({
           source: 'menu',
           destination: 'lifi-docs',
           url: docsUrl,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
-          ],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         openInNewTab(docsUrl);
         onCloseAllNavbarMenus();
@@ -98,10 +86,7 @@ export const useDevelopersContent = () => {
           label: 'click-brand-assets',
           action: TrackingAction.DownloadBrandAssets,
           data: { [TrackingEventParameter.Menu]: 'brand_assets' },
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
-          ],
+          disableTrackingTool: [EventTrackingTool.ARCx],
         });
         openInNewTab('/Jumper_Assets.zip');
       },

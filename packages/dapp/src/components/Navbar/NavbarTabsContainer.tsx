@@ -39,7 +39,7 @@ const NavbarTabsContainer = () => {
         action: TrackingAction.SwitchTab,
         label: `switch_tab_to_${tab}`,
         data: { [TrackingEventParameter.Tab]: tab },
-        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+        disableTrackingTool: [EventTrackingTool.ARCx],
       });
     };
 

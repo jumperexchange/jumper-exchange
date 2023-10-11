@@ -33,7 +33,7 @@ export const useThemeContent = () => {
       data: {
         [TrackingEventParameter.SwitchedTheme]: mode,
       },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx],
     });
     onChangeMode(mode);
   };
