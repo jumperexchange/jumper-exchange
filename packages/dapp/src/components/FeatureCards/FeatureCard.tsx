@@ -178,7 +178,10 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Link
               target="_blank"
               rel="noopener"
-              href={data?.fields?.url || 'https://li.fi'}
+              href={
+                data?.fields?.url ||
+                'https://li.fi?utm_source=b2c_jumper&utm_medium=feature_card'
+              }
               onClick={handleCTA}
               sx={{
                 textDecoration: 'none',
