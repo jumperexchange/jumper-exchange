@@ -84,6 +84,8 @@ export function Widgets() {
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
   const handleGetStarted: MouseEventHandler<HTMLDivElement> = (event) => {
+    if (welcomeScreenEntered) return;
+
     const classList = (event.target as HTMLElement).classList;
     if (
       classList.contains?.('stats-card') ||
