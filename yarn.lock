@@ -1676,6 +1676,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cookie3/analytics@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@cookie3/analytics@npm:0.6.0"
+  checksum: f6485f8d69767bbdf3208a1baa794cce1fa6d825ac128e98270834f633c341cb21e5baadae340c39172e765c9f47a95557177f9c54d585104b42daa20f237450
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.11.0":
   version: 11.11.0
   resolution: "@emotion/babel-plugin@npm:11.11.0"
@@ -4488,6 +4495,7 @@ __metadata:
   resolution: "@transferto/dapp@workspace:packages/dapp"
   dependencies:
     "@arcxmoney/analytics": ^1.9.1
+    "@cookie3/analytics": ^0.6.0
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
