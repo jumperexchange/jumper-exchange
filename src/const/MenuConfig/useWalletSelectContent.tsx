@@ -1,13 +1,18 @@
 import type { Wallet } from '@lifi/wallet-management';
 import { supportedWallets } from '@lifi/wallet-management';
-import { Avatar } from '@mui/material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { Theme } from '@mui/material';
+import { Avatar, useMediaQuery } from '@mui/material';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMultisig } from 'src/hooks';
 import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { MenuListItem } from 'src/types';
 
 export const useWalletSelectContent = () => {
+  const isDesktopView = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up('sm'),
+  );
+
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect, account } = useWallet();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
@@ -37,7 +42,13 @@ export const useWalletSelectContent = () => {
         !walletsInstalled[index] && wallet.name !== 'Default Wallet',
     );
 
-    setAvailableWallets([...installedWallets, ...notInstalledWallets]);
+    const allowedWallets = [...installedWallets];
+
+    if (isDesktopView) {
+      allowedWallets.push(...notInstalledWallets);
+    }
+
+    setAvailableWallets(allowedWallets);
 
     if (isMultisig) {
       setIsCurrentMultisigEnvironment(true);

@@ -32,7 +32,7 @@ export const useChains = (): ChainProps => {
   };
 
   return {
-    getChainById: getChainById,
+    getChainById,
     chains: data?.chains,
     isSuccess,
   };
