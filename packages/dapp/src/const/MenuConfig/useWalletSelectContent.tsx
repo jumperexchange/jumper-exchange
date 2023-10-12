@@ -10,7 +10,10 @@ export const useWalletSelectContent = () => {
   const isDesktopView = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up('sm'),
   );
-
+  const [clientWallets, onClientWallets] = useSettingsStore((state) => [
+    state.clientWallets,
+    state.onClientWallets,
+  ]);
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect, account } = useWallet();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
@@ -30,9 +33,10 @@ export const useWalletSelectContent = () => {
     const walletsInstalled = await Promise.all(walletsPromise);
 
     // separate into installed and not installed wallets
-    const installedWallets = supportedWallets.filter(
-      (_, index) => walletsInstalled[index],
-    );
+    const installedWallets = supportedWallets.filter((_, index) => {
+      walletsInstalled[index] && onClientWallets(_.name);
+      return walletsInstalled[index];
+    });
 
     // always remove Default Wallet from not installed Wallets
     const notInstalledWallets = supportedWallets.filter(
@@ -94,6 +98,17 @@ export const useWalletSelectContent = () => {
       return true;
     });
 
+    const handleClick = async (wallet: Wallet) => {
+      if (clientWallets.includes(wallet.name)) {
+        login(wallet);
+        onCloseAllNavbarMenus();
+        onWelcomeScreenEntered(true);
+      } else {
+        onCloseAllNavbarMenus();
+        console.error(`${wallet.name} is not installed`);
+      }
+    };
+
     const output = walletsOptions.map((wallet) => {
       return {
         label: wallet.name,
@@ -106,15 +121,14 @@ export const useWalletSelectContent = () => {
         ),
         showMoreIcon: false,
         onClick: () => {
-          login(wallet);
-          onCloseAllNavbarMenus();
-          onWelcomeScreenEntered(true);
+          handleClick(wallet);
         },
       };
     });
     return output;
   }, [
     availableWallets,
+    clientWallets,
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
