@@ -66,7 +66,7 @@ export const WalletManagementButtons: React.FC<
   const handleWalletSelectClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    openNavbarWalletSelectMenu &&
+    !openNavbarWalletSelectMenu &&
       trackEvent({
         category: TrackingCategory.WalletSelectMenu,
         action: TrackingAction.OpenMenu,
