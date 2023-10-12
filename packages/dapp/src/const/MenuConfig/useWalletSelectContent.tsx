@@ -105,7 +105,7 @@ export const useWalletSelectContent = () => {
         onWelcomeScreenEntered(true);
       } else {
         onCloseAllNavbarMenus();
-        console.error(`${wallet.name} is not installed`);
+        console.error(`Wallet '${wallet.name}' is not installed`);
       }
     };
 
