@@ -3,11 +3,11 @@ import { useWallet } from '../providers';
 
 export const useBlockchainExplorerURL = () => {
   const { account } = useWallet();
-  const { getChainById } = useChains();
+  const { isSuccess: chainsLoaded, getChainById } = useChains();
 
-  if (account?.address && account?.chainId) {
+  if (account.isActive && account.chainId) {
     const chain = getChainById(account.chainId);
-    if (chain?.metamask) {
+    if (chainsLoaded && chain?.metamask) {
       return `${chain.metamask.blockExplorerUrls[0]}address/${account.address}`;
     } else {
       console.error(`No blockchain explorer found for ${account.chainId}`);
