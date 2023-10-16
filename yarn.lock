@@ -2839,8 +2839,8 @@ __metadata:
   linkType: hard
 
 "@lifi/widget@npm:^2.6.1":
-  version: 2.6.1
-  resolution: "@lifi/widget@npm:2.6.1"
+  version: 2.6.2
+  resolution: "@lifi/widget@npm:2.6.2"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -2876,7 +2876,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 171b17515172e8dbaa32ccb3081c775c73a00f602bec42913784b3b2ea28f854823bf05e378df4a16c28c31dc755745a8bf4faeaa76cb1bb6041098260728b37
+  checksum: 4851880c5e7168a3c9a6ef2715d0a40dc801fa77abe9cd6bc0bc99699dfd6df876b544f197545daa1709f5bbe142dae542e59d8f898069a264b2cc8707601488
   languageName: node
   linkType: hard
 
