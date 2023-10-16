@@ -1,6 +1,7 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar, Theme, useMediaQuery } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
@@ -10,6 +11,7 @@ export const useWalletSelectContent = () => {
   const isDesktopView = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up('sm'),
   );
+  const { t } = useTranslation();
   const [clientWallets, onClientWallets] = useSettingsStore((state) => [
     state.clientWallets,
     state.onClientWallets,
@@ -19,6 +21,7 @@ export const useWalletSelectContent = () => {
   const { connect, account } = useWallet();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
     useState(false);
+  const onOpenSnackbar = useMenuStore((state) => state.onOpenSnackbar);
 
   const [availableWallets, setAvailableWallets] = useState<Wallet[]>([]);
 
@@ -106,6 +109,12 @@ export const useWalletSelectContent = () => {
         onWelcomeScreenClosed(true);
       } else {
         onCloseAllNavbarMenus();
+        onOpenSnackbar(
+          true,
+          t('navbar.walletMenu.walletNotInstalled', { wallet: wallet.name }),
+          'error',
+        );
+
         console.error(`Wallet '${wallet.name}' is not installed`);
       }
     };
@@ -133,7 +142,9 @@ export const useWalletSelectContent = () => {
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
+    onOpenSnackbar,
     onWelcomeScreenClosed,
+    t,
   ]);
 
   return walletMenuItems;
