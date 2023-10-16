@@ -11,7 +11,7 @@ export interface SettingsProps {
   activeWalletName: WalletConnected;
   clientWallets: string[];
   disabledFeatureCards: string[];
-  welcomeScreenEntered: boolean;
+  welcomeScreenClosed: boolean;
   [key: string]: any;
 }
 export interface SettingsState extends SettingsProps {
@@ -38,5 +38,5 @@ export interface SettingsState extends SettingsProps {
   onResetSetting: VoidFunction;
 
   // Welcome Screen
-  onWelcomeScreenEntered: (shown: boolean) => void;
+  onWelcomeScreenClosed: (shown: boolean) => void;
 }

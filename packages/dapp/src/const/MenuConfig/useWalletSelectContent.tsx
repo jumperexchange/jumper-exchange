@@ -14,6 +14,7 @@ export const useWalletSelectContent = () => {
     state.clientWallets,
     state.onClientWallets,
   ]);
+
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect, account } = useWallet();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
@@ -59,10 +60,10 @@ export const useWalletSelectContent = () => {
     }
   };
 
-  const { onWalletConnect, onWelcomeScreenEntered } = useSettingsStore(
+  const { onWalletConnect, onWelcomeScreenClosed } = useSettingsStore(
     (state) => ({
       onWalletConnect: state.onWalletConnect,
-      onWelcomeScreenEntered: state.onWelcomeScreenEntered,
+      onWelcomeScreenClosed: state.onWelcomeScreenClosed,
     }),
   );
 
@@ -102,7 +103,7 @@ export const useWalletSelectContent = () => {
       if (clientWallets.includes(wallet.name)) {
         login(wallet);
         onCloseAllNavbarMenus();
-        onWelcomeScreenEntered(true);
+        onWelcomeScreenClosed(true);
       } else {
         onCloseAllNavbarMenus();
         console.error(`Wallet '${wallet.name}' is not installed`);
@@ -132,7 +133,7 @@ export const useWalletSelectContent = () => {
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
-    onWelcomeScreenEntered,
+    onWelcomeScreenClosed,
   ]);
 
   return walletMenuItems;
