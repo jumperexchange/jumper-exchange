@@ -27,12 +27,12 @@ export const useChains = (): ChainProps => {
     if (filteredChain) {
       return filteredChain;
     } else {
-      throw Error(`ChainID ${id} is not available`);
+      console.error(`ChainID ${id} is not available`);
     }
   };
 
   return {
-    getChainById: getChainById,
+    getChainById,
     chains: data?.chains,
     isSuccess,
   };

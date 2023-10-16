@@ -77,9 +77,9 @@ export const useSettingsStore = createWithEqualityFn(
       },
 
       // Welcome Screen
-      onWelcomeScreenEntered: (shown: boolean) => {
+      onWelcomeScreenClosed: (shown: boolean) => {
         set({
-          welcomeScreenEntered: shown,
+          welcomeScreenClosed: shown,
         });
       },
 

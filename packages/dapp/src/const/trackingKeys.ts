@@ -75,8 +75,8 @@ export enum TrackingEventParameter {
   SwitchedChain = 'param_switched_chain',
   SwitchedTheme = 'param_switched_theme',
   SwitchedLanguage = 'param_switched_language',
-  AddedTokenAddress = 'param_token_added',
-  AddedTokenName = 'param_token_added_chain_id',
+  AddedTokenAddress = 'param_added_token_address',
+  AddedTokenName = 'param_added_token_name',
   Wallet = 'param_wallet',
 
   // Transaction:
