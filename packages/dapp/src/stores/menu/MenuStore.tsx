@@ -101,25 +101,14 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
 
     // Open Snackbar and set label
     onOpenSnackbar: (open, label, severity) => {
-      const currentSeverity = get().openSnackbar.severity;
-      const currentLabel = get().openSnackbar.label;
-      if (open && label) {
-        set({
-          openSnackbar: {
-            open: true,
-            label,
-            severity: severity || currentSeverity,
-          },
-        });
-      } else {
-        set({
-          openSnackbar: {
-            open: false,
-            label: currentLabel,
-            severity: currentSeverity,
-          },
-        });
-      }
+      set((state) => ({
+        ...state,
+        openSnackbar: {
+          open: open,
+          label: label || state.openSnackbar.label,
+          severity: severity || state.openSnackbar.severity,
+        },
+      }));
     },
 
     // Toggle support modal
