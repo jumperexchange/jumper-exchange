@@ -1,5 +1,5 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
-import { Avatar } from '@mui/material';
+import { Avatar, Theme, useMediaQuery } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
@@ -7,6 +7,10 @@ import { useMenuStore, useSettingsStore } from '../../stores';
 import { MenuListItem } from '../../types';
 
 export const useWalletSelectContent = () => {
+  const isDesktopView = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up('sm'),
+  );
+
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect, account } = useWallet();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
@@ -36,7 +40,13 @@ export const useWalletSelectContent = () => {
         !walletsInstalled[index] && wallet.name !== 'Default Wallet',
     );
 
-    setAvailableWallets([...installedWallets, ...notInstalledWallets]);
+    const allowedWallets = [...installedWallets];
+
+    if (isDesktopView) {
+      allowedWallets.push(...notInstalledWallets);
+    }
+
+    setAvailableWallets(allowedWallets);
 
     if (isMultisig) {
       setIsCurrentMultisigEnvironment(true);
@@ -45,10 +55,10 @@ export const useWalletSelectContent = () => {
     }
   };
 
-  const { onWalletConnect, onWelcomeScreenEntered } = useSettingsStore(
+  const { onWalletConnect, onWelcomeScreenClosed } = useSettingsStore(
     (state) => ({
       onWalletConnect: state.onWalletConnect,
-      onWelcomeScreenEntered: state.onWelcomeScreenEntered,
+      onWelcomeScreenClosed: state.onWelcomeScreenClosed,
     }),
   );
 
@@ -98,7 +108,7 @@ export const useWalletSelectContent = () => {
         onClick: () => {
           login(wallet);
           onCloseAllNavbarMenus();
-          onWelcomeScreenEntered(true);
+          onWelcomeScreenClosed(true);
         },
       };
     });
@@ -108,7 +118,7 @@ export const useWalletSelectContent = () => {
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
-    onWelcomeScreenEntered,
+    onWelcomeScreenClosed,
   ]);
 
   return walletMenuItems;
