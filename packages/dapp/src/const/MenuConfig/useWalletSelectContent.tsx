@@ -55,10 +55,10 @@ export const useWalletSelectContent = () => {
     }
   };
 
-  const { onWalletConnect, onWelcomeScreenEntered } = useSettingsStore(
+  const { onWalletConnect, onWelcomeScreenClosed } = useSettingsStore(
     (state) => ({
       onWalletConnect: state.onWalletConnect,
-      onWelcomeScreenEntered: state.onWelcomeScreenEntered,
+      onWelcomeScreenClosed: state.onWelcomeScreenClosed,
     }),
   );
 
@@ -108,7 +108,7 @@ export const useWalletSelectContent = () => {
         onClick: () => {
           login(wallet);
           onCloseAllNavbarMenus();
-          onWelcomeScreenEntered(true);
+          onWelcomeScreenClosed(true);
         },
       };
     });
@@ -118,7 +118,7 @@ export const useWalletSelectContent = () => {
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
-    onWelcomeScreenEntered,
+    onWelcomeScreenClosed,
   ]);
 
   return walletMenuItems;
