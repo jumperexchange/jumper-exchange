@@ -31,7 +31,7 @@ interface DefaultSettingsType {
   languageMode: LanguageKey;
   activeWalletName: string;
   disabledFeatureCards: string[];
-  welcomeScreenEntered: boolean;
+  welcomeScreenClosed: boolean;
 }
 
 export const defaultSettings: DefaultSettingsType = {
@@ -42,5 +42,5 @@ export const defaultSettings: DefaultSettingsType = {
   activeWalletName:
     (localStorage.getItem(localStorageKey.activeWalletName) as string) || '',
   disabledFeatureCards: [],
-  welcomeScreenEntered: false,
+  welcomeScreenClosed: false,
 };
