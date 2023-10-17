@@ -7,7 +7,7 @@
     "@arcxmoney/analytics": "^1.9.1",
     "@lifi/sdk": "^2.4.3",
     "@lifi/wallet-management": "^2.3.7",
-    "@lifi/widget": "^2.6.1",
+    "@lifi/widget": "^2.6.2",
     "@mui/icons-material": "^5.14.13",
     "@mui/material": "^5.14.13",
     "@safe-global/safe-apps-sdk": "^8.1.0",
