@@ -7,7 +7,7 @@
     "@arcxmoney/analytics": "^1.9.1",
     "@lifi/sdk": "^2.4.1",
     "@lifi/wallet-management": "^2.3.5",
-    "@lifi/widget": "^2.5.0",
+    "@lifi/widget": "^2.6.2",
     "@mui/icons-material": "^5.14.11",
     "@mui/material": "^5.14.11",
     "@safe-global/safe-apps-sdk": "^8.1.0",
@@ -77,5 +77,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "resolutions": {
+    "@lifi/widget": "portal:/Users/abhishekkumar/Desktop/work/widget/packages/widget"
   }
 }
