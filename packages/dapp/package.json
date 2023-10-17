@@ -77,8 +77,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "resolutions": {
-    "@lifi/widget": "portal:/Users/abhishekkumar/Desktop/work/widget/packages/widget"
   }
 }
