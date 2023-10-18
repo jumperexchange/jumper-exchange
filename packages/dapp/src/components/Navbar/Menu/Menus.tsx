@@ -28,8 +28,6 @@ export const Menus = () => {
     onOpenSnackbar(false);
   };
 
-  console.log(openSnackbar);
-
   return (
     <>
       <MainMenu handleClose={handleClose} />
