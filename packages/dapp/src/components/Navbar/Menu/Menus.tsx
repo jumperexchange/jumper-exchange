@@ -42,7 +42,6 @@ export const Menus = () => {
         autoHideDuration={2000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ top: '80px !important' }}
       >
         <MuiAlert
           elevation={6}
