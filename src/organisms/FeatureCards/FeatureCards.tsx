@@ -10,8 +10,8 @@ import { FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
   const [featureCards, setFeatureCards] = useState<FeatureCardType[]>([]);
-  const [disabledFeatureCards, welcomeScreenEntered] = useSettingsStore(
-    (state) => [state.disabledFeatureCards, state.welcomeScreenEntered],
+  const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
+    (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
 
@@ -40,7 +40,7 @@ export const FeatureCards = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (
     isDesktop &&
-    welcomeScreenEntered && (
+    welcomeScreenClosed && (
       <FeatureCardsContainer>
         {featureCards.map((cardData, index) => {
           return (

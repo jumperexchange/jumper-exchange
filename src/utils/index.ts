@@ -3,4 +3,5 @@ export * from './deepMerge';
 export * from './openInNewTab';
 export * from './removeHash';
 export * from './sortByName';
+export * from './structuredClone';
 export * from './walletDigest';

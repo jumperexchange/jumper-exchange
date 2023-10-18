@@ -2,7 +2,7 @@ import type { Wallet } from '@lifi/wallet-management';
 import { supportedWallets } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery } from '@mui/material';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMultisig } from 'src/hooks';
 import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
@@ -57,10 +57,10 @@ export const useWalletSelectContent = () => {
     }
   };
 
-  const { onWalletConnect, onWelcomeScreenEntered } = useSettingsStore(
+  const { onWalletConnect, onWelcomeScreenClosed } = useSettingsStore(
     (state) => ({
       onWalletConnect: state.onWalletConnect,
-      onWelcomeScreenEntered: state.onWelcomeScreenEntered,
+      onWelcomeScreenClosed: state.onWelcomeScreenClosed,
     }),
   );
 
@@ -110,7 +110,7 @@ export const useWalletSelectContent = () => {
         onClick: () => {
           login(wallet);
           onCloseAllPopperMenus();
-          onWelcomeScreenEntered(true);
+          onWelcomeScreenClosed(true);
         },
       };
     });
@@ -120,7 +120,7 @@ export const useWalletSelectContent = () => {
     isCurrentMultisigEnvironment,
     login,
     onCloseAllPopperMenus,
-    onWelcomeScreenEntered,
+    onWelcomeScreenClosed,
   ]);
 
   return walletMenuItems;

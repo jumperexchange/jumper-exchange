@@ -7,12 +7,12 @@ import { HeaderContainer as Container, HeaderLogoLink } from '.';
 export const Header = () => {
   const theme = useTheme();
   const { account } = useWallet();
-  const [onWelcomeScreenEntered] = useSettingsStore((state) => [
-    state.onWelcomeScreenEntered,
+  const [onWelcomeScreenClosed] = useSettingsStore((state) => [
+    state.onWelcomeScreenClosed,
   ]);
 
   const handleClick = () => {
-    onWelcomeScreenEntered(false);
+    onWelcomeScreenClosed(false);
   };
 
   return (

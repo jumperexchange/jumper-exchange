@@ -1,6 +1,9 @@
+// import '@transferto/shared/src/fonts/gt-america.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initSentry } from 'src/config';
+import 'src/fonts/inter.css';
+import 'src/utils/structuredClone';
 import { App } from './App';
 import './fonts/inter.css';
 import { reportWebVitals } from './reportWebVitals';
