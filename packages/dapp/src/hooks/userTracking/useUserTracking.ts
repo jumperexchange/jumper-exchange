@@ -89,6 +89,7 @@ export function useUserTracking() {
       action,
       category,
       label,
+      value,
       data,
       disableTrackingTool,
     }: TrackEventProps) => {
@@ -108,15 +109,13 @@ export function useUserTracking() {
           ...data,
         });
       }
-      if (
-        !disableTrackingTool?.includes(EventTrackingTool.Cookie3) &&
+      if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
         cookie3?.trackEvent({
           category,
           action,
           name: label,
-          //value: todo add to trackingEventProps
-        })
-      ) {
+          value: value ?? undefined,
+        });
       }
     },
     [arcx, cookie3],
@@ -172,6 +171,7 @@ export function useUserTracking() {
       action,
       category,
       chain,
+      value,
       data,
       disableTrackingTool,
       txhash,
@@ -181,7 +181,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         window.gtag('event', action, {
-          category: category,
+          category,
           ...data,
         });
       }
@@ -192,8 +192,16 @@ export function useUserTracking() {
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });
       }
+      if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
+        cookie3?.trackEvent({
+          category,
+          action,
+          name: 'transaction',
+          value: value ?? undefined,
+        });
+      }
     },
-    [arcx],
+    [arcx, cookie3],
   );
 
   return {
