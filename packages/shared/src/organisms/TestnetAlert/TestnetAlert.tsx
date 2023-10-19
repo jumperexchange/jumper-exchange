@@ -3,14 +3,16 @@ import { Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { WarningMessageCard, WarningMessageCardTitle } from '..';
 import { ButtonTransparent } from '../../atoms';
-import { openInNewTab } from '../../utils';
-
-const PROD_URL =
-  'https://jumper.exchange?utm_source=b2c_jumper&utm_medium=testnet';
+import { appendUTMParametersToLink, openInNewTab } from '../../utils';
 
 export const TestnetAlert = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+
+  const PROD_URL = appendUTMParametersToLink('https://jumper.exchange/', {
+    utm_medium: 'testnet',
+    utm_campaign: 'testnet_to_jumper',
+  });
 
   const handleClick = () => {
     openInNewTab(PROD_URL);

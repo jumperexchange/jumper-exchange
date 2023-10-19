@@ -1,5 +1,6 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
+import { appendUTMParametersToLink } from '@transferto/shared/src/utils';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import {
@@ -25,8 +26,18 @@ export const WelcomeWrapper: React.FC<
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
-  const LIFI_URL =
-    'https://li.fi/?utm_source=b2c_jumper&utm_medium=landing_page&utm_campaign=welcome_screen';
+
+  const utmWelcomePage = {
+    utm_medium: 'landing_page',
+  };
+  const auditsWelcomeUrl = appendUTMParametersToLink(
+    'https://docs.li.fi/smart-contracts/audits',
+    { ...utmWelcomePage, utm_campaign: 'jumper_to_docs' },
+  );
+  const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
+    ...utmWelcomePage,
+    utm_campaign: 'jumper_to_lifi',
+  });
 
   useEffect(() => {
     if (showWelcome) {
@@ -50,7 +61,7 @@ export const WelcomeWrapper: React.FC<
     trackPageload({
       source: 'welcome-screen',
       destination: 'docs-sc-audits',
-      url: 'https://docs.li.fi/smart-contracts/audits',
+      url: auditsWelcomeUrl,
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
@@ -67,7 +78,7 @@ export const WelcomeWrapper: React.FC<
     trackPageload({
       source: 'welcome-screen',
       destination: 'lifi-website',
-      url: LIFI_URL,
+      url: lifiWelcomeUrl,
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
     });
@@ -115,7 +126,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href="https://docs.li.fi/smart-contracts/audits"
+                    href={auditsWelcomeUrl}
                     target={'_blank'}
                     rel="noreferrer"
                     onClick={handleAuditClick}
@@ -123,7 +134,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href={LIFI_URL}
+                    href={lifiWelcomeUrl}
                     onClick={handleLIFIClick}
                     target={'_blank'}
                     rel="noreferrer"

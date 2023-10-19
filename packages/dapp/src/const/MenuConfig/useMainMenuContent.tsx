@@ -7,7 +7,10 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
-import { openInNewTab } from '@transferto/shared/src/utils/';
+import {
+  appendUTMParametersToLink,
+  openInNewTab,
+} from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import {
   MenuKeys,
@@ -27,6 +30,20 @@ export const useMainMenuContent = () => {
   const isDarkMode = useDetectDarkModePreference();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
+
+  const utmMinMenuJson = {
+    utm_medium: 'menu',
+  };
+
+  const explorerUrl = appendUTMParametersToLink('https://explorer.li.fi/', {
+    ...utmMinMenuJson,
+    utm_campaign: 'jumper_to_explorer',
+  });
+
+  const lifiUrl = appendUTMParametersToLink('https://li.fi/', {
+    ...utmMinMenuJson,
+    utm_campaign: 'jumper_to_lifi',
+  });
 
   return [
     {
@@ -132,8 +149,6 @@ export const useMainMenuContent = () => {
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
       onClick: () => {
-        const explorerUrl =
-          'https://explorer.li.fi?utm_source=b2c_jumper&utm_medium=menu';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'open-lifi-explorer',
@@ -171,7 +186,6 @@ export const useMainMenuContent = () => {
       ),
       showMoreIcon: false,
       onClick: () => {
-        const lifiUrl = 'https://li.fi?utm_source=b2c_jumper&utm_medium=menu';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'click-lifi-link',
