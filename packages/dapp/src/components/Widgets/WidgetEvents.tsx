@@ -130,6 +130,7 @@ export function WidgetEvents() {
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
           label: 'execution_success',
+          value: parseFloat(route.fromAmountUSD),
           data: {
             [TrackingEventParameter.RouteId]: route.id,
             [TrackingEventParameter.FromChainId]: route.fromChainId,
