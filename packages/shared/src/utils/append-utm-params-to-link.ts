@@ -1,11 +1,5 @@
 import { UTM_SOURCE } from '@transferto/dapp/src/const';
-
-interface UtmProps {
-  utm_medium?: string;
-  utm_campaign?: string;
-  utm_term?: string;
-  utm_content?: string;
-}
+import type { UtmProps } from '@transferto/dapp/src/types';
 
 export function appendUTMParametersToLink(link: string, utm: UtmProps) {
   // Check if the link already has a query string

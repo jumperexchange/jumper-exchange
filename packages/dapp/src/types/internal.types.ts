@@ -9,7 +9,6 @@ declare module 'react-i18next' {
     allowObjectInHTMLChildren: true;
   }
 }
-
 interface RaleonProps {
   addPopup: (n: string, e: string) => void;
   enableMessages: (e: boolean) => void;
@@ -77,3 +76,10 @@ export type MultisigWidgetConfig = Pick<
   WidgetConfig,
   'fromChain' | 'requiredUI'
 >;
+
+export interface UtmProps {
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_term?: string;
+  utm_content?: string;
+}
