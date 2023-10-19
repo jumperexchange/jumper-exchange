@@ -1,7 +1,7 @@
 import { UTM_SOURCE } from '@transferto/dapp/src/const';
-import type { UtmProps } from '@transferto/dapp/src/types';
+import type { UtmParams } from '@transferto/dapp/src/types';
 
-export function appendUTMParametersToLink(link: string, utm: UtmProps) {
+export function appendUTMParametersToLink(link: string, utm: UtmParams) {
   // Check if the link already has a query string
   const hasQueryString = link.includes('?');
   const source = { utm_source: UTM_SOURCE };

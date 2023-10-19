@@ -77,7 +77,7 @@ export type MultisigWidgetConfig = Pick<
   'fromChain' | 'requiredUI'
 >;
 
-export interface UtmProps {
+export interface UtmParams {
   utm_medium?: string;
   utm_campaign?: string;
   utm_term?: string;
