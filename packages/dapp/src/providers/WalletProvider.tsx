@@ -148,6 +148,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
+            EventTrackingTool.Hotjar,
           ],
         });
         handleWalletUpdate(currentWallet);
