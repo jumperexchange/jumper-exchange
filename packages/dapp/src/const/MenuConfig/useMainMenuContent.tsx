@@ -73,14 +73,20 @@ export const useMainMenuContent = () => {
           label: 'click-lifi-link',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_twitter' },
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         trackPageload({
           source: TrackingCategory.MainMenu,
           destination: 'twitter-JumperExchange',
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         openInNewTab('https://twitter.com/JumperExchange');
       },
@@ -103,14 +109,20 @@ export const useMainMenuContent = () => {
           label: 'click-discord-link',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'discord-lifi',
           url: 'https://discord.gg/lifi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         openInNewTab('https://discord.gg/lifi');
       },
@@ -126,14 +138,20 @@ export const useMainMenuContent = () => {
           label: 'open-lifi-explorer',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         trackPageload({
           source: 'menu',
           destination: 'lifi-explorer',
           url: explorerUrl,
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         openInNewTab(explorerUrl);
       },
@@ -157,14 +175,20 @@ export const useMainMenuContent = () => {
           label: 'click-lifi-link',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'lifi_website' },
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'lifi-website',
           url: 'https://li.fi',
           pageload: true,
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         openInNewTab('https://li.fi');
       },
@@ -178,7 +202,10 @@ export const useMainMenuContent = () => {
           label: 'open-support-modal',
           action: TrackingAction.OpenMenu,
           data: { [TrackingEventParameter.Menu]: 'support_modal' },
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         onOpenSupportModal(true);
       },

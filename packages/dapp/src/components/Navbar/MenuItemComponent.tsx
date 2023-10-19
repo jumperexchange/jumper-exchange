@@ -50,7 +50,10 @@ const MenuItemComponent = ({
         action: TrackingAction.OpenMenu,
         label: `open_submenu_${triggerSubMenu.toLowerCase()}`,
         data: { [TrackingEventParameter.Menu]: triggerSubMenu },
-        disableTrackingTool: [EventTrackingTool.ARCx],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
       });
     !!onClick && onClick();
   };

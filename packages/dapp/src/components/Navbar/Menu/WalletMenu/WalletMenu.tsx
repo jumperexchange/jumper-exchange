@@ -88,7 +88,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.OpenBlockchainExplorer,
       label: 'open-blockchain-explorer-wallet',
-      disableTrackingTool: [EventTrackingTool.ARCx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     if (blockchainExplorerURL) {
       trackPageload({
@@ -96,7 +96,10 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         destination: 'blokchain-explorer',
         url: blockchainExplorerURL || '',
         pageload: true,
-        disableTrackingTool: [EventTrackingTool.ARCx],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
       });
       openInNewTab(blockchainExplorerURL);
     }
@@ -109,7 +112,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.CopyAddressToClipboard,
       label: 'copy_addr_to_clipboard',
-      disableTrackingTool: [EventTrackingTool.ARCx],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     onCloseAllNavbarMenus();
   };

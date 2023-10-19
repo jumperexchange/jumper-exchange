@@ -110,7 +110,11 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
         data: {
           [TrackingEventParameter.Wallet]: wallet.name,
         },
-        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Hotjar],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+          EventTrackingTool.Hotjar,
+        ],
       });
       wallet.on('walletAccountChanged', handleWalletUpdate);
       handleWalletUpdate(wallet);
@@ -141,7 +145,10 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
           data: {
             [TrackingEventParameter.SwitchedChain]: chainId,
           },
-          disableTrackingTool: [EventTrackingTool.ARCx],
+          disableTrackingTool: [
+            EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
+          ],
         });
         handleWalletUpdate(currentWallet);
         return true;
