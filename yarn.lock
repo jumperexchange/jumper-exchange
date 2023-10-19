@@ -2838,7 +2838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.6.1":
+"@lifi/widget@npm:^2.6.2":
   version: 2.6.2
   resolution: "@lifi/widget@npm:2.6.2"
   dependencies:
@@ -4480,7 +4480,7 @@ __metadata:
     "@lifi/sdk": ^2.4.3
     "@lifi/types": ^9.1.0
     "@lifi/wallet-management": ^2.3.7
-    "@lifi/widget": ^2.6.1
+    "@lifi/widget": ^2.6.2
     "@mui/icons-material": ^5.14.13
     "@mui/material": ^5.14.13
     "@safe-global/safe-apps-sdk": ^8.1.0
