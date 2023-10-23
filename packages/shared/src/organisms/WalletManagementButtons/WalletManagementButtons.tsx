@@ -57,7 +57,6 @@ export const WalletManagementButtons: React.FC<
           if (value.name === localStorage.activeWalletName) {
             return value.icon;
           }
-          //do something with value;
         }
       }
     }
@@ -103,7 +102,7 @@ export const WalletManagementButtons: React.FC<
       sx={(theme) => ({
         display: 'none',
         [theme.breakpoints.up('sm' as Breakpoint)]: {
-          width: '169px',
+          width: '115px',
           display: 'inline-flex !important',
         },
       })}
