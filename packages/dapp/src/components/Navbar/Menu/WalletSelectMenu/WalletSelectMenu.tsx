@@ -14,11 +14,12 @@ interface NavbarMenuProps {
 
 export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const { t } = useTranslation();
+  const numberOfWalletsDisplayed = 8;
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
   const subMenuWalletSelectMore = useWalletSelectContent();
   const filteredWalletSelectMenuItems = walletSelectMenuItems.filter(
-    (element, index) => index < 8,
+    (element, index) => index < numberOfWalletsDisplayed,
   );
   const [
     openNavbarWalletSelectMenu,
@@ -88,22 +89,23 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                   open={open || openNavbarWalletSelectMenu}
                 />
               ))}
-            {openNavbarSubMenu === MenuKeys.None && (
-              <MenuItemComponent
-                key={`select-more-wallets`}
-                triggerSubMenu={MenuKeys.WalletSelectMore}
-                showButton={false}
-                cardsLayout={true}
-                showMoreIcon={false}
-                open={true}
-                prefixIcon={
-                  <Typography variant={'lifiBodyLarge'}>
-                    +{walletSelectMenuItems.length - 8}
-                  </Typography>
-                }
-                onClick={handleClickSelectMore}
-              />
-            )}
+            {walletSelectMenuItems.length - numberOfWalletsDisplayed > 0 &&
+              openNavbarSubMenu === MenuKeys.None && (
+                <MenuItemComponent
+                  key={`select-more-wallets`}
+                  triggerSubMenu={MenuKeys.WalletSelectMore}
+                  showButton={false}
+                  cardsLayout={true}
+                  showMoreIcon={false}
+                  open={true}
+                  prefixIcon={
+                    <Typography variant={'lifiBodyLarge'}>
+                      +{walletSelectMenuItems.length - numberOfWalletsDisplayed}
+                    </Typography>
+                  }
+                  onClick={handleClickSelectMore}
+                />
+              )}
           </>
         }
         <SubMenuComponent
