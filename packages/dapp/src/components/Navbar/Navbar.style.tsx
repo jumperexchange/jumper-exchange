@@ -146,7 +146,8 @@ export const NavbarMenuList = styled(MenuList, {
   marginTop: 0,
   display: cardsLayout ? 'flex' : 'block',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
-  padding: cardsLayout ? '0 12px' : 0,
+  padding: cardsLayout ? '0 24px' : 0,
+  gap: cardsLayout ? '12px' : 'inherit',
   '& > :first-of-type': {
     marginTop:
       isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
@@ -281,12 +282,13 @@ export const MenuItem = styled(MUIMenuItem, {
   flexDirection: cardsLayout ? 'column' : 'row',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
   padding: showButton ? theme.spacing(0, 1.5, 1.5) : theme.spacing(0, 1.5),
-  backgroundColor: 'inherit',
+  backgroundColor: cardsLayout ? theme.palette.white.main : 'inherit',
   justifyContent: 'space-between',
   margin: cardsLayout ? 0 : theme.spacing(0, 1.5),
+  height: showButton ? 'auto' : cardsLayout ? '72px' : '48px',
   marginTop: showButton ? theme.spacing(1) : 0,
   borderRadius: '12px',
-  width: cardsLayout ? '33.3%' : 'auto',
+  width: cardsLayout ? '72px' : 'auto',
   placeContent: cardsLayout ? 'center' : 'space-between',
 
   '&:hover': {
@@ -401,8 +403,8 @@ export const MenuHeaderAppWrapper = styled(ListItem)<MenuHeaderAppWrapperProps>(
     backdropFilter: 'blur(12px)',
     zIndex: 1400,
     overflow: 'hidden',
-    // margin: theme.spacing(0),
     margin: theme.spacing(0),
+    marginBottom: cardsLayout ? '-12px' : 'inherit',
     marginTop: '0px',
     height: MenuLabelHeight,
     padding: '0px',
