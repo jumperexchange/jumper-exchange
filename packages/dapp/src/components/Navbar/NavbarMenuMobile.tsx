@@ -17,6 +17,7 @@ interface NavbarMenuProps {
   isOpenSubMenu: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
+  cardsLayout?: boolean;
   label?: string;
   open: boolean;
   children: any;
@@ -26,6 +27,7 @@ const NavbarMenuMobile = ({
   handleClose,
   open,
   setOpen,
+  cardsLayout,
   label,
   isOpenSubMenu,
   children,
@@ -63,7 +65,7 @@ const NavbarMenuMobile = ({
             transition
             disablePortal
           >
-            <NavbarPaper isDarkMode={isDarkMode}>
+            <NavbarPaper isDarkMode={isDarkMode} cardsLayout={cardsLayout}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
@@ -76,6 +78,7 @@ const NavbarMenuMobile = ({
                   aria-labelledby="composition-button"
                   isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                   onKeyDown={handleListKeyDown}
+                  cardsLayout={cardsLayout}
                   autoFocus={open}
                   hasLabel={!!label}
                   component={
@@ -85,7 +88,7 @@ const NavbarMenuMobile = ({
                   }
                 >
                   {!!label ? (
-                    <MenuHeaderAppWrapper>
+                    <MenuHeaderAppWrapper cardsLayout={cardsLayout}>
                       <MenuHeaderAppBar component="div" elevation={0}>
                         <Typography
                           variant={'lifiBodyMediumStrong'}

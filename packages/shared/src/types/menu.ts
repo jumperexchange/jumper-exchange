@@ -12,16 +12,6 @@ export type MenuProps = {
   openSupportModal: boolean;
 };
 
-export type MenuContextProps = {
-  anchorRef?: any;
-  openMainNavbarMenu?: boolean;
-  openNavbarChainsMenu?: boolean;
-  openNavbarWalletSelectMenu?: boolean;
-  openNavbarWalletMenu?: boolean;
-  openNavbarSubMenu?: keyof typeof MenuKeys;
-  openSupportModal?: boolean;
-};
-
 export interface MenuState extends MenuProps {
   // Close ALL Navbar Menus
   onCloseAllNavbarMenus: () => void;

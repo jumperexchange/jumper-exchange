@@ -99,9 +99,10 @@ export const useWalletSelectContent = () => {
         label: wallet.name,
         prefixIcon: (
           <Avatar
+            className="wallet-select-avatar"
             src={wallet.icon}
             alt={`${wallet.name}-wallet-logo`}
-            sx={{ height: '32px', width: '32px' }}
+            sx={{ height: '48px', width: '48px', objectFit: 'contain' }}
           />
         ),
         showMoreIcon: false,

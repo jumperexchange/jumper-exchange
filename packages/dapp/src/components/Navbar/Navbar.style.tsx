@@ -5,7 +5,7 @@ import {
   Link,
   LinkProps,
   ListItem,
-  ListItemProps,
+  ListItemProps as MUIListItemProps,
   MenuItem as MUIMenuItem,
   MenuItemProps as MUIMenuItemProps,
   MenuList,
@@ -135,16 +135,21 @@ export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
 export interface NavbarMenuListProps extends Omit<MenuListProps, 'component'> {
   component?: string;
   isOpenSubMenu?: boolean;
+  cardsLayout?: boolean;
   hasLabel?: boolean;
 }
 
 export const NavbarMenuList = styled(MenuList, {
-  shouldForwardProp: (prop) => prop !== 'isOpenSubMenu' && prop !== 'hasLabel',
-})<NavbarMenuListProps>(({ theme, isOpenSubMenu, hasLabel }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
+})<NavbarMenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
   marginTop: 0,
-  padding: 0,
+  display: cardsLayout ? 'flex' : 'block',
+  flexWrap: cardsLayout ? 'wrap' : 'inherit',
+  padding: cardsLayout ? '0 12px' : 0,
   '& > :first-of-type': {
-    marginTop: isOpenSubMenu || hasLabel ? 'inherit' : theme.spacing(1.5),
+    marginTop:
+      isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
     paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
   },
   '& > :last-child': {
@@ -264,19 +269,25 @@ export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
 export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;
+  cardsLayout?: boolean;
   component?: ElementType<any>;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
-})<MenuItemProps>(({ theme, showButton }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== 'showButton' && prop !== 'component' && prop !== 'cardsLayout',
+})<MenuItemProps>(({ theme, showButton, cardsLayout }) => ({
   display: 'flex',
+  flexDirection: cardsLayout ? 'column' : 'row',
+  flexWrap: cardsLayout ? 'wrap' : 'inherit',
   padding: showButton ? theme.spacing(0, 1.5, 1.5) : theme.spacing(0, 1.5),
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
-  margin: theme.spacing(0, 1.5),
+  margin: cardsLayout ? 0 : theme.spacing(0, 1.5),
   marginTop: showButton ? theme.spacing(1) : 0,
   borderRadius: '12px',
+  width: cardsLayout ? '33.3%' : 'auto',
+  placeContent: cardsLayout ? 'center' : 'space-between',
 
   '&:hover': {
     backgroundColor: showButton
@@ -285,7 +296,7 @@ export const MenuItem = styled(MUIMenuItem, {
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: showButton ? 'auto' : '48px',
+    height: showButton ? 'auto' : cardsLayout ? '72px' : '48px',
   },
 }));
 
@@ -293,14 +304,20 @@ export interface NavbarPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isDarkMode?: boolean;
   isWide?: boolean;
+  cardsLayout?: boolean;
   component?: ElementType<any>;
 }
 
 export const NavbarPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'isDarkMode' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<NavbarPaperProps>(({ theme, isDarkMode, isWide }) => ({
-  background: theme.palette.surface1.main,
+    prop !== 'isDarkMode' &&
+    prop !== 'isWide' &&
+    prop !== 'isSubMenu' &&
+    prop !== 'cardsLayout',
+})<NavbarPaperProps>(({ theme, isDarkMode, isWide, cardsLayout }) => ({
+  background: cardsLayout
+    ? theme.palette.colorSurface2.main
+    : theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
   boxShadow: !isDarkMode
@@ -315,6 +332,11 @@ export const NavbarPaper = styled(Paper, {
   transformOrigin: 'bottom',
   transition:
     'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+
+  '.submenu .wallet-select-avatar': {
+    width: '32px ',
+    height: '32px',
+  },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     transformOrigin: 'inherit',
@@ -344,14 +366,16 @@ export const MenuLinkItem = styled(Link, {
   color: 'inherit',
 }));
 
-export interface MenuItemLabelProps extends Omit<ListItemProps, 'variant'> {
+export interface MenuItemLabelProps extends Omit<MUIListItemProps, 'variant'> {
   variant?: 'xs' | 'md' | 'lg';
+  cardsLayout?: boolean;
 }
 
 export const MenuItemLabel = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'variant',
-})<MenuItemLabelProps>(({ variant, theme }) => ({
+  shouldForwardProp: (prop) => prop !== 'variant' && prop !== 'cardsLayout',
+})<MenuItemLabelProps>(({ variant, theme, cardsLayout }) => ({
   display: 'flex',
+  // flexDirection: cardsLayout ? 'row' : 'column',
   alignItems: 'center',
   maxWidth: variant === 'xs' ? '198px' : variant === 'md' ? '232px' : '260px',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -361,12 +385,19 @@ export const MenuItemLabel = styled('div', {
 
 export const MenuItemText = styled('span')({});
 
-export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
-  ({ theme }) => ({
+export interface MenuHeaderAppWrapperProps
+  extends Omit<MUIListItemProps, 'component'> {
+  cardsLayout?: boolean;
+}
+
+export const MenuHeaderAppWrapper = styled(ListItem)<MenuHeaderAppWrapperProps>(
+  ({ theme, cardsLayout }) => ({
     position: 'sticky',
     top: 0,
     alignItems: 'center',
-    backgroundColor: alpha(theme.palette.surface1.main, 0.84),
+    backgroundColor: cardsLayout
+      ? alpha(theme.palette.colorSurface2.main, 0.84)
+      : alpha(theme.palette.surface1.main, 0.84),
     backdropFilter: 'blur(12px)',
     zIndex: 1400,
     overflow: 'hidden',
@@ -375,8 +406,8 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     marginTop: '0px',
     height: MenuLabelHeight,
     padding: '0px',
-    borderTopLeftRadius: '24px',
-    borderTopRightRadius: '24px',
+    borderTopLeftRadius: '12px',
+    borderTopRightRadius: '12px',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       paddingLeft: '0px',
     },

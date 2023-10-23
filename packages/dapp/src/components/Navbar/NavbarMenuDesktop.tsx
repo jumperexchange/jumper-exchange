@@ -18,6 +18,7 @@ interface NavbarMenuProps {
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   transformOrigin?: string;
+  cardsLayout?: boolean;
   setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
   children: any;
@@ -28,6 +29,7 @@ const NavbarMenuDesktop = ({
   setOpen,
   handleClose,
   transformOrigin,
+  cardsLayout,
   label,
   open,
   children,
@@ -76,6 +78,7 @@ const NavbarMenuDesktop = ({
               }}
             >
               <NavbarPaper
+                cardsLayout={cardsLayout}
                 isDarkMode={isDarkMode}
                 isWide={openNavbarWalletMenu}
               >
@@ -92,6 +95,7 @@ const NavbarMenuDesktop = ({
                     isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
+                    cardsLayout={cardsLayout}
                     hasLabel={!!label}
                     component={
                       isOpenSubMenu &&
@@ -101,7 +105,7 @@ const NavbarMenuDesktop = ({
                     }
                   >
                     {!!label ? (
-                      <MenuHeaderAppWrapper>
+                      <MenuHeaderAppWrapper cardsLayout={cardsLayout}>
                         <MenuHeaderAppBar component="div" elevation={0}>
                           <Typography
                             variant={'lifiBodyMediumStrong'}

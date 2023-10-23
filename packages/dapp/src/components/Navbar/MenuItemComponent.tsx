@@ -17,7 +17,8 @@ interface MenuItemProps {
   showButton: boolean;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
-  label: string;
+  cardsLayout?: boolean;
+  label?: string;
   onClick: any;
   triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
@@ -30,6 +31,7 @@ const MenuItemComponent = ({
   showButton,
   autoFocus,
   showMoreIcon = true,
+  cardsLayout,
   onClick,
   label,
   triggerSubMenu,
@@ -59,11 +61,12 @@ const MenuItemComponent = ({
     <MenuItem
       disableRipple={showButton}
       showButton={showButton || false}
+      cardsLayout={cardsLayout || false}
       autoFocus={autoFocus}
       onClick={handleClick}
     >
       <>
-        {showButton ? (
+        {showButton && label ? (
           <ButtonPrimary fullWidth>
             {prefixIcon}
             <Typography
@@ -87,6 +90,7 @@ const MenuItemComponent = ({
         ) : (
           <>
             <MenuItemLabel
+              cardsLayout={cardsLayout}
               variant={
                 suffixIcon && showMoreIcon
                   ? 'xs'
@@ -96,19 +100,21 @@ const MenuItemComponent = ({
               }
             >
               {prefixIcon}
-              <Typography
-                variant={'lifiBodyMedium'}
-                ml={'12px'}
-                sx={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    maxWidth: prefixIcon ? '188px' : 'inherit',
-                  },
-                }}
-              >
-                {label}
-              </Typography>
+              {label && (
+                <Typography
+                  variant={'lifiBodyMedium'}
+                  ml={'12px'}
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      maxWidth: prefixIcon ? '188px' : 'inherit',
+                    },
+                  }}
+                >
+                  {label}
+                </Typography>
+              )}
             </MenuItemLabel>
             <div
               style={{

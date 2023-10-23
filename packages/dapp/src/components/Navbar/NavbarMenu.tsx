@@ -7,6 +7,7 @@ interface NavbarMenuProps {
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
+  cardsLayout?: boolean;
   open: boolean;
   transformOrigin?: string;
   children: any;
@@ -17,6 +18,7 @@ const NavbarMenu = ({
   open,
   setOpen,
   transformOrigin,
+  cardsLayout,
   label,
   isOpenSubMenu,
   children,
@@ -33,6 +35,7 @@ const NavbarMenu = ({
         label={label}
         transformOrigin={transformOrigin}
         open={open}
+        cardsLayout={cardsLayout}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu || false}
       >
@@ -43,6 +46,7 @@ const NavbarMenu = ({
         handleClose={handleClose}
         label={label}
         open={open}
+        cardsLayout={cardsLayout}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu || false}
       >

@@ -82,6 +82,7 @@ const SubMenuComponent = ({
 
   return open && openNavbarSubMenu === triggerSubMenu ? (
     <NavbarPaper
+      className="submenu"
       onKeyDown={handleBackSpace}
       autoFocus={open}
       component={'ul'}

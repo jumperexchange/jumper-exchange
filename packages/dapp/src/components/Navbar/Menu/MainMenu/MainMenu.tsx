@@ -15,9 +15,9 @@ interface MainMenuProps {
 export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const { t } = useTranslation();
   const mainMenuItems = useMainMenuContent();
-  const mainSubMenuTheme = useThemeContent();
-  const mainSubMenuDevelopers = useDevelopersContent();
-  const mainSubMenuLanguage = useLanguagesContent();
+  const subMenuTheme = useThemeContent();
+  const subMenuDevelopers = useDevelopersContent();
+  const subMenuLanguage = useLanguagesContent();
   const [openMainNavbarMenu, onOpenNavbarMainMenu, openNavbarSubMenu] =
     useMenuStore((state) => [
       state.openMainNavbarMenu,
@@ -53,7 +53,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
         triggerSubMenu={MenuKeys.Themes}
         open={openNavbarSubMenu === MenuKeys.Themes}
         prevMenu={MenuKeys.None}
-        subMenuList={mainSubMenuTheme}
+        subMenuList={subMenuTheme}
       />
 
       <SubMenuComponent
@@ -61,7 +61,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
         triggerSubMenu={MenuKeys.Language}
         open={openNavbarSubMenu === MenuKeys.Language}
         prevMenu={MenuKeys.None}
-        subMenuList={mainSubMenuLanguage}
+        subMenuList={subMenuLanguage}
       />
 
       <SubMenuComponent
@@ -69,7 +69,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
         triggerSubMenu={MenuKeys.Devs}
         open={openNavbarSubMenu === MenuKeys.Devs}
         prevMenu={MenuKeys.None}
-        subMenuList={mainSubMenuDevelopers}
+        subMenuList={subMenuDevelopers}
       />
     </NavbarMenu>
   ) : null;
