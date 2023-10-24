@@ -18,7 +18,7 @@ import { EventTrackingTool } from '../../types';
 import {
   FeatureCardAsset,
   FeatureCardType,
-} from '../../types/featureCardsRequest';
+} from '../../types/featureCardsRequest.types';
 import { Card, CardImage } from './FeatureCard.style';
 
 interface FeatureCardProps {

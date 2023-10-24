@@ -2,7 +2,7 @@ import { ChainId } from '@lifi/types';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import 'react-i18next';
 import { MenuKeys } from '../const';
-import { Gtag } from './gtag';
+import { Gtag } from './gtag.types';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
@@ -76,10 +76,3 @@ export type MultisigWidgetConfig = Pick<
   WidgetConfig,
   'fromChain' | 'requiredUI'
 >;
-
-export interface UtmParams {
-  utm_medium?: string;
-  utm_campaign?: string;
-  utm_term?: string;
-  utm_content?: string;
-}
