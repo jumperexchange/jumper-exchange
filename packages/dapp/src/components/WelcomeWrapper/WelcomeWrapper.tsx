@@ -27,16 +27,16 @@ export const WelcomeWrapper: React.FC<
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
 
-  const utmWelcomePage = {
-    utm_medium: 'landing_page',
-  };
   const auditsWelcomeUrl = appendUTMParametersToLink(
     'https://docs.li.fi/smart-contracts/audits',
-    { ...utmWelcomePage, utm_campaign: 'jumper_to_docs' },
+    {
+      utm_campaign: 'jumper_to_docs',
+      utm_medium: 'landing_page',
+    },
   );
   const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
-    ...utmWelcomePage,
     utm_campaign: 'jumper_to_lifi',
+    utm_medium: 'landing_page',
   });
 
   useEffect(() => {

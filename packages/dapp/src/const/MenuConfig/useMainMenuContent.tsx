@@ -31,18 +31,14 @@ export const useMainMenuContent = () => {
   const themeMode = useSettingsStore((state) => state.themeMode);
   const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
 
-  const utmMinMenuJson = {
-    utm_medium: 'menu',
-  };
-
   const explorerUrl = appendUTMParametersToLink('https://explorer.li.fi/', {
-    ...utmMinMenuJson,
     utm_campaign: 'jumper_to_explorer',
+    utm_medium: 'menu',
   });
 
   const lifiUrl = appendUTMParametersToLink('https://li.fi/', {
-    ...utmMinMenuJson,
     utm_campaign: 'jumper_to_lifi',
+    utm_medium: 'menu',
   });
 
   return [
