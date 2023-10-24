@@ -13,9 +13,10 @@ interface NavbarMenuProps {
   open?: boolean;
 }
 
+const numberOfWalletsDisplayed = 8;
+
 export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const { t } = useTranslation();
-  const numberOfWalletsDisplayed = 8;
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
   const subMenuWalletSelectMore = useWalletSelectContent();
