@@ -1,6 +1,6 @@
 import { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
-import { TestnetAlert } from '@transferto/shared/src';
+import { PoweredBy, TestnetAlert } from '@transferto/shared/src';
 import {
   MouseEventHandler,
   useCallback,
@@ -143,6 +143,7 @@ export function Widgets() {
         </WidgetContainer>
       ) : null}
       <WidgetEvents />
+      <PoweredBy />
     </WelcomeWrapper>
   );
 }
