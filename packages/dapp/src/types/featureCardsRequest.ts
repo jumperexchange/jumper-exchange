@@ -24,6 +24,7 @@ export type FeatureCardEntry = {
   subtitle: string;
   gradientColor?: string;
   title: string;
+  ctaCall?: string;
   url: string;
   imageDarkMode?: Image;
   imageLightMode?: Image;
