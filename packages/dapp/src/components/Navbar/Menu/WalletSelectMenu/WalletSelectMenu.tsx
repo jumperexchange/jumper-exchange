@@ -21,9 +21,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const walletSelectMenuItems = useWalletSelectContent();
   const subMenuWalletSelectMore = useWalletSelectContent();
   const isDarkMode = theme.palette.mode === 'dark';
-  const filteredWalletSelectMenuItems = walletSelectMenuItems.filter(
-    (element, index) => index < numberOfWalletsDisplayed,
-  );
+  const filteredWalletSelectMenuItems = walletSelectMenuItems.slice(0, 6);
   const [
     openNavbarWalletSelectMenu,
     onOpenNavbarWalletSelectMenu,
