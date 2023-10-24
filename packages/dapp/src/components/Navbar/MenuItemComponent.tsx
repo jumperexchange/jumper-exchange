@@ -1,5 +1,5 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Typography } from '@mui/material';
+import { CSSObject, Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 import {
@@ -16,6 +16,7 @@ interface MenuItemProps {
   open: boolean;
   showButton: boolean;
   autoFocus?: boolean;
+  customHoverStyles?: CSSObject;
   showMoreIcon?: boolean;
   cardsLayout?: boolean;
   label?: string;
@@ -31,6 +32,7 @@ const MenuItemComponent = ({
   showButton,
   autoFocus,
   showMoreIcon = true,
+  customHoverStyles,
   cardsLayout,
   onClick,
   label,
@@ -60,10 +62,11 @@ const MenuItemComponent = ({
   return open ? (
     <MenuItem
       disableRipple={showButton}
-      showButton={showButton || false}
-      cardsLayout={cardsLayout || false}
+      showButton={showButton}
+      cardsLayout={cardsLayout}
       autoFocus={autoFocus}
       onClick={handleClick}
+      customHoverStyles={customHoverStyles}
     >
       <>
         {showButton && label ? (

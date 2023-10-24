@@ -3,6 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { MenuKeys, useWalletSelectContent } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
+import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 import { useTranslation } from 'react-i18next';
 import { MenuHeaderAppBar, MenuHeaderAppWrapper } from '../../Navbar.style';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
@@ -18,6 +19,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
   const subMenuWalletSelectMore = useWalletSelectContent();
+  const isDarkMode = theme.palette.mode === 'dark';
   const filteredWalletSelectMenuItems = walletSelectMenuItems.filter(
     (element, index) => index < numberOfWalletsDisplayed,
   );
@@ -62,6 +64,11 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
           <MenuHeaderAppWrapper cardsLayout={true}>
             <MenuHeaderAppBar component="div" elevation={0}>
               <Typography
+                sx={{
+                  color: isDarkMode
+                    ? theme.palette.white.main
+                    : theme.palette.black.main,
+                }}
                 variant={'lifiBodyMediumStrong'}
                 width={'100%'}
                 align={'center'}
@@ -82,6 +89,9 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                   // label={`${el.label || ' '}`}
                   triggerSubMenu={MenuKeys.WalletSelect}
                   showButton={false}
+                  customHoverStyles={{
+                    backgroundColor: getContrastAlphaColor(theme, '4%'),
+                  }}
                   cardsLayout={true}
                   showMoreIcon={false}
                   prefixIcon={el.prefixIcon}
@@ -98,8 +108,27 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                   cardsLayout={true}
                   showMoreIcon={false}
                   open={true}
+                  customHoverStyles={{
+                    backgroundColor: getContrastAlphaColor(theme, '4%'),
+                    color: isDarkMode
+                      ? theme.palette.white.main
+                      : theme.palette.black.main,
+                  }}
                   prefixIcon={
-                    <Typography variant={'lifiBodyLarge'}>
+                    <Typography
+                      variant={'lifiBodyLarge'}
+                      sx={{
+                        color: isDarkMode
+                          ? theme.palette.white.main
+                          : theme.palette.black.main,
+                        '&:hover': {
+                          color:
+                            theme.palette.mode === 'dark'
+                              ? theme.palette.black.main
+                              : theme.palette.white.main,
+                        },
+                      }}
+                    >
                       +{walletSelectMenuItems.length - numberOfWalletsDisplayed}
                     </Typography>
                   }

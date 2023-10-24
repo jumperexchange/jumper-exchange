@@ -26,7 +26,6 @@ declare module '@mui/material/styles' {
     surface1: Palette['primary'];
     surface2: Palette['primary'];
     surface3: Palette['primary'];
-    colorSurface2: Palette['primary'];
     templateBg: Palette['primary'];
     templateOutline: Palette['primary'];
     dataBg: Palette['primary'];
@@ -59,7 +58,6 @@ declare module '@mui/material/styles' {
     surface1?: PaletteOptions['primary'];
     surface2?: PaletteOptions['primary'];
     surface3?: PaletteOptions['primary'];
-    colorSurface2?: PaletteOptions['primary'];
     templateBg?: Palette['primary'];
     templateOutline?: Palette['primary'];
     dataBg?: Palette['primary'];
@@ -156,7 +154,6 @@ declare module '@mui/material/Button' {
     surface1: true;
     surface2: true;
     surface3: true;
-    colorSurface2: true;
     templateBg: true;
     templateOutline: true;
     dataBg: true;
@@ -869,11 +866,6 @@ export const lightTheme: Theme = createTheme(
         main: '#E5E1EB',
         dark: '#E5E1EB',
       },
-      colorSurface2: {
-        light: '#F0F1FC',
-        main: '#F0F1FC',
-        dark: '#F0F1FC',
-      },
       templateBg: {
         light: '#FEF5FF',
         main: '#FEF5FF',
@@ -968,11 +960,6 @@ export const darkTheme: Theme = createTheme(
         light: '#302B52',
         main: '#302B52',
         dark: '#302B52',
-      },
-      colorSurface2: {
-        light: '#F0F1FC',
-        main: '#F0F1FC',
-        dark: '#F0F1FC',
       },
       templateBg: {
         light: '#401946',
