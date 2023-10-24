@@ -43,9 +43,9 @@ export interface CardImageProps extends Omit<CardMediaProps, 'component'> {
 export const CardImage = styled(CardMedia)<CardImageProps>(({ theme }) => ({
   width: '106px',
   height: 'auto',
-  maxHeight: '106px',
+  maxHeight: '88px',
   position: 'absolute',
   objectFit: 'contain',
   right: theme.spacing(3.75),
-  bottom: theme.spacing(3.5),
+  bottom: '22px',
 }));
