@@ -7,7 +7,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../../stores';
 
-import { appendUTMParametersToLink } from '@transferto/shared/src/utils';
 import {
   TrackingAction,
   TrackingCategory,
@@ -110,10 +109,6 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
     });
   };
 
-  const featureCardFallbackURL = appendUTMParametersToLink('https://li.fi/', {
-    utm_medium: 'feature_card',
-  });
-
   return (
     <Slide
       direction="up"
@@ -183,7 +178,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Link
               target="_blank"
               rel="noopener"
-              href={data?.fields?.url || featureCardFallbackURL}
+              href={data?.fields?.url}
               onClick={handleCTA}
               sx={{
                 textDecoration: 'none',
