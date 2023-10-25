@@ -1,6 +1,7 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
 import { Avatar, Theme, useMediaQuery } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
@@ -10,11 +11,17 @@ export const useWalletSelectContent = () => {
   const isDesktopView = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up('sm'),
   );
+  const { t } = useTranslation();
+  const [clientWallets, onClientWallets] = useSettingsStore((state) => [
+    state.clientWallets,
+    state.onClientWallets,
+  ]);
 
   const [, setShowWalletIdentityPopover] = useState<Wallet>();
   const { connect, account } = useWallet();
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
     useState(false);
+  const onOpenSnackbar = useMenuStore((state) => state.onOpenSnackbar);
 
   const [availableWallets, setAvailableWallets] = useState<Wallet[]>([]);
 
@@ -30,9 +37,10 @@ export const useWalletSelectContent = () => {
     const walletsInstalled = await Promise.all(walletsPromise);
 
     // separate into installed and not installed wallets
-    const installedWallets = supportedWallets.filter(
-      (_, index) => walletsInstalled[index],
-    );
+    const installedWallets = supportedWallets.filter((_, index) => {
+      walletsInstalled[index] && onClientWallets(_.name);
+      return walletsInstalled[index];
+    });
 
     // always remove Default Wallet from not installed Wallets
     const notInstalledWallets = supportedWallets.filter(
@@ -94,6 +102,23 @@ export const useWalletSelectContent = () => {
       return true;
     });
 
+    const handleClick = async (wallet: Wallet) => {
+      if (clientWallets.includes(wallet.name)) {
+        login(wallet);
+        onCloseAllNavbarMenus();
+        onWelcomeScreenClosed(true);
+      } else {
+        onCloseAllNavbarMenus();
+        onOpenSnackbar(
+          true,
+          t('navbar.walletMenu.walletNotInstalled', { wallet: wallet.name }),
+          'error',
+        );
+
+        console.error(`Wallet '${wallet.name}' is not installed`);
+      }
+    };
+
     const output = walletsOptions.map((wallet) => {
       return {
         label: wallet.name,
@@ -106,19 +131,20 @@ export const useWalletSelectContent = () => {
         ),
         showMoreIcon: false,
         onClick: () => {
-          login(wallet);
-          onCloseAllNavbarMenus();
-          onWelcomeScreenClosed(true);
+          handleClick(wallet);
         },
       };
     });
     return output;
   }, [
     availableWallets,
+    clientWallets,
     isCurrentMultisigEnvironment,
     login,
     onCloseAllNavbarMenus,
+    onOpenSnackbar,
     onWelcomeScreenClosed,
+    t,
   ]);
 
   return walletMenuItems;
