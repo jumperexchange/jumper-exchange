@@ -10,7 +10,7 @@ export const TestnetAlert = () => {
   const theme = useTheme();
 
   const PROD_URL = appendUTMParametersToLink('https://jumper.exchange/', {
-    utm_medium: 'testnet',
+    utm_medium: 'testnet_banner',
     utm_campaign: 'testnet_to_jumper',
   });
 
