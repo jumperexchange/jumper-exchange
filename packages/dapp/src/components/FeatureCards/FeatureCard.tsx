@@ -202,7 +202,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
                   textOverflow: 'ellipsis',
                 }}
               >
-                {t('featureCard.learnMore')}
+                {data.fields.ctaCall ?? t('featureCard.learnMore')}
               </Typography>
             </Link>
           </CardActions>
