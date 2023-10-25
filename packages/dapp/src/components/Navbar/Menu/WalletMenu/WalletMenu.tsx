@@ -3,9 +3,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
-import Snackbar from '@mui/material/Snackbar';
 import {
   MenuKeys,
   TrackingAction,
@@ -31,7 +29,6 @@ interface NavbarMenuProps {
 }
 export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { checkMultisigEnvironment } = useMultisig();
-  const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t } = useTranslation();
   const theme = useTheme();
   const blockchainExplorerURL = useBlockchainExplorerURL();
@@ -39,14 +36,17 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const walletSource = supportedWallets;
+
   const [
     openNavbarWalletMenu,
     onOpenNavbarWalletMenu,
+    onOpenSnackbar,
     openNavbarSubMenu,
     onCloseAllNavbarMenus,
   ] = useMenuStore((state) => [
     state.openNavbarWalletMenu,
     state.onOpenNavbarWalletMenu,
+    state.onOpenSnackbar,
     state.openNavbarSubMenu,
     state.onCloseAllNavbarMenus,
   ]);
@@ -70,16 +70,6 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
   }, [account]);
-
-  const handleCloseSnackbar = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string,
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setCopiedToClipboard(false);
-  };
 
   const handleExploreButton = () => {
     account.chainId && onCloseAllNavbarMenus();
@@ -107,7 +97,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
   const handleCopyButton = () => {
     account.address && navigator.clipboard.writeText(account.address);
-    setCopiedToClipboard(true);
+    onOpenSnackbar(true, t('navbar.walletMenu.copiedMsg'), 'success');
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.CopyAddressToClipboard,
@@ -132,8 +122,8 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   }, []);
 
   useEffect(() => {
-    openNavbarWalletMenu! && setCopiedToClipboard(false);
-  }, [openNavbarWalletMenu]);
+    openNavbarWalletMenu! && onOpenSnackbar(false);
+  }, [onOpenSnackbar, openNavbarWalletMenu]);
 
   useEffect(() => {
     handleMultisigEnvironmentCheck();
@@ -198,17 +188,5 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         </Grid>
       </Grid>
     </NavbarMenu>
-  ) : (
-    <Snackbar
-      open={copiedToClipboard}
-      autoHideDuration={2000}
-      onClose={handleCloseSnackbar}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      sx={{ top: '80px !important' }}
-    >
-      <MuiAlert elevation={6} variant="filled" severity="success">
-        {t('navbar.walletMenu.copiedMsg')}
-      </MuiAlert>
-    </Snackbar>
-  );
+  ) : null;
 };
