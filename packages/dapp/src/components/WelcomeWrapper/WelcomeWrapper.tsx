@@ -17,6 +17,18 @@ interface WelcomeWrapperProps {
   handleGetStarted: (event: any) => void;
 }
 
+const auditsWelcomeUrl = appendUTMParametersToLink(
+  'https://docs.li.fi/smart-contracts/audits',
+  {
+    utm_campaign: 'jumper_to_docs',
+    utm_medium: 'welcome_screen',
+  },
+);
+const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
+  utm_campaign: 'jumper_to_lifi',
+  utm_medium: 'welcome_screen',
+});
+
 export const WelcomeWrapper: React.FC<
   PropsWithChildren<WelcomeWrapperProps>
 > = ({ children, showWelcome, handleGetStarted }) => {
@@ -26,18 +38,6 @@ export const WelcomeWrapper: React.FC<
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
-
-  const auditsWelcomeUrl = appendUTMParametersToLink(
-    'https://docs.li.fi/smart-contracts/audits',
-    {
-      utm_campaign: 'jumper_to_docs',
-      utm_medium: 'welcome_screen',
-    },
-  );
-  const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
-    utm_campaign: 'jumper_to_lifi',
-    utm_medium: 'welcome_screen',
-  });
 
   useEffect(() => {
     if (showWelcome) {

@@ -5,14 +5,14 @@ import { WarningMessageCard, WarningMessageCardTitle } from '..';
 import { ButtonTransparent } from '../../atoms';
 import { appendUTMParametersToLink, openInNewTab } from '../../utils';
 
+const PROD_URL = appendUTMParametersToLink('https://jumper.exchange/', {
+  utm_medium: 'testnet_banner',
+  utm_campaign: 'testnet_to_jumper',
+});
+
 export const TestnetAlert = () => {
   const { t } = useTranslation();
   const theme = useTheme();
-
-  const PROD_URL = appendUTMParametersToLink('https://jumper.exchange/', {
-    utm_medium: 'testnet_banner',
-    utm_campaign: 'testnet_to_jumper',
-  });
 
   const handleClick = () => {
     openInNewTab(PROD_URL);
