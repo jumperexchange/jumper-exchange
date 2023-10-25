@@ -16,14 +16,15 @@ export function useUserTracking() {
   const arcx = useArcxAnalytics();
   const { account, usedWallet } = useWallet();
 
+
   /* 
   use useEffect depended on account to track wallet connects with account depended tracking software
   */
   useEffect(() => {
     if (account?.address && account?.chainId && usedWallet) {
-      arcx?.connectWallet({
+      arcx?.wallet({
         account: `${account.address}`,
-        chain: `${account.chainId}`,
+        chainId: `${account.chainId}`,
       });
       window.raleon.walletConnected(account.address);
       hotjar.identify(account.address, {
@@ -53,7 +54,7 @@ export function useUserTracking() {
         data && window.gtag('set', 'user_properties', data);
       }
       if (data && !disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        await arcx?.attribute({
+        await arcx?.attributes({
           ...data,
           //   source, // optional(string) - the origin of the web traffic (eg. discord, twitter etc)
           //   campaignId, // optional(string) - a specific identifier of the campaign (eg. bankless-5)
@@ -200,7 +201,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         arcx?.transaction({
-          chain,
+          chainId:chain,
           transactionHash: txhash,
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });

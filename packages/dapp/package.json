@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@arcxmoney/analytics": "^1.9.1",
+    "@arcxmoney/analytics": "^2.0.3",
     "@lifi/sdk": "^2.4.3",
     "@lifi/wallet-management": "^2.4.1",
     "@lifi/widget": "^2.7.1",

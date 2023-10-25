@@ -36,16 +36,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arcxmoney/analytics@npm:^1.9.1":
-  version: 1.9.1
-  resolution: "@arcxmoney/analytics@npm:1.9.1"
+"@arcxmoney/analytics@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@arcxmoney/analytics@npm:2.0.3"
   dependencies:
     "@restless/sanitizers": ^0.2.5
     socket.io-client: ^4.5.4
   peerDependencies:
     "@types/react": ">=16.14.34"
     react: ">=16.14.0"
-  checksum: 989772bcde3fe5d500d9faf796e046954eec8b117856b27e07f1c0464e360f53481cb28d00f963e174ed02b4ddc5f529fd4caf649f615e860d4f7d5efcceebd2
+  checksum: 01dbbc4f218c6aeea2d27f3394e10fb2fa99ed623dd0f0cfa3eb001990e6e27961175c06f650870165434fafd886cb0d798148286ea262df6227fe25ec43977e
   languageName: node
   linkType: hard
 
@@ -4474,7 +4474,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@transferto/dapp@workspace:packages/dapp"
   dependencies:
-    "@arcxmoney/analytics": ^1.9.1
+    "@arcxmoney/analytics": ^2.0.3
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
