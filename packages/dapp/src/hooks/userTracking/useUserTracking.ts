@@ -74,8 +74,14 @@ export function useUserTracking() {
           ...data,
         });
       }
+      if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
+        arcx?.disconnection({
+          account: `${account.address}`, // optional(string) - The account that got disconnected
+          chainId: `${account.chainId}`, // optional(string | number) - The chain ID from which the wallet disconnected
+        })
+      } 
     },
-    [account.address],
+    [account, arcx],
   );
 
   const trackEvent = useCallback(
