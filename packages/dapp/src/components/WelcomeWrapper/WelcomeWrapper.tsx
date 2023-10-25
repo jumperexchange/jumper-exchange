@@ -31,12 +31,12 @@ export const WelcomeWrapper: React.FC<
     'https://docs.li.fi/smart-contracts/audits',
     {
       utm_campaign: 'jumper_to_docs',
-      utm_medium: 'landing_page',
+      utm_medium: 'welcome_screen',
     },
   );
   const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
     utm_campaign: 'jumper_to_lifi',
-    utm_medium: 'landing_page',
+    utm_medium: 'welcome_screen',
   });
 
   useEffect(() => {
