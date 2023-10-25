@@ -11,9 +11,11 @@ import {
   TrackTransactionProps,
   trackPageloadProps,
 } from '../../types';
+import { useCookie3 } from '../useCookie3';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
+  const cookie3 = useCookie3();
   const { account, usedWallet } = useWallet();
 
   /* 
@@ -25,7 +27,6 @@ export function useUserTracking() {
         account: `${account.address}`,
         chain: `${account.chainId}`,
       });
-      window.raleon.walletConnected(account.address);
       hotjar.identify(account.address, {
         [TrackingEventParameter.Wallet]: usedWallet.name,
       });
@@ -74,12 +75,6 @@ export function useUserTracking() {
         });
         hotjar.initialized() && hotjar.event(TrackingAction.DisconnectWallet);
       }
-      if (
-        account.address &&
-        !disableTrackingTool?.includes(EventTrackingTool.Raleon)
-      ) {
-        window.raleon.walletDisconnected();
-      }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         window.gtag('event', TrackingAction.DisconnectWallet, {
           ...data,
@@ -94,6 +89,7 @@ export function useUserTracking() {
       action,
       category,
       label,
+      value,
       data,
       disableTrackingTool,
     }: TrackEventProps) => {
@@ -113,15 +109,16 @@ export function useUserTracking() {
           ...data,
         });
       }
-      if (
-        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
-        account.isActive &&
-        account.address
-      ) {
-        window.raleon.registerEvent(action, account.address, category);
+      if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
+        cookie3?.trackEvent({
+          category,
+          action,
+          name: label,
+          value,
+        });
       }
     },
-    [account.address, account.isActive, arcx],
+    [arcx, cookie3],
   );
 
   const trackPageload = useCallback(
@@ -161,19 +158,8 @@ export function useUserTracking() {
             ...data,
           });
       }
-      if (
-        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
-        account.isActive &&
-        !!account.address
-      ) {
-        window.raleon.registerEvent(
-          `pageload-${pageload ? 'external' : 'internal'}`,
-          account.address,
-          destination,
-        );
-      }
     },
-    [account.address, account.isActive, arcx],
+    [arcx],
   );
 
   const trackTransaction = useCallback(
@@ -185,6 +171,7 @@ export function useUserTracking() {
       action,
       category,
       chain,
+      value,
       data,
       disableTrackingTool,
       txhash,
@@ -194,7 +181,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
         window.gtag('event', action, {
-          category: category,
+          category,
           ...data,
         });
       }
@@ -205,15 +192,16 @@ export function useUserTracking() {
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });
       }
-      if (
-        !disableTrackingTool?.includes(EventTrackingTool.Raleon) &&
-        account.isActive &&
-        !!account.address
-      ) {
-        window.raleon.registerEvent(action, account.address, category);
+      if (!disableTrackingTool?.includes(EventTrackingTool.Cookie3)) {
+        cookie3?.trackEvent({
+          category,
+          action,
+          name: 'transaction',
+          value: value,
+        });
       }
     },
-    [account.address, account.isActive, arcx],
+    [arcx, cookie3],
   );
 
   return {

@@ -42,7 +42,7 @@ export const ChainSwitch = () => {
       action: TrackingAction.OpenMenu,
       label: 'click_open_chains_menu',
       data: { [TrackingEventParameter.Menu]: 'chains_menu' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 

@@ -128,7 +128,7 @@ export const StatsCards = ({
           data: { [TrackingEventParameter.StatsModal]: 'chains_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         setOpenChainsPopper(!openChainsPopper);
@@ -148,7 +148,7 @@ export const StatsCards = ({
           data: { [TrackingEventParameter.StatsModal]: 'bridges_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         setOpenBridgesPopper(!openBridgesPopper);
@@ -168,7 +168,7 @@ export const StatsCards = ({
           data: { [TrackingEventParameter.StatsModal]: 'dexes_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         setOpenDexsPopper(!openDexsPopper);

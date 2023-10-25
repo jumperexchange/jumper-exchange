@@ -45,7 +45,10 @@ export const WelcomeWrapper: React.FC<
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
         action: TrackingAction.OpenWelcomeMessageScreen,
-        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
       });
     }
   }, [showWelcome, trackEvent]);
@@ -56,14 +59,14 @@ export const WelcomeWrapper: React.FC<
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameter.WelcomeMessageLink]: '4x_audited' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
       source: 'welcome-screen',
       destination: 'docs-sc-audits',
       url: auditsWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
@@ -73,14 +76,14 @@ export const WelcomeWrapper: React.FC<
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameter.WelcomeMessageLink]: 'LIFI' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
       source: 'welcome-screen',
       destination: 'lifi-website',
       url: lifiWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
