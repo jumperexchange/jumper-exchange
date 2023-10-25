@@ -7,7 +7,10 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
-import { openInNewTab } from '@transferto/shared/src/utils/';
+import {
+  appendUTMParametersToLink,
+  openInNewTab,
+} from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import {
   MenuKeys,
@@ -27,6 +30,16 @@ export const useMainMenuContent = () => {
   const isDarkMode = useDetectDarkModePreference();
   const themeMode = useSettingsStore((state) => state.themeMode);
   const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
+
+  const explorerUrl = appendUTMParametersToLink('https://explorer.li.fi/', {
+    utm_campaign: 'jumper_to_explorer',
+    utm_medium: 'menu',
+  });
+
+  const lifiUrl = appendUTMParametersToLink('https://li.fi/', {
+    utm_campaign: 'jumper_to_lifi',
+    utm_medium: 'menu',
+  });
 
   return [
     {
@@ -75,7 +88,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_twitter' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -85,7 +98,7 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab('https://twitter.com/JumperExchange');
@@ -111,7 +124,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -121,7 +134,7 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab('https://discord.gg/lifi');
@@ -132,7 +145,6 @@ export const useMainMenuContent = () => {
       prefixIcon: <SearchOutlinedIcon />,
       showMoreIcon: false,
       onClick: () => {
-        const explorerUrl = 'https://explorer.li.fi?utm_source=jumper';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'open-lifi-explorer',
@@ -140,7 +152,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -150,7 +162,7 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab(explorerUrl);
@@ -177,20 +189,20 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_website' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'lifi-website',
-          url: 'https://li.fi',
+          url: lifiUrl,
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
-        openInNewTab('https://li.fi');
+        openInNewTab(lifiUrl);
       },
     },
     {
@@ -204,7 +216,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'support_modal' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         onOpenSupportModal(true);
