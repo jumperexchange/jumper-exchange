@@ -75,7 +75,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_twitter' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -85,7 +85,7 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab('https://twitter.com/JumperExchange');
@@ -111,7 +111,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -121,7 +121,7 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab('https://discord.gg/lifi');
@@ -140,7 +140,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_explorer' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -150,7 +150,7 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab(explorerUrl);
@@ -177,7 +177,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_website' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -187,7 +187,7 @@ export const useMainMenuContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab('https://li.fi');
@@ -204,7 +204,7 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'support_modal' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         onOpenSupportModal(true);

@@ -52,7 +52,10 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             data.fields.displayConditions.id,
           url: data.fields.url,
         },
-        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
       });
     }
   }, [
@@ -90,7 +93,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
         [TrackingEventParameter.FeatureCardId]:
           data?.fields?.displayConditions?.id,
       },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
@@ -105,7 +108,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
           data.fields.displayConditions.id,
         url: data.fields.url,
       },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
