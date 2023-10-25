@@ -17,7 +17,7 @@ import { EventTrackingTool } from '../../types';
 import {
   FeatureCardAsset,
   FeatureCardType,
-} from '../../types/featureCardsRequest';
+} from '../../types/featureCardsRequest.types';
 import { Card, CardImage } from './FeatureCard.style';
 
 interface FeatureCardProps {
@@ -181,7 +181,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Link
               target="_blank"
               rel="noopener"
-              href={data?.fields?.url || 'https://li.fi'}
+              href={data?.fields?.url}
               onClick={handleCTA}
               sx={{
                 textDecoration: 'none',

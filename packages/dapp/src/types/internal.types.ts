@@ -2,7 +2,7 @@ import { ChainId } from '@lifi/types';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import 'react-i18next';
 import { MenuKeys } from '../const';
-import { Gtag } from './gtag';
+import { Gtag } from './gtag.types';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {

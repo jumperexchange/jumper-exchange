@@ -8,11 +8,11 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { TrackingAction, TrackingCategory } from '../../const';
+import { LinkMap, TrackingAction, TrackingCategory } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
-import { EventTrackingTool, LinkMap, StarterVariantType } from '../../types';
+import { EventTrackingTool, StarterVariantType } from '../../types';
 import { OnRamper } from '../OnRamper';
 import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';

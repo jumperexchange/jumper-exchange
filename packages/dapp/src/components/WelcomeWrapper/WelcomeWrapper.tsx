@@ -1,5 +1,6 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
+import { appendUTMParametersToLink } from '@transferto/shared/src/utils';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import {
@@ -15,6 +16,18 @@ interface WelcomeWrapperProps {
   showWelcome: boolean;
   handleGetStarted: (event: any) => void;
 }
+
+const auditsWelcomeUrl = appendUTMParametersToLink(
+  'https://docs.li.fi/smart-contracts/audits',
+  {
+    utm_campaign: 'jumper_to_docs',
+    utm_medium: 'welcome_screen',
+  },
+);
+const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
+  utm_campaign: 'jumper_to_lifi',
+  utm_medium: 'welcome_screen',
+});
 
 export const WelcomeWrapper: React.FC<
   PropsWithChildren<WelcomeWrapperProps>
@@ -51,7 +64,7 @@ export const WelcomeWrapper: React.FC<
     trackPageload({
       source: 'welcome-screen',
       destination: 'docs-sc-audits',
-      url: 'https://docs.li.fi/smart-contracts/audits',
+      url: auditsWelcomeUrl,
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
@@ -68,7 +81,7 @@ export const WelcomeWrapper: React.FC<
     trackPageload({
       source: 'welcome-screen',
       destination: 'lifi-website',
-      url: 'https://li.fi',
+      url: lifiWelcomeUrl,
       pageload: true,
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
@@ -116,7 +129,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href="https://docs.li.fi/smart-contracts/audits"
+                    href={auditsWelcomeUrl}
                     target={'_blank'}
                     rel="noreferrer"
                     onClick={handleAuditClick}
@@ -124,7 +137,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href="https://li.fi"
+                    href={lifiWelcomeUrl}
                     onClick={handleLIFIClick}
                     target={'_blank'}
                     rel="noreferrer"
