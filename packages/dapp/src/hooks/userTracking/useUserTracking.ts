@@ -114,7 +114,7 @@ export function useUserTracking() {
           category,
           action,
           name: label,
-          value: value ?? undefined,
+          value,
         });
       }
     },
@@ -197,7 +197,7 @@ export function useUserTracking() {
           category,
           action,
           name: 'transaction',
-          value: value ?? undefined,
+          value: value,
         });
       }
     },
