@@ -218,13 +218,6 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               </Typography>
             </Link>
           </CardActions>
-          {/* {imageUrl && (
-            <CardImage
-              component="img"
-              src={imageUrl}
-              alt="Feature Card Image"
-            />
-          )} */}
         </CardContent>
       </Card>
     </Slide>
