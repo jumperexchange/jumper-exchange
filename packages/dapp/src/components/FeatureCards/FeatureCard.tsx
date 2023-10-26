@@ -40,6 +40,27 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       onDisableFeatureCard(data?.fields?.displayConditions?.id);
   }, [data?.fields?.displayConditions, onDisableFeatureCard]);
 
+  const typographyColor = useMemo(() => {
+    if (data.fields.displayConditions.custom?.mode) {
+      if (data.fields.displayConditions.custom?.mode === 'dark') {
+        return theme.palette.white.main;
+      } else if (data.fields.displayConditions.custom?.mode === 'light') {
+        return theme.palette.black.main;
+      }
+    } else {
+      if (theme.palette.mode === 'dark') {
+        return theme.palette.white.main;
+      } else {
+        return theme.palette.black.main;
+      }
+    }
+  }, [
+    data.fields.displayConditions.custom?.mode,
+    theme.palette.black.main,
+    theme.palette.mode,
+    theme.palette.white.main,
+  ]);
+
   useEffect(() => {
     if (open) {
       trackEvent({
@@ -141,11 +162,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               sx={{
                 width: '24px',
                 height: '24px',
-                color:
-                  data.fields.displayConditions.custom?.mode === 'dark' ||
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
+                color: typographyColor,
               }}
             />
           </IconButton>
@@ -153,11 +170,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Typography
               variant={'lifiHeaderSmall'}
               sx={{
-                color:
-                  data.fields.displayConditions.custom?.mode === 'dark' ||
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
+                color: typographyColor,
                 fontSize: '24px',
                 lineHeight: '32px',
                 maxHeight: '32px',
@@ -173,11 +186,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Typography
               variant={'lifiBodySmall'}
               sx={{
-                color:
-                  data.fields.displayConditions.custom?.mode === 'dark' ||
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
+                color: typographyColor,
                 lineHeight: '24px',
                 width: '224px',
                 height: '48px',
