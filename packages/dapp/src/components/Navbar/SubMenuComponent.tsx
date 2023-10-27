@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonBackArrow } from '@transferto/shared/src/atoms/ButtonArrowBack';
-import { KeyboardEvent } from 'react';
+import { KeyboardEvent, useEffect, useRef } from 'react';
 import {
   MenuKeys,
   TrackingAction,
@@ -47,6 +47,7 @@ const SubMenuComponent = ({
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
+  const menuListRef = useRef(null);
   const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore((state) => [
     state.openNavbarSubMenu,
     state.onOpenNavbarSubMenu,
@@ -83,12 +84,20 @@ const SubMenuComponent = ({
     onOpenNavbarSubMenu(prevMenu);
   };
 
+  useEffect(() => {
+    if (menuListRef.current && open && openNavbarSubMenu === triggerSubMenu) {
+      const menuList: HTMLUListElement = menuListRef.current;
+      menuList.scrollTop = 0;
+    }
+  }, [open, openNavbarSubMenu, triggerSubMenu]);
+
   return open && openNavbarSubMenu === triggerSubMenu ? (
     <NavbarPaper
       className="submenu"
       onKeyDown={handleBackSpace}
       autoFocus={open}
       component={'ul'}
+      ref={menuListRef}
       isDarkMode={isDarkMode}
     >
       <MenuHeaderAppWrapper>
