@@ -119,13 +119,16 @@ export const WalletManagementButtons: React.FC<
     // Wallet-Menu-Button -->
     <ButtonSecondary
       sx={{
-        width: '180px',
-        padding: '6px 8px',
+        display: 'flex',
+        placeContent: 'space-between',
+        justifyContent: 'center',
+        margin: 'auto',
+        p: '6px',
         paddingRight: '16px',
         minWidth: 'inherit',
         '@media screen and (min-width:430px) and (max-width: 900px)': {
-          width: '180px',
-          padding: '6px 8px',
+          // width: '180px',
+          // padding: '6px 8px',
         },
         [theme.breakpoints.up('md' as Breakpoint)]: {
           position: 'relative',
@@ -136,8 +139,9 @@ export const WalletManagementButtons: React.FC<
           transform: 'unset',
         },
         [theme.breakpoints.up('lg' as Breakpoint)]: {
-          width: '180px',
-          padding: '6px',
+          width: 'auto',
+          p: '6px',
+          pr: theme.spacing(2),
         },
       }}
       onClick={handleWalletMenuClick}
@@ -150,15 +154,25 @@ export const WalletManagementButtons: React.FC<
               theme.palette.mode === 'light'
                 ? 'transparent'
                 : theme.palette.white.main,
-            height: '32px',
-            width: '32px',
-            padding: '3px',
+            height: '34px',
+            width: '34px',
+            padding: '4px',
+            mr: '8px',
+            ml: '2px',
+            [theme.breakpoints.up('md' as Breakpoint)]: {
+              mr: '0px',
+              ml: '0px',
+            },
+            [theme.breakpoints.up('lg' as Breakpoint)]: {
+              mr: '8px',
+              ml: '2px',
+            },
           }}
         />
       ) : null}
       <Typography
         variant={'lifiBodyMediumStrong'}
-        width={'100%'}
+        width={'auto'}
         sx={{
           [theme.breakpoints.up('md' as Breakpoint)]: {
             display: 'none',
