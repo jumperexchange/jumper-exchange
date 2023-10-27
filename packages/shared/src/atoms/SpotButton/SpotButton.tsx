@@ -8,7 +8,7 @@ interface SpotButtonProps {
   variant?: string;
   onClick: any;
   children: ReactNode;
-  style?: CSSObject;
+  styles?: CSSObject;
 }
 
 export const SpotButton = ({
@@ -16,11 +16,11 @@ export const SpotButton = ({
   name,
   variant,
   onClick,
-  style,
+  styles,
 }: SpotButtonProps) => {
   const theme = useTheme();
   return (
-    <Box textAlign={'center'} sx={{ ...style }}>
+    <Box textAlign={'center'} sx={{ ...styles }}>
       <SpotButtonStyled variant={variant} onClick={onClick}>
         {children}
       </SpotButtonStyled>
@@ -32,8 +32,9 @@ export const SpotButton = ({
             textOverflow: 'ellipsis',
             maxWidth: '75%',
             margin: '8px auto 0',
+            userSelect: 'none',
           }}
-          variant={'lifiBodyXSmallStrong'}
+          variant={'lifiBodySmall'}
         >
           {name}
         </Typography>

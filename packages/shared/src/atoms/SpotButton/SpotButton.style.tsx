@@ -1,19 +1,20 @@
 import type { IconButtonProps } from '@mui/material';
 import { IconButton } from '@mui/material';
-import type { Breakpoint } from '@mui/material/styles';
+import type { Breakpoint, CSSObject } from '@mui/material/styles';
 import { darken, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '../../utils';
 
 export interface SpotButtonProps extends Omit<IconButtonProps, 'variant'> {
   variant?: string;
+  styles?: CSSObject;
 }
 
 export const SpotButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'variant',
-})<SpotButtonProps>(({ theme, variant }) => ({
+})<SpotButtonProps>(({ theme, variant, styles }) => ({
   color: theme.palette.text.primary,
-  width: '64px',
-  height: '64px',
+  width: '72px',
+  height: '72px',
   margin: 'auto',
   backgroundColor:
     variant === 'primary' && theme.palette.mode === 'dark'
@@ -47,4 +48,5 @@ export const SpotButton = styled(IconButton, {
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     display: 'flex',
   },
+  ...styles,
 }));

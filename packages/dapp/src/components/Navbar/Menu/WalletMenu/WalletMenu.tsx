@@ -147,21 +147,25 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
           },
         }}
       >
-        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(3)}>
+        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(2.5)}>
           <Avatar
             src={walletIcon}
             sx={{
               padding: theme.spacing(2.25),
               background:
                 theme.palette.mode === 'light'
-                  ? theme.palette.black.main
+                  ? 'transparent'
                   : theme.palette.white.main,
               margin: 'auto',
               height: '96px',
               width: '96px',
+              '> img': {
+                height: '72px',
+                width: '72px',
+              },
             }}
           />
-          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(2)}>
+          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(1.5)}>
             {_walletDigest}
           </Typography>
         </Grid>
@@ -183,7 +187,14 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
             variant={'primary'}
             onClick={handleDisconnectButton}
           >
-            <PowerSettingsNewIcon />
+            <PowerSettingsNewIcon
+              sx={{
+                color:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.primary.main
+                    : 'inherit',
+              }}
+            />
           </SpotButton>
         </Grid>
       </Grid>
