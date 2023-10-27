@@ -1,14 +1,18 @@
+import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { ButtonSecondary } from '@transferto/shared/src/atoms';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
+import { ThemeModesSupported } from '@transferto/shared/src/types';
 import {
   appendUTMParametersToLink,
+  getContrastAlphaColor,
   openInNewTab,
 } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +23,6 @@ import {
   TrackingEventParameter,
 } from '..';
 import { useUserTracking } from '../../hooks';
-import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 
@@ -27,9 +30,12 @@ export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
-  const isDarkMode = useDetectDarkModePreference();
-  const themeMode = useSettingsStore((state) => state.themeMode);
   const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
+
+  const [themeMode, onChangeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.onChangeMode,
+  ]);
 
   const explorerUrl = appendUTMParametersToLink('https://explorer.li.fi/', {
     utm_campaign: 'jumper_to_explorer',
@@ -41,16 +47,122 @@ export const useMainMenuContent = () => {
     utm_medium: 'menu',
   });
 
+  const handleSwitchMode = (mode: ThemeModesSupported) => {
+    console.log('MODE', mode);
+    trackEvent({
+      category: TrackingCategory.ThemeMenu,
+      action: TrackingAction.SwitchTheme,
+      label: `theme_${mode}`,
+      data: {
+        [TrackingEventParameter.SwitchedTheme]: mode,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    onChangeMode(mode);
+  };
+
+  const activeButtonBgCol =
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : theme.palette.grey[600];
+
+  const inactiveButtonBgCol =
+    theme.palette.mode === 'light'
+      ? 'transparent'
+      : getContrastAlphaColor(theme, '8%');
+
+  const buttonStyles = {
+    height: '40px',
+    borderRadius: '8px',
+    width: '72px',
+  };
+
   return [
     {
-      label: t('navbar.navbarMenu.theme'),
-      prefixIcon: isDarkMode ? (
-        <NightlightOutlinedIcon />
-      ) : (
-        <LightModeOutlinedIcon />
+      children: (
+        <>
+          <ButtonSecondary
+            styles={{
+              ...buttonStyles,
+              backgroundColor:
+                themeMode === 'light' ? activeButtonBgCol : inactiveButtonBgCol,
+            }}
+            onClick={() => {
+              handleSwitchMode('light');
+            }}
+          >
+            <LightModeIcon
+              sx={{
+                fill:
+                  themeMode === 'light'
+                    ? 'currentColor'
+                    : theme.palette.grey[700],
+              }}
+            />
+          </ButtonSecondary>
+          <ButtonSecondary
+            styles={{
+              ...buttonStyles,
+              backgroundColor:
+                themeMode === 'dark' ? activeButtonBgCol : inactiveButtonBgCol,
+            }}
+            onClick={() => {
+              handleSwitchMode('dark');
+            }}
+          >
+            <NightlightIcon
+              sx={{
+                fill:
+                  themeMode === 'dark'
+                    ? 'currentColor'
+                    : theme.palette.grey[700],
+              }}
+            />
+          </ButtonSecondary>
+          <ButtonSecondary
+            styles={{
+              ...buttonStyles,
+              backgroundColor:
+                themeMode === 'auto' ? activeButtonBgCol : inactiveButtonBgCol,
+            }}
+            onClick={() => {
+              handleSwitchMode('auto');
+            }}
+          >
+            <BrightnessAutoIcon
+              sx={{
+                fill:
+                  themeMode === 'auto'
+                    ? 'currentColor'
+                    : theme.palette.grey[700],
+              }}
+            />
+          </ButtonSecondary>
+        </>
       ),
-      url: 'https://github.com/lifinance/',
-      triggerSubMenu: MenuKeys.Themes,
+      styles: {
+        width: '240px',
+        margin: '12px auto',
+        backgroundColor: theme.palette.grey[200],
+        '&:hover': {
+          backgroundColor: theme.palette.grey[200],
+        },
+        paddingTop: '4px !important',
+        padding: '4px',
+        '> button:hover': {
+          backgroundColor:
+            theme.palette.mode === 'light'
+              ? getContrastAlphaColor(theme, '4%')
+              : theme.palette.grey[700],
+        },
+        '> button:hover svg': {
+          fill:
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[700]
+              : theme.palette.grey[300],
+        },
+      },
+      showMoreIcon: false,
     },
     {
       label: t('language.key', { ns: 'language' }),

@@ -2,6 +2,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { CSSObject, Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
+
+import { JsxElement } from 'typescript';
 import {
   MenuKeys,
   TrackingAction,
@@ -15,6 +17,7 @@ import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
   showButton: boolean;
+  children?: Element | JsxElement | undefined;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
   styles?: CSSObject;
@@ -30,6 +33,7 @@ const MenuItemComponent = ({
   open,
   showButton,
   autoFocus,
+  children,
   showMoreIcon = true,
   styles,
   onClick,
@@ -66,11 +70,14 @@ const MenuItemComponent = ({
       showButton={showButton}
       styles={styles}
       autoFocus={autoFocus}
-      onClick={handleClick}
+      onClick={() => {
+        !children && handleClick();
+      }}
     >
       <>
-        {showButton && label ? (
-          <ButtonPrimary fullWidth sx={{ ...styles }}>
+        {children}
+        {showButton && label && (
+          <ButtonPrimary fullWidth>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -88,11 +95,13 @@ const MenuItemComponent = ({
             >
               {label}
             </Typography>
-            {suffixIcon}
+            {suffixIcon ?? null}
           </ButtonPrimary>
-        ) : (
+        )}
+        {!showButton && label && (
           <>
             <MenuItemLabel
+              className="TEST"
               variant={
                 suffixIcon && showMoreIcon
                   ? 'xs'
@@ -101,8 +110,8 @@ const MenuItemComponent = ({
                   : 'md'
               }
             >
-              {prefixIcon}
-              {label && (
+              {prefixIcon ?? null}
+              {label ? (
                 <Typography
                   variant={'lifiBodyMedium'}
                   ml={'12px'}
@@ -116,18 +125,18 @@ const MenuItemComponent = ({
                 >
                   {label}
                 </Typography>
-              )}
+              ) : null}
             </MenuItemLabel>
             <div
               style={{
-                display: 'flex',
+                display: suffixIcon || showMoreIcon ? 'flex' : 'none',
                 alignItems: 'center',
               }}
             >
-              {suffixIcon}
-              {showMoreIcon && (
+              {suffixIcon ?? null}
+              {showMoreIcon ? (
                 <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
-              )}
+              ) : null}
             </div>
           </>
         )}

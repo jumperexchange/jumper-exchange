@@ -40,6 +40,8 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             autoFocus={index > 0 ? true : false}
             label={el.label}
             prefixIcon={el.prefixIcon}
+            styles={el.styles}
+            children={el.children}
             triggerSubMenu={el.triggerSubMenu}
             showButton={el.showButton ?? false}
             showMoreIcon={el.showMoreIcon}
