@@ -33,7 +33,8 @@
       "switchChain": "Switch Chain",
       "copy": "Copy",
       "explore": "Explore",
-      "copiedMsg": "Wallet address copied"
+      "copiedMsg": "Wallet address copied",
+      "walletNotInstalled": "{{wallet}} is not installed"
     },
     "themes": {
       "switchToLight": "Switch to Light Theme",

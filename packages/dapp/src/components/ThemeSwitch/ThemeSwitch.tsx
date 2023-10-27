@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { usePopperIsOpened, useUserTracking } from '../../hooks';
 import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useSettingsStore } from '../../stores';
+import { EventTrackingTool } from '../../types';
 import { ButtonThemeSwitch } from './ThemeSwitch.style';
 
 export const ThemeSwitch = () => {
@@ -36,6 +37,7 @@ export const ThemeSwitch = () => {
       data: {
         [TrackingEventParameter.SwitchedTheme]: changeMode,
       },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     onChangeMode(changeMode);
   };

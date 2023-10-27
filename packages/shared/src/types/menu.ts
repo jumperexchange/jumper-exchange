@@ -2,6 +2,14 @@
 
 import type { MenuKeys } from '@transferto/dapp/src/const';
 
+type SnackbarSeverityType = 'error' | 'warning' | 'info' | 'success';
+
+export interface SnackbarProps {
+  open: boolean;
+  label?: string;
+  severity?: SnackbarSeverityType | undefined;
+}
+
 export type MenuProps = {
   anchorRef: any;
   openMainNavbarMenu: boolean;
@@ -9,6 +17,7 @@ export type MenuProps = {
   openNavbarChainsMenu: boolean;
   openNavbarWalletMenu: boolean;
   openNavbarSubMenu: keyof typeof MenuKeys;
+  openSnackbar: SnackbarProps;
   openSupportModal: boolean;
 };
 
@@ -30,6 +39,13 @@ export interface MenuState extends MenuProps {
 
   // Toggle Navbar Sub Menu
   onOpenNavbarSubMenu: (subMenu: keyof typeof MenuKeys) => void;
+
+  // Open Snackbar and set label
+  onOpenSnackbar: (
+    open: boolean,
+    label?: string,
+    severity?: SnackbarSeverityType,
+  ) => void;
 
   // Toggle support modal
   onOpenSupportModal: (open: boolean) => void;

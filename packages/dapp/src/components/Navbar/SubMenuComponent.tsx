@@ -69,7 +69,10 @@ const SubMenuComponent = ({
           [TrackingEventParameter.Menu]: el.triggerSubMenu,
           [TrackingEventParameter.PrevMenu]: prevMenu,
         },
-        disableTrackingTool: [EventTrackingTool.Raleon, EventTrackingTool.ARCx],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
       });
     } else {
       typeof el.onClick === 'function' && el.onClick();

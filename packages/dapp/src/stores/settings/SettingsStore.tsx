@@ -65,6 +65,15 @@ export const useSettingsStore = createWithEqualityFn(
         });
       },
 
+      // Installed Wallets
+      onClientWallets: (wallet: string) => {
+        const clientWallets = (get() as SettingsProps)?.clientWallets;
+        !clientWallets.includes(wallet) &&
+          set({
+            clientWallets: [...clientWallets, wallet],
+          });
+      },
+
       // Disable Feature Card
       onDisableFeatureCard: (id: string) => {
         const disabledFeatureCards = (get() as SettingsProps)
