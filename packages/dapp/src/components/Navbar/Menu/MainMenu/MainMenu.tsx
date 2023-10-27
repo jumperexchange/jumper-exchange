@@ -7,6 +7,7 @@ import {
 } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
+import { JsxElement } from 'typescript';
 import { MenuItemComponent, NavbarMenu, SubMenuComponent } from '../../index';
 interface MainMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -41,7 +42,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             label={el.label}
             prefixIcon={el.prefixIcon}
             styles={el.styles}
-            children={el.children}
+            children={el.children as unknown as JsxElement}
             triggerSubMenu={el.triggerSubMenu}
             showButton={el.showButton ?? false}
             showMoreIcon={el.showMoreIcon}
