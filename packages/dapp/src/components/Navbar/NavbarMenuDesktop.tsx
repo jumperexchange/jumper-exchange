@@ -78,7 +78,6 @@ const NavbarMenuDesktop = ({
               }}
             >
               <NavbarPaper
-                cardsLayout={cardsLayout}
                 isDarkMode={isDarkMode}
                 isWide={openNavbarWalletMenu}
               >
@@ -105,7 +104,7 @@ const NavbarMenuDesktop = ({
                     }
                   >
                     {!!label ? (
-                      <MenuHeaderAppWrapper cardsLayout={cardsLayout}>
+                      <MenuHeaderAppWrapper>
                         <MenuHeaderAppBar component="div" elevation={0}>
                           <Typography
                             variant={'lifiBodyMediumStrong'}

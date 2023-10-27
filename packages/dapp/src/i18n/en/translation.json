@@ -18,7 +18,11 @@
       "chains": "Chains"
     },
     "connect": "Connect",
-    "chooseWallet": "Choose Wallet",
+    "walletSelectMenu": {
+      "connectWallet": "Connect a wallet",
+      "wallets": "Wallets"
+    },
+    "seeAllWallets": "See all wallets",
     "navbarMenu": {
       "brandAssets": "Brand Assets",
       "theme": "Theme",

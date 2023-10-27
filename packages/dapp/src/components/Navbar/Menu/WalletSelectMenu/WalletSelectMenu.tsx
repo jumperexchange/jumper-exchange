@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Breakpoint, CSSObject, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import { MenuKeys, useWalletSelectContent } from '@transferto/dapp/src/const';
@@ -13,7 +13,7 @@ interface NavbarMenuProps {
   open?: boolean;
 }
 
-const numberOfWalletsDisplayed = 8;
+const numberOfWalletsDisplayed = 9;
 
 export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const { t } = useTranslation();
@@ -21,7 +21,10 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const walletSelectMenuItems = useWalletSelectContent();
   const subMenuWalletSelectMore = useWalletSelectContent();
   const isDarkMode = theme.palette.mode === 'dark';
-  const filteredWalletSelectMenuItems = walletSelectMenuItems.slice(0, 6);
+  const filteredWalletSelectMenuItems = walletSelectMenuItems.slice(
+    0,
+    numberOfWalletsDisplayed,
+  );
   const [
     openNavbarWalletSelectMenu,
     onOpenNavbarWalletSelectMenu,
@@ -47,6 +50,30 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
     );
   }
 
+  const menuItemStyles: CSSObject = {
+    margin: 0,
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    backgroundColor: getContrastAlphaColor(theme, '2%'),
+    height: '72px',
+    width: '72px',
+    placeContent: 'center',
+
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      height: '72px',
+    },
+  };
+
+  const hoverStyles = {
+    '&:hover': {
+      backgroundColor: getContrastAlphaColor(theme, '4%'),
+    },
+
+    '&:hover p': {
+      color: isDarkMode ? theme.palette.white.main : theme.palette.black.main,
+    },
+  };
+
   return (
     openNavbarWalletSelectMenu && (
       <NavbarMenu
@@ -60,7 +87,11 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
         isOpenSubMenu={openNavbarSubMenu === MenuKeys.WalletSelect}
       >
         {openNavbarSubMenu === MenuKeys.None && (
-          <MenuHeaderAppWrapper cardsLayout={true}>
+          <MenuHeaderAppWrapper
+            styles={{
+              marginBottom: '-12px',
+            }}
+          >
             <MenuHeaderAppBar component="div" elevation={0}>
               <Typography
                 sx={{
@@ -74,70 +105,68 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                 flex={1}
                 noWrap
               >
-                {t('navbar.chooseWallet')}
+                {t('navbar.walletSelectMenu.connectWallet')}
               </Typography>
             </MenuHeaderAppBar>
           </MenuHeaderAppWrapper>
         )}
-        {
-          <>
-            {openNavbarSubMenu === MenuKeys.None &&
-              filteredWalletSelectMenuItems.map((el, index) => (
-                <MenuItemComponent
-                  key={`${el.label}-${index}`}
-                  // label={`${el.label || ' '}`}
-                  triggerSubMenu={MenuKeys.WalletSelect}
-                  showButton={false}
-                  customHoverStyles={{
-                    backgroundColor: getContrastAlphaColor(theme, '4%'),
-                  }}
-                  cardsLayout={true}
-                  showMoreIcon={false}
-                  prefixIcon={el.prefixIcon}
-                  onClick={el.onClick}
-                  open={open || openNavbarWalletSelectMenu}
-                />
-              ))}
-            {walletSelectMenuItems.length - numberOfWalletsDisplayed > 0 &&
-              openNavbarSubMenu === MenuKeys.None && (
-                <MenuItemComponent
-                  key={`select-more-wallets`}
-                  triggerSubMenu={MenuKeys.WalletSelectMore}
-                  showButton={false}
-                  cardsLayout={true}
-                  showMoreIcon={false}
-                  open={true}
-                  customHoverStyles={{
-                    backgroundColor: getContrastAlphaColor(theme, '4%'),
+        {openNavbarSubMenu === MenuKeys.None &&
+          filteredWalletSelectMenuItems.map((el, index) => (
+            <MenuItemComponent
+              key={`${el.label}-${index}`}
+              triggerSubMenu={MenuKeys.WalletSelect}
+              showButton={false}
+              styles={{
+                borderRadius: '72px',
+                ...menuItemStyles,
+                ...hoverStyles,
+              }}
+              cardsLayout={true}
+              showMoreIcon={false}
+              prefixIcon={el.prefixIcon}
+              onClick={el.onClick}
+              open={open || openNavbarWalletSelectMenu}
+            />
+          ))}
+        {walletSelectMenuItems.length - numberOfWalletsDisplayed > 0 &&
+          openNavbarSubMenu === MenuKeys.None && (
+            <MenuItemComponent
+              key={`select-more-wallets`}
+              triggerSubMenu={MenuKeys.WalletSelectMore}
+              showButton={true}
+              showMoreIcon={false}
+              open={true}
+              styles={{
+                ...menuItemStyles,
+                ...hoverStyles,
+                width: '100%',
+                height: '48px !important',
+                borderRadius: '24px',
+              }}
+              prefixIcon={
+                <Typography
+                  variant={'lifiBodyMediumStrong'}
+                  sx={{
                     color: isDarkMode
                       ? theme.palette.white.main
                       : theme.palette.black.main,
+                    '&:hover': {
+                      color:
+                        theme.palette.mode === 'dark'
+                          ? theme.palette.black.main
+                          : theme.palette.white.main,
+                    },
                   }}
-                  prefixIcon={
-                    <Typography
-                      variant={'lifiBodyLarge'}
-                      sx={{
-                        color: isDarkMode
-                          ? theme.palette.white.main
-                          : theme.palette.black.main,
-                        '&:hover': {
-                          color:
-                            theme.palette.mode === 'dark'
-                              ? theme.palette.black.main
-                              : theme.palette.white.main,
-                        },
-                      }}
-                    >
-                      +{walletSelectMenuItems.length - numberOfWalletsDisplayed}
-                    </Typography>
-                  }
-                  onClick={handleClickSelectMore}
-                />
-              )}
-          </>
-        }
+                >
+                  {t('navbar.seeAllWallets')}
+                </Typography>
+              }
+              onClick={handleClickSelectMore}
+            />
+          )}
+
         <SubMenuComponent
-          label={t('navbar.chooseWallet')}
+          label={t('navbar.walletSelectMenu.wallets')}
           triggerSubMenu={MenuKeys.WalletSelectMore}
           open={openNavbarSubMenu === MenuKeys.WalletSelectMore}
           prevMenu={MenuKeys.None}

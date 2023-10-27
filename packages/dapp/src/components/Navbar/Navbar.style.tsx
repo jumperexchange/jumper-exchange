@@ -271,63 +271,53 @@ export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
 export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;
-  customHoverStyles?: CSSObject;
-  cardsLayout?: boolean;
+  styles?: CSSObject;
   component?: ElementType<any>;
 }
 
 export const MenuItem = styled(MUIMenuItem, {
   shouldForwardProp: (prop) =>
     prop !== 'showButton' &&
+    prop !== 'styles' &&
     prop !== 'component' &&
-    prop !== 'cardsLayout' &&
     prop !== 'styles',
-})<MenuItemProps>(({ theme, showButton, cardsLayout, customHoverStyles }) => ({
+})<MenuItemProps>(({ theme, showButton, styles }) => ({
   display: 'flex',
-  flexDirection: cardsLayout ? 'column' : 'row',
-  flexWrap: cardsLayout ? 'wrap' : 'inherit',
+  flexDirection: 'row',
+  flexWrap: 'inherit',
   padding: showButton ? theme.spacing(0, 1.5, 1.5) : theme.spacing(0, 1.5),
-  backgroundColor: cardsLayout ? getContrastAlphaColor(theme, '2%') : 'inherit',
+  backgroundColor: 'inherit',
   justifyContent: 'space-between',
-  margin: cardsLayout ? 0 : theme.spacing(0, 1.5),
-  height: showButton ? 'auto' : cardsLayout ? '72px' : '48px',
+  margin: theme.spacing(0, 1.5),
+  height: showButton ? 'auto' : '48px',
   marginTop: showButton ? theme.spacing(1) : 0,
   borderRadius: '12px',
-  width: cardsLayout ? '72px' : 'auto',
-  placeContent: cardsLayout ? 'center' : 'space-between',
+  width: 'auto',
+  placeContent: 'space-between',
 
   '&:hover': {
-    backgroundColor: customHoverStyles?.backgroundColor
-      ? customHoverStyles.backgroundColor
-      : showButton
+    backgroundColor: showButton
       ? 'transparent'
       : getContrastAlphaColor(theme, '4%'),
   },
-
-  '&:hover p': {
-    color: customHoverStyles?.color ? customHoverStyles.color : 'inherit',
-  },
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: showButton ? 'auto' : cardsLayout ? '72px' : '48px',
+    height: showButton ? 'auto' : '48px',
   },
+
+  ...styles,
 }));
 
 export interface NavbarPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isDarkMode?: boolean;
   isWide?: boolean;
-  cardsLayout?: boolean;
   component?: ElementType<any>;
 }
 
 export const NavbarPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'isDarkMode' &&
-    prop !== 'isWide' &&
-    prop !== 'isSubMenu' &&
-    prop !== 'cardsLayout',
-})<NavbarPaperProps>(({ theme, isDarkMode, isWide, cardsLayout }) => ({
+    prop !== 'isDarkMode' && prop !== 'isWide' && prop !== 'isSubMenu',
+})<NavbarPaperProps>(({ theme, isDarkMode, isWide }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -379,12 +369,11 @@ export const MenuLinkItem = styled(Link, {
 
 export interface MenuItemLabelProps extends Omit<MUIListItemProps, 'variant'> {
   variant?: 'xs' | 'md' | 'lg';
-  cardsLayout?: boolean;
 }
 
 export const MenuItemLabel = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'variant' && prop !== 'cardsLayout',
-})<MenuItemLabelProps>(({ variant, theme, cardsLayout }) => ({
+  shouldForwardProp: (prop) => prop !== 'variant',
+})<MenuItemLabelProps>(({ variant, theme }) => ({
   display: 'flex',
   alignItems: 'center',
   maxWidth: variant === 'xs' ? '198px' : variant === 'md' ? '232px' : '260px',
@@ -397,11 +386,11 @@ export const MenuItemText = styled('span')({});
 
 export interface MenuHeaderAppWrapperProps
   extends Omit<MUIListItemProps, 'component'> {
-  cardsLayout?: boolean;
+  styles?: CSSObject;
 }
 
 export const MenuHeaderAppWrapper = styled(ListItem)<MenuHeaderAppWrapperProps>(
-  ({ theme, cardsLayout }) => ({
+  ({ theme, styles }) => ({
     position: 'sticky',
     top: 0,
     alignItems: 'center',
@@ -410,7 +399,7 @@ export const MenuHeaderAppWrapper = styled(ListItem)<MenuHeaderAppWrapperProps>(
     zIndex: 1400,
     overflow: 'hidden',
     margin: theme.spacing(0),
-    marginBottom: cardsLayout ? '-12px' : 'inherit',
+    marginBottom: 'inherit',
     marginTop: '0px',
     height: MenuLabelHeight,
     padding: '0px',
@@ -419,6 +408,7 @@ export const MenuHeaderAppWrapper = styled(ListItem)<MenuHeaderAppWrapperProps>(
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       paddingLeft: '0px',
     },
+    ...styles,
   }),
 );
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {

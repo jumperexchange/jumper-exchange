@@ -18,6 +18,7 @@ interface MenuItemProps {
   autoFocus?: boolean;
   customHoverStyles?: CSSObject;
   showMoreIcon?: boolean;
+  styles?: CSSObject;
   cardsLayout?: boolean;
   label?: string;
   onClick: any;
@@ -33,6 +34,7 @@ const MenuItemComponent = ({
   autoFocus,
   showMoreIcon = true,
   customHoverStyles,
+  styles,
   cardsLayout,
   onClick,
   label,
@@ -66,14 +68,13 @@ const MenuItemComponent = ({
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
-      cardsLayout={cardsLayout}
+      styles={styles}
       autoFocus={autoFocus}
       onClick={handleClick}
-      customHoverStyles={customHoverStyles}
     >
       <>
         {showButton && label ? (
-          <ButtonPrimary fullWidth>
+          <ButtonPrimary fullWidth sx={{ ...styles }}>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -96,7 +97,6 @@ const MenuItemComponent = ({
         ) : (
           <>
             <MenuItemLabel
-              cardsLayout={cardsLayout}
               variant={
                 suffixIcon && showMoreIcon
                   ? 'xs'

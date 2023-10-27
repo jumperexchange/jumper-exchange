@@ -65,7 +65,7 @@ const NavbarMenuMobile = ({
             transition
             disablePortal
           >
-            <NavbarPaper isDarkMode={isDarkMode} cardsLayout={cardsLayout}>
+            <NavbarPaper isDarkMode={isDarkMode}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
@@ -88,7 +88,7 @@ const NavbarMenuMobile = ({
                   }
                 >
                   {!!label ? (
-                    <MenuHeaderAppWrapper cardsLayout={cardsLayout}>
+                    <MenuHeaderAppWrapper>
                       <MenuHeaderAppBar component="div" elevation={0}>
                         <Typography
                           variant={'lifiBodyMediumStrong'}
