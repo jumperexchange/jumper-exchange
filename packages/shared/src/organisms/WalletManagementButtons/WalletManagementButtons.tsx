@@ -108,7 +108,7 @@ export const WalletManagementButtons: React.FC<
       sx={(theme) => ({
         display: 'none',
         [theme.breakpoints.up('sm' as Breakpoint)]: {
-          width: '115px',
+          padding: theme.spacing(3),
           display: 'inline-flex !important',
         },
       })}

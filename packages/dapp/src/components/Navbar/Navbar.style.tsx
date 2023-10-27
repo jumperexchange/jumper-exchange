@@ -146,6 +146,7 @@ export const NavbarMenuList = styled(MenuList, {
 })<NavbarMenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
   marginTop: 0,
   display: cardsLayout ? 'flex' : 'block',
+  justifyContent: cardsLayout ? 'center' : 'unset',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
   padding: cardsLayout ? '0 24px' : 0,
   gap: cardsLayout ? '12px' : 'inherit',

@@ -76,7 +76,7 @@ const MenuItemComponent = ({
     >
       <>
         {children}
-        {showButton && label && (
+        {showButton && (
           <ButtonPrimary fullWidth>
             {prefixIcon}
             <Typography
@@ -98,10 +98,9 @@ const MenuItemComponent = ({
             {suffixIcon ?? null}
           </ButtonPrimary>
         )}
-        {!showButton && label && (
+        {!showButton && (
           <>
             <MenuItemLabel
-              className="TEST"
               variant={
                 suffixIcon && showMoreIcon
                   ? 'xs'

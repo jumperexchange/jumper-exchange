@@ -53,23 +53,13 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
     margin: 0,
     flexDirection: 'column',
     flexWrap: 'wrap',
-    backgroundColor: getContrastAlphaColor(theme, '2%'),
+    // backgroundColor: `${getContrastAlphaColor(theme, '2%')} !important`,
     height: '72px',
     width: '72px',
     placeContent: 'center',
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       height: '72px',
-    },
-  };
-
-  const hoverStyles = {
-    '&:hover': {
-      backgroundColor: getContrastAlphaColor(theme, '4%'),
-    },
-
-    '&:hover p': {
-      color: isDarkMode ? theme.palette.white.main : theme.palette.black.main,
     },
   };
 
@@ -117,8 +107,12 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
               showButton={false}
               styles={{
                 borderRadius: '72px',
+                backgroundColor: getContrastAlphaColor(theme, '2%'),
                 ...menuItemStyles,
-                ...hoverStyles,
+
+                '&:hover': {
+                  backgroundColor: getContrastAlphaColor(theme, '4%'),
+                },
               }}
               showMoreIcon={false}
               prefixIcon={el.prefixIcon}
@@ -136,10 +130,16 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
               open={true}
               styles={{
                 ...menuItemStyles,
-                ...hoverStyles,
+                padding: '0px',
                 width: '100%',
                 height: '48px !important',
                 borderRadius: '24px',
+                '> button': {
+                  backgroundColor: getContrastAlphaColor(theme, '2%'),
+                },
+                '&:hover > button': {
+                  backgroundColor: getContrastAlphaColor(theme, '4%'),
+                },
               }}
               prefixIcon={
                 <Typography
@@ -148,12 +148,6 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                     color: isDarkMode
                       ? theme.palette.white.main
                       : theme.palette.black.main,
-                    '&:hover': {
-                      color:
-                        theme.palette.mode === 'dark'
-                          ? theme.palette.black.main
-                          : theme.palette.white.main,
-                    },
                   }}
                 >
                   {t('navbar.seeAllWallets')}
