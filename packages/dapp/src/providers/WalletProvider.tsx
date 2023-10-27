@@ -152,7 +152,10 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
           ],
         });
         handleWalletUpdate(currentWallet);
-        return true;
+
+        // Stale account was being passed in `switchChain` prop in walletManagement in widget config,
+        // so we need to return the updated account, hence returning the resolved
+        return currentWallet;
       } catch {
         return false;
       }

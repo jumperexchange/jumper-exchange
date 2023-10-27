@@ -9,7 +9,7 @@ export interface WalletContextProps {
   addChain(chainId: ChainId): Promise<boolean>;
   addToken(chainId: ChainId, token: Token): Promise<void>;
   disconnect(): void;
-  switchChain(chainId: ChainId): Promise<boolean>;
+  switchChain(chainId: ChainId): Promise<any>;
   connect(wallet?: Wallet | undefined): Promise<void>;
 }
 
