@@ -38,7 +38,6 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   ]);
 
   const handleClickSelectMore = () => {
-    console.log('clicked more');
     onOpenNavbarSubMenu(MenuKeys.WalletSelectMore);
   };
 
@@ -84,7 +83,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
         }
         transformOrigin={'top'}
         setOpen={onOpenNavbarWalletSelectMenu}
-        isOpenSubMenu={openNavbarSubMenu === MenuKeys.WalletSelect}
+        isOpenSubMenu={openNavbarSubMenu === MenuKeys.WalletSelectMore}
       >
         {openNavbarSubMenu === MenuKeys.None && (
           <MenuHeaderAppWrapper
@@ -121,7 +120,6 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                 ...menuItemStyles,
                 ...hoverStyles,
               }}
-              cardsLayout={true}
               showMoreIcon={false}
               prefixIcon={el.prefixIcon}
               onClick={el.onClick}

@@ -16,10 +16,8 @@ interface MenuItemProps {
   open: boolean;
   showButton: boolean;
   autoFocus?: boolean;
-  customHoverStyles?: CSSObject;
   showMoreIcon?: boolean;
   styles?: CSSObject;
-  cardsLayout?: boolean;
   label?: string;
   onClick: any;
   triggerSubMenu?: MenuKeys;
@@ -33,9 +31,7 @@ const MenuItemComponent = ({
   showButton,
   autoFocus,
   showMoreIcon = true,
-  customHoverStyles,
   styles,
-  cardsLayout,
   onClick,
   label,
   triggerSubMenu,

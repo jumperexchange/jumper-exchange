@@ -65,7 +65,6 @@ const NavbarMenuDesktop = ({
           open={open}
           anchorEl={anchorRef}
           role={undefined}
-          // placement="bottom"
           popperOptions={{ strategy: 'fixed' }}
           transition
           disablePortal
