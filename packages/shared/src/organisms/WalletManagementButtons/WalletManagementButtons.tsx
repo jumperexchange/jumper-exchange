@@ -146,13 +146,13 @@ export const WalletManagementButtons: React.FC<
         <Avatar
           src={walletIcon}
           sx={{
-            padding: theme.spacing(0.75),
             background:
               theme.palette.mode === 'light'
-                ? theme.palette.black.main
+                ? 'transparent'
                 : theme.palette.white.main,
             height: '32px',
             width: '32px',
+            padding: '3px',
           }}
         />
       ) : null}
