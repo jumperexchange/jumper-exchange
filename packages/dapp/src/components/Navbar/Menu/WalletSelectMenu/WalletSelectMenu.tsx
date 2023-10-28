@@ -1,5 +1,4 @@
-import { Box, Breakpoint, CSSObject, Typography } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Breakpoint, CSSObject, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MenuKeys, useWalletSelectContent } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
@@ -40,14 +39,6 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const handleClickSelectMore = () => {
     onOpenNavbarSubMenu(MenuKeys.WalletSelectMore);
   };
-
-  if (!walletSelectMenuItems.length) {
-    return (
-      <Box textAlign={'center'} mt={theme.spacing(1)}>
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   const menuItemStyles: CSSObject = {
     margin: 0,
