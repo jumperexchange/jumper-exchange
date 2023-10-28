@@ -5,7 +5,7 @@
       "subtitle": "<0>4x audited</0> multi-chain liquidity aggregator powered by <1>LI.FI</1>",
       "cta": "Get started"
     },
-    "poweredByLifi": "Powered by <0>LI.FI</0>",
+    "poweredByLifi": "<0>Powered by </0><1>LI.FI</1>",
     "links": {
       "exchange": "Exchange",
       "dashboard": "Dashboard",

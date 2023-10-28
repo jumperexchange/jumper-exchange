@@ -16,6 +16,8 @@ export const PoweredBy = () => {
           components={[
             // fix: allow component with "no content"
             // eslint-disable-next-line jsx-a11y/anchor-has-content
+            <span style={{ userSelect: 'none' }}></span>,
+            // eslint-disable-next-line jsx-a11y/anchor-has-content
             <a
               className={'link-lifi'}
               href="https://li.fi/?utm_source=jumper&utm_medium=powered_by&utm_campaign=jumper_to_lifi"
