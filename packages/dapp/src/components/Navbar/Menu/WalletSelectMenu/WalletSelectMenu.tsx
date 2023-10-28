@@ -44,7 +44,6 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
     margin: 0,
     flexDirection: 'column',
     flexWrap: 'wrap',
-    // backgroundColor: `${getContrastAlphaColor(theme, '2%')} !important`,
     height: '72px',
     width: '72px',
     placeContent: 'center',

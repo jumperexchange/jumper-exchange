@@ -126,10 +126,6 @@ export const WalletManagementButtons: React.FC<
         p: '6px',
         paddingRight: '16px',
         minWidth: 'inherit',
-        '@media screen and (min-width:430px) and (max-width: 900px)': {
-          // width: '180px',
-          // padding: '6px 8px',
-        },
         [theme.breakpoints.up('md' as Breakpoint)]: {
           position: 'relative',
           width: '48px',
