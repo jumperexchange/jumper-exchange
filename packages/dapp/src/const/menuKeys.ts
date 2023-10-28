@@ -3,7 +3,6 @@ export enum MenuKeys {
   WalletSelect = 'WalletSelect',
   WalletSelectMore = 'WalletSelectMore',
   Wallet = 'Wallet',
-  Themes = 'Themes',
   Chains = 'Chains',
   Devs = 'Devs',
   Language = 'Language',
@@ -33,7 +32,6 @@ export const MenuMain: MenuMainType = {
 };
 
 export const MenuSub: MenuSubType = {
-  [MenuKeys.Themes]: MenuKeys.Themes,
   [MenuKeys.Devs]: MenuKeys.Devs,
   [MenuKeys.Language]: MenuKeys.Language,
   [MenuKeys.WalletSelectMore]: MenuKeys.WalletSelectMore,
