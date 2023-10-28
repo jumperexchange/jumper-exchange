@@ -48,9 +48,8 @@ export const useMainMenuContent = () => {
   });
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
-    console.log('MODE', mode);
     trackEvent({
-      category: TrackingCategory.ThemeMenu,
+      category: TrackingCategory.ThemeSection,
       action: TrackingAction.SwitchTheme,
       label: `theme_${mode}`,
       data: {

@@ -3,7 +3,6 @@ import {
   useDevelopersContent,
   useLanguagesContent,
   useMainMenuContent,
-  useThemeContent,
 } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +15,6 @@ interface MainMenuProps {
 export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const { t } = useTranslation();
   const mainMenuItems = useMainMenuContent();
-  const subMenuTheme = useThemeContent();
   const subMenuDevelopers = useDevelopersContent();
   const subMenuLanguage = useLanguagesContent();
   const [openMainNavbarMenu, onOpenNavbarMainMenu, openNavbarSubMenu] =
@@ -51,13 +49,6 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             open
           />
         ))}
-      <SubMenuComponent
-        label={t('navbar.navbarMenu.theme')}
-        triggerSubMenu={MenuKeys.Themes}
-        open={openNavbarSubMenu === MenuKeys.Themes}
-        prevMenu={MenuKeys.None}
-        subMenuList={subMenuTheme}
-      />
 
       <SubMenuComponent
         label={t('language.key', { ns: 'language' })}

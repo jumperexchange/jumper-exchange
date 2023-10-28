@@ -14,7 +14,6 @@ import { useChains } from '../../hooks/useChains';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
-import { ThemeSwitch } from '../ThemeSwitch';
 import {
   NavbarDropdownButton,
   NavbarManagement as NavbarManagementContainer,
@@ -82,7 +81,6 @@ const NavbarManagement = () => {
         isSuccess={isSuccess}
       />
       {account.isActive ? <ChainSwitch /> : null}
-      <ThemeSwitch />
       <NavbarDropdownButton
         ref={mainMenuAnchor}
         id="composition-button"
