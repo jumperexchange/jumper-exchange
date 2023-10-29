@@ -6,6 +6,7 @@
   "dependencies": {
     "@arcxmoney/analytics": "^1.9.1",
     "@cookie3/analytics": "^0.6.0",
+    "@cyberlab/cyber-app-sdk": "1.3.0-beta.4",
     "@lifi/sdk": "^2.4.3",
     "@lifi/wallet-management": "^2.4.1",
     "@lifi/widget": "^2.7.1",

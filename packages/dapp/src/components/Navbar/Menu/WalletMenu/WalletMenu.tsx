@@ -23,18 +23,22 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
+import { useCyberConnectWallet } from '../../../../hooks/useCyberConnectWallet';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
 export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { checkMultisigEnvironment } = useMultisig();
+  const { checkCyberConnectEnvironment } = useCyberConnectWallet();
   const { t } = useTranslation();
   const theme = useTheme();
   const blockchainExplorerURL = useBlockchainExplorerURL();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+  const [isCyberConnectEnvironment, setIsCyberConnectEnvironment] =
+    useState(false);
   const walletSource = supportedWallets;
 
   const [
@@ -115,6 +119,9 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
   const handleMultisigEnvironmentCheck = useCallback(async () => {
     const response = await checkMultisigEnvironment();
+    const isCyberConnect = await checkCyberConnectEnvironment();
+
+    setIsCyberConnectEnvironment(isCyberConnect);
 
     setIsMultisigEnvironment(response);
     // Check MultisigEnvironment only on first render
@@ -128,6 +135,12 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   useEffect(() => {
     handleMultisigEnvironmentCheck();
   }, [account, handleMultisigEnvironmentCheck]);
+
+  const isSmartContractWalletEnv = !(
+    isMultisigEnvironment || isCyberConnectEnvironment
+  );
+
+  console.log({ isSmartContractWalletEnv });
 
   return openNavbarWalletMenu ? (
     <NavbarMenu
@@ -165,19 +178,19 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
             {_walletDigest}
           </Typography>
         </Grid>
-        {!isMultisigEnvironment && (
+        {isSmartContractWalletEnv && (
           <Grid item xs={4}>
             <SpotButton name="Copy" onClick={handleCopyButton}>
               <ContentCopyIcon />
             </SpotButton>
           </Grid>
         )}
-        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
+        <Grid item xs={isSmartContractWalletEnv ? 4 : 6}>
           <SpotButton name="Explore" onClick={handleExploreButton}>
             <LaunchIcon />
           </SpotButton>
         </Grid>
-        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
+        <Grid item xs={isSmartContractWalletEnv ? 4 : 6}>
           <SpotButton
             name={t('navbar.walletMenu.disconnect')}
             variant={'primary'}
