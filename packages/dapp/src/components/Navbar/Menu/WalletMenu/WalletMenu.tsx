@@ -118,12 +118,12 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   };
 
   const handleMultisigEnvironmentCheck = useCallback(async () => {
-    const response = await checkMultisigEnvironment();
+    const isMultiSig = await checkMultisigEnvironment();
     const isCyberConnect = await checkCyberConnectEnvironment();
 
     setIsCyberConnectEnvironment(isCyberConnect);
 
-    setIsMultisigEnvironment(response);
+    setIsMultisigEnvironment(isMultiSig);
     // Check MultisigEnvironment only on first render
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -139,8 +139,6 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const isSmartContractWalletEnv = !(
     isMultisigEnvironment || isCyberConnectEnvironment
   );
-
-  console.log({ isSmartContractWalletEnv });
 
   return openNavbarWalletMenu ? (
     <NavbarMenu
