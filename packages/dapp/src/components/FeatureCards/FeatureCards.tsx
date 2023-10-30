@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { useFeatureCards } from '../../hooks/useFeatureCards';
 import { useSettingsStore } from '../../stores';
-import { FeatureCardType } from '../../types/featureCardsRequest';
+import { FeatureCardType } from '../../types/featureCardsRequest.types';
 import { FeatureCard, FeatureCardsContainer } from './index';
 
 export const FeatureCards = () => {
