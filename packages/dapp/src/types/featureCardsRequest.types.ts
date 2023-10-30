@@ -22,12 +22,11 @@ export type FeatureCardType = {
 export type FeatureCardEntry = {
   displayConditions: DisplayConditions;
   subtitle: string;
-  gradientColor?: string;
   title: string;
   ctaCall?: string;
   url: string;
-  imageDarkMode?: Image;
-  imageLightMode?: Image;
+  backgroundImageDark?: Image;
+  backgroundImageLight?: Image;
 };
 
 export type FeatureCardAsset = {
@@ -82,9 +81,17 @@ type Fields = {
   title: string;
 };
 
+type CustomCardMode = 'light' | 'dark';
+
+interface CustomCard {
+  ctaColor: string;
+  mode: CustomCardMode;
+}
+
 type DisplayConditions = {
   id: string;
-  showOnce: boolean;
+  showOnce?: boolean;
+  custom?: CustomCard;
 };
 
 type Image = {

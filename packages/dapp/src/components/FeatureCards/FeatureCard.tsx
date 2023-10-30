@@ -18,7 +18,7 @@ import {
   FeatureCardAsset,
   FeatureCardType,
 } from '../../types/featureCardsRequest.types';
-import { Card, CardImage } from './FeatureCard.style';
+import { Card } from './FeatureCard.style';
 
 interface FeatureCardProps {
   data: FeatureCardType;
@@ -39,6 +39,27 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       data?.fields?.displayConditions.showOnce &&
       onDisableFeatureCard(data?.fields?.displayConditions?.id);
   }, [data?.fields?.displayConditions, onDisableFeatureCard]);
+
+  const typographyColor = useMemo(() => {
+    if (data.fields.displayConditions.custom?.mode) {
+      if (data.fields.displayConditions.custom?.mode === 'dark') {
+        return theme.palette.white.main;
+      } else if (data.fields.displayConditions.custom?.mode === 'light') {
+        return theme.palette.black.main;
+      }
+    } else {
+      if (theme.palette.mode === 'dark') {
+        return theme.palette.white.main;
+      } else {
+        return theme.palette.black.main;
+      }
+    }
+  }, [
+    data.fields.displayConditions.custom?.mode,
+    theme.palette.black.main,
+    theme.palette.mode,
+    theme.palette.white.main,
+  ]);
 
   useEffect(() => {
     if (open) {
@@ -69,14 +90,14 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   const imageUrl = useMemo(() => {
     return assets.filter((el: FeatureCardAsset) => {
       return theme.palette.mode === 'dark'
-        ? el?.sys?.id === data?.fields?.imageDarkMode?.sys?.id
-        : el?.sys?.id === data?.fields?.imageLightMode?.sys?.id;
+        ? el?.sys?.id === data?.fields?.backgroundImageDark?.sys?.id
+        : el?.sys?.id === data?.fields?.backgroundImageLight?.sys?.id;
     })[0]?.fields?.file?.url;
   }, [
     theme.palette.mode,
     assets,
-    data?.fields?.imageDarkMode?.sys?.id,
-    data?.fields?.imageLightMode?.sys?.id,
+    data?.fields?.backgroundImageDark?.sys?.id,
+    data?.fields?.backgroundImageLight?.sys?.id,
   ]);
 
   const handleClose = () => {
@@ -121,7 +142,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       timeout={150}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
-      <Card gradient={data?.fields.gradientColor || undefined}>
+      <Card backgroundImageUrl={imageUrl}>
         <CardContent
           sx={{
             padding: theme.spacing(3),
@@ -141,10 +162,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               sx={{
                 width: '24px',
                 height: '24px',
-                color:
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
+                color: typographyColor,
               }}
             />
           </IconButton>
@@ -152,6 +170,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Typography
               variant={'lifiHeaderSmall'}
               sx={{
+                color: typographyColor,
                 fontSize: '24px',
                 lineHeight: '32px',
                 maxHeight: '32px',
@@ -167,6 +186,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Typography
               variant={'lifiBodySmall'}
               sx={{
+                color: typographyColor,
                 lineHeight: '24px',
                 width: '224px',
                 height: '48px',
@@ -186,8 +206,9 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               sx={{
                 textDecoration: 'none',
                 color:
+                  data.fields.displayConditions.custom?.mode === 'dark' ||
                   theme.palette.mode === 'dark'
-                    ? theme.palette.accent1Alt.main
+                    ? theme.palette.accent1Alt?.main
                     : theme.palette.primary.main,
               }}
             >
@@ -198,19 +219,14 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
                   maxHeight: '20px',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
+                  color:
+                    data.fields.displayConditions.custom?.ctaColor ?? 'inherit',
                 }}
               >
                 {data.fields.ctaCall ?? t('featureCard.learnMore')}
               </Typography>
             </Link>
           </CardActions>
-          {imageUrl && (
-            <CardImage
-              component="img"
-              src={imageUrl}
-              alt="Feature Card Image"
-            />
-          )}
         </CardContent>
       </Card>
     </Slide>
