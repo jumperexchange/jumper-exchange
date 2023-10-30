@@ -2,6 +2,14 @@
 
 import type { MenuKeys } from 'src/const';
 
+type SnackbarSeverityType = 'error' | 'warning' | 'info' | 'success';
+
+export interface SnackbarProps {
+  open: boolean;
+  label?: string;
+  severity?: SnackbarSeverityType | undefined;
+}
+
 export type MenuProps = {
   anchorRef: any;
   openMainMenuPopper: boolean;
@@ -9,37 +17,35 @@ export type MenuProps = {
   openChainsPopper: boolean;
   openWalletPopper: boolean;
   openSubMenuPopper: keyof typeof MenuKeys;
+  openSnackbar: SnackbarProps;
   openSupportModal: boolean;
-};
-
-export type MenuContextProps = {
-  anchorRef?: any;
-  openMainMenuPopper?: boolean;
-  openChainsPopper?: boolean;
-  openWalletSelectPopper?: boolean;
-  openWalletPopper?: boolean;
-  openSubMenuPopper?: keyof typeof MenuKeys;
-  openSupportModal?: boolean;
 };
 
 export interface MenuState extends MenuProps {
   // Close ALL Navbar Menus
   onCloseAllPopperMenus: () => void;
 
-  // Toggle Navbar Main Menu
+  // Toggle Main Menu
   onOpenMainMenuPopper: (open: boolean, anchorRef?: any) => void;
 
-  // Toggle Navbar Wallet Menu
-  onOpenWalletSelectPopper: (open: boolean, anchorRef?: any) => void;
-
-  // Toggle Navbar Connected Menu
+  // Toggle Wallet Menu
   onOpenWalletPopper: (open: boolean, anchorRef?: any) => void;
 
-  // Toggle Navbar Chains Menu
+  // Toggle Wallet Selection Menu
+  onOpenWalletSelectPopper: (open: boolean, anchorRef?: any) => void;
+
+  // Toggle Chains Menu
   onOpenChainsPopper: (open: boolean, anchorRef?: any) => void;
 
-  // Toggle Navbar Sub Menu
+  // Toggle Sub Menu
   onOpenSubMenuPopper: (subMenu: keyof typeof MenuKeys) => void;
+
+  // Open Snackbar and set label
+  onOpenSnackbar: (
+    open: boolean,
+    label?: string,
+    severity?: SnackbarSeverityType,
+  ) => void;
 
   // Toggle support modal
   onOpenSupportModal: (open: boolean) => void;

@@ -4,9 +4,7 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import type { Breakpoint } from '@mui/material';
 import { Grid, Typography, useTheme } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
-import Snackbar from '@mui/material/Snackbar';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SpotButton } from 'src/atoms';
@@ -24,9 +22,9 @@ import { openInNewTab, walletDigest } from 'src/utils';
 interface PopperMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
+
 export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   const { checkMultisigEnvironment } = useMultisig();
-  const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { t } = useTranslation();
   const theme = useTheme();
   const blockchainExplorerURL = useBlockchainExplorerURL();
@@ -37,15 +35,16 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   const [
     openWalletPopper,
     onOpenWalletPopper,
+    onOpenSnackbar,
     openSubMenuPopper,
     onCloseAllPopperMenus,
   ] = useMenuStore((state) => [
     state.openWalletPopper,
     state.onOpenWalletPopper,
+    state.onOpenSnackbar,
     state.openSubMenuPopper,
     state.onCloseAllPopperMenus,
   ]);
-
   const onWalletDisconnect = useSettingsStore(
     (state) => state.onWalletDisconnect,
   );
@@ -66,16 +65,6 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
     return walletDigest(account);
   }, [account]);
 
-  const handleCloseSnackbar = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string,
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setCopiedToClipboard(false);
-  };
-
   const handleExploreButton = () => {
     account.chainId && onCloseAllPopperMenus();
 
@@ -83,7 +72,7 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.OpenBlockchainExplorer,
       label: 'open-blockchain-explorer-wallet',
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     if (blockchainExplorerURL) {
       trackPageload({
@@ -91,7 +80,10 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
         destination: 'blokchain-explorer',
         url: blockchainExplorerURL || '',
         pageload: true,
-        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
       });
       openInNewTab(blockchainExplorerURL);
     }
@@ -99,12 +91,12 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
 
   const handleCopyButton = () => {
     account.address && navigator.clipboard.writeText(account.address);
-    setCopiedToClipboard(true);
+    onOpenSnackbar(true, t('navbar.walletMenu.copiedMsg'), 'success');
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.CopyAddressToClipboard,
       label: 'copy_addr_to_clipboard',
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     onCloseAllPopperMenus();
   };
@@ -124,8 +116,8 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   }, []);
 
   useEffect(() => {
-    openWalletPopper! && setCopiedToClipboard(false);
-  }, [openWalletPopper]);
+    openWalletPopper! && onOpenSnackbar(false);
+  }, [onOpenSnackbar, openWalletPopper]);
 
   useEffect(() => {
     handleMultisigEnvironmentCheck();
@@ -190,17 +182,5 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
         </Grid>
       </Grid>
     </PopperMenu>
-  ) : (
-    <Snackbar
-      open={copiedToClipboard}
-      autoHideDuration={2000}
-      onClose={handleCloseSnackbar}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      sx={{ top: '80px !important' }}
-    >
-      <MuiAlert elevation={6} variant="filled" severity="success">
-        {t('navbar.walletMenu.copiedMsg')}
-      </MuiAlert>
-    </Snackbar>
-  );
+  ) : null;
 };

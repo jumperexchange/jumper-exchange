@@ -1,12 +1,10 @@
-import type { Breakpoint } from '@mui/material';
+import type { Breakpoint, Theme } from '@mui/material';
 import { Slide, Typography, useTheme } from '@mui/material';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { ButtonPrimary } from 'src/atoms';
 import {
-  AUDITS_URL,
-  LIFI_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
@@ -14,11 +12,24 @@ import {
 import { useUserTracking } from 'src/hooks';
 import { StatsCards } from 'src/organisms';
 import { EventTrackingTool } from 'src/types';
+import { appendUTMParametersToLink } from 'src/utils';
 import { ContentContainer, CustomColor, Wrapper } from './WelcomeWrapper.style';
 interface WelcomeWrapperProps {
   showWelcome: boolean;
   handleGetStarted: (event: any) => void;
 }
+
+const auditsWelcomeUrl = appendUTMParametersToLink(
+  'https://docs.li.fi/smart-contracts/audits',
+  {
+    utm_campaign: 'jumper_to_docs',
+    utm_medium: 'welcome_screen',
+  },
+);
+const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
+  utm_campaign: 'jumper_to_lifi',
+  utm_medium: 'welcome_screen',
+});
 
 export const WelcomeWrapper: React.FC<
   PropsWithChildren<WelcomeWrapperProps>
@@ -26,9 +37,9 @@ export const WelcomeWrapper: React.FC<
   const theme = useTheme();
   const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
-  const [openChainsPopper, setOpenChainsPopper] = useState(false);
   const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
   const [openDexsPopper, setOpenDexsPopper] = useState(false);
+  const [openChainsPopper, setOpenChainsPopper] = useState(false);
 
   useEffect(() => {
     if (showWelcome) {
@@ -36,7 +47,10 @@ export const WelcomeWrapper: React.FC<
         category: TrackingCategory.WelcomeScreen,
         label: 'open-welcome-screen',
         action: TrackingAction.OpenWelcomeMessageScreen,
-        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
       });
     }
   }, [showWelcome, trackEvent]);
@@ -47,14 +61,14 @@ export const WelcomeWrapper: React.FC<
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameter.WelcomeMessageLink]: '4x_audited' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
       source: 'welcome-screen',
       destination: 'docs-sc-audits',
-      url: AUDITS_URL,
+      url: auditsWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
@@ -64,14 +78,14 @@ export const WelcomeWrapper: React.FC<
       label: 'open-welcome-message-link',
       action: TrackingAction.OpenWelcomeMessageLink,
       data: { [TrackingEventParameter.WelcomeMessageLink]: 'LIFI' },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
       source: 'welcome-screen',
       destination: 'lifi-website',
-      url: LIFI_URL,
+      url: lifiWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
   };
 
@@ -117,7 +131,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href={AUDITS_URL}
+                    href={auditsWelcomeUrl}
                     target={'_blank'}
                     rel="noreferrer"
                     onClick={handleAuditClick}
@@ -125,7 +139,7 @@ export const WelcomeWrapper: React.FC<
                   // eslint-disable-next-line jsx-a11y/anchor-has-content
                   <a
                     className={'link-lifi'}
-                    href={LIFI_URL}
+                    href={lifiWelcomeUrl}
                     onClick={handleLIFIClick}
                     target={'_blank'}
                     rel="noreferrer"
@@ -144,7 +158,7 @@ export const WelcomeWrapper: React.FC<
           />
           <ButtonPrimary
             onClick={handleGetStarted}
-            sx={(theme) => ({
+            sx={(theme: Theme) => ({
               margin: 'auto',
               marginTop: theme.spacing(4),
               height: '48px',

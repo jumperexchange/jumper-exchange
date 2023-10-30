@@ -49,6 +49,7 @@ export function WidgetEvents() {
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionStarted,
           label: 'execution_start',
+          value: parseFloat(route.fromAmountUSD),
           data: {
             [TrackingEventParameter.RouteId]: route.id,
             [TrackingEventParameter.FromToken]: route.fromToken.address,
@@ -85,6 +86,7 @@ export function WidgetEvents() {
             txhash: update.process.txHash || '',
             category: TrackingCategory.WidgetEvent,
             action: TrackingAction.OnRouteExecutionUpdated,
+            value: parseFloat(update.route.fromAmountUSD),
             data: {
               label: 'execution_update',
               [TrackingEventParameter.FromAmountUSD]:
@@ -123,6 +125,7 @@ export function WidgetEvents() {
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnRouteExecutionCompleted,
           label: 'execution_success',
+          value: parseFloat(route.fromAmountUSD),
           data: {
             [TrackingEventParameter.RouteId]: route.id,
             [TrackingEventParameter.FromChainId]: route.fromChainId,

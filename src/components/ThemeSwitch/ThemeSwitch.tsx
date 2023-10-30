@@ -12,6 +12,7 @@ import {
 import { usePopperIsOpened, useUserTracking } from 'src/hooks';
 import { useDetectDarkModePreference } from 'src/providers';
 import { useSettingsStore } from 'src/stores';
+import { EventTrackingTool } from 'src/types';
 import { ButtonThemeSwitch } from '.';
 
 export const ThemeSwitch = () => {
@@ -36,6 +37,7 @@ export const ThemeSwitch = () => {
       data: {
         [TrackingEventParameter.SwitchedTheme]: changeMode,
       },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     onChangeMode(changeMode);
   };

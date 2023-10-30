@@ -1,3 +1,5 @@
+export const UTM_SOURCE = 'jumper';
+
 /*
   Name of an action that a user makes on the site. 
   GA: in GA this is the name of the even that is fired
@@ -80,12 +82,10 @@ export enum TrackingEventParameter {
 
   // Transaction:
   RouteId = 'param_route_id',
-  Steps = 'param_steps',
   FromToken = 'param_from_token',
   FromChainId = 'param_from_chain_id',
   ToToken = 'param_to_token',
   Timestamp = 'param_timestamp',
-  SubStatus = 'param_substatus',
   Status = 'param_status',
   Error = 'param_error',
   Message = 'param_message',

@@ -3,12 +3,12 @@ import { Grid, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { OnRamper, WelcomeWrapper, Widget } from 'src/components';
-import { TabsMap, TrackingAction, TrackingCategory } from 'src/const';
+import { LinkMap, TabsMap, TrackingAction, TrackingCategory } from 'src/const';
 import { useUserTracking } from 'src/hooks';
 import { TestnetAlert, WidgetContainer, WidgetEvents } from 'src/organisms';
 import { useActiveTabStore, useSettingsStore } from 'src/stores';
 import type { StarterVariantType } from 'src/types';
-import { EventTrackingTool, LinkMap } from 'src/types';
+import { EventTrackingTool } from 'src/types';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
@@ -88,7 +88,10 @@ export function Widgets() {
         category: TrackingCategory.WelcomeScreen,
         action: TrackingAction.CloseWelcomeScreen,
         label: 'enter_welcome_screen',
-        disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Raleon],
+        disableTrackingTool: [
+          EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
+        ],
       });
     }
   };

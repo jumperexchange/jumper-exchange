@@ -1,5 +1,5 @@
 import { MenuKeys } from 'src/const';
-import type { MenuState } from 'src/types';
+import type { MenuState, SnackbarProps } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
@@ -10,6 +10,7 @@ interface DefaultMenuType {
   openWalletSelectPopper: boolean;
   openSubMenuPopper: keyof typeof MenuKeys;
   openSupportModal: boolean;
+  openSnackbar: SnackbarProps;
   anchorRef: null | JSX.Element;
 }
 
@@ -20,6 +21,7 @@ export const defaultMenu: DefaultMenuType = {
   openWalletSelectPopper: false,
   openSubMenuPopper: 'None',
   openSupportModal: false,
+  openSnackbar: { open: false, label: undefined, severity: undefined },
   anchorRef: null,
 };
 
@@ -95,6 +97,18 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       set({
         openSubMenuPopper: subMenu,
       });
+    },
+
+    // Open Snackbar and set label
+    onOpenSnackbar: (open, label, severity) => {
+      set((state) => ({
+        ...state,
+        openSnackbar: {
+          open: open,
+          label: label || state.openSnackbar.label,
+          severity: severity || state.openSnackbar.severity,
+        },
+      }));
     },
 
     // Toggle support modal

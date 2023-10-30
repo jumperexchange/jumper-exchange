@@ -4,14 +4,19 @@ import { useTranslation } from 'react-i18next';
 import { ButtonTransparent } from 'src/atoms';
 import { WarningMessageCard, WarningMessageCardTitle } from 'src/components';
 import { PROD_URL } from 'src/const';
-import { openInNewTab } from 'src/utils';
+import { appendUTMParametersToLink, openInNewTab } from 'src/utils';
+
+const jumperUrl = appendUTMParametersToLink(PROD_URL, {
+  utm_medium: 'testnet_banner',
+  utm_campaign: 'testnet_to_jumper',
+});
 
 export const TestnetAlert = () => {
   const { t } = useTranslation();
   const theme = useTheme();
 
   const handleClick = () => {
-    openInNewTab(PROD_URL);
+    openInNewTab(jumperUrl);
   };
 
   return (

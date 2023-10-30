@@ -1,7 +1,7 @@
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { useTheme } from '@mui/material/styles';
-import FolderZipOutlinedIcon from '@mui/icons-material/FolderZipOutlined';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
@@ -43,7 +43,7 @@ export const useDevelopersContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_github' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -53,7 +53,7 @@ export const useDevelopersContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab(GITHUB_URL);
@@ -71,7 +71,7 @@ export const useDevelopersContent = () => {
           data: { [TrackingEventParameter.Menu]: 'lifi_docs' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         trackPageload({
@@ -81,7 +81,7 @@ export const useDevelopersContent = () => {
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab(DOCS_URL);
@@ -100,7 +100,7 @@ export const useDevelopersContent = () => {
           data: { [TrackingEventParameter.Menu]: 'brand_assets' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
-            EventTrackingTool.Raleon,
+            EventTrackingTool.Cookie3,
           ],
         });
         openInNewTab('/Jumper_Assets.zip');
