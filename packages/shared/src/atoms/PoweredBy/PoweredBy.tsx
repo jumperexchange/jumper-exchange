@@ -9,7 +9,12 @@ export const PoweredBy = () => {
     <Container>
       <Typography
         variant={'lifiBodySmall'}
-        sx={{ color: theme.palette.grey[500] }}
+        sx={{
+          color:
+            theme.palette.mode === 'dark'
+              ? theme.palette.alphaLight500.main
+              : theme.palette.alphaDark500.main,
+        }}
       >
         <Trans
           i18nKey={'navbar.poweredByLifi' as string & never[]}

@@ -17,7 +17,10 @@ export const Container = styled('div')<ContainerProps>(({ theme }) => ({
 
     '.link-lifi': {
       fontWeight: '700',
-      color: theme.palette.primary.main,
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.accent1.main
+          : theme.palette.accent1Alt.main,
       textDecoration: 'none',
     },
   },
