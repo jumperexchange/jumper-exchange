@@ -6,6 +6,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
 import { useTheme } from '@mui/material/styles';
 import { ButtonSecondary } from '@transferto/shared/src/atoms';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
@@ -73,67 +74,100 @@ export const useMainMenuContent = () => {
     flexGrow: '1',
   };
 
+  const popperProps = {
+    sx: {
+      zIndex: 1600,
+    },
+  };
+
   return [
     {
       children: (
         <>
-          <ButtonSecondary
-            styles={{
-              ...buttonStyles,
-              backgroundColor:
-                themeMode === 'light' ? activeButtonBgCol : inactiveButtonBgCol,
-            }}
-            onClick={() => {
-              handleSwitchMode('light');
-            }}
+          <Tooltip
+            enterDelay={800}
+            title={t('navbar.themes.switchToDark')}
+            PopperProps={popperProps}
+            arrow
           >
-            <LightModeIcon
-              sx={{
-                fill:
+            <ButtonSecondary
+              styles={{
+                ...buttonStyles,
+                backgroundColor:
                   themeMode === 'light'
-                    ? 'currentColor'
-                    : theme.palette.grey[700],
+                    ? activeButtonBgCol
+                    : inactiveButtonBgCol,
               }}
-            />
-          </ButtonSecondary>
-          <ButtonSecondary
-            styles={{
-              ...buttonStyles,
-              backgroundColor:
-                themeMode === 'dark' ? activeButtonBgCol : inactiveButtonBgCol,
-            }}
-            onClick={() => {
-              handleSwitchMode('dark');
-            }}
+              onClick={() => {
+                handleSwitchMode('light');
+              }}
+            >
+              <LightModeIcon
+                sx={{
+                  fill:
+                    themeMode === 'light'
+                      ? 'currentColor'
+                      : theme.palette.grey[700],
+                }}
+              />
+            </ButtonSecondary>
+          </Tooltip>
+          <Tooltip
+            enterDelay={800}
+            title={t('navbar.themes.switchToLight')}
+            PopperProps={popperProps}
+            arrow
           >
-            <NightlightIcon
-              sx={{
-                fill:
+            <ButtonSecondary
+              styles={{
+                ...buttonStyles,
+                backgroundColor:
                   themeMode === 'dark'
-                    ? 'currentColor'
-                    : theme.palette.grey[700],
+                    ? activeButtonBgCol
+                    : inactiveButtonBgCol,
               }}
-            />
-          </ButtonSecondary>
-          <ButtonSecondary
-            styles={{
-              ...buttonStyles,
-              backgroundColor:
-                themeMode === 'auto' ? activeButtonBgCol : inactiveButtonBgCol,
-            }}
-            onClick={() => {
-              handleSwitchMode('auto');
-            }}
+              onClick={() => {
+                handleSwitchMode('dark');
+              }}
+            >
+              <NightlightIcon
+                sx={{
+                  fill:
+                    themeMode === 'dark'
+                      ? 'currentColor'
+                      : theme.palette.grey[700],
+                }}
+              />
+            </ButtonSecondary>
+          </Tooltip>
+          <Tooltip
+            enterDelay={800}
+            title={t('navbar.themes.switchToAuto')}
+            PopperProps={popperProps}
+            arrow
           >
-            <BrightnessAutoIcon
-              sx={{
-                fill:
+            <ButtonSecondary
+              styles={{
+                ...buttonStyles,
+                backgroundColor:
                   themeMode === 'auto'
-                    ? 'currentColor'
-                    : theme.palette.grey[700],
+                    ? activeButtonBgCol
+                    : inactiveButtonBgCol,
               }}
-            />
-          </ButtonSecondary>
+              onClick={() => {
+                handleSwitchMode('auto');
+              }}
+            >
+              <BrightnessAutoIcon
+                sx={{
+                  fill:
+                    themeMode === 'auto'
+                      ? 'currentColor'
+                      : theme.palette.grey[700],
+                }}
+              />
+            </ButtonSecondary>
+          </Tooltip>
         </>
       ),
       styles: {
