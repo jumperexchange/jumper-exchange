@@ -73,7 +73,7 @@ export const useMainMenuContent = () => {
   const buttonStyles = {
     height: '40px',
     borderRadius: '8px',
-    width: '72px',
+    flexGrow: '1',
   };
 
   return [
@@ -140,8 +140,9 @@ export const useMainMenuContent = () => {
         </>
       ),
       styles: {
-        width: '240px',
-        margin: '12px auto',
+        width: 'auto',
+        margin: '12px 24px',
+        gap: '8px',
         backgroundColor: theme.palette.grey[200],
         '&:hover': {
           backgroundColor: theme.palette.grey[200],
@@ -159,6 +160,9 @@ export const useMainMenuContent = () => {
             theme.palette.mode === 'light'
               ? theme.palette.grey[700]
               : theme.palette.grey[300],
+        },
+        '> div': {
+          display: 'none',
         },
       },
       showMoreIcon: false,
