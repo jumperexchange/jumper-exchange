@@ -36,22 +36,16 @@ export const useWalletSelectContent = () => {
 
     const walletsInstalled = await Promise.all(walletsPromise);
 
-    // separate into installed and not installed wallets
-    const installedWallets = supportedWallets.filter((_, index) => {
-      walletsInstalled[index] && onClientWallets(_.name);
-      return walletsInstalled[index];
+    // always remove Default Wallet from list
+    const filteredWallets = supportedWallets.filter((wallet, index) => {
+      walletsInstalled[index] && onClientWallets(wallet.name);
+      return wallet.name !== 'Default Wallet';
     });
 
-    // always remove Default Wallet from not installed Wallets
-    const notInstalledWallets = supportedWallets.filter(
-      (wallet, index) =>
-        !walletsInstalled[index] && wallet.name !== 'Default Wallet',
-    );
-
-    const allowedWallets = [...installedWallets];
+    let allowedWallets = filteredWallets.slice(0, 7);
 
     if (isDesktopView) {
-      allowedWallets.push(...notInstalledWallets);
+      allowedWallets = filteredWallets;
     }
 
     setAvailableWallets(allowedWallets);
