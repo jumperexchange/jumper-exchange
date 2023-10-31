@@ -4,6 +4,8 @@ import { appendUTMParametersToLink } from '@transferto/shared/src/utils';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import {
+  AUDITS_URL,
+  LIFI_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
@@ -17,14 +19,11 @@ interface WelcomeWrapperProps {
   handleGetStarted: (event: any) => void;
 }
 
-const auditsWelcomeUrl = appendUTMParametersToLink(
-  'https://docs.li.fi/smart-contracts/audits',
-  {
-    utm_campaign: 'jumper_to_docs',
-    utm_medium: 'welcome_screen',
-  },
-);
-const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
+const auditsWelcomeUrl = appendUTMParametersToLink(AUDITS_URL, {
+  utm_campaign: 'jumper_to_docs',
+  utm_medium: 'welcome_screen',
+});
+const lifiWelcomeUrl = appendUTMParametersToLink(LIFI_URL, {
   utm_campaign: 'jumper_to_lifi',
   utm_medium: 'welcome_screen',
 });
@@ -62,7 +61,7 @@ export const WelcomeWrapper: React.FC<
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
-      source: 'welcome-screen',
+      source: TrackingCategory.WelcomeScreen,
       destination: 'docs-sc-audits',
       url: auditsWelcomeUrl,
       pageload: true,
@@ -79,7 +78,7 @@ export const WelcomeWrapper: React.FC<
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
-      source: 'welcome-screen',
+      source: TrackingCategory.WelcomeScreen,
       destination: 'lifi-website',
       url: lifiWelcomeUrl,
       pageload: true,

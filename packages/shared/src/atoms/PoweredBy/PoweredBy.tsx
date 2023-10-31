@@ -1,9 +1,40 @@
 import { Typography, useTheme } from '@mui/material';
+import {
+  LIFI_URL,
+  TrackingAction,
+  TrackingCategory,
+} from '@transferto/dapp/src/const';
+import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { EventTrackingTool } from '@transferto/dapp/src/types';
 import { Trans } from 'react-i18next';
+import { appendUTMParametersToLink, openInNewTab } from '../../utils';
 import { Container } from './PoweredBy.style';
+
+const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
+  utm_campaign: 'jumper_to_lifi',
+  utm_medium: 'powered_by',
+});
 
 export const PoweredBy = () => {
   const theme = useTheme();
+  const { trackPageload, trackEvent } = useUserTracking();
+
+  const handleClick = () => {
+    trackPageload({
+      source: TrackingCategory.PoweredBy,
+      destination: 'lifi-website',
+      url: lifiUrl,
+      pageload: true,
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    trackEvent({
+      category: TrackingCategory.PoweredBy,
+      action: TrackingAction.PoweredBy,
+      label: 'click_lifi_in_powered_by',
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    openInNewTab(lifiUrl);
+  };
 
   return (
     <Container>
@@ -25,7 +56,8 @@ export const PoweredBy = () => {
             // eslint-disable-next-line jsx-a11y/anchor-has-content
             <a
               className={'link-lifi'}
-              href="https://li.fi/?utm_source=jumper&utm_medium=powered_by&utm_campaign=jumper_to_lifi"
+              onClick={handleClick}
+              href={lifiUrl}
               target={'_blank'}
               rel="noreferrer"
             />,

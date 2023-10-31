@@ -18,7 +18,11 @@ import {
 } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import {
+  DISCORD_URL,
+  EXPLORER_URL,
+  LIFI_URL,
   MenuKeys,
+  TWITTER_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
@@ -38,12 +42,12 @@ export const useMainMenuContent = () => {
     state.onChangeMode,
   ]);
 
-  const explorerUrl = appendUTMParametersToLink('https://explorer.li.fi/', {
+  const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
     utm_campaign: 'jumper_to_explorer',
     utm_medium: 'menu',
   });
 
-  const lifiUrl = appendUTMParametersToLink('https://li.fi/', {
+  const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
     utm_campaign: 'jumper_to_lifi',
     utm_medium: 'menu',
   });
@@ -242,15 +246,15 @@ export const useMainMenuContent = () => {
         });
         trackPageload({
           source: TrackingCategory.MainMenu,
-          destination: 'twitter-JumperExchange',
-          url: 'https://twitter.com/JumperExchange',
+          destination: 'twitter-jumper',
+          url: TWITTER_URL,
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
-        openInNewTab('https://twitter.com/JumperExchange');
+        openInNewTab(TWITTER_URL);
       },
     },
     {
@@ -279,14 +283,14 @@ export const useMainMenuContent = () => {
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'discord-lifi',
-          url: 'https://discord.gg/lifi',
+          url: DISCORD_URL,
           pageload: true,
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
-        openInNewTab('https://discord.gg/lifi');
+        openInNewTab(DISCORD_URL);
       },
     },
     {
@@ -305,7 +309,7 @@ export const useMainMenuContent = () => {
           ],
         });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.Menu,
           destination: 'lifi-explorer',
           url: explorerUrl,
           pageload: true,

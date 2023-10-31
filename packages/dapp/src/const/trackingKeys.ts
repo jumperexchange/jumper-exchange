@@ -1,6 +1,6 @@
 /*
   Name of an action that a user makes on the site. 
-  GA: in GA this is the name of the even that is fired
+  GA: in GA this is the name of the event that is fired
 */
 export enum TrackingAction {
   // Widget
@@ -40,6 +40,8 @@ export enum TrackingAction {
   SwitchTab = 'action_switch_tab',
   SwitchTheme = 'action_switch_theme',
   DownloadBrandAssets = 'action_dl_brand_assets',
+
+  PoweredBy = 'action_click_powered_by',
 }
 
 export enum TrackingCategory {
@@ -57,6 +59,7 @@ export enum TrackingCategory {
   WelcomeScreen = 'cat_welcome_screen',
   Widget = 'cat_widget',
   WidgetEvent = 'cat_widget_event',
+  PoweredBy = 'cat_powered_by',
 }
 
 // can be used as custom dimensions / metrics

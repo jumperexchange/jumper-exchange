@@ -1,18 +1,19 @@
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { Typography, useTheme } from '@mui/material';
+import { JUMPER_URL } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
 import { WarningMessageCard, WarningMessageCardTitle } from '..';
 import { ButtonTransparent } from '../../atoms';
 import { appendUTMParametersToLink, openInNewTab } from '../../utils';
 
-const PROD_URL = appendUTMParametersToLink('https://jumper.exchange/', {
-  utm_medium: 'testnet_banner',
-  utm_campaign: 'testnet_to_jumper',
-});
-
 export const TestnetAlert = () => {
   const { t } = useTranslation();
   const theme = useTheme();
+
+  const PROD_URL = appendUTMParametersToLink(JUMPER_URL, {
+    utm_medium: 'testnet_banner',
+    utm_campaign: 'testnet_to_jumper',
+  });
 
   const handleClick = () => {
     openInNewTab(PROD_URL);
