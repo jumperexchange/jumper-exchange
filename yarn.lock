@@ -4439,6 +4439,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-devtools@npm:5.4.2":
+  version: 5.4.2
+  resolution: "@tanstack/query-devtools@npm:5.4.2"
+  checksum: a084545813630d1238e2ebae45f55193414208aa9a5bdb22cf2cb9ff3682c58aa6a111ee57599a2b12f905e5e47a2ca40d580dd577ac9dff48905ce170b1b4e7
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.4.3":
+  version: 5.4.3
+  resolution: "@tanstack/react-query-devtools@npm:5.4.3"
+  dependencies:
+    "@tanstack/query-devtools": 5.4.2
+  peerDependencies:
+    "@tanstack/react-query": ^5.4.3
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: cf148c5938a953a1e4eedbaad6c9e571e22b94e0fb484b0293762b57349f7625048a13553bbf4346b7518a159b1d1981db928cab887b33534240bad358746ad6
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:^4.36.1":
   version: 4.36.1
   resolution: "@tanstack/react-query@npm:4.36.1"
@@ -4522,6 +4542,7 @@ __metadata:
     "@sentry/integrations": ^7.74.1
     "@sentry/react": ^7.74.1
     "@tanstack/react-query": ^5.0.0
+    "@tanstack/react-query-devtools": ^5.4.3
     "@transferto/shared": "*"
     "@types/react": ^18.2.31
     "@types/react-dom": ^18.2.14
