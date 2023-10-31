@@ -61,14 +61,11 @@ export const useMainMenuContent = () => {
   };
 
   const activeButtonBgCol =
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.grey[600];
+    theme.palette.mode === 'dark'
+      ? theme.palette.alphaLight300.main
+      : theme.palette.white.main;
 
-  const inactiveButtonBgCol =
-    theme.palette.mode === 'light'
-      ? 'transparent'
-      : getContrastAlphaColor(theme, '8%');
+  const inactiveButtonBgCol = 'transparent';
 
   const buttonStyles = {
     height: '40px',
@@ -143,17 +140,20 @@ export const useMainMenuContent = () => {
         width: 'auto',
         margin: '12px 24px',
         gap: '8px',
-        backgroundColor: theme.palette.grey[200],
+        backgroundColor:
+          theme.palette.mode === 'dark'
+            ? getContrastAlphaColor(theme, '12%')
+            : getContrastAlphaColor(theme, '4%'),
         '&:hover': {
-          backgroundColor: theme.palette.grey[200],
+          backgroundColor:
+            theme.palette.mode === 'dark'
+              ? getContrastAlphaColor(theme, '12%')
+              : getContrastAlphaColor(theme, '4%'),
         },
         paddingTop: '4px !important',
         padding: '4px',
         '> button:hover': {
-          backgroundColor:
-            theme.palette.mode === 'light'
-              ? getContrastAlphaColor(theme, '4%')
-              : theme.palette.grey[700],
+          backgroundColor: getContrastAlphaColor(theme, '4%'),
         },
         '> button:hover svg': {
           fill:

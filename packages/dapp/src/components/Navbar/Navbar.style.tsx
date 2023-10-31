@@ -197,8 +197,8 @@ export const NavbarTabs = styled(Tabs, {
     transform: 'translateX(-50%)',
     backgroundColor:
       theme.palette.mode === 'dark'
-        ? theme.palette.alphaLight100.main
-        : '#0000000A',
+        ? getContrastAlphaColor(theme, '12%')
+        : getContrastAlphaColor(theme, '4%'),
     margin: 'auto',
     borderRadius: 28,
     padding: 1,
