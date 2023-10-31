@@ -1,4 +1,4 @@
-import { Breakpoint, CSSObject, Typography } from '@mui/material';
+import { Breakpoint, CSSObject, Typography, darken } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MenuKeys, useWalletSelectContent } from '@transferto/dapp/src/const';
 import { useMenuStore } from '@transferto/dapp/src/stores';
@@ -97,11 +97,17 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
               showButton={false}
               styles={{
                 borderRadius: '72px',
-                backgroundColor: getContrastAlphaColor(theme, '2%'),
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? getContrastAlphaColor(theme, '12%')
+                    : getContrastAlphaColor(theme, '4%'),
                 ...menuItemStyles,
 
                 '&:hover': {
-                  backgroundColor: getContrastAlphaColor(theme, '4%'),
+                  backgroundColor:
+                    theme.palette.mode === 'dark'
+                      ? theme.palette.alphaLight300.main
+                      : darken(theme.palette.white.main, 0.08),
                 },
               }}
               showMoreIcon={false}
@@ -125,10 +131,16 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                 height: '48px !important',
                 borderRadius: '24px',
                 '> button': {
-                  backgroundColor: getContrastAlphaColor(theme, '2%'),
+                  backgroundColor:
+                    theme.palette.mode === 'dark'
+                      ? getContrastAlphaColor(theme, '12%')
+                      : getContrastAlphaColor(theme, '4%'),
                 },
                 '&:hover > button': {
-                  backgroundColor: getContrastAlphaColor(theme, '4%'),
+                  backgroundColor:
+                    theme.palette.mode === 'dark'
+                      ? theme.palette.alphaLight300.main
+                      : darken(theme.palette.white.main, 0.08),
                 },
               }}
               prefixIcon={
