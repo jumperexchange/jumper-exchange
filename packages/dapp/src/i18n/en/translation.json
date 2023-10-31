@@ -43,9 +43,7 @@
     "themes": {
       "switchToLight": "Switch to Light Theme",
       "switchToDark": "Switch to Dark Theme",
-      "light": "Light",
-      "dark": "Dark",
-      "auto": "Auto"
+      "switchToAuto": "Switch to Browser's theme"
     },
     "developers": {
       "github": "GitHub",
