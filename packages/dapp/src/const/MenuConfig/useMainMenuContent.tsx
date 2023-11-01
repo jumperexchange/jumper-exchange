@@ -89,8 +89,7 @@ export const useMainMenuContent = () => {
       children: (
         <>
           <Tooltip
-            enterDelay={800}
-            title={t('navbar.themes.switchToDark')}
+            title={t('navbar.themes.switchToLight')}
             PopperProps={popperProps}
             arrow
           >
@@ -117,8 +116,7 @@ export const useMainMenuContent = () => {
             </ButtonSecondary>
           </Tooltip>
           <Tooltip
-            enterDelay={800}
-            title={t('navbar.themes.switchToLight')}
+            title={t('navbar.themes.switchToDark')}
             PopperProps={popperProps}
             arrow
           >
@@ -145,8 +143,7 @@ export const useMainMenuContent = () => {
             </ButtonSecondary>
           </Tooltip>
           <Tooltip
-            enterDelay={800}
-            title={t('navbar.themes.switchToAuto')}
+            title={t('navbar.themes.switchToSystem')}
             PopperProps={popperProps}
             arrow
           >
