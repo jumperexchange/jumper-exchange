@@ -50,6 +50,7 @@ export const ChainSwitch = () => {
     <Tooltip
       title={t('navbar.walletMenu.switchChain')}
       disableHoverListener={popperOpened}
+      enterTouchDelay={0}
       arrow
     >
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>

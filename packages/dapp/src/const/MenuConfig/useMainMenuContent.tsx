@@ -91,6 +91,7 @@ export const useMainMenuContent = () => {
           <Tooltip
             title={t('navbar.themes.switchToLight')}
             PopperProps={popperProps}
+            enterTouchDelay={0}
             arrow
           >
             <ButtonSecondary
@@ -118,6 +119,7 @@ export const useMainMenuContent = () => {
           <Tooltip
             title={t('navbar.themes.switchToDark')}
             PopperProps={popperProps}
+            enterTouchDelay={0}
             arrow
           >
             <ButtonSecondary
@@ -145,6 +147,7 @@ export const useMainMenuContent = () => {
           <Tooltip
             title={t('navbar.themes.switchToSystem')}
             PopperProps={popperProps}
+            enterTouchDelay={0}
             arrow
           >
             <ButtonSecondary
