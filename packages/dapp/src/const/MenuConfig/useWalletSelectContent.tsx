@@ -121,7 +121,7 @@ export const useWalletSelectContent = () => {
             className="wallet-select-avatar"
             src={wallet.icon}
             alt={`${wallet.name}-wallet-logo`}
-            sx={{ height: '48px', width: '48px', objectFit: 'contain' }}
+            sx={{ height: '40px', width: '40px', objectFit: 'contain' }}
           />
         ),
         showMoreIcon: false,
