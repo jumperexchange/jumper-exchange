@@ -1,4 +1,5 @@
 import { ChainID } from '@arcxmoney/analytics';
+import { ChainId } from '@lifi/types';
 import { WalletAccount } from '@transferto/shared/src/types';
 
 export enum EventTrackingTool {
@@ -30,6 +31,11 @@ export interface TrackTransactionProps {
   data: Record<string, unknown>;
   txhash: string;
 }
+export interface TrackChainSwitchProps  {
+  chainId: ChainId;
+  account?: WalletAccount | { address: string }; 
+  disableTrackingTool?: EventTrackingTool[]; 
+};
 
 export interface trackPageloadProps {
   destination: string;

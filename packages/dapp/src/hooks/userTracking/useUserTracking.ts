@@ -6,10 +6,11 @@ import { useWallet } from '../../providers/WalletProvider';
 import {
   EventTrackingTool,
   TrackAttributeProps,
+  TrackChainSwitchProps,
   TrackDisconnectWalletProps,
   TrackEventProps,
   TrackTransactionProps,
-  trackPageloadProps,
+  trackPageloadProps
 } from '../../types';
 import { useCookie3 } from '../useCookie3';
 
@@ -204,11 +205,27 @@ export function useUserTracking() {
     [arcx, cookie3],
   );
 
+  const trackChainSwitch = useCallback(
+    async ({ chainId, account, disableTrackingTool }: TrackChainSwitchProps) => {
+
+      // ARCx Tracking
+      if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
+        arcx?.chain({
+          chainId: `${chainId}`,
+          account: account?.address,
+        });
+      }
+  
+    },
+    [arcx],
+  );
+
   return {
     trackAttribute,
     trackDisconnectWallet,
     trackEvent,
     trackPageload,
     trackTransaction,
+    trackChainSwitch,
   };
 }
