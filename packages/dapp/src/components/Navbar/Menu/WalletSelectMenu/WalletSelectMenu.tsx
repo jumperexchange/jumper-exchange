@@ -101,7 +101,6 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                   theme.palette.mode === 'dark'
                     ? getContrastAlphaColor(theme, '12%')
                     : getContrastAlphaColor(theme, '4%'),
-                ...menuItemStyles,
 
                 '&:hover': {
                   backgroundColor:
@@ -109,6 +108,8 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                       ? theme.palette.alphaLight300.main
                       : darken(theme.palette.white.main, 0.08),
                 },
+                ...menuItemStyles,
+                ...el.styles,
               }}
               showMoreIcon={false}
               prefixIcon={el.prefixIcon}
@@ -136,11 +137,12 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
                       ? getContrastAlphaColor(theme, '12%')
                       : getContrastAlphaColor(theme, '4%'),
                 },
-                '&:hover > button': {
-                  backgroundColor:
-                    theme.palette.mode === 'dark'
-                      ? theme.palette.alphaLight300.main
-                      : darken(theme.palette.white.main, 0.08),
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                },
+
+                '&:hover button': {
+                  backgroundColor: getContrastAlphaColor(theme, '16%'),
                 },
               }}
               prefixIcon={

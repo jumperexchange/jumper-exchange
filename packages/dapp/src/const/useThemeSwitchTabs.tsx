@@ -11,7 +11,7 @@ import {
   TrackingEventParameter,
 } from './trackingKeys';
 
-export const useNavbarTabs = () => {
+export const useThemeSwitchTabs = () => {
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const theme = useTheme();
@@ -31,9 +31,18 @@ export const useNavbarTabs = () => {
       });
     };
 
+  interface TabProps {
+    label: string;
+    tooltip?: string;
+    value: number;
+    icon: JSX.Element;
+    onClick: any;
+    disabled?: boolean;
+  }
+
   const output = [
     {
-      label: t('navbar.links.exchange'),
+      title: t('navbar.links.exchange'),
       value: 0,
       icon: (
         <SwapHorizIcon
@@ -50,7 +59,7 @@ export const useNavbarTabs = () => {
       onClick: handleClickTab('exchange'),
     },
     {
-      label: t('navbar.links.refuel'),
+      title: t('navbar.links.refuel'),
       onClick: handleClickTab('refuel'),
       value: 1,
       icon: (
@@ -67,7 +76,7 @@ export const useNavbarTabs = () => {
       ),
     },
     {
-      label: t('navbar.links.buy'),
+      title: t('navbar.links.buy'),
       onClick: handleClickTab('buy'),
       value: 2,
       icon: (

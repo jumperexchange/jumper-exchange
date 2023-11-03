@@ -1,8 +1,8 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
-import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
 import { appendUTMParametersToLink } from '@transferto/shared/src/utils';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { ButtonPrimary } from '../../atoms';
 import {
   AUDITS_URL,
   LIFI_URL,

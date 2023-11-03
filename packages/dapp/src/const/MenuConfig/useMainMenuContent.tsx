@@ -1,13 +1,9 @@
-import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { ButtonSecondary } from '@transferto/shared/src/atoms';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import { ThemeModesSupported } from '@transferto/shared/src/types';
 import {
@@ -25,8 +21,9 @@ import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
+  useThemeSwitchTabs,
 } from '..';
-import { Tooltip } from '../../components/Tooltip';
+import { Tabs } from '../../components';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
@@ -65,6 +62,8 @@ export const useMainMenuContent = () => {
     onChangeMode(mode);
   };
 
+  const themeSwitchTabs = useThemeSwitchTabs();
+
   const activeButtonBgCol =
     theme.palette.mode === 'dark'
       ? theme.palette.alphaLight300.main
@@ -86,88 +85,7 @@ export const useMainMenuContent = () => {
 
   return [
     {
-      children: (
-        <>
-          <Tooltip
-            title={t('navbar.themes.switchToLight')}
-            popperProps={popperProps}
-          >
-            <ButtonSecondary
-              styles={{
-                ...buttonStyles,
-                backgroundColor:
-                  themeMode === 'light'
-                    ? activeButtonBgCol
-                    : inactiveButtonBgCol,
-              }}
-              onClick={() => {
-                handleSwitchMode('light');
-              }}
-            >
-              <LightModeIcon
-                sx={{
-                  fill:
-                    themeMode === 'light'
-                      ? 'currentColor'
-                      : theme.palette.grey[700],
-                }}
-              />
-            </ButtonSecondary>
-          </Tooltip>
-          <Tooltip
-            title={t('navbar.themes.switchToDark')}
-            popperProps={popperProps}
-          >
-            <ButtonSecondary
-              styles={{
-                ...buttonStyles,
-                backgroundColor:
-                  themeMode === 'dark'
-                    ? activeButtonBgCol
-                    : inactiveButtonBgCol,
-              }}
-              onClick={() => {
-                handleSwitchMode('dark');
-              }}
-            >
-              <NightlightIcon
-                sx={{
-                  fill:
-                    themeMode === 'dark'
-                      ? 'currentColor'
-                      : theme.palette.grey[700],
-                }}
-              />
-            </ButtonSecondary>
-          </Tooltip>
-          <Tooltip
-            title={t('navbar.themes.switchToSystem')}
-            popperProps={popperProps}
-          >
-            <ButtonSecondary
-              styles={{
-                ...buttonStyles,
-                backgroundColor:
-                  themeMode === 'auto'
-                    ? activeButtonBgCol
-                    : inactiveButtonBgCol,
-              }}
-              onClick={() => {
-                handleSwitchMode('auto');
-              }}
-            >
-              <BrightnessAutoIcon
-                sx={{
-                  fill:
-                    themeMode === 'auto'
-                      ? 'currentColor'
-                      : theme.palette.grey[700],
-                }}
-              />
-            </ButtonSecondary>
-          </Tooltip>
-        </>
-      ),
+      children: <Tabs data={themeSwitchTabs} />,
       styles: {
         width: 'auto',
         margin: '12px 24px',

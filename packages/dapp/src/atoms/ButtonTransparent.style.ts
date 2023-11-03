@@ -1,5 +1,5 @@
 import { alpha, styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from '../utils';
+import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 import { ButtonBase } from './ButtonBase.style';
 
 export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({

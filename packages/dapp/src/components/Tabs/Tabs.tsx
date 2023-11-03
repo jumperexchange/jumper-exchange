@@ -2,7 +2,7 @@ import { Tooltip } from '@mui/material';
 import { Tab, TabsContainer } from './Tabs.style';
 
 interface TabProps {
-  label: string;
+  label?: string;
   tooltip?: string;
   value: number;
   icon: JSX.Element;
@@ -30,13 +30,13 @@ export const Tabs = ({
       {data.map((el, index) => {
         const tab = (
           <Tab
-            key={`${el.label}-${index}`}
+            key={`${el.label ?? 'tab-key'}-${index}`}
             onClick={(event) => {
               el.onClick(event, el.value);
             }}
             icon={el.icon}
             label={el.label}
-            id={`tab-${el.label}-${el.value}`}
+            id={`tab-${el.label ?? 'key'}-${el.value}`}
             aria-controls={`simple-tabpanel-${index}`}
           />
         );

@@ -1,6 +1,7 @@
 import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Typography, useTheme } from '@mui/material';
+import { ButtonPrimary, ButtonSecondary } from '@transferto/dapp/src/atoms';
 import {
   TrackingAction,
   TrackingCategory,
@@ -11,7 +12,6 @@ import { useMenuStore } from '@transferto/dapp/src/stores';
 import { EventTrackingTool } from '@transferto/dapp/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
-import { ButtonPrimary, ButtonSecondary } from '../../atoms';
 import { walletDigest } from '../../utils/walletDigest';
 
 interface WalletManagementButtonsProps {

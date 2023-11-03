@@ -1,9 +1,9 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { CSSObject, Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
-import { ButtonPrimary } from '@transferto/shared/src/atoms/index';
 
 import { JsxElement } from 'typescript';
+import { ButtonPrimary } from '../../atoms';
 import {
   MenuKeys,
   TrackingAction,
@@ -77,7 +77,7 @@ const MenuItemComponent = ({
       <>
         {children}
         {showButton && (
-          <ButtonPrimary fullWidth>
+          <ButtonPrimary styles={styles} fullWidth>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -126,17 +126,20 @@ const MenuItemComponent = ({
                 </Typography>
               ) : null}
             </MenuItemLabel>
-            <div
-              style={{
-                display: suffixIcon || showMoreIcon ? 'flex' : 'none',
-                alignItems: 'center',
-              }}
-            >
-              {suffixIcon ?? null}
-              {showMoreIcon ? (
-                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
-              ) : null}
-            </div>
+            {suffixIcon ||
+              (showMoreIcon && (
+                <div
+                  style={{
+                    display: suffixIcon || showMoreIcon ? 'flex' : 'none',
+                    alignItems: 'center',
+                  }}
+                >
+                  {suffixIcon ?? null}
+                  {showMoreIcon ? (
+                    <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
+                  ) : null}
+                </div>
+              ))}
           </>
         )}
       </>

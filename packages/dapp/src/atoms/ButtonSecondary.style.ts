@@ -1,14 +1,14 @@
 import type { ButtonProps } from '@mui/material';
 import type { CSSObject } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { getContrastAlphaColor } from '../utils';
+import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 import { ButtonBase } from './ButtonBase.style';
 
-export interface ButtonPrimaryProps extends Omit<ButtonProps, 'component'> {
+export interface ButtonSecondaryProps extends Omit<ButtonProps, 'component'> {
   styles?: CSSObject;
 }
 
-export const ButtonSecondary = styled(ButtonBase)<ButtonPrimaryProps>(
+export const ButtonSecondary = styled(ButtonBase)<ButtonSecondaryProps>(
   ({ theme, styles }) => ({
     color:
       theme.palette.mode === 'dark'

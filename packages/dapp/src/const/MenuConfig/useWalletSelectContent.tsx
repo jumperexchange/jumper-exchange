@@ -1,5 +1,6 @@
 import { supportedWallets, Wallet } from '@lifi/wallet-management';
-import { Avatar, Theme, useMediaQuery } from '@mui/material';
+import { Avatar, Theme, useMediaQuery, useTheme } from '@mui/material';
+import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMultisig } from '../../hooks/useMultisig';
@@ -11,6 +12,7 @@ export const useWalletSelectContent = () => {
   const isDesktopView = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up('sm'),
   );
+  const theme = useTheme();
   const { t } = useTranslation();
   const [clientWallets, onClientWallets] = useSettingsStore((state) => [
     state.clientWallets,
@@ -121,12 +123,21 @@ export const useWalletSelectContent = () => {
             className="wallet-select-avatar"
             src={wallet.icon}
             alt={`${wallet.name}-wallet-logo`}
-            sx={{ height: '40px', width: '40px', objectFit: 'contain' }}
+            sx={{
+              height: '40px',
+              width: '40px',
+              objectFit: 'contain',
+            }}
           />
         ),
         showMoreIcon: false,
         onClick: () => {
           handleClick(wallet);
+        },
+        styles: {
+          '&:hover': {
+            backgroundColor: getContrastAlphaColor(theme, '16%'),
+          },
         },
       };
     });
@@ -140,6 +151,7 @@ export const useWalletSelectContent = () => {
     onOpenSnackbar,
     onWelcomeScreenClosed,
     t,
+    theme,
   ]);
 
   return walletMenuItems;
