@@ -1,7 +1,7 @@
 import type { Chain } from '@lifi/types';
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
 import { Avatar } from '@mui/material';
-import Tooltip from '@mui/material/Tooltip';
+import { Tooltip } from '@transferto/dapp/src/components/Tooltip';
 import {
   TrackingAction,
   TrackingCategory,
@@ -50,8 +50,6 @@ export const ChainSwitch = () => {
     <Tooltip
       title={t('navbar.walletMenu.switchChain')}
       disableHoverListener={popperOpened}
-      enterTouchDelay={0}
-      arrow
     >
       <ButtonChainSwitch onClick={handleOpenChainsMenu}>
         {!!activeChain?.logoURI ? (

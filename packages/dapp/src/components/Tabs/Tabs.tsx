@@ -1,18 +1,13 @@
+import { Tooltip } from '@mui/material';
 import { Tab, TabsContainer } from './Tabs.style';
 
 interface TabProps {
   label: string;
+  tooltip?: string;
   value: number;
   icon: JSX.Element;
   onClick: any;
   disabled?: boolean;
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
 }
 
 interface TabsProps {
@@ -31,26 +26,34 @@ export const Tabs = ({
   indicatorColor,
 }: TabsProps) => {
   return (
-    <TabsContainer
-      value={value}
-      onChange={onChange}
-      aria-label={ariaLabel}
-      // indicatorColor={indicatorColor}
-    >
-      {data.map(
-        (el, index) =>
-          !el.disabled && (
-            <Tab
-              key={`${el.label}-${index}`}
-              onClick={(event) => {
-                el.onClick(event, el.value);
-              }}
-              icon={el.icon}
-              label={el.label}
-              {...a11yProps(el.value)}
-            />
-          ),
-      )}
+    <TabsContainer value={value} onChange={onChange} aria-label={ariaLabel}>
+      {data.map((el, index) => {
+        const tab = (
+          <Tab
+            key={`${el.label}-${index}`}
+            onClick={(event) => {
+              el.onClick(event, el.value);
+            }}
+            icon={el.icon}
+            label={el.label}
+            id={`tab-${el.label}-${el.value}`}
+            aria-controls={`simple-tabpanel-${index}`}
+          />
+        );
+        return !!el.tooltip ? (
+          <Tooltip
+            title={el.tooltip ?? null}
+            key={`tooltip-${el.label}-${index}`}
+            enterTouchDelay={0}
+            disableHoverListener={el.disabled}
+            arrow
+          >
+            {tab}
+          </Tooltip>
+        ) : (
+          tab
+        );
+      })}
     </TabsContainer>
   );
 };

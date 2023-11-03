@@ -6,7 +6,6 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
-import Tooltip from '@mui/material/Tooltip';
 import { useTheme } from '@mui/material/styles';
 import { ButtonSecondary } from '@transferto/shared/src/atoms';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
@@ -27,6 +26,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '..';
+import { Tooltip } from '../../components/Tooltip';
 import { useUserTracking } from '../../hooks';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
@@ -90,9 +90,7 @@ export const useMainMenuContent = () => {
         <>
           <Tooltip
             title={t('navbar.themes.switchToLight')}
-            PopperProps={popperProps}
-            enterTouchDelay={0}
-            arrow
+            popperProps={popperProps}
           >
             <ButtonSecondary
               styles={{
@@ -118,9 +116,7 @@ export const useMainMenuContent = () => {
           </Tooltip>
           <Tooltip
             title={t('navbar.themes.switchToDark')}
-            PopperProps={popperProps}
-            enterTouchDelay={0}
-            arrow
+            popperProps={popperProps}
           >
             <ButtonSecondary
               styles={{
@@ -146,9 +142,7 @@ export const useMainMenuContent = () => {
           </Tooltip>
           <Tooltip
             title={t('navbar.themes.switchToSystem')}
-            PopperProps={popperProps}
-            enterTouchDelay={0}
-            arrow
+            popperProps={popperProps}
           >
             <ButtonSecondary
               styles={{
