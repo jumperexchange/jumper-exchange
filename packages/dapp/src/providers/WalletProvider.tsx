@@ -54,7 +54,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
 }) => {
   const [account, setAccount] = useState<WalletAccount>({});
   const [currentWallet, setCurrentWallet] = useState<Wallet | undefined>();
-  const { trackEvent, trackDisconnectWallet } = useUserTracking();
+  const { trackEvent, trackDisconnectWallet,trackChainSwitch } = useUserTracking();
   const { checkMultisigEnvironment } = useMultisig();
 
   const connectMultisigWallet = async () => {
@@ -138,6 +138,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     async (chainId: number) => {
       try {
         await currentWallet?.switchChain(chainId);
+        trackChainSwitch({chainId,account:currentWallet?.account})
         trackEvent({
           action: TrackingAction.SwitchChain,
           label: 'switch-chain',
@@ -157,7 +158,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
         return false;
       }
     },
-    [currentWallet, trackEvent],
+    [currentWallet, trackChainSwitch, trackEvent],
   );
 
   const addChain = useCallback(

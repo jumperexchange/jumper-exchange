@@ -33,7 +33,7 @@ export interface TrackTransactionProps {
 }
 export interface TrackChainSwitchProps  {
   chainId: ChainId;
-  account?: WalletAccount | { address: string }; 
+  account?: WalletAccount;
   disableTrackingTool?: EventTrackingTool[]; 
 };
 
