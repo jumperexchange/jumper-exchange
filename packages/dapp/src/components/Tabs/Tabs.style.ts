@@ -1,34 +1,43 @@
 import {
   Breakpoint,
+  CSSObject,
   Tab as MuiTab,
-  TabProps,
+  TabProps as MuiTabProps,
+  TabsProps as MuiTabsProps,
   Tabs,
-  TabsProps,
   styled,
 } from '@mui/material';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
+interface TabsStyles {
+  styles?: CSSObject;
+  ['.MuiTabs-indicator']?: CSSObject;
+  div?: CSSObject;
+  breakpointMd?: CSSObject;
+}
+
+export interface TabsProps extends Omit<MuiTabsProps, 'variant'> {
+  styles?: TabsStyles;
+}
+
 export const TabsContainer = styled(Tabs, {
-  shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<TabsProps>(({ theme }) => ({
-  display: 'none',
-  minWidth: 392,
+  shouldForwardProp: (prop) => prop !== 'styles',
+})<TabsProps>(({ theme, styles }) => ({
+  position: 'absolute',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  backgroundColor:
+    theme.palette.mode === 'dark'
+      ? getContrastAlphaColor(theme, '12%')
+      : getContrastAlphaColor(theme, '4%'),
+  margin: 'auto',
+  padding: 1,
+  alignItems: 'center',
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    position: 'absolute',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    backgroundColor:
-      theme.palette.mode === 'dark'
-        ? getContrastAlphaColor(theme, '12%')
-        : getContrastAlphaColor(theme, '4%'),
-    margin: 'auto',
-    borderRadius: 28,
-    padding: 1,
-    display: 'flex',
-    alignItems: 'center',
+    ...styles?.breakpointMd,
   },
   div: {
-    height: '56px',
+    ...styles?.div,
   },
   '.MuiTabs-flexContainer': {
     alignItems: 'center',
@@ -37,13 +46,12 @@ export const TabsContainer = styled(Tabs, {
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%) scaleY(0.98)',
-    height: '48px',
     backgroundColor:
       theme.palette.mode === 'dark'
         ? theme.palette.alphaLight300.main
         : theme.palette.white.main,
     zIndex: '-1',
-    borderRadius: '24px',
+    ...styles?.['.MuiTabs-indicator'],
   },
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
@@ -51,13 +59,17 @@ export const TabsContainer = styled(Tabs, {
   '.MuiTabs-root': {
     minHeight: 'unset !important',
   },
+  ...styles?.styles,
 }));
 
+export interface TabProps extends Omit<MuiTabProps, 'variant'> {
+  styles?: CSSObject;
+}
+
 export const Tab = styled(MuiTab, {
-  shouldForwardProp: (prop) => prop !== 'isDarkMode',
-})<TabProps>(({ theme }) => ({
+  shouldForwardProp: (prop) => prop !== 'styles',
+})<TabProps>(({ theme, styles }) => ({
   textTransform: 'initial',
-  borderRadius: 24,
   letterSpacing: 0,
   display: 'flex',
   flexGrow: 1,
@@ -69,8 +81,7 @@ export const Tab = styled(MuiTab, {
   fontSize: '16px',
   lineHeight: '20px',
   margin: '6px 4px',
-  height: '48px',
-  width: '142px',
+  background: 'transparent',
   minHeight: 'unset',
   color:
     theme.palette.mode === 'dark'
@@ -88,4 +99,5 @@ export const Tab = styled(MuiTab, {
   ':hover': {
     backgroundColor: getContrastAlphaColor(theme, '4%'),
   },
+  ...styles,
 }));

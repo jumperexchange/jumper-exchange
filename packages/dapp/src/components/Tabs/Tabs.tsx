@@ -1,4 +1,4 @@
-import { Tooltip } from '@mui/material';
+import { CSSObject, Tooltip } from '@mui/material';
 import { Tab, TabsContainer } from './Tabs.style';
 
 interface TabProps {
@@ -10,12 +10,19 @@ interface TabProps {
   disabled?: boolean;
 }
 
+interface ContainerStyleProps {
+  styles?: any;
+  ['.MuiTabs-indicator']?: CSSObject;
+  div?: CSSObject;
+}
+
 interface TabsProps {
   data: TabProps[];
   value: number | boolean;
-  onChange: any;
+  onChange?: any;
   ariaLabel: string;
-  indicatorColor: string;
+  containerStyles?: ContainerStyleProps;
+  tabStyles?: CSSObject;
 }
 
 export const Tabs = ({
@@ -23,10 +30,16 @@ export const Tabs = ({
   value,
   onChange,
   ariaLabel,
-  indicatorColor,
+  containerStyles,
+  tabStyles,
 }: TabsProps) => {
   return (
-    <TabsContainer value={value} onChange={onChange} aria-label={ariaLabel}>
+    <TabsContainer
+      value={value}
+      onChange={onChange}
+      aria-label={ariaLabel}
+      styles={containerStyles}
+    >
       {data.map((el, index) => {
         const tab = (
           <Tab
@@ -38,6 +51,7 @@ export const Tabs = ({
             label={el.label}
             id={`tab-${el.label ?? 'key'}-${el.value}`}
             aria-controls={`simple-tabpanel-${index}`}
+            styles={tabStyles}
           />
         );
         return !!el.tooltip ? (
@@ -46,6 +60,9 @@ export const Tabs = ({
             key={`tooltip-${el.label}-${index}`}
             enterTouchDelay={0}
             disableHoverListener={el.disabled}
+            componentsProps={{
+              popper: { sx: { zIndex: 1700 } },
+            }}
             arrow
           >
             {tab}

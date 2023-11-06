@@ -34,7 +34,6 @@ export const useNavbarTabs = () => {
   const output = [
     {
       label: t('navbar.links.exchange'),
-      tooltip: '!!exchange',
       value: 0,
       icon: (
         <SwapHorizIcon
@@ -52,7 +51,6 @@ export const useNavbarTabs = () => {
     },
     {
       label: t('navbar.links.refuel'),
-      tooltip: '!!refuel',
       onClick: handleClickTab('refuel'),
       value: 1,
       icon: (
@@ -70,7 +68,6 @@ export const useNavbarTabs = () => {
     },
     {
       label: t('navbar.links.buy'),
-      tooltip: '!!buy',
       onClick: handleClickTab('buy'),
       value: 2,
       icon: (

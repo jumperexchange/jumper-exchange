@@ -1,2 +1,2 @@
 export * from './Tabs';
-// export * from './Tabs.style';
+export * from './Tabs.style';

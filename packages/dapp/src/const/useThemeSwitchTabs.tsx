@@ -1,9 +1,11 @@
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import NightlightIcon from '@mui/icons-material/Nightlight';
 import { useTheme } from '@mui/material';
+import { ThemeModesSupported } from '@transferto/shared/types';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../hooks';
+import { useSettingsStore } from '../stores';
 import { EventTrackingTool } from '../types';
 import {
   TrackingAction,
@@ -12,86 +14,73 @@ import {
 } from './trackingKeys';
 
 export const useThemeSwitchTabs = () => {
-  const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const theme = useTheme();
 
-  const handleClickTab =
-    (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      window.history.replaceState(null, document.title, `/${tab}`);
-      trackEvent({
-        category: TrackingCategory.Navigation,
-        action: TrackingAction.SwitchTab,
-        label: `switch_tab_to_${tab}`,
-        data: { [TrackingEventParameter.Tab]: tab },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-    };
+  const [themeMode, onChangeMode] = useSettingsStore((state) => [
+    state.themeMode,
+    state.onChangeMode,
+  ]);
 
-  interface TabProps {
-    label: string;
-    tooltip?: string;
-    value: number;
-    icon: JSX.Element;
-    onClick: any;
-    disabled?: boolean;
-  }
+  const handleSwitchMode = (mode: ThemeModesSupported) => {
+    trackEvent({
+      category: TrackingCategory.ThemeSection,
+      action: TrackingAction.SwitchTheme,
+      label: `theme_${mode}`,
+      data: {
+        [TrackingEventParameter.SwitchedTheme]: mode,
+      },
+      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+    });
+    onChangeMode(mode);
+  };
 
   const output = [
     {
-      title: t('navbar.links.exchange'),
+      tooltip: t('navbar.themes.switchToLight'),
       value: 0,
       icon: (
-        <SwapHorizIcon
+        <LightModeIcon
           sx={{
-            marginRight: '6px',
-            marginBottom: '0px !important',
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
+            fill:
+              themeMode === 'light' ? 'currentColor' : theme.palette.grey[700],
           }}
         />
       ),
-      onClick: handleClickTab('exchange'),
+      onClick: () => {
+        handleSwitchMode('light');
+      },
     },
     {
-      title: t('navbar.links.refuel'),
-      onClick: handleClickTab('refuel'),
+      tooltip: t('navbar.themes.switchToDark'),
       value: 1,
       icon: (
-        <EvStationOutlinedIcon
+        <NightlightIcon
           sx={{
-            marginRight: '6px',
-            marginBottom: '0px !important',
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
+            fill:
+              themeMode === 'dark' ? 'currentColor' : theme.palette.grey[700],
           }}
         />
       ),
+      onClick: () => {
+        handleSwitchMode('dark');
+      },
     },
     {
-      title: t('navbar.links.buy'),
-      onClick: handleClickTab('buy'),
+      tooltip: t('navbar.themes.switchToSystem'),
       value: 2,
       icon: (
-        <CreditCardIcon
+        <BrightnessAutoIcon
           sx={{
-            marginRight: '6px',
-            marginBottom: '0px !important',
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.white.main
-                : theme.palette.black.main,
+            fill:
+              themeMode === 'auto' ? 'currentColor' : theme.palette.grey[700],
           }}
         />
       ),
-      disabled: import.meta.env.VITE_ONRAMPER_ENABLED !== 'true',
+      onClick: () => {
+        handleSwitchMode('auto');
+      },
     },
   ];
 

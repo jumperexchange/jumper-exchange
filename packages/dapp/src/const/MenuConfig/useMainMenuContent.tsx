@@ -5,7 +5,6 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
-import { ThemeModesSupported } from '@transferto/shared/src/types';
 import {
   appendUTMParametersToLink,
   getContrastAlphaColor,
@@ -33,12 +32,7 @@ export const useMainMenuContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
-
-  const [themeMode, onChangeMode] = useSettingsStore((state) => [
-    state.themeMode,
-    state.onChangeMode,
-  ]);
-
+  const themeMode = useSettingsStore((state) => state.themeMode);
   const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
     utm_campaign: 'jumper_to_explorer',
     utm_medium: 'menu',
@@ -49,43 +43,41 @@ export const useMainMenuContent = () => {
     utm_medium: 'menu',
   });
 
-  const handleSwitchMode = (mode: ThemeModesSupported) => {
-    trackEvent({
-      category: TrackingCategory.ThemeSection,
-      action: TrackingAction.SwitchTheme,
-      label: `theme_${mode}`,
-      data: {
-        [TrackingEventParameter.SwitchedTheme]: mode,
-      },
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
-    });
-    onChangeMode(mode);
-  };
-
   const themeSwitchTabs = useThemeSwitchTabs();
 
-  const activeButtonBgCol =
-    theme.palette.mode === 'dark'
-      ? theme.palette.alphaLight300.main
-      : theme.palette.white.main;
-
-  const inactiveButtonBgCol = 'transparent';
-
-  const buttonStyles = {
-    height: '40px',
-    borderRadius: '8px',
-    flexGrow: '1',
+  const containerStyles = {
+    styles: {
+      display: 'flex',
+      width: '100%',
+      borderRadius: '12px',
+    },
+    div: {
+      height: '36px',
+    },
+    '.MuiTabs-indicator': {
+      height: '36px',
+      zIndex: '-1',
+      borderRadius: '8px',
+    },
   };
 
-  const popperProps = {
-    sx: {
-      zIndex: 1600,
-    },
+  const tabStyles = {
+    height: '36px',
+    minWidth: 'unset',
+    borderRadius: '8px',
   };
 
   return [
     {
-      children: <Tabs data={themeSwitchTabs} />,
+      children: (
+        <Tabs
+          data={themeSwitchTabs}
+          value={themeMode === 'light' ? 0 : themeMode === 'dark' ? 1 : 2}
+          ariaLabel="theme-switch-tabs"
+          containerStyles={containerStyles}
+          tabStyles={tabStyles}
+        />
+      ),
       styles: {
         width: 'auto',
         margin: '12px 24px',
@@ -111,16 +103,12 @@ export const useMainMenuContent = () => {
               ? theme.palette.grey[700]
               : theme.palette.grey[300],
         },
-        '> div': {
-          display: 'none',
-        },
       },
       showMoreIcon: false,
     },
     {
       label: t('language.key', { ns: 'language' }),
       prefixIcon: <LanguageIcon />,
-      checkIcon: themeMode === 'light',
       suffixIcon: (
         <Typography
           variant="lifiBodyMedium"
