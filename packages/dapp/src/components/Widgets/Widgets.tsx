@@ -1,20 +1,14 @@
 import { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { TestnetAlert } from '@transferto/shared/src';
-import {
-  MouseEventHandler,
-  useCallback,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { LinkMap, TrackingAction, TrackingCategory } from '../../const';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { LinkMap } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
 import { useUserTracking } from '../../hooks';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
-import { EventTrackingTool, StarterVariantType } from '../../types';
+import { useWelcomeScreenHoverStore } from '../../stores/welcomeScreenHover/WelcomeScreenHoverStore';
+import { StarterVariantType } from '../../types';
 import { OnRamper } from '../OnRamper';
-import { WelcomeWrapper } from '../WelcomeWrapper';
 import { Widget } from '../Widget';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
@@ -24,6 +18,8 @@ export function Widgets() {
   const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
   );
+  const { welcomeScreenHover, setWelcomeScreenHover } =
+    useWelcomeScreenHoverStore();
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
@@ -83,60 +79,25 @@ export function Widgets() {
     }
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
-  const handleGetStarted: MouseEventHandler<HTMLDivElement> = (event) => {
-    const classList = (event.target as HTMLElement).classList;
-    if (
-      classList.contains?.('stats-card') ||
-      classList.contains?.('link-lifi')
-    ) {
-      return;
-    } else {
-      event.stopPropagation();
-      onWelcomeScreenClosed(true);
-      trackEvent({
-        category: TrackingCategory.WelcomeScreen,
-        action: TrackingAction.CloseWelcomeScreen,
-        label: 'enter_welcome_screen',
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-    }
-  };
-
   useLayoutEffect(() => {
     getActiveWidget();
   }, [getActiveWidget, starterVariant, activeTab]);
 
   return (
-    <WelcomeWrapper
-      showWelcome={!welcomeScreenClosed}
-      handleGetStarted={handleGetStarted}
-    >
+    <>
       {import.meta.env.MODE === 'testnet' && (
         <Grid item xs={12} mt={theme.spacing(3)}>
           <TestnetAlert />
         </Grid>
       )}
-      <WidgetContainer
-        onClick={!welcomeScreenClosed ? handleGetStarted : undefined}
-        showWelcome={!welcomeScreenClosed}
-        isActive={_starterVariant === TabsMap.Exchange.variant}
-      >
+      <WidgetContainer isActive={_starterVariant === TabsMap.Exchange.variant}>
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
-      <WidgetContainer
-        onClick={!welcomeScreenClosed ? handleGetStarted : undefined}
-        showWelcome={!welcomeScreenClosed}
-        isActive={_starterVariant === TabsMap.Refuel.variant}
-      >
+      <WidgetContainer isActive={_starterVariant === TabsMap.Refuel.variant}>
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
-          onClick={!welcomeScreenClosed ? handleGetStarted : undefined}
-          showWelcome={!welcomeScreenClosed}
           isActive={_starterVariant === TabsMap.Buy.variant}
           sx={{ width: '392px' }}
         >
@@ -146,6 +107,6 @@ export function Widgets() {
         </WidgetContainer>
       ) : null}
       <WidgetEvents />
-    </WelcomeWrapper>
+    </>
   );
 }

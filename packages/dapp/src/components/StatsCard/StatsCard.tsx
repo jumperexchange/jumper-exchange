@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from '../../const';
@@ -100,6 +100,10 @@ interface StatsCardsProps {
   setOpenDexsPopper: Dispatch<SetStateAction<boolean>>;
 }
 
+const chainsIndex = 0;
+const bridgesIndex = 1;
+const dexsIndex = 2;
+
 export const StatsCards = ({
   openChainsPopper,
   setOpenChainsPopper,
@@ -178,23 +182,42 @@ export const StatsCards = ({
 
   return (
     <Container>
-      {statsData.map((el, index) => {
-        return (
-          <Box key={`stats-box-${el.title}-${index}`}>
-            <StatsCard
-              title={el.title}
-              number={el.number}
-              handleClick={el.handleOnClick}
-            />
-            <StatsModal
-              title={el.title}
-              open={el.open}
-              setOpen={el.setOpen}
-              data={el.data}
-            />
-          </Box>
-        );
-      })}
+      {/* Chains */}
+      <StatsCard
+        title={statsData[chainsIndex].title}
+        number={statsData[chainsIndex].number}
+        handleClick={statsData[chainsIndex].handleOnClick}
+      />
+      <StatsModal
+        title={statsData[chainsIndex].title}
+        open={statsData[chainsIndex].open}
+        setOpen={statsData[chainsIndex].setOpen}
+        data={statsData[chainsIndex].data}
+      />
+      {/* Bridges */}
+      <StatsCard
+        title={statsData[bridgesIndex].title}
+        number={statsData[bridgesIndex].number}
+        handleClick={statsData[bridgesIndex].handleOnClick}
+      />
+      <StatsModal
+        title={statsData[bridgesIndex].title}
+        open={statsData[bridgesIndex].open}
+        setOpen={statsData[bridgesIndex].setOpen}
+        data={statsData[bridgesIndex].data}
+      />
+      {/* DEXs */}
+      <StatsCard
+        title={statsData[dexsIndex].title}
+        number={statsData[dexsIndex].number}
+        handleClick={statsData[dexsIndex].handleOnClick}
+      />
+      <StatsModal
+        title={statsData[dexsIndex].title}
+        open={statsData[dexsIndex].open}
+        setOpen={statsData[dexsIndex].setOpen}
+        data={statsData[dexsIndex].data}
+      />
     </Container>
   );
 };
