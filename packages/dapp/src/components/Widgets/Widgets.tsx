@@ -18,8 +18,7 @@ export function Widgets() {
   const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
   );
-  const { welcomeScreenHover, setWelcomeScreenHover } =
-    useWelcomeScreenHoverStore();
+  const { welcomeScreenHover } = useWelcomeScreenHoverStore();
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
@@ -90,15 +89,25 @@ export function Widgets() {
           <TestnetAlert />
         </Grid>
       )}
-      <WidgetContainer isActive={_starterVariant === TabsMap.Exchange.variant}>
+      <WidgetContainer
+        isActive={_starterVariant === TabsMap.Exchange.variant}
+        welcomeScreenClosed={welcomeScreenClosed}
+        welcomeScreenHover={welcomeScreenHover}
+      >
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
-      <WidgetContainer isActive={_starterVariant === TabsMap.Refuel.variant}>
+      <WidgetContainer
+        isActive={_starterVariant === TabsMap.Refuel.variant}
+        welcomeScreenClosed={welcomeScreenClosed}
+        welcomeScreenHover={welcomeScreenHover}
+      >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
           isActive={_starterVariant === TabsMap.Buy.variant}
+          welcomeScreenClosed={welcomeScreenClosed}
+          welcomeScreenHover={welcomeScreenHover}
           sx={{ width: '392px' }}
         >
           <div className="onramper-wrapper">

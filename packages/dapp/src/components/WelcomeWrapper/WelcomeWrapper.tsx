@@ -17,7 +17,7 @@ import {
   TrackingEventParameter,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
-import { useSettingsStore } from '../../stores';
+import { useSettingsStore, useWelcomeScreenHoverStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 import { StatsCards } from '../StatsCard';
 import {
@@ -25,6 +25,7 @@ import {
   CustomColor,
   SlideWrapper,
   WelcomeContent,
+  WidgetsBlackBox,
   Wrapper,
 } from './WelcomeWrapper.style';
 
@@ -47,6 +48,7 @@ export const WelcomeWrapper = () => {
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
     shallow,
   );
+  const { setWelcomeScreenHover } = useWelcomeScreenHoverStore();
 
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
@@ -123,6 +125,11 @@ export const WelcomeWrapper = () => {
     }
   };
 
+  const handleHover = (active: boolean) => {
+    console.log('hovering:', active);
+    setWelcomeScreenHover(active);
+  };
+
   return (
     <Wrapper
       className="welcome-wrapper"
@@ -136,6 +143,10 @@ export const WelcomeWrapper = () => {
         in={!welcomeScreenClosed}
       >
         <SlideWrapper>
+          <WidgetsBlackBox
+            onMouseEnter={() => handleHover(true)}
+            onMouseLeave={() => handleHover(false)}
+          />
           <ContentWrapper showWelcome={!welcomeScreenClosed}>
             <WelcomeContent>
               <CustomColor variant={'lifiHeaderMedium'}>

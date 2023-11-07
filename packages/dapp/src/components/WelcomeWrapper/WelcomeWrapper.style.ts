@@ -34,32 +34,20 @@ export const Wrapper = styled(Box, {
   [theme.breakpoints.up('md' as Breakpoint)]: {
     padding: `${NavbarHeight.LG} 0px 0px`,
   },
-  // maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.XS} )` : 'unset',
-  // overflow: showWelcome ? 'hidden' : 'hidden',
-  // [`@media screen and (min-width: 392px)`]: {
-  //   overflow: showWelcome ? 'visible' : 'hidden',
-  // },
-  // [theme.breakpoints.up('sm' as Breakpoint)]: {
-  //   maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.SM} )` : 'auto',
-  // },
-  // [theme.breakpoints.up('md' as Breakpoint)]: {
-  //   maxHeight: showWelcome ? `calc( 100vh - ${NavbarHeight.LG} )` : 'auto',
-  // },
-  // '&:after': {
-  //   content: showWelcome && '" "',
-  //   top: 0,
-  //   position: 'absolute',
-  //   left: 0,
-  //   zIndex: -1,
-  //   right: 0,
-  //   bottom: 0,
-  //   background:
-  //     showWelcome && theme.palette.mode === 'dark'
-  //       ? 'linear-gradient(180deg, rgba(26, 16, 51, 0) 0%, #1A1033 21.15%)'
-  //       : showWelcome && theme.palette.mode === 'light'
-  //       ? 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebffd4 21.15%)'
-  //       : 'unset',
-  // },
+
+  '&:after': {
+    content: '" "',
+    top: 0,
+    position: 'absolute',
+    left: 0,
+    zIndex: -1,
+    right: 0,
+    bottom: 0,
+    background:
+      theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, rgba(26, 16, 51, 0) 0%, #1A1033 21.15%)'
+        : 'linear-gradient(180deg, rgba(243, 235, 255, 0) 0%, #f3ebffd4 21.15%)',
+  },
 }));
 
 export const CustomColor = styled(Typography)(({ theme }) => ({
@@ -69,6 +57,7 @@ export const CustomColor = styled(Typography)(({ theme }) => ({
       : 'linear-gradient(270deg, #31007A 0%, #8700B8 94.17%);',
   backgroundClip: 'text',
   textFillColor: 'transparent',
+  userSelect: 'none',
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -97,6 +86,39 @@ export const SlideWrapper = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     top: NavbarHeight.LG,
   },
+}));
+
+export const WidgetsBlackBox = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  zIndex: 2000,
+  opacity: 0.5,
+  top: NavbarHeight.XS,
+  width: '392px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  height: '500px',
+  backgroundColor: 'red',
+  borderRadius: '12px',
+  cursor: 'pointer',
+
+  /* --> correlates to Widgets.styles marginTop */
+  marginTop: theme.spacing(0),
+  [`@media screen and (min-height: 700px)`]: {
+    marginTop: 'calc( 50vh - 680px / 2.75 - 80px / 2)', // (mid viewheight - half-two/thirds widget height - header height )
+  },
+  [`@media screen and (min-height: 900px)`]: {
+    marginTop: 'calc( 50vh - 680px / 2.75 - 128px - 80px / 2)', // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+  },
+  '&:hover': {
+    marginTop: 0,
+    [`@media screen and (min-height: 700px)`]: {
+      marginTop: 'calc( 50vh - 680px / 2.75 - 80px / 2) - 24px', // (mid viewheight - half-two/thirds widget height - header height )
+    },
+    [`@media screen and (min-height: 900px)`]: {
+      marginTop: 'calc( 50vh - 680px / 2.75 - 128px - 80px / 2 - 24px)', // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+    },
+  },
+  /* <-- end */
 }));
 
 export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {
