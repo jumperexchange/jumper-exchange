@@ -103,7 +103,7 @@ export const WelcomeWrapper = () => {
     });
   };
 
-  const handleGetStarted: MouseEventHandler<HTMLAnchorElement> = (event) => {
+  const handleGetStarted: MouseEventHandler<HTMLButtonElement> = (event) => {
     const classList = (event.target as HTMLElement).classList;
     if (
       classList.contains?.('stats-card') ||
