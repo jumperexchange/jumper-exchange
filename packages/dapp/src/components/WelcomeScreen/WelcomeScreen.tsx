@@ -27,7 +27,7 @@ import {
   WelcomeContent,
   WidgetsBlackBox,
   Wrapper,
-} from './WelcomeWrapper.style';
+} from './WelcomeScreen.style';
 
 const auditsWelcomeUrl = appendUTMParametersToLink(
   'https://docs.li.fi/smart-contracts/audits',
@@ -41,7 +41,7 @@ const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
   utm_medium: 'welcome_screen',
 });
 
-export const WelcomeWrapper = () => {
+export const WelcomeScreen = () => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
