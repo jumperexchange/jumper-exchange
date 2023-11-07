@@ -54,7 +54,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
 }) => {
   const [account, setAccount] = useState<WalletAccount>({});
   const [currentWallet, setCurrentWallet] = useState<Wallet | undefined>();
-  const { trackEvent, trackDisconnectWallet,trackChainSwitch } = useUserTracking();
+  const { trackEvent, trackDisconnectWallet,trackChainSwitch, trackConnectWallet } = useUserTracking();
   const { checkMultisigEnvironment } = useMultisig();
 
   const connectMultisigWallet = async () => {
@@ -103,23 +103,24 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
   const connect = useCallback(
     async (wallet: Wallet) => {
       await liFiWalletManagement.connect(wallet);
-      trackEvent({
-        action: TrackingAction.ConnectWallet,
-        category: TrackingCategory.Wallet,
-        label: 'connect-wallet',
-        data: {
-          [TrackingEventParameter.Wallet]: wallet.name,
-        },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-          EventTrackingTool.Hotjar,
-        ],
-      });
+      trackConnectWallet({disableTrackingTool:[]})
+      // trackEvent({
+      //   action: TrackingAction.ConnectWallet,
+      //   category: TrackingCategory.Wallet,
+      //   label: 'connect-wallet',
+      //   data: {
+      //     [TrackingEventParameter.Wallet]: wallet.name,
+      //   },
+      //   disableTrackingTool: [
+      //     EventTrackingTool.ARCx,
+      //     EventTrackingTool.Cookie3,
+      //     EventTrackingTool.Hotjar,
+      //   ],
+      // });
       wallet.on('walletAccountChanged', handleWalletUpdate);
       handleWalletUpdate(wallet);
     },
-    [trackEvent],
+    [trackConnectWallet],
   );
 
   const disconnect = useCallback(async () => {

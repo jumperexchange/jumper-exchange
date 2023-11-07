@@ -1,5 +1,5 @@
 import { useArcxAnalytics } from '@arcxmoney/analytics';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { hotjar } from 'react-hotjar';
 import { TrackingAction, TrackingEventParameter } from '../../const';
 import { useWallet } from '../../providers/WalletProvider';
@@ -7,6 +7,7 @@ import {
   EventTrackingTool,
   TrackAttributeProps,
   TrackChainSwitchProps,
+  TrackConnectWalletProps,
   TrackDisconnectWalletProps,
   TrackEventProps,
   TrackTransactionProps,
@@ -23,19 +24,43 @@ export function useUserTracking() {
   /* 
   use useEffect depended on account to track wallet connects with account depended tracking software
   */
-  useEffect(() => {
-    if (account?.address && account?.chainId && usedWallet) {
-      arcx?.wallet({
-        account: `${account.address}`,
-        chainId: `${account.chainId}`,
-      });
-      hotjar.identify(account.address, {
-        [TrackingEventParameter.Wallet]: usedWallet.name,
-      });
-      hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
-    }
-  }, [account, account.address, account.chainId, arcx, usedWallet]);
+  // useEffect(() => {
+  //   if (account?.address && account?.chainId && usedWallet) {
+  //     arcx?.wallet({
+  //       account: `${account.address}`,
+  //       chainId: `${account.chainId}`,
+  //     });
+  //     hotjar.identify(account.address, {
+  //       [TrackingEventParameter.Wallet]: usedWallet.name,
+  //     });
+  //     hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
+  //   }
+  // }, [account, account.address, account.chainId, arcx, usedWallet]);
 
+  const trackConnectWallet = useCallback(
+    /**
+     * Track Wallet Connect with HJ and ARCx
+     *
+     */
+    ({disableTrackingTool}:TrackConnectWalletProps) => {
+      if (account?.address && account?.chainId && usedWallet) {
+        if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
+          arcx?.wallet({
+            account: `${account.address}`,
+            chainId: `${account.chainId}`,
+          });
+        }
+        if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
+          hotjar.identify(account.address, {
+            [TrackingEventParameter.Wallet]: usedWallet.name,
+          });
+          hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
+        }
+      }
+    },
+    [account, arcx, usedWallet],
+  );
+  
   const trackAttribute = useCallback(
     /**
      * Track Attributes with GA, HJ and ARCx
@@ -223,6 +248,7 @@ export function useUserTracking() {
   return {
     trackAttribute,
     trackDisconnectWallet,
+    trackConnectWallet,
     trackEvent,
     trackPageload,
     trackTransaction,
