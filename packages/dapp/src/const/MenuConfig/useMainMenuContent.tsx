@@ -97,7 +97,6 @@ export const useMainMenuContent = () => {
           url: 'https://twitter.com/JumperExchange',
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
@@ -133,7 +132,6 @@ export const useMainMenuContent = () => {
           url: 'https://discord.gg/lifi',
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
@@ -161,7 +159,6 @@ export const useMainMenuContent = () => {
           url: explorerUrl,
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
@@ -198,7 +195,6 @@ export const useMainMenuContent = () => {
           url: lifiUrl,
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });

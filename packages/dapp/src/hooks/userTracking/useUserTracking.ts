@@ -174,18 +174,8 @@ export function useUserTracking() {
           ...data,
         });
       }
-      if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
-        pageload &&
-          arcx?.event(`pageload`, {
-            url,
-            source,
-            destination,
-            pageload: pageload ? 'external' : 'internal',
-            ...data,
-          });
-      }
     },
-    [arcx],
+    [],
   );
 
   const trackTransaction = useCallback(
