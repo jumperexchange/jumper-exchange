@@ -10,6 +10,7 @@ import {
   TrackingEventParameter,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
+import { useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 import { StatsCards } from '../StatsCard';
 import {
