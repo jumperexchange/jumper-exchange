@@ -187,12 +187,11 @@ export const WelcomeScreen = () => {
                 handleGetStarted(event);
               }}
               sx={(theme) => ({
-                margin: 'auto',
-                marginTop: theme.spacing(4),
                 height: '48px',
                 width: '192px',
+                margin: `${theme.spacing(4)} auto`,
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
-                  marginTop: theme.spacing(6),
+                  margin: `${theme.spacing(6)} auto`,
                   height: '56px',
                   borderRadius: '28px',
                   width: '247px',

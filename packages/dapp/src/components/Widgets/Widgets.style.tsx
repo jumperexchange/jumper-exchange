@@ -10,6 +10,7 @@ export const WidgetContainer = styled(Box, {
 })<WidgetContainerProps>(({ theme, isActive, welcomeScreenClosed }) => ({
   display: isActive ? 'inherit' : 'none',
   margin: '0 auto 24px',
+  overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
   maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
 
   // setting hover animations on widget wrappers
