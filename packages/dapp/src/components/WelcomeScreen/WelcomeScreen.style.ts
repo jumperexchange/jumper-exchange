@@ -66,7 +66,7 @@ export const ContentWrapper = styled(Box, {
   position: 'absolute',
   top: 0,
   zIndex: '1400',
-  height: '55vh',
+  height: '50vh',
   animation: !showWelcome ? fadeOut : 'unset',
   animationDuration: '.5s',
 
