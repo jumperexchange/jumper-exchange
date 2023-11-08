@@ -6,7 +6,8 @@ export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
 }
 
 export const WidgetContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'isActive',
+  shouldForwardProp: (prop) =>
+    prop !== 'isActive' && prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, isActive, welcomeScreenClosed }) => ({
   display: isActive ? 'inherit' : 'none',
   margin: '0 auto 24px',
