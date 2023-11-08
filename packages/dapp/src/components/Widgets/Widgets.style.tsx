@@ -14,15 +14,27 @@ export const WidgetContainer = styled(Box, {
 
   // setting hover animations on widget wrappers
   '& > .widget-wrapper > div , & > .onramper-wrapper': {
-    transitionProperty: 'padding-top',
+    transitionProperty: 'margin-top',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    paddingTop: !welcomeScreenClosed ? theme.spacing(16) : theme.spacing(3.5),
+    marginTop: !welcomeScreenClosed ? theme.spacing(16) : theme.spacing(3.5),
+    cursor: 'pointer',
   },
+
+  [`@media screen and (min-height: 700px)`]: {
+    marginTop: !welcomeScreenClosed ? 'calc( 50vh - 680px / 2.75 - 80px)' : '0', // (mid viewheight - half-two/thirds widget height - header height )
+  },
+
+  [`@media screen and (min-height: 900px)`]: {
+    marginTop: !welcomeScreenClosed
+      ? 'calc( 50vh - 680px / 2.75 - 128px)'
+      : '0', // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+  },
+
   // widget wrappers -> animations
   '& > .widget-wrapper > div:hover, & > .onramper-wrapper:hover':
     !welcomeScreenClosed && {
-      paddingTop: theme.spacing(10),
+      marginTop: theme.spacing(10),
     },
 
   // dark widget overlay when welcome screen opened
