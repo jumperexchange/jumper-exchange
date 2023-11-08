@@ -3,6 +3,7 @@ import { Box, styled } from '@mui/material';
 export const WidgetWrapper = styled(Box)(() => ({
   width: 'fit-content',
   margin: ' 0 auto',
+  position: 'relative',
 }));
 
 export const GlowBackground = styled('span')(({ theme }) => ({

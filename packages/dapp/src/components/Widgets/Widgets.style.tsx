@@ -12,48 +12,50 @@ export const WidgetContainer = styled(Box, {
   display: isActive ? 'inherit' : 'none',
   margin: '0 auto 24px',
 
+  // setting hover animations on widget wrappers
   '& > .widget-wrapper > div , & > .onramper-wrapper': {
     transitionProperty: 'padding-top',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    paddingTop: !welcomeScreenClosed ? theme.spacing(14) : theme.spacing(4),
+    paddingTop: !welcomeScreenClosed ? theme.spacing(16) : theme.spacing(3.5),
   },
-
+  // widget wrappers -> animations
   '& > .widget-wrapper > div:hover, & > .onramper-wrapper:hover':
     !welcomeScreenClosed && {
       paddingTop: theme.spacing(10),
     },
 
-  // Hover-Transition
-  // '& > div > div, & > .onramper-wrapper': {
-  //   paddingTop: welcomeScreenHover && theme.spacing(0),
-  // },
+  // dark widget overlay when welcome screen opened
+  '& .widget-wrapper > div:before, & > .onramper-wrapper:after': {
+    content: !welcomeScreenClosed && '" "',
+    position: 'absolute',
+    width: 'inherit',
+    height: 'inherit',
+    zIndex: 900,
+    top: theme.spacing(4),
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background:
+      theme.palette.mode === 'dark'
+        ? 'linear-gradient(180deg, transparent 15%,  #000 40%)'
+        : 'linear-gradient(180deg, transparent 15%, #fff 40%)',
+    opacity: 0.5,
+    margin: 'auto',
+    transitionProperty: 'opacity, top, padding-top',
+    transitionDuration: '.3s',
+    transitionTimingFunction: 'ease-in-out',
+    borderTopRightRadius: '12px',
+    borderTopLeftRadius: '12px',
+  },
 
-  // darken widget when welcome screen open
-  // Background-Gradients
-  // '& .widget-wrapper > div:before, & > .onramper-wrapper:after': {
-  //   content: !welcomeScreenClosed && '" "',
-  //   position: 'absolute',
-  //   left: 0,
-  //   zIndex: 900,
-  //   right: 0,
-  //   bottom: 0,
+  // dark widget overlay when welcome screen opened -> hover animation
+  '& .widget-wrapper > div:hover:before, & > .onramper-wrapper .onramper-container:hover:before':
+    {
+      opacity: 0,
+    },
 
-  //   background:
-  //     theme.palette.mode === 'dark'
-  //       ? 'linear-gradient(180deg, transparent 0%, #000000 50%, #000000 100%)'
-  //       : 'linear-gradient(180deg, transparent 0%, #ffffff 50%, #ffffff 100%)',
-
-  //   opacity: 0.5,
-  //   margin: 'auto',
-  //   transitionProperty: 'opacity, top, padding-top',
-  //   transitionDuration: '.3s',
-  //   transitionTimingFunction: 'ease-in-out',
-  //   borderTopRightRadius: '12px',
-  //   borderTopLeftRadius: '12px',
-  // },
-
-  // radial shadow that animates on hover
+  // radial shadow glow
   '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
     content: !welcomeScreenClosed && '" "',
     transitionProperty: 'top, opacity',
@@ -75,6 +77,8 @@ export const WidgetContainer = styled(Box, {
     top: '50%',
     opacity: theme.palette.mode === 'dark' ? 0.24 : 0.12,
   },
+
+  // radial shadow glow -> animation
   '& > .widget-wrapper:hover:before, & > .onramper-wrapper:hover:before': {
     opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
     top: '45%',
