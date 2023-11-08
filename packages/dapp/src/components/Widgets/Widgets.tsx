@@ -15,12 +15,12 @@ import { WidgetContainer } from './Widgets.style';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
-    (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
-  );
+  const [welcomeScreenClosed] = useSettingsStore((state) => [
+    state.welcomeScreenClosed,
+    state.onWelcomeScreenClosed,
+  ]);
   const { welcomeScreenHover } = useWelcomeScreenHoverStore();
   const theme = useTheme();
-  const { trackEvent } = useUserTracking();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
     WidgetSubvariant | 'buy'

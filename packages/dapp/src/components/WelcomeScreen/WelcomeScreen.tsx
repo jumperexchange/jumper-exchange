@@ -23,10 +23,8 @@ import { StatsCards } from '../StatsCard';
 import {
   ContentWrapper,
   CustomColor,
-  SlideWrapper,
   WelcomeContent,
-  WidgetsBlackBox,
-  Wrapper,
+  Overlay,
 } from './WelcomeScreen.style';
 
 const auditsWelcomeUrl = appendUTMParametersToLink(
@@ -48,7 +46,7 @@ export const WelcomeScreen = () => {
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
     shallow,
   );
-  const { setWelcomeScreenHover } = useWelcomeScreenHoverStore();
+  // const { setWelcomeScreenHover } = useWelcomeScreenHoverStore();
 
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
@@ -125,16 +123,13 @@ export const WelcomeScreen = () => {
     }
   };
 
-  const handleHover = (active: boolean) => {
-    console.log('hovering:', active);
-    setWelcomeScreenHover(active);
-  };
+  // const handleHover = (active: boolean) => {
+  //   console.log('hovering:', active);
+  //   setWelcomeScreenHover(active);
+  // };
 
   return (
-    <Wrapper
-      className="welcome-wrapper"
-      showWelcome={!welcomeScreenClosed || false}
-    >
+    <Overlay showWelcome={!welcomeScreenClosed || false}>
       <Slide
         direction="up"
         unmountOnExit
@@ -142,122 +137,100 @@ export const WelcomeScreen = () => {
         timeout={400}
         in={!welcomeScreenClosed}
       >
-        <SlideWrapper>
-          <WidgetsBlackBox
-            onMouseEnter={() => handleHover(true)}
-            onMouseLeave={() => handleHover(false)}
-          />
-          <ContentWrapper showWelcome={!welcomeScreenClosed}>
-            <WelcomeContent>
-              <CustomColor variant={'lifiHeaderMedium'}>
-                {t('navbar.welcome.title')}
-              </CustomColor>
-              <Typography
-                variant={'lifiBodyLarge'}
-                sx={{
-                  marginTop: theme.spacing(2),
-                  color:
-                    theme.palette.mode === 'dark'
-                      ? theme.palette.accent1Alt.main
-                      : theme.palette.primary.main,
-                  '& > .link-lifi': {
-                    fontWeight: 700,
-                    color: 'inherit',
-                    textDecoration: 'none',
-                  },
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    fontSize: '24px',
-                    fontWeight: 400,
-                    lineHeight: '32px',
-                  },
-                }}
-              >
-                {
-                  <Trans
-                    i18nKey={'navbar.welcome.subtitle' as string & never[]}
-                    components={[
-                      // fix: allow component with "no content"
-                      // eslint-disable-next-line jsx-a11y/anchor-has-content
-                      <a
-                        className={'link-lifi'}
-                        href={auditsWelcomeUrl}
-                        target={'_blank'}
-                        rel="noreferrer"
-                        onClick={handleAuditClick}
-                      />,
-                      // eslint-disable-next-line jsx-a11y/anchor-has-content
-                      <a
-                        className={'link-lifi'}
-                        href={lifiWelcomeUrl}
-                        onClick={handleLIFIClick}
-                        target={'_blank'}
-                        rel="noreferrer"
-                      />,
-                    ]}
-                  />
-                }
-              </Typography>
-              <StatsCards
-                openChainsPopper={openChainsPopper}
-                setOpenChainsPopper={setOpenChainsPopper}
-                openBridgesPopper={openBridgesPopper}
-                setOpenBridgesPopper={setOpenBridgesPopper}
-                openDexsPopper={openDexsPopper}
-                setOpenDexsPopper={setOpenDexsPopper}
-              />
-              <ButtonPrimary
-                onClick={(event) => {
-                  handleGetStarted(event);
-                }}
-                sx={(theme) => ({
-                  margin: 'auto',
-                  marginTop: theme.spacing(4),
-                  height: '48px',
-                  width: '192px',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    marginTop: theme.spacing(6),
-                    height: '56px',
-                    borderRadius: '28px',
-                    width: '247px',
-                  },
-                })}
-              >
-                <Typography
-                  variant={'lifiBodyMediumStrong'}
-                  sx={{
-                    maxHeight: '40px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      fontSize: '18px',
-                      maxHeight: '48px',
-                      lineHeight: '24px',
-                    },
-                  }}
-                >
-                  {t('navbar.welcome.cta')}
-                </Typography>
-              </ButtonPrimary>
-            </WelcomeContent>
-            <Box
-              display={'flex'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
-              gap={'24px'}
+        <ContentWrapper showWelcome={!welcomeScreenClosed}>
+          <WelcomeContent>
+            <CustomColor variant={'lifiHeaderMedium'}>
+              {t('navbar.welcome.title')}
+            </CustomColor>
+            <Typography
+              variant={'lifiBodyLarge'}
+              sx={{
+                marginTop: theme.spacing(2),
+                color:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.accent1Alt.main
+                    : theme.palette.primary.main,
+                '& > .link-lifi': {
+                  fontWeight: 700,
+                  color: 'inherit',
+                  textDecoration: 'none',
+                },
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  fontSize: '24px',
+                  fontWeight: 400,
+                  lineHeight: '32px',
+                },
+              }}
             >
-              <Card sx={{ width: '100%', minHeight: '400px', margin: '24px' }}>
-                Test1
-              </Card>
-              <Card sx={{ width: '100%', minHeight: '400px', margin: '24px' }}>
-                Test2
-              </Card>
-              <Card sx={{ width: '100%', minHeight: '400px', margin: '24px' }}>
-                Test3
-              </Card>
-            </Box>
-          </ContentWrapper>
-        </SlideWrapper>
+              {
+                <Trans
+                  i18nKey={'navbar.welcome.subtitle' as string & never[]}
+                  components={[
+                    // fix: allow component with "no content"
+                    // eslint-disable-next-line jsx-a11y/anchor-has-content
+                    <a
+                      className={'link-lifi'}
+                      href={auditsWelcomeUrl}
+                      target={'_blank'}
+                      rel="noreferrer"
+                      onClick={handleAuditClick}
+                    />,
+                    // eslint-disable-next-line jsx-a11y/anchor-has-content
+                    <a
+                      className={'link-lifi'}
+                      href={lifiWelcomeUrl}
+                      onClick={handleLIFIClick}
+                      target={'_blank'}
+                      rel="noreferrer"
+                    />,
+                  ]}
+                />
+              }
+            </Typography>
+            <StatsCards
+              openChainsPopper={openChainsPopper}
+              setOpenChainsPopper={setOpenChainsPopper}
+              openBridgesPopper={openBridgesPopper}
+              setOpenBridgesPopper={setOpenBridgesPopper}
+              openDexsPopper={openDexsPopper}
+              setOpenDexsPopper={setOpenDexsPopper}
+            />
+            <ButtonPrimary
+              onClick={(event) => {
+                handleGetStarted(event);
+              }}
+              sx={(theme) => ({
+                margin: 'auto',
+                marginTop: theme.spacing(4),
+                height: '48px',
+                width: '192px',
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  marginTop: theme.spacing(6),
+                  height: '56px',
+                  borderRadius: '28px',
+                  width: '247px',
+                },
+              })}
+            >
+              <Typography
+                variant={'lifiBodyMediumStrong'}
+                sx={{
+                  maxHeight: '40px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    fontSize: '18px',
+                    maxHeight: '48px',
+                    lineHeight: '24px',
+                  },
+                }}
+              >
+                {t('navbar.welcome.cta')}
+              </Typography>
+            </ButtonPrimary>
+          </WelcomeContent>
+        </ContentWrapper>
       </Slide>
-    </Wrapper>
+    </Overlay>
   );
 };

@@ -154,7 +154,10 @@ export function Widget({ starterVariant }: WidgetProps) {
   ]);
 
   return (
-    <Box className="widget-wrapper">
+    <Box
+      sx={{ border: '1px solid red', width: 'fit-content', margin: ' 0 auto' }}
+      className="widget-wrapper"
+    >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
