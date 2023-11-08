@@ -4,9 +4,7 @@ import { TestnetAlert } from '@transferto/shared/src';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { LinkMap } from '../../const';
 import { TabsMap } from '../../const/tabsMap';
-import { useUserTracking } from '../../hooks';
 import { useActiveTabStore, useSettingsStore } from '../../stores';
-import { useWelcomeScreenHoverStore } from '../../stores/welcomeScreenHover/WelcomeScreenHoverStore';
 import { StarterVariantType } from '../../types';
 import { OnRamper } from '../OnRamper';
 import { Widget } from '../Widget';
@@ -19,7 +17,6 @@ export function Widgets() {
     state.welcomeScreenClosed,
     state.onWelcomeScreenClosed,
   ]);
-  const { welcomeScreenHover } = useWelcomeScreenHoverStore();
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
@@ -92,14 +89,12 @@ export function Widgets() {
       <WidgetContainer
         isActive={_starterVariant === TabsMap.Exchange.variant}
         welcomeScreenClosed={welcomeScreenClosed}
-        welcomeScreenHover={welcomeScreenHover}
       >
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
         isActive={_starterVariant === TabsMap.Refuel.variant}
         welcomeScreenClosed={welcomeScreenClosed}
-        welcomeScreenHover={welcomeScreenHover}
       >
         <Widget starterVariant={TabsMap.Refuel.variant as WidgetSubvariant} />
       </WidgetContainer>
@@ -107,7 +102,6 @@ export function Widgets() {
         <WidgetContainer
           isActive={_starterVariant === TabsMap.Buy.variant}
           welcomeScreenClosed={welcomeScreenClosed}
-          welcomeScreenHover={welcomeScreenHover}
           sx={{ width: '392px' }}
         >
           <div className="onramper-wrapper">

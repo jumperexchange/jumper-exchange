@@ -1,11 +1,4 @@
-import {
-  Box,
-  Breakpoint,
-  Card,
-  Slide,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
 import { appendUTMParametersToLink } from '@transferto/shared/src/utils';
 import { MouseEventHandler, useEffect, useState } from 'react';
@@ -17,14 +10,13 @@ import {
   TrackingEventParameter,
 } from '../../const';
 import { useUserTracking } from '../../hooks';
-import { useSettingsStore, useWelcomeScreenHoverStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 import { StatsCards } from '../StatsCard';
 import {
   ContentWrapper,
   CustomColor,
-  WelcomeContent,
   Overlay,
+  WelcomeContent,
 } from './WelcomeScreen.style';
 
 const auditsWelcomeUrl = appendUTMParametersToLink(
@@ -46,7 +38,6 @@ export const WelcomeScreen = () => {
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
     shallow,
   );
-  // const { setWelcomeScreenHover } = useWelcomeScreenHoverStore();
 
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
@@ -122,11 +113,6 @@ export const WelcomeScreen = () => {
       });
     }
   };
-
-  // const handleHover = (active: boolean) => {
-  //   console.log('hovering:', active);
-  //   setWelcomeScreenHover(active);
-  // };
 
   return (
     <Overlay showWelcome={!welcomeScreenClosed || false}>

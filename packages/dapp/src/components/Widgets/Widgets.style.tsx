@@ -2,7 +2,6 @@ import { Box, BoxProps, styled } from '@mui/material';
 
 export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
   isActive?: boolean;
-  welcomeScreenHover?: boolean;
   welcomeScreenClosed: boolean;
 }
 
