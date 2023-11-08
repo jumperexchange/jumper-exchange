@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { AppProvider } from './AppProvider';
-import { FeatureCards } from './components';
+import { FeatureCards, WelcomeScreen } from './components';
 import { Navbar } from './components/Navbar';
 import { Menus } from './components/Navbar/Menu/Menus';
 import { Widgets } from './components/Widgets';
@@ -20,6 +20,8 @@ export default function App() {
       <Navbar />
       <Menus />
       <Widgets />
+      <WelcomeScreen />
+
       <FeatureCards />
     </AppProvider>
   );
