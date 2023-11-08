@@ -10,7 +10,7 @@ export const WidgetContainer = styled(Box, {
 })<WidgetContainerProps>(({ theme, isActive, showWelcome }) => ({
   display: isActive ? 'inherit' : 'none',
   placeContent: 'center',
-  width: showWelcome ? '392px' : 'auto',
+  width: 'auto',
   position: showWelcome ? 'relative' : 'inherit',
   zIndex: showWelcome ? 1400 : 'inherit',
   overflow: 'visible',
@@ -65,9 +65,6 @@ export const WidgetContainer = styled(Box, {
     transitionProperty: showWelcome && 'padding-top',
     transitionDuration: showWelcome && '.3s',
     transitionTimingFunction: showWelcome && 'ease-in-out',
-    [`@media screen and (min-height: 600px)`]: {
-      overflow: 'visible',
-    },
   },
 
   '& > .widget-wrapper, & > .onramper-wrapper': {
