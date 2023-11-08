@@ -100,9 +100,9 @@ interface StatsCardsProps {
   setOpenDexsPopper: Dispatch<SetStateAction<boolean>>;
 }
 
-const chainsIndex = 0;
-const bridgesIndex = 1;
-const dexsIndex = 2;
+const CHAINS_INDEX = 0;
+const BRIDGES_INDEX = 1;
+const DEXS_INDEX = 2;
 
 export const StatsCards = ({
   openChainsPopper,
@@ -184,39 +184,39 @@ export const StatsCards = ({
     <Container>
       {/* Chains */}
       <StatsCard
-        title={statsData[chainsIndex].title}
-        number={statsData[chainsIndex].number}
-        handleClick={statsData[chainsIndex].handleOnClick}
+        title={statsData[CHAINS_INDEX].title}
+        number={statsData[CHAINS_INDEX].number}
+        handleClick={statsData[CHAINS_INDEX].handleOnClick}
       />
       <StatsModal
-        title={statsData[chainsIndex].title}
-        open={statsData[chainsIndex].open}
-        setOpen={statsData[chainsIndex].setOpen}
-        data={statsData[chainsIndex].data}
+        title={statsData[CHAINS_INDEX].title}
+        open={statsData[CHAINS_INDEX].open}
+        setOpen={statsData[CHAINS_INDEX].setOpen}
+        data={statsData[CHAINS_INDEX].data}
       />
       {/* Bridges */}
       <StatsCard
-        title={statsData[bridgesIndex].title}
-        number={statsData[bridgesIndex].number}
-        handleClick={statsData[bridgesIndex].handleOnClick}
+        title={statsData[BRIDGES_INDEX].title}
+        number={statsData[BRIDGES_INDEX].number}
+        handleClick={statsData[BRIDGES_INDEX].handleOnClick}
       />
       <StatsModal
-        title={statsData[bridgesIndex].title}
-        open={statsData[bridgesIndex].open}
-        setOpen={statsData[bridgesIndex].setOpen}
-        data={statsData[bridgesIndex].data}
+        title={statsData[BRIDGES_INDEX].title}
+        open={statsData[BRIDGES_INDEX].open}
+        setOpen={statsData[BRIDGES_INDEX].setOpen}
+        data={statsData[BRIDGES_INDEX].data}
       />
       {/* DEXs */}
       <StatsCard
-        title={statsData[dexsIndex].title}
-        number={statsData[dexsIndex].number}
-        handleClick={statsData[dexsIndex].handleOnClick}
+        title={statsData[DEXS_INDEX].title}
+        number={statsData[DEXS_INDEX].number}
+        handleClick={statsData[DEXS_INDEX].handleOnClick}
       />
       <StatsModal
-        title={statsData[dexsIndex].title}
-        open={statsData[dexsIndex].open}
-        setOpen={statsData[dexsIndex].setOpen}
-        data={statsData[dexsIndex].data}
+        title={statsData[DEXS_INDEX].title}
+        open={statsData[DEXS_INDEX].open}
+        setOpen={statsData[DEXS_INDEX].setOpen}
+        data={statsData[DEXS_INDEX].data}
       />
     </Container>
   );
