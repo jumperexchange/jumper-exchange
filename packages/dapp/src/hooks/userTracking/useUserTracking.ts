@@ -20,29 +20,12 @@ export function useUserTracking() {
   const cookie3 = useCookie3();
   const { account, usedWallet } = useWallet();
 
-
-  /* 
-  use useEffect depended on account to track wallet connects with account depended tracking software
-  */
-  // useEffect(() => {
-  //   if (account?.address && account?.chainId && usedWallet) {
-  //     arcx?.wallet({
-  //       account: `${account.address}`,
-  //       chainId: `${account.chainId}`,
-  //     });
-  //     hotjar.identify(account.address, {
-  //       [TrackingEventParameter.Wallet]: usedWallet.name,
-  //     });
-  //     hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
-  //   }
-  // }, [account, account.address, account.chainId, arcx, usedWallet]);
-
   const trackConnectWallet = useCallback(
     /**
      * Track Wallet Connect with HJ and ARCx
      *
      */
-    ({disableTrackingTool}:TrackConnectWalletProps) => {
+    ({disableTrackingTool,account}:TrackConnectWalletProps) => {
       if (account?.address && account?.chainId && usedWallet) {
         if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
           arcx?.wallet({
@@ -58,7 +41,7 @@ export function useUserTracking() {
         }
       }
     },
-    [account, arcx, usedWallet],
+    [arcx, usedWallet],
   );
   
   const trackAttribute = useCallback(
@@ -85,9 +68,9 @@ export function useUserTracking() {
   );
 
   const trackDisconnectWallet = useCallback(
-    ({ data, disableTrackingTool }: TrackDisconnectWalletProps) => {
+    ({ account, data, disableTrackingTool }: TrackDisconnectWalletProps) => {
       if (
-        account.address &&
+        account?.address &&
         !disableTrackingTool?.includes(EventTrackingTool.Hotjar)
       ) {
         hotjar.identify(account.address, {
@@ -102,12 +85,12 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         arcx?.disconnection({
-          account: `${account.address}`, // optional(string) - The account that got disconnected
-          chainId: `${account.chainId}`, // optional(string | number) - The chain ID from which the wallet disconnected
+          account: `${account?.address}`, // optional(string) - The account that got disconnected
+          chainId: `${account?.chainId}`, // optional(string | number) - The chain ID from which the wallet disconnected
         })
       } 
     },
-    [account, arcx],
+    [arcx],
   );
 
   const trackEvent = useCallback(
@@ -221,16 +204,20 @@ export function useUserTracking() {
   );
 
   const trackChainSwitch = useCallback(
-    async ({ chainId, account, disableTrackingTool }: TrackChainSwitchProps) => {
-
-      // ARCx Tracking
+    async ({ account, disableTrackingTool,action, category, data }: TrackChainSwitchProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         arcx?.chain({
-          chainId: `${chainId}`,
-          account: account?.address,
+          account: `${account?.address}`,
+          chainId: `${account?.chainId}`,
         });
       }
-  
+      if (!disableTrackingTool?.includes(EventTrackingTool.GA)) {
+        window.gtag('event', action, {
+          category: category,
+          ...data,
+        });
+      }
+      
     },
     [arcx],
   );
