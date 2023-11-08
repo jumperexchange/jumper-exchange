@@ -9,6 +9,7 @@ export interface SettingsProps {
   themeMode: ThemeModesSupported;
   languageMode: LanguageKey;
   activeWalletName: WalletConnected;
+  clientWallets: string[];
   disabledFeatureCards: string[];
   welcomeScreenClosed: boolean;
   [key: string]: any;
@@ -26,6 +27,9 @@ export interface SettingsState extends SettingsProps {
 
   // Language
   onChangeLanguage: (language: LanguageKey) => void;
+
+  // Installed Wallets
+  onClientWallets: (wallet: string) => void;
 
   // Disable Feature Cards
   onDisableFeatureCard: (id: string) => void;

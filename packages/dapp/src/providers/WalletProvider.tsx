@@ -20,7 +20,11 @@ import {
   WalletAccount,
   WalletContextProps,
 } from '@transferto/shared/src/types/wallet';
-import { TrackingAction, TrackingEventParameter } from '../const';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '../const';
 import { useUserTracking } from '../hooks';
 import { useMultisig } from '../hooks/useMultisig';
 import { EventTrackingTool } from '../types';
@@ -101,13 +105,15 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       await liFiWalletManagement.connect(wallet);
       trackEvent({
         action: TrackingAction.ConnectWallet,
+        category: TrackingCategory.Wallet,
+        label: 'connect-wallet',
         data: {
           [TrackingEventParameter.Wallet]: wallet.name,
         },
         disableTrackingTool: [
           EventTrackingTool.ARCx,
+          EventTrackingTool.Cookie3,
           EventTrackingTool.Hotjar,
-          EventTrackingTool.Raleon,
         ],
       });
       wallet.on('walletAccountChanged', handleWalletUpdate);
@@ -134,13 +140,15 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
         await currentWallet?.switchChain(chainId);
         trackEvent({
           action: TrackingAction.SwitchChain,
+          label: 'switch-chain',
+          category: TrackingCategory.Wallet,
           data: {
             [TrackingEventParameter.SwitchedChain]: chainId,
           },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
+            EventTrackingTool.Cookie3,
             EventTrackingTool.Hotjar,
-            EventTrackingTool.Raleon,
           ],
         });
         handleWalletUpdate(currentWallet);
@@ -158,6 +166,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
         await currentWallet?.addChain(chainId);
         trackEvent({
           action: TrackingAction.AddChain,
+          category: TrackingCategory.Wallet,
+          label: 'add-chain',
           data: {
             [TrackingEventParameter.ChainIdAdded]: chainId,
           },
@@ -177,6 +187,8 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       await currentWallet?.addToken(chainId, token);
       trackEvent({
         action: TrackingAction.AddToken,
+        label: 'add-token',
+        category: TrackingCategory.Wallet,
         data: {
           [TrackingEventParameter.AddedTokenAddress]: token.address,
           [TrackingEventParameter.AddedTokenName]: token.name,

@@ -2,7 +2,7 @@ import { ChainId } from '@lifi/types';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import 'react-i18next';
 import { MenuKeys } from '../const';
-import { Gtag } from './gtag';
+import { Gtag } from './gtag.types';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
@@ -10,20 +10,8 @@ declare module 'react-i18next' {
   }
 }
 
-interface RaleonProps {
-  addPopup: (n: string, e: string) => void;
-  enableMessages: (e: boolean) => void;
-  enableQuests: (e: boolean) => void;
-  generateRaleonId: () => string;
-  pageVisited: (e: string) => void;
-  registerEvent: (e: string, t: string, o: any, a?: string) => void;
-  walletConnected: (e: string) => void;
-  walletDisconnected: () => void;
-}
-
 declare global {
   interface Window {
-    raleon: RaleonProps;
     gtag: Gtag.Gtag;
   }
 }
