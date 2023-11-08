@@ -13,10 +13,9 @@ import { WidgetContainer } from './Widgets.style';
 
 export function Widgets() {
   const { activeTab, setActiveTab } = useActiveTabStore();
-  const [welcomeScreenClosed] = useSettingsStore((state) => [
-    state.welcomeScreenClosed,
-    state.onWelcomeScreenClosed,
-  ]);
+  const [welcomeScreenClosed, onWelcomeScreenClosed] = useSettingsStore(
+    (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
+  );
   const theme = useTheme();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
   const [_starterVariant, setStarterVariant] = useState<
@@ -75,6 +74,10 @@ export function Widgets() {
     }
   }, [activeTab, setActiveTab, starterVariant, starterVariantUsed]);
 
+  const handleCloseWelcomeScreen = () => {
+    onWelcomeScreenClosed(true);
+  };
+
   useLayoutEffect(() => {
     getActiveWidget();
   }, [getActiveWidget, starterVariant, activeTab]);
@@ -87,6 +90,7 @@ export function Widgets() {
         </Grid>
       )}
       <WidgetContainer
+        onClick={handleCloseWelcomeScreen}
         isActive={_starterVariant === TabsMap.Exchange.variant}
         welcomeScreenClosed={welcomeScreenClosed}
       >
