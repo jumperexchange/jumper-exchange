@@ -32,7 +32,8 @@
       "switchChain": "Перемикнути чейн",
       "copy": "Скопіювати",
       "explore": "Переглянути",
-      "copiedMsg": "Адреса гаманця скопійована"
+      "copiedMsg": "Адреса гаманця скопійована",
+      "walletNotInstalled": "{{wallet}} не встановлено"
     },
     "themes": {
       "switchToLight": "Увімкнути світлу тему",

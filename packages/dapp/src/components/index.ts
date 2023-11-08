@@ -6,6 +6,6 @@ export * from './StatsCard';
 export * from './StatsModal';
 export * from './SupportModal';
 export * from './ThemeSwitch';
-export * from './WelcomeWrapper';
+export * from './WelcomeScreen';
 export * from './Widget';
 export * from './Widgets';
