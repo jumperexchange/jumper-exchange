@@ -160,6 +160,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
     if (currentWallet) {
       await liFiWalletManagement.disconnect(currentWallet);
       currentWallet.removeAllListeners();
+      //Disconnect action tracked over here since wallet gets updated to undefined value after disconection occures
       trackDisconnectWallet({
         account,
         data: { [TrackingEventParameter.Wallet]: currentWallet.name },
