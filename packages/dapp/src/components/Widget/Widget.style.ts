@@ -1,4 +1,9 @@
-import { styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
+
+export const WidgetWrapper = styled(Box)(() => ({
+  width: 'fit-content',
+  margin: ' 0 auto',
+}));
 
 export const GlowBackground = styled('span')(({ theme }) => ({
   position: 'absolute',

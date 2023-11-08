@@ -1,6 +1,5 @@
 import { ChainId, Token } from '@lifi/sdk';
 import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
-import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MenuState } from '@transferto/shared/src/types';
 import { useMemo } from 'react';
@@ -12,6 +11,7 @@ import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore } from '../../stores';
 import { LanguageKey, StarterVariantType } from '../../types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
+import { WidgetWrapper } from './Widget.style';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -154,15 +154,12 @@ export function Widget({ starterVariant }: WidgetProps) {
   ]);
 
   return (
-    <Box
-      sx={{ border: '1px solid red', width: 'fit-content', margin: ' 0 auto' }}
-      className="widget-wrapper"
-    >
+    <WidgetWrapper className="widget-wrapper">
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={widgetConfig}
       />
-    </Box>
+    </WidgetWrapper>
   );
 }
