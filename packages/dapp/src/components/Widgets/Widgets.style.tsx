@@ -10,24 +10,26 @@ export const WidgetContainer = styled(Box, {
 })<WidgetContainerProps>(({ theme, isActive, welcomeScreenClosed }) => ({
   display: isActive ? 'inherit' : 'none',
   margin: '0 auto 24px',
+  maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
 
   // setting hover animations on widget wrappers
   '& > .widget-wrapper > div , & > .onramper-wrapper': {
     transitionProperty: 'margin-top',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    marginTop: !welcomeScreenClosed ? theme.spacing(16) : theme.spacing(3.5),
+    marginTop: !welcomeScreenClosed ? theme.spacing(3) : theme.spacing(3.5),
     cursor: 'pointer',
-  },
+    [`@media screen and (min-height: 700px)`]: {
+      marginTop: !welcomeScreenClosed
+        ? 'calc( 50vh - 680px / 2.75 - 80px)'
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
+    },
 
-  [`@media screen and (min-height: 700px)`]: {
-    marginTop: !welcomeScreenClosed ? 'calc( 50vh - 680px / 2.75 - 80px)' : '0', // (mid viewheight - half-two/thirds widget height - header height )
-  },
-
-  [`@media screen and (min-height: 900px)`]: {
-    marginTop: !welcomeScreenClosed
-      ? 'calc( 50vh - 680px / 2.75 - 128px)'
-      : '0', // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+    [`@media screen and (min-height: 900px)`]: {
+      marginTop: !welcomeScreenClosed
+        ? 'calc( 50vh - 680px / 2.75 - 128px)'
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+    },
   },
 
   // widget wrappers -> animations
