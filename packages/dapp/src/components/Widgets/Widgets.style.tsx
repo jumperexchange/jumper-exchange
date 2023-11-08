@@ -30,9 +30,10 @@ export const WidgetContainer = styled(Box, {
     paddingTop: !welcomeScreenClosed ? theme.spacing(14) : theme.spacing(4),
   },
 
-  '& > .widget-wrapper > div:hover, & > .onramper-wrapper:hover': {
-    paddingTop: theme.spacing(10),
-  },
+  '& > .widget-wrapper > div:hover, & > .onramper-wrapper:hover':
+    !welcomeScreenClosed && {
+      paddingTop: theme.spacing(10),
+    },
 
   // Hover-Transition
   // '& > div > div, & > .onramper-wrapper': {
