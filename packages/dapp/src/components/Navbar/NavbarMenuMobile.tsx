@@ -1,6 +1,6 @@
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { useTheme } from '@mui/material/styles';
+import { CSSObject, useTheme } from '@mui/material/styles';
 import { KeyboardEvent } from 'react';
 import { MenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
@@ -18,6 +18,7 @@ interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
   cardsLayout?: boolean;
+  styles?: CSSObject;
   label?: string;
   open: boolean;
   children: any;
@@ -29,6 +30,7 @@ const NavbarMenuMobile = ({
   setOpen,
   cardsLayout,
   label,
+  styles,
   isOpenSubMenu,
   children,
 }: NavbarMenuProps) => {
@@ -81,6 +83,7 @@ const NavbarMenuMobile = ({
                   cardsLayout={cardsLayout}
                   autoFocus={open}
                   hasLabel={!!label}
+                  styles={styles}
                   component={
                     isOpenSubMenu && openNavbarSubMenu !== MenuKeys.WalletSelect
                       ? 'div'

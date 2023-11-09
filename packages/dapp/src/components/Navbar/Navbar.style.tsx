@@ -131,31 +131,40 @@ export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
 export interface NavbarMenuListProps extends Omit<MenuListProps, 'component'> {
   component?: string;
   isOpenSubMenu?: boolean;
+  styles?: CSSObject;
   cardsLayout?: boolean;
   hasLabel?: boolean;
 }
 
 export const NavbarMenuList = styled(MenuList, {
   shouldForwardProp: (prop) =>
-    prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
-})<NavbarMenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
-  marginTop: 0,
-  display: cardsLayout ? 'flex' : 'block',
-  justifyContent: cardsLayout ? 'center' : 'unset',
-  flexWrap: cardsLayout ? 'wrap' : 'inherit',
-  padding: cardsLayout ? '0 24px' : 0,
-  gap: cardsLayout ? '12px' : 'inherit',
-  '& > :first-of-type': {
-    marginTop:
-      isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
-    paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
-  },
-  '& > :last-child': {
-    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
-    paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
-    paddingTop: hasLabel ? 0 : 'inherit',
-  },
-}));
+    prop !== 'isOpenSubMenu' &&
+    prop !== 'hasLabel' &&
+    prop !== 'cardsLayout' &&
+    prop !== 'styles',
+})<NavbarMenuListProps>(
+  ({ theme, isOpenSubMenu, hasLabel, cardsLayout, styles }) => ({
+    marginTop: 0,
+    display: cardsLayout ? 'flex' : 'block',
+    justifyContent: cardsLayout ? 'center' : 'unset',
+    flexWrap: cardsLayout ? 'wrap' : 'inherit',
+    padding: cardsLayout ? '0 24px' : 0,
+    gap: cardsLayout ? '12px' : 'inherit',
+    '& > :first-of-type': {
+      marginTop:
+        isOpenSubMenu || hasLabel || cardsLayout
+          ? 'inherit'
+          : theme.spacing(1.5),
+      paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
+    },
+    '& > :last-child': {
+      marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
+      paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
+      paddingTop: hasLabel ? 0 : 'inherit',
+    },
+    ...styles,
+  }),
+);
 
 export const MenuHeader = styled('div')(() => ({
   padding: '0',

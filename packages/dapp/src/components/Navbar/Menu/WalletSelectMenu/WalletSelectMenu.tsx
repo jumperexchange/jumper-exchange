@@ -61,6 +61,11 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
         cardsLayout={
           openNavbarSubMenu === MenuKeys.WalletSelectMore ? false : true
         }
+        styles={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr 1fr',
+          justifyItems: 'center',
+        }}
         transformOrigin={'top'}
         setOpen={onOpenNavbarWalletSelectMenu}
         isOpenSubMenu={openNavbarSubMenu === MenuKeys.WalletSelectMore}
@@ -68,6 +73,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
         {openNavbarSubMenu === MenuKeys.None && (
           <MenuHeaderAppWrapper
             styles={{
+              gridColumn: 'span 3',
               marginBottom: '-12px',
             }}
           >
@@ -127,6 +133,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
               open={true}
               styles={{
                 ...menuItemStyles,
+                gridColumn: 'span 3',
                 padding: '0px',
                 width: '100%',
                 height: '48px !important',
