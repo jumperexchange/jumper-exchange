@@ -119,7 +119,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
   const handleMultisigEnvironmentCheck = useCallback(async () => {
     const isMultiSig = await checkMultisigEnvironment();
-    const isCyberConnect = await checkCyberConnectEnvironment();
+    const isCyberConnect = checkCyberConnectEnvironment();
 
     setIsCyberConnectEnvironment(isCyberConnect);
 
@@ -176,19 +176,19 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
             {_walletDigest}
           </Typography>
         </Grid>
-        {isSmartContractWalletEnv && (
+        {!isSmartContractWalletEnv && (
           <Grid item xs={4}>
             <SpotButton name="Copy" onClick={handleCopyButton}>
               <ContentCopyIcon />
             </SpotButton>
           </Grid>
         )}
-        <Grid item xs={isSmartContractWalletEnv ? 4 : 6}>
+        <Grid item xs={!isSmartContractWalletEnv ? 4 : 6}>
           <SpotButton name="Explore" onClick={handleExploreButton}>
             <LaunchIcon />
           </SpotButton>
         </Grid>
-        <Grid item xs={isSmartContractWalletEnv ? 4 : 6}>
+        <Grid item xs={!isSmartContractWalletEnv ? 4 : 6}>
           <SpotButton
             name={t('navbar.walletMenu.disconnect')}
             variant={'primary'}

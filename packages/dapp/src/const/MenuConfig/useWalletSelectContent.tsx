@@ -34,7 +34,7 @@ export const useWalletSelectContent = () => {
 
   const initializeWalletSelect = async () => {
     const isMultisig = await checkMultisigEnvironment();
-    const isCyberConnectEnv = await checkCyberConnectEnvironment();
+    const isCyberConnectEnv = checkCyberConnectEnvironment();
 
     const walletsPromise = supportedWallets.map(
       async (wallet) => await wallet.installed(),
@@ -55,7 +55,7 @@ export const useWalletSelectContent = () => {
     );
 
     const allowedWallets = [...installedWallets];
-
+    console.log(allowedWallets);
     if (isDesktopView) {
       allowedWallets.push(...notInstalledWallets);
     }
@@ -116,6 +116,11 @@ export const useWalletSelectContent = () => {
 
     const handleClick = async (wallet: Wallet) => {
       if (clientWallets.includes(wallet.name)) {
+        console.log(
+          'on wallet click env check:',
+          checkCyberConnectEnvironment(),
+        );
+
         login(wallet);
         onCloseAllNavbarMenus();
         onWelcomeScreenClosed(true);

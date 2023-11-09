@@ -2,14 +2,14 @@ import type { Signer } from '@ethersproject/abstract-signer';
 import type { Token } from '@lifi/types';
 import type { ChainId } from '@lifi/types';
 import type events from 'events';
-
+import { Wallet as LIFIWallet } from '@lifi/wallet-management';
 export interface WalletContextProps {
   account: WalletAccount;
   usedWallet?: Wallet;
   addChain(chainId: ChainId): Promise<boolean>;
   addToken(chainId: ChainId, token: Token): Promise<void>;
   disconnect(): void;
-  switchChain(chainId: ChainId): Promise<any>;
+  switchChain(chainId: ChainId): Promise<LIFIWallet | undefined>;
   connect(wallet?: Wallet | undefined): Promise<void>;
 }
 

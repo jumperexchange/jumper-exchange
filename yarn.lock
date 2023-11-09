@@ -1692,13 +1692,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cyberlab/cyber-app-sdk@npm:1.3.0-beta.4":
-  version: 1.3.0-beta.4
-  resolution: "@cyberlab/cyber-app-sdk@npm:1.3.0-beta.4"
+"@cyberlab/cyber-account@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@cyberlab/cyber-account@npm:2.0.2"
+  dependencies:
+    viem: ^1.17.2
+  checksum: 833e5835f3824e7c4c5d1dc451bdea4627c17faa3c354f6f92e87a50e210122b8d3caece064810bb973aab59a82946fa60e82c72f17655513027e7eabe24ceb1
+  languageName: node
+  linkType: hard
+
+"@cyberlab/cyber-app-sdk@npm:2.1.2":
+  version: 2.1.2
+  resolution: "@cyberlab/cyber-app-sdk@npm:2.1.2"
   dependencies:
     ts-node: ^10.9.1
     viem: ^1.8.1
-  checksum: 1bc6aa8fd097497d8937064aa968dec317a6ccfb70b691b926bb69a4094a93244aa6f02a0da626d83561dc6c5308add38609be905db2ae572ddfe2c8adb7eac0
+  checksum: d018bc2fc37e558c1a4018f2e474f66a2255e1f222190af46c1613f32def9ebfbc371c0b8b45f92a552233388dcf80742d6832d95b3b54148aa7509dd686226c
   languageName: node
   linkType: hard
 
@@ -2855,11 +2864,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "@lifi/wallet-management@npm:2.4.1"
+"@lifi/wallet-management@portal:/Users/adrianweniger/Documents/LiFi/lifi-widget/packages/wallet-management::locator=root%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@lifi/wallet-management@portal:/Users/adrianweniger/Documents/LiFi/lifi-widget/packages/wallet-management::locator=root%40workspace%3A."
   dependencies:
     "@coinbase/wallet-sdk": ^3.7.2
+    "@cyberlab/cyber-account": ^2.0.2
+    "@cyberlab/cyber-app-sdk": 2.1.2
     "@ethersproject/abstract-signer": ^5.7.0
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
@@ -2870,13 +2881,12 @@ __metadata:
     "@walletconnect/modal": ^2.6.2
     events: ^3.3.0
     react: ^18.2.0
-  checksum: ec30295c837f25cdcf117a474c2cca5bcda171eeeee67b2e7f4823b29913b1fa477e0871e5081ac203bfe2a3bfc16d51c47ba74f09e05b273ccdbe6b963e0de7
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@lifi/widget@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "@lifi/widget@npm:2.7.1"
+"@lifi/widget@portal:/Users/adrianweniger/Documents/LiFi/lifi-widget/packages/widget::locator=root%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@lifi/widget@portal:/Users/adrianweniger/Documents/LiFi/lifi-widget/packages/widget::locator=root%40workspace%3A."
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -2890,7 +2900,7 @@ __metadata:
     "@mui/lab": ^5.0.0-alpha.149
     "@mui/material": ^5.14.14
     "@tanstack/react-query": ^4.36.1
-    "@tanstack/react-virtual": ^3.0.0-beta.66
+    "@tanstack/react-virtual": ^3.0.0-beta.68
     big.js: ^6.2.1
     i18next: ^23.6.0
     i18next-browser-languagedetector: ^7.1.0
@@ -2899,12 +2909,12 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-hook-form: ^7.47.0
-    react-i18next: ^13.3.0
+    react-i18next: ^13.3.1
     react-intersection-observer: ^9.5.2
     react-router-dom: ^6.17.0
     react-timer-hook: ^3.0.7
     uuid: ^9.0.1
-    zustand: ^4.4.3
+    zustand: ^4.4.4
   peerDependencies:
     "@types/react": ^18.0.0
     react: ^18.0.0
@@ -2912,9 +2922,8 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 440fd8fe9edd4df68a46c3d02d4d191825380bd301234cc83e0c3f5d635ce7af9fb79775f43ee0961cb6fa6c5b65191edea823f1a0b20ec73af2433346772790
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@lit-labs/ssr-dom-shim@npm:^1.0.0, @lit-labs/ssr-dom-shim@npm:^1.1.0":
   version: 1.1.2
@@ -4480,7 +4489,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-virtual@npm:^3.0.0-beta.66":
+"@tanstack/react-virtual@npm:^3.0.0-beta.68":
   version: 3.0.0-beta.68
   resolution: "@tanstack/react-virtual@npm:3.0.0-beta.68"
   dependencies:
@@ -4512,7 +4521,7 @@ __metadata:
   dependencies:
     "@arcxmoney/analytics": ^1.9.1
     "@cookie3/analytics": ^0.6.0
-    "@cyberlab/cyber-app-sdk": 1.3.0-beta.4
+    "@cyberlab/cyber-app-sdk": 2.1.2
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
@@ -12965,7 +12974,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^13.3.0, react-i18next@npm:^13.3.1":
+"react-i18next@npm:^13.3.1":
   version: 13.3.1
   resolution: "react-i18next@npm:13.3.1"
   dependencies:
@@ -15192,6 +15201,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"viem@npm:^1.17.2":
+  version: 1.18.9
+  resolution: "viem@npm:1.18.9"
+  dependencies:
+    "@adraffy/ens-normalize": 1.9.4
+    "@noble/curves": 1.2.0
+    "@noble/hashes": 1.3.2
+    "@scure/bip32": 1.3.2
+    "@scure/bip39": 1.2.1
+    abitype: 0.9.8
+    isows: 1.0.3
+    ws: 8.13.0
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 4bcd28a3bc2e0ff2f19a8de2c779dfdc0c7a479fe2c103a03cb4faa96450241075ddbc7e39bde4db9d8ad8e1dbc4d394223cdae00f8e135c2748ba354a2e2665
+  languageName: node
+  linkType: hard
+
 "viem@npm:^1.8.1":
   version: 1.18.0
   resolution: "viem@npm:1.18.0"
@@ -15760,7 +15790,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.4.3, zustand@npm:^4.4.4":
+"zustand@npm:^4.4.4":
   version: 4.4.4
   resolution: "zustand@npm:4.4.4"
   dependencies:

@@ -157,7 +157,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
         // so we need to return the updated account, hence returning the resolved
         return currentWallet;
       } catch {
-        return false;
+        return undefined;
       }
     },
     [currentWallet, trackEvent],
