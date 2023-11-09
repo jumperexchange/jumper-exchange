@@ -64,6 +64,12 @@ export const WidgetContainer = styled(Box, {
     borderTopLeftRadius: '12px',
   },
 
+  // specify clickable and hoverable area for onramper widget
+  '& > .onramper-wrapper': {
+    width: '392px',
+    height: '660px',
+  },
+
   // dark widget overlay when welcome screen opened -> hover animation
   '& .widget-wrapper > div:hover:before, & > .onramper-wrapper .onramper-container:hover:before':
     {
