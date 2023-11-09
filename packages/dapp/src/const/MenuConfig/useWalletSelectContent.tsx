@@ -6,7 +6,7 @@ import { useMultisig } from '../../hooks/useMultisig';
 import { useWallet } from '../../providers/WalletProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { MenuListItem } from '../../types';
-import { useCyberConnectWallet } from '../../hooks/useCyberConnectWallet';
+import { useIsCyberConnectEnvironment } from '../../hooks/useCyberConnectWallet';
 
 export const useWalletSelectContent = () => {
   const isDesktopView = useMediaQuery((theme: Theme) =>
@@ -27,14 +27,10 @@ export const useWalletSelectContent = () => {
   const [availableWallets, setAvailableWallets] = useState<Wallet[]>([]);
 
   const { checkMultisigEnvironment } = useMultisig();
-  const { checkCyberConnectEnvironment } = useCyberConnectWallet();
-
-  const [isCyberConnectEnvironment, setIsCyberConnectEnvironment] =
-    useState(false);
+  const isCyberConnectEnvironment = useIsCyberConnectEnvironment();
 
   const initializeWalletSelect = async () => {
     const isMultisig = await checkMultisigEnvironment();
-    const isCyberConnectEnv = checkCyberConnectEnvironment();
 
     const walletsPromise = supportedWallets.map(
       async (wallet) => await wallet.installed(),
@@ -61,7 +57,6 @@ export const useWalletSelectContent = () => {
     }
 
     setAvailableWallets(allowedWallets);
-    setIsCyberConnectEnvironment(isCyberConnectEnv);
 
     if (isMultisig) {
       setIsCurrentMultisigEnvironment(true);
@@ -116,11 +111,6 @@ export const useWalletSelectContent = () => {
 
     const handleClick = async (wallet: Wallet) => {
       if (clientWallets.includes(wallet.name)) {
-        console.log(
-          'on wallet click env check:',
-          checkCyberConnectEnvironment(),
-        );
-
         login(wallet);
         onCloseAllNavbarMenus();
         onWelcomeScreenClosed(true);

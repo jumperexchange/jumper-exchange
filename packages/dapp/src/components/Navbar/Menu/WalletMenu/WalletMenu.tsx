@@ -23,22 +23,22 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
-import { useCyberConnectWallet } from '../../../../hooks/useCyberConnectWallet';
+import { useIsCyberConnectEnvironment } from '../../../../hooks/useCyberConnectWallet';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
 export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { checkMultisigEnvironment } = useMultisig();
-  const { checkCyberConnectEnvironment } = useCyberConnectWallet();
+  const isCyberConnectEnvironment = useIsCyberConnectEnvironment();
   const { t } = useTranslation();
   const theme = useTheme();
   const blockchainExplorerURL = useBlockchainExplorerURL();
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
-  const [isCyberConnectEnvironment, setIsCyberConnectEnvironment] =
-    useState(false);
+  // const [isCyberConnectEnvironment, setIsCyberConnectEnvironment] =
+  //   useState(false);
   const walletSource = supportedWallets;
 
   const [
@@ -119,12 +119,9 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
 
   const handleMultisigEnvironmentCheck = useCallback(async () => {
     const isMultiSig = await checkMultisigEnvironment();
-    const isCyberConnect = checkCyberConnectEnvironment();
 
-    setIsCyberConnectEnvironment(isCyberConnect);
-
-    setIsMultisigEnvironment(isMultiSig);
     // Check MultisigEnvironment only on first render
+    setIsMultisigEnvironment(isMultiSig);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
