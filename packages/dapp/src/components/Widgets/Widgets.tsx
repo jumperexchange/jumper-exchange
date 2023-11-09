@@ -97,6 +97,7 @@ export function Widgets() {
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
+        onClick={handleCloseWelcomeScreen}
         isActive={_starterVariant === TabsMap.Refuel.variant}
         welcomeScreenClosed={welcomeScreenClosed}
       >
@@ -104,6 +105,7 @@ export function Widgets() {
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
+          onClick={handleCloseWelcomeScreen}
           isActive={_starterVariant === TabsMap.Buy.variant}
           welcomeScreenClosed={welcomeScreenClosed}
           sx={{ width: '392px' }}
