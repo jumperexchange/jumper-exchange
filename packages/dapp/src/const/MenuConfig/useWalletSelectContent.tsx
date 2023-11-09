@@ -51,7 +51,6 @@ export const useWalletSelectContent = () => {
     );
 
     const allowedWallets = [...installedWallets];
-    console.log(allowedWallets);
     if (isDesktopView) {
       allowedWallets.push(...notInstalledWallets);
     }
