@@ -107,7 +107,11 @@ export function Widgets() {
         <WidgetContainer
           isActive={_starterVariant === TabsMap.Buy.variant}
           welcomeScreenClosed={welcomeScreenClosed}
-          sx={{ width: '420px', textAlign: '-webkit-center' }}
+          sx={{
+            display: _starterVariant === TabsMap.Buy.variant ? 'flex' : 'block',
+            justifyContent:
+              _starterVariant === TabsMap.Buy.variant ? 'center' : 'inherit',
+          }}
         >
           <div onClick={handleCloseWelcomeScreen} className="onramper-wrapper">
             <OnRamper />
