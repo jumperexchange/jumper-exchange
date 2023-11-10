@@ -19,11 +19,13 @@ export const WidgetContainer = styled(Box, {
     transitionProperty: 'margin-top',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
-    marginTop: !welcomeScreenClosed ? theme.spacing(3) : theme.spacing(3.5),
+    marginTop: !welcomeScreenClosed
+      ? 'calc( 50vh - 680px / 3.5)'
+      : theme.spacing(3.5),
     cursor: 'pointer',
     [`@media screen and (min-height: 700px)`]: {
       marginTop: !welcomeScreenClosed
-        ? 'calc( 50vh - 680px / 2.75 - 80px)'
+        ? 'calc( 50vh - 680px / 2.75 - 40px)'
         : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
     },
 
@@ -37,7 +39,21 @@ export const WidgetContainer = styled(Box, {
   // widget wrappers -> animations
   '& > .widget-wrapper > div:hover, & > .onramper-wrapper:hover':
     !welcomeScreenClosed && {
-      marginTop: theme.spacing(10),
+      marginTop: !welcomeScreenClosed
+        ? 'calc( 50vh - 680px / 3.5 - 24px)'
+        : theme.spacing(3.5),
+
+      [`@media screen and (min-height: 700px)`]: {
+        marginTop: !welcomeScreenClosed
+          ? 'calc( 50vh - 680px / 2.75 - 40px - 24px )'
+          : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
+      },
+
+      [`@media screen and (min-height: 900px)`]: {
+        marginTop: !welcomeScreenClosed
+          ? 'calc( 50vh - 680px / 2.75 - 128px - 24px)'
+          : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+      },
     },
 
   // dark widget overlay when welcome screen opened
@@ -62,6 +78,12 @@ export const WidgetContainer = styled(Box, {
     transitionTimingFunction: 'ease-in-out',
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
+  },
+
+  // specify clickable and hoverable area for onramper widget
+  '& > .onramper-wrapper': {
+    width: '392px',
+    height: '660px',
   },
 
   // dark widget overlay when welcome screen opened -> hover animation
@@ -97,5 +119,14 @@ export const WidgetContainer = styled(Box, {
   '& > .widget-wrapper:hover:before, & > .onramper-wrapper:hover:before': {
     opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
     top: '45%',
+  },
+
+  // position radial shadow glow on buy tab to sync with other tabs
+  '& > .onramper-wrapper:before': {
+    top: 'calc( 50% + 48px )',
+  },
+
+  '& > .onramper-wrapper:hover:before': {
+    top: 'calc( 45% + 24px )',
   },
 }));
