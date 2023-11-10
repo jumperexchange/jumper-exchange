@@ -108,7 +108,7 @@ export function Widgets() {
           isActive={_starterVariant === TabsMap.Buy.variant}
           welcomeScreenClosed={welcomeScreenClosed}
           sx={{
-            display: _starterVariant === TabsMap.Buy.variant ? 'flex' : 'block',
+            display: _starterVariant === TabsMap.Buy.variant ? 'flex' : 'none',
             justifyContent:
               _starterVariant === TabsMap.Buy.variant ? 'center' : 'inherit',
           }}
