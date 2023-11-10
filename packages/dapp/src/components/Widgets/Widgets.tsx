@@ -97,6 +97,7 @@ export function Widgets() {
         <Widget starterVariant={TabsMap.Exchange.variant as WidgetSubvariant} />
       </WidgetContainer>
       <WidgetContainer
+        onClick={handleCloseWelcomeScreen}
         isActive={_starterVariant === TabsMap.Refuel.variant}
         welcomeScreenClosed={welcomeScreenClosed}
       >
@@ -106,9 +107,13 @@ export function Widgets() {
         <WidgetContainer
           isActive={_starterVariant === TabsMap.Buy.variant}
           welcomeScreenClosed={welcomeScreenClosed}
-          sx={{ width: '392px' }}
+          sx={{
+            display: _starterVariant === TabsMap.Buy.variant ? 'flex' : 'none',
+            justifyContent:
+              _starterVariant === TabsMap.Buy.variant ? 'center' : 'inherit',
+          }}
         >
-          <div className="onramper-wrapper">
+          <div onClick={handleCloseWelcomeScreen} className="onramper-wrapper">
             <OnRamper />
           </div>
         </WidgetContainer>
