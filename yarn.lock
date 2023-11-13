@@ -2817,12 +2817,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/types@npm:^9.0.3, @lifi/types@npm:^9.2.0":
+"@lifi/sdk@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "@lifi/sdk@npm:2.5.0"
+  dependencies:
+    "@ethersproject/abi": ^5.7.0
+    "@ethersproject/contracts": ^5.7.0
+    "@lifi/types": ^9.3.0
+    bignumber.js: ^9.1.2
+    eth-rpc-errors: ^4.0.3
+    ethers: ^5.7.2
+  checksum: 5348be1e9837f55aa590ff3fc940ba6f67d44bfa33f8a3ce20b4c227065aefcb1f61f99f4cf6822faa6a7033c9b396cff04d59157c2a59b5dd97457a75147fe0
+  languageName: node
+  linkType: hard
+
+"@lifi/types@npm:^9.0.3":
   version: 9.2.0
   resolution: "@lifi/types@npm:9.2.0"
   dependencies:
     ethers: ^5.7.2
   checksum: 8a186d0b1f7e8632e54e638b7ccd0bde00e8d92a4d4ce5f220afd86a56602a77256943e637e6e106c6520e0042ccb3ece13e79c6432e69dfc9bd29832766d49a
+  languageName: node
+  linkType: hard
+
+"@lifi/types@npm:^9.3.0, @lifi/types@npm:^9.3.1":
+  version: 9.3.1
+  resolution: "@lifi/types@npm:9.3.1"
+  dependencies:
+    ethers: ^5.7.2
+  checksum: 4a666f38d9a5c79d4b719b6be05c13d56f52e13f56981f4a88cd2b03100fd416f0ef81a11ba1acafa4848fdf199c5a657a78867ccfffccec61d91be73dba0ed8
   languageName: node
   linkType: hard
 
@@ -2845,9 +2868,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "@lifi/widget@npm:2.7.1"
+"@lifi/widget@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "@lifi/widget@npm:2.8.0"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -2861,7 +2884,7 @@ __metadata:
     "@mui/lab": ^5.0.0-alpha.149
     "@mui/material": ^5.14.14
     "@tanstack/react-query": ^4.36.1
-    "@tanstack/react-virtual": ^3.0.0-beta.66
+    "@tanstack/react-virtual": ^3.0.0-beta.68
     big.js: ^6.2.1
     i18next: ^23.6.0
     i18next-browser-languagedetector: ^7.1.0
@@ -2870,12 +2893,12 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-hook-form: ^7.47.0
-    react-i18next: ^13.3.0
+    react-i18next: ^13.3.1
     react-intersection-observer: ^9.5.2
     react-router-dom: ^6.17.0
     react-timer-hook: ^3.0.7
     uuid: ^9.0.1
-    zustand: ^4.4.3
+    zustand: ^4.4.4
   peerDependencies:
     "@types/react": ^18.0.0
     react: ^18.0.0
@@ -2883,7 +2906,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 440fd8fe9edd4df68a46c3d02d4d191825380bd301234cc83e0c3f5d635ce7af9fb79775f43ee0961cb6fa6c5b65191edea823f1a0b20ec73af2433346772790
+  checksum: 247f784e077f32ddd19d4af429664f9e14573d37f3e721dbbeff556cb70596cba330c7b8f7fa64af133b76cc47e494c260ea9be88755a9848ed658ef21debae7
   languageName: node
   linkType: hard
 
@@ -4432,6 +4455,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.8.1":
+  version: 5.8.1
+  resolution: "@tanstack/query-core@npm:5.8.1"
+  checksum: b2b4cc0e31eabb2b59297f9b90e3bb1eec9c23c156a9dad12f230e6ba12478bd34fcc9a37db9df3e74ef4241ea9feede807920963bdeaf5b6b72c3bf93576107
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:^4.36.1":
   version: 4.36.1
   resolution: "@tanstack/react-query@npm:4.36.1"
@@ -4451,7 +4481,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-virtual@npm:^3.0.0-beta.66":
+"@tanstack/react-query@npm:^5.8.1":
+  version: 5.8.1
+  resolution: "@tanstack/react-query@npm:5.8.1"
+  dependencies:
+    "@tanstack/query-core": 5.8.1
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 0ab9591f05810baa454f61d8ca3c451ad1087a8d33e2268e6f91f75b1096d7d265110806d78361c512f327884f93dab9a54fcb7a0dd2b54afcf34c8e6dc60616
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-virtual@npm:^3.0.0-beta.68":
   version: 3.0.0-beta.68
   resolution: "@tanstack/react-virtual@npm:3.0.0-beta.68"
   dependencies:
@@ -4486,17 +4534,17 @@ __metadata:
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
-    "@lifi/sdk": ^2.4.3
-    "@lifi/types": ^9.2.0
+    "@lifi/sdk": ^2.5.0
+    "@lifi/types": ^9.3.1
     "@lifi/wallet-management": ^2.4.1
-    "@lifi/widget": ^2.7.1
+    "@lifi/widget": ^2.8.0
     "@mui/icons-material": ^5.14.14
     "@mui/material": ^5.14.14
     "@safe-global/safe-apps-sdk": ^8.1.0
     "@sentry/browser": ^7.74.1
     "@sentry/integrations": ^7.74.1
     "@sentry/react": ^7.74.1
-    "@tanstack/react-query": ^4.36.1
+    "@tanstack/react-query": ^5.8.1
     "@transferto/shared": "*"
     "@types/react": ^18.2.31
     "@types/react-dom": ^18.2.14
@@ -12863,7 +12911,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^13.3.0, react-i18next@npm:^13.3.1":
+"react-i18next@npm:^13.3.1":
   version: 13.3.1
   resolution: "react-i18next@npm:13.3.1"
   dependencies:
@@ -15585,7 +15633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.4.3, zustand@npm:^4.4.4":
+"zustand@npm:^4.4.4":
   version: 4.4.4
   resolution: "zustand@npm:4.4.4"
   dependencies:
