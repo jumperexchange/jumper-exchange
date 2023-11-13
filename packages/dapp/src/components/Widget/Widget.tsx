@@ -69,10 +69,11 @@ export function Widget({ starterVariant }: WidgetProps) {
           disconnect();
         },
         switchChain: async (reqChainId: number) => {
-          const { account: updatedAccount } = await switchChain(reqChainId);
+          const wallet = await switchChain(reqChainId);
+          const updatedAccount = wallet?.account;
 
-          if (updatedAccount.signer) {
-            return updatedAccount.signer!;
+          if (updatedAccount!.signer) {
+            return updatedAccount!.signer!;
           } else {
             throw Error('No signer object after chain switch');
           }
