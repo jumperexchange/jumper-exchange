@@ -2855,12 +2855,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/types@npm:^9.0.3, @lifi/types@npm:^9.2.0":
+"@lifi/sdk@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "@lifi/sdk@npm:2.5.0"
+  dependencies:
+    "@ethersproject/abi": ^5.7.0
+    "@ethersproject/contracts": ^5.7.0
+    "@lifi/types": ^9.3.0
+    bignumber.js: ^9.1.2
+    eth-rpc-errors: ^4.0.3
+    ethers: ^5.7.2
+  checksum: 5348be1e9837f55aa590ff3fc940ba6f67d44bfa33f8a3ce20b4c227065aefcb1f61f99f4cf6822faa6a7033c9b396cff04d59157c2a59b5dd97457a75147fe0
+  languageName: node
+  linkType: hard
+
+"@lifi/types@npm:^9.0.3":
   version: 9.2.0
   resolution: "@lifi/types@npm:9.2.0"
   dependencies:
     ethers: ^5.7.2
   checksum: 8a186d0b1f7e8632e54e638b7ccd0bde00e8d92a4d4ce5f220afd86a56602a77256943e637e6e106c6520e0042ccb3ece13e79c6432e69dfc9bd29832766d49a
+  languageName: node
+  linkType: hard
+
+"@lifi/types@npm:^9.3.0, @lifi/types@npm:^9.3.1":
+  version: 9.3.1
+  resolution: "@lifi/types@npm:9.3.1"
+  dependencies:
+    ethers: ^5.7.2
+  checksum: 4a666f38d9a5c79d4b719b6be05c13d56f52e13f56981f4a88cd2b03100fd416f0ef81a11ba1acafa4848fdf199c5a657a78867ccfffccec61d91be73dba0ed8
   languageName: node
   linkType: hard
 
@@ -4493,6 +4516,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.8.3":
+  version: 5.8.3
+  resolution: "@tanstack/query-core@npm:5.8.3"
+  checksum: 65ce30fcae252a18b9cb8ffb64a6f2d6361de1f0f9b9481dd9b42b8387ebeffe30c48add26aa2d4ed0a36b23ac5f1a872fdf3afbe2fb84deca3f07cca2152888
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query@npm:^4.36.1":
   version: 4.36.1
   resolution: "@tanstack/react-query@npm:4.36.1"
@@ -4509,6 +4539,24 @@ __metadata:
     react-native:
       optional: true
   checksum: 1aff0a476859386f8d32253fa0d0bde7b81769a6d4d4d9cbd78778f0f955459a3bdb7ee27a0d2ee7373090f12998b45df80db0b5b313bd0a7a39d36c6e8e51c5
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.8.1":
+  version: 5.8.3
+  resolution: "@tanstack/react-query@npm:5.8.3"
+  dependencies:
+    "@tanstack/query-core": 5.8.3
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 79f46b103c237db32b8e11562b63e8e7f461be6a17c8038caaebd6b8c22d51817ff51cf228ae0bab57ada425860b70cb16a50d1934ca457a891d08f105c65d85
   languageName: node
   linkType: hard
 
@@ -4548,8 +4596,8 @@ __metadata:
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@esbuild-plugins/node-modules-polyfill": ^0.2.2
     "@lerna/run": ^6.6.2
-    "@lifi/sdk": ^2.4.3
-    "@lifi/types": ^9.2.0
+    "@lifi/sdk": ^2.5.0
+    "@lifi/types": ^9.3.1
     "@lifi/wallet-management": ^2.5.2
     "@lifi/widget": ^2.9.2
     "@mui/icons-material": ^5.14.14
@@ -4558,7 +4606,7 @@ __metadata:
     "@sentry/browser": ^7.74.1
     "@sentry/integrations": ^7.74.1
     "@sentry/react": ^7.74.1
-    "@tanstack/react-query": ^4.36.1
+    "@tanstack/react-query": ^5.8.1
     "@transferto/shared": "*"
     "@types/react": ^18.2.31
     "@types/react-dom": ^18.2.14
