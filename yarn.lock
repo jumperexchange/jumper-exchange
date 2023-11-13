@@ -2864,9 +2864,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/wallet-management@portal:/Users/adrianweniger/Documents/LiFi/lifi-widget/packages/wallet-management::locator=root%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@lifi/wallet-management@portal:/Users/adrianweniger/Documents/LiFi/lifi-widget/packages/wallet-management::locator=root%40workspace%3A."
+"@lifi/wallet-management@npm:^2.4.1":
+  version: 2.5.1
+  resolution: "@lifi/wallet-management@npm:2.5.1"
   dependencies:
     "@coinbase/wallet-sdk": ^3.7.2
     "@cyberlab/cyber-account": ^2.0.2
@@ -2881,12 +2881,34 @@ __metadata:
     "@walletconnect/modal": ^2.6.2
     events: ^3.3.0
     react: ^18.2.0
+  checksum: bbda85247b9b705f014427863284bf3b5084408458075671e0bd98569f10a4d8ff8ecbffc817d04159b4c97da78c9f8de16cd512c966ad5ae237f540e433282d
   languageName: node
-  linkType: soft
+  linkType: hard
 
-"@lifi/widget@portal:/Users/adrianweniger/Documents/LiFi/lifi-widget/packages/widget::locator=root%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@lifi/widget@portal:/Users/adrianweniger/Documents/LiFi/lifi-widget/packages/widget::locator=root%40workspace%3A."
+"@lifi/wallet-management@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "@lifi/wallet-management@npm:2.5.2"
+  dependencies:
+    "@coinbase/wallet-sdk": ^3.7.2
+    "@cyberlab/cyber-account": ^2.0.2
+    "@cyberlab/cyber-app-sdk": 2.1.2
+    "@ethersproject/abstract-signer": ^5.7.0
+    "@ethersproject/experimental": ^5.7.0
+    "@ethersproject/providers": ^5.7.2
+    "@lifi/sdk": ^2.4.3
+    "@safe-global/safe-apps-provider": ^0.18.0
+    "@safe-global/safe-apps-sdk": ^8.1.0
+    "@walletconnect/ethereum-provider": ^2.10.2
+    "@walletconnect/modal": ^2.6.2
+    events: ^3.3.0
+    react: ^18.2.0
+  checksum: e87a9e79b4f42f4e8244c5d31f6d15d95d6121f086430b5a2f5323fc74bd4d24217e1ec5db049ba33c2c0c6be5334e8a4fd2fb95002c3c6ac4adecf24bdc845a
+  languageName: node
+  linkType: hard
+
+"@lifi/widget@npm:^2.9.2":
+  version: 2.9.2
+  resolution: "@lifi/widget@npm:2.9.2"
   dependencies:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
@@ -2895,7 +2917,7 @@ __metadata:
     "@ethersproject/experimental": ^5.7.0
     "@ethersproject/providers": ^5.7.2
     "@lifi/sdk": ^2.4.3
-    "@lifi/wallet-management": ^2.4.1
+    "@lifi/wallet-management": ^2.5.2
     "@mui/icons-material": ^5.14.14
     "@mui/lab": ^5.0.0-alpha.149
     "@mui/material": ^5.14.14
@@ -2922,8 +2944,9 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
+  checksum: 885d92cfa68767e4aa7b903021c9d68547162236849fa242bd673e97f61c56d8c779c0c52479223bbd943501eed34e28db4692be5fb719689b14795fdf1023d7
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@lit-labs/ssr-dom-shim@npm:^1.0.0, @lit-labs/ssr-dom-shim@npm:^1.1.0":
   version: 1.1.2
@@ -4527,8 +4550,8 @@ __metadata:
     "@lerna/run": ^6.6.2
     "@lifi/sdk": ^2.4.3
     "@lifi/types": ^9.2.0
-    "@lifi/wallet-management": ^2.4.1
-    "@lifi/widget": ^2.7.1
+    "@lifi/wallet-management": ^2.5.2
+    "@lifi/widget": ^2.9.2
     "@mui/icons-material": ^5.14.14
     "@mui/material": ^5.14.14
     "@safe-global/safe-apps-sdk": ^8.1.0

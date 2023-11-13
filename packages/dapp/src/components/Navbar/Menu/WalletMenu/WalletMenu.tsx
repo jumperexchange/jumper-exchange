@@ -37,8 +37,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { account, usedWallet, disconnect } = useWallet();
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
-  // const [isCyberConnectEnvironment, setIsCyberConnectEnvironment] =
-  //   useState(false);
+
   const walletSource = supportedWallets;
 
   const [
@@ -133,9 +132,8 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
     handleMultisigEnvironmentCheck();
   }, [account, handleMultisigEnvironmentCheck]);
 
-  const isSmartContractWalletEnv = !(
-    isMultisigEnvironment || isCyberConnectEnvironment
-  );
+  const isSmartContractWalletEnv =
+    isMultisigEnvironment || isCyberConnectEnvironment;
 
   return openNavbarWalletMenu ? (
     <NavbarMenu
