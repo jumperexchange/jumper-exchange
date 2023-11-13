@@ -1,7 +1,6 @@
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import { useTheme } from '@mui/material';
 import { ThemeModesSupported } from '@transferto/shared/types';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../hooks';
@@ -16,12 +15,8 @@ import {
 export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const theme = useTheme();
 
-  const [themeMode, onChangeMode] = useSettingsStore((state) => [
-    state.themeMode,
-    state.onChangeMode,
-  ]);
+  const onChangeMode = useSettingsStore((state) => state.onChangeMode);
 
   const handleSwitchMode = (mode: ThemeModesSupported) => {
     trackEvent({
@@ -43,8 +38,7 @@ export const useThemeSwitchTabs = () => {
       icon: (
         <LightModeIcon
           sx={{
-            fill:
-              themeMode === 'light' ? 'currentColor' : theme.palette.grey[700],
+            fill: 'currentColor',
           }}
         />
       ),
@@ -58,8 +52,7 @@ export const useThemeSwitchTabs = () => {
       icon: (
         <NightlightIcon
           sx={{
-            fill:
-              themeMode === 'dark' ? 'currentColor' : theme.palette.grey[700],
+            fill: 'currentColor',
           }}
         />
       ),
@@ -73,8 +66,7 @@ export const useThemeSwitchTabs = () => {
       icon: (
         <BrightnessAutoIcon
           sx={{
-            fill:
-              themeMode === 'auto' ? 'currentColor' : theme.palette.grey[700],
+            fill: 'currentColor',
           }}
         />
       ),

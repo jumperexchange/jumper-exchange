@@ -49,7 +49,7 @@ export const useMainMenuContent = () => {
     styles: {
       display: 'flex',
       width: '100%',
-      borderRadius: '12px',
+      borderRadius: '24px',
     },
     div: {
       height: '36px',
@@ -57,14 +57,14 @@ export const useMainMenuContent = () => {
     '.MuiTabs-indicator': {
       height: '36px',
       zIndex: '-1',
-      borderRadius: '8px',
+      borderRadius: '18px',
     },
   };
 
   const tabStyles = {
     height: '36px',
     minWidth: 'unset',
-    borderRadius: '8px',
+    borderRadius: '18px',
   };
 
   return [
@@ -82,15 +82,10 @@ export const useMainMenuContent = () => {
         width: 'auto',
         margin: '12px 24px',
         gap: '8px',
-        backgroundColor:
-          theme.palette.mode === 'dark'
-            ? getContrastAlphaColor(theme, '12%')
-            : getContrastAlphaColor(theme, '4%'),
+        backgroundColor: 'transparent',
+        borderRadius: '24px',
         '&:hover': {
-          backgroundColor:
-            theme.palette.mode === 'dark'
-              ? getContrastAlphaColor(theme, '12%')
-              : getContrastAlphaColor(theme, '4%'),
+          backgroundColor: 'transparent',
         },
         paddingTop: '4px !important',
         padding: '4px',

@@ -1,6 +1,7 @@
+import type { Chain } from '@lifi/types';
 import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
-import { Avatar, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { ButtonPrimary, ButtonSecondary } from '@transferto/dapp/src/atoms';
 import {
   TrackingAction,
@@ -8,10 +9,16 @@ import {
   TrackingEventParameter,
 } from '@transferto/dapp/src/const';
 import { useUserTracking } from '@transferto/dapp/src/hooks';
+import { useChains } from '@transferto/dapp/src/hooks/useChains';
 import { useMenuStore } from '@transferto/dapp/src/stores';
 import { EventTrackingTool } from '@transferto/dapp/src/types';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
+import {
+  WalletMgmtAvatarContainer,
+  WalletMgmtChainAvatar,
+  WalletMgmtWalletAvatar,
+} from '.';
 import { walletDigest } from '../../utils/walletDigest';
 
 interface WalletManagementButtonsProps {
@@ -28,12 +35,16 @@ export const WalletManagementButtons: React.FC<
   WalletManagementButtonsProps
 > = ({ walletManagement, connectButtonLabel, isSuccess }) => {
   const theme = useTheme();
+  const { chains } = useChains();
   const { trackEvent } = useUserTracking();
   const { account, usedWallet } = walletManagement;
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
   }, [account]);
-
+  const activeChain = useMemo(
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
+    [chains, account.chainId],
+  );
   const [
     openNavbarWalletSelectMenu,
     onOpenNavbarWalletSelectMenu,
@@ -123,12 +134,13 @@ export const WalletManagementButtons: React.FC<
         placeContent: 'space-between',
         justifyContent: 'center',
         margin: 'auto',
+        position: 'relative',
         p: '6px',
         paddingRight: '16px',
         minWidth: 'inherit',
         [theme.breakpoints.up('md' as Breakpoint)]: {
           position: 'relative',
-          width: '48px',
+          width: '64px',
           padding: '0',
           left: 'unset',
           display: 'inherit',
@@ -142,29 +154,14 @@ export const WalletManagementButtons: React.FC<
       }}
       onClick={handleWalletMenuClick}
     >
-      {isSuccess ? (
-        <Avatar
-          src={walletIcon}
-          sx={{
-            background:
-              theme.palette.mode === 'light'
-                ? 'transparent'
-                : theme.palette.white.main,
-            height: '34px',
-            width: '34px',
-            padding: '4px',
-            mr: '8px',
-            ml: '2px',
-            [theme.breakpoints.up('md' as Breakpoint)]: {
-              mr: '0px',
-              ml: '0px',
-            },
-            [theme.breakpoints.up('lg' as Breakpoint)]: {
-              mr: '8px',
-              ml: '2px',
-            },
-          }}
-        />
+      {isSuccess && activeChain ? (
+        <WalletMgmtAvatarContainer>
+          <WalletMgmtWalletAvatar src={walletIcon} />
+          <WalletMgmtChainAvatar
+            src={activeChain.logoURI || 'empty'}
+            alt={`${activeChain.name}chain-logo`}
+          />
+        </WalletMgmtAvatarContainer>
       ) : null}
       <Typography
         variant={'lifiBodyMediumStrong'}

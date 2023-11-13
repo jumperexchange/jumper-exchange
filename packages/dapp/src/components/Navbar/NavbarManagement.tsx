@@ -1,7 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { WalletManagementButtons } from '@transferto/shared/src';
-import { ChainSwitch } from '@transferto/shared/src/atoms/ChainSwitch';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -80,7 +79,6 @@ const NavbarManagement = () => {
         }
         isSuccess={isSuccess}
       />
-      {account.isActive ? <ChainSwitch /> : null}
       <NavbarDropdownButton
         ref={mainMenuAnchor}
         id="composition-button"
