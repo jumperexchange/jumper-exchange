@@ -10,7 +10,7 @@ export const Container = styled('div')<ContainerProps>(({ theme }) => ({
   bottom: '22px',
   right: '24px',
   display: 'block',
-  zIndex: '-1',
+  zIndex: '1',
 
   '.link-lifi': {
     fontWeight: '700',
