@@ -10619,9 +10619,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^15.0.2":
-  version: 15.0.2
-  resolution: "lint-staged@npm:15.0.2"
+"lint-staged@npm:^15.1.0":
+  version: 15.1.0
+  resolution: "lint-staged@npm:15.1.0"
   dependencies:
     chalk: 5.3.0
     commander: 11.1.0
@@ -10632,10 +10632,10 @@ __metadata:
     micromatch: 4.0.5
     pidtree: 0.6.0
     string-argv: 0.3.2
-    yaml: 2.3.3
+    yaml: 2.3.4
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 437bc006a103eda779584b0beccef03732d1e79fe3c5d66004fee0ba641b2defe81ed8f7b4909fd1b4c59a7b7e2587d811dcc3a2e171f95573976af4294da9fc
+  checksum: e99bdedb32d20fa22c0d0798ecf014fd00ac9cce1158373d7caf47855c0b9b4c20d228417677a05ea81f6941f957ae9347dccb3846a48bc1fdd0cdeed2ccf0ef
   languageName: node
   linkType: hard
 
@@ -12668,6 +12668,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "prettier@npm:3.1.0"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 44b556bd56f74d7410974fbb2418bb4e53a894d3e7b42f6f87779f69f27a6c272fa7fc27cec0118cd11730ef3246478052e002cbd87e9a253f9cd04a56aa7d9b
+  languageName: node
+  linkType: hard
+
 "pretty-format@npm:29.4.3":
   version: 29.4.3
   resolution: "pretty-format@npm:29.4.3"
@@ -13552,8 +13561,8 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     husky: ^8.0.3
     lerna: ^7.4.1
-    lint-staged: ^15.0.2
-    prettier: ^3.0.3
+    lint-staged: ^15.1.0
+    prettier: ^3.1.0
     typescript: ^5.2.2
   languageName: unknown
   linkType: soft
@@ -15525,10 +15534,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:2.3.3":
-  version: 2.3.3
-  resolution: "yaml@npm:2.3.3"
-  checksum: cdfd132e7e0259f948929efe8835923df05c013c273c02bb7a2de9b46ac3af53c2778a35b32c7c0f877cc355dc9340ed564018c0242bfbb1278c2a3e53a0e99e
+"yaml@npm:2.3.4":
+  version: 2.3.4
+  resolution: "yaml@npm:2.3.4"
+  checksum: e6d1dae1c6383bcc8ba11796eef3b8c02d5082911c6723efeeb5ba50fc8e881df18d645e64de68e421b577296000bea9c75d6d9097c2f6699da3ae0406c030d8
   languageName: node
   linkType: hard
 
