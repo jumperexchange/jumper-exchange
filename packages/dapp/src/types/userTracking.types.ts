@@ -30,15 +30,15 @@ export interface TrackTransactionProps {
   data: Record<string, unknown>;
   txhash: string;
 }
-export interface TrackChainSwitchProps  {
+export interface TrackChainSwitchProps {
   account?: WalletAccount;
-  disableTrackingTool?: EventTrackingTool[]; 
+  disableTrackingTool?: EventTrackingTool[];
   action: string;
   category?: string;
   label?: string;
   value?: number;
   data?: { [key: string]: string | number | boolean | any };
-};
+}
 
 export interface trackPageloadProps {
   destination: string;
@@ -57,7 +57,7 @@ export interface TrackConnectWalletProps {
 }
 
 export interface TrackDisconnectWalletProps {
-  account?:WalletAccount;
+  account?: WalletAccount;
   data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
 }

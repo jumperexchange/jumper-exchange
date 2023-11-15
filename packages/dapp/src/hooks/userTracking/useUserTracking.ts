@@ -11,7 +11,7 @@ import {
   TrackDisconnectWalletProps,
   TrackEventProps,
   TrackTransactionProps,
-  trackPageloadProps
+  trackPageloadProps,
 } from '../../types';
 import { useCookie3 } from '../useCookie3';
 
@@ -25,7 +25,7 @@ export function useUserTracking() {
      * Track Wallet Connect with HJ and ARCx
      *
      */
-    ({disableTrackingTool,account}:TrackConnectWalletProps) => {
+    ({ disableTrackingTool, account }: TrackConnectWalletProps) => {
       if (account?.address && account?.chainId && usedWallet) {
         if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
           arcx?.wallet({
@@ -43,7 +43,7 @@ export function useUserTracking() {
     },
     [arcx, usedWallet],
   );
-  
+
   const trackAttribute = useCallback(
     /**
      * Track Attributes with GA, HJ and ARCx
@@ -87,8 +87,8 @@ export function useUserTracking() {
         arcx?.disconnection({
           account: `${account?.address}`, // optional(string) - The account that got disconnected
           chainId: `${account?.chainId}`, // optional(string | number) - The chain ID from which the wallet disconnected
-        })
-      } 
+        });
+      }
     },
     [arcx],
   );
@@ -186,7 +186,7 @@ export function useUserTracking() {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         arcx?.transaction({
-          chainId:chain,
+          chainId: chain,
           transactionHash: txhash,
           metadata: { ...data, category, action }, // optional(object) - additional information about the transaction
         });
@@ -204,7 +204,13 @@ export function useUserTracking() {
   );
 
   const trackChainSwitch = useCallback(
-    async ({ account, disableTrackingTool,action, category, data }: TrackChainSwitchProps) => {
+    async ({
+      account,
+      disableTrackingTool,
+      action,
+      category,
+      data,
+    }: TrackChainSwitchProps) => {
       if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
         arcx?.chain({
           account: `${account?.address}`,
@@ -217,7 +223,6 @@ export function useUserTracking() {
           ...data,
         });
       }
-      
     },
     [arcx],
   );
