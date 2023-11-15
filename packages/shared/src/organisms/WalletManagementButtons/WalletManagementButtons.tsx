@@ -136,21 +136,8 @@ export const WalletManagementButtons: React.FC<
         margin: 'auto',
         position: 'relative',
         p: '6px',
-        paddingRight: '16px',
-        minWidth: 'inherit',
-        [theme.breakpoints.up('md' as Breakpoint)]: {
-          position: 'relative',
-          width: '64px',
-          padding: '0',
-          left: 'unset',
-          display: 'inherit',
-          transform: 'unset',
-        },
-        [theme.breakpoints.up('lg' as Breakpoint)]: {
-          width: 'auto',
-          p: '6px',
-          pr: theme.spacing(2),
-        },
+        pr: theme.spacing(2),
+        width: 'auto',
       }}
       onClick={handleWalletMenuClick}
     >
@@ -163,18 +150,7 @@ export const WalletManagementButtons: React.FC<
           />
         </WalletMgmtAvatarContainer>
       ) : null}
-      <Typography
-        variant={'lifiBodyMediumStrong'}
-        width={'auto'}
-        sx={{
-          [theme.breakpoints.up('md' as Breakpoint)]: {
-            display: 'none',
-          },
-          [theme.breakpoints.up('lg' as Breakpoint)]: {
-            display: 'block',
-          },
-        }}
-      >
+      <Typography variant={'lifiBodyMediumStrong'} width={'auto'}>
         {_walletDigest}
       </Typography>
     </ButtonSecondary>

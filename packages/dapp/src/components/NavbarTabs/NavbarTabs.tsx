@@ -18,7 +18,7 @@ export const NavbarTabs = () => {
       display: 'none',
       minWidth: 392,
       borderRadius: 28,
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('lg')]: {
         display: 'flex',
       },
     },
