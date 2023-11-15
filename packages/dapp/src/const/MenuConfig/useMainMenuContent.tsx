@@ -63,6 +63,7 @@ export const useMainMenuContent = () => {
 
   const tabStyles = {
     height: '38px',
+    margin: '6px',
     minWidth: 'unset',
     borderRadius: '18px',
   };
