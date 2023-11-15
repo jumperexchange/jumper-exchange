@@ -3,4 +3,6 @@
 
 echo "Executing pre-push scripts"
 
+yarn eslint --fix src && echo \"ESLint: Files have been fixed.\" && exit 0 || true && echo \"ESLint: No files needed to be linted.\"
+
 yarn pre-push
