@@ -20,6 +20,7 @@
     "husky": "^8.0.3",
     "lerna": "^7.4.1",
     "lint-staged": "^15.1.0",
+    "pre-commit": "^1.2.2",
     "pre-push": "^0.1.4",
     "prettier": "^3.1.0",
     "typescript": "^5.2.2"

@@ -12676,6 +12676,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pre-commit@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "pre-commit@npm:1.2.2"
+  dependencies:
+    cross-spawn: ^5.0.1
+    spawn-sync: ^1.0.15
+    which: 1.2.x
+  checksum: b604716647a620796a3827ad1b45d68bd22407803845053ee6b788ceaac120c3ac00bf97c1f06256b6a68bc785d94dbad87e16a45e3dd7191e1f72dedcf4215c
+  languageName: node
+  linkType: hard
+
 "pre-push@npm:^0.1.4":
   version: 0.1.4
   resolution: "pre-push@npm:0.1.4"
@@ -13620,6 +13631,7 @@ __metadata:
     husky: ^8.0.3
     lerna: ^7.4.1
     lint-staged: ^15.1.0
+    pre-commit: ^1.2.2
     pre-push: ^0.1.4
     prettier: ^3.1.0
     typescript: ^5.2.2
