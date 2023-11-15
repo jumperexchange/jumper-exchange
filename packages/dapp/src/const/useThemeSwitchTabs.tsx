@@ -1,7 +1,7 @@
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
-import { ThemeModesSupported } from '@transferto/shared/types';
+import { ThemeModesSupported } from '@transferto/shared/src/types';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from '../hooks';
 import { useSettingsStore } from '../stores';

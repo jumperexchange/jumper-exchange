@@ -52,17 +52,17 @@ export const useMainMenuContent = () => {
       borderRadius: '24px',
     },
     div: {
-      height: '36px',
+      height: '38px',
     },
     '.MuiTabs-indicator': {
-      height: '36px',
+      height: '38px',
       zIndex: '-1',
       borderRadius: '18px',
     },
   };
 
   const tabStyles = {
-    height: '36px',
+    height: '38px',
     minWidth: 'unset',
     borderRadius: '18px',
   };
