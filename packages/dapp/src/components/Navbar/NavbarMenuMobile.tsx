@@ -50,64 +50,62 @@ const NavbarMenuMobile = ({
     }
   }
 
-  return (
-    open && (
-      <>
-        <NavbarExternalBackground />
-        <Slide direction="up" in={open} mountOnEnter unmountOnExit>
-          <NavbarPopper
-            open={open}
-            anchorEl={anchorRef}
-            role={undefined}
-            placement="bottom-start"
-            transition
-            disablePortal
-          >
-            <NavbarPaper isDarkMode={isDarkMode}>
-              <ClickAwayListener
-                onClickAway={(event) => {
-                  handleClose(event);
-                  onCloseAllNavbarMenus();
-                }}
+  return open ? (
+    <>
+      <NavbarExternalBackground />
+      <Slide direction="up" in={open} mountOnEnter unmountOnExit>
+        <NavbarPopper
+          open={open}
+          anchorEl={anchorRef}
+          role={undefined}
+          placement="bottom-start"
+          transition
+          disablePortal
+        >
+          <NavbarPaper isDarkMode={isDarkMode}>
+            <ClickAwayListener
+              onClickAway={(event) => {
+                handleClose(event);
+                onCloseAllNavbarMenus();
+              }}
+            >
+              <NavbarMenuList
+                autoFocusItem={open}
+                id="composition-menu"
+                aria-labelledby="composition-button"
+                isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
+                onKeyDown={handleListKeyDown}
+                autoFocus={open}
+                hasLabel={!!label}
+                component={
+                  isOpenSubMenu && openNavbarSubMenu !== MenuKeys.WalletSelect
+                    ? 'div'
+                    : 'ul'
+                }
               >
-                <NavbarMenuList
-                  autoFocusItem={open}
-                  id="composition-menu"
-                  aria-labelledby="composition-button"
-                  isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
-                  onKeyDown={handleListKeyDown}
-                  autoFocus={open}
-                  hasLabel={!!label}
-                  component={
-                    isOpenSubMenu && openNavbarSubMenu !== MenuKeys.WalletSelect
-                      ? 'div'
-                      : 'ul'
-                  }
-                >
-                  {!!label ? (
-                    <MenuHeaderAppWrapper>
-                      <MenuHeaderAppBar component="div" elevation={0}>
-                        <Typography
-                          variant={'lifiBodyMediumStrong'}
-                          width={'100%'}
-                          align={'center'}
-                          flex={1}
-                          noWrap
-                        >
-                          {label}
-                        </Typography>
-                      </MenuHeaderAppBar>
-                    </MenuHeaderAppWrapper>
-                  ) : null}
-                  {children}
-                </NavbarMenuList>
-              </ClickAwayListener>
-            </NavbarPaper>
-          </NavbarPopper>
-        </Slide>
-      </>
-    )
-  );
+                {!!label ? (
+                  <MenuHeaderAppWrapper>
+                    <MenuHeaderAppBar component="div" elevation={0}>
+                      <Typography
+                        variant={'lifiBodyMediumStrong'}
+                        width={'100%'}
+                        align={'center'}
+                        flex={1}
+                        noWrap
+                      >
+                        {label}
+                      </Typography>
+                    </MenuHeaderAppBar>
+                  </MenuHeaderAppWrapper>
+                ) : null}
+                {children}
+              </NavbarMenuList>
+            </ClickAwayListener>
+          </NavbarPaper>
+        </NavbarPopper>
+      </Slide>
+    </>
+  ) : null;
 };
 
 export default NavbarMenuMobile;

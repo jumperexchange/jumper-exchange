@@ -1,8 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo "Executing pre-push scripts"
+echo "Executing pre-push scripts..."
 
-yarn eslint --fix src && echo \"ESLint: Files have been fixed.\" && exit 0 || true && echo \"ESLint: No files needed to be linted.\"
-
+npx lerna exec -- yarn fix:all-files
+npx lerna exec -- yarn hook:prettier
+npx lerna exec -- yarn hook:linter
+npx lerna exec -- yarn hook:build-check
 yarn pre-push

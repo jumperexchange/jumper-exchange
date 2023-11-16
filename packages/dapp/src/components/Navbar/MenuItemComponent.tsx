@@ -94,8 +94,8 @@ const MenuItemComponent = ({
                 suffixIcon && showMoreIcon
                   ? 'xs'
                   : !suffixIcon && !showMoreIcon
-                  ? 'lg'
-                  : 'md'
+                    ? 'lg'
+                    : 'md'
               }
             >
               {prefixIcon}

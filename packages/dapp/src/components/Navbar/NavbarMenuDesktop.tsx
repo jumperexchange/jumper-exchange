@@ -55,76 +55,70 @@ const NavbarMenuDesktop = ({
     }
   }
 
-  return (
-    open && (
-      <>
-        <NavbarExternalBackground />
-        <NavbarPopper
-          open={open}
-          anchorEl={anchorRef}
-          role={undefined}
-          // placement="bottom"
-          popperOptions={{ strategy: 'fixed' }}
-          transition
-          disablePortal
-        >
-          {({ TransitionProps }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin: transformOrigin || 'top',
-              }}
-            >
-              <NavbarPaper
-                isDarkMode={isDarkMode}
-                isWide={openNavbarWalletMenu}
+  return open ? (
+    <>
+      <NavbarExternalBackground />
+      <NavbarPopper
+        open={open}
+        anchorEl={anchorRef}
+        role={undefined}
+        // placement="bottom"
+        popperOptions={{ strategy: 'fixed' }}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin: transformOrigin || 'top',
+            }}
+          >
+            <NavbarPaper isDarkMode={isDarkMode} isWide={openNavbarWalletMenu}>
+              <ClickAwayListener
+                onClickAway={(event) => {
+                  handleClose(event);
+                  onCloseAllNavbarMenus();
+                }}
               >
-                <ClickAwayListener
-                  onClickAway={(event) => {
-                    handleClose(event);
-                    onCloseAllNavbarMenus();
-                  }}
+                <NavbarMenuList
+                  autoFocusItem={open}
+                  id="composition-menu"
+                  autoFocus={open}
+                  isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
+                  aria-labelledby="composition-button"
+                  onKeyDown={handleListKeyDown}
+                  hasLabel={!!label}
+                  component={
+                    isOpenSubMenu && openNavbarSubMenu !== MenuMain.WalletSelect
+                      ? 'div'
+                      : 'ul'
+                  }
                 >
-                  <NavbarMenuList
-                    autoFocusItem={open}
-                    id="composition-menu"
-                    autoFocus={open}
-                    isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
-                    aria-labelledby="composition-button"
-                    onKeyDown={handleListKeyDown}
-                    hasLabel={!!label}
-                    component={
-                      isOpenSubMenu &&
-                      openNavbarSubMenu !== MenuMain.WalletSelect
-                        ? 'div'
-                        : 'ul'
-                    }
-                  >
-                    {!!label ? (
-                      <MenuHeaderAppWrapper>
-                        <MenuHeaderAppBar component="div" elevation={0}>
-                          <Typography
-                            variant={'lifiBodyMediumStrong'}
-                            width={'100%'}
-                            align={'center'}
-                            flex={1}
-                            noWrap
-                          >
-                            {label}
-                          </Typography>
-                        </MenuHeaderAppBar>
-                      </MenuHeaderAppWrapper>
-                    ) : null}
-                    {children}
-                  </NavbarMenuList>
-                </ClickAwayListener>
-              </NavbarPaper>
-            </Grow>
-          )}
-        </NavbarPopper>
-      </>
-    )
-  );
+                  {!!label ? (
+                    <MenuHeaderAppWrapper>
+                      <MenuHeaderAppBar component="div" elevation={0}>
+                        <Typography
+                          variant={'lifiBodyMediumStrong'}
+                          width={'100%'}
+                          align={'center'}
+                          flex={1}
+                          noWrap
+                        >
+                          {label}
+                        </Typography>
+                      </MenuHeaderAppBar>
+                    </MenuHeaderAppWrapper>
+                  ) : null}
+                  {children}
+                </NavbarMenuList>
+              </ClickAwayListener>
+            </NavbarPaper>
+          </Grow>
+        )}
+      </NavbarPopper>
+    </>
+  ) : null;
 };
 
 export default NavbarMenuDesktop;

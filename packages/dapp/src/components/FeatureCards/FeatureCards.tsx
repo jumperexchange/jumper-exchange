@@ -36,21 +36,18 @@ export const FeatureCards = () => {
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
-  return (
-    isDesktop &&
-    welcomeScreenClosed && (
-      <FeatureCardsContainer>
-        {featureCards.map((cardData, index) => {
-          return (
-            <FeatureCard
-              isSuccess={isSuccess}
-              data={cardData}
-              assets={data?.includes?.Asset || []}
-              key={`feature-card-${index}`}
-            />
-          );
-        })}
-      </FeatureCardsContainer>
-    )
-  );
+  return isDesktop && welcomeScreenClosed ? (
+    <FeatureCardsContainer>
+      {featureCards.map((cardData, index) => {
+        return (
+          <FeatureCard
+            isSuccess={isSuccess}
+            data={cardData}
+            assets={data?.includes?.Asset || []}
+            key={`feature-card-${index}`}
+          />
+        );
+      })}
+    </FeatureCardsContainer>
+  ) : null;
 };

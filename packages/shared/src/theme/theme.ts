@@ -1,7 +1,7 @@
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
+import type { CSSProperties } from '@mui/material/styles/createTypography';
 import { deepmerge } from '@mui/utils';
-import type React from 'react';
 
 declare module '@mui/material/styles' {
   interface Shape {
@@ -81,66 +81,52 @@ declare module '@mui/material/styles' {
     alphaLight800?: PaletteOptions['primary'];
   }
   interface TypographyVariants {
-    // lifiBrandBodyMedium: React.CSSProperties;
-    // lifiBrandBodyLarge: React.CSSProperties;
-    // lifiBrandBodyXLarge: React.CSSProperties;
-    // lifiBrandBodySmall: React.CSSProperties;
-    // lifiBrandHeaderMedium: React.CSSProperties;
-    // lifiBrandHeaderLarge: React.CSSProperties;
-    // lifiBrandHeaderXLarge: React.CSSProperties;
-    lifiHeaderDisplay: React.CSSProperties;
-    lifiHeaderXLarge: React.CSSProperties;
-    lifiHeaderLarge: React.CSSProperties;
-    lifiHeaderMedium: React.CSSProperties;
-    lifiHeaderSmall: React.CSSProperties;
-    lifiHeaderXSmall: React.CSSProperties;
-    lifiBodyXLargeStrong: React.CSSProperties;
-    lifiBodyXLarge: React.CSSProperties;
-    lifiBodyLargeStrong: React.CSSProperties;
-    lifiBodyLarge: React.CSSProperties;
-    lifiBodyMediumStrong: React.CSSProperties;
-    lifiBodyMedium: React.CSSProperties;
-    lifiBodySmallStrong: React.CSSProperties;
-    lifiBodySmall: React.CSSProperties;
-    lifiBodyXSmallStrong: React.CSSProperties;
-    lifiBodyXSmall: React.CSSProperties;
-    lifiMono5: React.CSSProperties;
-    lifiMono4: React.CSSProperties;
-    lifiMono3: React.CSSProperties;
-    lifiMono2: React.CSSProperties;
-    lifiMono1: React.CSSProperties;
+    lifiHeaderDisplay: CSSProperties;
+    lifiHeaderXLarge: CSSProperties;
+    lifiHeaderLarge: CSSProperties;
+    lifiHeaderMedium: CSSProperties;
+    lifiHeaderSmall: CSSProperties;
+    lifiHeaderXSmall: CSSProperties;
+    lifiBodyXLargeStrong: CSSProperties;
+    lifiBodyXLarge: CSSProperties;
+    lifiBodyLargeStrong: CSSProperties;
+    lifiBodyLarge: CSSProperties;
+    lifiBodyMediumStrong: CSSProperties;
+    lifiBodyMedium: CSSProperties;
+    lifiBodySmallStrong: CSSProperties;
+    lifiBodySmall: CSSProperties;
+    lifiBodyXSmallStrong: CSSProperties;
+    lifiBodyXSmall: CSSProperties;
+    lifiMono5: CSSProperties;
+    lifiMono4: CSSProperties;
+    lifiMono3: CSSProperties;
+    lifiMono2: CSSProperties;
+    lifiMono1: CSSProperties;
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
-    // lifiBrandBodyMedium: React.CSSProperties;
-    // lifiBrandBodyLarge: React.CSSProperties;
-    // lifiBrandBodyXLarge: React.CSSProperties;
-    // lifiBrandBodySmall: React.CSSProperties;
-    // lifiBrandHeaderMedium: React.CSSProperties;
-    // lifiBrandHeaderLarge: React.CSSProperties;
-    // lifiBrandHeaderXLarge: React.CSSProperties;
-    lifiHeaderDisplay?: React.CSSProperties;
-    lifiHeaderXLarge?: React.CSSProperties;
-    lifiHeaderLarge?: React.CSSProperties;
-    lifiHeaderMedium?: React.CSSProperties;
-    lifiHeaderSmall?: React.CSSProperties;
-    lifiHeaderXSmall?: React.CSSProperties;
-    lifiBodyXLargeStrong?: React.CSSProperties;
-    lifiBodyXLarge: React.CSSProperties;
-    lifiBodyLargeStrong: React.CSSProperties;
-    lifiBodyLarge: React.CSSProperties;
-    lifiBodyMediumStrong: React.CSSProperties;
-    lifiBodyMedium: React.CSSProperties;
-    lifiBodySmallStrong: React.CSSProperties;
-    lifiBodySmall: React.CSSProperties;
-    lifiBodyXSmallStrong: React.CSSProperties;
-    lifiBodyXSmall: React.CSSProperties;
-    lifiMono5: React.CSSProperties;
-    lifiMono4: React.CSSProperties;
-    lifiMono3: React.CSSProperties;
-    lifiMono2: React.CSSProperties;
-    lifiMono1: React.CSSProperties;
+    lifiHeaderDisplay?: CSSProperties;
+    lifiHeaderXLarge?: CSSProperties;
+    lifiHeaderLarge?: CSSProperties;
+    lifiHeaderMedium?: CSSProperties;
+    lifiHeaderSmall?: CSSProperties;
+    lifiHeaderXSmall?: CSSProperties;
+    lifiBodyXLargeStrong?: CSSProperties;
+    lifiBodyXLarge: CSSProperties;
+    lifiBodyLargeStrong: CSSProperties;
+    lifiBodyLarge: CSSProperties;
+    lifiBodyMediumStrong: CSSProperties;
+    lifiBodyMedium: CSSProperties;
+    lifiBodySmallStrong: CSSProperties;
+    lifiBodySmall: CSSProperties;
+    lifiBodyXSmallStrong: CSSProperties;
+    lifiBodyXSmall: CSSProperties;
+    lifiMono5: CSSProperties;
+    lifiMono4: CSSProperties;
+    lifiMono3: CSSProperties;
+    lifiMono2: CSSProperties;
+    lifiMono1: CSSProperties;
   }
 }
 declare module '@mui/material/Button' {

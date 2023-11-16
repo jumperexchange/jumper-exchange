@@ -10,28 +10,30 @@
     "clean": "rimraf --no-glob ./tsconfig.tsbuildinfo",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
+    "hook:prettier": "prettier --write 'src/**/*.{ts,tsx}'",
+    "hook:build-check": "tsc --build --clean && tsc --project tsconfig.json --noEmit && tsc --build tsconfig.json && echo 'Build succeeded in SHARED package' || echo 'Build failed in SHARED package'",
+    "hook:linter": "eslint --fix src && echo /'ESLint: Files have been linted in SHARED package.'/ || echo /'ESLint: No files needed to be linted in SHARED package.'/",
     "test": "run-s 'test:*'",
     "test:unit": "echo \"No tests yet\"",
     "fix:staged-files": "lint-staged --allow-empty",
-    "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
-    "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
+    "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix"
   },
   "dependencies": {
-    "@lifi/wallet-management": "^2.4.1",
-    "@mui/icons-material": "^5.14.14",
-    "@mui/material": "^5.14.14",
+    "@lifi/wallet-management": "^2.5.2",
+    "@mui/icons-material": "^5.14.18",
+    "@mui/material": "^5.14.18",
     "@ungap/structured-clone": "^1.2.0",
-    "i18next": "^23.6.0",
+    "i18next": "^23.7.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^13.3.1",
-    "typescript": "^5.2.2",
-    "zustand": "^4.4.4"
+    "react-i18next": "^13.4.1",
+    "typescript": "^4.5.0",
+    "zustand": "^4.4.6"
   },
   "devDependencies": {
-    "@types/node": "^20.8.7",
-    "@types/react": "^18.2.31",
-    "@types/ungap__structured-clone": "^0.3.1",
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.0",
+    "@types/ungap__structured-clone": "^0.3.2",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.1.0"
   }

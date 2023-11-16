@@ -1,17 +1,17 @@
 import { ArcxAnalyticsProvider } from '@arcxmoney/analytics';
+import { cookie3Analytics } from '@cookie3/analytics';
 import { CssBaseline } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
 import type { PropsWithChildren } from 'react';
 import { BackgroundGradient } from './components/BackgroundGradient';
 import { queryClient } from './config/queryClient';
+import { cookie3Config } from './const/cookie3';
 import {
   Cookie3Provider,
   I18NProvider,
   ThemeProvider,
   WalletProvider,
 } from './providers';
-import { cookie3Analytics } from '@cookie3/analytics';
-import { cookie3Config } from './const/cookie3';
 
 const analytics = cookie3Analytics(cookie3Config);
 

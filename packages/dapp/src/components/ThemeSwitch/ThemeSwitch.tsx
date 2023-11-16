@@ -51,10 +51,10 @@ export const ThemeSwitch = () => {
         themeMode === 'light'
           ? t('navbar.themes.switchToDark')
           : themeMode === 'dark'
-          ? t('navbar.themes.switchToLight')
-          : !isDarkModeHook
-          ? t('navbar.themes.switchToDark')
-          : t('navbar.themes.switchToLight')
+            ? t('navbar.themes.switchToLight')
+            : !isDarkModeHook
+              ? t('navbar.themes.switchToDark')
+              : t('navbar.themes.switchToLight')
       }
       arrow
     >

@@ -16,20 +16,12 @@ export const SpotButton = styled(IconButton, {
   height: '64px',
   margin: 'auto',
   backgroundColor:
-    variant === 'primary' && theme.palette.mode === 'dark'
-      ? theme.palette.primary.main
-      : variant === 'primary' && theme.palette.mode === 'light'
-      ? theme.palette.secondary.main
-      : theme.palette.mode === 'dark'
+    theme.palette.mode === 'dark'
       ? getContrastAlphaColor(theme, '12%')
       : getContrastAlphaColor(theme, '4%'),
   '&:hover': {
     backgroundColor:
-      variant === 'primary' && theme.palette.mode === 'dark'
-        ? 'rgb(80, 47, 130)'
-        : variant === 'primary' && theme.palette.mode === 'light'
-        ? darken(theme.palette.secondary.main, 0.08)
-        : theme.palette.mode === 'dark'
+      theme.palette.mode === 'dark'
         ? theme.palette.alphaLight300.main
         : darken(theme.palette.white.main, 0.08),
   },

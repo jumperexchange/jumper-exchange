@@ -11,7 +11,7 @@ export const useChains = (): ChainProps => {
   const { data, isSuccess } = useQuery({
     queryKey: ['chainStats'],
     queryFn: async () => {
-      const apiUrl = import.meta.env.VITE_LIFI_API_URL;
+      const apiUrl = (import.meta as ImportMeta).env.VITE_LIFI_API_URL;
       const response = await fetch(`${apiUrl}/chains`);
       const result = await response.json();
       return result;

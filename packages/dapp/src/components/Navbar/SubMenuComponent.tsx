@@ -117,8 +117,8 @@ const SubMenuComponent = ({
                   !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
                     ? 'lg'
                     : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
-                    ? 'xs'
-                    : 'md'
+                      ? 'xs'
+                      : 'md'
                 }
               >
                 {el.prefixIcon}
@@ -148,8 +148,8 @@ const SubMenuComponent = ({
                   !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
                     ? 'lg'
                     : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
-                    ? 'xs'
-                    : 'md'
+                      ? 'xs'
+                      : 'md'
                 }
               >
                 {el.prefixIcon}

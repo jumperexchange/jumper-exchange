@@ -1,13 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
@@ -15,9 +13,9 @@
       "@transferto/shared/*": ["../shared/src/*"]
     },
     "resolveJsonModule": true,
-    "skipLibCheck": true,
     "strict": true
   },
+  "types": ["vite/client"],
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["env.d.ts", "**/*.ts", "**/*.tsx"]
 }

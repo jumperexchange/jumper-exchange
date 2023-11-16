@@ -3,9 +3,15 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "module": "ESNext",
+    "target": "ESNext",
     "declarationDir": "dist/types"
   },
-  "include": ["src/**/*", "../dapp/src/types/i18n.types.ts"],
+  "include": [
+    "src/**/*",
+    "../dapp/src/types/i18n.types.ts",
+    "../dapp/env.d.ts"
+  ],
   "paths": {
     "@transferto/dapp": ["../dapp/src"],
     "@transferto/dapp/*": ["../dapp/src/*"]

@@ -1,6 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo "Executing pre-commit scripts"
+echo "Executing pre-commit scripts..."
 
-yarn pre-commit
+yarn lint-staged 
+npx lerna exec -- yarn hook:prettier
+npx lerna exec -- yarn hook:linter

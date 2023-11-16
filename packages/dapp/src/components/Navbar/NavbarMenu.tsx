@@ -25,9 +25,8 @@ const NavbarMenu = ({
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
-  return (
-    open &&
-    (isDesktop ? (
+  return open ? (
+    isDesktop ? (
       <NavbarMenuDesktop
         handleClose={handleClose}
         label={label}
@@ -48,8 +47,8 @@ const NavbarMenu = ({
       >
         {children}
       </NavbarMenuMobile>
-    ))
-  );
+    )
+  ) : null;
 };
 
 export default NavbarMenu;
