@@ -18,6 +18,7 @@ export default function App() {
   return (
     <AppProvider>
       <Navbar />
+
       <Menus />
       <Widgets />
       <WelcomeScreen />
