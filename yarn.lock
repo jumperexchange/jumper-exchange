@@ -4705,10 +4705,11 @@ __metadata:
     "@sentry/react": ^7.80.1
     "@tanstack/react-query": ^5.8.4
     "@transferto/shared": "*"
-    "@types/react": ^18.2.0
-    "@types/react-dom": ^18.2.0
+    "@types/react": ^18.2.37
+    "@types/react-dom": ^18.2.15
     "@vitejs/plugin-react": ^4.1.1
     "@widgetbot/react-embed": ^1.9.0
+    eslint: ^8.53.0
     eslint-config-prettier: ^9.0.0
     ethers: ^6.8.0
     fontaine: ^0.4.1
@@ -4744,6 +4745,7 @@ __metadata:
     "@types/react": ^18.2.0
     "@types/ungap__structured-clone": ^0.3.2
     "@ungap/structured-clone": ^1.2.0
+    eslint: ^8.53.0
     eslint-config-prettier: ^9.0.0
     i18next: ^23.7.6
     prettier: ^3.1.0
@@ -4945,7 +4947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^18.2.0":
+"@types/react-dom@npm:^18.2.15":
   version: 18.2.15
   resolution: "@types/react-dom@npm:18.2.15"
   dependencies:
@@ -4963,7 +4965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.2.0":
+"@types/react@npm:*, @types/react@npm:^18.2.0, @types/react@npm:^18.2.37":
   version: 18.2.37
   resolution: "@types/react@npm:18.2.37"
   dependencies:
@@ -14116,9 +14118,8 @@ __metadata:
   dependencies:
     "@lerna/run": ^6.6.2
     "@types/node": ^20.9.0
-    "@types/react": ^18.2.0
-    "@types/react-dom": ^18.2.0
-    eslint: ^8.53.0
+    "@types/react": ^18.2.37
+    "@types/react-dom": ^18.2.15
     eslint-config-prettier: ^9.0.0
     eslint-config-react-app: ^7.0.1
     eslint-plugin-flowtype: ^8.0.3

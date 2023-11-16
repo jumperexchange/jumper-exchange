@@ -3,5 +3,4 @@
 
 echo "Executing pre-commit scripts..."
 
-yarn lint-staged 
-npx lerna run hook:build-test
+yarn lint-staged && npx lerna run hook:build-test || echo 'Commit failed: Check Output to debug' && exit 1

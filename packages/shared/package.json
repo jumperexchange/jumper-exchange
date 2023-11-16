@@ -10,7 +10,9 @@
     "clean": "rimraf --no-glob ./tsconfig.tsbuildinfo",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
-    "hook:build-test": "tsc --build --clean && tsc --project tsconfig.json --noEmit && tsc --build tsconfig.json && echo 'Build succeeded in SHARED package' || echo 'Build failed in SHARED package'",
+    "hook:prettier-test": "prettier --list-different 'src/**/*.{ts,tsx,json}' && echo 'Prettier: No need to prettify, files are pretty in SHARED package.' || echo 'Prettier: Files must be prettified in SHARED package.' && exit 1",
+    "hook:build-test": "tsc --build --clean && tsc --project tsconfig.json --noEmit && tsc --build tsconfig.json && echo 'Build succeeded in SHARED package.' || echo 'Build failed in SHARED package.'",
+    "hook:linter-test": "eslint 'src/**/*.{ts,tsx}' --quiet && echo 'ESLint: All Files are good to go and linted in SHARED package.' || echo 'ESLint: Files need to be linted in SHARED package.'",
     "test": "run-s 'test:*'",
     "test:unit": "echo \"No tests yet\"",
     "fix:staged-files": "lint-staged --allow-empty",
@@ -32,6 +34,7 @@
     "@types/node": "^20.9.0",
     "@types/react": "^18.2.0",
     "@types/ungap__structured-clone": "^0.3.2",
+    "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.1.0"
   }
