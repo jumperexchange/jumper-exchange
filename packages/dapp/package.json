@@ -63,7 +63,7 @@
     "dev:production": "vite --mode production",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "hook:prettier": "prettier --write 'src/**/*.{ts,tsx}'",
+    "hook:prettier-test": "prettier --list-different 'src/**/*.{ts,tsx,json}' && echo 'Prettier: No need to prettify, files are pretty in DAPP package' || echo 'Prettier: Files must be prettified in DAPP package'",
     "hook:build-check": "tsc --build --clean && tsc --project tsconfig.json --noEmit && tsc --build tsconfig.json && echo 'Build succeeded in DAPP package' || echo 'Build failed in DAPP package'",
     "hook:linter": "eslint --fix src && echo /'ESLint: Files have been linted in DAPP package.'/ || echo /'ESLint: No files needed to be linted in DAPP package.'/",
     "fix:staged-files": "lint-staged --allow-empty",
