@@ -4,5 +4,5 @@
 echo "Executing pre-commit scripts..."
 
 yarn lint-staged 
-npx lerna exec -- yarn hook:prettier
-npx lerna exec -- yarn hook:linter
+npx lerna run hook:prettier
+npx lerna run hook:linter

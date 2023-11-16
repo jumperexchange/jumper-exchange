@@ -3,8 +3,8 @@
 
 echo "Executing pre-push scripts..."
 
-npx lerna exec -- yarn fix:all-files
-npx lerna exec -- yarn hook:prettier
-npx lerna exec -- yarn hook:linter
-npx lerna exec -- yarn hook:build-check
+npx lerna run fix:all-files
+npx lerna run hook:prettier
+npx lerna run hook:linter
+npx lerna run hook:build-check
 yarn pre-push
