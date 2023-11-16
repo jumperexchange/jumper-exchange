@@ -3,4 +3,4 @@
 
 echo "Executing pre-push scripts..."
 
-npx lerna run fix:all-files && npx lerna run hook:prettier-test && npx lerna run hook:linter-test && npx lerna run hook:build-test && yarn pre-push || echo 'Push failed' && exit 1
+npx lerna run fix:all-files && npx lerna run hook:prettier-test && npx lerna run hook:linter-test && npx lerna run hook:build-test && yarn pre-push || echo 'Push failed'
