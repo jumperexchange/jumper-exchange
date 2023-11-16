@@ -9,8 +9,8 @@
   },
   "include": [
     "src/**/*",
-    "../dapp/src/types/i18n.types.ts",
-    "../dapp/env.d.ts"
+    "../dapp/src/types/i18n.types.ts"
+    // "../dapp/env.d.ts"
   ],
   "paths": {
     "@transferto/dapp": ["../dapp/src"],
