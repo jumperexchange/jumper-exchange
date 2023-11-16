@@ -14,7 +14,7 @@ export const ButtonBackArrow: React.FC<ButtonBackArrowProps> = ({
 }) => {
   const theme = useTheme();
 
-  const handleClick = () => {
+  const handleClick () => {
     if (onClick) {
       onClick();
     }
