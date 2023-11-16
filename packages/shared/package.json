@@ -10,7 +10,7 @@
     "clean": "rimraf --no-glob ./tsconfig.tsbuildinfo",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
-    "hook:prettier-test": "prettier --list-different 'src/**/*.{ts,tsx,json}' && echo 'Prettier: No need to prettify, files are pretty in SHARED package.' || echo 'Prettier: Files must be prettified in SHARED package.' && exit 1",
+    "hook:prettier-test": "prettier --list-different 'src/**/*.{ts,tsx,json}' && echo 'Prettier: Files must be prettified in SHARED package.' && exit 1 || echo 'Prettier: No need to prettify, files are pretty in SHARED package.'",
     "hook:build-test": "tsc --build --clean && tsc --project tsconfig.json --noEmit && tsc --build tsconfig.json && echo 'Build succeeded in SHARED package.' || echo 'Build failed in SHARED package.'",
     "hook:linter-test": "eslint 'src/**/*.{ts,tsx}' --quiet && echo 'ESLint: All Files are good to go and linted in SHARED package.' || echo 'ESLint: Files need to be linted in SHARED package.'",
     "test": "run-s 'test:*'",
