@@ -71,7 +71,7 @@ export const WelcomeScreen = () => {
       destination: 'docs-sc-audits',
       url: auditsWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+      disableTrackingTool: [EventTrackingTool.Cookie3],
     });
   };
 
@@ -88,7 +88,7 @@ export const WelcomeScreen = () => {
       destination: 'lifi-website',
       url: lifiWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+      disableTrackingTool: [EventTrackingTool.Cookie3],
     });
   };
 

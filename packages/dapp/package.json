@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@arcxmoney/analytics": "^1.9.1",
+    "@arcxmoney/analytics": "^2.0.3",
     "@cookie3/analytics": "^0.6.0",
     "@lifi/sdk": "^2.5.0",
     "@lifi/wallet-management": "^2.4.1",
