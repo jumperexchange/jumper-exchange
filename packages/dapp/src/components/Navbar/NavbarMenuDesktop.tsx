@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
-import { CSSObject, useTheme } from '@mui/material/styles';
+import { CSSObject } from '@mui/material/styles';
 import { KeyboardEvent } from 'react';
 import { MenuKeys, MenuMain } from '../../const/';
 import { useMenuStore } from '../../stores/menu';
@@ -36,8 +36,6 @@ const NavbarMenuDesktop = ({
   open,
   children,
 }: NavbarMenuProps) => {
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
   const [
     openNavbarSubMenu,
     onCloseAllNavbarMenus,
@@ -78,10 +76,7 @@ const NavbarMenuDesktop = ({
                 transformOrigin: transformOrigin || 'top',
               }}
             >
-              <NavbarPaper
-                isDarkMode={isDarkMode}
-                isWide={openNavbarWalletMenu}
-              >
+              <NavbarPaper isWide={openNavbarWalletMenu}>
                 <ClickAwayListener
                   onClickAway={(event) => {
                     handleClose(event);

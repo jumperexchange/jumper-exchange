@@ -44,7 +44,7 @@ export const NavbarExternalBackground = styled('div')(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  zIndex: 1400,
+  zIndex: 1600,
   backgroundColor: '#000000',
   opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -231,7 +231,7 @@ export const MenuItem = styled(MUIMenuItem, {
 
 export interface NavbarPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
-  isDarkMode?: boolean;
+  isMobile?: boolean;
   isWide?: boolean;
   component?: ElementType<any>;
 }
@@ -239,13 +239,18 @@ export interface NavbarPaperProps
 export const NavbarPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'isDarkMode' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<NavbarPaperProps>(({ theme, isDarkMode, isWide }) => ({
+})<NavbarPaperProps>(({ theme, isMobile, isWide }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
-  boxShadow: !isDarkMode
-    ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-    : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  boxShadow:
+    theme.palette.mode === 'light'
+      ? `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+          isMobile ? '-' : ''
+        }8px 16px rgba(0, 0, 0, 0.08)`
+      : `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+          isMobile ? '-' : ''
+        }8px 16px rgba(0, 0, 0, 0.16)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
   maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - navbarHeight - offset

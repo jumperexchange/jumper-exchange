@@ -1,6 +1,6 @@
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { CSSObject, useTheme } from '@mui/material/styles';
+import { CSSObject } from '@mui/material/styles';
 import { KeyboardEvent } from 'react';
 import { MenuKeys } from '../../const';
 import { useMenuStore } from '../../stores/menu';
@@ -34,9 +34,6 @@ const NavbarMenuMobile = ({
   isOpenSubMenu,
   children,
 }: NavbarMenuProps) => {
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
-
   const [openNavbarSubMenu, anchorRef, onCloseAllNavbarMenus] = useMenuStore(
     (state) => [
       state.openNavbarSubMenu,
@@ -67,7 +64,7 @@ const NavbarMenuMobile = ({
             transition
             disablePortal
           >
-            <NavbarPaper isDarkMode={isDarkMode}>
+            <NavbarPaper isMobile={true}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);

@@ -45,7 +45,6 @@ const SubMenuComponent = ({
   subMenuList,
 }: NavbarSubMenuProps) => {
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
   const [openNavbarSubMenu, onOpenNavbarSubMenu] = useMenuStore((state) => [
@@ -98,7 +97,6 @@ const SubMenuComponent = ({
       autoFocus={open}
       component={'ul'}
       ref={menuListRef}
-      isDarkMode={isDarkMode}
     >
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
