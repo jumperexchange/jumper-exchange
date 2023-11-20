@@ -5,65 +5,56 @@ export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
   welcomeScreenClosed: boolean;
 }
 
+export const hoverOffset = '24px';
+
 export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, isActive, welcomeScreenClosed }) => ({
-  display: isActive ? 'inherit' : 'none',
+  display: isActive ? 'grid' : 'none',
   margin: '0 auto 24px',
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
-  maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
+  width: '392px',
+  gridTemplateRows: !welcomeScreenClosed
+    ? '28px 40% 30% 30%'
+    : '28px 50% 25% 25%',
+  transitionProperty: 'grid-template-rows, max-height, margin-top',
+  transitionDuration: '.5s',
+  transitionTimingFunction: 'ease-in-out',
+
+  [`@media screen and (min-height: 700px)`]: {
+    gridTemplateRows: !welcomeScreenClosed
+      ? '25% 25% 25% 25%'
+      : '28px 50% 25% 25%',
+  },
+
+  [`@media screen and (min-height: 900px)`]: {
+    gridTemplateRows: !welcomeScreenClosed
+      ? '20% 30% 25% 25%'
+      : '28px 50% 25% 25%',
+  },
 
   // setting hover animations on widget wrappers
-  '& > .widget-wrapper > div , & > .onramper-wrapper': {
-    transitionProperty: 'margin-top',
-    transitionDuration: '.3s',
-    transitionTimingFunction: 'ease-in-out',
-    marginTop: !welcomeScreenClosed
-      ? 'calc( 50vh - 680px / 3.5)'
-      : theme.spacing(3.5),
+  '& > .widget-wrapper > div': {
     cursor: 'pointer',
-    [`@media screen and (min-height: 700px)`]: {
-      marginTop: !welcomeScreenClosed
-        ? 'calc( 50vh - 680px / 2.75 - 40px)'
-        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
-    },
-
-    [`@media screen and (min-height: 900px)`]: {
-      marginTop: !welcomeScreenClosed
-        ? 'calc( 50vh - 680px / 2.75 - 128px)'
-        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
-    },
+    position: 'relative',
   },
 
   // widget wrappers -> animations
   '& > .widget-wrapper > div:hover, & > .onramper-wrapper:hover':
     !welcomeScreenClosed && {
       marginTop: !welcomeScreenClosed
-        ? 'calc( 50vh - 680px / 3.5 - 24px)'
-        : theme.spacing(3.5),
-
-      [`@media screen and (min-height: 700px)`]: {
-        marginTop: !welcomeScreenClosed
-          ? 'calc( 50vh - 680px / 2.75 - 40px - 24px )'
-          : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
-      },
-
-      [`@media screen and (min-height: 900px)`]: {
-        marginTop: !welcomeScreenClosed
-          ? 'calc( 50vh - 680px / 2.75 - 128px - 24px)'
-          : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
-      },
+        ? `calc( ${theme.spacing(10) + hoverOffset} )`
+        : hoverOffset,
     },
 
   // dark widget overlay when welcome screen opened
-  '& .widget-wrapper > div:before, & > .onramper-wrapper:after': {
+  '& .widget-wrapper > div:before': {
     content: !welcomeScreenClosed && '" "',
     position: 'absolute',
     width: 'inherit',
     height: 'inherit',
     zIndex: 900,
-    top: theme.spacing(4),
     left: 0,
     right: 0,
     bottom: 0,
@@ -80,12 +71,6 @@ export const WidgetContainer = styled(Box, {
     borderTopLeftRadius: '12px',
   },
 
-  // specify clickable and hoverable area for onramper widget
-  '& > .onramper-wrapper': {
-    width: '392px',
-    height: '660px',
-  },
-
   // dark widget overlay when welcome screen opened -> hover animation
   '& .widget-wrapper > div:hover:before, & > .onramper-wrapper .onramper-container:hover:before':
     {
@@ -93,7 +78,7 @@ export const WidgetContainer = styled(Box, {
     },
 
   // radial shadow glow
-  '& > .widget-wrapper:before, & > .onramper-wrapper:before': {
+  '&:before': {
     content: !welcomeScreenClosed && '" "',
     transitionProperty: 'top, opacity',
     transitionDuration: '.4s',
@@ -116,7 +101,7 @@ export const WidgetContainer = styled(Box, {
   },
 
   // radial shadow glow -> animation
-  '& > .widget-wrapper:hover:before, & > .onramper-wrapper:hover:before': {
+  '&:hover:before': {
     opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
     top: '45%',
   },

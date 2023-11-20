@@ -1,10 +1,38 @@
-import { Box, styled } from '@mui/material';
+import { Box, BoxProps, Breakpoint, styled } from '@mui/material';
+import { hoverOffset } from '../Widgets/Widgets.style';
 
-export const WidgetWrapper = styled(Box)(() => ({
-  width: 'fit-content',
+export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
+  welcomeScreenClosed: boolean;
+}
+
+export const WidgetWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'welcomeScreenClosed',
+})<WidgetWrapperProps>(({ theme, welcomeScreenClosed }) => ({
   minWidth: '392px',
-  margin: ' 0 auto',
   position: 'relative',
+  overflow: 'hidden',
+  gridRow: '1 / 5',
+  maxHeight: !welcomeScreenClosed ? 'calc( 50vh - 80px )' : '100%',
+  marginTop: hoverOffset,
+  transition: 'margin-top 0.3s ease-in-out' /* 3 */,
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    gridRow: '2 / 5',
+  },
+
+  [`@media screen and (min-height: 900px)`]: {
+    maxHeight: 'inherit',
+  },
+
+  ...(!welcomeScreenClosed && {
+    '&:hover': {
+      marginTop: 0,
+    },
+
+    iframe: {
+      ...(!welcomeScreenClosed && { pointerEvents: 'none' }),
+    },
+  }),
 }));
 
 export const GlowBackground = styled('span')(({ theme }) => ({
