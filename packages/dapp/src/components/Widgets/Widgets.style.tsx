@@ -14,24 +14,20 @@ export const WidgetContainer = styled(Box, {
   display: isActive ? 'grid' : 'none',
   margin: '0 auto 24px',
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
-  width: '392px',
-  gridTemplateRows: !welcomeScreenClosed
-    ? '28px 40% 30% 30%'
-    : '28px 50% 25% 25%',
-  transitionProperty: 'grid-template-rows, max-height, margin-top',
+  width: 'fit-content',
+  gridTemplateRows: !welcomeScreenClosed ? '28px 1fr 200px' : '28px 0fr 1fr',
+  transitionProperty: 'grid-template-rows, max-height',
   transitionDuration: '.5s',
   transitionTimingFunction: 'ease-in-out',
+  minHeight: '50vh',
 
   [`@media screen and (min-height: 700px)`]: {
-    gridTemplateRows: !welcomeScreenClosed
-      ? '25% 25% 25% 25%'
-      : '28px 50% 25% 25%',
+    gridTemplateRows: !welcomeScreenClosed ? '1fr 1fr 350px' : '28px 0fr 1fr',
+    height: 'inherit',
   },
 
   [`@media screen and (min-height: 900px)`]: {
-    gridTemplateRows: !welcomeScreenClosed
-      ? '20% 30% 25% 25%'
-      : '28px 50% 25% 25%',
+    gridTemplateRows: !welcomeScreenClosed ? '1fr 1fr 350px' : '28px 0r 1fr',
   },
 
   // setting hover animations on widget wrappers

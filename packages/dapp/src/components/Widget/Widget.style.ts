@@ -11,18 +11,17 @@ export const WidgetWrapper = styled(Box, {
   minWidth: '392px',
   position: 'relative',
   overflow: 'hidden',
-  gridRow: '1 / 5',
-  maxHeight: !welcomeScreenClosed ? 'calc( 50vh - 80px )' : '100%',
+  gridRow: '3 / 3',
+  // maxHeight: !welcomeScreenClosed ? 'calc( 50vh - 80px )' : '100%',
   marginTop: hoverOffset,
   transition: 'margin-top 0.3s ease-in-out' /* 3 */,
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    gridRow: '2 / 5',
+    gridRow: '3 / 3',
+    // maxHeight: 'inherit',
   },
 
-  [`@media screen and (min-height: 900px)`]: {
-    maxHeight: 'inherit',
-  },
+  [`@media screen and (min-height: 900px)`]: {},
 
   ...(!welcomeScreenClosed && {
     '&:hover': {
