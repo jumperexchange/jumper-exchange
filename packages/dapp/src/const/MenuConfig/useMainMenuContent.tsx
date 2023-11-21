@@ -81,7 +81,7 @@ export const useMainMenuContent = () => {
       ),
       styles: {
         width: 'auto',
-        margin: '12px 24px',
+        margin: '12px',
         gap: '8px',
         backgroundColor: 'transparent',
         borderRadius: '24px',
@@ -145,9 +145,7 @@ export const useMainMenuContent = () => {
           destination: 'twitter-jumper',
           url: TWITTER_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(TWITTER_URL);
       },
@@ -180,9 +178,7 @@ export const useMainMenuContent = () => {
           destination: 'discord-lifi',
           url: DISCORD_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(DISCORD_URL);
       },
@@ -207,9 +203,7 @@ export const useMainMenuContent = () => {
           destination: 'lifi-explorer',
           url: explorerUrl,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(explorerUrl);
       },
@@ -243,9 +237,7 @@ export const useMainMenuContent = () => {
           destination: 'lifi-website',
           url: lifiUrl,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(lifiUrl);
       },
