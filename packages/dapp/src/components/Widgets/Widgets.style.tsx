@@ -11,10 +11,10 @@ export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, isActive, welcomeScreenClosed }) => ({
-  display: isActive ? 'inherit' : 'none',
+  display: isActive ? 'flex' : 'none',
   margin: '0 auto 24px',
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
-  width: 'fit-content',
+  width: 'auto',
   minHeight: '50vh',
   maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
 
@@ -123,10 +123,6 @@ export const WidgetContainer = styled(Box, {
     top: '50%',
     opacity: theme.palette.mode === 'dark' ? 0.24 : 0.12,
   },
-
-  // '& .widget-wrapper div div': {
-  //   ...(!welcomeScreenClosed && { zIndex: -1 }),
-  // },
 
   // radial shadow glow -> animation
   '&:hover:before': {

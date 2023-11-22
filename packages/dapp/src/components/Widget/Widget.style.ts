@@ -10,7 +10,6 @@ export const WidgetWrapper = styled(Box, {
   minWidth: '392px',
   position: 'relative',
   margin: ' 0 auto',
-  overflow: 'hidden',
 
   [`@media screen and (min-height: 900px)`]: {},
 
