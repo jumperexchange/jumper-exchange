@@ -16,6 +16,9 @@ export const WidgetContainer = styled(Box, {
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
   width: 'auto',
   minHeight: '50vh',
+  transitionProperty: 'max-height',
+  transitionDuration: '.3s',
+  transitionTimingFunction: 'ease-in-out',
   maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
 
   [`@media screen and (min-height: 700px)`]: {
@@ -25,6 +28,7 @@ export const WidgetContainer = styled(Box, {
 
   [`@media screen and (min-height: 900px)`]: {
     gridTemplateRows: !welcomeScreenClosed ? '1fr 1fr 350px' : '28px 0r 1fr',
+    maxHeight: 'inherit',
   },
 
   // setting hover animations on widget wrappers
