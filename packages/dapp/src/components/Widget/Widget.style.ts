@@ -1,5 +1,4 @@
-import { Box, BoxProps, Breakpoint, styled } from '@mui/material';
-import { hoverOffset } from '../Widgets/Widgets.style';
+import { Box, BoxProps, styled } from '@mui/material';
 
 export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
   welcomeScreenClosed: boolean;
@@ -10,16 +9,8 @@ export const WidgetWrapper = styled(Box, {
 })<WidgetWrapperProps>(({ theme, welcomeScreenClosed }) => ({
   minWidth: '392px',
   position: 'relative',
+  margin: ' 0 auto',
   overflow: 'hidden',
-  gridRow: '3 / 3',
-  // maxHeight: !welcomeScreenClosed ? 'calc( 50vh - 80px )' : '100%',
-  marginTop: hoverOffset,
-  transition: 'margin-top 0.3s ease-in-out' /* 3 */,
-
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    gridRow: '3 / 3',
-    // maxHeight: 'inherit',
-  },
 
   [`@media screen and (min-height: 900px)`]: {},
 

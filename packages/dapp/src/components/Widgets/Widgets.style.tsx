@@ -11,15 +11,12 @@ export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, isActive, welcomeScreenClosed }) => ({
-  display: isActive ? 'grid' : 'none',
+  display: isActive ? 'inherit' : 'none',
   margin: '0 auto 24px',
   overflow: !welcomeScreenClosed ? 'hidden' : 'inherit',
   width: 'fit-content',
-  gridTemplateRows: !welcomeScreenClosed ? '28px 1fr 200px' : '28px 0fr 1fr',
-  transitionProperty: 'grid-template-rows, max-height',
-  transitionDuration: '.5s',
-  transitionTimingFunction: 'ease-in-out',
   minHeight: '50vh',
+  maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
 
   [`@media screen and (min-height: 700px)`]: {
     gridTemplateRows: !welcomeScreenClosed ? '1fr 1fr 350px' : '28px 0fr 1fr',
@@ -32,24 +29,46 @@ export const WidgetContainer = styled(Box, {
 
   // setting hover animations on widget wrappers
   '& > .widget-wrapper > div': {
+    transitionProperty: 'margin-top',
+    transitionDuration: '.3s',
+    transitionTimingFunction: 'ease-in-out',
+    marginTop: !welcomeScreenClosed ? '24px' : theme.spacing(3.5),
     cursor: 'pointer',
-    position: 'relative',
+    [`@media screen and (min-height: 700px)`]: {
+      marginTop: !welcomeScreenClosed
+        ? 'calc( 50vh - 680px / 2.75 - 40px)'
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
+    },
+
+    [`@media screen and (min-height: 900px)`]: {
+      marginTop: !welcomeScreenClosed
+        ? 'calc( 50vh - 680px / 2.75 - 128px)'
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+    },
   },
 
   // widget wrappers -> animations
-  '& > .widget-wrapper > div:hover, & > .onramper-wrapper:hover':
-    !welcomeScreenClosed && {
+  '& > .widget-wrapper > div:hover': !welcomeScreenClosed && {
+    marginTop: !welcomeScreenClosed ? 0 : theme.spacing(3.5),
+
+    [`@media screen and (min-height: 700px)`]: {
       marginTop: !welcomeScreenClosed
-        ? `calc( ${theme.spacing(10) + hoverOffset} )`
-        : hoverOffset,
+        ? 'calc( 50vh - 680px / 2.75 - 40px - 24px )'
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
     },
 
-  // dark widget overlay when welcome screen opened
+    [`@media screen and (min-height: 900px)`]: {
+      marginTop: !welcomeScreenClosed
+        ? 'calc( 50vh - 680px / 2.75 - 128px - 24px)'
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+    },
+  },
+
+  // widget overlay when welcome screen opened
   '& .widget-wrapper > div:before': {
     content: !welcomeScreenClosed && '" "',
     position: 'absolute',
     width: 'inherit',
-    height: 'inherit',
     zIndex: 900,
     left: 0,
     right: 0,
@@ -65,13 +84,22 @@ export const WidgetContainer = styled(Box, {
     transitionTimingFunction: 'ease-in-out',
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
+
+    top: '24px',
+
+    [`@media screen and (min-height: 700px)`]: {
+      top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - header height )
+    },
+
+    [`@media screen and (min-height: 900px)`]: {
+      top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+    },
   },
 
   // dark widget overlay when welcome screen opened -> hover animation
-  '& .widget-wrapper > div:hover:before, & > .onramper-wrapper .onramper-container:hover:before':
-    {
-      opacity: 0,
-    },
+  '& .widget-wrapper > div:hover:before': {
+    opacity: 0,
+  },
 
   // radial shadow glow
   '&:before': {
@@ -96,18 +124,13 @@ export const WidgetContainer = styled(Box, {
     opacity: theme.palette.mode === 'dark' ? 0.24 : 0.12,
   },
 
+  // '& .widget-wrapper div div': {
+  //   ...(!welcomeScreenClosed && { zIndex: -1 }),
+  // },
+
   // radial shadow glow -> animation
   '&:hover:before': {
     opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
     top: '45%',
-  },
-
-  // position radial shadow glow on buy tab to sync with other tabs
-  '& > .onramper-wrapper:before': {
-    top: 'calc( 50% + 48px )',
-  },
-
-  '& > .onramper-wrapper:hover:before': {
-    top: 'calc( 45% + 24px )',
   },
 }));
