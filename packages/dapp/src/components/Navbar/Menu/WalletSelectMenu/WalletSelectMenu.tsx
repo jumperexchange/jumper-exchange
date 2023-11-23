@@ -12,7 +12,7 @@ interface NavbarMenuProps {
   open?: boolean;
 }
 
-const numberOfWalletsDisplayed = 9;
+const NUMBER_OF_WALLETS_DISPLAYED = 9;
 
 export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
   const isDarkMode = theme.palette.mode === 'dark';
   const filteredWalletSelectMenuItems = walletSelectMenuItems.slice(
     0,
-    numberOfWalletsDisplayed,
+    NUMBER_OF_WALLETS_DISPLAYED,
   );
   const [
     openNavbarWalletSelectMenu,
@@ -123,7 +123,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
               open={open || openNavbarWalletSelectMenu}
             />
           ))}
-        {walletSelectMenuItems.length - numberOfWalletsDisplayed > 0 &&
+        {walletSelectMenuItems.length - NUMBER_OF_WALLETS_DISPLAYED > 0 &&
           openNavbarSubMenu === MenuKeys.None && (
             <MenuItemComponent
               key={`select-more-wallets`}
