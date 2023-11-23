@@ -3,7 +3,6 @@ import { CSSObject, Typography } from '@mui/material';
 import { Breakpoint, useTheme } from '@mui/material/styles';
 
 import { JsxElement } from 'typescript';
-import { ButtonPrimary } from '../../atoms';
 import {
   MenuKeys,
   TrackingAction,
@@ -13,6 +12,7 @@ import {
 import { useUserTracking } from '../../hooks';
 import { useMenuStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
+import { Button } from '../Button';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
@@ -77,7 +77,7 @@ const MenuItemComponent = ({
       <>
         {children}
         {showButton && (
-          <ButtonPrimary styles={styles} fullWidth>
+          <Button variant="primary" styles={styles} fullWidth={true}>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -96,7 +96,7 @@ const MenuItemComponent = ({
               {label}
             </Typography>
             {suffixIcon ?? null}
-          </ButtonPrimary>
+          </Button>
         )}
         {!showButton && (
           <>

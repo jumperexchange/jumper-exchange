@@ -1,9 +1,8 @@
-import { Breakpoint, Slide, Theme, Typography, useTheme } from '@mui/material';
+import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
 import { appendUTMParametersToLink } from '@transferto/shared/src/utils';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
-import { ButtonPrimary } from '../../atoms';
 import {
   AUDITS_URL,
   LIFI_URL,
@@ -14,6 +13,7 @@ import {
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
+import { Button } from '../Button';
 import { StatsCards } from '../StatsCard';
 import {
   ContentWrapper,
@@ -22,15 +22,6 @@ import {
   WelcomeContent,
 } from './WelcomeScreen.style';
 
-const auditsWelcomeUrl = appendUTMParametersToLink(AUDITS_URL, {
-  utm_campaign: 'jumper_to_docs',
-  utm_medium: 'welcome_screen',
-});
-const lifiWelcomeUrl = appendUTMParametersToLink(LIFI_URL, {
-  utm_campaign: 'jumper_to_lifi',
-  utm_medium: 'welcome_screen',
-});
-
 export const WelcomeScreen = () => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -38,6 +29,15 @@ export const WelcomeScreen = () => {
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
     shallow,
   );
+
+  const auditsWelcomeUrl = appendUTMParametersToLink(AUDITS_URL, {
+    utm_campaign: 'jumper_to_docs',
+    utm_medium: 'welcome_screen',
+  });
+  const lifiWelcomeUrl = appendUTMParametersToLink(LIFI_URL, {
+    utm_campaign: 'jumper_to_lifi',
+    utm_medium: 'welcome_screen',
+  });
 
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
@@ -181,11 +181,10 @@ export const WelcomeScreen = () => {
               openDexsPopper={openDexsPopper}
               setOpenDexsPopper={setOpenDexsPopper}
             />
-            <ButtonPrimary
-              onClick={(event) => {
-                return handleGetStarted(event);
-              }}
-              sx={(theme: Theme) => ({
+            <Button
+              variant="primary"
+              onClick={handleGetStarted}
+              styles={{
                 height: '48px',
                 width: '192px',
                 margin: `${theme.spacing(4)} auto`,
@@ -195,7 +194,7 @@ export const WelcomeScreen = () => {
                   borderRadius: '28px',
                   width: '247px',
                 },
-              })}
+              }}
             >
               <Typography
                 variant={'lifiBodyMediumStrong'}
@@ -212,7 +211,7 @@ export const WelcomeScreen = () => {
               >
                 {t('navbar.welcome.cta')}
               </Typography>
-            </ButtonPrimary>
+            </Button>
           </WelcomeContent>
         </ContentWrapper>
       </Slide>

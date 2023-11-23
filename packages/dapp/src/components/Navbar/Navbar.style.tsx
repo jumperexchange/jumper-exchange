@@ -21,7 +21,7 @@ import {
 import { Breakpoint, alpha, styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 import { ElementType } from 'react';
-import { ButtonSecondary } from '../../atoms';
+import { ButtonSecondary } from '../Button';
 
 const MenuLabelHeight = '64px';
 

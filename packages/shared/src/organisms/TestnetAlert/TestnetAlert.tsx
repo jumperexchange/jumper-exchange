@@ -1,6 +1,6 @@
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import { Typography, useTheme } from '@mui/material';
-import { ButtonTransparent } from '@transferto/dapp/src/atoms';
+import { Button } from '@transferto/dapp/src/components';
 import { JUMPER_URL } from '@transferto/dapp/src/const';
 import { useTranslation } from 'react-i18next';
 import { WarningMessageCard, WarningMessageCardTitle } from '..';
@@ -32,12 +32,13 @@ export const TestnetAlert = () => {
       <Typography variant={'lifiBodySmall'} pt={theme.spacing(1.5)}>
         {t('alert.testnet')}
       </Typography>
-      <ButtonTransparent
+      <Button
+        variant="transparent"
         onClick={handleClick}
-        style={{ marginTop: theme.spacing(1.5), width: '100%' }}
+        styles={{ marginTop: theme.spacing(1.5), width: '100%' }}
       >
         {t('alert.switchToMainnet')}
-      </ButtonTransparent>
+      </Button>
     </WarningMessageCard>
   );
 };

@@ -2,7 +2,7 @@ import type { Chain } from '@lifi/types';
 import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import { ButtonPrimary, ButtonSecondary } from '@transferto/dapp/src/atoms';
+import { Button } from '@transferto/dapp/src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -112,24 +112,26 @@ export const WalletManagementButtons: React.FC<
 
   return !account.address ? (
     // Connect/WalletSelect-Button -->
-    <ButtonPrimary
+    <Button
       // Used in the widget
+      variant="primary"
       id="connect-wallet-button"
       onClick={handleWalletSelectClick}
-      sx={(theme) => ({
+      styles={{
         display: 'none',
         [theme.breakpoints.up('sm' as Breakpoint)]: {
           padding: theme.spacing(3),
           display: 'inline-flex !important',
         },
-      })}
+      }}
     >
       {connectButtonLabel}
-    </ButtonPrimary>
+    </Button>
   ) : (
     // Wallet-Menu-Button -->
-    <ButtonSecondary
-      sx={{
+    <Button
+      variant="secondary"
+      styles={{
         display: 'flex',
         placeContent: 'space-between',
         justifyContent: 'center',
@@ -153,6 +155,6 @@ export const WalletManagementButtons: React.FC<
       <Typography variant={'lifiBodyMediumStrong'} width={'auto'}>
         {_walletDigest}
       </Typography>
-    </ButtonSecondary>
+    </Button>
   );
 };
