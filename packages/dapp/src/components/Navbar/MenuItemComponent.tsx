@@ -68,7 +68,7 @@ const MenuItemComponent = ({
     <MenuItem
       disableRipple={showButton}
       showButton={showButton}
-      styles={styles}
+      sx={styles}
       autoFocus={autoFocus}
       onClick={() => {
         !children && handleClick();

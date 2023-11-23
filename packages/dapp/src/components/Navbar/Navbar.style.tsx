@@ -138,33 +138,25 @@ export interface NavbarMenuListProps extends Omit<MenuListProps, 'component'> {
 
 export const NavbarMenuList = styled(MenuList, {
   shouldForwardProp: (prop) =>
-    prop !== 'isOpenSubMenu' &&
-    prop !== 'hasLabel' &&
-    prop !== 'cardsLayout' &&
-    prop !== 'styles',
-})<NavbarMenuListProps>(
-  ({ theme, isOpenSubMenu, hasLabel, cardsLayout, styles }) => ({
-    marginTop: 0,
-    display: cardsLayout ? 'flex' : 'block',
-    justifyContent: cardsLayout ? 'center' : 'unset',
-    flexWrap: cardsLayout ? 'wrap' : 'inherit',
-    padding: cardsLayout ? '0 24px' : 0,
-    gap: cardsLayout ? '12px' : 'inherit',
-    '& > :first-of-type': {
-      marginTop:
-        isOpenSubMenu || hasLabel || cardsLayout
-          ? 'inherit'
-          : theme.spacing(1.5),
-      paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
-    },
-    '& > :last-child': {
-      marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
-      paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
-      paddingTop: hasLabel ? 0 : 'inherit',
-    },
-    ...styles,
-  }),
-);
+    prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
+})<NavbarMenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
+  marginTop: 0,
+  display: cardsLayout ? 'flex' : 'block',
+  justifyContent: cardsLayout ? 'center' : 'unset',
+  flexWrap: cardsLayout ? 'wrap' : 'inherit',
+  padding: cardsLayout ? '0 24px' : 0,
+  gap: cardsLayout ? '12px' : 'inherit',
+  '& > :first-of-type': {
+    marginTop:
+      isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
+    paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
+  },
+  '& > :last-child': {
+    marginBottom: isOpenSubMenu ? 'inherit' : theme.spacing(3),
+    paddingBottom: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
+    paddingTop: hasLabel ? 0 : 'inherit',
+  },
+}));
 
 export const MenuHeader = styled('div')(() => ({
   padding: '0',
@@ -200,11 +192,8 @@ export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
 
 export const MenuItem = styled(MUIMenuItem, {
   shouldForwardProp: (prop) =>
-    prop !== 'showButton' &&
-    prop !== 'styles' &&
-    prop !== 'component' &&
-    prop !== 'styles',
-})<MenuItemProps>(({ theme, showButton, styles }) => ({
+    prop !== 'showButton' && prop !== 'component' && prop !== 'styles',
+})<MenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'inherit',
@@ -226,7 +215,6 @@ export const MenuItem = styled(MUIMenuItem, {
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     height: showButton ? 'auto' : '48px',
   },
-  ...styles,
 }));
 
 export interface NavbarPaperProps
@@ -311,13 +299,8 @@ export const MenuItemLabel = styled('div', {
 
 export const MenuItemText = styled('span')({});
 
-export interface MenuHeaderAppWrapperProps
-  extends Omit<MUIListItemProps, 'component'> {
-  styles?: CSSObject;
-}
-
-export const MenuHeaderAppWrapper = styled(ListItem)<MenuHeaderAppWrapperProps>(
-  ({ theme, styles }) => ({
+export const MenuHeaderAppWrapper = styled(ListItem)<MUIListItemProps>(
+  ({ theme }) => ({
     position: 'sticky',
     top: 0,
     alignItems: 'center',
@@ -335,7 +318,6 @@ export const MenuHeaderAppWrapper = styled(ListItem)<MenuHeaderAppWrapperProps>(
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       paddingLeft: '0px',
     },
-    ...styles,
   }),
 );
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {

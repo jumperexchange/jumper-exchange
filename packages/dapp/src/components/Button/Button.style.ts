@@ -1,6 +1,5 @@
 import type { ButtonProps as MuiButtonProps } from '@mui/material';
 import { Button as MuiButton, alpha } from '@mui/material'; //ButtonProps
-import type { CSSObject } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
@@ -23,12 +22,8 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   },
 }));
 
-interface ButtonProps extends Omit<MuiButtonProps, 'component'> {
-  styles?: CSSObject;
-}
-
-export const ButtonPrimary = styled(ButtonBase)<ButtonProps>(
-  ({ theme, styles }) => ({
+export const ButtonPrimary = styled(ButtonBase)<MuiButtonProps>(
+  ({ theme }) => ({
     color: theme.palette.white.main,
     backgroundColor:
       theme.palette.mode === 'dark'
@@ -38,12 +33,11 @@ export const ButtonPrimary = styled(ButtonBase)<ButtonProps>(
       backgroundColor:
         theme.palette.mode === 'dark' ? 'rgb(80, 47, 130)' : 'rgb(39, 0, 97)',
     },
-    ...styles,
   }),
 );
 
-export const ButtonSecondary = styled(ButtonBase)<ButtonProps>(
-  ({ theme, styles }) => ({
+export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
+  ({ theme }) => ({
     color:
       theme.palette.mode === 'dark'
         ? theme.palette.white.main
@@ -69,12 +63,11 @@ export const ButtonSecondary = styled(ButtonBase)<ButtonProps>(
       transition: 'background-color 250ms',
       background: getContrastAlphaColor(theme, '4%'),
     },
-    ...styles,
   }),
 );
 
-export const ButtonTransparent = styled(ButtonBase)<ButtonProps>(
-  ({ theme, styles }) => ({
+export const ButtonTransparent = styled(ButtonBase)<MuiButtonProps>(
+  ({ theme }) => ({
     color:
       theme.palette.mode === 'dark'
         ? theme.palette.white.main
@@ -100,6 +93,5 @@ export const ButtonTransparent = styled(ButtonBase)<ButtonProps>(
       transition: 'background-color 250ms',
       background: getContrastAlphaColor(theme, '4%'),
     },
-    ...styles,
   }),
 );

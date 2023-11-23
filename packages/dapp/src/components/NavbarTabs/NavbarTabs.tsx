@@ -14,13 +14,11 @@ export const NavbarTabs = () => {
   const navbarTabs = useNavbarTabs();
 
   const containerStyles = {
-    styles: {
-      display: 'none',
-      minWidth: 392,
-      borderRadius: 28,
-      [theme.breakpoints.up('lg')]: {
-        display: 'flex',
-      },
+    display: 'none',
+    minWidth: 392,
+    borderRadius: 28,
+    [theme.breakpoints.up('lg')]: {
+      display: 'flex',
     },
     div: {
       height: '56px',

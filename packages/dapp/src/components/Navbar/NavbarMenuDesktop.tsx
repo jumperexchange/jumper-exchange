@@ -90,7 +90,7 @@ const NavbarMenuDesktop = ({
                     isOpenSubMenu={openNavbarSubMenu !== MenuKeys.None}
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
-                    styles={styles}
+                    sx={styles}
                     cardsLayout={cardsLayout}
                     hasLabel={!!label}
                     component={

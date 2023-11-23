@@ -101,7 +101,7 @@ const SubMenuComponent = ({
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
           <ButtonBackArrow
-            style={{ marginLeft: '0px' }}
+            styles={{ marginLeft: '0px' }}
             onClick={handleBackNavigation}
           />
           <MenuHeaderLabel>{label}</MenuHeaderLabel>

@@ -46,11 +46,9 @@ export const useMainMenuContent = () => {
   const themeSwitchTabs = useThemeSwitchTabs();
 
   const containerStyles = {
-    styles: {
-      display: 'flex',
-      width: '100%',
-      borderRadius: '24px',
-    },
+    display: 'flex',
+    width: '100%',
+    borderRadius: '24px',
     div: {
       height: '38px',
     },
@@ -212,7 +210,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.aboutLIFI'),
       prefixIcon: (
         <LifiSmallLogo
-          style={{ flexShrink: 0 }}
+          styles={{ flexShrink: 0 }}
           color={
             theme.palette.mode === 'dark'
               ? theme.palette.white.main

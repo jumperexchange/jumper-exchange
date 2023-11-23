@@ -10,18 +10,12 @@ interface TabProps {
   disabled?: boolean;
 }
 
-interface ContainerStyleProps {
-  styles?: any;
-  ['.MuiTabs-indicator']?: CSSObject;
-  div?: CSSObject;
-}
-
 interface TabsProps {
   data: TabProps[];
   value: number | boolean;
   onChange?: any;
   ariaLabel: string;
-  containerStyles?: ContainerStyleProps;
+  containerStyles?: CSSObject;
   tabStyles?: CSSObject;
 }
 
@@ -38,7 +32,7 @@ export const Tabs = ({
       value={value}
       onChange={onChange}
       aria-label={ariaLabel}
-      styles={containerStyles}
+      sx={containerStyles}
     >
       {data.map((el, index) => {
         const tab = (
@@ -51,7 +45,7 @@ export const Tabs = ({
             label={el.label}
             id={`tab-${el.label ?? 'key'}-${el.value}`}
             aria-controls={`simple-tabpanel-${index}`}
-            styles={tabStyles}
+            sx={tabStyles}
           />
         );
         return !!el.tooltip ? (

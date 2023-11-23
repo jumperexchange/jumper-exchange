@@ -65,6 +65,10 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
           justifyItems: 'center',
+          ul: {
+            gridColumnStart: 1,
+            gridColumnEnd: 4,
+          },
         }}
         transformOrigin={'top'}
         setOpen={onOpenNavbarWalletSelectMenu}
@@ -72,7 +76,7 @@ export const WalletSelectMenu = ({ handleClose, open }: NavbarMenuProps) => {
       >
         {openNavbarSubMenu === MenuKeys.None && (
           <MenuHeaderAppWrapper
-            styles={{
+            sx={{
               gridColumn: 'span 3',
               marginBottom: '-12px',
             }}

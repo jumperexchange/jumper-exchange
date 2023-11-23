@@ -80,7 +80,7 @@ const NavbarMenuMobile = ({
                   cardsLayout={cardsLayout}
                   autoFocus={open}
                   hasLabel={!!label}
-                  styles={styles}
+                  sx={styles}
                   component={
                     isOpenSubMenu && openNavbarSubMenu !== MenuKeys.WalletSelect
                       ? 'div'

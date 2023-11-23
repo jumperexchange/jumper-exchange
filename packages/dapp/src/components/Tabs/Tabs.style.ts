@@ -1,28 +1,15 @@
 import {
-  Breakpoint,
-  CSSObject,
   Tab as MuiTab,
-  TabProps as MuiTabProps,
-  TabsProps as MuiTabsProps,
+  TabProps,
   Tabs,
+  TabsProps,
   styled,
 } from '@mui/material';
 import { getContrastAlphaColor } from '@transferto/shared/src/utils';
 
-interface TabsStyles {
-  styles?: CSSObject;
-  ['.MuiTabs-indicator']?: CSSObject;
-  div?: CSSObject;
-  breakpointMd?: CSSObject;
-}
-
-export interface TabsProps extends Omit<MuiTabsProps, 'variant'> {
-  styles?: TabsStyles;
-}
-
 export const TabsContainer = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'styles',
-})<TabsProps>(({ theme, styles }) => ({
+})<TabsProps>(({ theme }) => ({
   position: 'absolute',
   left: '50%',
   transform: 'translateX(-50%)',
@@ -33,12 +20,7 @@ export const TabsContainer = styled(Tabs, {
   margin: 'auto',
   padding: 1,
   alignItems: 'center',
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    ...styles?.breakpointMd,
-  },
-  div: {
-    ...styles?.div,
-  },
+
   '.MuiTabs-flexContainer': {
     alignItems: 'center',
   },
@@ -51,7 +33,6 @@ export const TabsContainer = styled(Tabs, {
         ? theme.palette.alphaLight300.main
         : theme.palette.white.main,
     zIndex: '-1',
-    ...styles?.['.MuiTabs-indicator'],
   },
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
@@ -59,16 +40,11 @@ export const TabsContainer = styled(Tabs, {
   '.MuiTabs-root': {
     minHeight: 'unset !important',
   },
-  ...styles?.styles,
 }));
-
-export interface TabProps extends Omit<MuiTabProps, 'variant'> {
-  styles?: CSSObject;
-}
 
 export const Tab = styled(MuiTab, {
   shouldForwardProp: (prop) => prop !== 'styles',
-})<TabProps>(({ theme, styles }) => ({
+})<TabProps>(({ theme }) => ({
   textTransform: 'initial',
   letterSpacing: 0,
   display: 'flex',
@@ -99,5 +75,4 @@ export const Tab = styled(MuiTab, {
   ':hover': {
     backgroundColor: getContrastAlphaColor(theme, '4%'),
   },
-  ...styles,
 }));
