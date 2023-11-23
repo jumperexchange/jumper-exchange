@@ -1,7 +1,13 @@
 import { useEffect } from 'react';
 import { useCookie3, useInitUserTracking } from 'src/hooks';
 import { AppProvider } from './AppProvider';
-import { FeatureCards, Header, Menus, Widgets } from './organisms';
+import {
+  FeatureCards,
+  Header,
+  Menus,
+  WelcomeScreen,
+  Widgets,
+} from './organisms';
 
 export function App() {
   const { initTracking } = useInitUserTracking();
@@ -17,6 +23,8 @@ export function App() {
       <Header />
       <Menus />
       <Widgets />
+      <WelcomeScreen />
+
       <FeatureCards />
     </AppProvider>
   );

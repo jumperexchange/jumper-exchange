@@ -8,19 +8,17 @@ export interface ChainProps {
 }
 
 export const useChains = (): ChainProps => {
-  const { data, isSuccess } = useQuery(
-    ['chainStats'],
-    async () => {
+  const { data, isSuccess } = useQuery({
+    queryKey: ['chainStats'],
+    queryFn: async () => {
       const apiUrl = import.meta.env.VITE_LIFI_API_URL;
       const response = await fetch(`${apiUrl}/chains`);
       const result = await response.json();
       return result;
     },
-    {
-      enabled: true,
-      refetchInterval: 1000 * 60 * 60,
-    },
-  );
+    enabled: true,
+    refetchInterval: 1000 * 60 * 60,
+  });
 
   const getChainById = (id: ChainId) => {
     const filteredChain = data?.chains.find((el: Chain) => el.id === id);

@@ -10,4 +10,5 @@ export * from './TestnetAlert';
 export * from './WalletManagementButtons';
 export * from './WalletMenu';
 export * from './WalletSelectMenu';
+export * from './WelcomeScreen';
 export * from './Widgets';

@@ -7,4 +7,5 @@ export * from './multisig';
 export * from './settings';
 export * from './userTracking.types';
 export * from './utm.types';
-export * from './wallet';
+export * from './wallet.types';
+export * from './walletProvider.types';

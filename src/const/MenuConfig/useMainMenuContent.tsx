@@ -99,7 +99,6 @@ export const useMainMenuContent = () => {
           url: TWITTER_URL,
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
@@ -135,7 +134,6 @@ export const useMainMenuContent = () => {
           url: DISCORD_URL,
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
@@ -163,7 +161,6 @@ export const useMainMenuContent = () => {
           url: explorerUrl,
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
@@ -200,7 +197,6 @@ export const useMainMenuContent = () => {
           url: lifiUrl,
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });

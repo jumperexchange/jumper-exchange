@@ -12,5 +12,4 @@ export * from './PopperSubMenu';
 export * from './StatsCard';
 export * from './Tabs';
 export * from './ThemeSwitch';
-export * from './WelcomeWrapper';
 export * from './Widget';

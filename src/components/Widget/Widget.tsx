@@ -2,7 +2,6 @@ import type { Token } from '@lifi/sdk';
 import { ChainId } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +11,7 @@ import { useWallet } from 'src/providers';
 import { useMenuStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
+import { WidgetWrapper } from './Widget.style';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -34,7 +34,6 @@ export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
-  const isDarkMode = theme.palette.mode === 'dark';
   const onOpenWalletSelectPopper = useMenuStore(
     (state: MenuState) => state.onOpenWalletSelectPopper,
   );
@@ -89,15 +88,16 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       containerStyle: {
         borderRadius: '12px',
-        boxShadow: !isDarkMode
-          ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-          : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+        boxShadow:
+          theme.palette.mode === 'light'
+            ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+            : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
       },
       languages: {
         default: i18n.resolvedLanguage as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
-      appearance: isDarkMode ? 'dark' : 'light',
+      appearance: theme.palette.mode === 'light' ? 'light' : 'dark',
       hiddenUI: [HiddenUI.Appearance, HiddenUI.Language, HiddenUI.PoweredBy],
       theme: {
         shape: {
@@ -137,13 +137,13 @@ export function Widget({ starterVariant }: WidgetProps) {
     getMultisigWidgetConfig,
     starterVariant,
     account.signer,
-    isDarkMode,
-    i18n.resolvedLanguage,
-    i18n.languages,
+    theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
     theme.palette.accent1.main,
     theme.palette.grey,
+    i18n.resolvedLanguage,
+    i18n.languages,
     isMultisigSigner,
     onOpenWalletSelectPopper,
     disconnect,
@@ -153,12 +153,12 @@ export function Widget({ starterVariant }: WidgetProps) {
   ]);
 
   return (
-    <Box className="widget-wrapper">
+    <WidgetWrapper className="widget-wrapper">
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}
         config={widgetConfig}
       />
-    </Box>
+    </WidgetWrapper>
   );
 }

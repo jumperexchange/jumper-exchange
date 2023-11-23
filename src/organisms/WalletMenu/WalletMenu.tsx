@@ -81,7 +81,6 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
         url: blockchainExplorerURL || '',
         pageload: true,
         disableTrackingTool: [
-          EventTrackingTool.ARCx,
           EventTrackingTool.Cookie3,
         ],
       });
