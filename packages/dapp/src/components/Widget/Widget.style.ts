@@ -11,8 +11,6 @@ export const WidgetWrapper = styled(Box, {
   position: 'relative',
   margin: ' 0 auto',
 
-  [`@media screen and (min-height: 900px)`]: {},
-
   ...(!welcomeScreenClosed && {
     '&:hover': {
       marginTop: 0,

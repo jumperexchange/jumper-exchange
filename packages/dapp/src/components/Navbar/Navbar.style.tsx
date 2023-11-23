@@ -154,14 +154,6 @@ export const NavbarMenuList = styled(MenuList, {
   },
 }));
 
-export const MenuHeader = styled('div')(() => ({
-  padding: '0',
-  textAlign: 'center',
-  display: 'flex',
-  alignItems: 'center',
-  margin: '0 auto',
-}));
-
 export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   ...theme.typography.lifiBodyMediumStrong,
   width: '100%',
@@ -259,8 +251,6 @@ export const NavbarTab = styled(Tab, {
     backgroundColor: getContrastAlphaColor(theme, '4%'),
   },
 }));
-
-export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
 export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;
