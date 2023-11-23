@@ -70,25 +70,26 @@ export const WidgetContainer = styled(Box, {
 
   // widget overlay when welcome screen opened
   '& .widget-wrapper > div:before': {
-    content: !welcomeScreenClosed && '" "',
+    content: '" "',
+    visibility: !welcomeScreenClosed ? 'visible' : 'hidden',
     position: 'absolute',
     width: 'inherit',
     zIndex: 900,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: !welcomeScreenClosed ? 0 : 'calc( 680px - 486px )',
     background:
       theme.palette.mode === 'dark'
         ? 'linear-gradient(180deg, transparent 15%,  #000 40%)'
         : 'linear-gradient(180deg, transparent 15%, #fff 40%)',
     opacity: 0.5,
     margin: 'auto',
-    transitionProperty: 'opacity, top, padding-top',
-    transitionDuration: '.3s',
+    transitionProperty: 'opacity, bottom',
+    transitionDuration: '0s',
     transitionTimingFunction: 'ease-in-out',
+    transitionDelay: '0.3s',
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
-
     top: '24px',
 
     [`@media screen and (min-height: 700px)`]: {
