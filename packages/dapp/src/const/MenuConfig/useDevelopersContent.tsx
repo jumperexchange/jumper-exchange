@@ -51,7 +51,6 @@ export const useDevelopersContent = () => {
           url: githubUrl,
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
@@ -80,7 +79,6 @@ export const useDevelopersContent = () => {
           url: docsUrl,
           pageload: true,
           disableTrackingTool: [
-            EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });

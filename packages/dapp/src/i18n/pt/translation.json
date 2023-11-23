@@ -32,7 +32,8 @@
       "switchChain": "Trocar Cadeia",
       "copy": "Copiar",
       "explore": "Explorar",
-      "copiedMsg": "Endereço da carteira copiado"
+      "copiedMsg": "Endereço da carteira copiado",
+      "walletNotInstalled": "{{wallet}} não está instalada"
     },
     "themes": {
       "switchToLight": "Mudar para o Modo Claro",
