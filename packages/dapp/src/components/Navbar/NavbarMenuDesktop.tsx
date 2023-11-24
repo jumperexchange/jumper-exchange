@@ -1,6 +1,5 @@
-import { Typography } from '@mui/material';
+import { Fade, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
 import { CSSObject } from '@mui/material/styles';
 import { KeyboardEvent } from 'react';
 import { MenuKeys, MenuMain } from '../../const/';
@@ -70,7 +69,7 @@ const NavbarMenuDesktop = ({
           disablePortal
         >
           {({ TransitionProps }) => (
-            <Grow
+            <Fade
               {...TransitionProps}
               style={{
                 transformOrigin: transformOrigin || 'top',
@@ -119,7 +118,7 @@ const NavbarMenuDesktop = ({
                   </NavbarMenuList>
                 </ClickAwayListener>
               </NavbarPaper>
-            </Grow>
+            </Fade>
           )}
         </NavbarPopper>
       </>
