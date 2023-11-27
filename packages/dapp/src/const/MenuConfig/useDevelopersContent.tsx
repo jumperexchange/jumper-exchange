@@ -12,6 +12,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '../trackingKeys';
+import { DOCS_URL, GITHUB_URL } from '../urls';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
@@ -34,7 +35,6 @@ export const useDevelopersContent = () => {
         />
       ),
       onClick: () => {
-        const githubUrl = 'https://github.com/lifinance/';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'open-lifi-github',
@@ -46,15 +46,13 @@ export const useDevelopersContent = () => {
           ],
         });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.Menu,
           destination: 'lifi-github',
-          url: githubUrl,
+          url: GITHUB_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(githubUrl);
+        openInNewTab(GITHUB_URL);
         onCloseAllNavbarMenus();
       },
     },
@@ -62,7 +60,6 @@ export const useDevelopersContent = () => {
       label: t('navbar.developers.documentation'),
       prefixIcon: <DescriptionOutlinedIcon />,
       onClick: () => {
-        const docsUrl = 'https://docs.li.fi/';
         trackEvent({
           category: TrackingCategory.Menu,
           label: 'open-lifi-docs',
@@ -74,15 +71,13 @@ export const useDevelopersContent = () => {
           ],
         });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.Menu,
           destination: 'lifi-docs',
-          url: docsUrl,
+          url: DOCS_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab(docsUrl);
+        openInNewTab(DOCS_URL);
         onCloseAllNavbarMenus();
       },
     },

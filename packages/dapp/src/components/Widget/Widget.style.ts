@@ -20,6 +20,7 @@ export const WidgetWrapper = styled(Box, {
       ...(!welcomeScreenClosed && { pointerEvents: 'none' }),
     },
   }),
+  zIndex: 2,
 }));
 
 export const GlowBackground = styled('span')(({ theme }) => ({
