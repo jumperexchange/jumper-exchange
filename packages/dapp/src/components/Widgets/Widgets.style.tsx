@@ -85,9 +85,9 @@ export const WidgetContainer = styled(Box, {
     opacity: 0.5,
     margin: 'auto',
     transitionProperty: 'opacity, bottom',
-    transitionDuration: '0s',
+    transitionDuration: '0.3s',
     transitionTimingFunction: 'ease-in-out',
-    transitionDelay: '0.3s',
+    transitionDelay: !welcomeScreenClosed ? '0s' : '0.3s',
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
     top: '24px',
@@ -98,17 +98,20 @@ export const WidgetContainer = styled(Box, {
 
     [`@media screen and (min-height: 900px)`]: {
       top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+      bottom: !welcomeScreenClosed
+        ? 'calc( 680px - 300px)'
+        : 'calc( 680px - 486px )',
     },
   },
 
   // dark widget overlay when welcome screen opened -> hover animation
   '& .widget-wrapper > div:hover:before': {
-    opacity: 0,
+    opacity: 0.25,
   },
 
   // radial shadow glow
   '&:before': {
-    content: !welcomeScreenClosed && '" "',
+    content: '" "',
     transitionProperty: 'top, opacity',
     transitionDuration: '.4s',
     transitionTimingFunction: 'ease-in-out',
@@ -126,12 +129,19 @@ export const WidgetContainer = styled(Box, {
     transform: 'translate(-50%, -50%)',
     left: '50%',
     top: '50%',
-    opacity: theme.palette.mode === 'dark' ? 0.24 : 0.12,
+    opacity:
+      !welcomeScreenClosed && theme.palette.mode === 'dark'
+        ? 0.24
+        : !welcomeScreenClosed && theme.palette.mode === 'light'
+        ? 0.12
+        : 0,
   },
 
   // radial shadow glow -> animation
   '&:hover:before': {
-    opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
-    top: '45%',
+    ...(!welcomeScreenClosed && {
+      opacity: theme.palette.mode === 'dark' ? 0.48 : 0.34,
+      top: '45%',
+    }),
   },
 }));
