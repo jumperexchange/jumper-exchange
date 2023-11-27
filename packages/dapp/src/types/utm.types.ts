@@ -1,4 +1,9 @@
-type UtmMedium = 'feature_card' | 'welcome_screen' | 'menu' | 'testnet_banner';
+type UtmMedium =
+  | 'feature_card'
+  | 'welcome_screen'
+  | 'menu'
+  | 'testnet_banner'
+  | 'powered_by';
 
 type UtmCampaign =
   | 'jumper_to_lifi'

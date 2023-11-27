@@ -1,5 +1,6 @@
 import { ChainId } from '@lifi/types';
 import { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
+import { CSSObject } from '@mui/material';
 import 'react-i18next';
 import { MenuKeys } from '../const';
 import { Gtag } from './gtag.types';
@@ -34,6 +35,7 @@ export interface MenuListItem {
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
   showMoreIcon?: boolean;
+  styles?: CSSObject;
   checkIcon?: boolean;
   url?: string;
   onClick?: any;

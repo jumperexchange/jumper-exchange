@@ -1,9 +1,16 @@
+import type { Chain } from '@lifi/types';
 import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import { Breakpoint, Grid, Typography, useTheme } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
+import {
+  Breakpoint,
+  Grid,
+  Typography,
+  darken,
+  lighten,
+  useTheme,
+} from '@mui/material';
 import {
   MenuKeys,
   TrackingAction,
@@ -11,6 +18,8 @@ import {
 } from '@transferto/dapp/src/const';
 import {
   useBlockchainExplorerURL,
+  useChains,
+  useMultisig,
   useUserTracking,
 } from '@transferto/dapp/src/hooks';
 import { useWallet } from '@transferto/dapp/src/providers/WalletProvider';
@@ -21,8 +30,8 @@ import { SpotButton } from '@transferto/shared/src/atoms';
 import { openInNewTab, walletDigest } from '@transferto/shared/src/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMultisig } from '../../../../hooks/useMultisig';
 import { NavbarMenu } from '../../index';
+import { AvatarContainer, ChainAvatar, WalletAvatar } from './';
 
 interface NavbarMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -36,6 +45,11 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
   const walletSource = supportedWallets;
+  const { chains } = useChains();
+  const activeChain = useMemo(
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
+    [chains, account.chainId],
+  );
 
   const [
     openNavbarWalletMenu,
@@ -146,43 +160,85 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
           },
         }}
       >
-        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(3)}>
-          <Avatar
-            src={walletIcon}
-            sx={{
-              padding: theme.spacing(2.25),
-              background:
-                theme.palette.mode === 'light'
-                  ? theme.palette.black.main
-                  : theme.palette.white.main,
-              margin: 'auto',
-              height: '96px',
-              width: '96px',
-            }}
-          />
-          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(2)}>
+        <Grid item xs={12} textAlign={'center'} mb={theme.spacing(2.5)}>
+          {activeChain && (
+            <AvatarContainer>
+              <WalletAvatar src={walletIcon} />
+              <ChainAvatar
+                src={activeChain.logoURI || 'empty'}
+                alt={`${activeChain.name}chain-logo`}
+              />
+            </AvatarContainer>
+          )}
+          <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(1.5)}>
             {_walletDigest}
           </Typography>
         </Grid>
         {!isMultisigEnvironment && (
-          <Grid item xs={4}>
-            <SpotButton name="Copy" onClick={handleCopyButton}>
+          <Grid item xs={4} sx={{ paddingLeft: '20px' }}>
+            <SpotButton
+              name={t('navbar.walletMenu.copy')}
+              onClick={handleCopyButton}
+              typography="lifiBodyXSmall"
+              styles={{
+                p: {
+                  color: lighten(theme.palette.black.main, 0.48),
+                },
+              }}
+            >
               <ContentCopyIcon />
             </SpotButton>
           </Grid>
         )}
         <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
-          <SpotButton name="Explore" onClick={handleExploreButton}>
+          <SpotButton
+            name={t('navbar.walletMenu.explore')}
+            onClick={handleExploreButton}
+            typography="lifiBodyXSmall"
+            styles={{
+              p: {
+                color: lighten(theme.palette.black.main, 0.48),
+              },
+            }}
+          >
             <LaunchIcon />
           </SpotButton>
         </Grid>
-        <Grid item xs={!isMultisigEnvironment ? 4 : 6}>
+        <Grid
+          item
+          xs={!isMultisigEnvironment ? 4 : 6}
+          sx={{ paddingRight: '20px' }}
+        >
           <SpotButton
             name={t('navbar.walletMenu.disconnect')}
-            variant={'primary'}
             onClick={handleDisconnectButton}
+            typography="lifiBodyXSmall"
+            styles={{
+              button: {
+                background: theme.palette.secondary.main,
+              },
+              'button:hover': {
+                background:
+                  theme.palette.mode === 'light'
+                    ? darken(theme.palette.secondary.main, 0.04)
+                    : lighten(theme.palette.secondary.main, 0.04),
+              },
+              p: {
+                color:
+                  theme.palette.mode === 'light'
+                    ? lighten(theme.palette.black.main, 0.48)
+                    : darken(theme.palette.white.main, 0.48),
+              },
+            }}
           >
-            <PowerSettingsNewIcon />
+            <PowerSettingsNewIcon
+              sx={{
+                color:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.accent1Alt.main
+                    : theme.palette.accent1.main,
+              }}
+            />
           </SpotButton>
         </Grid>
       </Grid>
