@@ -42,7 +42,8 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             styles={el.styles}
             children={el.children as unknown as JsxElement}
             triggerSubMenu={el.triggerSubMenu}
-            showButton={el.showButton ?? false}
+            showButton={el.showButton}
+            disableRipple={el.disableRipple}
             showMoreIcon={el.showMoreIcon}
             suffixIcon={el.suffixIcon}
             onClick={el.onClick}

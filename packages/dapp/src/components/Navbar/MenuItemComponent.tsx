@@ -16,8 +16,9 @@ import { Button } from '../Button';
 import { MenuItem, MenuItemLabel } from './Navbar.style';
 interface MenuItemProps {
   open: boolean;
-  showButton: boolean;
+  showButton: boolean | undefined;
   children?: Element | JsxElement | undefined;
+  disableRipple?: boolean | undefined;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
   styles?: CSSObject;
@@ -33,6 +34,7 @@ const MenuItemComponent = ({
   open,
   showButton,
   autoFocus,
+  disableRipple,
   children,
   showMoreIcon = true,
   styles,
@@ -66,7 +68,7 @@ const MenuItemComponent = ({
 
   return open ? (
     <MenuItem
-      disableRipple={showButton}
+      disableRipple={disableRipple || showButton}
       showButton={showButton}
       sx={styles}
       autoFocus={autoFocus}

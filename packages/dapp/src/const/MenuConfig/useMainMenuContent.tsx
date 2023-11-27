@@ -99,6 +99,7 @@ export const useMainMenuContent = () => {
         },
       },
       showMoreIcon: false,
+      disableRipple: true,
     },
     {
       label: t('language.key', { ns: 'language' }),
