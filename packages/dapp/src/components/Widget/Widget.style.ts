@@ -5,6 +5,7 @@ export const WidgetWrapper = styled(Box)(() => ({
   minWidth: '392px',
   margin: ' 0 auto',
   position: 'relative',
+  zIndex: 2,
 }));
 
 export const GlowBackground = styled('span')(({ theme }) => ({
