@@ -5,8 +5,6 @@ export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
   welcomeScreenClosed: boolean;
 }
 
-export const hoverOffset = '24px';
-
 export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'isActive' && prop !== 'welcomeScreenClosed',
