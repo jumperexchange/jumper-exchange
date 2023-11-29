@@ -23,7 +23,9 @@ export type FeatureCardEntry = {
   displayConditions: DisplayConditions;
   subtitle: string;
   title: string;
+  titleColor?: string;
   ctaCall?: string;
+  ctaColor?: string;
   url: string;
   backgroundImageDark?: Image;
   backgroundImageLight?: Image;
@@ -81,17 +83,12 @@ type Fields = {
   title: string;
 };
 
-type CustomCardMode = 'light' | 'dark';
-
-interface CustomCard {
-  ctaColor: string;
-  mode: CustomCardMode;
-}
+type CardTheme = 'light' | 'dark';
 
 type DisplayConditions = {
   id: string;
   showOnce?: boolean;
-  custom?: CustomCard;
+  mode?: CardTheme;
 };
 
 type Image = {
