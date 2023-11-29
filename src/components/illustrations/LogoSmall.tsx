@@ -4,6 +4,7 @@ interface Props {
   theme: Theme;
 }
 
+// jumper-icon
 export const LogoSmall = ({ theme }: Props) => {
   const mainCol =
     theme.palette.mode === 'light'

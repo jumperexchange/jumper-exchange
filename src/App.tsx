@@ -3,12 +3,12 @@ import { useCookie3, useInitUserTracking } from 'src/hooks';
 import { AppProvider } from './AppProvider';
 import {
   FeatureCards,
-  Header,
   Menus,
+  Navbar,
+  PoweredBy,
   WelcomeScreen,
   Widgets,
-} from './organisms';
-import { PoweredBy } from './components';
+} from './components';
 
 export function App() {
   const { initTracking } = useInitUserTracking();
@@ -21,7 +21,7 @@ export function App() {
 
   return (
     <AppProvider>
-      <Header />
+      <Navbar />
       <Menus />
       <Widgets />
       <WelcomeScreen />

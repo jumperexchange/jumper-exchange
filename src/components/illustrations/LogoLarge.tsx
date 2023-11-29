@@ -5,6 +5,7 @@ interface Props {
   theme: Theme;
 }
 
+// brand-logo: "jumper" + jumper-icon
 export const LogoLarge = ({ theme }: Props) => {
   const mainCol =
     theme.palette.mode === 'light'
