@@ -1,7 +1,7 @@
 import { Modal, Typography } from '@mui/material';
 
 import { useTranslation } from 'react-i18next';
-import { ButtonPrimary } from 'src/atoms';
+import { Button } from 'src/components';
 import {
   MultisigConfirmationModalContainer,
   MultisigConfirmationModalIcon,
@@ -33,15 +33,16 @@ export const MultisigConfirmationModal: React.FC<{
         <Typography fontSize={'1.125 rem'} marginY={4}>
           {t('multisig.transactionInitiated.description')}
         </Typography>
-        <ButtonPrimary
-          style={{
+        <Button
+          variant="primary"
+          muiVariant="contained"
+          styles={{
             width: '100%',
           }}
-          variant="contained"
           onClick={onClose}
         >
           {t('button.okay')}
-        </ButtonPrimary>
+        </Button>
       </MultisigConfirmationModalContainer>
     </Modal>
   );

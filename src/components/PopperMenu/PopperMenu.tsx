@@ -1,4 +1,4 @@
-import type { Breakpoint } from '@mui/material/styles';
+import type { Breakpoint, CSSObject } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { PopperMenuDesktop, PopperMenuMobile } from '.';
@@ -8,6 +8,8 @@ interface PopperMenuProps {
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
+  cardsLayout?: boolean;
+  styles?: CSSObject;
   open: boolean;
   transformOrigin?: string;
   children: any;
@@ -18,6 +20,8 @@ export const PopperMenu = ({
   open,
   setOpen,
   transformOrigin,
+  cardsLayout,
+  styles,
   label,
   isOpenSubMenu,
   children,
@@ -34,6 +38,8 @@ export const PopperMenu = ({
         label={label}
         transformOrigin={transformOrigin}
         open={open}
+        styles={styles}
+        cardsLayout={cardsLayout}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu || false}
       >
@@ -44,6 +50,8 @@ export const PopperMenu = ({
         handleClose={handleClose}
         label={label}
         open={open}
+        styles={styles}
+        cardsLayout={cardsLayout}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu || false}
       >

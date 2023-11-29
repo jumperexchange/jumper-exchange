@@ -2,7 +2,7 @@ export const UTM_SOURCE = 'jumper';
 
 /*
   Name of an action that a user makes on the site. 
-  GA: in GA this is the name of the even that is fired
+  GA: in GA this is the name of the event that is fired
 */
 export enum TrackingAction {
   // Widget
@@ -41,24 +41,25 @@ export enum TrackingAction {
   SwitchTab = 'action_switch_tab',
   SwitchTheme = 'action_switch_theme',
   DownloadBrandAssets = 'action_dl_brand_assets',
+
+  PoweredBy = 'action_click_powered_by',
 }
 
 export enum TrackingCategory {
-  ChainsMenu = 'cat_chains_menu',
   MainMenu = 'cat_main_menu',
   Menu = 'cat_menu',
   FeatureCard = 'cat_feature_card',
   Navigation = 'cat_navigation',
   LanguageMenu = 'cat_language_menu',
   SubMenu = 'cat_submenu',
-  ThemeMenu = 'cat_theme_menu',
-  ThemeSwitch = 'cat_theme_switch',
+  ThemeSection = 'cat_theme_section',
   Wallet = 'cat_wallet',
   WalletMenu = 'cat_wallet_menu',
   WalletSelectMenu = 'cat_wallet_select_menu',
   WelcomeScreen = 'cat_welcome_screen',
   Widget = 'cat_widget',
   WidgetEvent = 'cat_widget_event',
+  PoweredBy = 'cat_powered_by',
 }
 
 // can be used as custom dimensions / metrics

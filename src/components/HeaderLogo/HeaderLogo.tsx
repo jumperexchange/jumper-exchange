@@ -1,7 +1,7 @@
 import type { Breakpoint, Theme } from '@mui/material';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { LogoLarge, LogoSmall } from 'src/atoms';
+import { LogoLarge, LogoSmall } from 'src/components';
 
 type HeaderLogoProps = {
   isConnected: boolean;

@@ -1,4 +1,4 @@
-export * from './ChainsMenu';
+export * from '../components/TestnetAlert';
 export * from './FeatureCards';
 export * from './Header';
 export * from './MainMenu';
@@ -6,7 +6,6 @@ export * from './Menus';
 export * from './StatsCards';
 export * from './StatsModal';
 export * from './SupportModal';
-export * from './TestnetAlert';
 export * from './WalletManagementButtons';
 export * from './WalletMenu';
 export * from './WalletSelectMenu';

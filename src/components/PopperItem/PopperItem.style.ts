@@ -18,12 +18,17 @@ export const PopperItemContainer = styled(MUIMenuItem, {
   shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
 })<PopperItemProps>(({ theme, showButton }) => ({
   display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'inherit',
   padding: showButton ? theme.spacing(0, 1.5, 1.5) : theme.spacing(0, 1.5),
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
   margin: theme.spacing(0, 1.5),
+  height: showButton ? 'auto' : '48px',
   marginTop: showButton ? theme.spacing(1) : 0,
   borderRadius: '12px',
+  width: 'auto',
+  placeContent: 'space-between',
 
   '&:hover': {
     backgroundColor: showButton

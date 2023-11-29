@@ -1,8 +1,6 @@
-import { Typography } from '@mui/material';
+import type { CSSObject } from '@mui/material';
+import { Fade, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import { useTheme } from '@mui/material/styles';
-import type { KeyboardEvent } from 'react';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -18,6 +16,8 @@ interface NavbarMenuProps {
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   transformOrigin?: string;
+  cardsLayout?: boolean;
+  styles?: CSSObject;
   setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
   children: any;
@@ -27,13 +27,13 @@ export const NavbarMenuDesktop = ({
   isOpenSubMenu,
   setOpen,
   handleClose,
+  styles,
   transformOrigin,
+  cardsLayout,
   label,
   open,
   children,
 }: NavbarMenuProps) => {
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
   const [
     openSubMenuPopper,
     onCloseAllPopperMenus,
@@ -46,9 +46,8 @@ export const NavbarMenuDesktop = ({
     state.anchorRef,
   ]);
 
-  function handleListKeyDown(event: KeyboardEvent) {
+  function handleListKeyDown(event: { key: string }) {
     if (event.key === 'Tab') {
-      event.preventDefault();
       setOpen(false, null);
     } else if (event.key === 'Escape') {
       setOpen(false, null);
@@ -63,19 +62,18 @@ export const NavbarMenuDesktop = ({
           open={open}
           anchorEl={anchorRef}
           role={undefined}
-          // placement="bottom"
           popperOptions={{ strategy: 'fixed' }}
           transition
           disablePortal
         >
           {({ TransitionProps }) => (
-            <Grow
+            <Fade
               {...TransitionProps}
               style={{
                 transformOrigin: transformOrigin || 'top',
               }}
             >
-              <PopperPaper isDarkMode={isDarkMode} isWide={openWalletPopper}>
+              <PopperPaper isWide={openWalletPopper}>
                 <ClickAwayListener
                   onClickAway={(event) => {
                     handleClose(event);
@@ -89,6 +87,8 @@ export const NavbarMenuDesktop = ({
                     isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
+                    sx={styles}
+                    cardsLayout={cardsLayout}
                     hasLabel={!!label}
                     component={
                       isOpenSubMenu &&
@@ -116,7 +116,7 @@ export const NavbarMenuDesktop = ({
                   </PopperMenuList>
                 </ClickAwayListener>
               </PopperPaper>
-            </Grow>
+            </Fade>
           )}
         </NavbarPopper>
       </>

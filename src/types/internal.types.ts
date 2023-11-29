@@ -1,8 +1,9 @@
-import type { ChainId } from '@lifi/types';
-import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import 'react-i18next';
 import type { MenuKeys } from 'src/const';
 import type { Gtag } from './gtag';
+import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
+import type { CSSObject } from '@mui/material';
+import type { ChainId } from '@lifi/sdk';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
@@ -29,6 +30,7 @@ export interface MenuListItem {
   prefixIcon?: JSX.Element | string;
   suffixIcon?: JSX.Element | string;
   showMoreIcon?: boolean;
+  styles?: CSSObject;
   checkIcon?: boolean;
   url?: string;
   onClick?: any;

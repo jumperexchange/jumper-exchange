@@ -1,13 +1,13 @@
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Box, Typography } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import type { Breakpoint } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
+import { useEffect, useRef } from 'react';
 import type { KeyboardEvent } from 'react';
-import { ButtonBackArrow } from 'src/atoms';
 import {
   MenuHeaderAppBar,
+  ButtonBackArrow,
   MenuHeaderAppWrapper,
   PopperHeaderLabel,
   PopperItemContainer,
@@ -45,8 +45,8 @@ export const PopperSubMenu = ({
   subMenuList,
 }: PopperSubMenuProps) => {
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
   const { trackEvent } = useUserTracking();
+  const menuListRef = useRef(null);
   const [openSubMenuPopper, onOpenSubMenuPopper] = useMenuStore((state) => [
     state.openSubMenuPopper,
     state.onOpenSubMenuPopper,
@@ -83,17 +83,25 @@ export const PopperSubMenu = ({
     onOpenSubMenuPopper(prevMenu);
   };
 
+  useEffect(() => {
+    if (menuListRef.current && open && openSubMenuPopper === triggerSubMenu) {
+      const menuList: HTMLUListElement = menuListRef.current;
+      menuList.scrollTop = 0;
+    }
+  }, [open, openSubMenuPopper, triggerSubMenu]);
+
   return open && openSubMenuPopper === triggerSubMenu ? (
     <PopperPaper
+      className="submenu"
       onKeyDown={handleBackSpace}
       autoFocus={open}
       component={'ul'}
-      isDarkMode={isDarkMode}
+      ref={menuListRef}
     >
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
           <ButtonBackArrow
-            style={{ marginLeft: '0px' }}
+            styles={{ marginLeft: '0px' }}
             onClick={handleBackNavigation}
           />
           <PopperHeaderLabel>{label}</PopperHeaderLabel>
@@ -117,8 +125,8 @@ export const PopperSubMenu = ({
                   !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
                     ? 'lg'
                     : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
-                    ? 'xs'
-                    : 'md'
+                      ? 'xs'
+                      : 'md'
                 }
               >
                 {el.prefixIcon}
@@ -148,8 +156,8 @@ export const PopperSubMenu = ({
                   !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
                     ? 'lg'
                     : (el.showMoreIcon || el.checkIcon) && el.suffixIcon
-                    ? 'xs'
-                    : 'md'
+                      ? 'xs'
+                      : 'md'
                 }
               >
                 {el.prefixIcon}

@@ -1,5 +1,5 @@
 import { useTheme } from '@mui/material/styles';
-import { HeaderLogo, HeaderManagement, Tabs } from 'src/components';
+import { HeaderLogo, HeaderManagement, NavbarTabs } from 'src/components';
 import { useWallet } from 'src/providers';
 import { useSettingsStore } from 'src/stores';
 import { HeaderContainer as Container, HeaderLogoLink } from '.';
@@ -20,7 +20,7 @@ export const Header = () => {
       <HeaderLogoLink onClick={handleClick}>
         <HeaderLogo isConnected={!!account.address} theme={theme} />
       </HeaderLogoLink>
-      <Tabs />
+      <NavbarTabs />
       <HeaderManagement />
     </Container>
   );

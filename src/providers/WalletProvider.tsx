@@ -21,7 +21,8 @@ import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from '../const';
+} from 'src/const';
+
 const liFiWalletManagement = new LiFiWalletManagement();
 
 const stub = (): never => {

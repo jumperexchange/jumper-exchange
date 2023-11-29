@@ -2,7 +2,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Typography } from '@mui/material';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ChainSwitch, PopperToggle, ThemeSwitch } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -13,7 +12,8 @@ import { WalletManagementButtons } from 'src/organisms';
 import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
-import { HeaderManagementContainer as Container } from '.';
+import { HeaderManagementContainer } from '.';
+import { PopperToggle } from '..';
 
 export const HeaderManagement = () => {
   const mainMenuAnchor = useRef<any>(null);
@@ -57,7 +57,7 @@ export const HeaderManagement = () => {
   };
 
   return (
-    <Container className="settings">
+    <HeaderManagementContainer className="settings">
       <WalletManagementButtons
         walletManagement={walletManagement}
         connectButtonLabel={
@@ -71,13 +71,12 @@ export const HeaderManagement = () => {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {t('navbar.connectWallet')}
+            {t('navbar.connect')}
           </Typography>
         }
         isSuccess={isSuccess}
       />
-      {account.isActive ? <ChainSwitch /> : null}
-      <ThemeSwitch />
+
       <PopperToggle
         ref={mainMenuAnchor}
         id="composition-button"
@@ -93,6 +92,6 @@ export const HeaderManagement = () => {
           }}
         />
       </PopperToggle>
-    </Container>
+    </HeaderManagementContainer>
   );
 };

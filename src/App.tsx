@@ -8,6 +8,7 @@ import {
   WelcomeScreen,
   Widgets,
 } from './organisms';
+import { PoweredBy } from './components';
 
 export function App() {
   const { initTracking } = useInitUserTracking();
@@ -24,7 +25,7 @@ export function App() {
       <Menus />
       <Widgets />
       <WelcomeScreen />
-
+      <PoweredBy />
       <FeatureCards />
     </AppProvider>
   );

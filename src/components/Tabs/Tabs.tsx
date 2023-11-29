@@ -1,111 +1,71 @@
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { useMediaQuery } from '@mui/material';
-import type { Breakpoint } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const';
-import { useUserTracking } from 'src/hooks';
-import { useActiveTabStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import { Tab, TabsContainer } from '.';
+import type { CSSObject } from '@mui/material';
+import { Tooltip } from '@mui/material';
+import { Tab, TabsContainer } from './Tabs.style';
 
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
+interface TabProps {
+  label?: string;
+  tooltip?: string;
+  value: number;
+  icon: JSX.Element;
+  onClick: any;
+  disabled?: boolean;
 }
 
-export const Tabs = () => {
-  const theme = useTheme();
-  const { t } = useTranslation();
-  const { activeTab, setActiveTab } = useActiveTabStore();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md' as Breakpoint));
-  const { trackEvent } = useUserTracking();
-  const isDarkMode = theme.palette.mode === 'dark';
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
+interface TabsProps {
+  data: TabProps[];
+  value: number | boolean;
+  onChange?: any;
+  ariaLabel: string;
+  containerStyles?: CSSObject;
+  tabStyles?: CSSObject;
+}
 
-  const handleClickTab =
-    (tab: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      window.history.replaceState(null, document.title, `/${tab}`);
-      trackEvent({
-        category: TrackingCategory.Navigation,
-        action: TrackingAction.SwitchTab,
-        label: `switch_tab_to_${tab}`,
-        data: { [TrackingEventParameter.Tab]: tab },
-        disableTrackingTool: [
-          EventTrackingTool.ARCx,
-          EventTrackingTool.Cookie3,
-        ],
-      });
-    };
-
-  return (
+export const Tabs = ({
+  data,
+  value,
+  onChange,
+  ariaLabel,
+  containerStyles,
+  tabStyles,
+}: TabsProps) => {
+  return data ? (
     <TabsContainer
-      value={isDesktop ? activeTab : false}
-      onChange={handleChange}
-      isDarkMode={isDarkMode}
-      aria-label="tabs"
-      indicatorColor="primary"
+      value={value}
+      onChange={onChange}
+      aria-label={ariaLabel}
+      sx={containerStyles}
     >
-      <Tab
-        onClick={handleClickTab('exchange')}
-        icon={
-          <SwapHorizIcon
-            sx={{
-              marginRight: '6px',
-              marginBottom: '0px !important',
-              color: isDarkMode
-                ? theme.palette.white.main
-                : theme.palette.black.main,
+      {data.map((el, index) => {
+        const tab = (
+          <Tab
+            key={`${el.label ?? 'tab-key'}-${index}`}
+            onClick={(event) => {
+              el.onClick(event, el.value);
             }}
+            icon={el.icon}
+            label={el.label}
+            id={`tab-${el.label ?? 'key'}-${el.value}`}
+            aria-controls={`simple-tabpanel-${index}`}
+            sx={tabStyles}
           />
-        }
-        label={t('navbar.links.exchange')}
-        {...a11yProps(0)}
-      />
-      <Tab
-        onClick={handleClickTab('refuel')}
-        label={t('navbar.links.refuel')}
-        icon={
-          <EvStationOutlinedIcon
-            sx={{
-              marginRight: '6px',
-              marginBottom: '0px !important',
-              color: isDarkMode
-                ? theme.palette.white.main
-                : theme.palette.black.main,
+        );
+        return !!el.tooltip ? (
+          <Tooltip
+            title={el.tooltip ?? null}
+            key={`tooltip-${el.label}-${index}`}
+            enterTouchDelay={0}
+            disableHoverListener={el.disabled}
+            componentsProps={{
+              popper: { sx: { zIndex: 1700 } },
             }}
-          />
-        }
-        {...a11yProps(1)}
-      />
-      {import.meta.env.VITE_ONRAMPER_ENABLED ? (
-        <Tab
-          onClick={handleClickTab('buy')}
-          label={t('navbar.links.buy')}
-          icon={
-            <CreditCardIcon
-              sx={{
-                marginRight: '6px',
-                marginBottom: '0px !important',
-                color: isDarkMode
-                  ? theme.palette.white.main
-                  : theme.palette.black.main,
-              }}
-            />
-          }
-          {...a11yProps(2)}
-        />
-      ) : null}
+            arrow
+          >
+            {tab}
+          </Tooltip>
+        ) : (
+          tab
+        );
+      })}
     </TabsContainer>
-  );
+  ) : null;
 };

@@ -2,7 +2,6 @@ import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import type { SyntheticEvent } from 'react';
 import {
-  ChainsMenu,
   MainMenu,
   SupportModal,
   WalletMenu,
@@ -38,7 +37,6 @@ export const Menus = () => {
       <MainMenu handleClose={handleClose} />
       <WalletMenu handleClose={handleClose} />
       <WalletSelectMenu handleClose={handleClose} />
-      <ChainsMenu handleClose={handleClose} />
       <SupportModal />
       <Snackbar
         open={openSnackbar.open}

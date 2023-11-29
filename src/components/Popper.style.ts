@@ -1,6 +1,6 @@
 import type {
   AppBarProps,
-  ButtonProps,
+  CSSObject,
   LinkProps,
   ListItemProps,
   MenuListProps,
@@ -20,8 +20,6 @@ import {
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import type { ElementType } from 'react';
-import { ButtonSecondary } from 'src/atoms';
-import { getContrastAlphaColor } from 'src/utils';
 
 const MenuLabelHeight = '64px';
 
@@ -31,38 +29,13 @@ export const PopperExternalBackground = styled('div')(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  zIndex: 1400,
+  zIndex: 1600,
   backgroundColor: '#000000',
   opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     backgroundColor: 'transparent',
   },
 }));
-
-export const PopperToggle = styled(ButtonSecondary)<ButtonProps>(
-  ({ theme }) => ({
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    color:
-      theme.palette.mode === 'dark'
-        ? theme.palette.accent1Alt.main
-        : theme.palette.primary.main,
-    width: '48px',
-    borderRadius: '50%',
-    marginLeft: theme.spacing(1.5),
-    minWidth: 'unset',
-    height: '48px',
-    ':hover:before': {
-      backgroundColor:
-        theme.palette.mode === 'dark'
-          ? getContrastAlphaColor(theme, '4%')
-          : theme.palette.alphaDark100.main,
-    },
-    ':hover': {
-      backgroundColor: 'transparent',
-    },
-  }),
-);
 
 export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
   zIndex: 1600,
@@ -81,16 +54,24 @@ export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
 export interface PopperMenuListProps extends Omit<MenuListProps, 'component'> {
   component?: string;
   isOpenSubMenu?: boolean;
+  styles?: CSSObject;
+  cardsLayout?: boolean;
   hasLabel?: boolean;
 }
 
 export const PopperMenuList = styled(MenuList, {
-  shouldForwardProp: (prop) => prop !== 'isOpenSubMenu' && prop !== 'hasLabel',
-})<PopperMenuListProps>(({ theme, isOpenSubMenu, hasLabel }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
+})<PopperMenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
   marginTop: 0,
-  padding: 0,
+  display: cardsLayout ? 'flex' : 'block',
+  justifyContent: cardsLayout ? 'center' : 'unset',
+  flexWrap: cardsLayout ? 'wrap' : 'inherit',
+  padding: cardsLayout ? '0 24px' : 0,
+  gap: cardsLayout ? '12px' : 'inherit',
   '& > :first-of-type': {
-    marginTop: isOpenSubMenu || hasLabel ? 'inherit' : theme.spacing(1.5),
+    marginTop:
+      isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
     paddingTop: isOpenSubMenu ? theme.spacing(1.5) : 'inherit',
   },
   '& > :last-child': {
@@ -118,30 +99,40 @@ export const PopperHeaderLabel = styled(Typography)(({ theme }) => ({
 
 export interface PopperPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
-  isDarkMode?: boolean;
+  isMobile?: boolean;
   isWide?: boolean;
   component?: ElementType<any>;
 }
 
 export const PopperPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'isDarkMode' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<PopperPaperProps>(({ theme, isDarkMode, isWide }) => ({
+    prop !== 'isMobile' && prop !== 'isWide' && prop !== 'isSubMenu',
+})<PopperPaperProps>(({ theme, isMobile, isWide }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
-  boxShadow: !isDarkMode
-    ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-    : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  boxShadow:
+    theme.palette.mode === 'light'
+      ? `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+          isMobile ? '-' : ''
+        }8px 16px rgba(0, 0, 0, 0.08)`
+      : `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+          isMobile ? '-' : ''
+        }8px 16px rgba(0, 0, 0, 0.16)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - HeaderHeight - offset
+  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - navbarHeight - offset
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',
   transformOrigin: 'bottom',
   transition:
     'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+
+  '.submenu .wallet-select-avatar': {
+    width: '32px ',
+    height: '32px',
+  },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     transformOrigin: 'inherit',
@@ -183,11 +174,12 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     zIndex: 1400,
     overflow: 'hidden',
     margin: theme.spacing(0),
+    marginBottom: 'inherit',
     marginTop: '0px',
     height: MenuLabelHeight,
     padding: '0px',
-    borderTopLeftRadius: '24px',
-    borderTopRightRadius: '24px',
+    borderTopLeftRadius: '12px',
+    borderTopRightRadius: '12px',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       paddingLeft: '0px',
     },

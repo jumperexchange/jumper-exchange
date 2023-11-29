@@ -7,13 +7,13 @@ import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab } from 'src/utils';
-import { DOCS_URL, GITHUB_URL } from '..';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '../trackingKeys';
 
+import { DOCS_URL, GITHUB_URL } from '../urls';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
@@ -47,13 +47,11 @@ export const useDevelopersContent = () => {
           ],
         });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.Menu,
           destination: 'lifi-github',
           url: GITHUB_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(GITHUB_URL);
         onCloseAllPopperMenus();
@@ -74,13 +72,11 @@ export const useDevelopersContent = () => {
           ],
         });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.Menu,
           destination: 'lifi-docs',
           url: DOCS_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(DOCS_URL);
         onCloseAllPopperMenus();

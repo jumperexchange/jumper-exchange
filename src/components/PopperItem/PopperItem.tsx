@@ -1,24 +1,28 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Typography } from '@mui/material';
-import type { Breakpoint } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
-import { ButtonPrimary } from 'src/atoms';
+import type { Breakpoint, CSSObject } from '@mui/material';
+import { Container, Typography, useTheme } from '@mui/material';
+import type { MenuKeys } from 'src/const';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-  type MenuKeys,
 } from 'src/const';
+import { Button } from 'src/components';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
-import { PopperItemContainer as Container, PopperItemLabel } from '.';
+import type { JsxElement } from 'typescript';
+import { PopperItemContainer, PopperItemLabel } from '.';
+
 interface MenuItemProps {
   open: boolean;
-  showButton: boolean;
+  showButton: boolean | undefined;
+  children?: Element | JsxElement | undefined;
+  disableRipple?: boolean | undefined;
   autoFocus?: boolean;
   showMoreIcon?: boolean;
-  label: string;
+  styles?: CSSObject;
+  label?: string;
   onClick: any;
   triggerSubMenu?: MenuKeys;
   prefixIcon?: JSX.Element | string;
@@ -30,7 +34,10 @@ export const PopperItem = ({
   open,
   showButton,
   autoFocus,
+  disableRipple,
+  children,
   showMoreIcon = true,
+  styles,
   onClick,
   label,
   triggerSubMenu,
@@ -60,15 +67,19 @@ export const PopperItem = ({
   };
 
   return open ? (
-    <Container
-      disableRipple={showButton}
+    <PopperItemContainer
+      disableRipple={disableRipple || showButton}
       showButton={showButton || false}
+      sx={styles}
       autoFocus={autoFocus}
-      onClick={handleClick}
+      onClick={() => {
+        !children && handleClick();
+      }}
     >
       <>
-        {showButton ? (
-          <ButtonPrimary fullWidth>
+        {children}
+        {showButton && (
+          <Button variant="primary" styles={styles} fullWidth={true}>
             {prefixIcon}
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -86,9 +97,10 @@ export const PopperItem = ({
             >
               {label}
             </Typography>
-            {suffixIcon}
-          </ButtonPrimary>
-        ) : (
+            {suffixIcon ?? null}
+          </Button>
+        )}
+        {!showButton && (
           <>
             <PopperItemLabel
               variant={
@@ -99,35 +111,40 @@ export const PopperItem = ({
                   : 'md'
               }
             >
-              {prefixIcon}
-              <Typography
-                variant={'lifiBodyMedium'}
-                ml={'12px'}
-                sx={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  [theme.breakpoints.up('sm' as Breakpoint)]: {
-                    maxWidth: prefixIcon ? '188px' : 'inherit',
-                  },
-                }}
-              >
-                {label}
-              </Typography>
+              {prefixIcon ?? null}
+              {label ? (
+                <Typography
+                  variant={'lifiBodyMedium'}
+                  ml={'12px'}
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    [theme.breakpoints.up('sm' as Breakpoint)]: {
+                      maxWidth: prefixIcon ? '188px' : 'inherit',
+                    },
+                  }}
+                >
+                  {label}
+                </Typography>
+              ) : null}
             </PopperItemLabel>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              {suffixIcon}
-              {showMoreIcon && (
-                <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
-              )}
-            </div>
+            {suffixIcon ||
+              (showMoreIcon && (
+                <div
+                  style={{
+                    display: suffixIcon || showMoreIcon ? 'flex' : 'none',
+                    alignItems: 'center',
+                  }}
+                >
+                  {suffixIcon ?? null}
+                  {showMoreIcon ? (
+                    <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
+                  ) : null}
+                </div>
+              ))}
           </>
         )}
       </>
-    </Container>
+    </PopperItemContainer>
   ) : null;
 };

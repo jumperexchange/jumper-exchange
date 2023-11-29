@@ -1,7 +1,6 @@
+import type { CSSObject } from '@mui/material';
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { useTheme } from '@mui/material/styles';
-import type { KeyboardEvent } from 'react';
 import {
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
@@ -17,6 +16,8 @@ interface PopperMenuProps {
   isOpenSubMenu: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
+  cardsLayout?: boolean;
+  styles?: CSSObject;
   label?: string;
   open: boolean;
   children: any;
@@ -26,13 +27,12 @@ export const PopperMenuMobile = ({
   handleClose,
   open,
   setOpen,
+  cardsLayout,
   label,
+  styles,
   isOpenSubMenu,
   children,
 }: PopperMenuProps) => {
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
-
   const [openSubMenuPopper, anchorRef, onCloseAllPopperMenus] = useMenuStore(
     (state) => [
       state.openSubMenuPopper,
@@ -40,15 +40,6 @@ export const PopperMenuMobile = ({
       state.onCloseAllPopperMenus,
     ],
   );
-
-  function handleListKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false, null);
-    } else if (event.key === 'Escape') {
-      setOpen(false, null);
-    }
-  }
 
   return (
     open && (
@@ -63,7 +54,7 @@ export const PopperMenuMobile = ({
             transition
             disablePortal
           >
-            <PopperPaper isDarkMode={isDarkMode}>
+            <PopperPaper isMobile={true}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
@@ -73,11 +64,12 @@ export const PopperMenuMobile = ({
                 <PopperMenuList
                   autoFocusItem={open}
                   id="composition-menu"
-                  aria-labelledby="composition-button"
-                  isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
-                  onKeyDown={handleListKeyDown}
                   autoFocus={open}
+                  isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
+                  aria-labelledby="composition-button"
+                  cardsLayout={cardsLayout}
                   hasLabel={!!label}
+                  sx={styles}
                   component={
                     isOpenSubMenu && openSubMenuPopper !== MenuKeys.WalletSelect
                       ? 'div'

@@ -1,5 +1,6 @@
 import type { ChainID } from '@arcxmoney/analytics';
-import type { WalletAccount } from './';
+import type { WalletAccount } from '.';
+import type { TrackingCategory } from 'src/const';
 
 export enum EventTrackingTool {
   ARCx,
@@ -40,9 +41,21 @@ export interface TrackChainSwitchProps {
   data?: { [key: string]: string | number | boolean | any };
 }
 
+type destinations =
+  | 'discord-lifi'
+  | 'lifi-explorer'
+  | 'lifi-website'
+  | 'docs-sc-audits'
+  | 'lifi-github'
+  | 'lifi-docs'
+  | 'twitter-jumper'
+  | 'blokchain-explorer';
+
+type source = TrackingCategory;
+
 export interface trackPageloadProps {
-  destination: string;
-  source: string;
+  destination: destinations;
+  source: source;
   data?: { [key: string]: string | number | boolean };
   pageload: boolean;
   disableTrackingTool?: EventTrackingTool[];

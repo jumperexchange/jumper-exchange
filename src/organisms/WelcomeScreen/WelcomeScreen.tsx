@@ -3,7 +3,7 @@ import { Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { ButtonPrimary } from 'src/atoms';
+import { ButtonPrimary } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -70,7 +70,7 @@ export const WelcomeScreen = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
-      source: 'welcome-screen',
+      source: TrackingCategory.WelcomeScreen,
       destination: 'docs-sc-audits',
       url: auditsWelcomeUrl,
       pageload: true,
@@ -87,7 +87,7 @@ export const WelcomeScreen = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
-      source: 'welcome-screen',
+      source: TrackingCategory.WelcomeScreen,
       destination: 'lifi-website',
       url: lifiWelcomeUrl,
       pageload: true,
@@ -185,9 +185,7 @@ export const WelcomeScreen = () => {
               setOpenDexsPopper={setOpenDexsPopper}
             />
             <ButtonPrimary
-              onClick={(event) => {
-                handleGetStarted(event);
-              }}
+              onClick={handleGetStarted}
               sx={(theme) => ({
                 height: '48px',
                 width: '192px',

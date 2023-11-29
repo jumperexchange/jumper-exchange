@@ -5,9 +5,9 @@ import {
   useDevelopersContent,
   useLanguagesContent,
   useMainMenuContent,
-  useThemeContent,
 } from 'src/const';
 import { useMenuStore } from 'src/stores';
+import type { JsxElement } from 'typescript';
 interface MainMenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
@@ -15,7 +15,6 @@ interface MainMenuProps {
 export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const { t } = useTranslation();
   const mainMenuItems = useMainMenuContent();
-  const mainSubMenuTheme = useThemeContent();
   const mainSubMenuDevelopers = useDevelopersContent();
   const mainSubMenuLanguage = useLanguagesContent();
   const [openMainMenuPopper, onOpenMainMenuPopper, openSubMenuPopper] =
@@ -40,21 +39,17 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
             autoFocus={index > 0 ? true : false}
             label={el.label}
             prefixIcon={el.prefixIcon}
+            styles={el.styles}
+            children={el.children as unknown as JsxElement}
             triggerSubMenu={el.triggerSubMenu}
-            showButton={el.showButton ?? false}
+            showButton={el.showButton}
+            disableRipple={el.disableRipple}
             showMoreIcon={el.showMoreIcon}
             suffixIcon={el.suffixIcon}
             onClick={el.onClick}
             open
           />
         ))}
-      <PopperSubMenu
-        label={t('navbar.navbarMenu.theme')}
-        triggerSubMenu={MenuKeys.Themes}
-        open={openSubMenuPopper === MenuKeys.Themes}
-        prevMenu={MenuKeys.None}
-        subMenuList={mainSubMenuTheme}
-      />
 
       <PopperSubMenu
         label={t('language.key', { ns: 'language' })}

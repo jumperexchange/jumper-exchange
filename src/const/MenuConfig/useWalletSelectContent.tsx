@@ -1,18 +1,18 @@
-import type { Wallet } from '@lifi/wallet-management';
 import { supportedWallets } from '@lifi/wallet-management';
-import type { Theme } from '@mui/material';
-import { Avatar, useMediaQuery } from '@mui/material';
+import { Avatar, Theme, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMultisig } from 'src/hooks';
 import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
-import type { MenuListItem } from 'src/types';
+import type { MenuListItem, Wallet } from 'src/types';
+import { getContrastAlphaColor } from 'src/utils';
 
 export const useWalletSelectContent = () => {
   const isDesktopView = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up('sm'),
   );
+  const theme = useTheme();
   const { t } = useTranslation();
   const [clientWallets, onClientWallets] = useSettingsStore((state) => [
     state.clientWallets,
@@ -42,22 +42,16 @@ export const useWalletSelectContent = () => {
 
     const walletsInstalled = await Promise.all(walletsPromise);
 
-    // separate into installed and not installed wallets
-    const installedWallets = supportedWallets.filter((_, index) => {
-      walletsInstalled[index] && onClientWallets(_.name);
-      return walletsInstalled[index];
+    // always remove Default Wallet from list
+    const filteredWallets = supportedWallets.filter((wallet, index) => {
+      walletsInstalled[index] && onClientWallets(wallet.name);
+      return wallet.name !== 'Default Wallet';
     });
 
-    // always remove Default Wallet from not installed Wallets
-    const notInstalledWallets = supportedWallets.filter(
-      (wallet, index) =>
-        !walletsInstalled[index] && wallet.name !== 'Default Wallet',
-    );
-
-    const allowedWallets = [...installedWallets];
+    let allowedWallets = filteredWallets.slice(0, 7);
 
     if (isDesktopView) {
-      allowedWallets.push(...notInstalledWallets);
+      allowedWallets = filteredWallets;
     }
 
     setAvailableWallets(allowedWallets);
@@ -126,14 +120,24 @@ export const useWalletSelectContent = () => {
         label: wallet.name,
         prefixIcon: (
           <Avatar
+            className="wallet-select-avatar"
             src={wallet.icon}
             alt={`${wallet.name}-wallet-logo`}
-            sx={{ height: '32px', width: '32px' }}
+            sx={{
+              height: '40px',
+              width: '40px',
+              objectFit: 'contain',
+            }}
           />
         ),
         showMoreIcon: false,
         onClick: () => {
           handleClick(wallet);
+        },
+        styles: {
+          '&:hover': {
+            backgroundColor: getContrastAlphaColor(theme, '16%'),
+          },
         },
       };
     });
@@ -147,6 +151,7 @@ export const useWalletSelectContent = () => {
     onOpenSnackbar,
     onWelcomeScreenClosed,
     t,
+    theme,
   ]);
 
   return walletMenuItems;

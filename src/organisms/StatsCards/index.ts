@@ -1,2 +1,2 @@
-export * from './StatsCards';
-export * from './StatsCards.style';
+export * from '../../components/StatsCard/StatsCards';
+export * from '../../components/StatsCard/StatsCards.style';

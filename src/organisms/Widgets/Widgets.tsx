@@ -1,12 +1,10 @@
 import type { WidgetSubvariant } from '@lifi/widget';
 import { Grid, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { OnRamper, Widget } from 'src/components';
-import { TestnetAlert } from '..';
-import { LinkMap } from '../../const';
-import { TabsMap } from '../../const/tabsMap';
-import { useActiveTabStore, useSettingsStore } from '../../stores';
-import type { StarterVariantType } from '../../types';
+import { OnRamper, TestnetAlert, Widget } from 'src/components';
+import { LinkMap, TabsMap } from 'src/const';
+import { useActiveTabStore, useSettingsStore } from 'src/stores';
+import type { StarterVariantType } from 'src/types';
 import { WidgetEvents } from './WidgetEvents';
 import { WidgetContainer } from './Widgets.style';
 

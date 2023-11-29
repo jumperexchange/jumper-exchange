@@ -5,3 +5,4 @@ export { MenuKeys, MenuMain, MenuSub } from './menuKeys';
 export * from './tabsMap';
 export * from './trackingKeys';
 export * from './urls';
+export * from './useThemeSwitchTabs';

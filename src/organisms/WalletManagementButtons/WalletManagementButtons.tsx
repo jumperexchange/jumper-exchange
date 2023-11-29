@@ -1,18 +1,24 @@
+import type { Chain } from '@lifi/types';
 import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
-import { Avatar, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
-import { ButtonPrimary, ButtonSecondary } from 'src/atoms';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useUserTracking } from 'src/hooks';
+import { useChains, useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { walletDigest } from 'src/utils';
+import {
+  WalletMgmtAvatarContainer,
+  WalletMgmtChainAvatar,
+  WalletMgmtWalletAvatar,
+} from '.';
+import { Button } from 'src/components';
 
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
@@ -28,12 +34,16 @@ export const WalletManagementButtons: React.FC<
   WalletManagementButtonsProps
 > = ({ walletManagement, connectButtonLabel, isSuccess }) => {
   const theme = useTheme();
+  const { chains } = useChains();
   const { trackEvent } = useUserTracking();
   const { account, usedWallet } = walletManagement;
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
   }, [account]);
-
+  const activeChain = useMemo(
+    () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
+    [chains, account.chainId],
+  );
   const [
     openWalletSelectPopper,
     onOpenWalletSelectPopper,
@@ -57,7 +67,6 @@ export const WalletManagementButtons: React.FC<
           if (value.name === localStorage.activeWalletName) {
             return value.icon;
           }
-          //do something with value;
         }
       }
     }
@@ -99,75 +108,49 @@ export const WalletManagementButtons: React.FC<
 
   return !account.address ? (
     // Connect/WalletSelect-Button -->
-    <ButtonPrimary
+    <Button
       // Used in the widget
+      variant="primary"
       id="connect-wallet-button"
       onClick={handleWalletSelectClick}
-      sx={(theme) => ({
+      styles={{
         display: 'none',
         [theme.breakpoints.up('sm' as Breakpoint)]: {
-          width: '169px',
+          padding: theme.spacing(3),
           display: 'inline-flex !important',
         },
-      })}
+      }}
     >
       {connectButtonLabel}
-    </ButtonPrimary>
+    </Button>
   ) : (
     // Wallet-Menu-Button -->
-    <ButtonSecondary
-      sx={{
-        width: '180px',
-        padding: '6px 8px',
-        paddingRight: '16px',
-        minWidth: 'inherit',
-        '@media screen and (min-width:430px) and (max-width: 900px)': {
-          width: '180px',
-          padding: '6px 8px',
-        },
-        [theme.breakpoints.up('md' as Breakpoint)]: {
-          position: 'relative',
-          width: '48px',
-          padding: '0',
-          left: 'unset',
-          display: 'inherit',
-          transform: 'unset',
-        },
-        [theme.breakpoints.up('lg' as Breakpoint)]: {
-          width: '180px',
-          padding: '6px',
-        },
+    <Button
+      variant="secondary"
+      styles={{
+        display: 'flex',
+        placeContent: 'space-between',
+        justifyContent: 'center',
+        margin: 'auto',
+        position: 'relative',
+        p: '6px',
+        pr: theme.spacing(2),
+        width: 'auto',
       }}
       onClick={handleWalletMenuClick}
     >
-      {isSuccess ? (
-        <Avatar
-          src={walletIcon}
-          sx={{
-            padding: theme.spacing(0.75),
-            background:
-              theme.palette.mode === 'light'
-                ? theme.palette.black.main
-                : theme.palette.white.main,
-            height: '32px',
-            width: '32px',
-          }}
-        />
+      {isSuccess && activeChain ? (
+        <WalletMgmtAvatarContainer>
+          <WalletMgmtWalletAvatar src={walletIcon} />
+          <WalletMgmtChainAvatar
+            src={activeChain.logoURI || 'empty'}
+            alt={`${activeChain.name}chain-logo`}
+          />
+        </WalletMgmtAvatarContainer>
       ) : null}
-      <Typography
-        variant={'lifiBodyMediumStrong'}
-        width={'100%'}
-        sx={{
-          [theme.breakpoints.up('md' as Breakpoint)]: {
-            display: 'none',
-          },
-          [theme.breakpoints.up('lg' as Breakpoint)]: {
-            display: 'block',
-          },
-        }}
-      >
+      <Typography variant={'lifiBodyMediumStrong'} width={'auto'}>
         {_walletDigest}
       </Typography>
-    </ButtonSecondary>
+    </Button>
   );
 };
