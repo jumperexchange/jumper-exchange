@@ -1,6 +1,7 @@
 import { ChainID } from '@arcxmoney/analytics';
 import { WalletAccount } from '@transferto/shared/src/types';
 import { TrackingCategory } from '../const';
+import { Wallet } from '@lifi/wallet-management';
 
 export enum EventTrackingTool {
   ARCx,
@@ -66,6 +67,7 @@ export interface TrackConnectWalletProps {
   account?: WalletAccount;
   data?: { [key: string]: string | number | boolean };
   disableTrackingTool?: EventTrackingTool[];
+  wallet?: Wallet;
   disconnect?: boolean;
 }
 
