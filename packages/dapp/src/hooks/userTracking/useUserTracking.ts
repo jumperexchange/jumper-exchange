@@ -18,15 +18,15 @@ import { useCookie3 } from '../useCookie3';
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
   const cookie3 = useCookie3();
-  const { account, usedWallet } = useWallet();
+  const { account } = useWallet();
 
   const trackConnectWallet = useCallback(
     /**
      * Track Wallet Connect with HJ and ARCx
      *
      */
-    ({ disableTrackingTool, account }: TrackConnectWalletProps) => {
-      if (account?.address && account?.chainId && usedWallet) {
+    ({ disableTrackingTool, account, wallet }: TrackConnectWalletProps) => {
+      if (account?.address && account?.chainId && wallet) {
         if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
           arcx?.wallet({
             account: `${account.address}`,
@@ -35,13 +35,13 @@ export function useUserTracking() {
         }
         if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
           hotjar.identify(account.address, {
-            [TrackingEventParameter.Wallet]: usedWallet.name,
+            [TrackingEventParameter.Wallet]: wallet.name,
           });
           hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
         }
       }
     },
-    [arcx, usedWallet],
+    [arcx],
   );
 
   const trackAttribute = useCallback(
