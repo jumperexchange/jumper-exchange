@@ -1,7 +1,5 @@
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { Typography } from '@mui/material';
@@ -9,17 +7,23 @@ import { useTheme } from '@mui/material/styles';
 import { Discord, LifiSmallLogo } from '@transferto/shared/src/atoms/icons';
 import {
   appendUTMParametersToLink,
+  getContrastAlphaColor,
   openInNewTab,
 } from '@transferto/shared/src/utils/';
 import { useTranslation } from 'react-i18next';
 import {
+  DISCORD_URL,
+  EXPLORER_URL,
+  LIFI_URL,
   MenuKeys,
+  TWITTER_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
+  useThemeSwitchTabs,
 } from '..';
+import { Tabs } from '../../components';
 import { useUserTracking } from '../../hooks';
-import { useDetectDarkModePreference } from '../../providers/ThemeProvider';
 import { useMenuStore, useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
 
@@ -27,35 +31,79 @@ export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
-  const isDarkMode = useDetectDarkModePreference();
-  const themeMode = useSettingsStore((state) => state.themeMode);
   const onOpenSupportModal = useMenuStore((state) => state.onOpenSupportModal);
-
-  const explorerUrl = appendUTMParametersToLink('https://explorer.li.fi/', {
+  const themeMode = useSettingsStore((state) => state.themeMode);
+  const explorerUrl = appendUTMParametersToLink(EXPLORER_URL, {
     utm_campaign: 'jumper_to_explorer',
     utm_medium: 'menu',
   });
 
-  const lifiUrl = appendUTMParametersToLink('https://li.fi/', {
+  const lifiUrl = appendUTMParametersToLink(LIFI_URL, {
     utm_campaign: 'jumper_to_lifi',
     utm_medium: 'menu',
   });
 
+  const themeSwitchTabs = useThemeSwitchTabs();
+
+  const containerStyles = {
+    display: 'flex',
+    width: '100%',
+    borderRadius: '24px',
+    div: {
+      height: '38px',
+    },
+    '.MuiTabs-indicator': {
+      height: '38px',
+      zIndex: '-1',
+      borderRadius: '18px',
+    },
+  };
+
+  const tabStyles = {
+    height: '38px',
+    margin: '6px',
+    minWidth: 'unset',
+    borderRadius: '18px',
+  };
+
   return [
     {
-      label: t('navbar.navbarMenu.theme'),
-      prefixIcon: isDarkMode ? (
-        <NightlightOutlinedIcon />
-      ) : (
-        <LightModeOutlinedIcon />
+      children: (
+        <Tabs
+          data={themeSwitchTabs}
+          value={themeMode === 'light' ? 0 : themeMode === 'dark' ? 1 : 2}
+          ariaLabel="theme-switch-tabs"
+          containerStyles={containerStyles}
+          tabStyles={tabStyles}
+        />
       ),
-      url: 'https://github.com/lifinance/',
-      triggerSubMenu: MenuKeys.Themes,
+      styles: {
+        width: 'auto',
+        margin: '12px',
+        gap: '8px',
+        backgroundColor: 'transparent',
+        borderRadius: '24px',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+        paddingTop: '4px !important',
+        padding: '4px',
+        '> button:hover': {
+          backgroundColor: getContrastAlphaColor(theme, '4%'),
+        },
+        '> button:hover svg': {
+          fill:
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[700]
+              : theme.palette.grey[300],
+        },
+      },
+      showMoreIcon: false,
+      disableRipple: true,
     },
     {
       label: t('language.key', { ns: 'language' }),
       prefixIcon: <LanguageIcon />,
-      checkIcon: themeMode === 'light',
       suffixIcon: (
         <Typography
           variant="lifiBodyMedium"
@@ -93,15 +141,12 @@ export const useMainMenuContent = () => {
         });
         trackPageload({
           source: TrackingCategory.MainMenu,
-          destination: 'twitter-JumperExchange',
-          url: 'https://twitter.com/JumperExchange',
+          destination: 'twitter-jumper',
+          url: TWITTER_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab('https://twitter.com/JumperExchange');
+        openInNewTab(TWITTER_URL);
       },
     },
     {
@@ -130,14 +175,11 @@ export const useMainMenuContent = () => {
         trackPageload({
           source: TrackingCategory.Menu,
           destination: 'discord-lifi',
-          url: 'https://discord.gg/lifi',
+          url: DISCORD_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
-        openInNewTab('https://discord.gg/lifi');
+        openInNewTab(DISCORD_URL);
       },
     },
     {
@@ -156,14 +198,11 @@ export const useMainMenuContent = () => {
           ],
         });
         trackPageload({
-          source: 'menu',
+          source: TrackingCategory.Menu,
           destination: 'lifi-explorer',
           url: explorerUrl,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(explorerUrl);
       },
@@ -172,7 +211,7 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.aboutLIFI'),
       prefixIcon: (
         <LifiSmallLogo
-          style={{ flexShrink: 0 }}
+          styles={{ flexShrink: 0 }}
           color={
             theme.palette.mode === 'dark'
               ? theme.palette.white.main
@@ -197,10 +236,7 @@ export const useMainMenuContent = () => {
           destination: 'lifi-website',
           url: lifiUrl,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.ARCx,
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(lifiUrl);
       },

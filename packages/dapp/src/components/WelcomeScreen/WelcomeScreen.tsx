@@ -1,10 +1,11 @@
 import { Breakpoint, Slide, Typography, useTheme } from '@mui/material';
-import { ButtonPrimary } from '@transferto/shared/src/atoms/ButtonPrimary.style';
 import { appendUTMParametersToLink } from '@transferto/shared/src/utils';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { shallow } from 'zustand/shallow';
 import {
+  AUDITS_URL,
+  LIFI_URL,
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
@@ -12,6 +13,7 @@ import {
 import { useUserTracking } from '../../hooks';
 import { useSettingsStore } from '../../stores';
 import { EventTrackingTool } from '../../types';
+import { Button } from '../Button';
 import { StatsCards } from '../StatsCard';
 import {
   ContentWrapper,
@@ -20,18 +22,6 @@ import {
   WelcomeContent,
 } from './WelcomeScreen.style';
 
-const auditsWelcomeUrl = appendUTMParametersToLink(
-  'https://docs.li.fi/smart-contracts/audits',
-  {
-    utm_campaign: 'jumper_to_docs',
-    utm_medium: 'welcome_screen',
-  },
-);
-const lifiWelcomeUrl = appendUTMParametersToLink('https://li.fi/', {
-  utm_campaign: 'jumper_to_lifi',
-  utm_medium: 'welcome_screen',
-});
-
 export const WelcomeScreen = () => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -39,6 +29,15 @@ export const WelcomeScreen = () => {
     (state) => [state.welcomeScreenClosed, state.onWelcomeScreenClosed],
     shallow,
   );
+
+  const auditsWelcomeUrl = appendUTMParametersToLink(AUDITS_URL, {
+    utm_campaign: 'jumper_to_docs',
+    utm_medium: 'welcome_screen',
+  });
+  const lifiWelcomeUrl = appendUTMParametersToLink(LIFI_URL, {
+    utm_campaign: 'jumper_to_lifi',
+    utm_medium: 'welcome_screen',
+  });
 
   const { trackPageload, trackEvent } = useUserTracking();
   const [openChainsPopper, setOpenChainsPopper] = useState(false);
@@ -68,11 +67,11 @@ export const WelcomeScreen = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
-      source: 'welcome-screen',
+      source: TrackingCategory.WelcomeScreen,
       destination: 'docs-sc-audits',
       url: auditsWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+      disableTrackingTool: [EventTrackingTool.Cookie3],
     });
   };
 
@@ -85,11 +84,11 @@ export const WelcomeScreen = () => {
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
     trackPageload({
-      source: 'welcome-screen',
+      source: TrackingCategory.WelcomeScreen,
       destination: 'lifi-website',
       url: lifiWelcomeUrl,
       pageload: true,
-      disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
+      disableTrackingTool: [EventTrackingTool.Cookie3],
     });
   };
 
@@ -182,11 +181,10 @@ export const WelcomeScreen = () => {
               openDexsPopper={openDexsPopper}
               setOpenDexsPopper={setOpenDexsPopper}
             />
-            <ButtonPrimary
-              onClick={(event) => {
-                handleGetStarted(event);
-              }}
-              sx={(theme) => ({
+            <Button
+              variant="primary"
+              onClick={handleGetStarted}
+              styles={{
                 height: '48px',
                 width: '192px',
                 margin: `${theme.spacing(4)} auto`,
@@ -196,7 +194,7 @@ export const WelcomeScreen = () => {
                   borderRadius: '28px',
                   width: '247px',
                 },
-              })}
+              }}
             >
               <Typography
                 variant={'lifiBodyMediumStrong'}
@@ -213,7 +211,7 @@ export const WelcomeScreen = () => {
               >
                 {t('navbar.welcome.cta')}
               </Typography>
-            </ButtonPrimary>
+            </Button>
           </WelcomeContent>
         </ContentWrapper>
       </Slide>
