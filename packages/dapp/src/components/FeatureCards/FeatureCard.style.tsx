@@ -12,7 +12,7 @@ export interface CardProps extends Omit<MuiCardProps, 'component'> {
 }
 
 export const Card = styled(MuiCard, {
-  shouldForwardProp: (prop) => prop !== 'gradient',
+  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
 })<CardProps>(({ theme, backgroundImageUrl }) => ({
   width: 384,
   height: 160,
