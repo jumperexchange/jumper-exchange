@@ -50,9 +50,7 @@ export const useDevelopersContent = () => {
           destination: 'lifi-github',
           url: GITHUB_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(GITHUB_URL);
         onCloseAllNavbarMenus();
@@ -77,9 +75,7 @@ export const useDevelopersContent = () => {
           destination: 'lifi-docs',
           url: DOCS_URL,
           pageload: true,
-          disableTrackingTool: [
-            EventTrackingTool.Cookie3,
-          ],
+          disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(DOCS_URL);
         onCloseAllNavbarMenus();
@@ -100,7 +96,7 @@ export const useDevelopersContent = () => {
             EventTrackingTool.Cookie3,
           ],
         });
-        openInNewTab('/Jumper_Assets.zip');
+        openInNewTab('/jumper_brand_assets.zip');
       },
     },
   ];
