@@ -105,7 +105,7 @@ export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
       if (walletAction) {
         switch (walletAction) {
           case WalletActions.Connect:
-            trackConnectWallet({ account });
+            trackConnectWallet({ account, wallet });
             break;
           case WalletActions.SwitchChain:
             trackChainSwitch({

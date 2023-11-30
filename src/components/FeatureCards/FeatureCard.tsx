@@ -41,10 +41,10 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
   }, [data?.fields?.displayConditions, onDisableFeatureCard]);
 
   const typographyColor = useMemo(() => {
-    if (data.fields.displayConditions.custom?.mode) {
-      if (data.fields.displayConditions.custom?.mode === 'dark') {
+    if (data.fields.displayConditions.mode) {
+      if (data.fields.displayConditions.mode === 'dark') {
         return theme.palette.white.main;
-      } else if (data.fields.displayConditions.custom?.mode === 'light') {
+      } else if (data.fields.displayConditions.mode === 'light') {
         return theme.palette.black.main;
       }
     } else {
@@ -55,7 +55,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
       }
     }
   }, [
-    data.fields.displayConditions.custom?.mode,
+    data.fields.displayConditions.mode,
     theme.palette.black.main,
     theme.palette.mode,
     theme.palette.white.main,
@@ -170,9 +170,10 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
             <Typography
               variant={'lifiHeaderSmall'}
               sx={{
-                color: typographyColor,
+                color: data.fields.titleColor ?? typographyColor,
                 fontSize: '24px',
                 lineHeight: '32px',
+                userSelect: 'none',
                 maxHeight: '32px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -189,6 +190,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
                 color: typographyColor,
                 lineHeight: '24px',
                 width: '224px',
+                userSelect: 'none',
                 height: '48px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -206,7 +208,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
               sx={{
                 textDecoration: 'none',
                 color:
-                  data.fields.displayConditions.custom?.mode === 'dark' ||
+                  data.fields.displayConditions.mode === 'dark' ||
                   theme.palette.mode === 'dark'
                     ? theme.palette.accent1Alt?.main
                     : theme.palette.primary.main,
@@ -219,8 +221,7 @@ export const FeatureCard = ({ data, isSuccess, assets }: FeatureCardProps) => {
                   maxHeight: '20px',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  color:
-                    data.fields.displayConditions.custom?.ctaColor ?? 'inherit',
+                  color: data.fields.ctaColor ?? 'inherit',
                 }}
               >
                 {data.fields.ctaCall ?? t('featureCard.learnMore')}

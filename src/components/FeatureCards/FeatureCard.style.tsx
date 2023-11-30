@@ -1,9 +1,5 @@
-import {
-  CardMedia,
-  CardMediaProps,
-  Card as MuiCard,
-  CardProps as MuiCardProps,
-} from '@mui/material';
+import type { CardMediaProps, CardProps as MuiCardProps } from '@mui/material';
+import { CardMedia, Card as MuiCard } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
@@ -12,7 +8,7 @@ export interface CardProps extends Omit<MuiCardProps, 'component'> {
 }
 
 export const FCard = styled(MuiCard, {
-  shouldForwardProp: (prop) => prop !== 'gradient',
+  shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
 })<CardProps>(({ theme, backgroundImageUrl }) => ({
   width: 384,
   height: 160,
