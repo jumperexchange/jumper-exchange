@@ -105,17 +105,11 @@ export function Widgets() {
       </WidgetContainer>
       {import.meta.env.VITE_ONRAMPER_ENABLED ? (
         <WidgetContainer
+          onClick={handleCloseWelcomeScreen}
           isActive={_starterVariant === TabsMap.Buy.variant}
           welcomeScreenClosed={welcomeScreenClosed}
-          sx={{
-            display: _starterVariant === TabsMap.Buy.variant ? 'flex' : 'none',
-            justifyContent:
-              _starterVariant === TabsMap.Buy.variant ? 'center' : 'inherit',
-          }}
         >
-          <div onClick={handleCloseWelcomeScreen} className="onramper-wrapper">
-            <OnRamper />
-          </div>
+          <OnRamper handleCloseWelcomeScreen={handleCloseWelcomeScreen} />
         </WidgetContainer>
       ) : null}
       <WidgetEvents />

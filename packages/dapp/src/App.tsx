@@ -1,3 +1,4 @@
+import { PoweredBy } from '@transferto/shared/src/atoms';
 import { useEffect } from 'react';
 import { AppProvider } from './AppProvider';
 import { FeatureCards, WelcomeScreen } from './components';
@@ -23,6 +24,7 @@ export default function App() {
       <Menus />
       <Widgets />
       <WelcomeScreen />
+      <PoweredBy />
 
       <FeatureCards />
     </AppProvider>
