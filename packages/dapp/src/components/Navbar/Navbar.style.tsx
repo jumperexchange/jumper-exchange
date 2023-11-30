@@ -158,14 +158,6 @@ export const NavbarMenuList = styled(MenuList, {
   },
 }));
 
-export const MenuHeader = styled('div')(() => ({
-  padding: '0',
-  textAlign: 'center',
-  display: 'flex',
-  alignItems: 'center',
-  margin: '0 auto',
-}));
-
 export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   ...theme.typography.lifiBodyMediumStrong,
   width: '100%',
@@ -181,8 +173,6 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
     marginLeft: '6px',
   },
 }));
-
-export const MenuHeaderText = styled('span')(({ theme }) => ({}));
 
 export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;

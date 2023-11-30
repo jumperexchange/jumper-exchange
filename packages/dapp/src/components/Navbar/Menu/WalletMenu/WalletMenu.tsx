@@ -100,9 +100,7 @@ export const WalletMenu = ({ handleClose }: NavbarMenuProps) => {
         destination: 'blokchain-explorer',
         url: blockchainExplorerURL || '',
         pageload: true,
-        disableTrackingTool: [
-          EventTrackingTool.Cookie3,
-        ],
+        disableTrackingTool: [EventTrackingTool.Cookie3],
       });
       openInNewTab(blockchainExplorerURL);
     }
