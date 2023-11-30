@@ -8,8 +8,9 @@ import {
   PopperItem,
   PopperMenu,
   PopperSubMenu,
+  useWalletSelectContent,
 } from 'src/components';
-import { MenuKeys, useWalletSelectContent } from 'src/const';
+import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import { getContrastAlphaColor } from 'src/utils';
 

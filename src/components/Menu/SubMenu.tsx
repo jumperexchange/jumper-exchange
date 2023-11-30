@@ -3,15 +3,13 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useEffect, useRef } from 'react';
 import type { KeyboardEvent } from 'react';
+import { useEffect, useRef } from 'react';
 import {
-  MenuHeaderAppBar,
   ButtonBackArrow,
+  MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   PopperHeaderLabel,
-  PopperItemContainer,
-  PopperItemLabel,
   PopperLinkItem,
   PopperPaper,
 } from 'src/components';
@@ -24,6 +22,7 @@ import {
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool, type MenuListItem } from 'src/types';
+import { PopperItemContainer, PopperItemLabel } from '.';
 
 interface PopperSubMenuProps {
   open: boolean;

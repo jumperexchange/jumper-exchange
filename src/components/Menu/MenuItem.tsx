@@ -1,13 +1,13 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint, CSSObject } from '@mui/material';
-import { Container, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
+import { Button } from 'src/components';
 import type { MenuKeys } from 'src/const';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { Button } from 'src/components';
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
@@ -107,8 +107,8 @@ export const PopperItem = ({
                 suffixIcon && showMoreIcon
                   ? 'xs'
                   : !suffixIcon && !showMoreIcon
-                  ? 'lg'
-                  : 'md'
+                    ? 'lg'
+                    : 'md'
               }
             >
               {prefixIcon ?? null}

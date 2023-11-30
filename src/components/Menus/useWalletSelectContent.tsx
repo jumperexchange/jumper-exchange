@@ -1,5 +1,6 @@
 import { supportedWallets } from '@lifi/wallet-management';
-import { Avatar, Theme, useMediaQuery, useTheme } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMultisig } from 'src/hooks';

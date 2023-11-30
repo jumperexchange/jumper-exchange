@@ -1,5 +1,4 @@
 export * from '../components/Menus/MainMenu/useThemeSwitchTabs';
-export * from './MenuConfig';
 export * from './headerHeight';
 export * from './linkMap';
 export { MenuKeys, MenuMain, MenuSub } from './menuKeys';

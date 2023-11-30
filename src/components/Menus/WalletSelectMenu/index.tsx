@@ -1,1 +1,1 @@
-export { WalletSelectMenu } from './WalletSelectMenu';
+export * from './WalletSelectMenu';

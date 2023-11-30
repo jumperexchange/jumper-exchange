@@ -21,7 +21,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
   useThemeSwitchTabs,
-} from '../../const';
+} from '../../../const';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
