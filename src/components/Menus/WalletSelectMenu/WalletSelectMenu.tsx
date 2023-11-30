@@ -8,11 +8,11 @@ import {
   MenuHeaderAppWrapper,
   MenuItem,
   SubMenu,
-  useWalletSelectContent,
 } from 'src/components';
 import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import { getContrastAlphaColor } from 'src/utils';
+import { useWalletSelectContent } from './useWalletSelectContent';
 
 interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -25,7 +25,6 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
-  const subMenuWalletSelectMore = useWalletSelectContent();
   const isDarkMode = theme.palette.mode === 'dark';
   const filteredWalletSelectMenuItems = walletSelectMenuItems.slice(
     0,
@@ -182,7 +181,7 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
           triggerSubMenu={MenuKeys.WalletSelectMore}
           open={openSubMenu === MenuKeys.WalletSelectMore}
           prevMenu={MenuKeys.None}
-          subMenuList={subMenuWalletSelectMore}
+          subMenuList={walletSelectMenuItems}
         />
       </Menu>
     )

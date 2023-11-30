@@ -13,7 +13,7 @@ import type {
   trackPageloadProps,
 } from 'src/types';
 import { EventTrackingTool } from 'src/types';
-import { useCookie3 } from '../useCookie3';
+import { useCookie3 } from './useCookie3';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
