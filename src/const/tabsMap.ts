@@ -1,4 +1,4 @@
-import { WidgetSubvariant } from '@lifi/widget/types';
+import type { WidgetSubvariant } from '@lifi/widget/types';
 import { LinkMap } from './linkMap';
 
 interface TabsMapType {
