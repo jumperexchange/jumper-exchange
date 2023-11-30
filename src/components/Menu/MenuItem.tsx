@@ -126,20 +126,19 @@ export const MenuItem = ({
                 </Typography>
               ) : null}
             </MenuLabel>
-            {suffixIcon ||
-              (showMoreIcon && (
-                <div
-                  style={{
-                    display: suffixIcon || showMoreIcon ? 'flex' : 'none',
-                    alignItems: 'center',
-                  }}
-                >
-                  {suffixIcon ?? null}
-                  {showMoreIcon ? (
-                    <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
-                  ) : null}
-                </div>
-              ))}
+            {suffixIcon || showMoreIcon ? (
+              <div
+                style={{
+                  display: suffixIcon || showMoreIcon ? 'flex' : 'none',
+                  alignItems: 'center',
+                }}
+              >
+                {suffixIcon ?? null}
+                {showMoreIcon ? (
+                  <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
+                ) : null}
+              </div>
+            ) : null}
           </>
         )}
       </>

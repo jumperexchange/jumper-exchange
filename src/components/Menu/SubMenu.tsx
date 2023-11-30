@@ -176,9 +176,9 @@ export const SubMenu = ({
                 </Typography>
               </MenuLabel>
               {el.checkIcon && <CheckIcon />}
-              {el.showMoreIcon && (
+              {el.showMoreIcon ? (
                 <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
-              )}
+              ) : null}
             </MenuItemContainer>
           ),
         )

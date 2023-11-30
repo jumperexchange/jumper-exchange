@@ -113,6 +113,7 @@ export const useMainMenuContent = () => {
           {i18n.resolvedLanguage}
         </Typography>
       ),
+      showMoreIcon: true,
       triggerSubMenu: MenuKeys.Language,
     },
     {
