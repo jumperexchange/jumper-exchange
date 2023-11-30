@@ -11,9 +11,9 @@ import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from '../../const/trackingKeys';
+} from '../../../const/trackingKeys';
 
-import { DOCS_URL, GITHUB_URL } from '../../const/urls';
+import { DOCS_URL, GITHUB_URL } from '../../../const/urls';
 export const useDevelopersContent = () => {
   const { t } = useTranslation();
   const { trackPageload, trackEvent } = useUserTracking();
