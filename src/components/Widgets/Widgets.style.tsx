@@ -1,4 +1,5 @@
-import { Box, BoxProps, styled } from '@mui/material';
+import type { BoxProps } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export interface WidgetContainerProps extends Omit<BoxProps, 'component'> {
   isActive?: boolean;
@@ -39,13 +40,13 @@ export const WidgetContainer = styled(Box, {
     [`@media screen and (min-height: 700px)`]: {
       marginTop: !welcomeScreenClosed
         ? 'calc( 50vh - 680px / 2.75 - 40px)'
-        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - navbar height )
     },
 
     [`@media screen and (min-height: 900px)`]: {
       marginTop: !welcomeScreenClosed
         ? 'calc( 50vh - 680px / 2.75 - 128px)'
-        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
     },
   },
 
@@ -56,13 +57,13 @@ export const WidgetContainer = styled(Box, {
     [`@media screen and (min-height: 700px)`]: {
       marginTop: !welcomeScreenClosed
         ? 'calc( 50vh - 680px / 2.75 - 40px - 24px )'
-        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - header height )
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - navbar height )
     },
 
     [`@media screen and (min-height: 900px)`]: {
       marginTop: !welcomeScreenClosed
         ? 'calc( 50vh - 680px / 2.75 - 128px - 24px)'
-        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+        : theme.spacing(3.5), // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
     },
   },
 
@@ -91,11 +92,11 @@ export const WidgetContainer = styled(Box, {
     top: '24px',
 
     [`@media screen and (min-height: 700px)`]: {
-      top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - header height )
+      top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - navbar height )
     },
 
     [`@media screen and (min-height: 900px)`]: {
-      top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( header height + additional spacing) )
+      top: 'calc( 50vh - 680px / 2.75 - 128px)', // (mid viewheight - half-two/thirds widget height - ( navbar height + additional spacing) )
       bottom: !welcomeScreenClosed
         ? 'calc( 680px - 300px)'
         : 'calc( 680px - 486px )',
@@ -131,8 +132,8 @@ export const WidgetContainer = styled(Box, {
       !welcomeScreenClosed && theme.palette.mode === 'dark'
         ? 0.24
         : !welcomeScreenClosed && theme.palette.mode === 'light'
-        ? 0.12
-        : 0,
+          ? 0.12
+          : 0,
   },
 
   // radial shadow glow -> animation

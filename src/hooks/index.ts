@@ -4,6 +4,6 @@ export * from './useCookie3';
 export * from './useCountUpAnimation';
 export * from './useFeatureCards';
 export * from './useFetchDexsAndBridges';
-export * from './useMnuIsOpened';
+export * from './useMenuIsOpened';
 export * from './useMultisig';
 export * from './userTracking';
