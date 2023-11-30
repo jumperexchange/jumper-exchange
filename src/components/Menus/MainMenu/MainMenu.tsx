@@ -1,11 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { PopperItem, PopperMenu, PopperSubMenu } from 'src/components';
 import {
-  MenuKeys,
+  PopperItem,
+  PopperMenu,
+  PopperSubMenu,
   useDevelopersContent,
   useLanguagesContent,
   useMainMenuContent,
-} from 'src/const';
+} from 'src/components';
+import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import type { JsxElement } from 'typescript';
 interface MainMenuProps {

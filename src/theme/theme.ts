@@ -81,13 +81,6 @@ declare module '@mui/material/styles' {
     alphaLight800?: PaletteOptions['primary'];
   }
   interface TypographyVariants {
-    // lifiBrandBodyMedium: React.CSSProperties;
-    // lifiBrandBodyLarge: React.CSSProperties;
-    // lifiBrandBodyXLarge: React.CSSProperties;
-    // lifiBrandBodySmall: React.CSSProperties;
-    // lifiBrandHeaderMedium: React.CSSProperties;
-    // lifiBrandHeaderLarge: React.CSSProperties;
-    // lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay: React.CSSProperties;
     lifiHeaderXLarge: React.CSSProperties;
     lifiHeaderLarge: React.CSSProperties;
@@ -180,14 +173,6 @@ declare module '@mui/material/Button' {
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     '@supports (font-variation-settings: normal)': true;
-
-    // lifiBrandBodyMedium: true;
-    // lifiBrandBodyLarge: true;
-    // lifiBrandBodyXLarge: true;
-    // lifiBrandBodySmall: true;
-    // lifiBrandHeaderMedium: true;
-    // lifiBrandHeaderLarge: true;
-    // lifiBrandHeaderXLarge: true;
     lifiHeaderDisplay: true;
     lifiHeaderXLarge: true;
     lifiHeaderLarge: true;
@@ -269,13 +254,6 @@ const themeCustomized: Theme = createTheme({
     MuiTypography: {
       defaultProps: {
         variantMapping: {
-          // lifiBrandBodyMedium: 'p',
-          // lifiBrandBodyLarge: 'p',
-          // lifiBrandBodyXLarge: 'p',
-          // lifiBrandBodySmall: 'p',
-          // lifiBrandHeaderMedium: 'p',
-          // lifiBrandHeaderLarge: 'p',
-          // lifiBrandHeaderXLarge: 'p',
           lifiHeaderDisplay: 'p',
           lifiHeaderXLarge: 'p',
           lifiHeaderLarge: 'p',
@@ -404,77 +382,6 @@ const themeCustomized: Theme = createTheme({
       'Helvetica Neue',
       'sans-serif',
     ].join(','),
-    // lifiBrandBodySmall: {
-    //   fontFamily: 'GT-America',
-    //   fontSize: '14px',
-    //   fontWeight: 400,
-    //   lineHeight: '20px',
-    //   letterSpacing: 0,
-    //   textAlign: 'center',
-    //   // example to make it responsive:
-    //   // [themeBase.breakpoints.up('sm')]: {
-    //   //   fontSize: 120,
-    //   //   lineHeight: '140px',
-    //   //   fontWeight: 700,
-    //   //   letterSpacing: -1,
-    //   // },
-    // },
-    // lifiBrandBodyXLarge: {
-    //   fontFamily: 'GT-America',
-    //   fontSize: '24px',
-    //   fontWeight: 400,
-    //   lineHeight: '32px',
-    //   letterSpacing: 0,
-    //   textAlign: 'center',
-    //   // example to make it responsive:
-    //   // [themeBase.breakpoints.up('sm')]: {
-    //   //   fontSize: 120,
-    //   //   lineHeight: '140px',
-    //   //   fontWeight: 700,
-    //   //   letterSpacing: -1,
-    //   // },
-    // },
-    // lifiBrandBodyLarge: {
-    //   fontFamily: 'GT-America',
-    //   fontSize: '18px',
-    //   fontWeight: 400,
-    //   lineHeight: '24px',
-    //   letterSpacing: 0,
-    //   textAlign: 'center',
-    // },
-    // lifiBrandBodyMedium: {
-    //   fontFamily: 'GT-America',
-    //   fontSize: '16px',
-    //   fontWeight: 400,
-    //   lineHeight: '20px',
-    //   letterSpacing: 0,
-    //   textAlign: 'center',
-    // },
-    // lifiBrandHeaderMedium: {
-    //   fontFamily: 'GT-America',
-    //   fontSize: '32px',
-    //   fontWeight: 700,
-    //   lineHeight: '40px',
-    //   letterSpacing: 0,
-    //   textAlign: 'center',
-    // },
-
-    // lifiBrandHeaderLarge: {
-    //   fontFamily: 'GT-America',
-    //   fontSize: '48px',
-    //   fontWeight: 700,
-    //   lineHeight: '56px',
-    //   letterSpacing: 0,
-    //   textAlign: 'center',
-    // },
-    // lifiBrandHeaderXLarge: {
-    //   fontFamily: 'GT-America',
-    //   fontSize: '48px',
-    //   fontWeight: 700,
-    //   lineHeight: '56px',
-    //   letterSpacing: 0,
-    //   textAlign: 'center',
-    // },
     lifiHeaderDisplay: {
       fontFamily: [
         'Inter var',
@@ -825,37 +732,31 @@ export const lightTheme: Theme = createTheme(
         light: '#F3EBFF',
         main: '#F3EBFF',
         dark: '#F3EBFF',
-        // contrastText: '#fff',
       },
       primary: {
         light: '#31007A',
         main: '#31007A',
         dark: '#31007A',
-        // contrastText: '#fff',
       },
       secondary: {
         light: '#E9E1F5',
         main: '#E9E1F5',
         dark: '#E9E1F5',
-        // contrastText: '#fff',
       },
       tertiary: {
         light: '#FCEBFF',
         main: '#FCEBFF',
         dark: '#FCEBFF',
-        // contrastText: '#fff',
       },
       accent1: {
         light: '#31007A',
         main: '#31007A',
         dark: '#31007A',
-        // contrastText: '#fff',
       },
       accent2: {
         light: '#8700B8',
         main: '#8700B8',
         dark: '#8700B8',
-        // contrastText: '#fff',
       },
       surface1: {
         light: '#FCFAFF',
@@ -912,45 +813,38 @@ export const darkTheme: Theme = createTheme(
       },
       bg: {
         light: '#0E0B1F',
-        main: '#030014', //#030014;
+        main: '#030014',
         dark: '#030014',
-        // contrastText: '#fff',
       },
       primary: {
         light: '#653BA3',
         main: '#653BA3',
         dark: '#653BA3',
-        // contrastText: '#fff',
       },
       secondary: {
         light: '#321D52',
         main: '#321D52',
         dark: '#321D52',
-        // contrastText: '#fff',
       },
       tertiary: {
         light: '#33163D',
         main: '#33163D',
         dark: '#33163D',
-        // contrastText: '#fff',
       },
       accent1: {
         light: '#653BA3',
         main: '#653BA3',
         dark: '#653BA3',
-        // contrastText: '#fff',
       },
       accent1Alt: {
         light: '#BEA0EB',
         main: '#BEA0EB',
         dark: '#BEA0EB',
-        // contrastText: '#fff',
       },
       accent2: {
         light: '#D35CFF',
         main: '#D35CFF',
         dark: '#D35CFF',
-        // contrastText: '#fff',
       },
       surface1: {
         light: '#120F29',

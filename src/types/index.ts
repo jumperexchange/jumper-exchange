@@ -1,4 +1,4 @@
-export * from './featureCardsRequest.types';
+export * from './featureCards.types';
 export * from './gtag.types';
 export * from './i18n.types';
 export * from './internal.types';

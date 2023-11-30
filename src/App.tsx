@@ -6,6 +6,7 @@ import {
   Menus,
   Navbar,
   PoweredBy,
+  Snackbar,
   WelcomeScreen,
   Widgets,
 } from './components';
@@ -22,11 +23,12 @@ export function App() {
   return (
     <AppProvider>
       <Navbar />
+      <WelcomeScreen />
       <Menus />
       <Widgets />
-      <WelcomeScreen />
-      <PoweredBy />
       <FeatureCards />
+      <PoweredBy />
+      <Snackbar />
     </AppProvider>
   );
 }

@@ -14,6 +14,7 @@ export * from './PopperItem';
 export * from './PopperMenu';
 export * from './PopperSubMenu';
 export * from './PoweredBy';
+export * from './Snackbar';
 export * from './SupportModal';
 export * from './Tabs';
 export * from './TestnetAlert';
