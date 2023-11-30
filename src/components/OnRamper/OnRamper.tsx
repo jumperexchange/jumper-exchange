@@ -1,10 +1,14 @@
 import { useTheme } from '@mui/material';
+import { WidgetWrapper } from 'src/components';
+import { useSettingsStore } from 'src/stores';
 import { removeHash } from 'src/utils';
 import { OnRamperIFrame } from './index';
 
 export const OnRamper = () => {
   const theme = useTheme();
-
+  const welcomeScreenClosed = useSettingsStore(
+    (state) => state.welcomeScreenClosed,
+  );
   const onRamperConfig = {
     apiKey: import.meta.env.VITE_ONRAMPER_API_KEY,
     defaultCrypto: 'ETH',
@@ -35,12 +39,19 @@ export const OnRamper = () => {
   );
   const onRamperSrc = `https://buy.onramper.com/?${searchParams.toString()}`;
   return (
-    <OnRamperIFrame
-      src={onRamperSrc}
-      height="630px"
-      width="392px"
-      title="Onramper widget"
-      allow="accelerometer; autoplay; camera; gyroscope; payment"
-    ></OnRamperIFrame>
+    <WidgetWrapper
+      welcomeScreenClosed={welcomeScreenClosed}
+      className="widget-wrapper"
+    >
+      <div>
+        <OnRamperIFrame
+          src={onRamperSrc}
+          height="630px"
+          width="392px"
+          title="Onramper widget"
+          allow="accelerometer; autoplay; camera; gyroscope; payment"
+        ></OnRamperIFrame>
+      </div>
+    </WidgetWrapper>
   );
 };

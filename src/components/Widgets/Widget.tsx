@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
 import { useWallet } from 'src/providers';
-import { useMenuStore } from 'src/stores';
+import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
@@ -34,6 +34,9 @@ export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
+  const welcomeScreenClosed = useSettingsStore(
+    (state) => state.welcomeScreenClosed,
+  );
   const onOpenWalletSelectMenu = useMenuStore(
     (state: MenuState) => state.onOpenWalletSelectMenu,
   );
@@ -88,6 +91,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       containerStyle: {
         borderRadius: '12px',
+        minWidth: '392px',
         boxShadow:
           theme.palette.mode === 'light'
             ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
@@ -153,7 +157,10 @@ export function Widget({ starterVariant }: WidgetProps) {
   ]);
 
   return (
-    <WidgetWrapper className="widget-wrapper">
+    <WidgetWrapper
+      className="widget-wrapper"
+      welcomeScreenClosed={welcomeScreenClosed}
+    >
       {isMultisigSigner && <MultisigWalletHeaderAlert />}
       <LiFiWidget
         integrator={import.meta.env.VITE_WIDGET_INTEGRATOR as string}

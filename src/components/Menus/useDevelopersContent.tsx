@@ -95,7 +95,7 @@ export const useDevelopersContent = () => {
             EventTrackingTool.Cookie3,
           ],
         });
-        openInNewTab('/Jumper_Assets.zip');
+        openInNewTab('/jumper_brand_assets.zip');
       },
     },
   ];

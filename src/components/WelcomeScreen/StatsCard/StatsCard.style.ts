@@ -3,9 +3,10 @@ import { styled } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
 export const SCard = styled('div')(({ theme }) => ({
+  flexWrap: 'wrap',
   display: 'flex',
-  flexDirection: 'column',
   justifyContent: 'center',
+  flexDirection: 'column',
   alignItems: 'center',
   padding: theme.spacing(3, 4),
   width: '104px',
