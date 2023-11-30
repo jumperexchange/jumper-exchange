@@ -1,10 +1,25 @@
-import { Box, styled } from '@mui/material';
+import { Box, BoxProps, styled } from '@mui/material';
 
-export const WidgetWrapper = styled(Box)(() => ({
-  width: 'fit-content',
+export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
+  welcomeScreenClosed: boolean;
+}
+
+export const WidgetWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'welcomeScreenClosed',
+})<WidgetWrapperProps>(({ theme, welcomeScreenClosed }) => ({
   minWidth: '392px',
-  margin: ' 0 auto',
   position: 'relative',
+  margin: ' 0 auto',
+
+  ...(!welcomeScreenClosed && {
+    '&:hover': {
+      marginTop: 0,
+    },
+
+    iframe: {
+      ...(!welcomeScreenClosed && { pointerEvents: 'none' }),
+    },
+  }),
   zIndex: 2,
 }));
 
