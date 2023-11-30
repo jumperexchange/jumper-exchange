@@ -81,7 +81,7 @@ export const MenuList = styled(MuiMenuList, {
   },
 }));
 
-export const PopperHeaderLabel = styled(Typography)(({ theme }) => ({
+export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   ...theme.typography.lifiBodyMediumStrong,
   width: '100%',
   overflow: 'hidden',

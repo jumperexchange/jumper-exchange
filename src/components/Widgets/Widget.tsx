@@ -1,3 +1,7 @@
+import type { Token } from '@lifi/sdk';
+import { ChainId } from '@lifi/sdk';
+import type { WidgetConfig } from '@lifi/widget';
+import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,8 +12,6 @@ import { useMenuStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
-import { ChainId, Token } from '@lifi/sdk';
-import { HiddenUI, LiFiWidget, WidgetConfig } from '@lifi/widget';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -32,8 +34,8 @@ export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { disconnect, account, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
-  const onOpenWalletSelectPopper = useMenuStore(
-    (state: MenuState) => state.onOpenWalletSelectPopper,
+  const onOpenWalletSelectMenu = useMenuStore(
+    (state: MenuState) => state.onOpenWalletSelectMenu,
   );
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
@@ -56,7 +58,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       walletManagement: {
         signer: account.signer,
         connect: async () => {
-          onOpenWalletSelectPopper(
+          onOpenWalletSelectMenu(
             true,
             document.getElementById('connect-wallet-button'),
           );
@@ -143,7 +145,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     i18n.resolvedLanguage,
     i18n.languages,
     isMultisigSigner,
-    onOpenWalletSelectPopper,
+    onOpenWalletSelectMenu,
     disconnect,
     switchChain,
     addToken,

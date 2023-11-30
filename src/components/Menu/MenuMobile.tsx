@@ -33,13 +33,11 @@ export const MenuMobile = ({
   isOpenSubMenu,
   children,
 }: MenuProps) => {
-  const [openSubMenuPopper, anchorRef, onCloseAllPopperMenus] = useMenuStore(
-    (state) => [
-      state.openSubMenuPopper,
-      state.anchorRef,
-      state.onCloseAllPopperMenus,
-    ],
-  );
+  const [openSubMenu, anchorRef, onCloseAllMenus] = useMenuStore((state) => [
+    state.openSubMenu,
+    state.anchorRef,
+    state.onCloseAllMenus,
+  ]);
 
   return (
     open && (
@@ -58,20 +56,20 @@ export const MenuMobile = ({
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
-                  onCloseAllPopperMenus();
+                  onCloseAllMenus();
                 }}
               >
                 <MenuList
                   autoFocusItem={open}
                   id="composition-menu"
                   autoFocus={open}
-                  isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
+                  isOpenSubMenu={openSubMenu !== MenuKeys.None}
                   aria-labelledby="composition-button"
                   cardsLayout={cardsLayout}
                   hasLabel={!!label}
                   sx={styles}
                   component={
-                    isOpenSubMenu && openSubMenuPopper !== MenuKeys.WalletSelect
+                    isOpenSubMenu && openSubMenu !== MenuKeys.WalletSelect
                       ? 'div'
                       : 'ul'
                   }

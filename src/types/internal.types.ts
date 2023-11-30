@@ -1,9 +1,9 @@
+import type { ChainId } from '@lifi/sdk';
+import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
+import type { CSSObject } from '@mui/material';
 import 'react-i18next';
 import type { MenuKeys } from 'src/const';
 import type { Gtag } from './gtag';
-import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
-import type { CSSObject } from '@mui/material';
-import type { ChainId } from '@lifi/sdk';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
@@ -15,11 +15,6 @@ declare global {
   interface Window {
     gtag: Gtag.Gtag;
   }
-}
-
-export interface PopperItem {
-  label: string;
-  destination: string;
 }
 
 export type StarterVariantType = 'buy' | WidgetSubvariant;

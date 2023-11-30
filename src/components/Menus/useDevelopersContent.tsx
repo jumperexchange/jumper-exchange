@@ -19,9 +19,7 @@ export const useDevelopersContent = () => {
   const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
-  const onCloseAllPopperMenus = useMenuStore(
-    (state) => state.onCloseAllPopperMenus,
-  );
+  const onCloseAllMenus = useMenuStore((state) => state.onCloseAllMenus);
 
   return [
     {
@@ -54,7 +52,7 @@ export const useDevelopersContent = () => {
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(GITHUB_URL);
-        onCloseAllPopperMenus();
+        onCloseAllMenus();
       },
     },
     {
@@ -79,7 +77,7 @@ export const useDevelopersContent = () => {
           disableTrackingTool: [EventTrackingTool.Cookie3],
         });
         openInNewTab(DOCS_URL);
-        onCloseAllPopperMenus();
+        onCloseAllMenus();
       },
     },
     {

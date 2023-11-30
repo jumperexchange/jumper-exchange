@@ -40,17 +40,17 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
   );
 
   const [
-    openWalletPopper,
-    onOpenWalletPopper,
+    openWalletMenu,
+    onOpenWalletMenu,
     onOpenSnackbar,
-    openSubMenuPopper,
-    onCloseAllPopperMenus,
+    openSubMenu,
+    onCloseAllMenus,
   ] = useMenuStore((state) => [
-    state.openWalletPopper,
-    state.onOpenWalletPopper,
+    state.openWalletMenu,
+    state.onOpenWalletMenu,
     state.onOpenSnackbar,
-    state.openSubMenuPopper,
-    state.onCloseAllPopperMenus,
+    state.openSubMenu,
+    state.onCloseAllMenus,
   ]);
   const onWalletDisconnect = useSettingsStore(
     (state) => state.onWalletDisconnect,
@@ -73,7 +73,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
   }, [account]);
 
   const handleExploreButton = () => {
-    account.chainId && onCloseAllPopperMenus();
+    account.chainId && onCloseAllMenus();
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
@@ -102,12 +102,12 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
       label: 'copy_addr_to_clipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    onCloseAllPopperMenus();
+    onCloseAllMenus();
   };
 
   const handleDisconnectButton = () => {
     disconnect();
-    onCloseAllPopperMenus();
+    onCloseAllMenus();
     onWalletDisconnect();
   };
 
@@ -120,20 +120,20 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
   }, []);
 
   useEffect(() => {
-    openWalletPopper! && onOpenSnackbar(false);
-  }, [onOpenSnackbar, openWalletPopper]);
+    openWalletMenu! && onOpenSnackbar(false);
+  }, [onOpenSnackbar, openWalletMenu]);
 
   useEffect(() => {
     handleMultisigEnvironmentCheck();
   }, [account, handleMultisigEnvironmentCheck]);
 
-  return openWalletPopper ? (
+  return openWalletMenu ? (
     <Menu
       open
       transformOrigin={'top left'}
-      setOpen={onOpenWalletPopper}
+      setOpen={onOpenWalletMenu}
       handleClose={handleClose}
-      isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
+      isOpenSubMenu={openSubMenu !== MenuKeys.None}
     >
       <Grid
         container

@@ -12,7 +12,7 @@ import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
-import { PopperToggle } from '../..';
+import { MenuToggle } from '../..';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef<any>(null);
@@ -22,9 +22,9 @@ export const NavbarButtons = () => {
     (state) => state.onWalletDisconnect,
   );
 
-  const [openMainMenuPopper, onOpenMainMenuPopper] = useMenuStore((state) => [
-    state.openMainMenuPopper,
-    state.onOpenMainMenuPopper,
+  const [openMainMenu, onOpenMainMenu] = useMenuStore((state) => [
+    state.openMainMenu,
+    state.onOpenMainMenu,
   ]);
 
   const { t } = useTranslation();
@@ -33,19 +33,19 @@ export const NavbarButtons = () => {
   !account.isActive ?? onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
-  const prevMainMenu = useRef(openMainMenuPopper);
+  const prevMainMenu = useRef(openMainMenu);
   useEffect(() => {
-    if (prevMainMenu.current === true && openMainMenuPopper === false) {
+    if (prevMainMenu.current === true && openMainMenu === false) {
       mainMenuAnchor!.current.focus();
     }
 
-    prevMainMenu.current = openMainMenuPopper;
-  }, [openMainMenuPopper]);
+    prevMainMenu.current = openMainMenu;
+  }, [openMainMenu]);
 
   const { isSuccess } = useChains();
 
   const handleOnOpenNavbarMainMenu = () => {
-    onOpenMainMenuPopper(!openMainMenuPopper, mainMenuAnchor.current);
+    onOpenMainMenu(!openMainMenu, mainMenuAnchor.current);
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
@@ -76,11 +76,11 @@ export const NavbarButtons = () => {
         isSuccess={isSuccess}
       />
 
-      <PopperToggle
+      <MenuToggle
         ref={mainMenuAnchor}
         id="composition-button"
-        aria-controls={openMainMenuPopper ? 'composition-menu' : undefined}
-        aria-expanded={openMainMenuPopper ? 'true' : undefined}
+        aria-controls={openMainMenu ? 'composition-menu' : undefined}
+        aria-expanded={openMainMenu ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleOnOpenNavbarMainMenu}
       >
@@ -90,7 +90,7 @@ export const NavbarButtons = () => {
             color: 'inherit',
           }}
         />
-      </PopperToggle>
+      </MenuToggle>
     </NavbarButtonsContainer>
   );
 };

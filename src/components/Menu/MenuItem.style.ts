@@ -9,14 +9,14 @@ import { styled } from '@mui/material/styles';
 import type { ElementType } from 'react';
 import { getContrastAlphaColor } from 'src/utils';
 
-export interface PopperItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
+export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   showButton?: boolean;
   component?: ElementType<any>;
 }
 
 export const MenuItemContainer = styled(MUIMenuItem, {
   shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
-})<PopperItemProps>(({ theme, showButton }) => ({
+})<MenuItemProps>(({ theme, showButton }) => ({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'inherit',

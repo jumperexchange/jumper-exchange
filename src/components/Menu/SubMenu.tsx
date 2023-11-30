@@ -9,9 +9,9 @@ import {
   ButtonBackArrow,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
+  MenuHeaderLabel,
   MenuItemLink,
   MenuPaper,
-  PopperHeaderLabel,
 } from 'src/components';
 import {
   TrackingAction,
@@ -46,20 +46,20 @@ export const SubMenu = ({
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
-  const [openSubMenuPopper, onOpenSubMenuPopper] = useMenuStore((state) => [
-    state.openSubMenuPopper,
-    state.onOpenSubMenuPopper,
+  const [openSubMenu, onOpenSubMenu] = useMenuStore((state) => [
+    state.openSubMenu,
+    state.onOpenSubMenu,
   ]);
 
   function handleBackSpace(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Backspace') {
-      onOpenSubMenuPopper(prevMenu);
+      onOpenSubMenu(prevMenu);
     }
   }
 
   const handleClick = (el: MenuListItem) => {
     if (el.triggerSubMenu) {
-      onOpenSubMenuPopper(el.triggerSubMenu);
+      onOpenSubMenu(el.triggerSubMenu);
       trackEvent({
         category: TrackingCategory.SubMenu,
         action: TrackingAction.OpenMenu,
@@ -79,17 +79,17 @@ export const SubMenu = ({
   };
 
   const handleBackNavigation = () => {
-    onOpenSubMenuPopper(prevMenu);
+    onOpenSubMenu(prevMenu);
   };
 
   useEffect(() => {
-    if (menuListRef.current && open && openSubMenuPopper === triggerSubMenu) {
+    if (menuListRef.current && open && openSubMenu === triggerSubMenu) {
       const menuList: HTMLUListElement = menuListRef.current;
       menuList.scrollTop = 0;
     }
-  }, [open, openSubMenuPopper, triggerSubMenu]);
+  }, [open, openSubMenu, triggerSubMenu]);
 
-  return open && openSubMenuPopper === triggerSubMenu ? (
+  return open && openSubMenu === triggerSubMenu ? (
     <MenuPaper
       className="submenu"
       onKeyDown={handleBackSpace}
@@ -103,7 +103,7 @@ export const SubMenu = ({
             styles={{ marginLeft: '0px' }}
             onClick={handleBackNavigation}
           />
-          <PopperHeaderLabel>{label}</PopperHeaderLabel>
+          <MenuHeaderLabel>{label}</MenuHeaderLabel>
         </MenuHeaderAppBar>
       </MenuHeaderAppWrapper>
       {!!subMenuList.length ? (
@@ -113,7 +113,7 @@ export const SubMenu = ({
               autoFocus={index > 0 ? true : false}
               onClick={() => {
                 el.triggerSubMenu
-                  ? onOpenSubMenuPopper(el.triggerSubMenu)
+                  ? onOpenSubMenu(el.triggerSubMenu)
                   : el.onClick();
               }}
               component="li"

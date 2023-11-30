@@ -45,15 +45,15 @@ export const WalletManagementButtons: React.FC<
     [chains, account.chainId],
   );
   const [
-    openWalletSelectPopper,
-    onOpenWalletSelectPopper,
-    openWalletPopper,
-    onOpenWalletPopper,
+    openWalletSelectMenu,
+    onOpenWalletSelectMenu,
+    openWalletMenu,
+    onOpenWalletMenu,
   ] = useMenuStore((state) => [
-    state.openWalletSelectPopper,
-    state.onOpenWalletSelectPopper,
-    state.openWalletPopper,
-    state.onOpenWalletPopper,
+    state.openWalletSelectMenu,
+    state.onOpenWalletSelectMenu,
+    state.openWalletMenu,
+    state.onOpenWalletMenu,
   ]);
 
   const walletSource = supportedWallets;
@@ -75,7 +75,7 @@ export const WalletManagementButtons: React.FC<
   const handleWalletSelectClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    !openWalletSelectPopper &&
+    !openWalletSelectMenu &&
       trackEvent({
         category: TrackingCategory.WalletSelectMenu,
         action: TrackingAction.OpenMenu,
@@ -86,13 +86,13 @@ export const WalletManagementButtons: React.FC<
           EventTrackingTool.Cookie3,
         ],
       });
-    onOpenWalletSelectPopper(!openWalletSelectPopper, event.currentTarget);
+    onOpenWalletSelectMenu(!openWalletSelectMenu, event.currentTarget);
   };
 
   const handleWalletMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
-    openWalletPopper &&
+    openWalletMenu &&
       trackEvent({
         category: TrackingCategory.WalletMenu,
         action: TrackingAction.OpenMenu,
@@ -103,7 +103,7 @@ export const WalletManagementButtons: React.FC<
           EventTrackingTool.Cookie3,
         ],
       });
-    onOpenWalletPopper(!openWalletPopper, event.currentTarget);
+    onOpenWalletMenu(!openWalletMenu, event.currentTarget);
   };
 
   return !account.address ? (

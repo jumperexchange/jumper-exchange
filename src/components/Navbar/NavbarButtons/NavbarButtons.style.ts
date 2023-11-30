@@ -8,27 +8,25 @@ export const NavbarButtonsContainer = styled('div')({
   justifySelf: 'self-end',
 });
 
-export const PopperToggle = styled(ButtonSecondary)<ButtonProps>(
-  ({ theme }) => ({
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    color:
+export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({
+  justifyContent: 'center',
+  backgroundColor: 'transparent',
+  color:
+    theme.palette.mode === 'dark'
+      ? theme.palette.accent1Alt.main
+      : theme.palette.primary.main,
+  width: '48px',
+  borderRadius: '50%',
+  marginLeft: theme.spacing(1.5),
+  minWidth: 'unset',
+  height: '48px',
+  ':hover:before': {
+    backgroundColor:
       theme.palette.mode === 'dark'
-        ? theme.palette.accent1Alt.main
-        : theme.palette.primary.main,
-    width: '48px',
-    borderRadius: '50%',
-    marginLeft: theme.spacing(1.5),
-    minWidth: 'unset',
-    height: '48px',
-    ':hover:before': {
-      backgroundColor:
-        theme.palette.mode === 'dark'
-          ? getContrastAlphaColor(theme, '4%')
-          : theme.palette.alphaDark100.main,
-    },
-    ':hover': {
-      backgroundColor: 'transparent',
-    },
-  }),
-);
+        ? getContrastAlphaColor(theme, '4%')
+        : theme.palette.alphaDark100.main,
+  },
+  ':hover': {
+    backgroundColor: 'transparent',
+  },
+}));

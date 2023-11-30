@@ -6,7 +6,7 @@ import {
   Menu,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
-  PopperItem,
+  MenuItem,
   SubMenu,
   useWalletSelectContent,
 } from 'src/components';
@@ -32,19 +32,19 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
     NUMBER_OF_WALLETS_DISPLAYED,
   );
   const [
-    openWalletSelectPopper,
-    onOpenWalletSelectPopper,
-    openSubMenuPopper,
-    onOpenSubMenuPopper,
+    openWalletSelectMenu,
+    onOpenWalletSelectMenu,
+    openSubMenu,
+    onOpenSubMenu,
   ] = useMenuStore((state) => [
-    state.openWalletSelectPopper,
-    state.onOpenWalletSelectPopper,
-    state.openSubMenuPopper,
-    state.onOpenSubMenuPopper,
+    state.openWalletSelectMenu,
+    state.onOpenWalletSelectMenu,
+    state.openSubMenu,
+    state.onOpenSubMenu,
   ]);
 
   const handleClickSelectMore = () => {
-    onOpenSubMenuPopper(MenuKeys.WalletSelectMore);
+    onOpenSubMenu(MenuKeys.WalletSelectMore);
   };
 
   const menuItemStyles: CSSObject = {
@@ -61,13 +61,11 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
   };
 
   return (
-    openWalletSelectPopper && (
+    openWalletSelectMenu && (
       <Menu
         handleClose={handleClose}
-        open={openWalletSelectPopper}
-        cardsLayout={
-          openSubMenuPopper === MenuKeys.WalletSelectMore ? false : true
-        }
+        open={openWalletSelectMenu}
+        cardsLayout={openSubMenu === MenuKeys.WalletSelectMore ? false : true}
         styles={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
@@ -78,10 +76,10 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
           },
         }}
         transformOrigin={'top'}
-        setOpen={onOpenWalletSelectPopper}
-        isOpenSubMenu={openSubMenuPopper === MenuKeys.WalletSelectMore}
+        setOpen={onOpenWalletSelectMenu}
+        isOpenSubMenu={openSubMenu === MenuKeys.WalletSelectMore}
       >
-        {openSubMenuPopper === MenuKeys.None && (
+        {openSubMenu === MenuKeys.None && (
           <MenuHeaderAppWrapper
             sx={{
               gridColumn: 'span 3',
@@ -106,9 +104,9 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
             </MenuHeaderAppBar>
           </MenuHeaderAppWrapper>
         )}
-        {openSubMenuPopper === MenuKeys.None &&
+        {openSubMenu === MenuKeys.None &&
           filteredWalletSelectMenuItems.map((el, index) => (
-            <PopperItem
+            <MenuItem
               key={`${el.label}-${index}`}
               triggerSubMenu={MenuKeys.WalletSelect}
               showButton={false}
@@ -131,12 +129,12 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
               showMoreIcon={false}
               prefixIcon={el.prefixIcon}
               onClick={el.onClick}
-              open={open || openWalletSelectPopper}
+              open={open || openWalletSelectMenu}
             />
           ))}
         {walletSelectMenuItems.length - NUMBER_OF_WALLETS_DISPLAYED > 0 &&
-          openSubMenuPopper === MenuKeys.None && (
-            <PopperItem
+          openSubMenu === MenuKeys.None && (
+            <MenuItem
               key={`select-more-wallets`}
               triggerSubMenu={MenuKeys.WalletSelectMore}
               showButton={true}
@@ -182,7 +180,7 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
         <SubMenu
           label={t('navbar.walletSelectMenu.wallets')}
           triggerSubMenu={MenuKeys.WalletSelectMore}
-          open={openSubMenuPopper === MenuKeys.WalletSelectMore}
+          open={openSubMenu === MenuKeys.WalletSelectMore}
           prevMenu={MenuKeys.None}
           subMenuList={subMenuWalletSelectMore}
         />

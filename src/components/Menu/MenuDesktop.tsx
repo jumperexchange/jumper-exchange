@@ -35,17 +35,13 @@ export const MenuDesktop = ({
   open,
   children,
 }: MenuProps) => {
-  const [
-    openSubMenuPopper,
-    onCloseAllPopperMenus,
-    openWalletPopper,
-    anchorRef,
-  ] = useMenuStore((state) => [
-    state.openSubMenuPopper,
-    state.onCloseAllPopperMenus,
-    state.openWalletPopper,
-    state.anchorRef,
-  ]);
+  const [openSubMenu, onCloseAllMenus, openWalletMenu, anchorRef] =
+    useMenuStore((state) => [
+      state.openSubMenu,
+      state.onCloseAllMenus,
+      state.openWalletMenu,
+      state.anchorRef,
+    ]);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -74,25 +70,25 @@ export const MenuDesktop = ({
               transformOrigin: transformOrigin || 'top',
             }}
           >
-            <MenuPaper isWide={openWalletPopper}>
+            <MenuPaper isWide={openWalletMenu}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
-                  onCloseAllPopperMenus();
+                  onCloseAllMenus();
                 }}
               >
                 <MenuList
                   autoFocusItem={open}
                   id="composition-menu"
                   autoFocus={open}
-                  isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
+                  isOpenSubMenu={openSubMenu !== MenuKeys.None}
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                   cardsLayout={cardsLayout}
                   hasLabel={!!label}
                   sx={styles}
                   component={
-                    isOpenSubMenu && openSubMenuPopper !== MenuMain.WalletSelect
+                    isOpenSubMenu && openSubMenu !== MenuMain.WalletSelect
                       ? 'div'
                       : 'ul'
                   }

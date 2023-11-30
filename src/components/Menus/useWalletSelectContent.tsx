@@ -25,9 +25,9 @@ export const useWalletSelectContent = () => {
   const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
     useState(false);
 
-  const [onOpenSnackbar, onCloseAllPopperMenus] = useMenuStore((state) => [
+  const [onOpenSnackbar, onCloseAllMenus] = useMenuStore((state) => [
     state.onOpenSnackbar,
-    state.onCloseAllPopperMenus,
+    state.onCloseAllMenus,
   ]);
 
   const [availableWallets, setAvailableWallets] = useState<Wallet[]>([]);
@@ -102,10 +102,10 @@ export const useWalletSelectContent = () => {
     const handleClick = async (wallet: Wallet) => {
       if (clientWallets.includes(wallet.name)) {
         login(wallet);
-        onCloseAllPopperMenus();
+        onCloseAllMenus();
         onWelcomeScreenClosed(true);
       } else {
-        onCloseAllPopperMenus();
+        onCloseAllMenus();
         onOpenSnackbar(
           true,
           t('navbar.walletMenu.walletNotInstalled', { wallet: wallet.name }),
@@ -148,7 +148,7 @@ export const useWalletSelectContent = () => {
     clientWallets,
     isCurrentMultisigEnvironment,
     login,
-    onCloseAllPopperMenus,
+    onCloseAllMenus,
     onOpenSnackbar,
     onWelcomeScreenClosed,
     t,

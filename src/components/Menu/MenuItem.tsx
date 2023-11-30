@@ -30,7 +30,7 @@ interface MenuItemProps {
   checkIcon?: boolean;
 }
 
-export const PopperItem = ({
+export const MenuItem = ({
   open,
   showButton,
   autoFocus,
@@ -46,12 +46,10 @@ export const PopperItem = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const [onOpenSubMenuPopper] = useMenuStore((state) => [
-    state.onOpenSubMenuPopper,
-  ]);
+  const [onOpenSubMenu] = useMenuStore((state) => [state.onOpenSubMenu]);
 
   const handleClick = () => {
-    triggerSubMenu && onOpenSubMenuPopper(triggerSubMenu);
+    triggerSubMenu && onOpenSubMenu(triggerSubMenu);
     triggerSubMenu &&
       trackEvent({
         category: TrackingCategory.MainMenu,

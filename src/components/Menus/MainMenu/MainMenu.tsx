@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import {
   Menu,
-  PopperItem,
+  MenuItem,
   SubMenu,
   useDevelopersContent,
   useLanguagesContent,
@@ -19,24 +19,23 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
   const mainMenuItems = useMainMenuContent();
   const mainSubMenuDevelopers = useDevelopersContent();
   const mainSubMenuLanguage = useLanguagesContent();
-  const [openMainMenuPopper, onOpenMainMenuPopper, openSubMenuPopper] =
-    useMenuStore((state) => [
-      state.openMainMenuPopper,
-      state.onOpenMainMenuPopper,
-      state.openSubMenuPopper,
-    ]);
+  const [openMainMenu, onOpenMainMenu, openSubMenu] = useMenuStore((state) => [
+    state.openMainMenu,
+    state.onOpenMainMenu,
+    state.openSubMenu,
+  ]);
 
-  return openMainMenuPopper ? (
+  return openMainMenu ? (
     <Menu
       handleClose={handleClose}
       open
       transformOrigin={'top right'}
-      setOpen={onOpenMainMenuPopper}
-      isOpenSubMenu={openSubMenuPopper !== MenuKeys.None}
+      setOpen={onOpenMainMenu}
+      isOpenSubMenu={openSubMenu !== MenuKeys.None}
     >
-      {openSubMenuPopper === MenuKeys.None &&
+      {openSubMenu === MenuKeys.None &&
         mainMenuItems.map((el, index) => (
-          <PopperItem
+          <MenuItem
             key={`${el.label}-${index}`}
             autoFocus={index > 0 ? true : false}
             label={el.label}
@@ -56,7 +55,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       <SubMenu
         label={t('language.key', { ns: 'language' })}
         triggerSubMenu={MenuKeys.Language}
-        open={openSubMenuPopper === MenuKeys.Language}
+        open={openSubMenu === MenuKeys.Language}
         prevMenu={MenuKeys.None}
         subMenuList={mainSubMenuLanguage}
       />
@@ -64,7 +63,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
       <SubMenu
         label={t('navbar.navbarMenu.developers')}
         triggerSubMenu={MenuKeys.Devs}
-        open={openSubMenuPopper === MenuKeys.Devs}
+        open={openSubMenu === MenuKeys.Devs}
         prevMenu={MenuKeys.None}
         subMenuList={mainSubMenuDevelopers}
       />

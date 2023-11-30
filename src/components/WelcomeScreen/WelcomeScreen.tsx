@@ -42,9 +42,9 @@ export const WelcomeScreen = () => {
   );
 
   const { trackPageload, trackEvent } = useUserTracking();
-  const [openChainsPopper, setOpenChainsPopper] = useState(false);
-  const [openBridgesPopper, setOpenBridgesPopper] = useState(false);
-  const [openDexsPopper, setOpenDexsPopper] = useState(false);
+  const [openChainsStatsModal, setOpenChainsStatsModal] = useState(false);
+  const [openBridgesStatsModal, setOpenBridgesStatsModal] = useState(false);
+  const [openDexsStatsModal, setOpenDexsStatsModal] = useState(false);
 
   useEffect(() => {
     if (!welcomeScreenClosed) {
@@ -176,12 +176,12 @@ export const WelcomeScreen = () => {
               }
             </Typography>
             <StatsCards
-              openChainsPopper={openChainsPopper}
-              setOpenChainsPopper={setOpenChainsPopper}
-              openBridgesPopper={openBridgesPopper}
-              setOpenBridgesPopper={setOpenBridgesPopper}
-              openDexsPopper={openDexsPopper}
-              setOpenDexsPopper={setOpenDexsPopper}
+              openChainsStatsModal={openChainsStatsModal}
+              setOpenChainsStatsModal={setOpenChainsStatsModal}
+              openBridgesStatsModal={openBridgesStatsModal}
+              setOpenBridgesStatsModal={setOpenBridgesStatsModal}
+              openDexsStatsModal={openDexsStatsModal}
+              setOpenDexsStatsModal={setOpenDexsStatsModal}
             />
             <ButtonPrimary
               onClick={handleGetStarted}

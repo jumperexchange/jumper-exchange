@@ -20,12 +20,12 @@ interface StatsDataProps {
 }
 
 interface StatsCardsProps {
-  openChainsPopper: boolean;
-  setOpenChainsPopper: Dispatch<SetStateAction<boolean>>;
-  openBridgesPopper: boolean;
-  setOpenBridgesPopper: Dispatch<SetStateAction<boolean>>;
-  openDexsPopper: boolean;
-  setOpenDexsPopper: Dispatch<SetStateAction<boolean>>;
+  openChainsStatsModal: boolean;
+  setOpenChainsStatsModal: Dispatch<SetStateAction<boolean>>;
+  openBridgesStatsModal: boolean;
+  setOpenBridgesStatsModal: Dispatch<SetStateAction<boolean>>;
+  openDexsStatsModal: boolean;
+  setOpenDexsStatsModal: Dispatch<SetStateAction<boolean>>;
 }
 
 const CHAINS_INDEX = 0;
@@ -33,12 +33,12 @@ const BRIDGES_INDEX = 1;
 const DEXS_INDEX = 2;
 
 export const StatsCards = ({
-  openChainsPopper,
-  setOpenChainsPopper,
-  openBridgesPopper,
-  setOpenBridgesPopper,
-  openDexsPopper,
-  setOpenDexsPopper,
+  openChainsStatsModal,
+  setOpenChainsStatsModal,
+  openBridgesStatsModal,
+  setOpenBridgesStatsModal,
+  openDexsStatsModal,
+  setOpenDexsStatsModal,
 }: StatsCardsProps) => {
   const { exchanges, bridges } = useFetchDexsAndBridges();
   const { chains } = useChains();
@@ -50,8 +50,8 @@ export const StatsCards = ({
       title: t('navbar.statsCards.chains'),
       number: chains?.length || 0,
       data: sortByName(chains),
-      open: openChainsPopper,
-      setOpen: setOpenChainsPopper,
+      open: openChainsStatsModal,
+      setOpen: setOpenChainsStatsModal,
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
@@ -63,15 +63,15 @@ export const StatsCards = ({
             EventTrackingTool.Cookie3,
           ],
         });
-        setOpenChainsPopper(!openChainsPopper);
+        setOpenChainsStatsModal(!openChainsStatsModal);
       },
     },
     {
       title: t('navbar.statsCards.bridges'),
       number: bridges?.length || 0,
       data: sortByName(bridges),
-      open: openBridgesPopper,
-      setOpen: setOpenBridgesPopper,
+      open: openBridgesStatsModal,
+      setOpen: setOpenBridgesStatsModal,
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
@@ -83,15 +83,15 @@ export const StatsCards = ({
             EventTrackingTool.Cookie3,
           ],
         });
-        setOpenBridgesPopper(!openBridgesPopper);
+        setOpenBridgesStatsModal(!openBridgesStatsModal);
       },
     },
     {
       title: t('navbar.statsCards.dexs'),
       number: exchanges?.length || 0,
       data: sortByName(exchanges),
-      open: openDexsPopper,
-      setOpen: setOpenDexsPopper,
+      open: openDexsStatsModal,
+      setOpen: setOpenDexsStatsModal,
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
@@ -103,7 +103,7 @@ export const StatsCards = ({
             EventTrackingTool.Cookie3,
           ],
         });
-        setOpenDexsPopper(!openDexsPopper);
+        setOpenDexsStatsModal(!openDexsStatsModal);
       },
     },
   ];
