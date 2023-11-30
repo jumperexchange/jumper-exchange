@@ -14,7 +14,7 @@ export interface PopperItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
   component?: ElementType<any>;
 }
 
-export const PopperItemContainer = styled(MUIMenuItem, {
+export const MenuItemContainer = styled(MUIMenuItem, {
   shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
 })<PopperItemProps>(({ theme, showButton }) => ({
   display: 'flex',
@@ -41,13 +41,13 @@ export const PopperItemContainer = styled(MUIMenuItem, {
   },
 }));
 
-export interface PopperItemLabelProps extends Omit<ListItemProps, 'variant'> {
+export interface MenuLabelProps extends Omit<ListItemProps, 'variant'> {
   variant?: 'xs' | 'md' | 'lg';
 }
 
-export const PopperItemLabel = styled('div', {
+export const MenuLabel = styled('div', {
   shouldForwardProp: (prop) => prop !== 'variant',
-})<PopperItemLabelProps>(({ variant, theme }) => ({
+})<MenuLabelProps>(({ variant, theme }) => ({
   display: 'flex',
   alignItems: 'center',
   maxWidth: variant === 'xs' ? '198px' : variant === 'md' ? '232px' : '260px',

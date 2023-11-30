@@ -3,7 +3,7 @@ import type {
   CSSObject,
   LinkProps,
   ListItemProps,
-  MenuListProps,
+  MenuListProps as MuiMenuListProps,
   PaperProps,
   PopperProps,
 } from '@mui/material';
@@ -11,7 +11,7 @@ import {
   AppBar,
   Link,
   ListItem,
-  MenuList,
+  MenuList as MuiMenuList,
   Paper,
   Popper,
   Typography,
@@ -23,7 +23,7 @@ import type { ElementType } from 'react';
 
 const MenuLabelHeight = '64px';
 
-export const PopperExternalBackground = styled('div')(({ theme }) => ({
+export const ExternalBackground = styled('div')(({ theme }) => ({
   position: 'fixed',
   top: 0,
   left: 0,
@@ -37,7 +37,7 @@ export const PopperExternalBackground = styled('div')(({ theme }) => ({
   },
 }));
 
-export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
+export const MenuPopper = styled(Popper)<PopperProps>(({ theme }) => ({
   zIndex: 1600,
   bottom: '0 !important',
   left: '0 !important',
@@ -51,7 +51,7 @@ export const NavbarPopper = styled(Popper)<PopperProps>(({ theme }) => ({
     transform: 'unset !important',
   },
 }));
-export interface PopperMenuListProps extends Omit<MenuListProps, 'component'> {
+export interface MenuListProps extends Omit<MuiMenuListProps, 'component'> {
   component?: string;
   isOpenSubMenu?: boolean;
   styles?: CSSObject;
@@ -59,10 +59,10 @@ export interface PopperMenuListProps extends Omit<MenuListProps, 'component'> {
   hasLabel?: boolean;
 }
 
-export const PopperMenuList = styled(MenuList, {
+export const MenuList = styled(MuiMenuList, {
   shouldForwardProp: (prop) =>
     prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
-})<PopperMenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
+})<MenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
   marginTop: 0,
   display: cardsLayout ? 'flex' : 'block',
   justifyContent: cardsLayout ? 'center' : 'unset',
@@ -97,17 +97,17 @@ export const PopperHeaderLabel = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export interface PopperPaperProps
+export interface MenuPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isMobile?: boolean;
   isWide?: boolean;
   component?: ElementType<any>;
 }
 
-export const PopperPaper = styled(Paper, {
+export const MenuPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'isMobile' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<PopperPaperProps>(({ theme, isMobile, isWide }) => ({
+})<MenuPaperProps>(({ theme, isMobile, isWide }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -147,13 +147,13 @@ export const PopperPaper = styled(Paper, {
   },
 }));
 
-export interface PopperLinkItemProps extends Omit<LinkProps, 'component'> {
+export interface MenuItemLinkProps extends Omit<LinkProps, 'component'> {
   component?: string;
 }
 
-export const PopperLinkItem = styled(Link, {
+export const MenuItemLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'component',
-})<PopperLinkItemProps>(({ theme }) => ({
+})<MenuItemLinkProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   padding: `0 ${theme.spacing(1.5)}`,

@@ -3,16 +3,16 @@ import { Fade, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import type { KeyboardEvent } from 'react';
 import {
+  ExternalBackground,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
-  NavbarPopper,
-  PopperExternalBackground,
-  PopperMenuList,
-  PopperPaper,
+  MenuList,
+  MenuPaper,
+  MenuPopper,
 } from 'src/components';
 import { MenuKeys, MenuMain } from 'src/const';
 import { useMenuStore } from 'src/stores';
-interface PopperMenuProps {
+interface MenuProps {
   isOpenSubMenu: boolean;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -24,7 +24,7 @@ interface PopperMenuProps {
   children: any;
 }
 
-export const PopperMenuDesktop = ({
+export const MenuDesktop = ({
   isOpenSubMenu,
   setOpen,
   handleClose,
@@ -34,7 +34,7 @@ export const PopperMenuDesktop = ({
   label,
   open,
   children,
-}: PopperMenuProps) => {
+}: MenuProps) => {
   const [
     openSubMenuPopper,
     onCloseAllPopperMenus,
@@ -58,8 +58,8 @@ export const PopperMenuDesktop = ({
 
   return open ? (
     <>
-      <PopperExternalBackground />
-      <NavbarPopper
+      <ExternalBackground />
+      <MenuPopper
         open={open}
         anchorEl={anchorRef}
         role={undefined}
@@ -74,14 +74,14 @@ export const PopperMenuDesktop = ({
               transformOrigin: transformOrigin || 'top',
             }}
           >
-            <PopperPaper isWide={openWalletPopper}>
+            <MenuPaper isWide={openWalletPopper}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
                   onCloseAllPopperMenus();
                 }}
               >
-                <PopperMenuList
+                <MenuList
                   autoFocusItem={open}
                   id="composition-menu"
                   autoFocus={open}
@@ -113,12 +113,12 @@ export const PopperMenuDesktop = ({
                     </MenuHeaderAppWrapper>
                   ) : null}
                   {children}
-                </PopperMenuList>
+                </MenuList>
               </ClickAwayListener>
-            </PopperPaper>
+            </MenuPaper>
           </Fade>
         )}
-      </NavbarPopper>
+      </MenuPopper>
     </>
   ) : null;
 };

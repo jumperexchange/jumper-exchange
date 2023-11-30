@@ -1,9 +1,9 @@
 import type { Breakpoint, CSSObject } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { PopperMenuDesktop, PopperMenuMobile } from '.';
+import { MenuDesktop, MenuMobile } from '.';
 
-interface PopperMenuProps {
+interface MenuProps {
   isOpenSubMenu?: boolean;
   label?: string;
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -15,7 +15,7 @@ interface PopperMenuProps {
   children: any;
 }
 
-export const PopperMenu = ({
+export const Menu = ({
   handleClose,
   open,
   setOpen,
@@ -25,7 +25,7 @@ export const PopperMenu = ({
   label,
   isOpenSubMenu,
   children,
-}: PopperMenuProps) => {
+}: MenuProps) => {
   const theme = useTheme();
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
@@ -33,7 +33,7 @@ export const PopperMenu = ({
   return (
     open &&
     (isDesktop ? (
-      <PopperMenuDesktop
+      <MenuDesktop
         handleClose={handleClose}
         label={label}
         transformOrigin={transformOrigin}
@@ -44,9 +44,9 @@ export const PopperMenu = ({
         isOpenSubMenu={isOpenSubMenu || false}
       >
         {children}
-      </PopperMenuDesktop>
+      </MenuDesktop>
     ) : (
-      <PopperMenuMobile
+      <MenuMobile
         handleClose={handleClose}
         label={label}
         open={open}
@@ -56,7 +56,7 @@ export const PopperMenu = ({
         isOpenSubMenu={isOpenSubMenu || false}
       >
         {children}
-      </PopperMenuMobile>
+      </MenuMobile>
     ))
   );
 };

@@ -14,14 +14,14 @@ import {
   ModalHeaderAppBar,
 } from './StatsModal.style';
 
-interface PopperMenuProps {
+interface MenuProps {
   title: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   data: any;
 }
 
-export const StatsModal = ({ title, open, setOpen, data }: PopperMenuProps) => {
+export const StatsModal = ({ title, open, setOpen, data }: MenuProps) => {
   const theme = useTheme();
 
   const handleOpenStatsModal = () => {

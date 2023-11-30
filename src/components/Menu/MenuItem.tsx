@@ -12,7 +12,7 @@ import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import type { JsxElement } from 'typescript';
-import { PopperItemContainer, PopperItemLabel } from '.';
+import { MenuItemContainer, MenuLabel } from '.';
 
 interface MenuItemProps {
   open: boolean;
@@ -67,7 +67,7 @@ export const PopperItem = ({
   };
 
   return open ? (
-    <PopperItemContainer
+    <MenuItemContainer
       disableRipple={disableRipple || showButton}
       showButton={showButton || false}
       sx={styles}
@@ -102,7 +102,7 @@ export const PopperItem = ({
         )}
         {!showButton && (
           <>
-            <PopperItemLabel
+            <MenuLabel
               variant={
                 suffixIcon && showMoreIcon
                   ? 'xs'
@@ -127,7 +127,7 @@ export const PopperItem = ({
                   {label}
                 </Typography>
               ) : null}
-            </PopperItemLabel>
+            </MenuLabel>
             {suffixIcon ||
               (showMoreIcon && (
                 <div
@@ -145,6 +145,6 @@ export const PopperItem = ({
           </>
         )}
       </>
-    </PopperItemContainer>
+    </MenuItemContainer>
   ) : null;
 };

@@ -9,9 +9,9 @@ import {
   ButtonBackArrow,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
+  MenuItemLink,
+  MenuPaper,
   PopperHeaderLabel,
-  PopperLinkItem,
-  PopperPaper,
 } from 'src/components';
 import {
   TrackingAction,
@@ -22,9 +22,9 @@ import {
 import { useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool, type MenuListItem } from 'src/types';
-import { PopperItemContainer, PopperItemLabel } from '.';
+import { MenuItemContainer, MenuLabel } from '.';
 
-interface PopperSubMenuProps {
+interface SubMenuProps {
   open: boolean;
   label: string;
   suffixIcon?: JSX.Element | string;
@@ -36,13 +36,13 @@ interface PopperSubMenuProps {
   triggerSubMenu: MenuKeys;
 }
 
-export const PopperSubMenu = ({
+export const SubMenu = ({
   open,
   prevMenu,
   label,
   triggerSubMenu,
   subMenuList,
-}: PopperSubMenuProps) => {
+}: SubMenuProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const menuListRef = useRef(null);
@@ -90,7 +90,7 @@ export const PopperSubMenu = ({
   }, [open, openSubMenuPopper, triggerSubMenu]);
 
   return open && openSubMenuPopper === triggerSubMenu ? (
-    <PopperPaper
+    <MenuPaper
       className="submenu"
       onKeyDown={handleBackSpace}
       autoFocus={open}
@@ -109,7 +109,7 @@ export const PopperSubMenu = ({
       {!!subMenuList.length ? (
         subMenuList.map((el, index) =>
           !!el.url ? (
-            <PopperLinkItem
+            <MenuItemLink
               autoFocus={index > 0 ? true : false}
               onClick={() => {
                 el.triggerSubMenu
@@ -119,7 +119,7 @@ export const PopperSubMenu = ({
               component="li"
               key={`${el.label}-${index}`}
             >
-              <PopperItemLabel
+              <MenuLabel
                 variant={
                   !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
                     ? 'lg'
@@ -142,15 +142,15 @@ export const PopperSubMenu = ({
                   {`${el.label || ' '}`}
                 </Typography>
                 {el.suffixIcon}
-              </PopperItemLabel>
-            </PopperLinkItem>
+              </MenuLabel>
+            </MenuItemLink>
           ) : (
-            <PopperItemContainer
+            <MenuItemContainer
               autoFocus={index > 0 ? true : false}
               onClick={() => handleClick(el)}
               key={`${el.label}-${index}`}
             >
-              <PopperItemLabel
+              <MenuLabel
                 variant={
                   !el.suffixIcon && !el.checkIcon && !el.showMoreIcon
                     ? 'lg'
@@ -174,12 +174,12 @@ export const PopperSubMenu = ({
                 >
                   {`${el.label || ' '}`}
                 </Typography>
-              </PopperItemLabel>
+              </MenuLabel>
               {el.checkIcon && <CheckIcon />}
               {el.showMoreIcon && (
                 <ChevronRightIcon sx={{ ml: theme.spacing(1) }} />
               )}
-            </PopperItemContainer>
+            </MenuItemContainer>
           ),
         )
       ) : (
@@ -187,6 +187,6 @@ export const PopperSubMenu = ({
           <CircularProgress />
         </Box>
       )}
-    </PopperPaper>
+    </MenuPaper>
   ) : null;
 };

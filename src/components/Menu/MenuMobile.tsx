@@ -2,17 +2,17 @@ import type { CSSObject } from '@mui/material';
 import { Slide, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {
+  ExternalBackground,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
-  NavbarPopper,
-  PopperExternalBackground,
-  PopperMenuList,
-  PopperPaper,
+  MenuList,
+  MenuPaper,
+  MenuPopper,
 } from 'src/components';
 import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 
-interface PopperMenuProps {
+interface MenuProps {
   isOpenSubMenu: boolean;
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
@@ -23,7 +23,7 @@ interface PopperMenuProps {
   children: any;
 }
 
-export const PopperMenuMobile = ({
+export const MenuMobile = ({
   handleClose,
   open,
   setOpen,
@@ -32,7 +32,7 @@ export const PopperMenuMobile = ({
   styles,
   isOpenSubMenu,
   children,
-}: PopperMenuProps) => {
+}: MenuProps) => {
   const [openSubMenuPopper, anchorRef, onCloseAllPopperMenus] = useMenuStore(
     (state) => [
       state.openSubMenuPopper,
@@ -44,9 +44,9 @@ export const PopperMenuMobile = ({
   return (
     open && (
       <>
-        <PopperExternalBackground />
+        <ExternalBackground />
         <Slide direction="up" in={open} mountOnEnter unmountOnExit>
-          <NavbarPopper
+          <MenuPopper
             open={open}
             anchorEl={anchorRef}
             role={undefined}
@@ -54,14 +54,14 @@ export const PopperMenuMobile = ({
             transition
             disablePortal
           >
-            <PopperPaper isMobile={true}>
+            <MenuPaper isMobile={true}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);
                   onCloseAllPopperMenus();
                 }}
               >
-                <PopperMenuList
+                <MenuList
                   autoFocusItem={open}
                   id="composition-menu"
                   autoFocus={open}
@@ -92,10 +92,10 @@ export const PopperMenuMobile = ({
                     </MenuHeaderAppWrapper>
                   ) : null}
                   {children}
-                </PopperMenuList>
+                </MenuList>
               </ClickAwayListener>
-            </PopperPaper>
-          </NavbarPopper>
+            </MenuPaper>
+          </MenuPopper>
         </Slide>
       </>
     )

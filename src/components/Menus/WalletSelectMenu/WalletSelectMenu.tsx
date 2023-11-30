@@ -3,25 +3,25 @@ import { Typography, darken } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import {
+  Menu,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   PopperItem,
-  PopperMenu,
-  PopperSubMenu,
+  SubMenu,
   useWalletSelectContent,
 } from 'src/components';
 import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import { getContrastAlphaColor } from 'src/utils';
 
-interface PopperMenuProps {
+interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
   open?: boolean;
 }
 
 const NUMBER_OF_WALLETS_DISPLAYED = 9;
 
-export const WalletSelectMenu = ({ handleClose, open }: PopperMenuProps) => {
+export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
@@ -62,7 +62,7 @@ export const WalletSelectMenu = ({ handleClose, open }: PopperMenuProps) => {
 
   return (
     openWalletSelectPopper && (
-      <PopperMenu
+      <Menu
         handleClose={handleClose}
         open={openWalletSelectPopper}
         cardsLayout={
@@ -179,14 +179,14 @@ export const WalletSelectMenu = ({ handleClose, open }: PopperMenuProps) => {
             />
           )}
 
-        <PopperSubMenu
+        <SubMenu
           label={t('navbar.walletSelectMenu.wallets')}
           triggerSubMenu={MenuKeys.WalletSelectMore}
           open={openSubMenuPopper === MenuKeys.WalletSelectMore}
           prevMenu={MenuKeys.None}
           subMenuList={subMenuWalletSelectMore}
         />
-      </PopperMenu>
+      </Menu>
     )
   );
 };

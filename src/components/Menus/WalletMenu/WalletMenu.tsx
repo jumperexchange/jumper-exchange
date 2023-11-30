@@ -7,7 +7,7 @@ import type { Breakpoint } from '@mui/material';
 import { Grid, Typography, darken, lighten, useTheme } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PopperMenu, SpotButton } from 'src/components';
+import { Menu, SpotButton } from 'src/components';
 import { MenuKeys, TrackingAction, TrackingCategory } from 'src/const';
 import {
   useBlockchainExplorerURL,
@@ -20,11 +20,11 @@ import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
 import { AvatarContainer, ChainAvatar, WalletAvatar } from '.';
-interface PopperMenuProps {
+interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
 
-export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
+export const WalletMenu = ({ handleClose }: MenuProps) => {
   const { checkMultisigEnvironment } = useMultisig();
   const { t } = useTranslation();
   const theme = useTheme();
@@ -128,7 +128,7 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
   }, [account, handleMultisigEnvironmentCheck]);
 
   return openWalletPopper ? (
-    <PopperMenu
+    <Menu
       open
       transformOrigin={'top left'}
       setOpen={onOpenWalletPopper}
@@ -227,6 +227,6 @@ export const WalletMenu = ({ handleClose }: PopperMenuProps) => {
           </SpotButton>
         </Grid>
       </Grid>
-    </PopperMenu>
+    </Menu>
   ) : null;
 };

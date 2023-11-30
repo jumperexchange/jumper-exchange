@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import {
+  Menu,
   PopperItem,
-  PopperMenu,
-  PopperSubMenu,
+  SubMenu,
   useDevelopersContent,
   useLanguagesContent,
   useMainMenuContent,
@@ -27,7 +27,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
     ]);
 
   return openMainMenuPopper ? (
-    <PopperMenu
+    <Menu
       handleClose={handleClose}
       open
       transformOrigin={'top right'}
@@ -53,7 +53,7 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
           />
         ))}
 
-      <PopperSubMenu
+      <SubMenu
         label={t('language.key', { ns: 'language' })}
         triggerSubMenu={MenuKeys.Language}
         open={openSubMenuPopper === MenuKeys.Language}
@@ -61,13 +61,13 @@ export const MainMenu = ({ handleClose }: MainMenuProps) => {
         subMenuList={mainSubMenuLanguage}
       />
 
-      <PopperSubMenu
+      <SubMenu
         label={t('navbar.navbarMenu.developers')}
         triggerSubMenu={MenuKeys.Devs}
         open={openSubMenuPopper === MenuKeys.Devs}
         prevMenu={MenuKeys.None}
         subMenuList={mainSubMenuDevelopers}
       />
-    </PopperMenu>
+    </Menu>
   ) : null;
 };
