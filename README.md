@@ -48,4 +48,4 @@ This is a collection of shared atoms/molecules/organisms that can be used across
 
 ### packages/<other_folders>
 
-NOT EXISTING YET. Sub-apps of the transferto page. These componentized sub-apps will be resuable accross this project and could also be used in different external projects.
+NOT EXISTING YET. Sub-apps of the transferto page. These componentized sub-apps will be reusable across this project and could also be used in different external projects.
