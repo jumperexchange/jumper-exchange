@@ -1,5 +1,5 @@
 import { UTM_SOURCE } from 'src/const';
-import type { UtmParams } from 'src/types/utm.types';
+import type { UtmParams } from 'src/types/utm';
 
 export function appendUTMParametersToLink(link: string, utm: UtmParams) {
   const searchParams = new URLSearchParams(
