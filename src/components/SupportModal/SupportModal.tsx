@@ -16,7 +16,7 @@ export const SupportModal = () => {
     <Modal open={openSupportModal} onClose={() => onOpenSupportModal(false)}>
       <SupportModalContainer>
         <WidgetBot
-          server="849912621360218112" // LI.FI / TransferTo.xyz
+          server="849912621360218112" // LI.FI
           channel="1108568727148056646" // #🩹︱web-support
           shard="https://emerald.widgetbot.io"
           style={{
