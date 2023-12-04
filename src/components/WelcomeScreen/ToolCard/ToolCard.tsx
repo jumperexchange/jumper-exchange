@@ -1,14 +1,14 @@
 import { Typography, useTheme } from '@mui/material';
 import { useCountUpAnimation } from 'src/hooks';
-import { SCard as Card } from './StatsCard.style';
+import { SCard as Card } from './ToolCard.style';
 
-interface StatsCardProps {
+interface ToolCardProps {
   number: string;
   title: string;
   handleClick: () => void;
 }
 
-export const StatsCard = ({ number, title, handleClick }: StatsCardProps) => {
+export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
   const theme = useTheme();
   const counter = useCountUpAnimation({ children: number, duration: 1000 });
   return (

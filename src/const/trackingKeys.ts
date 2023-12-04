@@ -26,7 +26,7 @@ export enum TrackingAction {
   // Welcome_Screen
   OpenWelcomeMessageScreen = 'action_open_welcome_screen',
   CloseWelcomeScreen = 'action_close_welcome_screen',
-  OpenStatsModal = 'action_open_stats_modal',
+  OpenToolModal = 'action_open_stats_modal',
   OpenWelcomeMessageLink = 'action_open_welcome_message_link',
 
   // Feature Card
@@ -72,7 +72,7 @@ export enum TrackingEventParameter {
   ChainName = 'param_chain_name',
   ChainIdAdded = 'param_chain_added',
   Menu = 'param_menu',
-  StatsModal = 'param_stats_modal',
+  ToolModal = 'param_stats_modal',
   WelcomeMessageLink = 'param_welcome_message_link',
   SwitchedChain = 'param_switched_chain',
   SwitchedTheme = 'param_switched_theme',

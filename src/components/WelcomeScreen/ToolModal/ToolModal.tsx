@@ -12,23 +12,23 @@ import {
   ModalContainer,
   ModalContent,
   ModalHeaderAppBar,
-} from './StatsModal.style';
+} from './ToolModal.style';
 
-interface MenuProps {
+interface ToolModalProps {
   title: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   data: any;
 }
 
-export const StatsModal = ({ title, open, setOpen, data }: MenuProps) => {
+export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
   const theme = useTheme();
 
-  const handleOpenStatsModal = () => {
+  const handleOpenToolModal = () => {
     setOpen(false);
   };
 
-  const handleCloseStatsModal = () => {
+  const handleCloseToolModal = () => {
     setOpen(false);
   };
 
@@ -36,8 +36,8 @@ export const StatsModal = ({ title, open, setOpen, data }: MenuProps) => {
     <MUIModal
       disableAutoFocus={true}
       open={open}
-      onClick={handleOpenStatsModal}
-      onClose={handleCloseStatsModal}
+      onClick={handleOpenToolModal}
+      onClose={handleCloseToolModal}
       sx={{ zIndex: 1700 }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -67,7 +67,7 @@ export const StatsModal = ({ title, open, setOpen, data }: MenuProps) => {
             }}
             aria-label="close modal"
             component="label"
-            onClick={handleCloseStatsModal}
+            onClick={handleCloseToolModal}
           >
             <CloseIcon />
           </IconButton>

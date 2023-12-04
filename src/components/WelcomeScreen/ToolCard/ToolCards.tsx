@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StatsModal } from 'src/components';
+import { ToolModal } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -9,7 +9,7 @@ import {
 import { useChains, useFetchDexsAndBridges, useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type DataItem } from 'src/types';
 import { sortByName } from 'src/utils';
-import { StatsCardsContainer as Container, StatsCard } from '.';
+import { ToolCardsContainer as Container, ToolCard } from '.';
 interface StatsDataProps {
   title: string;
   number: string;
@@ -19,27 +19,27 @@ interface StatsDataProps {
   handleOnClick: () => void;
 }
 
-interface StatsCardsProps {
-  openChainsStatsModal: boolean;
-  setOpenChainsStatsModal: Dispatch<SetStateAction<boolean>>;
-  openBridgesStatsModal: boolean;
-  setOpenBridgesStatsModal: Dispatch<SetStateAction<boolean>>;
-  openDexsStatsModal: boolean;
-  setOpenDexsStatsModal: Dispatch<SetStateAction<boolean>>;
+interface ToolCardsProps {
+  openChainsToolModal: boolean;
+  setOpenChainsToolModal: Dispatch<SetStateAction<boolean>>;
+  openBridgesToolModal: boolean;
+  setOpenBridgesToolModal: Dispatch<SetStateAction<boolean>>;
+  openDexsToolModal: boolean;
+  setOpenDexsToolModal: Dispatch<SetStateAction<boolean>>;
 }
 
 const CHAINS_INDEX = 0;
 const BRIDGES_INDEX = 1;
 const DEXS_INDEX = 2;
 
-export const StatsCards = ({
-  openChainsStatsModal,
-  setOpenChainsStatsModal,
-  openBridgesStatsModal,
-  setOpenBridgesStatsModal,
-  openDexsStatsModal,
-  setOpenDexsStatsModal,
-}: StatsCardsProps) => {
+export const ToolCards = ({
+  openChainsToolModal,
+  setOpenChainsToolModal,
+  openBridgesToolModal,
+  setOpenBridgesToolModal,
+  openDexsToolModal,
+  setOpenDexsToolModal,
+}: ToolCardsProps) => {
   const { exchanges, bridges } = useFetchDexsAndBridges();
   const { chains } = useChains();
   const { t } = useTranslation();
@@ -50,60 +50,60 @@ export const StatsCards = ({
       title: t('navbar.statsCards.chains'),
       number: chains?.length || 0,
       data: sortByName(chains),
-      open: openChainsStatsModal,
-      setOpen: setOpenChainsStatsModal,
+      open: openChainsToolModal,
+      setOpen: setOpenChainsToolModal,
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
-          action: TrackingAction.OpenStatsModal,
+          action: TrackingAction.OpenToolModal,
           label: 'chains_stats',
-          data: { [TrackingEventParameter.StatsModal]: 'chains_stats' },
+          data: { [TrackingEventParameter.ToolModal]: 'chains_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
-        setOpenChainsStatsModal(!openChainsStatsModal);
+        setOpenChainsToolModal(!openChainsToolModal);
       },
     },
     {
       title: t('navbar.statsCards.bridges'),
       number: bridges?.length || 0,
       data: sortByName(bridges),
-      open: openBridgesStatsModal,
-      setOpen: setOpenBridgesStatsModal,
+      open: openBridgesToolModal,
+      setOpen: setOpenBridgesToolModal,
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
-          action: TrackingAction.OpenStatsModal,
+          action: TrackingAction.OpenToolModal,
           label: 'bridges_stats',
-          data: { [TrackingEventParameter.StatsModal]: 'bridges_stats' },
+          data: { [TrackingEventParameter.ToolModal]: 'bridges_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
-        setOpenBridgesStatsModal(!openBridgesStatsModal);
+        setOpenBridgesToolModal(!openBridgesToolModal);
       },
     },
     {
       title: t('navbar.statsCards.dexs'),
       number: exchanges?.length || 0,
       data: sortByName(exchanges),
-      open: openDexsStatsModal,
-      setOpen: setOpenDexsStatsModal,
+      open: openDexsToolModal,
+      setOpen: setOpenDexsToolModal,
       handleOnClick: () => {
         trackEvent({
           category: TrackingCategory.WelcomeScreen,
-          action: TrackingAction.OpenStatsModal,
+          action: TrackingAction.OpenToolModal,
           label: 'dexes_stats',
-          data: { [TrackingEventParameter.StatsModal]: 'dexes_stats' },
+          data: { [TrackingEventParameter.ToolModal]: 'dexes_stats' },
           disableTrackingTool: [
             EventTrackingTool.ARCx,
             EventTrackingTool.Cookie3,
           ],
         });
-        setOpenDexsStatsModal(!openDexsStatsModal);
+        setOpenDexsToolModal(!openDexsToolModal);
       },
     },
   ];
@@ -111,36 +111,36 @@ export const StatsCards = ({
   return (
     <Container>
       {/* Chains */}
-      <StatsCard
+      <ToolCard
         title={statsData[CHAINS_INDEX].title}
         number={statsData[CHAINS_INDEX].number}
         handleClick={statsData[CHAINS_INDEX].handleOnClick}
       />
-      <StatsModal
+      <ToolModal
         title={statsData[CHAINS_INDEX].title}
         open={statsData[CHAINS_INDEX].open}
         setOpen={statsData[CHAINS_INDEX].setOpen}
         data={statsData[CHAINS_INDEX].data}
       />
       {/* Bridges */}
-      <StatsCard
+      <ToolCard
         title={statsData[BRIDGES_INDEX].title}
         number={statsData[BRIDGES_INDEX].number}
         handleClick={statsData[BRIDGES_INDEX].handleOnClick}
       />
-      <StatsModal
+      <ToolModal
         title={statsData[BRIDGES_INDEX].title}
         open={statsData[BRIDGES_INDEX].open}
         setOpen={statsData[BRIDGES_INDEX].setOpen}
         data={statsData[BRIDGES_INDEX].data}
       />
       {/* DEXs */}
-      <StatsCard
+      <ToolCard
         title={statsData[DEXS_INDEX].title}
         number={statsData[DEXS_INDEX].number}
         handleClick={statsData[DEXS_INDEX].handleOnClick}
       />
-      <StatsModal
+      <ToolModal
         title={statsData[DEXS_INDEX].title}
         open={statsData[DEXS_INDEX].open}
         setOpen={statsData[DEXS_INDEX].setOpen}

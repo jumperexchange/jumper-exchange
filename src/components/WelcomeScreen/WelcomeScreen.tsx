@@ -3,7 +3,7 @@ import { Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { ButtonPrimary, StatsCards } from 'src/components';
+import { ButtonPrimary, ToolCards } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -42,9 +42,9 @@ export const WelcomeScreen = () => {
   );
 
   const { trackPageload, trackEvent } = useUserTracking();
-  const [openChainsStatsModal, setOpenChainsStatsModal] = useState(false);
-  const [openBridgesStatsModal, setOpenBridgesStatsModal] = useState(false);
-  const [openDexsStatsModal, setOpenDexsStatsModal] = useState(false);
+  const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
+  const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
+  const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
 
   useEffect(() => {
     if (!welcomeScreenClosed) {
@@ -175,13 +175,13 @@ export const WelcomeScreen = () => {
                 />
               }
             </Typography>
-            <StatsCards
-              openChainsStatsModal={openChainsStatsModal}
-              setOpenChainsStatsModal={setOpenChainsStatsModal}
-              openBridgesStatsModal={openBridgesStatsModal}
-              setOpenBridgesStatsModal={setOpenBridgesStatsModal}
-              openDexsStatsModal={openDexsStatsModal}
-              setOpenDexsStatsModal={setOpenDexsStatsModal}
+            <ToolCards
+              openChainsToolModal={openChainsToolModal}
+              setOpenChainsToolModal={setOpenChainsToolModal}
+              openBridgesToolModal={openBridgesToolModal}
+              setOpenBridgesToolModal={setOpenBridgesToolModal}
+              openDexsToolModal={openDexsToolModal}
+              setOpenDexsToolModal={setOpenDexsToolModal}
             />
             <ButtonPrimary
               onClick={handleGetStarted}

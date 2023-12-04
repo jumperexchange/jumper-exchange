@@ -1,7 +1,7 @@
 import type { Breakpoint } from '@mui/material';
 import { styled } from '@mui/material';
 
-export const StatsCardsContainer = styled('div')(({ theme }) => ({
+export const ToolCardsContainer = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(4),
   flexWrap: 'wrap',
   display: 'flex',
