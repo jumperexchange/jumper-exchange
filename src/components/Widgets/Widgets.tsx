@@ -106,7 +106,7 @@ export function Widgets() {
           isActive={_starterVariant === TabsMap.Buy.variant}
           welcomeScreenClosed={welcomeScreenClosed}
         >
-          <OnRamper handleCloseWelcomeScreen={handleCloseWelcomeScreen} />
+          <OnRamper />
         </WidgetContainer>
       ) : null}
       <WidgetEvents />
