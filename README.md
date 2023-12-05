@@ -48,4 +48,4 @@ if you plan to commit to this repository to use all necessary husky hooks. If yo
 chmod ug+x .husky/
 ```
 
-to mark the as executables
+to mark them as executables
