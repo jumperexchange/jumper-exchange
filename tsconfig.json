@@ -7,11 +7,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -20,32 +16,18 @@
     "strict": true,
     "target": "ES6",
     "paths": {
-      "src/*": [
-        "./*"
-      ],
-    },
+      "src/*": ["./*"]
+    }
   },
-  "plugins": [
-    "import"
-  ],
+  "plugins": ["import"],
   "rules": {
     "import/no-unresolved": "error"
   },
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [
-        ".ts",
-        ".tsx"
-      ]
-    },
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    }
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "env.d.ts", "**/*.ts", "**/*.tsx"]
 }

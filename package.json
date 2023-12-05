@@ -47,7 +47,7 @@
     "@types/react-dom": "^18.2.14",
     "@types/ungap__structured-clone": "^0.3.1",
     "@vitejs/plugin-react": "^4.1.0",
-    "eslint": "^8.52.0",
+    "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -58,7 +58,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
-    "lint-staged": "^15.0.2",
+    "lint-staged": "^15.2.0",
     "prettier": "^3.0.3",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "typescript": "^5.2.2",
@@ -97,7 +97,7 @@
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
-      "yarn tsc --noEmit",
+      "bash -c tsc --noEmit",
       "yarn eslint --fix",
       "yarn prettier --write"
     ],
