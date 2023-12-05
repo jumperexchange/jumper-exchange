@@ -1,1 +1,0 @@
-export { WalletSelectMenu } from './WalletSelectMenu';

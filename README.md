@@ -35,3 +35,24 @@ Please refer to the following descriptions of the dev serve scripts:
     dev:testnet - starts the app in a testnet only mode using the backend staging stage
     dev:staging - starts the app using the backend staging stage
     dev:production - starts the app using the backend production stage
+
+### Husky Scripts
+
+In addition to these commands you should also run
+
+```
+yarn husky install
+```
+
+if you plan to commit to this repository to use all necessary husky hooks. If you have trouble running a script try modifying the permissions for the scripts with
+
+```
+chmod ug+x .husky/
+```
+
+to mark them as executables
+
+### lint-staged
+
+small comment on the lint-staged config. The idea of invoking `tsc --noEmit` from bash instead of yarn comes from here: [github issue](https://github.com/lint-staged/lint-staged/issues/825#issuecomment-674575655)
+It fixes some problems we had with lint-staged ignoring our tsconfig and not working properly.
