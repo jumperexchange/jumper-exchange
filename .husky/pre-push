@@ -2,5 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 echo "Executing pre-push scripts"
-
-git diff HEAD --quiet && yarn pre-push
+yarn pre-push
