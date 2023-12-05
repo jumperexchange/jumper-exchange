@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-export const useFetchDexsAndBridges = () => {
+export const useDexsAndBridges = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['tools'],
     queryFn: async () => {

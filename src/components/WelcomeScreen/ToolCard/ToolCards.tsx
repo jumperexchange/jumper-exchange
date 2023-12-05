@@ -6,7 +6,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const';
-import { useChains, useFetchDexsAndBridges, useUserTracking } from 'src/hooks';
+import { useChains, useDexsAndBridges, useUserTracking } from 'src/hooks';
 import { EventTrackingTool, type DataItem } from 'src/types';
 import { sortByName } from 'src/utils';
 import { ToolCardsContainer as Container, ToolCard } from '.';
@@ -40,7 +40,7 @@ export const ToolCards = ({
   openDexsToolModal,
   setOpenDexsToolModal,
 }: ToolCardsProps) => {
-  const { exchanges, bridges } = useFetchDexsAndBridges();
+  const { exchanges, bridges } = useDexsAndBridges();
   const { chains } = useChains();
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
