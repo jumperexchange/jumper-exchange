@@ -35,3 +35,17 @@ Please refer to the following descriptions of the dev serve scripts:
     dev:testnet - starts the app in a testnet only mode using the backend staging stage
     dev:staging - starts the app using the backend staging stage
     dev:production - starts the app using the backend production stage
+
+In addition to these commands you should also run
+
+```
+yarn husky install
+```
+
+if you plan to commit to this repository to use all necessary husky hooks. If you have trouble running a script try modifying the permissions for the scripts with
+
+```
+chmod ug+x .husky/
+```
+
+to mark the as executables
