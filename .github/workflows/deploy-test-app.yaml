@@ -11,7 +11,7 @@ env:
 
 jobs:
   deploy-test:
-    if: contains(github.event.label.name, 'testing') || contains(github.event.pull_request.labels.*.name, 'testing')
+    if: github.event.pull_request.merged == false && (contains(github.event.label.name, 'testing') || contains(github.event.pull_request.labels.*.name, 'testing'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
