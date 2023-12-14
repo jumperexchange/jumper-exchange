@@ -35,7 +35,7 @@ jobs:
         run: yarn build:${{env.BRANCH_NAME == 'main' && 'production' || env.BRANCH_NAME }}
 
       - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./packages/dapp/dist/ ${{ env.BRANCH_NAME == 'main' && 's3://' || format('s3://{0}.',env.BRANCH_NAME) }}jumper.exchange --delete
+        run: aws s3 sync ./dist/ ${{ env.BRANCH_NAME == 'main' && 's3://' || format('s3://{0}.',env.BRANCH_NAME) }}jumper.exchange --delete
 
       - name: Purge Cache
         run: |

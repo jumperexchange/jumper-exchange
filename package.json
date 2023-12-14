@@ -1,39 +1,120 @@
 {
-  "name": "root",
-  "private": true,
+  "name": "jumper.exchange",
   "version": "1.0.0",
+  "private": true,
   "repository": "https://github.com/lifinance/jumper.exchange",
+  "packageManager": "yarn@3.6.1",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "@arcxmoney/analytics": "^2.0.3",
+    "@cookie3/analytics": "^0.6.0",
+    "@lifi/sdk": "^2.5.0",
+    "@lifi/wallet-management": "^2.4.1",
+    "@lifi/widget": "^2.9.4",
+    "@mui/icons-material": "^5.14.19",
+    "@mui/material": "^5.14.20",
+    "@safe-global/safe-apps-sdk": "^8.1.0",
+    "@sentry/browser": "^7.85.0",
+    "@sentry/integrations": "^7.85.0",
+    "@sentry/react": "^7.85.0",
+    "@tanstack/react-query": "^5.12.2",
+    "@ungap/structured-clone": "^1.2.0",
+    "@widgetbot/react-embed": "^1.9.0",
+    "ethers": "^6.8.0",
+    "fontaine": "^0.4.1",
+    "i18next": "^23.7.7",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "i18next-http-backend": "^2.4.2",
+    "i18next-resources-to-backend": "^1.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-ga4": "^2.1.0",
+    "react-hotjar": "^6.1.0",
+    "react-i18next": "^13.5.0",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^6.20.1",
+    "typescript": "^5.3.2",
+    "vite-tsconfig-paths": "^4.2.1",
+    "zustand": "^4.4.7"
+  },
   "devDependencies": {
-    "@lerna/run": "^6.6.2",
-    "@types/node": "^20.8.7",
-    "@types/react": "^18.2.31",
-    "@types/react-dom": "^18.2.14",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@lifi/types": "^9.3.1",
+    "@types/node": "^20.10.3",
+    "@types/react": "^18.2.42",
+    "@types/react-dom": "^18.2.17",
+    "@types/ungap__structured-clone": "^0.3.3",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-config-react-app": "^7.0.1",
+    "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
-    "lerna": "^7.4.1",
-    "lint-staged": "^15.0.2",
-    "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
+    "rollup-plugin-polyfill-node": "^0.12.0",
+    "typescript": "^5.3.2",
+    "vite": "^4.5.1",
+    "web-vitals": "^3.5.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "scripts": {
-    "bootstrap": "yarn install; lerna bootstrap;",
-    "start": "lerna run start",
-    "dev": "lerna run dev --parallel",
-    "build": "lerna run build --parallel",
-    "prepare": "husky install",
-    "pre-push": "lerna run pre-push",
-    "pre-commit": "yarn lint-staged && lerna run pre-commit"
+    "dev": "vite",
+    "dev:local": "vite --mode localhost",
+    "dev:testnet": "vite --mode testnet",
+    "dev:staging": "vite --mode staging",
+    "dev:production": "vite --mode production",
+    "build": "tsc && vite build",
+    "build:testnet": "tsc && vite build --mode testnet",
+    "build:develop": "tsc && vite build --mode development",
+    "build:staging": "tsc && vite build --mode staging",
+    "build:production": "tsc && vite build --mode production",
+    "preview": "vite preview",
+    "clean": "rimraf --no-glob ./tsconfig.tsbuildinfo",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint-staged": "lint-staged",
+    "typecheck": "tsc --project ./tsconfig.json --noEmit",
+    "test": "run-s 'test:*'",
+    "test:unit": "echo \"No tests yet\"",
+    "fix:staged-files": "lint-staged --allow-empty",
+    "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "pre-commit": "lint-staged",
+    "pre-push": "yarn && yarn build",
+    "start": "tsc --build --clean && tsc --build && tsc --build tsconfig.json"
   },
-  "workspaces": [
-    "packages/*"
-  ],
-  "packageManager": "yarn@3.6.1"
+  "lint-staged": {
+    "**/*.(ts|tsx|js)": [
+      "bash -c tsc --noEmit",
+      "yarn eslint --fix",
+      "yarn prettier --write"
+    ],
+    "**/*.(md|json)": [
+      "yarn prettier --write"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
