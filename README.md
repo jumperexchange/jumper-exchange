@@ -8,7 +8,7 @@
 
 # Jumper.Exchange
 
-Lerna Monorepo for all jumper.exchange related things
+This is the [jumper.exchange](https://jumper.exchange) repository that gets deployed to `develop.jumper.exchange`, `staging.jumper.exchange` and `jumper.exchange`.
 
 ## Getting Started
 
@@ -21,11 +21,11 @@ yarn
 to install all dependencies, and choose one of these start commands to start the development vite server and to start building packages in watch mode.
 
 ```
-    yarn dev
-    yarn dev:local
-    yarn dev:testnet
-    yarn dev:staging
-    yarn dev:production
+yarn dev
+yarn dev:local
+yarn dev:testnet
+yarn dev:staging
+yarn dev:production
 ```
 
 Please refer to the following descriptions of the dev serve scripts:
@@ -36,16 +36,23 @@ Please refer to the following descriptions of the dev serve scripts:
     dev:staging - starts the app using the backend staging stage
     dev:production - starts the app using the backend production stage
 
-## Project Structure
+### Husky Scripts
 
-### packages/dapp/
+In addition to these commands you should also run
 
-This is the jumper.exchange page that gets deployed to `develop.jumper.exchange`, `staging.jumper.exchange` and `jumper.exchange`. This is a vite.js app
+```
+yarn husky install
+```
 
-### packages/shared/
+if you plan to commit to this repository to use all necessary husky hooks. If you have trouble running a script try modifying the permissions for the scripts with
 
-This is a collection of shared atoms/molecules/organisms that can be used across the entire project to ensure a unified UI/UX
+```
+chmod ug+x .husky/
+```
 
-### packages/<other_folders>
+to mark them as executables
 
-NOT EXISTING YET. Sub-apps of the transferto page. These componentized sub-apps will be resuable accross this project and could also be used in different external projects.
+### lint-staged
+
+small comment on the lint-staged config. The idea of invoking `tsc --noEmit` from bash instead of yarn comes from here: [github issue](https://github.com/lint-staged/lint-staged/issues/825#issuecomment-674575655)
+It fixes some problems we had with lint-staged ignoring our tsconfig and not working properly.

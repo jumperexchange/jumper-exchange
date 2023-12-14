@@ -11,7 +11,7 @@ env:
 
 jobs:
   deploy-test:
-    if: contains(github.event.label.name, 'testing') || contains(github.event.pull_request.labels.*.name, 'testing')
+    if: github.event.pull_request.merged == false && (contains(github.event.label.name, 'testing') || contains(github.event.pull_request.labels.*.name, 'testing'))
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -63,7 +63,7 @@ jobs:
                 body: JSON.stringify({
                   build_config: {
                     build_command: "yarn run build",
-                    destination_dir: "packages/dapp/dist/",
+                    destination_dir: "dist/",
                     root_dir: "/",
                   },
                   canonical_deployment: null,
@@ -117,7 +117,7 @@ jobs:
           apiToken: ${{ secrets.CF_PAGES_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: | 
-            pages deploy ./packages/dapp/dist/ --project-name ${{ env.PROJECT_NAME }} --branch ${{ env.BRANCH_NAME }}
+            pages deploy ./dist/ --project-name ${{ env.PROJECT_NAME }} --branch ${{ env.BRANCH_NAME }}
 
       - name: Comment Test Endpoint
         uses: actions/github-script@v6
