@@ -36,3 +36,10 @@ export const LogoLink = styled(Link)(({ theme }) => ({
   alignItems: 'center',
   display: 'flex',
 }));
+
+export const CenteredContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh',
+}));
