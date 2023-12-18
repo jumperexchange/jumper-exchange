@@ -1,100 +1,83 @@
-export type FeatureCardsResponseType = {
-  sys: {
-    type: string;
-  };
-  total: number;
-  skip: number;
-  limit: number;
-  items: FeatureCardType[];
-  includes: {
-    Asset: FeatureCardAsset[];
-  };
-};
-
-export type FeatureCardType = {
-  fields: FeatureCardEntry;
-  metadata: {
-    tags: any[];
-  };
-  sys: Sys;
-};
-
-export type FeatureCardEntry = {
-  displayConditions: DisplayConditions;
-  subtitle: string;
-  title: string;
-  titleColor?: string;
-  ctaCall?: string;
-  ctaColor?: string;
-  url: string;
-  backgroundImageDark?: Image;
-  backgroundImageLight?: Image;
-};
-
-export type FeatureCardAsset = {
-  fields: Fields;
-  metadata: {
-    tags: any[];
-  };
-  sys: Sys;
-};
-
-type Sys = {
-  createdAt: string;
-  environment: {
-    sys: {
-      id: string;
-      linkType: string;
-      type: string;
-    };
-  };
+interface FeatureCardDisplayConditions {
   id: string;
-  locale: string;
-  revision: number;
-  space: {
-    sys: {
-      id: string;
-      linkType: string;
-      type: string;
-    };
-  };
-  type: string;
-  updatedAt: string;
-};
-
-type FileDetails = {
-  image: {
-    height: number;
-    width: number;
-  };
-  size: number;
-};
-
-type File = {
-  contentType: string;
-  details: FileDetails;
-  fileName: string;
-  url: string;
-};
-
-type Fields = {
-  description: string;
-  file: File;
-  title: string;
-};
-
-type CardTheme = 'light' | 'dark';
-
-type DisplayConditions = {
-  id: string;
+  mode: string;
   showOnce?: boolean;
-  mode?: CardTheme;
-};
+}
 
-type Image = {
-  sys: {
-    id: string;
-    linkType: string;
-    type: string;
+interface FeatureCardFormat {
+  name: string;
+  hash: string;
+  ext: string;
+  mime: string;
+  path: string | null;
+  width: number;
+  height: number;
+  size: number;
+  url: string;
+}
+
+interface FeatureCardMedia {
+  id: number;
+  attributes: {
+    name: string;
+    alternativeText: string | null;
+    caption: string | null;
+    width: number;
+    height: number;
+    formats: {
+      [key: string]: FeatureCardFormat;
+    };
+    hash: string;
+    ext: string;
+    mime: string;
+    size: number;
+    url: string;
+    previewUrl: string | null;
+    provider: string;
+    provider_metadata: any;
+    createdAt: string;
+    updatedAt: string;
   };
-};
+}
+
+interface FeatureCardAttributes {
+  Title: string;
+  Subtitle: string;
+  CTACall: string;
+  URL: string;
+  TitleColor: string | null;
+  CTAColor: string | null;
+  DisplayConditions: FeatureCardDisplayConditions;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
+  locale: string;
+  BackgroundImageLight: {
+    data: FeatureCardMedia;
+  };
+  BackgroundImageDark: {
+    data: FeatureCardMedia;
+  };
+  localizations: {
+    data: any[];
+  };
+}
+
+export interface FeatureCardData {
+  id: number;
+  attributes: FeatureCardAttributes;
+}
+
+interface FeatureCardMeta {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+  };
+}
+
+export interface FeatureCardResponse {
+  data: FeatureCardData[];
+  meta: FeatureCardMeta;
+}
