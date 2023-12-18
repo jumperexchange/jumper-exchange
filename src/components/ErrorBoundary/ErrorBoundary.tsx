@@ -1,10 +1,16 @@
 import { useWallet } from '@lifi/widget';
-import type { Breakpoint } from '@mui/material';
-import { Typography, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
+import { Button } from 'src/components';
 import { LogoLink } from '../Navbar';
 
-import { Logo } from 'src/components';
-import { CenteredContainer, NavbarContainer } from './ErrorBoundary.style';
+import { Discord, Logo } from 'src/components';
+import { getContrastAlphaColor } from 'src/utils';
+import {
+  CenteredContainer,
+  DiscordText,
+  ErrorMessage,
+  NavbarContainer,
+} from './ErrorBoundary.style';
 
 export const ErrorBoundary = () => {
   const theme = useTheme();
@@ -17,24 +23,41 @@ export const ErrorBoundary = () => {
         </LogoLink>
       </NavbarContainer>
       <CenteredContainer>
-        <Typography
-          variant={'lifiBodyLarge'}
-          sx={{
-            color:
-              theme.palette.mode === 'dark'
-                ? theme.palette.accent1Alt.main
-                : theme.palette.primary.main,
-            fontWeight: 700,
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              fontSize: '24px',
-              fontWeight: 400,
-              lineHeight: '32px',
-            },
-          }}
-        >
+        <ErrorMessage variant={'lifiBodyLarge'}>
           We encountered a major Error. Please try reloading the page. If the
           problem persists, contact our support.
-        </Typography>
+        </ErrorMessage>
+        <Button
+          variant="primary"
+          styles={{
+            width: 'auto',
+            margin: '12px',
+            gap: '8px',
+            borderRadius: '24px',
+            padding: '8px',
+            '> button:hover': {
+              backgroundColor: getContrastAlphaColor(theme, '4%'),
+            },
+            '> button:hover svg': {
+              fill:
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[700]
+                  : theme.palette.grey[300],
+            },
+          }}
+          fullWidth={true}
+        >
+          <Discord
+            color={
+              theme.palette.mode === 'dark'
+                ? theme.palette.white.main
+                : theme.palette.black.main
+            }
+          />
+          <DiscordText variant="lifiBodyMediumStrong" component="span">
+            Discord
+          </DiscordText>
+        </Button>
       </CenteredContainer>
     </>
   );
