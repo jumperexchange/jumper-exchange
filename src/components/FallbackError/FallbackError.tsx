@@ -8,9 +8,9 @@ import { Discord, Logo } from 'src/components';
 import { getContrastAlphaColor } from 'src/utils';
 import {
   CenteredContainer,
-  DiscordText,
   ErrorMessage,
   NavbarContainer,
+  SupportMessage,
 } from './FallbackError.styles';
 
 export function FallbackError() {
@@ -55,9 +55,9 @@ export function FallbackError() {
                 : theme.palette.black.main
             }
           />
-          <DiscordText variant="lifiBodyMediumStrong" component="span">
-            Discord
-          </DiscordText>
+          <SupportMessage variant="lifiBodyMediumStrong" component="span">
+            {t('navbar.navbarMenu.support')}
+          </SupportMessage>
         </Button>
       </CenteredContainer>
     </>

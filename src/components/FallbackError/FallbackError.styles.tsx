@@ -61,13 +61,15 @@ export const ErrorMessage = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const DiscordText = styled(Typography)<TypographyProps>(({ theme }) => ({
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  maxWidth: '208px',
-  marginLeft: '9.5px',
-  marginRight: '9.5px',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: '168px',
-  },
-}));
+export const SupportMessage = styled(Typography)<TypographyProps>(
+  ({ theme }) => ({
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '208px',
+    marginLeft: '9.5px',
+    marginRight: '9.5px',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      maxWidth: '168px',
+    },
+  }),
+);
