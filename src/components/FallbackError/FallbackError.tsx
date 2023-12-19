@@ -5,7 +5,15 @@ import { LogoLink } from '../Navbar';
 
 import { useTranslation } from 'react-i18next';
 import { Discord, Logo } from 'src/components';
-import { getContrastAlphaColor } from 'src/utils';
+import {
+  DISCORD_URL,
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const';
+import { useUserTracking } from 'src/hooks';
+import { EventTrackingTool } from 'src/types';
+import { getContrastAlphaColor, openInNewTab } from 'src/utils';
 import {
   CenteredContainer,
   ErrorMessage,
@@ -14,6 +22,7 @@ import {
 } from './FallbackError.styles';
 
 export function FallbackError() {
+  const { trackPageload, trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
   const { account } = useWallet();
@@ -30,6 +39,26 @@ export function FallbackError() {
         </ErrorMessage>
         <Button
           variant="primary"
+          onClick={() => {
+            trackEvent({
+              category: TrackingCategory.Menu,
+              label: 'click-discord-link',
+              action: TrackingAction.OpenMenu,
+              data: { [TrackingEventParameter.Menu]: 'lifi_discord' },
+              disableTrackingTool: [
+                EventTrackingTool.ARCx,
+                EventTrackingTool.Cookie3,
+              ],
+            });
+            trackPageload({
+              source: TrackingCategory.Menu,
+              destination: 'discord-lifi',
+              url: DISCORD_URL,
+              pageload: true,
+              disableTrackingTool: [EventTrackingTool.Cookie3],
+            });
+            openInNewTab(DISCORD_URL);
+          }}
           styles={{
             width: 'auto',
             margin: '12px',
