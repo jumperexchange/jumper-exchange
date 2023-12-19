@@ -11,9 +11,9 @@ import {
   DiscordText,
   ErrorMessage,
   NavbarContainer,
-} from './ErrorBoundary.style';
+} from './FallbackError.styles';
 
-export const ErrorBoundary = () => {
+export function FallbackError() {
   const theme = useTheme();
   const { t } = useTranslation();
   const { account } = useWallet();
@@ -62,4 +62,4 @@ export const ErrorBoundary = () => {
       </CenteredContainer>
     </>
   );
-};
+}
