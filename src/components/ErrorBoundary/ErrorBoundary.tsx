@@ -3,6 +3,7 @@ import { useTheme } from '@mui/material';
 import { Button } from 'src/components';
 import { LogoLink } from '../Navbar';
 
+import { useTranslation } from 'react-i18next';
 import { Discord, Logo } from 'src/components';
 import { getContrastAlphaColor } from 'src/utils';
 import {
@@ -14,6 +15,7 @@ import {
 
 export const ErrorBoundary = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const { account } = useWallet();
   return (
     <>
@@ -24,8 +26,7 @@ export const ErrorBoundary = () => {
       </NavbarContainer>
       <CenteredContainer>
         <ErrorMessage variant={'lifiBodyLarge'}>
-          We encountered a major Error. Please try reloading the page. If the
-          problem persists, contact our support.
+          {t('error.message')}
         </ErrorMessage>
         <Button
           variant="primary"
