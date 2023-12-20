@@ -62,7 +62,7 @@
     "okay": "Okay"
   },
   "error" : {
-    "message": "We encountered a major Error. Please try reloading the page. If the problem persists, contact our support."
+    "message": "Something went wrong. Please try reloading the page. If the problem persists, contact our support."
   },
   "multisig": {
     "connected": {
