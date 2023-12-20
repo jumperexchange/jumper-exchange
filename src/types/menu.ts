@@ -15,6 +15,7 @@ export type MenuProps = {
   openMainMenu: boolean;
   openWalletSelectMenu: boolean;
   openWalletMenu: boolean;
+  openEcosystemSelect: boolean;
   openSubMenu: keyof typeof MenuKeys;
   openSnackbar: SnackbarProps;
   openSupportModal: boolean;
@@ -29,6 +30,9 @@ export interface MenuState extends MenuProps {
 
   // Toggle Wallet Menu
   onOpenWalletMenu: (open: boolean, anchorRef?: any) => void;
+
+  // Toggle Ecosystem Select Menu
+  onOpenEcosystemSelect: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Wallet Selection Menu
   onOpenWalletSelectMenu: (open: boolean, anchorRef?: any) => void;

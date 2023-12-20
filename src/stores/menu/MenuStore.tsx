@@ -7,6 +7,7 @@ interface DefaultMenuType {
   openMainMenu: boolean;
   openWalletMenu: boolean;
   openWalletSelectMenu: boolean;
+  openEcosystemSelect: boolean;
   openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
   openSnackbar: SnackbarProps;
@@ -17,6 +18,7 @@ export const defaultMenu: DefaultMenuType = {
   openMainMenu: false,
   openWalletMenu: false,
   openWalletSelectMenu: false,
+  openEcosystemSelect: false,
   openSubMenu: 'None',
   openSupportModal: false,
   openSnackbar: { open: false, label: undefined, severity: undefined },
@@ -77,6 +79,16 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
         openWalletMenu: open,
         openSubMenu: MenuKeys.None,
         anchorRef: open ? anchorRef : null,
+      });
+    },
+
+    // Toggle Navbar Connected Menu
+    onOpenEcosystemSelect: (open) => {
+      set({
+        openEcosystemSelect: open,
+        openWalletSelectMenu: false,
+        openSubMenu: MenuKeys.None,
+        // anchorRef: open ? anchorRef : null,
       });
     },
 

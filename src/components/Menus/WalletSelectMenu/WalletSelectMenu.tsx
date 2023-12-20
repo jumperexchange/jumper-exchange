@@ -33,11 +33,15 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
   const [
     openWalletSelectMenu,
     onOpenWalletSelectMenu,
+    openEcosystemSelect,
+    onOpenEcosystemSelect,
     openSubMenu,
     onOpenSubMenu,
   ] = useMenuStore((state) => [
     state.openWalletSelectMenu,
     state.onOpenWalletSelectMenu,
+    state.openEcosystemSelect,
+    state.onOpenEcosystemSelect,
     state.openSubMenu,
     state.onOpenSubMenu,
   ]);
@@ -175,7 +179,14 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
               onClick={handleClickSelectMore}
             />
           )}
-
+        <button
+          onClick={() => {
+            console.log('click');
+            onOpenEcosystemSelect(!openEcosystemSelect);
+          }}
+        >
+          Trigger Me
+        </button>
         <SubMenu
           label={t('navbar.walletSelectMenu.wallets')}
           triggerSubMenu={MenuKeys.WalletSelectMore}

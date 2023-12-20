@@ -7,3 +7,4 @@ export * from './MainMenu/useMainMenuContent';
 export * from './Menus';
 export * from './WalletMenu';
 export * from './WalletSelectMenu';
+export * from './EcosystemSelectMenu';
