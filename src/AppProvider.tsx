@@ -18,22 +18,22 @@ const analytics = cookie3Analytics(cookie3Config);
 export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <I18NProvider>
-        <ThemeProvider>
-          <Cookie3Provider value={analytics}>
-            <ArcxAnalyticsProvider
-              apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
-            >
-              <WalletProvider>
+      <WalletProvider>
+        <I18NProvider>
+          <ThemeProvider>
+            <Cookie3Provider value={analytics}>
+              <ArcxAnalyticsProvider
+                apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
+              >
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
                 <BackgroundGradient />
                 {children}
-              </WalletProvider>
-            </ArcxAnalyticsProvider>
-          </Cookie3Provider>
-        </ThemeProvider>
-      </I18NProvider>
+              </ArcxAnalyticsProvider>
+            </Cookie3Provider>
+          </ThemeProvider>
+        </I18NProvider>
+      </WalletProvider>
     </QueryClientProvider>
   );
 };

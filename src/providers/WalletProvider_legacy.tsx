@@ -40,10 +40,10 @@ export const initialContext: WalletContextProps = {
 
 const WalletContext = createContext<WalletContextProps>(initialContext);
 
-export const useWallet = (): WalletContextProps =>
+export const useWallet_legacy = (): WalletContextProps =>
   React.useContext(WalletContext);
 
-export const WalletProvider: React.FC<PropsWithChildren<{}>> = ({
+export const WalletProvider_legacy: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
   const [account, setAccount] = useState<WalletAccount>({});

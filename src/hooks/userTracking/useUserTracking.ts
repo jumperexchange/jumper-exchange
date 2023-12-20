@@ -2,7 +2,6 @@ import { useArcxAnalytics } from '@arcxmoney/analytics';
 import { useCallback } from 'react';
 import { hotjar } from 'react-hotjar';
 import { TrackingAction, TrackingEventParameter } from 'src/const';
-import { useWallet } from 'src/providers';
 import type {
   TrackAttributeProps,
   TrackChainSwitchProps,
@@ -14,11 +13,12 @@ import type {
 } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 import { useCookie3 } from './useCookie3';
+import { useAccount } from '../useAccount';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
   const cookie3 = useCookie3();
-  const { account } = useWallet();
+  const { account } = useAccount();
 
   const trackConnectWallet = useCallback(
     /**

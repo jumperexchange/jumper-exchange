@@ -1,12 +1,12 @@
 import { useTheme } from '@mui/material/styles';
 import { Logo, NavbarButtons, NavbarTabs } from 'src/components';
-import { useWallet } from 'src/providers';
 import { useSettingsStore } from 'src/stores';
 import { NavbarContainer as Container, LogoLink } from '.';
+import { useAccount } from 'src/hooks/useAccount';
 
 export const Navbar = () => {
   const theme = useTheme();
-  const { account } = useWallet();
+  const { account } = useAccount();
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
     state.onWelcomeScreenClosed,
   ]);

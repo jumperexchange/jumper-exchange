@@ -1,69 +1,37 @@
-import { supportedWallets } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMultisig } from 'src/hooks';
-import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
-import type { MenuListItem, Wallet } from 'src/types';
+import type { MenuListItem } from 'src/types';
+import type { Wallet } from '@solana/wallet-adapter-react';
 import { getContrastAlphaColor } from 'src/utils';
+import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
+import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
 
 export const useWalletSelectContent = () => {
+  const theme = useTheme();
+  const { t } = useTranslation();
+  const { checkMultisigEnvironment } = useMultisig();
+  const { combinedInstalledWallets, combinedNotDetectedWallets } =
+    useCombinedWallets();
   const isDesktopView = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up('sm'),
   );
-  const theme = useTheme();
-  const { t } = useTranslation();
+
+  const [, setShowWalletIdentityPopover] = useState<Wallet>();
+  const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
+    useState(false);
+
   const [clientWallets, onClientWallets] = useSettingsStore((state) => [
     state.clientWallets,
     state.onClientWallets,
   ]);
-
-  const [, setShowWalletIdentityPopover] = useState<Wallet>();
-  const { connect, account } = useWallet();
-  const [isCurrentMultisigEnvironment, setIsCurrentMultisigEnvironment] =
-    useState(false);
-
   const [onOpenSnackbar, onCloseAllMenus] = useMenuStore((state) => [
     state.onOpenSnackbar,
     state.onCloseAllMenus,
   ]);
-
-  const [availableWallets, setAvailableWallets] = useState<Wallet[]>([]);
-
-  const { checkMultisigEnvironment } = useMultisig();
-
-  const initializeWalletSelect = async () => {
-    const isMultisig = await checkMultisigEnvironment();
-
-    const walletsPromise = supportedWallets.map(
-      async (wallet) => await wallet.installed(),
-    );
-
-    const walletsInstalled = await Promise.all(walletsPromise);
-
-    // always remove Default Wallet from list
-    const filteredWallets = supportedWallets.filter((wallet, index) => {
-      walletsInstalled[index] && onClientWallets(wallet.name);
-      return wallet.name !== 'Default Wallet';
-    });
-
-    let allowedWallets = filteredWallets.slice(0, 7);
-
-    if (isDesktopView) {
-      allowedWallets = filteredWallets;
-    }
-
-    setAvailableWallets(allowedWallets);
-
-    if (isMultisig) {
-      setIsCurrentMultisigEnvironment(true);
-    } else {
-      setIsCurrentMultisigEnvironment(false);
-    }
-  };
-
   const { onWalletConnect, onWelcomeScreenClosed } = useSettingsStore(
     (state) => ({
       onWalletConnect: state.onWalletConnect,
@@ -71,59 +39,86 @@ export const useWalletSelectContent = () => {
     }),
   );
 
-  const login = useCallback(
-    async (wallet: Wallet) => {
-      if (!wallet.installed()) {
-        setShowWalletIdentityPopover(wallet);
-        return;
-      }
-      await connect(wallet as Wallet | undefined);
-      onWalletConnect(wallet.name);
-      try {
-      } catch (e) {}
-    },
-    [connect, onWalletConnect],
-  );
-
   useEffect(() => {
-    initializeWalletSelect();
-    // fix: remove 'initializeWalletSelect' from dep´s to fix infinite loop / freeze
+    const setupMultiSig = async () =>
+      setIsCurrentMultisigEnvironment(await checkMultisigEnvironment());
+
+    setupMultiSig();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account.address]);
+  }, []);
+
+  const availableWallets = useMemo(() => {
+    let allowedWallets = combinedInstalledWallets.slice(0, 7);
+
+    if (isDesktopView) {
+      allowedWallets = [
+        ...combinedInstalledWallets,
+        ...combinedNotDetectedWallets,
+      ];
+    }
+
+    return allowedWallets;
+  }, [combinedInstalledWallets, combinedNotDetectedWallets, isDesktopView]);
+
+  // const login = useCallback(
+  //   async (wallet: Wallet) => {
+  //     if (!wallet.installed()) {
+  //       setShowWalletIdentityPopover(wallet);
+  //       return;
+  //     }
+  //     await connect(wallet as Wallet | undefined);
+  //     onWalletConnect(wallet.name);
+  //     try {
+  //     } catch (e) {}
+  //   },
+  //   [connect, onWalletConnect],
+  // );
+
+  const login = useCallback((combinedWallet: CombinedWallet) => {
+    console.log('useWalletSelectContent > login:', combinedWallet);
+  }, []);
 
   const walletMenuItems = useMemo<MenuListItem[]>(() => {
-    const walletsOptions: Wallet[] = availableWallets.filter((wallet) => {
-      if (!isCurrentMultisigEnvironment) {
-        return wallet.name !== 'Safe';
-      }
-      return true;
-    });
-
-    const handleClick = async (wallet: Wallet) => {
-      if (clientWallets.includes(wallet.name)) {
-        login(wallet);
+    const handleClick = async (combinedWallet: CombinedWallet) => {
+      if (
+        clientWallets.includes(
+          (combinedWallet.evm?.id || combinedWallet.svm?.adapter.name) ?? '',
+        )
+      ) {
+        login(combinedWallet);
         onCloseAllMenus();
         onWelcomeScreenClosed(true);
       } else {
         onCloseAllMenus();
         onOpenSnackbar(
           true,
-          t('navbar.walletMenu.walletNotInstalled', { wallet: wallet.name }),
+          t('navbar.walletMenu.walletNotInstalled', {
+            wallet:
+              (combinedWallet.evm?.id || combinedWallet.svm?.adapter.name) ??
+              '',
+          }),
           'error',
         );
 
-        console.error(`Wallet '${wallet.name}' is not installed`);
+        console.error(
+          `Wallet '${
+            combinedWallet.evm?.id || combinedWallet.svm?.adapter.name
+          }' is not installed`,
+        );
       }
     };
 
-    const output = walletsOptions.map((wallet) => {
+    const output = availableWallets.map((combinedWallet) => {
       return {
-        label: wallet.name,
+        label:
+          (combinedWallet.evm?.id || combinedWallet.svm?.adapter.name) ?? '',
         prefixIcon: (
           <Avatar
             className="wallet-select-avatar"
-            src={wallet.icon}
-            alt={`${wallet.name}-wallet-logo`}
+            src={combinedWallet.evm?.icon || combinedWallet.svm?.adapter.icon}
+            alt={`${
+              combinedWallet.evm?.id || combinedWallet.svm?.adapter.name
+            }-wallet-logo`}
             sx={{
               height: '40px',
               width: '40px',
@@ -133,7 +128,7 @@ export const useWalletSelectContent = () => {
         ),
         showMoreIcon: false,
         onClick: () => {
-          handleClick(wallet);
+          handleClick(combinedWallet);
         },
         styles: {
           '&:hover': {
@@ -146,8 +141,6 @@ export const useWalletSelectContent = () => {
   }, [
     availableWallets,
     clientWallets,
-    isCurrentMultisigEnvironment,
-    login,
     onCloseAllMenus,
     onOpenSnackbar,
     onWelcomeScreenClosed,

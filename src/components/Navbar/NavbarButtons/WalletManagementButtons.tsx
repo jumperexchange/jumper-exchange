@@ -1,5 +1,4 @@
 import type { Chain } from '@lifi/types';
-import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
@@ -16,6 +15,7 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useChains, useUserTracking } from 'src/hooks';
+import { useAccount } from 'src/hooks/useAccount';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { walletDigest } from 'src/utils';
@@ -27,16 +27,15 @@ interface WalletManagementButtonsProps {
   walletConnected?: boolean;
   connectButtonLabel?: ReactElement<any, any>;
   isSuccess: boolean;
-  walletManagement: any;
 }
 
 export const WalletManagementButtons: React.FC<
   WalletManagementButtonsProps
-> = ({ walletManagement, connectButtonLabel, isSuccess }) => {
+> = ({ connectButtonLabel, isSuccess }) => {
   const theme = useTheme();
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
-  const { account, usedWallet } = walletManagement;
+  const { account } = useAccount();
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
   }, [account]);
@@ -56,21 +55,23 @@ export const WalletManagementButtons: React.FC<
     state.onOpenWalletMenu,
   ]);
 
-  const walletSource = supportedWallets;
   const walletIcon: string = useMemo(() => {
-    if (!!usedWallet) {
-      return usedWallet.icon;
+    if (account.isConnected) {
+      return account.connector?.icon ?? '';
     } else {
-      for (const key in Object.keys(walletSource)) {
-        if (walletSource.hasOwnProperty(key)) {
-          let value = walletSource[key];
-          if (value.name === localStorage.activeWalletName) {
-            return value.icon;
-          }
-        }
-      }
+      return '';
     }
-  }, [usedWallet, walletSource]);
+    //  else {
+    //   for (const key in Object.keys(walletSource)) {
+    //     if (walletSource.hasOwnProperty(key)) {
+    //       let value = walletSource[key];
+    //       if (value.name === localStorage.activeWalletName) {
+    //         return value.icon;
+    //       }
+    //     }
+    //   }
+    // }
+  }, [account]);
 
   const handleWalletSelectClick = (
     event: React.MouseEvent<HTMLButtonElement>,

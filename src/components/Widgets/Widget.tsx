@@ -7,11 +7,12 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
-import { useWallet } from 'src/providers';
+// import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
+import { useAccount } from 'src/hooks/useAccount';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -32,7 +33,8 @@ interface WidgetProps {
 
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
-  const { disconnect, account, switchChain, addChain, addToken } = useWallet();
+  // const { disconnect, switchChain, addChain, addToken } = useWallet();
+  const { account } = useAccount();
   const { i18n } = useTranslation();
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
@@ -58,33 +60,33 @@ export function Widget({ starterVariant }: WidgetProps) {
     return {
       variant: starterVariant === 'refuel' ? 'default' : 'expandable',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
-      walletManagement: {
-        signer: account.signer,
-        connect: async () => {
-          onOpenWalletSelectMenu(
-            true,
-            document.getElementById('connect-wallet-button'),
-          );
-          return account.signer!;
-        },
-        disconnect: async () => {
-          disconnect();
-        },
-        switchChain: async (reqChainId: number) => {
-          await switchChain(reqChainId);
-          if (account.signer) {
-            return account.signer!;
-          } else {
-            throw Error('No signer object after chain switch');
-          }
-        },
-        addToken: async (token: Token, chainId: number) => {
-          await addToken(chainId, token);
-        },
-        addChain: async (chainId: number) => {
-          return addChain(chainId);
-        },
-      },
+      // walletManagement: {
+      //   signer: account.signer,
+      //   connect: async () => {
+      //     onOpenWalletSelectMenu(
+      //       true,
+      //       document.getElementById('connect-wallet-button'),
+      //     );
+      //     return account.signer!;
+      //   },
+      //   disconnect: async () => {
+      //     disconnect();
+      //   },
+      //   switchChain: async (reqChainId: number) => {
+      //     await switchChain(reqChainId);
+      //     if (account.signer) {
+      //       return account.signer!;
+      //     } else {
+      //       throw Error('No signer object after chain switch');
+      //     }
+      //   },
+      //   addToken: async (token: Token, chainId: number) => {
+      //     await addToken(chainId, token);
+      //   },
+      //   addChain: async (chainId: number) => {
+      //     return addChain(chainId);
+      //   },
+      // },
       chains: {
         allow:
           starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],
@@ -140,7 +142,6 @@ export function Widget({ starterVariant }: WidgetProps) {
   }, [
     getMultisigWidgetConfig,
     starterVariant,
-    account.signer,
     theme.palette.mode,
     theme.palette.surface2.main,
     theme.palette.surface1.main,
@@ -149,11 +150,6 @@ export function Widget({ starterVariant }: WidgetProps) {
     i18n.resolvedLanguage,
     i18n.languages,
     isMultisigSigner,
-    onOpenWalletSelectMenu,
-    disconnect,
-    switchChain,
-    addToken,
-    addChain,
   ]);
 
   return (

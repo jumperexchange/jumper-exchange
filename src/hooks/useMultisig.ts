@@ -7,12 +7,12 @@ import type {
 import { ChainId, ChainKey } from '@lifi/sdk';
 import type { GatewayTransactionDetails } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK, { TransactionStatus } from '@safe-global/safe-apps-sdk';
-import { useWallet } from 'src/providers';
 import { useMultisigStore } from 'src/stores';
 import type { MultisigWidgetConfig } from 'src/types';
+import { useAccount } from './useAccount';
 
 export const useMultisig = () => {
-  const { account } = useWallet();
+  const { account } = useAccount();
 
   const { destinationChain } = useMultisigStore();
 

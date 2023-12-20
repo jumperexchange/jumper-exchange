@@ -8,11 +8,11 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useChains, useUserTracking } from 'src/hooks';
-import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
 import { MenuToggle } from '../..';
+import { useAccount } from 'src/hooks/useAccount';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef<any>(null);
@@ -28,9 +28,8 @@ export const NavbarButtons = () => {
   ]);
 
   const { t } = useTranslation();
-  const walletManagement = useWallet();
-  const { account } = useWallet();
-  !account.isActive ?? onWalletDisconnect();
+  const { account } = useAccount();
+  !account.isConnected ?? onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
   const prevMainMenu = useRef(openMainMenu);
@@ -58,7 +57,6 @@ export const NavbarButtons = () => {
   return (
     <NavbarButtonsContainer className="settings">
       <WalletManagementButtons
-        walletManagement={walletManagement}
         connectButtonLabel={
           <Typography
             variant={'lifiBodyMediumStrong'}

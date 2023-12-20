@@ -1,11 +1,11 @@
 import { useChains } from 'src/hooks';
-import { useWallet } from 'src/providers';
+import { useAccount } from './useAccount';
 
 export const useBlockchainExplorerURL = () => {
-  const { account } = useWallet();
+  const { account } = useAccount();
   const { isSuccess: chainsLoaded, getChainById } = useChains();
 
-  if (account.isActive && account.chainId) {
+  if (account.address && account.chainId) {
     const chain = getChainById(account.chainId);
     if (chainsLoaded && chain?.metamask) {
       return `${chain.metamask.blockExplorerUrls[0]}address/${account.address}`;

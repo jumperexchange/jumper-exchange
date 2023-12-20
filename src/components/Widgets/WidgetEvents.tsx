@@ -3,7 +3,7 @@ import { useUserTracking } from 'src/hooks';
 
 import type {
   ChainTokenSelected,
-  RouteContactSupport,
+  // RouteContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
@@ -16,10 +16,10 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useMultisig } from 'src/hooks';
-import { useWallet } from 'src/providers';
 import { useActiveTabStore, useMenuStore, useMultisigStore } from 'src/stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
+import { useAccount } from 'src/hooks/useAccount';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -34,7 +34,7 @@ export function WidgetEvents() {
     state.onDestinationChainSelected,
   ]);
 
-  const { account } = useWallet();
+  const { account } = useAccount();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
@@ -172,10 +172,10 @@ export function WidgetEvents() {
         },
       });
     };
-
-    const onRouteContactSupport = (supportId: RouteContactSupport) => {
-      onOpenSupportModal(true);
-    };
+    // TODO: Discuss what is up here
+    // const onRouteContactSupport = (supportId: RouteContactSupport) => {
+    //   onOpenSupportModal(true);
+    // };
 
     const handleMultisigChainTokenSelected = (
       destinationData: ChainTokenSelected,
@@ -191,7 +191,7 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
-    widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
+    // widgetEvents.on(WidgetEvent.RouteContactSupport, onRouteContactSupport);
     widgetEvents.on(
       WidgetEvent.DestinationChainTokenSelected,
       handleMultisigChainTokenSelected,

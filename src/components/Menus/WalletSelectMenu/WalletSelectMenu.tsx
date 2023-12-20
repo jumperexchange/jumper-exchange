@@ -175,7 +175,6 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
               onClick={handleClickSelectMore}
             />
           )}
-
         <SubMenu
           label={t('navbar.walletSelectMenu.wallets')}
           triggerSubMenu={MenuKeys.WalletSelectMore}

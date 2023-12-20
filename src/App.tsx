@@ -25,10 +25,11 @@ export function App() {
       <Navbar />
       <WelcomeScreen />
       <Menus />
+      {/* 
       <Widgets />
       <FeatureCards />
       <PoweredBy />
-      <Snackbar />
+      <Snackbar /> */}
     </AppProvider>
   );
 }

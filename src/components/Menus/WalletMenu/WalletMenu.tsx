@@ -1,5 +1,5 @@
 import type { Chain } from '@lifi/types';
-import { supportedWallets } from '@lifi/wallet-management';
+// import { supportedWallets } from '@lifi/wallet-management';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
@@ -15,11 +15,12 @@ import {
   useMultisig,
   useUserTracking,
 } from 'src/hooks';
-import { useWallet } from 'src/providers';
+// import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
 import { AvatarContainer, ChainAvatar, WalletAvatar } from '.';
+import { useAccount } from 'src/hooks/useAccount';
 interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
@@ -29,10 +30,10 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const blockchainExplorerURL = useBlockchainExplorerURL();
-  const { account, usedWallet, disconnect } = useWallet();
+  const { account } = useAccount();
+
   const { trackPageload, trackEvent } = useUserTracking();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
-  const walletSource = supportedWallets;
   const { chains } = useChains();
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
@@ -57,16 +58,12 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
   );
 
   const walletIcon: string = useMemo(() => {
-    if (!!usedWallet) {
-      return usedWallet.icon;
+    if (account.isConnected) {
+      return account.connector?.icon || '';
     } else {
-      const walletKey: any = Object.keys(walletSource).filter(
-        (el: string, index: number) =>
-          walletSource[index].name === localStorage.activeWalletName,
-      );
-      return walletSource[walletKey]?.icon || '';
+      return '';
     }
-  }, [usedWallet, walletSource]);
+  }, [account]);
 
   const _walletDigest = useMemo(() => {
     return walletDigest(account);
@@ -106,7 +103,6 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
   };
 
   const handleDisconnectButton = () => {
-    disconnect();
     onCloseAllMenus();
     onWalletDisconnect();
   };
