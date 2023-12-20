@@ -18,6 +18,7 @@ interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
   transformOrigin?: string;
   cardsLayout?: boolean;
+  width?: string;
   styles?: CSSObject;
   setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
@@ -32,16 +33,15 @@ export const MenuDesktop = ({
   transformOrigin,
   cardsLayout,
   label,
+  width,
   open,
   children,
 }: MenuProps) => {
-  const [openSubMenu, onCloseAllMenus, openWalletMenu, anchorRef] =
-    useMenuStore((state) => [
-      state.openSubMenu,
-      state.onCloseAllMenus,
-      state.openWalletMenu,
-      state.anchorRef,
-    ]);
+  const [openSubMenu, onCloseAllMenus, anchorRef] = useMenuStore((state) => [
+    state.openSubMenu,
+    state.onCloseAllMenus,
+    state.anchorRef,
+  ]);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab') {
@@ -70,7 +70,7 @@ export const MenuDesktop = ({
               transformOrigin: transformOrigin || 'top',
             }}
           >
-            <MenuPaper isWide={openWalletMenu}>
+            <MenuPaper width={width}>
               <ClickAwayListener
                 onClickAway={(event) => {
                   handleClose(event);

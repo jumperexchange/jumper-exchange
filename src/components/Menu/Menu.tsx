@@ -9,6 +9,7 @@ interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
   cardsLayout?: boolean;
+  width?: string;
   styles?: CSSObject;
   open: boolean;
   transformOrigin?: string;
@@ -22,6 +23,7 @@ export const Menu = ({
   transformOrigin,
   cardsLayout,
   styles,
+  width,
   label,
   isOpenSubMenu,
   children,
@@ -39,6 +41,7 @@ export const Menu = ({
         transformOrigin={transformOrigin}
         open={open}
         styles={styles}
+        width={width}
         cardsLayout={cardsLayout}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu || false}

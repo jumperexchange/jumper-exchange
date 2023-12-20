@@ -32,6 +32,7 @@ export const EcosystemSelectMenu = ({ handleClose, open }: MenuProps) => {
       <Menu
         handleClose={handleClose}
         open={openEcosystemSelect}
+        width="420px"
         styles={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',

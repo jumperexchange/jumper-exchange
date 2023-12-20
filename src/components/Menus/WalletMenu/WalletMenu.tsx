@@ -132,6 +132,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
       open
       transformOrigin={'top left'}
       setOpen={onOpenWalletMenu}
+      width={'320px'}
       handleClose={handleClose}
       isOpenSubMenu={openSubMenu !== MenuKeys.None}
     >
