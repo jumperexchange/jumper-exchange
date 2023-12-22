@@ -5,3 +5,4 @@ export * from './useFeatureCards';
 export * from './useDexsAndBridges';
 export * from './useMultisig';
 export * from './userTracking';
+export * from './useStrapi';

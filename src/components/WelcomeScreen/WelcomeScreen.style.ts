@@ -31,11 +31,6 @@ export const CustomColor = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    fontSize: '48px',
-    fontWeight: 700,
-    lineHeight: '56px',
-  },
 }));
 
 export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {

@@ -1,17 +1,14 @@
 import { useEffect } from 'react';
 import { useCookie3, useInitUserTracking } from 'src/hooks';
-import { AppProvider } from './AppProvider';
 import {
+  BackgroundGradient,
   FeatureCards,
-  Menus,
-  Navbar,
-  PoweredBy,
-  Snackbar,
   WelcomeScreen,
   Widgets,
-} from './components';
+} from 'src/components';
+import { Layout } from 'src/Layout';
 
-export function App() {
+export const Homepage = () => {
   const { initTracking } = useInitUserTracking();
   const cookie3 = useCookie3();
 
@@ -21,14 +18,11 @@ export function App() {
   }, [cookie3, initTracking]);
 
   return (
-    <AppProvider>
-      <Navbar />
+    <Layout>
+      <BackgroundGradient />
       <WelcomeScreen />
-      <Menus />
       <Widgets />
       <FeatureCards />
-      <PoweredBy />
-      <Snackbar />
-    </AppProvider>
+    </Layout>
   );
-}
+};

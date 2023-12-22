@@ -97,6 +97,7 @@ declare module '@mui/material/styles' {
     lifiBodySmall: React.CSSProperties;
     lifiBodyXSmallStrong: React.CSSProperties;
     lifiBodyXSmall: React.CSSProperties;
+    lifiBrandHeaderXLarge: React.CSSProperties;
     lifiMono5: React.CSSProperties;
     lifiMono4: React.CSSProperties;
     lifiMono3: React.CSSProperties;
@@ -112,7 +113,7 @@ declare module '@mui/material/styles' {
     // lifiBrandBodySmall: React.CSSProperties;
     // lifiBrandHeaderMedium: React.CSSProperties;
     // lifiBrandHeaderLarge: React.CSSProperties;
-    // lifiBrandHeaderXLarge: React.CSSProperties;
+    lifiBrandHeaderXLarge: React.CSSProperties;
     lifiHeaderDisplay?: React.CSSProperties;
     lifiHeaderXLarge?: React.CSSProperties;
     lifiHeaderLarge?: React.CSSProperties;
@@ -189,6 +190,7 @@ declare module '@mui/material/Typography' {
     lifiBodySmall: true;
     lifiBodyXSmallStrong: true;
     lifiBodyXSmall: true;
+    lifiBrandHeaderXLarge: true;
     lifiMono5: true;
     lifiMono4: true;
     lifiMono3: true;
@@ -270,6 +272,7 @@ const themeCustomized: Theme = createTheme({
           lifiBodySmall: 'p',
           lifiBodyXSmallStrong: 'p',
           lifiBodyXSmall: 'p',
+          lifiBrandHeaderXLarge: 'h1',
           lifiMono5: 'p',
           lifiMono4: 'p',
           lifiMono3: 'p',
@@ -485,8 +488,8 @@ const themeCustomized: Theme = createTheme({
       ].join(','),
       fontStyle: 'normal',
       fontWeight: 700,
-      fontSize: '14px',
-      lineHeight: '20px',
+      fontSize: '18px',
+      lineHeight: '24px',
       letterSpacing: 0,
     },
     lifiBodyXLargeStrong: {
@@ -667,6 +670,24 @@ const themeCustomized: Theme = createTheme({
       fontWeight: 500,
       fontSize: '12px',
       lineHeight: '16px',
+      letterSpacing: 0,
+    },
+    lifiBrandHeaderXLarge: {
+      fontFamily: [
+        'Inter var',
+        'Inter',
+        'Inter fallback',
+        'Arial',
+        'Noto Sans',
+        'BlinkMacSystemFont',
+        'Segoe UI',
+        'Helvetica Neue',
+        'sans-serif',
+      ].join(','),
+      fontStyle: 'normal',
+      fontWeight: 700,
+      fontSize: '64px',
+      lineHeight: '72px',
       letterSpacing: 0,
     },
     lifiMono5: {

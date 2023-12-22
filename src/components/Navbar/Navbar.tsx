@@ -4,7 +4,11 @@ import { useWallet } from 'src/providers';
 import { useSettingsStore } from 'src/stores';
 import { NavbarContainer as Container, LogoLink } from '.';
 
-export const Navbar = () => {
+interface NavbarProps {
+  hideNavbarTabs?: boolean;
+}
+
+export const Navbar = ({ hideNavbarTabs }: NavbarProps) => {
   const theme = useTheme();
   const { account } = useWallet();
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
@@ -20,7 +24,7 @@ export const Navbar = () => {
       <LogoLink onClick={handleClick}>
         <Logo isConnected={!!account.address} theme={theme} />
       </LogoLink>
-      <NavbarTabs />
+      {!hideNavbarTabs ? <NavbarTabs /> : null}
       <NavbarButtons />
     </Container>
   );

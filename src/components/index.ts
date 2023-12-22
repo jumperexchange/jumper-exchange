@@ -1,4 +1,5 @@
 export * from './BackgroundGradient';
+export * from './BlogArticleCard';
 export * from './Button';
 export * from './ButtonArrowBack';
 export * from './FeatureCards';

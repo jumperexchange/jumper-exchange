@@ -55,6 +55,11 @@
     "testnet": "Any transactions or actions performed on the Testnet will not be reflected on the Mainnet.",
     "switchToMainnet": "Switch to Mainnet"
   },
+  "blog": {
+    "title": "Tips and tutorials",
+    "subtitle": "TL;DR step-by-step guides to DeFi and crypto for all levels",
+    "minRead": "{{minRead}} min read"
+  },
   "featureCard": {
     "learnMore": "Learn more"
   },

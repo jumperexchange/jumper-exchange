@@ -1,20 +1,58 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { initSentry } from 'src/config';
+import { initSentry } from './config';
 import 'src/fonts/inter.css';
 import 'src/utils/structuredClone';
-import { App } from './App';
 import './fonts/inter.css';
 import { reportWebVitals } from './reportWebVitals';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { BlogArticlePage, BlogPage, Homepage } from './pages';
+import { AppProvider } from './providers';
+import React from 'react';
 
 initSentry();
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
-
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Homepage />,
+  },
+  {
+    path: '/exchange',
+    element: <Homepage />,
+  },
+  {
+    path: '/swap',
+    element: <Homepage />,
+  },
+  {
+    path: '/gas',
+    element: <Homepage />,
+  },
+  {
+    path: '/refuel',
+    element: <Homepage />,
+  },
+  {
+    path: '/buy',
+    element: <Homepage />,
+  },
+  {
+    path: '/blog',
+    element: <BlogPage />,
+  },
+  {
+    path: '/blog/:id',
+    element: <BlogArticlePage />,
+  },
+]);
 root.render(
   <StrictMode>
-    <App />
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
   </StrictMode>,
 );
 

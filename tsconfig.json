@@ -16,7 +16,8 @@
     "strict": true,
     "target": "ES6",
     "paths": {
-      "src/*": ["./*"]
+      "src/*": ["./*"],
+      "src": ["."]
     }
   },
   "plugins": ["import"],

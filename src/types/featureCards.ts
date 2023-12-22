@@ -1,43 +1,8 @@
+/* Feature-Cards */
 interface FeatureCardDisplayConditions {
   id: string;
   mode: string;
   showOnce?: boolean;
-}
-
-interface FeatureCardFormat {
-  name: string;
-  hash: string;
-  ext: string;
-  mime: string;
-  path: string | null;
-  width: number;
-  height: number;
-  size: number;
-  url: string;
-}
-
-interface FeatureCardMedia {
-  id: number;
-  attributes: {
-    name: string;
-    alternativeText: string | null;
-    caption: string | null;
-    width: number;
-    height: number;
-    formats: {
-      [key: string]: FeatureCardFormat;
-    };
-    hash: string;
-    ext: string;
-    mime: string;
-    size: number;
-    url: string;
-    previewUrl: string | null;
-    provider: string;
-    provider_metadata: any;
-    createdAt: string;
-    updatedAt: string;
-  };
 }
 
 interface FeatureCardAttributes {
@@ -53,13 +18,85 @@ interface FeatureCardAttributes {
   publishedAt: string | null;
   locale: string;
   BackgroundImageLight: {
-    data: FeatureCardMedia;
+    data: MediaAttributes;
   };
   BackgroundImageDark: {
-    data: FeatureCardMedia;
+    data: MediaAttributes;
   };
   localizations: {
     data: any[];
+  };
+}
+
+export interface StrapiImageData {
+  data: MediaAttributes;
+}
+
+export interface TagData {
+  data: TagAttributes[];
+}
+interface TagAttributes {
+  attributes: {
+    Title: string;
+    createdAt: string;
+    locale: string;
+    publishedAt: string | null;
+    updatedAt: string;
+  };
+  id: number;
+}
+
+/* Blog */
+export interface BlogArticleAttributes {
+  Title: string;
+  Subtitle: string;
+  Content: string;
+  Image: StrapiImageData;
+  Slug: string;
+  createdAt: string;
+  updatedAt: string;
+  tags: TagData;
+  publishedAt: string | null;
+  locale: string;
+  localizations: {
+    data: any[];
+  };
+}
+
+/* Strapi */
+interface MediaFormat {
+  name: string;
+  hash: string;
+  ext: string;
+  mime: string;
+  path: string | null;
+  width: number;
+  height: number;
+  size: number;
+  url: string;
+}
+
+interface MediaAttributes {
+  id: number;
+  attributes: {
+    name: string;
+    alternativeText: string | undefined;
+    caption: string | null;
+    width: number;
+    height: number;
+    formats: {
+      [key: string]: MediaFormat;
+    };
+    hash: string;
+    ext: string;
+    mime: string;
+    size: number;
+    url: string;
+    previewUrl: string | null;
+    provider: string;
+    provider_metadata: any;
+    createdAt: string;
+    updatedAt: string;
   };
 }
 
@@ -68,7 +105,12 @@ export interface FeatureCardData {
   attributes: FeatureCardAttributes;
 }
 
-interface FeatureCardMeta {
+export interface BlogArticleData {
+  id: number;
+  attributes: BlogArticleAttributes;
+}
+
+interface StrapiMeta {
   pagination: {
     page: number;
     pageSize: number;
@@ -77,7 +119,7 @@ interface FeatureCardMeta {
   };
 }
 
-export interface FeatureCardResponse {
-  data: FeatureCardData[];
-  meta: FeatureCardMeta;
+export interface StrapiResponse {
+  data: BlogArticleData[] | FeatureCardData[];
+  meta: StrapiMeta;
 }

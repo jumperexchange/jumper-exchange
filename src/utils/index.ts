@@ -6,3 +6,5 @@ export * from './removeHash';
 export * from './sortByName';
 export * from './structuredClone';
 export * from './walletDigest';
+export * from './readingTime';
+export * from './formatDate';

@@ -127,7 +127,16 @@ export const WelcomeScreen = () => {
       >
         <ContentWrapper showWelcome={!welcomeScreenClosed}>
           <WelcomeContent>
-            <CustomColor variant={'lifiHeaderMedium'}>
+            <CustomColor
+              variant={'lifiHeaderMedium'}
+              sx={{
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  fontSize: '48px',
+                  fontWeight: 700,
+                  lineHeight: '56px',
+                },
+              }}
+            >
               {t('navbar.welcome.title')}
             </CustomColor>
             <Typography
