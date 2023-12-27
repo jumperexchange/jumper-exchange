@@ -16,7 +16,7 @@ export const Menus = () => {
   return (
     <>
       <MainMenu handleClose={handleClose} />
-      {/* <WalletMenu handleClose={handleClose} /> */}
+      <WalletMenu handleClose={handleClose} />
       <EcosystemSelectMenu handleClose={handleClose} />
       <WalletSelectMenu handleClose={handleClose} />
       <SupportModal />
