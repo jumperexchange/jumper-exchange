@@ -130,6 +130,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
       setOpen={onOpenWalletMenu}
       handleClose={handleClose}
       isOpenSubMenu={openSubMenu !== MenuKeys.None}
+      width={'320px'}
     >
       <Grid
         container

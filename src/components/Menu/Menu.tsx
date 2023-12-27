@@ -13,6 +13,7 @@ interface MenuProps {
   open: boolean;
   transformOrigin?: string;
   children: any;
+  width?: string;
 }
 
 export const Menu = ({
@@ -22,6 +23,7 @@ export const Menu = ({
   transformOrigin,
   cardsLayout,
   styles,
+  width,
   label,
   isOpenSubMenu,
   children,
@@ -39,6 +41,7 @@ export const Menu = ({
         transformOrigin={transformOrigin}
         open={open}
         styles={styles}
+        width={width}
         cardsLayout={cardsLayout}
         setOpen={setOpen}
         isOpenSubMenu={isOpenSubMenu || false}

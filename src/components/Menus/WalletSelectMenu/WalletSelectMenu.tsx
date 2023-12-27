@@ -30,17 +30,12 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
     0,
     NUMBER_OF_WALLETS_DISPLAYED,
   );
-  const [
+  const {
     openWalletSelectMenu,
     onOpenWalletSelectMenu,
     openSubMenu,
     onOpenSubMenu,
-  ] = useMenuStore((state) => [
-    state.openWalletSelectMenu,
-    state.onOpenWalletSelectMenu,
-    state.openSubMenu,
-    state.onOpenSubMenu,
-  ]);
+  } = useMenuStore((state) => state);
 
   const handleClickSelectMore = () => {
     onOpenSubMenu(MenuKeys.WalletSelectMore);

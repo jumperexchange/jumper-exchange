@@ -1,5 +1,9 @@
 import { MenuKeys } from 'src/const';
-import type { MenuState, SnackbarProps } from 'src/types';
+import type {
+  EcosystemSelectMenuProps,
+  MenuState,
+  SnackbarProps,
+} from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
@@ -7,6 +11,7 @@ interface DefaultMenuType {
   openMainMenu: boolean;
   openWalletMenu: boolean;
   openWalletSelectMenu: boolean;
+  openEcosystemSelect: EcosystemSelectMenuProps;
   openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
   openSnackbar: SnackbarProps;
@@ -17,6 +22,7 @@ export const defaultMenu: DefaultMenuType = {
   openMainMenu: false,
   openWalletMenu: false,
   openWalletSelectMenu: false,
+  openEcosystemSelect: { open: false },
   openSubMenu: 'None',
   openSupportModal: false,
   openSnackbar: { open: false, label: undefined, severity: undefined },
@@ -75,6 +81,16 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     onOpenWalletMenu: (open, anchorRef) => {
       set({
         openWalletMenu: open,
+        openSubMenu: MenuKeys.None,
+        anchorRef: open ? anchorRef : null,
+      });
+    },
+
+    // Toggle Wallet Ecosystem Selection Menu
+    onOpenEcosystemSelectMenu: (open, combinedWallet, anchorRef) => {
+      set({
+        openEcosystemSelect: { open, combinedWallet },
+        openWalletSelectMenu: false,
         openSubMenu: MenuKeys.None,
         anchorRef: open ? anchorRef : null,
       });

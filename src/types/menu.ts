@@ -1,3 +1,4 @@
+import type { CombinedWallet } from './../hooks/useCombinedWallets';
 // ----------------------------------------------------------------------
 
 import type { MenuKeys } from 'src/const';
@@ -10,6 +11,11 @@ export interface SnackbarProps {
   severity?: SnackbarSeverityType | undefined;
 }
 
+export interface EcosystemSelectMenuProps {
+  open: boolean;
+  combinedWallet?: CombinedWallet;
+}
+
 export type MenuProps = {
   anchorRef: any;
   openMainMenu: boolean;
@@ -18,6 +24,7 @@ export type MenuProps = {
   openSubMenu: keyof typeof MenuKeys;
   openSnackbar: SnackbarProps;
   openSupportModal: boolean;
+  openEcosystemSelect: EcosystemSelectMenuProps;
 };
 
 export interface MenuState extends MenuProps {
@@ -32,6 +39,13 @@ export interface MenuState extends MenuProps {
 
   // Toggle Wallet Selection Menu
   onOpenWalletSelectMenu: (open: boolean, anchorRef?: any) => void;
+
+  // Toggle Ecosystem Select Menu
+  onOpenEcosystemSelectMenu: (
+    open: boolean,
+    combinedWallet?: CombinedWallet,
+    anchorRef?: any,
+  ) => void;
 
   // Toggle Sub Menu
   onOpenSubMenu: (subMenu: keyof typeof MenuKeys) => void;

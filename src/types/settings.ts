@@ -29,7 +29,7 @@ export interface SettingsState extends SettingsProps {
   onChangeLanguage: (language: LanguageKey) => void;
 
   // Installed Wallets
-  onClientWallets: (wallet: string) => void;
+  setClientWallets: (wallet: string) => void;
 
   // Disable Feature Cards
   onDisableFeatureCard: (id: string) => void;

@@ -100,14 +100,14 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
 export interface MenuPaperProps
   extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
   isMobile?: boolean;
-  isWide?: boolean;
+  width?: string;
   component?: ElementType<any>;
 }
 
 export const MenuPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'isMobile' && prop !== 'isWide' && prop !== 'isSubMenu',
-})<MenuPaperProps>(({ theme, isMobile, isWide }) => ({
+})<MenuPaperProps>(({ theme, isMobile, width }) => ({
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -138,7 +138,7 @@ export const MenuPaper = styled(Paper, {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 72px - 12px )',
     borderRadius: '12px !important',
-    width: isWide ? '320px' : '288px',
+    width: width ?? '288px',
     marginTop: '-2px',
   },
 

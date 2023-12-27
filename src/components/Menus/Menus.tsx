@@ -2,6 +2,8 @@ import type { SyntheticEvent } from 'react';
 import { SupportModal } from 'src/components';
 import { useMenuStore } from 'src/stores';
 import { MainMenu, WalletMenu, WalletSelectMenu } from '.';
+import { EcosystemSelectMenu } from './EcosystemSelectMenu';
+
 export const Menus = () => {
   const [anchorRef] = useMenuStore((state) => [state.anchorRef]);
   const handleClose = (event: Event | SyntheticEvent) => {
@@ -15,6 +17,7 @@ export const Menus = () => {
     <>
       <MainMenu handleClose={handleClose} />
       {/* <WalletMenu handleClose={handleClose} /> */}
+      <EcosystemSelectMenu handleClose={handleClose} />
       <WalletSelectMenu handleClose={handleClose} />
       <SupportModal />
     </>

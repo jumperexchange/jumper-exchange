@@ -8,6 +8,7 @@ import {
   useAccount as useWagmiAccount,
 } from 'wagmi';
 import { useEffect, useState } from 'react';
+import { useSettingsStore } from 'src/stores';
 
 export interface CombinedWallet {
   evm?: Connector;
