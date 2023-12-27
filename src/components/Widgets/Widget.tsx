@@ -1,4 +1,3 @@
-import type { Token } from '@lifi/sdk';
 import { ChainId } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
@@ -12,7 +11,6 @@ import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
-import { useAccount } from 'src/hooks/useAccount';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -33,7 +31,6 @@ interface WidgetProps {
 
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
-  // const { disconnect, switchChain, addChain, addToken } = useWallet();
   const { i18n } = useTranslation();
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
@@ -127,6 +124,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     i18n.resolvedLanguage,
     i18n.languages,
     isMultisigSigner,
+    onOpenWalletSelectMenu,
   ]);
 
   return (

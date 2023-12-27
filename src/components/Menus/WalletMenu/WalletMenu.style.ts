@@ -18,8 +18,8 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
   background:
     theme.palette.mode === 'light' ? 'transparent' : theme.palette.white.main,
   margin: 'auto',
-  height: '96px',
-  width: '96px',
+  height: '88px',
+  width: '88px',
   '> img': {
     height: '58px',
     width: '58px',
@@ -27,8 +27,8 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 export const ChainAvatar = styled(Avatar)(({ theme }) => ({
-  height: '48px',
-  width: '48px',
+  height: '44px',
+  width: '44px',
   position: 'absolute',
   padding: '6px',
   right: '-18px',

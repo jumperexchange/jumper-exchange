@@ -15,7 +15,7 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useChains, useUserTracking } from 'src/hooks';
-import { useAccount } from 'src/hooks/useAccount';
+import { useAccounts } from 'src/hooks/useAccounts';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { walletDigest } from 'src/utils';
@@ -35,9 +35,9 @@ export const WalletManagementButtons: React.FC<
   const theme = useTheme();
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
-  const { account } = useAccount();
+  const { account } = useAccounts();
   const _walletDigest = useMemo(() => {
-    return walletDigest(account);
+    return walletDigest(account.address);
   }, [account]);
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
@@ -61,16 +61,6 @@ export const WalletManagementButtons: React.FC<
     } else {
       return '';
     }
-    //  else {
-    //   for (const key in Object.keys(walletSource)) {
-    //     if (walletSource.hasOwnProperty(key)) {
-    //       let value = walletSource[key];
-    //       if (value.name === localStorage.activeWalletName) {
-    //         return value.icon;
-    //       }
-    //     }
-    //   }
-    // }
   }, [account]);
 
   const handleWalletSelectClick = (

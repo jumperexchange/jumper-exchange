@@ -2,11 +2,11 @@ import { useTheme } from '@mui/material/styles';
 import { Logo, NavbarButtons, NavbarTabs } from 'src/components';
 import { useSettingsStore } from 'src/stores';
 import { NavbarContainer as Container, LogoLink } from '.';
-import { useAccount } from 'src/hooks/useAccount';
+import { useAccounts } from 'src/hooks/useAccounts';
 
 export const Navbar = () => {
   const theme = useTheme();
-  const { account } = useAccount();
+  const { account } = useAccounts();
   const [onWelcomeScreenClosed] = useSettingsStore((state) => [
     state.onWelcomeScreenClosed,
   ]);

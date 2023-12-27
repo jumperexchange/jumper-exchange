@@ -13,12 +13,12 @@ import type {
 } from 'src/types';
 import { EventTrackingTool } from 'src/types';
 import { useCookie3 } from './useCookie3';
-import { useAccount } from '../useAccount';
+import { useAccounts } from '../useAccounts';
 
 export function useUserTracking() {
   const arcx = useArcxAnalytics();
   const cookie3 = useCookie3();
-  const { account } = useAccount();
+  const { account } = useAccounts();
 
   const trackConnectWallet = useCallback(
     /**

@@ -19,7 +19,7 @@ import { useMultisig } from 'src/hooks';
 import { useActiveTabStore, useMenuStore, useMultisigStore } from 'src/stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
-import { useAccount } from 'src/hooks/useAccount';
+import { useAccounts } from 'src/hooks/useAccounts';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
@@ -34,7 +34,7 @@ export function WidgetEvents() {
     state.onDestinationChainSelected,
   ]);
 
-  const { account } = useAccount();
+  const { account } = useAccounts();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);

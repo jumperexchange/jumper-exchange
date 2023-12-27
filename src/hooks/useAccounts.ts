@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import type { Chain } from 'viem';
 import type { Connector } from 'wagmi';
 import { useDisconnect, useAccount as useWagmiAccount } from 'wagmi';
+import { useBlockchainExplorerURL } from '.';
 
 export interface AccountBase {
   address?: string;
@@ -17,6 +18,8 @@ export interface AccountBase {
   isDisconnected: boolean;
   isReconnecting: boolean;
   status: 'connected' | 'reconnecting' | 'connecting' | 'disconnected';
+  blockChainExplorerUrl?: string;
+  walletIcon?: string;
 }
 
 export interface EVMAccount extends AccountBase {
@@ -36,10 +39,10 @@ export interface AccountResult {
   accounts: Account[];
 }
 
-export const useAccount = (): AccountResult => {
+export const useAccounts = (): AccountResult => {
   const account = useWagmiAccount();
   const { wallet } = useWallet();
-
+  const getBlockexplorerURL = useBlockchainExplorerURL();
   return useMemo(() => {
     const svm: Account = wallet?.adapter.publicKey
       ? {
@@ -52,6 +55,11 @@ export const useAccount = (): AccountResult => {
           isReconnecting: false,
           isDisconnected: !wallet,
           status: 'connected',
+          blockChainExplorerUrl: getBlockexplorerURL(
+            wallet?.adapter.publicKey.toString(),
+            ChainId.SOL,
+          ),
+          walletIcon: wallet?.adapter.icon,
         }
       : {
           chainType: ChainType.SVM,
@@ -60,27 +68,36 @@ export const useAccount = (): AccountResult => {
           isReconnecting: false,
           isDisconnected: true,
           status: 'disconnected',
+          blockChainExplorerUrl: undefined,
+          walletIcon: undefined,
         };
-    const evm: Account = { ...account, chainType: ChainType.EVM };
+    const evm: Account = {
+      ...account,
+      chainType: ChainType.EVM,
+      blockChainExplorerUrl: getBlockexplorerURL(
+        account.address,
+        account.chainId,
+      ),
+      walletIcon: account.connector?.icon,
+    };
 
     return {
       account: account.isConnected ? evm : svm,
       accounts: [evm, svm],
     };
-  }, [account, wallet]);
+  }, [account.status, getBlockexplorerURL, wallet?.readyState]);
 };
 
 export const useAccountDisconnect = () => {
-  const account = useWagmiAccount();
   const { disconnect: wagmiDisconnect } = useDisconnect();
-  const { wallet, disconnect } = useWallet();
+  const { disconnect: solanaDisconnect } = useWallet();
 
-  return () => {
-    if (account.isConnected) {
+  return (account: Account) => {
+    console.log(account);
+    if (account.chainType === ChainType.SVM) {
+      solanaDisconnect();
+    } else {
       wagmiDisconnect();
-    }
-    if (wallet) {
-      disconnect();
     }
   };
 };

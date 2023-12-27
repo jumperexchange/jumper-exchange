@@ -1,6 +1,6 @@
 import { isWalletInstalledAsync } from '@lifi/wallet-management';
 import { Avatar, Button, Typography, useTheme } from '@mui/material';
-import { useConnect, type Connector } from 'wagmi';
+import { useConnect, useDisconnect, type Connector } from 'wagmi';
 
 interface EvmConnectButton {
   walletIcon?: string;
@@ -10,6 +10,7 @@ interface EvmConnectButton {
 export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
   const theme = useTheme();
   const { connectAsync } = useConnect();
+  const { disconnect } = useDisconnect();
 
   const connect = async () => {
     const identityCheckPassed = await isWalletInstalledAsync(evm.id);
@@ -17,7 +18,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
       //   onNotInstalled(connector);
       return;
     }
-
+    disconnect();
     await connectAsync(
       { connector: evm },
       //   {

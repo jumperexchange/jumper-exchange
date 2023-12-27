@@ -12,7 +12,7 @@ import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
 import { MenuToggle } from '../..';
-import { useAccount } from 'src/hooks/useAccount';
+import { useAccounts } from 'src/hooks/useAccounts';
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef<any>(null);
@@ -28,7 +28,7 @@ export const NavbarButtons = () => {
   ]);
 
   const { t } = useTranslation();
-  const { account } = useAccount();
+  const { account } = useAccounts();
   !account.isConnected ?? onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open

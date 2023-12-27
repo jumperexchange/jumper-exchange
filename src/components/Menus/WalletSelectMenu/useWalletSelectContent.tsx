@@ -2,7 +2,6 @@ import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMultisig } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { MenuListItem } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
@@ -10,8 +9,8 @@ import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
 import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
 import { isWalletInstalled } from '@lifi/wallet-management';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
-import { useConnect } from 'wagmi';
-// import { MenuKeys } from 'src/const';
+import { useConnect, useDisconnect } from 'wagmi';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
@@ -22,6 +21,8 @@ export const useWalletSelectContent = () => {
     theme.breakpoints.up('sm'),
   );
   const { connectAsync } = useConnect();
+  const { disconnect: wagmiDisconnect } = useDisconnect();
+  const { select, disconnect, connected } = useWallet();
 
   const { onOpenSnackbar, onCloseAllMenus, onOpenEcosystemSelectMenu } =
     useMenuStore((state) => state);
@@ -45,29 +46,21 @@ export const useWalletSelectContent = () => {
     return allowedWallets;
   }, [combinedInstalledWallets, combinedNotDetectedWallets, isDesktopView]);
 
-  // const login = useCallback(
-  //   async (wallet: Wallet) => {
-  //     if (!wallet.installed()) {
-  //       setShowWalletIdentityPopover(wallet);
-  //       return;
-  //     }
-  //     await connect(wallet as Wallet | undefined);
-  //     onWalletConnect(wallet.name);
-  //     try {
-  //     } catch (e) {}
-  //   },
-  //   [connect, onWalletConnect],
-  // );
-
   const login = useCallback(
     async (combinedWallet: CombinedWallet) => {
       if (combinedWallet.evm && combinedWallet.svm) {
         onOpenEcosystemSelectMenu(true, combinedWallet);
         return;
       } else if (combinedWallet.evm) {
+        wagmiDisconnect();
         await connectAsync({ connector: combinedWallet.evm! });
+        onWalletConnect(combinedWallet.evm.name);
       } else if (combinedWallet.svm) {
-        console.log('need to add svm connection logic selector');
+        if (connected) {
+          disconnect();
+        }
+        select(combinedWallet.svm.adapter.name);
+        onWalletConnect(combinedWallet.svm.adapter.name);
       } else {
         onOpenSnackbar(true, 'No appropriate ecosystem adapter found', 'error'); // Localize text
       }
@@ -79,6 +72,10 @@ export const useWalletSelectContent = () => {
       onWelcomeScreenClosed,
       onOpenEcosystemSelectMenu,
       connectAsync,
+      onWalletConnect,
+      connected,
+      select,
+      disconnect,
       onOpenSnackbar,
     ],
   );

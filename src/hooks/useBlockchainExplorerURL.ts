@@ -1,16 +1,21 @@
+import { ChainId } from '@lifi/sdk';
 import { useChains } from 'src/hooks';
-import { useAccount } from './useAccount';
 
 export const useBlockchainExplorerURL = () => {
-  const { account } = useAccount();
   const { isSuccess: chainsLoaded, getChainById } = useChains();
 
-  if (account.address && account.chainId) {
-    const chain = getChainById(account.chainId);
-    if (chainsLoaded && chain?.metamask) {
-      return `${chain.metamask.blockExplorerUrls[0]}address/${account.address}`;
-    } else {
-      console.error(`No blockchain explorer found for ${account.chainId}`);
+  return (walletAddress?: string, chainId?: number) => {
+    if (!walletAddress || !chainId) {
+      return undefined;
     }
-  }
+    if (chainId === ChainId.SOL) {
+      return `https://explorer.solana.com/address/${walletAddress}`;
+    }
+    const chain = getChainById(chainId);
+    if (chainsLoaded && chain?.metamask) {
+      return `${chain.metamask.blockExplorerUrls[0]}address/${walletAddress}`;
+    } else {
+      console.error(`No blockchain explorer found for ${chainId}`);
+    }
+  };
 };
