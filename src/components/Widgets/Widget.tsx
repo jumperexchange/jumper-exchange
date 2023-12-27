@@ -34,7 +34,6 @@ interface WidgetProps {
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   // const { disconnect, switchChain, addChain, addToken } = useWallet();
-  const { account } = useAccount();
   const { i18n } = useTranslation();
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
@@ -60,33 +59,11 @@ export function Widget({ starterVariant }: WidgetProps) {
     return {
       variant: starterVariant === 'refuel' ? 'default' : 'expandable',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
-      // walletManagement: {
-      //   signer: account.signer,
-      //   connect: async () => {
-      //     onOpenWalletSelectMenu(
-      //       true,
-      //       document.getElementById('connect-wallet-button'),
-      //     );
-      //     return account.signer!;
-      //   },
-      //   disconnect: async () => {
-      //     disconnect();
-      //   },
-      //   switchChain: async (reqChainId: number) => {
-      //     await switchChain(reqChainId);
-      //     if (account.signer) {
-      //       return account.signer!;
-      //     } else {
-      //       throw Error('No signer object after chain switch');
-      //     }
-      //   },
-      //   addToken: async (token: Token, chainId: number) => {
-      //     await addToken(chainId, token);
-      //   },
-      //   addChain: async (chainId: number) => {
-      //     return addChain(chainId);
-      //   },
-      // },
+      walletManagement: {
+        connect: async () => {
+          onOpenWalletSelectMenu(true);
+        },
+      },
       chains: {
         allow:
           starterVariant === TabsMap.Refuel.variant ? refuelAllowChains : [],

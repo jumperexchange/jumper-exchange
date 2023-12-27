@@ -1,53 +1,20 @@
-import { Avatar, Button, Container, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { Menu, MenuHeaderAppBar, MenuHeaderAppWrapper } from 'src/components';
 import { useMenuStore } from 'src/stores';
-import type { Connector } from 'wagmi';
-import type { Wallet } from '@solana/wallet-adapter-react';
+
+import { SVMConnectButton } from './SVMConnectButton';
+import { EVMConnectButton } from './EVMConnectButton';
 
 interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
   open?: boolean;
 }
-interface EcosystemSelectButtonProps {
-  type: 'evm' | 'svm';
-  walletIcon?: string;
-  clickHandler: () => void;
-}
-
-const EcosystemSelectButton = ({
-  walletIcon,
-  type,
-}: EcosystemSelectButtonProps) => {
-  const theme = useTheme();
-
-  return (
-    <Button
-      sx={{
-        boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-        padding: '24px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: ' 1 0 0',
-        cursor: 'pointer',
-        background: theme.palette.surface2.main,
-      }}
-    >
-      <Avatar src={walletIcon} sx={{ width: '88px', height: '88px' }} />
-      <Typography variant={'lifiBodySmallStrong'} sx={{ margin: '12px' }}>
-        {type === 'evm' ? 'EVM' : 'Solana'}
-      </Typography>
-    </Button>
-  );
-};
 
 export const EcosystemSelectMenu = ({ handleClose, open }: MenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-
   const { openEcosystemSelect, onOpenEcosystemSelectMenu } = useMenuStore(
     (state) => state,
   );
@@ -99,19 +66,19 @@ export const EcosystemSelectMenu = ({ handleClose, open }: MenuProps) => {
             background: theme.palette.surface1.main,
           }}
         >
-          <EcosystemSelectButton
-            type="evm"
+          <EVMConnectButton
             walletIcon={
               openEcosystemSelect.combinedWallet?.evm?.icon ||
               openEcosystemSelect.combinedWallet?.svm?.adapter.icon
             }
+            evm={openEcosystemSelect.combinedWallet?.evm!}
           />
-          <EcosystemSelectButton
-            type="svm"
+          <SVMConnectButton
             walletIcon={
               openEcosystemSelect.combinedWallet?.evm?.icon ||
               openEcosystemSelect.combinedWallet?.svm?.adapter.icon
             }
+            svm={openEcosystemSelect.combinedWallet?.svm!}
           />
         </Container>
       </Menu>

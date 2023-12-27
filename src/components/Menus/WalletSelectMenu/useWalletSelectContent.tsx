@@ -1,23 +1,21 @@
 import type { Theme } from '@mui/material';
 import { Avatar, useMediaQuery, useTheme } from '@mui/material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMultisig } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { MenuListItem } from 'src/types';
-import type { Wallet } from '@solana/wallet-adapter-react';
 import { getContrastAlphaColor } from 'src/utils';
 import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
 import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
 import { isWalletInstalled } from '@lifi/wallet-management';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useConnect } from 'wagmi';
-import { MenuKeys } from 'src/const';
+// import { MenuKeys } from 'src/const';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { checkMultisigEnvironment } = useMultisig();
   const { combinedInstalledWallets, combinedNotDetectedWallets } =
     useCombinedWallets();
   const isDesktopView = useMediaQuery((theme: Theme) =>
