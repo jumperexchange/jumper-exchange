@@ -2,7 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import { styled } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
-export const SCard = styled('div')(({ theme }) => ({
+export const TCard = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',

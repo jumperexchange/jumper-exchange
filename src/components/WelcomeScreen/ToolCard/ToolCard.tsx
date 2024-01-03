@@ -1,6 +1,6 @@
 import { Typography, useTheme } from '@mui/material';
 import { useCountUpAnimation } from 'src/hooks';
-import { SCard as Card } from './ToolCard.style';
+import { TCard as Card } from './ToolCard.style';
 
 interface ToolCardProps {
   number: string;
