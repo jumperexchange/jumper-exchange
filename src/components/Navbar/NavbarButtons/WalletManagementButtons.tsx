@@ -1,15 +1,10 @@
 import type { Chain } from '@lifi/types';
 import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
-import { Typography, useTheme } from '@mui/material';
+import { Badge, Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
-import {
-  Button,
-  WalletMgmtAvatarContainer,
-  WalletMgmtChainAvatar,
-  WalletMgmtWalletAvatar,
-} from 'src/components';
+import { Avatar, Button, WalletMgmtWalletAvatar } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -140,15 +135,33 @@ export const WalletManagementButtons: React.FC<
       onClick={handleWalletMenuClick}
     >
       {isSuccess && activeChain ? (
-        <WalletMgmtAvatarContainer>
+        <Badge
+          overlap="circular"
+          className="badge"
+          sx={{
+            background: theme.palette.surface1.main,
+            borderRadius: '50%',
+            '& > span': { paddingLeft: theme.spacing(1.5) },
+          }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          badgeContent={
+            <Avatar
+              size="small"
+              src={activeChain.logoURI || 'empty'}
+              alt={`${activeChain.name}chain-logo`}
+            >
+              {activeChain.name[0]}
+            </Avatar>
+          }
+        >
           <WalletMgmtWalletAvatar src={walletIcon} />
-          <WalletMgmtChainAvatar
-            src={activeChain.logoURI || 'empty'}
-            alt={`${activeChain.name}chain-logo`}
-          />
-        </WalletMgmtAvatarContainer>
+        </Badge>
       ) : null}
-      <Typography variant={'lifiBodyMediumStrong'} width={'auto'}>
+      <Typography
+        variant={'lifiBodyMediumStrong'}
+        width={'auto'}
+        sx={{ marginLeft: theme.spacing(1) }}
+      >
         {_walletDigest}
       </Typography>
     </Button>

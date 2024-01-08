@@ -1,3 +1,4 @@
+export * from './Avatar';
 export * from './BackgroundGradient';
 export * from './Button';
 export * from './ButtonArrowBack';

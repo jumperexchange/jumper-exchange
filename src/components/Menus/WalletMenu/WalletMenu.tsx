@@ -4,10 +4,17 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LaunchIcon from '@mui/icons-material/Launch';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import type { Breakpoint } from '@mui/material';
-import { Grid, Typography, darken, lighten, useTheme } from '@mui/material';
+import {
+  Badge,
+  Grid,
+  Typography,
+  darken,
+  lighten,
+  useTheme,
+} from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Menu, SpotButton } from 'src/components';
+import { Avatar, Menu, SpotButton } from 'src/components';
 import { MenuKeys, TrackingAction, TrackingCategory } from 'src/const';
 import {
   useBlockchainExplorerURL,
@@ -19,7 +26,7 @@ import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { openInNewTab, walletDigest } from 'src/utils';
-import { AvatarContainer, ChainAvatar, WalletAvatar } from '.';
+import { WalletAvatar } from '.';
 interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
 }
@@ -147,13 +154,22 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
       >
         <Grid item xs={12} textAlign={'center'} mb={theme.spacing(2.5)}>
           {activeChain && (
-            <AvatarContainer>
+            <Badge
+              overlap="circular"
+              className="badge"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              badgeContent={
+                <Avatar
+                  size="large"
+                  src={activeChain.logoURI || ''}
+                  alt={activeChain.name}
+                >
+                  {activeChain.name[0]}
+                </Avatar>
+              }
+            >
               <WalletAvatar src={walletIcon} />
-              <ChainAvatar
-                src={activeChain.logoURI || 'empty'}
-                alt={`${activeChain.name}chain-logo`}
-              />
-            </AvatarContainer>
+            </Badge>
           )}
           <Typography variant="lifiBodyLargeStrong" mt={theme.spacing(1.5)}>
             {_walletDigest}

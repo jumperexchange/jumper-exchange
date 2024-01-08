@@ -1,5 +1,6 @@
 import type { CSSObject } from '@mui/material';
-import { ReactNode, type PropsWithChildren } from 'react';
+import type { ReactNode } from 'react';
+import { type PropsWithChildren } from 'react';
 import {
   ButtonPrimary,
   ButtonSecondary,

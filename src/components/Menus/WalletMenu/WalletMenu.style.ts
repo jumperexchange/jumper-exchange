@@ -1,16 +1,9 @@
 import { Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export const AvatarContainer = styled('div')(({ theme }) => ({
-  position: 'relative',
-  width: 'fit-content',
-  margin: 'auto',
-}));
-
 export const WalletAvatar = styled(Avatar)(({ theme }) => ({
   padding: theme.spacing(2.25),
-  background:
-    theme.palette.mode === 'light' ? 'transparent' : theme.palette.white.main,
+  background: '#F7F9FB', //todo: proper color-name
   margin: 'auto',
   height: '96px',
   width: '96px',
@@ -30,6 +23,6 @@ export const ChainAvatar = styled(Avatar)(({ theme }) => ({
   borderRadius: '24px',
   background: 'white',
   img: {
-    borderRadius: '23px',
+    borderRadius: '50%',
   },
 }));

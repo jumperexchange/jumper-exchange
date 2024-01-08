@@ -58,6 +58,7 @@ export const ButtonSecondary = styled(ButtonBase)<MuiButtonProps>(
       position: 'absolute',
       top: 0,
       right: 0,
+      zIndex: 2,
       bottom: 0,
       left: 0,
       transition: 'background-color 250ms',
