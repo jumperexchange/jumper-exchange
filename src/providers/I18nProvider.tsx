@@ -40,6 +40,7 @@ export const I18NProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
       detection: {
         caches: [],
       },
+      returnEmptyString: false,
     });
 
     i18n

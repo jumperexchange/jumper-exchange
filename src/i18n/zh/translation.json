@@ -5,6 +5,7 @@
       "subtitle": "由<1>LI.FI</1>提供技术支持，<0>高达4次审计</0>的多链流动性聚合器",
       "cta": "开始使用"
     },
+    "poweredByLifi": "",
     "links": {
       "exchange": "兑换",
       "dashboard": "面板",
@@ -16,9 +17,14 @@
       "bridges": "跨链桥",
       "chains": "区块链"
     },
-    "connectWallet": "连接钱包",
-    "chooseWallet": "选择钱包",
+    "connect": "",
+    "walletSelectMenu": {
+      "connectWallet": "",
+      "wallets": ""
+    },
+    "seeAllWallets": "",
     "navbarMenu": {
+      "brandAssets": "",
       "theme": "主题",
       "developers": "开发者",
       "lifiExplorer": "LI.FI 浏览器",
@@ -31,17 +37,16 @@
       "switchChain": "切换网络",
       "copy": "复制到剪切板",
       "explore": "浏览区块浏览器",
-      "copiedMsg": "钱包地址已复制"
+      "copiedMsg": "钱包地址已复制",
+      "walletNotInstalled": ""
     },
     "themes": {
       "switchToLight": "切换到浅色主题",
       "switchToDark": "切换到深色主题",
-      "light": "浅色主题",
-      "dark": "深色主题",
-      "auto": "自动切换"
+      "switchToSystem": ""
     },
     "developers": {
-      "github": "GitHub",
+      "github": "",
       "documentation": "文档"
     }
   },
