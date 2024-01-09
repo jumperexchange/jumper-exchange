@@ -29,10 +29,10 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   background: theme.palette.background.paper,
   width: '16px',
   height: '16px',
-  top: '-2px',
+  top: theme.spacing(-0.25),
   backgroundColor: theme.palette.surface1.main,
   img: {
-    padding: '2px',
+    padding: theme.spacing(0.25),
     borderRadius: '50%',
     background:
       theme.palette.mode === 'dark' ? theme.palette.white.main : 'inherit',
