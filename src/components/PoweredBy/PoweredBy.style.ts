@@ -7,10 +7,10 @@ export interface ContainerProps extends Omit<BoxProps, 'variant'> {
 //, {  shouldForwardProp: (prop) => prop !== 'variant' && prop !== 'cardsLayout',}
 export const Container = styled('div')<ContainerProps>(({ theme }) => ({
   position: 'fixed',
-  bottom: '22px',
-  right: '24px',
+  bottom: 22,
+  right: 24,
   display: 'block',
-  zIndex: '1',
+  zIndex: 1,
 
   '.link-lifi': {
     fontWeight: '700',

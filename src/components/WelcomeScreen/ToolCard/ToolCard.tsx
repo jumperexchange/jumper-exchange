@@ -25,11 +25,11 @@ export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
           pointerEvents: 'none',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          maxWidth: '80px',
-          maxHeight: '32px',
+          maxWidth: 80,
+          maxHeight: 32,
           [theme.breakpoints.up('sm')]: {
             fontSize: '32px',
-            maxHeight: '40px',
+            maxHeight: 40,
             lineHeight: '40px',
           },
         }}
@@ -42,12 +42,12 @@ export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
           pointerEvents: 'none',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          maxWidth: '80px',
-          maxHeight: '20px',
+          maxWidth: 80,
+          maxHeight: 20,
           [theme.breakpoints.up('sm')]: {
             mt: theme.spacing(0.5),
             fontSize: '16px',
-            maxWidth: '118px',
+            maxWidth: 118,
           },
         }}
       >

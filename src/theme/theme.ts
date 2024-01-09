@@ -225,9 +225,9 @@ const themeCustomized: Theme = createTheme({
     MuiSnackbar: {
       styleOverrides: {
         root: () => ({
-          top: '80px',
+          top: 80,
           [themeBase.breakpoints.up('sm' as Breakpoint)]: {
-            top: '80px',
+            top: 80,
           },
         }),
       },

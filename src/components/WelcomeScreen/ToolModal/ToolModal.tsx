@@ -82,20 +82,20 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
                 <Grid
                   item
                   key={`${title}-item-${index}`}
-                  width={'72px'}
+                  width={72}
                   textAlign={'center'}
                 >
                   <Avatar
                     src={el.logoURI}
                     sx={{
                       margin: 'auto',
-                      height: '48px',
-                      width: '48px',
+                      height: 48,
+                      width: 48,
                     }}
                   />
                   <Typography
                     variant={'lifiBodyXSmall'}
-                    marginTop={'12px'}
+                    marginTop={theme.spacing(1.5)}
                     sx={{
                       color:
                         theme.palette.mode === 'dark'
@@ -103,9 +103,9 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
                           : theme.palette.black.main,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      maxWidth: '72px',
-                      height: '32px',
-                      maxHeight: '32px',
+                      maxWidth: 72,
+                      height: 32,
+                      maxHeight: 32,
                     }}
                   >
                     {el.name}

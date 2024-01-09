@@ -4,35 +4,35 @@ import { styled } from '@mui/material/styles';
 
 export const WalletMgmtAvatarContainer = styled('div')(({ theme }) => ({
   position: 'relative',
-  marginRight: '12px',
+  marginRight: `${theme.spacing(1.5)}`,
 }));
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
   background:
     theme.palette.mode === 'light' ? 'transparent' : theme.palette.white.main,
-  height: '32px',
-  width: '32px',
-  padding: '4px',
-  mr: '8px',
-  ml: '2px',
+  height: 32,
+  width: 32,
+  padding: theme.spacing(0.5),
+  mr: theme.spacing(1),
+  ml: theme.spacing(0.25),
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    mr: '0px',
-    ml: '0px',
+    mr: theme.spacing(0),
+    ml: theme.spacing(0),
   },
   [theme.breakpoints.up('lg' as Breakpoint)]: {
-    mr: '8px',
-    ml: '2px',
+    mr: theme.spacing(1),
+    ml: theme.spacing(0.25),
   },
 }));
 
 export const WalletMgmtChainAvatar = styled(Avatar)(({ theme }) => ({
-  height: '20px',
-  width: '20px',
+  height: 20,
+  width: 20,
   position: 'absolute',
-  padding: '4px',
-  right: '-10px',
+  padding: `${theme.spacing(0.5)}`,
+  right: -10,
   borderRadius: '10px',
-  bottom: '-6px',
+  bottom: `${theme.spacing(-0.75)}`,
   background: 'white',
   img: {
     borderRadius: '6px',
