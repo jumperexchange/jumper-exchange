@@ -127,7 +127,7 @@ export const useWalletSelectContent = () => {
             sx={{
               height: '40px',
               width: '40px',
-              objectFit: 'contain',
+              img: { objectFit: 'contain' },
             }}
           />
         ),

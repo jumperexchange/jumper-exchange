@@ -17,6 +17,9 @@ export const LargeAvatar = styled(Avatar)(({ theme }) => ({
       ? '#F7F9FB' //todo: proper color-name
       : theme.palette.surface1.main
   }`,
+  '& img': {
+    objectFit: 'contain',
+  },
 }));
 
 export const LargeAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
@@ -34,6 +37,7 @@ export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   img: {
     padding: theme.spacing(0.25),
     borderRadius: '50%',
+    objectFit: 'contain',
     background:
       theme.palette.mode === 'dark' ? theme.palette.white.main : 'inherit',
   },
