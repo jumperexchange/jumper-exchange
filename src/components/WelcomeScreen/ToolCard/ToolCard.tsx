@@ -1,6 +1,6 @@
 import { Typography, useTheme } from '@mui/material';
 import { useCountUpAnimation } from 'src/hooks';
-import { SCard as Card } from './ToolCard.style';
+import { ToolCardContainer } from './ToolCard.style';
 
 interface ToolCardProps {
   number: string;
@@ -12,7 +12,7 @@ export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
   const theme = useTheme();
   const counter = useCountUpAnimation({ children: number, duration: 1000 });
   return (
-    <Card
+    <ToolCardContainer
       className={'stats-card'}
       onClick={handleClick}
       sx={{ cursor: 'pointer' }}
@@ -53,6 +53,6 @@ export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
       >
         {title}
       </Typography>
-    </Card>
+    </ToolCardContainer>
   );
 };
