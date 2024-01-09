@@ -20,16 +20,6 @@ export const WidgetContainer = styled(Box, {
   transitionTimingFunction: 'ease-in-out',
   maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
 
-  [`@media screen and (min-height: 700px)`]: {
-    gridTemplateRows: !welcomeScreenClosed ? '1fr 1fr 350px' : '28px 0fr 1fr',
-    height: 'inherit',
-  },
-
-  [`@media screen and (min-height: 900px)`]: {
-    gridTemplateRows: !welcomeScreenClosed ? '1fr 1fr 350px' : '28px 0r 1fr',
-    maxHeight: 'inherit',
-  },
-
   // setting hover animations on widget wrappers
   '& > .widget-wrapper > div': {
     transitionProperty: 'margin-top',
