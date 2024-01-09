@@ -9,7 +9,7 @@ export const FeatureCardsContainer = styled(Box)<BoxProps>(({ theme }) => ({
   position: 'fixed',
   right: 0,
   width: 408,
-  padding: 12,
+  padding: `${theme.spacing(1.5)}`,
   bottom: 0,
   zIndex: 2,
 }));

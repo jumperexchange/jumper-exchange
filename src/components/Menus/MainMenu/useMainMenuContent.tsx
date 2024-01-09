@@ -76,7 +76,7 @@ export const useMainMenuContent = () => {
       styles: {
         width: 'auto',
         margin: theme.spacing(1.5),
-        gap: 8,
+        gap: '8px',
         backgroundColor: 'transparent',
         borderRadius: '24px',
         '&:hover': {

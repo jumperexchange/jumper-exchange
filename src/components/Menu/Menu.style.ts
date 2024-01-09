@@ -93,7 +93,7 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     maxWidth: 174,
     marginRight: 0,
-    marginLeft: `${theme.spacing(0.75)}`, //6px
+    marginLeft: `${theme.spacing(0.75)}`,
   },
 }));
 
