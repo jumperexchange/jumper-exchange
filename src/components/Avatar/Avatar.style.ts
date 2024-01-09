@@ -11,7 +11,7 @@ export const LargeAvatar = styled(Avatar)(({ theme }) => ({
   width: 48,
   height: 48,
   left: theme.spacing(0.5),
-  top: `-${theme.spacing(0.5)}`,
+  top: theme.spacing(-0.5),
   border: `6px solid ${
     theme.palette.mode === 'dark'
       ? '#F7F9FB' //todo: proper color-name
