@@ -1,7 +1,7 @@
 import type { Chain } from '@lifi/types';
 import { supportedWallets } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
-import { Badge, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
 import React, { useMemo } from 'react';
 import { Avatar, Button, WalletMgmtWalletAvatar } from 'src/components';
@@ -14,6 +14,7 @@ import { useChains, useUserTracking } from 'src/hooks';
 import { useMenuStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { walletDigest } from 'src/utils';
+import { Badge } from './WalletManagementButtons.style';
 
 interface WalletManagementButtonsProps {
   children?: React.ReactNode;
@@ -138,11 +139,6 @@ export const WalletManagementButtons: React.FC<
         <Badge
           overlap="circular"
           className="badge"
-          sx={{
-            background: theme.palette.surface1.main,
-            borderRadius: '50%',
-            '& > span': { paddingLeft: theme.spacing(1.5) },
-          }}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           badgeContent={
             <Avatar

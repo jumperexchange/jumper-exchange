@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Badge as MuiBadge } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
@@ -8,4 +8,10 @@ export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
   height: '32px',
   width: '32px',
   padding: '6px',
+}));
+
+export const Badge = styled(MuiBadge)(({ theme }) => ({
+  background: theme.palette.surface1.main,
+  borderRadius: '50%',
+  '& > span': { paddingLeft: theme.spacing(1.5) },
 }));
