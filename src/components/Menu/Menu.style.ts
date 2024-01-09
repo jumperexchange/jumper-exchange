@@ -139,7 +139,7 @@ export const MenuPaper = styled(Paper, {
     maxHeight: 'calc( 100vh - 72px - 12px )',
     borderRadius: '12px !important',
     width: isWide ? '320px' : '288px',
-    marginTop: '-2px',
+    marginTop: `${theme.spacing(-0.25)}`,
   },
 
   [theme.breakpoints.up('md' as Breakpoint)]: {

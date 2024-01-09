@@ -30,8 +30,8 @@ export const LargeAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
 
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   background: theme.palette.background.paper,
-  width: '16px',
-  height: '16px',
+  width: 16,
+  height: 16,
   top: theme.spacing(-0.25),
   backgroundColor: theme.palette.surface1.main,
   img: {
@@ -49,6 +49,6 @@ export const SmallAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
       ? theme.palette.alphaLight400.main
       : darken(theme.palette.white.main, 0.04)
   }`,
-  width: '16px',
-  height: '16px',
+  width: 16,
+  height: 16,
 }));
