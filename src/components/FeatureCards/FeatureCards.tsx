@@ -5,20 +5,53 @@ import { FeatureCard } from 'src/components';
 import { useFeatureCards } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import type { FeatureCardData } from 'src/types';
+import { deepMerge, removeEmpty } from 'src/utils';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
   const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
-  const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
-    (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
-    shallow,
-  );
-
+  const [disabledFeatureCards, welcomeScreenClosed, languageMode] =
+    useSettingsStore(
+      (state) => [
+        state.disabledFeatureCards,
+        state.welcomeScreenClosed,
+        state.languageMode,
+      ],
+      shallow,
+    );
+  // get english response
   const { featureCards: data, isSuccess } = useFeatureCards();
+  // get translated response
+  const {
+    featureCards: translatedFeatureCards,
+    isSuccess: translatedFeatureCardsIsSuccess,
+  } = useFeatureCards({ translation: true });
+
+  // remove null´s (missing entries) from translated object
+  const cleanedTranslation = useMemo(() => {
+    const cleanedTranslation = translatedFeatureCards?.map((el) =>
+      removeEmpty(el),
+    );
+    return cleanedTranslation;
+  }, [translatedFeatureCards]);
+
+  // merge
+  const filteredResponse = data?.map((el) => {
+    const translatedItem = cleanedTranslation?.find(
+      (foundItem) =>
+        foundItem?.attributes?.DisplayConditions.id ===
+        el.attributes?.DisplayConditions.id,
+    );
+    if (translatedItem) {
+      return deepMerge(el, translatedItem);
+    }
+    return el;
+  });
+
   const featureCardsFetched = useMemo(() => {
-    if (Array.isArray(data) && !!data.length) {
-      return data?.filter(
+    if (Array.isArray(filteredResponse) && !!filteredResponse.length) {
+      return filteredResponse?.filter(
         (el, index) =>
           isSuccess &&
           el.attributes.DisplayConditions &&
@@ -27,7 +60,7 @@ export const FeatureCards = () => {
     }
     // trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, isSuccess]);
+  }, [languageMode, isSuccess, translatedFeatureCardsIsSuccess]);
 
   useEffect(() => {
     if (Array.isArray(featureCardsFetched)) {
