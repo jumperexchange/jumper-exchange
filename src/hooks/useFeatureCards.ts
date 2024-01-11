@@ -35,7 +35,10 @@ export const useFeatureCards = (
     apiUrl.searchParams.set('locale', languageMode);
   }
   const { data, isSuccess } = useQuery({
-    queryKey: [props?.translation ? 'featureCardsTranslated' : 'featureCards'],
+    queryKey: [
+      languageMode,
+      props?.translation ? 'featureCardsTranslated' : 'featureCards',
+    ],
 
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
