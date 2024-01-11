@@ -2,6 +2,7 @@ import { Avatar, Button, Typography, useTheme } from '@mui/material';
 import type { Wallet } from '@solana/wallet-adapter-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useMenuStore } from 'src/stores';
+import { ConnectButton } from './EcosystemSelectMenu.style';
 
 interface SVMConnectButtonProps {
   walletIcon?: string;
@@ -32,24 +33,20 @@ export const SVMConnectButton = ({
     onCloseAllMenus();
   };
   return (
-    <Button
-      sx={{
-        boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-        padding: '24px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: ' 1 0 0',
-        cursor: 'pointer',
-        background: theme.palette.surface2.main,
-      }}
-      onClick={() => connect()}
-    >
+    <ConnectButton onClick={() => connect()}>
       <Avatar src={walletIcon} sx={{ width: '88px', height: '88px' }} />
-      <Typography variant={'lifiBodySmallStrong'} sx={{ margin: '12px' }}>
+      <Typography
+        sx={{
+          color:
+            theme.palette.mode === 'dark'
+              ? theme.palette.white.main
+              : theme.palette.black.main,
+          margin: '12px',
+        }}
+        variant={'lifiBodySmallStrong'}
+      >
         Solana
       </Typography>
-    </Button>
+    </ConnectButton>
   );
 };

@@ -6,6 +6,7 @@ import { useMenuStore } from 'src/stores';
 
 import { SVMConnectButton } from './SVMConnectButton';
 import { EVMConnectButton } from './EVMConnectButton';
+import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 
 interface MenuProps {
   handleClose: (event: MouseEvent | TouchEvent) => void;
@@ -39,13 +40,7 @@ export const EcosystemSelectMenu = ({ handleClose, open }: MenuProps) => {
         >
           <MenuHeaderAppBar component="div" elevation={0}>
             <Typography
-              sx={{
-                color:
-                  theme.palette.mode === 'dark'
-                    ? theme.palette.white.main
-                    : theme.palette.black.main,
-              }}
-              variant={'lifiBodyMediumStrong'}
+              variant="lifiBodyMediumStrong"
               width={'100%'}
               align={'center'}
               flex={1}
@@ -56,16 +51,7 @@ export const EcosystemSelectMenu = ({ handleClose, open }: MenuProps) => {
             </Typography>
           </MenuHeaderAppBar>
         </MenuHeaderAppWrapper>
-        <Container
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            gap: '16px',
-            alignSelf: 'stretch',
-            background: theme.palette.surface1.main,
-          }}
-        >
+        <ConnectButtonContainer>
           <EVMConnectButton
             walletIcon={
               openEcosystemSelect.combinedWallet?.evm?.icon ||
@@ -80,7 +66,7 @@ export const EcosystemSelectMenu = ({ handleClose, open }: MenuProps) => {
             }
             svm={openEcosystemSelect.combinedWallet?.svm!}
           />
-        </Container>
+        </ConnectButtonContainer>
       </Menu>
     )
   );

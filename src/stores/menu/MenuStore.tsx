@@ -55,6 +55,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
         openWalletMenu: false,
         openSubMenu: MenuKeys.None,
         openSupportModal: false,
+        openEcosystemSelect: { open: false },
         anchorRef: null,
       });
     },
@@ -92,7 +93,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
         openEcosystemSelect: { open, combinedWallet },
         openWalletSelectMenu: false,
         openSubMenu: MenuKeys.None,
-        anchorRef: open ? anchorRef : null,
+        anchorRef,
       });
     },
 

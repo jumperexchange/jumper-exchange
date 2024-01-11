@@ -49,7 +49,11 @@ export const useWalletSelectContent = () => {
   const login = useCallback(
     async (combinedWallet: CombinedWallet) => {
       if (combinedWallet.evm && combinedWallet.svm) {
-        onOpenEcosystemSelectMenu(true, combinedWallet);
+        onOpenEcosystemSelectMenu(
+          true,
+          combinedWallet,
+          // document.getElementById('connect-wallet-button'),
+        );
         return;
       } else if (combinedWallet.evm) {
         wagmiDisconnect();
@@ -71,6 +75,7 @@ export const useWalletSelectContent = () => {
       onCloseAllMenus,
       onWelcomeScreenClosed,
       onOpenEcosystemSelectMenu,
+      wagmiDisconnect,
       connectAsync,
       onWalletConnect,
       connected,

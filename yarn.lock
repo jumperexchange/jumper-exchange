@@ -2893,10 +2893,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lifi/sdk@npm:^3.0.0-alpha.42":
+  version: 3.0.0-alpha.42
+  resolution: "@lifi/sdk@npm:3.0.0-alpha.42"
+  dependencies:
+    "@lifi/types": 10.0.0-beta.1
+    "@solana/wallet-adapter-base": ^0.9.23
+    "@solana/web3.js": ^1.87.6
+    eth-rpc-errors: ^4.0.3
+    viem: ^2.0.0-rc.3
+  checksum: 2e88e619472eea1074e56da48289cdb882da2627816439fbcebc3b52c777de0e663dbbd2c7fa1152622f5e67110de3c5f75537c94a4fea1b0931bc79b0f9e417
+  languageName: node
+  linkType: hard
+
 "@lifi/types@npm:10.0.0-beta.0":
   version: 10.0.0-beta.0
   resolution: "@lifi/types@npm:10.0.0-beta.0"
   checksum: e6c9d6a5719d94ee7ff85ce3e12b306378e97688176867cb76b4cc54666f93ffe524107b078237a841268cefd88f65dc7d645e0844340da060cb7551382c21ce
+  languageName: node
+  linkType: hard
+
+"@lifi/types@npm:10.0.0-beta.1":
+  version: 10.0.0-beta.1
+  resolution: "@lifi/types@npm:10.0.0-beta.1"
+  checksum: cfe132b04a5617ab831238b2590daf38a21dfee389ae8e871b9520727f58a5574553fa08ff2a3d96d6922e16ba42f41868c33fb8353c88af81d2c951fd6228e8
   languageName: node
   linkType: hard
 
@@ -10254,7 +10274,7 @@ __metadata:
     "@arcxmoney/analytics": ^2.0.3
     "@cookie3/analytics": ^0.6.0
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
-    "@lifi/sdk": ^3.0.0-alpha.39
+    "@lifi/sdk": ^3.0.0-alpha.42
     "@lifi/types": ^9.3.1
     "@lifi/wallet-management": 3.0.0-alpha.7
     "@lifi/widget": 3.0.0-alpha.11
@@ -13908,6 +13928,27 @@ __metadata:
     typescript:
       optional: true
   checksum: 02226e00cef8fc0023d88d211e61cd86846cd31b8eb2bf032edd23238970720b59cc85287fcd0c667d6d3d400618fdbdb46a1da638f22865dbb54268e768945c
+  languageName: node
+  linkType: hard
+
+"viem@npm:^2.0.0-rc.3":
+  version: 2.0.0-rc.3
+  resolution: "viem@npm:2.0.0-rc.3"
+  dependencies:
+    "@adraffy/ens-normalize": 1.10.0
+    "@noble/curves": 1.2.0
+    "@noble/hashes": 1.3.2
+    "@scure/bip32": 1.3.2
+    "@scure/bip39": 1.2.1
+    abitype: 0.10.0
+    isows: 1.0.3
+    ws: 8.13.0
+  peerDependencies:
+    typescript: ">=5.0.4"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: fc0f69a0b71ad046e8ce3b8228d1ed8d0c45ac61061e1e57eec236dff891b004e3c8501da3b51058a27a7e6087593ee2c951f0e1a64768c3d82b0069a1ef5dba
   languageName: node
   linkType: hard
 

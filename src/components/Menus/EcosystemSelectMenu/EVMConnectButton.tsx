@@ -1,6 +1,8 @@
 import { isWalletInstalledAsync } from '@lifi/wallet-management';
 import { Avatar, Button, Typography, useTheme } from '@mui/material';
+import { useMenuStore } from 'src/stores';
 import { useConnect, useDisconnect, type Connector } from 'wagmi';
+import { ConnectButton } from './EcosystemSelectMenu.style';
 
 interface EvmConnectButton {
   walletIcon?: string;
@@ -11,6 +13,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
   const theme = useTheme();
   const { connectAsync } = useConnect();
   const { disconnect } = useDisconnect();
+  const { onCloseAllMenus } = useMenuStore((state) => state);
 
   const connect = async () => {
     const identityCheckPassed = await isWalletInstalledAsync(evm.id);
@@ -31,26 +34,23 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
       //     },
       //   },
     );
+    onCloseAllMenus();
   };
   return (
-    <Button
-      sx={{
-        boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-        padding: '24px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: ' 1 0 0',
-        cursor: 'pointer',
-        background: theme.palette.surface2.main,
-      }}
-      onClick={() => connect()}
-    >
+    <ConnectButton onClick={() => connect()}>
       <Avatar src={walletIcon} sx={{ width: '88px', height: '88px' }} />
-      <Typography variant={'lifiBodySmallStrong'} sx={{ margin: '12px' }}>
+      <Typography
+        variant={'lifiBodySmallStrong'}
+        sx={{
+          color:
+            theme.palette.mode === 'dark'
+              ? theme.palette.white.main
+              : theme.palette.black.main,
+          margin: '12px',
+        }}
+      >
         EVM
       </Typography>
-    </Button>
+    </ConnectButton>
   );
 };

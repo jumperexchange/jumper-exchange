@@ -39,7 +39,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
       setOpen={onOpenWalletMenu}
       handleClose={handleClose}
       isOpenSubMenu={openSubMenu !== MenuKeys.None}
-      width={'420'}
+      width={'auto'}
       styles={{
         background: theme.palette.surface1.main,
         padding: '16px',
@@ -55,6 +55,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
           ) : null,
         )}
         <WalletButton
+          sx={{ width: '324px' }}
           onClick={() => {
             onCloseAllMenus();
             onOpenWalletSelectMenu(true);

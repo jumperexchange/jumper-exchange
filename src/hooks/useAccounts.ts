@@ -93,7 +93,6 @@ export const useAccountDisconnect = () => {
   const { disconnect: solanaDisconnect } = useWallet();
 
   return (account: Account) => {
-    console.log(account);
     if (account.chainType === ChainType.SVM) {
       solanaDisconnect();
     } else {

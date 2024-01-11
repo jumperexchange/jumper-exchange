@@ -6,7 +6,6 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
-// import { useWallet } from 'src/providers';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
@@ -58,7 +57,10 @@ export function Widget({ starterVariant }: WidgetProps) {
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletManagement: {
         connect: async () => {
-          onOpenWalletSelectMenu(true);
+          onOpenWalletSelectMenu(
+            true,
+            document.getElementById('connect-wallet-button'),
+          );
         },
       },
       chains: {
