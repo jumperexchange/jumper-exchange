@@ -95,7 +95,7 @@ export const useWalletSelectContent = () => {
       if (
         isWalletInstalled(combinedWallet.evm?.id || '') ||
         (combinedWallet.svm &&
-          combinedWallet.svm.adapter.readyState !== WalletReadyState.Installed)
+          combinedWallet.svm.adapter.readyState === WalletReadyState.Installed)
       ) {
         connectWallet(combinedWallet);
       } else {
@@ -108,12 +108,6 @@ export const useWalletSelectContent = () => {
               '',
           }),
           'error',
-        );
-
-        console.error(
-          `Wallet '${
-            combinedWallet.evm?.name || combinedWallet.svm?.adapter.name
-          }' is not installed`,
         );
       }
     };
