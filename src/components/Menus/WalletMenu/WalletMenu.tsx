@@ -17,6 +17,8 @@ interface MenuProps {
 export const WalletMenu = ({ handleClose }: MenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
+
   const { accounts } = useAccounts();
 
   const {
@@ -61,7 +63,14 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
             onOpenWalletSelectMenu(true);
           }}
         >
-          <Typography variant="lifiBodySmallStrong">
+          <Typography
+            sx={{
+              color: isDarkMode
+                ? theme.palette.white.main
+                : theme.palette.black.main,
+            }}
+            variant="lifiBodySmallStrong"
+          >
             Connect another wallet
           </Typography>
         </WalletButton>

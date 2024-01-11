@@ -115,7 +115,7 @@ export const useWalletSelectContent = () => {
     const output = availableWallets.map((combinedWallet) => {
       return {
         label:
-          (combinedWallet.evm?.id || combinedWallet.svm?.adapter.name) ?? '',
+          (combinedWallet.evm?.name || combinedWallet.svm?.adapter.name) ?? '',
         prefixIcon: (
           <Avatar
             className="wallet-select-avatar"

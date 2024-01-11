@@ -59,4 +59,8 @@ export const WalletButton = styled(Button, {
         ? theme.palette.alphaLight300.main
         : darken(theme.palette.white.main, 0.08),
   },
+  color:
+    theme.palette.mode === 'dark'
+      ? theme.palette.white.main
+      : theme.palette.black.main,
 }));
