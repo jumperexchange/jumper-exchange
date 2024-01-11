@@ -7,7 +7,7 @@ import type { MenuListItem } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
 import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
 import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
-import { isWalletInstalled } from '@lifi/wallet-management';
+import { getWalletIcon, isWalletInstalled } from '@lifi/wallet-management';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useConnect, useDisconnect } from 'wagmi';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -119,7 +119,11 @@ export const useWalletSelectContent = () => {
         prefixIcon: (
           <Avatar
             className="wallet-select-avatar"
-            src={combinedWallet.evm?.icon || combinedWallet.svm?.adapter.icon}
+            src={
+              combinedWallet.evm?.icon ||
+              combinedWallet.svm?.adapter.icon ||
+              getWalletIcon(combinedWallet.evm?.id!)
+            }
             alt={`${
               combinedWallet.evm?.id || combinedWallet.svm?.adapter.name
             }-wallet-logo`}

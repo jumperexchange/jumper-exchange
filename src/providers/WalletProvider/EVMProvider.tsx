@@ -5,7 +5,6 @@ import {
   bitpie,
   block,
   brave,
-  coinbase,
   dcent,
   exodus,
   frame,
@@ -24,16 +23,34 @@ import {
   tokenary,
   tokenpocket,
   trust,
-  walletConnect,
   xdefi,
 } from '@lifi/wallet-management';
-import { useContext, useMemo, type FC, type PropsWithChildren } from 'react';
+import { useMemo, type FC, type PropsWithChildren } from 'react';
 import type { Chain } from 'viem';
 import { createClient } from 'viem';
-import { WagmiContext, WagmiProvider, createConfig, http } from 'wagmi';
+import { WagmiProvider, createConfig, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { formatChain } from './utils';
 import { useChains } from 'src/hooks';
+import {
+  walletConnect as _walletConnect,
+  coinbaseWallet,
+} from '@wagmi/connectors';
+
+export const walletConnect = /*@__PURE__*/ _walletConnect({
+  projectId: '7480e74780d20eb6db1056eab0de6ddb',
+  showQrModal: true,
+  qrModalOptions: {
+    themeVariables: {
+      '--wcm-z-index': '3000',
+    },
+  },
+});
+
+export const coinbase: ReturnType<typeof coinbaseWallet> =
+  /*@__PURE__*/ coinbaseWallet({
+    appName: 'Jumper.Exchange',
+  });
 
 const connectors = [
   walletConnect,
@@ -66,15 +83,6 @@ const connectors = [
 ];
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
-  const inWagmiContext = useInWagmiContext();
-  return inWagmiContext ? (
-    children
-  ) : (
-    <EVMBaseProvider>{children}</EVMBaseProvider>
-  );
-};
-
-export const EVMBaseProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
 
   const wagmiConfig = useMemo(() => {
@@ -112,8 +120,3 @@ export const EVMBaseProvider: FC<PropsWithChildren> = ({ children }) => {
     </WagmiProvider>
   );
 };
-
-function useInWagmiContext(): boolean {
-  const context = useContext(WagmiContext);
-  return Boolean(context);
-}
