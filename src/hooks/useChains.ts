@@ -1,20 +1,21 @@
 import type { Chain, ChainId, ExtendedChain } from '@lifi/types';
 import { useQuery } from '@tanstack/react-query';
+import { ChainType, getChains } from '@lifi/sdk';
 
 export interface ChainProps {
   chains: ExtendedChain[];
   isSuccess: boolean;
-  getChainById: (id: ChainId) => ExtendedChain;
+  getChainById: (id: ChainId) => ExtendedChain | undefined;
 }
 
 export const useChains = (): ChainProps => {
   const { data, isSuccess } = useQuery({
     queryKey: ['chainStats'],
     queryFn: async () => {
-      const apiUrl = import.meta.env.VITE_LIFI_API_URL;
-      const response = await fetch(`${apiUrl}/chains`);
-      const result = await response.json();
-      return result;
+      const chains = await getChains({
+        chainTypes: [ChainType.EVM, ChainType.SVM],
+      });
+      return { chains };
     },
     enabled: true,
     refetchInterval: 1000 * 60 * 60,
@@ -31,7 +32,7 @@ export const useChains = (): ChainProps => {
 
   return {
     getChainById,
-    chains: data?.chains,
+    chains: data?.chains || ([] as ExtendedChain[]),
     isSuccess,
   };
 };

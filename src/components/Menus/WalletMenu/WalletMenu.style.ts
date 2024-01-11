@@ -1,6 +1,6 @@
 import { getContrastAlphaColor } from 'src/utils';
 import type { ButtonProps } from '@mui/material';
-import { Avatar, Button, darken } from '@mui/material';
+import { Avatar, Button, Container, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export interface WalletButtonProps extends ButtonProps {
@@ -63,4 +63,23 @@ export const WalletButton = styled(Button, {
     theme.palette.mode === 'dark'
       ? theme.palette.white.main
       : theme.palette.black.main,
+}));
+
+export const WalletCardContainer = styled(Container)(({ theme }) => ({
+  boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
+  padding: '24px',
+  display: 'flex',
+  background: theme.palette.surface2.main,
+  borderRadius: '16px',
+}));
+
+export const WalletCardButtonContainer = styled(Container)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateRows: 'repeat(2, auto)',
+  gridTemplateColumns: 'repeat(2, auto)',
+  gridGap: '12px',
+  justifyItems: 'center',
+  alignItems: 'center',
+  width: 'fit-content',
+  padding: '0 !important',
 }));

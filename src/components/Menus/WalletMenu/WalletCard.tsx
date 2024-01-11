@@ -6,6 +6,8 @@ import {
   WalletAvatar,
   ChainAvatar,
   WalletButton,
+  WalletCardContainer,
+  WalletCardButtonContainer,
 } from './WalletMenu.style';
 import { useChains, useUserTracking } from 'src/hooks';
 import type { Account } from 'src/hooks/useAccounts';
@@ -16,7 +18,7 @@ import { TrackingAction, TrackingCategory } from 'src/const';
 import { EventTrackingTool } from 'src/types';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
-import { Chain } from '@lifi/sdk';
+import type { Chain } from '@lifi/sdk';
 
 interface WalletCardProps {
   account: Account;
@@ -24,7 +26,6 @@ interface WalletCardProps {
 
 export const WalletCard = ({ account }: WalletCardProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
   const disconnectWallet = useAccountDisconnect();
   const { trackPageload, trackEvent } = useUserTracking();
   const { chains } = useChains();
@@ -76,33 +77,13 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   };
 
   return (
-    <Container
-      sx={{
-        boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
-        padding: '24px',
-        display: 'flex',
-        cursor: 'pointer',
-        background: theme.palette.surface2.main,
-        borderRadius: '16px',
-      }}
-    >
+    <WalletCardContainer>
       <Stack direction={'row'} spacing={4} sx={{ margin: 'auto' }}>
         <AvatarContainer>
           <WalletAvatar src={account.walletIcon} />
           <ChainAvatar src={activeChain?.logoURI} />
         </AvatarContainer>
-        <Container
-          sx={{
-            display: 'grid',
-            gridTemplateRows: 'repeat(2, auto)',
-            gridTemplateColumns: 'repeat(2, auto)',
-            gridGap: '12px',
-            justifyItems: 'center',
-            alignItems: 'center',
-            width: 'fit-content',
-            padding: '0 !important',
-          }}
-        >
+        <WalletCardButtonContainer>
           <WalletButton
             sx={{ gridColumn: '1/3', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
@@ -132,8 +113,8 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           >
             <PowerSettingsNewIcon sx={{ height: '20px' }} />
           </WalletButton>
-        </Container>
+        </WalletCardButtonContainer>
       </Stack>
-    </Container>
+    </WalletCardContainer>
   );
 };
