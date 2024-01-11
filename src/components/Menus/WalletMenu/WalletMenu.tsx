@@ -1,13 +1,10 @@
-import { Button, Stack, Typography, useTheme } from '@mui/material';
-import { useEffect, useMemo } from 'react';
+import { Stack, Typography, useTheme } from '@mui/material';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Menu, WalletButton } from 'src/components';
-import { MenuKeys, TrackingAction, TrackingCategory } from 'src/const';
-import { useBlockchainExplorerURL, useUserTracking } from 'src/hooks';
+import { MenuKeys } from 'src/const';
 // import { useWallet } from 'src/providers';
-import { useMenuStore, useSettingsStore } from 'src/stores';
-import { EventTrackingTool } from 'src/types';
-import { openInNewTab, walletDigest } from 'src/utils';
+import { useMenuStore } from 'src/stores';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { WalletCard } from './WalletCard';
 interface MenuProps {
@@ -71,7 +68,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
             }}
             variant="lifiBodySmallStrong"
           >
-            Connect another wallet
+            {t('navbar.walletMenu.connectAnotherWallet')}
           </Typography>
         </WalletButton>
       </Stack>

@@ -46,8 +46,7 @@ export const EcosystemSelectMenu = ({ handleClose, open }: MenuProps) => {
               flex={1}
               noWrap
             >
-              {/* {t('navbar.walletSelectMenu.connectWallet')} */}
-              Select wallet ecosystem
+              {t('navbar.walletSelectMenu.ecosystemSelectMenu.selectEcosystem')}
             </Typography>
           </MenuHeaderAppBar>
         </MenuHeaderAppWrapper>
