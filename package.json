@@ -47,6 +47,7 @@
     "@types/react": "^18.2.42",
     "@types/react-dom": "^18.2.17",
     "@types/ungap__structured-clone": "^0.3.3",
+    "@types/uuid": "^9.0.7",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",

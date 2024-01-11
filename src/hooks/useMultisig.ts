@@ -1,15 +1,14 @@
-import type {
-  BaseTransaction,
-  MultisigConfig,
-  MultisigTxDetails,
-  Route,
-} from '@lifi/sdk';
-import { ChainId, ChainKey } from '@lifi/sdk';
+import type { Process, Route } from '@lifi/sdk';
 import type { GatewayTransactionDetails } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK, { TransactionStatus } from '@safe-global/safe-apps-sdk';
 import { useMultisigStore } from 'src/stores';
 import type { MultisigWidgetConfig } from 'src/types';
 import { useAccounts } from './useAccounts';
+import type {
+  MultisigConfig,
+  MultisigTransaction,
+  MultisigTxDetails,
+} from '@lifi/sdk/src/_types/core/EVM/types';
 
 export const useMultisig = () => {
   const { account } = useAccounts();
@@ -33,16 +32,14 @@ export const useMultisig = () => {
     return !!accountInfo?.safeAddress;
   };
 
-  const isSafeSigner = Boolean(
-    (account?.signer?.provider as any)?.provider?.safe?.safeAddress,
-  );
+  const isSafeConnector = Boolean(account?.connector?.name === 'Safe');
 
   const handleMultiSigTransactionDetails = async (
     txHash: string,
     chainId: number,
     updateIntermediateStatus?: () => void,
   ): Promise<MultisigTxDetails> => {
-    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
+    const safeProviderSDK = (account?.connector as any).SDK;
 
     const safeTransactionDetails: GatewayTransactionDetails =
       await safeProviderSDK.txs.getBySafeTxHash(txHash);
@@ -94,7 +91,7 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'DONE',
-        txHash: safeTransactionDetails.txHash,
+        txHash: `0x${safeTransactionDetails.txHash?.slice(2)}`,
       };
     }
 
@@ -106,7 +103,7 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'FAILED',
-        txHash: safeTransactionDetails.txHash,
+        txHash: `0x${safeTransactionDetails.txHash?.slice(2)}`,
       };
     }
 
@@ -118,36 +115,34 @@ export const useMultisig = () => {
     ) {
       return {
         status: 'CANCELLED',
-        txHash: safeTransactionDetails.txHash,
+        txHash: `0x${safeTransactionDetails.txHash?.slice(2)}`,
       };
     }
 
     if (isSafeStatusPending) {
       return {
         status: 'PENDING',
-        txHash: safeTransactionDetails.txHash,
+        txHash: `0x${safeTransactionDetails.txHash?.slice(2)}`,
       };
     }
 
     return {
       status: 'PENDING',
-      txHash: safeTransactionDetails.txHash,
+      txHash: `0x${safeTransactionDetails.txHash?.slice(2)}`,
     };
   };
 
   const handleSendingBatchTransaction = async (
-    batchTransactions: BaseTransaction[],
-  ) => {
-    const safeProviderSDK = (account?.signer?.provider as any)?.provider?.sdk;
+    batchTransactions: MultisigTransaction[],
+  ): Promise<`0x${string}`> => {
+    const safeProviderSDK = (account?.connector as any).SDK;
 
     try {
       const { safeTxHash } = await safeProviderSDK.txs.send({
         txs: batchTransactions,
       });
 
-      return {
-        hash: safeTxHash,
-      };
+      return `0x${safeTxHash.slice(2)}`;
     } catch (error) {
       throw new Error(error as string);
     }
@@ -158,29 +153,30 @@ export const useMultisig = () => {
     multisigSdkConfig: MultisigConfig;
   }> => {
     const multisigConfig = {
-      isMultisigSigner: isSafeSigner,
+      isMultisigWalletClient: isSafeConnector,
+      // isMultisigSigner: isSafeConnector,
       getMultisigTransactionDetails: handleMultiSigTransactionDetails,
-      shouldBatchTransactions: isSafeSigner,
+      shouldBatchTransactions: isSafeConnector,
       sendBatchTransaction: handleSendingBatchTransaction,
     };
 
-    if (isSafeSigner) {
-      const currentChain = account.chainId;
+    if (isSafeConnector) {
+      // const currentChain = account.chainId;
 
       const shouldRequireToAddress = account.chainId !== destinationChain;
 
       // get the Chain symbol (ETH) from chainID
       // get the ChainKey(eth) from ChainID(ETH)
       // unsure if it'll always be the same letters in lowercase, hence getting from mapping
-      const fromChainKey =
-        currentChain &&
-        ((ChainKey as Record<string, string>)[
-          ChainId[currentChain]
-        ] as ChainKey);
+      // const fromChainKey = currentChain.
+      //   currentChain &&
+      //   ((ChainKey as Record<string, string>)[
+      //     ChainId[currentChain]
+      //   ] as ChainKey);
 
       return {
         multisigWidget: {
-          fromChain: fromChainKey,
+          fromChain: account.chainId,
           requiredUI: shouldRequireToAddress ? ['toAddress'] : [],
         },
         multisigSdkConfig: {
@@ -194,17 +190,17 @@ export const useMultisig = () => {
 
   const shouldOpenMultisigSignatureModal = (route: Route) => {
     const isRouteDone = route.steps.every(
-      (step) => step.execution?.status === 'DONE',
+      (step) => (step as any).execution?.status === 'DONE',
     );
 
     const isRouteFailed = route.steps.some(
-      (step) => step.execution?.status === 'FAILED',
+      (step) => (step as any).execution?.status === 'FAILED',
     );
 
     const multisigRouteStarted = route.steps.some(
       (step) =>
-        step.execution?.process.find(
-          (process) =>
+        (step as any).execution?.process.find(
+          (process: Process) =>
             !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
         ),
     );
@@ -213,7 +209,7 @@ export const useMultisig = () => {
   };
 
   return {
-    isMultisigSigner: isSafeSigner,
+    isMultisigSigner: isSafeConnector,
     getMultisigWidgetConfig,
     checkMultisigEnvironment,
     shouldOpenMultisigSignatureModal,

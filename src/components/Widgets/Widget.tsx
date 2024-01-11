@@ -41,9 +41,9 @@ export function Widget({ starterVariant }: WidgetProps) {
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
-    let rpcs = {};
+    let rpcUrls = {};
     try {
-      rpcs = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
+      rpcUrls = JSON.parse(import.meta.env.VITE_CUSTOM_RPCS);
     } catch (e) {
       if (import.meta.env.DEV) {
         console.warn('Parsing custom rpcs failed', e);
@@ -104,12 +104,12 @@ export function Widget({ starterVariant }: WidgetProps) {
       ...multisigWidget,
       sdkConfig: {
         apiUrl: import.meta.env.VITE_LIFI_API_URL,
-        rpcs,
-        defaultRouteOptions: {
+        rpcUrls,
+        routeOptions: {
           maxPriceImpact: 0.4,
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        multisigConfig: { ...(multisigSdkConfig ?? {}) },
+        // multisigConfig: { ...(multisigSdkConfig ?? {}) },
       },
       buildUrl: true,
       insurance: true,
