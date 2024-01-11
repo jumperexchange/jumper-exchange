@@ -156,7 +156,7 @@ export const WalletManagementButtons: React.FC<
       <Typography
         variant={'lifiBodyMediumStrong'}
         width={'auto'}
-        sx={{ marginLeft: theme.spacing(1) }}
+        sx={{ marginLeft: 1, background: 'red' }}
       >
         {_walletDigest}
       </Typography>
