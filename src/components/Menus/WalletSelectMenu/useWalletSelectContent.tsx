@@ -46,13 +46,13 @@ export const useWalletSelectContent = () => {
     return allowedWallets;
   }, [combinedInstalledWallets, combinedNotDetectedWallets, isDesktopView]);
 
-  const login = useCallback(
+  const connectWallet = useCallback(
     async (combinedWallet: CombinedWallet) => {
       if (combinedWallet.evm && combinedWallet.svm) {
         onOpenEcosystemSelectMenu(
           true,
           combinedWallet,
-          // document.getElementById('connect-wallet-button'),
+          document.getElementById('connect-wallet-button'),
         );
         return;
       } else if (combinedWallet.evm) {
@@ -66,7 +66,11 @@ export const useWalletSelectContent = () => {
         select(combinedWallet.svm.adapter.name);
         onWalletConnect(combinedWallet.svm.adapter.name);
       } else {
-        onOpenSnackbar(true, 'No appropriate ecosystem adapter found', 'error'); // Localize text
+        onOpenSnackbar(
+          true,
+          t('navbar.walletSelectMenu.ecosystemSelectMenu.noEcosystemAdapter'),
+          'error',
+        );
       }
       onCloseAllMenus();
       onWelcomeScreenClosed(true);
@@ -82,6 +86,7 @@ export const useWalletSelectContent = () => {
       select,
       disconnect,
       onOpenSnackbar,
+      t,
     ],
   );
 
@@ -89,9 +94,10 @@ export const useWalletSelectContent = () => {
     const handleClick = async (combinedWallet: CombinedWallet) => {
       if (
         isWalletInstalled(combinedWallet.evm?.id || '') ||
-        combinedWallet.svm?.adapter.readyState !== WalletReadyState.Installed
+        (combinedWallet.svm &&
+          combinedWallet.svm.adapter.readyState !== WalletReadyState.Installed)
       ) {
-        login(combinedWallet);
+        connectWallet(combinedWallet);
       } else {
         onCloseAllMenus();
         onOpenSnackbar(
@@ -106,7 +112,7 @@ export const useWalletSelectContent = () => {
 
         console.error(
           `Wallet '${
-            combinedWallet.evm?.id || combinedWallet.svm?.adapter.name
+            combinedWallet.evm?.name || combinedWallet.svm?.adapter.name
           }' is not installed`,
         );
       }
@@ -146,7 +152,14 @@ export const useWalletSelectContent = () => {
       };
     });
     return output;
-  }, [availableWallets, login, onCloseAllMenus, onOpenSnackbar, t, theme]);
+  }, [
+    availableWallets,
+    connectWallet,
+    onCloseAllMenus,
+    onOpenSnackbar,
+    t,
+    theme,
+  ]);
 
   return walletMenuItems;
 };

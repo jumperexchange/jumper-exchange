@@ -22,7 +22,8 @@
       "connectWallet": "Connect a wallet",
       "wallets": "Wallets",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "Select wallet ecosystem"
+        "selectEcosystem": "Select wallet ecosystem",
+        "noEcosystemAdapter": "No appropriate ecosystem adapter found"
       }
     },
     "seeAllWallets": "See all wallets",
