@@ -10,7 +10,7 @@ export const WidgetWrapper = styled(Box, {
 })<WidgetWrapperProps>(({ theme, welcomeScreenClosed }) => ({
   minWidth: 392,
   position: 'relative',
-  margin: `${theme.spacing(0, 'auto')}`,
+  margin: theme.spacing(0, 'auto'),
 
   ...(!welcomeScreenClosed && {
     '&:hover': {

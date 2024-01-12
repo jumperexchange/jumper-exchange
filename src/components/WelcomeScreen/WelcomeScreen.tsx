@@ -188,9 +188,9 @@ export const WelcomeScreen = () => {
               sx={(theme) => ({
                 height: 48,
                 width: 192,
-                margin: `${theme.spacing(4)} auto`,
+                margin: theme.spacing(4, 'auto'),
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
-                  margin: `${theme.spacing(6)} auto`,
+                  margin: theme.spacing(6, 'auto'),
                   height: 56,
                   borderRadius: '28px',
                   width: 247,

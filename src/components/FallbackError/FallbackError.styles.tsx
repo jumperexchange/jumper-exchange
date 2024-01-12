@@ -47,7 +47,7 @@ export const CenteredContainer = styled('div')(({ theme }) => ({
 }));
 
 export const ErrorMessage = styled(Typography)(({ theme }) => ({
-  margin: `${theme.spacing(2.5)}`,
+  margin: theme.spacing(2.5),
   textAlign: 'center',
   color:
     theme.palette.mode === 'dark'

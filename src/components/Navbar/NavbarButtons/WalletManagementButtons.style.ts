@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 
 export const WalletMgmtAvatarContainer = styled('div')(({ theme }) => ({
   position: 'relative',
-  marginRight: `${theme.spacing(1.5)}`,
+  marginRight: theme.spacing(1.5),
 }));
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
@@ -29,10 +29,10 @@ export const WalletMgmtChainAvatar = styled(Avatar)(({ theme }) => ({
   height: 20,
   width: 20,
   position: 'absolute',
-  padding: `${theme.spacing(0.5)}`,
+  padding: theme.spacing(0.5),
   right: -10,
   borderRadius: '10px',
-  bottom: `${theme.spacing(-0.75)}`,
+  bottom: theme.spacing(-0.75),
   background: 'white',
   img: {
     borderRadius: '6px',

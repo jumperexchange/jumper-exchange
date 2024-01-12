@@ -137,7 +137,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
     >
       <Grid
         container
-        m={`${theme.spacing(3)} auto !important`}
+        m={`${theme.spacing(3, 'auto')} !important`}
         sx={{
           maxWidth: 360,
           [theme.breakpoints.up('sm' as Breakpoint)]: {
