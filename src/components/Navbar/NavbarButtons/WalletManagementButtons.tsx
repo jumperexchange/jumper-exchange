@@ -112,7 +112,7 @@ export const WalletManagementButtons: React.FC<
       styles={{
         display: 'none',
         [theme.breakpoints.up('sm' as Breakpoint)]: {
-          padding: theme.spacing(3),
+          padding: 3,
           display: 'inline-flex !important',
         },
       }}
@@ -129,8 +129,8 @@ export const WalletManagementButtons: React.FC<
         justifyContent: 'center',
         margin: 'auto',
         position: 'relative',
-        p: '6px',
-        pr: theme.spacing(2),
+        p: 0.75,
+        pr: 2,
         width: 'auto',
       }}
       onClick={handleWalletMenuClick}
