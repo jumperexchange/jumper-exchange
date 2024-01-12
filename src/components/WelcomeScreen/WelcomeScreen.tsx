@@ -133,7 +133,7 @@ export const WelcomeScreen = () => {
             <Typography
               variant={'lifiBodyLarge'}
               sx={{
-                marginTop: theme.spacing(2),
+                marginTop: 2,
                 color:
                   theme.palette.mode === 'dark'
                     ? theme.palette.accent1Alt.main

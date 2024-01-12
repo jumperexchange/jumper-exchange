@@ -45,7 +45,7 @@ export const ToolCard = ({ number, title, handleClick }: ToolCardProps) => {
           maxWidth: 80,
           maxHeight: 20,
           [theme.breakpoints.up('sm')]: {
-            mt: theme.spacing(0.5),
+            mt: 0.5,
             fontSize: '16px',
             maxWidth: 118,
           },

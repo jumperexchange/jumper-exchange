@@ -82,7 +82,7 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
           <MenuHeaderAppWrapper
             sx={{
               gridColumn: 'span 3',
-              marginBottom: theme.spacing(-1.5),
+              marginBottom: -1.5,
             }}
           >
             <MenuHeaderAppBar component="div" elevation={0}>

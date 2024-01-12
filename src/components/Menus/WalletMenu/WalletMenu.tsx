@@ -192,7 +192,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
         <Grid
           item
           xs={!isMultisigEnvironment ? 4 : 6}
-          sx={{ paddingRight: theme.spacing(2.5) }}
+          sx={{ paddingRight: 2.5 }}
         >
           <SpotButton
             name={t('navbar.walletMenu.disconnect')}

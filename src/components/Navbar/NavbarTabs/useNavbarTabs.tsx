@@ -38,7 +38,7 @@ export const useNavbarTabs = () => {
       icon: (
         <SwapHorizIcon
           sx={{
-            marginRight: theme.spacing(0.75),
+            marginRight: 0.75,
             marginBottom: `${theme.spacing(0)} !important`,
             color:
               theme.palette.mode === 'dark'
@@ -56,7 +56,7 @@ export const useNavbarTabs = () => {
       icon: (
         <EvStationOutlinedIcon
           sx={{
-            marginRight: theme.spacing(0.75),
+            marginRight: 0.75,
             marginBottom: `${theme.spacing(0)} !important`,
             color:
               theme.palette.mode === 'dark'
@@ -73,7 +73,7 @@ export const useNavbarTabs = () => {
       icon: (
         <CreditCardIcon
           sx={{
-            marginRight: theme.spacing(0.75),
+            marginRight: 0.75,
             marginBottom: `${theme.spacing(0)} !important`,
             color:
               theme.palette.mode === 'dark'

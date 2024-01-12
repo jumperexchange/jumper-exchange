@@ -152,8 +152,8 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
             disableRipple={true}
             sx={{
               position: 'absolute',
-              right: theme.spacing(1),
-              top: theme.spacing(1),
+              right: 1,
+              top: 1,
             }}
             onClick={handleClose}
           >
