@@ -2,6 +2,7 @@ export * from './BackgroundGradient';
 export * from './BlogArticleCard';
 export * from './Button';
 export * from './ButtonArrowBack';
+export * from './FallbackError';
 export * from './FeatureCards';
 export * from './Menu';
 export * from './Menus';
