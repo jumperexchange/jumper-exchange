@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import type { StrapiImageData, TagData } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
-import { BlogArticleCard, BlogArticleImage, BlogArticleMeta } from '.';
+import { BlogArticleCard, BlogArticleCardImage, BlogArticleMeta } from '.';
 
 interface BlogCardProps {
   title: string;
   subtitle: string;
-  content: string;
+  content: any;
   tags: TagData;
   slug: string;
   publishedAt: string | null;
@@ -31,15 +31,20 @@ export const BlogCard = ({
   const { t } = useTranslation();
   const theme = useTheme();
   const minRead = readingTime(content);
+  console.log('content', content);
+  console.log(content.reduce);
 
   return (
-    <Link to={`/blog/${slug}`}>
+    <Link to={`/blog/${slug}`} style={{ textDecoration: 'none' }}>
       <BlogArticleCard>
-        <BlogArticleImage
+        <BlogArticleCardImage
           src={`${baseUrl}${image.data.attributes.url}`}
           alt={image.data.attributes.alternativeText}
         />
-        <Typography variant="lifiHeaderXSmall" sx={{ pt: theme.spacing(1) }}>
+        <Typography
+          variant="lifiHeaderXSmall"
+          sx={{ pt: theme.spacing(1), color: theme.palette.black.main }}
+        >
           {title}
         </Typography>
         {/* <Typography
@@ -53,12 +58,18 @@ export const BlogCard = ({
             tags.data.map((tag, index) => (
               <Typography
                 component="span"
-                variant="lifiMono3"
+                variant="lifiBodyXSmallStrong"
                 sx={{
                   height: '32px',
                   padding: theme.spacing(1, 2),
-                  backgroundColor: theme.palette.bg.main,
-                  color: theme.palette.primary.main,
+                  backgroundColor:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.secondary.main
+                      : theme.palette.accent1Alt.main,
+                  color:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.primary.main
+                      : theme.palette.white.main,
                   userSelect: 'none',
                   borderRadius: '24px',
                   ':not(:first-of-type)': {
@@ -67,7 +78,10 @@ export const BlogCard = ({
                   '&:before': {
                     content: '"#"',
                     mr: theme.spacing(0.5),
-                    color: theme.palette.accent2.main,
+                    color:
+                      theme.palette.mode === 'light'
+                        ? theme.palette.primary.main
+                        : theme.palette.white.main,
                   },
                 }}
               >{`${tag.attributes.Title}`}</Typography> //catId={tag.id}

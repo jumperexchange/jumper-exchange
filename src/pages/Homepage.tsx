@@ -1,12 +1,7 @@
 import { useEffect } from 'react';
-import { useCookie3, useInitUserTracking } from 'src/hooks';
-import {
-  BackgroundGradient,
-  FeatureCards,
-  WelcomeScreen,
-  Widgets,
-} from 'src/components';
 import { Layout } from 'src/Layout';
+import { FeatureCards, WelcomeScreen, Widgets } from 'src/components';
+import { useCookie3, useInitUserTracking } from 'src/hooks';
 
 export const Homepage = () => {
   const { initTracking } = useInitUserTracking();
@@ -19,7 +14,6 @@ export const Homepage = () => {
 
   return (
     <Layout>
-      <BackgroundGradient />
       <WelcomeScreen />
       <Widgets />
       <FeatureCards />

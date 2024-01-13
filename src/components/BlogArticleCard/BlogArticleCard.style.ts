@@ -11,8 +11,17 @@ export const BlogArticleCard = styled(Card, {
   shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
 })<BlogArticleCardProps>(({ theme }) => ({
   width: '512px',
+  boxShadow:
+    theme.palette.mode === 'dark'
+      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 4px 8px rgba(0, 0, 0, 0.08)'
+      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 4px 8px rgba(0, 0, 0, 0.16)',
   '&:hover': {
     cursor: 'pointer',
+    transform: 'scale(1.005)',
+    boxShadow:
+      theme.palette.mode === 'dark'
+        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
   },
   '> *:not(img)': {
     paddingLeft: theme.spacing(4),
@@ -20,7 +29,7 @@ export const BlogArticleCard = styled(Card, {
   },
 }));
 
-export const BlogArticleImage = styled('img', {
+export const BlogArticleCardImage = styled('img', {
   shouldForwardProp: (prop) => prop !== 'backgroundImageUrl',
 })(({ theme }) => ({
   width: '100%',

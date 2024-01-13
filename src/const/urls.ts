@@ -6,3 +6,6 @@ export const TWITTER_URL = 'https://twitter.com/JumperExchange';
 export const GITHUB_URL = 'https://github.com/lifinance/';
 export const DOCS_URL = 'https://docs.li.fi/';
 export const AUDITS_URL = 'https://docs.li.fi/smart-contracts/audits';
+export const X_SHARE_URL = 'https://x.com/share';
+export const FB_SHARE_URL = 'https://www.facebook.com/sharer/sharer.php';
+export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';

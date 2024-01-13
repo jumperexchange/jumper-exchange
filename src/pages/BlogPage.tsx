@@ -1,18 +1,26 @@
 import { Grid, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Layout } from 'src/Layout';
-import { BackgroundGradient, BlogCard, CustomColor } from 'src/components';
-import { useStrapiQuery } from 'src/hooks';
-import type { BlogArticleData } from 'src/types';
+import { AccordionFAQ, BlogCard, CustomColor } from 'src/components';
+import { useStrapi } from 'src/hooks';
+import type { BlogArticleData, FaqMeta } from 'src/types';
 
 export const BlogPage = () => {
   const { t } = useTranslation();
-  const { data: blogArticles, url } = useStrapiQuery({
+  const { data: blogArticles, url } = useStrapi<BlogArticleData>({
     contentType: 'blog-articles',
+    queryKey: 'blog-articles',
   });
 
+  const { data: faqData } = useStrapi<FaqMeta>({
+    contentType: 'faq-items',
+    filterDisplayed: true,
+    queryKey: 'faq',
+  });
+
+  console.log('faqData', faqData);
+
   const theme = useTheme();
-  console.log('blogArticles', blogArticles);
   return (
     <Layout hideNavbarTabs={true}>
       <CustomColor
@@ -61,7 +69,7 @@ export const BlogPage = () => {
           );
         })}
       </Grid>
-      <BackgroundGradient />
+      <AccordionFAQ content={faqData} />
     </Layout>
   );
 };

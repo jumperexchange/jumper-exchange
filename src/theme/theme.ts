@@ -31,6 +31,7 @@ declare module '@mui/material/styles' {
     dataBg: Palette['primary'];
     dataOutline: Palette['primary'];
     bg: Palette['primary'];
+    shadow: Palette['primary'];
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -63,6 +64,7 @@ declare module '@mui/material/styles' {
     dataBg?: Palette['primary'];
     dataOutline?: Palette['primary'];
     bg?: PaletteOptions['primary'];
+    shadow?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -153,6 +155,7 @@ declare module '@mui/material/Button' {
     dataBg: true;
     dataOutline: true;
     bg: true;
+    shadow: true;
     alphaDark100: true;
     alphaDark200: true;
     alphaDark300: true;
@@ -754,6 +757,11 @@ export const lightTheme: Theme = createTheme(
         main: '#F3EBFF',
         dark: '#F3EBFF',
       },
+      shadow: {
+        light: '#F3EBFF',
+        main: '#F3EBFF',
+        dark: '#F3EBFF',
+      },
       primary: {
         light: '#31007A',
         main: '#31007A',
@@ -836,6 +844,11 @@ export const darkTheme: Theme = createTheme(
         light: '#0E0B1F',
         main: '#030014',
         dark: '#030014',
+      },
+      shadow: {
+        light: '#F3EBFF',
+        main: '#F3EBFF',
+        dark: '#F3EBFF',
       },
       primary: {
         light: '#653BA3',

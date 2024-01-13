@@ -2,7 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { FeatureCard } from 'src/components';
-import { useFeatureCards } from 'src/hooks';
+import { useStrapi } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
 import type { FeatureCardData } from 'src/types';
 import { shallow } from 'zustand/shallow';
@@ -15,7 +15,10 @@ export const FeatureCards = () => {
     shallow,
   );
 
-  const { featureCards: data, isSuccess } = useFeatureCards();
+  const { data, isSuccess } = useStrapi<FeatureCardData>({
+    contentType: 'feature-cards',
+    queryKey: 'feature-cards',
+  });
   const featureCardsFetched = useMemo(() => {
     if (Array.isArray(data) && !!data.length) {
       return data?.filter(

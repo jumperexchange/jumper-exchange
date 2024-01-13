@@ -1,4 +1,5 @@
 import { useTheme } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
 import { Logo, NavbarButtons, NavbarTabs } from 'src/components';
 import { useWallet } from 'src/providers';
 import { useSettingsStore } from 'src/stores';
@@ -21,9 +22,11 @@ export const Navbar = ({ hideNavbarTabs }: NavbarProps) => {
 
   return (
     <Container>
-      <LogoLink onClick={handleClick}>
-        <Logo isConnected={!!account.address} theme={theme} />
-      </LogoLink>
+      <Link to="/">
+        <LogoLink onClick={handleClick}>
+          <Logo isConnected={!!account.address} theme={theme} />
+        </LogoLink>
+      </Link>
       {!hideNavbarTabs ? <NavbarTabs /> : null}
       <NavbarButtons />
     </Container>

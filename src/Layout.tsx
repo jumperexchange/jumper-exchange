@@ -1,4 +1,10 @@
-import { Menus, Navbar, PoweredBy, Snackbar } from './components';
+import {
+  BackgroundGradient,
+  Menus,
+  Navbar,
+  PoweredBy,
+  Snackbar,
+} from './components';
 
 interface LayoutProps {
   hideNavbarTabs?: boolean;
@@ -16,6 +22,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, hideNavbarTabs }) => {
 
   return (
     <>
+      <BackgroundGradient />
       <Navbar hideNavbarTabs={hideNavbarTabs} />
       <Menus />
       {children}
