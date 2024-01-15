@@ -5,6 +5,8 @@ import {
   bitpie,
   block,
   brave,
+  createCoinbaseConnector,
+  createWalletConnectConnector,
   dcent,
   exodus,
   frame,
@@ -28,33 +30,22 @@ import {
 import { useMemo, type FC, type PropsWithChildren } from 'react';
 import type { Chain } from 'viem';
 import { createClient } from 'viem';
+import type { CreateConnectorFn } from 'wagmi';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { formatChain } from './utils';
 import { useChains } from 'src/hooks';
-import {
-  walletConnect as _walletConnect,
-  coinbaseWallet,
-} from '@wagmi/connectors';
 
-export const walletConnect = /*@__PURE__*/ _walletConnect({
-  projectId: '7480e74780d20eb6db1056eab0de6ddb',
-  showQrModal: true,
-  qrModalOptions: {
-    themeVariables: {
-      '--wcm-z-index': '3000',
-    },
-  },
-});
+const JUMPER_LOGO_URL = 'https://jumper.exchange/logo-144x144.svg';
 
-export const coinbase: ReturnType<typeof coinbaseWallet> =
-  /*@__PURE__*/ coinbaseWallet({
+const connectors: Record<string, CreateConnectorFn | undefined> = {
+  walletConnect: createWalletConnectConnector({
+    projectId: import.meta.env.VITE_WALLET_CONNECT,
+  }),
+  coinbase: createCoinbaseConnector({
     appName: 'Jumper.Exchange',
-  });
-
-const connectors = [
-  walletConnect,
-  coinbase,
+    appLogoUrl: JUMPER_LOGO_URL,
+  }),
   bitget,
   gate,
   exodus,
@@ -80,7 +71,7 @@ const connectors = [
   tokenary,
   safepal,
   rabby,
-];
+};
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const { chains } = useChains();
@@ -94,9 +85,10 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     if (_mainnet) {
       _mainnet.contracts = mainnet.contracts;
     }
+
     const wagmiConfig = createConfig({
       chains: _chains,
-      connectors: connectors,
+      connectors: Object.values(connectors) as CreateConnectorFn[],
       client({ chain }) {
         return createClient({ chain, transport: http() });
       },
@@ -107,7 +99,12 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
       //   },
       //   {} as Record<number, Transport>,
       // ),
+
+      // Workaround for Wagmi config re-creation after we load chains.
+      // Internal Wagmi hydration logic doesn't allow the safe creation of new configs in runtime.
+      ssr: !chains?.length,
     });
+
     return wagmiConfig;
   }, [chains]);
 

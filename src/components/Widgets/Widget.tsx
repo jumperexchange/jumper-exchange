@@ -1,4 +1,4 @@
-import { ChainId } from '@lifi/sdk';
+import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
@@ -10,6 +10,8 @@ import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
+import { getWalletClient, switchChain } from '@wagmi/core';
+import { useConfig } from 'wagmi';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -31,13 +33,16 @@ interface WidgetProps {
 export function Widget({ starterVariant }: WidgetProps) {
   const theme = useTheme();
   const { i18n } = useTranslation();
+  const wagmiConfig = useConfig();
+  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
+  const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
+
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
   const onOpenWalletSelectMenu = useMenuStore(
     (state: MenuState) => state.onOpenWalletSelectMenu,
   );
-  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
 
   // load environment config
   const widgetConfig: WidgetConfig = useMemo((): WidgetConfig => {
@@ -50,13 +55,11 @@ export function Widget({ starterVariant }: WidgetProps) {
       }
     }
 
-    const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-
     return {
       variant: starterVariant === 'refuel' ? 'default' : 'expandable',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
-      walletManagement: {
-        connect: async () => {
+      walletConfig: {
+        onConnect: async () => {
           onOpenWalletSelectMenu(
             true,
             document.getElementById('connect-wallet-button'),
@@ -116,7 +119,6 @@ export function Widget({ starterVariant }: WidgetProps) {
       integrator: import.meta.env.VITE_WIDGET_INTEGRATOR,
     };
   }, [
-    getMultisigWidgetConfig,
     starterVariant,
     theme.palette.mode,
     theme.palette.surface2.main,
@@ -125,6 +127,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     theme.palette.grey,
     i18n.resolvedLanguage,
     i18n.languages,
+    multisigWidget,
     isMultisigSigner,
     onOpenWalletSelectMenu,
   ]);
