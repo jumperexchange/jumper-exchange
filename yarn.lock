@@ -3076,9 +3076,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lifi/widget@npm:3.0.0-alpha.13":
-  version: 3.0.0-alpha.13
-  resolution: "@lifi/widget@npm:3.0.0-alpha.13"
+"@lifi/widget@npm:3.0.0-alpha.14":
+  version: 3.0.0-alpha.14
+  resolution: "@lifi/widget@npm:3.0.0-alpha.14"
   dependencies:
     "@emotion/react": ^11.11.3
     "@emotion/styled": ^11.11.0
@@ -3113,7 +3113,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 31a496c7d10747291b2c67d5c930460f486fd5d3df2031e5f5ec0e61a2873d91e741926d47373da0cbc5c2db81579624ad2389012e9af944220b2ec2dd2b7438
+  checksum: 2e7d921f6a7a4628883421bb8bf1f0a4dfedc6af5cde35f7d940439f6a2fc65dd75d90e3cacd4cc62599b7793d08e217c7d7bd054aa3a68c1fe17fb9067fe1e5
   languageName: node
   linkType: hard
 
@@ -11001,7 +11001,7 @@ __metadata:
     "@lifi/sdk": ^3.0.0-alpha.47
     "@lifi/types": ^9.3.1
     "@lifi/wallet-management": 3.0.0-alpha.9
-    "@lifi/widget": 3.0.0-alpha.13
+    "@lifi/widget": 3.0.0-alpha.14
     "@mui/icons-material": ^5.14.19
     "@mui/material": ^5.14.20
     "@safe-global/safe-apps-sdk": ^8.1.0
