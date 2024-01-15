@@ -38,7 +38,7 @@ import { useChains } from 'src/hooks';
 
 const JUMPER_LOGO_URL = 'https://jumper.exchange/logo-144x144.svg';
 
-const connectors: Record<string, CreateConnectorFn | undefined> = {
+const connectors: Record<string, CreateConnectorFn> = {
   walletConnect: createWalletConnectConnector({
     projectId: import.meta.env.VITE_WALLET_CONNECT,
   }),
@@ -79,7 +79,11 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
     const _chains: [Chain, ...Chain[]] = chains?.length
       ? (chains.map(formatChain) as [Chain, ...Chain[]])
       : [mainnet];
-
+    // Add ENS contracts
+    const _mainnet = _chains.find((chain) => chain.id === mainnet.id);
+    if (_mainnet) {
+      _mainnet.contracts = mainnet.contracts;
+    }
     const wagmiConfig = createConfig({
       chains: _chains,
       connectors: Object.values(connectors) as CreateConnectorFn[],

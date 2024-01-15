@@ -1,12 +1,11 @@
 import type { Adapter } from '@solana/wallet-adapter-base';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
-  ConnectionContext,
   ConnectionProvider,
   WalletProvider,
 } from '@solana/wallet-adapter-react';
 import { clusterApiUrl } from '@solana/web3.js';
-import { useContext, type FC, type PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
 
 const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
 /**
@@ -24,15 +23,6 @@ const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
 const wallets: Adapter[] = [];
 
 export const SolanaProvider: FC<PropsWithChildren> = ({ children }) => {
-  const inSolanaContext = useInSolanaContext();
-  return inSolanaContext ? (
-    children
-  ) : (
-    <SolanaBaseProvider>{children}</SolanaBaseProvider>
-  );
-};
-
-export const SolanaBaseProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
@@ -41,8 +31,3 @@ export const SolanaBaseProvider: FC<PropsWithChildren> = ({ children }) => {
     </ConnectionProvider>
   );
 };
-
-function useInSolanaContext(): boolean {
-  const context = useContext(ConnectionContext);
-  return Boolean(context?.connection);
-}
