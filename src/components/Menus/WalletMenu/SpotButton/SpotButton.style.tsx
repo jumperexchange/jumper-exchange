@@ -12,26 +12,26 @@ export const SpotButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'variant',
 })<SpotButtonProps>(({ theme, variant }) => ({
   color: theme.palette.text.primary,
-  width: '72px',
-  height: '72px',
+  width: 72,
+  height: 72,
   margin: 'auto',
   backgroundColor:
     variant === 'primary' && theme.palette.mode === 'dark'
       ? theme.palette.primary.main
       : variant === 'primary' && theme.palette.mode === 'light'
-      ? theme.palette.secondary.main
-      : theme.palette.mode === 'dark'
-      ? getContrastAlphaColor(theme, '12%')
-      : getContrastAlphaColor(theme, '4%'),
+        ? theme.palette.secondary.main
+        : theme.palette.mode === 'dark'
+          ? getContrastAlphaColor(theme, '12%')
+          : getContrastAlphaColor(theme, '4%'),
   '&:hover': {
     backgroundColor:
       variant === 'primary' && theme.palette.mode === 'dark'
         ? 'rgb(80, 47, 130)'
         : variant === 'primary' && theme.palette.mode === 'light'
-        ? darken(theme.palette.secondary.main, 0.08)
-        : theme.palette.mode === 'dark'
-        ? theme.palette.alphaLight300.main
-        : darken(theme.palette.white.main, 0.08),
+          ? darken(theme.palette.secondary.main, 0.08)
+          : theme.palette.mode === 'dark'
+            ? theme.palette.alphaLight300.main
+            : darken(theme.palette.white.main, 0.08),
   },
   '&:hover:before': {
     content: '" "',

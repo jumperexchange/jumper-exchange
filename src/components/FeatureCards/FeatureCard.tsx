@@ -152,15 +152,15 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
             disableRipple={true}
             sx={{
               position: 'absolute',
-              right: theme.spacing(1),
-              top: theme.spacing(1),
+              right: 1,
+              top: 1,
             }}
             onClick={handleClose}
           >
             <CloseIcon
               sx={{
-                width: '24px',
-                height: '24px',
+                width: 24,
+                height: 24,
                 color: typographyColor,
               }}
             />
@@ -173,7 +173,7 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
                 fontSize: '24px',
                 lineHeight: '32px',
                 userSelect: 'none',
-                maxHeight: '32px',
+                maxHeight: 32,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
@@ -188,9 +188,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               sx={{
                 color: typographyColor,
                 lineHeight: '24px',
-                width: '224px',
+                width: 224,
                 userSelect: 'none',
-                height: '48px',
+                height: 48,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
@@ -216,8 +216,8 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               <Typography
                 variant="lifiBodySmallStrong"
                 sx={{
-                  maxWidth: '224px',
-                  maxHeight: '20px',
+                  maxWidth: 224,
+                  maxHeight: 20,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   color: data.attributes.CTAColor ?? 'inherit',

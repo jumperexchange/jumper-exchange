@@ -32,7 +32,7 @@ export const NavbarContainer = styled(AppBar)<{ sticky?: boolean }>(
 );
 
 export const LogoLink = styled(Link)(({ theme }) => ({
-  height: '48px',
+  height: 48,
   cursor: 'pointer',
   alignItems: 'center',
   display: 'flex',
@@ -47,7 +47,7 @@ export const CenteredContainer = styled('div')(({ theme }) => ({
 }));
 
 export const ErrorMessage = styled(Typography)(({ theme }) => ({
-  margin: '20px',
+  margin: theme.spacing(2.5),
   textAlign: 'center',
   color:
     theme.palette.mode === 'dark'
@@ -65,11 +65,11 @@ export const SupportMessage = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    maxWidth: '208px',
+    maxWidth: 208,
     marginLeft: '9.5px',
     marginRight: '9.5px',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      maxWidth: '168px',
+      maxWidth: 168,
     },
   }),
 );
