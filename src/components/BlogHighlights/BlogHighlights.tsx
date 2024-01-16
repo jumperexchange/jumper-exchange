@@ -31,7 +31,7 @@ export const BlogHighlights = ({
     contentType: 'blog-articles',
     queryKey: 'blog-articles',
   });
-  return (
+  return blogArticles ? (
     <>
       <Grid
         container
@@ -156,5 +156,5 @@ export const BlogHighlights = ({
         </Box>
       ) : null}
     </>
-  );
+  ) : null;
 };
