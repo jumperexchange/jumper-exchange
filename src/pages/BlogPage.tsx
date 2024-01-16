@@ -14,7 +14,6 @@ export const BlogPage = () => {
     queryKey: 'faq',
   });
 
-  console.log('FAQDATA', faqData);
   return (
     <Layout hideNavbarTabs={true}>
       <CustomColor

@@ -19,12 +19,11 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
   const theme = useTheme();
   const [show, setShow] = useState(false);
   const { t } = useTranslation();
-  console.log('CONTENT', content);
   const handleShowMore = () => {
     setShow(!show);
   };
 
-  return (
+  return !!content.length ? (
     <Container
       sx={{
         margin: 'auto',
@@ -71,7 +70,17 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
         <Typography variant="lifiHeaderMedium" m={theme.spacing(2, 0)}>
           {t('blog.faq')}
         </Typography>
-        <IconButton sx={{ width: 42, height: 42 }} onClick={handleShowMore}>
+        <IconButton
+          sx={{
+            width: 42,
+            height: 42,
+            color:
+              theme.palette.mode === 'dark'
+                ? theme.palette.white.main
+                : 'currentColor',
+          }}
+          onClick={handleShowMore}
+        >
           <ExpandMoreIcon sx={{ width: 24, height: 24 }} />
         </IconButton>
       </Box>
@@ -79,6 +88,7 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
         <Accordion
           key={`faq-item-${index}`}
           sx={{
+            background: 'transparent',
             visibility: show ? 'visible' : 'hidden',
             height: show ? 'auto' : 0,
             '&:last-of-type': {
@@ -95,7 +105,13 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
               {el.attributes.Question}
             </Typography>
           </AccordionSummary>
-          <Divider />
+          <Divider
+            sx={{
+              ...(theme.palette.mode === 'dark' && {
+                borderColor: theme.palette.grey[200],
+              }),
+            }}
+          />
           <AccordionDetails sx={{ '& > img': { width: '100%' } }}>
             <BlocksRenderer content={el.attributes.Answer} />
           </AccordionDetails>
@@ -103,5 +119,5 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
       ))}
       <QAJsonSchema data={content} />
     </Container>
-  );
+  ) : null;
 };

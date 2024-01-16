@@ -14,7 +14,6 @@ export const SlideshowContainer = forwardRef<
   SlideshowContainerProps
 >(function MyInput(props, ref) {
   const { children, styles } = props;
-  console.log('REF', ref);
   return (
     <SlideshowContainerBox
       ref={ref}

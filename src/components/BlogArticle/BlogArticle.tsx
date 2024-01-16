@@ -93,7 +93,6 @@ export const BlogArticle = ({
   const customRichBlocks = {
     // You can use the default components to set class names...
     paragraph: ({ children }: any) => {
-      console.log('children', children);
       if (children[0].props.text.includes('<JUMPER_BANNER>')) {
         return <JumperBanner />;
       } else {
@@ -101,7 +100,6 @@ export const BlogArticle = ({
       }
     },
   };
-  console.log('AUTHOR', author);
   return title ? (
     <>
       <BlogArticleContainer>

@@ -38,8 +38,6 @@ export const BlogCard = ({
   const theme = useTheme();
   const minRead = readingTime(content);
   const navigate = useNavigate();
-  console.log('content', content);
-  console.log(content.reduce);
 
   const handleclick = () => {
     navigate(`/blog/${slug}`);

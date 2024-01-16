@@ -42,7 +42,6 @@ export const QAJsonSchema = ({ data }: QAJsonSchemaProps) => {
       const text = extractTextFromBlocks(
         el.attributes.Answer as unknown as BlocksProps[],
       );
-      console.log('TEXT', text);
       const output = text && {
         '@type': 'Question',
         name: el.attributes.Question,
@@ -60,6 +59,5 @@ export const QAJsonSchema = ({ data }: QAJsonSchemaProps) => {
     };
     return structuredJson;
   }, [data]);
-  console.log(schema);
   return <script type="application/ld+json">{JSON.stringify(schema)}</script>;
 };

@@ -86,15 +86,12 @@ export const BlogArticlePage = () => {
           left: parseInt(`${scrollPos}`),
           behavior: 'smooth',
         });
-        console.log(direction);
       } else {
-        console.log('Ref is still null');
       }
     },
     [slideshowContainerRef],
   );
 
-  console.log('ARTICLE', article);
   // Ensure that articles and article are defined before using them
 
   return articles && article ? (

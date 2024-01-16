@@ -68,7 +68,6 @@ export const useStrapi = <T>({
     enabled: true,
     refetchInterval: 1000 * 60 * 60,
   });
-  console.log('useStrapi RETURN', data);
   return {
     data: data ?? undefined,
     url: apiUrl,
