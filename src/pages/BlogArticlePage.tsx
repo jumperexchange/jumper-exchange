@@ -23,7 +23,6 @@ import {
 } from 'src/components';
 import { useStrapi } from 'src/hooks';
 import type { BlogArticleData, TagAttributes } from 'src/types';
-import { getContrastTextColor } from 'src/utils';
 
 const slideDistance = 550;
 
@@ -154,9 +153,16 @@ export const BlogArticlePage = () => {
                     fontSize: '14px',
                     lineHeight: '24px',
                     padding: theme.spacing(1, 2),
-                    backgroundColor:
-                      tag.attributes.Color ?? theme.palette.bg.main,
-                    color: getContrastTextColor(theme),
+                    backgroundColor: tag.attributes.BackgroundColor
+                      ? tag.attributes.BackgroundColor
+                      : theme.palette.mode === 'light'
+                        ? theme.palette.secondary.main
+                        : theme.palette.accent1Alt.main,
+                    color: tag.attributes.TextColor
+                      ? tag.attributes.TextColor
+                      : theme.palette.mode === 'light'
+                        ? theme.palette.primary.main
+                        : theme.palette.white.main,
                     userSelect: 'none',
                     borderRadius: '24px',
                     flexShrink: 0,

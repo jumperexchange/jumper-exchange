@@ -44,6 +44,8 @@ export const BlogCard = ({
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
+  console.log('TAGS', tags);
+
   return (
     <BlogArticleCard onClick={handleclick}>
       <BlogArticleCardImage
@@ -75,39 +77,41 @@ export const BlogCard = ({
           },
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 0.5,
-            // pt: 2,
-            overflow: 'auto',
-            width: '100%',
-            position: 'relative',
-            scrollSnapType: 'x mandatory',
-            '& > *': {
-              flexShrink: 0,
-              scrollSnapAlign: 'center',
-            },
-            '::-webkit-scrollbar': { display: 'none' },
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              // width: '75%',
-            },
-          }}
-        >
-          {tags?.data.length > 0 &&
-            tags.data.map((tag, index) => (
+        {tags?.data.length > 0 ? (
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 0.5,
+              // pt: 2,
+              overflow: 'auto',
+              width: '100%',
+              position: 'relative',
+              scrollSnapType: 'x mandatory',
+              '& > *': {
+                flexShrink: 0,
+                scrollSnapAlign: 'center',
+              },
+              '::-webkit-scrollbar': { display: 'none' },
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                // width: '75%',
+              },
+            }}
+          >
+            {tags.data.map((tag, index) => (
               <Typography
                 component="span"
                 variant="lifiBodyXSmallStrong"
                 sx={{
                   height: '32px',
                   padding: theme.spacing(1, 2),
-                  backgroundColor:
-                    theme.palette.mode === 'light'
+                  backgroundColor: tag.attributes.BackgroundColor
+                    ? tag.attributes.BackgroundColor
+                    : theme.palette.mode === 'light'
                       ? theme.palette.secondary.main
                       : theme.palette.accent1Alt.main,
-                  color:
-                    theme.palette.mode === 'light'
+                  color: tag.attributes.TextColor
+                    ? tag.attributes.TextColor
+                    : theme.palette.mode === 'light'
                       ? theme.palette.primary.main
                       : theme.palette.white.main,
                   userSelect: 'none',
@@ -118,16 +122,18 @@ export const BlogCard = ({
                   '&:before': {
                     content: '"#"',
                     mr: theme.spacing(0.5),
-                    color:
-                      theme.palette.mode === 'light'
+                    color: tag.attributes.TextColor
+                      ? tag.attributes.TextColor
+                      : theme.palette.mode === 'light'
                         ? theme.palette.primary.main
                         : theme.palette.white.main,
                   },
                 }}
               >{`${tag.attributes.Title}`}</Typography> //catId={tag.id}
             ))}
-          <BlogTagsOverlay />
-        </Box>
+            <BlogTagsOverlay />
+          </Box>
+        ) : null}
         <BlogArticleMeta>
           <Typography
             variant="lifiBodyXSmall"

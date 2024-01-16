@@ -96,7 +96,8 @@ export interface TagData {
 export interface TagAttributes {
   attributes: {
     Title: string;
-    Color?: string;
+    TextColor?: string;
+    BackgroundColor?: string;
     createdAt: string;
     locale: string;
     publishedAt: string | null;
