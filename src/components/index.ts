@@ -25,6 +25,7 @@ export * from './SlideshowContainer';
 export * from './Snackbar';
 export * from './SupportModal';
 export * from './Tabs';
+export * from './Tag.style';
 export * from './TestnetAlert';
 export * from './WelcomeScreen';
 export * from './Widgets';

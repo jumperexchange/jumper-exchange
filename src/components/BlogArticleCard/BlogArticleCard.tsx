@@ -10,6 +10,7 @@ import {
   BlogArticleMeta,
   BlogTagsOverlay,
 } from '.';
+import { Tag } from '../Tag.style';
 
 interface BlogCardProps {
   title: string;
@@ -44,8 +45,6 @@ export const BlogCard = ({
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
-  console.log('TAGS', tags);
-
   return (
     <BlogArticleCard onClick={handleclick}>
       <BlogArticleCardImage
@@ -58,12 +57,6 @@ export const BlogCard = ({
       >
         {title}
       </Typography>
-      {/* <Typography
-        variant="lifiBodySmall"
-        sx={{ pt: theme.spacing(2), lineHeight: '24px' }}
-      >
-        {subtitle}
-      </Typography> */}
       <Box
         sx={{
           display: 'flex',
@@ -77,63 +70,37 @@ export const BlogCard = ({
           },
         }}
       >
-        {tags?.data.length > 0 ? (
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 0.5,
-              // pt: 2,
-              overflow: 'auto',
-              width: '100%',
-              position: 'relative',
-              scrollSnapType: 'x mandatory',
-              '& > *': {
-                flexShrink: 0,
-                scrollSnapAlign: 'center',
-              },
-              '::-webkit-scrollbar': { display: 'none' },
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                // width: '75%',
-              },
-            }}
-          >
-            {tags.data.map((tag, index) => (
-              <Typography
-                component="span"
-                variant="lifiBodyXSmallStrong"
-                sx={{
-                  height: '32px',
-                  padding: theme.spacing(1, 2),
-                  backgroundColor: tag.attributes.BackgroundColor
-                    ? tag.attributes.BackgroundColor
-                    : theme.palette.mode === 'light'
-                      ? theme.palette.secondary.main
-                      : theme.palette.accent1Alt.main,
-                  color: tag.attributes.TextColor
-                    ? tag.attributes.TextColor
-                    : theme.palette.mode === 'light'
-                      ? theme.palette.primary.main
-                      : theme.palette.white.main,
-                  userSelect: 'none',
-                  borderRadius: '24px',
-                  ':not(:first-of-type)': {
-                    ml: theme.spacing(0.5),
-                  },
-                  '&:before': {
-                    content: '"#"',
-                    mr: theme.spacing(0.5),
-                    color: tag.attributes.TextColor
-                      ? tag.attributes.TextColor
-                      : theme.palette.mode === 'light'
-                        ? theme.palette.primary.main
-                        : theme.palette.white.main,
-                  },
-                }}
-              >{`${tag.attributes.Title}`}</Typography> //catId={tag.id}
-            ))}
-            <BlogTagsOverlay />
-          </Box>
-        ) : null}
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 0.5,
+            // pt: 2,
+            overflow: 'auto',
+            width: '100%',
+            position: 'relative',
+            scrollSnapType: 'x mandatory',
+            '& > *': {
+              flexShrink: 0,
+              scrollSnapAlign: 'center',
+            },
+            '::-webkit-scrollbar': { display: 'none' },
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              // width: '75%',
+            },
+          }}
+        >
+          {tags?.data.length > 0
+            ? tags.data.map((tag, index) => (
+                <Tag
+                  component="span"
+                  variant="lifiBodyXSmallStrong"
+                  backgroundColor={tag.attributes.BackgroundColor}
+                  color={tag.attributes.TextColor}
+                >{`${tag.attributes.Title}`}</Tag>
+              ))
+            : null}
+          <BlogTagsOverlay />
+        </Box>
         <BlogArticleMeta>
           <Typography
             variant="lifiBodyXSmall"

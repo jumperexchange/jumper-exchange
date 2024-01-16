@@ -236,7 +236,9 @@ export const BlogArticle = ({
             <Tooltip
               title={'Share the link'}
               key={`tooltip-share-link`}
-              open={showCopyMessage}
+              // open={showCopyMessage ? false : undefined}
+              // disableFocusListener={showCopyMessage ? false : undefined}
+              // disableInteractive={!showCopyMessage ? false : undefined}
               placement="top"
               enterTouchDelay={0}
               arrow
@@ -247,7 +249,7 @@ export const BlogArticle = ({
                   marginLeft: 0.5,
                   width: showCopyMessage ? 'auto' : '40px',
                   ...(showCopyMessage && {
-                    borderRadius: 0.5,
+                    borderRadius: '20px',
                   }),
                   height: '40px',
                   color:
@@ -258,7 +260,11 @@ export const BlogArticle = ({
               >
                 <ShareIcon sx={{ width: '18px' }} />
                 {showCopyMessage && (
-                  <Typography variant="lifiBodySmall" marginLeft={1}>
+                  <Typography
+                    variant="lifiBodySmall"
+                    marginLeft={1}
+                    marginRight={1}
+                  >
                     Copied Link
                   </Typography>
                 )}

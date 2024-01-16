@@ -19,6 +19,7 @@ import {
   Button,
   JoinDiscordBanner,
   SlideshowContainer,
+  Tag,
 } from 'src/components';
 import { useStrapi } from 'src/hooks';
 import type { BlogArticleData, TagAttributes } from 'src/types';
@@ -91,7 +92,7 @@ export const BlogArticlePage = () => {
   );
 
   // Ensure that articles and article are defined before using them
-
+  console.log('TAGS', article && article[0]?.attributes.tags);
   return articles && article ? (
     <>
       <Layout hideNavbarTabs={true}>
@@ -143,41 +144,13 @@ export const BlogArticlePage = () => {
           {article[0].attributes.tags?.data.length > 0 &&
             article[0].attributes.tags.data.map(
               (tag: TagAttributes, index: any) => (
-                <Typography
+                <Tag
+                  color={tag.attributes.TextColor}
+                  backgroundColor={tag.attributes.BackgroundColor}
                   component="span"
                   variant="lifiBodySmall"
                   key={`blog-article-${index}`}
-                  sx={{
-                    height: '40px',
-                    fontSize: '14px',
-                    lineHeight: '24px',
-                    padding: theme.spacing(1, 2),
-                    backgroundColor: tag.attributes.BackgroundColor
-                      ? tag.attributes.BackgroundColor
-                      : theme.palette.mode === 'light'
-                        ? theme.palette.secondary.main
-                        : theme.palette.accent1Alt.main,
-                    color: tag.attributes.TextColor
-                      ? tag.attributes.TextColor
-                      : theme.palette.mode === 'light'
-                        ? theme.palette.primary.main
-                        : theme.palette.white.main,
-                    userSelect: 'none',
-                    borderRadius: '24px',
-                    flexShrink: 0,
-                    boxShadow:
-                      theme.palette.mode === 'dark'
-                        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-                        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-                    ':not(:first-of-type)': {
-                      ml: theme.spacing(0.5),
-                    },
-                    '&:before': {
-                      content: '"#"',
-                      mr: theme.spacing(0.5),
-                    },
-                  }}
-                >{`${tag.attributes.Title}`}</Typography> //catId={tag.id}
+                >{`${tag.attributes.Title}`}</Tag> //catId={tag.id}
               ),
             )}
         </Container>
