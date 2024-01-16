@@ -14,7 +14,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Layout } from 'src/Layout';
 import {
-  AccordionFAQ,
   BlogArticle,
   BlogPreviewCard,
   Button,
@@ -183,7 +182,7 @@ export const BlogArticlePage = () => {
             )}
         </Container>
 
-        <Container
+        {/* <Container
           sx={{
             padding: theme.spacing(1.5, 0, 3),
             [theme.breakpoints.up('sk' as Breakpoint)]: {
@@ -193,7 +192,7 @@ export const BlogArticlePage = () => {
           }}
         >
           <AccordionFAQ content={article[0].attributes.faq_items.data} />
-        </Container>
+        </Container> */}
       </Layout>
       <JoinDiscordBanner />
       <Box

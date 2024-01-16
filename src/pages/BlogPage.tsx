@@ -1,9 +1,9 @@
 import { Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Layout } from 'src/Layout';
-import { AccordionFAQ, BlogHighlights, CustomColor } from 'src/components';
+import { BlogHighlights, CustomColor } from 'src/components';
 import { useStrapi } from 'src/hooks';
-import type { FaqData, FaqMeta } from 'src/types';
+import type { FaqData } from 'src/types';
 
 export const BlogPage = () => {
   const theme = useTheme();
@@ -29,7 +29,7 @@ export const BlogPage = () => {
         {t('blog.subtitle')}
       </Typography>
       <BlogHighlights />
-      <AccordionFAQ content={faqData as unknown as FaqMeta[]} />
+      {/* <AccordionFAQ content={faqData as unknown as FaqMeta[]} /> */}
     </Layout>
   );
 };

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { ArticleJsonSchema, JumperBanner } from 'src/components';
@@ -55,6 +56,7 @@ export const BlogArticle = ({
 }: BlogArticleProps) => {
   const theme = useTheme();
   const minRead = readingTime(content);
+  const [showCopyMessage, setShowCopyMessage] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
 
@@ -62,6 +64,12 @@ export const BlogArticle = ({
     navigator.clipboard.writeText(
       `${window.location.host}${location.pathname}`,
     );
+    setShowCopyMessage(true);
+
+    // Hide the copy message after 3 seconds
+    setTimeout(() => {
+      setShowCopyMessage(false);
+    }, 3000);
   };
 
   const handleTwitterClick = () => {
@@ -228,6 +236,7 @@ export const BlogArticle = ({
             <Tooltip
               title={'Share the link'}
               key={`tooltip-share-link`}
+              open={showCopyMessage}
               placement="top"
               enterTouchDelay={0}
               arrow
@@ -236,7 +245,10 @@ export const BlogArticle = ({
                 onClick={handleShareClick}
                 sx={{
                   marginLeft: 0.5,
-                  width: '40px',
+                  width: showCopyMessage ? 'auto' : '40px',
+                  ...(showCopyMessage && {
+                    borderRadius: 0.5,
+                  }),
                   height: '40px',
                   color:
                     theme.palette.mode === 'light'
@@ -245,6 +257,11 @@ export const BlogArticle = ({
                 }}
               >
                 <ShareIcon sx={{ width: '18px' }} />
+                {showCopyMessage && (
+                  <Typography variant="lifiBodySmall" marginLeft={1}>
+                    Copied Link
+                  </Typography>
+                )}
               </IconButton>
             </Tooltip>
           </Box>
