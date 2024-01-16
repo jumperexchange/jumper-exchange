@@ -12,8 +12,8 @@ export const Logo = ({ isConnected, theme }: LogoProps) => {
   const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
   return !isTablet || (!isTablet && isConnected) ? (
-    <LogoSmall theme={theme} />
+    <LogoSmall />
   ) : (
-    <LogoLarge theme={theme} />
+    <LogoLarge />
   );
 };

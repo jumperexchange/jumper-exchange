@@ -58,7 +58,10 @@
   "blog": {
     "title": "Tips and tutorials",
     "subtitle": "TL;DR step-by-step guides to DeFi and crypto for all levels",
-    "minRead": "{{minRead}} min read"
+    "minRead": "{{minRead}} min read",
+    "seeAllPosts": "See all posts",
+    "similarPosts": "Similar Posts",
+    "faq": "FAQ"
   },
   "featureCard": {
     "learnMore": "Learn more"

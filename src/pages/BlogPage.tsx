@@ -1,26 +1,20 @@
-import { Grid, Typography, useTheme } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Layout } from 'src/Layout';
-import { AccordionFAQ, BlogCard, CustomColor } from 'src/components';
+import { AccordionFAQ, BlogHighlights, CustomColor } from 'src/components';
 import { useStrapi } from 'src/hooks';
-import type { BlogArticleData, FaqMeta } from 'src/types';
+import type { FaqData, FaqMeta } from 'src/types';
 
 export const BlogPage = () => {
+  const theme = useTheme();
   const { t } = useTranslation();
-  const { data: blogArticles, url } = useStrapi<BlogArticleData>({
-    contentType: 'blog-articles',
-    queryKey: 'blog-articles',
-  });
-
-  const { data: faqData } = useStrapi<FaqMeta>({
+  const { data: faqData } = useStrapi<FaqData>({
     contentType: 'faq-items',
     filterDisplayed: true,
     queryKey: 'faq',
   });
 
-  console.log('faqData', faqData);
-
-  const theme = useTheme();
+  console.log('FAQDATA', faqData);
   return (
     <Layout hideNavbarTabs={true}>
       <CustomColor
@@ -35,41 +29,8 @@ export const BlogPage = () => {
       >
         {t('blog.subtitle')}
       </Typography>
-      <Grid
-        container
-        display="grid"
-        justifyContent="center"
-        // justifyItems="center"
-        m={theme.spacing(4, 0)}
-        gridTemplateColumns={'512px 512px'}
-        gap={theme.spacing(6)}
-      >
-        {blogArticles?.map((article: BlogArticleData) => {
-          return (
-            <Grid
-              item
-              xs={6}
-              md={6}
-              width="512px"
-              minWidth="512px"
-              padding={`0`}
-            >
-              <BlogCard
-                title={article.attributes.Title}
-                subtitle={article.attributes.Subtitle}
-                content={article.attributes.Content}
-                tags={article.attributes.tags}
-                slug={article.attributes.Slug}
-                publishedAt={article.attributes.publishedAt}
-                createdAt={article.attributes.createdAt}
-                image={article.attributes.Image}
-                baseUrl={url.origin}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
-      <AccordionFAQ content={faqData} />
+      <BlogHighlights />
+      <AccordionFAQ content={faqData as unknown as FaqMeta[]} />
     </Layout>
   );
 };

@@ -39,7 +39,9 @@ interface QAJsonSchemaProps {
 export const QAJsonSchema = ({ data }: QAJsonSchemaProps) => {
   const schema = useMemo(() => {
     const entities = data?.map((el, index) => {
-      const text = extractTextFromBlocks(el.attributes.Answer);
+      const text = extractTextFromBlocks(
+        el.attributes.Answer as unknown as BlocksProps[],
+      );
       console.log('TEXT', text);
       const output = text && {
         '@type': 'Question',

@@ -2,12 +2,20 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import ShareIcon from '@mui/icons-material/Share';
 import XIcon from '@mui/icons-material/X';
-import { Box, Divider, IconButton, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Divider,
+  IconButton,
+  Skeleton,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { ArticleJsonSchema } from 'src/components';
+import { ArticleJsonSchema, JumperBanner } from 'src/components';
 import { FB_SHARE_URL, LINKEDIN_SHARE_URL, X_SHARE_URL } from 'src/const';
 import type { AuthorData, StrapiImageData, TagData } from 'src/types';
 import { formatDate, openInNewTab, readingTime } from 'src/utils';
@@ -47,7 +55,6 @@ export const BlogArticle = ({
 }: BlogArticleProps) => {
   const theme = useTheme();
   const minRead = readingTime(content);
-  console.log('CONTENT', content);
   const { t } = useTranslation();
   const location = useLocation();
 
@@ -61,7 +68,6 @@ export const BlogArticle = ({
     const xUrl = new URL(X_SHARE_URL);
     xUrl.searchParams.set('url', `${window.location.host}${location.pathname}`);
     xUrl.searchParams.set('title', title);
-    console.log(xUrl.href);
     openInNewTab(xUrl.href);
   };
 
@@ -69,7 +75,6 @@ export const BlogArticle = ({
     const fbUrl = new URL(FB_SHARE_URL);
     fbUrl.searchParams.set('u', `${window.location.host}${location.pathname}`);
     fbUrl.searchParams.set('title', title);
-    console.log(fbUrl.href);
     openInNewTab(fbUrl.href);
   };
 
@@ -81,11 +86,23 @@ export const BlogArticle = ({
       `${window.location.host}${location.pathname}`,
     );
     linkedInUrl.searchParams.set('title', title);
-    console.log(linkedInUrl.href);
     openInNewTab(linkedInUrl.href);
   };
 
-  return (
+  // Ensure that articles and article are defined before using them
+  const customRichBlocks = {
+    // You can use the default components to set class names...
+    paragraph: ({ children }: any) => {
+      console.log('children', children);
+      if (children[0].props.text.includes('<JUMPER_BANNER>')) {
+        return <JumperBanner />;
+      } else {
+        return <p className="text-neutral900 max-w-prose">{children}</p>;
+      }
+    },
+  };
+  console.log('AUTHOR', author);
+  return title ? (
     <>
       <BlogArticleContainer>
         <Typography
@@ -127,7 +144,7 @@ export const BlogArticle = ({
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <BlogAuthorAvatar
-              src={`${baseUrl}${author.attributes.Avatar.data.attributes.url}`}
+              src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
               alt="author-avatar"
             />
             <Typography
@@ -139,67 +156,99 @@ export const BlogArticle = ({
                   : theme.palette.grey[300]
               }
             >
-              {author.attributes.Name}
+              {author.data.attributes.Name}
             </Typography>
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton
-              onClick={handleLinkedInClick}
-              sx={{
-                marginLeft: 0.5,
-                width: '40px',
-                height: '40px',
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[300],
-              }}
+            <Tooltip
+              title={'Share article on LinkedIn'}
+              key={`tooltip-share-linkedin`}
+              placement="top"
+              enterTouchDelay={0}
+              arrow
             >
-              <LinkedInIcon sx={{ width: '18px' }} />
-            </IconButton>{' '}
-            <IconButton
-              onClick={handleFbClick}
-              sx={{
-                marginLeft: 0.5,
-                width: '40px',
-                height: '40px',
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[300],
-              }}
+              <IconButton
+                onClick={handleLinkedInClick}
+                sx={{
+                  marginLeft: 0.5,
+                  width: '40px',
+                  height: '40px',
+                  color:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.grey[800]
+                      : theme.palette.grey[300],
+                }}
+              >
+                <LinkedInIcon sx={{ width: '18px' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              title={'Share article on Facebook'}
+              key={`tooltip-share-facebook`}
+              placement="top"
+              enterTouchDelay={0}
+              arrow
             >
-              <FacebookIcon sx={{ width: '18px' }} />
-            </IconButton>
-            <IconButton
-              onClick={handleTwitterClick}
-              sx={{
-                marginLeft: 0.5,
-                width: '40px',
-                height: '40px',
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[300],
-              }}
+              <IconButton
+                onClick={handleFbClick}
+                sx={{
+                  marginLeft: 0.5,
+                  width: '40px',
+                  height: '40px',
+                  color:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.grey[800]
+                      : theme.palette.grey[300],
+                }}
+              >
+                <FacebookIcon sx={{ width: '18px' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              title={'Share article on X'}
+              key={`tooltip-share-x`}
+              placement="top"
+              enterTouchDelay={0}
+              arrow
             >
-              <XIcon sx={{ width: '18px' }} />
-            </IconButton>
-            <IconButton
-              onClick={handleShareClick}
-              sx={{
-                marginLeft: 0.5,
-                width: '40px',
-                height: '40px',
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[800]
-                    : theme.palette.grey[300],
-              }}
+              <IconButton
+                onClick={handleTwitterClick}
+                sx={{
+                  marginLeft: 0.5,
+                  width: '40px',
+                  height: '40px',
+                  color:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.grey[800]
+                      : theme.palette.grey[300],
+                }}
+              >
+                <XIcon sx={{ width: '18px' }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              title={'Share the link'}
+              key={`tooltip-share-link`}
+              placement="top"
+              enterTouchDelay={0}
+              arrow
             >
-              <ShareIcon sx={{ width: '18px' }} />
-            </IconButton>
+              <IconButton
+                onClick={handleShareClick}
+                sx={{
+                  marginLeft: 0.5,
+                  width: '40px',
+                  height: '40px',
+                  color:
+                    theme.palette.mode === 'light'
+                      ? theme.palette.grey[800]
+                      : theme.palette.grey[300],
+                }}
+              >
+                <ShareIcon sx={{ width: '18px' }} />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Box>
         <BlogArticleImage
@@ -208,7 +257,7 @@ export const BlogArticle = ({
         />
         <BlogArticleContentContainer>
           <Typography variant="lifiHeaderMedium">{subtitle}</Typography>
-          <BlocksRenderer content={content} />
+          <BlocksRenderer content={content} blocks={customRichBlocks} />
           <Divider
             sx={{
               borderColor:
@@ -223,7 +272,6 @@ export const BlogArticle = ({
               display: 'flex',
               alignItems: 'center',
               img: { width: '28px' },
-              // background: 'white',
               padding: theme.spacing(0.5),
               paddingRight: theme.spacing(1.5),
               width: 'fit-content',
@@ -231,7 +279,7 @@ export const BlogArticle = ({
             }}
           >
             <BlogAuthorAvatar
-              src={`${baseUrl}${author.attributes.Avatar.data.attributes.url}`}
+              src={`${baseUrl}${author.data.attributes.Avatar.data.attributes.url}`}
               alt="author-avatar"
             />
             <Box
@@ -249,7 +297,7 @@ export const BlogArticle = ({
                     : theme.palette.grey[300]
                 }
               >
-                {author.attributes.Name}
+                {author.data.attributes.Name}
               </Typography>
               <Typography
                 variant="lifiBodyXSmall"
@@ -260,7 +308,7 @@ export const BlogArticle = ({
                     : theme.palette.grey[300]
                 }
               >
-                {author.attributes.Role}
+                {author.data.attributes.Role}
               </Typography>
             </Box>
           </Box>
@@ -271,8 +319,10 @@ export const BlogArticle = ({
         images={[`${baseUrl}${image.data.attributes.url}`]}
         datePublished={publishedAt || createdAt}
         dateModified={updatedAt || createdAt}
-        authorName={author.attributes.Name}
+        authorName={author.data.attributes.Name}
       />
     </>
+  ) : (
+    <Skeleton variant="rectangular" width={210} height={118} />
   );
 };

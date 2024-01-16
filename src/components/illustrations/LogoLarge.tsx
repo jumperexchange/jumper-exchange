@@ -1,12 +1,9 @@
 import type { Breakpoint } from '@mui/material';
-import { useMediaQuery, type Theme } from '@mui/material';
-
-interface Props {
-  theme: Theme;
-}
+import { useMediaQuery, useTheme, type Theme } from '@mui/material';
 
 // brand-logo: "jumper" + jumper-icon
-export const LogoLarge = ({ theme }: Props) => {
+export const LogoLarge = () => {
+  const theme = useTheme();
   const mainCol =
     theme.palette.mode === 'light'
       ? theme.palette.accent1.main
@@ -78,7 +75,8 @@ export const LogoLarge = ({ theme }: Props) => {
   );
 };
 
-const JumperIcon = ({ theme }: Props) => {
+const JumperIcon = () => {
+  const theme = useTheme();
   const mainCol =
     theme.palette.mode === 'light'
       ? theme.palette.accent1.main
@@ -115,8 +113,8 @@ export const BrandLogo = ({ isConnected, theme }: BrandLogoProps) => {
   const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
   return !isTablet || (!isTablet && isConnected) ? (
-    <JumperIcon theme={theme} />
+    <JumperIcon />
   ) : (
-    <LogoLarge theme={theme} />
+    <LogoLarge />
   );
 };

@@ -1,11 +1,8 @@
-import type { Theme } from '@mui/material';
-
-interface Props {
-  theme: Theme;
-}
+import { useTheme } from '@mui/material';
 
 // jumper-icon
-export const LogoSmall = ({ theme }: Props) => {
+export const LogoSmall = () => {
+  const theme = useTheme();
   const mainCol =
     theme.palette.mode === 'light'
       ? theme.palette.accent1.main

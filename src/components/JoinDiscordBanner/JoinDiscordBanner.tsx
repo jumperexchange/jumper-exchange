@@ -1,12 +1,12 @@
 import { Box, Typography, useTheme } from '@mui/material';
-import { Banner } from '.';
+import { DiscordBanner } from '.';
 import { Button } from '../Button';
 import { Discord } from '../illustrations';
 
 export const JoinDiscordBanner = () => {
   const theme = useTheme();
   return (
-    <Banner>
+    <DiscordBanner>
       <Box
         sx={{
           display: 'flex',
@@ -24,7 +24,7 @@ export const JoinDiscordBanner = () => {
               : theme.palette.black.main
           }
         >
-          Level Up Your Crypto Knowledge: Connect with Our Discord Experts
+          Level Up Your Crypto Knowledge: Connect with Our Community
         </Typography>
         <Button
           styles={{
@@ -45,6 +45,6 @@ export const JoinDiscordBanner = () => {
           </Typography>
         </Button>
       </Box>
-    </Banner>
+    </DiscordBanner>
   );
 };

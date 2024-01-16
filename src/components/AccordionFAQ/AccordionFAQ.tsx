@@ -1,11 +1,14 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
-import { Container, useTheme } from '@mui/material';
+import { Box, Container, Divider, IconButton, useTheme } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { QAJsonSchema } from 'src/components';
 import type { FaqMeta } from 'src/types';
 
 interface AccordionFAQProps {
@@ -14,20 +17,28 @@ interface AccordionFAQProps {
 
 export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
   const theme = useTheme();
+  const [show, setShow] = useState(false);
+  const { t } = useTranslation();
   console.log('CONTENT', content);
+  const handleShowMore = () => {
+    setShow(!show);
+  };
 
   return (
     <Container
       sx={{
         margin: 'auto',
         marginTop: theme.spacing(4),
-        padding: theme.spacing(1, 2, 3),
+        padding: theme.spacing(1, 2),
+        borderRadius: '8px',
         background: theme.palette.surface1.main,
         position: 'relative',
         maxWidth: theme.breakpoints.values.md,
         width: '100% !important',
-
-        '& > .accordion-item:first-of-type': { marginTop: theme.spacing(2.5) },
+        boxShadow:
+          theme.palette.mode === 'dark'
+            ? '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+            : '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)',
 
         '&:before': {
           content: '" "',
@@ -49,23 +60,48 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
         },
       }}
     >
-      <Typography variant="lifiHeaderMedium" mt={theme.spacing(2)}>
-        FAQ
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+        onClick={() => setShow(!show)}
+      >
+        <Typography variant="lifiHeaderMedium" m={theme.spacing(2, 0)}>
+          {t('blog.faq')}
+        </Typography>
+        <IconButton sx={{ width: 42, height: 42 }} onClick={handleShowMore}>
+          <ExpandMoreIcon sx={{ width: 24, height: 24 }} />
+        </IconButton>
+      </Box>
       {content?.map((el: FaqMeta, index: number) => (
-        <Accordion key={`faq-item-${index}`} className="accordion-item">
+        <Accordion
+          key={`faq-item-${index}`}
+          sx={{
+            visibility: show ? 'visible' : 'hidden',
+            height: show ? 'auto' : 0,
+            '&:last-of-type': {
+              marginBottom: show ? theme.spacing(2) : 0,
+            },
+          }}
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel${index}a-content`}
             id={`panel${index}a-header`}
           >
-            <Typography>{el.attributes.Question}</Typography>
+            <Typography variant="lifiBodyMediumStrong">
+              {el.attributes.Question}
+            </Typography>
           </AccordionSummary>
+          <Divider />
           <AccordionDetails sx={{ '& > img': { width: '100%' } }}>
             <BlocksRenderer content={el.attributes.Answer} />
           </AccordionDetails>
         </Accordion>
       ))}
+      <QAJsonSchema data={content} />
     </Container>
   );
 };

@@ -1,52 +1,103 @@
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import type { Breakpoint } from '@mui/material';
 import {
   Box,
-  CircularProgress,
   Container,
+  IconButton,
+  Skeleton,
   Typography,
   useTheme,
 } from '@mui/material';
+import { useCallback, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Layout } from 'src/Layout';
 import {
+  AccordionFAQ,
   BlogArticle,
   BlogPreviewCard,
-  ButtonBackArrow,
+  Button,
   JoinDiscordBanner,
+  SlideshowContainer,
 } from 'src/components';
 import { useStrapi } from 'src/hooks';
-import type { BlogArticleData } from 'src/types';
+import type { BlogArticleData, TagAttributes } from 'src/types';
+import { getContrastAlphaColor, getContrastTextColor } from 'src/utils';
+
+const slideDistance = 550;
 
 export const BlogArticlePage = () => {
   const { id } = useParams();
   const theme = useTheme();
-  const {
-    data: article,
-    url: articleUrl,
-    isSuccess: articleIsSuccess,
-  } = useStrapi<BlogArticleData>({
+  const { t } = useTranslation();
+  const slideshowContainerRef = useRef<HTMLDivElement>(null);
+  const { data: article, url: articleUrl } = useStrapi<BlogArticleData>({
     contentType: 'blog-articles',
     filterSlug: id,
-    queryKey: 'blog-article',
+    queryKey: ['blog-article', `${id ?? ''}`],
   });
-  const {
-    data: articles,
-    url: articlesUrl,
-    isSuccess: articlesIsSuccess,
-  } = useStrapi<BlogArticleData>({
+  const { data: articles } = useStrapi<BlogArticleData>({
     contentType: 'blog-articles',
-    queryKey: 'blog-articles',
+    queryKey: ['blog-articles'],
   });
+
+  // setCurrentArticleId(article[0].id);
+
+  const filteredArticles = useMemo(() => {
+    return article && articles?.filter((el) => el.id !== article[0].id);
+  }, [article, articles]);
 
   const navigate = useNavigate();
 
   const handleBackArrow = () => {
     navigate('/blog');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  console.log('articleUrl', articleUrl);
+  const handleChange = useCallback(
+    (direction: 'forward' | 'back') => {
+      if (slideshowContainerRef.current) {
+        const node: HTMLDivElement = slideshowContainerRef.current;
+        const scrollLeftPos = node.scrollLeft;
+        const scrollWidth =
+          slideshowContainerRef.current.scrollWidth -
+          slideshowContainerRef.current.clientWidth;
 
-  return articleIsSuccess ? (
+        let scrollPos = 0;
+        switch (direction) {
+          case 'forward':
+            if (scrollLeftPos + slideDistance < scrollWidth) {
+              scrollPos = scrollLeftPos + slideDistance;
+            } else {
+              scrollPos = scrollWidth;
+            }
+            break;
+          case 'back':
+            if (scrollLeftPos - slideDistance > 0) {
+              scrollPos = scrollLeftPos - slideDistance;
+            } else {
+              scrollPos = 0;
+            }
+            break;
+        }
+
+        node.scrollTo({
+          left: parseInt(`${scrollPos}`),
+          behavior: 'smooth',
+        });
+        console.log(direction);
+      } else {
+        console.log('Ref is still null');
+      }
+    },
+    [slideshowContainerRef],
+  );
+
+  console.log('ARTICLE', article);
+  // Ensure that articles and article are defined before using them
+
+  return articles && article ? (
     <>
       <Layout hideNavbarTabs={true}>
         <Container
@@ -63,7 +114,7 @@ export const BlogArticlePage = () => {
             title={article[0].attributes.Title}
             content={article[0].attributes.Content}
             slug={article[0].attributes.Slug}
-            author={article[0].attributes.author.data}
+            author={article[0].attributes.author}
             publishedAt={article[0].attributes.publishedAt}
             createdAt={article[0].attributes.createdAt}
             updatedAt={article[0].attributes.updatedAt}
@@ -79,6 +130,8 @@ export const BlogArticlePage = () => {
             alignItems: 'center',
             // justifyContent: 'space-between',
             padding: theme.spacing(1.5, 2, 3),
+            flexWrap: 'wrap',
+            gap: theme.spacing(1),
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               padding: theme.spacing(1.5, 3, 3),
               maxWidth: `${theme.breakpoints.values.md}px !important`,
@@ -92,13 +145,9 @@ export const BlogArticlePage = () => {
             },
           }}
         >
-          <ButtonBackArrow
-            onClick={handleBackArrow}
-            styles={{ marginRight: theme.spacing(2) }}
-          />
           {article[0].attributes.tags?.data.length > 0 &&
             article[0].attributes.tags.data.map(
-              (tag: { attributes: { Title: any } }, index: any) => (
+              (tag: TagAttributes, index: any) => (
                 <Typography
                   component="span"
                   variant="lifiBodySmall"
@@ -108,17 +157,22 @@ export const BlogArticlePage = () => {
                     fontSize: '14px',
                     lineHeight: '24px',
                     padding: theme.spacing(1, 2),
-                    backgroundColor: theme.palette.bg.main,
-                    color: theme.palette.primary.main,
+                    backgroundColor:
+                      tag.attributes.Color ?? theme.palette.bg.main,
+                    color: getContrastTextColor(theme),
                     userSelect: 'none',
                     borderRadius: '24px',
+                    flexShrink: 0,
+                    boxShadow:
+                      theme.palette.mode === 'dark'
+                        ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+                        : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
                     ':not(:first-of-type)': {
                       ml: theme.spacing(0.5),
                     },
                     '&:before': {
                       content: '"#"',
                       mr: theme.spacing(0.5),
-                      color: theme.palette.accent2.main,
                     },
                   }}
                 >{`${tag.attributes.Title}`}</Typography> //catId={tag.id}
@@ -135,95 +189,85 @@ export const BlogArticlePage = () => {
             },
           }}
         >
-          {/* <AccordionFAQ content={article[0].attributes.faq_items} /> */}
+          <AccordionFAQ content={article[0].attributes.faq_items.data} />
         </Container>
       </Layout>
       <JoinDiscordBanner />
-      {articlesIsSuccess && (
-        <Container
+      <Box
+        sx={{
+          backgroundColor: theme.palette.white.main,
+          padding: theme.spacing(6, 1, 8),
+        }}
+      >
+        <Box
           sx={{
-            padding: theme.spacing(1.5, 0, 3),
-            [theme.breakpoints.up('sk' as Breakpoint)]: {
-              padding: theme.spacing(1.5, 3, 3),
-              maxWidth: `${theme.breakpoints.values.md}px`,
+            display: 'flex',
+            justifyContent: 'space-between',
+            [theme.breakpoints.up('lg' as Breakpoint)]: {
+              justifyContent: 'flex-start',
             },
           }}
         >
-          import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Box from '@mui/joy/Box';
-import Typography from '@mui/joy/Typography';
-import Card from '@mui/joy/Card';
+          <Typography variant="lifiHeaderMedium" sx={{ marginLeft: 2 }}>
+            {t('blog.similarPosts')}
+          </Typography>
+          <Box
+            sx={{
+              [theme.breakpoints.up('md' as Breakpoint)]: {
+                ...(filteredArticles.length < 3 && { display: 'none' }),
+                marginLeft: 3,
+              },
+            }}
+          >
+            <IconButton onClick={() => handleChange('back')}>
+              <ArrowBackIosIcon />
+            </IconButton>
 
-const data = [
-  {
-    src: 'https://images.unsplash.com/photo-1502657877623-f66bf489d236',
-    title: 'Night view',
-    description: '4.21M views',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1527549993586-dff825b37782',
-    title: 'Lake view',
-    description: '4.74M views',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1532614338840-ab30cf10ed36',
-    title: 'Mountain view',
-    description: '3.98M views',
-  },
-];
-
-export default function CarouselRatio() {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        gap: 1,
-        py: 1,
-        overflow: 'auto',
-        width: 343,
-        scrollSnapType: 'x mandatory',
-        '& > *': {
-          scrollSnapAlign: 'center',
-        },
-        '::-webkit-scrollbar': { display: 'none' },
-      }}
-    >
-      {data.map((item) => (
-                  <Box display={'flex'}>
-                  {articles.map((el) => (
-                  
-                  ))}
-                </Box>
-        <Card orientation="horizontal" size="sm" key={item.title} variant="outlined">
-          <AspectRatio ratio="1" sx={{ minWidth: 60 }}>
-          <BlogPreviewCard
-                      image={el.attributes.Image}
-                      title={el.attributes.Title}
-                      baseUrl={articleUrl}
-                    />
-            <img
-              srcSet={`${item.src}?h=120&fit=crop&auto=format&dpr=2 2x`}
-              src={`${item.src}?h=120&fit=crop&auto=format`}
-              alt={item.title}
-            />
-          </AspectRatio>
-          <Box sx={{ whiteSpace: 'nowrap', mx: 1 }}>
-            <Typography level="title-md">{item.title}</Typography>
-            <Typography level="body-sm">{item.description}</Typography>
+            <IconButton
+              onClick={() => handleChange('forward')}
+              sx={{ marginLeft: 1 }}
+            >
+              <ArrowForwardIosIcon />
+            </IconButton>
           </Box>
-        </Card>
-      ))}
-    </Box>
-  );
-}
+        </Box>
 
-        </Container>
-      )}
+        <SlideshowContainer
+          ref={slideshowContainerRef}
+          styles={{ paddingTop: theme.spacing(2) }}
+        >
+          {filteredArticles.map((el) => (
+            <BlogPreviewCard
+              image={el.attributes.Image}
+              slug={el.attributes.Slug}
+              title={el.attributes.Title}
+              baseUrl={articleUrl}
+            />
+          ))}
+        </SlideshowContainer>
+        <Box width="100%" display="flex" justifyContent="center">
+          <Button
+            variant="secondary"
+            onClick={handleBackArrow}
+            styles={{
+              width: '320px',
+              margin: 'auto',
+              marginTop: theme.spacing(2),
+              backgroundColor: getContrastAlphaColor(theme, '4%'),
+              '&:hover': {
+                backgroundColor: getContrastAlphaColor(theme, '12%'),
+              },
+            }}
+          >
+            {t('blog.seeAllPosts')}
+          </Button>
+        </Box>
+      </Box>
     </>
   ) : (
-    <Box textAlign={'center'} mt={theme.spacing(1)}>
-      <CircularProgress />
-    </Box>
+    <Skeleton variant="rectangular" width={210} height={118} />
+    // <Box textAlign={'center'} mt={theme.spacing(1)}>
+    //   <CircularProgress />
+    // </Box>
   );
 };

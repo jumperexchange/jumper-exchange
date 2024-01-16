@@ -1,9 +1,15 @@
-import { Typography, useTheme } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import type { StrapiImageData, TagData } from 'src/types';
 import { formatDate, readingTime } from 'src/utils';
-import { BlogArticleCard, BlogArticleCardImage, BlogArticleMeta } from '.';
+import {
+  BlogArticleCard,
+  BlogArticleCardImage,
+  BlogArticleMeta,
+  BlogTagsOverlay,
+} from '.';
 
 interface BlogCardProps {
   title: string;
@@ -31,29 +37,65 @@ export const BlogCard = ({
   const { t } = useTranslation();
   const theme = useTheme();
   const minRead = readingTime(content);
+  const navigate = useNavigate();
   console.log('content', content);
   console.log(content.reduce);
 
+  const handleclick = () => {
+    navigate(`/blog/${slug}`);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
   return (
-    <Link to={`/blog/${slug}`} style={{ textDecoration: 'none' }}>
-      <BlogArticleCard>
-        <BlogArticleCardImage
-          src={`${baseUrl}${image.data.attributes.url}`}
-          alt={image.data.attributes.alternativeText}
-        />
-        <Typography
-          variant="lifiHeaderXSmall"
-          sx={{ pt: theme.spacing(1), color: theme.palette.black.main }}
-        >
-          {title}
-        </Typography>
-        {/* <Typography
+    <BlogArticleCard onClick={handleclick}>
+      <BlogArticleCardImage
+        src={`${baseUrl}${image.data.attributes.url}`}
+        alt={image.data.attributes.alternativeText}
+      />
+      <Typography
+        variant="lifiHeaderXSmall"
+        sx={{ pt: theme.spacing(1), color: theme.palette.black.main }}
+      >
+        {title}
+      </Typography>
+      {/* <Typography
         variant="lifiBodySmall"
         sx={{ pt: theme.spacing(2), lineHeight: '24px' }}
       >
         {subtitle}
       </Typography> */}
-        <BlogArticleMeta>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column-reverse',
+          justifyContent: 'space-between',
+          position: 'relative',
+          marginBottom: 1.5,
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            mt: theme.spacing(1.5),
+            flexDirection: 'row',
+          },
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 0.5,
+            // pt: 2,
+            overflow: 'auto',
+            width: '100%',
+            position: 'relative',
+            scrollSnapType: 'x mandatory',
+            '& > *': {
+              flexShrink: 0,
+              scrollSnapAlign: 'center',
+            },
+            '::-webkit-scrollbar': { display: 'none' },
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              // width: '75%',
+            },
+          }}
+        >
           {tags?.data.length > 0 &&
             tags.data.map((tag, index) => (
               <Typography
@@ -86,11 +128,18 @@ export const BlogCard = ({
                 }}
               >{`${tag.attributes.Title}`}</Typography> //catId={tag.id}
             ))}
+          <BlogTagsOverlay />
+        </Box>
+        <BlogArticleMeta>
           <Typography
             variant="lifiBodyXSmall"
             component="span"
             sx={{
-              marginLeft: theme.spacing(2.5),
+              marginLeft: theme.spacing(0),
+
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                marginLeft: theme.spacing(2.5),
+              },
               '&:after': {
                 content: '"•"',
                 margin: '0 4px',
@@ -103,7 +152,7 @@ export const BlogCard = ({
             {t('blog.minRead', { minRead: minRead })}
           </Typography>
         </BlogArticleMeta>
-      </BlogArticleCard>
-    </Link>
+      </Box>
+    </BlogArticleCard>
   );
 };

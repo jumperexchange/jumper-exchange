@@ -13,28 +13,30 @@ interface MediaFormat {
   url: string;
 }
 
-interface MediaAttributes {
+export interface MediaData {
   id: number;
-  attributes: {
-    name: string;
-    alternativeText: string | undefined;
-    caption: string | null;
-    width: number;
-    height: number;
-    formats: {
-      [key: string]: MediaFormat;
-    };
-    hash: string;
-    ext: string;
-    mime: string;
-    size: number;
-    url: string;
-    previewUrl: string | null;
-    provider: string;
-    provider_metadata: any;
-    createdAt: string;
-    updatedAt: string;
+  attributes: MediaAttributes;
+}
+
+interface MediaAttributes {
+  name: string;
+  alternativeText: string | undefined;
+  caption: string | null;
+  width: number;
+  height: number;
+  formats: {
+    [key: string]: MediaFormat;
   };
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: any;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface StrapiMeta {
@@ -48,18 +50,13 @@ interface StrapiMeta {
 
 export type StrapiResponseData<T> = T[];
 
-// export type StrapiResponseData =
-//   | BlogArticleData[]
-//   | FeatureCardData[]
-//   | FaqMeta[];
-
 export interface StrapiResponse<T> {
   data: StrapiResponseData<T>;
   meta: StrapiMeta;
 }
 
 export interface StrapiImageData {
-  data: MediaAttributes;
+  data: MediaData;
 }
 
 /* Feature-Cards */
@@ -85,8 +82,8 @@ interface FeatureCardAttributes {
   updatedAt: string;
   publishedAt: string | null;
   locale: string;
-  BackgroundImageLight: MediaAttributes;
-  BackgroundImageDark: MediaAttributes;
+  BackgroundImageLight: StrapiImageData;
+  BackgroundImageDark: StrapiImageData;
   localizations: {
     data: any[];
   };
@@ -96,9 +93,10 @@ interface FeatureCardAttributes {
 export interface TagData {
   data: TagAttributes[];
 }
-interface TagAttributes {
+export interface TagAttributes {
   attributes: {
     Title: string;
+    Color?: string;
     createdAt: string;
     locale: string;
     publishedAt: string | null;
@@ -137,10 +135,19 @@ interface AuthorAttributes {
     createdAt: string;
     publishedAt: string | null;
     updatedAt: string;
-    Avatar: MediaAttributes;
+    Avatar: AvatarItem;
     Role: string;
   };
   id: number;
+}
+
+export interface AvatarItem {
+  data: AvatarData;
+}
+
+export interface AvatarData {
+  id: number;
+  attributes: MediaAttributes;
 }
 
 /* Blog */
@@ -158,7 +165,7 @@ export interface BlogArticleAttributes {
   updatedAt: string;
   tags: TagData;
   author: AuthorData;
-  faq_items: FaqMeta[];
+  faq_items: FaqData;
   publishedAt: string | null;
   locale: string;
   localizations: {

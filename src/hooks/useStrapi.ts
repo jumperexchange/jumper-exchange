@@ -11,7 +11,7 @@ interface ContentTypeProps {
   contentType: 'feature-cards' | 'blog-articles' | 'faq-items';
   filterSlug?: string;
   filterDisplayed?: boolean;
-  queryKey: string;
+  queryKey: string | string[] | number;
 }
 
 // Query passed Content-Type var from Strapi
@@ -68,8 +68,7 @@ export const useStrapi = <T>({
     enabled: true,
     refetchInterval: 1000 * 60 * 60,
   });
-  console.log('APIURL', decodeURIComponent(apiUrl.href));
-  console.log('RETURN', data);
+  console.log('useStrapi RETURN', data);
   return {
     data: data ?? undefined,
     url: apiUrl,
