@@ -27,7 +27,7 @@ export const SupportModal = () => {
               maxHeight: `calc( 100vh - ${HeaderHeight.SM} )`,
             },
             [theme.breakpoints.up('md' as Breakpoint)]: {
-              height: '500px',
+              height: 500,
             },
           }}
         />

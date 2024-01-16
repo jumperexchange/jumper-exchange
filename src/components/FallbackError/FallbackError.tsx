@@ -61,10 +61,10 @@ export function FallbackError() {
           }}
           styles={{
             width: 'auto',
-            margin: '12px',
+            margin: theme.spacing(1.5),
             gap: '8px',
             borderRadius: '24px',
-            padding: '8px',
+            padding: theme.spacing(1),
             '> button:hover': {
               backgroundColor: getContrastAlphaColor(theme, '4%'),
             },

@@ -24,7 +24,7 @@ export const MenuItemContainer = styled(MUIMenuItem, {
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
   margin: theme.spacing(0, 1.5),
-  height: showButton ? 'auto' : '48px',
+  height: showButton ? 'auto' : 48,
   marginTop: showButton ? theme.spacing(1) : 0,
   borderRadius: '12px',
   width: 'auto',
@@ -37,7 +37,7 @@ export const MenuItemContainer = styled(MUIMenuItem, {
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: showButton ? 'auto' : '48px',
+    height: showButton ? 'auto' : 48,
   },
 }));
 
@@ -50,8 +50,8 @@ export const MenuLabel = styled('div', {
 })<MenuLabelProps>(({ variant, theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  maxWidth: variant === 'xs' ? '198px' : variant === 'md' ? '232px' : '260px',
+  maxWidth: variant === 'xs' ? 198 : variant === 'md' ? 232 : 260,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: variant === 'xs' ? '168px' : variant === 'md' ? '194px' : '244px',
+    maxWidth: variant === 'xs' ? 168 : variant === 'md' ? 194 : 244,
   },
 }));

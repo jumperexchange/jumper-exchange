@@ -1,5 +1,5 @@
-import type { CardMediaProps, CardProps as MuiCardProps } from '@mui/material';
-import { CardMedia, Card as MuiCard } from '@mui/material';
+import type { CardProps as MuiCardProps } from '@mui/material';
+import { Card as MuiCard } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
@@ -25,20 +25,4 @@ export const FCard = styled(MuiCard, {
   ':last-child': {
     marginBottom: 0,
   },
-}));
-
-export interface CardImageProps extends Omit<CardMediaProps, 'component'> {
-  component?: string;
-  alt?: string;
-  src?: string;
-}
-
-export const CardImage = styled(CardMedia)<CardImageProps>(({ theme }) => ({
-  width: '106px',
-  height: 'auto',
-  maxHeight: '88px',
-  position: 'absolute',
-  objectFit: 'contain',
-  right: theme.spacing(3.75),
-  bottom: '22px',
 }));

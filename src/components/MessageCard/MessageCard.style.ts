@@ -9,7 +9,7 @@ const MessageCard = styled(Box)(({ theme }) => ({
 }));
 
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({
-  width: '392px',
+  width: 392,
   borderRadius: '12px',
   padding: theme.spacing(2, 3),
   boxShadow:

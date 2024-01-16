@@ -1,4 +1,5 @@
-import { Box, BoxProps, styled } from '@mui/material';
+import type { BoxProps } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
   welcomeScreenClosed: boolean;
@@ -7,9 +8,9 @@ export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
 export const WidgetWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'welcomeScreenClosed',
 })<WidgetWrapperProps>(({ theme, welcomeScreenClosed }) => ({
-  minWidth: '392px',
+  minWidth: 392,
   position: 'relative',
-  margin: ' 0 auto',
+  margin: theme.spacing(0, 'auto'),
 
   ...(!welcomeScreenClosed && {
     '&:hover': {
@@ -27,11 +28,11 @@ export const GlowBackground = styled('span')(({ theme }) => ({
   position: 'absolute',
   opacity: 0,
   zIndex: -1,
-  minWidth: '440px',
-  minHeight: '440px',
+  minWidth: 440,
+  minHeight: 440,
   width: '50vw',
   height: '50vw',
   transform: 'translateX(-50%)',
   left: '50%',
-  top: '80px',
+  top: 80,
 }));

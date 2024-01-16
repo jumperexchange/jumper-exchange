@@ -53,8 +53,8 @@ export const ContentWrapper = styled(Box, {
     height: '35%',
     top: '-35%',
     pointerEvents: 'none',
-    left: '0',
-    right: '0',
+    left: 0,
+    right: 0,
     background:
       theme.palette.mode === 'dark'
         ? 'linear-gradient(to top, #1A1033 0%, transparent 100%)'
