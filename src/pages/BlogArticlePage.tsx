@@ -23,7 +23,7 @@ import {
 } from 'src/components';
 import { useStrapi } from 'src/hooks';
 import type { BlogArticleData, TagAttributes } from 'src/types';
-import { getContrastAlphaColor, getContrastTextColor } from 'src/utils';
+import { getContrastTextColor } from 'src/utils';
 
 const slideDistance = 550;
 
@@ -205,7 +205,15 @@ export const BlogArticlePage = () => {
             },
           }}
         >
-          <Typography variant="lifiHeaderMedium" sx={{ marginLeft: 2 }}>
+          <Typography
+            variant="lifiHeaderMedium"
+            sx={{
+              marginLeft: 2,
+              ...(theme.palette.mode === 'dark' && {
+                color: theme.palette.black.main,
+              }),
+            }}
+          >
             {t('blog.similarPosts')}
           </Typography>
           <Box
@@ -244,16 +252,19 @@ export const BlogArticlePage = () => {
         </SlideshowContainer>
         <Box width="100%" display="flex" justifyContent="center">
           <Button
-            variant="secondary"
+            variant="primary"
             onClick={handleBackArrow}
             styles={{
               width: '320px',
               margin: 'auto',
+              // ...(theme.palette.mode === 'dark' && {
+              //   color: theme.palette.black.main,
+              // }),
               marginTop: theme.spacing(2),
-              backgroundColor: getContrastAlphaColor(theme, '4%'),
-              '&:hover': {
-                backgroundColor: getContrastAlphaColor(theme, '12%'),
-              },
+              // backgroundColor: getContrastAlphaColor(theme, '4%'),
+              // '&:hover': {
+              //   backgroundColor: getContrastAlphaColor(theme, '12%'),
+              // },
             }}
           >
             {t('blog.seeAllPosts')}

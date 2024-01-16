@@ -56,8 +56,16 @@ export const BlogPreviewCard = ({
         src={`${baseUrl?.origin}${image.data.attributes.url}`}
         alt={image.data.attributes.alternativeText}
       />
-      <CardContent>
-        <Typography variant="lifiBodyLarge">{title}</Typography>
+      <CardContent
+        sx={{
+          ...(theme.palette.mode === 'dark' && {
+            color: theme.palette.black.main,
+          }),
+        }}
+      >
+        <Typography variant="lifiBodyLarge" sx={{ color: 'inherit' }}>
+          {title}
+        </Typography>
       </CardContent>
     </Card>
   );

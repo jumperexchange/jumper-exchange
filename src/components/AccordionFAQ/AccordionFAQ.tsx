@@ -23,7 +23,7 @@ export const AccordionFAQ = ({ content }: AccordionFAQProps) => {
     setShow(!show);
   };
 
-  return !!content.length ? (
+  return !!content?.length ? (
     <Container
       sx={{
         margin: 'auto',
