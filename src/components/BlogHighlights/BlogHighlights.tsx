@@ -85,7 +85,7 @@ export const BlogHighlights = ({
                 },
               }}
             >
-              Dive into
+              {t('blog.title')}
             </Typography>
             <Typography
               variant={'lifiBodyMediumStrong'}
@@ -100,7 +100,7 @@ export const BlogHighlights = ({
                 },
               }}
             >
-              Learn more about bridging and get started
+              {t('blog.subtitle')}
             </Typography>
           </Grid>
         ) : null}
