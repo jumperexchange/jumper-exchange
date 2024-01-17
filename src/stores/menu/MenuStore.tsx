@@ -48,7 +48,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       }),
 
     // Close ALL Navbar Menus
-    onCloseAllMenus: () => {
+    closeAllMenus: () => {
       set({
         openMainMenu: false,
         openWalletSelectMenu: false,
@@ -61,7 +61,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Navbar Main Menu
-    onOpenMainMenu: (open, anchorRef) => {
+    setMainMenuState: (open, anchorRef) => {
       set({
         openMainMenu: open,
         openSubMenu: MenuKeys.None,
@@ -70,7 +70,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Navbar Wallet Menu
-    onOpenWalletSelectMenu: (open, anchorRef) => {
+    setWalletSelectMenuState: (open, anchorRef) => {
       set({
         openWalletSelectMenu: open,
         openSubMenu: MenuKeys.None,
@@ -79,7 +79,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Navbar Connected Menu
-    onOpenWalletMenu: (open, anchorRef) => {
+    setWalletMenuState: (open, anchorRef) => {
       set({
         openWalletMenu: open,
         openSubMenu: MenuKeys.None,
@@ -88,7 +88,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Wallet Ecosystem Selection Menu
-    onOpenEcosystemSelectMenu: (open, combinedWallet, anchorRef) => {
+    setEcosystemSelectMenuState: (open, combinedWallet, anchorRef) => {
       set({
         openEcosystemSelect: { open, combinedWallet },
         openWalletSelectMenu: false,
@@ -98,14 +98,14 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle Navbar Sub Menu
-    onOpenSubMenu: (subMenu) => {
+    setSubMenuState: (subMenu) => {
       set({
         openSubMenu: subMenu,
       });
     },
 
     // Open Snackbar and set label
-    onOpenSnackbar: (open, label, severity) => {
+    setSnackbarState: (open, label, severity) => {
       set((state) => ({
         ...state,
         openSnackbar: {
@@ -117,7 +117,7 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
     },
 
     // Toggle support modal
-    onOpenSupportModal: (open) => {
+    setSupportModalState: (open) => {
       set({
         openMainMenu: false,
         openWalletSelectMenu: false,

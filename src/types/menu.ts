@@ -29,34 +29,34 @@ export type MenuProps = {
 
 export interface MenuState extends MenuProps {
   // Close ALL Navbar Menus
-  onCloseAllMenus: () => void;
+  closeAllMenus: () => void;
 
   // Toggle Main Menu
-  onOpenMainMenu: (open: boolean, anchorRef?: any) => void;
+  setMainMenuState: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Wallet Menu
-  onOpenWalletMenu: (open: boolean, anchorRef?: any) => void;
+  setWalletMenuState: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Wallet Selection Menu
-  onOpenWalletSelectMenu: (open: boolean, anchorRef?: any) => void;
+  setWalletSelectMenuState: (open: boolean, anchorRef?: any) => void;
 
   // Toggle Ecosystem Select Menu
-  onOpenEcosystemSelectMenu: (
+  setEcosystemSelectMenuState: (
     open: boolean,
     combinedWallet?: CombinedWallet,
     anchorRef?: any,
   ) => void;
 
   // Toggle Sub Menu
-  onOpenSubMenu: (subMenu: keyof typeof MenuKeys) => void;
+  setSubMenuState: (subMenu: keyof typeof MenuKeys) => void;
 
   // Open Snackbar and set label
-  onOpenSnackbar: (
+  setSnackbarState: (
     open: boolean,
     label?: string,
     severity?: SnackbarSeverityType,
   ) => void;
 
   // Toggle support modal
-  onOpenSupportModal: (open: boolean) => void;
+  setSupportModalState: (open: boolean) => void;
 }

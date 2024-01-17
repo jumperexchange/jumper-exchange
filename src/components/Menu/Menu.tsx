@@ -6,7 +6,6 @@ import { MenuDesktop, MenuMobile } from '.';
 interface MenuProps {
   isOpenSubMenu?: boolean;
   label?: string;
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
   cardsLayout?: boolean;
   styles?: CSSObject;
@@ -17,7 +16,6 @@ interface MenuProps {
 }
 
 export const Menu = ({
-  handleClose,
   open,
   setOpen,
   transformOrigin,
@@ -36,7 +34,6 @@ export const Menu = ({
     open &&
     (isDesktop ? (
       <MenuDesktop
-        handleClose={handleClose}
         label={label}
         transformOrigin={transformOrigin}
         open={open}
@@ -50,7 +47,6 @@ export const Menu = ({
       </MenuDesktop>
     ) : (
       <MenuMobile
-        handleClose={handleClose}
         label={label}
         open={open}
         styles={styles}

@@ -25,8 +25,8 @@ export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();
   const { activeTab } = useActiveTabStore();
   const { trackEvent, trackTransaction } = useUserTracking();
-  const [onOpenSupportModal] = useMenuStore((state) => [
-    state.onOpenSupportModal,
+  const [setSupportModalState] = useMenuStore((state) => [
+    state.setSupportModalState,
   ]);
   const widgetEvents = useWidgetEvents();
   const { isMultisigSigner, shouldOpenMultisigSignatureModal } = useMultisig();
@@ -174,7 +174,7 @@ export function WidgetEvents() {
     };
     // TODO: Discuss what is up here
     // const onRouteContactSupport = (supportId: RouteContactSupport) => {
-    //   onOpenSupportModal(true);
+    //   setSupportModalState(true);
     // };
 
     const handleMultisigChainTokenSelected = (
@@ -201,7 +201,7 @@ export function WidgetEvents() {
   }, [
     activeTab,
     onDestinationChainSelected,
-    onOpenSupportModal,
+    setSupportModalState,
     shouldOpenMultisigSignatureModal,
     trackEvent,
     trackTransaction,

@@ -15,7 +15,7 @@ export const SVMConnectButton = ({
 }: SVMConnectButtonProps) => {
   const theme = useTheme();
   const { select, disconnect, connected } = useWallet();
-  const { onCloseAllMenus } = useMenuStore((state) => state);
+  const { closeAllMenus } = useMenuStore((state) => state);
 
   const connect = async () => {
     if (connected) {
@@ -30,7 +30,7 @@ export const SVMConnectButton = ({
     //     chainType: ChainType.SVM,
     //   });
     // });
-    onCloseAllMenus();
+    closeAllMenus();
   };
   return (
     <ConnectButton onClick={() => connect()}>

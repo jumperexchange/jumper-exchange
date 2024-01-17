@@ -1,4 +1,4 @@
-import { Container, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { Menu, MenuHeaderAppBar, MenuHeaderAppWrapper } from 'src/components';
@@ -9,28 +9,26 @@ import { EVMConnectButton } from './EVMConnectButton';
 import { ConnectButtonContainer } from './EcosystemSelectMenu.style';
 
 interface MenuProps {
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   open?: boolean;
 }
 
-export const EcosystemSelectMenu = ({ handleClose, open }: MenuProps) => {
+export const EcosystemSelectMenu = ({ open }: MenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { openEcosystemSelect, onOpenEcosystemSelectMenu } = useMenuStore(
+  const { openEcosystemSelect, setEcosystemSelectMenuState } = useMenuStore(
     (state) => state,
   );
 
   return (
     openEcosystemSelect && (
       <Menu
-        handleClose={handleClose}
         open={openEcosystemSelect.open}
         width="420px"
         styles={{
           background: theme.palette.surface1.main,
         }}
         transformOrigin={'top'}
-        setOpen={onOpenEcosystemSelectMenu}
+        setOpen={setEcosystemSelectMenuState}
       >
         <MenuHeaderAppWrapper
           sx={{

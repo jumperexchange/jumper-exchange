@@ -22,14 +22,14 @@ export const NavbarButtons = () => {
     (state) => state.onWalletDisconnect,
   );
 
-  const [openMainMenu, onOpenMainMenu] = useMenuStore((state) => [
+  const [openMainMenu, setMainMenuState] = useMenuStore((state) => [
     state.openMainMenu,
-    state.onOpenMainMenu,
+    state.setMainMenuState,
   ]);
 
   const { t } = useTranslation();
   const { account } = useAccounts();
-  !account.isConnected ?? onWalletDisconnect();
+  if (!account.isConnected) onWalletDisconnect();
 
   // return focus to the button when we transitioned from !open -> open
   const prevMainMenu = useRef(openMainMenu);
@@ -44,7 +44,7 @@ export const NavbarButtons = () => {
   const { isSuccess } = useChains();
 
   const handleOnOpenNavbarMainMenu = () => {
-    onOpenMainMenu(!openMainMenu, mainMenuAnchor.current);
+    setMainMenuState(!openMainMenu, mainMenuAnchor.current);
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,

@@ -3,24 +3,18 @@ import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import type { JsxElement } from 'typescript';
 import { DevelopersSubmenu, LanguagesSubmenu } from '..';
-interface MainMenuProps {
-  handleClose: (event: MouseEvent | TouchEvent) => void;
-}
 
-export const MainMenu = ({ handleClose }: MainMenuProps) => {
+export const MainMenu = () => {
   const mainMenuItems = useMainMenuContent();
-  const [openMainMenu, onOpenMainMenu, openSubMenu] = useMenuStore((state) => [
-    state.openMainMenu,
-    state.onOpenMainMenu,
-    state.openSubMenu,
-  ]);
+  const { openMainMenu, setMainMenuState, openSubMenu } = useMenuStore(
+    (state) => state,
+  );
 
   return openMainMenu ? (
     <Menu
-      handleClose={handleClose}
       open
       transformOrigin={'top right'}
-      setOpen={onOpenMainMenu}
+      setOpen={setMainMenuState}
       isOpenSubMenu={openSubMenu !== MenuKeys.None}
     >
       {openSubMenu === MenuKeys.None &&

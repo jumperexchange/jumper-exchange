@@ -7,11 +7,8 @@ import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { WalletCard } from './WalletCard';
-interface MenuProps {
-  handleClose: (event: MouseEvent | TouchEvent) => void;
-}
 
-export const WalletMenu = ({ handleClose }: MenuProps) => {
+export const WalletMenu = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
@@ -20,28 +17,27 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
 
   const {
     openWalletMenu,
-    onOpenWalletMenu,
-    onOpenSnackbar,
+    setWalletMenuState,
+    setSnackbarState,
     openSubMenu,
-    onCloseAllMenus,
-    onOpenWalletSelectMenu,
+    closeAllMenus,
+    setWalletSelectMenuState,
   } = useMenuStore((state) => state);
 
   useEffect(() => {
-    openWalletMenu! && onOpenSnackbar(false);
-  }, [onOpenSnackbar, openWalletMenu]);
+    openWalletMenu! && setSnackbarState(false);
+  }, [setSnackbarState, openWalletMenu]);
   useEffect(() => {
     if (accounts.every((account) => account.status === 'disconnected')) {
-      onOpenWalletMenu(false);
+      setWalletMenuState(false);
     }
-  }, [accounts, onOpenWalletMenu]);
+  }, [accounts, setWalletMenuState]);
 
   return openWalletMenu ? (
     <Menu
       open
       transformOrigin={'top left'}
-      setOpen={onOpenWalletMenu}
-      handleClose={handleClose}
+      setOpen={setWalletMenuState}
       isOpenSubMenu={openSubMenu !== MenuKeys.None}
       width={'auto'}
       styles={{
@@ -61,8 +57,11 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
         <WalletButton
           sx={{ width: '324px' }}
           onClick={() => {
-            onCloseAllMenus();
-            onOpenWalletSelectMenu(true);
+            closeAllMenus();
+            setWalletSelectMenuState(
+              true,
+              document.getElementById('connect-wallet-button'),
+            );
           }}
         >
           <Typography

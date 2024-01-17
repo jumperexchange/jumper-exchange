@@ -4,9 +4,9 @@ import MuiAlert from '@mui/material/Alert';
 import { useMenuStore } from 'src/stores';
 
 export const Snackbar = () => {
-  const [openSnackbar, onOpenSnackbar] = useMenuStore((state) => [
+  const [openSnackbar, setSnackbarState] = useMenuStore((state) => [
     state.openSnackbar,
-    state.onOpenSnackbar,
+    state.setSnackbarState,
   ]);
 
   const handleCloseSnackbar = (
@@ -16,7 +16,7 @@ export const Snackbar = () => {
     if (reason === 'clickaway') {
       return;
     }
-    onOpenSnackbar(false);
+    setSnackbarState(false);
   };
 
   return (

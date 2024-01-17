@@ -33,13 +33,13 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
-  const { onCloseAllMenus, onOpenSnackbar } = useMenuStore((state) => state);
+  const { closeAllMenus, setSnackbarState } = useMenuStore((state) => state);
   const onWalletDisconnect = useSettingsStore(
     (state) => state.onWalletDisconnect,
   );
 
   const handleExploreButton = () => {
-    account.chainId && onCloseAllMenus();
+    account.chainId && closeAllMenus();
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
@@ -61,14 +61,14 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   const handleCopyButton = () => {
     account.address && navigator.clipboard.writeText(account.address);
-    onOpenSnackbar(true, t('navbar.walletMenu.copiedMsg'), 'success');
+    setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.CopyAddressToClipboard,
       label: 'copy_addr_to_clipboard',
       disableTrackingTool: [EventTrackingTool.ARCx, EventTrackingTool.Cookie3],
     });
-    onCloseAllMenus();
+    closeAllMenus();
   };
 
   const handleDisconnect = () => {

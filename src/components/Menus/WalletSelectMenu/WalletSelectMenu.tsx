@@ -15,13 +15,12 @@ import { getContrastAlphaColor } from 'src/utils';
 import { useWalletSelectContent } from './useWalletSelectContent';
 
 interface MenuProps {
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   open?: boolean;
 }
 
 const NUMBER_OF_WALLETS_DISPLAYED = 9;
 
-export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
+export const WalletSelectMenu = ({ open }: MenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
@@ -32,13 +31,13 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
   );
   const {
     openWalletSelectMenu,
-    onOpenWalletSelectMenu,
+    setWalletSelectMenuState,
     openSubMenu,
-    onOpenSubMenu,
+    setSubMenuState,
   } = useMenuStore((state) => state);
 
   const handleClickSelectMore = () => {
-    onOpenSubMenu(MenuKeys.WalletSelectMore);
+    setSubMenuState(MenuKeys.WalletSelectMore);
   };
 
   const menuItemStyles: CSSObject = {
@@ -57,7 +56,6 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
   return (
     openWalletSelectMenu && (
       <Menu
-        handleClose={handleClose}
         open={openWalletSelectMenu}
         cardsLayout={openSubMenu === MenuKeys.WalletSelectMore ? false : true}
         styles={{
@@ -70,7 +68,7 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
           },
         }}
         transformOrigin={'top'}
-        setOpen={onOpenWalletSelectMenu}
+        setOpen={setWalletSelectMenuState}
         isOpenSubMenu={openSubMenu === MenuKeys.WalletSelectMore}
       >
         {openSubMenu === MenuKeys.None && (

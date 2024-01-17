@@ -46,10 +46,10 @@ export const MenuItem = ({
 }: MenuItemProps) => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const [onOpenSubMenu] = useMenuStore((state) => [state.onOpenSubMenu]);
+  const [setSubMenuState] = useMenuStore((state) => [state.setSubMenuState]);
 
   const handleClick = () => {
-    triggerSubMenu && onOpenSubMenu(triggerSubMenu);
+    triggerSubMenu && setSubMenuState(triggerSubMenu);
     triggerSubMenu &&
       trackEvent({
         category: TrackingCategory.MainMenu,

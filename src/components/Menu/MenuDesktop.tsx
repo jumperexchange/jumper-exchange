@@ -15,7 +15,6 @@ import { useMenuStore } from 'src/stores';
 interface MenuProps {
   isOpenSubMenu: boolean;
   label?: string;
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   transformOrigin?: string;
   cardsLayout?: boolean;
   styles?: CSSObject;
@@ -28,7 +27,6 @@ interface MenuProps {
 export const MenuDesktop = ({
   isOpenSubMenu,
   setOpen,
-  handleClose,
   styles,
   transformOrigin,
   cardsLayout,
@@ -37,17 +35,15 @@ export const MenuDesktop = ({
   open,
   children,
 }: MenuProps) => {
-  const [openSubMenu, onCloseAllMenus, anchorRef] = useMenuStore((state) => [
+  const [openSubMenu, closeAllMenus, anchorRef] = useMenuStore((state) => [
     state.openSubMenu,
-    state.onCloseAllMenus,
+    state.closeAllMenus,
     state.anchorRef,
   ]);
 
   function handleListKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Tab') {
+    if (event.key === 'Tab' || event.key === 'Escape') {
       event.preventDefault();
-      setOpen(false, null);
-    } else if (event.key === 'Escape') {
       setOpen(false, null);
     }
   }
@@ -73,8 +69,7 @@ export const MenuDesktop = ({
             <MenuPaper width={width}>
               <ClickAwayListener
                 onClickAway={(event) => {
-                  handleClose(event);
-                  onCloseAllMenus();
+                  closeAllMenus();
                 }}
               >
                 <MenuList

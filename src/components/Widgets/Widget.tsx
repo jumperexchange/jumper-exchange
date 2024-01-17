@@ -40,8 +40,8 @@ export function Widget({ starterVariant }: WidgetProps) {
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
   );
-  const onOpenWalletSelectMenu = useMenuStore(
-    (state: MenuState) => state.onOpenWalletSelectMenu,
+  const setWalletSelectMenuState = useMenuStore(
+    (state: MenuState) => state.setWalletSelectMenuState,
   );
 
   // load environment config
@@ -60,7 +60,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletConfig: {
         onConnect: async () => {
-          onOpenWalletSelectMenu(
+          setWalletSelectMenuState(
             true,
             document.getElementById('connect-wallet-button'),
           );
@@ -129,7 +129,7 @@ export function Widget({ starterVariant }: WidgetProps) {
     i18n.languages,
     multisigWidget,
     isMultisigSigner,
-    onOpenWalletSelectMenu,
+    setWalletSelectMenuState,
   ]);
 
   return (

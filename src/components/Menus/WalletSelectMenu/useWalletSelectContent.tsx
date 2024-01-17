@@ -24,7 +24,7 @@ export const useWalletSelectContent = () => {
   const { disconnect: wagmiDisconnect } = useDisconnect();
   const { select, disconnect, connected } = useWallet();
 
-  const { onOpenSnackbar, onCloseAllMenus, onOpenEcosystemSelectMenu } =
+  const { setSnackbarState, closeAllMenus, setEcosystemSelectMenuState } =
     useMenuStore((state) => state);
   const { onWalletConnect, onWelcomeScreenClosed } = useSettingsStore(
     (state) => ({
@@ -49,7 +49,7 @@ export const useWalletSelectContent = () => {
   const connectWallet = useCallback(
     async (combinedWallet: CombinedWallet) => {
       if (combinedWallet.evm && combinedWallet.svm) {
-        onOpenEcosystemSelectMenu(
+        setEcosystemSelectMenuState(
           true,
           combinedWallet,
           document.getElementById('connect-wallet-button'),
@@ -66,26 +66,26 @@ export const useWalletSelectContent = () => {
         select(combinedWallet.svm.adapter.name);
         onWalletConnect(combinedWallet.svm.adapter.name);
       } else {
-        onOpenSnackbar(
+        setSnackbarState(
           true,
           t('navbar.walletSelectMenu.ecosystemSelectMenu.noEcosystemAdapter'),
           'error',
         );
       }
-      onCloseAllMenus();
+      closeAllMenus();
       onWelcomeScreenClosed(true);
     },
     [
-      onCloseAllMenus,
+      closeAllMenus,
       onWelcomeScreenClosed,
-      onOpenEcosystemSelectMenu,
+      setEcosystemSelectMenuState,
       wagmiDisconnect,
       connectAsync,
       onWalletConnect,
       connected,
       select,
       disconnect,
-      onOpenSnackbar,
+      setSnackbarState,
       t,
     ],
   );
@@ -99,8 +99,8 @@ export const useWalletSelectContent = () => {
       ) {
         connectWallet(combinedWallet);
       } else {
-        onCloseAllMenus();
-        onOpenSnackbar(
+        closeAllMenus();
+        setSnackbarState(
           true,
           t('navbar.walletMenu.walletNotInstalled', {
             wallet:
@@ -149,8 +149,8 @@ export const useWalletSelectContent = () => {
   }, [
     availableWallets,
     connectWallet,
-    onCloseAllMenus,
-    onOpenSnackbar,
+    closeAllMenus,
+    setSnackbarState,
     t,
     theme,
   ]);

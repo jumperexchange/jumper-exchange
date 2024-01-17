@@ -13,7 +13,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
   const theme = useTheme();
   const { connectAsync } = useConnect();
   const { disconnect } = useDisconnect();
-  const { onCloseAllMenus } = useMenuStore((state) => state);
+  const { closeAllMenus } = useMenuStore((state) => state);
 
   const connect = async () => {
     const identityCheckPassed = await isWalletInstalledAsync(evm.id);
@@ -34,7 +34,7 @@ export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
       //     },
       //   },
     );
-    onCloseAllMenus();
+    closeAllMenus();
   };
   return (
     <ConnectButton onClick={() => connect()}>

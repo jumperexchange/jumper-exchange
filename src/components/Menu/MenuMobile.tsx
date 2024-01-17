@@ -14,7 +14,6 @@ import { useMenuStore } from 'src/stores';
 
 interface MenuProps {
   isOpenSubMenu: boolean;
-  handleClose: (event: MouseEvent | TouchEvent) => void;
   setOpen: (open: boolean, anchorRef: any) => void;
   cardsLayout?: boolean;
   styles?: CSSObject;
@@ -24,7 +23,6 @@ interface MenuProps {
 }
 
 export const MenuMobile = ({
-  handleClose,
   open,
   setOpen,
   cardsLayout,
@@ -33,10 +31,10 @@ export const MenuMobile = ({
   isOpenSubMenu,
   children,
 }: MenuProps) => {
-  const [openSubMenu, anchorRef, onCloseAllMenus] = useMenuStore((state) => [
+  const [openSubMenu, anchorRef, closeAllMenus] = useMenuStore((state) => [
     state.openSubMenu,
     state.anchorRef,
-    state.onCloseAllMenus,
+    state.closeAllMenus,
   ]);
 
   return (
@@ -55,8 +53,7 @@ export const MenuMobile = ({
             <MenuPaper isMobile={true}>
               <ClickAwayListener
                 onClickAway={(event) => {
-                  handleClose(event);
-                  onCloseAllMenus();
+                  closeAllMenus();
                 }}
               >
                 <MenuList

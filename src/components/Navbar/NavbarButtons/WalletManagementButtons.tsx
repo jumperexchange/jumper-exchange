@@ -45,14 +45,14 @@ export const WalletManagementButtons: React.FC<
   );
   const [
     openWalletSelectMenu,
-    onOpenWalletSelectMenu,
+    setWalletSelectMenuState,
     openWalletMenu,
-    onOpenWalletMenu,
+    setWalletMenuState,
   ] = useMenuStore((state) => [
     state.openWalletSelectMenu,
-    state.onOpenWalletSelectMenu,
+    state.setWalletSelectMenuState,
     state.openWalletMenu,
-    state.onOpenWalletMenu,
+    state.setWalletMenuState,
   ]);
 
   const walletIcon: string = useMemo(() => {
@@ -77,7 +77,10 @@ export const WalletManagementButtons: React.FC<
           EventTrackingTool.Cookie3,
         ],
       });
-    onOpenWalletSelectMenu(!openWalletSelectMenu, event.currentTarget);
+    setWalletSelectMenuState(
+      !openWalletSelectMenu,
+      document.getElementById('connect-wallet-button'),
+    );
   };
 
   const handleWalletMenuClick = (
@@ -94,7 +97,7 @@ export const WalletManagementButtons: React.FC<
           EventTrackingTool.Cookie3,
         ],
       });
-    onOpenWalletMenu(!openWalletMenu, event.currentTarget);
+    setWalletMenuState(!openWalletMenu, event.currentTarget);
   };
 
   return !account.address ? (
