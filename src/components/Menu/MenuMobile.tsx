@@ -1,16 +1,22 @@
-import type { CSSObject } from '@mui/material';
-import { Slide, Typography } from '@mui/material';
+import type { CSSObject, Theme } from '@mui/material';
+import { Drawer, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {
-  ExternalBackground,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuList,
-  MenuPaper,
-  MenuPopper,
 } from 'src/components';
 import { MenuKeys } from 'src/const';
 import { useMenuStore } from 'src/stores';
+
+const paperProps = {
+  sx: (theme: Theme) => ({
+    position: 'absolute',
+    backgroundImage: 'none',
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderTopRightRadius: theme.shape.borderRadius,
+  }),
+};
 
 interface MenuProps {
   isOpenSubMenu: boolean;
@@ -24,75 +30,54 @@ interface MenuProps {
 
 export const MenuMobile = ({
   open,
-  setOpen,
   cardsLayout,
   label,
   styles,
   isOpenSubMenu,
   children,
 }: MenuProps) => {
-  const [openSubMenu, anchorRef, closeAllMenus] = useMenuStore((state) => [
-    state.openSubMenu,
-    state.anchorRef,
-    state.closeAllMenus,
-  ]);
+  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
 
   return (
-    open && (
-      <>
-        <ExternalBackground />
-        <Slide direction="up" in={open} mountOnEnter unmountOnExit>
-          <MenuPopper
-            open={open}
-            anchorEl={anchorRef}
-            role={undefined}
-            placement="bottom-start"
-            transition
-            disablePortal
-          >
-            <MenuPaper isMobile={true}>
-              <ClickAwayListener
-                onClickAway={(event) => {
-                  closeAllMenus();
-                }}
-              >
-                <MenuList
-                  autoFocusItem={open}
-                  id="composition-menu"
-                  autoFocus={open}
-                  isOpenSubMenu={openSubMenu !== MenuKeys.None}
-                  aria-labelledby="composition-button"
-                  cardsLayout={cardsLayout}
-                  hasLabel={!!label}
-                  sx={styles}
-                  component={
-                    isOpenSubMenu && openSubMenu !== MenuKeys.WalletSelect
-                      ? 'div'
-                      : 'ul'
-                  }
+    <Drawer anchor="bottom" open={open} PaperProps={paperProps}>
+      <ClickAwayListener
+        onClickAway={(event) => {
+          closeAllMenus();
+        }}
+      >
+        <MenuList
+          autoFocusItem={open}
+          id="main-burger-menu"
+          autoFocus={open}
+          isOpenSubMenu={openSubMenu !== MenuKeys.None}
+          aria-labelledby="main-burger-menu"
+          cardsLayout={cardsLayout}
+          hasLabel={!!label}
+          sx={styles}
+          component={
+            isOpenSubMenu && openSubMenu !== MenuKeys.WalletSelect
+              ? 'div'
+              : 'ul'
+          }
+        >
+          {!!label ? (
+            <MenuHeaderAppWrapper>
+              <MenuHeaderAppBar component="div" elevation={0}>
+                <Typography
+                  variant={'lifiBodyMediumStrong'}
+                  width={'100%'}
+                  align={'center'}
+                  flex={1}
+                  noWrap
                 >
-                  {!!label ? (
-                    <MenuHeaderAppWrapper>
-                      <MenuHeaderAppBar component="div" elevation={0}>
-                        <Typography
-                          variant={'lifiBodyMediumStrong'}
-                          width={'100%'}
-                          align={'center'}
-                          flex={1}
-                          noWrap
-                        >
-                          {label}
-                        </Typography>
-                      </MenuHeaderAppBar>
-                    </MenuHeaderAppWrapper>
-                  ) : null}
-                  {children}
-                </MenuList>
-              </ClickAwayListener>
-            </MenuPaper>
-          </MenuPopper>
-        </Slide>
-      </>
-    )
+                  {label}
+                </Typography>
+              </MenuHeaderAppBar>
+            </MenuHeaderAppWrapper>
+          ) : null}
+          {children}
+        </MenuList>
+      </ClickAwayListener>
+    </Drawer>
   );
 };

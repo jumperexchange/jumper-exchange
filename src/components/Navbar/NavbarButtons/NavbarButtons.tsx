@@ -11,7 +11,7 @@ import { useChains, useUserTracking } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import { EventTrackingTool } from 'src/types';
 import { NavbarButtonsContainer, WalletManagementButtons } from '.';
-import { MenuToggle } from '../..';
+import { MainMenu, MenuToggle } from '../..';
 import { useAccounts } from 'src/hooks/useAccounts';
 
 export const NavbarButtons = () => {
@@ -44,7 +44,7 @@ export const NavbarButtons = () => {
   const { isSuccess } = useChains();
 
   const handleOnOpenNavbarMainMenu = () => {
-    setMainMenuState(!openMainMenu, mainMenuAnchor.current);
+    setMainMenuState(!openMainMenu);
     trackEvent({
       category: TrackingCategory.Menu,
       action: TrackingAction.OpenMenu,
@@ -76,8 +76,8 @@ export const NavbarButtons = () => {
 
       <MenuToggle
         ref={mainMenuAnchor}
-        id="composition-button"
-        aria-controls={openMainMenu ? 'composition-menu' : undefined}
+        id="main-burger-menu-button"
+        aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
         aria-expanded={openMainMenu ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleOnOpenNavbarMainMenu}
@@ -89,6 +89,7 @@ export const NavbarButtons = () => {
           }}
         />
       </MenuToggle>
+      <MainMenu anchorEl={mainMenuAnchor.current} />
     </NavbarButtonsContainer>
   );
 };

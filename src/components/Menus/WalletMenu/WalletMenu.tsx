@@ -8,7 +8,11 @@ import { useMenuStore } from 'src/stores';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { WalletCard } from './WalletCard';
 
-export const WalletMenu = () => {
+interface WalletMenuProps {
+  anchorEl: any;
+}
+
+export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
@@ -33,10 +37,9 @@ export const WalletMenu = () => {
     }
   }, [accounts, setWalletMenuState]);
 
-  return openWalletMenu ? (
+  return (
     <Menu
-      open
-      transformOrigin={'top left'}
+      open={openWalletMenu}
       setOpen={setWalletMenuState}
       isOpenSubMenu={openSubMenu !== MenuKeys.None}
       width={'auto'}
@@ -44,6 +47,7 @@ export const WalletMenu = () => {
         background: theme.palette.surface1.main,
         padding: '16px',
       }}
+      anchorEl={anchorEl}
     >
       <Stack
         spacing={2}
@@ -58,10 +62,7 @@ export const WalletMenu = () => {
           sx={{ width: '324px' }}
           onClick={() => {
             closeAllMenus();
-            setWalletSelectMenuState(
-              true,
-              document.getElementById('connect-wallet-button'),
-            );
+            setWalletSelectMenuState(true);
           }}
         >
           <Typography
@@ -77,5 +78,5 @@ export const WalletMenu = () => {
         </WalletButton>
       </Stack>
     </Menu>
-  ) : null;
+  );
 };

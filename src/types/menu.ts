@@ -17,7 +17,6 @@ export interface EcosystemSelectMenuProps {
 }
 
 export type MenuProps = {
-  anchorRef: any;
   openMainMenu: boolean;
   openWalletSelectMenu: boolean;
   openWalletMenu: boolean;
@@ -26,25 +25,20 @@ export type MenuProps = {
   openSupportModal: boolean;
   openEcosystemSelect: EcosystemSelectMenuProps;
 };
-
 export interface MenuState extends MenuProps {
   // Close ALL Navbar Menus
   closeAllMenus: () => void;
 
   // Toggle Main Menu
-  setMainMenuState: (open: boolean, anchorRef?: any) => void;
-
+  setMainMenuState: (open: boolean) => void;
   // Toggle Wallet Menu
-  setWalletMenuState: (open: boolean, anchorRef?: any) => void;
-
+  setWalletMenuState: (open: boolean) => void;
   // Toggle Wallet Selection Menu
-  setWalletSelectMenuState: (open: boolean, anchorRef?: any) => void;
-
+  setWalletSelectMenuState: (open: boolean) => void;
   // Toggle Ecosystem Select Menu
   setEcosystemSelectMenuState: (
     open: boolean,
     combinedWallet?: CombinedWallet,
-    anchorRef?: any,
   ) => void;
 
   // Toggle Sub Menu

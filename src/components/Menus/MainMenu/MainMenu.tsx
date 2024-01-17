@@ -4,18 +4,22 @@ import { useMenuStore } from 'src/stores';
 import type { JsxElement } from 'typescript';
 import { DevelopersSubmenu, LanguagesSubmenu } from '..';
 
-export const MainMenu = () => {
+interface MenuProps {
+  anchorEl: any;
+}
+
+export const MainMenu = ({ anchorEl }: MenuProps) => {
   const mainMenuItems = useMainMenuContent();
   const { openMainMenu, setMainMenuState, openSubMenu } = useMenuStore(
     (state) => state,
   );
 
-  return openMainMenu ? (
+  return (
     <Menu
-      open
-      transformOrigin={'top right'}
+      open={openMainMenu}
       setOpen={setMainMenuState}
       isOpenSubMenu={openSubMenu !== MenuKeys.None}
+      anchorEl={anchorEl}
     >
       {openSubMenu === MenuKeys.None &&
         mainMenuItems.map((el, index) => (
@@ -39,5 +43,5 @@ export const MainMenu = () => {
       <LanguagesSubmenu />
       <DevelopersSubmenu />
     </Menu>
-  ) : null;
+  );
 };

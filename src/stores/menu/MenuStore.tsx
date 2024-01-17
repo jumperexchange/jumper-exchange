@@ -15,7 +15,6 @@ interface DefaultMenuType {
   openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
   openSnackbar: SnackbarProps;
-  anchorRef: null | JSX.Element;
 }
 
 export const defaultMenu: DefaultMenuType = {
@@ -23,10 +22,9 @@ export const defaultMenu: DefaultMenuType = {
   openWalletMenu: false,
   openWalletSelectMenu: false,
   openEcosystemSelect: { open: false },
-  openSubMenu: 'None',
+  openSubMenu: MenuKeys.None,
   openSupportModal: false,
-  openSnackbar: { open: false, label: undefined, severity: undefined },
-  anchorRef: null,
+  openSnackbar: { open: false },
 };
 
 export const useMenuStore = createWithEqualityFn<MenuState>(
@@ -56,44 +54,39 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
         openSubMenu: MenuKeys.None,
         openSupportModal: false,
         openEcosystemSelect: { open: false },
-        anchorRef: null,
       });
     },
 
     // Toggle Navbar Main Menu
-    setMainMenuState: (open, anchorRef) => {
+    setMainMenuState: (open) => {
       set({
         openMainMenu: open,
         openSubMenu: MenuKeys.None,
-        anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Navbar Wallet Menu
-    setWalletSelectMenuState: (open, anchorRef) => {
+    setWalletSelectMenuState: (open) => {
       set({
         openWalletSelectMenu: open,
         openSubMenu: MenuKeys.None,
-        anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Navbar Connected Menu
-    setWalletMenuState: (open, anchorRef) => {
+    setWalletMenuState: (open) => {
       set({
         openWalletMenu: open,
         openSubMenu: MenuKeys.None,
-        anchorRef: open ? anchorRef : null,
       });
     },
 
     // Toggle Wallet Ecosystem Selection Menu
-    setEcosystemSelectMenuState: (open, combinedWallet, anchorRef) => {
+    setEcosystemSelectMenuState: (open, combinedWallet) => {
       set({
         openEcosystemSelect: { open, combinedWallet },
         openWalletSelectMenu: false,
         openSubMenu: MenuKeys.None,
-        anchorRef,
       });
     },
 

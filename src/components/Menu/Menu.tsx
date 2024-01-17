@@ -10,52 +10,49 @@ interface MenuProps {
   cardsLayout?: boolean;
   styles?: CSSObject;
   open: boolean;
-  transformOrigin?: string;
   children: any;
   width?: string;
+  anchorEl: any;
 }
 
 export const Menu = ({
   open,
   setOpen,
-  transformOrigin,
   cardsLayout,
   styles,
   width,
   label,
   isOpenSubMenu,
   children,
+  anchorEl,
 }: MenuProps) => {
   const theme = useTheme();
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
 
-  return (
-    open &&
-    (isDesktop ? (
-      <MenuDesktop
-        label={label}
-        transformOrigin={transformOrigin}
-        open={open}
-        styles={styles}
-        width={width}
-        cardsLayout={cardsLayout}
-        setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu || false}
-      >
-        {children}
-      </MenuDesktop>
-    ) : (
-      <MenuMobile
-        label={label}
-        open={open}
-        styles={styles}
-        cardsLayout={cardsLayout}
-        setOpen={setOpen}
-        isOpenSubMenu={isOpenSubMenu || false}
-      >
-        {children}
-      </MenuMobile>
-    ))
+  return isDesktop ? (
+    <MenuDesktop
+      label={label}
+      open={open}
+      styles={styles}
+      width={width}
+      cardsLayout={cardsLayout}
+      setOpen={setOpen}
+      isOpenSubMenu={isOpenSubMenu || false}
+      anchorEl={anchorEl}
+    >
+      {children}
+    </MenuDesktop>
+  ) : (
+    <MenuMobile
+      label={label}
+      open={open}
+      styles={styles}
+      cardsLayout={cardsLayout}
+      setOpen={setOpen}
+      isOpenSubMenu={isOpenSubMenu || false}
+    >
+      {children}
+    </MenuMobile>
   );
 };

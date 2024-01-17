@@ -2,13 +2,16 @@ import type { Chain } from '@lifi/types';
 import type { Breakpoint } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import type { ReactElement } from 'react';
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import {
   Button,
+  WalletMenu,
   WalletMgmtAvatarContainer,
   WalletMgmtChainAvatar,
   WalletMgmtWalletAvatar,
+  WalletSelectMenu,
 } from 'src/components';
+import { EcosystemSelectMenu } from 'src/components/Menus/EcosystemSelectMenu';
 import {
   TrackingAction,
   TrackingCategory,
@@ -36,6 +39,16 @@ export const WalletManagementButtons: React.FC<
   const { chains } = useChains();
   const { trackEvent } = useUserTracking();
   const { account } = useAccounts();
+  const connectButtonRef = useRef<any>();
+  const digestButtonRef = useRef<any>();
+
+  const {
+    openWalletSelectMenu,
+    setWalletSelectMenuState,
+    openWalletMenu,
+    setWalletMenuState,
+  } = useMenuStore((state) => state);
+
   const _walletDigest = useMemo(() => {
     return walletDigest(account.address);
   }, [account]);
@@ -43,17 +56,6 @@ export const WalletManagementButtons: React.FC<
     () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
-  const [
-    openWalletSelectMenu,
-    setWalletSelectMenuState,
-    openWalletMenu,
-    setWalletMenuState,
-  ] = useMenuStore((state) => [
-    state.openWalletSelectMenu,
-    state.setWalletSelectMenuState,
-    state.openWalletMenu,
-    state.setWalletMenuState,
-  ]);
 
   const walletIcon: string = useMemo(() => {
     if (account.isConnected) {
@@ -77,10 +79,7 @@ export const WalletManagementButtons: React.FC<
           EventTrackingTool.Cookie3,
         ],
       });
-    setWalletSelectMenuState(
-      !openWalletSelectMenu,
-      document.getElementById('connect-wallet-button'),
-    );
+    setWalletSelectMenuState(!openWalletSelectMenu);
   };
 
   const handleWalletMenuClick = (
@@ -97,54 +96,64 @@ export const WalletManagementButtons: React.FC<
           EventTrackingTool.Cookie3,
         ],
       });
-    setWalletMenuState(!openWalletMenu, event.currentTarget);
+    setWalletMenuState(!openWalletMenu);
   };
 
   return !account.address ? (
     // Connect/WalletSelect-Button -->
-    <Button
-      // Used in the widget
-      variant="primary"
-      id="connect-wallet-button"
-      onClick={handleWalletSelectClick}
-      styles={{
-        display: 'none',
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          padding: theme.spacing(3),
-          display: 'inline-flex !important',
-        },
-      }}
-    >
-      {connectButtonLabel}
-    </Button>
+    <>
+      <div ref={connectButtonRef}>
+        <Button
+          // Used in the widget
+          variant="primary"
+          id="connect-wallet-button"
+          onClick={handleWalletSelectClick}
+          styles={{
+            display: 'none',
+            [theme.breakpoints.up('sm' as Breakpoint)]: {
+              padding: theme.spacing(3),
+              display: 'inline-flex !important',
+            },
+          }}
+        >
+          {connectButtonLabel}
+        </Button>
+      </div>
+      <WalletSelectMenu anchorEl={connectButtonRef.current} />
+      <EcosystemSelectMenu anchorEl={connectButtonRef.current} />
+    </>
   ) : (
     // Wallet-Menu-Button -->
-    <Button
-      variant="secondary"
-      styles={{
-        display: 'flex',
-        placeContent: 'space-between',
-        justifyContent: 'center',
-        margin: 'auto',
-        position: 'relative',
-        p: '6px',
-        pr: theme.spacing(2),
-        width: 'auto',
-      }}
-      onClick={handleWalletMenuClick}
-    >
-      {isSuccess && activeChain ? (
-        <WalletMgmtAvatarContainer>
-          <WalletMgmtWalletAvatar src={walletIcon} />
-          <WalletMgmtChainAvatar
-            src={activeChain.logoURI || 'empty'}
-            alt={`${activeChain.name}chain-logo`}
-          />
-        </WalletMgmtAvatarContainer>
-      ) : null}
-      <Typography variant={'lifiBodyMediumStrong'} width={'auto'}>
-        {_walletDigest}
-      </Typography>
-    </Button>
+    <div ref={digestButtonRef}>
+      <Button
+        variant="secondary"
+        id="wallet-digest-button"
+        styles={{
+          display: 'flex',
+          placeContent: 'space-between',
+          justifyContent: 'center',
+          margin: 'auto',
+          position: 'relative',
+          p: '6px',
+          pr: theme.spacing(2),
+          width: 'auto',
+        }}
+        onClick={handleWalletMenuClick}
+      >
+        {isSuccess && activeChain ? (
+          <WalletMgmtAvatarContainer>
+            <WalletMgmtWalletAvatar src={walletIcon} />
+            <WalletMgmtChainAvatar
+              src={activeChain.logoURI || 'empty'}
+              alt={`${activeChain.name}chain-logo`}
+            />
+          </WalletMgmtAvatarContainer>
+        ) : null}
+        <Typography variant={'lifiBodyMediumStrong'} width={'auto'}>
+          {_walletDigest}
+        </Typography>
+      </Button>
+      <WalletMenu anchorEl={digestButtonRef.current} />
+    </div>
   );
 };

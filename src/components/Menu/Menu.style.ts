@@ -21,35 +21,11 @@ import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import type { ElementType } from 'react';
 
-const MenuLabelHeight = '64px';
-
-export const ExternalBackground = styled('div')(({ theme }) => ({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: 1600,
-  backgroundColor: '#000000',
-  opacity: theme.palette.mode === 'dark' ? 0.75 : 0.25,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    backgroundColor: 'transparent',
-  },
-}));
+const MENU_LABEL_HEIGHT = '64px';
 
 export const MenuPopper = styled(Popper)<PopperProps>(({ theme }) => ({
   zIndex: 1600,
-  bottom: '0 !important',
-  left: '0 !important',
-  top: 'unset !important',
-  right: '0 !important',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    bottom: 'unset !important',
-    left: 'unset !important',
-    top: 'unset !important',
-    right: '1.5rem !important',
-    transform: 'unset !important',
-  },
+  top: '16px !important',
 }));
 export interface MenuListProps extends Omit<MuiMenuListProps, 'component'> {
   component?: string;
@@ -121,7 +97,7 @@ export const MenuPaper = styled(Paper, {
         }8px 16px rgba(0, 0, 0, 0.16)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-  maxHeight: `calc( 100vh - ${MenuLabelHeight} - 12px )`, // viewHeight - navbarHeight - offset
+  maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT} - 12px )`, // viewHeight - navbarHeight - offset
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',
@@ -176,7 +152,7 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     margin: theme.spacing(0),
     marginBottom: 'inherit',
     marginTop: '0px',
-    height: MenuLabelHeight,
+    height: MENU_LABEL_HEIGHT,
     padding: '0px',
     borderTopLeftRadius: '12px',
     borderTopRightRadius: '12px',

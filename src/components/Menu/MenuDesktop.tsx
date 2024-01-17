@@ -3,7 +3,6 @@ import { Fade, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import type { KeyboardEvent } from 'react';
 import {
-  ExternalBackground,
   MenuHeaderAppBar,
   MenuHeaderAppWrapper,
   MenuList,
@@ -22,6 +21,7 @@ interface MenuProps {
   open: boolean;
   children: any;
   width?: string;
+  anchorEl: any;
 }
 
 export const MenuDesktop = ({
@@ -34,12 +34,9 @@ export const MenuDesktop = ({
   label,
   open,
   children,
+  anchorEl,
 }: MenuProps) => {
-  const [openSubMenu, closeAllMenus, anchorRef] = useMenuStore((state) => [
-    state.openSubMenu,
-    state.closeAllMenus,
-    state.anchorRef,
-  ]);
+  const { openSubMenu, closeAllMenus } = useMenuStore((state) => state);
 
   function handleListKeyDown(event: KeyboardEvent) {
     if (event.key === 'Tab' || event.key === 'Escape') {
@@ -50,14 +47,13 @@ export const MenuDesktop = ({
 
   return open ? (
     <>
-      <ExternalBackground />
       <MenuPopper
         open={open}
-        anchorEl={anchorRef}
-        role={undefined}
+        anchorEl={anchorEl}
         popperOptions={{ strategy: 'fixed' }}
         transition
         disablePortal
+        placement="bottom"
       >
         {({ TransitionProps }) => (
           <Fade
@@ -74,10 +70,10 @@ export const MenuDesktop = ({
               >
                 <MenuList
                   autoFocusItem={open}
-                  id="composition-menu"
+                  id="main-burger-menu"
                   autoFocus={open}
                   isOpenSubMenu={openSubMenu !== MenuKeys.None}
-                  aria-labelledby="composition-button"
+                  aria-labelledby="main-burger-menu"
                   onKeyDown={handleListKeyDown}
                   cardsLayout={cardsLayout}
                   hasLabel={!!label}

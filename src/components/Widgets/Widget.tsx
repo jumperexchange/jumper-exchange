@@ -60,10 +60,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
       walletConfig: {
         onConnect: async () => {
-          setWalletSelectMenuState(
-            true,
-            document.getElementById('connect-wallet-button'),
-          );
+          setWalletSelectMenuState(true);
         },
       },
       chains: {

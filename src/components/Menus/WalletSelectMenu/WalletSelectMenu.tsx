@@ -15,12 +15,12 @@ import { getContrastAlphaColor } from 'src/utils';
 import { useWalletSelectContent } from './useWalletSelectContent';
 
 interface MenuProps {
-  open?: boolean;
+  anchorEl: any;
 }
 
 const NUMBER_OF_WALLETS_DISPLAYED = 9;
 
-export const WalletSelectMenu = ({ open }: MenuProps) => {
+export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const walletSelectMenuItems = useWalletSelectContent();
@@ -54,128 +54,126 @@ export const WalletSelectMenu = ({ open }: MenuProps) => {
   };
 
   return (
-    openWalletSelectMenu && (
-      <Menu
-        open={openWalletSelectMenu}
-        cardsLayout={openSubMenu === MenuKeys.WalletSelectMore ? false : true}
-        styles={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          justifyItems: 'center',
-          ul: {
-            gridColumnStart: 1,
-            gridColumnEnd: 4,
-          },
-        }}
-        transformOrigin={'top'}
-        setOpen={setWalletSelectMenuState}
-        isOpenSubMenu={openSubMenu === MenuKeys.WalletSelectMore}
-      >
-        {openSubMenu === MenuKeys.None && (
-          <MenuHeaderAppWrapper
-            sx={{
-              gridColumn: 'span 3',
-              marginBottom: '-12px',
+    <Menu
+      open={openWalletSelectMenu}
+      cardsLayout={openSubMenu === MenuKeys.WalletSelectMore ? false : true}
+      styles={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr',
+        justifyItems: 'center',
+        ul: {
+          gridColumnStart: 1,
+          gridColumnEnd: 4,
+        },
+      }}
+      setOpen={setWalletSelectMenuState}
+      isOpenSubMenu={openSubMenu === MenuKeys.WalletSelectMore}
+      anchorEl={anchorEl}
+    >
+      {openSubMenu === MenuKeys.None && (
+        <MenuHeaderAppWrapper
+          sx={{
+            gridColumn: 'span 3',
+            marginBottom: '-12px',
+          }}
+        >
+          <MenuHeaderAppBar component="div" elevation={0}>
+            <Typography
+              sx={{
+                color: isDarkMode
+                  ? theme.palette.white.main
+                  : theme.palette.black.main,
+              }}
+              variant={'lifiBodyMediumStrong'}
+              width={'100%'}
+              align={'center'}
+              flex={1}
+              noWrap
+            >
+              {t('navbar.walletSelectMenu.connectWallet')}
+            </Typography>
+          </MenuHeaderAppBar>
+        </MenuHeaderAppWrapper>
+      )}
+      {openSubMenu === MenuKeys.None &&
+        filteredWalletSelectMenuItems.map((el, index) => (
+          <MenuItem
+            key={`${el.label}-${index}`}
+            triggerSubMenu={MenuKeys.WalletSelect}
+            showButton={false}
+            styles={{
+              borderRadius: '72px',
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? getContrastAlphaColor(theme, '12%')
+                  : getContrastAlphaColor(theme, '4%'),
+
+              '&:hover': {
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.alphaLight300.main
+                    : darken(theme.palette.white.main, 0.08),
+              },
+              ...menuItemStyles,
+              ...el.styles,
             }}
-          >
-            <MenuHeaderAppBar component="div" elevation={0}>
+            showMoreIcon={false}
+            prefixIcon={el.prefixIcon}
+            onClick={el.onClick}
+            open={openWalletSelectMenu}
+          />
+        ))}
+      {walletSelectMenuItems.length - NUMBER_OF_WALLETS_DISPLAYED > 0 &&
+        openSubMenu === MenuKeys.None && (
+          <MenuItem
+            key={`select-more-wallets`}
+            triggerSubMenu={MenuKeys.WalletSelectMore}
+            showButton={true}
+            showMoreIcon={false}
+            open={true}
+            styles={{
+              ...menuItemStyles,
+              gridColumn: 'span 3',
+              padding: '0px',
+              width: '100%',
+              height: '48px !important',
+              borderRadius: '24px',
+              '> button': {
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? getContrastAlphaColor(theme, '12%')
+                    : getContrastAlphaColor(theme, '4%'),
+              },
+              '&:hover': {
+                backgroundColor: 'transparent',
+              },
+
+              '&:hover button': {
+                backgroundColor: getContrastAlphaColor(theme, '16%'),
+              },
+            }}
+            prefixIcon={
               <Typography
+                variant={'lifiBodyMediumStrong'}
                 sx={{
                   color: isDarkMode
                     ? theme.palette.white.main
                     : theme.palette.black.main,
                 }}
-                variant={'lifiBodyMediumStrong'}
-                width={'100%'}
-                align={'center'}
-                flex={1}
-                noWrap
               >
-                {t('navbar.walletSelectMenu.connectWallet')}
+                {t('navbar.seeAllWallets')}
               </Typography>
-            </MenuHeaderAppBar>
-          </MenuHeaderAppWrapper>
+            }
+            onClick={handleClickSelectMore}
+          />
         )}
-        {openSubMenu === MenuKeys.None &&
-          filteredWalletSelectMenuItems.map((el, index) => (
-            <MenuItem
-              key={`${el.label}-${index}`}
-              triggerSubMenu={MenuKeys.WalletSelect}
-              showButton={false}
-              styles={{
-                borderRadius: '72px',
-                backgroundColor:
-                  theme.palette.mode === 'dark'
-                    ? getContrastAlphaColor(theme, '12%')
-                    : getContrastAlphaColor(theme, '4%'),
-
-                '&:hover': {
-                  backgroundColor:
-                    theme.palette.mode === 'dark'
-                      ? theme.palette.alphaLight300.main
-                      : darken(theme.palette.white.main, 0.08),
-                },
-                ...menuItemStyles,
-                ...el.styles,
-              }}
-              showMoreIcon={false}
-              prefixIcon={el.prefixIcon}
-              onClick={el.onClick}
-              open={open || openWalletSelectMenu}
-            />
-          ))}
-        {walletSelectMenuItems.length - NUMBER_OF_WALLETS_DISPLAYED > 0 &&
-          openSubMenu === MenuKeys.None && (
-            <MenuItem
-              key={`select-more-wallets`}
-              triggerSubMenu={MenuKeys.WalletSelectMore}
-              showButton={true}
-              showMoreIcon={false}
-              open={true}
-              styles={{
-                ...menuItemStyles,
-                gridColumn: 'span 3',
-                padding: '0px',
-                width: '100%',
-                height: '48px !important',
-                borderRadius: '24px',
-                '> button': {
-                  backgroundColor:
-                    theme.palette.mode === 'dark'
-                      ? getContrastAlphaColor(theme, '12%')
-                      : getContrastAlphaColor(theme, '4%'),
-                },
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                },
-
-                '&:hover button': {
-                  backgroundColor: getContrastAlphaColor(theme, '16%'),
-                },
-              }}
-              prefixIcon={
-                <Typography
-                  variant={'lifiBodyMediumStrong'}
-                  sx={{
-                    color: isDarkMode
-                      ? theme.palette.white.main
-                      : theme.palette.black.main,
-                  }}
-                >
-                  {t('navbar.seeAllWallets')}
-                </Typography>
-              }
-              onClick={handleClickSelectMore}
-            />
-          )}
-        <SubMenu
-          label={t('navbar.walletSelectMenu.wallets')}
-          triggerSubMenu={MenuKeys.WalletSelectMore}
-          open={openSubMenu === MenuKeys.WalletSelectMore}
-          prevMenu={MenuKeys.None}
-          subMenuList={walletSelectMenuItems}
-        />
-      </Menu>
-    )
+      <SubMenu
+        label={t('navbar.walletSelectMenu.wallets')}
+        triggerSubMenu={MenuKeys.WalletSelectMore}
+        open={openSubMenu === MenuKeys.WalletSelectMore}
+        prevMenu={MenuKeys.None}
+        subMenuList={walletSelectMenuItems}
+      />
+    </Menu>
   );
 };

@@ -49,11 +49,7 @@ export const useWalletSelectContent = () => {
   const connectWallet = useCallback(
     async (combinedWallet: CombinedWallet) => {
       if (combinedWallet.evm && combinedWallet.svm) {
-        setEcosystemSelectMenuState(
-          true,
-          combinedWallet,
-          document.getElementById('connect-wallet-button'),
-        );
+        setEcosystemSelectMenuState(true, combinedWallet);
         return;
       } else if (combinedWallet.evm) {
         wagmiDisconnect();
