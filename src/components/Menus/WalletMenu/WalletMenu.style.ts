@@ -7,7 +7,7 @@ export interface WalletButtonProps extends ButtonProps {
   colored?: boolean;
 }
 
-export const AvatarContainer = styled('div')(({ theme }) => ({
+export const AvatarContainer = styled('div')(() => ({
   position: 'relative',
   width: 'fit-content',
   margin: 'auto',
