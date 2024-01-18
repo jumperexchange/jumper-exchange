@@ -87,9 +87,9 @@ export const MenuItem = ({
               sx={{
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                maxWidth: '208px',
+                maxWidth: 208,
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
-                  maxWidth: '168px',
+                  maxWidth: 168,
                 },
               }}
             >
@@ -113,12 +113,12 @@ export const MenuItem = ({
               {label ? (
                 <Typography
                   variant={'lifiBodyMedium'}
-                  ml={'12px'}
+                  ml={theme.spacing(1.5)}
                   sx={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: prefixIcon ? '188px' : 'inherit',
+                      maxWidth: prefixIcon ? 188 : 'inherit',
                     },
                   }}
                 >

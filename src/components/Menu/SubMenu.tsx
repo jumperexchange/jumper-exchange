@@ -97,7 +97,7 @@ export const SubMenu = ({
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component="div" elevation={0}>
           <ButtonBackArrow
-            styles={{ marginLeft: '0px' }}
+            styles={{ marginLeft: 0 }}
             onClick={handleBackNavigation}
           />
           <MenuHeaderLabel>{label}</MenuHeaderLabel>
@@ -133,8 +133,8 @@ export const SubMenu = ({
                     textOverflow: 'ellipsis',
                   }}
                   variant={'lifiBodyMedium'}
-                  ml={!!el.prefixIcon ? '12px' : 'inherit'}
-                  mr={!!el.suffixIcon ? '12px' : 'inherit'}
+                  ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
+                  mr={!!el.suffixIcon ? theme.spacing(1.5) : 'inherit'}
                 >
                   {`${el.label || ' '}`}
                 </Typography>
@@ -159,13 +159,13 @@ export const SubMenu = ({
                 {el.prefixIcon}
                 <Typography
                   variant={'lifiBodyMedium'}
-                  ml={!!el.prefixIcon ? '12px' : 'inherit'}
+                  ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
                   sx={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     maxWidth: 'inherit',
                     [theme.breakpoints.up('sm' as Breakpoint)]: {
-                      maxWidth: el.prefixIcon ? '188px' : 'inherit',
+                      maxWidth: el.prefixIcon ? 188 : 'inherit',
                     },
                   }}
                 >

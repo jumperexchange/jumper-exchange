@@ -44,12 +44,12 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
     margin: 0,
     flexDirection: 'column',
     flexWrap: 'wrap',
-    height: '72px',
-    width: '72px',
+    height: 72,
+    width: 72,
     placeContent: 'center',
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      height: '72px',
+      height: 72,
     },
   };
 
@@ -134,10 +134,10 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
             styles={{
               ...menuItemStyles,
               gridColumn: 'span 3',
-              padding: '0px',
+              padding: 0,
               width: '100%',
               height: '48px !important',
-              borderRadius: '24px',
+              borderRadius: 24,
               '> button': {
                 backgroundColor:
                   theme.palette.mode === 'dark'

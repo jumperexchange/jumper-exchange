@@ -1,39 +1,46 @@
 import { useQuery } from '@tanstack/react-query';
-import type { FeatureCardsResponseType } from 'src/types';
+import type { FeatureCardData } from 'src/types';
 
 export interface UseFeatureCardsProps {
-  featureCards: FeatureCardsResponseType | undefined;
+  featureCards: FeatureCardData | undefined;
+  url: URL;
   isSuccess: boolean;
 }
 
-const CONTENTFUL_CONTENT_TYPE = 'featureCard';
-
+const STRAPI_CONTENT_TYPE = 'feature-cards';
 // Query Content-Type "featureCards" from Contentful
 export const useFeatureCards = (): UseFeatureCardsProps => {
+  const apiBaseUrl =
+    import.meta.env.VITE_STRAPI_DEVELOP === 'true'
+      ? import.meta.env.VITE_LOCAL_STRAPI_URL
+      : import.meta.env.VITE_STRAPI_URL;
+  const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
+  apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
+  apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
+  import.meta.env.MODE !== 'production' &&
+    apiUrl.searchParams.set('publicationState', 'preview');
+  const apiAccesToken =
+    import.meta.env.VITE_STRAPI_DEVELOP === 'true'
+      ? import.meta.env.VITE_LOCAL_STRAPI_API_TOKEN
+      : import.meta.env.VITE_STRAPI_API_TOKEN;
   const { data, isSuccess } = useQuery({
     queryKey: ['featureCard'],
 
     queryFn: async () => {
-      const apiUrl =
-        import.meta.env.MODE === 'production'
-          ? import.meta.env.VITE_CONTENTFUL_API_URL
-          : import.meta.env.VITE_CONTENTFUL_PREVIEW_API_URL;
-      const apiSpaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
-      const apiAccesToken =
-        import.meta.env.MODE === 'production'
-          ? import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN
-          : import.meta.env.VITE_CONTENTFUL_PREVIEW_TOKEN;
-      const response = await fetch(
-        `${apiUrl}/spaces/${apiSpaceId}/environments/master/entries?access_token=${apiAccesToken}&content_type=${CONTENTFUL_CONTENT_TYPE}&limit=20`,
-      );
+      const response = await fetch(decodeURIComponent(apiUrl.href), {
+        headers: {
+          Authorization: `Bearer ${apiAccesToken}`,
+        },
+      });
       const result = await response.json();
-      return result;
+      return result.data;
     },
     enabled: true,
     refetchInterval: 1000 * 60 * 60,
   });
   return {
     featureCards: data ?? undefined,
+    url: apiUrl,
     isSuccess,
   };
 };

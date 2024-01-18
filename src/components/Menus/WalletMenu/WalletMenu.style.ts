@@ -18,21 +18,21 @@ export const WalletAvatar = styled(Avatar)(({ theme }) => ({
   background:
     theme.palette.mode === 'light' ? 'transparent' : theme.palette.white.main,
   margin: 'auto',
-  height: '88px',
-  width: '88px',
+  height: 88,
+  width: 88,
   '> img': {
-    height: '58px',
-    width: '58px',
+    height: 58,
+    width: 58,
   },
 }));
 
 export const ChainAvatar = styled(Avatar)(({ theme }) => ({
-  height: '44px',
-  width: '44px',
+  height: 44,
+  width: 44,
   position: 'absolute',
-  padding: '6px',
-  right: '-18px',
-  bottom: '-6px',
+  padding: theme.spacing(0.75),
+  right: theme.spacing(-2.25),
+  bottom: -6,
   borderRadius: '24px',
   background: 'white',
   img: {

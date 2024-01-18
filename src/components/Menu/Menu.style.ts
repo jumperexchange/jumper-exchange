@@ -21,7 +21,7 @@ import type { Breakpoint } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import type { ElementType } from 'react';
 
-const MENU_LABEL_HEIGHT = '64px';
+const MENU_LABEL_HEIGHT = 64;
 
 export const MenuPopper = styled(Popper)<PopperProps>(({ theme }) => ({
   zIndex: 1600,
@@ -43,7 +43,7 @@ export const MenuList = styled(MuiMenuList, {
   display: cardsLayout ? 'flex' : 'block',
   justifyContent: cardsLayout ? 'center' : 'unset',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
-  padding: cardsLayout ? '0 24px' : 0,
+  padding: cardsLayout ? theme.spacing(0, 3) : 0,
   gap: cardsLayout ? '12px' : 'inherit',
   '& > :first-of-type': {
     marginTop:
@@ -64,12 +64,12 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   textOverflow: 'ellipsis',
   justifyContent: 'center',
   display: 'flex',
-  marginRight: '38px',
+  marginRight: theme.spacing(4.75),
   flexWrap: 'nowrap',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: '174px',
-    marginRight: '0px',
-    marginLeft: '6px',
+    maxWidth: 174,
+    marginRight: 0,
+    marginLeft: theme.spacing(0.75),
   },
 }));
 
@@ -97,7 +97,7 @@ export const MenuPaper = styled(Paper, {
         }8px 16px rgba(0, 0, 0, 0.16)`,
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
-  maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT} - 12px )`, // viewHeight - navbarHeight - offset
+  maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT}px - 12px )`, // viewHeight - navbarHeight - offset
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',
@@ -106,16 +106,16 @@ export const MenuPaper = styled(Paper, {
     'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
 
   '.submenu .wallet-select-avatar': {
-    width: '32px ',
-    height: '32px',
+    width: 32,
+    height: 32,
   },
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 72px - 12px )',
     borderRadius: '12px !important',
-    width: width ?? '288px',
-    marginTop: '-2px',
+    width: width ?? 288,
+    marginTop: -2,
   },
 
   [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -132,8 +132,8 @@ export const MenuItemLink = styled(Link, {
 })<MenuItemLinkProps>(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  padding: `0 ${theme.spacing(1.5)}`,
-  height: '48px',
+  padding: theme.spacing(0, 1.5),
+  height: 48,
   textDecoration: 'none',
   color: 'inherit',
 }));
@@ -151,13 +151,13 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     overflow: 'hidden',
     margin: theme.spacing(0),
     marginBottom: 'inherit',
-    marginTop: '0px',
+    marginTop: 0,
     height: MENU_LABEL_HEIGHT,
-    padding: '0px',
-    borderTopLeftRadius: '12px',
-    borderTopRightRadius: '12px',
+    padding: 0,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      paddingLeft: '0px',
+      paddingLeft: 0,
     },
   }),
 );

@@ -69,7 +69,7 @@ export function Widget({ starterVariant }: WidgetProps) {
       },
       containerStyle: {
         borderRadius: '12px',
-        minWidth: '392px',
+        minWidth: 392,
         boxShadow:
           theme.palette.mode === 'light'
             ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'

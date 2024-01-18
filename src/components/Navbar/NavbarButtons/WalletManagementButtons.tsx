@@ -134,7 +134,7 @@ export const WalletManagementButtons: React.FC<
           justifyContent: 'center',
           margin: 'auto',
           position: 'relative',
-          p: '6px',
+          p: theme.spacing(0.75),
           pr: theme.spacing(2),
           width: 'auto',
         }}

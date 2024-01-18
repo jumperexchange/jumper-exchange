@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Menu, WalletButton } from 'src/components';
 import { MenuKeys } from 'src/const';
-// import { useWallet } from 'src/providers';
 import { useMenuStore } from 'src/stores';
 import { useAccounts } from 'src/hooks/useAccounts';
 import { WalletCard } from './WalletCard';
@@ -59,7 +58,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           ) : null,
         )}
         <WalletButton
-          sx={{ width: '324px' }}
+          sx={{ width: 324 }}
           onClick={() => {
             closeAllMenus();
             setWalletSelectMenuState(true);

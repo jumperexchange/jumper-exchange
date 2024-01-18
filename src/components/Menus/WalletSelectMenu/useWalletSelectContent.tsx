@@ -103,8 +103,8 @@ export const useWalletSelectContent = () => {
               combinedWallet.evm?.id || combinedWallet.svm?.adapter.name
             }-wallet-logo`}
             sx={{
-              height: '40px',
-              width: '40px',
+              height: 40,
+              width: 40,
               objectFit: 'contain',
             }}
           />
