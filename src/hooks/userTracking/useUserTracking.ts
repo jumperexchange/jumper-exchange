@@ -25,8 +25,13 @@ export function useUserTracking() {
      * Track Wallet Connect with HJ and ARCx
      *
      */
-    ({ disableTrackingTool, account, wallet }: TrackConnectWalletProps) => {
-      if (account?.address && account?.chainId && wallet) {
+    ({
+      disableTrackingTool,
+      account,
+      walletName,
+      walletEcosystem,
+    }: TrackConnectWalletProps) => {
+      if (account?.address && account?.chainId) {
         if (!disableTrackingTool?.includes(EventTrackingTool.ARCx)) {
           arcx?.wallet({
             account: `${account.address}`,
@@ -35,7 +40,7 @@ export function useUserTracking() {
         }
         if (!disableTrackingTool?.includes(EventTrackingTool.Hotjar)) {
           hotjar.identify(account.address, {
-            [TrackingEventParameter.Wallet]: wallet.name,
+            [TrackingEventParameter.Wallet]: `${walletName}_${walletEcosystem}`,
           });
           hotjar.initialized() && hotjar.event(TrackingAction.ConnectWallet);
         }
