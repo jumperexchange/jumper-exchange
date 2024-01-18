@@ -1,8 +1,8 @@
-import { Avatar, Button, Typography, useTheme } from '@mui/material';
+import { Avatar, Typography, useTheme } from '@mui/material';
 import type { Wallet } from '@solana/wallet-adapter-react';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { useMenuStore } from 'src/stores';
 import { ConnectButton } from './EcosystemSelectMenu.style';
+import { useAccountConnect } from 'src/hooks/useAccounts';
 
 interface SVMConnectButtonProps {
   walletIcon?: string;
@@ -14,26 +14,15 @@ export const SVMConnectButton = ({
   svm,
 }: SVMConnectButtonProps) => {
   const theme = useTheme();
-  const { select, disconnect, connected } = useWallet();
   const { closeAllMenus } = useMenuStore((state) => state);
+  const connect = useAccountConnect();
 
-  const connect = async () => {
-    if (connected) {
-      await disconnect();
-    }
-    select(svm.adapter.name);
-    // We use autoConnect on wallet selection
-    // svm.adapter.once('connect', (publicKey) => {
-    //   emitter.emit(WidgetEvent.WalletConnected, {
-    //     address: publicKey?.toString(),
-    //     chainId: ChainId.SOL,
-    //     chainType: ChainType.SVM,
-    //   });
-    // });
+  const connectHandler = async () => {
+    connect({ svm });
     closeAllMenus();
   };
   return (
-    <ConnectButton onClick={() => connect()}>
+    <ConnectButton onClick={() => connectHandler()}>
       <Avatar src={walletIcon} sx={{ width: '88px', height: '88px' }} />
       <Typography
         sx={{

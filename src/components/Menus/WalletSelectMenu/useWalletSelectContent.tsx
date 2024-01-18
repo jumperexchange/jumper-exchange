@@ -9,8 +9,7 @@ import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
 import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
 import { getWalletIcon, isWalletInstalled } from '@lifi/wallet-management';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
-import { useConnect, useDisconnect } from 'wagmi';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useAccountConnect } from 'src/hooks/useAccounts';
 
 export const useWalletSelectContent = () => {
   const theme = useTheme();
@@ -20,18 +19,11 @@ export const useWalletSelectContent = () => {
   const isDesktopView = useMediaQuery((theme: Theme) =>
     theme.breakpoints.up('sm'),
   );
-  const { connectAsync } = useConnect();
-  const { disconnect: wagmiDisconnect } = useDisconnect();
-  const { select, disconnect, connected } = useWallet();
+  const connect = useAccountConnect();
 
   const { setSnackbarState, closeAllMenus, setEcosystemSelectMenuState } =
     useMenuStore((state) => state);
-  const { onWalletConnect, onWelcomeScreenClosed } = useSettingsStore(
-    (state) => ({
-      onWalletConnect: state.onWalletConnect,
-      onWelcomeScreenClosed: state.onWelcomeScreenClosed,
-    }),
-  );
+  const { onWelcomeScreenClosed } = useSettingsStore((state) => state);
 
   const availableWallets = useMemo(() => {
     let allowedWallets = combinedInstalledWallets.slice(0, 7);
@@ -51,16 +43,8 @@ export const useWalletSelectContent = () => {
       if (combinedWallet.evm && combinedWallet.svm) {
         setEcosystemSelectMenuState(true, combinedWallet);
         return;
-      } else if (combinedWallet.evm) {
-        wagmiDisconnect();
-        await connectAsync({ connector: combinedWallet.evm! });
-        onWalletConnect(combinedWallet.evm.name);
-      } else if (combinedWallet.svm) {
-        if (connected) {
-          disconnect();
-        }
-        select(combinedWallet.svm.adapter.name);
-        onWalletConnect(combinedWallet.svm.adapter.name);
+      } else if (combinedWallet.evm || combinedWallet.svm) {
+        await connect(combinedWallet);
       } else {
         setSnackbarState(
           true,
@@ -75,12 +59,7 @@ export const useWalletSelectContent = () => {
       closeAllMenus,
       onWelcomeScreenClosed,
       setEcosystemSelectMenuState,
-      wagmiDisconnect,
-      connectAsync,
-      onWalletConnect,
-      connected,
-      select,
-      disconnect,
+      connect,
       setSnackbarState,
       t,
     ],

@@ -4,8 +4,14 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useMemo } from 'react';
 import type { Chain } from 'viem';
 import type { Connector } from 'wagmi';
-import { useDisconnect, useAccount as useWagmiAccount } from 'wagmi';
+import {
+  useConnect,
+  useDisconnect,
+  useAccount as useWagmiAccount,
+} from 'wagmi';
 import { useBlockchainExplorerURL } from '.';
+import type { CombinedWallet } from './useCombinedWallets';
+import { useSettingsStore } from 'src/stores';
 
 export interface AccountBase {
   address?: string;
@@ -97,6 +103,27 @@ export const useAccountDisconnect = () => {
       solanaDisconnect();
     } else {
       wagmiDisconnect();
+    }
+  };
+};
+
+export const useAccountConnect = () => {
+  const { connectAsync } = useConnect();
+  const { disconnect: wagmiDisconnect } = useDisconnect();
+  const { select, disconnect, connected } = useWallet();
+  const { onWalletConnect } = useSettingsStore((state) => state);
+
+  return async (combinedWallet: CombinedWallet) => {
+    if (combinedWallet.evm) {
+      wagmiDisconnect();
+      await connectAsync({ connector: combinedWallet.evm! });
+      onWalletConnect(combinedWallet.evm.name);
+    } else if (combinedWallet.svm) {
+      if (connected) {
+        disconnect();
+      }
+      select(combinedWallet.svm.adapter.name);
+      onWalletConnect(combinedWallet.svm.adapter.name);
     }
   };
 };

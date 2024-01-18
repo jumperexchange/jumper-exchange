@@ -1,8 +1,9 @@
 import { isWalletInstalledAsync } from '@lifi/wallet-management';
-import { Avatar, Button, Typography, useTheme } from '@mui/material';
+import { Avatar, Typography, useTheme } from '@mui/material';
 import { useMenuStore } from 'src/stores';
-import { useConnect, useDisconnect, type Connector } from 'wagmi';
+import { type Connector } from 'wagmi';
 import { ConnectButton } from './EcosystemSelectMenu.style';
+import { useAccountConnect } from 'src/hooks/useAccounts';
 
 interface EvmConnectButton {
   walletIcon?: string;
@@ -11,33 +12,21 @@ interface EvmConnectButton {
 
 export const EVMConnectButton = ({ walletIcon, evm }: EvmConnectButton) => {
   const theme = useTheme();
-  const { connectAsync } = useConnect();
-  const { disconnect } = useDisconnect();
+  const connect = useAccountConnect();
+
   const { closeAllMenus } = useMenuStore((state) => state);
 
-  const connect = async () => {
+  const connectHandler = async () => {
     const identityCheckPassed = await isWalletInstalledAsync(evm.id);
     if (!identityCheckPassed) {
       //   onNotInstalled(connector);
       return;
     }
-    disconnect();
-    await connectAsync(
-      { connector: evm },
-      //   {
-      //     onSuccess(data) {
-      //       emitter.emit(WidgetEvent.WalletConnected, {
-      //         address: data.accounts[0],
-      //         chainId: data.chainId,
-      //         chainType: ChainType.EVM,
-      //       });
-      //     },
-      //   },
-    );
+    connect({ evm });
     closeAllMenus();
   };
   return (
-    <ConnectButton onClick={() => connect()}>
+    <ConnectButton onClick={() => connectHandler()}>
       <Avatar src={walletIcon} sx={{ width: '88px', height: '88px' }} />
       <Typography
         variant={'lifiBodySmallStrong'}
