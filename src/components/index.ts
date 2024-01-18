@@ -9,6 +9,7 @@ export * from './ButtonArrowBack';
 export * from './CustomColorTypography.style';
 export * from './FallbackError';
 export * from './FeatureCards';
+export * from './ImageViewer';
 export * from './JoinDiscordBanner';
 export * from './JsonSchema';
 export * from './JumperBanner';

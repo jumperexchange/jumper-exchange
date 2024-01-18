@@ -92,7 +92,6 @@ export const BlogArticlePage = () => {
   );
 
   // Ensure that articles and article are defined before using them
-  console.log('TAGS', article && article[0]?.attributes.tags);
   return articles && article ? (
     <>
       <Layout hideNavbarTabs={true}>

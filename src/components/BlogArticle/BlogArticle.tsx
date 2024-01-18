@@ -16,9 +16,19 @@ import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { ArticleJsonSchema, JumperBanner, Widget } from 'src/components';
+import {
+  ArticleJsonSchema,
+  ImageViewer,
+  JumperBanner,
+  Widget,
+} from 'src/components';
 import { FB_SHARE_URL, LINKEDIN_SHARE_URL, X_SHARE_URL } from 'src/const';
-import type { AuthorData, StrapiImageData, TagData } from 'src/types';
+import type {
+  AuthorData,
+  MediaAttributes,
+  StrapiImageData,
+  TagData,
+} from 'src/types';
 import { formatDate, openInNewTab, readingTime } from 'src/utils';
 import {
   BlogArticleContainer,
@@ -26,6 +36,10 @@ import {
   BlogArticleImage,
   BlogAuthorAvatar,
 } from './BlogArticle.style';
+
+interface ImageData {
+  image: MediaAttributes;
+}
 
 interface BlogArticleProps {
   title: string;
@@ -100,8 +114,10 @@ export const BlogArticle = ({
   // Ensure that articles and article are defined before using them
   const customRichBlocks = {
     // You can use the default components to set class names...
+    image: (data: ImageData) => {
+      return <ImageViewer imageData={data.image} baseUrl={baseUrl} />;
+    },
     paragraph: ({ children }: any) => {
-      console.log('childs', children);
       if (children[0].props.text.includes('<JUMPER_BANNER>')) {
         return <JumperBanner />;
       } else if (children[0].props.text.includes('<WIDGET>')) {
@@ -281,7 +297,7 @@ export const BlogArticle = ({
         />
         <BlogArticleContentContainer>
           <Typography variant="lifiHeaderMedium">{subtitle}</Typography>
-          <BlocksRenderer content={content} blocks={customRichBlocks} />
+          <BlocksRenderer content={content} blocks={customRichBlocks as any} />
           <Divider
             sx={{
               borderColor:

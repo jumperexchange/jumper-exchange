@@ -105,10 +105,11 @@ export const BlogHighlights = ({
           </Grid>
         ) : null}
 
-        {blogArticles?.map((article: BlogArticleData) => {
+        {blogArticles?.map((article: BlogArticleData, index: number) => {
           return (
             <Grid
               item
+              key={`blog-article-card-${index}`}
               xs={12}
               md={6}
               maxWidth={512}

@@ -92,6 +92,7 @@ export const BlogCard = ({
           {tags?.data.length > 0
             ? tags.data.map((tag, index) => (
                 <Tag
+                  key={`tag-${index}`}
                   component="span"
                   variant="lifiBodyXSmallStrong"
                   backgroundColor={tag.attributes.BackgroundColor}

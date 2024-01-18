@@ -18,7 +18,7 @@ export interface MediaData {
   attributes: MediaAttributes;
 }
 
-interface MediaAttributes {
+export interface MediaAttributes {
   name: string;
   alternativeText: string | undefined;
   caption: string | null;
