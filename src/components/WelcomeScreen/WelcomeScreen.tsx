@@ -3,12 +3,7 @@ import { Slide, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import {
-  BlogHighlights,
-  ButtonPrimary,
-  CustomColor,
-  ToolCards,
-} from 'src/components';
+import { ButtonPrimary, CustomColor, ToolCards } from 'src/components';
 import {
   TrackingAction,
   TrackingCategory,
@@ -223,7 +218,7 @@ export const WelcomeScreen = () => {
               </Typography>
             </ButtonPrimary>
           </WelcomeContent>
-          <BlogHighlights
+          {/* <BlogHighlights
             showIntro={true}
             showAllButton={true}
             styles={{
@@ -233,7 +228,7 @@ export const WelcomeScreen = () => {
                   : theme.palette.accent1Alt.main
               })`,
             }}
-          />
+          /> */}
         </ContentWrapper>
       </Slide>
     </Overlay>
