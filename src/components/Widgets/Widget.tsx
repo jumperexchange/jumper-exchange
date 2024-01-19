@@ -1,4 +1,4 @@
-import { ChainId, EVM } from '@lifi/sdk';
+import { ChainId } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
@@ -8,10 +8,9 @@ import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
+import { useConfig } from 'wagmi';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
-import { getWalletClient, switchChain } from '@wagmi/core';
-import { useConfig } from 'wagmi';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,

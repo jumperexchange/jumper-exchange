@@ -1,4 +1,4 @@
-import type { CSSObject } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
 import { Fade, Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import type { KeyboardEvent } from 'react';
@@ -16,7 +16,7 @@ interface MenuProps {
   label?: string;
   transformOrigin?: string;
   cardsLayout?: boolean;
-  styles?: CSSObject;
+  styles?: SxProps<Theme>;
   setOpen: (open: boolean, anchorRef: any) => void;
   open: boolean;
   children: any;

@@ -16,10 +16,10 @@ import {
   TrackingEventParameter,
 } from 'src/const';
 import { useMultisig } from 'src/hooks';
+import { useAccounts } from 'src/hooks/useAccounts';
 import { useActiveTabStore, useMenuStore, useMultisigStore } from 'src/stores';
 import { MultisigConfirmationModal } from '../MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '../MultisigConnectedAlert';
-import { useAccounts } from 'src/hooks/useAccounts';
 
 export function WidgetEvents() {
   const lastTxHashRef = useRef<string>();

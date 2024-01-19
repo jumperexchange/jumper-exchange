@@ -20,23 +20,23 @@ const analytics = cookie3Analytics(cookie3Config);
 export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <WalletProvider>
-        <I18NProvider>
-          <ThemeProvider>
-            <Cookie3Provider value={analytics}>
-              <ArcxAnalyticsProvider
-                apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
-              >
+      <I18NProvider>
+        <Cookie3Provider value={analytics}>
+          <ArcxAnalyticsProvider
+            apiKey={`${import.meta.env.VITE_ARCX_API_KEY}`}
+          >
+            <ThemeProvider>
+              <WalletProvider>
                 <CssBaseline />
                 <BackgroundGradient />
                 <ErrorBoundary fallback={<FallbackError />}>
                   {children}
                 </ErrorBoundary>
-              </ArcxAnalyticsProvider>
-            </Cookie3Provider>
-          </ThemeProvider>
-        </I18NProvider>
-      </WalletProvider>
+              </WalletProvider>
+            </ThemeProvider>
+          </ArcxAnalyticsProvider>
+        </Cookie3Provider>
+      </I18NProvider>
     </QueryClientProvider>
   );
 };

@@ -1,4 +1,4 @@
-import type { Breakpoint, CSSObject } from '@mui/material';
+import type { Breakpoint, SxProps, Theme } from '@mui/material';
 import { Typography, darken } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +40,7 @@ export const WalletSelectMenu = ({ anchorEl }: MenuProps) => {
     setSubMenuState(MenuKeys.WalletSelectMore);
   };
 
-  const menuItemStyles: CSSObject = {
+  const menuItemStyles: SxProps<Theme> = {
     margin: 0,
     flexDirection: 'column',
     flexWrap: 'wrap',
