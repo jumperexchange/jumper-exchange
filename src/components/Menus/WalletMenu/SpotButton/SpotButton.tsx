@@ -29,12 +29,11 @@ export const SpotButton = ({
       </SpotButtonStyled>
       {name ? (
         <Typography
-          mt={theme.spacing(1)}
           sx={{
             overflow: 'hidden',
             fontSize: '12px',
             textOverflow: 'ellipsis',
-            margin: '8px auto 0',
+            margin: theme.spacing(1, 'auto', 0),
             userSelect: 'none',
           }}
           variant={typography || 'lifiBodySmall'}

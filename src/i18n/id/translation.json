@@ -5,22 +5,29 @@
       "subtitle": "<0>4x diaudit</0> agregator likuiditas multi-rantai yang didukung oleh <1>LI.FI</1>",
       "cta": "Memulai"
     },
+    "poweredByLifi": "",
     "links": {
       "exchange": "Pertukaran",
       "dashboard": "Dasbor",
-      "refuel": "Gas",
+      "refuel": "",
       "buy": "Beli"
     },
     "statsCards": {
-      "dexs": "DEXs",
+      "dexs": "",
       "bridges": "Bridge",
       "chains": "Jaringan"
     },
-    "connectWallet": "Hubungkan Dompet",
-    "chooseWallet": "Pilih Dompet",
+    "connect": "",
+    "walletSelectMenu": {
+      "connectWallet": "",
+      "wallets": ""
+    },
+    "seeAllWallets": "",
     "navbarMenu": {
+      "brandAssets": "",
       "theme": "Tema",
       "developers": "Para Pengembang",
+      "lifiExplorer": "",
       "aboutLIFI": "Tentang LI.FI",
       "support": "Bantuan"
     },
@@ -30,33 +37,45 @@
       "switchChain": "Pindah Jaringan",
       "copy": "Salin",
       "explore": "Jelajah",
-      "copiedMsg": "Alamat dompet disalin"
-    },
-    "language": {
-      "key": "Bahasa",
-      "value": "Indonesian"
+      "copiedMsg": "Alamat dompet disalin",
+      "walletNotInstalled": ""
     },
     "themes": {
       "switchToLight": "Beralih ke Tema Terang",
       "switchToDark": "Beralih ke Tema Gelap",
-      "light": "Terang",
-      "dark": "Gelap",
-      "auto": "Otomatis"
+      "switchToSystem": ""
     },
     "developers": {
-      "github": "GitHub",
-      "documentation": "Dokumentasi",
-      "showcases": "Showcase"
-    },
-    "showcases": {
-      "ukraineDonation": "Dukung Ukraina 🇺🇦",
-      "klimaStaking": "Cross Chain Klima Staking",
-      "carbonOffset": "Cross Chain Carbon Offset"
+      "github": "",
+      "documentation": "Dokumentasi"
     }
   },
   "alert": {
     "info": "Anda menggunakan Testnet",
     "testnet": "Setiap transaksi atau tindakan yang dilakukan di Testnet tidak akan tercermin di Mainnet.",
     "switchToMainnet": "Beralih ke Mainnet"
+  },
+  "featureCard": {
+    "learnMore": ""
+  },
+  "button": {
+    "okay": ""
+  },
+  "error": {
+    "message": ""
+  },
+  "multisig": {
+    "connected": {
+      "title": "",
+      "description": ""
+    },
+    "transactionInitiated": {
+      "title": "",
+      "description": ""
+    },
+    "alert": {
+      "title": "",
+      "description": ""
+    }
   }
 }

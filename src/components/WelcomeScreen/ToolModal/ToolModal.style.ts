@@ -25,7 +25,7 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
       ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)'
       : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   width: `calc( 100% - ${theme.spacing(3)})`,
-  maxWidth: '640px',
+  maxWidth: 640,
   maxHeight: '85%',
   overflowY: 'auto',
   background:
@@ -38,7 +38,7 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
 
   [theme.breakpoints.up('md' as Breakpoint)]: {
     margin: 0,
-    width: '640px',
+    width: 640,
   },
 }));
 

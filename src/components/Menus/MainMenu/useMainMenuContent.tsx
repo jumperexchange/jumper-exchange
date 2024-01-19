@@ -46,18 +46,18 @@ export const useMainMenuContent = () => {
     width: '100%',
     borderRadius: '24px',
     div: {
-      height: '38px',
+      height: 38,
     },
     '.MuiTabs-indicator': {
-      height: '38px',
-      zIndex: '-1',
+      height: 38,
+      zIndex: -1,
       borderRadius: '18px',
     },
   };
 
   const tabStyles = {
-    height: '38px',
-    margin: '6px',
+    height: 38,
+    margin: theme.spacing(0.75),
     minWidth: 'unset',
     borderRadius: '18px',
   };
@@ -75,15 +75,15 @@ export const useMainMenuContent = () => {
       ),
       styles: {
         width: 'auto',
-        margin: '12px',
+        margin: theme.spacing(1.5),
         gap: '8px',
         backgroundColor: 'transparent',
         borderRadius: '24px',
         '&:hover': {
           backgroundColor: 'transparent',
         },
-        paddingTop: '4px !important',
-        padding: '4px',
+        paddingTop: `${theme.spacing(0.5)} !important`,
+        padding: theme.spacing(0.5),
         '> button:hover': {
           backgroundColor: getContrastAlphaColor(theme, '4%'),
         },
@@ -107,7 +107,7 @@ export const useMainMenuContent = () => {
           sx={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            maxWidth: '38px',
+            maxWidth: 38,
           }}
         >
           {i18n.resolvedLanguage}

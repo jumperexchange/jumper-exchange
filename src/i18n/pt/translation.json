@@ -5,6 +5,7 @@
       "subtitle": "Agregador de liquidez multi-cadeias <0>4x auditado</0> fornecido pela <1>LI.FI</1>",
       "cta": "Começar"
     },
+    "poweredByLifi": "<0>Desenvolvido por </0><1>LI.FI</1>",
     "links": {
       "exchange": "Conversão",
       "dashboard": "Painel de controle",
@@ -16,8 +17,12 @@
       "bridges": "Pontes",
       "chains": "Cadeias"
     },
-    "connectWallet": "Conectar Carteira",
-    "chooseWallet": "Escolha uma Carteira",
+    "connect": "Conectar",
+    "walletSelectMenu": {
+      "connectWallet": "Conectar uma carteira",
+      "wallets": "Carteiras"
+    },
+    "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
       "brandAssets": "Ativos de marca",
       "theme": "Tema",
@@ -38,9 +43,7 @@
     "themes": {
       "switchToLight": "Mudar para o Modo Claro",
       "switchToDark": "Mudar para o Modo Escuro",
-      "light": "Claro",
-      "dark": "Escuro",
-      "auto": "Automático"
+      "switchToSystem": "Alternar para sistema"
     },
     "developers": {
       "github": "GitHub",
@@ -57,6 +60,9 @@
   },
   "button": {
     "okay": "Ok"
+  },
+  "error": {
+    "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
   },
   "multisig": {
     "connected": {

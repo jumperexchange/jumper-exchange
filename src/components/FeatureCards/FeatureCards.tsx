@@ -4,12 +4,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { FeatureCard } from 'src/components';
 import { useFeatureCards } from 'src/hooks';
 import { useSettingsStore } from 'src/stores';
-import type { FeatureCardType } from 'src/types';
+import type { FeatureCardData } from 'src/types';
 import { shallow } from 'zustand/shallow';
 import { FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
-  const [featureCards, setFeatureCards] = useState<FeatureCardType[]>([]);
+  const [featureCards, setFeatureCards] = useState<FeatureCardData[]>([]);
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
@@ -17,17 +17,17 @@ export const FeatureCards = () => {
 
   const { featureCards: data, isSuccess } = useFeatureCards();
   const featureCardsFetched = useMemo(() => {
-    if (Array.isArray(data?.items) && !!data?.items.length) {
-      return data?.items?.filter(
+    if (Array.isArray(data) && !!data.length) {
+      return data?.filter(
         (el, index) =>
           isSuccess &&
-          el.fields.displayConditions &&
-          !disabledFeatureCards.includes(el.fields.displayConditions?.id),
+          el.attributes.DisplayConditions &&
+          !disabledFeatureCards.includes(el.attributes.DisplayConditions?.id),
       );
     }
     // trigger featureCardsFetched-filtering only once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.items, isSuccess]);
+  }, [data, isSuccess]);
 
   useEffect(() => {
     if (Array.isArray(featureCardsFetched)) {
@@ -35,7 +35,6 @@ export const FeatureCards = () => {
         setFeatureCards(featureCardsFetched?.slice(0, 4));
     }
   }, [featureCardsFetched]);
-
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg' as Breakpoint));
   return (
@@ -47,7 +46,6 @@ export const FeatureCards = () => {
             <FeatureCard
               isSuccess={isSuccess}
               data={cardData}
-              assets={data?.includes?.Asset || []}
               key={`feature-card-${index}`}
             />
           );

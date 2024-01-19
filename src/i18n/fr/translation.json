@@ -5,6 +5,7 @@
       "subtitle": "<0>4x audit</0> agrégateur de liquidité multi-chaînes alimenté par <1>LI.FI</1>",
       "cta": "Commencer"
     },
+    "poweredByLifi": "<0>Propulsé par </0><1>LI.FI</1>",
     "links": {
       "exchange": "Échanger",
       "dashboard": "Tableau de bord",
@@ -16,9 +17,14 @@
       "bridges": "Ponts",
       "chains": "Chaines"
     },
-    "connectWallet": "Connecter le portefeuille",
-    "chooseWallet": "Choisir le portefeuille",
+    "connect": "Connecter",
+    "walletSelectMenu": {
+      "connectWallet": "Connecter un portefeuille",
+      "wallets": "Portefeuilles"
+    },
+    "seeAllWallets": "Afficher tous les portefeuilles",
     "navbarMenu": {
+      "brandAssets": "Actifs de marque",
       "theme": "Thème",
       "developers": "Développeurs",
       "lifiExplorer": "Explorateur LI.FI",
@@ -31,14 +37,13 @@
       "switchChain": "Changer de chaîne",
       "copy": "Copier",
       "explore": "Explorer",
-      "copiedMsg": "Adresse du portefeuille copiée"
+      "copiedMsg": "Adresse du portefeuille copiée",
+      "walletNotInstalled": "{{wallet}} n'est pas installé"
     },
     "themes": {
       "switchToLight": "Basculer en mode clair",
       "switchToDark": "Basculer en mode sombre",
-      "light": "Clair",
-      "dark": "Sombre",
-      "auto": "Auto"
+      "switchToSystem": "Basculer vers Système"
     },
     "developers": {
       "github": "GitHub",
@@ -55,6 +60,9 @@
   },
   "button": {
     "okay": "Ok"
+  },
+  "error": {
+    "message": ""
   },
   "multisig": {
     "connected": {
