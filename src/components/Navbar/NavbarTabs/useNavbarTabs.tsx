@@ -38,8 +38,8 @@ export const useNavbarTabs = () => {
       icon: (
         <SwapHorizIcon
           sx={{
-            marginRight: '6px',
-            marginBottom: '0px !important',
+            marginRight: 0.75,
+            marginBottom: `${theme.spacing(0)} !important`,
             color:
               theme.palette.mode === 'dark'
                 ? theme.palette.white.main
@@ -56,8 +56,8 @@ export const useNavbarTabs = () => {
       icon: (
         <EvStationOutlinedIcon
           sx={{
-            marginRight: '6px',
-            marginBottom: '0px !important',
+            marginRight: 0.75,
+            marginBottom: `${theme.spacing(0)} !important`,
             color:
               theme.palette.mode === 'dark'
                 ? theme.palette.white.main
@@ -73,8 +73,8 @@ export const useNavbarTabs = () => {
       icon: (
         <CreditCardIcon
           sx={{
-            marginRight: '6px',
-            marginBottom: '0px !important',
+            marginRight: 0.75,
+            marginBottom: `${theme.spacing(0)} !important`,
             color:
               theme.palette.mode === 'dark'
                 ? theme.palette.white.main

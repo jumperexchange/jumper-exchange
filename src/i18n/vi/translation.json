@@ -5,53 +5,77 @@
       "subtitle": "<0>4x audited</0> Nguồn tổng hợp thanh khoản đa chuỗi được cung cấp bởi <1>LI.FI</1>",
       "cta": "Bắt đầu"
     },
+    "poweredByLifi": "",
     "links": {
       "exchange": "Hoán đổi",
       "dashboard": "Tổng quan",
-      "refuel": "Gas",
+      "refuel": "",
       "buy": "Mua"
     },
-    "connectWallet": "Kết nối ví",
-    "chooseWallet": "Chọn ví",
+    "statsCards": {
+      "dexs": "",
+      "bridges": "",
+      "chains": ""
+    },
+    "connect": "",
+    "walletSelectMenu": {
+      "connectWallet": "",
+      "wallets": ""
+    },
+    "seeAllWallets": "",
     "navbarMenu": {
+      "brandAssets": "",
       "theme": "Giao diện",
-      "developers": "Developers",
+      "developers": "",
+      "lifiExplorer": "",
       "aboutLIFI": "Về LI.FI",
       "support": "Hỗ trợ"
     },
     "walletMenu": {
       "disconnect": "Ngắt kết nối",
-      "chains": "Chains",
+      "chains": "",
       "switchChain": "Thay đổi Chain",
       "copy": "Sao Chép",
-      "explore": "Explore",
-      "copiedMsg": "Địa chỉ ví đã được sao chép"
-    },
-    "language": {
-      "key": "Ngôn ngữ",
-      "value": "Tiếng Việt"
+      "explore": "",
+      "copiedMsg": "Địa chỉ ví đã được sao chép",
+      "walletNotInstalled": ""
     },
     "themes": {
       "switchToLight": "Đổi sang Chế độ nền sáng",
       "switchToDark": "Chuyển sang Chế độ nền tối",
-      "light": "Sáng",
-      "dark": "Tối",
-      "auto": "Tự động"
+      "switchToSystem": ""
     },
     "developers": {
-      "github": "GitHub",
-      "documentation": "Tài liệu",
-      "showcases": "Showcases"
-    },
-    "showcases": {
-      "ukraineDonation": "Ủng hộ Ukraine 🇺🇦",
-      "klimaStaking": "Cross Chain Klima Staking",
-      "carbonOffset": "Cross Chain Carbon Offset"
+      "github": "",
+      "documentation": "Tài liệu"
     }
   },
   "alert": {
     "info": "Bạn đang sử dụng mạng thử nghiệm",
     "testnet": "Mọi giao dịch hoặc hành động được thực hiện trên mạng thử nghiệm sẽ không được phản ánh trên mạng chính.",
     "switchToMainnet": "Chuyển sang mạng chính"
+  },
+  "featureCard": {
+    "learnMore": ""
+  },
+  "button": {
+    "okay": ""
+  },
+  "error": {
+    "message": ""
+  },
+  "multisig": {
+    "connected": {
+      "title": "",
+      "description": ""
+    },
+    "transactionInitiated": {
+      "title": "",
+      "description": ""
+    },
+    "alert": {
+      "title": "",
+      "description": ""
+    }
   }
 }

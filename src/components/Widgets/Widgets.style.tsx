@@ -20,16 +20,6 @@ export const WidgetContainer = styled(Box, {
   transitionTimingFunction: 'ease-in-out',
   maxHeight: !welcomeScreenClosed ? '50vh' : 'inherit',
 
-  [`@media screen and (min-height: 700px)`]: {
-    gridTemplateRows: !welcomeScreenClosed ? '1fr 1fr 350px' : '28px 0fr 1fr',
-    height: 'inherit',
-  },
-
-  [`@media screen and (min-height: 900px)`]: {
-    gridTemplateRows: !welcomeScreenClosed ? '1fr 1fr 350px' : '28px 0r 1fr',
-    maxHeight: 'inherit',
-  },
-
   // setting hover animations on widget wrappers
   '& > .widget-wrapper > div': {
     transitionProperty: 'margin-top',
@@ -89,7 +79,7 @@ export const WidgetContainer = styled(Box, {
     transitionDelay: !welcomeScreenClosed ? '0s' : '0.3s',
     borderTopRightRadius: '12px',
     borderTopLeftRadius: '12px',
-    top: '24px',
+    top: 24,
 
     [`@media screen and (min-height: 700px)`]: {
       top: 'calc( 50vh - 680px / 2.75 - 40px)', // (mid viewheight - half-two/thirds widget height - navbar height )
@@ -121,8 +111,8 @@ export const WidgetContainer = styled(Box, {
     position: 'absolute',
     zIndex: -1,
     pointerEvents: 'none',
-    width: '1080px',
-    height: '1080px',
+    width: 1080,
+    height: 1080,
     maxWidth: '90vw',
     maxHeight: '90vh',
     transform: 'translate(-50%, -50%)',

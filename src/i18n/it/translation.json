@@ -5,53 +5,49 @@
       "subtitle": "<0>4x verificato</0> aggregatori di liquidità multi-chain powerade by <1>LI.FI</1>",
       "cta": "Inizia adesso"
     },
+    "poweredByLifi": "",
     "links": {
-      "exchange": "Exchange",
-      "dashboard": "Dashboard",
-      "refuel": "Gas",
+      "exchange": "",
+      "dashboard": "",
+      "refuel": "",
       "buy": "Acquista"
     },
     "statsCards": {
       "dexs": "DEX",
-      "bridges": "Bridges",
-      "chains": "Chains"
+      "bridges": "",
+      "chains": ""
     },
-    "connectWallet": "Collega il portafoglio",
-    "chooseWallet": "Scegli il portafoglio",
+    "connect": "",
+    "walletSelectMenu": {
+      "connectWallet": "",
+      "wallets": ""
+    },
+    "seeAllWallets": "",
     "navbarMenu": {
+      "brandAssets": "",
       "theme": "Tema",
       "developers": "Sviluppatori",
+      "lifiExplorer": "",
       "aboutLIFI": "Info su LI.FI",
       "support": "Assistenza"
     },
     "walletMenu": {
       "disconnect": "Disconnetti",
-      "chains": "Chains",
+      "chains": "",
       "switchChain": "Cambia Chain",
       "copy": "Copia",
       "explore": "Esplora",
-      "copiedMsg": "Indirizzo del portafogli copiato"
-    },
-    "language": {
-      "key": "Lingua",
-      "value": "Italiano"
+      "copiedMsg": "Indirizzo del portafogli copiato",
+      "walletNotInstalled": ""
     },
     "themes": {
       "switchToLight": "Passa al tema chiaro",
       "switchToDark": "Passa al tema scuro",
-      "light": "Chiaro",
-      "dark": "Scuro",
-      "auto": "Automatico"
+      "switchToSystem": ""
     },
     "developers": {
-      "github": "GitHub",
-      "documentation": "Documentazione",
-      "showcases": "In primo piano"
-    },
-    "showcases": {
-      "ukraineDonation": "Sostieni l'Ucraina 🇺🇦",
-      "klimaStaking": "Cross Chain Klima Staking",
-      "carbonOffset": "Compenso Emissioni CO2 Cross Chain"
+      "github": "",
+      "documentation": "Documentazione"
     }
   },
   "alert": {
@@ -59,8 +55,14 @@
     "testnet": "Qualsiasi transazione o azione eseguita su una Testnet non si rifletterà sulla rete principale Mainnet.",
     "switchToMainnet": "Passa a Mainnet"
   },
+  "featureCard": {
+    "learnMore": ""
+  },
   "button": {
     "okay": "Ok"
+  },
+  "error": {
+    "message": ""
   },
   "multisig": {
     "connected": {

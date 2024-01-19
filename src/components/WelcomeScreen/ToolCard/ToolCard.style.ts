@@ -2,15 +2,14 @@ import type { Breakpoint } from '@mui/material';
 import { styled } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
-export const SCard = styled('div')(({ theme }) => ({
-  flexWrap: 'wrap',
+export const ToolCardContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
   alignItems: 'center',
   padding: theme.spacing(3, 4),
-  width: '104px',
-  height: '96px',
+  width: 104,
+  height: 96,
   color:
     theme.palette.mode === 'dark'
       ? theme.palette.accent1Alt.main
@@ -39,7 +38,7 @@ export const SCard = styled('div')(({ theme }) => ({
         : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    width: '136px',
-    height: '120px',
+    width: 136,
+    height: 120,
   },
 }));

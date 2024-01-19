@@ -5,6 +5,7 @@
       "subtitle": "<0>4 kez denetlenmiş</0> <1>LI.FI</1> tarafından desteklenen çok zincirli likidite toplayıcı",
       "cta": "Başlayın"
     },
+    "poweredByLifi": "<1>LI.FI</1><0> Tarafından Desteklenmektedir</0>",
     "links": {
       "exchange": "Al-Sat",
       "dashboard": "Kontrol Paneli",
@@ -12,12 +13,16 @@
       "buy": "Satın al"
     },
     "statsCards": {
-      "dexs": "DEXs",
+      "dexs": "DEX'ler",
       "bridges": "Köprüler",
       "chains": "Ağlar"
     },
-    "connectWallet": "Cüzdanı Bağla",
-    "chooseWallet": "Cüzdan Seçin",
+    "connect": "Bağlan",
+    "walletSelectMenu": {
+      "connectWallet": "Bir Cüzdan Bağlayın",
+      "wallets": "Cüzdanlar"
+    },
+    "seeAllWallets": "Tüm cüzdanları göster",
     "navbarMenu": {
       "brandAssets": "Varlıklar",
       "theme": "Tema",
@@ -38,9 +43,7 @@
     "themes": {
       "switchToLight": "Açık temaya geç",
       "switchToDark": "Koyu Temaya geç",
-      "light": "Açık",
-      "dark": "Koyu",
-      "auto": "Otomatik"
+      "switchToSystem": ""
     },
     "developers": {
       "github": "GitHub",
@@ -57,6 +60,9 @@
   },
   "button": {
     "okay": "Tamam"
+  },
+  "error": {
+    "message": "Bir şeyler yanlış gitti. Lütfen sayfayı yenilemeyi deneyin. Sorun devam ederse desteğimizle iletişime geçebilirsiniz."
   },
   "multisig": {
     "connected": {

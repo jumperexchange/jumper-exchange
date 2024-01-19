@@ -5,6 +5,7 @@
       "subtitle": "<0>4x аудитований</0> мульти-чейн агрегатор ліквідності на основі <1>LI.FI</1>",
       "cta": "Почати"
     },
+    "poweredByLifi": "<0>Powered by </0><1>LI.FI</1>",
     "links": {
       "exchange": "Обмін",
       "dashboard": "Дешборд",
@@ -16,8 +17,12 @@
       "bridges": "Бриджей",
       "chains": "Чейнів"
     },
-    "connectWallet": "Під'єднати гаманець",
-    "chooseWallet": "Оберіть гаманець",
+    "connect": "Під’єднатися",
+    "walletSelectMenu": {
+      "connectWallet": "Під'єднати гаманець",
+      "wallets": "Гаманці"
+    },
+    "seeAllWallets": "Переглянути всі гаманці",
     "navbarMenu": {
       "brandAssets": "Бренд ресурси",
       "theme": "Тема",
@@ -38,9 +43,7 @@
     "themes": {
       "switchToLight": "Увімкнути світлу тему",
       "switchToDark": "Увімкнути темну тему",
-      "light": "Світла",
-      "dark": "Темна",
-      "auto": "Авто"
+      "switchToSystem": "Увімкнути системну тему"
     },
     "developers": {
       "github": "GitHub",
@@ -57,6 +60,9 @@
   },
   "button": {
     "okay": "Добре"
+  },
+  "error": {
+    "message": "Щось пішло не так. Будь ласка, спробуйте перезавантажити сторінку. Якщо проблема залишиться, зверніться до нашої служби підтримки."
   },
   "multisig": {
     "connected": {

@@ -3,7 +3,9 @@ import { cookie3Analytics } from '@cookie3/analytics';
 import { CssBaseline } from '@mui/material';
 import { QueryClientProvider } from '@tanstack/react-query';
 import type { PropsWithChildren } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { BackgroundGradient } from './components/BackgroundGradient';
+import { FallbackError } from './components/FallbackError';
 import { queryClient } from './config/queryClient';
 import { cookie3Config } from './const/cookie3';
 import {
@@ -28,7 +30,9 @@ export const AppProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
                 <BackgroundGradient />
-                {children}
+                <ErrorBoundary fallback={<FallbackError />}>
+                  {children}
+                </ErrorBoundary>
               </WalletProvider>
             </ArcxAnalyticsProvider>
           </Cookie3Provider>
