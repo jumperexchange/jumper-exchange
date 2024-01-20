@@ -37,18 +37,6 @@
     -->
   <link rel="manifest" href="/manifest.json" />
   <title>Jumper | Multi-Chain Bridging & Swapping (powered by LI.FI)</title>
-  <style>
-    #cursor-text {
-        position: absolute;
-        display: none;
-        pointer-events: none;
-        z-index: 10000;
-        background-color: #31007a;
-        color: white;
-        border-radius: 12px;
-        padding: 2px 10px;
-    }
-</style>
 </head>
 
 <body>
@@ -59,16 +47,8 @@
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', '%VITE_GOOGLE_ANALYTICS_TRACKING_ID%');
-
-    document.addEventListener('mousemove', function(e) {
-    var cursorText = document.getElementById('cursor-text');
-    cursorText.style.display = 'block';
-    cursorText.style.left = (e.pageX + 10) + 'px';
-    cursorText.style.top = (e.pageY + 10) + 'px';
-});
   </script>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="cursor-text">free</div>
   <div id="root"></div>
   <script type="module" src="/src/index.tsx"></script>
 </body>
