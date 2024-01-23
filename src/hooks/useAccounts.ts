@@ -9,7 +9,7 @@ import {
   useDisconnect,
   useAccount as useWagmiAccount,
 } from 'wagmi';
-import { useBlockchainExplorerURL } from '.';
+import { useBlockchainExplorerURL, useUserTracking } from '.';
 import type { CombinedWallet } from './useCombinedWallets';
 import { useSettingsStore } from 'src/stores';
 
@@ -110,20 +110,34 @@ export const useAccountDisconnect = () => {
 export const useAccountConnect = () => {
   const { connectAsync } = useConnect();
   const { disconnect: wagmiDisconnect } = useDisconnect();
-  const { select, disconnect, connected } = useWallet();
+  const { select, disconnect, connected, publicKey } = useWallet();
   const { onWalletConnect } = useSettingsStore((state) => state);
+  const { trackConnectWallet } = useUserTracking();
 
   return async (combinedWallet: CombinedWallet) => {
     if (combinedWallet.evm) {
       wagmiDisconnect();
       await connectAsync({ connector: combinedWallet.evm! });
       onWalletConnect(combinedWallet.evm.name);
+      console.log(combinedWallet.evm);
+      trackConnectWallet({
+        walletName: combinedWallet.evm.name,
+        chainType: ChainType.EVM,
+        chainId: await combinedWallet.evm.getChainId(),
+        address: `${await combinedWallet.evm.getAccounts()}`,
+      });
     } else if (combinedWallet.svm) {
       if (connected) {
         disconnect();
       }
       select(combinedWallet.svm.adapter.name);
       onWalletConnect(combinedWallet.svm.adapter.name);
+
+      trackConnectWallet({
+        walletName: combinedWallet.svm.adapter.name,
+        chainType: ChainType.SVM,
+        chainId: ChainId.SOL,
+      });
     }
   };
 };

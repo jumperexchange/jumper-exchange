@@ -1,4 +1,5 @@
 import type { ChainID } from '@arcxmoney/analytics';
+import type { ChainType } from '@lifi/types';
 import type { TrackingCategory } from 'src/const';
 import type { Account } from 'src/hooks/useAccounts';
 
@@ -64,11 +65,10 @@ export interface trackPageloadProps {
 
 export interface TrackConnectWalletProps {
   account?: Account;
-  data?: { [key: string]: string | number | boolean };
-  disableTrackingTool?: EventTrackingTool[];
-  disconnect?: boolean;
   walletName?: string;
-  walletEcosystem: string;
+  chainType?: ChainType;
+  chainId: number;
+  address?: string;
 }
 
 export interface TrackDisconnectWalletProps {
