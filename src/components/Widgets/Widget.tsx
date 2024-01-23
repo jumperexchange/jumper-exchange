@@ -142,8 +142,6 @@ export function Widget({ starterVariant }: WidgetProps) {
     wagmiConfig,
   ]);
 
-  console.log(widgetConfig);
-
   return (
     <WidgetWrapper
       className="widget-wrapper"
