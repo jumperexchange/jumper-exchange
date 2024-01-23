@@ -9,8 +9,9 @@ export const SlideshowContainerBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<SlideshowContainerBoxProps>(({ theme, styles }) => ({
   display: 'flex',
-  gap: 4,
-  py: 4,
+  gap: 12,
+  marginTop: theme.spacing(4),
+  p: theme.spacing(4, 0),
   overflow: 'auto',
   width: '100%',
   scrollSnapType: 'x mandatory',

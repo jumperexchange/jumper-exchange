@@ -1,7 +1,10 @@
 import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
-export const readingTime = (text: string | RootNode[]) => {
+export const readingTime = (text: string | RootNode[] | undefined) => {
   let cleanedText = '';
+  if (!text) {
+    return 'XX';
+  }
   if (Array.isArray(text)) {
     text.forEach((node) => {
       if ('children' in node) {

@@ -3,7 +3,7 @@ export * from './BackgroundGradient';
 export * from './BlogArticle';
 export * from './BlogArticleCard';
 export * from './BlogHighlights';
-export * from './BlogPreviewCard';
+export * from './BlogSlideshow';
 export * from './Button';
 export * from './ButtonArrowBack';
 export * from './CustomColorTypography.style';

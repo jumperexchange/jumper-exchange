@@ -24,7 +24,7 @@ export const JoinDiscordBanner = () => {
               : theme.palette.black.main
           }
         >
-          Level Up Your Crypto Knowledge: Connect with Our Community
+          Level Up Your Crypto Knowledge
         </Typography>
         <Button
           styles={{

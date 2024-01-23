@@ -61,6 +61,7 @@
     "minRead": "{{minRead}} min read",
     "seeAllPosts": "See all posts",
     "similarPosts": "Similar Posts",
+    "goToArticle": "Go to article",
     "faq": "FAQ"
   },
   "featureCard": {

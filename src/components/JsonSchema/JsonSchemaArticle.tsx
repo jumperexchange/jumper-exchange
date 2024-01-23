@@ -3,7 +3,7 @@ interface ArticleJsonSchemaProps {
   images: string[];
   datePublished: string;
   dateModified: string;
-  authorName: string;
+  authorName?: string;
 }
 
 export const ArticleJsonSchema = ({
@@ -20,13 +20,15 @@ export const ArticleJsonSchema = ({
     image: images,
     datePublished: datePublished,
     dateModified: dateModified,
-    author: [
-      {
-        '@type': 'Person',
-        name: authorName,
-        // url: 'https://example.com/profile/janedoe123',
-      },
-    ],
+    ...(authorName && {
+      author: [
+        {
+          '@type': 'Person',
+          name: authorName,
+          // url: 'https://example.com/profile/janedoe123',
+        },
+      ],
+    }),
   };
   return <script type="application/ld+json">{JSON.stringify(schema)}</script>;
 };
