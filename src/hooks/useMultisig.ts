@@ -1,4 +1,4 @@
-import type { Process, Route } from '@lifi/sdk';
+import { ChainId, ChainKey, type Process, type Route } from '@lifi/sdk';
 import type { GatewayTransactionDetails } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK, { TransactionStatus } from '@safe-global/safe-apps-sdk';
 import { useMultisigStore } from 'src/stores';
@@ -161,18 +161,7 @@ export const useMultisig = () => {
     };
 
     if (isSafeConnector) {
-      // const currentChain = account.chainId;
-
       const shouldRequireToAddress = account.chainId !== destinationChain;
-
-      // get the Chain symbol (ETH) from chainID
-      // get the ChainKey(eth) from ChainID(ETH)
-      // unsure if it'll always be the same letters in lowercase, hence getting from mapping
-      // const fromChainKey = currentChain.
-      //   currentChain &&
-      //   ((ChainKey as Record<string, string>)[
-      //     ChainId[currentChain]
-      //   ] as ChainKey);
 
       return {
         multisigWidget: {
@@ -197,12 +186,11 @@ export const useMultisig = () => {
       (step) => (step as any).execution?.status === 'FAILED',
     );
 
-    const multisigRouteStarted = route.steps.some(
-      (step) =>
-        (step as any).execution?.process.find(
-          (process: Process) =>
-            !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
-        ),
+    const multisigRouteStarted = route.steps.some((step) =>
+      (step as any).execution?.process.find(
+        (process: Process) =>
+          !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
+      ),
     );
 
     return !isRouteDone && !isRouteFailed && multisigRouteStarted;

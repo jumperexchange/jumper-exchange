@@ -1,4 +1,4 @@
-import { ChainId } from '@lifi/sdk';
+import { ChainId, EVM } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { useTheme } from '@mui/material/styles';
@@ -9,6 +9,7 @@ import { useMultisig } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
 import { useConfig } from 'wagmi';
+import { getWalletClient, switchChain } from '@wagmi/core';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
 
@@ -108,7 +109,18 @@ export function Widget({ starterVariant }: WidgetProps) {
           maxPriceImpact: 0.4,
           allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        // multisigConfig: { ...(multisigSdkConfig ?? {}) },
+        providers: isMultisigSigner
+          ? [
+              EVM({
+                getWalletClient: () => getWalletClient(wagmiConfig),
+                switchChain: async (chainId: number) => {
+                  const chain = await switchChain(wagmiConfig, { chainId });
+                  return getWalletClient(wagmiConfig, { chainId: chain.id });
+                },
+                multisig: multisigSdkConfig,
+              }),
+            ]
+          : undefined,
       },
       buildUrl: true,
       insurance: true,
@@ -125,7 +137,9 @@ export function Widget({ starterVariant }: WidgetProps) {
     i18n.languages,
     multisigWidget,
     isMultisigSigner,
+    multisigSdkConfig,
     setWalletSelectMenuState,
+    wagmiConfig,
   ]);
 
   return (

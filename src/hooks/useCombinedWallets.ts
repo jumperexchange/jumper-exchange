@@ -50,15 +50,15 @@ export const useCombinedWallets = () => {
   const [combinedNotDetectedWallets, setCombinedNotDetectedWallets] = useState<
     CombinedWallet[]
   >([]);
-
   // combine installed wallets
   useEffect(() => {
-    const evmInstalled = connectors.filter(
-      (connector) =>
+    const evmInstalled = connectors.filter((connector) => {
+      return (
         isWalletInstalled(connector.id) &&
         // We should not show already connected connectors
-        account.connector?.id !== connector.id,
-    );
+        account.connector?.id !== connector.id
+      );
+    });
     const svmInstalled = solanaWallets?.filter(
       (connector) =>
         connector.adapter.readyState === WalletReadyState.Installed &&
