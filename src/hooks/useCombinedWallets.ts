@@ -1,7 +1,10 @@
 import type { Wallet } from '@solana/wallet-adapter-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
-import { isWalletInstalled } from '@lifi/wallet-management';
+import {
+  isWalletInstalled,
+  isWalletInstalledAsync,
+} from '@lifi/wallet-management';
 import {
   type Connector,
   useConnect,
@@ -50,15 +53,15 @@ export const useCombinedWallets = () => {
   const [combinedNotDetectedWallets, setCombinedNotDetectedWallets] = useState<
     CombinedWallet[]
   >([]);
+
   // combine installed wallets
   useEffect(() => {
-    const evmInstalled = connectors.filter((connector) => {
-      return (
+    const evmInstalled = connectors.filter(
+      (connector) =>
         isWalletInstalled(connector.id) &&
         // We should not show already connected connectors
-        account.connector?.id !== connector.id
-      );
-    });
+        account.connector?.id !== connector.id,
+    );
     const svmInstalled = solanaWallets?.filter(
       (connector) =>
         connector.adapter.readyState === WalletReadyState.Installed &&
@@ -69,6 +72,27 @@ export const useCombinedWallets = () => {
 
     setCombinedInstalledWallets(combined);
   }, [connectors, account.connector, solanaWallets]);
+
+  // check for multisig wallets
+  useEffect(() => {
+    const multiSigInstalled = async () => {
+      const safeWallet = connectors.find(
+        (connector) => connector.name === 'Safe',
+      );
+      if (await isWalletInstalledAsync(safeWallet?.id || '')) {
+        setCombinedInstalledWallets((oldCombined) => {
+          if (
+            !oldCombined.find((oldC) => oldC.evm?.name === safeWallet?.name)
+          ) {
+            return [...oldCombined, { evm: safeWallet }];
+          } else {
+            return oldCombined;
+          }
+        });
+      }
+    };
+    multiSigInstalled();
+  }, [connectors]);
 
   // combine undetected wallets
   useEffect(() => {

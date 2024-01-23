@@ -7,7 +7,11 @@ import type { MenuListItem } from 'src/types';
 import { getContrastAlphaColor } from 'src/utils';
 import type { CombinedWallet } from 'src/hooks/useCombinedWallets';
 import { useCombinedWallets } from 'src/hooks/useCombinedWallets';
-import { getWalletIcon, isWalletInstalled } from '@lifi/wallet-management';
+import {
+  getWalletIcon,
+  isWalletInstalled,
+  isWalletInstalledAsync,
+} from '@lifi/wallet-management';
 import { WalletReadyState } from '@solana/wallet-adapter-base';
 import { useAccountConnect } from 'src/hooks/useAccounts';
 
@@ -69,6 +73,7 @@ export const useWalletSelectContent = () => {
     const handleClick = async (combinedWallet: CombinedWallet) => {
       if (
         isWalletInstalled(combinedWallet.evm?.id || '') ||
+        (await isWalletInstalledAsync(combinedWallet.evm?.id || '')) ||
         (combinedWallet.svm &&
           combinedWallet.svm.adapter.readyState === WalletReadyState.Installed)
       ) {

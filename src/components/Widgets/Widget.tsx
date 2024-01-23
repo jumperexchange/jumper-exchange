@@ -8,10 +8,11 @@ import { TabsMap } from 'src/const';
 import { useMultisig } from 'src/hooks';
 import { useMenuStore, useSettingsStore } from 'src/stores';
 import type { LanguageKey, MenuState, StarterVariantType } from 'src/types';
-import { useConfig } from 'wagmi';
+import { CreateConnectorFn, useConfig } from 'wagmi';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { MultisigWalletHeaderAlert } from '../MultisigWalletHeaderAlert';
 import { WidgetWrapper } from './Widget.style';
+import { safe } from '@lifi/wallet-management';
 
 const refuelAllowChains: ChainId[] = [
   ChainId.ETH,
@@ -54,7 +55,6 @@ export function Widget({ starterVariant }: WidgetProps) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
-
     return {
       variant: starterVariant === 'refuel' ? 'default' : 'expandable',
       subvariant: (starterVariant !== 'buy' && starterVariant) || 'default',
@@ -141,6 +141,8 @@ export function Widget({ starterVariant }: WidgetProps) {
     setWalletSelectMenuState,
     wagmiConfig,
   ]);
+
+  console.log(widgetConfig);
 
   return (
     <WidgetWrapper

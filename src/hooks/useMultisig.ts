@@ -1,4 +1,4 @@
-import { ChainId, ChainKey, type Process, type Route } from '@lifi/sdk';
+import { type Process, type Route } from '@lifi/sdk';
 import type { GatewayTransactionDetails } from '@safe-global/safe-apps-sdk';
 import SafeAppsSDK, { TransactionStatus } from '@safe-global/safe-apps-sdk';
 import { useMultisigStore } from 'src/stores';
@@ -154,7 +154,6 @@ export const useMultisig = () => {
   }> => {
     const multisigConfig = {
       isMultisigWalletClient: isSafeConnector,
-      // isMultisigSigner: isSafeConnector,
       getMultisigTransactionDetails: handleMultiSigTransactionDetails,
       shouldBatchTransactions: isSafeConnector,
       sendBatchTransaction: handleSendingBatchTransaction,

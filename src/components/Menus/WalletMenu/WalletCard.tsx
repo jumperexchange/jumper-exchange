@@ -9,7 +9,7 @@ import {
   WalletCardContainer,
   WalletCardButtonContainer,
 } from './WalletMenu.style';
-import { useChains, useUserTracking } from 'src/hooks';
+import { useChains, useMultisig, useUserTracking } from 'src/hooks';
 import type { Account } from 'src/hooks/useAccounts';
 import { useAccountDisconnect } from 'src/hooks/useAccounts';
 import { openInNewTab, walletDigest } from 'src/utils';
@@ -17,7 +17,7 @@ import { useMenuStore, useSettingsStore } from 'src/stores';
 import { TrackingAction, TrackingCategory } from 'src/const';
 import { EventTrackingTool } from 'src/types';
 import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Chain } from '@lifi/sdk';
 
 interface WalletCardProps {
@@ -29,6 +29,9 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   const disconnectWallet = useAccountDisconnect();
   const { trackPageload, trackEvent } = useUserTracking();
   const { chains } = useChains();
+  const { checkMultisigEnvironment } = useMultisig();
+  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+
   const activeChain = useMemo(
     () => chains?.find((chainEl: Chain) => chainEl.id === account.chainId),
     [chains, account.chainId],
@@ -37,6 +40,17 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   const onWalletDisconnect = useSettingsStore(
     (state) => state.onWalletDisconnect,
   );
+  const handleMultisigEnvironmentCheck = useCallback(async () => {
+    const response = await checkMultisigEnvironment();
+
+    setIsMultisigEnvironment(response);
+    // Check MultisigEnvironment only on first render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    handleMultisigEnvironmentCheck();
+  }, [account, handleMultisigEnvironmentCheck]);
 
   const handleExploreButton = () => {
     account.chainId && closeAllMenus();
@@ -60,6 +74,9 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   };
 
   const handleCopyButton = () => {
+    if (isMultisigEnvironment) {
+      return;
+    }
     account.address && navigator.clipboard.writeText(account.address);
     setSnackbarState(true, t('navbar.walletMenu.copiedMsg'), 'success');
     trackEvent({
@@ -85,6 +102,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
         </AvatarContainer>
         <WalletCardButtonContainer>
           <WalletButton
+            disabled={isMultisigEnvironment}
             sx={{ gridColumn: '1/3', gridRow: '1/2' }}
             onClick={() => handleCopyButton()}
           >
@@ -102,7 +120,6 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           >
             <OpenInNewIcon sx={{ height: '20px' }} />
           </WalletButton>
-
           <WalletButton
             colored
             onClick={() => handleDisconnect()}
