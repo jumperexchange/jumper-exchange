@@ -26,6 +26,7 @@ import {
   tokenpocket,
   trust,
   xdefi,
+  safe,
 } from '@lifi/wallet-management';
 import { useMemo, type FC, type PropsWithChildren } from 'react';
 import type { Chain } from 'viem';
@@ -40,7 +41,7 @@ const JUMPER_LOGO_URL = 'https://jumper.exchange/logo-144x144.svg';
 
 const connectors: Record<string, CreateConnectorFn> = {
   walletConnect: createWalletConnectConnector({
-    projectId: import.meta.env.VITE_WALLET_CONNECT,
+    projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
   }),
   coinbase: createCoinbaseConnector({
     appName: 'Jumper.Exchange',
@@ -71,6 +72,7 @@ const connectors: Record<string, CreateConnectorFn> = {
   tokenary,
   safepal,
   rabby,
+  safe,
 };
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
