@@ -14,7 +14,7 @@ import { SlideshowContainerBox } from '.';
 
 interface SlideshowContainerProps {
   styles?: CSSObject;
-  children?: React.ReactNode[];
+  children?: any;
 }
 const slideDistance = 420;
 

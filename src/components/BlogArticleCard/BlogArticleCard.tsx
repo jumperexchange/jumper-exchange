@@ -1,14 +1,7 @@
-import type { Breakpoint } from '@mui/material';
-import {
-  Card,
-  CardContent,
-  Typography,
-  lighten,
-  useTheme,
-} from '@mui/material';
+import { CardContent, Typography, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import type { StrapiImageData } from 'src/types';
-import { BlogArticleCardImage } from './BlogArticleCard.style';
+import { BlogArticleCardContainer, BlogArticleCardImage } from '.';
 
 interface BlogArticleCardProps {
   baseUrl: URL;
@@ -31,26 +24,7 @@ export const BlogArticleCard = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
-    <Card
-      variant="outlined"
-      onClick={handleClick}
-      sx={{
-        flexShrink: 0,
-        // width: '100%',
-        width: '100%',
-        border: 'unset',
-        p: 1,
-        borderRadius: '24px',
-        background: 'transparent',
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          width: 420,
-        },
-        '&:hover': {
-          cursor: 'pointer',
-          background: lighten(theme.palette.grey[200], 0.5),
-        },
-      }}
-    >
+    <BlogArticleCardContainer variant="outlined" onClick={handleClick}>
       <BlogArticleCardImage
         // sx={{ width: '100%', height: '100%' }}
         src={`${baseUrl?.origin}${image.data.attributes.url}`}
@@ -68,6 +42,6 @@ export const BlogArticleCard = ({
           {title}
         </Typography>
       </CardContent>
-    </Card>
+    </BlogArticleCardContainer>
   );
 };
