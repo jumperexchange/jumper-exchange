@@ -50,12 +50,12 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
     margin: 0,
     flexDirection: 'column',
     flexWrap: 'wrap',
-    height: '72px',
-    width: '72px',
+    height: 72,
+    width: 72,
     placeContent: 'center',
 
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      height: '72px',
+      height: 72,
     },
   };
 
@@ -82,7 +82,7 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
           <MenuHeaderAppWrapper
             sx={{
               gridColumn: 'span 3',
-              marginBottom: '-12px',
+              marginBottom: -1.5,
             }}
           >
             <MenuHeaderAppBar component="div" elevation={0}>
@@ -142,7 +142,7 @@ export const WalletSelectMenu = ({ handleClose, open }: MenuProps) => {
               styles={{
                 ...menuItemStyles,
                 gridColumn: 'span 3',
-                padding: '0px',
+                padding: 0,
                 width: '100%',
                 height: '48px !important',
                 borderRadius: '24px',

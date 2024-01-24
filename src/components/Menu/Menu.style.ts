@@ -67,7 +67,7 @@ export const MenuList = styled(MuiMenuList, {
   display: cardsLayout ? 'flex' : 'block',
   justifyContent: cardsLayout ? 'center' : 'unset',
   flexWrap: cardsLayout ? 'wrap' : 'inherit',
-  padding: cardsLayout ? '0 24px' : 0,
+  padding: cardsLayout ? theme.spacing(0, 3) : 0,
   gap: cardsLayout ? '12px' : 'inherit',
   '& > :first-of-type': {
     marginTop:
@@ -91,7 +91,7 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   marginRight: theme.spacing(4.75),
   flexWrap: 'nowrap',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: '174px',
+    maxWidth: 174,
     marginRight: 0,
     marginLeft: theme.spacing(0.75),
   },
@@ -157,7 +157,7 @@ export const MenuItemLink = styled(Link, {
   display: 'flex',
   justifyContent: 'space-between',
   padding: theme.spacing(0, 1.5),
-  height: '48px',
+  height: 48,
   textDecoration: 'none',
   color: 'inherit',
 }));

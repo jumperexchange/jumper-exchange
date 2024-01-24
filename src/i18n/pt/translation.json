@@ -61,6 +61,9 @@
   "button": {
     "okay": "Ok"
   },
+  "error": {
+    "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
+  },
   "multisig": {
     "connected": {
       "title": "Carteira Multisig conectada",

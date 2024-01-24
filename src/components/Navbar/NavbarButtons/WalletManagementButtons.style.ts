@@ -5,9 +5,9 @@ export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
   background:
     theme.palette.mode === 'light' ? 'transparent' : theme.palette.white.main,
   borderRadius: '50%',
-  height: '32px',
-  width: '32px',
-  padding: '6px',
+  height: 32,
+  width: 32,
+  padding: theme.spacing(0.75),
 }));
 
 export const Badge = styled(MuiBadge)(({ theme }) => ({

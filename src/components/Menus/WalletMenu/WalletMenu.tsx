@@ -144,9 +144,9 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
     >
       <Grid
         container
-        m={`${theme.spacing(3)} auto !important`}
+        m={`${theme.spacing(3, 'auto')} !important`}
         sx={{
-          maxWidth: '360px',
+          maxWidth: 360,
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             maxWidth: 'auto',
           },
@@ -176,7 +176,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
           </Typography>
         </Grid>
         {!isMultisigEnvironment && (
-          <Grid item xs={4} sx={{ paddingLeft: '20px' }}>
+          <Grid item xs={4} sx={{ paddingLeft: theme.spacing(2.5) }}>
             <SpotButton
               name={t('navbar.walletMenu.copy')}
               onClick={handleCopyButton}
@@ -208,7 +208,7 @@ export const WalletMenu = ({ handleClose }: MenuProps) => {
         <Grid
           item
           xs={!isMultisigEnvironment ? 4 : 6}
-          sx={{ paddingRight: '20px' }}
+          sx={{ paddingRight: 2.5 }}
         >
           <SpotButton
             name={t('navbar.walletMenu.disconnect')}
